@@ -14,6 +14,7 @@ import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.PublicAccessType
+import com.azure.storage.blob.options.BlobGetTagsOptions
 import spock.lang.Unroll
 
 import java.security.MessageDigest
@@ -115,7 +116,7 @@ class AppendBlobAPITest extends APISpec {
 
         when:
         bc.createWithResponse(new AppendBlobCreateOptions().setTags(tags), null, Context.NONE)
-        def response = bc.getTagsWithResponse(null, null)
+        def response = bc.getTagsWithResponse(new BlobGetTagsOptions(), null, null)
 
         then:
         response.getValue() == tags
@@ -130,6 +131,9 @@ class AppendBlobAPITest extends APISpec {
     @Unroll
     def "Create AC"() {
         setup:
+        def t = new HashMap<String, String>()
+        t.put("foo", "bar")
+        bc.setTags(t)
         match = setupBlobMatchCondition(bc, match)
         leaseID = setupBlobLeaseCondition(bc, leaseID)
         def bac = new BlobRequestConditions()
@@ -138,18 +142,20 @@ class AppendBlobAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags)
 
         expect:
         bc.createWithResponse(null, null, bac, null, null).getStatusCode() == 201
 
         where:
-        modified | unmodified | match        | noneMatch   | leaseID
-        null     | null       | null         | null        | null
-        oldDate  | null       | null         | null        | null
-        null     | newDate    | null         | null        | null
-        null     | null       | receivedEtag | null        | null
-        null     | null       | null         | garbageEtag | null
-        null     | null       | null         | null        | receivedLeaseID
+        modified | unmodified | match        | noneMatch   | leaseID         | tags
+        null     | null       | null         | null        | null            | null
+        oldDate  | null       | null         | null        | null            | null
+        null     | newDate    | null         | null        | null            | null
+        null     | null       | receivedEtag | null        | null            | null
+        null     | null       | null         | garbageEtag | null            | null
+        null     | null       | null         | null        | receivedLeaseID | null
+        null     | null       | null         | null        | null            | "\"foo\" = 'bar'"
     }
 
     @Unroll
@@ -163,6 +169,7 @@ class AppendBlobAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags)
 
         when:
         bc.createWithResponse(null, null, bac, null, Context.NONE)
@@ -171,12 +178,13 @@ class AppendBlobAPITest extends APISpec {
         thrown(BlobStorageException)
 
         where:
-        modified | unmodified | match       | noneMatch    | leaseID
-        newDate  | null       | null        | null         | null
-        null     | oldDate    | null        | null         | null
-        null     | null       | garbageEtag | null         | null
-        null     | null       | null        | receivedEtag | null
-        null     | null       | null        | null         | garbageLeaseID
+        modified | unmodified | match       | noneMatch    | leaseID        | tags
+        newDate  | null       | null        | null         | null           | null
+        null     | oldDate    | null        | null         | null           | null
+        null     | null       | garbageEtag | null         | null           | null
+        null     | null       | null        | receivedEtag | null           | null
+        null     | null       | null        | null         | garbageLeaseID | null
+        null     | null       | null         | null        | null           | "\"notfoo\" = 'notbar'"
     }
 
     def "Append block defaults"() {
@@ -256,6 +264,9 @@ class AppendBlobAPITest extends APISpec {
     @Unroll
     def "Append block AC"() {
         setup:
+        def t = new HashMap<String, String>()
+        t.put("foo", "bar")
+        bc.setTags(t)
         match = setupBlobMatchCondition(bc, match)
         leaseID = setupBlobLeaseCondition(bc, leaseID)
         def bac = new AppendBlobRequestConditions()
@@ -266,22 +277,23 @@ class AppendBlobAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
             .setAppendPosition(appendPosE)
             .setMaxSize(maxSizeLTE)
-
+            .setTagsConditions(tags)
 
         expect:
         bc.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, bac, null, null)
             .getStatusCode() == 201
 
         where:
-        modified | unmodified | match        | noneMatch   | leaseID         | appendPosE | maxSizeLTE
-        null     | null       | null         | null        | null            | null       | null
-        oldDate  | null       | null         | null        | null            | null       | null
-        null     | newDate    | null         | null        | null            | null       | null
-        null     | null       | receivedEtag | null        | null            | null       | null
-        null     | null       | null         | garbageEtag | null            | null       | null
-        null     | null       | null         | null        | receivedLeaseID | null       | null
-        null     | null       | null         | null        | null            | 0          | null
-        null     | null       | null         | null        | null            | null       | 100
+        modified | unmodified | match        | noneMatch   | leaseID         | appendPosE | maxSizeLTE  | tags
+        null     | null       | null         | null        | null            | null       | null        | null
+        oldDate  | null       | null         | null        | null            | null       | null        | null
+        null     | newDate    | null         | null        | null            | null       | null        | null
+        null     | null       | receivedEtag | null        | null            | null       | null        | null
+        null     | null       | null         | garbageEtag | null            | null       | null        | null
+        null     | null       | null         | null        | receivedLeaseID | null       | null        | null
+        null     | null       | null         | null        | null            | 0          | null        | null
+        null     | null       | null         | null        | null            | null       | 100         | null
+        null     | null       | null         | null        | null            | null       | null        | "\"foo\" = 'bar'"
     }
 
     @Unroll
@@ -298,6 +310,7 @@ class AppendBlobAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
             .setAppendPosition(appendPosE)
             .setMaxSize(maxSizeLTE)
+            .setTagsConditions(tags)
 
         when:
         bc.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, bac, null, null)
@@ -309,14 +322,15 @@ class AppendBlobAPITest extends APISpec {
         defaultInputStream.get().reset()
 
         where:
-        modified | unmodified | match       | noneMatch    | leaseID        | appendPosE | maxSizeLTE
-        newDate  | null       | null        | null         | null           | null       | null
-        null     | oldDate    | null        | null         | null           | null       | null
-        null     | null       | garbageEtag | null         | null           | null       | null
-        null     | null       | null        | receivedEtag | null           | null       | null
-        null     | null       | null        | null         | garbageLeaseID | null       | null
-        null     | null       | null        | null         | null           | 1          | null
-        null     | null       | null        | null         | null           | null       | 1
+        modified | unmodified | match       | noneMatch    | leaseID        | appendPosE | maxSizeLTE | tags
+        newDate  | null       | null        | null         | null           | null       | null       | null
+        null     | oldDate    | null        | null         | null           | null       | null       | null
+        null     | null       | garbageEtag | null         | null           | null       | null       | null
+        null     | null       | null        | receivedEtag | null           | null       | null       | null
+        null     | null       | null        | null         | garbageLeaseID | null       | null       | null
+        null     | null       | null        | null         | null           | 1          | null       | null
+        null     | null       | null        | null         | null           | null       | 1          | null
+        null     | null       | null        | null         | null           | null       | null       | "\"notfoo\" = 'notbar'"
 
     }
 
@@ -405,6 +419,9 @@ class AppendBlobAPITest extends APISpec {
     @Unroll
     def "Append block from URL destination AC"() {
         setup:
+        def t = new HashMap<String, String>()
+        t.put("foo", "bar")
+        bc.setTags(t)
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
         match = setupBlobMatchCondition(bc, match)
         leaseID = setupBlobLeaseCondition(bc, leaseID)
@@ -416,6 +433,7 @@ class AppendBlobAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
             .setAppendPosition(appendPosE)
             .setMaxSize(maxSizeLTE)
+            .setTagsConditions(tags)
 
         def sourceURL = cc.getBlobClient(generateBlobName()).getAppendBlobClient()
         sourceURL.create()
@@ -426,15 +444,16 @@ class AppendBlobAPITest extends APISpec {
         bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl(), null, null, bac, null, null, null).getStatusCode() == 201
 
         where:
-        modified | unmodified | match        | noneMatch   | leaseID         | appendPosE | maxSizeLTE
-        null     | null       | null         | null        | null            | null       | null
-        oldDate  | null       | null         | null        | null            | null       | null
-        null     | newDate    | null         | null        | null            | null       | null
-        null     | null       | receivedEtag | null        | null            | null       | null
-        null     | null       | null         | garbageEtag | null            | null       | null
-        null     | null       | null         | null        | receivedLeaseID | null       | null
-        null     | null       | null         | null        | null            | 0          | null
-        null     | null       | null         | null        | null            | null       | 100
+        modified | unmodified | match        | noneMatch   | leaseID         | appendPosE | maxSizeLTE  | tags
+        null     | null       | null         | null        | null            | null       | null        | null
+        oldDate  | null       | null         | null        | null            | null       | null        | null
+        null     | newDate    | null         | null        | null            | null       | null        | null
+        null     | null       | receivedEtag | null        | null            | null       | null        | null
+        null     | null       | null         | garbageEtag | null            | null       | null        | null
+        null     | null       | null         | null        | receivedLeaseID | null       | null        | null
+        null     | null       | null         | null        | null            | 0          | null        | null
+        null     | null       | null         | null        | null            | null       | 100         | null
+        null     | null       | null         | null        | null            | null       | null        | "\"foo\" = 'bar'"
     }
 
     @Unroll
@@ -452,6 +471,7 @@ class AppendBlobAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
             .setAppendPosition(appendPosE)
             .setMaxSize(maxSizeLTE)
+            .setTagsConditions(tags)
 
         def sourceURL = cc.getBlobClient(generateBlobName()).getAppendBlobClient()
         sourceURL.create()
@@ -465,14 +485,15 @@ class AppendBlobAPITest extends APISpec {
         thrown(BlobStorageException)
 
         where:
-        modified | unmodified | match       | noneMatch    | leaseID        | appendPosE | maxSizeLTE
-        newDate  | null       | null        | null         | null           | null       | null
-        null     | oldDate    | null        | null         | null           | null       | null
-        null     | null       | garbageEtag | null         | null           | null       | null
-        null     | null       | null        | receivedEtag | null           | null       | null
-        null     | null       | null        | null         | garbageLeaseID | null       | null
-        null     | null       | null        | null         | null           | 1          | null
-        null     | null       | null        | null         | null           | null       | 1
+        modified | unmodified | match       | noneMatch    | leaseID        | appendPosE | maxSizeLTE | tags
+        newDate  | null       | null        | null         | null           | null       | null       | null
+        null     | oldDate    | null        | null         | null           | null       | null       | null
+        null     | null       | garbageEtag | null         | null           | null       | null       | null
+        null     | null       | null        | receivedEtag | null           | null       | null       | null
+        null     | null       | null        | null         | garbageLeaseID | null       | null       | null
+        null     | null       | null        | null         | null           | 1          | null       | null
+        null     | null       | null        | null         | null           | null       | 1          | null
+        null     | null       | null        | null         | null           | null       | null       | "\"notfoo\" = 'notbar'"
     }
 
     @Unroll

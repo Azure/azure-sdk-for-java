@@ -15,8 +15,6 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
 import com.azure.cosmos.models.CosmosTriggerProperties;
 import com.azure.cosmos.models.CosmosUserDefinedFunctionProperties;
-import com.azure.cosmos.models.CosmosUserProperties;
-import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.TriggerOperation;
@@ -30,8 +28,6 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -57,8 +53,8 @@ public class CosmosTracerTest extends TestSuiteBase {
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void cosmosAsyncClient() {
-        Tracer mockTracer = Mockito.mock(Tracer.class);
-        TracerProvider tracerProvider = Mockito.spy(new TracerProvider(getMockTracer(mockTracer)));
+        Tracer mockTracer = getMockTracer();
+        TracerProvider tracerProvider = Mockito.spy(new TracerProvider(mockTracer));
         ReflectionUtils.setTracerProvider(client, tracerProvider);
         int traceApiCounter = 1;
 
@@ -94,8 +90,8 @@ public class CosmosTracerTest extends TestSuiteBase {
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void cosmosAsyncDatabase() {
-        Tracer mockTracer = Mockito.mock(Tracer.class);
-        TracerProvider tracerProvider = Mockito.spy(new TracerProvider(getMockTracer(mockTracer)));
+        Tracer mockTracer = getMockTracer();
+        TracerProvider tracerProvider = Mockito.spy(new TracerProvider(mockTracer));
         ReflectionUtils.setTracerProvider(client, tracerProvider);
         TracerProviderCapture tracerProviderCapture = new TracerProviderCapture();
         Mockito.doAnswer(tracerProviderCapture).when(tracerProvider).startSpan(Matchers.anyString(),
@@ -145,8 +141,8 @@ public class CosmosTracerTest extends TestSuiteBase {
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void cosmosAsyncContainer() {
-        Tracer mockTracer = Mockito.mock(Tracer.class);
-        TracerProvider tracerProvider = Mockito.spy(new TracerProvider(getMockTracer(mockTracer)));
+        Tracer mockTracer = getMockTracer();
+        TracerProvider tracerProvider = Mockito.spy(new TracerProvider(mockTracer));
         ReflectionUtils.setTracerProvider(client, tracerProvider);
         TracerProviderCapture tracerProviderCapture = new TracerProviderCapture();
         Mockito.doAnswer(tracerProviderCapture).when(tracerProvider).startSpan(Matchers.anyString(),
@@ -231,8 +227,8 @@ public class CosmosTracerTest extends TestSuiteBase {
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void cosmosAsyncScripts() {
-        Tracer mockTracer = Mockito.mock(Tracer.class);
-        TracerProvider tracerProvider = Mockito.spy(new TracerProvider(getMockTracer(mockTracer)));
+        Tracer mockTracer = getMockTracer();
+        TracerProvider tracerProvider = Mockito.spy(new TracerProvider(mockTracer));
         ReflectionUtils.setTracerProvider(client, tracerProvider);
         TracerProviderCapture tracerProviderCapture = new TracerProviderCapture();
         Mockito.doAnswer(tracerProviderCapture).when(tracerProvider).startSpan(Matchers.anyString(),
@@ -387,8 +383,8 @@ public class CosmosTracerTest extends TestSuiteBase {
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void tracerExceptionSpan() {
-        Tracer mockTracer = Mockito.mock(Tracer.class);
-        TracerProvider tracerProvider = Mockito.spy(new TracerProvider(getMockTracer(mockTracer)));
+        Tracer mockTracer = getMockTracer();
+        TracerProvider tracerProvider = Mockito.spy(new TracerProvider(mockTracer));
         ReflectionUtils.setTracerProvider(client, tracerProvider);
         int traceApiCounter = 1;
 
@@ -450,11 +446,10 @@ public class CosmosTracerTest extends TestSuiteBase {
         return storedProcedureDef;
     }
 
-    private List<Tracer> getMockTracer(Tracer tracer) {
-        List<Tracer> tracerList = new ArrayList<>();
-        tracerList.add(tracer);
-        Mockito.when(tracer.start(Matchers.anyString(), Matchers.any(Context.class))).thenReturn(Context.NONE);
-        return tracerList;
+    private Tracer getMockTracer() {
+        Tracer mockTracer = Mockito.mock(Tracer.class);
+        Mockito.when(mockTracer.start(Matchers.anyString(), Matchers.any(Context.class))).thenReturn(Context.NONE);
+        return mockTracer;
     }
 
     private void verifyTracerAttributes(Tracer mockTracer, String methodName, Context context, String databaseName,

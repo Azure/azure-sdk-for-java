@@ -2,11 +2,16 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.performance.service;
 
-import com.azure.data.cosmos.*;
-import com.azure.data.cosmos.sync.CosmosSyncClient;
-import com.azure.spring.data.cosmos.performance.utils.DatabaseUtils;
-import com.google.gson.Gson;
+import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosClient;
+import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.performance.domain.PerfPerson;
+import com.azure.spring.data.cosmos.performance.utils.DatabaseUtils;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.assertj.core.util.Lists;
 import org.springframework.data.domain.Sort;
 
@@ -17,29 +22,25 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class SdkService {
-    private static Gson gson = new Gson();
 
-    private final CosmosSyncClient cosmosSyncClient;
+    private final CosmosClient cosmosClient;
     private final String dbName;
     private final String containerName;
 
-    public SdkService(CosmosSyncClient client, String dbName, String containerName, CosmosClient asyncClient) {
-        this.cosmosSyncClient = client;
+    public SdkService(CosmosClient client, String dbName, String containerName,
+                      CosmosAsyncClient cosmosAsyncClient) {
+        this.cosmosClient = client;
         this.dbName = dbName;
         this.containerName = containerName;
     }
 
     public PerfPerson save(PerfPerson person) {
         try {
-            final String personJson = gson.toJson(person);
-            final CosmosItemProperties personDoc = new CosmosItemProperties(personJson);
 
-            final CosmosItemProperties doc = cosmosSyncClient.getDatabase(dbName)
-                                                     .getContainer(containerName)
-                                                     .createItem(personDoc)
-                                                     .properties();
-
-            return gson.fromJson(doc.toJson(), PerfPerson.class);
+            return cosmosClient.getDatabase(dbName)
+                               .getContainer(containerName)
+                               .createItem(person)
+                               .getItem();
         } catch (Exception e) {
             throw new IllegalStateException(e); // Runtime exception to fail directly
         }
@@ -54,83 +55,85 @@ public class SdkService {
 
     public void delete(PerfPerson person) {
         try {
-            final String docLink = DatabaseUtils.getDocumentLink(dbName, containerName, person.getId());
-            cosmosSyncClient.getDatabase(dbName)
-                    .getContainer(containerName)
-                    .getItem(person.getId(), PartitionKey.None)
-                    .delete(new CosmosItemRequestOptions());
+            final String docLink = DatabaseUtils.getDocumentLink(dbName, containerName,
+                person.getId());
+            cosmosClient.getDatabase(dbName)
+                        .getContainer(containerName)
+                        .deleteItem(person.getId(), PartitionKey.NONE,
+                            new CosmosItemRequestOptions());
 
-        } catch (CosmosClientException e) {
+        } catch (CosmosException e) {
             throw new IllegalStateException(e); // Runtime exception to fail directly
         }
     }
 
     public void deleteAll(Iterable<PerfPerson> personIterable) {
-        personIterable.forEach(person -> delete(person));
+        personIterable.forEach(this::delete);
     }
 
-    public CosmosItemProperties findById(String id) {
-        final Iterator<FeedResponse<CosmosItemProperties>> feedResponseIterator =
-                cosmosSyncClient.getDatabase(dbName)
+    public PerfPerson findById(String id) {
+        final Iterator<FeedResponse<PerfPerson>> feedResponseIterator =
+            cosmosClient.getDatabase(dbName)
                         .getContainer(containerName)
                         .queryItems("SELECT * FROM "
-                                + containerName
-                                + " WHERE "
-                                + containerName
-                                + ".id='"
-                                + id
-                                + "'", new FeedOptions());
-        CosmosItemProperties itemProperties = null;
+                            + containerName
+                            + " WHERE "
+                            + containerName
+                            + ".id='"
+                            + id
+                            + "'", new CosmosQueryRequestOptions(), PerfPerson.class)
+                        .iterableByPage()
+                        .iterator();
+        PerfPerson perfPerson = null;
         if (feedResponseIterator.hasNext()) {
-            final List<CosmosItemProperties> results = feedResponseIterator.next().results();
+            final List<PerfPerson> results = feedResponseIterator.next().getResults();
             if (!results.isEmpty()) {
-                itemProperties = results.get(0);
+                perfPerson = results.get(0);
             }
         }
 
-        return itemProperties;
+        return perfPerson;
     }
 
     public List<PerfPerson> findAllById(Iterable<String> ids) {
         final String idsInList = String.join(",",
-                Arrays.asList(ids).stream().map(id -> "'" + id + "'").collect(Collectors.toList()));
+            Arrays.asList(ids).stream().map(id -> "'" + id + "'").collect(Collectors.toList()));
         final String sql = "SELECT * FROM " + containerName + " WHERE " + containerName + ".id IN ("
-                + idsInList + ")";
+            + idsInList + ")";
 
-        final FeedOptions feedOptions = new FeedOptions();
-        feedOptions.enableCrossPartitionQuery(true);
+        final List<PerfPerson> docs = new ArrayList<>();
 
-        final List<CosmosItemProperties> docs = new ArrayList<>();
-
-        final Iterator<FeedResponse<CosmosItemProperties>> feedResponseIterator = cosmosSyncClient.getDatabase(dbName)
-                                                                                    .getContainer(containerName)
-                                                                                    .queryItems(sql, feedOptions);
+        final Iterator<FeedResponse<PerfPerson>> feedResponseIterator =
+            cosmosClient.getDatabase(dbName)
+                        .getContainer(containerName)
+                        .queryItems(sql, new CosmosQueryRequestOptions(), PerfPerson.class)
+                        .iterableByPage()
+                        .iterator();
         while (feedResponseIterator.hasNext()) {
-            final FeedResponse<CosmosItemProperties> next = feedResponseIterator.next();
-            docs.addAll(next.results());
+            final FeedResponse<PerfPerson> next = feedResponseIterator.next();
+            docs.addAll(next.getResults());
         }
 
 
-        return fromDocuments(docs);
+        return docs;
     }
 
     public List<PerfPerson> findAll() {
         final String sql = "SELECT * FROM  " + containerName;
-        final List<CosmosItemProperties> docs = getCosmosItemPropertiesList(sql);
-        return fromDocuments(docs);
+        return getPerfPersonList(sql);
     }
 
     public boolean deleteAll() {
         final String sql = "SELECT * FROM  " + containerName;
-        final List<CosmosItemProperties> documents = getCosmosItemPropertiesList(sql);
+        final List<PerfPerson> documents = getPerfPersonList(sql);
 
         documents.forEach(document -> {
             try {
-                cosmosSyncClient.getDatabase(dbName)
-                        .getContainer(containerName)
-                        .getItem(document.id(), PartitionKey.None)
-                        .delete(new CosmosItemRequestOptions().partitionKey(PartitionKey.None));
-            } catch (CosmosClientException e) {
+                cosmosClient.getDatabase(dbName)
+                            .getContainer(containerName)
+                            .deleteItem(document.getId(), PartitionKey.NONE,
+                                new CosmosItemRequestOptions());
+            } catch (CosmosException e) {
                 throw new IllegalStateException(e);
             }
         });
@@ -138,76 +141,70 @@ public class SdkService {
         return true;
     }
 
-    private List<CosmosItemProperties> getCosmosItemPropertiesList(String sql) {
-        final List<CosmosItemProperties> documents = new ArrayList<>();
-        final Iterator<FeedResponse<CosmosItemProperties>> feedResponseIterator =
-                cosmosSyncClient.getDatabase(dbName)
+    private List<PerfPerson> getPerfPersonList(String sql, int size) {
+        final List<PerfPerson> documents = new ArrayList<>();
+        final Iterator<FeedResponse<PerfPerson>> feedResponseIterator =
+            cosmosClient.getDatabase(dbName)
                         .getContainer(containerName)
-                        .queryItems(sql, new FeedOptions().enableCrossPartitionQuery(true));
+                        .queryItems(sql, new CosmosQueryRequestOptions(), PerfPerson.class)
+                        .iterableByPage(size)
+                        .iterator();
         while (feedResponseIterator.hasNext()) {
-            final FeedResponse<CosmosItemProperties> next = feedResponseIterator.next();
-            documents.addAll(next.results());
+            final FeedResponse<PerfPerson> next = feedResponseIterator.next();
+            documents.addAll(next.getResults());
         }
         return documents;
+    }
+
+    private List<PerfPerson> getPerfPersonList(String sql) {
+        //  Pass default page size, which is 100
+        return getPerfPersonList(sql, 100);
     }
 
     public List<PerfPerson> searchDocuments(Sort sort) {
         final Sort.Order order = sort.iterator().next(); // Only one Order supported
         final String sql = "SELECT * FROM  " + containerName + " ORDER BY " + containerName + "."
-                                   + order.getProperty() + " " + order.getDirection().name();
-        final List<CosmosItemProperties> docs = getCosmosItemPropertiesList(sql);
-
-        return fromDocuments(docs);
+            + order.getProperty() + " " + order.getDirection().name();
+        return getPerfPersonList(sql);
     }
 
     public long count() {
         final String sql = "SELECT VALUE COUNT(1) FROM " + containerName;
-        final Iterator<FeedResponse<CosmosItemProperties>> feedResponseIterator = cosmosSyncClient.getDatabase(dbName)
-                                                                                    .getContainer(containerName)
-                                                                                    .queryItems(sql, new FeedOptions());
-        final Object result =   feedResponseIterator.next().results().get(0).get("_aggregate");
+        final Iterator<FeedResponse<JsonNode>> feedResponseIterator =
+            cosmosClient.getDatabase(dbName)
+                        .getContainer(containerName)
+                        .queryItems(sql, new CosmosQueryRequestOptions(), JsonNode.class)
+                        .iterableByPage()
+                        .iterator();
 
-        return result instanceof Integer ? Long.valueOf((Integer) result) : (Long) result;
+        return feedResponseIterator.next().getResults().get(0).get("_aggregate").asLong();
     }
 
     public List<PerfPerson> findByName(String name) {
         final String sql = "SELECT * FROM " + containerName + " WHERE " + containerName + ".name='"
-                           + name + "'";
-        final Iterator<CosmosItemProperties> result = getCosmosItemPropertiesList(sql).iterator();
-        return fromDocuments(Lists.newArrayList(result));
+            + name + "'";
+        final Iterator<PerfPerson> result = getPerfPersonList(sql).iterator();
+        return Lists.newArrayList(result);
     }
 
     public void queryTwoPages(int pageSize) {
-        final FeedOptions options = new FeedOptions();
-        options.maxItemCount(pageSize);
-        options.requestContinuation(null);
-
-        searchBySize(pageSize, options);
-        searchBySize(pageSize, options);
+        searchBySize(pageSize);
+        searchBySize(pageSize);
     }
 
-    private List<PerfPerson> searchBySize(int size, FeedOptions options) {
+    private List<PerfPerson> searchBySize(int size) {
         final String sql = "SELECT * FROM " + containerName;
 
-        final Iterator<CosmosItemProperties> it = getCosmosItemPropertiesList(sql).iterator();
+        final Iterator<PerfPerson> it = getPerfPersonList(sql, size).iterator();
         final List<PerfPerson> entities = new ArrayList<>();
         int i = 0;
-        while (it.hasNext()
-                && i++ < size) {
-            // This convert here is in order to mock data conversion in real use case, in order to compare with
-            // Spring Data mapping
-            final CosmosItemProperties d = it.next();
-            final PerfPerson entity = gson.fromJson(d.toJson(), PerfPerson.class);
-            entities.add(entity);
+        while (it.hasNext() && i++ < size) {
+            final PerfPerson perfPerson = it.next();
+            entities.add(perfPerson);
         }
 
         count(); // Mock same behavior with Spring pageable query, requires total elements count
 
         return entities;
-    }
-
-    private List<PerfPerson> fromDocuments(List<CosmosItemProperties> documents) {
-        return documents.stream().map(d -> gson.fromJson(d.toJson(), PerfPerson.class))
-                .collect(Collectors.toList());
     }
 }

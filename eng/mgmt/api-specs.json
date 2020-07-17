@@ -42,10 +42,6 @@
     "source": "specification/vmware/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },  
-  "azure-kusto/resource-manager": {
-    "source": "specification/azure-kusto/resource-manager/readme.md",
-    "args": "--multiapi --fluent"
-  },
   "azurestack/resource-manager": {
     "source": "specification/azurestack/resource-manager/readme.md",
     "args": "--multiapi --fluent"
@@ -176,6 +172,10 @@
     "source": "specification/kubernetesconfiguration/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "kusto/resource-manager": {
+    "source": "specification/azure-kusto/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },  
   "loganalytics/data-plane": {
     "source": "specification/operationalinsights/data-plane/readme.md",
     "args": "--payload-flattening-threshold=1 --override-client-name=LogAnalyticsDataClient"

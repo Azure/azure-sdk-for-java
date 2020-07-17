@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.encryption.api.DataEncryptionKeyProvider;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 
 import java.util.Collections;
@@ -22,7 +23,7 @@ import java.util.List;
  * Though consistencyLevel is not mandatory, but we strongly suggest to pay attention to this API when building client.
  * By default, account consistency level is used if none is provided.
  * <p>
- * By default, direct connection mode is used if none specified. 
+ * By default, direct connection mode is used if none specified.
  * <pre>
  *     Building Cosmos Async Client minimal APIs (without any customized configurations)
  * {@code
@@ -88,6 +89,7 @@ public class CosmosClientBuilder {
     private CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver;
     private AzureKeyCredential credential;
     private boolean sessionCapturingOverrideEnabled;
+    private DataEncryptionKeyProvider dataEncryptionKeyProvider;
     private boolean connectionSharingAcrossClientsEnabled;
     private boolean contentResponseOnWriteEnabled;
     private String userAgentSuffix;
@@ -490,6 +492,15 @@ public class CosmosClientBuilder {
         return this;
     }
 
+    CosmosClientBuilder dataEncryptionKeyProvider(DataEncryptionKeyProvider dataEncryptionKeyProvider) {
+        this.dataEncryptionKeyProvider = dataEncryptionKeyProvider;
+        return this;
+    }
+
+    DataEncryptionKeyProvider getDataEncryptionKeyProvider() {
+        return this.dataEncryptionKeyProvider;
+    }
+
     /**
      * Sets the flag to enable endpoint discovery for geo-replicated database accounts.
      * <p>
@@ -668,8 +679,10 @@ public class CosmosClientBuilder {
             //  Check if the user passed additional gateway connection configuration
             if (this.gatewayConnectionConfig != null) {
                 this.connectionPolicy.setMaxConnectionPoolSize(this.gatewayConnectionConfig.getMaxConnectionPoolSize());
+                //  TODO(kuthapar): potential bug - when we expose requestTimeout from direct and gateway connection config,
+                //   as gateway connection config will overwrite direct connection config settings
                 this.connectionPolicy.setRequestTimeout(this.gatewayConnectionConfig.getRequestTimeout());
-                this.connectionPolicy.setIdleConnectionTimeout(this.gatewayConnectionConfig.getIdleConnectionTimeout());
+                this.connectionPolicy.setIdleHttpConnectionTimeout(this.gatewayConnectionConfig.getIdleConnectionTimeout());
             }
         } else if (gatewayConnectionConfig != null) {
             this.connectionPolicy = new ConnectionPolicy(gatewayConnectionConfig);

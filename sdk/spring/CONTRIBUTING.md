@@ -33,35 +33,30 @@ submission is consistent with the project standards and is ready to be accepted 
 
 ## Building from source
 
-To build the project, open a command prompt/terminal:
+If it's the first time you try to build the project or you pull new commits from github, then you need to build the whole SDK project with the below command:
 1. Execute `git clone https://github.com/Azure/azure-sdk-for-java.git`
-1. Traverse to the spring directory:
+1. Traverse to the root directory:
+1. Build the whole product by executing the following command which may take several minutes:
+    * `mvn clean install -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -Djacoco.skip=true​ -DskipTests -Dparallel-test-playback`
+
+After executing the above steps, you can build the spring project only for the developing purpose:
+1. Traverse to spring directory:
     * `cd sdk\spring`
-1. Build the product by executing:
-    * `mvn clean package -DskipTests`
+1. Build the spring project:
+    * `mvn clean install -DskipTests`
+
 
 ## Running tests
 
 After following instructions above, you can run the
 unit tests by executing: 
 ```shell
-mvn clean test
+mvn test
 ```
 
 For unit tests, there are no special considerations; these are self-contained and execute locally without any reliance
 on external resources. These tests are run for all PR validations.
 
-
-## FAQ
-
-When building Spring Boot project, if it fails on the sample `azure-spring-boot-sample-servicebus`, please deploy the 
-`com.azure:azure-messaging-servicebus` to your local repository manually by:
-```shell
-cd sdk\servicebus\azure-messaging-service
-mvn clean install -DskipTests
-```
-This is because the version of `com.azure:azure-messaging-servicebus` library the sample depends on is from this SDK
-repository instead of Maven.
 
 ## Version management
 Developing version naming convention is like `0.1.2-beta.1`. Release version naming convention is like `0.1.2`. 

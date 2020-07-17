@@ -32,6 +32,9 @@ public interface SpringApp
     /** @return the url of the app */
     String url();
 
+    /** @return the fully qualified domain name (FQDN) of the app */
+    String fqdn();
+
     /** @return the temporary disk of the app */
     TemporaryDisk temporaryDisk();
 
@@ -49,6 +52,12 @@ public interface SpringApp
 
     /** @return the entry point of the spring app deployment */
     SpringAppDeployments deployments();
+
+    /** @return the entry point of the spring app service binding */
+    SpringAppServiceBindings serviceBindings();
+
+    /** @return the entry point of the spring app custom domain */
+    SpringAppDomains customDomains();
 
     /** @return the blob url to upload deployment */
     Mono<ResourceUploadDefinition> getResourceUploadUrlAsync();
@@ -68,10 +77,10 @@ public interface SpringApp
         /** The stage of a spring app definition allowing to specify the endpoint. */
         interface WithEndpoint {
             /**
-             * Enables the public endpoint for the spring app.
+             * Enables the default public endpoint for the spring app.
              * @return the next stage of spring app definition
              */
-            WithCreate withPublicEndpoint();
+            WithCreate withDefaultPublicEndpoint();
 
             /**
              * Specifies the custom domain for the spring app.
@@ -79,6 +88,14 @@ public interface SpringApp
              * @return the next stage of spring app definition
              */
             WithCreate withCustomDomain(String domain);
+
+            /**
+             * Specifies the custom domain for the spring app.
+             * @param domain the domain name
+             * @param certThumbprint the thumbprint of certificate for https
+             * @return the next stage of spring app update
+             */
+            WithCreate withCustomDomain(String domain, String certThumbprint);
 
             /**
              * Enables https only for the spring app.
@@ -129,6 +146,24 @@ public interface SpringApp
             WithCreate deploySource(String name, File sourceCodeFolder, String targetModule);
         }
 
+        /** The stage of a spring app update allowing to specify the service binding. */
+        interface WithServiceBinding {
+            /**
+             * Specifies a service binding for the spring app.
+             * @param name the service binding name
+             * @param bindingProperties the property for the service binding
+             * @return the next stage of spring app update
+             */
+            WithCreate withServiceBinding(String name, BindingResourceProperties bindingProperties);
+
+            /**
+             * Removes a service binding for the spring app.
+             * @param name the service binding name
+             * @return the next stage of spring app update
+             */
+            WithCreate withoutServiceBinding(String name);
+        }
+
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
          * but also allows for any other optional settings to be specified.
@@ -137,7 +172,8 @@ public interface SpringApp
             extends Creatable<SpringApp>,
                 DefinitionStages.WithEndpoint,
                 DefinitionStages.WithDisk,
-                DefinitionStages.WithDeployment { }
+                DefinitionStages.WithDeployment,
+                DefinitionStages.WithServiceBinding { }
     }
 
     /** The template for an update operation, containing all the settings that can be modified. */
@@ -145,23 +181,24 @@ public interface SpringApp
         extends Appliable<SpringApp>,
         UpdateStages.WithEndpoint,
         UpdateStages.WithDisk,
-        UpdateStages.WithDeployment { }
+        UpdateStages.WithDeployment,
+        UpdateStages.WithServiceBinding { }
 
     /** Grouping of spring app update stages. */
     interface UpdateStages {
         /** The stage of a spring app update allowing to specify the endpoint. */
         interface WithEndpoint {
             /**
-             * Enables the public endpoint for the spring app.
+             * Enables the default public endpoint for the spring app.
              * @return the next stage of spring app update
              */
-            Update withPublicEndpoint();
+            Update withDefaultPublicEndpoint();
 
             /**
-             * Disables the public endpoint for the spring app.
+             * Disables the default public endpoint for the spring app.
              * @return the next stage of spring app update
              */
-            Update withoutPublicEndpoint();
+            Update withoutDefaultPublicEndpoint();
 
             /**
              * Specifies the custom domain for the spring app.
@@ -171,10 +208,19 @@ public interface SpringApp
             Update withCustomDomain(String domain);
 
             /**
-             * Removes the custom domain for the spring app.
+             * Specifies the custom domain for the spring app.
+             * @param domain the domain name
+             * @param certThumbprint the thumbprint of certificate for https
              * @return the next stage of spring app update
              */
-            Update withoutCustomDomain();
+            Update withCustomDomain(String domain, String certThumbprint);
+
+            /**
+             * Removes the custom domain for the spring app.
+             * @param domain the domain name
+             * @return the next stage of spring app update
+             */
+            Update withoutCustomDomain(String domain);
 
             /**
              * Enables https only for the spring app.
@@ -220,7 +266,6 @@ public interface SpringApp
             Update withoutPersistentDisk();
         }
 
-
         /**
          * The stage of a spring app update allowing to specify an simple active deployment.
          * for more operations, use {@link #deployments()}
@@ -256,6 +301,24 @@ public interface SpringApp
              * @return the next stage of spring app update
              */
             Update withoutDeployment(String name);
+        }
+
+        /** The stage of a spring app update allowing to specify the service binding. */
+        interface WithServiceBinding {
+            /**
+             * Specifies a service binding for the spring app.
+             * @param name the service binding name
+             * @param bindingProperties the property for the service binding
+             * @return the next stage of spring app update
+             */
+            Update withServiceBinding(String name, BindingResourceProperties bindingProperties);
+
+            /**
+             * Removes a service binding for the spring app.
+             * @param name the service binding name
+             * @return the next stage of spring app update
+             */
+            Update withoutServiceBinding(String name);
         }
     }
 }

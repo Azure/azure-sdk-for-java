@@ -135,12 +135,12 @@ class ExtractKeyPhraseAsyncClient {
      * Helper method to convert the service response of {@link KeyPhraseResult} to {@link Response}
      * which contains {@link ExtractKeyPhrasesResultCollection}.
      *
-     * @param response the {@link SimpleResponse} returned by the service.
+     * @param response the {@link Response} returned by the service.
      *
      * @return A {@link Response} which contains {@link ExtractKeyPhrasesResultCollection}.
      */
     private Response<ExtractKeyPhrasesResultCollection> toExtractKeyPhrasesResultCollectionResponse(
-        final SimpleResponse<KeyPhraseResult> response) {
+        final Response<KeyPhraseResult> response) {
         final KeyPhraseResult keyPhraseResult = response.getValue();
         // List of documents results
         final List<ExtractKeyPhraseResult> keyPhraseResultList = new ArrayList<>();
@@ -169,7 +169,8 @@ class ExtractKeyPhraseAsyncClient {
             if (documentError.getId().isEmpty()) {
                 throw logger.logExceptionAsError(
                     new HttpResponseException(documentError.getError().getInnererror().getMessage(),
-                    getEmptyErrorIdHttpResponse(response), documentError.getError().getInnererror().getCode()));
+                    getEmptyErrorIdHttpResponse(new SimpleResponse<>(response, response.getValue())),
+                        documentError.getError().getInnererror().getCode()));
             }
 
             final TextAnalyticsError error = toTextAnalyticsError(documentError.getError());
@@ -198,9 +199,9 @@ class ExtractKeyPhraseAsyncClient {
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
         return service.keyPhrasesWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-            context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE),
             options == null ? null : options.getModelVersion(),
-            options == null ? null : options.isIncludeStatistics())
+            options == null ? null : options.isIncludeStatistics(),
+            context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
             .doOnSubscribe(ignoredValue -> logger.info("A batch of document - {}", documents.toString()))
             .doOnSuccess(response -> logger.info("A batch of key phrases output - {}", response.getValue()))
             .doOnError(error -> logger.warning("Failed to extract key phrases - {}", error))

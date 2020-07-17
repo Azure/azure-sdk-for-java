@@ -32,7 +32,7 @@ public class ReactiveCosmosRepositoryFactory extends ReactiveRepositoryFactorySu
     /**
      * Initialization
      *
-     * @param cosmosOperations for cosmosdb operations
+     * @param cosmosOperations for cosmosDB operations
      * @param applicationContext for the context
      */
     public ReactiveCosmosRepositoryFactory(ReactiveCosmosOperations cosmosOperations,

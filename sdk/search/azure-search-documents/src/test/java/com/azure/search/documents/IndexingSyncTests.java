@@ -333,9 +333,7 @@ public class IndexingSyncTests extends SearchTestBase {
     public void canUseIndexWithReservedName() {
         String indexName = "prototype";
         SearchIndex indexWithReservedName = new SearchIndex(indexName)
-            .setFields(Collections.singletonList(new SearchField("ID", SearchFieldDataType.STRING)
-                .setKey(Boolean.TRUE)
-            ));
+            .setFields(new SearchField("ID", SearchFieldDataType.STRING).setKey(Boolean.TRUE));
 
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder().buildClient();
         searchIndexClient.createOrUpdateIndex(indexWithReservedName);

@@ -24,6 +24,12 @@ public class VirtualMachineScaleSetExtensionInner extends SubResourceReadOnly {
     @JsonProperty(value = "name")
     private String name;
 
+//    /*
+//     * Resource type
+//     */
+//    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
+//    private String type;
+
     /*
      * If a value is provided and is different from the previous value, the
      * extension handler will be forced to update even if the extension
@@ -105,6 +111,15 @@ public class VirtualMachineScaleSetExtensionInner extends SubResourceReadOnly {
         this.name = name;
         return this;
     }
+
+//    /**
+//     * Get the type property: Resource type.
+//     *
+//     * @return the type value.
+//     */
+//    public String type() {
+//        return this.type;
+//    }
 
     /**
      * Get the forceUpdateTag property: If a value is provided and is different from the previous value, the extension

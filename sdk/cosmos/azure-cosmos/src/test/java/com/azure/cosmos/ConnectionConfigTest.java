@@ -12,7 +12,6 @@ import org.testng.annotations.Test;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -37,7 +36,7 @@ public class ConnectionConfigTest extends TestSuiteBase {
         AsyncDocumentClient asyncDocumentClient =
             CosmosBridgeInternal.getAsyncDocumentClient(cosmosClient);
         ConnectionPolicy connectionPolicy = asyncDocumentClient.getConnectionPolicy();
-        assertThat(connectionPolicy.getConnectionMode().equals(ConnectionMode.GATEWAY));
+        assertThat(connectionPolicy.getConnectionMode()).isEqualTo(ConnectionMode.GATEWAY);
         validateGatewayConnectionConfig(connectionPolicy, cosmosClientBuilder, gatewayConnectionConfig);
         safeCloseSyncClient(cosmosClient);
     }
@@ -66,7 +65,7 @@ public class ConnectionConfigTest extends TestSuiteBase {
         AsyncDocumentClient asyncDocumentClient =
             CosmosBridgeInternal.getAsyncDocumentClient(cosmosClient);
         ConnectionPolicy connectionPolicy = asyncDocumentClient.getConnectionPolicy();
-        assertThat(connectionPolicy.getConnectionMode().equals(ConnectionMode.GATEWAY));
+        assertThat(connectionPolicy.getConnectionMode()).isEqualTo(ConnectionMode.GATEWAY);
         validateGatewayConnectionConfig(connectionPolicy, cosmosClientBuilder, gatewayConnectionConfig);
         safeCloseSyncClient(cosmosClient);
     }
@@ -84,7 +83,7 @@ public class ConnectionConfigTest extends TestSuiteBase {
         AsyncDocumentClient asyncDocumentClient =
             CosmosBridgeInternal.getAsyncDocumentClient(cosmosClient);
         ConnectionPolicy connectionPolicy = asyncDocumentClient.getConnectionPolicy();
-        assertThat(connectionPolicy.getConnectionMode().equals(ConnectionMode.DIRECT));
+        assertThat(connectionPolicy.getConnectionMode()).isEqualTo(ConnectionMode.DIRECT);
         validateDirectConnectionConfig(connectionPolicy, cosmosClientBuilder, directConnectionConfig);
         safeCloseSyncClient(cosmosClient);
     }
@@ -113,7 +112,7 @@ public class ConnectionConfigTest extends TestSuiteBase {
         AsyncDocumentClient asyncDocumentClient =
             CosmosBridgeInternal.getAsyncDocumentClient(cosmosClient);
         ConnectionPolicy connectionPolicy = asyncDocumentClient.getConnectionPolicy();
-        assertThat(connectionPolicy.getConnectionMode().equals(ConnectionMode.DIRECT));
+        assertThat(connectionPolicy.getConnectionMode()).isEqualTo(ConnectionMode.DIRECT);
         validateDirectConnectionConfig(connectionPolicy, cosmosClientBuilder, directConnectionConfig);
         safeCloseSyncClient(cosmosClient);
     }
@@ -133,7 +132,7 @@ public class ConnectionConfigTest extends TestSuiteBase {
         AsyncDocumentClient asyncDocumentClient =
             CosmosBridgeInternal.getAsyncDocumentClient(cosmosClient);
         ConnectionPolicy connectionPolicy = asyncDocumentClient.getConnectionPolicy();
-        assertThat(connectionPolicy.getConnectionMode().equals(ConnectionMode.DIRECT));
+        assertThat(connectionPolicy.getConnectionMode()).isEqualTo(ConnectionMode.DIRECT);
         validateDirectAndGatewayConnectionConfig(connectionPolicy, cosmosClientBuilder, directConnectionConfig, gatewayConnectionConfig);
         safeCloseSyncClient(cosmosClient);
     }
@@ -149,7 +148,7 @@ public class ConnectionConfigTest extends TestSuiteBase {
         AsyncDocumentClient asyncDocumentClient =
             CosmosBridgeInternal.getAsyncDocumentClient(cosmosClient);
         ConnectionPolicy connectionPolicy = asyncDocumentClient.getConnectionPolicy();
-        assertThat(connectionPolicy.getConnectionMode().equals(ConnectionMode.DIRECT));
+        assertThat(connectionPolicy.getConnectionMode()).isEqualTo(ConnectionMode.DIRECT);
         validateDirectConnectionConfig(connectionPolicy, cosmosClientBuilder, DirectConnectionConfig.getDefaultConfig());
         safeCloseSyncClient(cosmosClient);
     }
@@ -157,44 +156,44 @@ public class ConnectionConfigTest extends TestSuiteBase {
     private void validateDirectAndGatewayConnectionConfig(ConnectionPolicy connectionPolicy, CosmosClientBuilder cosmosClientBuilder,
                                                           DirectConnectionConfig directConnectionConfig, GatewayConnectionConfig gatewayConnectionConfig) {
         validateCommonConnectionConfig(connectionPolicy, cosmosClientBuilder);
-        assertThat(Objects.equals(connectionPolicy.getConnectionMode(), ConnectionMode.DIRECT));
+        assertThat(connectionPolicy.getConnectionMode()).isEqualTo(ConnectionMode.DIRECT);
         validateDirectConfig(connectionPolicy, directConnectionConfig);
         validateGatewayConfig(connectionPolicy, gatewayConnectionConfig);
     }
 
     private void validateGatewayConnectionConfig(ConnectionPolicy connectionPolicy, CosmosClientBuilder cosmosClientBuilder, GatewayConnectionConfig gatewayConnectionConfig) {
         validateCommonConnectionConfig(connectionPolicy, cosmosClientBuilder);
-        assertThat(Objects.equals(connectionPolicy.getConnectionMode(), ConnectionMode.GATEWAY));
+        assertThat(connectionPolicy.getConnectionMode()).isEqualTo(ConnectionMode.GATEWAY);
         validateGatewayConfig(connectionPolicy, gatewayConnectionConfig);
     }
 
     private void validateDirectConnectionConfig(ConnectionPolicy connectionPolicy, CosmosClientBuilder cosmosClientBuilder, DirectConnectionConfig directConnectionConfig) {
         validateCommonConnectionConfig(connectionPolicy, cosmosClientBuilder);
-        assertThat(Objects.equals(connectionPolicy.getConnectionMode(), ConnectionMode.DIRECT));
+        assertThat(connectionPolicy.getConnectionMode()).isEqualTo(ConnectionMode.DIRECT);
         validateDirectConfig(connectionPolicy, directConnectionConfig);
     }
 
     private void validateCommonConnectionConfig(ConnectionPolicy connectionPolicy, CosmosClientBuilder cosmosClientBuilder) {
-        assertThat(Objects.equals(connectionPolicy.isMultipleWriteRegionsEnabled(), cosmosClientBuilder.isMultipleWriteRegionsEnabled()));
-        assertThat(Objects.equals(connectionPolicy.isEndpointDiscoveryEnabled(), cosmosClientBuilder.isEndpointDiscoveryEnabled()));
-        assertThat(Objects.equals(connectionPolicy.isReadRequestsFallbackEnabled(), cosmosClientBuilder.isReadRequestsFallbackEnabled()));
-        assertThat(Objects.equals(connectionPolicy.getPreferredRegions(), cosmosClientBuilder.getPreferredRegions()));
-        assertThat(Objects.equals(connectionPolicy.getThrottlingRetryOptions(), cosmosClientBuilder.getThrottlingRetryOptions()));
-        assertThat(Objects.equals(connectionPolicy.getUserAgentSuffix(), cosmosClientBuilder.getUserAgentSuffix()));
+        assertThat(connectionPolicy.isMultipleWriteRegionsEnabled()).isEqualTo(cosmosClientBuilder.isMultipleWriteRegionsEnabled());
+        assertThat(connectionPolicy.isEndpointDiscoveryEnabled()).isEqualTo(cosmosClientBuilder.isEndpointDiscoveryEnabled());
+        assertThat(connectionPolicy.isReadRequestsFallbackEnabled()).isEqualTo(cosmosClientBuilder.isReadRequestsFallbackEnabled());
+        assertThat(connectionPolicy.getPreferredRegions()).isEqualTo(cosmosClientBuilder.getPreferredRegions());
+        assertThat(connectionPolicy.getThrottlingRetryOptions()).isEqualTo(cosmosClientBuilder.getThrottlingRetryOptions());
+        assertThat(connectionPolicy.getUserAgentSuffix()).isEqualTo(cosmosClientBuilder.getUserAgentSuffix());
     }
 
     private void validateGatewayConfig(ConnectionPolicy connectionPolicy, GatewayConnectionConfig gatewayConnectionConfig) {
-        assertThat(Objects.equals(connectionPolicy.getIdleConnectionTimeout(), gatewayConnectionConfig.getIdleConnectionTimeout()));
-        assertThat(Objects.equals(connectionPolicy.getMaxConnectionPoolSize(), gatewayConnectionConfig.getMaxConnectionPoolSize()));
-        assertThat(Objects.equals(connectionPolicy.getRequestTimeout(), gatewayConnectionConfig.getRequestTimeout()));
-        assertThat(Objects.equals(connectionPolicy.getProxy(), gatewayConnectionConfig.getProxy()));
+        assertThat(connectionPolicy.getIdleHttpConnectionTimeout()).isEqualTo(gatewayConnectionConfig.getIdleConnectionTimeout());
+        assertThat(connectionPolicy.getMaxConnectionPoolSize()).isEqualTo(gatewayConnectionConfig.getMaxConnectionPoolSize());
+        assertThat(connectionPolicy.getRequestTimeout()).isEqualTo(gatewayConnectionConfig.getRequestTimeout());
+        assertThat(connectionPolicy.getProxy()).isEqualTo(gatewayConnectionConfig.getProxy());
     }
 
     private void validateDirectConfig(ConnectionPolicy connectionPolicy, DirectConnectionConfig directConnectionConfig) {
-        assertThat(Objects.equals(connectionPolicy.getConnectTimeout(), directConnectionConfig.getConnectTimeout()));
-        assertThat(Objects.equals(connectionPolicy.getIdleConnectionTimeout(), directConnectionConfig.getIdleConnectionTimeout()));
-        assertThat(Objects.equals(connectionPolicy.getIdleEndpointTimeout(), directConnectionConfig.getIdleEndpointTimeout()));
-        assertThat(Objects.equals(connectionPolicy.getMaxConnectionsPerEndpoint(), directConnectionConfig.getMaxConnectionsPerEndpoint()));
-        assertThat(Objects.equals(connectionPolicy.getMaxRequestsPerConnection(), directConnectionConfig.getMaxRequestsPerConnection()));
+        assertThat(connectionPolicy.getConnectTimeout()).isEqualTo(directConnectionConfig.getConnectTimeout());
+        assertThat(connectionPolicy.getIdleTcpConnectionTimeout()).isEqualTo(directConnectionConfig.getIdleConnectionTimeout());
+        assertThat(connectionPolicy.getIdleEndpointTimeout()).isEqualTo(directConnectionConfig.getIdleEndpointTimeout());
+        assertThat(connectionPolicy.getMaxConnectionsPerEndpoint()).isEqualTo(directConnectionConfig.getMaxConnectionsPerEndpoint());
+        assertThat(connectionPolicy.getMaxRequestsPerConnection()).isEqualTo(directConnectionConfig.getMaxRequestsPerConnection());
     }
 }

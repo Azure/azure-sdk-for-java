@@ -10,23 +10,21 @@ jobs:
           goals: "verify"
 
         Artifacts:
-          - name: azure-spring-boot-tests
-            groupId: com.microsoft.azure
-            safeName: azurespringboot-tests
+          - name: azure-spring-boot-test-application
+            groupId: com.azure
+            safeName: azurespringboottestapplication
           - name: azure-spring-boot-test-core
-            groupId: com.microsoft.azure
+            groupId: com.azure
             safeName: azurespringboottestcore
           - name: azure-spring-boot-test-cosmosdb
-            groupId: com.microsoft.azure
+            groupId: com.azure
             safeName: azurespringboottestcosmosdb
           - name: azure-spring-boot-test-aad
-            groupId: com.microsoft.azure
+            groupId: com.azure
             safeName: azurespringboottestaad
           - name: azure-spring-boot-test-keyvault
-            groupId: com.microsoft.azure
+            groupId: com.azure
             safeName: azurespringboottestkeyvault
-          - name: azure-spring-boot-test-application
-            groupId: com.microsoft.azure
-            safeName: azurespringboottestapplication
+
         EnvVars:
           AZURE_TEST_MODE: LIVE

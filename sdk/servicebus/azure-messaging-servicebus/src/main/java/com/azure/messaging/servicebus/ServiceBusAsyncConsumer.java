@@ -29,13 +29,13 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
     private final Flux<ServiceBusReceivedMessage> processor;
 
     ServiceBusAsyncConsumer(String linkName, ServiceBusReceiveLinkProcessor linkProcessor,
-        MessageSerializer messageSerializer) {
+        MessageSerializer messageSerializer, int prefetch) {
         this.linkName = linkName;
         this.linkProcessor = linkProcessor;
         this.messageSerializer = messageSerializer;
         this.processor = linkProcessor
             .map(message -> this.messageSerializer.deserialize(message, ServiceBusReceivedMessage.class))
-            .publish()
+            .publish(prefetch)
             .autoConnect(1);
     }
 

@@ -2,19 +2,19 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.integration;
 
-import com.azure.data.cosmos.CosmosContainerProperties;
-import com.azure.data.cosmos.IndexingPolicy;
-import com.azure.spring.data.cosmos.CosmosDbFactory;
-import com.azure.spring.data.cosmos.config.CosmosDBConfig;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.IndexingPolicy;
+import com.azure.spring.data.cosmos.CosmosFactory;
+import com.azure.spring.data.cosmos.common.TestConstants;
+import com.azure.spring.data.cosmos.common.TestUtils;
+import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
 import com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext;
-import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
-import com.azure.spring.data.cosmos.common.TestConstants;
-import com.azure.spring.data.cosmos.common.TestUtils;
 import com.azure.spring.data.cosmos.domain.Role;
 import com.azure.spring.data.cosmos.domain.TimeToLiveSample;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
+import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -39,7 +39,7 @@ public class CosmosAnnotationIT {
     @Autowired
     private ApplicationContext applicationContext;
     @Autowired
-    private CosmosDBConfig dbConfig;
+    private CosmosConfig cosmosConfig;
 
     private static CosmosTemplate cosmosTemplate;
     private static CosmosContainerProperties collectionRole;
@@ -52,7 +52,7 @@ public class CosmosAnnotationIT {
     @Before
     public void setUp() throws ClassNotFoundException {
         if (!initialized) {
-            final CosmosDbFactory cosmosDbFactory = new CosmosDbFactory(dbConfig);
+            final CosmosFactory cosmosFactory = new CosmosFactory(cosmosConfig);
 
             roleInfo = new CosmosEntityInformation<>(Role.class);
             sampleInfo = new CosmosEntityInformation<>(TimeToLiveSample.class);
@@ -62,7 +62,7 @@ public class CosmosAnnotationIT {
 
             final MappingCosmosConverter mappingConverter = new MappingCosmosConverter(dbContext, null);
 
-            cosmosTemplate = new CosmosTemplate(cosmosDbFactory, mappingConverter, dbConfig.getDatabase());
+            cosmosTemplate = new CosmosTemplate(cosmosFactory, mappingConverter, cosmosConfig.getDatabase());
             initialized = true;
         }
         collectionRole = cosmosTemplate.createContainerIfNotExists(roleInfo);
@@ -81,24 +81,24 @@ public class CosmosAnnotationIT {
     @Test
     public void testTimeToLiveAnnotation() {
         Integer timeToLive = sampleInfo.getTimeToLive();
-        assertThat(timeToLive).isEqualTo(collectionSample.defaultTimeToLive());
+        assertThat(timeToLive).isEqualTo(collectionSample.getDefaultTimeToLiveInSeconds());
 
         timeToLive = roleInfo.getTimeToLive();
-        assertThat(timeToLive).isEqualTo(collectionRole.defaultTimeToLive());
+        assertThat(timeToLive).isEqualTo(collectionRole.getDefaultTimeToLiveInSeconds());
     }
 
     @Test
     @Ignore // TODO(kuthapar): Ignore this test case for now, will update this from service update.
     public void testIndexingPolicyAnnotation() {
-        final IndexingPolicy policy = collectionRole.indexingPolicy();
+        final IndexingPolicy policy = collectionRole.getIndexingPolicy();
 
-        Assert.isTrue(policy.indexingMode() == TestConstants.INDEXINGPOLICY_MODE,
+        Assert.isTrue(policy.getIndexingMode() == TestConstants.INDEXING_POLICY_MODE,
                 "unmatched collection policy indexing mode of class Role");
-        Assert.isTrue(policy.automatic() == TestConstants.INDEXINGPOLICY_AUTOMATIC,
+        Assert.isTrue(policy.isAutomatic() == TestConstants.INDEXING_POLICY_AUTOMATIC,
             "unmatched collection policy automatic of class Role");
 
-        TestUtils.testIndexingPolicyPathsEquals(policy.includedPaths(), TestConstants.INCLUDEDPATHS);
-        TestUtils.testIndexingPolicyPathsEquals(policy.excludedPaths(), TestConstants.EXCLUDEDPATHS);
+        TestUtils.testIndexingPolicyPathsEquals(policy.getIncludedPaths(), TestConstants.INCLUDED_PATHS);
+        TestUtils.testIndexingPolicyPathsEquals(policy.getExcludedPaths(), TestConstants.EXCLUDED_PATHS);
     }
 }
 

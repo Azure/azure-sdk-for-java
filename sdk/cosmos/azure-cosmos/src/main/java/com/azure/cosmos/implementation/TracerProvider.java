@@ -31,11 +31,8 @@ public class TracerProvider {
     public static final int ERROR_CODE = 0;
     public static final String RESOURCE_PROVIDER_NAME = "Microsoft.DocumentDB";
 
-    public TracerProvider(Iterable<Tracer> tracers) {
-        Objects.requireNonNull(tracers, "'tracers' cannot be null.");
-        if (tracers.iterator().hasNext()) {
-            tracer = tracers.iterator().next();
-        }
+    public TracerProvider(Tracer tracer) {
+        this.tracer = tracer;
     }
 
     public boolean isEnabled() {
@@ -73,7 +70,9 @@ public class TracerProvider {
      * @param context Additional metadata that is passed through the call stack.
      * @param signal  The signal indicates the status and contains the metadata we need to end the tracing span.
      */
-    public <T extends CosmosResponse<? extends Resource>> void endSpan(Context context, Signal<T> signal, int statusCode) {
+    public <T extends CosmosResponse<? extends Resource>> void endSpan(Context context,
+                                                                       Signal<T> signal,
+                                                                       int statusCode) {
         Objects.requireNonNull(context, "'context' cannot be null.");
         Objects.requireNonNull(signal, "'signal' cannot be null.");
 
@@ -101,11 +100,11 @@ public class TracerProvider {
     }
 
     public <T extends CosmosResponse<?>> Mono<T> traceEnabledCosmosResponsePublisher(Mono<T> resultPublisher,
-                                                                                                             Context context,
-                                                                                                             String spanName,
-                                                                                                             String databaseId,
-                                                                                                             String endpoint) {
-        return traceEnabledPublisher(resultPublisher,  context, spanName,databaseId, endpoint,
+                                                                                     Context context,
+                                                                                     String spanName,
+                                                                                     String databaseId,
+                                                                                     String endpoint) {
+        return traceEnabledPublisher(resultPublisher, context, spanName, databaseId, endpoint,
             (T response) -> response.getStatusCode());
     }
 
@@ -114,7 +113,7 @@ public class TracerProvider {
                                                                                    String spanName,
                                                                                    String databaseId,
                                                                                    String endpoint) {
-        return traceEnabledPublisher(resultPublisher, context, spanName,databaseId, endpoint,
+        return traceEnabledPublisher(resultPublisher, context, spanName, databaseId, endpoint,
             CosmosItemResponse::getStatusCode);
     }
 

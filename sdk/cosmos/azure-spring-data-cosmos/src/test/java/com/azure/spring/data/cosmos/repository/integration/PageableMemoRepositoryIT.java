@@ -2,18 +2,17 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.integration;
 
-import com.azure.data.cosmos.CosmosClient;
-import com.azure.data.cosmos.CosmosItemProperties;
-import com.azure.data.cosmos.FeedOptions;
-import com.azure.data.cosmos.FeedResponse;
-import com.azure.spring.data.cosmos.config.CosmosDBConfig;
+import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
-import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import com.azure.spring.data.cosmos.domain.Importance;
 import com.azure.spring.data.cosmos.domain.PageableMemo;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.PageableMemoRepository;
+import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +26,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -52,7 +57,7 @@ public class PageableMemoRepositoryIT {
     private ApplicationContext applicationContext;
 
     @Autowired
-    private CosmosDBConfig dbConfig;
+    private CosmosConfig cosmosConfig;
 
     private static Set<PageableMemo> memoSet;
 
@@ -126,26 +131,26 @@ public class PageableMemoRepositoryIT {
         verifyItemsWithOffsetAndLimit(skipCount, takeCount, TOTAL_CONTENT_SIZE - skipCount);
     }
 
-    private Flux<FeedResponse<CosmosItemProperties>> getItemsWithOffsetAndLimit(int skipCount, int takeCount) {
-        final FeedOptions options = new FeedOptions();
-        options.enableCrossPartitionQuery(true);
-        options.maxDegreeOfParallelism(2);
+    private Flux<FeedResponse<PageableMemo>> getItemsWithOffsetAndLimit(int skipCount, int takeCount) {
+        final CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        options.setMaxDegreeOfParallelism(2);
 
         final String query = "SELECT * from c OFFSET " + skipCount + " LIMIT " + takeCount;
 
-        final CosmosClient cosmosClient = applicationContext.getBean(CosmosClient.class);
-        return cosmosClient.getDatabase(dbConfig.getDatabase())
-                    .getContainer(entityInformation.getContainerName())
-                    .queryItems(query, options);
+        final CosmosAsyncClient cosmosClient = applicationContext.getBean(CosmosAsyncClient.class);
+        return cosmosClient.getDatabase(cosmosConfig.getDatabase())
+                           .getContainer(entityInformation.getContainerName())
+                           .queryItems(query, options, PageableMemo.class)
+                           .byPage();
     }
 
     private void verifyItemsWithOffsetAndLimit(int skipCount, int takeCount, int verifyCount) {
-        final List<CosmosItemProperties> itemsWithOffsetAndLimit = new ArrayList<>();
-        final Flux<FeedResponse<CosmosItemProperties>> itemsWithOffsetAndLimitFlux =
+        final List<PageableMemo> itemsWithOffsetAndLimit = new ArrayList<>();
+        final Flux<FeedResponse<PageableMemo>> itemsWithOffsetAndLimitFlux =
             getItemsWithOffsetAndLimit(skipCount, takeCount);
         StepVerifier.create(itemsWithOffsetAndLimitFlux)
                     .thenConsumeWhile(cosmosItemPropertiesFeedResponse -> {
-                        itemsWithOffsetAndLimit.addAll(cosmosItemPropertiesFeedResponse.results());
+                        itemsWithOffsetAndLimit.addAll(cosmosItemPropertiesFeedResponse.getResults());
                         return true;
                     })
                     .verifyComplete();

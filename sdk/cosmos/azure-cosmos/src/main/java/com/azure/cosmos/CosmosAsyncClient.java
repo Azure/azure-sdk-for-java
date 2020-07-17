@@ -14,9 +14,10 @@ import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdMetrics;
+import com.azure.cosmos.implementation.encryption.api.DataEncryptionKeyProvider;
+import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
-import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -29,6 +30,7 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ServiceLoader;
 
@@ -57,7 +59,19 @@ public final class CosmosAsyncClient implements Closeable {
     private final boolean sessionCapturingOverride;
     private final boolean enableTransportClientSharing;
     private final TracerProvider tracerProvider;
+    private final DataEncryptionKeyProvider dataEncryptionKeyProvider;
     private final boolean contentResponseOnWriteEnabled;
+    private static final Tracer TRACER;
+
+    static {
+        ServiceLoader<Tracer> serviceLoader = ServiceLoader.load(Tracer.class);
+        Iterator<?> iterator = serviceLoader.iterator();
+        if (iterator.hasNext()) {
+            TRACER = serviceLoader.iterator().next();
+        } else {
+            TRACER = null;
+        }
+    }
 
     CosmosAsyncClient(CosmosClientBuilder builder) {
         this.configs = builder.configs();
@@ -69,9 +83,10 @@ public final class CosmosAsyncClient implements Closeable {
         this.cosmosAuthorizationTokenResolver = builder.getAuthorizationTokenResolver();
         this.credential = builder.getCredential();
         this.sessionCapturingOverride = builder.isSessionCapturingOverrideEnabled();
+        this.dataEncryptionKeyProvider = builder.getDataEncryptionKeyProvider();
         this.enableTransportClientSharing = builder.isConnectionSharingAcrossClientsEnabled();
         this.contentResponseOnWriteEnabled = builder.isContentResponseOnWriteEnabled();
-        this.tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
+        this.tracerProvider = new TracerProvider(TRACER);
         this.asyncDocumentClient = new AsyncDocumentClient.Builder()
                                        .withServiceEndpoint(this.serviceEndpoint)
                                        .withMasterKeyOrResourceToken(this.keyOrResourceToken)
@@ -82,6 +97,7 @@ public final class CosmosAsyncClient implements Closeable {
                                        .withTokenResolver(this.cosmosAuthorizationTokenResolver)
                                        .withCredential(this.credential)
                                        .withTransportClientSharing(this.enableTransportClientSharing)
+                                       .withDataEncryptionKeyProvider(this.dataEncryptionKeyProvider)
                                        .withContentResponseOnWriteEnabled(this.contentResponseOnWriteEnabled)
                                        .build();
     }
