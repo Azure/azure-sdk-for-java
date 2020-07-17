@@ -274,7 +274,7 @@ public class ReactiveCourseRepositoryIT {
     @Test
     public void testFindByNameOrDepartmentAllIgnoreCase() {
         final Flux<Course> findResult = repository.findByNameOrDepartmentAllIgnoreCase(
-            COURSE_NAME_3.toLowerCase(), DEPARTMENT_NAME_3.toLowerCase());
-        StepVerifier.create(findResult).expectNext(COURSE_1, COURSE_3).verifyComplete();
+            COURSE_NAME_1.toLowerCase(), DEPARTMENT_NAME_3.toLowerCase());
+        StepVerifier.create(findResult).expectNext(COURSE_1).verifyComplete();
     }
 }
