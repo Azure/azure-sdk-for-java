@@ -22,14 +22,14 @@ import com.microsoft.azure.management.appservice.v2016_03_01.DiagnosticAnalysis;
 import com.microsoft.azure.management.appservice.v2016_03_01.AnalysisDefinition;
 
 class DiagnosticsImpl extends WrapperImpl<DiagnosticsInner> implements Diagnostics {
-    private final AppServiceManager manager;
+    private final WebManager manager;
 
-    DiagnosticsImpl(AppServiceManager manager) {
+    DiagnosticsImpl(WebManager manager) {
         super(manager.inner().diagnostics());
         this.manager = manager;
     }
 
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 
@@ -89,10 +89,14 @@ class DiagnosticsImpl extends WrapperImpl<DiagnosticsInner> implements Diagnosti
     public Observable<DiagnosticCategory> getSiteDiagnosticCategoryAsync(String resourceGroupName, String siteName, String diagnosticCategory) {
         DiagnosticsInner client = this.inner();
         return client.getSiteDiagnosticCategoryAsync(resourceGroupName, siteName, diagnosticCategory)
-        .map(new Func1<DiagnosticCategoryInner, DiagnosticCategory>() {
+        .flatMap(new Func1<DiagnosticCategoryInner, Observable<DiagnosticCategory>>() {
             @Override
-            public DiagnosticCategory call(DiagnosticCategoryInner inner) {
-                return wrapModel(inner);
+            public Observable<DiagnosticCategory> call(DiagnosticCategoryInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((DiagnosticCategory)wrapModel(inner));
+                }
             }
        });
     }
@@ -126,10 +130,14 @@ class DiagnosticsImpl extends WrapperImpl<DiagnosticsInner> implements Diagnosti
     public Observable<DetectorResponse> getHostingEnvironmentDetectorResponseAsync(String resourceGroupName, String name, String detectorName) {
         DiagnosticsInner client = this.inner();
         return client.getHostingEnvironmentDetectorResponseAsync(resourceGroupName, name, detectorName)
-        .map(new Func1<DetectorResponseInner, DetectorResponse>() {
+        .flatMap(new Func1<DetectorResponseInner, Observable<DetectorResponse>>() {
             @Override
-            public DetectorResponse call(DetectorResponseInner inner) {
-                return wrapDetectorResponseModel(inner);
+            public Observable<DetectorResponse> call(DetectorResponseInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((DetectorResponse)wrapDetectorResponseModel(inner));
+                }
             }
        });
     }
@@ -312,10 +320,14 @@ class DiagnosticsImpl extends WrapperImpl<DiagnosticsInner> implements Diagnosti
     public Observable<DiagnosticAnalysis> getSiteAnalysisAsync(String resourceGroupName, String siteName, String diagnosticCategory, String analysisName) {
         DiagnosticsInner client = this.inner();
         return client.getSiteAnalysisAsync(resourceGroupName, siteName, diagnosticCategory, analysisName)
-        .map(new Func1<DiagnosticAnalysisInner, DiagnosticAnalysis>() {
+        .flatMap(new Func1<DiagnosticAnalysisInner, Observable<DiagnosticAnalysis>>() {
             @Override
-            public DiagnosticAnalysis call(DiagnosticAnalysisInner inner) {
-                return wrapDiagnosticAnalysisModel(inner);
+            public Observable<DiagnosticAnalysis> call(DiagnosticAnalysisInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((DiagnosticAnalysis)wrapDiagnosticAnalysisModel(inner));
+                }
             }
        });
     }
