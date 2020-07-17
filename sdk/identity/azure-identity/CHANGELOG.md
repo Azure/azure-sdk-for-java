@@ -1,7 +1,7 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
-
+## 1.0.9 (2020-07-17)
+- Upgraded `msal4j` dependency to 1.6.1
 
 ## 1.0.8 (2020-07-06)
 - Upgraded `azure-core` dependency to 1.6.0

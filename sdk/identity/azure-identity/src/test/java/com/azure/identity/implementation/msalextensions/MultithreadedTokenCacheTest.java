@@ -3,20 +3,29 @@
 
 package com.azure.identity.implementation.msalextensions;
 
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.identity.implementation.msalextensions.cachepersister.CachePersister;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.microsoft.aad.msal4j.*;
+import com.microsoft.aad.msal4j.ClientCredentialFactory;
+import com.microsoft.aad.msal4j.ClientCredentialParameters;
+import com.microsoft.aad.msal4j.ConfidentialClientApplication;
+import com.microsoft.aad.msal4j.DeviceCode;
+import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
+import com.microsoft.aad.msal4j.IAuthenticationResult;
+import com.microsoft.aad.msal4j.PublicClientApplication;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Collections;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 public class MultithreadedTokenCacheTest {
+    private final SerializerAdapter serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
 
     private PersistentTokenCacheAccessAspect accessAspect;
     private CachePersister cachePersister;
@@ -38,13 +47,13 @@ public class MultithreadedTokenCacheTest {
         accessAspect = new PersistentTokenCacheAccessAspect(cachePersister);
 
         confApp = ConfidentialClientApplication.builder(TestConfiguration.CONFIDENTIAL_CLIENT_ID,
-                ClientCredentialFactory.create(TestConfiguration.CONFIDENTIAL_CLIENT_SECRET))
+                ClientCredentialFactory.createFromSecret(TestConfiguration.CONFIDENTIAL_CLIENT_SECRET))
                 .authority(TestConfiguration.TENANT_SPECIFIC_AUTHORITY)
                 .setTokenCacheAccessAspect(accessAspect)
                 .build();
 
         confApp2 = ConfidentialClientApplication.builder(TestConfiguration.CONFIDENTIAL_CLIENT_ID_2,
-                ClientCredentialFactory.create(TestConfiguration.CONFIDENTIAL_CLIENT_SECRET_2))
+                ClientCredentialFactory.createFromSecret(TestConfiguration.CONFIDENTIAL_CLIENT_SECRET_2))
                 .authority(TestConfiguration.TENANT_SPECIFIC_AUTHORITY)
                 .setTokenCacheAccessAspect(accessAspect)
                 .build();
@@ -75,7 +84,7 @@ public class MultithreadedTokenCacheTest {
     }
 
     @Test
-    public void twoThreadsWritingTokens() {
+    public void twoThreadsWritingTokens() throws Exception {
 
         ConcurrentClient a = new ConcurrentClient("conf");
         ConcurrentClient b = new ConcurrentClient("pub");
@@ -90,19 +99,30 @@ public class MultithreadedTokenCacheTest {
         byte[] currJsonBytes = cachePersister.readCache();
         String currJson = new String(currJsonBytes);
 
-        JsonObject jsonObj = new JsonParser().parse(currJson).getAsJsonObject();
+        Map<String, Object> jsonObj = serializerAdapter.deserialize(currJson, Map.class, SerializerEncoding.JSON);
+        Map<String, Object> accessTokenObj = serializerAdapter.deserialize(
+            serializerAdapter.serialize(jsonObj.get("AccessToken"), SerializerEncoding.JSON), Map.class, SerializerEncoding.JSON);
+        Map<String, Object> refreshTokenObj = serializerAdapter.deserialize(
+            serializerAdapter.serialize(jsonObj.get("RefreshToken"), SerializerEncoding.JSON), Map.class, SerializerEncoding.JSON);
+        Map<String, Object> idTokenObj = serializerAdapter.deserialize(
+            serializerAdapter.serialize(jsonObj.get("IdToken"), SerializerEncoding.JSON), Map.class, SerializerEncoding.JSON);
+        Map<String, Object> accountObj = serializerAdapter.deserialize(
+            serializerAdapter.serialize(jsonObj.get("Account"), SerializerEncoding.JSON), Map.class, SerializerEncoding.JSON);
+        Map<String, Object> appMetadataObj = serializerAdapter.deserialize(
+            serializerAdapter.serialize(jsonObj.get("AppMetadata"), SerializerEncoding.JSON), Map.class, SerializerEncoding.JSON);
 
-        Assert.assertTrue(jsonObj.get("AccessToken").getAsJsonObject().keySet().size() == 2);
-        Assert.assertTrue(jsonObj.get("RefreshToken").getAsJsonObject().keySet().size() == 1);
-        Assert.assertTrue(jsonObj.get("IdToken").getAsJsonObject().keySet().size() == 1);
-        Assert.assertTrue(jsonObj.get("Account").getAsJsonObject().keySet().size() == 1);
-        Assert.assertTrue(jsonObj.get("AppMetadata").getAsJsonObject().keySet().size() == 1);
+
+        Assert.assertEquals(2, accessTokenObj.size());
+        Assert.assertEquals(1, refreshTokenObj.size());
+        Assert.assertEquals(1, idTokenObj.size());
+        Assert.assertEquals(1, accountObj.size());
+        Assert.assertEquals(1, appMetadataObj.size());
 
         accessAspect.deleteCache();
     }
 
     @Test
-    public void tenThreadsWritingSameConfTokens() {
+    public void tenThreadsWritingSameConfTokens() throws Exception {
 
         ConcurrentClient a = new ConcurrentClient("conf");
         ConcurrentClient b = new ConcurrentClient("conf");
@@ -134,16 +154,27 @@ public class MultithreadedTokenCacheTest {
         byte[] currJsonBytes = cachePersister.readCache();
         String currJson = new String(currJsonBytes);
 
-        JsonObject jsonObj = new JsonParser().parse(currJson).getAsJsonObject();
+        Map<String, Object> jsonObj = serializerAdapter.deserialize(currJson, Map.class, SerializerEncoding.JSON);
+        Map<String, Object> accessTokenObj = serializerAdapter.deserialize(
+            serializerAdapter.serialize(jsonObj.get("AccessToken"), SerializerEncoding.JSON), Map.class, SerializerEncoding.JSON);
+
+        System.out.println("keys: " + accessTokenObj.size());
+
+        Map<String, Object> refreshTokenObj = serializerAdapter.deserialize(
+            serializerAdapter.serialize(jsonObj.get("RefreshToken"), SerializerEncoding.JSON), Map.class, SerializerEncoding.JSON);
+        Map<String, Object> idTokenObj = serializerAdapter.deserialize(
+            serializerAdapter.serialize(jsonObj.get("IdToken"), SerializerEncoding.JSON), Map.class, SerializerEncoding.JSON);
+        Map<String, Object> accountObj = serializerAdapter.deserialize(
+            serializerAdapter.serialize(jsonObj.get("Account"), SerializerEncoding.JSON), Map.class, SerializerEncoding.JSON);
+        Map<String, Object> appMetadataObj = serializerAdapter.deserialize(
+            serializerAdapter.serialize(jsonObj.get("AppMetadata"), SerializerEncoding.JSON), Map.class, SerializerEncoding.JSON);
 
 
-        System.out.println("keys: " + jsonObj.get("AccessToken").getAsJsonObject().keySet().size());
-
-        Assert.assertTrue(jsonObj.get("AccessToken").getAsJsonObject().keySet().size() == 1);
-        Assert.assertTrue(jsonObj.get("RefreshToken").getAsJsonObject().keySet().size() == 0);
-        Assert.assertTrue(jsonObj.get("IdToken").getAsJsonObject().keySet().size() == 0);
-        Assert.assertTrue(jsonObj.get("Account").getAsJsonObject().keySet().size() == 0);
-        Assert.assertTrue(jsonObj.get("AppMetadata").getAsJsonObject().keySet().size() == 0);
+        Assert.assertEquals(1, accessTokenObj.size());
+        Assert.assertEquals(0, refreshTokenObj.size());
+        Assert.assertEquals(0, idTokenObj.size());
+        Assert.assertEquals(0, accountObj.size());
+        Assert.assertEquals(0, appMetadataObj.size());
 
         accessAspect.deleteCache();
     }

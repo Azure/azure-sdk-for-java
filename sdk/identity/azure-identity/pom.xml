@@ -6,8 +6,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-identity</artifactId>
-  <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-identity;current} -->
-
+  <version>1.0.9</version> <!-- {x-version-update;com.azure:azure-identity;current} -->
   <name>Microsoft Azure client library for Identity</name>
   <description>This module contains client library for Microsoft Azure Identity.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
@@ -48,7 +47,7 @@
                   <bannedDependencies>
                       <includes>
                           <include>com.azure:*</include>
-                          <include>com.microsoft.azure:msal4j:[0.5.0-preview]</include> <!-- {x-include-update;com.microsoft.azure:msal4j;external_dependency} -->
+                          <include>com.microsoft.azure:msal4j:[1.6.1]</include> <!-- {x-include-update;com.microsoft.azure:msal4j;external_dependency} -->
                           <include>com.nimbusds:oauth2-oidc-sdk:[6.14]</include> <!-- {x-include-update;com.nimbusds:oauth2-oidc-sdk;external_dependency} -->
                           <include>net.java.dev.jna:jna-platform:[5.4.0]</include> <!-- {x-include-update;net.java.dev.jna:jna-platform;external_dependency} -->
                           <include>org.nanohttpd:nanohttpd:[2.3.1]</include> <!-- {x-include-update;org.nanohttpd:nanohttpd;external_dependency} -->
@@ -70,7 +69,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>msal4j</artifactId>
-      <version>0.5.0-preview</version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
+      <version>1.6.1</version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.nimbusds</groupId>
@@ -82,7 +81,6 @@
       <artifactId>nanohttpd</artifactId>
       <version>2.3.1</version> <!-- {x-version-update;org.nanohttpd:nanohttpd;external_dependency} -->
     </dependency>
-
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>

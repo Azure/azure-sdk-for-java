@@ -3,20 +3,29 @@
 
 package com.azure.identity.implementation.msalextensions;
 
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.identity.implementation.msalextensions.cachepersister.CachePersister;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.microsoft.aad.msal4j.*;
+import com.microsoft.aad.msal4j.ClientCredentialFactory;
+import com.microsoft.aad.msal4j.ClientCredentialParameters;
+import com.microsoft.aad.msal4j.ConfidentialClientApplication;
+import com.microsoft.aad.msal4j.DeviceCode;
+import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
+import com.microsoft.aad.msal4j.IAuthenticationResult;
+import com.microsoft.aad.msal4j.PublicClientApplication;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Collections;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 public class PersistentTokenCacheAccessAspectTest {
+    private final SerializerAdapter serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
 
     private PersistentTokenCacheAccessAspect accessAspect;
     private CachePersister cachePersister;
@@ -42,13 +51,13 @@ public class PersistentTokenCacheAccessAspectTest {
         };
 
         confApp = ConfidentialClientApplication.builder(TestConfiguration.CONFIDENTIAL_CLIENT_ID,
-                ClientCredentialFactory.create(TestConfiguration.CONFIDENTIAL_CLIENT_SECRET))
+                ClientCredentialFactory.createFromSecret(TestConfiguration.CONFIDENTIAL_CLIENT_SECRET))
                 .authority(TestConfiguration.TENANT_SPECIFIC_AUTHORITY)
                 .setTokenCacheAccessAspect(accessAspect)
                 .build();
 
         confApp2 = ConfidentialClientApplication.builder(TestConfiguration.CONFIDENTIAL_CLIENT_ID_2,
-                ClientCredentialFactory.create(TestConfiguration.CONFIDENTIAL_CLIENT_SECRET_2))
+                ClientCredentialFactory.createFromSecret(TestConfiguration.CONFIDENTIAL_CLIENT_SECRET_2))
                 .authority(TestConfiguration.TENANT_SPECIFIC_AUTHORITY)
                 .setTokenCacheAccessAspect(accessAspect)
                 .build();
@@ -76,7 +85,7 @@ public class PersistentTokenCacheAccessAspectTest {
     }
 
     @Test
-    public void checkIfWritesToFileFirstTimeConfidentialClient() {
+    public void checkIfWritesToFileFirstTimeConfidentialClient() throws Exception {
 
         CompletableFuture<IAuthenticationResult> result = confApp.acquireToken(confParameters);
 
@@ -92,23 +101,24 @@ public class PersistentTokenCacheAccessAspectTest {
         byte[] currJsonBytes = cachePersister.readCache();
         String currJson = new String(currJsonBytes);
 
-        JsonObject jsonObj = new JsonParser().parse(currJson).getAsJsonObject();
+        Map<String, Object> jsonObj = serializerAdapter.deserialize(currJson, Map.class, SerializerEncoding.JSON);
 
-        Assert.assertTrue(jsonObj.has("AccessToken"));
-        Assert.assertTrue(jsonObj.has("RefreshToken"));
-        Assert.assertTrue(jsonObj.has("IdToken"));
-        Assert.assertTrue(jsonObj.has("Account"));
-        Assert.assertTrue(jsonObj.has("AppMetadata"));
+        Assert.assertTrue(jsonObj.containsKey("AccessToken"));
+        Assert.assertTrue(jsonObj.containsKey("RefreshToken"));
+        Assert.assertTrue(jsonObj.containsKey("IdToken"));
+        Assert.assertTrue(jsonObj.containsKey("Account"));
+        Assert.assertTrue(jsonObj.containsKey("AppMetadata"));
 
-        int set = jsonObj.get("AccessToken").getAsJsonObject().keySet().size();
+        Map<String, Object> accessTokenObj = serializerAdapter.deserialize(
+            serializerAdapter.serialize(jsonObj.get("AccessToken"), SerializerEncoding.JSON), Map.class, SerializerEncoding.JSON);
 
-        Assert.assertEquals(set, 1);
+        Assert.assertEquals(1, accessTokenObj.size());
 
         accessAspect.deleteCache();
     }
 
     @Test
-    public void checkIfWritesToFileFirstTimePublicClient() {
+    public void checkIfWritesToFileFirstTimePublicClient() throws Exception {
 
         CompletableFuture<IAuthenticationResult> result = pubApp.acquireToken(
                 pubParameters);
@@ -125,15 +135,18 @@ public class PersistentTokenCacheAccessAspectTest {
         byte[] currJsonBytes = cachePersister.readCache();
         String currJson = new String(currJsonBytes);
 
-        JsonObject jsonObj = new JsonParser().parse(currJson).getAsJsonObject();
+        Map<String, Object> jsonObj = serializerAdapter.deserialize(currJson, Map.class, SerializerEncoding.JSON);
 
-        Assert.assertTrue(jsonObj.has("AccessToken"));
-        Assert.assertTrue(jsonObj.has("RefreshToken"));
-        Assert.assertTrue(jsonObj.has("IdToken"));
-        Assert.assertTrue(jsonObj.has("Account"));
-        Assert.assertTrue(jsonObj.has("AppMetadata"));
+        Assert.assertTrue(jsonObj.containsKey("AccessToken"));
+        Assert.assertTrue(jsonObj.containsKey("RefreshToken"));
+        Assert.assertTrue(jsonObj.containsKey("IdToken"));
+        Assert.assertTrue(jsonObj.containsKey("Account"));
+        Assert.assertTrue(jsonObj.containsKey("AppMetadata"));
 
-        Assert.assertTrue(jsonObj.get("AccessToken").getAsJsonObject().keySet().size() == 1);
+        Map<String, Object> accessTokenObj = serializerAdapter.deserialize(
+            serializerAdapter.serialize(jsonObj.get("AccessToken"), SerializerEncoding.JSON), Map.class, SerializerEncoding.JSON);
+
+        Assert.assertEquals(1, accessTokenObj.size());
 
         accessAspect.deleteCache();
     }
@@ -160,7 +173,7 @@ public class PersistentTokenCacheAccessAspectTest {
     }
 
     @Test
-    public void writesTwoTokensToCache() {
+    public void writesTwoTokensToCache() throws Exception {
         CompletableFuture<IAuthenticationResult> result = pubApp.acquireToken(
                 pubParameters);
 
@@ -188,19 +201,30 @@ public class PersistentTokenCacheAccessAspectTest {
         byte[] currJsonBytes = cachePersister.readCache();
         String currJson = new String(currJsonBytes);
 
-        JsonObject jsonObj = new JsonParser().parse(currJson).getAsJsonObject();
+        Map<String, Object> jsonObj = serializerAdapter.deserialize(currJson, Map.class, SerializerEncoding.JSON);
+        Map<String, Object> accessTokenObj = serializerAdapter.deserialize(
+            serializerAdapter.serialize(jsonObj.get("AccessToken"), SerializerEncoding.JSON), Map.class, SerializerEncoding.JSON);
+        Map<String, Object> refreshTokenObj = serializerAdapter.deserialize(
+            serializerAdapter.serialize(jsonObj.get("RefreshToken"), SerializerEncoding.JSON), Map.class, SerializerEncoding.JSON);
+        Map<String, Object> idTokenObj = serializerAdapter.deserialize(
+            serializerAdapter.serialize(jsonObj.get("IdToken"), SerializerEncoding.JSON), Map.class, SerializerEncoding.JSON);
+        Map<String, Object> accountObj = serializerAdapter.deserialize(
+            serializerAdapter.serialize(jsonObj.get("Account"), SerializerEncoding.JSON), Map.class, SerializerEncoding.JSON);
+        Map<String, Object> appMetadataObj = serializerAdapter.deserialize(
+            serializerAdapter.serialize(jsonObj.get("AppMetadata"), SerializerEncoding.JSON), Map.class, SerializerEncoding.JSON);
 
-        Assert.assertTrue(jsonObj.get("AccessToken").getAsJsonObject().keySet().size() == 2);
-        Assert.assertTrue(jsonObj.get("RefreshToken").getAsJsonObject().keySet().size() == 1);
-        Assert.assertTrue(jsonObj.get("IdToken").getAsJsonObject().keySet().size() == 1);
-        Assert.assertTrue(jsonObj.get("Account").getAsJsonObject().keySet().size() == 1);
-        Assert.assertTrue(jsonObj.get("AppMetadata").getAsJsonObject().keySet().size() == 1);
+
+        Assert.assertEquals(2, accessTokenObj.size());
+        Assert.assertEquals(1, refreshTokenObj.size());
+        Assert.assertEquals(1, idTokenObj.size());
+        Assert.assertEquals(1, accountObj.size());
+        Assert.assertEquals(1, appMetadataObj.size());
 
         accessAspect.deleteCache();
     }
 
     @Test
-    public void writesReadsMultipleTokensToCache() {
+    public void writesReadsMultipleTokensToCache() throws Exception {
         CompletableFuture<IAuthenticationResult> result = pubApp.acquireToken(
                 pubParameters);
 
@@ -238,13 +262,24 @@ public class PersistentTokenCacheAccessAspectTest {
         byte[] currJsonBytes = cachePersister.readCache();
         String currJson = new String(currJsonBytes);
 
-        JsonObject jsonObj = new JsonParser().parse(currJson).getAsJsonObject();
+        Map<String, Object> jsonObj = serializerAdapter.deserialize(currJson, Map.class, SerializerEncoding.JSON);
+        Map<String, Object> accessTokenObj = serializerAdapter.deserialize(
+            serializerAdapter.serialize(jsonObj.get("AccessToken"), SerializerEncoding.JSON), Map.class, SerializerEncoding.JSON);
+        Map<String, Object> refreshTokenObj = serializerAdapter.deserialize(
+            serializerAdapter.serialize(jsonObj.get("RefreshToken"), SerializerEncoding.JSON), Map.class, SerializerEncoding.JSON);
+        Map<String, Object> idTokenObj = serializerAdapter.deserialize(
+            serializerAdapter.serialize(jsonObj.get("IdToken"), SerializerEncoding.JSON), Map.class, SerializerEncoding.JSON);
+        Map<String, Object> accountObj = serializerAdapter.deserialize(
+            serializerAdapter.serialize(jsonObj.get("Account"), SerializerEncoding.JSON), Map.class, SerializerEncoding.JSON);
+        Map<String, Object> appMetadataObj = serializerAdapter.deserialize(
+            serializerAdapter.serialize(jsonObj.get("AppMetadata"), SerializerEncoding.JSON), Map.class, SerializerEncoding.JSON);
 
-        Assert.assertTrue(jsonObj.get("AccessToken").getAsJsonObject().keySet().size() == 3);
-        Assert.assertTrue(jsonObj.get("RefreshToken").getAsJsonObject().keySet().size() == 1);
-        Assert.assertTrue(jsonObj.get("IdToken").getAsJsonObject().keySet().size() == 1);
-        Assert.assertTrue(jsonObj.get("Account").getAsJsonObject().keySet().size() == 1);
-        Assert.assertTrue(jsonObj.get("AppMetadata").getAsJsonObject().keySet().size() == 1);
+
+        Assert.assertEquals(3, accessTokenObj.size());
+        Assert.assertEquals(1, refreshTokenObj.size());
+        Assert.assertEquals(1, idTokenObj.size());
+        Assert.assertEquals(1, accountObj.size());
+        Assert.assertEquals(1, appMetadataObj.size());
 
         accessAspect.deleteCache();
     }

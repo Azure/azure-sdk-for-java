@@ -3,9 +3,10 @@
 
 package com.azure.identity.implementation.msalextensions;
 
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.identity.implementation.msalextensions.cachepersister.CachePersister;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ClientCredentialParameters;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
@@ -15,6 +16,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Collections;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 /*
@@ -36,6 +38,8 @@ public class CrossProgramVSTest {
 
     private int count = 0;
 
+    private final SerializerAdapter serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
+
     @Before
     public void setup() throws Exception {
         org.junit.Assume.assumeTrue("Skipping these tests until we mock or record it", false);
@@ -44,7 +48,7 @@ public class CrossProgramVSTest {
         accessAspect = new PersistentTokenCacheAccessAspect();
 
         confApp = ConfidentialClientApplication.builder(TestConfiguration.CONFIDENTIAL_CLIENT_ID,
-                ClientCredentialFactory.create(TestConfiguration.CONFIDENTIAL_CLIENT_SECRET))
+                ClientCredentialFactory.createFromSecret(TestConfiguration.CONFIDENTIAL_CLIENT_SECRET))
                 .authority(TestConfiguration.TENANT_SPECIFIC_AUTHORITY)
                 .setTokenCacheAccessAspect(accessAspect)
                 .build();
@@ -55,29 +59,29 @@ public class CrossProgramVSTest {
     }
 
     @Test
-    public void readCacheAfterVSAzureLogin() {
+    public void readCacheAfterVSAzureLogin() throws Exception {
         byte[] currJsonBytes = cachePersister.readCache();
         String currJson = new String(currJsonBytes);
 
-        JsonObject jsonObj = new JsonParser().parse(currJson).getAsJsonObject();
+        Map<String, Object> jsonObj = serializerAdapter.deserialize(currJson, Map.class, SerializerEncoding.JSON);
 
-        Assert.assertTrue(jsonObj.has("AccessToken"));
-        Assert.assertTrue(jsonObj.has("RefreshToken"));
-        Assert.assertTrue(jsonObj.has("IdToken"));
-        Assert.assertTrue(jsonObj.has("Account"));
-        Assert.assertTrue(jsonObj.has("AppMetadata"));
+        Assert.assertTrue(jsonObj.containsKey("AccessToken"));
+        Assert.assertTrue(jsonObj.containsKey("RefreshToken"));
+        Assert.assertTrue(jsonObj.containsKey("IdToken"));
+        Assert.assertTrue(jsonObj.containsKey("Account"));
+        Assert.assertTrue(jsonObj.containsKey("AppMetadata"));
 
         System.out.println(currJson);
-
-        count = jsonObj.get("AccessToken").getAsJsonObject().keySet().size();
     }
 
     @Test
-    public void writeToSameCacheFileAfterVSAzureLogin() {
+    public void writeToSameCacheFileAfterVSAzureLogin() throws Exception {
         String currJson = new String(cachePersister.readCache());
-        JsonObject jsonObj = new JsonParser().parse(currJson).getAsJsonObject();
+        Map<String, Object> jsonObj = serializerAdapter.deserialize(currJson, Map.class, SerializerEncoding.JSON);
+        Map<String, Object> accessTokenObj = serializerAdapter.deserialize(
+            serializerAdapter.serialize(jsonObj.get("AccessToken"), SerializerEncoding.JSON), Map.class, SerializerEncoding.JSON);
 
-        int set = jsonObj.get("AccessToken").getAsJsonObject().keySet().size();
+        int set = accessTokenObj.size();
 
         CompletableFuture<IAuthenticationResult> result = confApp.acquireToken(confParameters);
         result.handle((res, ex) -> {
@@ -90,9 +94,11 @@ public class CrossProgramVSTest {
         }).join();
 
         currJson = new String(cachePersister.readCache());
-        jsonObj = new JsonParser().parse(currJson).getAsJsonObject();
+        jsonObj = serializerAdapter.deserialize(currJson, Map.class, SerializerEncoding.JSON);
+        accessTokenObj = serializerAdapter.deserialize(
+            serializerAdapter.serialize(jsonObj.get("AccessToken"), SerializerEncoding.JSON), Map.class, SerializerEncoding.JSON);
 
-        int newSet = jsonObj.get("AccessToken").getAsJsonObject().keySet().size();
+        int newSet = accessTokenObj.size();
 
         Assert.assertEquals(newSet, set + 1);
         count++;
@@ -101,24 +107,27 @@ public class CrossProgramVSTest {
     }
 
     @Test
-    public void countCache() {
+    public void countCache() throws Exception {
         byte[] currJsonBytes = cachePersister.readCache();
         String currJson = new String(currJsonBytes);
-
-        JsonObject jsonObj = new JsonParser().parse(currJson).getAsJsonObject();
-        int newSet = jsonObj.get("AccessToken").getAsJsonObject().keySet().size();
+        Map<String, Object> jsonObj = serializerAdapter.deserialize(currJson, Map.class, SerializerEncoding.JSON);
+        Map<String, Object> accessTokenObj = serializerAdapter.deserialize(
+            serializerAdapter.serialize(jsonObj.get("AccessToken"), SerializerEncoding.JSON), Map.class, SerializerEncoding.JSON);
+        int newSet = accessTokenObj.size();
         System.out.println(newSet);
     }
 
     @Test
-    public void readCacheAfterPowershellAzureLogin() {
+    public void readCacheAfterPowershellAzureLogin() throws Exception {
         byte[] currJsonBytes = cachePersister.readCache();
         String currJson = new String(currJsonBytes);
 
-        JsonObject jsonObj = new JsonParser().parse(currJson).getAsJsonObject();
+        Map<String, Object> jsonObj = serializerAdapter.deserialize(currJson, Map.class, SerializerEncoding.JSON);
         System.out.println(currJson);
 
-        int newSet = jsonObj.get("AccessToken").getAsJsonObject().keySet().size();
+        Map<String, Object> accessTokenObj = serializerAdapter.deserialize(
+            serializerAdapter.serialize(jsonObj.get("AccessToken"), SerializerEncoding.JSON), Map.class, SerializerEncoding.JSON);
+        int newSet = accessTokenObj.size();
 
         Assert.assertEquals(newSet, 6);
         count++;
