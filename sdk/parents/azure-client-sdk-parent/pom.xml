@@ -408,7 +408,6 @@
                     <classifier>changelog</classifier>
                 </artifact>
               </artifacts>
-              <skipAttach>true</skipAttach> <!-- If the files don't exist, don't blow up. -->
             </configuration>
             </execution>
         </executions>
