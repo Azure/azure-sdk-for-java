@@ -88,7 +88,6 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.azure:*</include>
                 <include>com.microsoft.azure:spring-cloud-azure-appconfiguration-config:[1.2.8-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-cloud-azure-appconfiguration-config;current} -->
                 <include>javax.xml.bind:jaxb-api:[2.2.7]</include> <!-- {x-include-update;javax.xml.bind:jaxb-api;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter-actuator:[2.3.0.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
