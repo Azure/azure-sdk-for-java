@@ -1432,6 +1432,38 @@ class BlobAPITest extends APISpec {
         bc.createSnapshotWithResponse(null, null, null, null).getStatusCode() == 201
     }
 
+    def "getSnapshot"() {
+        setup:
+        def data = "test".getBytes()
+        def blobName = generateBlobName()
+        def bu = cc.getBlobClient(blobName).getBlockBlobClient()
+        bu.upload(new ByteArrayInputStream(data), data.length)
+        def snapshotId = bu.createSnapshot().getSnapshotId()
+
+        when:
+        def snapshotBlob = cc.getBlobClient(blobName, snapshotId).getBlockBlobClient()
+
+        then:
+        snapshotBlob.getSnapshotId() == snapshotId
+        bu.getSnapshotId() == null
+    }
+
+    def "isSnapshot"() {
+        setup:
+        def data = "test".getBytes()
+        def blobName = generateBlobName()
+        def bu = cc.getBlobClient(blobName).getBlockBlobClient()
+        bu.upload(new ByteArrayInputStream(data), data.length)
+        def snapshotId = bu.createSnapshot().getSnapshotId()
+
+        when:
+        def snapshotBlob = cc.getBlobClient(blobName, snapshotId).getBlockBlobClient()
+
+        then:
+        snapshotBlob.isSnapshot()
+        !bu.isSnapshot()
+    }
+
     @Unroll
     def "Snapshot metadata"() {
         setup:
