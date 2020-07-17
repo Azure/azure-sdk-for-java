@@ -63,7 +63,7 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
     }
 
     @Override
-    public ActivationResponse<T> getAcceptedResult() {
+    public ActivationResponse<T> getActivationResponse() {
         try {
             T value = wrapOperation.apply(serializerAdapter.deserialize(
                 new String(getResponse(), StandardCharsets.UTF_8),

@@ -239,6 +239,7 @@ public final class VirtualMachineImagesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2019-12-01";
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -459,6 +460,7 @@ public final class VirtualMachineImagesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2019-12-01";
+        context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
@@ -721,6 +723,7 @@ public final class VirtualMachineImagesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2019-12-01";
+        context = this.client.mergeContext(context);
         return service
             .listOffers(
                 this.client.getEndpoint(),
@@ -875,6 +878,7 @@ public final class VirtualMachineImagesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2019-12-01";
+        context = this.client.mergeContext(context);
         return service
             .listPublishers(this.client.getEndpoint(), location, apiVersion, this.client.getSubscriptionId(), context);
     }
@@ -1041,6 +1045,7 @@ public final class VirtualMachineImagesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2019-12-01";
+        context = this.client.mergeContext(context);
         return service
             .listSkus(
                 this.client.getEndpoint(),

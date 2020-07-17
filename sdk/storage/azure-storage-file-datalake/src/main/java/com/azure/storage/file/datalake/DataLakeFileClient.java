@@ -554,12 +554,11 @@ public class DataLakeFileClient extends DataLakePathClient {
         return new SimpleResponse<>(resp, new DataLakeFileClient(resp.getValue()));
     }
 
-    /* TODO (gapra): Populate Rest Api docs for quick query. */
     /**
      * Opens an input stream to query the file.
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/query-blob-contents">Azure Docs</a></p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -576,7 +575,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * Opens an input stream to query the file.
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/query-blob-contents">Azure Docs</a></p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -602,7 +601,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * Queries an entire file into an output stream.
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/query-blob-contents">Azure Docs</a></p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -621,7 +620,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * Queries an entire file into an output stream.
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/query-blob-contents">Azure Docs</a></p>
      *
      * <p><strong>Code Samples</strong></p>
      *

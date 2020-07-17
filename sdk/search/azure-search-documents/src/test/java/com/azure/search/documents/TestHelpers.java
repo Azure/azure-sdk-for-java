@@ -39,7 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 /**
- * This class contains helper methods for running Azure Search tests.
+ * This class contains helper methods for running Azure Cognitive Search tests.
  */
 public final class TestHelpers {
     private static final TestMode TEST_MODE = setupTestMode();

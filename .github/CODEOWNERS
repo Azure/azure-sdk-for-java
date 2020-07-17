@@ -17,7 +17,7 @@
 /sdk/core/                                          @alzimmermsft @jianghaolu @srnagar @hemanttanwar @anuchandy
 /sdk/core/azure-core-tracing-opentelemetry/         @samvaity @alzimmermsft
 /sdk/cosmos/                                        @moderakh @kushagraThapar @David-Noble-at-work @kirankumarkolli @mbhaskar
-/sdk/cosmos/azure-spring-data-cosmosdb/             @kushagraThapar @saragluna @yiliuTo @chenrujun @zhoufenqin @jialindai
+/sdk/cosmos/azure-spring-data-cosmos/               @kushagraThapar @saragluna @yiliuTo @chenrujun @zhoufenqin @jialindai
 /sdk/eventhubs/                                     @conniey @srnagar @mssfang
 /sdk/formrecognizer/                                @samvaity @mssfang @sima-zhu
 /sdk/identity/                                      @schaabs @g2vinay @jianghaolu

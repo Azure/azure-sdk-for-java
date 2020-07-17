@@ -386,6 +386,29 @@ public interface AccessPolicy extends ChildResource<Vault>, HasInner<AccessPolic
             WithAttach<ParentT> allowStorageAllPermissions();
 
             /**
+             * Allow all permissions for the AD identity to access certificates.
+             *
+             * @return the next stage of access policy definition
+             */
+            WithAttach<ParentT> allowCertificateAllPermissions();
+
+            /**
+             * Allow a list of permissions for the AD identity to access certificates.
+             *
+             * @param permissions the list of permissions allowed
+             * @return the next stage of access policy definition
+             */
+            WithAttach<ParentT> allowCertificatePermissions(CertificatePermissions... permissions);
+
+            /**
+             * Allow a list of permissions for the AD identity to access certificates.
+             *
+             * @param permissions the list of permissions allowed
+             * @return the next stage of access policy definition
+             */
+            WithAttach<ParentT> allowCertificatePermissions(List<CertificatePermissions> permissions);
+
+            /**
              * Allow a list of permissions for the AD identity to access storage.
              *
              * @param permissions the list of permissions allowed

@@ -21,6 +21,7 @@ import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobQueryAsyncResponse;
+import com.azure.storage.blob.options.BlobGetTagsOptions;
 import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.models.BlobQueryResponse;
 import com.azure.storage.blob.models.BlobRange;
@@ -33,6 +34,8 @@ import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.options.BlobSetAccessTierOptions;
+import com.azure.storage.blob.options.BlobSetTagsOptions;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.FluxInputStream;
@@ -785,7 +788,6 @@ public class BlobClientBase {
         return blockWithOptionalTimeout(response, timeout);
     }
 
-    // TODO: (rickle-msft) docs link
     /**
      * Returns the blob's tags.
      *
@@ -794,12 +796,12 @@ public class BlobClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.getTags}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-tags">Azure Docs</a></p>
      *
      * @return The blob's tags.
      */
     public Map<String, String> getTags() {
-        return this.getTagsWithResponse(null, Context.NONE).getValue();
+        return this.getTagsWithResponse(new BlobGetTagsOptions(), null, Context.NONE).getValue();
     }
 
     /**
@@ -807,17 +809,19 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.getTagsWithResponse#Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.getTagsWithResponse#BlobGetTagsOptions-Duration-Context}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-tags">Azure Docs</a></p>
      *
+     * @param options {@link BlobGetTagsOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The blob's tags.
      */
-    public Response<Map<String, String>> getTagsWithResponse(Duration timeout, Context context) {
-        Mono<Response<Map<String, String>>> response = client.getTagsWithResponse(context);
+    public Response<Map<String, String>> getTagsWithResponse(BlobGetTagsOptions options, Duration timeout,
+        Context context) {
+        Mono<Response<Map<String, String>>> response = client.getTagsWithResponse(options, context);
 
         return blockWithOptionalTimeout(response, timeout);
     }
@@ -831,12 +835,12 @@ public class BlobClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setTags#Map}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tags">Azure Docs</a></p>
      *
      * @param tags Tags to associate with the blob.
      */
     public void setTags(Map<String, String> tags) {
-        this.setTagsWithResponse(tags, null, Context.NONE);
+        this.setTagsWithResponse(new BlobSetTagsOptions(tags), null, Context.NONE);
     }
 
     /**
@@ -845,18 +849,18 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setTagsWithResponse#Map-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setTagsWithResponse#BlobSetTagsOptions-Duration-Context}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tags">Azure Docs</a></p>
      *
-     * @param tags Tags to associate with the blob.
+     * @param options {@link BlobSetTagsOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      */
-    public Response<Void> setTagsWithResponse(Map<String, String> tags, Duration timeout, Context context) {
-        Mono<Response<Void>> response = client.setTagsWithResponse(tags, context);
+    public Response<Void> setTagsWithResponse(BlobSetTagsOptions options, Duration timeout, Context context) {
+        Mono<Response<Void>> response = client.setTagsWithResponse(options, context);
 
         return blockWithOptionalTimeout(response, timeout);
     }
@@ -946,7 +950,31 @@ public class BlobClientBase {
      */
     public Response<Void> setAccessTierWithResponse(AccessTier tier, RehydratePriority priority, String leaseId,
         Duration timeout, Context context) {
-        return blockWithOptionalTimeout(client.setTierWithResponse(tier, priority, leaseId, context), timeout);
+        return setAccessTierWithResponse(new BlobSetAccessTierOptions(tier).setPriority(priority).setLeaseId(leaseId),
+            timeout, context);
+    }
+
+    /**
+     * Sets the tier on a blob. The operation is allowed on a page blob in a premium storage account or a block blob in
+     * a blob storage or GPV2 account. A premium page blob's tier determines the allowed size, IOPS, and bandwidth of
+     * the blob. A block blob's tier determines the Hot/Cool/Archive storage type. This does not update the blob's
+     * etag.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setAccessTierWithResponse#BlobSetAccessTierOptions-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tier">Azure Docs</a></p>
+     *
+     * @param options {@link BlobSetAccessTierOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing status code and HTTP headers.
+     */
+    public Response<Void> setAccessTierWithResponse(BlobSetAccessTierOptions options,
+        Duration timeout, Context context) {
+        return blockWithOptionalTimeout(client.setTierWithResponse(options, context), timeout);
     }
 
     /**
@@ -1055,12 +1083,11 @@ public class BlobClientBase {
         return this.client.generateSas(blobServiceSasSignatureValues);
     }
 
-    /* TODO (gapra): Populate Rest Api docs for quick query. */
     /**
      * Opens a blob input stream to query the blob.
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/query-blob-contents">Azure Docs</a></p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -1077,7 +1104,7 @@ public class BlobClientBase {
      * Opens a blob input stream to query the blob.
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/query-blob-contents">Azure Docs</a></p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -1102,7 +1129,7 @@ public class BlobClientBase {
      * Queries an entire blob into an output stream.
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/query-blob-contents">Azure Docs</a></p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -1121,7 +1148,7 @@ public class BlobClientBase {
      * Queries an entire blob into an output stream.
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/query-blob-contents">Azure Docs</a></p>
      *
      * <p><strong>Code Samples</strong></p>
      *

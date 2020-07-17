@@ -8,7 +8,6 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.AzureServiceClient;
 import com.azure.resourcemanager.compute.fluent.AvailabilitySetsClient;
 import com.azure.resourcemanager.compute.fluent.ContainerServicesClient;
 import com.azure.resourcemanager.compute.fluent.DedicatedHostGroupsClient;
@@ -39,6 +38,7 @@ import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetVMsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineSizesClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachinesClient;
+import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 
 /** Initializes a new instance of the ComputeManagementClient type. */
 @ServiceClient(builder = ComputeManagementClientBuilder.class)
