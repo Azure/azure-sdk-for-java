@@ -6,6 +6,8 @@
 
 package com.azure.resourcemanager.containerinstance.implementation;
 
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.containerinstance.ContainerInstanceManager;
 import com.azure.resourcemanager.containerinstance.fluent.ContainerGroupsClient;
@@ -13,16 +15,22 @@ import com.azure.resourcemanager.containerinstance.fluent.inner.CachedImagesList
 import com.azure.resourcemanager.containerinstance.fluent.inner.CapabilitiesListResultInner;
 import com.azure.resourcemanager.containerinstance.fluent.inner.ContainerGroupInner;
 import com.azure.resourcemanager.containerinstance.fluent.inner.LogsInner;
+import com.azure.resourcemanager.containerinstance.fluent.inner.OperationListResultInner;
 import com.azure.resourcemanager.containerinstance.models.CachedImages;
 import com.azure.resourcemanager.containerinstance.models.Capabilities;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroup;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroups;
+import com.azure.resourcemanager.containerinstance.models.Operation;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedList;
 import com.azure.resourcemanager.storage.StorageManager;
+import reactor.core.publisher.Mono;
 
 import java.util.Collections;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.function.Function;
 
 /**
  * Implementation for ContainerGroups.
@@ -39,7 +47,8 @@ public class ContainerGroupsImpl
     private final StorageManager storageManager;
     private final AuthorizationManager authorizationManager;
 
-    public ContainerGroupsImpl(final ContainerInstanceManager manager, final StorageManager storageManager, final AuthorizationManager authorizationManager) {
+    public ContainerGroupsImpl(final ContainerInstanceManager manager,
+                               final StorageManager storageManager, final AuthorizationManager authorizationManager) {
         super(manager.inner().getContainerGroups(), manager);
         this.storageManager = storageManager;
         this.authorizationManager = authorizationManager;
@@ -47,7 +56,8 @@ public class ContainerGroupsImpl
 
     @Override
     protected ContainerGroupImpl wrapModel(String name) {
-        return new ContainerGroupImpl(name, new ContainerGroupInner(), this.manager(), this.storageManager, this.rbacManager);
+        return new ContainerGroupImpl(
+            name, new ContainerGroupInner(), this.manager(), this.storageManager, this.authorizationManager);
     }
 
     @Override
@@ -55,12 +65,13 @@ public class ContainerGroupsImpl
         if (inner == null) {
             return null;
         }
-        return new ContainerGroupImpl(inner.name(), inner, this.manager(), this.storageManager, this.rbacManager);
+        return new ContainerGroupImpl(
+            inner.name(), inner, this.manager(), this.storageManager, this.authorizationManager);
     }
 
     @Override
-    protected Completable deleteInnerAsync(String resourceGroupName, String name) {
-        return this.manager().inner().containerGroups().deleteAsync(resourceGroupName, name).toCompletable();
+    protected Mono<Void> deleteInnerAsync(String resourceGroupName, String name) {
+        return this.manager().inner().getContainerGroups().deleteAsync(resourceGroupName, name).then();
     }
 
     @Override
@@ -70,145 +81,96 @@ public class ContainerGroupsImpl
 
     @Override
     public String getLogContent(String resourceGroupName, String containerGroupName, String containerName) {
-        LogsInner logsInner = this.manager().inner().containers().listLogs(resourceGroupName, containerGroupName, containerName);
+        LogsInner logsInner = this.manager().inner().getContainers().listLogs(resourceGroupName, containerGroupName, containerName);
 
         return logsInner != null ? logsInner.content() : null;
     }
 
     @Override
     public String getLogContent(String resourceGroupName, String containerGroupName, String containerName, int tailLineCount) {
-        LogsInner logsInner = this.manager().inner().containers().listLogs(resourceGroupName, containerGroupName, containerName, tailLineCount);
+        LogsInner logsInner = this.manager().inner().getContainers().listLogs(resourceGroupName, containerGroupName, containerName, tailLineCount);
 
         return logsInner != null ? logsInner.content() : null;
     }
 
     @Override
-    public Observable<String> getLogContentAsync(String resourceGroupName, String containerGroupName, String containerName) {
-        return this.manager().inner().containers().listLogsAsync(resourceGroupName, containerGroupName, containerName)
-                .map(new Func1<LogsInner, String>() {
-                    @Override
-                    public String call(LogsInner logsInner) {
-                        return logsInner.content();
-                    }
-                });
+    public Mono<String> getLogContentAsync(String resourceGroupName, String containerGroupName, String containerName) {
+        return this.manager().inner().getContainers().listLogsAsync(resourceGroupName, containerGroupName, containerName)
+                .map(LogsInner::content);
     }
 
     @Override
-    public Observable<String> getLogContentAsync(String resourceGroupName, String containerGroupName, String containerName, int tailLineCount) {
-        return this.manager().inner().containers().listLogsAsync(resourceGroupName, containerGroupName, containerName, tailLineCount)
-                .map(new Func1<LogsInner, String>() {
-                    @Override
-                    public String call(LogsInner logsInner) {
-                        return logsInner.content();
-                    }
-                });
+    public Mono<String> getLogContentAsync(String resourceGroupName, String containerGroupName, String containerName, int tailLineCount) {
+        return this.manager().inner().getContainers().listLogsAsync(resourceGroupName, containerGroupName, containerName, tailLineCount)
+                .map(LogsInner::content);
     }
 
     @Override
-    public Set<Operation> listOperations() {
-        OperationListResultInner operationListResultInner = this.manager().inner().operations().list();
-
-        return Collections.unmodifiableSet(operationListResultInner != null && operationListResultInner.value() != null
-                ? new HashSet<Operation>(operationListResultInner.value())
-                : new HashSet<Operation>());
+    public PagedIterable<Operation> listOperations() {
+        return new PagedIterable<>(listOperationsAsync());
     }
 
     @Override
-    public Observable<Set<Operation>> listOperationsAsync() {
-        return this.manager().inner().operations().listAsync()
-                .map(new Func1<OperationListResultInner, Set<Operation>>() {
-                    @Override
-                    public Set<Operation> call(OperationListResultInner operationListResultInner) {
-                        return Collections.unmodifiableSet(operationListResultInner != null && operationListResultInner.value() != null
-                                ? new HashSet<Operation>(operationListResultInner.value())
-                                : new HashSet<Operation>());
-                    }
-                });
+    public PagedFlux<Operation> listOperationsAsync() {
+        return PagedConverter.convertListToPagedFlux(
+            this.manager().inner().getOperations().listAsync()
+                .map(OperationListResultInner::value)
+        );
     }
 
     @Override
-    public List<CachedImages> listCachedImages(String location) {
-        return this.manager().inner().listCachedImages(location).value();
+    public PagedIterable<CachedImages> listCachedImages(String location) {
+        return new PagedIterable<>(listCachedImagesAsync(location));
     }
 
     @Override
-    public Observable<CachedImages> listCachedImagesAsync(String location) {
-        return this.manager().inner().listCachedImagesAsync(location)
-                .flatMap(new Func1<CachedImagesListResultInner, Observable<CachedImages>>() {
-                    @Override
-                    public Observable<CachedImages> call(CachedImagesListResultInner cachedImagesListResultInner) {
-                        return Observable.from(cachedImagesListResultInner.value());
-                    }
-                });
+    public PagedFlux<CachedImages> listCachedImagesAsync(String location) {
+        return PagedConverter.convertListToPagedFlux(
+            this.manager().inner().listCachedImagesAsync(location)
+                .map(CachedImagesListResultInner::value)
+        );
     }
 
     @Override
-    public List<Capabilities> listCapabilities(String location) {
-        return this.manager().inner().listCapabilities(location).value();
+    public PagedIterable<Capabilities> listCapabilities(String location) {
+        return new PagedIterable<>(listCapabilitiesAsync(location));
     }
 
     @Override
-    public Observable<Capabilities> listCapabilitiesAsync(String location) {
-        return this.manager().inner().listCapabilitiesAsync(location)
-                .flatMap(new Func1<CapabilitiesListResultInner, Observable<Capabilities>>() {
-                    @Override
-                    public Observable<Capabilities> call(CapabilitiesListResultInner capabilitiesListResultInner) {
-                        return Observable.from(capabilitiesListResultInner.value());
-                    }
-                });
+    public PagedFlux<Capabilities> listCapabilitiesAsync(String location) {
+        return PagedConverter.convertListToPagedFlux(
+            this.manager().inner().listCapabilitiesAsync(location)
+                .map(CapabilitiesListResultInner::value)
+        );
     }
 
     @Override
     public void start(String resourceGroupName, String containerGroupName) {
-        this.manager().inner().containerGroups().start(resourceGroupName, containerGroupName);
+        this.manager().inner().getContainerGroups().start(resourceGroupName, containerGroupName);
     }
 
     @Override
-    public Completable startAsync(String resourceGroupName, String containerGroupName) {
-        return this.manager().inner().containerGroups().startAsync(resourceGroupName, containerGroupName).toCompletable();
+    public Mono<Void> startAsync(String resourceGroupName, String containerGroupName) {
+        return this.manager().inner().getContainerGroups().startAsync(resourceGroupName, containerGroupName);
     }
 
     @Override
-    public Observable<ContainerGroup> listAsync() {
-        return wrapPageAsync(inner().listAsync())
-                .flatMap(new Func1<ContainerGroup, Observable<ContainerGroup>>() {
-                    @Override
-                    public Observable<ContainerGroup> call(ContainerGroup containerGroup) {
-                        return containerGroup.refreshAsync();
-                    }
-                });
+    public PagedFlux<ContainerGroup> listAsync() {
+        return wrapPageAsync(inner().listAsync());
     }
 
     @Override
-    public Observable<ContainerGroup> listByResourceGroupAsync(String resourceGroupName) {
-        return wrapPageAsync(inner().listByResourceGroupAsync(resourceGroupName))
-                .flatMap(new Func1<ContainerGroup, Observable<ContainerGroup>>() {
-                    @Override
-                    public Observable<ContainerGroup> call(ContainerGroup containerGroup) {
-                        return containerGroup.refreshAsync();
-                    }
-                });
+    public PagedFlux<ContainerGroup> listByResourceGroupAsync(String resourceGroupName) {
+        return wrapPageAsync(inner().listByResourceGroupAsync(resourceGroupName));
     }
 
     @Override
-    public final PagedList<ContainerGroup> list() {
-        final PagedListConverter<ContainerGroupInner, ContainerGroup> converter = new PagedListConverter<ContainerGroupInner, ContainerGroup>() {
-            @Override
-            public Observable<ContainerGroup> typeConvertAsync(ContainerGroupInner inner) {
-                return wrapModel(inner).refreshAsync();
-            }
-        };
-        return converter.convert(this.inner().list());
+    public final PagedIterable<ContainerGroup> list() {
+        return new PagedIterable<>(listAsync());
     }
 
     @Override
-    public PagedList<ContainerGroup> listByResourceGroup(String resourceGroupName) {
-        final PagedListConverter<ContainerGroupInner, ContainerGroup> converter = new PagedListConverter<ContainerGroupInner, ContainerGroup>() {
-            @Override
-            public Observable<ContainerGroup> typeConvertAsync(ContainerGroupInner inner) {
-                return wrapModel(inner).refreshAsync();
-            }
-        };
-        return converter.convert(this.inner().listByResourceGroup(resourceGroupName));
+    public PagedIterable<ContainerGroup> listByResourceGroup(String resourceGroupName) {
+        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 }

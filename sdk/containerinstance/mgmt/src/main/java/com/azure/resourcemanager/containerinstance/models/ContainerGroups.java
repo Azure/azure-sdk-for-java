@@ -24,8 +24,6 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
 
-import java.util.Set;
-
 /**
  * Entry point to the container instance management API.
  */
@@ -95,14 +93,14 @@ public interface ContainerGroups extends
      *
      * @return all operations for Azure Container Instance service
      */
-    Set<Operation> listOperations();
+    PagedIterable<Operation> listOperations();
 
     /**
      * Lists all operations for Azure Container Instance service.
      *
      * @return a representation of the future computation of this call
      */
-    Mono<Set<Operation>> listOperationsAsync();
+    PagedFlux<Operation> listOperationsAsync();
 
     /**
      * Lists cached images for a subscription in a region.

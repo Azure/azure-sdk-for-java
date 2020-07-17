@@ -5,24 +5,30 @@
  */
 package com.azure.resourcemanager.containerinstance.implementation;
 
+import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.implementation.RoleAssignmentHelper;
 import com.azure.resourcemanager.containerinstance.fluent.inner.ContainerGroupInner;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupIdentity;
+import com.azure.resourcemanager.containerinstance.models.ContainerGroupIdentityUserAssignedIdentities;
+import com.azure.resourcemanager.containerinstance.models.ResourceIdentityType;
+import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup;
+import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 class ContainerGroupMsiHandler extends RoleAssignmentHelper {
     private final ContainerGroupImpl containerGroup;
 
     private List<String> creatableIdentityKeys;
-    private Map<String, ContainerGroupIdentityUserAssignedIdentitiesValue> userAssignedIdentities;
+    private Map<String, ContainerGroupIdentityUserAssignedIdentities> userAssignedIdentities;
 
-    ContainerGroupMsiHandler(final GraphRbacManager rbacManager, ContainerGroupImpl containerGroup) {
-        super(rbacManager, containerGroup.taskGroup(), containerGroup.idProvider());
+    ContainerGroupMsiHandler(final AuthorizationManager authorizationManager, ContainerGroupImpl containerGroup) {
+        super(authorizationManager, containerGroup.taskGroup(), containerGroup.idProvider());
         this.containerGroup = containerGroup;
         this.creatableIdentityKeys = new ArrayList<>();
         this.userAssignedIdentities = new HashMap<>();
@@ -32,7 +38,7 @@ class ContainerGroupMsiHandler extends RoleAssignmentHelper {
         for (String key : this.creatableIdentityKeys) {
             Identity identity = (Identity) this.containerGroup.taskGroup().taskResult(key);
             Objects.requireNonNull(identity);
-            this.userAssignedIdentities.put(identity.id(), new ContainerGroupIdentityUserAssignedIdentitiesValue());
+            this.userAssignedIdentities.put(identity.id(), new ContainerGroupIdentityUserAssignedIdentities());
         }
         this.creatableIdentityKeys.clear();
     }
@@ -83,7 +89,7 @@ class ContainerGroupMsiHandler extends RoleAssignmentHelper {
      */
     ContainerGroupMsiHandler withExistingExternalManagedServiceIdentity(Identity identity) {
         this.initContainerInstanceIdentity(ResourceIdentityType.USER_ASSIGNED);
-        this.userAssignedIdentities.put(identity.id(), new ContainerGroupIdentityUserAssignedIdentitiesValue());
+        this.userAssignedIdentities.put(identity.id(), new ContainerGroupIdentityUserAssignedIdentities());
         return this;
     }
 
@@ -107,7 +113,7 @@ class ContainerGroupMsiHandler extends RoleAssignmentHelper {
                 || containerGroupInner.identity().type().equals(identityType)) {
             containerGroupInner.identity().withType(identityType);
         } else {
-            containerGroupInner.identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED);
+            containerGroupInner.identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED);
         }
     }
 }
