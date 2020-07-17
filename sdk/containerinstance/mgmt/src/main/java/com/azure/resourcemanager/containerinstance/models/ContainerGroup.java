@@ -1125,14 +1125,14 @@ public interface ContainerGroup extends
          *   (via {@link WithCreate#create()}), but also allows for any other optional settings to be specified.
          */
         interface WithCreate extends
-                WithRestartPolicy,
-                WithSystemAssignedManagedServiceIdentity,
-                WithUserAssignedManagedServiceIdentity,
-                WithDnsPrefix,
-                WithNetworkProfile,
-                WithLogAnalytics,
+            WithRestartPolicy,
+            WithSystemAssignedManagedServiceIdentity,
+            WithUserAssignedManagedServiceIdentity,
+            WithDnsPrefix,
+            WithNetworkProfile,
+            WithLogAnalytics,
             Creatable<ContainerGroup>,
-                Resource.DefinitionWithTags<WithCreate> {
+            Resource.DefinitionWithTags<WithCreate> {
         }
     }
 
@@ -1140,7 +1140,7 @@ public interface ContainerGroup extends
      * The template for an update operation, containing all the settings that can be modified.
      */
     interface Update extends
-            Resource.UpdateWithTags<Update>,
+        Resource.UpdateWithTags<Update>,
         Appliable<ContainerGroup> {
     }
 

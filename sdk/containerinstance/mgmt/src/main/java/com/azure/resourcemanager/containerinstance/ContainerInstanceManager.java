@@ -11,6 +11,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.containerinstance.implementation.ContainerGroupsImpl;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroups;
+import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.Manager;
@@ -27,8 +28,9 @@ public final class ContainerInstanceManager
 
     // The service managers
     private ContainerGroupsImpl containerGroups;
-    private StorageManager storageManager;
-    private AuthorizationManager authorizationManager;
+    private final StorageManager storageManager;
+    private final AuthorizationManager authorizationManager;
+    private final NetworkManager networkManager;
 
     /**
      * Get a Configurable instance that can be used to create ContainerInstanceManager with optional configuration.
@@ -111,6 +113,22 @@ public final class ContainerInstanceManager
 
         this.storageManager = StorageManager.authenticate(httpPipeline, profile, sdkContext);
         this.authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile, sdkContext);
+        this.networkManager = NetworkManager.authenticate(httpPipeline, profile, sdkContext);
+    }
+
+    /** @return the storage manager in container instance manager */
+    public StorageManager storageManager() {
+        return storageManager;
+    }
+
+    /** @return the authorization manager in container instance manager */
+    public AuthorizationManager authorizationManager() {
+        return authorizationManager;
+    }
+
+    /** @return the network manager in container instance manager */
+    public NetworkManager networkManager() {
+        return networkManager;
     }
 
     /**

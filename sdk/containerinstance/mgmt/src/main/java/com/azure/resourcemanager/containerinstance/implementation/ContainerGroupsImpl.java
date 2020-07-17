@@ -44,20 +44,14 @@ public class ContainerGroupsImpl
         ContainerInstanceManager>
     implements ContainerGroups {
 
-    private final StorageManager storageManager;
-    private final AuthorizationManager authorizationManager;
-
-    public ContainerGroupsImpl(final ContainerInstanceManager manager,
-                               final StorageManager storageManager, final AuthorizationManager authorizationManager) {
+    public ContainerGroupsImpl(final ContainerInstanceManager manager) {
         super(manager.inner().getContainerGroups(), manager);
-        this.storageManager = storageManager;
-        this.authorizationManager = authorizationManager;
     }
 
     @Override
     protected ContainerGroupImpl wrapModel(String name) {
         return new ContainerGroupImpl(
-            name, new ContainerGroupInner(), this.manager(), this.storageManager, this.authorizationManager);
+            name, new ContainerGroupInner(), this.manager());
     }
 
     @Override
@@ -66,7 +60,7 @@ public class ContainerGroupsImpl
             return null;
         }
         return new ContainerGroupImpl(
-            inner.name(), inner, this.manager(), this.storageManager, this.authorizationManager);
+            inner.name(), inner, this.manager());
     }
 
     @Override

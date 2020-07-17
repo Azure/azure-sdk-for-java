@@ -65,7 +65,6 @@ public class ContainerGroupImpl
         ContainerGroup.Definition,
         ContainerGroup.Update {
 
-    private final StorageManager storageManager;
     private String creatableStorageAccountKey;
     private Map<String, String> newFileShares;
 
@@ -76,11 +75,9 @@ public class ContainerGroupImpl
     private int[] externalUdpPorts;
     private ContainerGroupMsiHandler containerGroupMsiHandler;
 
-    protected ContainerGroupImpl(String name, ContainerGroupInner innerObject, ContainerInstanceManager manager,
-                                 final StorageManager storageManager, final AuthorizationManager authorizationManager) {
+    protected ContainerGroupImpl(String name, ContainerGroupInner innerObject, ContainerInstanceManager manager) {
         super(name, innerObject, manager);
-        this.storageManager = storageManager;
-        this.containerGroupMsiHandler = new ContainerGroupMsiHandler(authorizationManager, this);
+        this.containerGroupMsiHandler = new ContainerGroupMsiHandler(this);
     }
 
     @Override
@@ -303,7 +300,7 @@ public class ContainerGroupImpl
     @Override
     public ContainerGroupImpl withNewAzureFileShareVolume(String volumeName, String shareName) {
         if (this.newFileShares == null || this.creatableStorageAccountKey == null) {
-            StorageAccount.DefinitionStages.WithGroup definitionWithGroup = this.storageManager
+            StorageAccount.DefinitionStages.WithGroup definitionWithGroup = manager().storageManager()
                     .storageAccounts()
                     .define(manager().sdkContext().randomResourceName("fs", 24))
                     .withRegion(this.regionName());

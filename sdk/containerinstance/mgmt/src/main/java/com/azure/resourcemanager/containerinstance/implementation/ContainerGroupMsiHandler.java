@@ -5,7 +5,6 @@
  */
 package com.azure.resourcemanager.containerinstance.implementation;
 
-import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.implementation.RoleAssignmentHelper;
 import com.azure.resourcemanager.containerinstance.fluent.inner.ContainerGroupInner;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupIdentity;
@@ -27,8 +26,8 @@ class ContainerGroupMsiHandler extends RoleAssignmentHelper {
     private List<String> creatableIdentityKeys;
     private Map<String, ContainerGroupIdentityUserAssignedIdentities> userAssignedIdentities;
 
-    ContainerGroupMsiHandler(final AuthorizationManager authorizationManager, ContainerGroupImpl containerGroup) {
-        super(authorizationManager, containerGroup.taskGroup(), containerGroup.idProvider());
+    ContainerGroupMsiHandler(ContainerGroupImpl containerGroup) {
+        super(containerGroup.manager().authorizationManager(), containerGroup.taskGroup(), containerGroup.idProvider());
         this.containerGroup = containerGroup;
         this.creatableIdentityKeys = new ArrayList<>();
         this.userAssignedIdentities = new HashMap<>();
