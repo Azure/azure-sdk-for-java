@@ -27,9 +27,9 @@ public class CosmosDataEncryptionKeyProvider implements DataEncryptionKeyProvide
     // Is it a requirement on container definition?
     //Then the code-docs and samples needs to explicit cover it.
     private final DataEncryptionKeyContainerCore dataEncryptionKeyContainerCore;
-    private CosmosAsyncContainer container;
     private final DekCache DekCache;
     private final EncryptionKeyWrapProvider EncryptionKeyWrapProvider;
+    private CosmosAsyncContainer container;
 
     public CosmosDataEncryptionKeyProvider(EncryptionKeyWrapProvider encryptionKeyWrapProvider) {
         this(encryptionKeyWrapProvider, null);
