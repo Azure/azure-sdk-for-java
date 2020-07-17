@@ -1,5 +1,5 @@
 # Publish events with Azure Core Tracing OpenTelemetry
- 
+
 Following documentation describes instructions to run a sample program for publishing multiple events with tracing instrumentation.
 
 ## Getting Started
@@ -9,12 +9,12 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** for implementation and **
 <dependency>
     <groupId>io.opentelemetry</groupId>
     <artifactId>opentelemetry-sdk</artifactId>
-    <version>0.2.4</version>
+    <version>0.6.0</version>
 </dependency>
 <dependency>
     <groupId>io.opentelemetry</groupId>
     <artifactId>opentelemetry-exporters-logging</artifactId>
-    <version>0.2.4</version>
+    <version>0.6.0</version>
 </dependency>
 ```
 
@@ -24,12 +24,12 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** for implementation and **
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventhubs</artifactId>
-    <version>5.0.2</version>
+    <version>5.0.3</version>
 </dependency>
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-tracing-opentelemetry</artifactId>
-    <version>1.0.0-beta.4</version>
+    <version>1.0.0-beta.6</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -41,7 +41,7 @@ import com.azure.messaging.eventhubs.EventDataBatch;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
-import io.opentelemetry.OpenTelemetry;
+import io.opentelemetry.OpenTelemetrySdk;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.exporters.logging.LoggingSpanExporter;
 import io.opentelemetry.sdk.trace.TracerSdkProvider;
@@ -69,8 +69,8 @@ public class Sample {
 
     private static Tracer configureOpenTelemetryAndLoggingExporter() {
         LoggingSpanExporter exporter = new LoggingSpanExporter();
-        TracerSdkProvider tracerSdkProvider = (TracerSdkProvider) OpenTelemetry.getTracerProvider();
-        tracerSdkProvider.addSpanProcessor(SimpleSpansProcessor.newBuilder(exporter).build());
+        TracerSdkProvider tracerSdkProvider = OpenTelemetry.getTracerProvider();
+        tracerSdkProvider.addSpanProcessor(SimpleSpanProcessor.newBuilder(exporter).build());
         return tracerSdkProvider.get("Sample");
     }
 

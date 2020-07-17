@@ -50,33 +50,34 @@ The following sections provides examples of using the azure-core-tracing-opentel
     This [sample][sample_key_vault] provides an example when no user parent span is passed.
 
     ```java
-    private static  final Tracer TRACER;
-    private static final TracerSdkFactory TRACER_SDK_FACTORY;
+    private static  final Tracer TRACER = TRACER_SDK_FACTORY.get("Sample");
+    // configure the tracer to work with an exporter (using jaeger here)
+    private static final TracerSdkFactory TRACER_SDK_FACTORY = configureOpenTelemetryAndJaegerExporter();
 
-        static {
-            TRACER_SDK_FACTORY = configureOpenTelemetryAndJaegerExporter();
-            TRACER = TRACER_SDK_FACTORY.get("Sample");
-        }
+    public static void main(String[] args) {
+        doClientWork();
+        TRACER_SDK_FACTORY.shutdown();
+    }
 
-        public static void main(String[] args) {
-            doClientWork();
-            TRACER_SDK_FACTORY.shutdown();
-        }
-
-        public static void doClientWork() {
+    public static void doClientWork() {
           SecretClient client = new SecretClientBuilder()
             .endpoint("<your-vault-url>")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
-
+    
           Span span = TRACER.spanBuilder("user-parent-span").startSpan();
           try (Scope scope = TRACER.withSpan(span)) {
-              final Context traceContext = new Context(PARENT_SPAN_KEY, span);
-              secretClient.setSecretWithResponse(new Secret("secret_name", "secret_value", traceContext));
+  
+              // Thread bound (sync) calls will automatically pick up the parent span and you don't need to pass it explicitly.
+              secretClient.setSecret(new Secret("secret_name", "secret_value));
+  
+              // Optionally, to specify the context you can use
+              // final Context traceContext = new Context(PARENT_SPAN_KEY, span);
+              // secretClient.setSecretWithResponse(new Secret("secret_name", "secret_value", traceContext));
           } finally {
               span.end();
           }
-        }
+    }
     ```
 
 ### Using the plugin package with AMQP client libraries
@@ -86,39 +87,30 @@ Send a single event/message using [azure-messaging-eventhubs][azure-messaging-ev
 Users can additionally pass the value of the current tracing span to the EventData object with key **PARENT_SPAN_KEY** on the [Context][context] object:
 
 ```java
-private static final Tracer TRACER;
-private static final TracerSdkFactory TRACER_SDK_FACTORY;
+private static  final Tracer TRACER = TRACER_SDK_FACTORY.get("Sample");
+// configure the tracer to work with an exporter (using jaeger here)
+private static final TracerSdkFactory TRACER_SDK_FACTORY = configureOpenTelemetryAndJaegerExporter();
 
-    static {
-        TRACER_SDK_FACTORY = configureOpenTelemetryAndJaegerExporter();
-        TRACER = TRACER_SDK_FACTORY.get("Sample");
-    }
-
-    public static void main(String[] args) {
-        doClientWork();
-        TRACER_SDK_FACTORY.shutdown();
-    }
-
-    private static void doClientWork() {
-        EventHubProducerClient producer = new EventHubClientBuilder()
-            .connectionString(CONNECTION_STRING)
-            .buildProducerClient();
-
-        Span span = TRACER.spanBuilder("user-parent-span").startSpan();
-        try (Scope scope = TRACER.withSpan(span)) {
-            EventData event1 = new EventData("1".getBytes(UTF_8));
-            event1.addContext(PARENT_SPAN_KEY, span);
-
-            EventDataBatch eventDataBatch = producer.createBatch();
-
-            if (!eventDataBatch.tryAdd(eventData)) {
-                producer.send(eventDataBatch);
-                eventDataBatch = producer.createBatch();
-            }
-        } finally {
-            span.end();
+private static void doClientWork() {
+    EventHubProducerClient producer = new EventHubClientBuilder()
+        .connectionString(CONNECTION_STRING)
+        .buildProducerClient();
+    
+    Span span = TRACER.spanBuilder("user-parent-span").startSpan();
+    try (Scope scope = TRACER.withSpan(span)) {
+        EventData event1 = new EventData("1".getBytes(UTF_8));
+        event1.addContext(PARENT_SPAN_KEY, span);
+    
+        EventDataBatch eventDataBatch = producer.createBatch();
+    
+        if (!eventDataBatch.tryAdd(eventData)) {
+            producer.send(eventDataBatch);
+            eventDataBatch = producer.createBatch();
         }
+    } finally {
+        span.end();
     }
+}
 ```
 
 ## Troubleshooting
