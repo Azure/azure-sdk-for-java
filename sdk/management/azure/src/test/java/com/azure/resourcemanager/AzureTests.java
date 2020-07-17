@@ -1085,134 +1085,133 @@ public class AzureTests extends TestBase {
         new TestKubernetesCluster().runTest(azure.kubernetesClusters(), azure.resourceGroups());
     }
 
-    //    @Test
-    //    public void testContainerInstanceWithPublicIpAddressWithSystemAssignedMsi() throws Exception {
-    //        new TestContainerInstanceWithPublicIpAddressWithSystemAssignedMSI().runTest(azure.containerGroups(),
-    // azure.resourceGroups(), azure.subscriptionId());
-    //    }
-    //
-    //    @Test
-    //    public void testContainerInstanceWithPublicIpAddressWithUserAssignedMsi() throws Exception {
-    //        final String cgName = SdkContext.randomResourceName("aci", 10);
-    //        final String rgName = SdkContext.randomResourceName("rgaci", 10);
-    //        String identityName1 = generateRandomResourceName("msi-id", 15);
-    //        String identityName2 = generateRandomResourceName("msi-id", 15);
-    //
-    //        final Identity createdIdentity = msiManager.identities()
-    //                .define(identityName1)
-    //                .withRegion(Region.US_WEST)
-    //                .withNewResourceGroup(rgName)
-    //                .withAccessToCurrentResourceGroup(BuiltInRole.READER)
-    //                .create();
-    //
-    //        Creatable<Identity> creatableIdentity = msiManager.identities()
-    //                .define(identityName2)
-    //                .withRegion(Region.US_WEST)
-    //                .withExistingResourceGroup(rgName)
-    //                .withAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR);
-    //
-    //
-    //        List<String> dnsServers = new ArrayList<String>();
-    //        dnsServers.add("dnsServer1");
-    //        ContainerGroup containerGroup = azure.containerGroups().define(cgName)
-    //                .withRegion(Region.US_EAST2)
-    //                .withExistingResourceGroup(rgName)
-    //                .withLinux()
-    //                .withPublicImageRegistryOnly()
-    //                .withEmptyDirectoryVolume("emptydir1")
-    //                .defineContainerInstance("tomcat")
-    //                .withImage("tomcat")
-    //                .withExternalTcpPort(8080)
-    //                .withCpuCoreCount(1)
-    //                .withEnvironmentVariable("ENV1", "value1")
-    //                .attach()
-    //                .defineContainerInstance("nginx")
-    //                .withImage("nginx")
-    //                .withExternalTcpPort(80)
-    //                .withEnvironmentVariableWithSecuredValue("ENV2", "securedValue1")
-    //                .attach()
-    //                .withExistingUserAssignedManagedServiceIdentity(createdIdentity)
-    //                .withNewUserAssignedManagedServiceIdentity(creatableIdentity)
-    //                .withRestartPolicy(ContainerGroupRestartPolicy.NEVER)
-    //                .withDnsPrefix(cgName)
-    //                .withTag("tag1", "value1")
-    //                .create();
-    //
-    //        Assert.assertEquals(cgName, containerGroup.name());
-    //        Assert.assertEquals("Linux", containerGroup.osType().toString());
-    //        Assert.assertEquals(0, containerGroup.imageRegistryServers().size());
-    //        Assert.assertEquals(1, containerGroup.volumes().size());
-    //        Assert.assertNotNull(containerGroup.volumes().get("emptydir1"));
-    //        Assert.assertNotNull(containerGroup.ipAddress());
-    //        Assert.assertTrue(containerGroup.isIPAddressPublic());
-    //        Assert.assertEquals(2, containerGroup.externalTcpPorts().length);
-    //        Assert.assertEquals(2, containerGroup.externalPorts().size());
-    //        Assert.assertEquals(2, containerGroup.externalTcpPorts().length);
-    //        Assert.assertEquals(8080, containerGroup.externalTcpPorts()[0]);
-    //        Assert.assertEquals(80, containerGroup.externalTcpPorts()[1]);
-    //        Assert.assertEquals(2, containerGroup.containers().size());
-    //        Container tomcatContainer = containerGroup.containers().get("tomcat");
-    //        Assert.assertNotNull(tomcatContainer);
-    //        Container nginxContainer = containerGroup.containers().get("nginx");
-    //        Assert.assertNotNull(nginxContainer);
-    //        Assert.assertEquals("tomcat", tomcatContainer.name());
-    //        Assert.assertEquals("tomcat", tomcatContainer.image());
-    //        Assert.assertEquals(1.0, tomcatContainer.resources().requests().cpu(), .1);
-    //        Assert.assertEquals(1.5, tomcatContainer.resources().requests().memoryInGB(), .1);
-    //        Assert.assertEquals(1, tomcatContainer.ports().size());
-    //        Assert.assertEquals(8080, tomcatContainer.ports().get(0).port());
-    //        Assert.assertNull(tomcatContainer.volumeMounts());
-    //        Assert.assertNull(tomcatContainer.command());
-    //        Assert.assertNotNull(tomcatContainer.environmentVariables());
-    //        Assert.assertEquals(1, tomcatContainer.environmentVariables().size());
-    //        Assert.assertEquals("nginx", nginxContainer.name());
-    //        Assert.assertEquals("nginx", nginxContainer.image());
-    //        Assert.assertEquals(1.0, nginxContainer.resources().requests().cpu(), .1);
-    //        Assert.assertEquals(1.5, nginxContainer.resources().requests().memoryInGB(), .1);
-    //        Assert.assertEquals(1, nginxContainer.ports().size());
-    //        Assert.assertEquals(80, nginxContainer.ports().get(0).port());
-    //        Assert.assertNull(nginxContainer.volumeMounts());
-    //        Assert.assertNull(nginxContainer.command());
-    //        Assert.assertNotNull(nginxContainer.environmentVariables());
-    //        Assert.assertEquals(1, nginxContainer.environmentVariables().size());
-    //        Assert.assertTrue(containerGroup.tags().containsKey("tag1"));
-    //        Assert.assertEquals(ContainerGroupRestartPolicy.NEVER, containerGroup.restartPolicy());
-    //        Assert.assertTrue(containerGroup.isManagedServiceIdentityEnabled());
-    //        Assert.assertEquals(ResourceIdentityType.USER_ASSIGNED, containerGroup.managedServiceIdentityType());
-    //        Assert.assertNull(containerGroup.systemAssignedManagedServiceIdentityPrincipalId()); // No Local MSI
-    // enabled
-    //
-    //        // Ensure the "User Assigned (External) MSI" id can be retrieved from the virtual machine
-    //        //
-    //        Set<String> emsiIds = containerGroup.userAssignedManagedServiceIdentityIds();
-    //        Assert.assertNotNull(emsiIds);
-    //        Assert.assertEquals(2, emsiIds.size());
-    //        Assert.assertEquals(cgName, containerGroup.dnsPrefix());
-    //
-    //        //TODO: add network and dns testing when questions have been answered
-    //
-    //        ContainerGroup containerGroup2 = azure.containerGroups().getByResourceGroup(rgName, cgName);
-    //
-    //        List<ContainerGroup> containerGroupList = azure.containerGroups().listByResourceGroup(rgName);
-    //        Assert.assertTrue(containerGroupList.size() > 0);
-    //        Assert.assertNotNull(containerGroupList.get(0).state());
-    //
-    //        containerGroup.refresh();
-    //
-    //        Set<Operation> containerGroupOperations = azure.containerGroups().listOperations();
-    //        // Number of supported operation can change hence don't assert with a predefined number.
-    //        Assert.assertTrue(containerGroupOperations.size() > 0);
-    //    }
+    @Test
+    public void testContainerInstanceWithPublicIpAddressWithSystemAssignedMsi() throws Exception {
+        new TestContainerInstanceWithPublicIpAddressWithSystemAssignedMSI().runTest(azure.containerGroups(),
+            azure.resourceGroups(), azure.subscriptionId());
+    }
+    
+    @Test
+    public void testContainerInstanceWithPublicIpAddressWithUserAssignedMsi() throws Exception {
+        final String cgName = SdkContext.randomResourceName("aci", 10);
+        final String rgName = SdkContext.randomResourceName("rgaci", 10);
+        String identityName1 = generateRandomResourceName("msi-id", 15);
+        String identityName2 = generateRandomResourceName("msi-id", 15);
 
-    //    @Test
-    //    public void testContainerInstanceWithPrivateIpAddress() throws Exception {
-    //        //LIVE ONLY TEST BECAUSE IT REQUIRES SUBSCRIPTION ID
-    //        if (!isPlaybackMode()) {
-    //            new TestContainerInstanceWithPrivateIpAddress()
-    //                    .runTest(azure.containerGroups(), azure.resourceGroups(), azure.subscriptionId());
-    //        }
-    //    }
-    //
+        final Identity createdIdentity = msiManager.identities()
+                .define(identityName1)
+                .withRegion(Region.US_WEST)
+                .withNewResourceGroup(rgName)
+                .withAccessToCurrentResourceGroup(BuiltInRole.READER)
+                .create();
+
+        Creatable<Identity> creatableIdentity = msiManager.identities()
+                .define(identityName2)
+                .withRegion(Region.US_WEST)
+                .withExistingResourceGroup(rgName)
+                .withAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR);
+
+
+        List<String> dnsServers = new ArrayList<String>();
+        dnsServers.add("dnsServer1");
+        ContainerGroup containerGroup = azure.containerGroups().define(cgName)
+                .withRegion(Region.US_EAST2)
+                .withExistingResourceGroup(rgName)
+                .withLinux()
+                .withPublicImageRegistryOnly()
+                .withEmptyDirectoryVolume("emptydir1")
+                .defineContainerInstance("tomcat")
+                .withImage("tomcat")
+                .withExternalTcpPort(8080)
+                .withCpuCoreCount(1)
+                .withEnvironmentVariable("ENV1", "value1")
+                .attach()
+                .defineContainerInstance("nginx")
+                .withImage("nginx")
+                .withExternalTcpPort(80)
+                .withEnvironmentVariableWithSecuredValue("ENV2", "securedValue1")
+                .attach()
+                .withExistingUserAssignedManagedServiceIdentity(createdIdentity)
+                .withNewUserAssignedManagedServiceIdentity(creatableIdentity)
+                .withRestartPolicy(ContainerGroupRestartPolicy.NEVER)
+                .withDnsPrefix(cgName)
+                .withTag("tag1", "value1")
+                .create();
+
+        Assert.assertEquals(cgName, containerGroup.name());
+        Assert.assertEquals("Linux", containerGroup.osType().toString());
+        Assert.assertEquals(0, containerGroup.imageRegistryServers().size());
+        Assert.assertEquals(1, containerGroup.volumes().size());
+        Assert.assertNotNull(containerGroup.volumes().get("emptydir1"));
+        Assert.assertNotNull(containerGroup.ipAddress());
+        Assert.assertTrue(containerGroup.isIPAddressPublic());
+        Assert.assertEquals(2, containerGroup.externalTcpPorts().length);
+        Assert.assertEquals(2, containerGroup.externalPorts().size());
+        Assert.assertEquals(2, containerGroup.externalTcpPorts().length);
+        Assert.assertEquals(8080, containerGroup.externalTcpPorts()[0]);
+        Assert.assertEquals(80, containerGroup.externalTcpPorts()[1]);
+        Assert.assertEquals(2, containerGroup.containers().size());
+        Container tomcatContainer = containerGroup.containers().get("tomcat");
+        Assert.assertNotNull(tomcatContainer);
+        Container nginxContainer = containerGroup.containers().get("nginx");
+        Assert.assertNotNull(nginxContainer);
+        Assert.assertEquals("tomcat", tomcatContainer.name());
+        Assert.assertEquals("tomcat", tomcatContainer.image());
+        Assert.assertEquals(1.0, tomcatContainer.resources().requests().cpu(), .1);
+        Assert.assertEquals(1.5, tomcatContainer.resources().requests().memoryInGB(), .1);
+        Assert.assertEquals(1, tomcatContainer.ports().size());
+        Assert.assertEquals(8080, tomcatContainer.ports().get(0).port());
+        Assert.assertNull(tomcatContainer.volumeMounts());
+        Assert.assertNull(tomcatContainer.command());
+        Assert.assertNotNull(tomcatContainer.environmentVariables());
+        Assert.assertEquals(1, tomcatContainer.environmentVariables().size());
+        Assert.assertEquals("nginx", nginxContainer.name());
+        Assert.assertEquals("nginx", nginxContainer.image());
+        Assert.assertEquals(1.0, nginxContainer.resources().requests().cpu(), .1);
+        Assert.assertEquals(1.5, nginxContainer.resources().requests().memoryInGB(), .1);
+        Assert.assertEquals(1, nginxContainer.ports().size());
+        Assert.assertEquals(80, nginxContainer.ports().get(0).port());
+        Assert.assertNull(nginxContainer.volumeMounts());
+        Assert.assertNull(nginxContainer.command());
+        Assert.assertNotNull(nginxContainer.environmentVariables());
+        Assert.assertEquals(1, nginxContainer.environmentVariables().size());
+        Assert.assertTrue(containerGroup.tags().containsKey("tag1"));
+        Assert.assertEquals(ContainerGroupRestartPolicy.NEVER, containerGroup.restartPolicy());
+        Assert.assertTrue(containerGroup.isManagedServiceIdentityEnabled());
+        Assert.assertEquals(ResourceIdentityType.USER_ASSIGNED, containerGroup.managedServiceIdentityType());
+        Assert.assertNull(containerGroup.systemAssignedManagedServiceIdentityPrincipalId()); // No Local MSI enabled
+
+        // Ensure the "User Assigned (External) MSI" id can be retrieved from the virtual machine
+        //
+        Set<String> emsiIds = containerGroup.userAssignedManagedServiceIdentityIds();
+        Assert.assertNotNull(emsiIds);
+        Assert.assertEquals(2, emsiIds.size());
+        Assert.assertEquals(cgName, containerGroup.dnsPrefix());
+
+        //TODO: add network and dns testing when questions have been answered
+
+        ContainerGroup containerGroup2 = azure.containerGroups().getByResourceGroup(rgName, cgName);
+
+        List<ContainerGroup> containerGroupList = azure.containerGroups().listByResourceGroup(rgName);
+        Assert.assertTrue(containerGroupList.size() > 0);
+        Assert.assertNotNull(containerGroupList.get(0).state());
+
+        containerGroup.refresh();
+
+        Set<Operation> containerGroupOperations = azure.containerGroups().listOperations();
+        // Number of supported operation can change hence don't assert with a predefined number.
+        Assert.assertTrue(containerGroupOperations.size() > 0);
+    }
+
+    @Test
+    public void testContainerInstanceWithPrivateIpAddress() throws Exception {
+        //LIVE ONLY TEST BECAUSE IT REQUIRES SUBSCRIPTION ID
+        if (!isPlaybackMode()) {
+            new TestContainerInstanceWithPrivateIpAddress()
+                    .runTest(azure.containerGroups(), azure.resourceGroups(), azure.subscriptionId());
+        }
+    }
+
     @Test
     public void testContainerRegistry() throws Exception {
         new TestContainerRegistry().runTest(azure.containerRegistries(), azure.resourceGroups());
