@@ -94,10 +94,10 @@ public class DecryptDataEncryptedByDotNetTest extends TestSuiteBase {
         ObjectNode dataEncryptionKeyProperties = TestUtils.loadPojo("./encryption/dotnet/DataEncryptionKeyProperties.json", ObjectNode.class);
         keyContainer.createItem(dataEncryptionKeyProperties).block();
 
-        DataEncryptionKey loadedKey = dekProvider.getDataEncryptionKey(dataEncryptionKeyProperties.get("id").asText(), CosmosEncryptionAlgorithm.AEAes256CbcHmacSha256Randomized);
+        DataEncryptionKey loadedKey = dekProvider.getDataEncryptionKey(dataEncryptionKeyProperties.get("id").asText(), CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256_RANDOMIZED);
 
-        assertThat(loadedKey.getEncryptionAlgorithm()).isEqualTo(CosmosEncryptionAlgorithm.AEAes256CbcHmacSha256Randomized);
-        assertThat(loadedKey.getEncryptionAlgorithm()).isEqualTo(CosmosEncryptionAlgorithm.AEAes256CbcHmacSha256Randomized);
+        assertThat(loadedKey.getEncryptionAlgorithm()).isEqualTo(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256_RANDOMIZED);
+        assertThat(loadedKey.getEncryptionAlgorithm()).isEqualTo(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256_RANDOMIZED);
 
         EncryptionKeyWrapMetadata keyWrapMetadata = Utils.getSimpleObjectMapper().convertValue(dataEncryptionKeyProperties.get("keyWrapMetadata"), EncryptionKeyWrapMetadata.class);
         byte[] expectedWrappedKey = dataEncryptionKeyProperties.get("wrappedDataEncryptionKey").binaryValue();

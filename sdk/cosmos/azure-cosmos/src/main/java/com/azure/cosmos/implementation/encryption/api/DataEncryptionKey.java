@@ -19,7 +19,6 @@ public interface DataEncryptionKey {
      */
     byte[] getRawKey();
 
-
     /**
      * Gets Encryption algorithm to be used with this data encryption key.
      * @return encryption algorithm.
@@ -46,7 +45,7 @@ public interface DataEncryptionKey {
      * @return New instance of data encryption key.
      */
     static byte[] generate(String encryptionAlgorithm) {
-        if (!StringUtils.equals(encryptionAlgorithm, CosmosEncryptionAlgorithm.AEAes256CbcHmacSha256Randomized)) {
+        if (!StringUtils.equals(encryptionAlgorithm, CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256_RANDOMIZED)) {
             throw new IllegalArgumentException(String.format("Encryption algorithm not supported: {%s}", encryptionAlgorithm));
         }
 
@@ -79,7 +78,7 @@ public interface DataEncryptionKey {
             throw new NullPointerException("rawKey");
         }
 
-        if (!StringUtils.equals(encryptionAlgorithm, CosmosEncryptionAlgorithm.AEAes256CbcHmacSha256Randomized)) {
+        if (!StringUtils.equals(encryptionAlgorithm, CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256_RANDOMIZED)) {
             throw new IllegalArgumentException(String.format("Encryption algorithm not supported: {%s}", encryptionAlgorithm));
         }
 

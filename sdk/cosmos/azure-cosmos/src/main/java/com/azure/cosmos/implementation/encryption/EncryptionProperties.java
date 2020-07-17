@@ -3,10 +3,9 @@
 
 package com.azure.cosmos.implementation.encryption;
 
-import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.encryption.api.Constants;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
@@ -44,10 +43,10 @@ class EncryptionProperties {
 
     public ObjectNode toObjectNode() {
         ObjectNode objectNode = OBJECT_MAPPER.createObjectNode();
-        objectNode.put(Constants.Properties.EncryptionFormatVersion, this.encryptionFormatVersion);
-        objectNode.put(Constants.Properties.EncryptionAlgorithm, this.encryptionAlgorithm);
-        objectNode.put(Constants.Properties.DataEncryptionKeyId, this.dataEncryptionKeyId);
-        objectNode.put(Constants.Properties.EncryptedData, this.encryptedData);
+        objectNode.put(Constants.EncryptionFormatVersion, this.encryptionFormatVersion);
+        objectNode.put(Constants.EncryptionAlgorithm, this.encryptionAlgorithm);
+        objectNode.put(Constants.DataEncryptionKeyId, this.dataEncryptionKeyId);
+        objectNode.put(Constants.EncryptedData, this.encryptedData);
         return objectNode;
     }
 
@@ -73,7 +72,6 @@ class EncryptionProperties {
     public byte[] getEncryptedData() {
         return encryptedData;
     }
-
 
     private String encryptionAlgorithm;
 
@@ -111,10 +109,10 @@ class EncryptionProperties {
         @Override
         public void serialize(final EncryptionProperties value, final JsonGenerator generator, final SerializerProvider provider) throws IOException {
             generator.writeStartObject();
-            generator.writeNumberField(Constants.Properties.EncryptionFormatVersion, value.encryptionFormatVersion);
-            generator.writeStringField(Constants.Properties.EncryptionAlgorithm, value.encryptionAlgorithm);
-            generator.writeStringField(Constants.Properties.DataEncryptionKeyId, value.dataEncryptionKeyId);
-            generator.writeBinaryField(Constants.Properties.EncryptedData, value.encryptedData);
+            generator.writeNumberField(Constants.EncryptionFormatVersion, value.encryptionFormatVersion);
+            generator.writeStringField(Constants.EncryptionAlgorithm, value.encryptionAlgorithm);
+            generator.writeStringField(Constants.DataEncryptionKeyId, value.dataEncryptionKeyId);
+            generator.writeBinaryField(Constants.EncryptedData, value.encryptedData);
             generator.writeEndObject();
         }
     }
@@ -141,24 +139,24 @@ class EncryptionProperties {
 
             EncryptionProperties encryptionProperties = new EncryptionProperties();
 
-            JsonNode node = root.get(Constants.Properties.EncryptionFormatVersion);
-            Preconditions.checkNotNull(node, Constants.Properties.EncryptionFormatVersion +  "can't deserialize");
-            validateOrThrow(jsonParser, node.isInt(), Constants.Properties.EncryptionFormatVersion, "can't deserialize");
+            JsonNode node = root.get(Constants.EncryptionFormatVersion);
+            Preconditions.checkNotNull(node, Constants.EncryptionFormatVersion +  "can't deserialize");
+            validateOrThrow(jsonParser, node.isInt(), Constants.EncryptionFormatVersion, "can't deserialize");
             encryptionProperties.encryptionFormatVersion = node.asInt();
 
-            node = root.get(Constants.Properties.EncryptionAlgorithm);
-            Preconditions.checkNotNull(node, Constants.Properties.EncryptionAlgorithm +  "can't deserialize");
-            validateOrThrow(jsonParser, node.isTextual(), Constants.Properties.EncryptionAlgorithm, "can't deserialize");
+            node = root.get(Constants.EncryptionAlgorithm);
+            Preconditions.checkNotNull(node, Constants.EncryptionAlgorithm +  "can't deserialize");
+            validateOrThrow(jsonParser, node.isTextual(), Constants.EncryptionAlgorithm, "can't deserialize");
             encryptionProperties.encryptionAlgorithm = node.asText();
 
-            node = root.get(Constants.Properties.DataEncryptionKeyId);
-            Preconditions.checkNotNull(node, Constants.Properties.DataEncryptionKeyId +  "can't deserialize");
-            validateOrThrow(jsonParser, node.isTextual(), Constants.Properties.DataEncryptionKeyId, "can't deserialize");
+            node = root.get(Constants.DataEncryptionKeyId);
+            Preconditions.checkNotNull(node, Constants.DataEncryptionKeyId +  "can't deserialize");
+            validateOrThrow(jsonParser, node.isTextual(), Constants.DataEncryptionKeyId, "can't deserialize");
             encryptionProperties.dataEncryptionKeyId = node.asText();
 
-            node = root.get(Constants.Properties.EncryptedData);
-            Preconditions.checkNotNull(node, Constants.Properties.EncryptedData +  "can't deserialize");
-            validateOrThrow(jsonParser, node.isBinary() || node.isTextual(), Constants.Properties.EncryptedData, "can't deserialize");
+            node = root.get(Constants.EncryptedData);
+            Preconditions.checkNotNull(node, Constants.EncryptedData +  "can't deserialize");
+            validateOrThrow(jsonParser, node.isBinary() || node.isTextual(), Constants.EncryptedData, "can't deserialize");
             encryptionProperties.encryptedData = node.binaryValue();
 
             return encryptionProperties;
