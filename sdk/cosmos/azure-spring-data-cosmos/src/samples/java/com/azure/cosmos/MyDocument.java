@@ -11,7 +11,7 @@ package com.azure.cosmos;
 import com.azure.spring.data.cosmos.core.mapping.Document;
 import org.springframework.data.annotation.Version;
 
-@Document(collection = "myCollection")
+@Document(container = "myContainer")
 public class MyDocument {
     String id;
     String data;

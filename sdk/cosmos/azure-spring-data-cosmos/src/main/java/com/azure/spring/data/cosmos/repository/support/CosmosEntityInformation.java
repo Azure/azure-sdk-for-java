@@ -3,31 +3,29 @@
 
 package com.azure.spring.data.cosmos.repository.support;
 
-import com.azure.data.cosmos.ExcludedPath;
-import com.azure.data.cosmos.IncludedPath;
-import com.azure.data.cosmos.IndexingMode;
-import com.azure.data.cosmos.IndexingPolicy;
+import com.azure.cosmos.models.ExcludedPath;
+import com.azure.cosmos.models.IncludedPath;
+import com.azure.cosmos.models.IndexingMode;
+import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.spring.data.cosmos.Constants;
 import com.azure.spring.data.cosmos.core.mapping.Document;
 import com.azure.spring.data.cosmos.core.mapping.DocumentIndexingPolicy;
 import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
 import org.apache.commons.lang3.reflect.FieldUtils;
-
-import org.json.JSONObject;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.repository.core.support.AbstractEntityInformation;
 import org.springframework.lang.NonNull;
 import org.springframework.util.ReflectionUtils;
 
-import static com.azure.spring.data.cosmos.common.ExpressionResolver.resolveExpression;
-
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.azure.spring.data.cosmos.common.ExpressionResolver.resolveExpression;
+
 /**
- * Class to describe cosmosdb entity
+ * Class to describe cosmosDb entity
  */
 public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T, ID> {
 
@@ -39,7 +37,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
     private final Integer timeToLive;
     private final IndexingPolicy indexingPolicy;
     private final boolean isVersioned;
-    private boolean autoCreateContainer;
+    private final boolean autoCreateContainer;
 
     /**
      * Initialization
@@ -94,17 +92,6 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
     @SuppressWarnings("unchecked")
     public Class<ID> getIdType() {
         return (Class<ID>) id.getType();
-    }
-
-    /**
-     * Get collection name
-     *
-     * @return collection name
-     * @deprecated Use {@link #getContainerName()} instead
-     */
-    @Deprecated
-    public String getCollectionName() {
-        return this.containerName;
     }
 
     /**
@@ -179,17 +166,6 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
     }
 
     /**
-     * Check if auto creating collection is allowed
-     *
-     * @return boolean
-     * @deprecated Use {@link #isAutoCreateContainer()} instead.
-     */
-    @Deprecated
-    public boolean isAutoCreateCollection() {
-        return autoCreateContainer;
-    }
-
-    /**
      * Check if auto creating container is allowed
      *
      * @return boolean
@@ -201,10 +177,10 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
     private IndexingPolicy getIndexingPolicy(Class<?> domainType) {
         final IndexingPolicy policy = new IndexingPolicy();
 
-        policy.automatic(this.getIndexingPolicyAutomatic(domainType));
-        policy.indexingMode(this.getIndexingPolicyMode(domainType));
+        policy.setAutomatic(this.getIndexingPolicyAutomatic(domainType));
+        policy.setIndexingMode(this.getIndexingPolicyMode(domainType));
         policy.setIncludedPaths(this.getIndexingPolicyIncludePaths(domainType));
-        policy.excludedPaths(this.getIndexingPolicyExcludePaths(domainType));
+        policy.setExcludedPaths(this.getIndexingPolicyExcludePaths(domainType));
 
         return policy;
     }
@@ -238,9 +214,9 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
         final Document annotation = domainType.getAnnotation(Document.class);
 
         if (annotation != null
-                && annotation.collection() != null
-                && !annotation.collection().isEmpty()) {
-            customContainerName = resolveExpression(annotation.collection());
+                && annotation.container() != null
+                && !annotation.container().isEmpty()) {
+            customContainerName = resolveExpression(annotation.container());
         }
 
         return customContainerName;
@@ -290,7 +266,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
 
 
     private Boolean getIndexingPolicyAutomatic(Class<?> domainType) {
-        Boolean isAutomatic = Boolean.valueOf(Constants.DEFAULT_INDEXINGPOLICY_AUTOMATIC);
+        Boolean isAutomatic = Boolean.valueOf(Constants.DEFAULT_INDEXING_POLICY_AUTOMATIC);
         final DocumentIndexingPolicy annotation = domainType.getAnnotation(DocumentIndexingPolicy.class);
 
         if (annotation != null) {
@@ -301,7 +277,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
     }
 
     private IndexingMode getIndexingPolicyMode(Class<?> domainType) {
-        IndexingMode mode = Constants.DEFAULT_INDEXINGPOLICY_MODE;
+        IndexingMode mode = Constants.DEFAULT_INDEXING_POLICY_MODE;
         final DocumentIndexingPolicy annotation = domainType.getAnnotation(DocumentIndexingPolicy.class);
 
         if (annotation != null) {
@@ -315,7 +291,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
         final List<IncludedPath> pathArrayList = new ArrayList<>();
         final DocumentIndexingPolicy annotation = domainType.getAnnotation(DocumentIndexingPolicy.class);
 
-        if (annotation == null || annotation.includePaths() == null || annotation.includePaths().length == 0) {
+        if (annotation == null || annotation.includePaths().length == 0) {
             return null; // Align the default value of IndexingPolicy
         }
 
@@ -338,8 +314,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
 
         final String[] rawPaths = annotation.excludePaths();
         for (final String path : rawPaths) {
-            final JSONObject obj = new JSONObject(path);
-            pathArrayList.add(new ExcludedPath().path(obj.get("path").toString()));
+            pathArrayList.add(new ExcludedPath(path));
         }
 
         return pathArrayList;
@@ -357,7 +332,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
 
         boolean autoCreateContainer = Constants.DEFAULT_AUTO_CREATE_CONTAINER;
         if (annotation != null) {
-            autoCreateContainer = annotation.autoCreateCollection();
+            autoCreateContainer = annotation.autoCreateContainer();
         }
 
         return autoCreateContainer;

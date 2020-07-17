@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ObjectMapperConfigurationCodeSnippet {
 
-    @Bean(name = "cosmosdbObjectMapper")
+    @Bean(name = "cosmosObjectMapper")
     public ObjectMapper objectMapper() {
         return new ObjectMapper(); // Do configuration to the ObjectMapper if required
     }

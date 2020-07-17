@@ -1246,6 +1246,7 @@ directive:
     delete $.SourceIfModifiedSince["x-ms-parameter-grouping"];
     delete $.SourceIfNoneMatch["x-ms-parameter-grouping"];
     delete $.SourceIfUnmodifiedSince["x-ms-parameter-grouping"];
+    delete $.SourceIfTags["x-ms-parameter-grouping"];
 - from: swagger-document
   where: $.parameters
   transform: >
@@ -1253,6 +1254,7 @@ directive:
     delete $.IfModifiedSince["x-ms-parameter-grouping"];
     delete $.IfNoneMatch["x-ms-parameter-grouping"];
     delete $.IfUnmodifiedSince["x-ms-parameter-grouping"];
+    delete $.IfTags["x-ms-parameter-grouping"];
 - from: swagger-document
   where: $.parameters
   transform: >

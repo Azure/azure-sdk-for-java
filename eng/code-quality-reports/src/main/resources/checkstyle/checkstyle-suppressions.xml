@@ -430,6 +430,7 @@
 
   <!-- Cosmos sdk suppressions -->
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-cosmos[/\\]src[/\\]test[/\\]"/>
+  <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-cosmos-encryption[/\\]src[/\\]test[/\\]"/>
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]cosmos[/\\]examples[/\\]"/>
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]cosmos[/\\]implementation[/\\]"/>
   <suppress checks="[a-zA-Z0-9]*"

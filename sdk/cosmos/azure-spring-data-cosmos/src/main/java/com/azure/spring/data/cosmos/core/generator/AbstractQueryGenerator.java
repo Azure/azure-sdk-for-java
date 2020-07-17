@@ -2,14 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.core.generator;
 
-import com.azure.data.cosmos.SqlParameterList;
-import com.azure.data.cosmos.SqlQuerySpec;
+import com.azure.cosmos.models.SqlParameter;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
 import com.azure.spring.data.cosmos.core.query.DocumentQuery;
 import com.azure.spring.data.cosmos.exception.IllegalQueryException;
 import org.javatuples.Pair;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.parser.Part;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
@@ -53,13 +54,48 @@ public abstract class AbstractQueryGenerator {
         final String subject = criteria.getSubject();
         final Object subjectValue = toCosmosDbValue(criteria.getSubjectValues().get(0));
         final String parameter = generateQueryParameter(subject);
-
+        final Part.IgnoreCaseType ignoreCase = criteria.getIgnoreCase();
+        final String sqlKeyword = criteria.getType().getSqlKeyword();
         parameters.add(Pair.with(parameter, subjectValue));
 
         if (CriteriaType.isFunction(criteria.getType())) {
-            return String.format("%s(r.%s, @%s)", criteria.getType().getSqlKeyword(), subject, parameter);
+            return getFunctionCondition(ignoreCase, sqlKeyword, subject, parameter);
         } else {
-            return String.format("r.%s %s @%s", subject, criteria.getType().getSqlKeyword(), parameter);
+            return getCondition(ignoreCase, sqlKeyword, subject, parameter);
+        }
+    }
+
+    /**
+     * Get condition string with function
+     * @param ignoreCase ignore case flag
+     * @param sqlKeyword sql key word, operation name
+     * @param subject sql column name
+     * @param parameter sql filter value
+     * @return condition string
+     */
+    private String getCondition(final Part.IgnoreCaseType ignoreCase, final String sqlKeyword,
+                                final String subject, final String parameter) {
+        if (Part.IgnoreCaseType.NEVER == ignoreCase) {
+            return String.format("r.%s %s @%s", subject, sqlKeyword, parameter);
+        } else {
+            return String.format("UPPER(r.%s) %s UPPER(@%s)", subject, sqlKeyword, parameter);
+        }
+    }
+
+    /**
+     * Get condition string without function
+     * @param ignoreCase ignore case flag
+     * @param sqlKeyword sql key word, operation name
+     * @param subject sql column name
+     * @param parameter sql filter value
+     * @return condition string
+     */
+    private String getFunctionCondition(final Part.IgnoreCaseType ignoreCase, final String sqlKeyword,
+                                        final String subject, final String parameter) {
+        if (Part.IgnoreCaseType.NEVER == ignoreCase) {
+            return String.format("%s(r.%s, @%s)", sqlKeyword, subject, parameter);
+        } else {
+            return String.format("%s(UPPER(r.%s), UPPER(@%s))", sqlKeyword, subject, parameter);
         }
     }
 
@@ -208,19 +244,15 @@ public abstract class AbstractQueryGenerator {
 
 
     protected SqlQuerySpec generateCosmosQuery(@NonNull DocumentQuery query,
-                                                                            @NonNull String queryHead) {
+                                               @NonNull String queryHead) {
         final Pair<String, List<Pair<String, Object>>> queryBody = generateQueryBody(query);
         final String queryString = String.join(" ", queryHead, queryBody.getValue0(), generateQueryTail(query));
         final List<Pair<String, Object>> parameters = queryBody.getValue1();
-        final SqlParameterList sqlParameters =
-                new SqlParameterList();
 
-        sqlParameters.addAll(
-                parameters.stream()
-                        .map(p -> new com.azure.data.cosmos.SqlParameter("@"
-                                + p.getValue0(), toCosmosDbValue(p.getValue1())))
-                        .collect(Collectors.toList())
-        );
+        List<SqlParameter> sqlParameters = parameters.stream()
+                                               .map(p -> new SqlParameter("@" + p.getValue0(),
+                                                   toCosmosDbValue(p.getValue1())))
+                                               .collect(Collectors.toList());
 
         return new SqlQuerySpec(queryString, sqlParameters);
     }

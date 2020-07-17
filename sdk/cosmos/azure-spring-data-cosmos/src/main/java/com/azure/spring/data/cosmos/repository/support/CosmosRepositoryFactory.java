@@ -33,7 +33,7 @@ public class CosmosRepositoryFactory extends RepositoryFactorySupport {
     /**
      * Initialization
      *
-     * @param cosmosOperations for cosmosdb operations
+     * @param cosmosOperations for cosmosDb operations
      * @param applicationContext for the context
      */
     public CosmosRepositoryFactory(CosmosOperations cosmosOperations, ApplicationContext applicationContext) {

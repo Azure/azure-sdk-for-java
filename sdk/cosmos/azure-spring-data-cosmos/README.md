@@ -11,7 +11,6 @@
 * [Spring data version support](#spring-data-version-support)
 * [Feature List](#feature-list)
 * [Quick Start](#quick-start)
-* [Query Partitioned Collection](QueryPartitionedCollection.md)
 * [Beta version package](#Beta version package)
 * [Troubleshooting](#Troubleshooting)
 * [Contributing](#Contributing)
@@ -34,14 +33,14 @@ Please refer to [sample project here](./samplecode).
   There're 2 ways to map a field in domain class to `id` field of Azure Cosmos DB document.
   - annotate a field in domain class with `@Id`, this field will be mapped to document `id` in Cosmos DB. 
   - set name of this field to `id`, this field will be mapped to document `id` in Azure Cosmos DB.
-- Custom collection Name.
-  By default, collection name will be class name of user domain class. To customize it, add the `@Document(collection="myCustomCollectionName")` annotation to the domain class. The collection field also supports SpEL expressions (eg. `collection = "${dynamic.collection.name}"` or `collection = "#{@someBean.getContainerName()}"`) in order to provide collection names programmatically/via configuration properties.
+- Custom container Name.
+  By default, container name will be class name of user domain class. To customize it, add the `@Document(container="myCustomContainerName")` annotation to the domain class. The container field also supports SpEL expressions (eg. `container = "${dynamic.container.name}"` or `container = "#{@someBean.getContainerName()}"`) in order to provide container names programmatically/via configuration properties.
 - Custom IndexingPolicy
   By default, IndexingPolicy will be set by azure service. To customize it add annotation `@DocumentIndexingPolicy` to domain class. This annotation has 4 attributes to customize, see following:
 <!-- embedme src/samples/java/com/azure/cosmos/DocumentIndexingPolicyCodeSnippet.java#L16-L26 -->
 ```java
 // Indicate if indexing policy use automatic or not
-boolean automatic() default Constants.DEFAULT_INDEXINGPOLICY_AUTOMATIC;
+boolean automatic() default Constants.DEFAULT_INDEXING_POLICY_AUTOMATIC;
 
 // Indexing policy mode, option Consistent|Lazy|None.
 IndexingMode mode() default IndexingMode.CONSISTENT;
@@ -53,11 +52,11 @@ String[] includePaths() default {};
 String[] excludePaths() default {};
 ```
 
-- Supports Optimistic Locking for specific collections, which means upserts/deletes by document will fail with an exception in case the document was modified by another process in the meanwhile. To enable Optimistic Locking for a collection, just create a string `_etag` field and mark it with the `@Version` annotation. See the following:
+- Supports Optimistic Locking for specific containers, which means upserts/deletes by document will fail with an exception in case the document was modified by another process in the meanwhile. To enable Optimistic Locking for a container, just create a string `_etag` field and mark it with the `@Version` annotation. See the following:
 
 <!-- embedme src/samples/java/com/azure/cosmos/MyDocument.java#L14-L20 -->
 ```java
-@Document(collection = "myCollection")
+@Document(container = "myContainer")
 public class MyDocument {
     String id;
     String data;
@@ -70,23 +69,27 @@ public class MyDocument {
 - Supports [Spring Data pagable and sort](https://docs.spring.io/spring-data/commons/docs/current/reference/html/#repositories.special-parameters).
   - Based on available RUs on the database account, cosmosDB can return documents less than or equal to the requested size.
   - Due to this variable number of returned documents in every iteration, user should not rely on the totalPageSize, and instead iterating over pageable should be done in this way.  
-<!-- embedme src/samples/java/com/azure/cosmos/PageableRepositoryCodeSnippet.java#L29-L36 -->
+<!-- embedme src/samples/java/com/azure/cosmos/PageableRepositoryCodeSnippet.java#L27-L38 -->
 ```java
-final CosmosPageRequest pageRequest = new CosmosPageRequest(0, pageSize, null);
-Page<T> page = repository.findAll(pageRequest);
-List<T> pageContent = page.getContent();
-while (page.hasNext()) {
-    Pageable nextPageable = page.nextPageable();
-    page = repository.findAll(nextPageable);
-    pageContent = page.getContent();
+private List<T> findAllWithPageSize(int pageSize) {
+
+    final CosmosPageRequest pageRequest = new CosmosPageRequest(0, pageSize, null);
+    Page<T> page = repository.findAll(pageRequest);
+    List<T> pageContent = page.getContent();
+    while (page.hasNext()) {
+        Pageable nextPageable = page.nextPageable();
+        page = repository.findAll(nextPageable);
+        pageContent = page.getContent();
+    }
+    return pageContent;
 }
 ```
 - Supports [spring-boot-starter-data-rest](https://projects.spring.io/spring-data-rest/).
 - Supports List and nested type in domain class.
-- Configurable ObjectMapper bean with unique name `cosmosdbObjectMapper`, only configure customized ObjectMapper if you really need to. e.g.,
+- Configurable ObjectMapper bean with unique name `cosmosObjectMapper`, only configure customized ObjectMapper if you really need to. e.g.,
 <!-- embedme src/samples/java/com/azure/cosmos/ObjectMapperConfigurationCodeSnippet.java#L17-L20 -->
 ```java
-@Bean(name = "cosmosdbObjectMapper")
+@Bean(name = "cosmosObjectMapper")
 public ObjectMapper objectMapper() {
     return new ObjectMapper(); // Do configuration to the ObjectMapper if required
 }
@@ -122,9 +125,9 @@ For reactive repository support, use `@EnableReactiveCosmosRepositories`
 
 ### Response Diagnostics String and Query Metrics
 2.2.x supports Response Diagnostics String and Query Metrics. 
-Set `populateQueryMetrics` flag to true in application.properties to enable query metrics.
+Set `queryMetricsEnabled` flag to true in application.properties to enable query metrics.
 In addition to setting the flag, implement `ResponseDiagnosticsProcessor` to log diagnostics information. 
-<!-- embedme src/samples/java/com/azure/cosmos/AppConfiguration.java#L21-L65 -->
+<!-- embedme src/samples/java/com/azure/cosmos/AppConfiguration.java#L22-L73 -->
 
 ```java
 @Configuration
@@ -133,34 +136,41 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
 
     private static final Logger logger = LoggerFactory.getLogger(AppConfiguration.class);
 
-    @Value("${azure.cosmosdb.uri}")
+    @Value("${azure.cosmos.uri}")
     private String uri;
 
-    @Value("${azure.cosmosdb.key}")
+    @Value("${azure.cosmos.key}")
     private String key;
 
-    @Value("${azure.cosmosdb.secondaryKey}")
+    @Value("${azure.cosmos.secondaryKey}")
     private String secondaryKey;
 
-    @Value("${azure.cosmosdb.database}")
+    @Value("${azure.cosmos.database}")
     private String dbName;
 
-    @Value("${azure.cosmosdb.populateQueryMetrics}")
-    private boolean populateQueryMetrics;
+    @Value("${azure.cosmos.queryMetricsEnabled}")
+    private boolean queryMetricsEnabled;
 
-    private CosmosKeyCredential cosmosKeyCredential;
+    private AzureKeyCredential azureKeyCredential;
 
-    public CosmosDBConfig getConfig() {
-        this.cosmosKeyCredential = new CosmosKeyCredential(key);
-        CosmosDBConfig cosmosdbConfig = CosmosDBConfig.builder(uri,
-            this.cosmosKeyCredential, dbName).build();
-        cosmosdbConfig.setPopulateQueryMetrics(populateQueryMetrics);
-        cosmosdbConfig.setResponseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation());
-        return cosmosdbConfig;
+    public CosmosConfig getConfig() {
+        this.azureKeyCredential = new AzureKeyCredential(key);
+        DirectConnectionConfig directConnectionConfig = new DirectConnectionConfig();
+        GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
+        CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
+            .endpoint(uri)
+            .credential(azureKeyCredential)
+            .directMode(directConnectionConfig, gatewayConnectionConfig);
+        return CosmosConfig.builder()
+                           .database(dbName)
+                           .enableQueryMetrics(queryMetricsEnabled)
+                           .cosmosClientBuilder(cosmosClientBuilder)
+                           .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
+                           .build();
     }
 
     public void switchToSecondaryKey() {
-        this.cosmosKeyCredential.key(secondaryKey);
+        this.azureKeyCredential.update(secondaryKey);
     }
 
     private static class ResponseDiagnosticsProcessorImplementation implements ResponseDiagnosticsProcessor {
@@ -174,14 +184,20 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
 }
 ```
 Or if you want to customize your config:
-<!-- embedme src/samples/java/com/azure/cosmos/AppConfigurationCodeSnippet.java#L40-L46 -->
+<!-- embedme src/samples/java/com/azure/cosmos/AppConfigurationCodeSnippet.java#L44-L56 -->
 ```java
-public CosmosDBConfig getConfig() {
-    this.cosmosKeyCredential = new CosmosKeyCredential(key);
-    CosmosDBConfig cosmosDbConfig = CosmosDBConfig.builder(uri, this.cosmosKeyCredential, dbName).build();
-    cosmosDbConfig.getConnectionPolicy().connectionMode(ConnectionMode.DIRECT);
-    cosmosDbConfig.getConnectionPolicy().maxPoolSize(1000);
-    return cosmosDbConfig;
+public CosmosConfig getConfig() {
+    DirectConnectionConfig directConnectionConfig = new DirectConnectionConfig();
+    GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
+    CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
+        .endpoint(uri)
+        .directMode(directConnectionConfig, gatewayConnectionConfig);
+    return CosmosConfig.builder()
+                       .database(dbName)
+                       .enableQueryMetrics(queryMetricsEnabled)
+                       .cosmosClientBuilder(cosmosClientBuilder)
+                       .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
+                       .build();
 }
 ```
 By default, `@EnableCosmosRepositories` will scan the current package for any interfaces that extend one of Spring Data's repository interfaces. Using it to annotate your Configuration class to scan a different root package by `@EnableCosmosRepositories(basePackageClass=UserRepository.class)` if your project layout has multiple projects and it's not finding your repositories.
@@ -192,12 +208,12 @@ Define a simple entity as Document in Azure Cosmos DB.
 
 You can define entities by adding the `@Document` annotation and specifying properties related to the container, such as the container name, request units (RUs), time to live, and auto-create container. 
 
-Containers are created automatically unless you don't want them to: Set `autoCreateCollection` to false in `@Document` annotation to disable auto creation of containers. 
+Containers will be created automatically unless you don't want them to: Set `autoCreateContainer` to false in `@Document` annotation to disable auto creation of containers. 
 
-Note: By default request units assigned to newly created containers is 4000. Specify different ru value to customize request units for container created by the SDK (minimum RU value is 400). 
+Note: By default request units assigned to newly created containers is 4000. Specify different ru value to customize request units for the container created by the SDK (minimum RU value is 400). 
 <!-- embedme src/samples/java/com/azure/cosmos/User.java#L14-L62 -->
 ```java
-@Document(collection = "myCollection", ru = "400")
+@Document(container = "myContainer", ru = "400")
 public class User {
     private String id;
     private String firstName;
@@ -249,11 +265,11 @@ public class User {
 ```
 `id` field will be used as document id in Azure Cosmos DB. If you want use another field like `emailAddress` as document `id`, just annotate that field with `@Id` annotation.
 
-Annotation `@Document(collection="mycollection")` is used to specify collection name in Azure Cosmos DB.
+Annotation `@Document(container="myContainer")` is used to specify container name in Azure Cosmos DB.
 Annotation `@PartitionKey` on `lastName` field is used to specify this field be partition key in Azure Cosmos DB.
 <!-- embedme src/samples/java/com/azure/cosmos/UserSample.java#L14-L19 -->
 ```java
-@Document(collection = "mycollection")
+@Document(container = "myContainer")
 public class UserSample {
     @Id
     private String emailAddress;
@@ -263,7 +279,7 @@ public class UserSample {
 
 ### Create repositories
 Extends CosmosRepository interface, which provides Spring Data repository support.
-<!-- embedme src/samples/java/com/azure/cosmos/UserRepository.java#L17-L22 -->
+<!-- embedme src/samples/java/com/azure/cosmos/UserRepository.java#L17-L21 -->
 
 ```java
 @Repository

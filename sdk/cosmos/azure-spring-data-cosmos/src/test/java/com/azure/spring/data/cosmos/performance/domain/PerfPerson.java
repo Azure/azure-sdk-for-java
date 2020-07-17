@@ -6,12 +6,11 @@ package com.azure.spring.data.cosmos.performance.domain;
 import com.azure.spring.data.cosmos.core.mapping.Document;
 import com.azure.spring.data.cosmos.core.mapping.DocumentIndexingPolicy;
 import com.azure.spring.data.cosmos.performance.utils.Constants;
-import com.azure.spring.data.cosmos.common.TestConstants;
 
 import java.util.Objects;
 
-@Document(collection = Constants.SPRING_COLLECTION_NAME)
-@DocumentIndexingPolicy(includePaths = TestConstants.ORDER_BY_STRING_PATH)
+@Document(container = Constants.SPRING_CONTAINER_NAME)
+@DocumentIndexingPolicy()
 public class PerfPerson {
     private String id;
     private String name;

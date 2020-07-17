@@ -5,11 +5,11 @@ package com.azure.spring.data.cosmos.core.mapping;
 import com.azure.spring.data.cosmos.Constants;
 import org.springframework.data.annotation.Persistent;
 
+import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.lang.annotation.ElementType;
 
 /**
  * Annotation of cosmos document
@@ -20,10 +20,10 @@ import java.lang.annotation.ElementType;
 @Target({ElementType.TYPE})
 public @interface Document {
     /**
-     * To set collection name
+     * To set container name
      * @return String
      */
-    String collection() default Constants.DEFAULT_COLLECTION_NAME;
+    String container() default Constants.DEFAULT_CONTAINER_NAME;
 
     /**
      * To set request unit
@@ -38,8 +38,8 @@ public @interface Document {
     int timeToLive() default Constants.DEFAULT_TIME_TO_LIVE;
 
     /**
-     * To set if create collection automatically
+     * To set if create container automatically
      * @return default as true
      */
-    boolean autoCreateCollection() default Constants.DEFAULT_AUTO_CREATE_CONTAINER;
+    boolean autoCreateContainer() default Constants.DEFAULT_AUTO_CREATE_CONTAINER;
 }

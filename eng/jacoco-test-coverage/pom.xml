@@ -84,22 +84,22 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-serializer-avro-apache</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-serializer-avro-apache;current} -->
+      <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-core-serializer-avro-apache;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-serializer-avro-jackson</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-serializer-avro-jackson;current} -->
+      <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-core-serializer-avro-jackson;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-serializer-json-gson</artifactId>
-      <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-gson;current} -->
+      <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-gson;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-serializer-json-jackson</artifactId>
-      <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;current} -->
+      <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -110,6 +110,11 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
       <version>4.3.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-cosmos-encryption</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos-encryption;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -159,17 +164,17 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-certificates</artifactId>
-      <version>4.1.0-beta.4</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;current} -->
+      <version>4.1.0-beta.5</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-keys</artifactId>
-      <version>4.2.0-beta.5</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;current} -->
+      <version>4.2.0-beta.6</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-secrets</artifactId>
-      <version>4.2.0-beta.4</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;current} -->
+      <version>4.2.0-beta.5</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -225,7 +230,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-sdk-template</artifactId>
-      <version>1.0.4-beta.20</version> <!-- {x-version-update;com.azure:azure-sdk-template;current} -->
+      <version>1.0.4-beta.25</version> <!-- {x-version-update;com.azure:azure-sdk-template;current} -->
     </dependency>
 
     <dependency>
@@ -316,7 +321,8 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.azure:*</include>
+                <!--This is fine for in here but individual libraries need to list out everything. This mainly because
+                    com.microsoft.azure includes things that are not owned or built by the azure-sdk team. -->
                 <include>com.microsoft.azure:*</include>
               </includes>
             </bannedDependencies>

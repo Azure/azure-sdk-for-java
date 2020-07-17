@@ -20,6 +20,7 @@ public class AuthorizationCodeCredentialBuilder extends AadCredentialBuilderBase
 
     private String authCode;
     private String redirectUrl;
+    private String clientSecret;
 
     /**
      * Sets the authorization code on the builder.
@@ -47,7 +48,6 @@ public class AuthorizationCodeCredentialBuilder extends AadCredentialBuilderBase
         return this;
     }
 
-
     /**
      * Allows to use an unprotected file specified by <code>cacheFileLocation()</code> instead of
      * Gnome keyring on Linux. This is restricted by default.
@@ -58,7 +58,7 @@ public class AuthorizationCodeCredentialBuilder extends AadCredentialBuilderBase
         this.identityClientOptions.allowUnencryptedCache();
         return this;
     }
-
+     
     /**
      * Enables the shared token cache which is disabled by default. If enabled, the credential will store tokens
      * in a cache persisted to the machine, protected to the current user, which can be shared by other credentials
@@ -68,6 +68,18 @@ public class AuthorizationCodeCredentialBuilder extends AadCredentialBuilderBase
      */
     public AuthorizationCodeCredentialBuilder enablePersistentCache() {
         this.identityClientOptions.enablePersistentCache();
+        return this;
+    }
+  
+    /**
+     * Sets the client secret for the authentication. This is required for AAD web apps. Do not set this for AAD native
+     * apps.
+     *
+     * @param clientSecret the secret value of the AAD application.
+     * @return the AuthorizationCodeCredentialBuilder itself
+     */
+    public AuthorizationCodeCredentialBuilder clientSecret(String clientSecret) {
+        this.clientSecret = clientSecret;
         return this;
     }
 
@@ -83,8 +95,8 @@ public class AuthorizationCodeCredentialBuilder extends AadCredentialBuilderBase
                 put("redirectUrl", redirectUrl);
             }});
         try {
-            return new AuthorizationCodeCredential(clientId, tenantId, authCode,
-                new URI(redirectUrl), identityClientOptions);
+            return new AuthorizationCodeCredential(clientId, clientSecret, tenantId, authCode, new URI(redirectUrl),
+                identityClientOptions);
         } catch (URISyntaxException e) {
             throw logger.logExceptionAsError(new RuntimeException(e));
         }

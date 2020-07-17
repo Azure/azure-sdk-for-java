@@ -6,7 +6,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.lang.Nullable;
 
 /**
- * General exception for illegal creation of cosmosdb
+ * General exception for illegal creation of cosmos db
  */
 public class DatabaseCreationException extends DataAccessException {
 

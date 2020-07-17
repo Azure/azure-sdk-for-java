@@ -190,8 +190,8 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         return this.azureBlobStorage.appendBlobs().createWithRestResponseAsync(null, null, 0, null,
             options.getMetadata(), requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), null, tagsToString(options.getTags()), options.getHeaders(),
-            getCustomerProvidedKey(), encryptionScope, null,
+            requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
+            tagsToString(options.getTags()), options.getHeaders(), getCustomerProvidedKey(), encryptionScope,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 AppendBlobCreateHeaders hd = rb.getDeserializedHeaders();
@@ -268,8 +268,8 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
             null, null, data, length, null, contentMd5, null, appendBlobRequestConditions.getLeaseId(),
             appendBlobRequestConditions.getMaxSize(), appendBlobRequestConditions.getAppendPosition(),
             appendBlobRequestConditions.getIfModifiedSince(), appendBlobRequestConditions.getIfUnmodifiedSince(),
-            appendBlobRequestConditions.getIfMatch(), appendBlobRequestConditions.getIfNoneMatch(), null,
-            getCustomerProvidedKey(), encryptionScope, null,
+            appendBlobRequestConditions.getIfMatch(), appendBlobRequestConditions.getIfNoneMatch(),
+            appendBlobRequestConditions.getTagsConditions(), null, getCustomerProvidedKey(), encryptionScope,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 AppendBlobAppendBlockHeaders hd = rb.getDeserializedHeaders();
@@ -355,9 +355,9 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
             destRequestConditions.getMaxSize(), destRequestConditions.getAppendPosition(),
             destRequestConditions.getIfModifiedSince(), destRequestConditions.getIfUnmodifiedSince(),
             destRequestConditions.getIfMatch(), destRequestConditions.getIfNoneMatch(),
-            sourceRequestConditions.getIfModifiedSince(), sourceRequestConditions.getIfUnmodifiedSince(),
-            sourceRequestConditions.getIfMatch(), sourceRequestConditions.getIfNoneMatch(), null,
-            getCustomerProvidedKey(), encryptionScope, null,
+            destRequestConditions.getTagsConditions(), sourceRequestConditions.getIfModifiedSince(),
+            sourceRequestConditions.getIfUnmodifiedSince(), sourceRequestConditions.getIfMatch(),
+            sourceRequestConditions.getIfNoneMatch(), null, getCustomerProvidedKey(), encryptionScope,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 AppendBlobAppendBlockFromUrlHeaders hd = rb.getDeserializedHeaders();
