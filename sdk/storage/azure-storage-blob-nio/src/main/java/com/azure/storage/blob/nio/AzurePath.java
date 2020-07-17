@@ -218,10 +218,7 @@ public final class AzurePath implements Path {
         if (this.pathString.isEmpty()) {
             return this;
         }
-        // If the path is empty, the only valid option is also an empty path.
-        if (this.pathString.isEmpty()) {
-            return this;
-        }
+
         return this.parentFileSystem.getPath(this.splitToElements(this.withoutRoot())[index]);
     }
 
