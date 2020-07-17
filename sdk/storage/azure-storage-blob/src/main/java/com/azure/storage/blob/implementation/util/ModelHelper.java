@@ -252,6 +252,7 @@ public class ModelHelper {
         blobItemProperties.setAccessTierChangeTime(blobItemPropertiesInternal.getAccessTierChangeTime());
         blobItemProperties.setTagCount(blobItemPropertiesInternal.getTagCount());
         blobItemProperties.setRehydratePriority(blobItemPropertiesInternal.getRehydratePriority());
+        blobItemProperties.setIsSealed(blobItemPropertiesInternal.isSealed());
 
         return blobItemProperties;
     }
