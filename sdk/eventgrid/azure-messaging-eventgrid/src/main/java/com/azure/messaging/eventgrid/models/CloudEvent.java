@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /** The CloudEvent model. */
 @Fluent
@@ -90,6 +91,14 @@ public final class CloudEvent {
     private Map<String, Object> additionalProperties;
 
     /**
+     * Instantiates a cloud Event according to the cloud event spec
+     */
+    public CloudEvent() {
+        this.specversion = "1.0";
+        this.id = UUID.randomUUID().toString();
+    }
+
+    /**
      * Get the id property: An identifier for the event. The combination of id and source must be unique for each
      * distinct event.
      * @return the id value.
@@ -146,27 +155,8 @@ public final class CloudEvent {
      * @return the CloudEvent object itself.
      */
     public CloudEvent setData(Object data) {
-        // TODO: interprete data
+        // TODO: interpret data
         this.data = data;
-        return this;
-    }
-
-    /**
-     * Get the dataBase64 property: Event data specific to the event type, encoded as a base64 string.
-     * @return the dataBase64 value.
-     */
-    public String getDataBase64() {
-        return this.dataBase64;
-    }
-
-    /**
-     * Set the dataBase64 property: Event data specific to the event type, encoded as a base64 string.
-     * @param dataBase64 the dataBase64 value to set.
-     *
-     * @return the CloudEvent object itself.
-     */
-    public CloudEvent setDataBase64(String dataBase64) {
-        this.dataBase64 = dataBase64;
         return this;
     }
 
@@ -208,6 +198,13 @@ public final class CloudEvent {
         return this;
     }
 
+    /**
+     * Get the spec version attribute. Currently only supported for version 1.0.
+     * @return the spec version attribute value.
+     */
+    public String getSpecversion() {
+        return specversion;
+    }
 
     /**
      * Get the dataschema property: Identifies the schema that data adheres to.
@@ -225,25 +222,6 @@ public final class CloudEvent {
      */
     public CloudEvent setDataschema(String dataschema) {
         this.dataschema = dataschema;
-        return this;
-    }
-
-    /**
-     * Get the datacontenttype property: Content type of data value.
-     * @return the datacontenttype value.
-     */
-    public String getDatacontenttype() {
-        return this.datacontenttype;
-    }
-
-    /**
-     * Set the datacontenttype property: Content type of data value.
-     * @param datacontenttype the datacontenttype value to set.
-     *
-     * @return the CloudEvent object itself.
-     */
-    public CloudEvent setDatacontenttype(String datacontenttype) {
-        this.datacontenttype = datacontenttype;
         return this;
     }
 
