@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
 
+// TODO: can this be moved to encryption package?
 public class EncryptionProcessor {
 
     public ObjectNode encryptAsync(
@@ -55,6 +56,7 @@ public class EncryptionProcessor {
 
         for (String pathToEncrypt : encryptionOptions.getPathsToEncrypt()) {
             String propertyName = pathToEncrypt.substring(1);
+            // TODO: moderakh should support JPath
             JsonNode propertyValueHolder = itemJObj.get(propertyName);
 
             // Even null in the JSON is a JToken with Type Null, this null check is just a sanity check

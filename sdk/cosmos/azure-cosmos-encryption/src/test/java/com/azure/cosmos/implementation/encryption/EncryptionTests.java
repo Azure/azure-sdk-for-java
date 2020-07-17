@@ -62,7 +62,7 @@ public class EncryptionTests extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @BeforeTest(groups = {"emulator"})
+    @BeforeTest(groups = {"encryption"})
     public void beforeTest() {
         TestKeyWrapProvider keyWrapProvider = new TestKeyWrapProvider();
         dekProvider = new CosmosDataEncryptionKeyProvider(keyWrapProvider);
@@ -84,18 +84,18 @@ public class EncryptionTests extends TestSuiteBase {
         EncryptionTests.dekProperties = EncryptionTests.createDek(EncryptionTests.dekProvider, dekId);
     }
 
-    @BeforeClass(groups = {"emulator"})
+    @BeforeClass(groups = {"encryption"})
     public void beforeClass() {
         TestUtils.initialized();
         client = getClientBuilder().buildAsyncClient();
     }
 
-    @AfterMethod(groups = {"emulator"})
+    @AfterMethod(groups = {"encryption"})
     public void afterTest() {
         safeClose(client);
     }
 
-    @AfterClass(groups = {"emulator"})
+    @AfterClass(groups = {"encryption"})
     public void afterClass() {
         safeDeleteDatabase(databaseCore);
     }
@@ -138,7 +138,7 @@ public class EncryptionTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"emulator"})
+    @Test(groups = {"encryption"})
     public void encryptionCreateDek() {
         String dekId = "anotherDek";
         DataEncryptionKeyProperties dekProperties = EncryptionTests.createDek(EncryptionTests.dekProvider, dekId);
@@ -167,7 +167,7 @@ public class EncryptionTests extends TestSuiteBase {
         assertThat(dekProperties).isEqualTo(readProperties);
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT)
     public void createItemEncrypt_readItemDecrypt() throws Exception {
         CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
         EncryptionOptions encryptionOptions = new EncryptionOptions();

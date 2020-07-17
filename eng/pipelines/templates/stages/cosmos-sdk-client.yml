@@ -110,6 +110,14 @@ stages:
             ProfileFlag: '-P integration-test-emulator'
             DisplayName: 'Spring Emulator only Integration Tests'
             AdditionalArgs: '-DargLine="-DACCOUNT_HOST=$(ACCOUNT_HOST) -DACCOUNT_KEY=$(ACCOUNT_KEY) -DSECONDARY_ACCOUNT_KEY=$(SECONDARY_ACCOUNT_KEY) -DNEW_ACCOUNT_HOST=$(ACCOUNT_HOST) -DNEW_ACCOUNT_KEY=$(ACCOUNT_KEY) -DNEW_SECONDARY_ACCOUNT_KEY=$(SECONDARY_ACCOUNT_KEY)"'
+          Encryption_Integration_Tests_Java8:
+            OSVmImage: 'windows-2019'
+            JavaTestVersion: '1.8'
+            ProfileFlag: '-Pencryption-integration'
+            DisplayName: 'Encryption Emulator only Integration Tests'
+            PROTOCOLS: '["Tcp"]'
+            DESIRED_CONSISTENCIES: '["Session"]'
+            AdditionalArgs: '-DargLine="-DACCOUNT_HOST=https://localhost:8081/"'
 
         TestStepMavenInputs:
           goals: 'verify'

@@ -629,6 +629,7 @@ public class Utils {
             objectMapper.writeValue(byteBufferOutputStream, object);
             return byteBufferOutputStream.asByteBuffer();
         } catch (IOException e) {
+            // TODO moderakh: on serialization/deserialization failure we should throw CosmosException here and elsewhere
             throw new IllegalArgumentException("Failed to serialize the object into json", e);
         }
     }

@@ -19,6 +19,9 @@ import java.util.List;
 public class CosmosDataEncryptionKeyProvider implements DataEncryptionKeyProvider {
     // TODO: proper sample and documentation on container
     private static final String ContainerPartitionKeyPath = "/id";
+    // TODO: moderakh
+    // Is it a requirement on container definition?
+    //Then the code-docs and samples needs to explicit cover it.
     private final DataEncryptionKeyContainerCore dataEncryptionKeyContainerCore;
     private final DekCache DekCache;
     private final EncryptionKeyWrapProvider EncryptionKeyWrapProvider;
