@@ -6,6 +6,11 @@ package com.azure.search.documents;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.experimental.serializer.JsonInclusion;
+import com.azure.core.experimental.serializer.JsonOptions;
+import com.azure.core.experimental.serializer.JsonSerializer;
+import com.azure.core.experimental.serializer.JsonSerializerProviders;
+import com.azure.core.experimental.serializer.Type;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -45,10 +50,6 @@ import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
 import com.azure.search.documents.models.SuggestOptions;
 import com.azure.search.documents.models.SuggestResult;
-import com.azure.search.documents.serializer.SearchSerializer;
-import com.azure.search.documents.serializer.SearchSerializerProviders;
-import com.azure.search.documents.serializer.SearchType;
-import com.azure.search.documents.serializer.SerializationInclusion;
 import com.azure.search.documents.util.AutocompletePagedFlux;
 import com.azure.search.documents.util.AutocompletePagedResponse;
 import com.azure.search.documents.util.SearchPagedFlux;
@@ -109,6 +110,8 @@ public final class SearchAsyncClient {
      * The pipeline that powers this client.
      */
     private final HttpPipeline httpPipeline;
+
+    private static final JsonSerializer SERIALIZER = createSerializerInstance();
 
     /**
      * Package private constructor to be used by {@link SearchClientBuilder}
@@ -526,16 +529,14 @@ public final class SearchAsyncClient {
             return restClient.getDocuments()
                 .getWithResponseAsync(key, selectedFields, null, context)
                 .onErrorMap(DocumentResponseConversions::exceptionMapper)
-                .map(res -> {
-                    SearchSerializer SERIALIZER = SearchSerializerProviders.createInstance();
+                .flatMap(res -> {
                     if (SearchDocument.class == modelClass) {
-                        SearchType<Map<String, Object>> typeReference = new SearchType<Map<String, Object>>() {};
-                        SearchDocument doc = new SearchDocument(SERIALIZER.convertValue(res.getValue(), typeReference,
-                            SerializationInclusion.ALWAYS));
-                        return new SimpleResponse<T>(res, (T) doc);
+                        Type<Map<? extends String, ?>> typeReference = new Type<Map<? extends String, ?>>() {};
+                        return SERIALIZER.convertValue(res.getValue(), typeReference)
+                            .map(doc -> new SimpleResponse<T>(res, (T) new SearchDocument(doc)));
                     }
-                    T document = SERIALIZER.convertValue(res.getValue(), modelClass, SerializationInclusion.ALWAYS);
-                    return new SimpleResponse<>(res, document);
+                    return SERIALIZER.convertValue(res.getValue(), modelClass)
+                        .map(document -> new SimpleResponse<>(res, document));
                 })
                 .map(Function.identity());
         } catch (RuntimeException ex) {
@@ -947,5 +948,9 @@ public final class SearchAsyncClient {
             .setDocument(d)));
 
         return new IndexDocumentsBatch<T>().addActions(actions);
+    }
+
+    private static JsonSerializer createSerializerInstance() {
+        return JsonSerializerProviders.createInstance(new JsonOptions().setJsonInclusion(JsonInclusion.ALWAYS));
     }
 }

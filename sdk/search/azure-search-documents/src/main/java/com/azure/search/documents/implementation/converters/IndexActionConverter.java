@@ -3,13 +3,14 @@
 
 package com.azure.search.documents.implementation.converters;
 
+import com.azure.core.experimental.serializer.JsonInclusion;
+import com.azure.core.experimental.serializer.JsonOptions;
+import com.azure.core.experimental.serializer.JsonSerializer;
+import com.azure.core.experimental.serializer.JsonSerializerProviders;
+import com.azure.core.experimental.serializer.Type;
 import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
-import com.azure.search.documents.serializer.SearchSerializer;
-import com.azure.search.documents.serializer.SearchSerializerProviders;
-import com.azure.search.documents.serializer.SearchType;
-import com.azure.search.documents.serializer.SerializationInclusion;
 
 import java.util.Map;
 
@@ -17,6 +18,9 @@ import java.util.Map;
  * A converter between {@link com.azure.search.documents.implementation.models.IndexAction} and {@link IndexAction}.
  */
 public final class IndexActionConverter {
+
+    private static final JsonSerializer SERIALIZER = JsonSerializerProviders.createInstance(
+        new JsonOptions().setJsonInclusion(JsonInclusion.ALWAYS));
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.IndexAction} to {@link IndexAction}.
@@ -57,16 +61,15 @@ public final class IndexActionConverter {
         }
 
         Map<String, Object> additionalProperties;
-        SearchType<Map<String, Object>> typeRef = new SearchType<Map<String, Object>>() {};
+        Type<Map<String, Object>> typeRef = new Type<Map<String, Object>>() {};
 
         Map<String, Object> mapProperties = PrivateFieldAccessHelper.get(obj, "properties", Map.class);
         if (mapProperties != null) {
-            SearchSerializer searchSerializer = SearchSerializerProviders.createInstance();
-            additionalProperties = searchSerializer.convertValue(mapProperties, typeRef, SerializationInclusion.ALWAYS);
+            additionalProperties = SERIALIZER.convertValue(mapProperties, typeRef).block();
         } else {
             T properties = obj.getDocument();
-            SearchSerializer searchSerializer = SearchSerializerProviders.createInstance();
-            additionalProperties = searchSerializer.convertValue(properties, typeRef);
+            JsonSerializer searchSerializer = JsonSerializerProviders.createInstance();
+            additionalProperties = searchSerializer.convertValue(properties, typeRef).block();
         }
 
         indexAction.setAdditionalProperties(additionalProperties);

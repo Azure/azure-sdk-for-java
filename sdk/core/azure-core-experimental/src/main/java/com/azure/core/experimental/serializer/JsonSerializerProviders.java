@@ -35,6 +35,7 @@ public final class JsonSerializerProviders {
      * Creates an instance of {@link JsonSerializer} using the first {@link JsonSerializerProvider} found in the
      * classpath.
      *
+     * @param jsonOptions The json options for the serializer.
      * @return A new instance of {@link JsonSerializer}.
      */
     public static JsonSerializer createInstance(JsonOptions jsonOptions) {

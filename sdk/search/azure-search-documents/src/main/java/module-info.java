@@ -5,7 +5,6 @@ module com.azure.search.documents {
     requires transitive com.azure.core;
     requires com.fasterxml.jackson.datatype.jsr310;
     requires jakarta.activation;
-    requires com.azure.search.documents.serializer;
     requires com.azure.core.experimental;
 
     opens com.azure.search.documents to com.fasterxml.jackson.databind;
@@ -17,7 +16,6 @@ module com.azure.search.documents {
     opens com.azure.search.documents.indexes.implementation to com.fasterxml.jackson.databind;
     opens com.azure.search.documents.indexes.implementation.models to com.fasterxml.jackson.databind, com.azure.core;
     opens com.azure.search.documents.implementation.util to com.fasterxml.jackson.databind;
-    //opens com.azure.core.experimental.spatial to com.fasterxml.jackson.databind;
 
     exports com.azure.search.documents;
     exports com.azure.search.documents.indexes;

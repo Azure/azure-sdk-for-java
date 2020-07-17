@@ -232,7 +232,7 @@ public class SearchSyncTests extends SearchTestBase {
                 actualResults.add(hotel);
             });
         }
-        List<Hotel> hotelsList = hotels.stream().map(hotel -> SERIALIZER.convertValue(hotel, Hotel.class))
+        List<Hotel> hotelsList = hotels.stream().map(hotel -> SERIALIZER.convertValue(hotel, Hotel.class).block())
             .collect(Collectors.toList());
 
         assertEquals(hotelsList.size(), actualResults.size());

@@ -3,10 +3,11 @@
 
 package com.azure.search.documents;
 
+import com.azure.core.experimental.serializer.Type;
 import com.azure.core.experimental.spatial.PointGeometry;
-import com.azure.search.documents.serializer.SearchType;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayInputStream;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -37,8 +38,9 @@ public class SearchDocumentConverterTests {
         // the result object is a map of key:value, get deserialized directly into the Document object
         // Document is simply a Hash Map.
         // in this case we simulate creation of the object created by azure-core
-        SearchType<Map<String, Object>> type = new SearchType<Map<String, Object>>() {};
-        SearchDocument doc = new SearchDocument(SERIALIZER.readValue(json, type));
+        Type<Map<String, Object>> type = new Type<Map<String, Object>>() {};
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(json.getBytes());
+        SearchDocument doc = new SearchDocument(SERIALIZER.deserialize(inputStream, type).block());
         cleanupODataAnnotation(doc);
         return doc;
     }

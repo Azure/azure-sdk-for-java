@@ -24,6 +24,17 @@ public interface JsonSerializer extends ObjectSerializer {
     <T> Mono<T> deserialize(InputStream stream, Class<T> clazz);
 
     /**
+     * Reads a JSON stream into its object representation.
+     *
+     * @param stream JSON stream.
+     * @param toType {@link Type} The type Json stream converts to.
+     * @param <T> Type of the object.
+     * @return The object represented by the deserialized JSON stream.
+     */
+    @Override
+    <T> Mono<T> deserialize(InputStream stream, Type<T> toType);
+
+    /**
      * Reads a JSON tree into its object representation.
      *
      * @param jsonNode The JSON tree.
@@ -68,4 +79,25 @@ public interface JsonSerializer extends ObjectSerializer {
      * @return The JSON tree representing the object.
      */
     Mono<JsonNode> toTree(Object value);
+
+
+    /**
+     * Converts a Java object into a target {@link Type}.
+     *
+     * @param fromValue The value which converts from
+     * @param toType The type which converts to
+     * @param <T> The generic type to covert to.
+     * @return The JSON tree representing the deserialized JSON byte array.
+     */
+    <T> Mono<T> convertValue(Object fromValue, Type<T> toType);
+
+    /**
+     * Converts a Java object into a target model class.
+     *
+     * @param fromValue The value which converts from
+     * @param clazz Representing the class.
+     * @param <T> The generic type to covert to.
+     * @return The JSON tree representing the deserialized JSON byte array.
+     */
+    <T> Mono<T> convertValue(Object fromValue, Class<T> clazz);
 }

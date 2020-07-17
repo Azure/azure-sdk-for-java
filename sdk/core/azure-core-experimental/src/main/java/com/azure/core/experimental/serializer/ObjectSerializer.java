@@ -23,6 +23,16 @@ public interface ObjectSerializer {
     <T> Mono<T> deserialize(InputStream stream, Class<T> clazz);
 
     /**
+     * Reads a stream into its object representation.
+     *
+     * @param stream {@link InputStream} of data.
+     * @param type {@link Type} The type Json stream converts to.
+     * @param <T> Type of the object.
+     * @return The object represented by the deserialized stream.
+     */
+    <T> Mono<T> deserialize(InputStream stream, Type<T> type);
+
+    /**
      * Writes the object into a stream.
      *
      * @param stream {@link OutputStream} where the object will be written.

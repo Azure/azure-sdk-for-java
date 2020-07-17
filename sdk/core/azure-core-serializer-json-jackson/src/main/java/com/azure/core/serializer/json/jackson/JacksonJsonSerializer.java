@@ -5,7 +5,9 @@ package com.azure.core.serializer.json.jackson;
 
 import com.azure.core.experimental.serializer.JsonNode;
 import com.azure.core.experimental.serializer.JsonSerializer;
+import com.azure.core.experimental.serializer.Type;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
@@ -16,6 +18,7 @@ import java.io.OutputStream;
  */
 public final class JacksonJsonSerializer implements JsonSerializer {
     private final ObjectMapper mapper;
+    private final TypeFactory typeFactory;
 
     /**
      * Constructs a {@link JsonSerializer} using the passed Jackson serializer.
@@ -24,6 +27,7 @@ public final class JacksonJsonSerializer implements JsonSerializer {
      */
     JacksonJsonSerializer(ObjectMapper mapper) {
         this.mapper = mapper;
+        typeFactory = mapper.getTypeFactory();
     }
 
     @Override
@@ -34,6 +38,17 @@ public final class JacksonJsonSerializer implements JsonSerializer {
             }
 
             return mapper.readValue(stream, clazz);
+        });
+    }
+
+    @Override
+    public <T> Mono<T> deserialize(InputStream stream, Type<T> toType) {
+        return Mono.fromCallable(() -> {
+            if (stream == null) {
+                return null;
+            }
+
+            return mapper.readValue(stream, typeFactory.constructType(toType.getJavaType()));
         });
     }
 
@@ -64,5 +79,15 @@ public final class JacksonJsonSerializer implements JsonSerializer {
     @Override
     public Mono<JsonNode> toTree(Object value) {
         return Mono.fromCallable(() -> JsonNodeUtils.fromJacksonNode(mapper.valueToTree(value)));
+    }
+
+    @Override
+    public <T> Mono<T> convertValue(Object fromValue, Type<T> toType) {
+        return Mono.fromCallable(() -> mapper.convertValue(fromValue, typeFactory.constructType(toType.getJavaType())));
+    }
+
+    @Override
+    public <T> Mono<T> convertValue(Object fromValue, Class<T> clazz) {
+        return Mono.fromCallable(() -> mapper.convertValue(fromValue, clazz));
     }
 }

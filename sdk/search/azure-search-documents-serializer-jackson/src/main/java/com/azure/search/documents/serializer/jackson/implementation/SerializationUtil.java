@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.serializer.jackson.implementation;
 
+import com.azure.core.experimental.spatial.GeometryDeserializer;
 import com.azure.core.experimental.spatial.GeometrySerializer;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,6 +28,7 @@ public class SerializationUtil {
         module.addDeserializer(Object.class, geoPointDeserializer);
         mapper.registerModule(Iso8601DateSerializer.getModule());
         mapper.registerModule(GeometrySerializer.getModule());
+        mapper.registerModule(GeometryDeserializer.getModule());
 
         mapper.registerModule(module);
     }

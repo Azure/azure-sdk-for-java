@@ -2,10 +2,11 @@
 // Licensed under the MIT License.
 
 package com.azure.search.documents.models;
+
 import com.azure.core.annotation.Fluent;
+import com.azure.core.experimental.serializer.JsonSerializer;
+import com.azure.core.experimental.serializer.JsonSerializerProviders;
 import com.azure.search.documents.SearchDocument;
-import com.azure.search.documents.serializer.SearchSerializer;
-import com.azure.search.documents.serializer.SearchSerializerProviders;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -15,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class SuggestResult {
-    private static final SearchSerializer SERIALIZER = SearchSerializerProviders.createInstance();
+    private static final JsonSerializer SERIALIZER = JsonSerializerProviders.createInstance();
 
     /*
      * Unmatched properties from the message are deserialized this collection
@@ -50,7 +51,7 @@ public final class SuggestResult {
      * @return the additionalProperties value.
      */
     public <T> T getDocument(Class<T> modelClass) {
-        return SERIALIZER.convertValue(this.additionalProperties, modelClass);
+        return SERIALIZER.convertValue(this.additionalProperties, modelClass).block();
     }
 
     /**

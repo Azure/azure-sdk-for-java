@@ -3,6 +3,7 @@
 
 package com.azure.core.serializer.json.jackson;
 
+import com.azure.core.experimental.serializer.JsonOptions;
 import com.azure.core.experimental.serializer.JsonSerializer;
 import com.azure.core.experimental.serializer.JsonSerializerProvider;
 

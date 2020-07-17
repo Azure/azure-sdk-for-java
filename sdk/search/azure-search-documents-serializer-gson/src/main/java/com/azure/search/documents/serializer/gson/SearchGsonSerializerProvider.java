@@ -1,23 +1,21 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.serializer.json.gson;
+package com.azure.search.documents.serializer.gson;
 
 import com.azure.core.experimental.serializer.JsonOptions;
 import com.azure.core.experimental.serializer.JsonSerializer;
 import com.azure.core.experimental.serializer.JsonSerializerProvider;
+import com.azure.search.documents.serializer.SearchSerializer;
 
-/**
- * Implementation of {@link JsonSerializerProvider}.
- */
-public class GsonJsonSerializerProvider implements JsonSerializerProvider {
+public class SearchGsonSerializerProvider implements JsonSerializerProvider {
     @Override
     public JsonSerializer createInstance() {
-        return new GsonJsonSerializerBuilder().build();
+        return new JacksonJsonSerializerBuilder().build();
     }
 
     @Override
     public JsonSerializer createInstance(JsonOptions jsonOptions) {
-        return new GsonJsonSerializerBuilder().options(jsonOptions).build();
+        return new SearchGsonSerializerBuilder().options(jsonOptions).build();
     }
 }

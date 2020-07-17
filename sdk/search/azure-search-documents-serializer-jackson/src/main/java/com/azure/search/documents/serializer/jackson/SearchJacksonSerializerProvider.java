@@ -3,12 +3,18 @@
 
 package com.azure.search.documents.serializer.jackson;
 
-import com.azure.search.documents.serializer.SearchSerializer;
-import com.azure.search.documents.serializer.SearchSerializerProvider;
+import com.azure.core.experimental.serializer.JsonOptions;
+import com.azure.core.experimental.serializer.JsonSerializer;
+import com.azure.core.experimental.serializer.JsonSerializerProvider;
 
-public class SearchJacksonSerializerProvider implements SearchSerializerProvider {
+public class SearchJacksonSerializerProvider implements JsonSerializerProvider {
     @Override
-    public SearchSerializer createInstance() {
+    public JsonSerializer createInstance() {
         return new SearchJacksonSerializerBuilder().build();
+    }
+
+    @Override
+    public JsonSerializer createInstance(JsonOptions options) {
+        return new SearchJacksonSerializerBuilder().options(options).build();
     }
 }

@@ -13,12 +13,12 @@
   </parent>
 
   <groupId>com.azure</groupId>
-  <artifactId>azure-search-documents-serializer</artifactId>
+  <artifactId>azure-search-documents-serializer-gson</artifactId>
   <packaging>jar</packaging>
   <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-search-documents-serializer-json-jackson;current} -->
 
-  <name>Microsoft Azure Search JSON Serializer Library</name>
-  <description>This package contains the JSON serializer interface for azure-search-documents.</description>
+  <name>Microsoft Azure Search Gson JSON Serializer Library</name>
+  <description>This package contains the Gson JSON serializer client plugin for azure-search-documents.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -55,6 +55,17 @@
   </developers>
 
   <dependencies>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-experimental</artifactId>
+      <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-serializer-json-gson</artifactId>
+      <version>1.0.0-beta.3</version> <!-- {x-version-update;unreleased_com.azure:azure-core-serializer-json-gson;dependency} -->
+    </dependency>
+
     <!-- Test dependencies -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -87,5 +98,29 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <profiles>
+    <profile>
+      <id>java-lts</id>
+      <activation>
+        <jdk>[11,)</jdk>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+              <argLine>
+                --add-exports com.azure.search.documents.serializer.json.jackson/com.azure.search.documents.serializer.json.jackson=com.fasterxml.jackson.databind
+                --add-opens com.azure.search.documents.serializer.json.jackson/com.azure.search.documents.serializer.json.jackson=ALL-UNNAMED
+              </argLine>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 
 </project>

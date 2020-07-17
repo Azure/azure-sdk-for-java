@@ -1,10 +1,11 @@
+import com.azure.search.documents.serializer.jackson.SearchJacksonSerializerProvider;
+
 module com.azure.search.documents.serializer.jackson {
-    requires com.fasterxml.jackson.datatype.jsr310;
-    requires com.azure.search.documents.serializer;
-    requires transitive com.azure.core.experimental;
+    requires com.azure.core.experimental;
+    requires com.azure.core.serializer.json.jackson;
 
     exports com.azure.search.documents.serializer.jackson;
 
-    provides com.azure.search.documents.serializer.SearchSerializerProvider
-        with com.azure.search.documents.serializer.jackson.SearchJacksonSerializerProvider;
+    provides com.azure.core.experimental.serializer.JsonSerializerProvider
+        with SearchJacksonSerializerProvider;
 }

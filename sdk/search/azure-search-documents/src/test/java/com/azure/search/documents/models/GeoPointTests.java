@@ -3,6 +3,7 @@
 
 package com.azure.search.documents.models;
 
+import com.azure.core.experimental.serializer.Type;
 import com.azure.core.experimental.spatial.PointGeometry;
 import com.azure.core.util.Context;
 import com.azure.search.documents.SearchClient;
@@ -11,13 +12,11 @@ import com.azure.search.documents.SearchTestBase;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
-import com.azure.search.documents.serializer.SearchType;
 import com.azure.search.documents.util.SearchPagedIterable;
 import com.azure.search.documents.util.SearchPagedResponse;
 import org.junit.jupiter.api.Test;
 
-import java.io.InputStreamReader;
-import java.io.Reader;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -39,11 +38,11 @@ public class GeoPointTests extends SearchTestBase {
     private SearchClient client;
 
     private void uploadDocuments() {
-        Reader docsData = new InputStreamReader(Objects.requireNonNull(getClass().getClassLoader()
-            .getResourceAsStream(GeoPointTests.DATA_JSON_HOTELS)));
+        InputStream docsData = Objects.requireNonNull(getClass().getClassLoader()
+            .getResourceAsStream(GeoPointTests.DATA_JSON_HOTELS));
 
-        List<Map<String, Object>> documents = SERIALIZER.readValue(docsData,
-            new SearchType<List<Map<String, Object>>>() {});
+        List<Map<String, Object>> documents = SERIALIZER.deserialize(docsData,
+            new Type<List<Map<String, Object>>>() {}).block();
         client.uploadDocuments(documents);
 
         waitForIndexing();
@@ -55,7 +54,7 @@ public class GeoPointTests extends SearchTestBase {
     }
 
     @Test
-    public void canDeserializeGeoPoint() throws Exception {
+    public void canDeserializeGeoPoint() {
         client = getSearchClientBuilder(createHotelIndex()).buildClient();
 
         uploadDocuments();
