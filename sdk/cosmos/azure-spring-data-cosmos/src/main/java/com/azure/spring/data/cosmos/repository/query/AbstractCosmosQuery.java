@@ -46,15 +46,21 @@ public abstract class AbstractCosmosQuery implements RepositoryQuery {
     }
 
 
-
-    private CosmosQueryExecution getExecution(CosmosParameterAccessor accessor, ReturnedType returnedType) {
+    /**
+     * Determines the appropriate execution path for a query
+     *
+     * @param returnedType The return type of the method
+     * @param accessor Object for accessing method parameters
+     * @return the execution type needed to handle the query
+     */
+    protected CosmosQueryExecution getExecution(CosmosParameterAccessor accessor, ReturnedType returnedType) {
         if (isDeleteQuery()) {
             return new CosmosQueryExecution.DeleteExecution(operations);
-        } else if (method.isPageQuery()) {
+        } else if (isPageQuery()) {
             return new CosmosQueryExecution.PagedExecution(operations, accessor.getPageable());
         } else if (isExistsQuery()) {
             return new CosmosQueryExecution.ExistsExecution(operations);
-        } else if (method.isCollectionQuery()) {
+        } else if (isCollectionQuery()) {
             return new CosmosQueryExecution.MultiEntityExecution(operations);
         } else {
             return new CosmosQueryExecution.SingleEntityExecution(operations, returnedType);
@@ -75,5 +81,13 @@ public abstract class AbstractCosmosQuery implements RepositoryQuery {
     protected abstract boolean isDeleteQuery();
 
     protected abstract boolean isExistsQuery();
+
+    protected boolean isPageQuery() {
+        return method.isPageQuery();
+    }
+
+    protected boolean isCollectionQuery() {
+        return method.isCollectionQuery();
+    }
 
 }

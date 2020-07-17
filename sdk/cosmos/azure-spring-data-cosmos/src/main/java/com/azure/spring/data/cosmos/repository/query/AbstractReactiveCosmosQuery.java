@@ -45,15 +45,21 @@ public abstract class AbstractReactiveCosmosQuery implements RepositoryQuery {
         final String containerName =
             ((ReactiveCosmosEntityMetadata) method.getEntityInformation()).getContainerName();
 
-        final ReactiveCosmosQueryExecution execution = getExecution(accessor, processor.getReturnedType());
+        final ReactiveCosmosQueryExecution execution = getExecution(processor.getReturnedType());
         return execution.execute(query, processor.getReturnedType().getDomainType(), containerName);
     }
 
-    private ReactiveCosmosQueryExecution getExecution(ReactiveCosmosParameterAccessor accessor,
-                                                      ReturnedType returnedType) {
+    /**
+     * Determines the appropriate execution path for a reactive query
+     *
+     * @throws IllegalArgumentException if execution requires paging
+     * @param returnedType The return type of the method
+     * @return the execution type needed to handle the query
+     */
+    protected ReactiveCosmosQueryExecution getExecution(ReturnedType returnedType) {
         if (isDeleteQuery()) {
             return new ReactiveCosmosQueryExecution.DeleteExecution(operations);
-        } else if (method.isPageQuery()) {
+        } else if (isPageQuery()) {
             throw new IllegalArgumentException("Paged Query is not supported by reactive cosmos "
                 + "db");
         } else if (isExistsQuery()) {
@@ -79,6 +85,10 @@ public abstract class AbstractReactiveCosmosQuery implements RepositoryQuery {
     protected abstract boolean isDeleteQuery();
 
     protected abstract boolean isExistsQuery();
+
+    protected boolean isPageQuery() {
+        return method.isPageQuery();
+    }
 
     private boolean isReactiveSingleResultQuery() {
         return method.getReactiveWrapper() != null && method.getReactiveWrapper().equals(Mono.class);

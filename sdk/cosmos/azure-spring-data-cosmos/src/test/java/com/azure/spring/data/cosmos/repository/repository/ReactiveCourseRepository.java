@@ -41,6 +41,6 @@ public interface ReactiveCourseRepository extends ReactiveCosmosRepository<Cours
      * @param name name
      * @return Course list
      */
-    Mono<Course> findByName(String name);
+    Mono<Course> findOneByName(String name);
 
 }

@@ -139,19 +139,19 @@ public class ReactiveCourseRepositoryIT {
         final Mono<Course> saveSecond = repository.save(course);
         StepVerifier.create(saveSecond).expectNext(course).verifyComplete();
 
-        final Mono<Course> find = repository.findByName(COURSE_1.getName());
+        final Mono<Course> find = repository.findOneByName(COURSE_1.getName());
         StepVerifier.create(find).expectError(CosmosAccessException.class).verify();
     }
 
     @Test
     public void testShouldFindSingleEntity() {
-        final Mono<Course> find = repository.findByName(COURSE_1.getName());
+        final Mono<Course> find = repository.findOneByName(COURSE_1.getName());
         StepVerifier.create(find).expectNext(COURSE_1).expectComplete().verify();
     }
 
     @Test
     public void testShouldReturnEmptyMonoWhenNoResults() {
-        final Mono<Course> find = repository.findByName("unusedName");
+        final Mono<Course> find = repository.findOneByName("unusedName");
         StepVerifier.create(find).verifyComplete();
     }
 
