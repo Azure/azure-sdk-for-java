@@ -5,7 +5,7 @@ package com.azure.spring.data.cosmos.repository.query;
 import com.azure.spring.data.cosmos.core.CosmosOperations;
 import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
 import com.azure.spring.data.cosmos.core.query.DocumentQuery;
-import com.azure.spring.data.cosmos.exception.CosmosDBAccessException;
+import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.ReturnedType;
 
@@ -76,16 +76,18 @@ public interface CosmosQueryExecution {
 
         @Override
         public Object execute(DocumentQuery query, Class<?> type, String collection) {
-            final List results = operations.find(query, type, collection);
+            final List<?> results = operations.find(query, type, collection);
             final Object result;
             if (results == null || results.isEmpty()) {
                 result = null;
             } else if (results.size() == 1) {
                 result = results.get(0);
             } else {
-                throw new CosmosDBAccessException("Too many results - return type " + returnedType.getReturnedType() +
-                    " is not of type Iterable but find returned " + results.size() +
-                    " results");
+                throw new CosmosAccessException("Too many results - return type "
+                    + returnedType.getReturnedType()
+                    + " is not of type Iterable but find returned "
+                    + results.size()
+                    + " results");
             }
 
             if (returnedType.getReturnedType() == Optional.class) {

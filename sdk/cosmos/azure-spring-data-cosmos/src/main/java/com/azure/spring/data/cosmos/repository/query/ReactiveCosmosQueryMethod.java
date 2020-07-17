@@ -18,7 +18,7 @@ import java.lang.reflect.Method;
 public class ReactiveCosmosQueryMethod extends QueryMethod {
 
     private ReactiveCosmosEntityMetadata<?> metadata;
-    private Method method;
+    private final Method method;
 
     /**
      * Creates a new {@link QueryMethod} from the given parameters. Looks up the correct query to use for following
@@ -44,11 +44,16 @@ public class ReactiveCosmosQueryMethod extends QueryMethod {
         return this.metadata;
     }
 
+    /**
+     * Returns the reactive wrapper class type if it exists or null otherwise
+     *
+     * @return Reactive wrapper class (Flux or Mono)
+     */
     public Class<?> getReactiveWrapper() {
         return isReactiveWrapperClass(method.getReturnType()) ? method.getReturnType() : null;
     }
 
-    private static boolean isReactiveWrapperClass(Class clazz) {
+    private static boolean isReactiveWrapperClass(Class<?> clazz) {
         return clazz.equals(Flux.class) || clazz.equals(Mono.class);
     }
 }

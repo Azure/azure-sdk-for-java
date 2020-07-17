@@ -4,7 +4,7 @@ package com.azure.spring.data.cosmos.repository.query;
 
 import com.azure.spring.data.cosmos.core.ReactiveCosmosOperations;
 import com.azure.spring.data.cosmos.core.query.DocumentQuery;
-import com.azure.spring.data.cosmos.exception.CosmosDBAccessException;
+import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import org.springframework.data.repository.query.ReturnedType;
 
 /**
@@ -75,9 +75,9 @@ public interface ReactiveCosmosQueryExecution {
                 .buffer(2)
                 .map((vals) -> {
                     if (vals.size() > 1) {
-                        throw new CosmosDBAccessException("Too many results - Expected Mono<"
-                            + returnedType.getReturnedType() +
-                            "> but query returned multiple results");
+                        throw new CosmosAccessException("Too many results - Expected Mono<"
+                            + returnedType.getReturnedType()
+                            + "> but query returned multiple results");
                     }
                     return vals.iterator().next();
                 });

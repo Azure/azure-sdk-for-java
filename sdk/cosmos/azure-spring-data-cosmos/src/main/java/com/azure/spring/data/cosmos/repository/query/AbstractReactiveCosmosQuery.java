@@ -54,8 +54,8 @@ public abstract class AbstractReactiveCosmosQuery implements RepositoryQuery {
         if (isDeleteQuery()) {
             return new ReactiveCosmosQueryExecution.DeleteExecution(operations);
         } else if (method.isPageQuery()) {
-            throw new IllegalArgumentException("Paged Query is not supported by reactive cosmos " +
-                "db");
+            throw new IllegalArgumentException("Paged Query is not supported by reactive cosmos "
+                + "db");
         } else if (isExistsQuery()) {
             return new ReactiveCosmosQueryExecution.ExistsExecution(operations);
         } else if (isReactiveSingleResultQuery()) {

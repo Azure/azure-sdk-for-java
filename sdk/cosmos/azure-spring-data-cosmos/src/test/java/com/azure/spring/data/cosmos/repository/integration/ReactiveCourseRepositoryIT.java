@@ -140,7 +140,7 @@ public class ReactiveCourseRepositoryIT {
         StepVerifier.create(saveSecond).expectNext(course).verifyComplete();
 
         final Mono<Course> find = repository.findByName(COURSE_1.getName());
-        StepVerifier.create(find).expectError(CosmosDBAccessException.class).verify();
+        StepVerifier.create(find).expectError(CosmosAccessException.class).verify();
     }
 
     @Test

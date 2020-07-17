@@ -1,14 +1,11 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.spring.data.cosmos.repository.integration;
 
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.domain.Contact;
-import com.azure.spring.data.cosmos.exception.CosmosDBAccessException;
+import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.ContactRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
@@ -80,7 +77,7 @@ public class SingleResponseRepositoryIT {
         Assert.assertFalse(repository.findOptionallyByTitle("not here").isPresent());
     }
 
-    @Test(expected = CosmosDBAccessException.class)
+    @Test(expected = CosmosAccessException.class)
     public void testShouldFailIfMultipleResultsReturned() {
         repository.save(new Contact("testId2", TEST_CONTACT.getTitle()));
 
