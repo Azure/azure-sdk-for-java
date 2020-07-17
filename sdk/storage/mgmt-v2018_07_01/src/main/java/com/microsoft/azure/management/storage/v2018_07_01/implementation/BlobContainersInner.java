@@ -16,6 +16,7 @@ import com.microsoft.azure.management.storage.v2018_07_01.BlobContainersDeleteIm
 import com.microsoft.azure.management.storage.v2018_07_01.BlobContainersExtendImmutabilityPolicyHeaders;
 import com.microsoft.azure.management.storage.v2018_07_01.BlobContainersGetImmutabilityPolicyHeaders;
 import com.microsoft.azure.management.storage.v2018_07_01.BlobContainersLockImmutabilityPolicyHeaders;
+import com.microsoft.azure.management.storage.v2018_07_01.LeaseContainerRequest;
 import com.microsoft.azure.management.storage.v2018_07_01.PublicAccess;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
@@ -114,6 +115,10 @@ public class BlobContainersInner {
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers/{containerName}/immutabilityPolicies/default/extend")
         Observable<Response<ResponseBody>> extendImmutabilityPolicy(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("containerName") String containerName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("If-Match") String ifMatch, @Header("accept-language") String acceptLanguage, @Body ImmutabilityPolicyInner parameters, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.storage.v2018_07_01.BlobContainers lease" })
+        @POST("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers/{containerName}/lease")
+        Observable<Response<ResponseBody>> lease(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("containerName") String containerName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Body LeaseContainerRequest parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
     }
 
     /**
@@ -178,10 +183,8 @@ public class BlobContainersInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.list(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2018-07-01";
+        return service.list(resourceGroupName, accountName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ListContainerItemsInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ListContainerItemsInner>> call(Response<ResponseBody> response) {
@@ -271,15 +274,13 @@ public class BlobContainersInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
+        final String apiVersion = "2018-07-01";
         final PublicAccess publicAccess = null;
         final Map<String, String> metadata = null;
         BlobContainerInner blobContainer = new BlobContainerInner();
         blobContainer.withPublicAccess(null);
         blobContainer.withMetadata(null);
-        return service.create(resourceGroupName, accountName, containerName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), blobContainer, this.client.userAgent())
+        return service.create(resourceGroupName, accountName, containerName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), blobContainer, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BlobContainerInner>>>() {
                 @Override
                 public Observable<ServiceResponse<BlobContainerInner>> call(Response<ResponseBody> response) {
@@ -370,14 +371,12 @@ public class BlobContainersInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(metadata);
+        final String apiVersion = "2018-07-01";
         BlobContainerInner blobContainer = new BlobContainerInner();
         blobContainer.withPublicAccess(publicAccess);
         blobContainer.withMetadata(metadata);
-        return service.create(resourceGroupName, accountName, containerName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), blobContainer, this.client.userAgent())
+        return service.create(resourceGroupName, accountName, containerName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), blobContainer, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BlobContainerInner>>>() {
                 @Override
                 public Observable<ServiceResponse<BlobContainerInner>> call(Response<ResponseBody> response) {
@@ -467,15 +466,13 @@ public class BlobContainersInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
+        final String apiVersion = "2018-07-01";
         final PublicAccess publicAccess = null;
         final Map<String, String> metadata = null;
         BlobContainerInner blobContainer = new BlobContainerInner();
         blobContainer.withPublicAccess(null);
         blobContainer.withMetadata(null);
-        return service.update(resourceGroupName, accountName, containerName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), blobContainer, this.client.userAgent())
+        return service.update(resourceGroupName, accountName, containerName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), blobContainer, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BlobContainerInner>>>() {
                 @Override
                 public Observable<ServiceResponse<BlobContainerInner>> call(Response<ResponseBody> response) {
@@ -566,14 +563,12 @@ public class BlobContainersInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(metadata);
+        final String apiVersion = "2018-07-01";
         BlobContainerInner blobContainer = new BlobContainerInner();
         blobContainer.withPublicAccess(publicAccess);
         blobContainer.withMetadata(metadata);
-        return service.update(resourceGroupName, accountName, containerName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), blobContainer, this.client.userAgent())
+        return service.update(resourceGroupName, accountName, containerName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), blobContainer, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BlobContainerInner>>>() {
                 @Override
                 public Observable<ServiceResponse<BlobContainerInner>> call(Response<ResponseBody> response) {
@@ -663,10 +658,8 @@ public class BlobContainersInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.get(resourceGroupName, accountName, containerName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2018-07-01";
+        return service.get(resourceGroupName, accountName, containerName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BlobContainerInner>>>() {
                 @Override
                 public Observable<ServiceResponse<BlobContainerInner>> call(Response<ResponseBody> response) {
@@ -755,10 +748,8 @@ public class BlobContainersInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.delete(resourceGroupName, accountName, containerName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2018-07-01";
+        return service.delete(resourceGroupName, accountName, containerName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -853,16 +844,14 @@ public class BlobContainersInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         if (tags == null) {
             throw new IllegalArgumentException("Parameter tags is required and cannot be null.");
         }
         Validator.validate(tags);
+        final String apiVersion = "2018-07-01";
         LegalHoldInner legalHold = new LegalHoldInner();
         legalHold.withTags(tags);
-        return service.setLegalHold(resourceGroupName, accountName, containerName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), legalHold, this.client.userAgent())
+        return service.setLegalHold(resourceGroupName, accountName, containerName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), legalHold, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<LegalHoldInner>>>() {
                 @Override
                 public Observable<ServiceResponse<LegalHoldInner>> call(Response<ResponseBody> response) {
@@ -956,16 +945,14 @@ public class BlobContainersInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         if (tags == null) {
             throw new IllegalArgumentException("Parameter tags is required and cannot be null.");
         }
         Validator.validate(tags);
+        final String apiVersion = "2018-07-01";
         LegalHoldInner legalHold = new LegalHoldInner();
         legalHold.withTags(tags);
-        return service.clearLegalHold(resourceGroupName, accountName, containerName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), legalHold, this.client.userAgent())
+        return service.clearLegalHold(resourceGroupName, accountName, containerName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), legalHold, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<LegalHoldInner>>>() {
                 @Override
                 public Observable<ServiceResponse<LegalHoldInner>> call(Response<ResponseBody> response) {
@@ -1059,14 +1046,12 @@ public class BlobContainersInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         final String immutabilityPolicyName = "default";
+        final String apiVersion = "2018-07-01";
         final String ifMatch = null;
         ImmutabilityPolicyInner parameters = new ImmutabilityPolicyInner();
         parameters.withImmutabilityPeriodSinceCreationInDays(immutabilityPeriodSinceCreationInDays);
-        return service.createOrUpdateImmutabilityPolicy(resourceGroupName, accountName, containerName, immutabilityPolicyName, this.client.subscriptionId(), this.client.apiVersion(), ifMatch, this.client.acceptLanguage(), parameters, this.client.userAgent())
+        return service.createOrUpdateImmutabilityPolicy(resourceGroupName, accountName, containerName, immutabilityPolicyName, this.client.subscriptionId(), apiVersion, ifMatch, this.client.acceptLanguage(), parameters, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<ImmutabilityPolicyInner, BlobContainersCreateOrUpdateImmutabilityPolicyHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<ImmutabilityPolicyInner, BlobContainersCreateOrUpdateImmutabilityPolicyHeaders>> call(Response<ResponseBody> response) {
@@ -1157,13 +1142,11 @@ public class BlobContainersInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         final String immutabilityPolicyName = "default";
+        final String apiVersion = "2018-07-01";
         ImmutabilityPolicyInner parameters = new ImmutabilityPolicyInner();
         parameters.withImmutabilityPeriodSinceCreationInDays(immutabilityPeriodSinceCreationInDays);
-        return service.createOrUpdateImmutabilityPolicy(resourceGroupName, accountName, containerName, immutabilityPolicyName, this.client.subscriptionId(), this.client.apiVersion(), ifMatch, this.client.acceptLanguage(), parameters, this.client.userAgent())
+        return service.createOrUpdateImmutabilityPolicy(resourceGroupName, accountName, containerName, immutabilityPolicyName, this.client.subscriptionId(), apiVersion, ifMatch, this.client.acceptLanguage(), parameters, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<ImmutabilityPolicyInner, BlobContainersCreateOrUpdateImmutabilityPolicyHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<ImmutabilityPolicyInner, BlobContainersCreateOrUpdateImmutabilityPolicyHeaders>> call(Response<ResponseBody> response) {
@@ -1253,12 +1236,10 @@ public class BlobContainersInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         final String immutabilityPolicyName = "default";
+        final String apiVersion = "2018-07-01";
         final String ifMatch = null;
-        return service.getImmutabilityPolicy(resourceGroupName, accountName, containerName, immutabilityPolicyName, this.client.subscriptionId(), this.client.apiVersion(), ifMatch, this.client.acceptLanguage(), this.client.userAgent())
+        return service.getImmutabilityPolicy(resourceGroupName, accountName, containerName, immutabilityPolicyName, this.client.subscriptionId(), apiVersion, ifMatch, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<ImmutabilityPolicyInner, BlobContainersGetImmutabilityPolicyHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<ImmutabilityPolicyInner, BlobContainersGetImmutabilityPolicyHeaders>> call(Response<ResponseBody> response) {
@@ -1345,11 +1326,9 @@ public class BlobContainersInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         final String immutabilityPolicyName = "default";
-        return service.getImmutabilityPolicy(resourceGroupName, accountName, containerName, immutabilityPolicyName, this.client.subscriptionId(), this.client.apiVersion(), ifMatch, this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2018-07-01";
+        return service.getImmutabilityPolicy(resourceGroupName, accountName, containerName, immutabilityPolicyName, this.client.subscriptionId(), apiVersion, ifMatch, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<ImmutabilityPolicyInner, BlobContainersGetImmutabilityPolicyHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<ImmutabilityPolicyInner, BlobContainersGetImmutabilityPolicyHeaders>> call(Response<ResponseBody> response) {
@@ -1443,14 +1422,12 @@ public class BlobContainersInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         if (ifMatch == null) {
             throw new IllegalArgumentException("Parameter ifMatch is required and cannot be null.");
         }
         final String immutabilityPolicyName = "default";
-        return service.deleteImmutabilityPolicy(resourceGroupName, accountName, containerName, immutabilityPolicyName, this.client.subscriptionId(), this.client.apiVersion(), ifMatch, this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2018-07-01";
+        return service.deleteImmutabilityPolicy(resourceGroupName, accountName, containerName, immutabilityPolicyName, this.client.subscriptionId(), apiVersion, ifMatch, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<ImmutabilityPolicyInner, BlobContainersDeleteImmutabilityPolicyHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<ImmutabilityPolicyInner, BlobContainersDeleteImmutabilityPolicyHeaders>> call(Response<ResponseBody> response) {
@@ -1544,13 +1521,11 @@ public class BlobContainersInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         if (ifMatch == null) {
             throw new IllegalArgumentException("Parameter ifMatch is required and cannot be null.");
         }
-        return service.lockImmutabilityPolicy(resourceGroupName, accountName, containerName, this.client.subscriptionId(), this.client.apiVersion(), ifMatch, this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2018-07-01";
+        return service.lockImmutabilityPolicy(resourceGroupName, accountName, containerName, this.client.subscriptionId(), apiVersion, ifMatch, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<ImmutabilityPolicyInner, BlobContainersLockImmutabilityPolicyHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<ImmutabilityPolicyInner, BlobContainersLockImmutabilityPolicyHeaders>> call(Response<ResponseBody> response) {
@@ -1648,15 +1623,13 @@ public class BlobContainersInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         if (ifMatch == null) {
             throw new IllegalArgumentException("Parameter ifMatch is required and cannot be null.");
         }
+        final String apiVersion = "2018-07-01";
         ImmutabilityPolicyInner parameters = new ImmutabilityPolicyInner();
         parameters.withImmutabilityPeriodSinceCreationInDays(immutabilityPeriodSinceCreationInDays);
-        return service.extendImmutabilityPolicy(resourceGroupName, accountName, containerName, this.client.subscriptionId(), this.client.apiVersion(), ifMatch, this.client.acceptLanguage(), parameters, this.client.userAgent())
+        return service.extendImmutabilityPolicy(resourceGroupName, accountName, containerName, this.client.subscriptionId(), apiVersion, ifMatch, this.client.acceptLanguage(), parameters, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<ImmutabilityPolicyInner, BlobContainersExtendImmutabilityPolicyHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<ImmutabilityPolicyInner, BlobContainersExtendImmutabilityPolicyHeaders>> call(Response<ResponseBody> response) {
@@ -1675,6 +1648,187 @@ public class BlobContainersInner {
                 .register(200, new TypeToken<ImmutabilityPolicyInner>() { }.getType())
                 .registerError(CloudException.class)
                 .buildWithHeaders(response, BlobContainersExtendImmutabilityPolicyHeaders.class);
+    }
+
+    /**
+     * The Lease Container operation establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the LeaseContainerResponseInner object if successful.
+     */
+    public LeaseContainerResponseInner lease(String resourceGroupName, String accountName, String containerName) {
+        return leaseWithServiceResponseAsync(resourceGroupName, accountName, containerName).toBlocking().single().body();
+    }
+
+    /**
+     * The Lease Container operation establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<LeaseContainerResponseInner> leaseAsync(String resourceGroupName, String accountName, String containerName, final ServiceCallback<LeaseContainerResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(leaseWithServiceResponseAsync(resourceGroupName, accountName, containerName), serviceCallback);
+    }
+
+    /**
+     * The Lease Container operation establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the LeaseContainerResponseInner object
+     */
+    public Observable<LeaseContainerResponseInner> leaseAsync(String resourceGroupName, String accountName, String containerName) {
+        return leaseWithServiceResponseAsync(resourceGroupName, accountName, containerName).map(new Func1<ServiceResponse<LeaseContainerResponseInner>, LeaseContainerResponseInner>() {
+            @Override
+            public LeaseContainerResponseInner call(ServiceResponse<LeaseContainerResponseInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * The Lease Container operation establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the LeaseContainerResponseInner object
+     */
+    public Observable<ServiceResponse<LeaseContainerResponseInner>> leaseWithServiceResponseAsync(String resourceGroupName, String accountName, String containerName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (containerName == null) {
+            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2018-07-01";
+        final LeaseContainerRequest parameters = null;
+        return service.lease(resourceGroupName, accountName, containerName, this.client.subscriptionId(), apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<LeaseContainerResponseInner>>>() {
+                @Override
+                public Observable<ServiceResponse<LeaseContainerResponseInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<LeaseContainerResponseInner> clientResponse = leaseDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * The Lease Container operation establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param parameters Lease Container request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the LeaseContainerResponseInner object if successful.
+     */
+    public LeaseContainerResponseInner lease(String resourceGroupName, String accountName, String containerName, LeaseContainerRequest parameters) {
+        return leaseWithServiceResponseAsync(resourceGroupName, accountName, containerName, parameters).toBlocking().single().body();
+    }
+
+    /**
+     * The Lease Container operation establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param parameters Lease Container request body.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<LeaseContainerResponseInner> leaseAsync(String resourceGroupName, String accountName, String containerName, LeaseContainerRequest parameters, final ServiceCallback<LeaseContainerResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(leaseWithServiceResponseAsync(resourceGroupName, accountName, containerName, parameters), serviceCallback);
+    }
+
+    /**
+     * The Lease Container operation establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param parameters Lease Container request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the LeaseContainerResponseInner object
+     */
+    public Observable<LeaseContainerResponseInner> leaseAsync(String resourceGroupName, String accountName, String containerName, LeaseContainerRequest parameters) {
+        return leaseWithServiceResponseAsync(resourceGroupName, accountName, containerName, parameters).map(new Func1<ServiceResponse<LeaseContainerResponseInner>, LeaseContainerResponseInner>() {
+            @Override
+            public LeaseContainerResponseInner call(ServiceResponse<LeaseContainerResponseInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * The Lease Container operation establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param parameters Lease Container request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the LeaseContainerResponseInner object
+     */
+    public Observable<ServiceResponse<LeaseContainerResponseInner>> leaseWithServiceResponseAsync(String resourceGroupName, String accountName, String containerName, LeaseContainerRequest parameters) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (containerName == null) {
+            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        Validator.validate(parameters);
+        final String apiVersion = "2018-07-01";
+        return service.lease(resourceGroupName, accountName, containerName, this.client.subscriptionId(), apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<LeaseContainerResponseInner>>>() {
+                @Override
+                public Observable<ServiceResponse<LeaseContainerResponseInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<LeaseContainerResponseInner> clientResponse = leaseDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<LeaseContainerResponseInner> leaseDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<LeaseContainerResponseInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<LeaseContainerResponseInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
     }
 
 }
