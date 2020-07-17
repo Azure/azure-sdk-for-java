@@ -942,6 +942,7 @@ class BlobAPITest extends APISpec {
         properties.getArchiveStatus() == null
         properties.getCreationTime() != null
         properties.getTagCount() == 1
+        properties.getRehydratePriority() == null // tested in setTier rehydrate priority
     }
 
     def "Get properties min"() {
@@ -1430,6 +1431,38 @@ class BlobAPITest extends APISpec {
 
     def "Snapshot min"() {
         bc.createSnapshotWithResponse(null, null, null, null).getStatusCode() == 201
+    }
+
+    def "getSnapshot"() {
+        setup:
+        def data = "test".getBytes()
+        def blobName = generateBlobName()
+        def bu = cc.getBlobClient(blobName).getBlockBlobClient()
+        bu.upload(new ByteArrayInputStream(data), data.length)
+        def snapshotId = bu.createSnapshot().getSnapshotId()
+
+        when:
+        def snapshotBlob = cc.getBlobClient(blobName, snapshotId).getBlockBlobClient()
+
+        then:
+        snapshotBlob.getSnapshotId() == snapshotId
+        bu.getSnapshotId() == null
+    }
+
+    def "isSnapshot"() {
+        setup:
+        def data = "test".getBytes()
+        def blobName = generateBlobName()
+        def bu = cc.getBlobClient(blobName).getBlockBlobClient()
+        bu.upload(new ByteArrayInputStream(data), data.length)
+        def snapshotId = bu.createSnapshot().getSnapshotId()
+
+        when:
+        def snapshotBlob = cc.getBlobClient(blobName, snapshotId).getBlockBlobClient()
+
+        then:
+        snapshotBlob.isSnapshot()
+        !bu.isSnapshot()
     }
 
     @Unroll
@@ -2314,10 +2347,33 @@ class BlobAPITest extends APISpec {
         cc.listBlobs().iterator().next().getProperties().getArchiveStatus() == status
 
         where:
-        sourceTier         | destTier        | priority                   | status
-        AccessTier.ARCHIVE | AccessTier.COOL | RehydratePriority.STANDARD | ArchiveStatus.REHYDRATE_PENDING_TO_COOL
-        AccessTier.ARCHIVE | AccessTier.HOT  | RehydratePriority.STANDARD | ArchiveStatus.REHYDRATE_PENDING_TO_HOT
-        AccessTier.ARCHIVE | AccessTier.HOT  | RehydratePriority.HIGH     | ArchiveStatus.REHYDRATE_PENDING_TO_HOT
+        sourceTier         | destTier        || status
+        AccessTier.ARCHIVE | AccessTier.COOL || ArchiveStatus.REHYDRATE_PENDING_TO_COOL
+        AccessTier.ARCHIVE | AccessTier.HOT  || ArchiveStatus.REHYDRATE_PENDING_TO_HOT
+        AccessTier.ARCHIVE | AccessTier.HOT  || ArchiveStatus.REHYDRATE_PENDING_TO_HOT
+    }
+
+    @Unroll
+    def "Set tier rehydrate priority"() {
+        setup:
+        if (rehydratePriority != null) {
+            bc.setAccessTier(AccessTier.ARCHIVE)
+
+            bc.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT).setPriority(rehydratePriority), null, null)
+        }
+
+        when:
+        def resp = bc.getPropertiesWithResponse(null, null, null)
+
+        then:
+        resp.getStatusCode() == 200
+        resp.getValue().getRehydratePriority() == rehydratePriority
+
+        where:
+        rehydratePriority          || _
+        null                       || _
+        RehydratePriority.STANDARD || _
+        RehydratePriority.HIGH     || _
     }
 
     def "Set tier error"() {

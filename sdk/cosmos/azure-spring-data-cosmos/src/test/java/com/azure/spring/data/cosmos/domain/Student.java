@@ -4,11 +4,10 @@
 package com.azure.spring.data.cosmos.domain;
 
 import com.azure.spring.data.cosmos.core.mapping.DocumentIndexingPolicy;
-import com.azure.spring.data.cosmos.common.TestConstants;
 
 import java.util.Objects;
 
-@DocumentIndexingPolicy(includePaths = TestConstants.STARTSWITH_INCLUDEDPATH)
+@DocumentIndexingPolicy()
 public class Student {
     private String id;
     private String firstName;

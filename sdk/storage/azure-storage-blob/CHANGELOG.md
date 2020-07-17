@@ -3,6 +3,12 @@
 ## 12.8.0-beta.2 (Unreleased)
 - Fixed a bug that, when the data length parameter did not match the actual length of the data in BlobClient.upload, caused a zero length blob to be uploaded rather than throwing an exception.
 - Fixed a bug that ignored the customer's specified block size when determining buffer sizes in BlobClient.upload
+- Added support for Object Replication Service on listBlobs and getProperties.
+- Added support for blob tags. Added tagsConditions to BlobRequestConditions that allow a user to specify a SQL statement for the blob's tags to satisfy.
+- Added support for setting tags and filterTags operations on SAS by adding to AccountSASPermissions, BlobSASPermissions, and BlobContainerSASPermissions.
+- Added support for setting and getting the StaticWebsite.DefaultIndexDocumentPath property on the service client.
+- Added RehydratePriority to BlobProperties and BlobItemProperties.
+- Fixed bug where Query Input Stream would throw when a ByteBuffer of length 0 was encountered.
 
 ## 12.8.0-beta.1 (2020-07-07)
 - Added support for the 2019-12-12 service version.
