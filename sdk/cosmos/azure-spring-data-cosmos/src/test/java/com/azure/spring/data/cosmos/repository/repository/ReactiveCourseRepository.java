@@ -5,6 +5,7 @@ package com.azure.spring.data.cosmos.repository.repository;
 import com.azure.spring.data.cosmos.domain.Course;
 import com.azure.spring.data.cosmos.repository.ReactiveCosmosRepository;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.Collection;
 
@@ -34,4 +35,12 @@ public interface ReactiveCourseRepository extends ReactiveCosmosRepository<Cours
      * @return Course list
      */
     Flux<Course> findByNameOrDepartmentAllIgnoreCase(String name, String department);
+
+    /**
+     * Find a single Course list by name
+     * @param name name
+     * @return Course list
+     */
+    Mono<Course> findOneByName(String name);
+
 }
