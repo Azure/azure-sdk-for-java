@@ -56,7 +56,6 @@ public class ServiceBusJMSAutoConfiguration {
     public JmsTemplate jmsTemplate(ConnectionFactory jmsConnectionFactory) {
         final JmsTemplate jmsTemplate = new JmsTemplate();
         jmsTemplate.setConnectionFactory(jmsConnectionFactory);
-        jmsTemplate.setMessageConverter();
         return jmsTemplate;
     }
 
