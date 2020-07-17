@@ -1,5 +1,5 @@
-﻿# Azure CosmosDB client library for Java
-TODO
+﻿# Encryption plugin library for Azure Cosmos DB Java SDK for Java
+The encryption plugin is under development and not ready to be consumed yet.
 
 ## Getting started
 ### Include the package

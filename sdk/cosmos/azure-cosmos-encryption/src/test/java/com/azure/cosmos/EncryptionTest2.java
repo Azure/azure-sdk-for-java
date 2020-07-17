@@ -43,7 +43,7 @@ public class EncryptionTest2 extends TestSuiteBase {
         super(CosmosBridgeInternal.setDateKeyProvider(clientBuilder, simpleInMemoryProvider));
     }
 
-    @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"encryption"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosItemTest() {
         assertThat(this.client).isNull();
         this.client = getClientBuilder().buildClient();
@@ -51,18 +51,18 @@ public class EncryptionTest2 extends TestSuiteBase {
         container = client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
     }
 
-    @BeforeClass(groups = "emulator")
+    @BeforeClass(groups = "encryption")
     public void beforeClass() {
         TestUtils.initialized();
     }
 
-    @AfterClass(groups = {"emulator"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"encryption"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         assertThat(this.client).isNotNull();
         this.client.close();
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT)
     public void createItemEncrypt_readItemDecrypt() throws Exception {
         CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
         EncryptionOptions encryptionOptions = new EncryptionOptions();
@@ -88,7 +88,7 @@ public class EncryptionTest2 extends TestSuiteBase {
         validateReadResponseIsValid(properties, readItem);
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT)
     public void upsertItem_readItem() throws Exception {
         CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
         EncryptionOptions encryptionOptions = new EncryptionOptions();
@@ -135,7 +135,7 @@ public class EncryptionTest2 extends TestSuiteBase {
         assertThat(result.sensitive).isNull();
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT)
     public void readItem() throws Exception {
         Pojo properties = getItem(UUID.randomUUID().toString());
         CosmosItemResponse<Pojo> itemResponse = container.createItem(properties);
@@ -147,7 +147,7 @@ public class EncryptionTest2 extends TestSuiteBase {
         validateItemResponse(properties, readResponse1);
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT)
     public void readAllItems() throws Exception {
         Pojo properties = getItem(UUID.randomUUID().toString());
         CosmosItemResponse<Pojo> itemResponse = container.createItem(properties);
@@ -160,7 +160,7 @@ public class EncryptionTest2 extends TestSuiteBase {
     }
 
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT)
     public void queryItems() throws Exception {
         Pojo properties = getItem(UUID.randomUUID().toString());
         CosmosItemResponse<Pojo> itemResponse = container.createItem(properties);
@@ -179,7 +179,7 @@ public class EncryptionTest2 extends TestSuiteBase {
         assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT)
     public void queryItemsWithContinuationTokenAndPageSize() throws Exception {
         List<String> actualIds = new ArrayList<>();
         Pojo properties = getItem(UUID.randomUUID().toString());

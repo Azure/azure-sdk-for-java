@@ -612,6 +612,7 @@ public final class ModelBridgeInternal {
         }
     }
 
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosItemRequestOptions setEncryptionOptions(CosmosItemRequestOptions options,
                                                                 EncryptionOptions encryptionOptions) {
         options.setEncryptionOptions(encryptionOptions);

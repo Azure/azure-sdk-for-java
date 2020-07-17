@@ -18,7 +18,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * SQL client implementation with StyleCop related changes - also, we restrict to randomized encryption to start with.
  */
 class AeadAes256CbcHmac256Algorithm implements DataEncryptionKey {
-
+    // TODO: moderakh is there any other library which we can use?
     public final static String ALGORITHM_NAME = "AEAD_AES_256_CBC_HMAC_SHA256";
 
     /**
