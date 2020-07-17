@@ -38,6 +38,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -146,7 +147,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
         Field field = AppConfigurationPropertySourceLocator.class.getDeclaredField("startup");
         field.setAccessible(true);
-        field.set(null, true);
+        field.set(null, new AtomicBoolean(true));
         StateHolder.setLoadState(TEST_STORE_NAME, false);
     }
 
@@ -313,7 +314,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         IllegalArgumentException, IllegalAccessException {
         Field field = AppConfigurationPropertySourceLocator.class.getDeclaredField("startup");
         field.setAccessible(true);
-        field.set(null, false);
+        field.set(null, new AtomicBoolean(false));
         StateHolder.setLoadState(TEST_STORE_NAME, true);
 
         expected.expect(NullPointerException.class);
