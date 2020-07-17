@@ -1,34 +1,34 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.management;
+package com.azure.resourcemanager;
 
-import com.microsoft.azure.management.containerinstance.Container;
-import com.microsoft.azure.management.containerinstance.ContainerGroup;
-import com.microsoft.azure.management.containerinstance.ContainerGroupRestartPolicy;
-import com.microsoft.azure.management.containerinstance.ContainerGroups;
-import com.microsoft.azure.management.containerinstance.ContainerPort;
-import com.microsoft.azure.management.containerinstance.EnvironmentVariable;
-import com.microsoft.azure.management.containerinstance.Operation;
-import com.microsoft.azure.management.containerinstance.ResourceIdentityType;
-import com.microsoft.azure.management.containerinstance.Volume;
-import com.microsoft.azure.management.containerinstance.VolumeMount;
-import com.microsoft.azure.management.graphrbac.BuiltInRole;
-import com.microsoft.azure.management.resources.core.TestBase;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import org.junit.Assert;
+import com.azure.resourcemanager.authorization.models.BuiltInRole;
+import com.azure.resourcemanager.containerinstance.models.Container;
+import com.azure.resourcemanager.containerinstance.models.ContainerGroup;
+import com.azure.resourcemanager.containerinstance.models.ContainerGroupRestartPolicy;
+import com.azure.resourcemanager.containerinstance.models.ContainerGroups;
+import com.azure.resourcemanager.containerinstance.models.ContainerPort;
+import com.azure.resourcemanager.containerinstance.models.EnvironmentVariable;
+import com.azure.resourcemanager.containerinstance.models.Operation;
+import com.azure.resourcemanager.containerinstance.models.ResourceIdentityType;
+import com.azure.resourcemanager.containerinstance.models.Volume;
+import com.azure.resourcemanager.containerinstance.models.VolumeMount;
+import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import org.junit.jupiter.api.Assertions;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class TestContainerInstanceWithPrivateIpAddress extends TestTemplate<ContainerGroup, ContainerGroups> {
 
     @Override
     public ContainerGroup createResource(ContainerGroups containerGroups) throws Exception {
-        final String cgName = "aci" + this.testId;
-        final String rgName = "rgaci" + this.testId;
+        final String cgName = containerGroups.manager().sdkContext().randomResourceName("aci", 10);
+        final String rgName = containerGroups.manager().sdkContext().randomResourceName("rgaci", 10);
 
         final String logAnalyticsWorkspaceId = "REPLACE WITH YOUR LOG ANALYTICS WORKSPACE ID";
         final String logAnalyticsWorkspaceKey = "REPLACE WITH YOUR LOG ANALYTICS WORKSPACE KEY";
@@ -67,66 +67,67 @@ public class TestContainerInstanceWithPrivateIpAddress extends TestTemplate<Cont
                 .withTag("tag1", "value1")
                 .create();
 
-        Assert.assertEquals(cgName, containerGroup.name());
-        Assert.assertEquals("Linux", containerGroup.osType().toString());
-        Assert.assertEquals(0, containerGroup.imageRegistryServers().size());
-        Assert.assertEquals(1, containerGroup.volumes().size());
-        Assert.assertNotNull(containerGroup.volumes().get("emptydir1"));
-        Assert.assertNotNull(containerGroup.ipAddress());
-        Assert.assertTrue(containerGroup.isIPAddressPrivate());
-        Assert.assertEquals(2, containerGroup.externalTcpPorts().length);
-        Assert.assertEquals(2, containerGroup.externalPorts().size());
-        Assert.assertEquals(2, containerGroup.externalTcpPorts().length);
-        Assert.assertEquals(8080, containerGroup.externalTcpPorts()[0]);
-        Assert.assertEquals(80, containerGroup.externalTcpPorts()[1]);
-        Assert.assertEquals(2, containerGroup.containers().size());
+        Assertions.assertEquals(cgName, containerGroup.name());
+        Assertions.assertEquals("Linux", containerGroup.osType().toString());
+        Assertions.assertEquals(0, containerGroup.imageRegistryServers().size());
+        Assertions.assertEquals(1, containerGroup.volumes().size());
+        Assertions.assertNotNull(containerGroup.volumes().get("emptydir1"));
+        Assertions.assertNotNull(containerGroup.ipAddress());
+        Assertions.assertTrue(containerGroup.isIPAddressPrivate());
+        Assertions.assertEquals(2, containerGroup.externalTcpPorts().length);
+        Assertions.assertEquals(2, containerGroup.externalPorts().size());
+        Assertions.assertEquals(2, containerGroup.externalTcpPorts().length);
+        Assertions.assertEquals(8080, containerGroup.externalTcpPorts()[0]);
+        Assertions.assertEquals(80, containerGroup.externalTcpPorts()[1]);
+        Assertions.assertEquals(2, containerGroup.containers().size());
         Container tomcatContainer = containerGroup.containers().get("tomcat");
-        Assert.assertNotNull(tomcatContainer);
+        Assertions.assertNotNull(tomcatContainer);
         Container nginxContainer = containerGroup.containers().get("nginx");
-        Assert.assertNotNull(nginxContainer);
-        Assert.assertEquals("tomcat", tomcatContainer.name());
-        Assert.assertEquals("tomcat", tomcatContainer.image());
-        Assert.assertEquals(1.0, tomcatContainer.resources().requests().cpu(), .1);
-        Assert.assertEquals(1.5, tomcatContainer.resources().requests().memoryInGB(), .1);
-        Assert.assertEquals(1, tomcatContainer.ports().size());
-        Assert.assertEquals(8080, tomcatContainer.ports().get(0).port());
-        Assert.assertNull(tomcatContainer.volumeMounts());
-        Assert.assertNull(tomcatContainer.command());
-        Assert.assertNotNull(tomcatContainer.environmentVariables());
-        Assert.assertEquals(1, tomcatContainer.environmentVariables().size());
-        Assert.assertEquals("nginx", nginxContainer.name());
-        Assert.assertEquals("nginx", nginxContainer.image());
-        Assert.assertEquals(1.0, nginxContainer.resources().requests().cpu(), .1);
-        Assert.assertEquals(1.5, nginxContainer.resources().requests().memoryInGB(), .1);
-        Assert.assertEquals(1, nginxContainer.ports().size());
-        Assert.assertEquals(80, nginxContainer.ports().get(0).port());
-        Assert.assertNull(nginxContainer.volumeMounts());
-        Assert.assertNull(nginxContainer.command());
-        Assert.assertNotNull(nginxContainer.environmentVariables());
-        Assert.assertEquals(1, nginxContainer.environmentVariables().size());
-        Assert.assertTrue(containerGroup.tags().containsKey("tag1"));
-        Assert.assertEquals(ContainerGroupRestartPolicy.NEVER, containerGroup.restartPolicy());
-        Assert.assertTrue(containerGroup.isManagedServiceIdentityEnabled());
-        Assert.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, containerGroup.managedServiceIdentityType());
-        Assert.assertEquals(logAnalyticsWorkspaceId, containerGroup.logAnalytics().workspaceId());
-        Assert.assertEquals("/subscriptions/" + networkProfileSubscriptionId + "/resourceGroups/" +
+        Assertions.assertNotNull(nginxContainer);
+        Assertions.assertEquals("tomcat", tomcatContainer.name());
+        Assertions.assertEquals("tomcat", tomcatContainer.image());
+        Assertions.assertEquals(1.0, tomcatContainer.resources().requests().cpu(), .1);
+        Assertions.assertEquals(1.5, tomcatContainer.resources().requests().memoryInGB(), .1);
+        Assertions.assertEquals(1, tomcatContainer.ports().size());
+        Assertions.assertEquals(8080, tomcatContainer.ports().get(0).port());
+        Assertions.assertNull(tomcatContainer.volumeMounts());
+        Assertions.assertNull(tomcatContainer.command());
+        Assertions.assertNotNull(tomcatContainer.environmentVariables());
+        Assertions.assertEquals(1, tomcatContainer.environmentVariables().size());
+        Assertions.assertEquals("nginx", nginxContainer.name());
+        Assertions.assertEquals("nginx", nginxContainer.image());
+        Assertions.assertEquals(1.0, nginxContainer.resources().requests().cpu(), .1);
+        Assertions.assertEquals(1.5, nginxContainer.resources().requests().memoryInGB(), .1);
+        Assertions.assertEquals(1, nginxContainer.ports().size());
+        Assertions.assertEquals(80, nginxContainer.ports().get(0).port());
+        Assertions.assertNull(nginxContainer.volumeMounts());
+        Assertions.assertNull(nginxContainer.command());
+        Assertions.assertNotNull(nginxContainer.environmentVariables());
+        Assertions.assertEquals(1, nginxContainer.environmentVariables().size());
+        Assertions.assertTrue(containerGroup.tags().containsKey("tag1"));
+        Assertions.assertEquals(ContainerGroupRestartPolicy.NEVER, containerGroup.restartPolicy());
+        Assertions.assertTrue(containerGroup.isManagedServiceIdentityEnabled());
+        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, containerGroup.managedServiceIdentityType());
+        Assertions.assertEquals(logAnalyticsWorkspaceId, containerGroup.logAnalytics().workspaceId());
+        Assertions.assertEquals("/subscriptions/" + networkProfileSubscriptionId + "/resourceGroups/" +
                 networkProfileResourceGroupName + "/providers/Microsoft.Network/networkProfiles/" + networkProfileName,
                 containerGroup.networkProfileId());
-        Assert.assertEquals("dnsServer1", containerGroup.dnsConfig().nameServers().get(0));
-        Assert.assertEquals("dnsSearchDomains", containerGroup.dnsConfig().searchDomains());
-        Assert.assertEquals("dnsOptions", containerGroup.dnsConfig().options());
+        Assertions.assertEquals("dnsServer1", containerGroup.dnsConfig().nameServers().get(0));
+        Assertions.assertEquals("dnsSearchDomains", containerGroup.dnsConfig().searchDomains());
+        Assertions.assertEquals("dnsOptions", containerGroup.dnsConfig().options());
 
         ContainerGroup containerGroup2 = containerGroups.getByResourceGroup(rgName, cgName);
 
-        List<ContainerGroup> containerGroupList = containerGroups.listByResourceGroup(rgName);
-        Assert.assertTrue(containerGroupList.size() > 0);
-        Assert.assertNotNull(containerGroupList.get(0).state());
+        List<ContainerGroup> containerGroupList = containerGroups.listByResourceGroup(rgName)
+            .stream().collect(Collectors.toList());
+        Assertions.assertTrue(containerGroupList.size() > 0);
+        Assertions.assertNotNull(containerGroupList.get(0).state());
 
         containerGroup.refresh();
 
-        Set<Operation> containerGroupOperations = containerGroups.listOperations();
+        Set<Operation> containerGroupOperations = containerGroups.listOperations().stream().collect(Collectors.toSet());
         // Number of supported operation can change hence don't assert with a predefined number.
-        Assert.assertTrue(containerGroupOperations.size() > 0);
+        Assertions.assertTrue(containerGroupOperations.size() > 0);
 
         return containerGroup;
     }
@@ -137,8 +138,8 @@ public class TestContainerInstanceWithPrivateIpAddress extends TestTemplate<Cont
                 .withoutTag("tag1")
                 .withTag("tag2", "value2")
                 .apply();
-        Assert.assertFalse(containerGroup.tags().containsKey("tag"));
-        Assert.assertTrue(containerGroup.tags().containsKey("tag2"));
+        Assertions.assertFalse(containerGroup.tags().containsKey("tag"));
+        Assertions.assertTrue(containerGroup.tags().containsKey("tag2"));
 
         containerGroup.restart();
         containerGroup.stop();
@@ -180,7 +181,7 @@ public class TestContainerInstanceWithPrivateIpAddress extends TestTemplate<Cont
             info.append("\n\tVolume mapping: ");
             for (Map.Entry<String, Volume> entry: resource.volumes().entrySet()) {
                 info.append("\n\t\tName: ").append(entry.getKey()).append(" -> ")
-                        .append(entry.getValue().azureFile() != null 
+                        .append(entry.getValue().azureFile() != null
                         ? entry.getValue().azureFile().shareName() : "empty direcory volume");
             }
         }
