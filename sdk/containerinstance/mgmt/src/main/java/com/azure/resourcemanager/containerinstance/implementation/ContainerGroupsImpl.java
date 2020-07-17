@@ -8,29 +8,17 @@ package com.azure.resourcemanager.containerinstance.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.containerinstance.ContainerInstanceManager;
 import com.azure.resourcemanager.containerinstance.fluent.ContainerGroupsClient;
-import com.azure.resourcemanager.containerinstance.fluent.inner.CachedImagesListResultInner;
-import com.azure.resourcemanager.containerinstance.fluent.inner.CapabilitiesListResultInner;
 import com.azure.resourcemanager.containerinstance.fluent.inner.ContainerGroupInner;
 import com.azure.resourcemanager.containerinstance.fluent.inner.LogsInner;
-import com.azure.resourcemanager.containerinstance.fluent.inner.OperationListResultInner;
 import com.azure.resourcemanager.containerinstance.models.CachedImages;
 import com.azure.resourcemanager.containerinstance.models.Capabilities;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroup;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroups;
 import com.azure.resourcemanager.containerinstance.models.Operation;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
-import com.azure.resourcemanager.resources.fluentcore.utils.PagedList;
-import com.azure.resourcemanager.storage.StorageManager;
 import reactor.core.publisher.Mono;
-
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.function.Function;
 
 /**
  * Implementation for ContainerGroups.
@@ -106,10 +94,7 @@ public class ContainerGroupsImpl
 
     @Override
     public PagedFlux<Operation> listOperationsAsync() {
-        return PagedConverter.convertListToPagedFlux(
-            this.manager().inner().getOperations().listAsync()
-                .map(OperationListResultInner::value)
-        );
+        return this.manager().inner().getOperations().listAsync();
     }
 
     @Override
@@ -119,10 +104,7 @@ public class ContainerGroupsImpl
 
     @Override
     public PagedFlux<CachedImages> listCachedImagesAsync(String location) {
-        return PagedConverter.convertListToPagedFlux(
-            this.manager().inner().listCachedImagesAsync(location)
-                .map(CachedImagesListResultInner::value)
-        );
+        return this.manager().inner().getLocations().listCachedImagesAsync(location);
     }
 
     @Override
@@ -132,10 +114,7 @@ public class ContainerGroupsImpl
 
     @Override
     public PagedFlux<Capabilities> listCapabilitiesAsync(String location) {
-        return PagedConverter.convertListToPagedFlux(
-            this.manager().inner().listCapabilitiesAsync(location)
-                .map(CapabilitiesListResultInner::value)
-        );
+        return this.manager().inner().getLocations().listCapabilitiesAsync(location);
     }
 
     @Override

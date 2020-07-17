@@ -136,7 +136,7 @@ public final class ContainerInstanceManager
      */
     public ContainerGroups containerGroups() {
         if (this.containerGroups == null) {
-            this.containerGroups = new ContainerGroupsImpl(this, this.storageManager, this.authorizationManager);
+            this.containerGroups = new ContainerGroupsImpl(this);
         }
 
         return this.containerGroups;
