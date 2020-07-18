@@ -2,19 +2,18 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.integration;
 
-import com.azure.data.cosmos.CosmosClient;
-import com.azure.data.cosmos.CosmosItemProperties;
-import com.azure.data.cosmos.FeedOptions;
-import com.azure.data.cosmos.FeedResponse;
-import com.azure.spring.data.cosmos.config.CosmosDBConfig;
-import com.azure.spring.data.cosmos.core.CosmosTemplate;
-import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
-import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
+import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedResponse;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.common.TestUtils;
+import com.azure.spring.data.cosmos.config.CosmosConfig;
+import com.azure.spring.data.cosmos.core.CosmosTemplate;
+import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
 import com.azure.spring.data.cosmos.domain.PageableAddress;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.PageableAddressRepository;
+import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -65,7 +64,7 @@ public class PageableAddressRepositoryIT {
     private ApplicationContext applicationContext;
 
     @Autowired
-    private CosmosDBConfig dbConfig;
+    private CosmosConfig cosmosConfig;
 
     @Before
     public void setUp() {
@@ -166,22 +165,22 @@ public class PageableAddressRepositoryIT {
     public void testOffsetAndLimit() {
         final int skipCount = 2;
         final int takeCount = 2;
-        final List<CosmosItemProperties> results = new ArrayList<>();
-        final FeedOptions options = new FeedOptions();
-        options.enableCrossPartitionQuery(true);
-        options.maxDegreeOfParallelism(2);
+        final List<PageableAddress> results = new ArrayList<>();
+        final CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        options.setMaxDegreeOfParallelism(2);
 
         final String query = "SELECT * from c OFFSET " + skipCount + " LIMIT " + takeCount;
 
-        final CosmosClient cosmosClient = applicationContext.getBean(CosmosClient.class);
-        final Flux<FeedResponse<CosmosItemProperties>> feedResponseFlux =
-            cosmosClient.getDatabase(dbConfig.getDatabase())
+        final CosmosAsyncClient cosmosClient = applicationContext.getBean(CosmosAsyncClient.class);
+        final Flux<FeedResponse<PageableAddress>> feedResponseFlux =
+            cosmosClient.getDatabase(cosmosConfig.getDatabase())
                         .getContainer(entityInformation.getContainerName())
-                        .queryItems(query, options);
+                        .queryItems(query, options, PageableAddress.class)
+                        .byPage();
 
         StepVerifier.create(feedResponseFlux)
                     .consumeNextWith(cosmosItemPropertiesFeedResponse ->
-                        results.addAll(cosmosItemPropertiesFeedResponse.results()))
+                        results.addAll(cosmosItemPropertiesFeedResponse.getResults()))
                     .verifyComplete();
         assertThat(results.size()).isEqualTo(takeCount);
     }

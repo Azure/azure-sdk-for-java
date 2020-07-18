@@ -5,6 +5,7 @@ package com.azure.resourcemanager.appplatform.implementation;
 
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
 import com.azure.resourcemanager.appplatform.fluent.inner.ServiceResourceInner;
+import com.azure.resourcemanager.appplatform.models.CertificateProperties;
 import com.azure.resourcemanager.appplatform.models.ClusterResourceProperties;
 import com.azure.resourcemanager.appplatform.models.ConfigServerGitProperty;
 import com.azure.resourcemanager.appplatform.models.ConfigServerProperties;
@@ -12,15 +13,19 @@ import com.azure.resourcemanager.appplatform.models.ConfigServerSettings;
 import com.azure.resourcemanager.appplatform.models.Sku;
 import com.azure.resourcemanager.appplatform.models.SpringApps;
 import com.azure.resourcemanager.appplatform.models.SpringService;
+import com.azure.resourcemanager.appplatform.models.SpringServiceCertificates;
 import com.azure.resourcemanager.appplatform.models.TestKeyType;
 import com.azure.resourcemanager.appplatform.models.TestKeys;
 import com.azure.resourcemanager.appplatform.models.TraceProperties;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import reactor.core.publisher.Mono;
 
 public class SpringServiceImpl
     extends GroupableResourceImpl<SpringService, ServiceResourceInner, SpringServiceImpl, AppPlatformManager>
     implements SpringService, SpringService.Definition, SpringService.Update {
+    private final SpringServiceCertificatesImpl certificates = new SpringServiceCertificatesImpl(this);
+    private final SpringAppsImpl apps = new SpringAppsImpl(this);
 
     SpringServiceImpl(String name, ServiceResourceInner innerObject, AppPlatformManager manager) {
         super(name, innerObject, manager);
@@ -42,7 +47,12 @@ public class SpringServiceImpl
 
     @Override
     public SpringApps apps() {
-        return new SpringAppsImpl(this);
+        return apps;
+    }
+
+    @Override
+    public SpringServiceCertificates certificates() {
+        return certificates;
     }
 
     @Override
@@ -182,5 +192,40 @@ public class SpringServiceImpl
     @Override
     protected Mono<ServiceResourceInner> getInnerAsync() {
         return manager().inner().getServices().getByResourceGroupAsync(resourceGroupName(), name());
+    }
+
+    @Override
+    public SpringServiceImpl withCertificate(String name, String keyVaultUri, String certNameInKeyVault) {
+        this.addPostRunDependent(
+            context -> certificates.createOrUpdateAsync(
+                name,
+                new CertificateProperties().withVaultUri(keyVaultUri).withKeyVaultCertName(certNameInKeyVault)
+            ).cast(Indexable.class)
+        );
+        return this;
+    }
+
+    @Override
+    public SpringServiceImpl withCertificate(String name, String keyVaultUri,
+                                             String certNameInKeyVault, String certVersion) {
+        this.addPostRunDependent(
+            context -> certificates.createOrUpdateAsync(
+                name,
+                new CertificateProperties()
+                    .withVaultUri(keyVaultUri)
+                    .withKeyVaultCertName(certNameInKeyVault)
+                    .withCertVersion(certVersion)
+            ).cast(Indexable.class)
+        );
+        return this;
+    }
+
+    @Override
+    public SpringServiceImpl withoutCertificate(String name) {
+        this.addPostRunDependent(
+            context -> certificates.deleteByNameAsync(name)
+                .then(context.voidMono())
+        );
+        return this;
     }
 }

@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.performance;
 
-import com.azure.data.cosmos.CosmosClient;
-import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.sync.CosmosSyncClient;
+import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosClient;
+import com.azure.cosmos.CosmosException;
 import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
 import com.azure.spring.data.cosmos.performance.domain.PerfPerson;
 import com.azure.spring.data.cosmos.performance.repository.PerfPersonRepository;
@@ -52,10 +52,10 @@ public class PerformanceCompare {
     private float acceptanceDiff;
 
     @Autowired
-    private CosmosSyncClient cosmosSyncClient;
+    private CosmosClient cosmosClient;
 
     @Autowired
-    private CosmosClient asyncClient;
+    private CosmosAsyncClient cosmosAsyncClient;
 
     @Autowired
     private PerfPersonRepository repository;
@@ -65,16 +65,16 @@ public class PerformanceCompare {
     private static PerformanceReport report = new PerformanceReport();
 
     @Before
-    public void setUp() throws CosmosClientException {
+    public void setUp() throws CosmosException {
         if (!hasInit) {
-            DatabaseUtils.createDatabase(cosmosSyncClient, Constants.PERF_DATABASE_NAME);
-            DatabaseUtils.createContainer(cosmosSyncClient, Constants.PERF_DATABASE_NAME,
-                    Constants.SPRING_COLLECTION_NAME);
-            DatabaseUtils.createContainer(cosmosSyncClient,
-                Constants.PERF_DATABASE_NAME, Constants.SDK_COLLECTION_NAME);
+            DatabaseUtils.createDatabase(cosmosClient, Constants.PERF_DATABASE_NAME);
+            DatabaseUtils.createContainer(cosmosClient, Constants.PERF_DATABASE_NAME,
+                    Constants.SPRING_CONTAINER_NAME);
+            DatabaseUtils.createContainer(cosmosClient,
+                Constants.PERF_DATABASE_NAME, Constants.SDK_CONTAINER_NAME);
 
-            sdkService = new SdkService(cosmosSyncClient, Constants.PERF_DATABASE_NAME,
-                    Constants.SDK_COLLECTION_NAME, asyncClient);
+            sdkService = new SdkService(cosmosClient, Constants.PERF_DATABASE_NAME,
+                    Constants.SDK_CONTAINER_NAME, cosmosAsyncClient);
             hasInit = true;
         }
 

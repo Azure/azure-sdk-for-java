@@ -140,6 +140,7 @@ public final class VirtualMachineSizesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2019-12-01";
+        context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), location, apiVersion, this.client.getSubscriptionId(), context)
             .map(

@@ -212,18 +212,17 @@ public final class BlobItemProperties {
     @JsonProperty(value = "AccessTierChangeTime")
     private OffsetDateTime accessTierChangeTime;
 
-    // TODO: (rickle-msft) uncomment when these are returned on lists.
-    /*
-    private Map<String, ObjectReplicationPolicy> objectReplicationSourcePolicies;
-
-    private String objectReplicationDestinationPolicyId;
-    */
-
     /*
      * The tagCount property.
      */
     @JsonProperty(value = "TagCount")
     private Integer tagCount;
+
+    /*
+     * Possible values include: 'High', 'Standard'
+     */
+    @JsonProperty(value = "RehydratePriority")
+    private RehydratePriority rehydratePriority;
 
     /**
      * Get the creationTime property: The creationTime property.
@@ -909,6 +908,28 @@ public final class BlobItemProperties {
      */
     public BlobItemProperties setTagCount(Integer tagCount) {
         this.tagCount = tagCount;
+        return this;
+    }
+
+    /**
+     * Get the rehydratePriority property: Possible values include: 'High',
+     * 'Standard'.
+     *
+     * @return the rehydratePriority value.
+     */
+    public RehydratePriority getRehydratePriority() {
+        return this.rehydratePriority;
+    }
+
+    /**
+     * Set the rehydratePriority property: Possible values include: 'High',
+     * 'Standard'.
+     *
+     * @param rehydratePriority the rehydratePriority value to set.
+     * @return the BlobItemProperties object itself.
+     */
+    public BlobItemProperties setRehydratePriority(RehydratePriority rehydratePriority) {
+        this.rehydratePriority = rehydratePriority;
         return this;
     }
 }

@@ -20,12 +20,17 @@ import com.azure.storage.blob.models.CustomerProvidedKey
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.LeaseStatusType
 import com.azure.storage.blob.models.ListBlobsOptions
+import com.azure.storage.blob.models.ObjectReplicationPolicy
+import com.azure.storage.blob.models.ObjectReplicationStatus
+import com.azure.storage.blob.models.RehydratePriority
+import com.azure.storage.blob.options.BlobSetAccessTierOptions
 import com.azure.storage.blob.options.PageBlobCreateOptions
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.common.Utility
 import reactor.test.StepVerifier
+import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -934,6 +939,32 @@ class ContainerAPITest extends APISpec {
         pagedResponse2.getContinuationToken() == null
     }
 
+    @Unroll
+    def "List blobs flat rehydrate priority"() {
+        setup:
+        def name = generateBlobName()
+        def bc = cc.getBlobClient(name).getBlockBlobClient()
+        bc.upload(defaultInputStream.get(), 7)
+
+        if (rehydratePriority != null) {
+            bc.setAccessTier(AccessTier.ARCHIVE)
+
+            bc.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT).setPriority(rehydratePriority), null, null)
+        }
+
+        when:
+        def item = cc.listBlobs().iterator().next()
+
+        then:
+        item.getProperties().getRehydratePriority() == rehydratePriority
+
+        where:
+        rehydratePriority          || _
+        null                       || _
+        RehydratePriority.STANDARD || _
+        RehydratePriority.HIGH     || _
+    }
+
     def "List blobs flat error"() {
         setup:
         cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
@@ -981,6 +1012,50 @@ class ContainerAPITest extends APISpec {
 
         then: "Still have paging functionality"
         notThrown(Exception)
+    }
+
+    /*
+    This test requires two accounts that are configured in a very specific way. It is not feasible to setup that
+    relationship programmatically, so we have recorded a successful interaction and only test recordings.
+    */
+    @Requires( {playbackMode()})
+    def "List blobs flat ORS"() {
+        setup:
+        def sourceContainer = primaryBlobServiceClient.getBlobContainerClient("test1")
+        def destContainer = alternateBlobServiceClient.getBlobContainerClient("test2")
+
+        when:
+        def sourceBlobs = sourceContainer.listBlobs().stream().collect(Collectors.toList())
+        def destBlobs = destContainer.listBlobs().stream().collect(Collectors.toList())
+
+        then:
+        int i = 0
+        for (def blob : sourceBlobs) {
+            if (i == 1) {
+                assert blob.getObjectReplicationSourcePolicies() == null
+            } else {
+                assert validateOR(blob.getObjectReplicationSourcePolicies(), "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80", "105f9aad-f39b-4064-8e47-ccd7937295ca")
+            }
+            i++
+        }
+
+        /* Service specifies no ors metadata on the dest blobs. */
+        for (def blob : destBlobs) {
+            assert blob.getObjectReplicationSourcePolicies() == null
+        }
+    }
+
+    def validateOR(List<ObjectReplicationPolicy> policies, String policyId, String ruleId) {
+        return policies.stream()
+            .filter({ policy -> policyId.equals(policy.getPolicyId()) })
+            .findFirst()
+            .get()
+            .getRules()
+            .stream()
+            .filter({ rule -> ruleId.equals(rule.getRuleId()) })
+            .findFirst()
+            .get()
+            .getStatus() == ObjectReplicationStatus.COMPLETE
     }
 
     def "List blobs hierarchy"() {
@@ -1226,6 +1301,37 @@ class ContainerAPITest extends APISpec {
         secondPage.getContinuationToken() == null
     }
 
+    /*
+    This test requires two accounts that are configured in a very specific way. It is not feasible to setup that
+    relationship programmatically, so we have recorded a successful interaction and only test recordings.
+    */
+    @Requires( {playbackMode()})
+    def "List blobs hier ORS"() {
+        setup:
+        def sourceContainer = primaryBlobServiceClient.getBlobContainerClient("test1")
+        def destContainer = alternateBlobServiceClient.getBlobContainerClient("test2")
+
+        when:
+        def sourceBlobs = sourceContainer.listBlobsByHierarchy("/").stream().collect(Collectors.toList())
+        def destBlobs = destContainer.listBlobsByHierarchy("/").stream().collect(Collectors.toList())
+
+        then:
+        int i = 0
+        for (def blob : sourceBlobs) {
+            if (i == 1) {
+                assert blob.getObjectReplicationSourcePolicies() == null
+            } else {
+                assert validateOR(blob.getObjectReplicationSourcePolicies(), "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80", "105f9aad-f39b-4064-8e47-ccd7937295ca")
+            }
+            i++
+        }
+
+        /* Service specifies no ors metadata on the dest blobs. */
+        for (def blob : destBlobs) {
+            assert blob.getObjectReplicationSourcePolicies() == null
+        }
+    }
+
     def "List blobs flat simple"() {
         setup: "Create 10 page blobs in the container"
         def NUM_BLOBS = 10
@@ -1237,6 +1343,32 @@ class ContainerAPITest extends APISpec {
 
         expect: "listing operation will fetch all 10 blobs, despite page size being smaller than 10"
         cc.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(PAGE_SIZE), null).stream().count() == NUM_BLOBS
+    }
+
+    @Unroll
+    def "List blobs hier rehydrate priority"() {
+        setup:
+        def name = generateBlobName()
+        def bc = cc.getBlobClient(name).getBlockBlobClient()
+        bc.upload(defaultInputStream.get(), 7)
+
+        if (rehydratePriority != null) {
+            bc.setAccessTier(AccessTier.ARCHIVE)
+
+            bc.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT).setPriority(rehydratePriority), null, null)
+        }
+
+        when:
+        def item = cc.listBlobsByHierarchy(null).iterator().next()
+
+        then:
+        item.getProperties().getRehydratePriority() == rehydratePriority
+
+        where:
+        rehydratePriority          || _
+        null                       || _
+        RehydratePriority.STANDARD || _
+        RehydratePriority.HIGH     || _
     }
 
     def "List blobs hier error"() {

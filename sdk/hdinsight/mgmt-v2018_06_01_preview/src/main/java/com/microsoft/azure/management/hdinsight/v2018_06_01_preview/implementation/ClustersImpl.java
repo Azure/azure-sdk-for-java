@@ -175,4 +175,10 @@ class ClustersImpl extends GroupableResourcesCoreImpl<Cluster, ClusterImpl, Clus
         return client.resizeAsync(resourceGroupName, clusterName).toCompletable();
     }
 
+    @Override
+    public Completable updateAutoScaleConfigurationAsync(String resourceGroupName, String clusterName) {
+        ClustersInner client = this.inner();
+        return client.updateAutoScaleConfigurationAsync(resourceGroupName, clusterName).toCompletable();
+    }
+
 }

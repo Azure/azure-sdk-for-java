@@ -5,13 +5,12 @@ package com.azure.spring.data.cosmos.domain;
 import com.azure.spring.data.cosmos.core.mapping.Document;
 import com.azure.spring.data.cosmos.core.mapping.DocumentIndexingPolicy;
 import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
-import com.azure.spring.data.cosmos.common.TestConstants;
 import org.springframework.data.annotation.Id;
 
 import java.util.Objects;
 
 @Document()
-@DocumentIndexingPolicy(includePaths = TestConstants.ORDER_BY_STRING_PATH)
+@DocumentIndexingPolicy()
 public class SortedProject {
 
     @Id

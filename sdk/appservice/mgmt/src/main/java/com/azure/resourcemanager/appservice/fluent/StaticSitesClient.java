@@ -572,6 +572,7 @@ public final class StaticSitesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), context)
             .map(
@@ -716,6 +717,7 @@ public final class StaticSitesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(
                 this.client.getEndpoint(),
@@ -875,6 +877,7 @@ public final class StaticSitesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getByResourceGroup(
                 this.client.getEndpoint(),
@@ -1058,6 +1061,7 @@ public final class StaticSitesClient
         } else {
             staticSiteEnvelope.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdateStaticSite(
                 this.client.getEndpoint(),
@@ -1233,6 +1237,7 @@ public final class StaticSitesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .deleteStaticSite(
                 this.client.getEndpoint(),
@@ -1398,6 +1403,7 @@ public final class StaticSitesClient
         } else {
             staticSiteEnvelope.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .updateStaticSite(
                 this.client.getEndpoint(),
@@ -1592,6 +1598,7 @@ public final class StaticSitesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listStaticSiteUsers(
                 this.client.getEndpoint(),
@@ -1783,6 +1790,7 @@ public final class StaticSitesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .deleteStaticSiteUser(
                 this.client.getEndpoint(),
@@ -1991,6 +1999,7 @@ public final class StaticSitesClient
         } else {
             staticSiteUserEnvelope.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .updateStaticSiteUser(
                 this.client.getEndpoint(),
@@ -2207,6 +2216,7 @@ public final class StaticSitesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getStaticSiteBuilds(
                 this.client.getEndpoint(),
@@ -2382,6 +2392,7 @@ public final class StaticSitesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getStaticSiteBuild(
                 this.client.getEndpoint(),
@@ -2566,6 +2577,7 @@ public final class StaticSitesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .deleteStaticSiteBuild(
                 this.client.getEndpoint(),
@@ -2744,6 +2756,7 @@ public final class StaticSitesClient
         } else {
             appSettings.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdateStaticSiteBuildFunctionAppSettings(
                 this.client.getEndpoint(),
@@ -2948,6 +2961,7 @@ public final class StaticSitesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listStaticSiteBuildFunctions(
                 this.client.getEndpoint(),
@@ -3130,6 +3144,7 @@ public final class StaticSitesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listStaticSiteBuildFunctionAppSettings(
                 this.client.getEndpoint(),
@@ -3319,6 +3334,7 @@ public final class StaticSitesClient
         } else {
             appSettings.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdateStaticSiteFunctionAppSettings(
                 this.client.getEndpoint(),
@@ -3520,6 +3536,7 @@ public final class StaticSitesClient
         } else {
             staticSiteUserRolesInvitationEnvelope.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .createUserRolesInvitationLink(
                 this.client.getEndpoint(),
@@ -3720,6 +3737,7 @@ public final class StaticSitesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listStaticSiteCustomDomains(
                 this.client.getEndpoint(),
@@ -3899,6 +3917,7 @@ public final class StaticSitesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdateStaticSiteCustomDomain(
                 this.client.getEndpoint(),
@@ -4084,6 +4103,7 @@ public final class StaticSitesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .deleteStaticSiteCustomDomain(
                 this.client.getEndpoint(),
@@ -4251,6 +4271,7 @@ public final class StaticSitesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .validateCustomDomainCanBeAddedToStaticSite(
                 this.client.getEndpoint(),
@@ -4409,6 +4430,7 @@ public final class StaticSitesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .detachStaticSite(
                 this.client.getEndpoint(),
@@ -4568,6 +4590,7 @@ public final class StaticSitesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listStaticSiteFunctions(
                 this.client.getEndpoint(),
@@ -4736,6 +4759,7 @@ public final class StaticSitesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listStaticSiteFunctionAppSettings(
                 this.client.getEndpoint(),
@@ -4905,6 +4929,7 @@ public final class StaticSitesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listStaticSiteSecrets(
                 this.client.getEndpoint(),
@@ -5093,6 +5118,7 @@ public final class StaticSitesClient
         } else {
             resetPropertiesEnvelope.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .resetStaticSiteApiKey(
                 this.client.getEndpoint(),
@@ -5223,6 +5249,7 @@ public final class StaticSitesClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listNext(nextLink, context)
             .map(
@@ -5281,6 +5308,7 @@ public final class StaticSitesClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getStaticSitesByResourceGroupNext(nextLink, context)
             .map(
@@ -5338,6 +5366,7 @@ public final class StaticSitesClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listStaticSiteUsersNext(nextLink, context)
             .map(
@@ -5396,6 +5425,7 @@ public final class StaticSitesClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getStaticSiteBuildsNext(nextLink, context)
             .map(
@@ -5454,6 +5484,7 @@ public final class StaticSitesClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listStaticSiteBuildFunctionsNext(nextLink, context)
             .map(
@@ -5512,6 +5543,7 @@ public final class StaticSitesClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listStaticSiteCustomDomainsNext(nextLink, context)
             .map(
@@ -5570,6 +5602,7 @@ public final class StaticSitesClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listStaticSiteFunctionsNext(nextLink, context)
             .map(

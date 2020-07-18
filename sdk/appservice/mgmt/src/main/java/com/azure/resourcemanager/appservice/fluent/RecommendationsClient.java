@@ -395,6 +395,7 @@ public final class RecommendationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
@@ -577,6 +578,7 @@ public final class RecommendationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .resetAllFilters(
                 this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), context);
@@ -698,6 +700,7 @@ public final class RecommendationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .disableRecommendationForSubscription(
                 this.client.getEndpoint(), name, this.client.getSubscriptionId(), this.client.getApiVersion(), context);
@@ -865,6 +868,7 @@ public final class RecommendationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listHistoryForHostingEnvironment(
                 this.client.getEndpoint(),
@@ -1128,6 +1132,7 @@ public final class RecommendationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listRecommendedRulesForHostingEnvironment(
                 this.client.getEndpoint(),
@@ -1381,6 +1386,7 @@ public final class RecommendationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .disableAllForHostingEnvironment(
                 this.client.getEndpoint(),
@@ -1559,6 +1565,7 @@ public final class RecommendationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .resetAllFiltersForHostingEnvironment(
                 this.client.getEndpoint(),
@@ -1754,6 +1761,7 @@ public final class RecommendationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getRuleDetailsByHostingEnvironment(
                 this.client.getEndpoint(),
@@ -2047,6 +2055,7 @@ public final class RecommendationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .disableRecommendationForHostingEnvironment(
                 this.client.getEndpoint(),
@@ -2239,6 +2248,7 @@ public final class RecommendationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listHistoryForWebApp(
                 this.client.getEndpoint(),
@@ -2487,6 +2497,7 @@ public final class RecommendationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listRecommendedRulesForWebApp(
                 this.client.getEndpoint(),
@@ -2712,6 +2723,7 @@ public final class RecommendationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .disableAllForWebApp(
                 this.client.getEndpoint(),
@@ -2862,6 +2874,7 @@ public final class RecommendationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .resetAllFiltersForWebApp(
                 this.client.getEndpoint(),
@@ -3037,6 +3050,7 @@ public final class RecommendationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getRuleDetailsByWebApp(
                 this.client.getEndpoint(),
@@ -3299,6 +3313,7 @@ public final class RecommendationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .disableRecommendationForSite(
                 this.client.getEndpoint(),
@@ -3420,6 +3435,7 @@ public final class RecommendationsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listNext(nextLink, context)
             .map(
@@ -3478,6 +3494,7 @@ public final class RecommendationsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listHistoryForHostingEnvironmentNext(nextLink, context)
             .map(
@@ -3536,6 +3553,7 @@ public final class RecommendationsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listRecommendedRulesForHostingEnvironmentNext(nextLink, context)
             .map(
@@ -3593,6 +3611,7 @@ public final class RecommendationsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listHistoryForWebAppNext(nextLink, context)
             .map(
@@ -3650,6 +3669,7 @@ public final class RecommendationsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listRecommendedRulesForWebAppNext(nextLink, context)
             .map(

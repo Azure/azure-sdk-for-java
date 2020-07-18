@@ -4,12 +4,17 @@ package com.azure.spring.data.cosmos.repository.integration;
 
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
-import com.azure.spring.data.cosmos.exception.CosmosDBAccessException;
-import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import com.azure.spring.data.cosmos.domain.IntegerIdDomain;
+import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.IntegerIdDomainRepository;
-import org.junit.*;
+import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,7 +22,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -131,7 +141,7 @@ public class IntegerIdDomainRepositoryIT {
         Assert.assertEquals(0, this.repository.count());
     }
 
-    @Test(expected = CosmosDBAccessException.class)
+    @Test(expected = CosmosAccessException.class)
     public void testDeleteByIdShouldFailIfNothingToDelete() {
         this.repository.deleteAll();
         this.repository.deleteById(DOMAIN.getNumber());
@@ -144,7 +154,7 @@ public class IntegerIdDomainRepositoryIT {
         Assert.assertEquals(0, this.repository.count());
     }
 
-    @Test(expected = CosmosDBAccessException.class)
+    @Test(expected = CosmosAccessException.class)
     public void testDeleteShouldFailIfNothingToDelete() {
         this.repository.deleteAll();
         this.repository.delete(DOMAIN);
