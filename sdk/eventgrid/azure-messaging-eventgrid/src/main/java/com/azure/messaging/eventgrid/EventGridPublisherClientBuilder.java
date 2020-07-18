@@ -11,17 +11,21 @@ import com.azure.core.http.policy.*;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import reactor.core.publisher.Mono;
+import com.azure.messaging.eventgrid.events.CloudEvent;
+import com.azure.messaging.eventgrid.events.EventGridEvent;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
  * A Builder class to create service clients that can publish events to EventGrid.
  * @see EventGridPublisherAsyncClient
- * @see com.azure.messaging.eventgrid.models.EventGridEvent
- * @see com.azure.messaging.eventgrid.models.CloudEvent
+ * @see EventGridEvent
+ * @see CloudEvent
  */
 @ServiceClientBuilder(serviceClients = {EventGridPublisherClient.class, EventGridPublisherAsyncClient.class})
 public class EventGridPublisherClientBuilder {
@@ -30,9 +34,17 @@ public class EventGridPublisherClientBuilder {
 
     private static final String AEG_SAS_TOKEN = "aeg-sas-token";
 
+    private static final String EVENTGRID_PROPERTIES = "azure-messaging-eventgrid.properties";
+    private static final String NAME = "name";
+    private static final String VERSION = "version";
+
+    private final String clientName;
+
+    private final String clientVersion;
+
     private final ClientLogger logger = new ClientLogger(EventGridPublisherClientBuilder.class);
 
-    private List<HttpPipelinePolicy> policies;
+    private final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
     private Configuration configuration;
 
@@ -58,6 +70,9 @@ public class EventGridPublisherClientBuilder {
      */
     public EventGridPublisherClientBuilder() {
         this.httpLogOptions = new HttpLogOptions();
+        Map<String, String> properties = CoreUtils.getProperties(EVENTGRID_PROPERTIES);
+        clientName = properties.getOrDefault(NAME, "UnknownName");
+        clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
     }
 
 
@@ -81,9 +96,9 @@ public class EventGridPublisherClientBuilder {
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> httpPipelinePolicies = new ArrayList<>();
-        // TODO: Figure this out
-        /*httpPipelinePolicies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
-            buildConfiguration));*/
+
+        httpPipelinePolicies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
+            buildConfiguration));
         httpPipelinePolicies.add(new RequestIdPolicy());
 
         HttpPolicyProviders.addBeforeRetryPolicies(httpPipelinePolicies);
@@ -91,6 +106,7 @@ public class EventGridPublisherClientBuilder {
 
         httpPipelinePolicies.add(new AddDatePolicy());
 
+        // Using token before key if both are set
         if (sasToken != null) {
             httpPipelinePolicies.add((context, next) -> {
                 context.getHttpRequest().getHeaders().put(AEG_SAS_TOKEN, sasToken.getToken());
@@ -181,10 +197,12 @@ public class EventGridPublisherClientBuilder {
      * @return the builder itself.
      */
     public EventGridPublisherClientBuilder endpoint(String endpoint) {
-        if (CoreUtils.isNullOrEmpty(endpoint)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'endpoint' cannot be null or empty."));
+        try {
+            URL url = new URL(endpoint);
+            this.endpoint = url.getHost();
+        } catch (MalformedURLException e) {
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL"));
         }
-        this.endpoint = endpoint;
         return this;
     }
 
@@ -227,15 +245,5 @@ public class EventGridPublisherClientBuilder {
         return this;
     }
 
-    /**
-     * Set the service version to use.
-     * @param version the service version to set.
-     *
-     * @return the builder itself.
-     */
-    public EventGridPublisherClientBuilder serviceVersion(EventGridServiceVersion version) {
-        this.serviceVersion = version;
-        return this;
-    }
 
 }

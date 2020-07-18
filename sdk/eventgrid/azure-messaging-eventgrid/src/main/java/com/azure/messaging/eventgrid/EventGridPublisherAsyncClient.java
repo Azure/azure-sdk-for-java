@@ -9,8 +9,11 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
-import com.azure.messaging.eventgrid.models.CloudEvent;
-import com.azure.messaging.eventgrid.models.EventGridEvent;
+import com.azure.core.util.Context;
+import com.azure.messaging.eventgrid.events.CloudEvent;
+import com.azure.messaging.eventgrid.events.EventGridEvent;
+import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImpl;
+import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImplBuilder;
 import reactor.core.publisher.Mono;
 
 /**
@@ -23,8 +26,14 @@ import reactor.core.publisher.Mono;
 @ServiceClient(builder = EventGridPublisherClientBuilder.class, isAsync = true)
 public class EventGridPublisherAsyncClient {
 
+    private String endpoint;
+
+    private EventGridPublisherClientImpl impl;
+
     EventGridPublisherAsyncClient(HttpPipeline pipeline, String endpoint) {
-        // TODO: implement method
+        this.impl = new EventGridPublisherClientImplBuilder().pipeline(pipeline).buildClient();
+
+        this.endpoint = endpoint;
     }
 
     /**
@@ -35,6 +44,11 @@ public class EventGridPublisherAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> publishEvents(Iterable<EventGridEvent> events) {
+        // TODO: implement method
+        return null;
+    }
+
+    public Mono<Void> publishEvents(Iterable<EventGridEvent> events, Context context) {
         // TODO: implement method
         return null;
     }
@@ -51,6 +65,11 @@ public class EventGridPublisherAsyncClient {
         return null;
     }
 
+    public Mono<Void> publishCloudEvents(Iterable<CloudEvent> events, Context context) {
+        // TODO: implement method
+        return null;
+    }
+
     /**
      * Publishes the given custom events to the set topic or domain.
      * @param events the custom events to publish.
@@ -59,6 +78,11 @@ public class EventGridPublisherAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> publishCustomEvents(Iterable<Object> events) {
+        // TODO: implement method
+        return null;
+    }
+
+    public Mono<Void> publishCustomEvents(Iterable<Object> events, Context context) {
         // TODO: implement method
         return null;
     }
@@ -75,6 +99,11 @@ public class EventGridPublisherAsyncClient {
         return null;
     }
 
+    public Mono<Response<Void>> publishEventsWithResponse(Iterable<EventGridEvent> events, Context context) {
+        // TODO: implement method
+        return null;
+    }
+
     /**
      * Publishes the given cloud events to the set topic or domain and gives the response issued by EventGrid.
      * @param events the cloud events to publish.
@@ -87,6 +116,11 @@ public class EventGridPublisherAsyncClient {
         return null;
     }
 
+    public Mono<Response<Void>> publishCloudEventsWithResponse(Iterable<CloudEvent> events, Context context) {
+        // TODO: implement method
+        return null;
+    }
+
     /**
      * Publishes the given custom events to the set topic or domain and gives the response issued by EventGrid.
      * @param events the custom events to publish.
@@ -95,6 +129,11 @@ public class EventGridPublisherAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> publishCustomEventsWithResponse(Iterable<Object> events) {
+        // TODO: implement method
+        return null;
+    }
+
+    public Mono<Response<Void>> publishCustomEventsWithResponse(Iterable<Object> events, Context context) {
         // TODO: implement method
         return null;
     }
