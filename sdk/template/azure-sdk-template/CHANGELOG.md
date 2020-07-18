@@ -1,5 +1,8 @@
 # Release History
 
+## 1.1.0-beta.1 (Unreleased)
+
+
 ## 1.0.5 (2020-07-17)
 - Test Java Release Pipeline on a non-beta version (normal docs, normal sources)
 
