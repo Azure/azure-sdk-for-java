@@ -3,8 +3,10 @@ package com.azure.messaging.eventgrid;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.Response;
-import com.azure.messaging.eventgrid.models.CloudEvent;
-import com.azure.messaging.eventgrid.models.EventGridEvent;
+import com.azure.messaging.eventgrid.events.CloudEvent;
+import com.azure.messaging.eventgrid.events.CloudEventBuilder;
+import com.azure.messaging.eventgrid.events.EventGridEvent;
+import com.azure.messaging.eventgrid.events.EventGridEventBuilder;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -32,17 +34,18 @@ public class EventGridPublisherClientTests {
             .buildAsyncClient();
 
         List<EventGridEvent> events = new ArrayList<>();
-        events.add(new EventGridEvent()
-            .setId(UUID.randomUUID().toString())
-            .setSubject("Test")
-            .setEventType("Microsoft.MockPublisher.TestEvent")
-            .setData(new HashMap<String, String>() {{
+        events.add(new EventGridEventBuilder()
+            .id(UUID.randomUUID().toString())
+            .subject("Test")
+            .eventType("Microsoft.MockPublisher.TestEvent")
+            .data(new HashMap<String, String>() {{
                 put("Field1", "Value1");
                 put("Field2", "Value2");
                 put("Field3", "Value3");
             }})
-            .setDataVersion("1.0")
-            .setEventTime(OffsetDateTime.now()));
+            .dataVersion("1.0")
+            .eventTime(OffsetDateTime.now())
+            .build());
         egClient.publishEventsWithResponse(events).
             subscribe(response -> {
                 assertNotNull(response);
@@ -66,16 +69,17 @@ public class EventGridPublisherClientTests {
             .buildAsyncClient();
 
         List<CloudEvent> events = new ArrayList<>();
-        events.add(new CloudEvent()
-            .setId(UUID.randomUUID().toString())
-            .setSubject("Test")
-            .setType("Microsoft.MockPublisher.TestEvent")
-            .setData(new HashMap<String, String>() {{
+        events.add(new CloudEventBuilder()
+            .id(UUID.randomUUID().toString())
+            .subject("Test")
+            .type("Microsoft.MockPublisher.TestEvent")
+            .data(new HashMap<String, String>() {{
                 put("Field1", "Value1");
                 put("Field2", "Value2");
                 put("Field3", "Value3");
             }})
-            .setTime(OffsetDateTime.now()));
+            .time(OffsetDateTime.now())
+            .build());
         egClient.publishCloudEventsWithResponse(events).
             subscribe(response -> {
                 assertNotNull(response);
@@ -128,18 +132,19 @@ public class EventGridPublisherClientTests {
             .buildClient();
 
         List<EventGridEvent> events = new ArrayList<>();
-        events.add(new EventGridEvent()
-            .setId(UUID.randomUUID().toString())
-            .setSubject("Test")
-            .setEventType("Microsoft.MockPublisher.TestEvent")
-            .setData(new HashMap<String, String>() {{
+        events.add(new EventGridEventBuilder()
+            .id(UUID.randomUUID().toString())
+            .subject("Test")
+            .eventType("Microsoft.MockPublisher.TestEvent")
+            .data(new HashMap<String, String>() {{
                 put("Field1", "Value1");
                 put("Field2", "Value2");
                 put("Field3", "Value3");
             }})
-            .setDataVersion("1.0")
-            .setEventTime(OffsetDateTime.now()));
-        Response<Void> response = egClient.publishEventsWithResponse(events);
+            .dataVersion("1.0")
+            .eventTime(OffsetDateTime.now())
+            .build());
+        Response<Void> response = egClient.sendEventsWithResponse(events);
         assertNotNull(response);
         System.out.println("Got response " + response.getStatusCode());
         assertEquals(response.getStatusCode(), 200);
@@ -159,18 +164,19 @@ public class EventGridPublisherClientTests {
             .buildClient();
 
         List<CloudEvent> events = new ArrayList<>();
-        events.add(new CloudEvent()
-            .setId(UUID.randomUUID().toString())
-            .setSubject("Test")
-            .setType("Microsoft.MockPublisher.TestEvent")
-            .setData(new HashMap<String, String>() {{
+        events.add(new CloudEventBuilder()
+            .id(UUID.randomUUID().toString())
+            .subject("Test")
+            .type("Microsoft.MockPublisher.TestEvent")
+            .data(new HashMap<String, String>() {{
                 put("Field1", "Value1");
                 put("Field2", "Value2");
                 put("Field3", "Value3");
             }})
-            .setTime(OffsetDateTime.now()));
+            .time(OffsetDateTime.now())
+            .build());
 
-        Response<Void> response = egClient.publishCloudEventsWithResponse(events);
+        Response<Void> response = egClient.sendCloudEventsWithResponse(events);
         assertNotNull(response);
         System.out.println("Got response " + response.getStatusCode());
         assertEquals(response.getStatusCode(), 200);
@@ -196,7 +202,7 @@ public class EventGridPublisherClientTests {
                 put("type", "Microsoft.MockPublisher.TestEvent");
             }});
         }
-        Response<Void> response = egClient.publishCustomEventsWithResponse(events);
+        Response<Void> response = egClient.sendCustomEventsWithResponse(events);
         assertNotNull(response);
         System.out.println("Got response " + response.getStatusCode());
         assertEquals(response.getStatusCode(), 200);
