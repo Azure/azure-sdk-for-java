@@ -33,15 +33,22 @@ mvn clean install -Dgpg.skip
         - Click Databases, and then click Azure Cosmos DB to create your database. 
         - Navigate to the database you have created, and click Access keys and copy your URI and access keys for your database.
   
-     2. Set environment variables ACCOUNT_HOST, ACCOUNT_KEY and SECONDARY_ACCOUNT_KEY, where value of them are Cosmos account URI, primary key and secondary key.
+     2. Set environment variables ACCOUNT_HOST, ACCOUNT_KEY and SECONDARY_ACCOUNT_KEY, where value of them are Cosmos account URI, primary key and secondary key. 
+     
+        `azure-spring-data-cosmos` also support multiple database configuration. So set the second group environment variables NEW_ACCOUNT_HOST, NEW_ACCOUNT_KEY and NEW_SECONDARY_ACCOUNT_KEY, the two group environment variables can be same.
      3. Run maven command with `integration-test-azure` profile. 
   
         ```bash
         set ACCOUNT_HOST=your-cosmos-account-uri
         set ACCOUNT_KEY=your-cosmos-account-primary-key
         set SECONDARY_ACCOUNT_KEY=your-cosmos-account-secondary-key
+        
+        set NEW_ACCOUNT_HOST=your-cosmos-account-uri
+        set NEW_ACCOUNT_KEY=your-cosmos-account-primary-key
+        set NEW_SECONDARY_ACCOUNT_KEY=your-cosmos-account-secondary-key
         mvnw -P integration-test-azure clean install
         ```
+        
    - on Emulator
    
      Setup Azure Cosmos DB Emulator by following [this instruction](https://docs.microsoft.com/azure/cosmos-db/local-emulator), and set associated environment variables. Then run test with:

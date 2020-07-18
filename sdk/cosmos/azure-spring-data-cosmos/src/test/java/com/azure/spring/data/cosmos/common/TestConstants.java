@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.common;
 
-import com.azure.data.cosmos.IndexingMode;
+import com.azure.cosmos.models.IndexingMode;
 import com.azure.spring.data.cosmos.domain.Address;
 
 import java.util.Arrays;
@@ -18,11 +18,10 @@ public final class TestConstants {
     public static final List<Address> ADDRESSES = Arrays.asList(ADDRESS_1, ADDRESS_2);
 
     public static final int DEFAULT_TIME_TO_LIVE = -1;
-    public static final String DEFAULT_COLLECTION_NAME = "Person";
-    public static final boolean DEFAULT_INDEXINGPOLICY_AUTOMATIC = true;
-    public static final IndexingMode DEFAULT_INDEXINGPOLICY_MODE = IndexingMode.CONSISTENT;
-    public static final String[] DEFAULT_EXCLUDEDPATHS = {};
-    public static final String[] DEFAULT_INCLUDEDPATHS = {
+    public static final boolean DEFAULT_INDEXING_POLICY_AUTOMATIC = true;
+    public static final IndexingMode DEFAULT_INDEXING_POLICY_MODE = IndexingMode.CONSISTENT;
+    public static final String[] DEFAULT_EXCLUDED_PATHS = {};
+    public static final String[] DEFAULT_INCLUDED_PATHS = {
         "{\"path\":\"/*\",\"indexes\":["
                     + "{\"kind\":\"Range\",\"dataType\":\"Number\",\"precision\":-1},"
                     + "{\"kind\":\"Hash\",\"dataType\":\"String\",\"precision\":3}"
@@ -31,50 +30,51 @@ public final class TestConstants {
 
     public static final String ROLE_COLLECTION_NAME = "RoleCollectionName";
     public static final int TIME_TO_LIVE = 5;
-    public static final boolean INDEXINGPOLICY_AUTOMATIC = false;
-    public static final IndexingMode INDEXINGPOLICY_MODE = IndexingMode.LAZY;
-    public static final String INCLUDEDPATH_0 = "{\"path\":\"/*\",\"indexes\":["
+    public static final boolean INDEXING_POLICY_AUTOMATIC = false;
+    public static final IndexingMode INDEXING_POLICY_MODE = IndexingMode.CONSISTENT;
+    public static final String INCLUDED_PATH_0 = "{\"path\":\"/*\",\"indexes\":["
             + "{\"kind\":\"Range\",\"dataType\":\"Number\",\"precision\":2},"
             + "{\"kind\":\"Hash\",\"dataType\":\"String\",\"precision\":2},"
             + "{\"kind\":\"Spatial\",\"dataType\":\"Point\"}"
             + "]}";
-    public static final String INCLUDEDPATH_1 = "{\"path\":\"/cache/*\",\"indexes\":["
+    public static final String INCLUDED_PATH_1 = "{\"path\":\"/cache/*\",\"indexes\":["
             + "{\"kind\":\"Range\",\"dataType\":\"Number\",\"precision\":3},"
             + "{\"kind\":\"Hash\",\"dataType\":\"String\",\"precision\":3},"
             + "{\"kind\":\"Spatial\",\"dataType\":\"LineString\"}"
             + "]}";
-    public static final String INCLUDEDPATH_2 = "{\"path\":\"/entities/*\",\"indexes\":["
+    public static final String INCLUDED_PATH_2 = "{\"path\":\"/entities/*\",\"indexes\":["
             + "{\"kind\":\"Range\",\"dataType\":\"Number\",\"precision\":4},"
             + "{\"kind\":\"Hash\",\"dataType\":\"String\",\"precision\":4},"
             + "{\"kind\":\"Spatial\",\"dataType\":\"Polygon\"}"
             + "]}";
-    public static final String[] INCLUDEDPATHS = {
-        INCLUDEDPATH_0,
-        INCLUDEDPATH_1,
-        INCLUDEDPATH_2,
+    public static final String[] INCLUDED_PATHS = {
+        INCLUDED_PATH_0,
+        INCLUDED_PATH_1,
+        INCLUDED_PATH_2,
     };
-    public static final String EXCLUDEDPATH_0 = "{\"path\":\"/excluded/*\"}";
-    public static final String EXCLUDEDPATH_1 = "{\"path\":\"/props/*\"}";
-    public static final String[] EXCLUDEDPATHS = {
-        EXCLUDEDPATH_0,
-        EXCLUDEDPATH_1,
+    public static final String EXCLUDED_PATH_0 = "{\"path\":\"/excluded/*\"}";
+    public static final String EXCLUDED_PATH_1 = "{\"path\":\"/props/*\"}";
+    public static final String[] EXCLUDED_PATHS = {
+        EXCLUDED_PATH_0,
+        EXCLUDED_PATH_1,
     };
 
     public static final String ORDER_BY_STRING_PATH = "{\"path\":\"/*\",\"indexes\":["
             + "{\"kind\":\"Range\",\"dataType\":\"String\",\"precision\":-1},"
             + "]}";
 
-    public static final String STARTSWITH_INCLUDEDPATH =
+    public static final String STARTS_WITH_INCLUDED_PATH =
             "{\"path\":\"/*\",\"indexes\":["
                 + "{\"kind\":\"Range\",\"dataType\":\"Number\",\"precision\":-1},"
                 + "{\"kind\":\"Range\",\"dataType\":\"String\",\"precision\":3}"
                 + "]}";
 
-    public static final String[] PERSON_INCLUDEDPATHS = {
-        STARTSWITH_INCLUDEDPATH
+    public static final String[] PERSON_INCLUDED_PATHS = {
+        STARTS_WITH_INCLUDED_PATH
     };
 
     public static final String DB_NAME = "testdb";
+    public static final String SECONDARY_DB_NAME = "second_testdb";
     public static final String FIRST_NAME = "first_name_li";
     public static final String LAST_NAME = "last_name_p";
     public static final String ID_1 = "id-1";

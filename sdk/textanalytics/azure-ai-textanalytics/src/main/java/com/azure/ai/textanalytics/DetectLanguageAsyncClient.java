@@ -103,7 +103,7 @@ class DetectLanguageAsyncClient {
      * @return A {@link Response} that contains {@link DetectLanguageResultCollection}.
      */
     private Response<DetectLanguageResultCollection> toTextAnalyticsResultDocumentResponse(
-        SimpleResponse<LanguageResult> response) {
+        Response<LanguageResult> response) {
         final LanguageResult languageResult = response.getValue();
         final List<DetectLanguageResult> detectLanguageResults = new ArrayList<>();
         for (DocumentLanguage documentLanguage : languageResult.getDocuments()) {
@@ -138,7 +138,8 @@ class DetectLanguageAsyncClient {
             if (documentError.getId().isEmpty()) {
                 throw logger.logExceptionAsError(
                     new HttpResponseException(documentError.getError().getInnererror().getMessage(),
-                    getEmptyErrorIdHttpResponse(response), documentError.getError().getInnererror().getCode()));
+                    getEmptyErrorIdHttpResponse(new SimpleResponse<>(response, response.getValue())),
+                        documentError.getError().getInnererror().getCode()));
             }
 
             detectLanguageResults.add(new DetectLanguageResult(documentError.getId(), null,
@@ -164,9 +165,9 @@ class DetectLanguageAsyncClient {
         Iterable<DetectLanguageInput> documents, TextAnalyticsRequestOptions options, Context context) {
         return service.languagesWithResponseAsync(
                 new LanguageBatchInput().setDocuments(toLanguageInput(documents)),
-                context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE),
                 options == null ? null : options.getModelVersion(),
-                options == null ? null : options.isIncludeStatistics())
+                options == null ? null : options.isIncludeStatistics(),
+                context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
                 .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents.toString()))
                 .doOnSuccess(response -> logger.info("Detected languages for a batch of documents - {}",
                     response.getValue()))

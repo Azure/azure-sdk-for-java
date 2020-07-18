@@ -55,6 +55,7 @@ public final class BlobProperties {
     private final Boolean isCurrentVersion;
     private final List<ObjectReplicationPolicy> objectReplicationSourcePolicies;
     private final String objectReplicationDestinationPolicyId;
+    private final RehydratePriority rehydratePriority;
 
     /**
      * Constructs a {@link BlobProperties}.
@@ -109,8 +110,8 @@ public final class BlobProperties {
             contentLanguage, cacheControl, blobSequenceNumber, blobType, leaseStatus, leaseState, leaseDuration,
             copyId, copyStatus, copySource, copyProgress, copyCompletionTime, copyStatusDescription, isServerEncrypted,
             isIncrementalCopy, copyDestinationSnapshot, accessTier, isAccessTierInferred, archiveStatus,
-            encryptionKeySha256, null, accessTierChangeTime, metadata, committedBlockCount, null, null,
-            null, null, null);
+            encryptionKeySha256, null, accessTierChangeTime, metadata, committedBlockCount, (Long) null,
+            null, null, null, null);
     }
 
     /**
@@ -155,6 +156,7 @@ public final class BlobProperties {
      * @param isCurrentVersion Flag indicating if version identifier points to current version of the blob.
      * @param tagCount Number of tags associated with the blob.
      * @param objectReplicationStatus The object replication status map to parse.
+     * @param rehydratePriority The rehydrate priority
      */
     public BlobProperties(final OffsetDateTime creationTime, final OffsetDateTime lastModified, final String eTag,
         final long blobSize, final String contentType, final byte[] contentMd5, final String contentEncoding,
@@ -167,7 +169,7 @@ public final class BlobProperties {
         final Boolean isAccessTierInferred, final ArchiveStatus archiveStatus, final String encryptionKeySha256,
         final String encryptionScope, final OffsetDateTime accessTierChangeTime, final Map<String, String> metadata,
         final Integer committedBlockCount, final String versionId, final Boolean isCurrentVersion,
-        final Long tagCount, Map<String, String> objectReplicationStatus) {
+        final Long tagCount, Map<String, String> objectReplicationStatus, String rehydratePriority) {
         this.creationTime = creationTime;
         this.lastModified = lastModified;
         this.eTag = eTag;
@@ -224,6 +226,7 @@ public final class BlobProperties {
         for (Map.Entry<String, List<ObjectReplicationRule>> entry : internalSourcePolicies.entrySet()) {
             this.objectReplicationSourcePolicies.add(new ObjectReplicationPolicy(entry.getKey(), entry.getValue()));
         }
+        this.rehydratePriority = RehydratePriority.fromString(rehydratePriority);
     }
 
 
@@ -322,6 +325,7 @@ public final class BlobProperties {
         this.isCurrentVersion = isCurrentVersion;
         this.objectReplicationSourcePolicies = objectReplicationSourcePolicies;
         this.objectReplicationDestinationPolicyId = objectReplicationDestinationPolicyId;
+        this.rehydratePriority = null;
     }
 
     /**
@@ -595,5 +599,12 @@ public final class BlobProperties {
      */
     public String getObjectReplicationDestinationPolicyId() {
         return this.objectReplicationDestinationPolicyId;
+    }
+
+    /**
+     * @return The {@link RehydratePriority} of the blob if it is in RehydratePending state.
+     */
+    public RehydratePriority getRehydratePriority() {
+        return this.rehydratePriority;
     }
 }

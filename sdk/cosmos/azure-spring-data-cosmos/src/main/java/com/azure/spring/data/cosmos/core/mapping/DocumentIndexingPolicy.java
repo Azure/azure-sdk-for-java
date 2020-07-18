@@ -2,15 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.core.mapping;
 
-import com.azure.data.cosmos.IndexingMode;
+import com.azure.cosmos.models.IndexingMode;
 import com.azure.spring.data.cosmos.Constants;
 import org.springframework.data.annotation.Persistent;
 
+import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.lang.annotation.ElementType;
 
 /**
  * Annotation for document indexing policy
@@ -24,7 +24,7 @@ public @interface DocumentIndexingPolicy {
      * To set automatic indexing
      * @return default as true
      */
-    boolean automatic() default Constants.DEFAULT_INDEXINGPOLICY_AUTOMATIC;
+    boolean automatic() default Constants.DEFAULT_INDEXING_POLICY_AUTOMATIC;
 
     /**
      * To set indexing mode
