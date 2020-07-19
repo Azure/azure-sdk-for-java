@@ -205,7 +205,9 @@ public final class RntbdTransportClient extends TransportClient {
         final RntbdEndpoint endpoint = this.endpointProvider.get(address);
         final RntbdRequestRecord record = endpoint.request(requestArgs);
 
-        this.connectionStateListener.updateConnectionState(endpoint, request);
+        if (this.connectionStateListener != null) {
+            this.connectionStateListener.updateConnectionState(endpoint, request);
+        }
 
         final Mono<StoreResponse> result = Mono.fromFuture(record.whenComplete((response, throwable) -> {
 
@@ -267,8 +269,13 @@ public final class RntbdTransportClient extends TransportClient {
                             RntbdObjectMapper.toString(cause));
                     }
 
-                    if (event != null) {
+                    if (this.connectionStateListener != null && event != null) {
                         this.connectionStateListener.onConnectionEvent(event, Instant.now(), endpoint);
+                    } else {
+                        logger.warn("connection to {} lost due to {} event caused by ",
+                            endpoint.remoteURI(),
+                            event,
+                            cause);
                     }
                 }
             }
