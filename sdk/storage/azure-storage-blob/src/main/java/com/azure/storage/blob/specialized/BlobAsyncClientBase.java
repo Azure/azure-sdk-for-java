@@ -1374,7 +1374,7 @@ public class BlobAsyncClientBase {
     }
 
     Mono<Response<Map<String, String>>> getTagsWithResponse(BlobGetTagsOptions options, Context context) {
-        StorageImplUtils.assertNotNull("options", options);
+        options = (options == null) ? new BlobGetTagsOptions() : options;
         BlobRequestConditions requestConditions = (options.getRequestConditions() == null)
             ? new BlobRequestConditions() : options.getRequestConditions();
         return this.azureBlobStorage.blobs().getTagsWithRestResponseAsync(null, null, null, null, snapshot,
