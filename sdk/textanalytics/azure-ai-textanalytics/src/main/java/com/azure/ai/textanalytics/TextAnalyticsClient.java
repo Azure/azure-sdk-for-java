@@ -92,7 +92,7 @@ public final class TextAnalyticsClient {
      *
      * @return The {@link DetectedLanguage detected language} of the document.
      *
-     * @throws NullPointerException if {@code document} is {@code null}.
+     * @throws NullPointerException if {@code document} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DetectedLanguage detectLanguage(String document) {
@@ -116,7 +116,7 @@ public final class TextAnalyticsClient {
      *
      * @return The {@link DetectedLanguage detected language} of the document.
      *
-     * @throws NullPointerException if {@code document} is {@code null}.
+     * @throws NullPointerException if {@code document} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DetectedLanguage detectLanguage(String document, String countryHint) {
@@ -141,7 +141,7 @@ public final class TextAnalyticsClient {
      *
      * @return A {@link DetectLanguageResultCollection}.
      *
-     * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -168,7 +168,7 @@ public final class TextAnalyticsClient {
      *
      * @return A {@link Response} that contains a {@link DetectLanguageResultCollection}.
      *
-     * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -199,7 +199,7 @@ public final class TextAnalyticsClient {
      * @return A {@link CategorizedEntityCollection} contains a list of
      * {@link CategorizedEntity recognized categorized entities} and warnings.
      *
-     * @throws NullPointerException if {@code document} is {@code null}.
+     * @throws NullPointerException if {@code document} is null.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -225,7 +225,7 @@ public final class TextAnalyticsClient {
      * @return The {@link CategorizedEntityCollection} contains a list of
      * {@link CategorizedEntity recognized categorized entities} and warnings.
      *
-     * @throws NullPointerException if {@code document} is {@code null}.
+     * @throws NullPointerException if {@code document} is null.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -251,7 +251,7 @@ public final class TextAnalyticsClient {
      *
      * @return A {@link RecognizeEntitiesResultCollection}.
      *
-     * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -279,7 +279,7 @@ public final class TextAnalyticsClient {
      *
      * @return A {@link Response} that contains a {@link RecognizeEntitiesResultCollection}.
      *
-     * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -308,7 +308,7 @@ public final class TextAnalyticsClient {
      *
      * @return A {@link LinkedEntityCollection} contains a list of {@link LinkedEntity recognized linked entities}.
      *
-     * @throws NullPointerException if {@code document} is {@code null}.
+     * @throws NullPointerException if {@code document} is null.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -334,7 +334,7 @@ public final class TextAnalyticsClient {
      *
      * @return A {@link LinkedEntityCollection} contains a list of {@link LinkedEntity recognized linked entities}.
      *
-     * @throws NullPointerException if {@code document} is {@code null}.
+     * @throws NullPointerException if {@code document} is null.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -364,7 +364,7 @@ public final class TextAnalyticsClient {
      *
      * @return A {@link RecognizeLinkedEntitiesResultCollection}.
      *
-     * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -394,7 +394,7 @@ public final class TextAnalyticsClient {
      *
      * @return A {@link Response} that contains a {@link RecognizeLinkedEntitiesResultCollection}.
      *
-     * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -424,7 +424,7 @@ public final class TextAnalyticsClient {
      *
      * @return A {@link KeyPhrasesCollection} contains a list of extracted key phrases.
      *
-     * @throws NullPointerException if {@code document} is {@code null}.
+     * @throws NullPointerException if {@code document} is null.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -448,7 +448,7 @@ public final class TextAnalyticsClient {
      *
      * @return A {@link KeyPhrasesCollection} contains a list of extracted key phrases.
      *
-     * @throws NullPointerException if {@code document} is {@code null}.
+     * @throws NullPointerException if {@code document} is null.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -477,7 +477,7 @@ public final class TextAnalyticsClient {
      *
      * @return A {@link ExtractKeyPhrasesResultCollection}.
      *
-     * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -506,7 +506,7 @@ public final class TextAnalyticsClient {
      *
      * @return A {@link Response} that contains a {@link ExtractKeyPhrasesResultCollection}.
      *
-     * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -520,7 +520,7 @@ public final class TextAnalyticsClient {
     // Sentiment
     /**
      * Returns a sentiment prediction, as well as confidence scores for each sentiment label
-     * (Positive, Negative, and Neutral) for the document and each sentence within i
+     * (Positive, Negative, and Neutral) for the document and each sentence within it.
      *
      * This method will use the default language that sets up in
      * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
@@ -536,7 +536,7 @@ public final class TextAnalyticsClient {
      *
      * @return A {@link DocumentSentiment analyzed document sentiment} of the document.
      *
-     * @throws NullPointerException if {@code document} is {@code null}.
+     * @throws NullPointerException if {@code document} is null.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -546,7 +546,7 @@ public final class TextAnalyticsClient {
 
     /**
      * Returns a sentiment prediction, as well as confidence scores for each sentiment label
-     * (Positive, Negative, and Neutral) for the document and each sentence within i
+     * (Positive, Negative, and Neutral) for the document and each sentence within it.
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Analyze the sentiments in a document with a provided language representation.</p>
@@ -560,13 +560,38 @@ public final class TextAnalyticsClient {
      *
      * @return A {@link DocumentSentiment analyzed document sentiment} of the document.
      *
-     * @throws NullPointerException if {@code document} is {@code null}.
+     * @throws NullPointerException if {@code document} is null.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentSentiment analyzeSentiment(String document, String language) {
-        Objects.requireNonNull(document, "'document' cannot be null.");
         return client.analyzeSentiment(document, language).block();
+    }
+
+    /**
+     * Returns a sentiment prediction, as well as confidence scores for each sentiment label
+     * (Positive, Negative, and Neutral) for the document and each sentence within it.
+     * If {@code isIncludeOpinionMining} set to true, the output will include the opinion mining result.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Analyze the sentiments in a document with a provided language representation.</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentiment#String-boolean-String}
+     *
+     * @param document The document to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * @param isIncludeOpinionMining The boolean indicator to define if the request includes opinion mining.
+     * @param language The 2 letter ISO 639-1 representation of language for the document. If not set, uses "en" for
+     * English as default.
+     *
+     * @return A {@link DocumentSentiment analyzed document sentiment} of the document.
+     *
+     * @throws NullPointerException if {@code document} is null.
+     * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DocumentSentiment analyzeSentiment(String document, boolean isIncludeOpinionMining, String language) {
+        return client.analyzeSentiment(document, isIncludeOpinionMining, language).block();
     }
 
     /**
@@ -587,14 +612,42 @@ public final class TextAnalyticsClient {
      *
      * @return A {@link AnalyzeSentimentResultCollection}.
      *
-     * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AnalyzeSentimentResultCollection analyzeSentimentBatch(
         Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
-        inputDocumentsValidation(documents);
-        return client.analyzeSentimentBatch(documents, language, options).block();
+        return client.analyzeSentimentBatch(documents, false, language, options).block();
+    }
+
+    /**
+     * Returns a sentiment prediction, as well as confidence scores for each sentiment label
+     * (Positive, Negative, and Neutral) for the document and each sentence within it.
+     * If {@code isIncludeOpinionMining} set to true, the output will include the opinion mining result.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Analyze the sentiments in a list of documents with a provided language representation and request options.</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentBatch#Iterable-boolean-String-TextAnalyticsRequestOptions}
+     *
+     * @param documents A list of documents to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * @param isIncludeOpinionMining The boolean indicator to define if the request includes opinion mining.
+     * @param language The 2 letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
+     * English as default.
+     * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
+     * and show statistics.
+     *
+     * @return A {@link AnalyzeSentimentResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AnalyzeSentimentResultCollection analyzeSentimentBatch(Iterable<String> documents,
+        boolean isIncludeOpinionMining, String language, TextAnalyticsRequestOptions options) {
+        return client.analyzeSentimentBatch(documents, isIncludeOpinionMining, language, options).block();
     }
 
     /**
@@ -615,13 +668,44 @@ public final class TextAnalyticsClient {
      *
      * @return A {@link Response} that contains a {@link AnalyzeSentimentResultCollection}.
      *
-     * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AnalyzeSentimentResultCollection> analyzeSentimentBatchWithResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
-        inputDocumentsValidation(documents);
-        return client.analyzeSentimentAsyncClient.analyzeSentimentBatchWithContext(documents, options, context).block();
+        return client.analyzeSentimentAsyncClient.analyzeSentimentBatchWithContext(documents, false,
+            options, context).block();
+    }
+
+    /**
+     * Returns a sentiment prediction, as well as confidence scores for each sentiment label
+     * (Positive, Negative, and Neutral) for the document and each sentence within it.
+     * If {@code isIncludeOpinionMining} set to true, the output will include the opinion mining result.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Analyze the sentiments with http response in a list of {@link TextDocumentInput documents} with request
+     * options.</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentBatch#Iterable-boolean-TextAnalyticsRequestOptions-Context}
+     *
+     * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * @param isIncludeOpinionMining The boolean indicator to define if the request includes opinion mining.
+     * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
+     * and show statistics.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return A {@link Response} that contains a {@link AnalyzeSentimentResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AnalyzeSentimentResultCollection> analyzeSentimentBatchWithResponse(
+        Iterable<TextDocumentInput> documents, boolean isIncludeOpinionMining, TextAnalyticsRequestOptions options,
+        Context context) {
+        return client.analyzeSentimentAsyncClient.analyzeSentimentBatchWithContext(documents, isIncludeOpinionMining,
+            options, context).block();
     }
 }

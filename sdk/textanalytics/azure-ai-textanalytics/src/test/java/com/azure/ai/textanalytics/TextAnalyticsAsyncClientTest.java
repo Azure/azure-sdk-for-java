@@ -34,6 +34,7 @@ import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchDetectedLangu
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchKeyPhrases;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchLinkedEntities;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchTextSentiment;
+import static com.azure.ai.textanalytics.TestUtils.getExpectedDocumentSentiment;
 import static com.azure.ai.textanalytics.models.WarningCode.LONG_WORDS_IN_DOCUMENT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -577,16 +578,21 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeSentimentForTextInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
-        final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(TextSentiment.MIXED,
-            new SentimentConfidenceScores(0.0, 0.0, 0.0),
-            new IterableStream<>(Arrays.asList(
-                new SentenceSentiment("", TextSentiment.NEGATIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0)),
-                new SentenceSentiment("", TextSentiment.POSITIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0))
-            )), null);
-
         StepVerifier
             .create(client.analyzeSentiment("The hotel was dark and unclean. The restaurant had amazing gnocchi."))
-            .assertNext(response -> validateAnalyzedSentiment(expectedDocumentSentiment, response)).verifyComplete();
+            .assertNext(response -> validateAnalyzedSentiment(false, getExpectedDocumentSentiment(), response)).verifyComplete();
+    }
+
+    /**
+     * Test analyzing sentiment for a string input. Also verify the result of opinion mining.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeSentimentForTextInputWithOpinionMining(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        StepVerifier
+            .create(client.analyzeSentiment("The hotel was dark and unclean. The restaurant had amazing gnocchi.", true, "en"))
+            .assertNext(response -> validateAnalyzedSentiment(true, getExpectedDocumentSentiment(), response)).verifyComplete();
     }
 
     /**
@@ -613,12 +619,12 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             TextSentiment.NEUTRAL,
             new SentimentConfidenceScores(0.0, 0.0, 0.0),
             new IterableStream<>(Arrays.asList(
-                new SentenceSentiment("", TextSentiment.NEUTRAL, new SentimentConfidenceScores(0.0, 0.0, 0.0)),
-                new SentenceSentiment("", TextSentiment.NEUTRAL, new SentimentConfidenceScores(0.0, 0.0, 0.0))
+                new SentenceSentiment("!", TextSentiment.NEUTRAL, new SentimentConfidenceScores(0.0, 0.0, 0.0), null),
+                new SentenceSentiment("@#%%", TextSentiment.NEUTRAL, new SentimentConfidenceScores(0.0, 0.0, 0.0), null)
             )), null);
 
         StepVerifier.create(client.analyzeSentiment("!@#%%"))
-            .assertNext(response -> validateAnalyzedSentiment(expectedDocumentSentiment, response)).verifyComplete();
+            .assertNext(response -> validateAnalyzedSentiment(false, expectedDocumentSentiment, response)).verifyComplete();
     }
 
     /**
@@ -642,7 +648,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         analyzeSentimentStringInputRunner(inputs ->
             StepVerifier.create(client.analyzeSentimentBatch(inputs, null, null))
-                .assertNext(response -> validateSentimentResultCollection(false, getExpectedBatchTextSentiment(), response))
+                .assertNext(response -> validateSentimentResultCollection(false, false, getExpectedBatchTextSentiment(), response))
                 .verifyComplete());
     }
 
@@ -655,7 +661,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         analyzeSentimentLanguageHintRunner((inputs, language) ->
             StepVerifier.create(client.analyzeSentimentBatch(inputs, language, null))
-                .assertNext(response -> validateSentimentResultCollection(false, getExpectedBatchTextSentiment(), response))
+                .assertNext(response -> validateSentimentResultCollection(false, false, getExpectedBatchTextSentiment(), response))
                 .verifyComplete());
     }
 
@@ -668,7 +674,21 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         analyzeBatchStringSentimentShowStatsRunner((inputs, options) ->
             StepVerifier.create(client.analyzeSentimentBatch(inputs, null, options))
-                .assertNext(response -> validateSentimentResultCollection(true, getExpectedBatchTextSentiment(), response))
+                .assertNext(response -> validateSentimentResultCollection(true, false, getExpectedBatchTextSentiment(), response))
+                .verifyComplete());
+    }
+
+    /**
+     * Test analyzing sentiment for a list of string input with request options.
+     * Also verify the result of opinion mining.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeSentimentForListStringWithOptionsAndOpinionMining(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        analyzeBatchStringSentimentShowStatsRunner((inputs, options) ->
+            StepVerifier.create(client.analyzeSentimentBatch(inputs, true, null, options))
+                .assertNext(response -> validateSentimentResultCollection(true, true, getExpectedBatchTextSentiment(), response))
                 .verifyComplete());
     }
 
@@ -681,7 +701,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         analyzeBatchSentimentRunner(inputs ->
             StepVerifier.create(client.analyzeSentimentBatchWithResponse(inputs, null))
-                .assertNext(response -> validateSentimentResultCollectionWithResponse(false, getExpectedBatchTextSentiment(), 200, response))
+                .assertNext(response -> validateSentimentResultCollectionWithResponse(false, false, getExpectedBatchTextSentiment(), 200, response))
                 .verifyComplete());
     }
 
@@ -694,7 +714,21 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         analyzeBatchSentimentShowStatsRunner((inputs, options) ->
             StepVerifier.create(client.analyzeSentimentBatchWithResponse(inputs, options))
-                .assertNext(response -> validateSentimentResultCollectionWithResponse(true, getExpectedBatchTextSentiment(), 200, response))
+                .assertNext(response -> validateSentimentResultCollectionWithResponse(true, false, getExpectedBatchTextSentiment(), 200, response))
+                .verifyComplete());
+    }
+
+    /**
+     * Verify that we can get statistics on the collection result when given a batch of documents with options.
+     * Also verify the result of opinion mining.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeSentimentForBatchInputShowStatisticsAndIncludeOpinionMining(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        analyzeBatchSentimentShowStatsRunner((inputs, options) ->
+            StepVerifier.create(client.analyzeSentimentBatchWithResponse(inputs, true, options))
+                .assertNext(response -> validateSentimentResultCollectionWithResponse(true, true, getExpectedBatchTextSentiment(), 200, response))
                 .verifyComplete());
     }
 }

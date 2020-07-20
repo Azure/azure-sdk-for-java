@@ -3,12 +3,14 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.models.AspectSentiment;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
+import com.azure.ai.textanalytics.models.OpinionSentiment;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
@@ -447,19 +449,18 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 actualItem.getKeyPhrases().stream().collect(Collectors.toList())));
     }
 
-    static void validateSentimentResultCollectionWithResponse(boolean showStatistics,
+    static void validateSentimentResultCollectionWithResponse(boolean showStatistics, boolean includeOpinionMining,
         AnalyzeSentimentResultCollection expected,
         int expectedStatusCode, Response<AnalyzeSentimentResultCollection> response) {
         assertNotNull(response);
         assertEquals(expectedStatusCode, response.getStatusCode());
-        validateSentimentResultCollection(showStatistics, expected, response.getValue());
+        validateSentimentResultCollection(showStatistics, includeOpinionMining, expected, response.getValue());
     }
 
-    static void validateSentimentResultCollection(boolean showStatistics,
-        AnalyzeSentimentResultCollection expected,
-        AnalyzeSentimentResultCollection actual) {
+    static void validateSentimentResultCollection(boolean showStatistics, boolean includeOpinionMining,
+        AnalyzeSentimentResultCollection expected, AnalyzeSentimentResultCollection actual) {
         validateTextAnalyticsResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
-            validateAnalyzedSentiment(expectedItem.getDocumentSentiment(), actualItem.getDocumentSentiment()));
+            validateAnalyzedSentiment(includeOpinionMining, expectedItem.getDocumentSentiment(), actualItem.getDocumentSentiment()));
     }
 
     /**
@@ -564,12 +565,12 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      * @param expectedSentimentList a list of analyzed sentence sentiment returned by the service.
      * @param actualSentimentList a list of analyzed sentence sentiment returned by the API.
      */
-    static void validateAnalyzedSentenceSentiment(List<SentenceSentiment> expectedSentimentList,
+    static void validateAnalyzedSentenceSentiment(boolean includeOpinionMining, List<SentenceSentiment> expectedSentimentList,
         List<SentenceSentiment> actualSentimentList) {
 
         assertEquals(expectedSentimentList.size(), actualSentimentList.size());
         for (int i = 0; i < expectedSentimentList.size(); i++) {
-            validateSentenceSentiment(expectedSentimentList.get(i), actualSentimentList.get(i));
+            validateSentenceSentiment(includeOpinionMining, expectedSentimentList.get(i), actualSentimentList.get(i));
         }
     }
 
@@ -580,8 +581,70 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      * @param expectedSentiment analyzed sentence sentiment returned by the service.
      * @param actualSentiment analyzed sentence sentiment returned by the API.
      */
-    static void validateSentenceSentiment(SentenceSentiment expectedSentiment, SentenceSentiment actualSentiment) {
+    static void validateSentenceSentiment(boolean includeOpinionMining, SentenceSentiment expectedSentiment, SentenceSentiment actualSentiment) {
         assertEquals(expectedSentiment.getSentiment(), actualSentiment.getSentiment());
+        assertEquals(expectedSentiment.getText(), actualSentiment.getText());
+        if (includeOpinionMining) {
+            validateSentenceAspects(expectedSentiment.getAspects().stream().collect(Collectors.toList()),
+                actualSentiment.getAspects().stream().collect(Collectors.toList()));
+        }
+    }
+
+    /**
+     * Helper method to validate sentence's aspects. Can't really validate score numbers because it
+     * frequently changed by background model computation.
+     *
+     * @param expectedAspectSentiments a list of analyzed aspect sentiment returned by the service.
+     * @param actualAspectSentiments a list of analyzed aspect sentiment returned by the API.
+     */
+    static void validateSentenceAspects(List<AspectSentiment> expectedAspectSentiments,
+        List<AspectSentiment> actualAspectSentiments) {
+        assertEquals(expectedAspectSentiments.size(), actualAspectSentiments.size());
+        for (int i = 0; i < actualAspectSentiments.size(); i++) {
+            validateAspectSentiment(expectedAspectSentiments.get(i), actualAspectSentiments.get(i));
+        }
+    }
+
+    /**
+     * Helper method to validate aspect sentiment.
+     *
+     * @param expectedAspectSentiment An expected aspect sentiment.
+     * @param actualAspectSentiment An actual aspect sentiment.
+     */
+    static void validateAspectSentiment(AspectSentiment expectedAspectSentiment, AspectSentiment actualAspectSentiment) {
+        assertEquals(expectedAspectSentiment.getSentiment(), actualAspectSentiment.getSentiment());
+        assertEquals(expectedAspectSentiment.getText(), actualAspectSentiment.getText());
+        validateAspectOpinionList(expectedAspectSentiment.getOpinions().stream().collect(Collectors.toList()),
+            actualAspectSentiment.getOpinions().stream().collect(Collectors.toList()));
+        assertEquals(expectedAspectSentiment.getLength(), actualAspectSentiment.getLength());
+        assertEquals(expectedAspectSentiment.getOffset(), actualAspectSentiment.getOffset());
+    }
+
+    /**
+     * Helper method to validate a list of {@link OpinionSentiment}.
+     *
+     * @param expectedOpinionSentiments A list of expected opinion sentiments.
+     * @param actualOpinionSentiments A list of actual opinion sentiments.
+     */
+    static void validateAspectOpinionList(List<OpinionSentiment> expectedOpinionSentiments, List<OpinionSentiment> actualOpinionSentiments) {
+        assertEquals(expectedOpinionSentiments.size(), actualOpinionSentiments.size());
+        for (int i = 0; i < expectedOpinionSentiments.size(); i++) {
+            validateAspectOpinion(expectedOpinionSentiments.get(i), actualOpinionSentiments.get(i));
+        }
+    }
+
+    /**
+     * Helper method to validate opinion sentiment.
+     *
+     * @param expectedAspectOpinion An expected opinion sentiment.
+     * @param actualAspectOpinion An actual opinion sentiment.
+     */
+    static void validateAspectOpinion(OpinionSentiment expectedAspectOpinion, OpinionSentiment actualAspectOpinion) {
+        assertEquals(expectedAspectOpinion.getSentiment(), actualAspectOpinion.getSentiment());
+        assertEquals(expectedAspectOpinion.getText(), actualAspectOpinion.getText());
+        assertEquals(expectedAspectOpinion.isNegated(), actualAspectOpinion.isNegated());
+        assertEquals(expectedAspectOpinion.getLength(), actualAspectOpinion.getLength());
+        assertEquals(expectedAspectOpinion.getOffset(), actualAspectOpinion.getOffset());
     }
 
     /**
@@ -591,10 +654,12 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      * @param expectedSentiment analyzed document sentiment returned by the service.
      * @param actualSentiment analyzed document sentiment returned by the API.
      */
-    static void validateAnalyzedSentiment(DocumentSentiment expectedSentiment, DocumentSentiment actualSentiment) {
+    static void validateAnalyzedSentiment(boolean includeOpinionMining, DocumentSentiment expectedSentiment,
+        DocumentSentiment actualSentiment) {
         assertEquals(expectedSentiment.getSentiment(), actualSentiment.getSentiment());
-        validateAnalyzedSentenceSentiment(expectedSentiment.getSentences().stream().collect(Collectors.toList()),
-            expectedSentiment.getSentences().stream().collect(Collectors.toList()));
+        validateAnalyzedSentenceSentiment(includeOpinionMining,
+            expectedSentiment.getSentences().stream().collect(Collectors.toList()),
+            actualSentiment.getSentences().stream().collect(Collectors.toList()));
     }
 
     /**

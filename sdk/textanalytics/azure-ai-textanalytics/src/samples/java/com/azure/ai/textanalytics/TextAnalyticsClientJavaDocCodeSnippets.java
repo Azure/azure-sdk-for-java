@@ -3,6 +3,9 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.models.AspectSentiment;
+import com.azure.ai.textanalytics.models.OpinionSentiment;
+import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
@@ -23,8 +26,13 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static com.azure.ai.textanalytics.models.TextSentiment.MIXED;
+import static com.azure.ai.textanalytics.models.TextSentiment.NEGATIVE;
+import static com.azure.ai.textanalytics.models.TextSentiment.POSITIVE;
 
 /**
  * Code snippets for {@link TextAnalyticsClient} and {@link TextAnalyticsClientBuilder}
@@ -491,6 +499,73 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippet for {@link TextAnalyticsClient#analyzeSentiment(String, boolean, String)}
+     */
+    public void analyzeSentimentWithLanguageWithOpinionMining() {
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentiment#String-boolean-String
+        final DocumentSentiment documentSentiment = textAnalyticsClient.analyzeSentiment(
+            "The hotel was dark and unclean.", true, "en");
+
+        System.out.printf(
+            "Recognized sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f.%n",
+            documentSentiment.getSentiment(),
+            documentSentiment.getConfidenceScores().getPositive(),
+            documentSentiment.getConfidenceScores().getNeutral(),
+            documentSentiment.getConfidenceScores().getNegative());
+
+        List<AspectSentiment> positiveAspects = new ArrayList<>();
+        List<AspectSentiment> mixedAspects = new ArrayList<>();
+        List<AspectSentiment> negativeAspects = new ArrayList<>();
+        for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
+            System.out.printf(
+                "Recognized sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f.%n",
+                sentenceSentiment.getSentiment(),
+                sentenceSentiment.getConfidenceScores().getPositive(),
+                sentenceSentiment.getConfidenceScores().getNeutral(),
+                sentenceSentiment.getConfidenceScores().getNegative());
+
+            sentenceSentiment.getAspects().forEach(aspectSentiment -> {
+                TextSentiment aspectTextSentiment = aspectSentiment.getSentiment();
+                if (NEGATIVE.equals(aspectTextSentiment)) {
+                    negativeAspects.add(aspectSentiment);
+                } else if (POSITIVE.equals(aspectTextSentiment)) {
+                    positiveAspects.add(aspectSentiment);
+                } else if (MIXED.equals(aspectTextSentiment)) {
+                    mixedAspects.add(aspectSentiment);
+                }
+            });
+        }
+
+        System.out.printf("Positive aspects count: %d%n", positiveAspects.size());
+        for (AspectSentiment positiveAspect : positiveAspects) {
+            System.out.printf("\tAspect: %s%n", positiveAspect.getText());
+            for (OpinionSentiment opinionSentiment : positiveAspect.getOpinions()) {
+                System.out.printf("\t\t'%s' sentiment because of \"%s\". Does the aspect negated: %s.%n",
+                    opinionSentiment.getSentiment(), opinionSentiment.getText(), opinionSentiment.isNegated());
+            }
+        }
+
+        System.out.printf("Mixed aspects count: %d%n", mixedAspects.size());
+        for (AspectSentiment mixedAspect : mixedAspects) {
+            System.out.printf("\tAspect: %s%n", mixedAspect.getText());
+            for (OpinionSentiment opinionSentiment : mixedAspect.getOpinions()) {
+                System.out.printf("\t\t'%s' sentiment because of \"%s\". Does the aspect negated: %s.%n",
+                    opinionSentiment.getSentiment(), opinionSentiment.getText(), opinionSentiment.isNegated());
+            }
+        }
+
+        System.out.printf("Negative aspects count: %d%n", negativeAspects.size());
+        for (AspectSentiment negativeAspect : negativeAspects) {
+            System.out.printf("\tAspect: %s%n", negativeAspect.getText());
+            for (OpinionSentiment opinionSentiment : negativeAspect.getOpinions()) {
+                System.out.printf("\t\t'%s' sentiment because of \"%s\". Does the aspect negated: %s.%n",
+                    opinionSentiment.getSentiment(), opinionSentiment.getText(), opinionSentiment.isNegated());
+            }
+        }
+        // END: com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentiment#String-boolean-String
+    }
+
+    /**
      * Code snippet for {@link TextAnalyticsClient#analyzeSentimentBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     public void analyzeSentimentStringListWithOptions() {
@@ -530,6 +605,91 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                 sentenceSentiment.getConfidenceScores().getNegative()));
         });
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentBatch#Iterable-String-TextAnalyticsRequestOptions
+    }
+
+    /**
+     * Code snippet for {@link TextAnalyticsClient#analyzeSentimentBatch(Iterable, boolean, String, TextAnalyticsRequestOptions)}
+     */
+    public void analyzeSentimentStringListWithOptionsAndOpinionMining() {
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentBatch#Iterable-boolean-String-TextAnalyticsRequestOptions
+        List<String> documents = Arrays.asList(
+            "The hotel was dark and unclean. The restaurant had amazing gnocchi.",
+            "The restaurant had amazing gnocchi. The hotel was dark and unclean."
+        );
+
+        // Analyzing batch sentiments
+        AnalyzeSentimentResultCollection resultCollection =
+            textAnalyticsClient.analyzeSentimentBatch(documents, true, "en", null);
+
+        // Batch statistics
+        TextDocumentBatchStatistics batchStatistics = resultCollection.getStatistics();
+        System.out.printf("A batch of documents statistics, transaction count: %s, valid document count: %s.%n",
+            batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
+
+        // Analyzed sentiment for each of documents from a batch of documents
+        resultCollection.forEach(analyzeSentimentResult -> {
+            System.out.printf("Document ID: %s%n", analyzeSentimentResult.getId());
+            // Valid document
+            DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
+            System.out.printf(
+                "Recognized document sentiment: %s, positive score: %.2f, neutral score: %.2f,"
+                    + " negative score: %.2f.%n",
+                documentSentiment.getSentiment(),
+                documentSentiment.getConfidenceScores().getPositive(),
+                documentSentiment.getConfidenceScores().getNeutral(),
+                documentSentiment.getConfidenceScores().getNegative());
+
+            List<AspectSentiment> positiveAspects = new ArrayList<>();
+            List<AspectSentiment> mixedAspects = new ArrayList<>();
+            List<AspectSentiment> negativeAspects = new ArrayList<>();
+            documentSentiment.getSentences().forEach(sentenceSentiment -> {
+                System.out.printf(
+                    "Recognized sentence sentiment: %s, positive score: %.2f, neutral score: %.2f,"
+                        + " negative score: %.2f.%n",
+                    sentenceSentiment.getSentiment(),
+                    sentenceSentiment.getConfidenceScores().getPositive(),
+                    sentenceSentiment.getConfidenceScores().getNeutral(),
+                    sentenceSentiment.getConfidenceScores().getNegative());
+                sentenceSentiment.getAspects().forEach(aspectSentiment -> {
+                    TextSentiment aspectTextSentiment = aspectSentiment.getSentiment();
+                    if (NEGATIVE.equals(aspectTextSentiment)) {
+                        negativeAspects.add(aspectSentiment);
+                    } else if (POSITIVE.equals(aspectTextSentiment)) {
+                        positiveAspects.add(aspectSentiment);
+                    } else if (MIXED.equals(aspectTextSentiment)) {
+                        mixedAspects.add(aspectSentiment);
+                    }
+                });
+            });
+
+            System.out.printf("Positive aspects count: %d%n", positiveAspects.size());
+            for (AspectSentiment positiveAspect : positiveAspects) {
+                System.out.printf("\tAspect: %s%n", positiveAspect.getText());
+                for (OpinionSentiment opinionSentiment : positiveAspect.getOpinions()) {
+                    System.out.printf("\t\t'%s' sentiment because of \"%s\". Does the aspect negated: %s.%n",
+                        opinionSentiment.getSentiment(), opinionSentiment.getText(), opinionSentiment.isNegated());
+                }
+            }
+
+            System.out.printf("Mixed aspects count: %d%n", mixedAspects.size());
+            for (AspectSentiment mixedAspect : mixedAspects) {
+                System.out.printf("\tAspect: %s%n", mixedAspect.getText());
+                for (OpinionSentiment opinionSentiment : mixedAspect.getOpinions()) {
+                    System.out.printf("\t\t'%s' sentiment because of \"%s\". Does the aspect negated: %s.%n",
+                        opinionSentiment.getSentiment(), opinionSentiment.getText(), opinionSentiment.isNegated());
+                }
+            }
+
+            System.out.printf("Negative aspects count: %d%n", negativeAspects.size());
+            for (AspectSentiment negativeAspect : negativeAspects) {
+                System.out.printf("\tAspect: %s%n", negativeAspect.getText());
+                for (OpinionSentiment opinionSentiment : negativeAspect.getOpinions()) {
+                    System.out.printf("\t\t'%s' sentiment because of \"%s\". Does the aspect negated: %s.%n",
+                        opinionSentiment.getSentiment(), opinionSentiment.getText(), opinionSentiment.isNegated());
+                }
+            }
+        });
+        // END: com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentBatch#Iterable-boolean-String-TextAnalyticsRequestOptions
     }
 
     /**
@@ -581,5 +741,97 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             });
         });
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentBatch#Iterable-TextAnalyticsRequestOptions-Context
+    }
+
+    /**
+     * Code snippet for {@link TextAnalyticsClient#analyzeSentimentBatchWithResponse(Iterable, boolean, TextAnalyticsRequestOptions, Context)}
+     */
+    public void analyzeBatchSentimentMaxOverloadWithOpinionMining() {
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentBatch#Iterable-boolean-TextAnalyticsRequestOptions-Context
+        List<TextDocumentInput> textDocumentInputs = Arrays.asList(
+            new TextDocumentInput("1", "The hotel was dark and unclean. The restaurant had amazing gnocchi.")
+                .setLanguage("en"),
+            new TextDocumentInput("2", "The restaurant had amazing gnocchi. The hotel was dark and unclean.")
+                .setLanguage("en")
+        );
+
+        // Analyzing batch sentiments
+        Response<AnalyzeSentimentResultCollection> response =
+            textAnalyticsClient.analyzeSentimentBatchWithResponse(textDocumentInputs, true,
+                new TextAnalyticsRequestOptions().setIncludeStatistics(true), Context.NONE);
+
+        // Response's status code
+        System.out.printf("Status code of request response: %d%n", response.getStatusCode());
+        AnalyzeSentimentResultCollection resultCollection = response.getValue();
+
+        // Batch statistics
+        TextDocumentBatchStatistics batchStatistics = resultCollection.getStatistics();
+        System.out.printf("A batch of documents statistics, transaction count: %s, valid document count: %s.%n",
+            batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
+
+        // Analyzed sentiment for each of documents from a batch of documents
+        resultCollection.forEach(analyzeSentimentResult -> {
+            System.out.printf("Document ID: %s%n", analyzeSentimentResult.getId());
+            // Valid document
+            DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
+            System.out.printf(
+                "Recognized document sentiment: %s, positive score: %.2f, neutral score: %.2f, "
+                    + "negative score: %.2f.%n",
+                documentSentiment.getSentiment(),
+                documentSentiment.getConfidenceScores().getPositive(),
+                documentSentiment.getConfidenceScores().getNeutral(),
+                documentSentiment.getConfidenceScores().getNegative());
+
+            List<AspectSentiment> positiveAspects = new ArrayList<>();
+            List<AspectSentiment> mixedAspects = new ArrayList<>();
+            List<AspectSentiment> negativeAspects = new ArrayList<>();
+            documentSentiment.getSentences().forEach(sentenceSentiment -> {
+                System.out.printf(
+                    "Recognized sentence sentiment: %s, positive score: %.2f, neutral score: %.2f,"
+                        + " negative score: %.2f.%n",
+                    sentenceSentiment.getSentiment(),
+                    sentenceSentiment.getConfidenceScores().getPositive(),
+                    sentenceSentiment.getConfidenceScores().getNeutral(),
+                    sentenceSentiment.getConfidenceScores().getNegative());
+                sentenceSentiment.getAspects().forEach(aspectSentiment -> {
+                    TextSentiment aspectTextSentiment = aspectSentiment.getSentiment();
+                    if (NEGATIVE.equals(aspectTextSentiment)) {
+                        negativeAspects.add(aspectSentiment);
+                    } else if (POSITIVE.equals(aspectTextSentiment)) {
+                        positiveAspects.add(aspectSentiment);
+                    } else if (MIXED.equals(aspectTextSentiment)) {
+                        mixedAspects.add(aspectSentiment);
+                    }
+                });
+            });
+
+            System.out.printf("Positive aspects count: %d%n", positiveAspects.size());
+            for (AspectSentiment positiveAspect : positiveAspects) {
+                System.out.printf("\tAspect: %s%n", positiveAspect.getText());
+                for (OpinionSentiment opinionSentiment : positiveAspect.getOpinions()) {
+                    System.out.printf("\t\t'%s' sentiment because of \"%s\". Does the aspect negated: %s.%n",
+                        opinionSentiment.getSentiment(), opinionSentiment.getText(), opinionSentiment.isNegated());
+                }
+            }
+
+            System.out.printf("Mixed aspects count: %d%n", mixedAspects.size());
+            for (AspectSentiment mixedAspect : mixedAspects) {
+                System.out.printf("\tAspect: %s%n", mixedAspect.getText());
+                for (OpinionSentiment opinionSentiment : mixedAspect.getOpinions()) {
+                    System.out.printf("\t\t'%s' sentiment because of \"%s\". Does the aspect negated: %s.%n",
+                        opinionSentiment.getSentiment(), opinionSentiment.getText(), opinionSentiment.isNegated());
+                }
+            }
+
+            System.out.printf("Negative aspects count: %d%n", negativeAspects.size());
+            for (AspectSentiment negativeAspect : negativeAspects) {
+                System.out.printf("\tAspect: %s%n", negativeAspect.getText());
+                for (OpinionSentiment opinionSentiment : negativeAspect.getOpinions()) {
+                    System.out.printf("\t\t'%s' sentiment because of \"%s\". Does the aspect negated: %s.%n",
+                        opinionSentiment.getSentiment(), opinionSentiment.getText(), opinionSentiment.isNegated());
+                }
+            }
+        });
+        // END: com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentBatch#Iterable-boolean-TextAnalyticsRequestOptions-Context
     }
 }

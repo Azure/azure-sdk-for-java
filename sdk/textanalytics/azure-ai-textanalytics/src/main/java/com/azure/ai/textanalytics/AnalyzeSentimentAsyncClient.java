@@ -4,15 +4,23 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
+import com.azure.ai.textanalytics.implementation.models.AspectConfidenceScoreLabel;
+import com.azure.ai.textanalytics.implementation.models.AspectRelationType;
 import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.DocumentSentiment;
 import com.azure.ai.textanalytics.implementation.models.DocumentSentimentValue;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
+import com.azure.ai.textanalytics.implementation.models.SentenceAspect;
+import com.azure.ai.textanalytics.implementation.models.SentenceAspectSentiment;
+import com.azure.ai.textanalytics.implementation.models.SentenceOpinion;
+import com.azure.ai.textanalytics.implementation.models.SentenceOpinionSentiment;
 import com.azure.ai.textanalytics.implementation.models.SentenceSentimentValue;
 import com.azure.ai.textanalytics.implementation.models.SentimentConfidenceScorePerLabel;
 import com.azure.ai.textanalytics.implementation.models.SentimentResponse;
 import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
+import com.azure.ai.textanalytics.models.AspectSentiment;
+import com.azure.ai.textanalytics.models.OpinionSentiment;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
@@ -67,15 +75,16 @@ class AnalyzeSentimentAsyncClient {
      * which contains {@link AnalyzeSentimentResultCollection}.
      *
      * @param documents The list of documents to analyze sentiments for.
+     * @param isIncludeOpinionMining The boolean indicator to show the opinion mining.
      * @param options The {@link TextAnalyticsRequestOptions} request options.
-     *
      * @return A mono {@link Response} contains {@link AnalyzeSentimentResultCollection}.
      */
     public Mono<Response<AnalyzeSentimentResultCollection>> analyzeSentimentBatch(
-        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
+        Iterable<TextDocumentInput> documents, boolean isIncludeOpinionMining, TextAnalyticsRequestOptions options) {
         try {
             inputDocumentsValidation(documents);
-            return withContext(context -> getAnalyzedSentimentResponse(documents, options, context));
+            return withContext(context ->
+                getAnalyzedSentimentResponse(documents, isIncludeOpinionMining, options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -86,16 +95,18 @@ class AnalyzeSentimentAsyncClient {
      * which contains {@link AnalyzeSentimentResultCollection}.
      *
      * @param documents The list of documents to analyze sentiments for.
+     * @param isIncludeOpinionMining The boolean indicator to show the opinion mining.
      * @param options The {@link TextAnalyticsRequestOptions} request options.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A mono {@link Response} contains {@link AnalyzeSentimentResultCollection}.
      */
     Mono<Response<AnalyzeSentimentResultCollection>> analyzeSentimentBatchWithContext(
-        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        Iterable<TextDocumentInput> documents, boolean isIncludeOpinionMining, TextAnalyticsRequestOptions options,
+        Context context) {
         try {
             inputDocumentsValidation(documents);
-            return getAnalyzedSentimentResponse(documents, options, context);
+            return getAnalyzedSentimentResponse(documents, isIncludeOpinionMining, options, context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -155,7 +166,9 @@ class AnalyzeSentimentAsyncClient {
                 return new SentenceSentiment(sentenceSentiment.getText(),
                     TextSentiment.fromString(sentenceSentimentValue == null ? null : sentenceSentimentValue.toString()),
                     new SentimentConfidenceScores(confidenceScorePerSentence.getNegative(),
-                        confidenceScorePerSentence.getNeutral(), confidenceScorePerSentence.getPositive()));
+                        confidenceScorePerSentence.getNeutral(), confidenceScorePerSentence.getPositive()),
+                    toAspectSentimentList(sentenceSentiment)
+                );
             }).collect(Collectors.toList());
 
         // Warnings
@@ -188,24 +201,104 @@ class AnalyzeSentimentAsyncClient {
      * {@link AnalyzeSentimentResultCollection} from a {@link SimpleResponse} of {@link SentimentResponse}.
      *
      * @param documents A list of documents to be analyzed.
+     * @param isIncludeOpinionMining The boolean indicator to show the opinion mining.
      * @param options The {@link TextAnalyticsRequestOptions} request options.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A mono {@link Response} contains {@link AnalyzeSentimentResultCollection}.
      */
     private Mono<Response<AnalyzeSentimentResultCollection>> getAnalyzedSentimentResponse(
-        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
-        // TODO: add opinion mining in the following PR
+        Iterable<TextDocumentInput> documents, boolean isIncludeOpinionMining, TextAnalyticsRequestOptions options,
+        Context context) {
         return service.sentimentWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
             options == null ? null : options.getModelVersion(),
             options == null ? null : options.isIncludeStatistics(),
-            null,
+            isIncludeOpinionMining,
             context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
             .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents.toString()))
             .doOnSuccess(response -> logger.info("Analyzed sentiment for a batch of documents - {}", response))
             .doOnError(error -> logger.warning("Failed to analyze sentiment - {}", error))
             .map(this::toAnalyzeSentimentResultCollectionResponse)
             .onErrorMap(throwable -> mapToHttpResponseExceptionIfExist(throwable));
+    }
+
+    /*
+     * Transform SentenceSentiment's opinion mining to output that user can use.
+     */
+    private IterableStream<AspectSentiment> toAspectSentimentList(
+        com.azure.ai.textanalytics.implementation.models.SentenceSentiment sentenceSentiment) {
+        if (sentenceSentiment.getAspects() == null) {
+            return null;
+        }
+        final List<SentenceAspect> sentenceAspects = sentenceSentiment.getAspects();
+        final List<AspectSentiment> aspectSentiments = new ArrayList<>();
+        sentenceAspects.forEach(sentenceAspect -> {
+            final List<OpinionSentiment> opinionSentiments = new ArrayList<>();
+            sentenceAspect.getRelations().forEach(aspectRelation -> {
+                final AspectRelationType aspectRelationType = aspectRelation.getRelationType();
+                final String refLink = aspectRelation.getRef();
+                final int refIndex = Integer.parseInt(refLink.substring(refLink.lastIndexOf("/") + 1));
+                // TODO: Future work to add AspectRelationType.ASPECT feature when service has the implementation.
+                if (AspectRelationType.OPINION.equals(aspectRelationType)) {
+                    opinionSentiments.add(toOpinionSentiment(sentenceSentiment.getOpinions().get(refIndex)));
+                }
+            });
+
+            aspectSentiments.add(new AspectSentiment(sentenceAspect.getText(),
+                toTextSentiment(sentenceAspect.getSentiment()), new IterableStream<>(opinionSentiments),
+                sentenceAspect.getOffset(), sentenceAspect.getLength(),
+                toSentimentConfidenceScores(sentenceAspect.getConfidenceScores())));
+        });
+
+        return new IterableStream<>(aspectSentiments);
+    }
+
+    /*
+     * Transform type AspectConfidenceScoreLabel to SentimentConfidenceScores.
+     */
+    private SentimentConfidenceScores toSentimentConfidenceScores(
+        AspectConfidenceScoreLabel aspectConfidenceScoreLabel) {
+        return new SentimentConfidenceScores(aspectConfidenceScoreLabel.getNegative(), 0,
+            aspectConfidenceScoreLabel.getPositive());
+    }
+
+    /*
+     * Transform type SentenceOpinion to OpinionSentiment.
+     */
+    private OpinionSentiment toOpinionSentiment(SentenceOpinion sentenceOpinion) {
+        return new OpinionSentiment(sentenceOpinion.getText(), toTextSentiment(sentenceOpinion.getSentiment()),
+            sentenceOpinion.getOffset(), sentenceOpinion.getLength(), sentenceOpinion.isNegated(),
+            toSentimentConfidenceScores(sentenceOpinion.getConfidenceScores()));
+    }
+
+    /*
+     * Transform type SentenceOpinionSentiment to TextSentiment.
+     */
+    private TextSentiment toTextSentiment(SentenceOpinionSentiment sentenceOpinionSentiment) {
+        if (SentenceOpinionSentiment.POSITIVE.equals(sentenceOpinionSentiment)) {
+            return TextSentiment.POSITIVE;
+        } else if (SentenceOpinionSentiment.NEGATIVE.equals(sentenceOpinionSentiment)) {
+            return TextSentiment.NEGATIVE;
+        } else if (SentenceOpinionSentiment.MIXED.equals(sentenceOpinionSentiment)) {
+            return TextSentiment.MIXED;
+        } else {
+            return TextSentiment.fromString(sentenceOpinionSentiment.toString());
+        }
+    }
+
+    /*
+     * Transform type SentenceAspectSentiment to TextSentiment.
+     */
+    private TextSentiment toTextSentiment(SentenceAspectSentiment sentenceAspectSentiment) {
+        if (SentenceOpinionSentiment.POSITIVE.equals(sentenceAspectSentiment)) {
+            return TextSentiment.POSITIVE;
+        } else if (SentenceOpinionSentiment.NEGATIVE.equals(sentenceAspectSentiment)) {
+            return TextSentiment.NEGATIVE;
+        } else if (SentenceOpinionSentiment.MIXED.equals(sentenceAspectSentiment)) {
+            return TextSentiment.MIXED;
+        } else {
+            return TextSentiment.fromString(sentenceAspectSentiment.toString());
+        }
     }
 }
