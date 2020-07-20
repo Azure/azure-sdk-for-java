@@ -50,33 +50,32 @@ The following sections provides examples of using the azure-core-tracing-opentel
     This [sample][sample_key_vault] provides an example when no user parent span is passed.
 
     ```java
-    private static  final Tracer TRACER = TRACER_SDK_FACTORY.get("Sample");
-    // configure the tracer to work with an exporter (using jaeger here)
-    private static final TracerSdkFactory TRACER_SDK_FACTORY = configureOpenTelemetryAndJaegerExporter();
+    // Get the Tracer Provider
+    static TracerSdkProvider tracerProvider = OpenTelemetrySdk.getTracerProvider();
+    private static final Tracer TRACER = configureOpenTelemetryAndLoggingExporter();
 
     public static void main(String[] args) {
-        doClientWork();
-        TRACER_SDK_FACTORY.shutdown();
+       doClientWork();
     }
 
     public static void doClientWork() {
-          SecretClient client = new SecretClientBuilder()
-            .endpoint("<your-vault-url>")
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .buildClient();
-    
-          Span span = TRACER.spanBuilder("user-parent-span").startSpan();
-          try (Scope scope = TRACER.withSpan(span)) {
-  
-              // Thread bound (sync) calls will automatically pick up the parent span and you don't need to pass it explicitly.
-              secretClient.setSecret(new Secret("secret_name", "secret_value));
-  
-              // Optionally, to specify the context you can use
-              // final Context traceContext = new Context(PARENT_SPAN_KEY, span);
-              // secretClient.setSecretWithResponse(new Secret("secret_name", "secret_value", traceContext));
-          } finally {
-              span.end();
-          }
+       SecretClient client = new SecretClientBuilder()
+         .endpoint("<your-vault-url>")
+         .credential(new DefaultAzureCredentialBuilder().build())
+         .buildClient();
+
+       Span span = TRACER.spanBuilder("user-parent-span").startSpan();
+       try (Scope scope = TRACER.withSpan(span)) {
+
+           // Thread bound (sync) calls will automatically pick up the parent span and you don't need to pass it explicitly.
+           secretClient.setSecret(new Secret("secret_name", "secret_value));
+
+           // Optionally, to specify the context you can use
+           // final Context traceContext = new Context(PARENT_SPAN_KEY, span);
+           // secretClient.setSecretWithResponse(new Secret("secret_name", "secret_value", traceContext));
+       } finally {
+           span.end();
+       }
     }
     ```
 
@@ -87,22 +86,22 @@ Send a single event/message using [azure-messaging-eventhubs][azure-messaging-ev
 Users can additionally pass the value of the current tracing span to the EventData object with key **PARENT_SPAN_KEY** on the [Context][context] object:
 
 ```java
-private static  final Tracer TRACER = TRACER_SDK_FACTORY.get("Sample");
-// configure the tracer to work with an exporter (using jaeger here)
-private static final TracerSdkFactory TRACER_SDK_FACTORY = configureOpenTelemetryAndJaegerExporter();
+// Get the Tracer Provider
+private static TracerSdkProvider tracerProvider = OpenTelemetrySdk.getTracerProvider();
+private static final Tracer TRACER = configureOpenTelemetryAndLoggingExporter();
 
 private static void doClientWork() {
     EventHubProducerClient producer = new EventHubClientBuilder()
         .connectionString(CONNECTION_STRING)
         .buildProducerClient();
-    
+
     Span span = TRACER.spanBuilder("user-parent-span").startSpan();
     try (Scope scope = TRACER.withSpan(span)) {
         EventData event1 = new EventData("1".getBytes(UTF_8));
         event1.addContext(PARENT_SPAN_KEY, span);
-    
+
         EventDataBatch eventDataBatch = producer.createBatch();
-    
+
         if (!eventDataBatch.tryAdd(eventData)) {
             producer.send(eventDataBatch);
             eventDataBatch = producer.createBatch();
@@ -158,7 +157,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [azure-messaging-eventhubs]: ../../eventhubs/azure-messaging-eventhubs
 [azure-security-keyvault-secrets]: ../../keyvault/azure-security-keyvault-secrets
 [context]: ../azure-core/src/main/java/com/azure/core/util/Context.java
-[create-eventhubs-builders]: ../../eventhubs/azure-messaging-eventhubs#create-an-event-hub-client-using-a-connection-string
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [OpenTelemetry-quickstart]: https://github.com/open-telemetry/opentelemetry-java
 [OpenTelemetry]: https://github.com/open-telemetry/opentelemetry-java

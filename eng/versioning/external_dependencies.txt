@@ -123,7 +123,7 @@ com.microsoft.azure:msal4j-persistence-extension;0.2.0
 com.sun.activation:jakarta.activation;1.2.1
 io.opentelemetry:opentelemetry-api;0.6.0
 io.opentelemetry:opentelemetry-sdk;0.6.0
-io.grpc:grpc-core:jar:1.23.0
+io.grpc:grpc-core:jar:1.30.0
 io.projectreactor:reactor-test;3.3.8.RELEASE
 junit:junit;4.13-beta-3
 org.apache.maven:maven-compat;3.6.2
