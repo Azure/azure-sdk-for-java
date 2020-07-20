@@ -5,8 +5,10 @@ package com.azure.cosmos.implementation.encryption.api;
 
 import java.util.List;
 
+/**
+ * Options for encryption of data.
+ */
 public class EncryptionOptions {
-
 
     /**
      *  Gets Algorithm to be used for encrypting the data in the request payload.
@@ -16,17 +18,18 @@ public class EncryptionOptions {
         return encryptionAlgorithm;
     }
 
-
     /**
      * Sets Algorithm to be used for encrypting the data in the request payload.
+     *
+     * Authenticated Encryption algorithm based on https://tools.ietf.org/html/draft-mcgrew-aead-aes-cbc-hmac-sha2-05
+     * is the only one supported and is represented by "AEAes256CbcHmacSha256Randomized" value.
      * @param encryptionAlgorithm
-     * @return
+     * @return the encryptionOptions
      */
     public EncryptionOptions setEncryptionAlgorithm(String encryptionAlgorithm) {
         this.encryptionAlgorithm = encryptionAlgorithm;
         return this;
     }
-
 
     /**
      * Gets Identifier of the data encryption key to be used for encrypting the data in the request payload.

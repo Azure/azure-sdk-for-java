@@ -4,6 +4,7 @@ package com.azure.resourcemanager.compute.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.compute.models.VirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachineImages;
 import com.azure.resourcemanager.compute.models.VirtualMachinePublishers;
@@ -12,8 +13,9 @@ import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineImageResourc
 import com.azure.resourcemanager.compute.fluent.VirtualMachineImagesClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
+import reactor.core.publisher.Flux;
+
 import java.util.List;
-import reactor.core.publisher.Mono;
 
 /** The implementation for {@link VirtualMachineImages}. */
 public class VirtualMachineImagesImpl implements VirtualMachineImages {
@@ -85,7 +87,8 @@ public class VirtualMachineImagesImpl implements VirtualMachineImages {
                     virtualMachinePublisher
                         .offers()
                         .listAsync()
-                        .onErrorResume(e -> Mono.empty())
+                        .onErrorResume(ManagementException.class,
+                            e -> e.getResponse().getStatusCode() == 404 ? Flux.empty() : Flux.error(e))
                         .flatMap(virtualMachineOffer -> virtualMachineOffer.skus().listAsync())
                         .flatMap(virtualMachineSku -> virtualMachineSku.images().listAsync()));
     }

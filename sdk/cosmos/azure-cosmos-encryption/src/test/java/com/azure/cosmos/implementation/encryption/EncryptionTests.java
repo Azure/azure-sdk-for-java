@@ -174,7 +174,7 @@ public class EncryptionTests extends TestSuiteBase {
         encryptionOptions.setPathsToEncrypt(ImmutableList.of("/Sensitive"));
 
         encryptionOptions.setDataEncryptionKeyId(dekId);
-        encryptionOptions.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAes256CbcHmacSha256Randomized);
+        encryptionOptions.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256_RANDOMIZED);
         ModelBridgeInternal.setEncryptionOptions(requestOptions, encryptionOptions);
 
         TestDoc properties = getItem(UUID.randomUUID().toString());
@@ -224,7 +224,7 @@ public class EncryptionTests extends TestSuiteBase {
     private static DataEncryptionKeyProperties createDek(CosmosDataEncryptionKeyProvider dekProvider, String dekId) {
         CosmosItemResponse<DataEncryptionKeyProperties> dekResponse = dekProvider.getDataEncryptionKeyContainer().createDataEncryptionKeyAsync(
             dekId,
-            CosmosEncryptionAlgorithm.AEAes256CbcHmacSha256Randomized,
+            CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256_RANDOMIZED,
             EncryptionTests.metadata1, null).block();
 
         assertThat(dekResponse.getRequestCharge()).isGreaterThan(0);

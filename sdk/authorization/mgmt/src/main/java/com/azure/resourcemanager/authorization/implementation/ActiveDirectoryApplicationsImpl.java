@@ -8,7 +8,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryApplication;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryApplications;
-import com.azure.resourcemanager.authorization.models.GraphErrorException;
 import com.azure.resourcemanager.authorization.fluent.inner.ApplicationInner;
 import com.azure.resourcemanager.authorization.fluent.ApplicationsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;
@@ -72,7 +71,6 @@ public class ActiveDirectoryApplicationsImpl
     public Mono<ActiveDirectoryApplication> getByIdAsync(String id) {
         return innerCollection
             .getAsync(id)
-            .onErrorResume(GraphErrorException.class, e -> Mono.empty())
             .flatMap(
                 applicationInner ->
                     new ActiveDirectoryApplicationImpl(applicationInner, manager()).refreshCredentialsAsync());
@@ -93,10 +91,13 @@ public class ActiveDirectoryApplicationsImpl
                 Mono
                     .defer(
                         () -> {
-                            UUID.fromString(trimmed);
-                            return inner().listAsync(String.format("appId eq '%s'", trimmed)).singleOrEmpty();
+                            try {
+                                UUID.fromString(trimmed);
+                                return inner().listAsync(String.format("appId eq '%s'", trimmed)).singleOrEmpty();
+                            } catch (IllegalArgumentException e) {
+                                return Mono.empty();
+                            }
                         }))
-            .onErrorResume(IllegalArgumentException.class, e -> Mono.empty())
             .map(applicationInner -> new ActiveDirectoryApplicationImpl(applicationInner, manager()))
             .flatMap(activeDirectoryApplication -> activeDirectoryApplication.refreshCredentialsAsync());
     }

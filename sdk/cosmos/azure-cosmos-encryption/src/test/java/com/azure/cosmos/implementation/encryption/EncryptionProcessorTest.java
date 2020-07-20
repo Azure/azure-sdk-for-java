@@ -68,7 +68,7 @@ public class EncryptionProcessorTest {
 
             @Override
             public String getEncryptionAlgorithm() {
-                return CosmosEncryptionAlgorithm.AEAes256CbcHmacSha256Randomized;
+                return CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256_RANDOMIZED;
             }
 
             @Override
@@ -89,7 +89,7 @@ public class EncryptionProcessorTest {
         com.azure.cosmos.implementation.encryption.api.EncryptionOptions encryptionOptions = new EncryptionOptions();
         encryptionOptions.setPathsToEncrypt(ImmutableList.of("/sensitive"));
         encryptionOptions.setDataEncryptionKeyId(keyId);
-        encryptionOptions.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAes256CbcHmacSha256Randomized);
+        encryptionOptions.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256_RANDOMIZED);
 
         TestPojo testDate = getTestDate();
         byte[] inputAsByteArray = toByteArray(testDate);

@@ -5,7 +5,6 @@ package com.azure.resourcemanager.authorization.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.models.RoleDefinition;
 import com.azure.resourcemanager.authorization.models.RoleDefinitions;
@@ -41,7 +40,6 @@ public class RoleDefinitionsImpl extends ReadableWrappersImpl<RoleDefinition, Ro
     public Mono<RoleDefinition> getByIdAsync(String id) {
         return inner()
             .getByIdAsync(id)
-            .onErrorResume(ManagementException.class, e -> Mono.empty())
             .map(roleDefinitionInner -> new RoleDefinitionImpl(roleDefinitionInner, manager()));
     }
 
@@ -54,7 +52,6 @@ public class RoleDefinitionsImpl extends ReadableWrappersImpl<RoleDefinition, Ro
     public Mono<RoleDefinition> getByScopeAsync(String scope, String name) {
         return inner()
             .getAsync(scope, name)
-            .onErrorResume(ManagementException.class, e -> Mono.empty())
             .map(roleDefinitionInner -> new RoleDefinitionImpl(roleDefinitionInner, manager()));
     }
 
@@ -79,7 +76,6 @@ public class RoleDefinitionsImpl extends ReadableWrappersImpl<RoleDefinition, Ro
     public Mono<RoleDefinition> getByScopeAndRoleNameAsync(String scope, String roleName) {
         return inner()
             .listAsync(scope, String.format("roleName eq '%s'", roleName))
-            .onErrorResume(ManagementException.class, e -> Mono.empty())
             .singleOrEmpty()
             .map(roleDefinitionInner -> new RoleDefinitionImpl(roleDefinitionInner, manager()));
     }

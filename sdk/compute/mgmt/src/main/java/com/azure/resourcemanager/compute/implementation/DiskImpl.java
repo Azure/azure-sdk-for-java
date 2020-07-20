@@ -106,7 +106,6 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
             .inner()
             .getDisks()
             .grantAccessAsync(this.resourceGroupName(), this.name(), grantAccessDataInner)
-            .onErrorResume(e -> Mono.empty())
             .map(accessUriInner -> accessUriInner.accessSas());
     }
 

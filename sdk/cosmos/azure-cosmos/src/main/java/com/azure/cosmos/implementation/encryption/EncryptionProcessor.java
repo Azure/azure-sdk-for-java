@@ -111,7 +111,7 @@ public class EncryptionProcessor {
         }
 
         // get key
-        DataEncryptionKey inMemoryRawDek = keyProvider.getDataEncryptionKey(encryptionProperties.getDataEncryptionKeyId(), CosmosEncryptionAlgorithm.AEAes256CbcHmacSha256Randomized);
+        DataEncryptionKey inMemoryRawDek = keyProvider.getDataEncryptionKey(encryptionProperties.getDataEncryptionKeyId(), CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256_RANDOMIZED);
 
         byte[] plainText = inMemoryRawDek.decryptData(encryptionProperties.getEncryptedData());
 
