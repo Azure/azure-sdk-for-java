@@ -166,7 +166,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     public <T> T findById(Object id, Class<T> domainType, PartitionKey partitionKey) {
         Assert.notNull(domainType, "domainType should not be null");
         Assert.notNull(partitionKey, "partitionKey should not be null");
-        String idToQuery = (String) CosmosUtils.getStringIDValue(id);
+        String idToQuery = CosmosUtils.getStringIDValue(id);
         final String containerName = getContainerName(domainType);
         return cosmosAsyncClient
             .getDatabase(databaseName)
@@ -427,7 +427,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
      */
     public void deleteById(String containerName, Object id, PartitionKey partitionKey) {
         Assert.hasText(containerName, "containerName should not be null, empty or only whitespaces");
-        String idToDelete = (String) CosmosUtils.getStringIDValue(id);
+        String idToDelete = CosmosUtils.getStringIDValue(id);
         LOGGER.debug("execute deleteById in database {} container {}", this.databaseName,
             containerName);
 

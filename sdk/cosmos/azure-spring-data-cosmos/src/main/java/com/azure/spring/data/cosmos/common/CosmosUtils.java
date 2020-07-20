@@ -56,11 +56,11 @@ public class CosmosUtils {
      * @throws IllegalQueryException thrown if id value fail the validation.
      * @return String id value
      */
-    public static Object getStringIDValue(Object idValue) {
+    public static String getStringIDValue(Object idValue) {
         Assert.notNull(idValue, "id should not be null");
         if (idValue instanceof String) {
             Assert.hasText(idValue.toString(), "id should not be empty or only whitespaces.");
-            return idValue;
+            return (String) idValue;
         } else if (idValue instanceof Integer) {
             return Integer.toString((Integer) idValue);
         } else if (idValue instanceof Long) {

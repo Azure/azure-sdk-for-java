@@ -248,7 +248,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     @Override
     public <T> Mono<T> findById(Object id, Class<T> domainType, PartitionKey partitionKey) {
         Assert.notNull(domainType, "domainType should not be null");
-        String idToFind = (String) CosmosUtils.getStringIDValue(id);
+        String idToFind = CosmosUtils.getStringIDValue(id);
 
         final String containerName = getContainerName(domainType);
         return cosmosAsyncClient.getDatabase(databaseName)
@@ -389,7 +389,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     @Override
     public Mono<Void> deleteById(String containerName, Object id, PartitionKey partitionKey) {
         Assert.hasText(containerName, "container name should not be null, empty or only whitespaces");
-        String idToDelete = (String) CosmosUtils.getStringIDValue(id);
+        String idToDelete = CosmosUtils.getStringIDValue(id);
 
         if (partitionKey == null) {
             partitionKey = PartitionKey.NONE;
