@@ -6,7 +6,6 @@ package com.azure.security.keyvault.keys.models;
 import com.azure.core.annotation.Fluent;
 
 import java.time.OffsetDateTime;
-import java.util.Arrays;
 import java.util.Map;
 
 /**
