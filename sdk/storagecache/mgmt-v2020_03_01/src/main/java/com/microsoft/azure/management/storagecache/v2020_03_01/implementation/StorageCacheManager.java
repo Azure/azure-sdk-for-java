@@ -19,6 +19,7 @@ import com.microsoft.rest.RestClient;
 import com.microsoft.azure.management.storagecache.v2020_03_01.Operations;
 import com.microsoft.azure.management.storagecache.v2020_03_01.Skus;
 import com.microsoft.azure.management.storagecache.v2020_03_01.UsageModels;
+import com.microsoft.azure.management.storagecache.v2020_03_01.AscOperations;
 import com.microsoft.azure.management.storagecache.v2020_03_01.Caches;
 import com.microsoft.azure.management.storagecache.v2020_03_01.StorageTargets;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
@@ -31,6 +32,7 @@ public final class StorageCacheManager extends ManagerCore<StorageCacheManager, 
     private Operations operations;
     private Skus skus;
     private UsageModels usageModels;
+    private AscOperations ascOperations;
     private Caches caches;
     private StorageTargets storageTargets;
     /**
@@ -108,6 +110,16 @@ public final class StorageCacheManager extends ManagerCore<StorageCacheManager, 
             this.usageModels = new UsageModelsImpl(this);
         }
         return this.usageModels;
+    }
+
+    /**
+     * @return Entry point to manage AscOperations.
+     */
+    public AscOperations ascOperations() {
+        if (this.ascOperations == null) {
+            this.ascOperations = new AscOperationsImpl(this);
+        }
+        return this.ascOperations;
     }
 
     /**
