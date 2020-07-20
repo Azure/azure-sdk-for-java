@@ -158,6 +158,7 @@ public final class BlobProperties {
      * @param tagCount Number of tags associated with the blob.
      * @param objectReplicationStatus The object replication status map to parse.
      * @param rehydratePriority The rehydrate priority
+     * @param isSealed Whether or not the blob is sealed.
      */
     public BlobProperties(final OffsetDateTime creationTime, final OffsetDateTime lastModified, final String eTag,
         final long blobSize, final String contentType, final byte[] contentMd5, final String contentEncoding,
