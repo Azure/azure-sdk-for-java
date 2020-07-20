@@ -21,7 +21,6 @@ public class BlockBlobListBlocksOptions {
      * @param type Specifies which type of blocks to return.
      */
     public BlockBlobListBlocksOptions(BlockListType type) {
-        StorageImplUtils.assertNotNull("type", type);
         this.type = type;
     }
 

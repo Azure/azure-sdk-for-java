@@ -19,7 +19,6 @@ import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.BlobLeaseRequestConditions;
-import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.options.BlobAcquireLeaseOptions;
 import com.azure.storage.blob.options.BlobBreakLeaseOptions;
 import com.azure.storage.blob.options.BlobChangeLeaseOptions;
