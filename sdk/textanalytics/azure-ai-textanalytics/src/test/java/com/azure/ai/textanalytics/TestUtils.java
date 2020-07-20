@@ -287,18 +287,18 @@ final class TestUtils {
             new SentimentConfidenceScores(0.0, 0.0, 0.0),
             new IterableStream<>(asList(
                 new SentenceSentiment("The hotel was dark and unclean.", TextSentiment.NEGATIVE,
-                    new SentimentConfidenceScores(0.0, 0.0, 0.0),
                     new IterableStream<>(asList(
                         new AspectSentiment("hotel", TextSentiment.NEGATIVE, new IterableStream<>(asList(
                             new OpinionSentiment("dark", TextSentiment.NEGATIVE, 14, 4, false, new SentimentConfidenceScores(0.0, 0.0, 0.0)),
                             new OpinionSentiment("unclean", TextSentiment.NEGATIVE, 23, 7, false, new SentimentConfidenceScores(0.0, 0.0, 0.0))
-                        )), 4, 5, new SentimentConfidenceScores(0.0, 0.0, 0.0))))),
+                        )), 4, 5, new SentimentConfidenceScores(0.0, 0.0, 0.0)))), new SentimentConfidenceScores(0.0, 0.0, 0.0)
+                ),
                 new SentenceSentiment("The restaurant had amazing gnocchi.", TextSentiment.POSITIVE,
-                    new SentimentConfidenceScores(0.0, 0.0, 0.0),
                     new IterableStream<>(asList(
                         new AspectSentiment("gnocchi", TextSentiment.POSITIVE, new IterableStream<>(asList(
                             new OpinionSentiment("amazing", TextSentiment.POSITIVE, 51, 7, false, new SentimentConfidenceScores(0.0, 0.0, 0.0))
-                        )), 59, 7, new SentimentConfidenceScores(0.0, 0.0, 0.0)))))
+                        )), 59, 7, new SentimentConfidenceScores(0.0, 0.0, 0.0)))), new SentimentConfidenceScores(0.0, 0.0, 0.0)
+                )
             )), null);
     }
 
@@ -310,18 +310,18 @@ final class TestUtils {
             new SentimentConfidenceScores(0.0, 0.0, 0.0),
             new IterableStream<>(asList(
                 new SentenceSentiment("The restaurant had amazing gnocchi.", TextSentiment.POSITIVE,
-                    new SentimentConfidenceScores(0.0, 0.0, 0.0),
                     new IterableStream<>(asList(
                         new AspectSentiment("gnocchi", TextSentiment.POSITIVE, new IterableStream<>(asList(
                             new OpinionSentiment("amazing", TextSentiment.POSITIVE, 19, 7, false, new SentimentConfidenceScores(0.0, 0.0, 0.0))
-                        )), 27, 7, new SentimentConfidenceScores(0.0, 0.0, 0.0))))),
+                        )), 27, 7, new SentimentConfidenceScores(0.0, 0.0, 0.0)))), new SentimentConfidenceScores(0.0, 0.0, 0.0)
+                ),
                 new SentenceSentiment("The hotel was dark and unclean.", TextSentiment.NEGATIVE,
-                    new SentimentConfidenceScores(0.0, 0.0, 0.0),
                     new IterableStream<>(asList(
                         new AspectSentiment("hotel", TextSentiment.NEGATIVE, new IterableStream<>(asList(
                             new OpinionSentiment("dark", TextSentiment.NEGATIVE, 50, 4, false, new SentimentConfidenceScores(0.0, 0.0, 0.0)),
                             new OpinionSentiment("unclean", TextSentiment.NEGATIVE, 59, 7, false, new SentimentConfidenceScores(0.0, 0.0, 0.0))
-                        )), 40, 5, new SentimentConfidenceScores(0.0, 0.0, 0.0)))))
+                        )), 40, 5, new SentimentConfidenceScores(0.0, 0.0, 0.0)))), new SentimentConfidenceScores(0.0, 0.0, 0.0)
+                )
             )), null);
     }
 

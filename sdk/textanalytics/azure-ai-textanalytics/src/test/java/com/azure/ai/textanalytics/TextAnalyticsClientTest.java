@@ -542,8 +542,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(TextSentiment.NEUTRAL,
             new SentimentConfidenceScores(0.0, 0.0, 0.0),
             new IterableStream<>(Arrays.asList(
-                new SentenceSentiment("!", TextSentiment.NEUTRAL, new SentimentConfidenceScores(0.0, 0.0, 0.0), null),
-                new SentenceSentiment("@#%%", TextSentiment.NEUTRAL, new SentimentConfidenceScores(0.0, 0.0, 0.0), null)
+                new SentenceSentiment("!", TextSentiment.NEUTRAL, null, new SentimentConfidenceScores(0.0, 0.0, 0.0)),
+                new SentenceSentiment("@#%%", TextSentiment.NEUTRAL, null, new SentimentConfidenceScores(0.0, 0.0, 0.0))
             )), null);
 
         DocumentSentiment analyzeSentimentResult = client.analyzeSentiment("!@#%%");

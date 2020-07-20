@@ -165,9 +165,9 @@ class AnalyzeSentimentAsyncClient {
                 final SentenceSentimentValue sentenceSentimentValue = sentenceSentiment.getSentiment();
                 return new SentenceSentiment(sentenceSentiment.getText(),
                     TextSentiment.fromString(sentenceSentimentValue == null ? null : sentenceSentimentValue.toString()),
+                    toAspectSentimentList(sentenceSentiment),
                     new SentimentConfidenceScores(confidenceScorePerSentence.getNegative(),
-                        confidenceScorePerSentence.getNeutral(), confidenceScorePerSentence.getPositive()),
-                    toAspectSentimentList(sentenceSentiment)
+                        confidenceScorePerSentence.getNeutral(), confidenceScorePerSentence.getPositive())
                 );
             }).collect(Collectors.toList());
 

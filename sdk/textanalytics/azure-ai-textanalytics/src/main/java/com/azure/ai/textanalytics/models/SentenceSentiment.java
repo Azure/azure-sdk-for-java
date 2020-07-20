@@ -19,19 +19,18 @@ public final class SentenceSentiment {
 
     /**
      * Creates a {@link SentenceSentiment} model that describes the sentiment analysis of sentence.
-     *
      * @param text The sentence text.
      * @param sentiment The sentiment label of the sentence.
+     * @param aspects The aspect of the sentence sentiment.
      * @param confidenceScores The sentiment confidence score (Softmax score) between 0 and 1, for each sentiment label.
      *   Higher values signify higher confidence.
-     * @param aspects The aspect of the sentence sentiment.
      */
-    public SentenceSentiment(String text, TextSentiment sentiment, SentimentConfidenceScores confidenceScores,
-        IterableStream<AspectSentiment> aspects) {
+    public SentenceSentiment(String text, TextSentiment sentiment, IterableStream<AspectSentiment> aspects,
+        SentimentConfidenceScores confidenceScores) {
         this.text = text;
         this.sentiment = sentiment;
-        this.confidenceScores = confidenceScores;
         this.aspects = aspects;
+        this.confidenceScores = confidenceScores;
     }
 
     /**
@@ -53,6 +52,15 @@ public final class SentenceSentiment {
     }
 
     /**
+     * Get the aspects of sentence sentiment.
+     *
+     * @return The aspects of sentence sentiment.
+     */
+    public IterableStream<AspectSentiment> getAspects() {
+        return aspects;
+    }
+
+    /**
      * Get the confidence score of the sentiment label. All score values sum up to 1, higher the score value means
      * higher confidence the sentiment label represents.
      *
@@ -60,14 +68,5 @@ public final class SentenceSentiment {
      */
     public SentimentConfidenceScores getConfidenceScores() {
         return confidenceScores;
-    }
-
-    /**
-     * Get the aspects of sentence sentiment.
-     *
-     * @return The aspects of sentence sentiment.
-     */
-    public IterableStream<AspectSentiment> getAspects() {
-        return aspects;
     }
 }
