@@ -52,9 +52,11 @@ public class CosmosUtils {
      * ID value should be string value, real id type will be String, Integer, Long,
      * all of these must be converted to String type.
      * @param idValue id value to find
+     * @throws IllegalArgumentException thrown if id value fail the validation.
+     * @throws IllegalQueryException thrown if id value fail the validation.
      * @return String id value
      */
-    public static Object getStringIDValue(Object idValue) {
+    public static Object getStringIDValue(Object idValue)  {
         Assert.notNull(idValue, "id should not be null");
         if (idValue instanceof String) {
             Assert.hasText(idValue.toString(), "id should not be empty or only whitespaces.");

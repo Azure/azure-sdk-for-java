@@ -405,12 +405,12 @@ public class CosmosEntityInformationUnitTest {
 
         private String name;
 
-        public BasicLongIdDomain(long number, String name) {
+        BasicLongIdDomain(long number, String name) {
             this.number = number;
             this.name = name;
         }
 
-        public BasicLongIdDomain() {
+        BasicLongIdDomain() {
         }
 
         public long getNumber() {

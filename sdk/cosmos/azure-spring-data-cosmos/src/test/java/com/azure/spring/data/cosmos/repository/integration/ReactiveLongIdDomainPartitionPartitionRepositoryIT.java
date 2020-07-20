@@ -107,9 +107,10 @@ public class ReactiveLongIdDomainPartitionPartitionRepositoryIT {
     @Test
     public void testSaveAndFindById() {
         Assert.assertNotNull(this.repository.save(DOMAIN_1).block(DEFAULT_TIME_OUT));
-        Optional<LongIdDomainPartition> LongIdDomainPartitionOptional = this.repository.findById(DOMAIN_1.getNumber()).blockOptional(DEFAULT_TIME_OUT);
-        Assert.assertTrue(LongIdDomainPartitionOptional.isPresent());
-        Assert.assertEquals(DOMAIN_1, LongIdDomainPartitionOptional.get());
+        Optional<LongIdDomainPartition> longIdDomainPartitionOptional = this.repository
+            .findById(DOMAIN_1.getNumber()).blockOptional(DEFAULT_TIME_OUT);
+        Assert.assertTrue(longIdDomainPartitionOptional.isPresent());
+        Assert.assertEquals(DOMAIN_1, longIdDomainPartitionOptional.get());
     }
 
     @Test
@@ -117,14 +118,8 @@ public class ReactiveLongIdDomainPartitionPartitionRepositoryIT {
         this.repository.deleteAll().block(DEFAULT_TIME_OUT);
         List<LongIdDomainPartition> savedEntities = Stream.of(DOMAIN_1, DOMAIN_2).collect(Collectors.toList());
         this.repository.saveAll(savedEntities).collectList().block(DEFAULT_TIME_OUT);
-        List<LongIdDomainPartition> LongIdDomainPartitionList = this.repository.findAll().collectList().block(DEFAULT_TIME_OUT);
-        Assert.assertTrue(LongIdDomainPartitionList.containsAll(savedEntities));
-    }
-
-    private void assertLongIdDomainPartitionEquals(List<LongIdDomainPartition> cur, List<LongIdDomainPartition> reference) {
-        cur.sort(Comparator.comparing(LongIdDomainPartition::getNumber));
-        reference.sort(Comparator.comparing(LongIdDomainPartition::getNumber));
-        Assert.assertEquals(reference, cur);
+        List<LongIdDomainPartition> longIdDomainPartitionList = this.repository.findAll().collectList().block(DEFAULT_TIME_OUT);
+        Assert.assertTrue(longIdDomainPartitionList.containsAll(savedEntities));
     }
 
     @Test
