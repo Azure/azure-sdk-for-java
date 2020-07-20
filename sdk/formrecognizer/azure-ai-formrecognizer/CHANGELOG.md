@@ -1,7 +1,7 @@
 # Release History
 
 ## 1.0.0-beta.5 (Unreleased)
-- Add support for context passing.
+- Added support for context passing.
 
 ### Key Bug Fixes
 - Fixed `getFields()` to preserve service side ordering of fields.
