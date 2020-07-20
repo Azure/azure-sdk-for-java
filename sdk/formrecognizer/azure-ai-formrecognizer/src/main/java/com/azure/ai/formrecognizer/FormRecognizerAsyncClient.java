@@ -189,7 +189,7 @@ public final class FormRecognizerAsyncClient {
      * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code recognizeOptions} is {@code null}.
+     * @throws NullPointerException If {@code form}, {@code modelId} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedForm>>
@@ -325,7 +325,7 @@ public final class FormRecognizerAsyncClient {
      * been cancelled. The completed operation returns a List of {@link FormPage}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code recognizeOptions} is {@code null}.
+     * @throws NullPointerException If {@code form} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<FormPage>> beginRecognizeContent(Flux<ByteBuffer> form, long length,
@@ -348,6 +348,7 @@ public final class FormRecognizerAsyncClient {
             return PollerFlux.error(ex);
         }
     }
+
     /**
      * Recognizes receipt data using optical character recognition (OCR) and a prebuilt receipt trained
      * model.
@@ -463,7 +464,7 @@ public final class FormRecognizerAsyncClient {
      * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code recognizeOptions} is {@code null}.
+     * @throws NullPointerException If {@code receipt} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedForm>>
