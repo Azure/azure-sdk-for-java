@@ -132,7 +132,7 @@ public abstract class AbstractQueryGenerator {
         if (!(criteria.getSubjectValues().get(0) instanceof Collection)) {
             throw new IllegalQueryException("IN keyword requires Collection type in parameters");
         }
-        
+
         final Collection<Object> values = (Collection<Object>) criteria.getSubjectValues().get(0);
 
         final StringBuilder builder = new StringBuilder();
@@ -153,7 +153,7 @@ public abstract class AbstractQueryGenerator {
                 throw new IllegalQueryException("IN keyword Range only support Number and String type.");
             }
         }
-        
+
         return String.format("r.%s %s (%s)", criteria.getSubject(), criteria.getType().getSqlKeyword(), builder.toString());
     }
 
