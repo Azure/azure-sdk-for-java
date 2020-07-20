@@ -56,6 +56,7 @@ public final class BlobProperties {
     private final List<ObjectReplicationPolicy> objectReplicationSourcePolicies;
     private final String objectReplicationDestinationPolicyId;
     private final RehydratePriority rehydratePriority;
+    private final Boolean isSealed;
 
     /**
      * Constructs a {@link BlobProperties}.
@@ -157,6 +158,7 @@ public final class BlobProperties {
      * @param tagCount Number of tags associated with the blob.
      * @param objectReplicationStatus The object replication status map to parse.
      * @param rehydratePriority The rehydrate priority
+     * @param isSealed Whether or not the blob is sealed.
      */
     public BlobProperties(final OffsetDateTime creationTime, final OffsetDateTime lastModified, final String eTag,
         final long blobSize, final String contentType, final byte[] contentMd5, final String contentEncoding,
@@ -169,7 +171,8 @@ public final class BlobProperties {
         final Boolean isAccessTierInferred, final ArchiveStatus archiveStatus, final String encryptionKeySha256,
         final String encryptionScope, final OffsetDateTime accessTierChangeTime, final Map<String, String> metadata,
         final Integer committedBlockCount, final String versionId, final Boolean isCurrentVersion,
-        final Long tagCount, Map<String, String> objectReplicationStatus, String rehydratePriority) {
+        final Long tagCount, Map<String, String> objectReplicationStatus, final String rehydratePriority,
+        final Boolean isSealed) {
         this.creationTime = creationTime;
         this.lastModified = lastModified;
         this.eTag = eTag;
@@ -227,6 +230,7 @@ public final class BlobProperties {
             this.objectReplicationSourcePolicies.add(new ObjectReplicationPolicy(entry.getKey(), entry.getValue()));
         }
         this.rehydratePriority = RehydratePriority.fromString(rehydratePriority);
+        this.isSealed = isSealed;
     }
 
 
@@ -326,6 +330,7 @@ public final class BlobProperties {
         this.objectReplicationSourcePolicies = objectReplicationSourcePolicies;
         this.objectReplicationDestinationPolicyId = objectReplicationDestinationPolicyId;
         this.rehydratePriority = null;
+        this.isSealed = null;
     }
 
     /**
@@ -606,5 +611,12 @@ public final class BlobProperties {
      */
     public RehydratePriority getRehydratePriority() {
         return this.rehydratePriority;
+    }
+
+    /**
+     * @return the flag indicating whether or not this blob has been sealed.
+     */
+    public Boolean isSealed() {
+        return isSealed;
     }
 }

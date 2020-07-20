@@ -86,7 +86,7 @@ public final class AppendBlobsImpl {
         @Put("{containerName}/{blob}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<AppendBlobsSealResponse> seal(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("x-ms-blob-condition-appendpos") Long appendPosition, @QueryParam("comp") String comp, Context context);
+        Mono<AppendBlobsSealResponse> seal(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("x-ms-blob-condition-appendpos") Long appendPosition, @QueryParam("comp") String comp, Context context);
     }
 
     /**
@@ -383,12 +383,14 @@ public final class AppendBlobsImpl {
     /**
      * The Seal operation seals the Append Blob to make it read-only. Seal is supported only on version 2019-12-12 version or later.
      *
+     * @param containerName The container name.
+     * @param blob The blob name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AppendBlobsSealResponse> sealWithRestResponseAsync(Context context) {
+    public Mono<AppendBlobsSealResponse> sealWithRestResponseAsync(String containerName, String blob, Context context) {
         final Integer timeout = null;
         final String requestId = null;
         final String leaseId = null;
@@ -398,12 +400,14 @@ public final class AppendBlobsImpl {
         final String comp = "seal";
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.seal(this.client.getUrl(), timeout, this.client.getVersion(), requestId, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, appendPosition, comp, context);
+        return service.seal(containerName, blob, this.client.getUrl(), timeout, this.client.getVersion(), requestId, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, appendPosition, comp, context);
     }
 
     /**
      * The Seal operation seals the Append Blob to make it read-only. Seal is supported only on version 2019-12-12 version or later.
      *
+     * @param containerName The container name.
+     * @param blob The blob name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
@@ -417,10 +421,10 @@ public final class AppendBlobsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AppendBlobsSealResponse> sealWithRestResponseAsync(Integer timeout, String requestId, String leaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, Long appendPosition, Context context) {
+    public Mono<AppendBlobsSealResponse> sealWithRestResponseAsync(String containerName, String blob, Integer timeout, String requestId, String leaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, Long appendPosition, Context context) {
         final String comp = "seal";
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.seal(this.client.getUrl(), timeout, this.client.getVersion(), requestId, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, appendPosition, comp, context);
+        return service.seal(containerName, blob, this.client.getUrl(), timeout, this.client.getVersion(), requestId, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, appendPosition, comp, context);
     }
 }
