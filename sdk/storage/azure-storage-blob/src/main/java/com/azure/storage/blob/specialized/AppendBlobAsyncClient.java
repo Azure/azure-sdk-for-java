@@ -18,9 +18,7 @@ import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.implementation.models.AppendBlobAppendBlockFromUrlHeaders;
 import com.azure.storage.blob.implementation.models.AppendBlobAppendBlockHeaders;
 import com.azure.storage.blob.implementation.models.AppendBlobCreateHeaders;
-import com.azure.storage.blob.implementation.models.AppendBlobSealHeaders;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
-import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.blob.models.AppendBlobItem;
@@ -413,7 +411,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         requestConditions = (requestConditions == null) ? new AppendBlobRequestConditions() : requestConditions;
         context = context == null ? Context.NONE : context;
 
-        return this.azureBlobStorage.appendBlobs().sealWithRestResponseAsync(null, null,
+        return this.azureBlobStorage.appendBlobs().sealWithRestResponseAsync(null, null, null, null,
             requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
             requestConditions.getIfNoneMatch(), requestConditions.getAppendPosition(),

@@ -22,7 +22,6 @@ public class BlobCopyFromUrlOptions {
     private AccessTier tier;
     private RequestConditions sourceRequestConditions;
     private BlobRequestConditions destinationRequestConditions;
-    private Boolean sealed;
 
     /**
      * @param copySource The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
@@ -117,25 +116,6 @@ public class BlobCopyFromUrlOptions {
      */
     public BlobCopyFromUrlOptions setDestinationRequestConditions(BlobRequestConditions destinationRequestConditions) {
         this.destinationRequestConditions = destinationRequestConditions;
-        return this;
-    }
-
-    /**
-     *  Only applicable for Append Blobs.
-     * @return Whether or not the destination blob should be sealed.
-     */
-    public Boolean isSealed() {
-        return sealed;
-    }
-
-    /**
-     * Only applicable for Append Blobs.
-     *
-     * @param sealed Whether or not the destination blob should be sealed.
-     * @return The updated options.
-     */
-    public BlobCopyFromUrlOptions setSealed(Boolean sealed) {
-        this.sealed = sealed;
         return this;
     }
 }

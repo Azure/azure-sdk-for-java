@@ -6,7 +6,6 @@ package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.storage.blob.implementation.models.BlobItemPropertiesInternal;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -226,10 +225,10 @@ public final class BlobItemProperties {
     private RehydratePriority rehydratePriority;
 
     /*
-     * The isSealed property.
+     * The sealed property.
      */
-    @JsonProperty(value = "IsSealed")
-    private Boolean isSealed;
+    @JsonProperty(value = "Sealed")
+    private Boolean sealed;
 
     /**
      * Get the creationTime property: The creationTime property.
@@ -941,22 +940,22 @@ public final class BlobItemProperties {
     }
 
     /**
-     * Get the isSealed property: The isSealed property.
+     * Get the sealed property: The sealed property.
      *
      * @return the isSealed value.
      */
     public Boolean isSealed() {
-        return this.isSealed;
+        return this.sealed;
     }
 
     /**
-     * Set the isSealed property: The isSealed property.
+     * Set the sealed property: The sealed property.
      *
-     * @param isSealed the isSealed value to set.
+     * @param sealed the sealed value to set.
      * @return the BlobItemProperties object itself.
      */
-    public BlobItemProperties setIsSealed(Boolean isSealed) {
-        this.isSealed = isSealed;
+    public BlobItemProperties setSealed(Boolean sealed) {
+        this.sealed = sealed;
         return this;
     }
 }

@@ -757,7 +757,7 @@ public class BlobAsyncClientBase {
             destRequestConditions.getIfUnmodifiedSince(), destRequestConditions.getIfMatch(),
             destRequestConditions.getIfNoneMatch(), destRequestConditions.getTagsConditions(),
             destRequestConditions.getLeaseId(), null, null,
-            tagsToString(options.getTags()), options.isSealed(), context)
+            tagsToString(options.getTags()), context)
             .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getCopyId()));
     }
 
