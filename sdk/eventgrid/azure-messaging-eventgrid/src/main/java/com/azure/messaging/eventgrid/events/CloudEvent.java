@@ -9,9 +9,12 @@ package com.azure.messaging.eventgrid.events;
 import com.azure.core.util.CoreUtils;
 
 import java.time.OffsetDateTime;
+import java.util.Collections;
+import java.util.Map;
 
 /**
- * The CloudEvent model. See {@link CloudEventBuilder} for instructions on how to build.
+ * The CloudEvent model. See {@link CloudEventBuilder} for instructions on how to build. This represents
+ * a cloud event as specified by the CNCF, for sending event based data.
  * @see CloudEventBuilder
  **/
 public final class CloudEvent {
@@ -26,39 +29,85 @@ public final class CloudEvent {
         return this.cloudEvent;
     }
 
+    /**
+     * Get the id of the cloud event.
+     * @return the id.
+     */
     public String getId() {
-        // TODO: implement method
-        return null;
+        return this.cloudEvent.getId();
     }
 
+    /**
+     * Get the URI source of the event.
+     * @return the source.
+     */
     public String getSource() {
-        // TODO: implement method
-        return null;
+        return this.cloudEvent.getSource();
     }
 
+    /**
+     * Get the data encapsulated within this event.
+     * @return the data associated with this event, or null if this event type does not contain data.
+     */
     public Object getData() {
-        // TODO: implement method
-        return null;
+        return this.cloudEvent.getData();
     }
 
+    /**
+     * Get the type of event, e.g. "Contoso.Items.ItemReceived".
+     * @return the type of the event.
+     */
     public String getType() {
-        // TODO: implement method
-        return null;
+        return this.cloudEvent.getType();
     }
 
+    /**
+     * Get the time associated with the occurrence of the event.
+     * @return the event time, or null if the time is not set.
+     */
     public OffsetDateTime getTime() {
-        // TODO: implement method
-        return null;
+        return this.cloudEvent.getTime();
     }
 
+    /**
+     * Get the content type that the data is in. A null value indicates that the data is either nonexistent or in the
+     * "application/json" type. Note that "application/json" is still a possible value for this field.
+     * @return the content type the data is in, or null if the data is nonexistent or in "application/json" format.
+     */
     public String getDataContentType() {
-        // TODO: implement method
-        return null;
+        return this.cloudEvent.getDatacontenttype();
     }
 
+    /**
+     * Get the schema that the data adheres to.
+     * @return a URI of the data schema, or null if it is not set.
+     */
     public String getDataSchema() {
-        // TODO: implement method
-        return null;
+        return this.cloudEvent.getDataschema();
     }
 
+    /**
+     * Get the subject associated with this event.
+     * @return the subject, or null if the subject was not set.
+     */
+    public String getSubject() {
+        return this.cloudEvent.getSubject();
+    }
+
+    /**
+     * Get a map of the additional user-defined properties associated with this event.
+     * @return the additional properties as an unmodifiable map.
+     */
+    public Map<String, Object> getAdditionalProperties() {
+        return Collections.unmodifiableMap(this.cloudEvent.getAdditionalProperties());
+    }
+
+    /**
+     * Get the version of the CloudEvents specification to which this event follows. Note that this SDK currently only
+     * supports the CloudEvents 1.0 spec version.
+     * @return the version of the CloudEvents specification this event follows.
+     */
+    public String getSpecVersion() {
+        return this.cloudEvent.getSpecversion();
+    }
 }

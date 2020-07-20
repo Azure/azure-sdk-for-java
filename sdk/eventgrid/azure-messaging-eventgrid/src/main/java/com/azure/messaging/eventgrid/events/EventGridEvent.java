@@ -9,7 +9,8 @@ package com.azure.messaging.eventgrid.events;
 import java.time.OffsetDateTime;
 
 /**
- * The EventGridEvent model. See {@link EventGridEventBuilder} for information on how to build
+ * The EventGridEvent model. See {@link EventGridEventBuilder} for information on how to build. This represents events
+ * in the EventGrid schema to be used with the EventGrid service.
  * @see EventGridEventBuilder
  **/
 public final class EventGridEvent {
@@ -24,44 +25,68 @@ public final class EventGridEvent {
         return this.event;
     }
 
+    /**
+     * Get the unique id associated with this event.
+     * @return the id.
+     */
     public String getId() {
-        // TODO: implement method
-        return null;
+        return this.event.getId();
     }
 
+    /**
+     * Get the topic associated with this event if it is associated with a domain.
+     * @return the topic, or null if the topic is not set (i.e. the event came from or is going to a domain).
+     */
     public String getTopic() {
-        // TODO: implement method
-        return null;
+        return this.event.getTopic();
     }
 
+    /**
+     * Get the subject associated with this event.
+     * @return the subject.
+     */
     public String getSubject() {
-        // TODO: implement method
-        return null;
+        return this.event.getSubject();
     }
 
+    /**
+     * Get the data associated with this event.
+     * @return the data, or null if this event type does not contain data.
+     */
     public Object getData() {
-        // TODO: implement method
-        return null;
+        return this.event.getData();
     }
 
+    /**
+     * Get the type of this event.
+     * @return the event type.
+     */
     public String getEventType() {
-        // TODO: implement method
-        return null;
+        return this.event.getEventType();
     }
 
+    /**
+     * Get the time associated with the occurrence of this event.
+     * @return the event time.
+     */
     public OffsetDateTime getEventTime() {
-        // TODO: implement method
-        return null;
+        return this.event.getEventTime();
     }
 
+    /**
+     * Get the version of the EventGrid data schema.
+     * @return the event schema version.
+     */
     public String getMetadataVersion() {
-        // TODO: implement method
-        return null;
+        return this.event.getMetadataVersion();
     }
 
+    /**
+     * Get the version of the data in the event. This can be used to specify versioning of event data schemas over time.
+     * @return the version of the event data.
+     */
     public String getDataVersion() {
-        // TODO: implement method
-        return null;
+        return this.event.getDataVersion();
     }
 
 }
