@@ -6,15 +6,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.azure.resourcemanager</groupId>
-        <artifactId>azure-resourcemanager-parent</artifactId>
-        <version>2.0.0-beta.1</version>
-        <relativePath>../azure-resourcemanager-parent</relativePath>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-client-sdk-parent</artifactId>
+        <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
+        <relativePath>../../parents/azure-client-sdk-parent</relativePath>
     </parent>
 
     <groupId>com.azure.resourcemanager</groupId>
-    <version>2.0.0-beta.1</version>
     <artifactId>azure-resourcemanager-resources</artifactId>
+    <version>2.0.0-beta.4</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;current} -->
     <packaging>jar</packaging>
 
     <name>Microsoft Azure SDK for Resource Management</name>
@@ -52,40 +52,48 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-core-management</artifactId>
+            <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-core-management;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.github.spotbugs</groupId>
             <artifactId>spotbugs-annotations</artifactId>
+            <version>4.0.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
+            <version>1.7.25</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.6.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
+            <version>5.6.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
+            <version>24.1.1-jre</version> <!-- {x-version-update;com.google.guava:guava;external_dependency} -->
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-identity</artifactId>
+            <version>1.0.8</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-core-http-netty</artifactId>
+            <version>1.5.3</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -101,6 +109,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
+                <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
                 <executions>
                     <execution>
                         <goals>
@@ -118,24 +127,61 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-            </plugin>
-
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
                     <debug>true</debug>
                     <optimize>true</optimize>
-                    <compilerArguments>
-                        <AaddGeneratedAnnotation>true</AaddGeneratedAnnotation>
-                        <Adebug>true</Adebug>
-                    </compilerArguments>
+                    <!-- RMfailOnWarning set to false in azure-resourcemanager-parent's definition, set here to allow compilation
+                         but should be using the azure-client-sdk-parent's setting which is true -->
+                    <failOnWarning>false</failOnWarning>
+                    <!-- RMshowDeprecation set in azure-resourcemanager-parent but not in azure-client-sdk-parent -->
+                    <showDeprecation>true</showDeprecation>
+                    <compilerArgs>
+                        <arg>-AaddGeneratedAnnotation=true</arg>
+                        <arg>-Adebug=true</arg>
+                    </compilerArgs>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+                <configuration>
+                <rules>
+                    <bannedDependencies>
+                    <includes>
+                        <include>com.github.spotbugs:spotbugs-annotations:[4.0.2]</include> <!-- {x-include-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
+                    </includes>
+                    </bannedDependencies>
+                </rules>
+                </configuration>
+            </plugin>
+            <!-- RMgenerate-resources without this plugin configuration tests will fail but only for this library which
+                 is because whatever this is using for tests is using jetty for "playback" for their tests. It uses
+                 maven.properties to get the playbackUrl and the playback port. It was used in Track 1 tests. If they
+                 migrate to using our test framework instead of this track 1 TestBase, it won't be a problem.
+            -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+                <version>1.0.0</version>
+                <executions>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>write-project-properties</goal>
+                        </goals>
+                        <configuration>
+                            <outputFile>
+                                ${project.build.outputDirectory}/maven.properties
+                            </outputFile>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
