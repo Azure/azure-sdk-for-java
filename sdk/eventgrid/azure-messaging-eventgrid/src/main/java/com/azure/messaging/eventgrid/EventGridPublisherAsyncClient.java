@@ -48,7 +48,7 @@ public class EventGridPublisherAsyncClient {
         return null;
     }
 
-    public Mono<Void> publishEvents(Iterable<EventGridEvent> events, Context context) {
+    Mono<Void> publishEvents(Iterable<EventGridEvent> events, Context context) {
         // TODO: implement method
         return null;
     }
@@ -65,7 +65,7 @@ public class EventGridPublisherAsyncClient {
         return null;
     }
 
-    public Mono<Void> publishCloudEvents(Iterable<CloudEvent> events, Context context) {
+    Mono<Void> publishCloudEvents(Iterable<CloudEvent> events, Context context) {
         // TODO: implement method
         return null;
     }
@@ -82,7 +82,7 @@ public class EventGridPublisherAsyncClient {
         return null;
     }
 
-    public Mono<Void> publishCustomEvents(Iterable<Object> events, Context context) {
+    Mono<Void> publishCustomEvents(Iterable<Object> events, Context context) {
         // TODO: implement method
         return null;
     }
@@ -99,7 +99,7 @@ public class EventGridPublisherAsyncClient {
         return null;
     }
 
-    public Mono<Response<Void>> publishEventsWithResponse(Iterable<EventGridEvent> events, Context context) {
+    Mono<Response<Void>> publishEventsWithResponse(Iterable<EventGridEvent> events, Context context) {
         // TODO: implement method
         return null;
     }
@@ -116,7 +116,7 @@ public class EventGridPublisherAsyncClient {
         return null;
     }
 
-    public Mono<Response<Void>> publishCloudEventsWithResponse(Iterable<CloudEvent> events, Context context) {
+    Mono<Response<Void>> publishCloudEventsWithResponse(Iterable<CloudEvent> events, Context context) {
         // TODO: implement method
         return null;
     }
@@ -133,7 +133,7 @@ public class EventGridPublisherAsyncClient {
         return null;
     }
 
-    public Mono<Response<Void>> publishCustomEventsWithResponse(Iterable<Object> events, Context context) {
+    Mono<Response<Void>> publishCustomEventsWithResponse(Iterable<Object> events, Context context) {
         // TODO: implement method
         return null;
     }
