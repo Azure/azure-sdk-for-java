@@ -2266,7 +2266,6 @@ class BlobAPITest extends APISpec {
 
         when:
         def undeleteHeaders = bc.undeleteWithResponse(null, null).getHeaders()
-
         bc.getProperties()
 
         then:
