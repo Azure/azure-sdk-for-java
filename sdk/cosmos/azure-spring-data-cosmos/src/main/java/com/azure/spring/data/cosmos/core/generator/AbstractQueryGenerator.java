@@ -2,12 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.core.generator;
 
-import com.azure.cosmos.models.SqlParameter;
-import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.spring.data.cosmos.core.query.Criteria;
-import com.azure.spring.data.cosmos.core.query.CriteriaType;
-import com.azure.spring.data.cosmos.core.query.DocumentQuery;
-import com.azure.spring.data.cosmos.exception.IllegalQueryException;
+import static com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter.toCosmosDbValue;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.javatuples.Pair;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.parser.Part;
@@ -15,12 +17,12 @@ import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter.toCosmosDbValue;
+import com.azure.cosmos.models.SqlParameter;
+import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.spring.data.cosmos.core.query.Criteria;
+import com.azure.spring.data.cosmos.core.query.CriteriaType;
+import com.azure.spring.data.cosmos.core.query.DocumentQuery;
+import com.azure.spring.data.cosmos.exception.IllegalQueryException;
 
 /**
  * Base class for generating sql query
@@ -124,29 +126,35 @@ public abstract class AbstractQueryGenerator {
     }
 
     @SuppressWarnings("unchecked")
-    private String generateInQuery(Criteria criteria) {
+    private String generateInQuery(@NonNull Criteria criteria, @NonNull List<Pair<String, Object>> parameters) {
         Assert.isTrue(criteria.getSubjectValues().size() == 1,
             "Criteria should have only one subject value");
         if (!(criteria.getSubjectValues().get(0) instanceof Collection)) {
             throw new IllegalQueryException("IN keyword requires Collection type in parameters");
         }
-        final List<String> inRangeValues = new ArrayList<>();
+        
         final Collection<Object> values = (Collection<Object>) criteria.getSubjectValues().get(0);
-
-        values.forEach(o -> {
-            if (o instanceof Integer || o instanceof Long) {
-                inRangeValues.add(String.format("%d", o));
-            } else if (o instanceof String) {
-                inRangeValues.add(String.format("'%s'", (String) o));
-            } else if (o instanceof Boolean) {
-                inRangeValues.add(String.format("%b", (Boolean) o));
+        
+        final StringBuilder builder = new StringBuilder();
+        int index = 0;       
+        Iterator<Object> iterator = values.iterator();
+        while (iterator.hasNext()) {
+            Object o = iterator.next();
+            if (o instanceof String || o instanceof Integer || o instanceof Long || o instanceof Boolean) {
+                String key = "p" + index;
+                if (index == 0) {
+                    builder.append("@").append(key);
+                } else {
+                    builder.append(",@").append(key);
+                }
+                parameters.add(Pair.with(key, o));
+                index ++;
             } else {
                 throw new IllegalQueryException("IN keyword Range only support Number and String type.");
             }
-        });
-
-        final String inRange = String.join(",", inRangeValues);
-        return String.format("r.%s %s (%s)", criteria.getSubject(), criteria.getType().getSqlKeyword(), inRange);
+        }
+        
+        return String.format("r.%s %s (%s)", criteria.getSubject(), criteria.getType().getSqlKeyword(), builder.toString());
     }
 
     private String generateQueryBody(@NonNull Criteria criteria, @NonNull List<Pair<String, Object>> parameters) {
@@ -157,7 +165,7 @@ public abstract class AbstractQueryGenerator {
                 return "";
             case IN:
             case NOT_IN:
-                return generateInQuery(criteria);
+                return generateInQuery(criteria, parameters);
             case BETWEEN:
                 return generateBetween(criteria, parameters);
             case IS_NULL:

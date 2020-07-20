@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
@@ -525,5 +526,18 @@ public class ProjectRepositoryIT {
         //  Since there is one projects with creator_3
         assertThat(findAll.size()).isEqualTo(1);
         assertThat(findAll.contains(PROJECT_3)).isTrue();
+    }
+    
+    @Test
+    public void testSqlInjection() {
+        List<Project> projects = null;
+        projects = this.repository.findAllByNameIn(Arrays.asList(NAME_1, NAME_2));
+        assertProjectListEquals(projects, Arrays.asList(PROJECT_1, PROJECT_2));
+        projects = this.repository.findAllByStarCountIn(Arrays.asList(STAR_COUNT_0, STAR_COUNT_1));
+        assertProjectListEquals(projects, Arrays.asList(PROJECT_0, PROJECT_1, PROJECT_4));
+        projects = this.repository.findAllByHasReleasedIn(Collections.singleton(false));
+        assertProjectListEquals(projects, Arrays.asList(PROJECT_4));
+        projects = this.repository.findAllByNameIn(Collections.singleton("sql) or (r.firstName <> ''"));
+        assertTrue(projects.isEmpty());
     }
 }
