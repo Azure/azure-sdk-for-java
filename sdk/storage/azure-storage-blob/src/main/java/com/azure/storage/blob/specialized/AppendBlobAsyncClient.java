@@ -394,6 +394,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      *
      * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.sealWithResponse#AppendBlobSealOptions}
      *
+     * @param options {@link AppendBlobSealOptions}
      * @return A reactive response signalling completion.
      */
     public Mono<Response<Void>> sealWithResponse(AppendBlobSealOptions options) {

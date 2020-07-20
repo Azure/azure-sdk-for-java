@@ -32,7 +32,6 @@ import java.time.Duration;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
 
 /**
@@ -291,6 +290,9 @@ public final class AppendBlobClient extends BlobClientBase {
      *
      * {@codesnippet com.azure.storage.blob.specialized.AppendBlobClient.sealWithResponse#AppendBlobSealOptions-Duration-Context}
      *
+     * @param options {@link AppendBlobSealOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A reactive response signalling completion.
      */
     public Response<Void> sealWithResponse(AppendBlobSealOptions options, Duration timeout, Context context) {
