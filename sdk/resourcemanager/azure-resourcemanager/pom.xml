@@ -5,16 +5,17 @@
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+
   <parent>
-    <groupId>com.azure.resourcemanager</groupId>
-    <artifactId>azure-resourcemanager-parent</artifactId>
-    <version>2.0.0-beta.1</version>
-    <relativePath>../azure-resourcemanager-parent</relativePath>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-client-sdk-parent</artifactId>
+    <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
+    <relativePath>../../parents/azure-client-sdk-parent</relativePath>
   </parent>
 
   <groupId>com.azure.resourcemanager</groupId>
-  <version>2.0.0-beta.1</version>
   <artifactId>azure-resourcemanager</artifactId>
+  <version>2.0.0-beta.4</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK</name>
@@ -38,6 +39,9 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
+    <!-- RMJacoco -->
+    <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.10</jacoco.min.branchcoverage>
   </properties>
 
   <developers>
@@ -51,112 +55,118 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-resources</artifactId>
-      <version>2.0.0-beta.1</version>
+      <version>2.0.0-beta.4</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-storage</artifactId>
-      <version>2.0.0-beta.1</version>
+      <version>2.0.0-beta.4</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-storage;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-compute</artifactId>
-      <version>2.0.0-beta.1</version>
+      <version>2.0.0-beta.4</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-compute;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-network</artifactId>
-      <version>2.0.0-beta.1</version>
+      <version>2.0.0-beta.4</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-network;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-keyvault</artifactId>
-      <version>2.0.0-beta.1</version>
+      <version>2.0.0-beta.4</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-keyvault;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-msi</artifactId>
-      <version>2.0.0-beta.1</version>
+      <version>2.0.0-beta.4</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-msi;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-sql</artifactId>
-      <version>2.0.0-beta.1</version>
+      <version>2.0.0-beta.4</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-sql;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-authorization</artifactId>
-      <version>2.0.0-beta.1</version>
+      <version>2.0.0-beta.4</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-authorization;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-appservice</artifactId>
-      <version>2.0.0-beta.1</version>
+      <version>2.0.0-beta.4</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-appservice;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-cosmos</artifactId>
-      <version>2.0.0-beta.1</version>
+      <version>2.0.0-beta.4</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cosmos;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-containerservice</artifactId>
-      <version>2.0.0-beta.1</version>
+      <version>2.0.0-beta.4</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-containerservice;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-monitor</artifactId>
-      <version>2.0.0-beta.1</version>
+      <version>2.0.0-beta.4</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-monitor;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-containerregistry</artifactId>
-      <version>2.0.0-beta.1</version>
+      <version>2.0.0-beta.4</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-containerregistry;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-dns</artifactId>
-      <version>2.0.0-beta.1</version>
+      <version>2.0.0-beta.4</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-dns;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-appplatform</artifactId>
-      <version>2.0.0-beta.1</version>
+      <version>2.0.0-beta.4</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-appplatform;current} -->
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
+      <version>5.6.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
+      <version>1.7.25</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
+      <version>24.1.1-jre</version> <!-- {x-version-update;com.google.guava:guava;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
+      <version>5.6.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
+      <version>1.5.3</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
+      <version>1.0.8</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.jcraft</groupId>
       <artifactId>jsch</artifactId>
-      <version>0.1.55</version>
+      <version>0.1.55</version> <!-- {x-version-update;resourcemanager_com.jcraft:jsch;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -172,7 +182,7 @@
         <dependency>
           <groupId>com.azure.resourcemanager</groupId>
           <artifactId>azure-resourcemanager-resources</artifactId>
-          <version>2.0.0-beta.1</version>
+          <version>2.0.0-beta.4</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;current} -->
           <type>test-jar</type>
           <scope>test</scope>
         </dependency>
@@ -184,6 +194,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
+        <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
         <configuration>
           <archive>
             <manifest>
@@ -196,28 +207,28 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version>
+        <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
         <configuration>
           <source>1.8</source>
           <target>1.8</target>
           <debug>true</debug>
           <optimize>true</optimize>
-          <compilerArguments>
-            <AaddGeneratedAnnotation>true</AaddGeneratedAnnotation>
-            <Adebug>true</Adebug>
-          </compilerArguments>
+          <!-- RMfailOnWarning set to false in azure-resourcemanager-parent's definition, set here to allow compilation
+               but should be using the azure-client-sdk-parent's setting which is true -->
+          <failOnWarning>false</failOnWarning>
+          <!-- RMshowDeprecation set in azure-resourcemanager-parent but not in azure-client-sdk-parent -->
+          <showDeprecation>true</showDeprecation>
+          <compilerArgs>
+              <arg>-AaddGeneratedAnnotation=true</arg>
+              <arg>-Adebug=true</arg>
+          </compilerArgs>
         </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
       </plugin>
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.1.1</version>
+        <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
         <configuration>
           <excludePackageNames>*.implementation.*;*.utils.*;com.microsoft.schemas._2003._10.serialization;*.blob.core.storage</excludePackageNames>
           <bottom><![CDATA[<code>/**

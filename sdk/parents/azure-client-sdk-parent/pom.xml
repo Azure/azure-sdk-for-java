@@ -475,6 +475,7 @@
               </excludes>
               <includes combine.children="append">
                 <include>com.azure:*</include>
+                <include>com.azure.resourcemanager:*</include>
 
                 <!-- Used by many libraries to bring in annotations used by Reactor -->
                 <include>com.google.code.findbugs:jsr305:[3.0.2]</include> <!-- {x-include-update;com.google.code.findbugs:jsr305;external_dependency} -->
@@ -529,6 +530,9 @@
             <excludePackageNames>
               *.impl*:
               *.implementation*:
+              <!-- RMDocs do utils and samples actually do anything -->
+              *.utils:
+              *.samples
               com.azure.tools.checkstyle*:
               com.azure.core.test*:
               com.azure.endtoend*:
@@ -661,6 +665,10 @@
               <group>
                 <title>Azure Text Analytics</title>
                 <packages>com.azure.ai.textanalytics*</packages>
+              </group>
+              <group>
+                  <title>Azure Management</title>
+                  <packages>com.azure.management*</packages>
               </group>
             </groups>
             <links>
