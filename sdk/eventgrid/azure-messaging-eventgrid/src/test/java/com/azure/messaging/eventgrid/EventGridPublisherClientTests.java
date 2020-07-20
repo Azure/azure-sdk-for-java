@@ -3,10 +3,6 @@ package com.azure.messaging.eventgrid;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.Response;
-import com.azure.messaging.eventgrid.events.CloudEvent;
-import com.azure.messaging.eventgrid.events.CloudEventBuilder;
-import com.azure.messaging.eventgrid.events.EventGridEvent;
-import com.azure.messaging.eventgrid.events.EventGridEventBuilder;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -46,7 +42,7 @@ public class EventGridPublisherClientTests {
             .dataVersion("1.0")
             .eventTime(OffsetDateTime.now())
             .build());
-        egClient.publishEventsWithResponse(events).
+        egClient.sendEventsWithResponse(events).
             subscribe(response -> {
                 assertNotNull(response);
                 System.out.println("Got response " + response.getStatusCode());
@@ -80,7 +76,7 @@ public class EventGridPublisherClientTests {
             }})
             .time(OffsetDateTime.now())
             .build());
-        egClient.publishCloudEventsWithResponse(events).
+        egClient.sendCloudEventsWithResponse(events).
             subscribe(response -> {
                 assertNotNull(response);
                 System.out.println("Got response " + response.getStatusCode());
@@ -110,7 +106,7 @@ public class EventGridPublisherClientTests {
                 put("type", "Microsoft.MockPublisher.TestEvent");
             }});
         }
-        egClient.publishCustomEventsWithResponse(events).
+        egClient.sendCustomEventsWithResponse(events).
             subscribe(response -> {
                 assertNotNull(response);
                 System.out.println("Got response " + response.getStatusCode());

@@ -11,8 +11,6 @@ import com.azure.core.http.policy.*;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventgrid.events.CloudEvent;
-import com.azure.messaging.eventgrid.events.EventGridEvent;
 
 import java.net.MalformedURLException;
 import java.net.URL;

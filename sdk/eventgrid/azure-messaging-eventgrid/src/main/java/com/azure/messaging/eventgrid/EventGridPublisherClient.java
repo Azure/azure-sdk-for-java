@@ -9,15 +9,13 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.messaging.eventgrid.events.CloudEvent;
-import com.azure.messaging.eventgrid.events.EventGridEvent;
 
 /**
  * A service client that publishes events to an EventGrid topic or domain. Use {@link EventGridPublisherClientBuilder}
  * to create an instance of this client. Note that this is simply a synchronous convenience layer over the
  * {@link EventGridPublisherAsyncClient}, which has more efficient asynchronous functionality and is recommended.
- * @see com.azure.messaging.eventgrid.events.EventGridEventBuilder
- * @see com.azure.messaging.eventgrid.events.CloudEventBuilder
+ * @see EventGridEventBuilder
+ * @see CloudEventBuilder
  */
 @ServiceClient(builder = EventGridPublisherClientBuilder.class)
 public class EventGridPublisherClient {
@@ -34,7 +32,7 @@ public class EventGridPublisherClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void sendEvents(Iterable<EventGridEvent> events) {
-        // TODO: implement method
+        asyncClient.publishEvents(events, Context.NONE).block();
     }
 
     /**
@@ -43,7 +41,7 @@ public class EventGridPublisherClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void sendCloudEvents(Iterable<CloudEvent> events) {
-        // TODO: implement method
+        asyncClient.publishCloudEvents(events, Context.NONE).block();
     }
 
     /**
@@ -52,7 +50,7 @@ public class EventGridPublisherClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void sendCustomEvents(Iterable<Object> events) {
-        // TODO: implement method
+        asyncClient.publishCustomEvents(events, Context.NONE).block();
     }
 
     /**
@@ -63,8 +61,7 @@ public class EventGridPublisherClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendEventsWithResponse(Iterable<EventGridEvent> events) {
-        // TODO: implement method
-        return null;
+        return asyncClient.publishEventsWithResponse(events, Context.NONE).block();
     }
 
     /**
@@ -75,8 +72,7 @@ public class EventGridPublisherClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendCloudEventsWithResponse(Iterable<CloudEvent> events) {
-        // TODO: implement method
-        return null;
+        return asyncClient.publishCloudEventsWithResponse(events, Context.NONE).block();
     }
 
     /**
@@ -87,8 +83,7 @@ public class EventGridPublisherClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendCustomEventsWithResponse(Iterable<Object> events) {
-        // TODO: implement method
-        return null;
+        return asyncClient.publishCustomEventsWithResponse(events, Context.NONE).block();
     }
 
     /**
@@ -98,7 +93,7 @@ public class EventGridPublisherClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void sendEvents(Iterable<EventGridEvent> events, Context context) {
-        // TODO: implement method
+        asyncClient.publishEvents(events, context).block();
     }
 
     /**
@@ -108,7 +103,7 @@ public class EventGridPublisherClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void sendCloudEvents(Iterable<CloudEvent> events, Context context) {
-        // TODO: implement method
+        asyncClient.publishCloudEvents(events, context).block();
     }
 
     /**
@@ -118,7 +113,7 @@ public class EventGridPublisherClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void sendCustomEvents(Iterable<Object> events, Context context) {
-        // TODO: implement method
+        asyncClient.publishCustomEvents(events, context).block();
     }
 
     /**
@@ -130,8 +125,7 @@ public class EventGridPublisherClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendEventsWithResponse(Iterable<EventGridEvent> events, Context context) {
-        // TODO: implement method
-        return null;
+        return asyncClient.publishEventsWithResponse(events, context).block();
     }
 
     /**
@@ -143,8 +137,7 @@ public class EventGridPublisherClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendCloudEventsWithResponse(Iterable<CloudEvent> events, Context context) {
-        // TODO: implement method
-        return null;
+        return asyncClient.publishCloudEventsWithResponse(events, context).block();
     }
 
     /**
@@ -156,7 +149,6 @@ public class EventGridPublisherClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendCustomEventsWithResponse(Iterable<Object> events, Context context) {
-        // TODO: implement method
-        return null;
+        return asyncClient.publishCustomEventsWithResponse(events, context).block();
     }
 }
