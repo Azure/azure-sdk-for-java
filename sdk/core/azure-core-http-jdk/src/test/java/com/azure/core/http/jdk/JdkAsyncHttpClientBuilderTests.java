@@ -18,7 +18,6 @@ import java.util.TreeSet;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledForJreRange;
 import org.junit.jupiter.api.condition.JRE;
-import org.mockito.Mockito;
 import reactor.test.StepVerifier;
 
 import java.net.InetSocketAddress;
@@ -246,7 +245,7 @@ public class JdkAsyncHttpClientBuilderTests {
 
     @Test
     void testDefaultRestrictedHeaders() {
-        JdkAsyncHttpClientBuilder jdkAsyncHttpClientBuilder = Mockito.spy(new JdkAsyncHttpClientBuilder());
+        JdkAsyncHttpClientBuilder jdkAsyncHttpClientBuilder = spy(new JdkAsyncHttpClientBuilder());
         when(jdkAsyncHttpClientBuilder.getNetworkProperties()).thenReturn(new Properties());
 
         validateRestrictedHeaders(jdkAsyncHttpClientBuilder, JdkAsyncHttpClientBuilder.DEFAULT_RESTRICTED_HEADERS, 5);
@@ -254,7 +253,7 @@ public class JdkAsyncHttpClientBuilderTests {
 
     @Test
     void testAllowedHeadersFromNetworkProperties() {
-        JdkAsyncHttpClientBuilder jdkAsyncHttpClientBuilder = Mockito.spy(new JdkAsyncHttpClientBuilder());
+        JdkAsyncHttpClientBuilder jdkAsyncHttpClientBuilder = spy(new JdkAsyncHttpClientBuilder());
         Properties properties = new Properties();
         properties.put("jdk.httpclient.allowRestrictedHeaders", "content-length, upgrade");
         when(jdkAsyncHttpClientBuilder.getNetworkProperties()).thenReturn(properties);
@@ -307,7 +306,7 @@ public class JdkAsyncHttpClientBuilderTests {
     void testAllowedHeadersFromSystemProperties() {
         System.setProperty("jdk.httpclient.allowRestrictedHeaders", "content-length, upgrade");
 
-        JdkAsyncHttpClientBuilder jdkAsyncHttpClientBuilder = Mockito.spy(new JdkAsyncHttpClientBuilder());
+        JdkAsyncHttpClientBuilder jdkAsyncHttpClientBuilder = spy(new JdkAsyncHttpClientBuilder());
         Properties properties = new Properties();
         when(jdkAsyncHttpClientBuilder.getNetworkProperties()).thenReturn(properties);
 
@@ -322,7 +321,7 @@ public class JdkAsyncHttpClientBuilderTests {
     void testCaseInsensitivity() {
         System.setProperty("jdk.httpclient.allowRestrictedHeaders", "content-LENGTH");
 
-        JdkAsyncHttpClientBuilder jdkAsyncHttpClientBuilder = Mockito.spy(new JdkAsyncHttpClientBuilder());
+        JdkAsyncHttpClientBuilder jdkAsyncHttpClientBuilder = spy(new JdkAsyncHttpClientBuilder());
         Properties properties = new Properties();
         when(jdkAsyncHttpClientBuilder.getNetworkProperties()).thenReturn(properties);
 
