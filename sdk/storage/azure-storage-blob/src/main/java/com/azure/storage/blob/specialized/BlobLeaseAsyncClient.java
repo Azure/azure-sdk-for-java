@@ -19,6 +19,7 @@ import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.BlobLeaseRequestConditions;
+import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.options.BlobAcquireLeaseOptions;
 import com.azure.storage.blob.options.BlobBreakLeaseOptions;
 import com.azure.storage.blob.options.BlobChangeLeaseOptions;
@@ -241,7 +242,7 @@ public final class BlobLeaseAsyncClient {
     }
 
     Mono<Response<String>> renewLeaseWithResponse(BlobRenewLeaseOptions options, Context context) {
-        StorageImplUtils.assertNotNull("options", options);
+        options = (options == null) ? new BlobRenewLeaseOptions() : options;
         BlobLeaseRequestConditions requestConditions = (options.getRequestConditions() == null)
             ? new BlobLeaseRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
@@ -321,7 +322,7 @@ public final class BlobLeaseAsyncClient {
     }
 
     Mono<Response<Void>> releaseLeaseWithResponse(BlobReleaseLeaseOptions options, Context context) {
-        StorageImplUtils.assertNotNull("options", options);
+        options = (options == null) ? new BlobReleaseLeaseOptions() : options;
         BlobLeaseRequestConditions requestConditions = (options.getRequestConditions() == null)
             ? new BlobLeaseRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
@@ -414,7 +415,7 @@ public final class BlobLeaseAsyncClient {
     }
 
     Mono<Response<Integer>> breakLeaseWithResponse(BlobBreakLeaseOptions options, Context context) {
-        StorageImplUtils.assertNotNull("options", options);
+        options = (options == null) ? new BlobBreakLeaseOptions() : options;
         BlobLeaseRequestConditions requestConditions = (options.getRequestConditions() == null)
             ? new BlobLeaseRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;

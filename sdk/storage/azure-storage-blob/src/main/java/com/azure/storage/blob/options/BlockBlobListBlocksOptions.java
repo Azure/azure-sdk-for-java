@@ -5,6 +5,7 @@ package com.azure.storage.blob.options;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.blob.models.BlockListType;
+import com.azure.storage.common.implementation.StorageImplUtils;
 
 /**
  * Extended options that may be passed when listing blocks for a block blob.
@@ -20,6 +21,7 @@ public class BlockBlobListBlocksOptions {
      * @param type Specifies which type of blocks to return.
      */
     public BlockBlobListBlocksOptions(BlockListType type) {
+        StorageImplUtils.assertNotNull("type", type);
         this.type = type;
     }
 
