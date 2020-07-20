@@ -27,6 +27,7 @@ import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
 import com.azure.spring.data.cosmos.core.query.DocumentQuery;
 import com.azure.spring.data.cosmos.exception.CosmosExceptionUtils;
+import com.azure.spring.data.cosmos.exception.IllegalQueryException;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
@@ -454,9 +455,20 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         Assert.notNull(ids, "Id list should not be null");
         Assert.notNull(domainType, "domainType should not be null.");
         Assert.hasText(containerName, "container should not be null, empty or only whitespaces");
-
+        final List<Object> idList = new ArrayList<>();
+        for (ID id : ids) {
+            if (id instanceof String) {
+                idList.add(id);
+            } else if (id instanceof Integer) {
+                idList.add(Integer.toString((Integer) id));
+            } else if (id instanceof Long) {
+                idList.add(Long.toString((Long) id));
+            } else {
+                throw new IllegalQueryException("Type of id field must be String or Integer or Long");
+            }
+        }
         final DocumentQuery query = new DocumentQuery(Criteria.getInstance(CriteriaType.IN, "id",
-            Collections.singletonList(ids), Part.IgnoreCaseType.NEVER));
+            Collections.singletonList(idList), Part.IgnoreCaseType.NEVER));
         return find(query, domainType, containerName);
     }
 
