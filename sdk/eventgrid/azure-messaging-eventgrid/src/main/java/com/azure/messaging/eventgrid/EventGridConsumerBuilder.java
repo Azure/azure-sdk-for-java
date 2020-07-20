@@ -18,6 +18,8 @@ public class EventGridConsumerBuilder {
      * @param dataType  the data type class of the object to be decoded.
      * @param <T>       the type of the data to be decoded. This corresponds to the data field. The object must
      *                  have proper JsonProperty annotations to allow for deserialization.
+     *
+     * @return the builder itself.
      */
     public <T> EventGridConsumerBuilder putDataMapping(String eventType, Class<T> dataType) {
         // TODO: implement method

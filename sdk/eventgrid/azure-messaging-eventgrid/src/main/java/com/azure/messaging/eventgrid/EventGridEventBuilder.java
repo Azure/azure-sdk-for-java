@@ -1,4 +1,4 @@
-package com.azure.messaging.eventgrid.events;
+package com.azure.messaging.eventgrid;
 
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;

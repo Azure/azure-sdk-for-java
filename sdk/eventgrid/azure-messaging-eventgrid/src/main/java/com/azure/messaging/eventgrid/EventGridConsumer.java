@@ -4,9 +4,6 @@
 
 package com.azure.messaging.eventgrid;
 
-import com.azure.messaging.eventgrid.events.CloudEvent;
-import com.azure.messaging.eventgrid.events.EventGridEvent;
-
 import java.util.List;
 
 /**

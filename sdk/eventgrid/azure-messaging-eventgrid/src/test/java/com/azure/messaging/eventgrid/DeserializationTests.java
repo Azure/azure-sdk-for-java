@@ -1,7 +1,5 @@
 package com.azure.messaging.eventgrid;
 
-import com.azure.messaging.eventgrid.events.CloudEvent;
-import com.azure.messaging.eventgrid.events.EventGridEvent;
 import com.azure.messaging.eventgrid.models.*;
 import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
