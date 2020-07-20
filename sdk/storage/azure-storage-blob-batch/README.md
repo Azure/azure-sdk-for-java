@@ -23,7 +23,7 @@ definition, such as text or binary data.
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-blob-batch</artifactId>
   <version>12.6.0-beta.1</version>
-</dependency> 
+</dependency>
 ```
 [//]: # ({x-version-update-end})
 
@@ -52,7 +52,7 @@ Blob storage is designed for:
 
 The following sections provide several code snippets covering some of the most common Azure Storage Blob Batch tasks, including:
 
-- [Creating BlobBatchClient](#create-blobbatchclient)
+- [Creating BlobBatchClient](#creating-blobbatchclient)
 - [Bulk Deleting Blobs](#bulk-deleting-blobs)
 - [Bulk Setting AccessTier](#bulk-setting-accesstier)
 - [Advanced Batching](#advanced-batching)
