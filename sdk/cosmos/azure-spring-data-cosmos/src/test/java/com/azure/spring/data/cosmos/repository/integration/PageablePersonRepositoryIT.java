@@ -32,8 +32,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class PageablePersonRepositoryIT {
 
-    private static final int TOTAL_CONTENT_SIZE = 50;
-    public static final long ONE_KB = 1024L;
+    private static final int TOTAL_CONTENT_SIZE = 25;
+    public static final int ONE_KB = 1024;
 
     private static final CosmosEntityInformation<PageablePerson, String> entityInformation =
         new CosmosEntityInformation<>(PageablePerson.class);
@@ -63,7 +63,7 @@ public class PageablePersonRepositoryIT {
         for (int i = 0; i < TOTAL_CONTENT_SIZE; i++) {
             final List<String> hobbies = new ArrayList<>();
             hobbies.add(StringUtils.repeat("hobbies-" + UUID.randomUUID().toString(),
-                (int) ONE_KB * 10));
+                ONE_KB * 10));
             final List<Address> address = new ArrayList<>();
             address.add(new Address("postalCode-" + UUID.randomUUID().toString(),
                 "street-" + UUID.randomUUID().toString(),
@@ -85,18 +85,18 @@ public class PageablePersonRepositoryIT {
     //  Cosmos DB can return any number of documents less than or equal to requested page size
     //  Because of available RUs, the number of return documents vary.
     //  With documents more than 10 KB, and collection RUs 400,
-    //  it usually return documents less than total content size.
+    //  it usually return documents less than total 12 documents.
 
-    //  This test covers the case where page size is greater than returned documents
+    //  This test covers the case where page size is greater than returned documents limit
     @Test
-    public void testFindAllWithPageSizeGreaterThanReturned() {
-        final Set<PageablePerson> outputSet = findAllWithPageSize(30, false);
+    public void testFindAllWithPageSizeGreaterThanReturnedLimit() {
+        final Set<PageablePerson> outputSet = findAllWithPageSize(15, true);
         assertThat(outputSet).isEqualTo(personSet);
     }
 
-    //  This test covers the case where page size is less than returned documents
+    //  This test covers the case where page size is less than returned documents limit
     @Test
-    public void testFindAllWithPageSizeLessThanReturned() {
+    public void testFindAllWithPageSizeLessThanReturnedLimit() {
         final Set<PageablePerson> outputSet = findAllWithPageSize(5, false);
         assertThat(outputSet).isEqualTo(personSet);
     }
@@ -104,23 +104,25 @@ public class PageablePersonRepositoryIT {
     //  This test covers the case where page size is greater than total number of documents
     @Test
     public void testFindAllWithPageSizeGreaterThanTotal() {
-        final Set<PageablePerson> outputSet = findAllWithPageSize(120, true);
+        final Set<PageablePerson> outputSet = findAllWithPageSize(50, true);
         assertThat(outputSet).isEqualTo(personSet);
     }
 
     private Set<PageablePerson> findAllWithPageSize(int pageSize, boolean checkContentLimit) {
         final CosmosPageRequest pageRequest = new CosmosPageRequest(0, pageSize, null);
         Page<PageablePerson> page = repository.findAll(pageRequest);
-        final Set<PageablePerson> outputSet = new HashSet<>(page.getContent());
+        List<PageablePerson> content = page.getContent();
+        final Set<PageablePerson> outputSet = new HashSet<>(content);
         if (checkContentLimit) {
             //  Make sure CosmosDB returns less number of documents than requested
             //  This will verify the functionality of new pagination implementation
-            assertThat(page.getContent().size()).isLessThan(pageSize);
+            assertThat(content.size()).isLessThan(pageSize);
         }
         while (page.hasNext()) {
             final Pageable pageable = page.nextPageable();
             page = repository.findAll(pageable);
-            outputSet.addAll((page.getContent()));
+            content = page.getContent();
+            outputSet.addAll((content));
         }
         return outputSet;
     }
