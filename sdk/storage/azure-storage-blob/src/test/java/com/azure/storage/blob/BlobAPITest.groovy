@@ -1698,7 +1698,7 @@ class BlobAPITest extends APISpec {
         def bu2 = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient()
 
         when:
-        def poller = bu2.beginCopy(new BlobBeginCopyOptions(appendBlobClient.getBlobUrl()).setDestinationSealed(destination)
+        def poller = bu2.beginCopy(new BlobBeginCopyOptions(appendBlobClient.getBlobUrl()).sealDestination(destination)
             .setPollInterval(Duration.ofSeconds(1)))
         poller.blockLast()
 
