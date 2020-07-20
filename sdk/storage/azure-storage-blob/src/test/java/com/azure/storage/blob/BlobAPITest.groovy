@@ -2261,35 +2261,12 @@ class BlobAPITest extends APISpec {
 
     def "Undelete"() {
         setup:
-        String SLF4J_LOG_FILE_PROPERTY = "org.slf4j.simpleLogger.logFile";
-        String SLF4J_CACHED_STREAM_PROPERTY = "org.slf4j.simpleLogger.cacheOutputStream";
-        String SLF4J_TEST_LOG_FILE = "System.out";
-        String SLF4J_TEST_CACHED_STREAM = "false";
-        System.setProperty(SLF4J_LOG_FILE_PROPERTY, SLF4J_TEST_LOG_FILE);
-        System.setProperty(SLF4J_CACHED_STREAM_PROPERTY, SLF4J_TEST_CACHED_STREAM)
-        System.setProperty("org.slf4j.simpleLogger.log.reactor.netty", "DEBUG")
         enableSoftDelete()
-        System.out.println("Soft delete successfully enabled: " +
-            primaryBlobServiceClient.getProperties().getDeleteRetentionPolicy().isEnabled())
-
-        System.out.println("Deleting original")
         bc.delete()
 
         when:
-        System.out.println("Undeleting")
         def undeleteHeaders = bc.undeleteWithResponse(null, null).getHeaders()
-        System.out.println("Undelete request id: " + undeleteHeaders.getValue("x-ms-request-id"))
-
-        sleepIfRecord(10 * 1000)
-
-        System.out.println("Getting properties")
-        try {
-            bc.getProperties()
-        } catch (BlobStorageException e) {
-            System.out.println("Get properties failed")
-            System.out.println("Get properties request id: " + e.getMessage())
-        }
-        System.out.println("Got properties")
+        bc.getProperties()
 
         then:
         notThrown(BlobStorageException)
@@ -2298,10 +2275,6 @@ class BlobAPITest extends APISpec {
         undeleteHeaders.getValue("Date") != null
 
         disableSoftDelete() == null
-
-        cleanup:
-        System.clearProperty(SLF4J_LOG_FILE_PROPERTY);
-        System.clearProperty(SLF4J_CACHED_STREAM_PROPERTY);
     }
 
     def "Undelete min"() {

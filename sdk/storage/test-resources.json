@@ -100,13 +100,8 @@
             "apiVersion": "[variables('storageApiVersion')]",
             "name": "[concat(variables('primaryAccountName'), '/default')]",
             "properties": {
-                  "isVersioningEnabled": true,
-                  "deleteRetentionPolicy": {
-                    "enabled": true,
-                    "days": 1
-                  }
-
-        },
+                  "isVersioningEnabled": false
+            },
             "dependsOn": [
                   "[variables('primaryAccountName')]"
             ]

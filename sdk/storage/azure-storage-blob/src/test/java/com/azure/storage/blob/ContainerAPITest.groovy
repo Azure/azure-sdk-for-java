@@ -806,8 +806,6 @@ class ContainerAPITest extends APISpec {
     def "List blobs flat options deleted"() {
         setup:
         enableSoftDelete()
-        System.out.println("Soft delete successfully enabled: " +
-            primaryBlobServiceClient.getProperties().getDeleteRetentionPolicy().isEnabled())
         def name = generateBlobName()
         def bu = cc.getBlobClient(name).getAppendBlobClient()
         bu.create()
@@ -815,9 +813,6 @@ class ContainerAPITest extends APISpec {
 
         when:
         def options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveDeletedBlobs(true))
-        def page = cc.listBlobs(options, null).iterableByPage().first()
-        System.out.println("elements in list: " + page.getValue().size())
-        System.out.println("list request id: " + page.getHeaders().getValue("x-ms-request-id"))
         def blobs = cc.listBlobs(options, null).iterator()
 
         then:
