@@ -251,6 +251,7 @@ public class ModelHelper {
         blobItemProperties.setEncryptionScope(blobItemPropertiesInternal.getEncryptionScope());
         blobItemProperties.setAccessTierChangeTime(blobItemPropertiesInternal.getAccessTierChangeTime());
         blobItemProperties.setTagCount(blobItemPropertiesInternal.getTagCount());
+        blobItemProperties.setRehydratePriority(blobItemPropertiesInternal.getRehydratePriority());
 
         return blobItemProperties;
     }

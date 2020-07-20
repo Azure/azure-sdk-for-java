@@ -334,6 +334,143 @@ public class SampleApplication implements CommandLineRunner {
 ```
 Autowired UserRepository interface, then can do save, delete and find operations. Spring Data Azure Cosmos DB uses the CosmosTemplate to execute the queries behind *find*, *save* methods. You can use the template yourself for more complex queries.
 
+## Support multi-database configuration
+The `azure-spring-data-cosmos` support multi-database configuration, here is a sample to config multiple account database
+
+### Add the dependency
+[//]: # ({x-version-update-start;com.azure:azure-spring-data-cosmos;current})
+```xml
+<dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-spring-data-cosmos</artifactId>
+    <version>3.0.0-beta.1</version>
+</dependency>
+```
+[//]: # ({x-version-update-end})
+
+### Config application properties
+The example uses the `application.properties` file
+```properties
+azure.cosmos.primary.uri=your-primary-cosmosDb-uri
+azure.cosmos.primary.key=your-primary-cosmosDb-key
+azure.cosmos.primary.secondaryKey=your-primary-cosmosDb-secondary-key
+azure.cosmos.primary.database=your-primary-cosmosDb-dbName
+azure.cosmos.primary.populateQueryMetrics=if-populate-query-metrics
+
+azure.cosmos.secondary.uri=your-secondary-cosmosDb-uri
+azure.cosmos.secondary.key=your-secondary-cosmosDb-key
+azure.cosmos.secondary.secondaryKey=your-secondary-cosmosDb-secondary-key
+azure.cosmos.secondary.database=your-secondary-cosmosDb-dbName
+azure.cosmos.secondary.populateQueryMetrics=if-populate-query-metrics
+```
+
+### Define Entities and Repositories
+The [Entity](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-spring-data-cosmos#create-repositories) definition is same as above.
+You can put different database entities into different packages.
+
+### Setup configuration
+The `@EnableReactiveCosmosRepositories` or `@EnableCosmosRepositories` support user-define the cosmos template, use `reactiveCosmosTemplateRef` or `cosmosTemplateRef` to config the name of the `ReactiveCosmosTemplate` or `CosmosTemplate` bean to be used with the repositories detected.
+<!-- embedme src/samples/java/com/azure/cosmos/multidatasource/DatabaseConfiguration.java#L25-L76 -->
+```java
+@Configuration
+@PropertySource("classpath:application.properties")
+public class DatabaseConfiguration extends AbstractCosmosConfiguration {
+
+    @Bean
+    @ConfigurationProperties(prefix = "azure.cosmos.primary")
+    public CosmosProperties primaryDataSourceConfiguration() {
+        return new CosmosProperties();
+    }
+
+    @Bean
+    @ConfigurationProperties(prefix = "azure.cosmos.secondary")
+    public CosmosProperties secondaryDataSourceConfiguration() {
+        return new CosmosProperties();
+    }
+
+    @EnableReactiveCosmosRepositories(basePackages = "com.azure.cosmos.multidatasource.primarydatasource")
+    public class PrimaryDataSourceConfiguration {
+        @Autowired
+        @Qualifier("primaryDataSourceConfiguration")
+        CosmosProperties properties;
+        @Bean
+        public CosmosConfig cosmosConfig() {
+            CosmosConfig cosmosConfig = CosmosConfig.builder()
+                .cosmosClientBuilder(new CosmosClientBuilder()
+                    .key(properties.getKey()).endpoint(properties.getUri()))
+                .database(properties.getDatabase())
+                .enableQueryMetrics(properties.isQueryMetricsEnabled())
+                .build();
+            return cosmosConfig;
+        }
+
+    }
+
+    @EnableReactiveCosmosRepositories(basePackages = "com.azure.cosmos.multidatasource.secondarydatasource", reactiveCosmosTemplateRef = "secondaryReactiveCosmosTemplate")
+    public class SecondaryDataSourceConfiguration {
+        @Autowired
+        @Qualifier("secondaryDataSourceConfiguration")
+        CosmosProperties properties;
+        @Bean
+        public ReactiveCosmosTemplate secondaryReactiveCosmosTemplate(MappingCosmosConverter mappingCosmosConverter) {
+            CosmosConfig cosmosConfig = CosmosConfig.builder()
+                .cosmosClientBuilder(new CosmosClientBuilder()
+                    .key(properties.getKey()).endpoint(properties.getUri()))
+                .database(properties.getDatabase())
+                .enableQueryMetrics(properties.isQueryMetricsEnabled())
+                .build();
+
+            return new ReactiveCosmosTemplate(new CosmosFactory(cosmosConfig), mappingCosmosConverter, cosmosConfig.getDatabase());
+        }
+    }
+}
+```
+
+### Create an Application class
+<!-- embedme src/samples/java/com/azure/cosmos/multidatasource/MultiDatasourceApplication.java#L23-L61 -->
+
+```java
+@SpringBootApplication
+public class MultiDatasourceApplication implements CommandLineRunner {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private BookRepository bookRepository;
+
+
+    private final User user = new User("1024", "1024@geek.com", "1k", "Mars");
+    private final Book book = new Book("9780792745488", "Zen and the Art of Motorcycle Maintenance", "Robert M. Pirsig");
+
+
+    public static void main(String[] args) {
+        SpringApplication.run(MultiDatasourceApplication.class, args);
+    }
+
+    @Override
+    public void run(String... args) {
+        final List<User> users = this.userRepository.findByEmailOrName(this.user.getEmail(), this.user.getName()).collectList().block();
+        users.forEach(System.out::println);
+        final Book book = this.bookRepository.findById("9780792745488").block();
+        System.out.println(book);
+    }
+
+    @PostConstruct
+    public void setup() {
+        this.userRepository.save(user).block();
+        this.bookRepository.save(book).block();
+
+    }
+
+    @PreDestroy
+    public void cleanup() {
+        this.userRepository.deleteAll().block();
+        this.bookRepository.deleteAll().block();
+    }
+}
+```
+
 ## Beta version package
 
 Beta version built from `master` branch are available, you can refer to the [instruction](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING.md#nightly-package-builds) to use beta version packages.
