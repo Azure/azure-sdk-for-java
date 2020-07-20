@@ -7,7 +7,6 @@
 package com.azure.resourcemanager.containerinstance.implementation;
 
 import com.azure.core.management.Resource;
-import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.implementation.RoleAssignmentHelper;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.containerinstance.ContainerInstanceManager;
@@ -33,10 +32,14 @@ import com.azure.resourcemanager.containerinstance.models.Port;
 import com.azure.resourcemanager.containerinstance.models.ResourceIdentityType;
 import com.azure.resourcemanager.containerinstance.models.Volume;
 import com.azure.resourcemanager.msi.models.Identity;
+import com.azure.resourcemanager.network.fluent.inner.IpConfigurationProfileInner;
+import com.azure.resourcemanager.network.fluent.inner.NetworkProfileInner;
+import com.azure.resourcemanager.network.fluent.inner.SubnetInner;
+import com.azure.resourcemanager.network.models.ContainerNetworkInterfaceConfiguration;
+import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
-import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.storage.file.share.ShareServiceAsyncClient;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
@@ -66,6 +69,9 @@ public class ContainerGroupImpl
         ContainerGroup.Update {
 
     private String creatableStorageAccountKey;
+    private Creatable<Network> creatableVirtualNetwork;
+    private NetworkProfileInner creatableNetworkProfileInner;
+    private String creatableNetworkProfileName;
     private Map<String, String> newFileShares;
 
     private Map<String, Container> containers;
@@ -80,8 +86,27 @@ public class ContainerGroupImpl
         this.containerGroupMsiHandler = new ContainerGroupMsiHandler(this);
     }
 
-    @Override
-    protected void beforeCreating() {
+    private Mono<Void> beforeCreation() {
+        Mono<Void> mono = Mono.empty();
+        if (creatableVirtualNetwork != null) {
+            mono = mono.then(creatableVirtualNetwork.createAsync().last())
+                .flatMap(network -> {
+                    creatableVirtualNetwork = null;
+                    return Mono.empty();
+                });
+        }
+        if (creatableNetworkProfileName != null && creatableNetworkProfileInner != null) {
+            mono = mono.then(
+                manager().networkManager().inner().getNetworkProfiles()
+                    .createOrUpdateAsync(resourceGroupName(), creatableNetworkProfileName, creatableNetworkProfileInner)
+                    .flatMap(profile -> {
+                        creatableNetworkProfileName = null;
+                        creatableNetworkProfileInner = null;
+                        return Mono.empty();
+                    })
+            );
+        }
+        return mono;
     }
 
     @Override
@@ -94,14 +119,17 @@ public class ContainerGroupImpl
             Resource resource = new Resource();
             resource.withLocation(self.regionName());
             resource.withTags(self.tags());
-            return self.manager().inner().getContainerGroups()
-                .updateAsync(self.resourceGroupName(), self.name(), resource);
+            return beforeCreation()
+                .then(manager().inner().getContainerGroups()
+                    .updateAsync(self.resourceGroupName(), self.name(), resource));
         } else if (newFileShares == null || creatableStorageAccountKey == null) {
-            return self.manager().inner().getContainerGroups()
-                .createOrUpdateAsync(resourceGroupName(), name(), inner());
+            return beforeCreation()
+                .then(manager().inner().getContainerGroups()
+                .createOrUpdateAsync(resourceGroupName(), name(), inner()));
         } else {
             final StorageAccount storageAccount = this.taskResult(this.creatableStorageAccountKey);
-            return createFileShareAsync(storageAccount)
+            return beforeCreation()
+                    .thenMany(createFileShareAsync(storageAccount))
                     .map(volumeParameters ->
                         this.defineVolume(volumeParameters.volumeName)
                             .withExistingReadWriteAzureFileShare(volumeParameters.fileShareName)
@@ -393,6 +421,49 @@ public class ContainerGroupImpl
         }
         this.inner().ipAddress().withType(ContainerGroupIpAddressType.PRIVATE);
         return this;
+    }
+
+    @Override
+    public ContainerGroupImpl withExistingVirtualNetwork(String virtualNetworkId, String subnetName) {
+        creatableNetworkProfileName = manager().sdkContext().randomResourceName("aci-profile-", 20);
+        String subnetId = String.format("%s/subnets/%s", virtualNetworkId, subnetName);
+        creatableNetworkProfileInner = new NetworkProfileInner()
+            .withContainerNetworkInterfaceConfigurations(Collections.singletonList(
+                new ContainerNetworkInterfaceConfiguration()
+                    .withName("eth0")
+                    .withIpConfigurations(Collections.singletonList(
+                        new IpConfigurationProfileInner()
+                            .withName("ipconfig0")
+                            .withSubnet(
+                                (SubnetInner) new SubnetInner()
+                                    .withId(subnetId)
+                            )
+                    ))
+            ));
+        creatableNetworkProfileInner.withLocation(regionName());
+
+        return this.withNetworkProfileId(manager().subscriptionId(), resourceGroupName(), creatableNetworkProfileName);
+    }
+
+    @Override
+    public ContainerGroupImpl withNewVirtualNetwork(String addressSpace) {
+        String virtualNetworkName = manager().sdkContext().randomResourceName("net", 20);
+        String subnetName = "subnet0";
+
+        creatableVirtualNetwork = manager().networkManager().networks()
+            .define(virtualNetworkName)
+            .withRegion(region())
+            .withExistingResourceGroup(resourceGroupName())
+            .withAddressSpace(addressSpace)
+            .defineSubnet(subnetName)
+                .withAddressPrefix(addressSpace)
+                .withDelegation("Microsoft.ContainerInstance/containerGroups")
+                .attach();
+
+        String virtualNetworkId = String.format(
+            "/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Network/virtualNetworks/%s",
+            manager().subscriptionId(), resourceGroupName(), virtualNetworkName);
+        return withExistingVirtualNetwork(virtualNetworkId, subnetName);
     }
 
     @Override
