@@ -167,13 +167,12 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     public <T> T findById(Object id, Class<T> domainType, PartitionKey partitionKey) {
         Assert.notNull(domainType, "domainType should not be null");
         Assert.notNull(partitionKey, "partitionKey should not be null");
-        assertValidId(id);
-
+        String idToQuery = (String) CosmosUtils.getStringIDValue(id);
         final String containerName = getContainerName(domainType);
         return cosmosAsyncClient
             .getDatabase(databaseName)
             .getContainer(containerName)
-            .readItem(id.toString(), partitionKey, JsonNode.class)
+            .readItem(idToQuery, partitionKey, JsonNode.class)
             .flatMap(cosmosItemResponse -> {
                 CosmosUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
                     cosmosItemResponse.getDiagnostics(), null);
@@ -196,10 +195,9 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     public <T> T findById(String containerName, Object id, Class<T> domainType) {
         Assert.hasText(containerName, "containerName should not be null, empty or only whitespaces");
         Assert.notNull(domainType, "domainType should not be null");
-        assertValidId(id);
 
         final String query = String.format("select * from root where root.id = '%s'",
-            id.toString());
+            CosmosUtils.getStringIDValue(id));
         final CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setQueryMetricsEnabled(enableQueryMetrics);
         return cosmosAsyncClient
@@ -430,8 +428,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
      */
     public void deleteById(String containerName, Object id, PartitionKey partitionKey) {
         Assert.hasText(containerName, "containerName should not be null, empty or only whitespaces");
-        assertValidId(id);
-
+        String idToDelete = (String) CosmosUtils.getStringIDValue(id);
         LOGGER.debug("execute deleteById in database {} container {}", this.databaseName,
             containerName);
 
@@ -440,7 +437,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         }
         cosmosAsyncClient.getDatabase(this.databaseName)
                          .getContainer(containerName)
-                         .deleteItem(id.toString(), partitionKey)
+                         .deleteItem(idToDelete, partitionKey)
                          .doOnNext(response ->
                              CosmosUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
                                  response.getDiagnostics(), null))
@@ -457,15 +454,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         Assert.hasText(containerName, "container should not be null, empty or only whitespaces");
         final List<Object> idList = new ArrayList<>();
         for (ID id : ids) {
-            if (id instanceof String) {
-                idList.add(id);
-            } else if (id instanceof Integer) {
-                idList.add(Integer.toString((Integer) id));
-            } else if (id instanceof Long) {
-                idList.add(Long.toString((Long) id));
-            } else {
-                throw new IllegalQueryException("Type of id field must be String or Integer or Long");
-            }
+            idList.add(CosmosUtils.getStringIDValue(id));
         }
         final DocumentQuery query = new DocumentQuery(Criteria.getInstance(CriteriaType.IN, "id",
             Collections.singletonList(idList), Part.IgnoreCaseType.NEVER));
@@ -680,13 +669,6 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         }
 
         return Collections.singletonList(entityInfo.getPartitionKeyFieldName());
-    }
-
-    private void assertValidId(Object id) {
-        Assert.notNull(id, "id should not be null");
-        if (id instanceof String) {
-            Assert.hasText(id.toString(), "id should not be empty or only whitespaces.");
-        }
     }
 
     private <T> List<JsonNode> findItems(@NonNull DocumentQuery query,
