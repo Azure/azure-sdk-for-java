@@ -537,7 +537,7 @@ public class ProjectRepositoryIT {
         assertProjectListEquals(projects, Arrays.asList(PROJECT_0, PROJECT_1, PROJECT_4));
         projects = this.repository.findAllByHasReleasedIn(Collections.singleton(false));
         assertProjectListEquals(projects, Arrays.asList(PROJECT_4));
-        projects = this.repository.findAllByNameIn(Collections.singleton("sql) or (r.firstName <> ''"));
+        projects = this.repository.findAllByNameIn(Collections.singleton("sql) or (r.name <> ''"));
         assertTrue(projects.isEmpty());
     }
 }

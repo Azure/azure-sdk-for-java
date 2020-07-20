@@ -134,9 +134,9 @@ public abstract class AbstractQueryGenerator {
         }
         
         final Collection<Object> values = (Collection<Object>) criteria.getSubjectValues().get(0);
-        
+
         final StringBuilder builder = new StringBuilder();
-        int index = 0;       
+        int index = 0;
         Iterator<Object> iterator = values.iterator();
         while (iterator.hasNext()) {
             Object o = iterator.next();
@@ -148,7 +148,7 @@ public abstract class AbstractQueryGenerator {
                     builder.append(",@").append(key);
                 }
                 parameters.add(Pair.with(key, o));
-                index ++;
+                index++;
             } else {
                 throw new IllegalQueryException("IN keyword Range only support Number and String type.");
             }
