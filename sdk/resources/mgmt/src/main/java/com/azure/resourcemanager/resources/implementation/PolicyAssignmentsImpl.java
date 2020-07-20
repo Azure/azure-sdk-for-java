@@ -80,7 +80,6 @@ public final class PolicyAssignmentsImpl
     @Override
     public Mono<PolicyAssignment> getByIdAsync(String id) {
         return client.getByIdAsync(id)
-                .onErrorResume(e -> Mono.empty())
                 .map(this::wrapModel);
     }
 
