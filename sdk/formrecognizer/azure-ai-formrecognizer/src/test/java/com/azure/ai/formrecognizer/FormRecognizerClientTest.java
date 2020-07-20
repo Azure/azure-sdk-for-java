@@ -388,7 +388,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
                 SyncPoller<OperationResult, CustomFormModel> trainingPoller =
                     getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
-                        useTrainingLabels, null, durationTestMode);
+                        useTrainingLabels, null, durationTestMode, Context.NONE);
                 trainingPoller.waitForCompletion();
 
                 SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomForms(
@@ -412,7 +412,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
                 SyncPoller<OperationResult, CustomFormModel> trainingPoller =
                     getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl, useTrainingLabels,
-                        null, durationTestMode);
+                        null, durationTestMode, Context.NONE);
                 trainingPoller.waitForCompletion();
 
                 SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomForms(
@@ -434,7 +434,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         blankPdfDataRunner((data, dataLength) -> beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<OperationResult, CustomFormModel> trainingPoller =
                 getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl, useTrainingLabels,
-                    null, durationTestMode);
+                    null, durationTestMode, Context.NONE);
             trainingPoller.waitForCompletion();
 
             SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomForms(
@@ -457,7 +457,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         customFormDataRunner((data, dataLength) -> beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<OperationResult, CustomFormModel> trainingPoller =
                 getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl, useTrainingLabels,
-                    null, durationTestMode);
+                    null, durationTestMode, Context.NONE);
             trainingPoller.waitForCompletion();
 
             SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomForms(
@@ -480,7 +480,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
                 SyncPoller<OperationResult, CustomFormModel> syncPoller =
                     getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
-                        useTrainingLabels, null, durationTestMode);
+                        useTrainingLabels, null, durationTestMode, Context.NONE);
                 syncPoller.waitForCompletion();
 
                 assertThrows(RuntimeException.class, () -> client.beginRecognizeCustomForms(
@@ -534,7 +534,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             beginTrainingLabeledRunner((training, useTrainingLabels) -> {
                 SyncPoller<OperationResult, CustomFormModel> syncPoller =
                     getFormTrainingClient(httpClient, serviceVersion).beginTraining(training, useTrainingLabels,
-                        null, durationTestMode);
+                        null, durationTestMode, Context.NONE);
                 syncPoller.waitForCompletion();
                 CustomFormModel createdModel = syncPoller.getFinalResult();
                 FormRecognizerException formRecognizerException = assertThrows(FormRecognizerException.class,
@@ -561,7 +561,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<OperationResult, CustomFormModel> trainingPoller =
                 getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl, useTrainingLabels,
-                    null, durationTestMode);
+                    null, durationTestMode, Context.NONE);
             trainingPoller.waitForCompletion();
 
             SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomForms(
@@ -581,7 +581,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         multipageFromDataRunner((data, dataLength) -> beginTrainingMultipageRunner((trainingFilesUrl) -> {
             SyncPoller<OperationResult, CustomFormModel> trainingPoller =
                 getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl, true,
-                    null, durationTestMode);
+                    null, durationTestMode, Context.NONE);
             trainingPoller.waitForCompletion();
 
             SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomForms(
@@ -605,7 +605,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
                 SyncPoller<OperationResult, CustomFormModel> trainingPoller =
                     getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
-                        useTrainingLabels, null, durationTestMode);
+                        useTrainingLabels, null, durationTestMode, Context.NONE);
                 trainingPoller.waitForCompletion();
 
                 SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomForms(
@@ -628,7 +628,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         customFormDataRunner((data, dataLength) -> beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<OperationResult, CustomFormModel> trainingPoller =
                 getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
-                    useTrainingLabels, null, durationTestMode);
+                    useTrainingLabels, null, durationTestMode, Context.NONE);
             trainingPoller.waitForCompletion();
 
             SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomForms(
@@ -648,7 +648,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         multipageFromDataRunner((data, dataLength) -> beginTrainingMultipageRunner((trainingFilesUrl) -> {
             SyncPoller<OperationResult, CustomFormModel> trainingPoller =
                 getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl, false,
-                    null, durationTestMode);
+                    null, durationTestMode, Context.NONE);
             trainingPoller.waitForCompletion();
 
             SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomForms(
@@ -671,7 +671,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
                 SyncPoller<OperationResult, CustomFormModel> trainingPoller =
                     getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
-                        useTrainingLabels, null, durationTestMode);
+                        useTrainingLabels, null, durationTestMode, Context.NONE);
                 trainingPoller.waitForCompletion();
 
                 SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomForms(
@@ -693,7 +693,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         blankPdfDataRunner((data, dataLength) -> beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<OperationResult, CustomFormModel> trainingPoller =
                 getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
-                    useTrainingLabels, null, durationTestMode);
+                    useTrainingLabels, null, durationTestMode, Context.NONE);
             trainingPoller.waitForCompletion();
 
             SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomForms(
@@ -717,7 +717,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         urlRunner(fileUrl -> beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<OperationResult, CustomFormModel> trainingPoller =
                 getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl, useTrainingLabels,
-                    null, durationTestMode);
+                    null, durationTestMode, Context.NONE);
             trainingPoller.waitForCompletion();
 
             SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomFormsFromUrl(
@@ -739,7 +739,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         urlRunner(fileUrl -> beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<OperationResult, CustomFormModel> trainingPoller =
                 getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl, useTrainingLabels,
-                    null, durationTestMode);
+                    null, durationTestMode, Context.NONE);
             trainingPoller.waitForCompletion();
 
             SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomFormsFromUrl(
@@ -758,7 +758,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         multipageFromUrlRunner(fileUrl -> beginTrainingMultipageRunner((trainingFilesUrl) -> {
             SyncPoller<OperationResult, CustomFormModel> trainingPoller =
                 getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl, false,
-                    null, durationTestMode);
+                    null, durationTestMode, Context.NONE);
             trainingPoller.waitForCompletion();
 
             SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomFormsFromUrl(
@@ -782,7 +782,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<OperationResult, CustomFormModel> syncPoller =
                 getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl, useTrainingLabels,
-                    null, durationTestMode);
+                    null, durationTestMode, Context.NONE);
             syncPoller.waitForCompletion();
             CustomFormModel createdModel = syncPoller.getFinalResult();
             HttpResponseException httpResponseException = assertThrows(
@@ -835,7 +835,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         urlRunner(fileUrl -> beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<OperationResult, CustomFormModel> trainingPoller =
                 getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
-                    useTrainingLabels, null, durationTestMode);
+                    useTrainingLabels, null, durationTestMode, Context.NONE);
             trainingPoller.waitForCompletion();
 
             SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomFormsFromUrl(
@@ -857,7 +857,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
 
             SyncPoller<OperationResult, CustomFormModel> trainingPoller =
                 getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
-                    useTrainingLabels, null, durationTestMode);
+                    useTrainingLabels, null, durationTestMode, Context.NONE);
             trainingPoller.waitForCompletion();
 
             SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomFormsFromUrl(
@@ -879,7 +879,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         multipageFromUrlRunner(fileUrl -> beginTrainingMultipageRunner((trainingFilesUrl) -> {
             SyncPoller<OperationResult, CustomFormModel> trainingPoller =
                 getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl, true,
-                    null, durationTestMode);
+                    null, durationTestMode, Context.NONE);
             trainingPoller.waitForCompletion();
 
             SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomFormsFromUrl(
