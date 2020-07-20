@@ -184,7 +184,7 @@ KeyVaultKey key = keyClient.getKey("<key-name>");
 // Update the expiry time of the key.
 key.getProperties().setExpiresOn(OffsetDateTime.now().plusDays(30));
 KeyVaultKey updatedKey = keyClient.updateKeyProperties(key.getProperties());
-System.out.printf("Key's updated expiry time: %s\n", updatedKey.getProperties().getExpiresOn().toString());
+System.out.println("Key's updated expiry time: " + updatedKey.getProperties().getExpiresOn().toString());
 ```
 
 ### Delete a key
@@ -198,7 +198,7 @@ PollResponse<DeletedKey> deletedKeyPollResponse = deletedKeyPoller.poll();
 // Deleted key is accessible as soon as polling begins.
 DeletedKey deletedKey = deletedKeyPollResponse.getValue();
 // Deletion date only works for a SoftDelete-enabled Key Vault.
-System.out.printf("Deletion date: %s\n", deletedKey.getDeletedOn().toString());
+System.out.println("Deletion date: " + deletedKey.getDeletedOn().toString());
 
 // Key is being deleted on server.
 deletedKeyPoller.waitForCompletion();
@@ -319,9 +319,9 @@ Delete an existing key by calling `beginDeleteKey`.
 ```java
 keyAsyncClient.beginDeleteKey("<key-name>")
     .subscribe(pollResponse -> {
-        System.out.printf("Deletetion status: %s\n", pollResponse.getStatus().toString());
-        System.out.printf("Deleted key name: %s\n", pollResponse.getValue().getName());
-        System.out.printf("Key deletion date: %s\n", pollResponse.getValue().getDeletedOn().toString());
+        System.out.println("Deletetion status: " + pollResponse.getStatus().toString());
+        System.out.println("Deleted key name: " + pollResponse.getValue().getName());
+        System.out.println("Key deletion date: " + pollResponse.getValue().getDeletedOn().toString());
     });
 ```
 
