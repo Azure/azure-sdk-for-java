@@ -10,7 +10,6 @@ import com.azure.spring.data.cosmos.core.query.CriteriaType;
 import com.azure.spring.data.cosmos.core.query.DocumentQuery;
 import com.azure.spring.data.cosmos.repository.ReactiveCosmosRepository;
 import org.reactivestreams.Publisher;
-import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.Sort;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
@@ -27,22 +26,6 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
 
     private final CosmosEntityInformation<T, K> entityInformation;
     private final ReactiveCosmosOperations cosmosOperations;
-
-    /**
-     * Initialization with metadata and applicationContext will create container if required
-     *
-     * @param metadata for entityInformation
-     * @param applicationContext for cosmosOperations
-     */
-    public SimpleReactiveCosmosRepository(CosmosEntityInformation<T, K> metadata,
-                                          ApplicationContext applicationContext) {
-        this.cosmosOperations = applicationContext.getBean(ReactiveCosmosOperations.class);
-        this.entityInformation = metadata;
-
-        if (this.entityInformation.isAutoCreateContainer()) {
-            createContainerIfNotExists();
-        }
-    }
 
     /**
      * Initialization with metadata and reactiveCosmosOperations

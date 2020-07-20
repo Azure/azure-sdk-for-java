@@ -4,13 +4,12 @@
 package com.azure.spring.data.cosmos.repository.config;
 
 import com.azure.spring.data.cosmos.Constants;
-import com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext;
 import com.azure.spring.data.cosmos.repository.ReactiveCosmosRepository;
 import com.azure.spring.data.cosmos.repository.support.ReactiveCosmosRepositoryFactoryBean;
-import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
-import org.springframework.beans.factory.support.RootBeanDefinition;
+import org.springframework.core.annotation.AnnotationAttributes;
+import org.springframework.data.repository.config.AnnotationRepositoryConfigurationSource;
 import org.springframework.data.repository.config.RepositoryConfigurationExtensionSupport;
 import org.springframework.data.repository.config.RepositoryConfigurationSource;
 import org.springframework.data.repository.core.RepositoryMetadata;
@@ -57,19 +56,12 @@ public class ReactiveCosmosRepositoryConfigurationExtension extends RepositoryCo
     @Override
     public void registerBeansForRoot(BeanDefinitionRegistry registry, RepositoryConfigurationSource config) {
         super.registerBeansForRoot(registry, config);
-
-        if (!registry.containsBeanDefinition(Constants.COSMOS_MAPPING_CONTEXT)) {
-            final RootBeanDefinition definition = new RootBeanDefinition(CosmosMappingContext.class);
-            definition.setRole(AbstractBeanDefinition.ROLE_INFRASTRUCTURE);
-            definition.setSource(config.getSource());
-
-            registry.registerBeanDefinition(Constants.COSMOS_MAPPING_CONTEXT, definition);
-        }
     }
 
     @Override
-    public void postProcess(BeanDefinitionBuilder builder, RepositoryConfigurationSource source) {
-        super.postProcess(builder, source);
+    public void postProcess(BeanDefinitionBuilder builder, AnnotationRepositoryConfigurationSource source) {
+        final AnnotationAttributes attributes = source.getAttributes();
+        builder.addPropertyReference("reactiveCosmosOperations", attributes.getString("reactiveCosmosTemplateRef"));
     }
 
     //  Overriding this to provide reactive repository support.

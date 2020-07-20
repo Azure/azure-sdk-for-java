@@ -10,7 +10,6 @@ import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
 import com.azure.spring.data.cosmos.core.query.DocumentQuery;
 import com.azure.spring.data.cosmos.repository.CosmosRepository;
-import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -31,22 +30,6 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
 
     private final CosmosOperations operation;
     private final CosmosEntityInformation<T, ID> information;
-
-    /**
-     * Initialization
-     *
-     * @param metadata for cosmos entity information
-     * @param applicationContext to get bean of CosmosOperations class
-     */
-    public SimpleCosmosRepository(CosmosEntityInformation<T, ID> metadata,
-                                  ApplicationContext applicationContext) {
-        this.operation = applicationContext.getBean(CosmosOperations.class);
-        this.information = metadata;
-
-        if (this.information.isAutoCreateContainer()) {
-            createContainerIfNotExists();
-        }
-    }
 
     /**
      * Initialization

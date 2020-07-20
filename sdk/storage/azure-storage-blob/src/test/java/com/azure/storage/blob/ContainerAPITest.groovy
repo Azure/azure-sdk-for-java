@@ -22,6 +22,8 @@ import com.azure.storage.blob.models.LeaseStatusType
 import com.azure.storage.blob.models.ListBlobsOptions
 import com.azure.storage.blob.models.ObjectReplicationPolicy
 import com.azure.storage.blob.models.ObjectReplicationStatus
+import com.azure.storage.blob.models.RehydratePriority
+import com.azure.storage.blob.options.BlobSetAccessTierOptions
 import com.azure.storage.blob.options.PageBlobCreateOptions
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.specialized.AppendBlobClient
@@ -937,6 +939,32 @@ class ContainerAPITest extends APISpec {
         pagedResponse2.getContinuationToken() == null
     }
 
+    @Unroll
+    def "List blobs flat rehydrate priority"() {
+        setup:
+        def name = generateBlobName()
+        def bc = cc.getBlobClient(name).getBlockBlobClient()
+        bc.upload(defaultInputStream.get(), 7)
+
+        if (rehydratePriority != null) {
+            bc.setAccessTier(AccessTier.ARCHIVE)
+
+            bc.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT).setPriority(rehydratePriority), null, null)
+        }
+
+        when:
+        def item = cc.listBlobs().iterator().next()
+
+        then:
+        item.getProperties().getRehydratePriority() == rehydratePriority
+
+        where:
+        rehydratePriority          || _
+        null                       || _
+        RehydratePriority.STANDARD || _
+        RehydratePriority.HIGH     || _
+    }
+
     def "List blobs flat error"() {
         setup:
         cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
@@ -1315,6 +1343,32 @@ class ContainerAPITest extends APISpec {
 
         expect: "listing operation will fetch all 10 blobs, despite page size being smaller than 10"
         cc.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(PAGE_SIZE), null).stream().count() == NUM_BLOBS
+    }
+
+    @Unroll
+    def "List blobs hier rehydrate priority"() {
+        setup:
+        def name = generateBlobName()
+        def bc = cc.getBlobClient(name).getBlockBlobClient()
+        bc.upload(defaultInputStream.get(), 7)
+
+        if (rehydratePriority != null) {
+            bc.setAccessTier(AccessTier.ARCHIVE)
+
+            bc.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT).setPriority(rehydratePriority), null, null)
+        }
+
+        when:
+        def item = cc.listBlobsByHierarchy(null).iterator().next()
+
+        then:
+        item.getProperties().getRehydratePriority() == rehydratePriority
+
+        where:
+        rehydratePriority          || _
+        null                       || _
+        RehydratePriority.STANDARD || _
+        RehydratePriority.HIGH     || _
     }
 
     def "List blobs hier error"() {

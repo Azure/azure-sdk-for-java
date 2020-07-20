@@ -43,10 +43,10 @@ class EncryptionProperties {
 
     public ObjectNode toObjectNode() {
         ObjectNode objectNode = OBJECT_MAPPER.createObjectNode();
-        objectNode.put(Constants.EncryptionFormatVersion, this.encryptionFormatVersion);
-        objectNode.put(Constants.EncryptionAlgorithm, this.encryptionAlgorithm);
-        objectNode.put(Constants.DataEncryptionKeyId, this.dataEncryptionKeyId);
-        objectNode.put(Constants.EncryptedData, this.encryptedData);
+        objectNode.put(Constants.ENCRYPTION_FORMAT_VERSION, this.encryptionFormatVersion);
+        objectNode.put(Constants.ENCRYPTION_ALGORITHM, this.encryptionAlgorithm);
+        objectNode.put(Constants.DATA_ENCRYPTION_KEY_ID, this.dataEncryptionKeyId);
+        objectNode.put(Constants.ENCRYPTED_DATA, this.encryptedData);
         return objectNode;
     }
 
@@ -109,10 +109,10 @@ class EncryptionProperties {
         @Override
         public void serialize(final EncryptionProperties value, final JsonGenerator generator, final SerializerProvider provider) throws IOException {
             generator.writeStartObject();
-            generator.writeNumberField(Constants.EncryptionFormatVersion, value.encryptionFormatVersion);
-            generator.writeStringField(Constants.EncryptionAlgorithm, value.encryptionAlgorithm);
-            generator.writeStringField(Constants.DataEncryptionKeyId, value.dataEncryptionKeyId);
-            generator.writeBinaryField(Constants.EncryptedData, value.encryptedData);
+            generator.writeNumberField(Constants.ENCRYPTION_FORMAT_VERSION, value.encryptionFormatVersion);
+            generator.writeStringField(Constants.ENCRYPTION_ALGORITHM, value.encryptionAlgorithm);
+            generator.writeStringField(Constants.DATA_ENCRYPTION_KEY_ID, value.dataEncryptionKeyId);
+            generator.writeBinaryField(Constants.ENCRYPTED_DATA, value.encryptedData);
             generator.writeEndObject();
         }
     }
@@ -139,24 +139,24 @@ class EncryptionProperties {
 
             EncryptionProperties encryptionProperties = new EncryptionProperties();
 
-            JsonNode node = root.get(Constants.EncryptionFormatVersion);
-            Preconditions.checkNotNull(node, Constants.EncryptionFormatVersion +  "can't deserialize");
-            validateOrThrow(jsonParser, node.isInt(), Constants.EncryptionFormatVersion, "can't deserialize");
+            JsonNode node = root.get(Constants.ENCRYPTION_FORMAT_VERSION);
+            Preconditions.checkNotNull(node, Constants.ENCRYPTION_FORMAT_VERSION +  "can't deserialize");
+            validateOrThrow(jsonParser, node.isInt(), Constants.ENCRYPTION_FORMAT_VERSION, "can't deserialize");
             encryptionProperties.encryptionFormatVersion = node.asInt();
 
-            node = root.get(Constants.EncryptionAlgorithm);
-            Preconditions.checkNotNull(node, Constants.EncryptionAlgorithm +  "can't deserialize");
-            validateOrThrow(jsonParser, node.isTextual(), Constants.EncryptionAlgorithm, "can't deserialize");
+            node = root.get(Constants.ENCRYPTION_ALGORITHM);
+            Preconditions.checkNotNull(node, Constants.ENCRYPTION_ALGORITHM +  "can't deserialize");
+            validateOrThrow(jsonParser, node.isTextual(), Constants.ENCRYPTION_ALGORITHM, "can't deserialize");
             encryptionProperties.encryptionAlgorithm = node.asText();
 
-            node = root.get(Constants.DataEncryptionKeyId);
-            Preconditions.checkNotNull(node, Constants.DataEncryptionKeyId +  "can't deserialize");
-            validateOrThrow(jsonParser, node.isTextual(), Constants.DataEncryptionKeyId, "can't deserialize");
+            node = root.get(Constants.DATA_ENCRYPTION_KEY_ID);
+            Preconditions.checkNotNull(node, Constants.DATA_ENCRYPTION_KEY_ID +  "can't deserialize");
+            validateOrThrow(jsonParser, node.isTextual(), Constants.DATA_ENCRYPTION_KEY_ID, "can't deserialize");
             encryptionProperties.dataEncryptionKeyId = node.asText();
 
-            node = root.get(Constants.EncryptedData);
-            Preconditions.checkNotNull(node, Constants.EncryptedData +  "can't deserialize");
-            validateOrThrow(jsonParser, node.isBinary() || node.isTextual(), Constants.EncryptedData, "can't deserialize");
+            node = root.get(Constants.ENCRYPTED_DATA);
+            Preconditions.checkNotNull(node, Constants.ENCRYPTED_DATA +  "can't deserialize");
+            validateOrThrow(jsonParser, node.isBinary() || node.isTextual(), Constants.ENCRYPTED_DATA, "can't deserialize");
             encryptionProperties.encryptedData = node.binaryValue();
 
             return encryptionProperties;
