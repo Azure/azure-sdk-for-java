@@ -7,6 +7,7 @@ import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.RecognizeOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.Context;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -53,7 +54,7 @@ public class AdvancedDiffLabeledUnlabeledData {
                 new RecognizeOptions()
                     .setContentType(FormContentType.APPLICATION_PDF)
                     .setIncludeFieldElements(true)
-                    .setPollInterval(Duration.ofSeconds(5)))
+                    .setPollInterval(Duration.ofSeconds(5)), Context.NONE)
                 .getFinalResult();
 
         List<RecognizedForm> formsWithUnlabeledModel =
@@ -62,7 +63,7 @@ public class AdvancedDiffLabeledUnlabeledData {
                 new RecognizeOptions()
                     .setContentType(FormContentType.APPLICATION_PDF)
                     .setIncludeFieldElements(true)
-                    .setPollInterval(Duration.ofSeconds(5)))
+                    .setPollInterval(Duration.ofSeconds(5)), Context.NONE)
                 .getFinalResult();
 
         System.out.println("--------Recognizing forms with labeled custom model--------");
