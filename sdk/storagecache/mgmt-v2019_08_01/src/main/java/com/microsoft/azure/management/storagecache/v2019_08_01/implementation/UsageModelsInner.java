@@ -38,7 +38,7 @@ public class UsageModelsInner {
     /** The Retrofit service to perform REST calls. */
     private UsageModelsService service;
     /** The service client containing this operation class. */
-    private StorageCacheMgmtClientImpl client;
+    private StorageCacheManagementClientImpl client;
 
     /**
      * Initializes an instance of UsageModelsInner.
@@ -46,7 +46,7 @@ public class UsageModelsInner {
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public UsageModelsInner(Retrofit retrofit, StorageCacheMgmtClientImpl client) {
+    public UsageModelsInner(Retrofit retrofit, StorageCacheManagementClientImpl client) {
         this.service = retrofit.create(UsageModelsService.class);
         this.client = client;
     }
