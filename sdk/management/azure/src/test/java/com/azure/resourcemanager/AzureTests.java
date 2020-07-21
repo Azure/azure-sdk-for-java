@@ -1207,7 +1207,6 @@ public class AzureTests extends TestBase {
         List<ContainerGroup> containerGroupList = azure.containerGroups().listByResourceGroup(rgName)
             .stream().collect(Collectors.toList());
         Assertions.assertTrue(containerGroupList.size() > 0);
-        Assertions.assertNotNull(containerGroupList.get(0).state());
 
         containerGroup.refresh();
 
@@ -1217,6 +1216,7 @@ public class AzureTests extends TestBase {
         Assertions.assertTrue(containerGroupOperations.size() > 0);
     }
 
+    @Disabled("Cannot run test due to unknown parameter")
     @Test
     public void testContainerInstanceWithPrivateIpAddress() throws Exception {
         //LIVE ONLY TEST BECAUSE IT REQUIRES SUBSCRIPTION ID

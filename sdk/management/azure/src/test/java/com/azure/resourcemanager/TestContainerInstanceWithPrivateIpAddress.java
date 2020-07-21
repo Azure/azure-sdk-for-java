@@ -121,7 +121,6 @@ public class TestContainerInstanceWithPrivateIpAddress extends TestTemplate<Cont
         List<ContainerGroup> containerGroupList = containerGroups.listByResourceGroup(rgName)
             .stream().collect(Collectors.toList());
         Assertions.assertTrue(containerGroupList.size() > 0);
-        Assertions.assertNotNull(containerGroupList.get(0).state());
 
         containerGroup.refresh();
 

@@ -81,6 +81,11 @@
             <version>3.2.1</version>
         </dependency>
         <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.12</version>
+        </dependency>
+        <dependency>
             <groupId>com.github.cverges.expect4j</groupId>
             <artifactId>expect4j</artifactId>
             <version>1.6</version>

@@ -12,7 +12,7 @@ import java.util.Map;
 
 /** The ContainerGroupIdentity model. */
 @Fluent
-public final class ContainerGroupIdentity {
+public class ContainerGroupIdentity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerGroupIdentity.class);
 
     /*

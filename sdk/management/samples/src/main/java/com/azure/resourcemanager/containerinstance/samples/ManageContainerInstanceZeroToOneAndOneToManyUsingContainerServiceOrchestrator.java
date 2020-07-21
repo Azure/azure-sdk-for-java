@@ -45,7 +45,10 @@ import org.apache.commons.codec.binary.Base64;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Date;
@@ -100,7 +103,6 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
         String acsSecretName = "mysecret112233";
         String acsNamespace = "acrsample";
         String acsLbIngressName = "lb-acrsample";
-        SSHShell shell = null;
 
         try {
             //=============================================================
@@ -286,9 +288,7 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
             azureKubernetesCluster = azure.kubernetesClusters().getByResourceGroup(rgName, acsName);
             System.out.println("Found Kubernetes master at: " + azureKubernetesCluster.fqdn());
 
-            shell = SSHShell.open(azureKubernetesCluster.fqdn(), 22, rootUserName, sshKeys.getSshPrivateKey().getBytes());
-
-            String kubeConfigContent = shell.download("config", ".kube", true);
+            byte[] kubeConfigContent = azureKubernetesCluster.adminKubeConfigContent();
             System.out.println("Found Kubernetes config:\n" + kubeConfigContent);
 
 
@@ -299,9 +299,9 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
 
             File tempKubeConfigFile = File.createTempFile("kube", ".config", new File(System.getProperty("java.io.tmpdir")));
             tempKubeConfigFile.deleteOnExit();
-            BufferedWriter buffOut = new BufferedWriter(new FileWriter(tempKubeConfigFile));
-            buffOut.write(kubeConfigContent);
-            buffOut.close();
+            try (BufferedWriter buffOut = new BufferedWriter(new FileWriter(tempKubeConfigFile))) {
+                buffOut.write(new String(kubeConfigContent, StandardCharsets.UTF_8));
+            }
 
             System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, tempKubeConfigFile.getPath());
             Config config = new Config();
@@ -473,8 +473,6 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
 
             // Clean-up
             kubernetesClient.namespaces().delete(ns);
-
-            shell.close();
 
             return true;
         } catch (Exception f) {
