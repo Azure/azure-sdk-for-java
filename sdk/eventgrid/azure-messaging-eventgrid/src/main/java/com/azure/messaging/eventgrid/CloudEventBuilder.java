@@ -45,7 +45,7 @@ public class CloudEventBuilder {
 
     private String dataSchema;
 
-    private Map<String, Object> additionalProperties = new HashMap<>();
+    private final Map<String, Object> additionalProperties = new HashMap<>();
 
 
     /**
@@ -120,6 +120,7 @@ public class CloudEventBuilder {
         if (CoreUtils.isNullOrEmpty(source)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("source cannot be null or empty"));
         }
+        this.source = source;
         return this;
     }
 
