@@ -20,6 +20,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
@@ -70,7 +71,11 @@ public final class ConfigurationAsyncClient {
      * @param version {@link ConfigurationServiceVersion} of the service to be used when making requests.
      */
     ConfigurationAsyncClient(String serviceEndpoint, HttpPipeline pipeline, ConfigurationServiceVersion version) {
-        this.service = RestProxy.create(ConfigurationService.class, pipeline);
+        JacksonAdapter adapter = (JacksonAdapter) JacksonAdapter.createDefaultSerializerAdapter();
+        adapter.serializer().registerModule(ConfigurationSettingSerializer.getModule())
+            .registerModule(ConfigurationSettingDeserializer.getModule());
+
+        this.service = RestProxy.create(ConfigurationService.class, pipeline, adapter);
         this.serviceEndpoint = serviceEndpoint;
         this.apiVersion = version.getVersion();
     }

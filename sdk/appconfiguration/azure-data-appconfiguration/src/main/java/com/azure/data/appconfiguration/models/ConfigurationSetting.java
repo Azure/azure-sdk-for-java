@@ -152,12 +152,34 @@ public class ConfigurationSetting {
     }
 
     /**
+     * Sets the time when the configuration setting was last modified.
+     *
+     * @param lastModified The time when the configuration setting was last modified.
+     * @return The updated ConfigurationSetting object.
+     */
+    public ConfigurationSetting setLastModified(OffsetDateTime lastModified) {
+        this.lastModified = lastModified;
+        return this;
+    }
+
+    /**
      * The time when the configuration setting was last modified.
      *
      * @return The time when the configuration was last modified.
      */
     public OffsetDateTime getLastModified() {
         return lastModified;
+    }
+
+    /**
+     * Sets whether the configuration setting is read only.
+     *
+     * @param readOnly Whether the configuration setting is read only.
+     * @return The updated ConfigurationSetting object.
+     */
+    public ConfigurationSetting setReadOnly(boolean readOnly) {
+        this.readOnly = readOnly;
+        return this;
     }
 
     /**
