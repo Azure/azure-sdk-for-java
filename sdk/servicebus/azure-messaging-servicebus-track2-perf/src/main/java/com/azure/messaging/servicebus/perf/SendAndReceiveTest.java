@@ -23,6 +23,11 @@ public class SendAndReceiveTest extends ServiceTest<PerfStressOptions> {
         sender.sendMessage(message);
 
     }
+    public Mono<Void> globalSetupAsync() {
+        return super.globalSetupAsync()
+            .then(globalSetupAsync())
+                    .then();
+    }
 
     @Override
     public void run() {
