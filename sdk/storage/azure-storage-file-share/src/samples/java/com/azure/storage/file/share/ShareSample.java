@@ -139,8 +139,8 @@ public class ShareSample {
             System.out.println("Failed to delete the share snapshot 1. Reasons: " + e.getMessage());
         }
 
-         // Delete the share snapshot 2
-         try {
+        // Delete the share snapshot 2
+        try {
             shareClientWithSnapshot2.delete();
         } catch (ShareStorageException e) {
             System.out.println("Failed to delete the share snapshot 2. Reasons: " + e.getMessage());

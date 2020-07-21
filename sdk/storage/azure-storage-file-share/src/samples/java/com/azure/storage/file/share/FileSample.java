@@ -23,7 +23,7 @@ import java.util.concurrent.TimeoutException;
  */
 public class FileSample {
     private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_FILE_ENDPOINT");
-    private static final String CONNECTION_STRING=Configuration.getGlobalConfiguration().get("AZURE_CONNECTION_STRING");
+    private static final String CONNECTION_STRING = Configuration.getGlobalConfiguration().get("AZURE_CONNECTION_STRING");
 
     // This is the helper method to generate random name.
     private static String generateRandomName() {
