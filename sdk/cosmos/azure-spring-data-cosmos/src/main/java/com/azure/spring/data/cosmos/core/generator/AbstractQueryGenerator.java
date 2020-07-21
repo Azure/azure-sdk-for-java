@@ -17,7 +17,6 @@ import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -138,9 +137,7 @@ public abstract class AbstractQueryGenerator {
 
         final StringBuilder builder = new StringBuilder();
         int index = 0;
-        Iterator<Object> iterator = values.iterator();
-        while (iterator.hasNext()) {
-            Object o = iterator.next();
+        for (Object o : values) {
             if (o instanceof String || o instanceof Integer || o instanceof Long || o instanceof Boolean) {
                 String key = "p" + index;
                 if (index == 0) {
