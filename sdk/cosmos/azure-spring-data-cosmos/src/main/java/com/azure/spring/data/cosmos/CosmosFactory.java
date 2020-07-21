@@ -81,7 +81,10 @@ public class CosmosFactory {
         final CosmosClientBuilder cosmosClientBuilder = cosmosConfig.getCosmosClientBuilder();
         cosmosClientBuilder.contentResponseOnWriteEnabled(true);
         final String userAgentSuffixValue = getUserAgentSuffixValue(cosmosClientBuilder);
-        final String userAgentSuffix = getUserAgentSuffix() + userAgentSuffixValue;
+        String userAgentSuffix = getUserAgentSuffix();
+        if (!userAgentSuffixValue.contains(userAgentSuffix)) {
+            userAgentSuffix += userAgentSuffixValue;
+        }
 
         return cosmosConfig.getCosmosClientBuilder().userAgentSuffix(userAgentSuffix);
     }
