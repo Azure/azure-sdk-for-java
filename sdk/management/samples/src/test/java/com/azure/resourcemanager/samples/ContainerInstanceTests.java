@@ -30,7 +30,10 @@ public class ContainerInstanceTests extends SamplesTestBase {
 
     @Test
     public void testManageContainerInstanceWithMultipleContainerImages() {
-        Assertions.assertTrue(ManageContainerInstanceWithMultipleContainerImages.runSample(azure));
+        // Skip test in "playback" mode due to HTTP calls made outside of the management plane which can not be recorded at this time
+        if (!isPlaybackMode()) {
+            Assertions.assertTrue(ManageContainerInstanceWithMultipleContainerImages.runSample(azure));
+        }
     }
 
     @Test
