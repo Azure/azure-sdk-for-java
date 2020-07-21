@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class FieldValueTypeCastTest {
+public class FieldValueExtensionMethodTest {
 
     /**
      * Test for {@link FieldValue#asDate()} to Date.
@@ -173,7 +173,7 @@ public class FieldValueTypeCastTest {
      */
     @Test
     public void toMapFromMap() {
-        Map<String, FormField<?>> inputMap = new HashMap<>() {
+        Map<String, FormField<?>> inputMap = new HashMap<String, FormField<?>>() {
             {
                 put("key", new FormField<>(null, null, null, null, 0));
             }
