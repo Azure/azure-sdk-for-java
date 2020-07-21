@@ -70,8 +70,8 @@ public abstract class AbstractQueryGenerator {
      *
      * @param ignoreCase ignore case flag
      * @param sqlKeyword sql key word, operation name
-     * @param subject sql column name
-     * @param parameter sql filter value
+     * @param subject    sql column name
+     * @param parameter  sql filter value
      * @return condition string
      */
     private String getCondition(final Part.IgnoreCaseType ignoreCase, final String sqlKeyword,
@@ -88,8 +88,8 @@ public abstract class AbstractQueryGenerator {
      *
      * @param ignoreCase ignore case flag
      * @param sqlKeyword sql key word, operation name
-     * @param subject sql column name
-     * @param parameter sql filter value
+     * @param subject    sql column name
+     * @param parameter  sql filter value
      * @return condition string
      */
     private String getFunctionCondition(final Part.IgnoreCaseType ignoreCase, final String sqlKeyword,
@@ -133,7 +133,7 @@ public abstract class AbstractQueryGenerator {
             throw new IllegalQueryException("IN keyword requires Collection type in parameters");
         }
 
-        final Collection<Object> values = (Collection<Object>)criteria.getSubjectValues().get(0);
+        final Collection<Object> values = (Collection<Object>) criteria.getSubjectValues().get(0);
 
         final StringBuilder builder = new StringBuilder();
         int index = 0;
@@ -256,9 +256,9 @@ public abstract class AbstractQueryGenerator {
         final List<Pair<String, Object>> parameters = queryBody.getValue1();
 
         List<SqlParameter> sqlParameters = parameters.stream()
-                                                     .map(p -> new SqlParameter("@" + p.getValue0(),
-                                                         toCosmosDbValue(p.getValue1())))
-                                                     .collect(Collectors.toList());
+            .map(p -> new SqlParameter("@" + p.getValue0(),
+                toCosmosDbValue(p.getValue1())))
+            .collect(Collectors.toList());
 
         return new SqlQuerySpec(queryString, sqlParameters);
     }
