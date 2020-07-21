@@ -28,8 +28,8 @@ extends:
   parameters:
     ServiceDirectory: spring
     Artifacts:
-      - name: spring-data-gremlin
-        groupId: com.microsoft.spring.data.gremlin
+      - name: azure-spring-data-gremlin
+        groupId: com.azure
         safeName: azurespringdatagremlin
       - name: azure-spring-boot
         groupId: com.microsoft.azure
