@@ -78,41 +78,40 @@ public final class Receipt {
     public Receipt(RecognizedForm recognizedForm) {
         for (Map.Entry<String, FormField<?>> entry : recognizedForm.getFields().entrySet()) {
             String key = entry.getKey();
-            FormField<?> fieldValue = entry.getValue();
+            FormField<?> formField = entry.getValue();
             switch (key) {
                 case "ReceiptType":
-                    receiptType = new ReceiptType(((FormField<String>) fieldValue).getValue(),
-                        fieldValue.getConfidence());
+                    receiptType = new ReceiptType(formField.getFieldValue().asString(), formField.getConfidence());
                     break;
                 case "MerchantName":
-                    merchantName = (FormField<String>) fieldValue;
+                    merchantName = (FormField<String>) formField;
                     break;
                 case "MerchantAddress":
-                    merchantAddress = (FormField<String>) fieldValue;
+                    merchantAddress = (FormField<String>) formField;
                     break;
                 case "MerchantPhoneNumber":
-                    merchantPhoneNumber = (FormField<String>) fieldValue;
+                    merchantPhoneNumber = (FormField<String>) formField;
                     break;
                 case "Subtotal":
-                    subtotal = (FormField<Float>) fieldValue;
+                    subtotal = (FormField<Float>) formField;
                     break;
                 case "Tax":
-                    tax = (FormField<Float>) fieldValue;
+                    tax = (FormField<Float>) formField;
                     break;
                 case "Tip":
-                    tip = (FormField<Float>) fieldValue;
+                    tip = (FormField<Float>) formField;
                     break;
                 case "Total":
-                    total = (FormField<Float>) fieldValue;
+                    total = (FormField<Float>) formField;
                     break;
                 case "TransactionDate":
-                    transactionDate = (FormField<LocalDate>) fieldValue;
+                    transactionDate = (FormField<LocalDate>) formField;
                     break;
                 case "TransactionTime":
-                    transactionTime = (FormField<LocalTime>) fieldValue;
+                    transactionTime = (FormField<LocalTime>) formField;
                     break;
                 case "Items":
-                    receiptItems = Collections.unmodifiableList(toReceiptItems(fieldValue));
+                    receiptItems = Collections.unmodifiableList(toReceiptItems(formField));
                     break;
                 default:
                     break;
@@ -231,11 +230,11 @@ public final class Receipt {
      */
     @SuppressWarnings("unchecked")
     private static List<ReceiptItem> toReceiptItems(FormField<?> fieldValueItems) {
-        List<FormField<?>> fieldValueArray = (List<FormField<?>>) fieldValueItems.getValue();
+        List<FormField<?>> fieldValueArray = fieldValueItems.getFieldValue().asList();
         List<ReceiptItem> receiptItemList = new ArrayList<>();
 
         for (FormField<?> eachFieldValue : fieldValueArray) {
-            Map<String, FormField<?>> objectValue = ((Map<String, FormField<?>>) (eachFieldValue.getValue()));
+            Map<String, FormField<?>> objectValue = eachFieldValue.getFieldValue().asMap();
             FormField<String> name = null;
             FormField<Float> quantity = null;
             FormField<Float> price = null;
@@ -357,4 +356,6 @@ public final class Receipt {
             return totalPrice;
         }
     }
+
+
 }

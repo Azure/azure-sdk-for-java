@@ -14,28 +14,25 @@ public final class FormField<T> {
     private final float confidence;
     private final FieldData labelData;
     private final String name;
+    private final FieldValue fieldValue;
     private final FieldData valueData;
-    private final T value;
-    private final FieldValueType valueType;
 
     /**
      * Constructs a FormField object.
      *
-     * @param confidence The confidence of the recognized field.
-     * @param labelData The text, bounding box, and field elements for the field label.
      * @param name The name the field or label.
-     * @param value The value of the recognized field.
+     * @param labelData The text, bounding box, and field elements for the field label.
      * @param valueData The text, bounding box, and field elements for the field value.
-     * @param valueType The type of the value of the recognized field.
+     * @param fieldValue The value of the recognized field.
+     * @param confidence The confidence of the recognized field.
      */
-    public FormField(final float confidence, final FieldData labelData, final String name, final T value,
-        final FieldData valueData, FieldValueType valueType) {
+    public FormField(final String name, final FieldData labelData, final FieldData valueData,
+        final FieldValue fieldValue, final float confidence) {
         this.confidence = confidence;
         this.labelData = labelData;
         this.name = name;
-        this.value = value;
+        this.fieldValue = fieldValue;
         this.valueData = valueData;
-        this.valueType = valueType;
     }
 
     /**
@@ -68,25 +65,14 @@ public final class FormField<T> {
     /**
      * Get the value of the recognized field.
      *
-     * @return the value of the recognized field.
+     * @return Value of the recognized field.
      */
-    public T getValue() {
-        return this.value;
+    public FieldValue getFieldValue() {
+        return this.fieldValue;
     }
 
     /**
-     * The type of the value of the recognized field.
-     * Possible types include: 'String',
-     * 'LocalDate', 'LocalTime', 'Long', 'Double', 'Map', or 'List'.
-     *
-     * @return the type of the value of the field.
-     */
-    public FieldValueType getValueType() {
-        return valueType;
-    }
-
-    /**
-     * Get the text, bounding box, and text content of the field value.
+     * Get the text, bounding box, and field elements for the field value.
      *
      * @return the text, bounding box, and field elements for the field value.
      */

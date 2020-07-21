@@ -47,13 +47,13 @@ public final class FieldValue {
      * Floating point value.
      */
     @JsonProperty(value = "valueNumber")
-    private Float valueNumber;
+    private Double valueNumber;
 
     /*
      * Integer value.
      */
     @JsonProperty(value = "valueInteger")
-    private Integer valueInteger;
+    private Long valueInteger;
 
     /*
      * Array of field values.
@@ -203,7 +203,7 @@ public final class FieldValue {
      *
      * @return the valueNumber value.
      */
-    public Float getValueNumber() {
+    public Double getValueNumber() {
         return this.valueNumber;
     }
 
@@ -213,7 +213,7 @@ public final class FieldValue {
      * @param valueNumber the valueNumber value to set.
      * @return the FieldValue object itself.
      */
-    public FieldValue setValueNumber(Float valueNumber) {
+    public FieldValue setValueNumber(Double valueNumber) {
         this.valueNumber = valueNumber;
         return this;
     }
@@ -223,7 +223,7 @@ public final class FieldValue {
      *
      * @return the valueInteger value.
      */
-    public Integer getValueInteger() {
+    public Long getValueInteger() {
         return this.valueInteger;
     }
 
@@ -233,7 +233,7 @@ public final class FieldValue {
      * @param valueInteger the valueInteger value to set.
      * @return the FieldValue object itself.
      */
-    public FieldValue setValueInteger(Integer valueInteger) {
+    public FieldValue setValueInteger(Long valueInteger) {
         this.valueInteger = valueInteger;
         return this;
     }

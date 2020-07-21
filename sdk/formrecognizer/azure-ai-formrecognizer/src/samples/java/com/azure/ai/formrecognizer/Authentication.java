@@ -95,8 +95,8 @@ public class Authentication {
             System.out.printf("----------- Recognizing receipt info for page %d -----------%n", i);
             FormField<?> merchantNameField = recognizedFields.get("MerchantName");
             if (merchantNameField != null) {
-                if (FieldValueType.STRING == merchantNameField.getValueType()) {
-                    String merchantName = FieldValueType.STRING.cast(merchantNameField);
+                if (FieldValueType.STRING == merchantNameField.getFieldValue().getType()) {
+                    String merchantName = merchantNameField.getFieldValue().asString();
                     System.out.printf("Merchant Name: %s, confidence: %.2f%n",
                         merchantName, merchantNameField.getConfidence());
                 }
@@ -104,8 +104,8 @@ public class Authentication {
 
             FormField<?> merchantPhoneNumberField = recognizedFields.get("MerchantPhoneNumber");
             if (merchantPhoneNumberField != null) {
-                if (FieldValueType.PHONE_NUMBER == merchantPhoneNumberField.getValueType()) {
-                    String merchantAddress = FieldValueType.PHONE_NUMBER.cast(merchantPhoneNumberField);
+                if (FieldValueType.PHONE_NUMBER == merchantPhoneNumberField.getFieldValue().getType()) {
+                    String merchantAddress = merchantPhoneNumberField.getFieldValue().asPhoneNumber();
                     System.out.printf("Merchant Phone number: %s, confidence: %.2f%n",
                         merchantAddress, merchantPhoneNumberField.getConfidence());
                 }
@@ -113,8 +113,8 @@ public class Authentication {
 
             FormField<?> transactionDateField = recognizedFields.get("TransactionDate");
             if (transactionDateField != null) {
-                if (FieldValueType.DATE == transactionDateField.getValueType()) {
-                    LocalDate transactionDate = FieldValueType.DATE.cast(transactionDateField);
+                if (FieldValueType.DATE == transactionDateField.getFieldValue().getType()) {
+                    LocalDate transactionDate = transactionDateField.getFieldValue().asDate();
                     System.out.printf("Transaction Date: %s, confidence: %.2f%n",
                         transactionDate, transactionDateField.getConfidence());
                 }
@@ -123,22 +123,22 @@ public class Authentication {
             FormField<?> receiptItemsField = recognizedFields.get("Items");
             if (receiptItemsField != null) {
                 System.out.printf("Receipt Items: %n");
-                if (FieldValueType.LIST == receiptItemsField.getValueType()) {
-                    List<FormField<?>> receiptItems = FieldValueType.LIST.cast(receiptItemsField);
+                if (FieldValueType.LIST == receiptItemsField.getFieldValue().getType()) {
+                    List<FormField<?>> receiptItems = receiptItemsField.getFieldValue().asList();
                     receiptItems.stream()
-                        .filter(receiptItem -> FieldValueType.MAP == receiptItem.getValueType())
-                        .<Map<String, FormField<?>>>map(FieldValueType.MAP::cast)
+                        .filter(receiptItem -> FieldValueType.MAP == receiptItem.getFieldValue().getType())
+                        .map(formField -> formField.getFieldValue().asMap())
                         .forEach(formFieldMap -> formFieldMap.forEach((key, formField) -> {
                             if ("Name".equals(key)) {
-                                if (FieldValueType.STRING == formField.getValueType()) {
-                                    String name = FieldValueType.STRING.cast(formField);
+                                if (FieldValueType.STRING == formField.getFieldValue().getType()) {
+                                    String name = formField.getFieldValue().asString();
                                     System.out.printf("Name: %s, confidence: %.2fs%n",
                                         name, formField.getConfidence());
                                 }
                             }
                             if ("Quantity".equals(key)) {
-                                if (FieldValueType.DOUBLE == formField.getValueType()) {
-                                    Float quantity = FieldValueType.DOUBLE.cast(formField);
+                                if (FieldValueType.DOUBLE == formField.getFieldValue().getType()) {
+                                    Double quantity = formField.getFieldValue().asDouble();
                                     System.out.printf("Quantity: %f, confidence: %.2f%n",
                                         quantity, formField.getConfidence());
                                 }

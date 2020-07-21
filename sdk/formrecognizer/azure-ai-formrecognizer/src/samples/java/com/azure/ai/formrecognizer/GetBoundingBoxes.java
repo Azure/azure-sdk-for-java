@@ -47,10 +47,9 @@ public class GetBoundingBoxes {
             // each field is of type FormField
             // The value of the field can also be a FormField, or a list of FormFields
             // In our sample, it is not.
-            recognizedForm.getFields().forEach((fieldText, fieldValue) -> System.out.printf("Field %s has value %s "
-                    + "based on %s with a confidence score "
-                    + "of %.2f.%n",
-                fieldText, fieldValue.getValue(), fieldValue.getValueData().getText(),
+            recognizedForm.getFields().forEach((fieldText, fieldValue) -> System.out.printf("Field %s has value data "
+                    + "text %s based on %s with a confidence score of %.2f.%n",
+                fieldText, fieldValue.getValueData().getText(), fieldValue.getValueData().getText(),
                 fieldValue.getConfidence()));
 
             // Page Information
