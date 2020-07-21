@@ -24,7 +24,7 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** for implementation and **
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventhubs</artifactId>
-    <version>5.0.3</version>
+    <version>5.1.2</version>
 </dependency>
 <dependency>
     <groupId>com.azure</groupId>
@@ -41,21 +41,24 @@ import com.azure.messaging.eventhubs.EventDataBatch;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
-import io.opentelemetry.OpenTelemetrySdk;
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
 import io.opentelemetry.context.Scope;
-import io.opentelemetry.exporters.logging.LoggingSpanExporter;
+io.opentelemetry.exporters.logging.LoggingSpanExporter;
+import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.trace.TracerSdkProvider;
-import io.opentelemetry.sdk.trace.export.SimpleSpansProcessor;
+import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
 import io.opentelemetry.trace.Span;
 import io.opentelemetry.trace.Tracer;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.OPERATION_TIMEOUT;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class Sample {
@@ -132,10 +135,21 @@ public class Sample {
                     .subscribe(unused -> System.out.println("Complete"),
                             error -> System.out.println("Error sending events: " + error),
                             () -> {
-                                span.end();
-                                producer.close();
                                 System.out.println("Completed sending events.");
+                                span.end();
                             });
+
+
+            // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
+            // the thread so the program does not end before the send operation is complete. Using .block() instead of
+            // .subscribe() will turn this into a synchronous call.
+            try {
+                TimeUnit.SECONDS.sleep(5);
+            } catch (InterruptedException ignored) {
+            } finally {
+                // Disposing of our producer.
+                producer.close();
+            }
         }
     }
 }
