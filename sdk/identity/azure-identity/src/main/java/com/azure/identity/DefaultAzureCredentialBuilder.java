@@ -22,6 +22,9 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     private String managedIdentityClientId;
     private final ClientLogger logger = new ClientLogger(DefaultAzureCredentialBuilder.class);
 
+    /**
+     * Creates an instance of a DefaultAzureCredentialBuilder.
+     */
     public DefaultAzureCredentialBuilder() {
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
         tenantId = configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID);
