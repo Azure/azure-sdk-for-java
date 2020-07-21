@@ -12,6 +12,7 @@ import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.CheckNameAvailabilityRequest;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.ErrorContractInnerException;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
