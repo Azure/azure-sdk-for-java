@@ -15,13 +15,12 @@ import com.azure.resourcemanager.containerinstance.models.ResourceIdentityType;
 import com.azure.resourcemanager.containerinstance.models.Volume;
 import com.azure.resourcemanager.containerinstance.models.VolumeMount;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import org.junit.jupiter.api.Assertions;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.junit.jupiter.api.Assertions;
 
 public class TestContainerInstanceWithPrivateIpAddress extends TestTemplate<ContainerGroup, ContainerGroups> {
 
@@ -38,26 +37,27 @@ public class TestContainerInstanceWithPrivateIpAddress extends TestTemplate<Cont
         final List<String> dnsServerNames = new ArrayList<String>();
         dnsServerNames.add("dnsServer1");
 
-
         List<String> dnsServers = new ArrayList<String>();
         dnsServers.add("dnsServer1");
-        ContainerGroup containerGroup = containerGroups.define(cgName)
+        ContainerGroup containerGroup =
+            containerGroups
+                .define(cgName)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup(rgName)
                 .withLinux()
                 .withPublicImageRegistryOnly()
                 .withEmptyDirectoryVolume("emptydir1")
                 .defineContainerInstance("tomcat")
-                    .withImage("tomcat")
-                    .withExternalTcpPort(8080)
-                    .withCpuCoreCount(1)
-                    .withEnvironmentVariable("ENV1", "value1")
-                    .attach()
+                .withImage("tomcat")
+                .withExternalTcpPort(8080)
+                .withCpuCoreCount(1)
+                .withEnvironmentVariable("ENV1", "value1")
+                .attach()
                 .defineContainerInstance("nginx")
-                    .withImage("nginx")
-                    .withExternalTcpPort(80)
-                    .withEnvironmentVariableWithSecuredValue("ENV2", "securedValue1")
-                    .attach()
+                .withImage("nginx")
+                .withExternalTcpPort(80)
+                .withEnvironmentVariableWithSecuredValue("ENV2", "securedValue1")
+                .attach()
                 .withSystemAssignedManagedServiceIdentity()
                 .withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR)
                 .withRestartPolicy(ContainerGroupRestartPolicy.NEVER)
@@ -109,8 +109,14 @@ public class TestContainerInstanceWithPrivateIpAddress extends TestTemplate<Cont
         Assertions.assertTrue(containerGroup.isManagedServiceIdentityEnabled());
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, containerGroup.managedServiceIdentityType());
         Assertions.assertEquals(logAnalyticsWorkspaceId, containerGroup.logAnalytics().workspaceId());
-        Assertions.assertEquals("/subscriptions/" + networkProfileSubscriptionId + "/resourceGroups/" +
-                networkProfileResourceGroupName + "/providers/Microsoft.Network/networkProfiles/" + networkProfileName,
+        Assertions
+            .assertEquals(
+                "/subscriptions/"
+                    + networkProfileSubscriptionId
+                    + "/resourceGroups/"
+                    + networkProfileResourceGroupName
+                    + "/providers/Microsoft.Network/networkProfiles/"
+                    + networkProfileName,
                 containerGroup.networkProfileId());
         Assertions.assertEquals("dnsServer1", containerGroup.dnsConfig().nameServers().get(0));
         Assertions.assertEquals("dnsSearchDomains", containerGroup.dnsConfig().searchDomains());
@@ -118,8 +124,8 @@ public class TestContainerInstanceWithPrivateIpAddress extends TestTemplate<Cont
 
         ContainerGroup containerGroup2 = containerGroups.getByResourceGroup(rgName, cgName);
 
-        List<ContainerGroup> containerGroupList = containerGroups.listByResourceGroup(rgName)
-            .stream().collect(Collectors.toList());
+        List<ContainerGroup> containerGroupList =
+            containerGroups.listByResourceGroup(rgName).stream().collect(Collectors.toList());
         Assertions.assertTrue(containerGroupList.size() > 0);
 
         containerGroup.refresh();
@@ -133,10 +139,7 @@ public class TestContainerInstanceWithPrivateIpAddress extends TestTemplate<Cont
 
     @Override
     public ContainerGroup updateResource(ContainerGroup containerGroup) throws Exception {
-        containerGroup.update()
-                .withoutTag("tag1")
-                .withTag("tag2", "value2")
-                .apply();
+        containerGroup.update().withoutTag("tag1").withTag("tag2", "value2").apply();
         Assertions.assertFalse(containerGroup.tags().containsKey("tag"));
         Assertions.assertTrue(containerGroup.tags().containsKey("tag2"));
 
@@ -148,12 +151,20 @@ public class TestContainerInstanceWithPrivateIpAddress extends TestTemplate<Cont
 
     @Override
     public void print(ContainerGroup resource) {
-        StringBuilder info = new StringBuilder().append("Container Group: ").append(resource.id())
-                .append("Name: ").append(resource.name())
-                .append("\n\tResource group: ").append(resource.resourceGroupName())
-                .append("\n\tRegion: ").append(resource.region())
-                .append("\n\tTags: ").append(resource.tags())
-                .append("\n\tOS type: ").append(resource.osType());
+        StringBuilder info =
+            new StringBuilder()
+                .append("Container Group: ")
+                .append(resource.id())
+                .append("Name: ")
+                .append(resource.name())
+                .append("\n\tResource group: ")
+                .append(resource.resourceGroupName())
+                .append("\n\tRegion: ")
+                .append(resource.region())
+                .append("\n\tTags: ")
+                .append(resource.tags())
+                .append("\n\tOS type: ")
+                .append(resource.osType());
 
         if (resource.ipAddress() != null) {
             info.append("\n\tPublic IP address: ").append(resource.ipAddress());
@@ -178,15 +189,20 @@ public class TestContainerInstanceWithPrivateIpAddress extends TestTemplate<Cont
         }
         if (resource.volumes() != null) {
             info.append("\n\tVolume mapping: ");
-            for (Map.Entry<String, Volume> entry: resource.volumes().entrySet()) {
-                info.append("\n\t\tName: ").append(entry.getKey()).append(" -> ")
-                        .append(entry.getValue().azureFile() != null
-                        ? entry.getValue().azureFile().shareName() : "empty direcory volume");
+            for (Map.Entry<String, Volume> entry : resource.volumes().entrySet()) {
+                info
+                    .append("\n\t\tName: ")
+                    .append(entry.getKey())
+                    .append(" -> ")
+                    .append(
+                        entry.getValue().azureFile() != null
+                            ? entry.getValue().azureFile().shareName()
+                            : "empty direcory volume");
             }
         }
         if (resource.containers() != null) {
             info.append("\n\tContainer instances: ");
-            for (Map.Entry<String, Container> entry: resource.containers().entrySet()) {
+            for (Map.Entry<String, Container> entry : resource.containers().entrySet()) {
                 Container container = entry.getValue();
                 info.append("\n\t\tName: ").append(entry.getKey()).append(" -> ").append(container.image());
                 info.append("\n\t\t\tResources: ");

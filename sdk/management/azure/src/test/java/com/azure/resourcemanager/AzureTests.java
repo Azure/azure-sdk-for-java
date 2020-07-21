@@ -54,10 +54,6 @@ import com.azure.resourcemanager.resources.models.RegionType;
 import com.azure.resourcemanager.resources.models.Subscription;
 import com.azure.resourcemanager.storage.models.SkuName;
 import com.azure.resourcemanager.storage.models.StorageAccount;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -69,6 +65,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 public class AzureTests extends TestBase {
     private Azure azure;
@@ -76,8 +75,7 @@ public class AzureTests extends TestBase {
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
-        Azure.Authenticated azureAuthed =
-            Azure.authenticate(httpPipeline, profile).withSdkContext(sdkContext);
+        Azure.Authenticated azureAuthed = Azure.authenticate(httpPipeline, profile).withSdkContext(sdkContext);
         azure = azureAuthed.withDefaultSubscription();
         this.msiManager = MSIManager.authenticate(httpPipeline, profile, sdkContext);
     }
@@ -1099,8 +1097,8 @@ public class AzureTests extends TestBase {
 
     @Test
     public void testContainerInstanceWithPublicIpAddressWithSystemAssignedMsi() throws Exception {
-        new TestContainerInstanceWithPublicIpAddressWithSystemAssignedMSI().runTest(azure.containerGroups(),
-            azure.resourceGroups(), azure.subscriptionId());
+        new TestContainerInstanceWithPublicIpAddressWithSystemAssignedMSI()
+            .runTest(azure.containerGroups(), azure.resourceGroups(), azure.subscriptionId());
     }
 
     @Test
@@ -1110,23 +1108,29 @@ public class AzureTests extends TestBase {
         String identityName1 = generateRandomResourceName("msi-id", 15);
         String identityName2 = generateRandomResourceName("msi-id", 15);
 
-        final Identity createdIdentity = msiManager.identities()
+        final Identity createdIdentity =
+            msiManager
+                .identities()
                 .define(identityName1)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup(rgName)
                 .withAccessToCurrentResourceGroup(BuiltInRole.READER)
                 .create();
 
-        Creatable<Identity> creatableIdentity = msiManager.identities()
+        Creatable<Identity> creatableIdentity =
+            msiManager
+                .identities()
                 .define(identityName2)
                 .withRegion(Region.US_WEST)
                 .withExistingResourceGroup(rgName)
                 .withAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR);
 
-
         List<String> dnsServers = new ArrayList<String>();
         dnsServers.add("dnsServer1");
-        ContainerGroup containerGroup = azure.containerGroups().define(cgName)
+        ContainerGroup containerGroup =
+            azure
+                .containerGroups()
+                .define(cgName)
                 .withRegion(Region.US_EAST2)
                 .withExistingResourceGroup(rgName)
                 .withLinux()
@@ -1200,18 +1204,18 @@ public class AzureTests extends TestBase {
         Assertions.assertEquals(2, emsiIds.size());
         Assertions.assertEquals(cgName, containerGroup.dnsPrefix());
 
-        //TODO: add network and dns testing when questions have been answered
+        // TODO: add network and dns testing when questions have been answered
 
         ContainerGroup containerGroup2 = azure.containerGroups().getByResourceGroup(rgName, cgName);
 
-        List<ContainerGroup> containerGroupList = azure.containerGroups().listByResourceGroup(rgName)
-            .stream().collect(Collectors.toList());
+        List<ContainerGroup> containerGroupList =
+            azure.containerGroups().listByResourceGroup(rgName).stream().collect(Collectors.toList());
         Assertions.assertTrue(containerGroupList.size() > 0);
 
         containerGroup.refresh();
 
-        Set<Operation> containerGroupOperations = azure.containerGroups().listOperations()
-            .stream().collect(Collectors.toSet());
+        Set<Operation> containerGroupOperations =
+            azure.containerGroups().listOperations().stream().collect(Collectors.toSet());
         // Number of supported operation can change hence don't assert with a predefined number.
         Assertions.assertTrue(containerGroupOperations.size() > 0);
     }
@@ -1219,10 +1223,10 @@ public class AzureTests extends TestBase {
     @Disabled("Cannot run test due to unknown parameter")
     @Test
     public void testContainerInstanceWithPrivateIpAddress() throws Exception {
-        //LIVE ONLY TEST BECAUSE IT REQUIRES SUBSCRIPTION ID
+        // LIVE ONLY TEST BECAUSE IT REQUIRES SUBSCRIPTION ID
         if (!isPlaybackMode()) {
             new TestContainerInstanceWithPrivateIpAddress()
-                    .runTest(azure.containerGroups(), azure.resourceGroups(), azure.subscriptionId());
+                .runTest(azure.containerGroups(), azure.resourceGroups(), azure.subscriptionId());
         }
     }
 
