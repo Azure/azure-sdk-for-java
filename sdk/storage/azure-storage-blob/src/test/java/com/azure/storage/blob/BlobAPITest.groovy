@@ -1724,7 +1724,7 @@ class BlobAPITest extends APISpec {
         bc.setTags(t)
         def copyDestBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient()
         match = setupBlobMatchCondition(bc, match)
-        def mac = new BlobLeaseRequestConditions()
+        def mac = new BlobRequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
@@ -1753,7 +1753,7 @@ class BlobAPITest extends APISpec {
         setup:
         def copyDestBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient()
         noneMatch = setupBlobMatchCondition(bc, noneMatch)
-        def mac = new BlobLeaseRequestConditions()
+        def mac = new BlobRequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)

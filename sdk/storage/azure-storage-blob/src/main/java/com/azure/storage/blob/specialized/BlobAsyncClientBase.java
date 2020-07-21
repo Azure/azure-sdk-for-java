@@ -525,7 +525,7 @@ public class BlobAsyncClientBase {
 
     private Mono<BlobCopyInfo> onStart(String sourceUrl, Map<String, String> metadata, Map<String, String> tags,
         AccessTier tier, RehydratePriority priority, Boolean sealBlob,
-        BlobLeaseRequestConditions sourceModifiedRequestConditions,
+        BlobRequestConditions sourceModifiedRequestConditions,
         BlobRequestConditions destinationRequestConditions) {
         URL url;
         try {

@@ -117,7 +117,7 @@ public class BlobBeginCopyOptions {
     }
 
     /**
-     * @param sourceRequestConditions {@link BlobLeaseRequestConditions} for the source.
+     * @param sourceRequestConditions {@link BlobRequestConditions} for the source.
      * @return The updated options.
      */
     public BlobBeginCopyOptions setSourceRequestConditions(BlobRequestConditions sourceRequestConditions) {
