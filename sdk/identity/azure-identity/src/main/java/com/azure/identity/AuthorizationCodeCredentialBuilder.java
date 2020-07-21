@@ -48,7 +48,6 @@ public class AuthorizationCodeCredentialBuilder extends AadCredentialBuilderBase
         return this;
     }
 
-
     /**
      * Allows to use an unprotected file specified by <code>cacheFileLocation()</code> instead of
      * Gnome keyring on Linux. This is restricted by default.
@@ -59,7 +58,7 @@ public class AuthorizationCodeCredentialBuilder extends AadCredentialBuilderBase
         this.identityClientOptions.allowUnencryptedCache();
         return this;
     }
-
+    
     /**
      * Enables the shared token cache which is disabled by default. If enabled, the credential will store tokens
      * in a cache persisted to the machine, protected to the current user, which can be shared by other credentials
