@@ -15,8 +15,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Adapted from <a href="https://github.com/spring-projects/spring-data-mongodb/blob/master/spring-data-mongodb/
- * src/main/java/org/springframework/data/mongodb/config/EnableMongoAuditing.java">EnableMongoAuditing.java</a>
+ * Adapted from spring-data-mongodb
+ * @see <a href="https://github.com/spring-projects/spring-data-mongodb/blob/master/spring-data-mongodb/src/main/java/org/springframework/data/mongodb/config/EnableMongoAuditing.java">EnableMongoAuditing.java</a>
  */
 @Inherited
 @Documented
@@ -28,29 +28,29 @@ public @interface EnableCosmosAuditing {
     /**
      * Configures the {@link AuditorAware} bean to be used to lookup the current principal.
      *
-     * @return
+     * @return default empty string
      */
     String auditorAwareRef() default "";
 
     /**
      * Configures whether the creation and modification dates are set. Defaults to {@literal true}.
      *
-     * @return
+     * @return default true
      */
     boolean setDates() default true;
 
     /**
      * Configures whether the entity shall be marked as modified on creation. Defaults to {@literal true}.
      *
-     * @return
+     * @return default true
      */
     boolean modifyOnCreate() default true;
 
     /**
-     * Configures a {@link DateTimeProvider} bean name that allows customizing the {@link org.joda.time.DateTime} to be
+     * Configures a {@link DateTimeProvider} bean name that allows customizing the DateTime to be
      * used for setting creation and modification dates.
      *
-     * @return
+     * @return default empty string
      */
     String dateTimeProviderRef() default "";
 }

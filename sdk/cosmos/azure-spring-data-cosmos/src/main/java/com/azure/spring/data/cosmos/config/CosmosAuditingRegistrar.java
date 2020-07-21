@@ -83,7 +83,7 @@ class CosmosAuditingRegistrar extends AuditingBeanDefinitionRegistrarSupport {
 
         private final MappingCosmosConverter converter;
 
-        public DocumentDbMappingContextLookup(MappingCosmosConverter converter) {
+        DocumentDbMappingContextLookup(MappingCosmosConverter converter) {
             this.converter = converter;
         }
 

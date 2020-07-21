@@ -88,6 +88,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
      * @param cosmosFactory must not be {@literal null}
      * @param cosmosConfig must not be {@literal null}
      * @param mappingCosmosConverter must not be {@literal null}
+     * @param cosmosAuditingHandler can be {@literal null}
      */
     public CosmosTemplate(CosmosFactory cosmosFactory,
                           CosmosConfig cosmosConfig,

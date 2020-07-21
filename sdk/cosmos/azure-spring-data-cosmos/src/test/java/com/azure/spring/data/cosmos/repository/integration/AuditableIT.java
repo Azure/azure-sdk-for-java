@@ -16,6 +16,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -38,6 +39,7 @@ public class AuditableIT {
     @Test
     public void testInsertShouldSetAuditableEntries() {
         final AuditableEntity entity = new AuditableEntity();
+        entity.setId(UUID.randomUUID().toString());
         final OffsetDateTime now = OffsetDateTime.now(ZoneId.of("UTC"));
 
         stubDateTimeProvider.setNow(now);
@@ -53,6 +55,7 @@ public class AuditableIT {
     @Test
     public void testUpdateShouldNotOverwriteCreatedEntries() {
         final AuditableEntity entity = new AuditableEntity();
+        entity.setId(UUID.randomUUID().toString());
         final OffsetDateTime createdOn = OffsetDateTime.now(ZoneId.of("UTC"));
 
         stubDateTimeProvider.setNow(createdOn);
