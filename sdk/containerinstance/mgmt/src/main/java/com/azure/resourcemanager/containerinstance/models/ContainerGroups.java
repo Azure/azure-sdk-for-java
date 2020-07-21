@@ -6,7 +6,6 @@ package com.azure.resourcemanager.containerinstance.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.implementation.annotation.Beta;
 import com.azure.resourcemanager.containerinstance.ContainerInstanceManager;
 import com.azure.resourcemanager.containerinstance.fluent.ContainerGroupsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;

@@ -5,7 +5,6 @@ package com.azure.resourcemanager.containerregistry;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.implementation.annotation.Beta;
 import com.azure.resourcemanager.containerregistry.implementation.RegistriesImpl;
 import com.azure.resourcemanager.containerregistry.implementation.RegistryTaskRunsImpl;
 import com.azure.resourcemanager.containerregistry.implementation.RegistryTasksImpl;

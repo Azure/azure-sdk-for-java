@@ -4,7 +4,6 @@
 package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.implementation.annotation.Beta;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.containerinstance.ContainerInstanceManager;
 import com.azure.resourcemanager.containerinstance.fluent.inner.ContainerGroupInner;

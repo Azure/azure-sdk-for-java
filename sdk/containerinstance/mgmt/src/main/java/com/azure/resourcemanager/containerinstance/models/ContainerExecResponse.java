@@ -4,7 +4,6 @@
 package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.implementation.annotation.Beta;
 import com.azure.resourcemanager.containerinstance.fluent.inner.ContainerExecResponseInner;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 
