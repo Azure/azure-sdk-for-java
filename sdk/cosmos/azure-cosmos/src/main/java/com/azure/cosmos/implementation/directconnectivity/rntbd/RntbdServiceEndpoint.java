@@ -237,7 +237,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             if (released.isDone()) {
                 ensureSuccessWhenReleasedToPool(channel, released);
             } else {
-                this.channelPool.release(channel).addListener(ignored -> ensureSuccessWhenReleasedToPool(channel, released));
+                released.addListener(ignored -> ensureSuccessWhenReleasedToPool(channel, released));
             }
         }
     }
@@ -263,7 +263,8 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     }
 
     private RntbdRequestRecord writeWhenConnected(
-        final RntbdRequestRecord requestRecord, final Future<? super Channel> connected) {
+        final RntbdRequestRecord requestRecord,
+        final Future<? super Channel> connected) {
 
         if (connected.isSuccess()) {
             final Channel channel = (Channel) connected.getNow();
