@@ -22,6 +22,7 @@ import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmen
 import com.azure.storage.blob.implementation.models.ContainersListBlobHierarchySegmentResponse;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
+import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.BlobContainerProperties;
@@ -47,6 +48,7 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -136,9 +138,7 @@ public final class BlobContainerAsyncClient {
 
     /**
      * Creates a new BlobAsyncClient object by concatenating blobName to the end of ContainerAsyncClient's URL. The new
-     * BlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient. To change the pipeline, create
-     * the BlobAsyncClient and then call its WithPipeline method passing in the desired pipeline object. Or, call this
-     * package's getBlobAsyncClient instead of calling this object's getBlobAsyncClient method.
+     * BlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -153,9 +153,7 @@ public final class BlobContainerAsyncClient {
 
     /**
      * Creates a new BlobAsyncClient object by concatenating blobName to the end of ContainerAsyncClient's URL. The new
-     * BlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient. To change the pipeline, create
-     * the BlobAsyncClient and then call its WithPipeline method passing in the desired pipeline object. Or, call this
-     * package's getBlobAsyncClient instead of calling this object's getBlobAsyncClient method.
+     * BlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -169,6 +167,20 @@ public final class BlobContainerAsyncClient {
         return new BlobAsyncClient(getHttpPipeline(), StorageImplUtils.appendToUrlPath(getBlobContainerUrl(),
             Utility.urlEncode(Utility.urlDecode(blobName))).toString(), getServiceVersion(), getAccountName(),
             getBlobContainerName(), blobName, snapshot, getCustomerProvidedKey(), encryptionScope);
+    }
+
+    /**
+     * Creates a new BlobAsyncClient object by concatenating blobName to the end of ContainerAsyncClient's URL. The new
+     * BlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient.
+     *
+     * @param blobName A {@code String} representing the name of the blob.
+     * @param versionId the version identifier for the blob, pass {@code null} to interact with the latest blob version.
+     * @return A new {@link BlobAsyncClient} object which references the blob with the specified name in this container.
+     */
+    public BlobAsyncClient getBlobVersionAsyncClient(String blobName, String versionId) {
+        return new BlobAsyncClient(getHttpPipeline(), StorageImplUtils.appendToUrlPath(getBlobContainerUrl(),
+            Utility.urlEncode(Utility.urlDecode(blobName))).toString(), getServiceVersion(), getAccountName(),
+            getBlobContainerName(), blobName, null, getCustomerProvidedKey(), encryptionScope, versionId);
     }
 
     /**
@@ -775,8 +787,10 @@ public final class BlobContainerAsyncClient {
             marker -> listBlobsFlatSegment(marker, options, timeout)
                 .map(response -> {
                     List<BlobItem> value = response.getValue().getSegment() == null
-                        ? new ArrayList<>(0)
-                        : response.getValue().getSegment().getBlobItems();
+                        ? Collections.emptyList()
+                        : response.getValue().getSegment().getBlobItems().stream()
+                        .map(ModelHelper::populateBlobItem)
+                        .collect(Collectors.toList());
 
                     return new PagedResponseBase<>(
                         response.getRequest(),
@@ -914,9 +928,9 @@ public final class BlobContainerAsyncClient {
             marker -> listBlobsHierarchySegment(marker, delimiter, options, timeout)
                 .map(response -> {
                     List<BlobItem> value = response.getValue().getSegment() == null
-                        ? new ArrayList<>(0)
+                        ? Collections.emptyList()
                         : Stream.concat(
-                        response.getValue().getSegment().getBlobItems().stream(),
+                        response.getValue().getSegment().getBlobItems().stream().map(ModelHelper::populateBlobItem),
                         response.getValue().getSegment().getBlobPrefixes().stream()
                             .map(blobPrefix -> new BlobItem().setName(blobPrefix.getName()).setIsPrefix(true))
                     ).collect(Collectors.toList());

@@ -22,13 +22,13 @@ public final class MatchCondition {
     private List<MatchVariable> matchVariables;
 
     /*
-     * Describes operator to be matched.
+     * The operator to be matched.
      */
     @JsonProperty(value = "operator", required = true)
     private WebApplicationFirewallOperator operator;
 
     /*
-     * Describes if this is negate condition or not.
+     * Whether this is negate condition or not.
      */
     @JsonProperty(value = "negationConditon")
     private Boolean negationConditon;
@@ -66,7 +66,7 @@ public final class MatchCondition {
     }
 
     /**
-     * Get the operator property: Describes operator to be matched.
+     * Get the operator property: The operator to be matched.
      *
      * @return the operator value.
      */
@@ -75,7 +75,7 @@ public final class MatchCondition {
     }
 
     /**
-     * Set the operator property: Describes operator to be matched.
+     * Set the operator property: The operator to be matched.
      *
      * @param operator the operator value to set.
      * @return the MatchCondition object itself.
@@ -86,7 +86,7 @@ public final class MatchCondition {
     }
 
     /**
-     * Get the negationConditon property: Describes if this is negate condition or not.
+     * Get the negationConditon property: Whether this is negate condition or not.
      *
      * @return the negationConditon value.
      */
@@ -95,7 +95,7 @@ public final class MatchCondition {
     }
 
     /**
-     * Set the negationConditon property: Describes if this is negate condition or not.
+     * Set the negationConditon property: Whether this is negate condition or not.
      *
      * @param negationConditon the negationConditon value to set.
      * @return the MatchCondition object itself.

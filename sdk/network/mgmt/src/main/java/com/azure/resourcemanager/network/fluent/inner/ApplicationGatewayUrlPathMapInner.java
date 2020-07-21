@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -27,13 +28,13 @@ public class ApplicationGatewayUrlPathMapInner extends SubResource {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag")
+    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Type of the resource.
      */
-    @JsonProperty(value = "type")
+    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
@@ -67,11 +68,10 @@ public class ApplicationGatewayUrlPathMapInner extends SubResource {
     private List<ApplicationGatewayPathRuleInner> pathRules;
 
     /*
-     * Provisioning state of the backend http settings resource. Possible
-     * values are: 'Updating', 'Deleting', and 'Failed'.
+     * The provisioning state of the URL path map resource.
      */
-    @JsonProperty(value = "properties.provisioningState")
-    private String provisioningState;
+    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private ProvisioningState provisioningState;
 
     /**
      * Get the name property: Name of the URL path map that is unique within an Application Gateway.
@@ -103,34 +103,12 @@ public class ApplicationGatewayUrlPathMapInner extends SubResource {
     }
 
     /**
-     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
-     * @param etag the etag value to set.
-     * @return the ApplicationGatewayUrlPathMapInner object itself.
-     */
-    public ApplicationGatewayUrlPathMapInner withEtag(String etag) {
-        this.etag = etag;
-        return this;
-    }
-
-    /**
      * Get the type property: Type of the resource.
      *
      * @return the type value.
      */
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Set the type property: Type of the resource.
-     *
-     * @param type the type value to set.
-     * @return the ApplicationGatewayUrlPathMapInner object itself.
-     */
-    public ApplicationGatewayUrlPathMapInner withType(String type) {
-        this.type = type;
-        return this;
     }
 
     /**
@@ -235,25 +213,12 @@ public class ApplicationGatewayUrlPathMapInner extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: Provisioning state of the backend http settings resource. Possible values
-     * are: 'Updating', 'Deleting', and 'Failed'.
+     * Get the provisioningState property: The provisioning state of the URL path map resource.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Set the provisioningState property: Provisioning state of the backend http settings resource. Possible values
-     * are: 'Updating', 'Deleting', and 'Failed'.
-     *
-     * @param provisioningState the provisioningState value to set.
-     * @return the ApplicationGatewayUrlPathMapInner object itself.
-     */
-    public ApplicationGatewayUrlPathMapInner withProvisioningState(String provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
     }
 
     /**

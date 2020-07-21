@@ -8,7 +8,6 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.Azure;
-import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.KnownWindowsVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
@@ -111,7 +110,8 @@ public final class ManageVirtualMachineExtension {
                     .withNewPrimaryNetwork("10.0.0.0/28")
                     .withPrimaryPrivateIPAddressDynamic()
                     .withNewPrimaryPublicIPAddress(pipDnsLabelLinuxVM)
-                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+                    // mysql-server-5.6 not available for Ubuntu 16 and 18
+                    .withLatestLinuxImage("Canonical", "UbuntuServer", "14.04.4-LTS")
                     .withRootUsername(firstLinuxUserName)
                     .withRootPassword(firstLinuxUserPassword)
                     .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)

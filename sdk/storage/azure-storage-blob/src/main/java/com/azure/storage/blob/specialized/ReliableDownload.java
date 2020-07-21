@@ -8,6 +8,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.HttpGetterInfo;
 import com.azure.storage.blob.implementation.models.BlobsDownloadResponse;
+import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -53,7 +54,8 @@ final class ReliableDownload {
         from the response for better book keeping towards the end.
          */
         if (this.info.getCount() == null) {
-            long blobLength = BlobAsyncClientBase.getBlobLength(rawResponse.getDeserializedHeaders());
+            long blobLength = BlobAsyncClientBase.getBlobLength(
+                ModelHelper.populateBlobDownloadHeaders(rawResponse.getDeserializedHeaders()));
             info.setCount(blobLength - info.getOffset());
         }
     }
@@ -71,7 +73,7 @@ final class ReliableDownload {
     }
 
     BlobDownloadHeaders getDeserializedHeaders() {
-        return rawResponse.getDeserializedHeaders();
+        return ModelHelper.populateBlobDownloadHeaders(rawResponse.getDeserializedHeaders());
     }
 
     Flux<ByteBuffer> getValue() {

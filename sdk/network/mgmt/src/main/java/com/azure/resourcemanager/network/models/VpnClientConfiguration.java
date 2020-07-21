@@ -16,7 +16,7 @@ public final class VpnClientConfiguration {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnClientConfiguration.class);
 
     /*
-     * The reference of the address space resource which represents Address
+     * The reference to the address space resource which represents Address
      * space for P2S VpnClient.
      */
     @JsonProperty(value = "vpnClientAddressPool")
@@ -82,7 +82,7 @@ public final class VpnClientConfiguration {
     private String aadIssuer;
 
     /**
-     * Get the vpnClientAddressPool property: The reference of the address space resource which represents Address space
+     * Get the vpnClientAddressPool property: The reference to the address space resource which represents Address space
      * for P2S VpnClient.
      *
      * @return the vpnClientAddressPool value.
@@ -92,7 +92,7 @@ public final class VpnClientConfiguration {
     }
 
     /**
-     * Set the vpnClientAddressPool property: The reference of the address space resource which represents Address space
+     * Set the vpnClientAddressPool property: The reference to the address space resource which represents Address space
      * for P2S VpnClient.
      *
      * @param vpnClientAddressPool the vpnClientAddressPool value to set.

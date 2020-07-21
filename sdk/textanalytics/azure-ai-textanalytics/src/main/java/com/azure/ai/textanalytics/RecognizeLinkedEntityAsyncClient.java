@@ -135,12 +135,12 @@ class RecognizeLinkedEntityAsyncClient {
      * Helper method to convert the service response of {@link EntityLinkingResult} to
      * {@link Response} which contains {@link RecognizeLinkedEntitiesResultCollection}.
      *
-     * @param response the {@link SimpleResponse} of {@link EntityLinkingResult} returned by the service.
+     * @param response the {@link Response} of {@link EntityLinkingResult} returned by the service.
      *
      * @return A {@link Response} that contains {@link RecognizeLinkedEntitiesResultCollection}.
      */
     private Response<RecognizeLinkedEntitiesResultCollection> toRecognizeLinkedEntitiesResultCollectionResponse(
-        final SimpleResponse<EntityLinkingResult> response) {
+        final Response<EntityLinkingResult> response) {
         final EntityLinkingResult entityLinkingResult = response.getValue();
         // List of documents results
         final List<RecognizeLinkedEntitiesResult> linkedEntitiesResults = new ArrayList<>();
@@ -170,7 +170,8 @@ class RecognizeLinkedEntityAsyncClient {
             if (documentError.getId().isEmpty()) {
                 throw logger.logExceptionAsError(
                     new HttpResponseException(documentError.getError().getInnererror().getMessage(),
-                    getEmptyErrorIdHttpResponse(response), documentError.getError().getInnererror().getCode()));
+                    getEmptyErrorIdHttpResponse(new SimpleResponse<>(response, response.getValue())),
+                        documentError.getError().getInnererror().getCode()));
             }
 
             linkedEntitiesResults.add(
@@ -213,9 +214,9 @@ class RecognizeLinkedEntityAsyncClient {
             Context context) {
         return service.entitiesLinkingWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-            context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE),
             options == null ? null : options.getModelVersion(),
-            options == null ? null : options.isIncludeStatistics())
+            options == null ? null : options.isIncludeStatistics(),
+            context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
             .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents.toString()))
             .doOnSuccess(response -> logger.info("Recognized linked entities for a batch of documents - {}",
                 response.getValue()))

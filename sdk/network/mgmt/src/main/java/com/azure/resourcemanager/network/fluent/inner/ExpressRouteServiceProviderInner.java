@@ -9,6 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRouteServiceProviderBandwidthsOffered;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -20,22 +21,22 @@ public class ExpressRouteServiceProviderInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteServiceProviderInner.class);
 
     /*
-     * Get a list of peering locations.
+     * A list of peering locations.
      */
     @JsonProperty(value = "properties.peeringLocations")
     private List<String> peeringLocations;
 
     /*
-     * Gets bandwidths offered.
+     * A list of bandwidths offered.
      */
     @JsonProperty(value = "properties.bandwidthsOffered")
     private List<ExpressRouteServiceProviderBandwidthsOffered> bandwidthsOffered;
 
     /*
-     * Gets the provisioning state of the resource.
+     * The provisioning state of the express route service provider resource.
      */
-    @JsonProperty(value = "properties.provisioningState")
-    private String provisioningState;
+    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private ProvisioningState provisioningState;
 
     /*
      * Resource ID.
@@ -44,7 +45,7 @@ public class ExpressRouteServiceProviderInner extends Resource {
     private String id;
 
     /**
-     * Get the peeringLocations property: Get a list of peering locations.
+     * Get the peeringLocations property: A list of peering locations.
      *
      * @return the peeringLocations value.
      */
@@ -53,7 +54,7 @@ public class ExpressRouteServiceProviderInner extends Resource {
     }
 
     /**
-     * Set the peeringLocations property: Get a list of peering locations.
+     * Set the peeringLocations property: A list of peering locations.
      *
      * @param peeringLocations the peeringLocations value to set.
      * @return the ExpressRouteServiceProviderInner object itself.
@@ -64,7 +65,7 @@ public class ExpressRouteServiceProviderInner extends Resource {
     }
 
     /**
-     * Get the bandwidthsOffered property: Gets bandwidths offered.
+     * Get the bandwidthsOffered property: A list of bandwidths offered.
      *
      * @return the bandwidthsOffered value.
      */
@@ -73,7 +74,7 @@ public class ExpressRouteServiceProviderInner extends Resource {
     }
 
     /**
-     * Set the bandwidthsOffered property: Gets bandwidths offered.
+     * Set the bandwidthsOffered property: A list of bandwidths offered.
      *
      * @param bandwidthsOffered the bandwidthsOffered value to set.
      * @return the ExpressRouteServiceProviderInner object itself.
@@ -85,23 +86,12 @@ public class ExpressRouteServiceProviderInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: Gets the provisioning state of the resource.
+     * Get the provisioningState property: The provisioning state of the express route service provider resource.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Set the provisioningState property: Gets the provisioning state of the resource.
-     *
-     * @param provisioningState the provisioningState value to set.
-     * @return the ExpressRouteServiceProviderInner object itself.
-     */
-    public ExpressRouteServiceProviderInner withProvisioningState(String provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
     }
 
     /**

@@ -10,6 +10,8 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRouteLinkAdminState;
 import com.azure.resourcemanager.network.models.ExpressRouteLinkConnectorType;
+import com.azure.resourcemanager.network.models.ExpressRouteLinkMacSecConfig;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -69,11 +71,16 @@ public class ExpressRouteLinkInner extends SubResource {
     private ExpressRouteLinkAdminState adminState;
 
     /*
-     * The provisioning state of the ExpressRouteLink resource. Possible values
-     * are: 'Succeeded', 'Updating', 'Deleting', and 'Failed'.
+     * The provisioning state of the express route link resource.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    private ProvisioningState provisioningState;
+
+    /*
+     * MacSec configuration.
+     */
+    @JsonProperty(value = "properties.macSecConfig")
+    private ExpressRouteLinkMacSecConfig macSecConfig;
 
     /**
      * Get the name property: Name of child port resource that is unique among child port resources of the parent.
@@ -170,13 +177,32 @@ public class ExpressRouteLinkInner extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the ExpressRouteLink resource. Possible values are:
-     * 'Succeeded', 'Updating', 'Deleting', and 'Failed'.
+     * Get the provisioningState property: The provisioning state of the express route link resource.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the macSecConfig property: MacSec configuration.
+     *
+     * @return the macSecConfig value.
+     */
+    public ExpressRouteLinkMacSecConfig macSecConfig() {
+        return this.macSecConfig;
+    }
+
+    /**
+     * Set the macSecConfig property: MacSec configuration.
+     *
+     * @param macSecConfig the macSecConfig value to set.
+     * @return the ExpressRouteLinkInner object itself.
+     */
+    public ExpressRouteLinkInner withMacSecConfig(ExpressRouteLinkMacSecConfig macSecConfig) {
+        this.macSecConfig = macSecConfig;
+        return this;
     }
 
     /**
@@ -185,5 +211,8 @@ public class ExpressRouteLinkInner extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (macSecConfig() != null) {
+            macSecConfig().validate();
+        }
     }
 }

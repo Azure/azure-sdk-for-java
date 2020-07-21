@@ -4,7 +4,9 @@
 package com.azure.resourcemanager.resources.implementation;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
@@ -41,6 +43,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -322,7 +325,7 @@ public final class DeploymentImpl extends
                 DeploymentExtendedInner.class,
                 inner -> new DeploymentImpl(inner, inner.name(), resourceManager));
 
-            setInner(accepted.getAcceptedResult().getValue().inner());
+            setInner(accepted.getActivationResponse().getValue().inner());
             return accepted;
         }
     }
@@ -338,7 +341,18 @@ public final class DeploymentImpl extends
                     }
                 })
                 .flatMap(indexable -> manager().inner().getDeployments()
-                    .beginCreateOrUpdateWithoutPollingAsync(resourceGroupName(), name(), createRequestFromInner()))
+                    .createOrUpdateWithResponseAsync(resourceGroupName(), name(), createRequestFromInner()))
+                .flatMap(activationResponse -> FluxUtil.collectBytesInByteBufferStream(activationResponse.getValue()))
+                .map(response -> {
+                    try {
+                        return (DeploymentExtendedInner) this.manager().inner().getSerializerAdapter()
+                            .deserialize(new String(response, StandardCharsets.UTF_8),
+                                DeploymentExtendedInner.class, SerializerEncoding.JSON);
+                    } catch (IOException ioe) {
+                        throw logger.logExceptionAsError(
+                            new IllegalStateException("Failed to deserialize activation response body", ioe));
+                    }
+                })
                 .map(innerToFluentMap(this));
     }
 

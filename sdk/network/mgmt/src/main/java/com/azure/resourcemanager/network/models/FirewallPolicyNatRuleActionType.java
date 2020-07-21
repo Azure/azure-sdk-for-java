@@ -13,9 +13,6 @@ public final class FirewallPolicyNatRuleActionType extends ExpandableStringEnum<
     /** Static value DNAT for FirewallPolicyNatRuleActionType. */
     public static final FirewallPolicyNatRuleActionType DNAT = fromString("DNAT");
 
-    /** Static value SNAT for FirewallPolicyNatRuleActionType. */
-    public static final FirewallPolicyNatRuleActionType SNAT = fromString("SNAT");
-
     /**
      * Creates or finds a FirewallPolicyNatRuleActionType from its string representation.
      *

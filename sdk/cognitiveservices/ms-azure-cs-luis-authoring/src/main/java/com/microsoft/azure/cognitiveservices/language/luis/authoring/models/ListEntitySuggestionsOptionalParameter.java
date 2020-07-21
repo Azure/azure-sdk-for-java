@@ -20,6 +20,11 @@ public class ListEntitySuggestionsOptionalParameter {
     private Integer take;
 
     /**
+     * Toggles nested/flat format.
+     */
+    private Boolean enableNestedChildren;
+
+    /**
      * Gets or sets the preferred language for the response.
      */
     private String thisclientacceptLanguage;
@@ -41,6 +46,26 @@ public class ListEntitySuggestionsOptionalParameter {
      */
     public ListEntitySuggestionsOptionalParameter withTake(Integer take) {
         this.take = take;
+        return this;
+    }
+
+    /**
+     * Get the enableNestedChildren value.
+     *
+     * @return the enableNestedChildren value
+     */
+    public Boolean enableNestedChildren() {
+        return this.enableNestedChildren;
+    }
+
+    /**
+     * Set the enableNestedChildren value.
+     *
+     * @param enableNestedChildren the enableNestedChildren value to set
+     * @return the ListEntitySuggestionsOptionalParameter object itself.
+     */
+    public ListEntitySuggestionsOptionalParameter withEnableNestedChildren(Boolean enableNestedChildren) {
+        this.enableNestedChildren = enableNestedChildren;
         return this;
     }
 

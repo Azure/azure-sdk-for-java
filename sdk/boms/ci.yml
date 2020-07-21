@@ -33,3 +33,6 @@ extends:
       - name: azure-spring-boot-bom
         groupID: com.microsoft.azure
         safeName: azurespringbootbom
+      - name: azure-sdk-template-bom
+        groupID: com.azure
+        safeName: azuresdktemplatebom

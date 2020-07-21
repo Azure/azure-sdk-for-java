@@ -11,6 +11,7 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.IpTag;
 import com.azure.resourcemanager.network.models.IpVersion;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.PublicIpPrefixSku;
 import com.azure.resourcemanager.network.models.ReferencedPublicIpAddress;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -32,7 +33,7 @@ public class PublicIpPrefixInner extends Resource {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag")
+    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
@@ -63,13 +64,13 @@ public class PublicIpPrefixInner extends Resource {
     /*
      * The allocated Prefix.
      */
-    @JsonProperty(value = "properties.ipPrefix")
+    @JsonProperty(value = "properties.ipPrefix", access = JsonProperty.Access.WRITE_ONLY)
     private String ipPrefix;
 
     /*
      * The list of all referenced PublicIPAddresses.
      */
-    @JsonProperty(value = "properties.publicIPAddresses")
+    @JsonProperty(value = "properties.publicIPAddresses", access = JsonProperty.Access.WRITE_ONLY)
     private List<ReferencedPublicIpAddress> publicIpAddresses;
 
     /*
@@ -82,15 +83,14 @@ public class PublicIpPrefixInner extends Resource {
     /*
      * The resource GUID property of the public IP prefix resource.
      */
-    @JsonProperty(value = "properties.resourceGuid")
+    @JsonProperty(value = "properties.resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGuid;
 
     /*
-     * The provisioning state of the Public IP prefix resource. Possible values
-     * are: 'Updating', 'Deleting', and 'Failed'.
+     * The provisioning state of the public IP prefix resource.
      */
-    @JsonProperty(value = "properties.provisioningState")
-    private String provisioningState;
+    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private ProvisioningState provisioningState;
 
     /*
      * Resource ID.
@@ -125,17 +125,6 @@ public class PublicIpPrefixInner extends Resource {
      */
     public String etag() {
         return this.etag;
-    }
-
-    /**
-     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
-     * @param etag the etag value to set.
-     * @return the PublicIpPrefixInner object itself.
-     */
-    public PublicIpPrefixInner withEtag(String etag) {
-        this.etag = etag;
-        return this;
     }
 
     /**
@@ -230,34 +219,12 @@ public class PublicIpPrefixInner extends Resource {
     }
 
     /**
-     * Set the ipPrefix property: The allocated Prefix.
-     *
-     * @param ipPrefix the ipPrefix value to set.
-     * @return the PublicIpPrefixInner object itself.
-     */
-    public PublicIpPrefixInner withIpPrefix(String ipPrefix) {
-        this.ipPrefix = ipPrefix;
-        return this;
-    }
-
-    /**
      * Get the publicIpAddresses property: The list of all referenced PublicIPAddresses.
      *
      * @return the publicIpAddresses value.
      */
     public List<ReferencedPublicIpAddress> publicIpAddresses() {
         return this.publicIpAddresses;
-    }
-
-    /**
-     * Set the publicIpAddresses property: The list of all referenced PublicIPAddresses.
-     *
-     * @param publicIpAddresses the publicIpAddresses value to set.
-     * @return the PublicIpPrefixInner object itself.
-     */
-    public PublicIpPrefixInner withPublicIpAddresses(List<ReferencedPublicIpAddress> publicIpAddresses) {
-        this.publicIpAddresses = publicIpAddresses;
-        return this;
     }
 
     /**
@@ -280,36 +247,12 @@ public class PublicIpPrefixInner extends Resource {
     }
 
     /**
-     * Set the resourceGuid property: The resource GUID property of the public IP prefix resource.
-     *
-     * @param resourceGuid the resourceGuid value to set.
-     * @return the PublicIpPrefixInner object itself.
-     */
-    public PublicIpPrefixInner withResourceGuid(String resourceGuid) {
-        this.resourceGuid = resourceGuid;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning state of the Public IP prefix resource. Possible values are:
-     * 'Updating', 'Deleting', and 'Failed'.
+     * Get the provisioningState property: The provisioning state of the public IP prefix resource.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Set the provisioningState property: The provisioning state of the Public IP prefix resource. Possible values are:
-     * 'Updating', 'Deleting', and 'Failed'.
-     *
-     * @param provisioningState the provisioningState value to set.
-     * @return the PublicIpPrefixInner object itself.
-     */
-    public PublicIpPrefixInner withProvisioningState(String provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
     }
 
     /**

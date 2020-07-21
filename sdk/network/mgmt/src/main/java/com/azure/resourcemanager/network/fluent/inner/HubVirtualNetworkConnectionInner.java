@@ -26,8 +26,7 @@ public class HubVirtualNetworkConnectionInner extends SubResource {
     private String name;
 
     /*
-     * Gets a unique read-only string that changes whenever the resource is
-     * updated.
+     * A unique read-only string that changes whenever the resource is updated.
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
@@ -57,7 +56,7 @@ public class HubVirtualNetworkConnectionInner extends SubResource {
     private Boolean enableInternetSecurity;
 
     /*
-     * The provisioning state of the resource.
+     * The provisioning state of the hub virtual network connection resource.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
@@ -85,7 +84,7 @@ public class HubVirtualNetworkConnectionInner extends SubResource {
     }
 
     /**
-     * Get the etag property: Gets a unique read-only string that changes whenever the resource is updated.
+     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value.
      */
@@ -175,7 +174,7 @@ public class HubVirtualNetworkConnectionInner extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the resource.
+     * Get the provisioningState property: The provisioning state of the hub virtual network connection resource.
      *
      * @return the provisioningState value.
      */

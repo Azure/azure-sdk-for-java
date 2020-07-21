@@ -45,8 +45,6 @@ import java.util.Objects;
  */
 @ServiceClientBuilder(serviceClients = {ServiceBusManagementClient.class, ServiceBusManagementAsyncClient.class})
 public class ServiceBusManagementClientBuilder {
-    // We only allow one service version because the ATOM API was brought forward for legacy reasons.
-    private static final String API_VERSION = "2017-04";
     private final ClientLogger logger = new ClientLogger(ServiceBusManagementClientBuilder.class);
     private final ServiceBusManagementSerializer serializer = new ServiceBusManagementSerializer();
     private final List<HttpPipelinePolicy> userPolicies = new ArrayList<>();
@@ -62,6 +60,7 @@ public class ServiceBusManagementClientBuilder {
     private HttpPipeline pipeline;
     private HttpPipelinePolicy retryPolicy;
     private TokenCredential tokenCredential;
+    private ServiceBusServiceVersion serviceVersion;
 
     /**
      * Constructs a builder with the default parameters.
@@ -87,12 +86,15 @@ public class ServiceBusManagementClientBuilder {
             throw logger.logExceptionAsError(new NullPointerException("'endpoint' cannot be null."));
         }
 
+        final ServiceBusServiceVersion apiVersion = serviceVersion == null
+            ? ServiceBusServiceVersion.getLatest()
+            : serviceVersion;
         final HttpPipeline httpPipeline = createPipeline();
         final ServiceBusManagementClientImpl client = new ServiceBusManagementClientImplBuilder()
             .pipeline(httpPipeline)
             .serializer(serializer)
             .endpoint(endpoint)
-            .apiVersion(API_VERSION)
+            .apiVersion(apiVersion.getVersion())
             .buildClient();
 
         return new ServiceBusManagementAsyncClient(client, serializer);
@@ -281,6 +283,18 @@ public class ServiceBusManagementClientBuilder {
      */
     public ServiceBusManagementClientBuilder retryPolicy(HttpPipelinePolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
+        return this;
+    }
+
+    /**
+     * Sets the {@link ServiceBusServiceVersion} that is used. By default {@link ServiceBusServiceVersion#getLatest()}
+     * is used when none is specified.
+     *
+     * @param serviceVersion Service version to use.
+     * @return The updated {@link ServiceBusManagementClientBuilder} object.
+     */
+    public ServiceBusManagementClientBuilder serviceVersion(ServiceBusServiceVersion serviceVersion) {
+        this.serviceVersion = serviceVersion;
         return this;
     }
 

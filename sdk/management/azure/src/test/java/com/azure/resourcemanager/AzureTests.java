@@ -597,16 +597,16 @@ public class AzureTests extends TestBase {
     public void testPublicIPAddresses() throws Exception {
         new TestPublicIPAddress().runTest(azure.publicIpAddresses(), azure.resourceGroups());
     }
-    //
-    //    /**
-    //     * Tests the public IP prefix implementation.
-    //     *
-    //     * @throws Exception
-    //     */
-    //    @Test
-    //    public void testPublicIPPrefixes() throws Exception {
-    //        new TestPublicIPPrefix().runTest(azure.publicIPPrefixes(), azure.resourceGroups());
-    //    }
+
+    /**
+     * Tests the public IP address implementation.
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testPublicIPPrefixes() throws Exception {
+        new TestPublicIPPrefix().runTest(azure.publicIpPrefixes(), azure.resourceGroups());
+    }
 
     /**
      * Tests the availability set implementation.

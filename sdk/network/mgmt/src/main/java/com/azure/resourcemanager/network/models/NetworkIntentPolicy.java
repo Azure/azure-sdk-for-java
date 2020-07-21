@@ -16,10 +16,9 @@ public final class NetworkIntentPolicy extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkIntentPolicy.class);
 
     /*
-     * Gets a unique read-only string that changes whenever the resource is
-     * updated.
+     * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag")
+    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
@@ -29,23 +28,12 @@ public final class NetworkIntentPolicy extends Resource {
     private String id;
 
     /**
-     * Get the etag property: Gets a unique read-only string that changes whenever the resource is updated.
+     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value.
      */
     public String etag() {
         return this.etag;
-    }
-
-    /**
-     * Set the etag property: Gets a unique read-only string that changes whenever the resource is updated.
-     *
-     * @param etag the etag value to set.
-     * @return the NetworkIntentPolicy object itself.
-     */
-    public NetworkIntentPolicy withEtag(String etag) {
-        this.etag = etag;
-        return this;
     }
 
     /**

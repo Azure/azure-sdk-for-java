@@ -23,6 +23,7 @@ import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.security.keyvault.keys.models.ImportKeyOptions;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
+import com.azure.security.keyvault.keys.models.KeyCurveName;
 import com.azure.security.keyvault.keys.models.KeyOperation;
 import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.KeyType;
@@ -345,12 +346,16 @@ class KeyImpl extends CreatableUpdatableImpl<Key, KeyVaultKey, KeyImpl>
 
     @Override
     public KeyImpl withKeySize(int size) {
-        // TODO (weidxu) currently no setKeySize in CreateEcKeyOptions
-        /*if (createKeyRequest instanceof CreateEcKeyOptions) {
-            ((CreateEcKeyOptions) createKeyRequest).setKeySize(size);
-        } else */
         if (createKeyRequest instanceof CreateRsaKeyOptions) {
             ((CreateRsaKeyOptions) createKeyRequest).setKeySize(size);
+        }
+        return this;
+    }
+
+    @Override
+    public DefinitionStages.WithCreate withKeyCurveName(KeyCurveName keyCurveName) {
+        if (createKeyRequest instanceof CreateEcKeyOptions) {
+            ((CreateEcKeyOptions) createKeyRequest).setCurveName(keyCurveName);
         }
         return this;
     }

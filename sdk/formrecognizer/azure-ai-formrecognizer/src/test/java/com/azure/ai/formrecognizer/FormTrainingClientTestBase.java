@@ -12,6 +12,7 @@ import com.azure.ai.formrecognizer.models.CustomFormModelField;
 import com.azure.ai.formrecognizer.models.CustomFormSubmodel;
 import com.azure.ai.formrecognizer.models.ErrorInformation;
 import com.azure.ai.formrecognizer.models.FormRecognizerError;
+import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.models.TrainingDocumentInfo;
 import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
@@ -27,14 +28,23 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import static com.azure.ai.formrecognizer.FormRecognizerClientBuilder.DEFAULT_DURATION;
+import static com.azure.ai.formrecognizer.TestUtils.BLANK_PDF;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_RECEIPT_URL;
+import static com.azure.ai.formrecognizer.TestUtils.ONE_NANO_DURATION;
+import static com.azure.ai.formrecognizer.TestUtils.TEST_DATA_PNG;
+import static com.azure.ai.formrecognizer.TestUtils.getFileData;
 import static com.azure.ai.formrecognizer.TestUtils.getSerializerAdapter;
 import static com.azure.ai.formrecognizer.implementation.models.ModelStatus.READY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -57,7 +67,26 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         "FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL";
     static final String FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL =
         "FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL";
-    static final String RESOURCE_RESOLVER_ERROR = "ResourceResolverError";
+    static final String FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL =
+        "FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL";
+    static final String NO_VALID_BLOB_FOUND = "No valid blobs found in the specified Azure blob container."
+        + " Please conform to the document format/size/page/dimensions requirements.";
+    static final String PREFIX_SUBFOLDER = "subfolder";
+    static final String INVALID_PREFIX_FILE_NAME = "XXXXX";
+
+    Duration durationTestMode;
+
+    /**
+     * Use duration of nearly zero value for PLAYBACK test mode, otherwise, use default duration value for LIVE mode.
+     */
+    @Override
+    protected void beforeTest() {
+        if (interceptorManager.isPlaybackMode()) {
+            durationTestMode = ONE_NANO_DURATION;
+        } else {
+            durationTestMode = DEFAULT_DURATION;
+        }
+    }
 
     void validateCopyAuthorizationResult(String expectedResourceId, String expectedResourceRegion,
         CopyAuthorization actualResult) {
@@ -150,7 +179,6 @@ public abstract class FormTrainingClientTestBase extends TestBase {
                     subModelList.get(0).getFields().get(expectedField.getFieldName());
                 assertEquals(expectedField.getFieldName(), actualFormField.getName());
                 assertEquals(expectedField.getAccuracy(), actualFormField.getAccuracy());
-
             }
             assertTrue(subModelList.get(0).getFormType().startsWith("form-"));
             assertEquals(modelRawResponse.getTrainResult().getAverageModelAccuracy(),
@@ -179,6 +207,10 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         interceptorManager.getRecordedData().addNetworkCall(networkCallRecord);
         return deserializeRawResponse(serializerAdapter, networkCallRecord, Model.class);
     }
+
+    @Test
+    abstract void getFormRecognizerClientAndValidate(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
 
     @Test
     abstract void getCustomModelNullModelId(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
@@ -214,22 +246,48 @@ public abstract class FormTrainingClientTestBase extends TestBase {
     abstract void beginTrainingNullInput(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void beginTrainingLabeledResult(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+    abstract void beginCopy(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void beginTrainingUnlabeledResult(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+    abstract void beginCopyInvalidRegion(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
-    // @Test
-    // abstract void beginCopy(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
-    //
-    // @Test
-    // abstract void beginCopyInvalidRegion(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
-    //
-    // @Test
-    // abstract void copyAuthorization(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+    @Test
+    abstract void copyAuthorization(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
     abstract void beginTrainingInvalidModelStatus(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void beginTrainingWithTrainingLabelsForJPGTrainingSet(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void beginTrainingWithoutTrainingLabelsForJPGTrainingSet(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void beginTrainingWithTrainingLabelsForMultiPagePDFTrainingSet(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void beginTrainingWithoutTrainingLabelsForMultiPagePDFTrainingSet(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void beginTrainingWithoutTrainingLabelsExcludeSubfolderWithPrefixName(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void beginTrainingWithoutTrainingLabelsIncludeSubfolderWithPrefixName(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void beginTrainingWithoutTrainingLabelsIncludeSubfolderWithNonExistPrefixName(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void beginTrainingWithoutTrainingLabelsExcludeSubfolderWithNonExistPrefixName(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
 
     void getCustomModelInvalidModelIdRunner(Consumer<String> testRunner) {
         testRunner.accept(TestUtils.INVALID_MODEL_ID);
@@ -259,14 +317,8 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         testRunner.accept(INVALID_RECEIPT_URL, false);
     }
 
-    /**
-     * Get the string of API key value based on what running mode is on.
-     *
-     * @return the API key string
-     */
-    String getApiKey() {
-        return interceptorManager.isPlaybackMode() ? "apiKeyInPlayback"
-            : Configuration.getGlobalConfiguration().get(AZURE_FORM_RECOGNIZER_API_KEY);
+    void beginTrainingMultipageRunner(Consumer<String> testRunner) {
+        testRunner.accept(getMultipageTrainingSasUri());
     }
 
     /**
@@ -296,9 +348,61 @@ public abstract class FormTrainingClientTestBase extends TestBase {
             : Configuration.getGlobalConfiguration().get(AZURE_FORM_RECOGNIZER_ENDPOINT);
     }
 
+    void validateBlankPdfResultData(List<RecognizedForm> actualReceiptList) {
+        assertEquals(1, actualReceiptList.size());
+        final RecognizedForm actualReceipt = actualReceiptList.get(0);
+        assertTrue(actualReceipt.getFields().isEmpty());
+    }
+
+    void blankPdfDataRunner(Consumer<InputStream> testRunner) {
+        if (interceptorManager.isPlaybackMode()) {
+            testRunner.accept(new ByteArrayInputStream(TEST_DATA_PNG.getBytes(StandardCharsets.UTF_8)));
+        } else {
+            testRunner.accept(getFileData(getStorageTestingFileUrl(BLANK_PDF)));
+        }
+    }
+
     private String getTrainingSasUri() {
         return interceptorManager.isPlaybackMode()
             ? "https://isPlaybackmode"
             : Configuration.getGlobalConfiguration().get(FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL);
+    }
+
+    /**
+     * Get the training data set SAS Url value based on the test running mode.
+     *
+     * @return the training data set Url
+     */
+    private String getMultipageTrainingSasUri() {
+        return interceptorManager.isPlaybackMode()
+            ? "https://isPlaybackmode"
+            : Configuration.getGlobalConfiguration().get(FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL);
+    }
+
+    /**
+     * Prepare the file url from the testing data set SAS Url value.
+     *
+     * @return the testing data specific file Url
+     */
+    private String getStorageTestingFileUrl(String fileName) {
+        if (interceptorManager.isPlaybackMode()) {
+            return "https://isPlaybackmode";
+        } else {
+            final String[] urlParts = getTestingSasUri().split("\\?");
+            return urlParts[0] + "/" + fileName + "?" + urlParts[1];
+        }
+    }
+
+    /**
+     * Get the testing data set SAS Url value based on the test running mode.
+     *
+     * @return the testing data set Url
+     */
+    private String getTestingSasUri() {
+        if (interceptorManager.isPlaybackMode()) {
+            return "https://isPlaybackmode?SASToken";
+        } else {
+            return Configuration.getGlobalConfiguration().get(FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL);
+        }
     }
 }

@@ -12,9 +12,9 @@ import com.azure.ai.formrecognizer.implementation.models.CopyAuthorizationResult
 import com.azure.ai.formrecognizer.implementation.models.CopyOperationResult;
 import com.azure.ai.formrecognizer.implementation.models.CopyRequest;
 import com.azure.ai.formrecognizer.implementation.models.Model;
-import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
 import com.azure.ai.formrecognizer.implementation.models.ModelInfo;
 import com.azure.ai.formrecognizer.implementation.models.ModelStatus;
+import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
 import com.azure.ai.formrecognizer.implementation.models.TrainRequest;
 import com.azure.ai.formrecognizer.implementation.models.TrainSourceFilter;
 import com.azure.ai.formrecognizer.models.AccountProperties;
@@ -125,17 +125,19 @@ public final class FormTrainingAsyncClient {
      * Other type of content is ignored.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
+     * See <a href="https://docs.microsoft.com/azure/cognitive-services/form-recognizer/build-training-data-set#upload-your-training-data">here</a>
+     * for information on building your own training data set.
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginTraining#string-boolean}
      *
-     * @param trainingFilesUrl source URL parameter that is either an externally accessible Azure
+     * @param trainingFilesUrl source URL parameter that is an externally accessible Azure
      * storage blob container Uri (preferably a Shared Access Signature Uri).
      * @param useTrainingLabels boolean to specify the use of labeled files for training the model.
      *
      * @return A {@link PollerFlux} that polls the training model operation until it has completed, has failed, or has
-     * been cancelled. The completed operation returns a {@link CustomFormModel}.
-     * @throws FormRecognizerException If training fails and model with {@link ModelStatus#INVALID} is created.
+     * been cancelled. The completed operation returns the trained {@link CustomFormModel custom form model}.
+     * @throws FormRecognizerException If training fails and a model with {@link ModelStatus#INVALID} is created.
      * @throws NullPointerException If {@code trainingFilesUrl} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -149,6 +151,8 @@ public final class FormTrainingAsyncClient {
      * <p>Models are trained using documents that are of the following content type -
      * 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff'.Other type of content is ignored.
      * </p>
+     * See <a href="https://docs.microsoft.com/azure/cognitive-services/form-recognizer/build-training-data-set#upload-your-training-data">here</a>
+     * for information on building your own training data set.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
      *
@@ -162,24 +166,29 @@ public final class FormTrainingAsyncClient {
      * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
      * 5 seconds is used.
      *
-     * @return A {@link PollerFlux} that polls the extract receipt operation until it
-     * has completed, has failed, or has been cancelled. The completed operation returns a {@link CustomFormModel}.
+     * @return A {@link PollerFlux} that polls the training model operation until it has completed, has failed, or has
+     * been cancelled. The completed operation returns the trained {@link CustomFormModel custom form model}.
      * @throws FormRecognizerException If training fails and model with {@link ModelStatus#INVALID} is created.
      * @throws NullPointerException If {@code trainingFilesUrl} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<OperationResult, CustomFormModel> beginTraining(String trainingFilesUrl,
         boolean useTrainingLabels, TrainingFileFilter trainingFileFilter, Duration pollInterval) {
+        return beginTraining(trainingFilesUrl, useTrainingLabels, trainingFileFilter, pollInterval, Context.NONE);
+    }
+
+    PollerFlux<OperationResult, CustomFormModel> beginTraining(String trainingFilesUrl,
+        boolean useTrainingLabels, TrainingFileFilter trainingFileFilter, Duration pollInterval, Context context) {
         final Duration interval = pollInterval != null ? pollInterval : DEFAULT_DURATION;
         return new PollerFlux<OperationResult, CustomFormModel>(
             interval,
             getTrainingActivationOperation(trainingFilesUrl,
                 trainingFileFilter != null ? trainingFileFilter.isIncludeSubFolders() : false,
                 trainingFileFilter != null ? trainingFileFilter.getPrefix() : null,
-                useTrainingLabels),
-            createTrainingPollOperation(),
-            (activationResponse, context) -> Mono.error(new RuntimeException("Cancellation is not supported")),
-            fetchTrainingModelResultOperation());
+                useTrainingLabels, context),
+            createTrainingPollOperation(context),
+            (activationResponse, pollingContext) -> Mono.error(new RuntimeException("Cancellation is not supported")),
+            fetchTrainingModelResultOperation(context));
     }
 
     /**
@@ -191,7 +200,7 @@ public final class FormTrainingAsyncClient {
      * @param modelId The UUID string format model identifier.
      *
      * @return The detailed information for the specified model.
-     * @throws NullPointerException If {@code modelId} is {@code null}.
+     * @throws IllegalArgumentException If {@code modelId} is {@code null} or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CustomFormModel> getCustomModel(String modelId) {
@@ -199,7 +208,7 @@ public final class FormTrainingAsyncClient {
     }
 
     /**
-     * Get detailed information for a specified custom model id with Http response
+     * Get detailed information for a specified custom model id with Http response.
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getCustomModelWithResponse#string}
@@ -207,7 +216,7 @@ public final class FormTrainingAsyncClient {
      * @param modelId The UUID string format model identifier.
      *
      * @return A {@link Response} containing the requested {@link CustomFormModel model}.
-     * @throws NullPointerException If {@code modelId} is {@code null}.
+     * @throws IllegalArgumentException If {@code modelId} is {@code null} or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CustomFormModel>> getCustomModelWithResponse(String modelId) {
@@ -219,20 +228,22 @@ public final class FormTrainingAsyncClient {
     }
 
     Mono<Response<CustomFormModel>> getCustomModelWithResponse(String modelId, Context context) {
-        Objects.requireNonNull(modelId, "'modelId' cannot be null");
-
+        if (CoreUtils.isNullOrEmpty(modelId)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'modelId' is required and cannot"
+                + " be null or empty"));
+        }
         return service.getCustomModelWithResponseAsync(UUID.fromString(modelId), true, context)
             .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .map(response -> new SimpleResponse<>(response, toCustomFormModel(response.getValue())));
     }
 
     /**
-     * Get account information for all custom models.
+     * Get account information of the form recognizer account.
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getAccountProperties}
      *
-     * @return The account information.
+     * @return The requested account information details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AccountProperties> getAccountProperties() {
@@ -240,7 +251,7 @@ public final class FormTrainingAsyncClient {
     }
 
     /**
-     * Get account information.
+     * Get account information of the form recognizer account with an Http response.
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getAccountPropertiesWithResponse}
@@ -273,7 +284,7 @@ public final class FormTrainingAsyncClient {
      * @param modelId The UUID string format model identifier.
      *
      * @return An empty Mono.
-     * @throws NullPointerException If {@code modelId} is {@code null}.
+     * @throws IllegalArgumentException If {@code modelId} is {@code null} or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteModel(String modelId) {
@@ -288,8 +299,8 @@ public final class FormTrainingAsyncClient {
      *
      * @param modelId The UUID string format model identifier.
      *
-     * @return A {@link Mono} containing containing status code and HTTP headers
-     * @throws NullPointerException If {@code modelId} is {@code null}.
+     * @return A {@link Response} containing the status code and HTTP headers.
+     * @throws IllegalArgumentException If {@code modelId} is {@code null} or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteModelWithResponse(String modelId) {
@@ -301,15 +312,17 @@ public final class FormTrainingAsyncClient {
     }
 
     Mono<Response<Void>> deleteModelWithResponse(String modelId, Context context) {
-        Objects.requireNonNull(modelId, "'modelId' cannot be null");
-
+        if (CoreUtils.isNullOrEmpty(modelId)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'modelId' is required and cannot"
+                + " be null or empty"));
+        }
         return service.deleteCustomModelWithResponseAsync(UUID.fromString(modelId), context)
             .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
-     * List information for all models.
+     * List information for each model on the form recognizer account.
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.listCustomModels}
@@ -327,7 +340,8 @@ public final class FormTrainingAsyncClient {
     }
 
     /**
-     * List information for all models with taking {@link Context}.
+     * List information for each model on the form recognizer account with an Http response and a specified
+     * {@link Context}.
      *
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
@@ -396,13 +410,18 @@ public final class FormTrainingAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<OperationResult, CustomFormModelInfo> beginCopyModel(String modelId,
         CopyAuthorization target, Duration pollInterval) {
+        return beginCopyModel(modelId, target, pollInterval, Context.NONE);
+    }
+
+    PollerFlux<OperationResult, CustomFormModelInfo> beginCopyModel(String modelId,
+        CopyAuthorization target, Duration pollInterval, Context context) {
         final Duration interval = pollInterval != null ? pollInterval : DEFAULT_DURATION;
         return new PollerFlux<OperationResult, CustomFormModelInfo>(
             interval,
-            getCopyActivationOperation(modelId, target),
-            createCopyPollOperation(modelId),
-            (activationResponse, context) -> Mono.error(new RuntimeException("Cancellation is not supported")),
-            fetchCopyModelResultOperation(modelId, target.getModelId()));
+            getCopyActivationOperation(modelId, target, context),
+            createCopyPollOperation(modelId, context),
+            (activationResponse, pollingContext) -> Mono.error(new RuntimeException("Cancellation is not supported")),
+            fetchCopyModelResultOperation(modelId, target.getModelId(), context));
     }
 
     /**
@@ -498,12 +517,12 @@ public final class FormTrainingAsyncClient {
     }
 
     private Function<PollingContext<OperationResult>, Mono<CustomFormModelInfo>> fetchCopyModelResultOperation(
-        String modelId, String copyModelId) {
+        String modelId, String copyModelId, Context context) {
         return (pollingContext) -> {
             try {
                 final UUID resultUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
                 Objects.requireNonNull(modelId, "'modelId' cannot be null.");
-                return service.getCustomModelCopyResultWithResponseAsync(UUID.fromString(modelId), resultUid)
+                return service.getCustomModelCopyResultWithResponseAsync(UUID.fromString(modelId), resultUid, context)
                     .map(modelSimpleResponse -> {
                         CopyOperationResult copyOperationResult = modelSimpleResponse.getValue();
                         throwIfCopyOperationStatusInvalid(copyOperationResult);
@@ -522,12 +541,12 @@ public final class FormTrainingAsyncClient {
     }
 
     private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>>
-        createCopyPollOperation(String modelId) {
+        createCopyPollOperation(String modelId, Context context) {
         return (pollingContext) -> {
             try {
                 PollResponse<OperationResult> operationResultPollResponse = pollingContext.getLatestResponse();
                 UUID targetId = UUID.fromString(operationResultPollResponse.getValue().getResultId());
-                return service.getCustomModelCopyResultWithResponseAsync(UUID.fromString(modelId), targetId)
+                return service.getCustomModelCopyResultWithResponseAsync(UUID.fromString(modelId), targetId, context)
                         .flatMap(modelSimpleResponse ->
                             processCopyModelResponse(modelSimpleResponse, operationResultPollResponse))
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
@@ -538,7 +557,7 @@ public final class FormTrainingAsyncClient {
     }
 
     private Function<PollingContext<OperationResult>, Mono<OperationResult>> getCopyActivationOperation(
-        String modelId, CopyAuthorization target) {
+        String modelId, CopyAuthorization target, Context context) {
         return (pollingContext) -> {
             try {
                 Objects.requireNonNull(modelId, "'modelId' cannot be null.");
@@ -550,7 +569,7 @@ public final class FormTrainingAsyncClient {
                         .setModelId(target.getModelId())
                         .setAccessToken(target.getAccessToken())
                         .setExpirationDateTimeTicks(target.getExpiresOn().toEpochSecond()));
-                return service.copyCustomModelWithResponseAsync(UUID.fromString(modelId), copyRequest)
+                return service.copyCustomModelWithResponseAsync(UUID.fromString(modelId), copyRequest, context)
                     .map(response ->
                         new OperationResult(parseModelId(response.getDeserializedHeaders().getOperationLocation())))
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
@@ -582,11 +601,12 @@ public final class FormTrainingAsyncClient {
         return Mono.just(new PollResponse<>(status, copyModelOperationResponse.getValue()));
     }
 
-    private Function<PollingContext<OperationResult>, Mono<CustomFormModel>> fetchTrainingModelResultOperation() {
+    private Function<PollingContext<OperationResult>, Mono<CustomFormModel>>
+        fetchTrainingModelResultOperation(Context context) {
         return (pollingContext) -> {
             try {
                 final UUID modelUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
-                return service.getCustomModelWithResponseAsync(modelUid, true)
+                return service.getCustomModelWithResponseAsync(modelUid, true, context)
                     .map(modelSimpleResponse -> {
                         throwIfModelStatusInvalid(modelSimpleResponse.getValue());
                         return toCustomFormModel(modelSimpleResponse.getValue());
@@ -599,12 +619,12 @@ public final class FormTrainingAsyncClient {
     }
 
     private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>>
-        createTrainingPollOperation() {
+        createTrainingPollOperation(Context context) {
         return (pollingContext) -> {
             try {
                 PollResponse<OperationResult> operationResultPollResponse = pollingContext.getLatestResponse();
                 UUID modelUid = UUID.fromString(operationResultPollResponse.getValue().getResultId());
-                return service.getCustomModelWithResponseAsync(modelUid, true)
+                return service.getCustomModelWithResponseAsync(modelUid, true, context)
                     .flatMap(modelSimpleResponse ->
                         processTrainingModelResponse(modelSimpleResponse, operationResultPollResponse))
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
@@ -616,7 +636,8 @@ public final class FormTrainingAsyncClient {
     }
 
     private Function<PollingContext<OperationResult>, Mono<OperationResult>> getTrainingActivationOperation(
-        String trainingFilesUrl, boolean includeSubFolders, String filePrefix, boolean useTrainingLabels) {
+        String trainingFilesUrl, boolean includeSubFolders, String filePrefix, boolean useTrainingLabels,
+        Context context) {
         return (pollingContext) -> {
             try {
                 Objects.requireNonNull(trainingFilesUrl, "'trainingFilesUrl' cannot be null.");
@@ -624,7 +645,7 @@ public final class FormTrainingAsyncClient {
                     .setPrefix(filePrefix);
                 TrainRequest serviceTrainRequest = new TrainRequest().setSource(trainingFilesUrl).
                     setSourceFilter(trainSourceFilter).setUseLabelFile(useTrainingLabels);
-                return service.trainCustomModelAsyncWithResponseAsync(serviceTrainRequest)
+                return service.trainCustomModelAsyncWithResponseAsync(serviceTrainRequest, context)
                     .map(response ->
                         new OperationResult(parseModelId(response.getDeserializedHeaders().getLocation())))
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);

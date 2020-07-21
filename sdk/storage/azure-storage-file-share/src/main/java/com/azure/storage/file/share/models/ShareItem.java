@@ -28,6 +28,18 @@ public final class ShareItem {
     private String snapshot;
 
     /*
+     * The deleted property.
+     */
+    @JsonProperty(value = "Deleted")
+    private Boolean deleted;
+
+    /*
+     * The version property.
+     */
+    @JsonProperty(value = "Version")
+    private String version;
+
+    /*
      * The properties property.
      */
     @JsonProperty(value = "Properties", required = true)
@@ -76,6 +88,46 @@ public final class ShareItem {
      */
     public ShareItem setSnapshot(String snapshot) {
         this.snapshot = snapshot;
+        return this;
+    }
+
+    /**
+     * Get the deleted property: The deleted property.
+     *
+     * @return the deleted value.
+     */
+    public Boolean isDeleted() {
+        return this.deleted;
+    }
+
+    /**
+     * Set the deleted property: The deleted property.
+     *
+     * @param deleted the deleted value to set.
+     * @return the ShareItem object itself.
+     */
+    public ShareItem setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+        return this;
+    }
+
+    /**
+     * Get the version property: The version property.
+     *
+     * @return the version value.
+     */
+    public String getVersion() {
+        return this.version;
+    }
+
+    /**
+     * Set the version property: The version property.
+     *
+     * @param version the version value to set.
+     * @return the ShareItem object itself.
+     */
+    public ShareItem setVersion(String version) {
+        this.version = version;
         return this;
     }
 

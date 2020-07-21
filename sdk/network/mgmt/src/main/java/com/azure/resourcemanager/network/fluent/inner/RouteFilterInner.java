@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -19,8 +20,7 @@ public class RouteFilterInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RouteFilterInner.class);
 
     /*
-     * Gets a unique read-only string that changes whenever the resource is
-     * updated.
+     * A unique read-only string that changes whenever the resource is updated.
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
@@ -34,21 +34,20 @@ public class RouteFilterInner extends Resource {
     /*
      * A collection of references to express route circuit peerings.
      */
-    @JsonProperty(value = "properties.peerings")
+    @JsonProperty(value = "properties.peerings", access = JsonProperty.Access.WRITE_ONLY)
     private List<ExpressRouteCircuitPeeringInner> peerings;
 
     /*
      * A collection of references to express route circuit ipv6 peerings.
      */
-    @JsonProperty(value = "properties.ipv6Peerings")
+    @JsonProperty(value = "properties.ipv6Peerings", access = JsonProperty.Access.WRITE_ONLY)
     private List<ExpressRouteCircuitPeeringInner> ipv6Peerings;
 
     /*
-     * The provisioning state of the resource. Possible values are: 'Updating',
-     * 'Deleting', 'Succeeded' and 'Failed'.
+     * The provisioning state of the route filter resource.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * Resource ID.
@@ -57,7 +56,7 @@ public class RouteFilterInner extends Resource {
     private String id;
 
     /**
-     * Get the etag property: Gets a unique read-only string that changes whenever the resource is updated.
+     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value.
      */
@@ -95,17 +94,6 @@ public class RouteFilterInner extends Resource {
     }
 
     /**
-     * Set the peerings property: A collection of references to express route circuit peerings.
-     *
-     * @param peerings the peerings value to set.
-     * @return the RouteFilterInner object itself.
-     */
-    public RouteFilterInner withPeerings(List<ExpressRouteCircuitPeeringInner> peerings) {
-        this.peerings = peerings;
-        return this;
-    }
-
-    /**
      * Get the ipv6Peerings property: A collection of references to express route circuit ipv6 peerings.
      *
      * @return the ipv6Peerings value.
@@ -115,23 +103,11 @@ public class RouteFilterInner extends Resource {
     }
 
     /**
-     * Set the ipv6Peerings property: A collection of references to express route circuit ipv6 peerings.
-     *
-     * @param ipv6Peerings the ipv6Peerings value to set.
-     * @return the RouteFilterInner object itself.
-     */
-    public RouteFilterInner withIpv6Peerings(List<ExpressRouteCircuitPeeringInner> ipv6Peerings) {
-        this.ipv6Peerings = ipv6Peerings;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning state of the resource. Possible values are: 'Updating',
-     * 'Deleting', 'Succeeded' and 'Failed'.
+     * Get the provisioningState property: The provisioning state of the route filter resource.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 

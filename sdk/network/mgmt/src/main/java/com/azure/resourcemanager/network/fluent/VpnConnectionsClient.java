@@ -24,15 +24,16 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.ListVpnConnectionsResultInner;
 import com.azure.resourcemanager.network.fluent.inner.VpnConnectionInner;
-import com.azure.resourcemanager.network.models.ErrorException;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -70,7 +71,7 @@ public final class VpnConnectionsClient {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnGateways"
                 + "/{gatewayName}/vpnConnections/{connectionName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VpnConnectionInner>> get(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
@@ -85,7 +86,7 @@ public final class VpnConnectionsClient {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnGateways"
                 + "/{gatewayName}/vpnConnections/{connectionName}")
         @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
@@ -101,7 +102,7 @@ public final class VpnConnectionsClient {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnGateways"
                 + "/{gatewayName}/vpnConnections/{connectionName}")
         @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
@@ -116,7 +117,7 @@ public final class VpnConnectionsClient {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnGateways"
                 + "/{gatewayName}/vpnConnections")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListVpnConnectionsResultInner>> listByVpnGateway(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
@@ -126,40 +127,9 @@ public final class VpnConnectionsClient {
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnGateways"
-                + "/{gatewayName}/vpnConnections/{connectionName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<VpnConnectionInner>> beginCreateOrUpdateWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("gatewayName") String gatewayName,
-            @PathParam("connectionName") String connectionName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") VpnConnectionInner vpnConnectionParameters,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnGateways"
-                + "/{gatewayName}/vpnConnections/{connectionName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<Void>> beginDeleteWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("gatewayName") String gatewayName,
-            @PathParam("connectionName") String connectionName,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListVpnConnectionsResultInner>> listByVpnGatewayNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
@@ -171,7 +141,7 @@ public final class VpnConnectionsClient {
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnConnection Resource.
      */
@@ -200,7 +170,7 @@ public final class VpnConnectionsClient {
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -224,7 +194,7 @@ public final class VpnConnectionsClient {
      * @param connectionName The name of the vpn connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnConnection Resource.
      */
@@ -253,7 +223,7 @@ public final class VpnConnectionsClient {
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .get(
                 this.client.getEndpoint(),
@@ -272,7 +242,7 @@ public final class VpnConnectionsClient {
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnConnection Resource.
      */
@@ -297,7 +267,7 @@ public final class VpnConnectionsClient {
      * @param connectionName The name of the vpn connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnConnection Resource.
      */
@@ -322,7 +292,7 @@ public final class VpnConnectionsClient {
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnConnection Resource.
      */
@@ -339,7 +309,7 @@ public final class VpnConnectionsClient {
      * @param connectionName The name of the vpn connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnConnection Resource.
      */
@@ -357,7 +327,7 @@ public final class VpnConnectionsClient {
      * @param connectionName The name of the connection.
      * @param vpnConnectionParameters VpnConnection Resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnConnection Resource.
      */
@@ -396,7 +366,7 @@ public final class VpnConnectionsClient {
         } else {
             vpnConnectionParameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -422,7 +392,7 @@ public final class VpnConnectionsClient {
      * @param vpnConnectionParameters VpnConnection Resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnConnection Resource.
      */
@@ -462,7 +432,7 @@ public final class VpnConnectionsClient {
         } else {
             vpnConnectionParameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -483,12 +453,12 @@ public final class VpnConnectionsClient {
      * @param connectionName The name of the connection.
      * @param vpnConnectionParameters VpnConnection Resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnConnection Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<VpnConnectionInner>, VpnConnectionInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<VpnConnectionInner>, VpnConnectionInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String gatewayName,
         String connectionName,
@@ -510,12 +480,12 @@ public final class VpnConnectionsClient {
      * @param vpnConnectionParameters VpnConnection Resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnConnection Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<VpnConnectionInner>, VpnConnectionInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<VpnConnectionInner>, VpnConnectionInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String gatewayName,
         String connectionName,
@@ -538,24 +508,18 @@ public final class VpnConnectionsClient {
      * @param connectionName The name of the connection.
      * @param vpnConnectionParameters VpnConnection Resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnConnection Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VpnConnectionInner> createOrUpdateAsync(
+    public SyncPoller<PollResult<VpnConnectionInner>, VpnConnectionInner> beginCreateOrUpdate(
         String resourceGroupName,
         String gatewayName,
         String connectionName,
         VpnConnectionInner vpnConnectionParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, gatewayName, connectionName, vpnConnectionParameters);
-        return this
-            .client
-            .<VpnConnectionInner, VpnConnectionInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), VpnConnectionInner.class, VpnConnectionInner.class)
-            .last()
-            .flatMap(client::getLroFinalResultOrError);
+        return beginCreateOrUpdateAsync(resourceGroupName, gatewayName, connectionName, vpnConnectionParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -567,26 +531,20 @@ public final class VpnConnectionsClient {
      * @param vpnConnectionParameters VpnConnection Resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnConnection Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VpnConnectionInner> createOrUpdateAsync(
+    public SyncPoller<PollResult<VpnConnectionInner>, VpnConnectionInner> beginCreateOrUpdate(
         String resourceGroupName,
         String gatewayName,
         String connectionName,
         VpnConnectionInner vpnConnectionParameters,
         Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, gatewayName, connectionName, vpnConnectionParameters, context);
-        return this
-            .client
-            .<VpnConnectionInner, VpnConnectionInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), VpnConnectionInner.class, VpnConnectionInner.class)
-            .last()
-            .flatMap(client::getLroFinalResultOrError);
+        return beginCreateOrUpdateAsync(
+                resourceGroupName, gatewayName, connectionName, vpnConnectionParameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -597,7 +555,56 @@ public final class VpnConnectionsClient {
      * @param connectionName The name of the connection.
      * @param vpnConnectionParameters VpnConnection Resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return vpnConnection Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<VpnConnectionInner> createOrUpdateAsync(
+        String resourceGroupName,
+        String gatewayName,
+        String connectionName,
+        VpnConnectionInner vpnConnectionParameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, gatewayName, connectionName, vpnConnectionParameters)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Creates a vpn connection to a scalable vpn gateway if it doesn't exist else updates the existing connection.
+     *
+     * @param resourceGroupName The resource group name of the VpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @param connectionName The name of the connection.
+     * @param vpnConnectionParameters VpnConnection Resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return vpnConnection Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<VpnConnectionInner> createOrUpdateAsync(
+        String resourceGroupName,
+        String gatewayName,
+        String connectionName,
+        VpnConnectionInner vpnConnectionParameters,
+        Context context) {
+        return beginCreateOrUpdateAsync(
+                resourceGroupName, gatewayName, connectionName, vpnConnectionParameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Creates a vpn connection to a scalable vpn gateway if it doesn't exist else updates the existing connection.
+     *
+     * @param resourceGroupName The resource group name of the VpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @param connectionName The name of the connection.
+     * @param vpnConnectionParameters VpnConnection Resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnConnection Resource.
      */
@@ -619,7 +626,7 @@ public final class VpnConnectionsClient {
      * @param vpnConnectionParameters VpnConnection Resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnConnection Resource.
      */
@@ -641,7 +648,7 @@ public final class VpnConnectionsClient {
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -670,7 +677,7 @@ public final class VpnConnectionsClient {
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -694,7 +701,7 @@ public final class VpnConnectionsClient {
      * @param connectionName The name of the connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -723,7 +730,7 @@ public final class VpnConnectionsClient {
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -742,12 +749,12 @@ public final class VpnConnectionsClient {
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String gatewayName, String connectionName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, gatewayName, connectionName);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
@@ -761,12 +768,12 @@ public final class VpnConnectionsClient {
      * @param connectionName The name of the connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String gatewayName, String connectionName, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, gatewayName, connectionName, context);
@@ -780,18 +787,14 @@ public final class VpnConnectionsClient {
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String resourceGroupName, String gatewayName, String connectionName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, gatewayName, connectionName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
-            .last()
-            .flatMap(client::getLroFinalResultOrError);
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String gatewayName, String connectionName) {
+        return beginDeleteAsync(resourceGroupName, gatewayName, connectionName).getSyncPoller();
     }
 
     /**
@@ -802,20 +805,14 @@ public final class VpnConnectionsClient {
      * @param connectionName The name of the connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String gatewayName, String connectionName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, gatewayName, connectionName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
-            .last()
-            .flatMap(client::getLroFinalResultOrError);
+        return beginDeleteAsync(resourceGroupName, gatewayName, connectionName, context).getSyncPoller();
     }
 
     /**
@@ -825,7 +822,45 @@ public final class VpnConnectionsClient {
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteAsync(String resourceGroupName, String gatewayName, String connectionName) {
+        return beginDeleteAsync(resourceGroupName, gatewayName, connectionName)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Deletes a vpn connection.
+     *
+     * @param resourceGroupName The resource group name of the VpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @param connectionName The name of the connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteAsync(
+        String resourceGroupName, String gatewayName, String connectionName, Context context) {
+        return beginDeleteAsync(resourceGroupName, gatewayName, connectionName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Deletes a vpn connection.
+     *
+     * @param resourceGroupName The resource group name of the VpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @param connectionName The name of the connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -841,7 +876,7 @@ public final class VpnConnectionsClient {
      * @param connectionName The name of the connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -855,7 +890,7 @@ public final class VpnConnectionsClient {
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list all vpn connections to a virtual wan vpn gateway.
      */
@@ -881,7 +916,7 @@ public final class VpnConnectionsClient {
         if (gatewayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -912,7 +947,7 @@ public final class VpnConnectionsClient {
      * @param gatewayName The name of the gateway.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list all vpn connections to a virtual wan vpn gateway.
      */
@@ -938,7 +973,7 @@ public final class VpnConnectionsClient {
         if (gatewayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .listByVpnGateway(
                 this.client.getEndpoint(),
@@ -964,7 +999,7 @@ public final class VpnConnectionsClient {
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list all vpn connections to a virtual wan vpn gateway.
      */
@@ -982,7 +1017,7 @@ public final class VpnConnectionsClient {
      * @param gatewayName The name of the gateway.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list all vpn connections to a virtual wan vpn gateway.
      */
@@ -1000,7 +1035,7 @@ public final class VpnConnectionsClient {
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list all vpn connections to a virtual wan vpn gateway.
      */
@@ -1016,7 +1051,7 @@ public final class VpnConnectionsClient {
      * @param gatewayName The name of the gateway.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list all vpn connections to a virtual wan vpn gateway.
      */
@@ -1027,417 +1062,11 @@ public final class VpnConnectionsClient {
     }
 
     /**
-     * Creates a vpn connection to a scalable vpn gateway if it doesn't exist else updates the existing connection.
-     *
-     * @param resourceGroupName The resource group name of the VpnGateway.
-     * @param gatewayName The name of the gateway.
-     * @param connectionName The name of the connection.
-     * @param vpnConnectionParameters VpnConnection Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnConnection Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<VpnConnectionInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName,
-        String gatewayName,
-        String connectionName,
-        VpnConnectionInner vpnConnectionParameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (gatewayName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
-        }
-        if (connectionName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
-        }
-        if (vpnConnectionParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter vpnConnectionParameters is required and cannot be null."));
-        } else {
-            vpnConnectionParameters.validate();
-        }
-        final String apiVersion = "2019-06-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginCreateOrUpdateWithoutPolling(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            gatewayName,
-                            connectionName,
-                            apiVersion,
-                            vpnConnectionParameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Creates a vpn connection to a scalable vpn gateway if it doesn't exist else updates the existing connection.
-     *
-     * @param resourceGroupName The resource group name of the VpnGateway.
-     * @param gatewayName The name of the gateway.
-     * @param connectionName The name of the connection.
-     * @param vpnConnectionParameters VpnConnection Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnConnection Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<VpnConnectionInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName,
-        String gatewayName,
-        String connectionName,
-        VpnConnectionInner vpnConnectionParameters,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (gatewayName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
-        }
-        if (connectionName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
-        }
-        if (vpnConnectionParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter vpnConnectionParameters is required and cannot be null."));
-        } else {
-            vpnConnectionParameters.validate();
-        }
-        final String apiVersion = "2019-06-01";
-        return service
-            .beginCreateOrUpdateWithoutPolling(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                gatewayName,
-                connectionName,
-                apiVersion,
-                vpnConnectionParameters,
-                context);
-    }
-
-    /**
-     * Creates a vpn connection to a scalable vpn gateway if it doesn't exist else updates the existing connection.
-     *
-     * @param resourceGroupName The resource group name of the VpnGateway.
-     * @param gatewayName The name of the gateway.
-     * @param connectionName The name of the connection.
-     * @param vpnConnectionParameters VpnConnection Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnConnection Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VpnConnectionInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName,
-        String gatewayName,
-        String connectionName,
-        VpnConnectionInner vpnConnectionParameters) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(
-                resourceGroupName, gatewayName, connectionName, vpnConnectionParameters)
-            .flatMap(
-                (Response<VpnConnectionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates a vpn connection to a scalable vpn gateway if it doesn't exist else updates the existing connection.
-     *
-     * @param resourceGroupName The resource group name of the VpnGateway.
-     * @param gatewayName The name of the gateway.
-     * @param connectionName The name of the connection.
-     * @param vpnConnectionParameters VpnConnection Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnConnection Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VpnConnectionInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName,
-        String gatewayName,
-        String connectionName,
-        VpnConnectionInner vpnConnectionParameters,
-        Context context) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(
-                resourceGroupName, gatewayName, connectionName, vpnConnectionParameters, context)
-            .flatMap(
-                (Response<VpnConnectionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates a vpn connection to a scalable vpn gateway if it doesn't exist else updates the existing connection.
-     *
-     * @param resourceGroupName The resource group name of the VpnGateway.
-     * @param gatewayName The name of the gateway.
-     * @param connectionName The name of the connection.
-     * @param vpnConnectionParameters VpnConnection Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnConnection Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VpnConnectionInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName,
-        String gatewayName,
-        String connectionName,
-        VpnConnectionInner vpnConnectionParameters) {
-        return beginCreateOrUpdateWithoutPollingAsync(
-                resourceGroupName, gatewayName, connectionName, vpnConnectionParameters)
-            .block();
-    }
-
-    /**
-     * Creates a vpn connection to a scalable vpn gateway if it doesn't exist else updates the existing connection.
-     *
-     * @param resourceGroupName The resource group name of the VpnGateway.
-     * @param gatewayName The name of the gateway.
-     * @param connectionName The name of the connection.
-     * @param vpnConnectionParameters VpnConnection Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnConnection Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VpnConnectionInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName,
-        String gatewayName,
-        String connectionName,
-        VpnConnectionInner vpnConnectionParameters,
-        Context context) {
-        return beginCreateOrUpdateWithoutPollingAsync(
-                resourceGroupName, gatewayName, connectionName, vpnConnectionParameters, context)
-            .block();
-    }
-
-    /**
-     * Deletes a vpn connection.
-     *
-     * @param resourceGroupName The resource group name of the VpnGateway.
-     * @param gatewayName The name of the gateway.
-     * @param connectionName The name of the connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
-        String resourceGroupName, String gatewayName, String connectionName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (gatewayName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
-        }
-        if (connectionName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginDeleteWithoutPolling(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            gatewayName,
-                            connectionName,
-                            apiVersion,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Deletes a vpn connection.
-     *
-     * @param resourceGroupName The resource group name of the VpnGateway.
-     * @param gatewayName The name of the gateway.
-     * @param connectionName The name of the connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
-        String resourceGroupName, String gatewayName, String connectionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (gatewayName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
-        }
-        if (connectionName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        return service
-            .beginDeleteWithoutPolling(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                gatewayName,
-                connectionName,
-                apiVersion,
-                context);
-    }
-
-    /**
-     * Deletes a vpn connection.
-     *
-     * @param resourceGroupName The resource group name of the VpnGateway.
-     * @param gatewayName The name of the gateway.
-     * @param connectionName The name of the connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteWithoutPollingAsync(
-        String resourceGroupName, String gatewayName, String connectionName) {
-        return beginDeleteWithoutPollingWithResponseAsync(resourceGroupName, gatewayName, connectionName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes a vpn connection.
-     *
-     * @param resourceGroupName The resource group name of the VpnGateway.
-     * @param gatewayName The name of the gateway.
-     * @param connectionName The name of the connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteWithoutPollingAsync(
-        String resourceGroupName, String gatewayName, String connectionName, Context context) {
-        return beginDeleteWithoutPollingWithResponseAsync(resourceGroupName, gatewayName, connectionName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes a vpn connection.
-     *
-     * @param resourceGroupName The resource group name of the VpnGateway.
-     * @param gatewayName The name of the gateway.
-     * @param connectionName The name of the connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(String resourceGroupName, String gatewayName, String connectionName) {
-        beginDeleteWithoutPollingAsync(resourceGroupName, gatewayName, connectionName).block();
-    }
-
-    /**
-     * Deletes a vpn connection.
-     *
-     * @param resourceGroupName The resource group name of the VpnGateway.
-     * @param gatewayName The name of the gateway.
-     * @param connectionName The name of the connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(
-        String resourceGroupName, String gatewayName, String connectionName, Context context) {
-        beginDeleteWithoutPollingAsync(resourceGroupName, gatewayName, connectionName, context).block();
-    }
-
-    /**
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list all vpn connections to a virtual wan vpn gateway.
      */
@@ -1466,7 +1095,7 @@ public final class VpnConnectionsClient {
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list all vpn connections to a virtual wan vpn gateway.
      */

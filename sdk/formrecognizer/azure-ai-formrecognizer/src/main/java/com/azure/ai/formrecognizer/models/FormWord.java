@@ -9,7 +9,7 @@ import com.azure.core.annotation.Immutable;
  * The FormTable model.
  */
 @Immutable
-public final class FormWord extends FormContent {
+public final class FormWord extends FormElement {
 
     /*
      * The confidence value of the recognized word.

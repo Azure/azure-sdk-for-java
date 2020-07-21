@@ -21,13 +21,13 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.HubVirtualNetworkConnectionInner;
 import com.azure.resourcemanager.network.fluent.inner.ListHubVirtualNetworkConnectionsResultInner;
-import com.azure.resourcemanager.network.models.ErrorException;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in HubVirtualNetworkConnections. */
@@ -65,7 +65,7 @@ public final class HubVirtualNetworkConnectionsClient {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs"
                 + "/{virtualHubName}/hubVirtualNetworkConnections/{connectionName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<HubVirtualNetworkConnectionInner>> get(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
@@ -80,7 +80,7 @@ public final class HubVirtualNetworkConnectionsClient {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs"
                 + "/{virtualHubName}/hubVirtualNetworkConnections")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListHubVirtualNetworkConnectionsResultInner>> list(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
@@ -92,7 +92,7 @@ public final class HubVirtualNetworkConnectionsClient {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListHubVirtualNetworkConnectionsResultInner>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
@@ -104,7 +104,7 @@ public final class HubVirtualNetworkConnectionsClient {
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the vpn connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return hubVirtualNetworkConnection Resource.
      */
@@ -133,7 +133,7 @@ public final class HubVirtualNetworkConnectionsClient {
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -157,7 +157,7 @@ public final class HubVirtualNetworkConnectionsClient {
      * @param connectionName The name of the vpn connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return hubVirtualNetworkConnection Resource.
      */
@@ -186,7 +186,7 @@ public final class HubVirtualNetworkConnectionsClient {
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .get(
                 this.client.getEndpoint(),
@@ -205,7 +205,7 @@ public final class HubVirtualNetworkConnectionsClient {
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the vpn connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return hubVirtualNetworkConnection Resource.
      */
@@ -231,7 +231,7 @@ public final class HubVirtualNetworkConnectionsClient {
      * @param connectionName The name of the vpn connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return hubVirtualNetworkConnection Resource.
      */
@@ -256,7 +256,7 @@ public final class HubVirtualNetworkConnectionsClient {
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the vpn connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return hubVirtualNetworkConnection Resource.
      */
@@ -274,7 +274,7 @@ public final class HubVirtualNetworkConnectionsClient {
      * @param connectionName The name of the vpn connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return hubVirtualNetworkConnection Resource.
      */
@@ -290,7 +290,7 @@ public final class HubVirtualNetworkConnectionsClient {
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of HubVirtualNetworkConnections and a URL nextLink to get the next set of results.
      */
@@ -316,7 +316,7 @@ public final class HubVirtualNetworkConnectionsClient {
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -347,7 +347,7 @@ public final class HubVirtualNetworkConnectionsClient {
      * @param virtualHubName The name of the VirtualHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of HubVirtualNetworkConnections and a URL nextLink to get the next set of results.
      */
@@ -373,7 +373,7 @@ public final class HubVirtualNetworkConnectionsClient {
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .list(
                 this.client.getEndpoint(),
@@ -399,7 +399,7 @@ public final class HubVirtualNetworkConnectionsClient {
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of HubVirtualNetworkConnections and a URL nextLink to get the next set of results.
      */
@@ -417,7 +417,7 @@ public final class HubVirtualNetworkConnectionsClient {
      * @param virtualHubName The name of the VirtualHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of HubVirtualNetworkConnections and a URL nextLink to get the next set of results.
      */
@@ -435,7 +435,7 @@ public final class HubVirtualNetworkConnectionsClient {
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of HubVirtualNetworkConnections and a URL nextLink to get the next set of results.
      */
@@ -451,7 +451,7 @@ public final class HubVirtualNetworkConnectionsClient {
      * @param virtualHubName The name of the VirtualHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of HubVirtualNetworkConnections and a URL nextLink to get the next set of results.
      */
@@ -466,7 +466,7 @@ public final class HubVirtualNetworkConnectionsClient {
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of HubVirtualNetworkConnections and a URL nextLink to get the next set of results.
      */
@@ -495,7 +495,7 @@ public final class HubVirtualNetworkConnectionsClient {
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of HubVirtualNetworkConnections and a URL nextLink to get the next set of results.
      */

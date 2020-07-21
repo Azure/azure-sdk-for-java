@@ -17,6 +17,7 @@ import com.azure.messaging.servicebus.implementation.models.QueueDescriptionEntr
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionEntryContent;
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionFeed;
 import com.azure.messaging.servicebus.implementation.models.ResponseLink;
+import com.azure.messaging.servicebus.models.MessageCountDetails;
 import com.azure.messaging.servicebus.models.QueueDescription;
 import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
 import org.junit.jupiter.api.AfterAll;
@@ -30,12 +31,16 @@ import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -44,6 +49,9 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -234,30 +242,46 @@ class ServiceBusManagementAsyncClientTest {
     @Test
     void getQueueRuntimeInfo() throws IOException {
         // Arrange
-        final QueueDescription expectedDescription = new QueueDescription(queueName)
-            .setMessageCount(100)
-            .setSizeInBytes(1053)
-            .setAccessedAt(OffsetDateTime.of(2020, 10, 6, 12, 1, 20, 300, ZoneOffset.UTC))
-            .setCreatedAt(OffsetDateTime.of(2010, 12, 10, 12, 1, 20, 300, ZoneOffset.UTC))
-            .setUpdatedAt(OffsetDateTime.of(2019, 4, 25, 7, 1, 20, 300, ZoneOffset.UTC));
-        final QueueDescriptionEntry expected = new QueueDescriptionEntry()
-            .setTitle(getResponseTitle(queueName))
-            .setContent(new QueueDescriptionEntryContent().setQueueDescription(expectedDescription));
+        final String contents = getContents("QueueDescriptionEntry.xml");
+        final ServiceBusManagementSerializer managementSerializer = new ServiceBusManagementSerializer();
+        final QueueDescriptionEntry entry = managementSerializer.deserialize(contents, QueueDescriptionEntry.class);
+
+        final String name = "my-test-queue";
+        final OffsetDateTime createdAt = OffsetDateTime.parse("2020-06-05T03:55:07.5Z");
+        final OffsetDateTime updatedAt = OffsetDateTime.parse("2020-06-05T03:45:07.64Z");
+        final OffsetDateTime accessedAt = OffsetDateTime.parse("0001-01-01T00:00:00Z");
+        final long sizeInBytes = 2048;
+        final long messageCount = 23;
+        final MessageCountDetails expectedCount = new MessageCountDetails()
+            .setActiveMessageCount(5)
+            .setDeadLetterMessageCount(3)
+            .setScheduledMessageCount(65)
+            .setTransferMessageCount(10)
+            .setTransferDeadLetterMessageCount(123);
 
         when(entitys.getWithResponseAsync(eq(queueName), eq(true), any(Context.class)))
             .thenReturn(Mono.just(objectResponse));
 
-        when(serializer.deserialize(responseString, QueueDescriptionEntry.class)).thenReturn(expected);
+        when(serializer.deserialize(responseString, QueueDescriptionEntry.class)).thenReturn(entry);
 
         // Act & Assert
         StepVerifier.create(client.getQueueRuntimeInfo(queueName))
             .assertNext(info -> {
-                assertEquals(expectedDescription.getName(), info.getName());
-                assertEquals(Long.valueOf(expectedDescription.getMessageCount()), info.getMessageCount());
-                assertEquals(Long.valueOf(expectedDescription.getSizeInBytes()), info.getSizeInBytes());
-                assertEquals(expectedDescription.getCreatedAt(), info.getCreatedAt());
-                assertEquals(expectedDescription.getUpdatedAt(), info.getUpdatedAt());
-                assertEquals(expectedDescription.getAccessedAt(), info.getAccessedAt());
+                assertEquals(name, info.getName());
+                assertEquals(messageCount, info.getMessageCount());
+                assertEquals(sizeInBytes, info.getSizeInBytes());
+                assertEquals(createdAt, info.getCreatedAt());
+                assertEquals(updatedAt, info.getUpdatedAt());
+                assertEquals(accessedAt, info.getAccessedAt());
+
+                final MessageCountDetails details = info.getDetails();
+                assertNotNull(details);
+
+                assertEquals(expectedCount.getActiveMessageCount(), details.getActiveMessageCount());
+                assertEquals(expectedCount.getDeadLetterMessageCount(), details.getDeadLetterMessageCount());
+                assertEquals(expectedCount.getScheduledMessageCount(), details.getScheduledMessageCount());
+                assertEquals(expectedCount.getTransferMessageCount(), details.getTransferMessageCount());
+                assertEquals(expectedCount.getTransferDeadLetterMessageCount(), details.getTransferDeadLetterMessageCount());
             })
             .verifyComplete();
     }
@@ -265,20 +289,27 @@ class ServiceBusManagementAsyncClientTest {
     @Test
     void getQueueRuntimeInfoWithResponse() throws IOException {
         // Arrange
-        final QueueDescription expectedDescription = new QueueDescription(queueName)
-            .setMessageCount(100)
-            .setSizeInBytes(1053)
-            .setAccessedAt(OffsetDateTime.of(2020, 10, 6, 12, 1, 20, 300, ZoneOffset.UTC))
-            .setCreatedAt(OffsetDateTime.of(2010, 12, 10, 12, 1, 20, 300, ZoneOffset.UTC))
-            .setUpdatedAt(OffsetDateTime.of(2019, 4, 25, 7, 1, 20, 300, ZoneOffset.UTC));
-        final QueueDescriptionEntry expected = new QueueDescriptionEntry()
-            .setTitle(getResponseTitle(queueName))
-            .setContent(new QueueDescriptionEntryContent().setQueueDescription(expectedDescription));
+        final String contents = getContents("QueueDescriptionEntry.xml");
+        final ServiceBusManagementSerializer managementSerializer = new ServiceBusManagementSerializer();
+        final QueueDescriptionEntry entry = managementSerializer.deserialize(contents, QueueDescriptionEntry.class);
+
+        final String name = "my-test-queue";
+        final OffsetDateTime createdAt = OffsetDateTime.parse("2020-06-05T03:55:07.5Z");
+        final OffsetDateTime updatedAt = OffsetDateTime.parse("2020-06-05T03:45:07.64Z");
+        final OffsetDateTime accessedAt = OffsetDateTime.parse("0001-01-01T00:00:00Z");
+        final long sizeInBytes = 2048;
+        final long messageCount = 23;
+        final MessageCountDetails expectedCount = new MessageCountDetails()
+            .setActiveMessageCount(5)
+            .setDeadLetterMessageCount(3)
+            .setScheduledMessageCount(65)
+            .setTransferMessageCount(10)
+            .setTransferDeadLetterMessageCount(123);
 
         when(entitys.getWithResponseAsync(eq(queueName), eq(true), any(Context.class)))
             .thenReturn(Mono.just(objectResponse));
 
-        when(serializer.deserialize(responseString, QueueDescriptionEntry.class)).thenReturn(expected);
+        when(serializer.deserialize(responseString, QueueDescriptionEntry.class)).thenReturn(entry);
 
         // Act & Assert
         StepVerifier.create(client.getQueueRuntimeInfoWithResponse(queueName))
@@ -286,12 +317,21 @@ class ServiceBusManagementAsyncClientTest {
                 assertResponse(objectResponse, response);
 
                 final QueueRuntimeInfo info = response.getValue();
-                assertEquals(expectedDescription.getName(), info.getName());
-                assertEquals(Long.valueOf(expectedDescription.getMessageCount()), info.getMessageCount());
-                assertEquals(Long.valueOf(expectedDescription.getSizeInBytes()), info.getSizeInBytes());
-                assertEquals(expectedDescription.getCreatedAt(), info.getCreatedAt());
-                assertEquals(expectedDescription.getUpdatedAt(), info.getUpdatedAt());
-                assertEquals(expectedDescription.getAccessedAt(), info.getAccessedAt());
+                assertEquals(name, info.getName());
+                assertEquals(messageCount, info.getMessageCount());
+                assertEquals(sizeInBytes, info.getSizeInBytes());
+                assertEquals(createdAt, info.getCreatedAt());
+                assertEquals(updatedAt, info.getUpdatedAt());
+                assertEquals(accessedAt, info.getAccessedAt());
+
+                final MessageCountDetails details = info.getDetails();
+                assertNotNull(details);
+
+                assertEquals(expectedCount.getActiveMessageCount(), details.getActiveMessageCount());
+                assertEquals(expectedCount.getDeadLetterMessageCount(), details.getDeadLetterMessageCount());
+                assertEquals(expectedCount.getScheduledMessageCount(), details.getScheduledMessageCount());
+                assertEquals(expectedCount.getTransferMessageCount(), details.getTransferMessageCount());
+                assertEquals(expectedCount.getTransferDeadLetterMessageCount(), details.getTransferDeadLetterMessageCount());
             })
             .verifyComplete();
     }
@@ -401,6 +441,28 @@ class ServiceBusManagementAsyncClientTest {
                 assertEquals(updatedName, response.getValue().getName());
             })
             .verifyComplete();
+    }
+
+    /**
+     * Gets the corresponding test xml file.
+     *
+     * @param fileName Name of the xml file.
+     * @return String contents of file.
+     */
+    private String getContents(String fileName) {
+        final URL resourceUrl = getClass().getClassLoader().getResource(".");
+        assertNotNull(resourceUrl);
+
+        final File resourceFolder = new File(resourceUrl.getFile(), "xml");
+        assertTrue(resourceFolder.exists());
+
+        final Path path = Paths.get(resourceFolder.getPath(), fileName);
+        try {
+            return new String(Files.readAllBytes(path), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            fail(String.format("Unable to read file: '  %s'. Error: %s", path.getFileName(), e));
+            return null;
+        }
     }
 
     private static <T> void assertResponse(Response<Object> expected, Response<T> actual) {

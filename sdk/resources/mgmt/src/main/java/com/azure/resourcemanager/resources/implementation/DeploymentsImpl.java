@@ -32,8 +32,7 @@ public final class DeploymentsImpl
 
     @Override
     public PagedIterable<Deployment> list() {
-        return this.manager().inner().getDeployments().list()
-                .mapPage(inner -> new DeploymentImpl(inner, inner.name(), resourceManager));
+        return new PagedIterable<>(this.listAsync());
     }
 
     @Override
@@ -83,8 +82,7 @@ public final class DeploymentsImpl
 
     @Override
     public boolean checkExistence(String resourceGroupName, String deploymentName) {
-        // return this.getManager().getInner().deployments().checkExistence(resourceGroupName, deploymentName);
-        return true;
+        return this.manager().inner().getDeployments().checkExistence(resourceGroupName, deploymentName);
     }
 
     protected DeploymentImpl createFluentModel(String name) {
@@ -106,7 +104,6 @@ public final class DeploymentsImpl
     public void deleteById(String id) {
         deleteByIdAsync(id).block();
     }
-
 
     @Override
     public Mono<Void> deleteByIdAsync(String id) {

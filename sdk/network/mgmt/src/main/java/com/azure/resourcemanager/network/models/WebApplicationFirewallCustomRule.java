@@ -16,28 +16,27 @@ public final class WebApplicationFirewallCustomRule {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(WebApplicationFirewallCustomRule.class);
 
     /*
-     * Gets name of the resource that is unique within a policy. This name can
+     * The name of the resource that is unique within a policy. This name can
      * be used to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;
 
     /*
-     * Gets a unique read-only string that changes whenever the resource is
-     * updated.
+     * A unique read-only string that changes whenever the resource is updated.
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
-     * Describes priority of the rule. Rules with a lower value will be
-     * evaluated before rules with a higher value.
+     * Priority of the rule. Rules with a lower value will be evaluated before
+     * rules with a higher value.
      */
     @JsonProperty(value = "priority", required = true)
     private int priority;
 
     /*
-     * Describes type of rule.
+     * The rule type.
      */
     @JsonProperty(value = "ruleType", required = true)
     private WebApplicationFirewallRuleType ruleType;
@@ -55,7 +54,7 @@ public final class WebApplicationFirewallCustomRule {
     private WebApplicationFirewallAction action;
 
     /**
-     * Get the name property: Gets name of the resource that is unique within a policy. This name can be used to access
+     * Get the name property: The name of the resource that is unique within a policy. This name can be used to access
      * the resource.
      *
      * @return the name value.
@@ -65,7 +64,7 @@ public final class WebApplicationFirewallCustomRule {
     }
 
     /**
-     * Set the name property: Gets name of the resource that is unique within a policy. This name can be used to access
+     * Set the name property: The name of the resource that is unique within a policy. This name can be used to access
      * the resource.
      *
      * @param name the name value to set.
@@ -77,7 +76,7 @@ public final class WebApplicationFirewallCustomRule {
     }
 
     /**
-     * Get the etag property: Gets a unique read-only string that changes whenever the resource is updated.
+     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value.
      */
@@ -86,8 +85,8 @@ public final class WebApplicationFirewallCustomRule {
     }
 
     /**
-     * Get the priority property: Describes priority of the rule. Rules with a lower value will be evaluated before
-     * rules with a higher value.
+     * Get the priority property: Priority of the rule. Rules with a lower value will be evaluated before rules with a
+     * higher value.
      *
      * @return the priority value.
      */
@@ -96,8 +95,8 @@ public final class WebApplicationFirewallCustomRule {
     }
 
     /**
-     * Set the priority property: Describes priority of the rule. Rules with a lower value will be evaluated before
-     * rules with a higher value.
+     * Set the priority property: Priority of the rule. Rules with a lower value will be evaluated before rules with a
+     * higher value.
      *
      * @param priority the priority value to set.
      * @return the WebApplicationFirewallCustomRule object itself.
@@ -108,7 +107,7 @@ public final class WebApplicationFirewallCustomRule {
     }
 
     /**
-     * Get the ruleType property: Describes type of rule.
+     * Get the ruleType property: The rule type.
      *
      * @return the ruleType value.
      */
@@ -117,7 +116,7 @@ public final class WebApplicationFirewallCustomRule {
     }
 
     /**
-     * Set the ruleType property: Describes type of rule.
+     * Set the ruleType property: The rule type.
      *
      * @param ruleType the ruleType value to set.
      * @return the WebApplicationFirewallCustomRule object itself.

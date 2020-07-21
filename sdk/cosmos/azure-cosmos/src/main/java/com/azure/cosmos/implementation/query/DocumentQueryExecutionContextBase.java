@@ -163,9 +163,9 @@ implements IDocumentQueryExecutionContext<T> {
             requestHeaders.put(HttpConstants.HttpHeaders.PARALLELIZE_CROSS_PARTITION_QUERY, Strings.toString(true));
         }
 
-        if (this.cosmosQueryRequestOptions.setResponseContinuationTokenLimitInKb() > 0) {
+        if (this.cosmosQueryRequestOptions.getResponseContinuationTokenLimitInKb() > 0) {
             requestHeaders.put(HttpConstants.HttpHeaders.RESPONSE_CONTINUATION_TOKEN_LIMIT_IN_KB,
-                    Strings.toString(cosmosQueryRequestOptions.setResponseContinuationTokenLimitInKb()));
+                    Strings.toString(cosmosQueryRequestOptions.getResponseContinuationTokenLimitInKb()));
         }
 
         if (desiredConsistencyLevel != null) {

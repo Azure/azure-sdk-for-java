@@ -10,6 +10,7 @@ import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ContainerNetworkInterface;
 import com.azure.resourcemanager.network.models.ContainerNetworkInterfaceConfiguration;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -23,13 +24,13 @@ public class NetworkProfileInner extends Resource {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag")
+    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * List of child container network interfaces.
      */
-    @JsonProperty(value = "properties.containerNetworkInterfaces")
+    @JsonProperty(value = "properties.containerNetworkInterfaces", access = JsonProperty.Access.WRITE_ONLY)
     private List<ContainerNetworkInterface> containerNetworkInterfaces;
 
     /*
@@ -39,16 +40,16 @@ public class NetworkProfileInner extends Resource {
     private List<ContainerNetworkInterfaceConfiguration> containerNetworkInterfaceConfigurations;
 
     /*
-     * The resource GUID property of the network interface resource.
+     * The resource GUID property of the network profile resource.
      */
     @JsonProperty(value = "properties.resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGuid;
 
     /*
-     * The provisioning state of the resource.
+     * The provisioning state of the network profile resource.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * Resource ID.
@@ -66,35 +67,12 @@ public class NetworkProfileInner extends Resource {
     }
 
     /**
-     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
-     * @param etag the etag value to set.
-     * @return the NetworkProfileInner object itself.
-     */
-    public NetworkProfileInner withEtag(String etag) {
-        this.etag = etag;
-        return this;
-    }
-
-    /**
      * Get the containerNetworkInterfaces property: List of child container network interfaces.
      *
      * @return the containerNetworkInterfaces value.
      */
     public List<ContainerNetworkInterface> containerNetworkInterfaces() {
         return this.containerNetworkInterfaces;
-    }
-
-    /**
-     * Set the containerNetworkInterfaces property: List of child container network interfaces.
-     *
-     * @param containerNetworkInterfaces the containerNetworkInterfaces value to set.
-     * @return the NetworkProfileInner object itself.
-     */
-    public NetworkProfileInner withContainerNetworkInterfaces(
-        List<ContainerNetworkInterface> containerNetworkInterfaces) {
-        this.containerNetworkInterfaces = containerNetworkInterfaces;
-        return this;
     }
 
     /**
@@ -121,7 +99,7 @@ public class NetworkProfileInner extends Resource {
     }
 
     /**
-     * Get the resourceGuid property: The resource GUID property of the network interface resource.
+     * Get the resourceGuid property: The resource GUID property of the network profile resource.
      *
      * @return the resourceGuid value.
      */
@@ -130,11 +108,11 @@ public class NetworkProfileInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the resource.
+     * Get the provisioningState property: The provisioning state of the network profile resource.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 

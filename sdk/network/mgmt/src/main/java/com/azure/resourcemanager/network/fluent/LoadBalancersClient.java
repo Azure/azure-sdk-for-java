@@ -31,6 +31,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.LoadBalancerInner;
 import com.azure.resourcemanager.network.fluent.inner.LoadBalancerListResultInner;
@@ -122,7 +123,7 @@ public final class LoadBalancersClient
                 + "/loadBalancers/{loadBalancerName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> updateTags(
+        Mono<Response<LoadBalancerInner>> updateTags(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("loadBalancerName") String loadBalancerName,
@@ -152,50 +153,6 @@ public final class LoadBalancersClient
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/loadBalancers/{loadBalancerName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginDeleteWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("loadBalancerName") String loadBalancerName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/loadBalancers/{loadBalancerName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LoadBalancerInner>> beginCreateOrUpdateWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("loadBalancerName") String loadBalancerName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") LoadBalancerInner parameters,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/loadBalancers/{loadBalancerName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LoadBalancerInner>> beginUpdateTagsWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("loadBalancerName") String loadBalancerName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") TagsObject parameters,
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
@@ -245,7 +202,7 @@ public final class LoadBalancersClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -294,7 +251,7 @@ public final class LoadBalancersClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -316,7 +273,7 @@ public final class LoadBalancersClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(String resourceGroupName, String loadBalancerName) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String loadBalancerName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, loadBalancerName);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
     }
@@ -333,7 +290,7 @@ public final class LoadBalancersClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String loadBalancerName, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, loadBalancerName, context);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
@@ -350,13 +307,42 @@ public final class LoadBalancersClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String loadBalancerName) {
+        return beginDeleteAsync(resourceGroupName, loadBalancerName).getSyncPoller();
+    }
+
+    /**
+     * Deletes the specified load balancer.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String loadBalancerName, Context context) {
+        return beginDeleteAsync(resourceGroupName, loadBalancerName, context).getSyncPoller();
+    }
+
+    /**
+     * Deletes the specified load balancer.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String loadBalancerName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, loadBalancerName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, loadBalancerName)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -372,12 +358,9 @@ public final class LoadBalancersClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String loadBalancerName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, loadBalancerName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, loadBalancerName, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -443,7 +426,7 @@ public final class LoadBalancersClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -494,7 +477,7 @@ public final class LoadBalancersClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .getByResourceGroup(
                 this.client.getEndpoint(),
@@ -672,7 +655,7 @@ public final class LoadBalancersClient
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -728,7 +711,7 @@ public final class LoadBalancersClient
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -752,7 +735,7 @@ public final class LoadBalancersClient
      * @return loadBalancer resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<LoadBalancerInner>, LoadBalancerInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<LoadBalancerInner>, LoadBalancerInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, loadBalancerName, parameters);
@@ -775,7 +758,7 @@ public final class LoadBalancersClient
      * @return loadBalancer resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<LoadBalancerInner>, LoadBalancerInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<LoadBalancerInner>, LoadBalancerInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, loadBalancerName, parameters, context);
@@ -797,16 +780,46 @@ public final class LoadBalancersClient
      * @return loadBalancer resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<LoadBalancerInner>, LoadBalancerInner> beginCreateOrUpdate(
+        String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, loadBalancerName, parameters).getSyncPoller();
+    }
+
+    /**
+     * Creates or updates a load balancer.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param parameters LoadBalancer resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return loadBalancer resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<LoadBalancerInner>, LoadBalancerInner> beginCreateOrUpdate(
+        String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, loadBalancerName, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * Creates or updates a load balancer.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param parameters LoadBalancer resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return loadBalancer resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LoadBalancerInner> createOrUpdateAsync(
         String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, loadBalancerName, parameters);
-        return this
-            .client
-            .<LoadBalancerInner, LoadBalancerInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), LoadBalancerInner.class, LoadBalancerInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, loadBalancerName, parameters)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -824,14 +837,9 @@ public final class LoadBalancersClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LoadBalancerInner> createOrUpdateAsync(
         String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, loadBalancerName, parameters, context);
-        return this
-            .client
-            .<LoadBalancerInner, LoadBalancerInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), LoadBalancerInner.class, LoadBalancerInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, loadBalancerName, parameters, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -881,7 +889,7 @@ public final class LoadBalancersClient
      * @return loadBalancer resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
+    public Mono<Response<LoadBalancerInner>> updateTagsWithResponseAsync(
         String resourceGroupName, String loadBalancerName, Map<String, String> tags) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -903,7 +911,7 @@ public final class LoadBalancersClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         TagsObject parameters = new TagsObject();
         parameters.withTags(tags);
         return FluxUtil
@@ -934,7 +942,7 @@ public final class LoadBalancersClient
      * @return loadBalancer resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
+    public Mono<Response<LoadBalancerInner>> updateTagsWithResponseAsync(
         String resourceGroupName, String loadBalancerName, Map<String, String> tags, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -956,7 +964,7 @@ public final class LoadBalancersClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         TagsObject parameters = new TagsObject();
         parameters.withTags(tags);
         return service
@@ -982,59 +990,17 @@ public final class LoadBalancersClient
      * @return loadBalancer resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<LoadBalancerInner>, LoadBalancerInner> beginUpdateTags(
-        String resourceGroupName, String loadBalancerName, Map<String, String> tags) {
-        Mono<Response<Flux<ByteBuffer>>> mono = updateTagsWithResponseAsync(resourceGroupName, loadBalancerName, tags);
-        return this
-            .client
-            .<LoadBalancerInner, LoadBalancerInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), LoadBalancerInner.class, LoadBalancerInner.class);
-    }
-
-    /**
-     * Updates a load balancer tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return loadBalancer resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<LoadBalancerInner>, LoadBalancerInner> beginUpdateTags(
-        String resourceGroupName, String loadBalancerName, Map<String, String> tags, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateTagsWithResponseAsync(resourceGroupName, loadBalancerName, tags, context);
-        return this
-            .client
-            .<LoadBalancerInner, LoadBalancerInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), LoadBalancerInner.class, LoadBalancerInner.class);
-    }
-
-    /**
-     * Updates a load balancer tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return loadBalancer resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LoadBalancerInner> updateTagsAsync(
         String resourceGroupName, String loadBalancerName, Map<String, String> tags) {
-        Mono<Response<Flux<ByteBuffer>>> mono = updateTagsWithResponseAsync(resourceGroupName, loadBalancerName, tags);
-        return this
-            .client
-            .<LoadBalancerInner, LoadBalancerInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), LoadBalancerInner.class, LoadBalancerInner.class)
-            .last()
-            .flatMap(client::getLroFinalResultOrError);
+        return updateTagsWithResponseAsync(resourceGroupName, loadBalancerName, tags)
+            .flatMap(
+                (Response<LoadBalancerInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -1052,14 +1018,15 @@ public final class LoadBalancersClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LoadBalancerInner> updateTagsAsync(
         String resourceGroupName, String loadBalancerName, Map<String, String> tags, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateTagsWithResponseAsync(resourceGroupName, loadBalancerName, tags, context);
-        return this
-            .client
-            .<LoadBalancerInner, LoadBalancerInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), LoadBalancerInner.class, LoadBalancerInner.class)
-            .last()
-            .flatMap(client::getLroFinalResultOrError);
+        return updateTagsWithResponseAsync(resourceGroupName, loadBalancerName, tags, context)
+            .flatMap(
+                (Response<LoadBalancerInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -1117,7 +1084,7 @@ public final class LoadBalancersClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1157,7 +1124,7 @@ public final class LoadBalancersClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), context)
             .map(
@@ -1250,7 +1217,7 @@ public final class LoadBalancersClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1302,7 +1269,7 @@ public final class LoadBalancersClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .listByResourceGroup(
                 this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(), context)
@@ -1376,543 +1343,6 @@ public final class LoadBalancersClient
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LoadBalancerInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
-    }
-
-    /**
-     * Deletes the specified load balancer.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
-        String resourceGroupName, String loadBalancerName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (loadBalancerName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter loadBalancerName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginDeleteWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            loadBalancerName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Deletes the specified load balancer.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
-        String resourceGroupName, String loadBalancerName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (loadBalancerName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter loadBalancerName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        return service
-            .beginDeleteWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                loadBalancerName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                context);
-    }
-
-    /**
-     * Deletes the specified load balancer.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteWithoutPollingAsync(String resourceGroupName, String loadBalancerName) {
-        return beginDeleteWithoutPollingWithResponseAsync(resourceGroupName, loadBalancerName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes the specified load balancer.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteWithoutPollingAsync(
-        String resourceGroupName, String loadBalancerName, Context context) {
-        return beginDeleteWithoutPollingWithResponseAsync(resourceGroupName, loadBalancerName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes the specified load balancer.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(String resourceGroupName, String loadBalancerName) {
-        beginDeleteWithoutPollingAsync(resourceGroupName, loadBalancerName).block();
-    }
-
-    /**
-     * Deletes the specified load balancer.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(String resourceGroupName, String loadBalancerName, Context context) {
-        beginDeleteWithoutPollingAsync(resourceGroupName, loadBalancerName, context).block();
-    }
-
-    /**
-     * Creates or updates a load balancer.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
-     * @param parameters LoadBalancer resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return loadBalancer resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<LoadBalancerInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (loadBalancerName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter loadBalancerName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2019-06-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginCreateOrUpdateWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            loadBalancerName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Creates or updates a load balancer.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
-     * @param parameters LoadBalancer resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return loadBalancer resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<LoadBalancerInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (loadBalancerName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter loadBalancerName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2019-06-01";
-        return service
-            .beginCreateOrUpdateWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                loadBalancerName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                parameters,
-                context);
-    }
-
-    /**
-     * Creates or updates a load balancer.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
-     * @param parameters LoadBalancer resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return loadBalancer resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LoadBalancerInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(resourceGroupName, loadBalancerName, parameters)
-            .flatMap(
-                (Response<LoadBalancerInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates a load balancer.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
-     * @param parameters LoadBalancer resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return loadBalancer resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LoadBalancerInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters, Context context) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(
-                resourceGroupName, loadBalancerName, parameters, context)
-            .flatMap(
-                (Response<LoadBalancerInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates a load balancer.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
-     * @param parameters LoadBalancer resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return loadBalancer resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LoadBalancerInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters) {
-        return beginCreateOrUpdateWithoutPollingAsync(resourceGroupName, loadBalancerName, parameters).block();
-    }
-
-    /**
-     * Creates or updates a load balancer.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
-     * @param parameters LoadBalancer resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return loadBalancer resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LoadBalancerInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters, Context context) {
-        return beginCreateOrUpdateWithoutPollingAsync(resourceGroupName, loadBalancerName, parameters, context).block();
-    }
-
-    /**
-     * Updates a load balancer tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return loadBalancer resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<LoadBalancerInner>> beginUpdateTagsWithoutPollingWithResponseAsync(
-        String resourceGroupName, String loadBalancerName, Map<String, String> tags) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (loadBalancerName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter loadBalancerName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginUpdateTagsWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            loadBalancerName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Updates a load balancer tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return loadBalancer resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<LoadBalancerInner>> beginUpdateTagsWithoutPollingWithResponseAsync(
-        String resourceGroupName, String loadBalancerName, Map<String, String> tags, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (loadBalancerName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter loadBalancerName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
-        return service
-            .beginUpdateTagsWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                loadBalancerName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                parameters,
-                context);
-    }
-
-    /**
-     * Updates a load balancer tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return loadBalancer resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LoadBalancerInner> beginUpdateTagsWithoutPollingAsync(
-        String resourceGroupName, String loadBalancerName, Map<String, String> tags) {
-        return beginUpdateTagsWithoutPollingWithResponseAsync(resourceGroupName, loadBalancerName, tags)
-            .flatMap(
-                (Response<LoadBalancerInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Updates a load balancer tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return loadBalancer resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LoadBalancerInner> beginUpdateTagsWithoutPollingAsync(
-        String resourceGroupName, String loadBalancerName, Map<String, String> tags, Context context) {
-        return beginUpdateTagsWithoutPollingWithResponseAsync(resourceGroupName, loadBalancerName, tags, context)
-            .flatMap(
-                (Response<LoadBalancerInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Updates a load balancer tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return loadBalancer resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LoadBalancerInner beginUpdateTagsWithoutPolling(
-        String resourceGroupName, String loadBalancerName, Map<String, String> tags) {
-        return beginUpdateTagsWithoutPollingAsync(resourceGroupName, loadBalancerName, tags).block();
-    }
-
-    /**
-     * Updates a load balancer tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return loadBalancer resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LoadBalancerInner beginUpdateTagsWithoutPolling(
-        String resourceGroupName, String loadBalancerName, Map<String, String> tags, Context context) {
-        return beginUpdateTagsWithoutPollingAsync(resourceGroupName, loadBalancerName, tags, context).block();
     }
 
     /**

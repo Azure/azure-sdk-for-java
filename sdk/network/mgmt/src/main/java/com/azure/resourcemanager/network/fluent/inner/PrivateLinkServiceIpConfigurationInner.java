@@ -51,7 +51,7 @@ public class PrivateLinkServiceIpConfigurationInner extends SubResource {
     private IpAllocationMethod privateIpAllocationMethod;
 
     /*
-     * The reference of the subnet resource.
+     * The reference to the subnet resource.
      */
     @JsonProperty(value = "properties.subnet")
     private SubnetInner subnet;
@@ -63,14 +63,14 @@ public class PrivateLinkServiceIpConfigurationInner extends SubResource {
     private Boolean primary;
 
     /*
-     * The provisioning state of the private link service ip configuration.
+     * The provisioning state of the private link service IP configuration
+     * resource.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
-     * Available from Api-Version 2016-03-30 onwards, it represents whether the
-     * specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4.
+     * Whether the specific IP configuration is IPv4 or IPv6. Default is IPv4.
      */
     @JsonProperty(value = "properties.privateIPAddressVersion")
     private IpVersion privateIpAddressVersion;
@@ -155,7 +155,7 @@ public class PrivateLinkServiceIpConfigurationInner extends SubResource {
     }
 
     /**
-     * Get the subnet property: The reference of the subnet resource.
+     * Get the subnet property: The reference to the subnet resource.
      *
      * @return the subnet value.
      */
@@ -164,7 +164,7 @@ public class PrivateLinkServiceIpConfigurationInner extends SubResource {
     }
 
     /**
-     * Set the subnet property: The reference of the subnet resource.
+     * Set the subnet property: The reference to the subnet resource.
      *
      * @param subnet the subnet value to set.
      * @return the PrivateLinkServiceIpConfigurationInner object itself.
@@ -195,7 +195,7 @@ public class PrivateLinkServiceIpConfigurationInner extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the private link service ip configuration.
+     * Get the provisioningState property: The provisioning state of the private link service IP configuration resource.
      *
      * @return the provisioningState value.
      */
@@ -204,8 +204,7 @@ public class PrivateLinkServiceIpConfigurationInner extends SubResource {
     }
 
     /**
-     * Get the privateIpAddressVersion property: Available from Api-Version 2016-03-30 onwards, it represents whether
-     * the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4.
+     * Get the privateIpAddressVersion property: Whether the specific IP configuration is IPv4 or IPv6. Default is IPv4.
      *
      * @return the privateIpAddressVersion value.
      */
@@ -214,8 +213,7 @@ public class PrivateLinkServiceIpConfigurationInner extends SubResource {
     }
 
     /**
-     * Set the privateIpAddressVersion property: Available from Api-Version 2016-03-30 onwards, it represents whether
-     * the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4.
+     * Set the privateIpAddressVersion property: Whether the specific IP configuration is IPv4 or IPv6. Default is IPv4.
      *
      * @param privateIpAddressVersion the privateIpAddressVersion value to set.
      * @return the PrivateLinkServiceIpConfigurationInner object itself.

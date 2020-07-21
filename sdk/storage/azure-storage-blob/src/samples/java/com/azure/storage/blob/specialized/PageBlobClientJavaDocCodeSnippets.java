@@ -9,6 +9,7 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.CopyStatusType;
+import com.azure.storage.blob.options.PageBlobCreateOptions;
 import com.azure.storage.blob.models.PageBlobItem;
 import com.azure.storage.blob.models.PageBlobRequestConditions;
 import com.azure.storage.blob.models.PageList;
@@ -32,6 +33,7 @@ import java.util.Map;
 public class PageBlobClientJavaDocCodeSnippets {
     private PageBlobClient client = new SpecializedBlobClientBuilder().buildPageBlobClient();
     private Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+    private Map<String, String> tags = Collections.singletonMap("tag", "value");
     private String leaseId = "leaseId";
     private Duration timeout = Duration.ofSeconds(30);
     private long size = 1024;
@@ -81,6 +83,28 @@ public class PageBlobClientJavaDocCodeSnippets {
 
         System.out.printf("Created page blob with sequence number %s%n", pageBlob.getBlobSequenceNumber());
         // END: com.azure.storage.blob.specialized.PageBlobClient.createWithResponse#long-Long-BlobHttpHeaders-Map-BlobRequestConditions-Duration-Context
+    }
+
+    /**
+     * Code snippets for {@link PageBlobClient#createWithResponse(PageBlobCreateOptions, Duration, Context)}
+     */
+    public void createWithResponse2CodeSnippet() {
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.createWithResponse#PageBlobCreateOptions-Duration-Context
+        BlobHttpHeaders headers = new BlobHttpHeaders()
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+        BlobRequestConditions blobRequestConditions = new BlobRequestConditions().setLeaseId(leaseId);
+        Context context = new Context(key, value);
+
+        PageBlobItem pageBlob = client
+            .createWithResponse(new PageBlobCreateOptions(size).setSequenceNumber(sequenceNumber)
+                    .setHeaders(headers).setMetadata(metadata).setTags(tags)
+                    .setRequestConditions(blobRequestConditions), timeout,
+                context)
+            .getValue();
+
+        System.out.printf("Created page blob with sequence number %s%n", pageBlob.getBlobSequenceNumber());
+        // END: com.azure.storage.blob.specialized.PageBlobClient.createWithResponse#PageBlobCreateOptions-Duration-Context
     }
 
     /**

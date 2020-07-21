@@ -27,8 +27,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders;
 import static com.azure.cosmos.implementation.HttpConstants.HeaderValues;
+import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders;
 import static com.azure.cosmos.implementation.directconnectivity.WFConstants.BackendHeaders;
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.RntbdConsistencyLevel;
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.RntbdContentSerializationFormat;

@@ -38,11 +38,10 @@ public class ApplicationGatewayRewriteRuleSet extends SubResource {
     private List<ApplicationGatewayRewriteRule> rewriteRules;
 
     /*
-     * Provisioning state of the rewrite rule set resource. Possible values
-     * are: 'Updating', 'Deleting', and 'Failed'.
+     * The provisioning state of the rewrite rule set resource.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    private ProvisioningState provisioningState;
 
     /**
      * Get the name property: Name of the rewrite rule set that is unique within an Application Gateway.
@@ -94,12 +93,11 @@ public class ApplicationGatewayRewriteRuleSet extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: Provisioning state of the rewrite rule set resource. Possible values are:
-     * 'Updating', 'Deleting', and 'Failed'.
+     * Get the provisioningState property: The provisioning state of the rewrite rule set resource.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 

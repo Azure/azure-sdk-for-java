@@ -33,6 +33,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.resources.ResourceManagementClient;
 import com.azure.resourcemanager.resources.fluent.inner.ResourceGroupExportResultInner;
 import com.azure.resourcemanager.resources.fluent.inner.ResourceGroupInner;
@@ -150,29 +151,6 @@ public final class ResourceGroupsClient {
             @QueryParam("$top") Integer top,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginDeleteWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Post("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/exportTemplate")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ResourceGroupExportResultInner>> beginExportTemplateWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ExportTemplateRequest parameters,
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
@@ -618,7 +596,7 @@ public final class ResourceGroupsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(String resourceGroupName) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
     }
@@ -635,7 +613,7 @@ public final class ResourceGroupsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(String resourceGroupName, Context context) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, context);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
     }
@@ -651,13 +629,39 @@ public final class ResourceGroupsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName) {
+        return beginDeleteAsync(resourceGroupName).getSyncPoller();
+    }
+
+    /**
+     * When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of
+     * its template deployments and currently stored operations.
+     *
+     * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, Context context) {
+        return beginDeleteAsync(resourceGroupName, context).getSyncPoller();
+    }
+
+    /**
+     * When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of
+     * its template deployments and currently stored operations.
+     *
+     * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
-            .last()
-            .flatMap(client::getLroFinalResultOrError);
+        return beginDeleteAsync(resourceGroupName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -673,12 +677,7 @@ public final class ResourceGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
-            .last()
-            .flatMap(client::getLroFinalResultOrError);
+        return beginDeleteAsync(resourceGroupName, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1143,8 +1142,8 @@ public final class ResourceGroupsClient {
      * @return resource group export result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<ResourceGroupExportResultInner>, ResourceGroupExportResultInner> beginExportTemplate(
-        String resourceGroupName, ExportTemplateRequest parameters) {
+    public PollerFlux<PollResult<ResourceGroupExportResultInner>, ResourceGroupExportResultInner>
+        beginExportTemplateAsync(String resourceGroupName, ExportTemplateRequest parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = exportTemplateWithResponseAsync(resourceGroupName, parameters);
         return this
             .client
@@ -1167,8 +1166,8 @@ public final class ResourceGroupsClient {
      * @return resource group export result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<ResourceGroupExportResultInner>, ResourceGroupExportResultInner> beginExportTemplate(
-        String resourceGroupName, ExportTemplateRequest parameters, Context context) {
+    public PollerFlux<PollResult<ResourceGroupExportResultInner>, ResourceGroupExportResultInner>
+        beginExportTemplateAsync(String resourceGroupName, ExportTemplateRequest parameters, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono = exportTemplateWithResponseAsync(resourceGroupName, parameters, context);
         return this
             .client
@@ -1190,18 +1189,44 @@ public final class ResourceGroupsClient {
      * @return resource group export result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ResourceGroupExportResultInner>, ResourceGroupExportResultInner> beginExportTemplate(
+        String resourceGroupName, ExportTemplateRequest parameters) {
+        return beginExportTemplateAsync(resourceGroupName, parameters).getSyncPoller();
+    }
+
+    /**
+     * Captures the specified resource group as a template.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param parameters Export resource group template request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource group export result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ResourceGroupExportResultInner>, ResourceGroupExportResultInner> beginExportTemplate(
+        String resourceGroupName, ExportTemplateRequest parameters, Context context) {
+        return beginExportTemplateAsync(resourceGroupName, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * Captures the specified resource group as a template.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param parameters Export resource group template request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource group export result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResourceGroupExportResultInner> exportTemplateAsync(
         String resourceGroupName, ExportTemplateRequest parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono = exportTemplateWithResponseAsync(resourceGroupName, parameters);
-        return this
-            .client
-            .<ResourceGroupExportResultInner, ResourceGroupExportResultInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                ResourceGroupExportResultInner.class,
-                ResourceGroupExportResultInner.class)
+        return beginExportTemplateAsync(resourceGroupName, parameters)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1218,16 +1243,9 @@ public final class ResourceGroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResourceGroupExportResultInner> exportTemplateAsync(
         String resourceGroupName, ExportTemplateRequest parameters, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono = exportTemplateWithResponseAsync(resourceGroupName, parameters, context);
-        return this
-            .client
-            .<ResourceGroupExportResultInner, ResourceGroupExportResultInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                ResourceGroupExportResultInner.class,
-                ResourceGroupExportResultInner.class)
+        return beginExportTemplateAsync(resourceGroupName, parameters, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1450,322 +1468,6 @@ public final class ResourceGroupsClient {
         final Integer top = null;
         final Context context = null;
         return new PagedIterable<>(listAsync(filter, top));
-    }
-
-    /**
-     * When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of
-     * its template deployments and currently stored operations.
-     *
-     * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(String resourceGroupName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginDeleteWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of
-     * its template deployments and currently stored operations.
-     *
-     * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(String resourceGroupName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        return service
-            .beginDeleteWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                context);
-    }
-
-    /**
-     * When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of
-     * its template deployments and currently stored operations.
-     *
-     * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteWithoutPollingAsync(String resourceGroupName) {
-        return beginDeleteWithoutPollingWithResponseAsync(resourceGroupName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of
-     * its template deployments and currently stored operations.
-     *
-     * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteWithoutPollingAsync(String resourceGroupName, Context context) {
-        return beginDeleteWithoutPollingWithResponseAsync(resourceGroupName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of
-     * its template deployments and currently stored operations.
-     *
-     * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(String resourceGroupName) {
-        beginDeleteWithoutPollingAsync(resourceGroupName).block();
-    }
-
-    /**
-     * When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of
-     * its template deployments and currently stored operations.
-     *
-     * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(String resourceGroupName, Context context) {
-        beginDeleteWithoutPollingAsync(resourceGroupName, context).block();
-    }
-
-    /**
-     * Captures the specified resource group as a template.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters Export resource group template request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource group export result.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ResourceGroupExportResultInner>> beginExportTemplateWithoutPollingWithResponseAsync(
-        String resourceGroupName, ExportTemplateRequest parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginExportTemplateWithoutPolling(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Captures the specified resource group as a template.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters Export resource group template request parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource group export result.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ResourceGroupExportResultInner>> beginExportTemplateWithoutPollingWithResponseAsync(
-        String resourceGroupName, ExportTemplateRequest parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        return service
-            .beginExportTemplateWithoutPolling(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                parameters,
-                context);
-    }
-
-    /**
-     * Captures the specified resource group as a template.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters Export resource group template request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource group export result.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResourceGroupExportResultInner> beginExportTemplateWithoutPollingAsync(
-        String resourceGroupName, ExportTemplateRequest parameters) {
-        return beginExportTemplateWithoutPollingWithResponseAsync(resourceGroupName, parameters)
-            .flatMap(
-                (Response<ResourceGroupExportResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Captures the specified resource group as a template.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters Export resource group template request parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource group export result.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResourceGroupExportResultInner> beginExportTemplateWithoutPollingAsync(
-        String resourceGroupName, ExportTemplateRequest parameters, Context context) {
-        return beginExportTemplateWithoutPollingWithResponseAsync(resourceGroupName, parameters, context)
-            .flatMap(
-                (Response<ResourceGroupExportResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Captures the specified resource group as a template.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters Export resource group template request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource group export result.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResourceGroupExportResultInner beginExportTemplateWithoutPolling(
-        String resourceGroupName, ExportTemplateRequest parameters) {
-        return beginExportTemplateWithoutPollingAsync(resourceGroupName, parameters).block();
-    }
-
-    /**
-     * Captures the specified resource group as a template.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters Export resource group template request parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource group export result.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResourceGroupExportResultInner beginExportTemplateWithoutPolling(
-        String resourceGroupName, ExportTemplateRequest parameters, Context context) {
-        return beginExportTemplateWithoutPollingAsync(resourceGroupName, parameters, context).block();
     }
 
     /**

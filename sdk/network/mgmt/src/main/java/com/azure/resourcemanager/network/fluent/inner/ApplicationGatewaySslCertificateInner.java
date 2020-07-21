@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -27,13 +28,13 @@ public class ApplicationGatewaySslCertificateInner extends SubResource {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag")
+    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Type of the resource.
      */
-    @JsonProperty(value = "type")
+    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
@@ -53,7 +54,7 @@ public class ApplicationGatewaySslCertificateInner extends SubResource {
      * Base-64 encoded Public cert data corresponding to pfx specified in data.
      * Only applicable in GET request.
      */
-    @JsonProperty(value = "properties.publicCertData")
+    @JsonProperty(value = "properties.publicCertData", access = JsonProperty.Access.WRITE_ONLY)
     private String publicCertData;
 
     /*
@@ -64,11 +65,10 @@ public class ApplicationGatewaySslCertificateInner extends SubResource {
     private String keyVaultSecretId;
 
     /*
-     * Provisioning state of the SSL certificate resource Possible values are:
-     * 'Updating', 'Deleting', and 'Failed'.
+     * The provisioning state of the SSL certificate resource.
      */
-    @JsonProperty(value = "properties.provisioningState")
-    private String provisioningState;
+    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private ProvisioningState provisioningState;
 
     /**
      * Get the name property: Name of the SSL certificate that is unique within an Application Gateway.
@@ -100,34 +100,12 @@ public class ApplicationGatewaySslCertificateInner extends SubResource {
     }
 
     /**
-     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
-     * @param etag the etag value to set.
-     * @return the ApplicationGatewaySslCertificateInner object itself.
-     */
-    public ApplicationGatewaySslCertificateInner withEtag(String etag) {
-        this.etag = etag;
-        return this;
-    }
-
-    /**
      * Get the type property: Type of the resource.
      *
      * @return the type value.
      */
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Set the type property: Type of the resource.
-     *
-     * @param type the type value to set.
-     * @return the ApplicationGatewaySslCertificateInner object itself.
-     */
-    public ApplicationGatewaySslCertificateInner withType(String type) {
-        this.type = type;
-        return this;
     }
 
     /**
@@ -181,18 +159,6 @@ public class ApplicationGatewaySslCertificateInner extends SubResource {
     }
 
     /**
-     * Set the publicCertData property: Base-64 encoded Public cert data corresponding to pfx specified in data. Only
-     * applicable in GET request.
-     *
-     * @param publicCertData the publicCertData value to set.
-     * @return the ApplicationGatewaySslCertificateInner object itself.
-     */
-    public ApplicationGatewaySslCertificateInner withPublicCertData(String publicCertData) {
-        this.publicCertData = publicCertData;
-        return this;
-    }
-
-    /**
      * Get the keyVaultSecretId property: Secret Id of (base-64 encoded unencrypted pfx) 'Secret' or 'Certificate'
      * object stored in KeyVault.
      *
@@ -215,25 +181,12 @@ public class ApplicationGatewaySslCertificateInner extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: Provisioning state of the SSL certificate resource Possible values are:
-     * 'Updating', 'Deleting', and 'Failed'.
+     * Get the provisioningState property: The provisioning state of the SSL certificate resource.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Set the provisioningState property: Provisioning state of the SSL certificate resource Possible values are:
-     * 'Updating', 'Deleting', and 'Failed'.
-     *
-     * @param provisioningState the provisioningState value to set.
-     * @return the ApplicationGatewaySslCertificateInner object itself.
-     */
-    public ApplicationGatewaySslCertificateInner withProvisioningState(String provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
     }
 
     /**

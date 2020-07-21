@@ -4,41 +4,28 @@
 
 package com.azure.resourcemanager.compute.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for DiskEncryptionSetIdentityType. */
-public enum DiskEncryptionSetIdentityType {
-    /** Enum value SystemAssigned. */
-    SYSTEM_ASSIGNED("SystemAssigned");
-
-    /** The actual serialized value for a DiskEncryptionSetIdentityType instance. */
-    private final String value;
-
-    DiskEncryptionSetIdentityType(String value) {
-        this.value = value;
-    }
+public final class DiskEncryptionSetIdentityType extends ExpandableStringEnum<DiskEncryptionSetIdentityType> {
+    /** Static value SystemAssigned for DiskEncryptionSetIdentityType. */
+    public static final DiskEncryptionSetIdentityType SYSTEM_ASSIGNED = fromString("SystemAssigned");
 
     /**
-     * Parses a serialized value to a DiskEncryptionSetIdentityType instance.
+     * Creates or finds a DiskEncryptionSetIdentityType from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed DiskEncryptionSetIdentityType object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding DiskEncryptionSetIdentityType.
      */
     @JsonCreator
-    public static DiskEncryptionSetIdentityType fromString(String value) {
-        DiskEncryptionSetIdentityType[] items = DiskEncryptionSetIdentityType.values();
-        for (DiskEncryptionSetIdentityType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static DiskEncryptionSetIdentityType fromString(String name) {
+        return fromString(name, DiskEncryptionSetIdentityType.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /** @return known DiskEncryptionSetIdentityType values. */
+    public static Collection<DiskEncryptionSetIdentityType> values() {
+        return values(DiskEncryptionSetIdentityType.class);
     }
 }

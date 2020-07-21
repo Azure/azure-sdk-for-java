@@ -85,7 +85,14 @@ class FileTestHelper {
         }
     }
 
-    static boolean assertSharesAreEqual(ShareItem expected, ShareItem actual, boolean includeMetadata, boolean includeSnapshot) {
+    static boolean assertSharesAreEqual(ShareItem expected, ShareItem actual,
+                                        boolean includeMetadata, boolean includeSnapshot) {
+        return assertSharesAreEqual(expected, actual, includeMetadata, includeSnapshot, false)
+    }
+
+    static boolean assertSharesAreEqual(ShareItem expected, ShareItem actual,
+                                        boolean includeMetadata, boolean includeSnapshot,
+                                        boolean includeDeleted) {
         if (expected == null) {
             return actual == null
         } else {
@@ -103,6 +110,10 @@ class FileTestHelper {
             if (expected.getProperties() == null) {
                 return actual.getProperties() == null
             } else {
+                if (includeDeleted &&
+                    (expected.getProperties().getDeletedTime() == null ^ actual.getProperties().getDeletedTime() == null)) {
+                    return false;
+                }
                 return Objects.equals(expected.getProperties().getQuota(), actual.getProperties().getQuota())
             }
         }

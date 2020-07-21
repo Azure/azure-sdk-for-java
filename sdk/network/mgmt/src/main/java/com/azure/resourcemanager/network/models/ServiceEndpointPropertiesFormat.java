@@ -28,10 +28,10 @@ public final class ServiceEndpointPropertiesFormat {
     private List<String> locations;
 
     /*
-     * The provisioning state of the resource.
+     * The provisioning state of the service endpoint resource.
      */
-    @JsonProperty(value = "provisioningState")
-    private String provisioningState;
+    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private ProvisioningState provisioningState;
 
     /**
      * Get the service property: The type of the endpoint service.
@@ -74,23 +74,12 @@ public final class ServiceEndpointPropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the resource.
+     * Get the provisioningState property: The provisioning state of the service endpoint resource.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Set the provisioningState property: The provisioning state of the resource.
-     *
-     * @param provisioningState the provisioningState value to set.
-     * @return the ServiceEndpointPropertiesFormat object itself.
-     */
-    public ServiceEndpointPropertiesFormat withProvisioningState(String provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
     }
 
     /**

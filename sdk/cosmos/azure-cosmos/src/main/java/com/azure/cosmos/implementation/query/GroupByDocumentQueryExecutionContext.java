@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 public final class GroupByDocumentQueryExecutionContext<T extends Resource> implements
     IDocumentQueryExecutionComponent<T> {
@@ -40,11 +40,12 @@ public final class GroupByDocumentQueryExecutionContext<T extends Resource> impl
     }
 
     public static <T extends Resource> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
-        Function<String, Flux<IDocumentQueryExecutionComponent<T>>> createSourceComponentFunction,
+        BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createSourceComponentFunction,
         String continuationToken,
         Map<String, AggregateOperator> groupByAliasToAggregateType,
         List<String> orderedAliases,
-        boolean hasSelectValue) {
+        boolean hasSelectValue,
+        PipelinedDocumentQueryParams<T> documentQueryParams) {
         if (continuationToken != null) {
             CosmosException dce = new BadRequestException(CONTINUATION_TOKEN_NOT_SUPPORTED_WITH_GROUP_BY);
             return Flux.error(dce);
@@ -57,7 +58,7 @@ public final class GroupByDocumentQueryExecutionContext<T extends Resource> impl
         }
         GroupingTable table = new GroupingTable(groupByAliasToAggregateType, orderedAliases, hasSelectValue);
         // Have to pass non-null continuation token once supported
-        return createSourceComponentFunction.apply(null)
+        return createSourceComponentFunction.apply(null, documentQueryParams)
                    .map(component -> new GroupByDocumentQueryExecutionContext<>(component,
                                                                                 table));
     }

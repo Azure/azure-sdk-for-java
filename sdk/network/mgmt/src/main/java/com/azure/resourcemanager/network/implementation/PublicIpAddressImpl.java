@@ -70,6 +70,9 @@ class PublicIpAddressImpl
 
     @Override
     public PublicIpAddressImpl withLeafDomainLabel(String dnsName) {
+        if (this.inner().dnsSettings() == null) {
+            this.inner().withDnsSettings(new PublicIpAddressDnsSettings());
+        }
         this.inner().dnsSettings().withDomainNameLabel((dnsName == null) ? null : dnsName.toLowerCase(Locale.ROOT));
         return this;
     }
@@ -100,11 +103,15 @@ class PublicIpAddressImpl
 
     @Override
     public PublicIpAddressImpl withoutLeafDomainLabel() {
-        return this.withLeafDomainLabel(null);
+        this.inner().withDnsSettings(null);
+        return this;
     }
 
     @Override
     public PublicIpAddressImpl withReverseFqdn(String reverseFqdn) {
+        if (this.inner().dnsSettings() == null) {
+            this.inner().withDnsSettings(new PublicIpAddressDnsSettings());
+        }
         this.inner().dnsSettings().withReverseFqdn(reverseFqdn != null ? reverseFqdn.toLowerCase(Locale.ROOT) : null);
         return this;
     }

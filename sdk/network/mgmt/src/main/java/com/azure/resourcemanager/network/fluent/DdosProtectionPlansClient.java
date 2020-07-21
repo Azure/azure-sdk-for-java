@@ -31,6 +31,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.DdosProtectionPlanInner;
 import com.azure.resourcemanager.network.fluent.inner.DdosProtectionPlanListResultInner;
@@ -123,7 +124,7 @@ public final class DdosProtectionPlansClient
                 + "/ddosProtectionPlans/{ddosProtectionPlanName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> updateTags(
+        Mono<Response<DdosProtectionPlanInner>> updateTags(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("ddosProtectionPlanName") String ddosProtectionPlanName,
@@ -153,50 +154,6 @@ public final class DdosProtectionPlansClient
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/ddosProtectionPlans/{ddosProtectionPlanName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginDeleteWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("ddosProtectionPlanName") String ddosProtectionPlanName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/ddosProtectionPlans/{ddosProtectionPlanName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DdosProtectionPlanInner>> beginCreateOrUpdateWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("ddosProtectionPlanName") String ddosProtectionPlanName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") DdosProtectionPlanInner parameters,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/ddosProtectionPlans/{ddosProtectionPlanName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DdosProtectionPlanInner>> beginUpdateTagsWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("ddosProtectionPlanName") String ddosProtectionPlanName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") TagsObject parameters,
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
@@ -248,7 +205,7 @@ public final class DdosProtectionPlansClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -298,7 +255,7 @@ public final class DdosProtectionPlansClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -320,7 +277,8 @@ public final class DdosProtectionPlansClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(String resourceGroupName, String ddosProtectionPlanName) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String ddosProtectionPlanName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, ddosProtectionPlanName);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
     }
@@ -337,7 +295,7 @@ public final class DdosProtectionPlansClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String ddosProtectionPlanName, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, ddosProtectionPlanName, context);
@@ -355,13 +313,42 @@ public final class DdosProtectionPlansClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String ddosProtectionPlanName) {
+        return beginDeleteAsync(resourceGroupName, ddosProtectionPlanName).getSyncPoller();
+    }
+
+    /**
+     * Deletes the specified DDoS protection plan.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param ddosProtectionPlanName The name of the DDoS protection plan.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String ddosProtectionPlanName, Context context) {
+        return beginDeleteAsync(resourceGroupName, ddosProtectionPlanName, context).getSyncPoller();
+    }
+
+    /**
+     * Deletes the specified DDoS protection plan.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param ddosProtectionPlanName The name of the DDoS protection plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String ddosProtectionPlanName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, ddosProtectionPlanName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, ddosProtectionPlanName)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -377,13 +364,9 @@ public final class DdosProtectionPlansClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String ddosProtectionPlanName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, ddosProtectionPlanName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, ddosProtectionPlanName, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -449,7 +432,7 @@ public final class DdosProtectionPlansClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -499,7 +482,7 @@ public final class DdosProtectionPlansClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .getByResourceGroup(
                 this.client.getEndpoint(),
@@ -631,7 +614,7 @@ public final class DdosProtectionPlansClient
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -688,7 +671,7 @@ public final class DdosProtectionPlansClient
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -712,7 +695,7 @@ public final class DdosProtectionPlansClient
      * @return a DDoS protection plan in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<DdosProtectionPlanInner>, DdosProtectionPlanInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<DdosProtectionPlanInner>, DdosProtectionPlanInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String ddosProtectionPlanName, DdosProtectionPlanInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, ddosProtectionPlanName, parameters);
@@ -735,7 +718,7 @@ public final class DdosProtectionPlansClient
      * @return a DDoS protection plan in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<DdosProtectionPlanInner>, DdosProtectionPlanInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<DdosProtectionPlanInner>, DdosProtectionPlanInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String ddosProtectionPlanName, DdosProtectionPlanInner parameters, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, ddosProtectionPlanName, parameters, context);
@@ -757,16 +740,46 @@ public final class DdosProtectionPlansClient
      * @return a DDoS protection plan in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<DdosProtectionPlanInner>, DdosProtectionPlanInner> beginCreateOrUpdate(
+        String resourceGroupName, String ddosProtectionPlanName, DdosProtectionPlanInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, ddosProtectionPlanName, parameters).getSyncPoller();
+    }
+
+    /**
+     * Creates or updates a DDoS protection plan.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param ddosProtectionPlanName The name of the DDoS protection plan.
+     * @param parameters A DDoS protection plan in a resource group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a DDoS protection plan in a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<DdosProtectionPlanInner>, DdosProtectionPlanInner> beginCreateOrUpdate(
+        String resourceGroupName, String ddosProtectionPlanName, DdosProtectionPlanInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, ddosProtectionPlanName, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * Creates or updates a DDoS protection plan.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param ddosProtectionPlanName The name of the DDoS protection plan.
+     * @param parameters A DDoS protection plan in a resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a DDoS protection plan in a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DdosProtectionPlanInner> createOrUpdateAsync(
         String resourceGroupName, String ddosProtectionPlanName, DdosProtectionPlanInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, ddosProtectionPlanName, parameters);
-        return this
-            .client
-            .<DdosProtectionPlanInner, DdosProtectionPlanInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DdosProtectionPlanInner.class, DdosProtectionPlanInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, ddosProtectionPlanName, parameters)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -784,14 +797,9 @@ public final class DdosProtectionPlansClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DdosProtectionPlanInner> createOrUpdateAsync(
         String resourceGroupName, String ddosProtectionPlanName, DdosProtectionPlanInner parameters, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, ddosProtectionPlanName, parameters, context);
-        return this
-            .client
-            .<DdosProtectionPlanInner, DdosProtectionPlanInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DdosProtectionPlanInner.class, DdosProtectionPlanInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, ddosProtectionPlanName, parameters, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -841,7 +849,7 @@ public final class DdosProtectionPlansClient
      * @return a DDoS protection plan in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
+    public Mono<Response<DdosProtectionPlanInner>> updateTagsWithResponseAsync(
         String resourceGroupName, String ddosProtectionPlanName, Map<String, String> tags) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -864,7 +872,7 @@ public final class DdosProtectionPlansClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         TagsObject parameters = new TagsObject();
         parameters.withTags(tags);
         return FluxUtil
@@ -895,7 +903,7 @@ public final class DdosProtectionPlansClient
      * @return a DDoS protection plan in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
+    public Mono<Response<DdosProtectionPlanInner>> updateTagsWithResponseAsync(
         String resourceGroupName, String ddosProtectionPlanName, Map<String, String> tags, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -918,7 +926,7 @@ public final class DdosProtectionPlansClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         TagsObject parameters = new TagsObject();
         parameters.withTags(tags);
         return service
@@ -944,61 +952,17 @@ public final class DdosProtectionPlansClient
      * @return a DDoS protection plan in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<DdosProtectionPlanInner>, DdosProtectionPlanInner> beginUpdateTags(
-        String resourceGroupName, String ddosProtectionPlanName, Map<String, String> tags) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateTagsWithResponseAsync(resourceGroupName, ddosProtectionPlanName, tags);
-        return this
-            .client
-            .<DdosProtectionPlanInner, DdosProtectionPlanInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DdosProtectionPlanInner.class, DdosProtectionPlanInner.class);
-    }
-
-    /**
-     * Update a DDoS protection plan tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ddosProtectionPlanName The name of the DDoS protection plan.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DDoS protection plan in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<DdosProtectionPlanInner>, DdosProtectionPlanInner> beginUpdateTags(
-        String resourceGroupName, String ddosProtectionPlanName, Map<String, String> tags, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateTagsWithResponseAsync(resourceGroupName, ddosProtectionPlanName, tags, context);
-        return this
-            .client
-            .<DdosProtectionPlanInner, DdosProtectionPlanInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DdosProtectionPlanInner.class, DdosProtectionPlanInner.class);
-    }
-
-    /**
-     * Update a DDoS protection plan tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ddosProtectionPlanName The name of the DDoS protection plan.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DDoS protection plan in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DdosProtectionPlanInner> updateTagsAsync(
         String resourceGroupName, String ddosProtectionPlanName, Map<String, String> tags) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateTagsWithResponseAsync(resourceGroupName, ddosProtectionPlanName, tags);
-        return this
-            .client
-            .<DdosProtectionPlanInner, DdosProtectionPlanInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DdosProtectionPlanInner.class, DdosProtectionPlanInner.class)
-            .last()
-            .flatMap(client::getLroFinalResultOrError);
+        return updateTagsWithResponseAsync(resourceGroupName, ddosProtectionPlanName, tags)
+            .flatMap(
+                (Response<DdosProtectionPlanInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -1016,14 +980,15 @@ public final class DdosProtectionPlansClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DdosProtectionPlanInner> updateTagsAsync(
         String resourceGroupName, String ddosProtectionPlanName, Map<String, String> tags, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateTagsWithResponseAsync(resourceGroupName, ddosProtectionPlanName, tags, context);
-        return this
-            .client
-            .<DdosProtectionPlanInner, DdosProtectionPlanInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DdosProtectionPlanInner.class, DdosProtectionPlanInner.class)
-            .last()
-            .flatMap(client::getLroFinalResultOrError);
+        return updateTagsWithResponseAsync(resourceGroupName, ddosProtectionPlanName, tags, context)
+            .flatMap(
+                (Response<DdosProtectionPlanInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -1082,7 +1047,7 @@ public final class DdosProtectionPlansClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1122,7 +1087,7 @@ public final class DdosProtectionPlansClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), context)
             .map(
@@ -1215,7 +1180,7 @@ public final class DdosProtectionPlansClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1267,7 +1232,7 @@ public final class DdosProtectionPlansClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .listByResourceGroup(
                 this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(), context)
@@ -1342,550 +1307,6 @@ public final class DdosProtectionPlansClient
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DdosProtectionPlanInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
-    }
-
-    /**
-     * Deletes the specified DDoS protection plan.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ddosProtectionPlanName The name of the DDoS protection plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
-        String resourceGroupName, String ddosProtectionPlanName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (ddosProtectionPlanName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter ddosProtectionPlanName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginDeleteWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            ddosProtectionPlanName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Deletes the specified DDoS protection plan.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ddosProtectionPlanName The name of the DDoS protection plan.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
-        String resourceGroupName, String ddosProtectionPlanName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (ddosProtectionPlanName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter ddosProtectionPlanName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        return service
-            .beginDeleteWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                ddosProtectionPlanName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                context);
-    }
-
-    /**
-     * Deletes the specified DDoS protection plan.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ddosProtectionPlanName The name of the DDoS protection plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteWithoutPollingAsync(String resourceGroupName, String ddosProtectionPlanName) {
-        return beginDeleteWithoutPollingWithResponseAsync(resourceGroupName, ddosProtectionPlanName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes the specified DDoS protection plan.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ddosProtectionPlanName The name of the DDoS protection plan.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteWithoutPollingAsync(
-        String resourceGroupName, String ddosProtectionPlanName, Context context) {
-        return beginDeleteWithoutPollingWithResponseAsync(resourceGroupName, ddosProtectionPlanName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes the specified DDoS protection plan.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ddosProtectionPlanName The name of the DDoS protection plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(String resourceGroupName, String ddosProtectionPlanName) {
-        beginDeleteWithoutPollingAsync(resourceGroupName, ddosProtectionPlanName).block();
-    }
-
-    /**
-     * Deletes the specified DDoS protection plan.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ddosProtectionPlanName The name of the DDoS protection plan.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteWithoutPolling(String resourceGroupName, String ddosProtectionPlanName, Context context) {
-        beginDeleteWithoutPollingAsync(resourceGroupName, ddosProtectionPlanName, context).block();
-    }
-
-    /**
-     * Creates or updates a DDoS protection plan.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ddosProtectionPlanName The name of the DDoS protection plan.
-     * @param parameters A DDoS protection plan in a resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DDoS protection plan in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DdosProtectionPlanInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String ddosProtectionPlanName, DdosProtectionPlanInner parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (ddosProtectionPlanName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter ddosProtectionPlanName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2019-06-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginCreateOrUpdateWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            ddosProtectionPlanName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Creates or updates a DDoS protection plan.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ddosProtectionPlanName The name of the DDoS protection plan.
-     * @param parameters A DDoS protection plan in a resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DDoS protection plan in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DdosProtectionPlanInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String ddosProtectionPlanName, DdosProtectionPlanInner parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (ddosProtectionPlanName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter ddosProtectionPlanName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2019-06-01";
-        return service
-            .beginCreateOrUpdateWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                ddosProtectionPlanName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                parameters,
-                context);
-    }
-
-    /**
-     * Creates or updates a DDoS protection plan.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ddosProtectionPlanName The name of the DDoS protection plan.
-     * @param parameters A DDoS protection plan in a resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DDoS protection plan in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DdosProtectionPlanInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName, String ddosProtectionPlanName, DdosProtectionPlanInner parameters) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(resourceGroupName, ddosProtectionPlanName, parameters)
-            .flatMap(
-                (Response<DdosProtectionPlanInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates a DDoS protection plan.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ddosProtectionPlanName The name of the DDoS protection plan.
-     * @param parameters A DDoS protection plan in a resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DDoS protection plan in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DdosProtectionPlanInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName, String ddosProtectionPlanName, DdosProtectionPlanInner parameters, Context context) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(
-                resourceGroupName, ddosProtectionPlanName, parameters, context)
-            .flatMap(
-                (Response<DdosProtectionPlanInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates a DDoS protection plan.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ddosProtectionPlanName The name of the DDoS protection plan.
-     * @param parameters A DDoS protection plan in a resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DDoS protection plan in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DdosProtectionPlanInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName, String ddosProtectionPlanName, DdosProtectionPlanInner parameters) {
-        return beginCreateOrUpdateWithoutPollingAsync(resourceGroupName, ddosProtectionPlanName, parameters).block();
-    }
-
-    /**
-     * Creates or updates a DDoS protection plan.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ddosProtectionPlanName The name of the DDoS protection plan.
-     * @param parameters A DDoS protection plan in a resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DDoS protection plan in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DdosProtectionPlanInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName, String ddosProtectionPlanName, DdosProtectionPlanInner parameters, Context context) {
-        return beginCreateOrUpdateWithoutPollingAsync(resourceGroupName, ddosProtectionPlanName, parameters, context)
-            .block();
-    }
-
-    /**
-     * Update a DDoS protection plan tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ddosProtectionPlanName The name of the DDoS protection plan.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DDoS protection plan in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DdosProtectionPlanInner>> beginUpdateTagsWithoutPollingWithResponseAsync(
-        String resourceGroupName, String ddosProtectionPlanName, Map<String, String> tags) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (ddosProtectionPlanName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter ddosProtectionPlanName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginUpdateTagsWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            ddosProtectionPlanName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Update a DDoS protection plan tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ddosProtectionPlanName The name of the DDoS protection plan.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DDoS protection plan in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DdosProtectionPlanInner>> beginUpdateTagsWithoutPollingWithResponseAsync(
-        String resourceGroupName, String ddosProtectionPlanName, Map<String, String> tags, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (ddosProtectionPlanName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter ddosProtectionPlanName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
-        return service
-            .beginUpdateTagsWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                ddosProtectionPlanName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                parameters,
-                context);
-    }
-
-    /**
-     * Update a DDoS protection plan tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ddosProtectionPlanName The name of the DDoS protection plan.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DDoS protection plan in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DdosProtectionPlanInner> beginUpdateTagsWithoutPollingAsync(
-        String resourceGroupName, String ddosProtectionPlanName, Map<String, String> tags) {
-        return beginUpdateTagsWithoutPollingWithResponseAsync(resourceGroupName, ddosProtectionPlanName, tags)
-            .flatMap(
-                (Response<DdosProtectionPlanInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Update a DDoS protection plan tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ddosProtectionPlanName The name of the DDoS protection plan.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DDoS protection plan in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DdosProtectionPlanInner> beginUpdateTagsWithoutPollingAsync(
-        String resourceGroupName, String ddosProtectionPlanName, Map<String, String> tags, Context context) {
-        return beginUpdateTagsWithoutPollingWithResponseAsync(resourceGroupName, ddosProtectionPlanName, tags, context)
-            .flatMap(
-                (Response<DdosProtectionPlanInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Update a DDoS protection plan tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ddosProtectionPlanName The name of the DDoS protection plan.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DDoS protection plan in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DdosProtectionPlanInner beginUpdateTagsWithoutPolling(
-        String resourceGroupName, String ddosProtectionPlanName, Map<String, String> tags) {
-        return beginUpdateTagsWithoutPollingAsync(resourceGroupName, ddosProtectionPlanName, tags).block();
-    }
-
-    /**
-     * Update a DDoS protection plan tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ddosProtectionPlanName The name of the DDoS protection plan.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DDoS protection plan in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DdosProtectionPlanInner beginUpdateTagsWithoutPolling(
-        String resourceGroupName, String ddosProtectionPlanName, Map<String, String> tags, Context context) {
-        return beginUpdateTagsWithoutPollingAsync(resourceGroupName, ddosProtectionPlanName, tags, context).block();
     }
 
     /**

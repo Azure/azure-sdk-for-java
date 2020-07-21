@@ -111,7 +111,7 @@ public final class ExpressRoutePortsLocationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -152,7 +152,7 @@ public final class ExpressRoutePortsLocationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, context)
             .map(
@@ -249,7 +249,7 @@ public final class ExpressRoutePortsLocationsClient {
         if (locationName == null) {
             return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -291,7 +291,7 @@ public final class ExpressRoutePortsLocationsClient {
         if (locationName == null) {
             return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .get(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, locationName, context);
     }

@@ -4,41 +4,28 @@
 
 package com.azure.resourcemanager.network.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for FlowLogFormatType. */
-public enum FlowLogFormatType {
-    /** Enum value JSON. */
-    JSON("JSON");
-
-    /** The actual serialized value for a FlowLogFormatType instance. */
-    private final String value;
-
-    FlowLogFormatType(String value) {
-        this.value = value;
-    }
+public final class FlowLogFormatType extends ExpandableStringEnum<FlowLogFormatType> {
+    /** Static value JSON for FlowLogFormatType. */
+    public static final FlowLogFormatType JSON = fromString("JSON");
 
     /**
-     * Parses a serialized value to a FlowLogFormatType instance.
+     * Creates or finds a FlowLogFormatType from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed FlowLogFormatType object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding FlowLogFormatType.
      */
     @JsonCreator
-    public static FlowLogFormatType fromString(String value) {
-        FlowLogFormatType[] items = FlowLogFormatType.values();
-        for (FlowLogFormatType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static FlowLogFormatType fromString(String name) {
+        return fromString(name, FlowLogFormatType.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /** @return known FlowLogFormatType values. */
+    public static Collection<FlowLogFormatType> values() {
+        return values(FlowLogFormatType.class);
     }
 }

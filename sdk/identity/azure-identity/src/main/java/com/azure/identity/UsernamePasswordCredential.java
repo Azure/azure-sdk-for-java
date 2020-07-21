@@ -13,6 +13,7 @@ import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.MsalAuthenticationAccount;
 import com.azure.identity.implementation.MsalToken;
+import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;
@@ -67,7 +68,9 @@ public class UsernamePasswordCredential implements TokenCredential {
                 return Mono.empty();
             }
         }).switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithUsernamePassword(request, username, password)))
-            .map(this::updateCache);
+            .map(this::updateCache)
+            .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
+            .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
     }
 
     /**
@@ -97,7 +100,7 @@ public class UsernamePasswordCredential implements TokenCredential {
         return authenticate(new TokenRequestContext().addScopes(defaultScope));
     }
 
-    private MsalToken updateCache(MsalToken msalToken) {
+    private AccessToken updateCache(MsalToken msalToken) {
         cachedToken.set(
                 new MsalAuthenticationAccount(
                         new AuthenticationRecord(msalToken.getAuthenticationResult(),

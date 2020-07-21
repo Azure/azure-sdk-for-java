@@ -24,14 +24,14 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.storage.StorageManagementClient;
 import com.azure.resourcemanager.storage.fluent.inner.ManagementPolicyInner;
+import com.azure.resourcemanager.storage.models.ManagementPolicyName;
 import com.azure.resourcemanager.storage.models.ManagementPolicySchema;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ManagementPolicies. */
-public final class ManagementPoliciesClient implements InnerSupportsDelete<Void> {
+public final class ManagementPoliciesClient {
     private final ClientLogger logger = new ClientLogger(ManagementPoliciesClient.class);
 
     /** The proxy service used to perform REST calls. */
@@ -70,7 +70,7 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("managementPolicyName") String managementPolicyName,
+            @PathParam("managementPolicyName") ManagementPolicyName managementPolicyName,
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
@@ -85,7 +85,7 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("managementPolicyName") String managementPolicyName,
+            @PathParam("managementPolicyName") ManagementPolicyName managementPolicyName,
             @BodyParam("application/json") ManagementPolicyInner properties,
             Context context);
 
@@ -101,7 +101,7 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("managementPolicyName") String managementPolicyName,
+            @PathParam("managementPolicyName") ManagementPolicyName managementPolicyName,
             Context context);
     }
 
@@ -112,13 +112,15 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the managementpolicy associated with the specified storage account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ManagementPolicyInner>> getWithResponseAsync(String resourceGroupName, String accountName) {
+    public Mono<Response<ManagementPolicyInner>> getWithResponseAsync(
+        String resourceGroupName, String accountName, ManagementPolicyName managementPolicyName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -138,7 +140,10 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String managementPolicyName = "default";
+        if (managementPolicyName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managementPolicyName is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -161,6 +166,7 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -169,7 +175,7 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagementPolicyInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, Context context) {
+        String resourceGroupName, String accountName, ManagementPolicyName managementPolicyName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -189,7 +195,10 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String managementPolicyName = "default";
+        if (managementPolicyName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managementPolicyName is required and cannot be null."));
+        }
         return service
             .get(
                 this.client.getEndpoint(),
@@ -208,14 +217,16 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the managementpolicy associated with the specified storage account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagementPolicyInner> getAsync(String resourceGroupName, String accountName) {
-        return getWithResponseAsync(resourceGroupName, accountName)
+    public Mono<ManagementPolicyInner> getAsync(
+        String resourceGroupName, String accountName, ManagementPolicyName managementPolicyName) {
+        return getWithResponseAsync(resourceGroupName, accountName, managementPolicyName)
             .flatMap(
                 (Response<ManagementPolicyInner> res) -> {
                     if (res.getValue() != null) {
@@ -233,6 +244,7 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -240,8 +252,9 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
      * @return the managementpolicy associated with the specified storage account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagementPolicyInner> getAsync(String resourceGroupName, String accountName, Context context) {
-        return getWithResponseAsync(resourceGroupName, accountName, context)
+    public Mono<ManagementPolicyInner> getAsync(
+        String resourceGroupName, String accountName, ManagementPolicyName managementPolicyName, Context context) {
+        return getWithResponseAsync(resourceGroupName, accountName, managementPolicyName, context)
             .flatMap(
                 (Response<ManagementPolicyInner> res) -> {
                     if (res.getValue() != null) {
@@ -259,14 +272,16 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the managementpolicy associated with the specified storage account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagementPolicyInner get(String resourceGroupName, String accountName) {
-        return getAsync(resourceGroupName, accountName).block();
+    public ManagementPolicyInner get(
+        String resourceGroupName, String accountName, ManagementPolicyName managementPolicyName) {
+        return getAsync(resourceGroupName, accountName, managementPolicyName).block();
     }
 
     /**
@@ -276,6 +291,7 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -283,8 +299,9 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
      * @return the managementpolicy associated with the specified storage account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagementPolicyInner get(String resourceGroupName, String accountName, Context context) {
-        return getAsync(resourceGroupName, accountName, context).block();
+    public ManagementPolicyInner get(
+        String resourceGroupName, String accountName, ManagementPolicyName managementPolicyName, Context context) {
+        return getAsync(resourceGroupName, accountName, managementPolicyName, context).block();
     }
 
     /**
@@ -294,6 +311,7 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
      * @param policy The Storage Account ManagementPolicies Rules. See more details in:
      *     https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -303,7 +321,10 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagementPolicyInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String accountName, ManagementPolicySchema policy) {
+        String resourceGroupName,
+        String accountName,
+        ManagementPolicyName managementPolicyName,
+        ManagementPolicySchema policy) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -323,10 +344,13 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (managementPolicyName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managementPolicyName is required and cannot be null."));
+        }
         if (policy != null) {
             policy.validate();
         }
-        final String managementPolicyName = "default";
         ManagementPolicyInner properties = new ManagementPolicyInner();
         properties.withPolicy(policy);
         return FluxUtil
@@ -352,6 +376,7 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
      * @param policy The Storage Account ManagementPolicies Rules. See more details in:
      *     https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
      * @param context The context to associate with this operation.
@@ -362,7 +387,11 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagementPolicyInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String accountName, ManagementPolicySchema policy, Context context) {
+        String resourceGroupName,
+        String accountName,
+        ManagementPolicyName managementPolicyName,
+        ManagementPolicySchema policy,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -382,10 +411,13 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (managementPolicyName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managementPolicyName is required and cannot be null."));
+        }
         if (policy != null) {
             policy.validate();
         }
-        final String managementPolicyName = "default";
         ManagementPolicyInner properties = new ManagementPolicyInner();
         properties.withPolicy(policy);
         return service
@@ -407,6 +439,7 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
      * @param policy The Storage Account ManagementPolicies Rules. See more details in:
      *     https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -416,8 +449,11 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagementPolicyInner> createOrUpdateAsync(
-        String resourceGroupName, String accountName, ManagementPolicySchema policy) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, accountName, policy)
+        String resourceGroupName,
+        String accountName,
+        ManagementPolicyName managementPolicyName,
+        ManagementPolicySchema policy) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, accountName, managementPolicyName, policy)
             .flatMap(
                 (Response<ManagementPolicyInner> res) -> {
                     if (res.getValue() != null) {
@@ -435,6 +471,7 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
      * @param policy The Storage Account ManagementPolicies Rules. See more details in:
      *     https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
      * @param context The context to associate with this operation.
@@ -445,8 +482,12 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagementPolicyInner> createOrUpdateAsync(
-        String resourceGroupName, String accountName, ManagementPolicySchema policy, Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, accountName, policy, context)
+        String resourceGroupName,
+        String accountName,
+        ManagementPolicyName managementPolicyName,
+        ManagementPolicySchema policy,
+        Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, accountName, managementPolicyName, policy, context)
             .flatMap(
                 (Response<ManagementPolicyInner> res) -> {
                     if (res.getValue() != null) {
@@ -464,6 +505,7 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
      * @param policy The Storage Account ManagementPolicies Rules. See more details in:
      *     https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -473,8 +515,11 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagementPolicyInner createOrUpdate(
-        String resourceGroupName, String accountName, ManagementPolicySchema policy) {
-        return createOrUpdateAsync(resourceGroupName, accountName, policy).block();
+        String resourceGroupName,
+        String accountName,
+        ManagementPolicyName managementPolicyName,
+        ManagementPolicySchema policy) {
+        return createOrUpdateAsync(resourceGroupName, accountName, managementPolicyName, policy).block();
     }
 
     /**
@@ -484,6 +529,7 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
      * @param policy The Storage Account ManagementPolicies Rules. See more details in:
      *     https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
      * @param context The context to associate with this operation.
@@ -494,8 +540,12 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagementPolicyInner createOrUpdate(
-        String resourceGroupName, String accountName, ManagementPolicySchema policy, Context context) {
-        return createOrUpdateAsync(resourceGroupName, accountName, policy, context).block();
+        String resourceGroupName,
+        String accountName,
+        ManagementPolicyName managementPolicyName,
+        ManagementPolicySchema policy,
+        Context context) {
+        return createOrUpdateAsync(resourceGroupName, accountName, managementPolicyName, policy, context).block();
     }
 
     /**
@@ -505,13 +555,15 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accountName) {
+    public Mono<Response<Void>> deleteWithResponseAsync(
+        String resourceGroupName, String accountName, ManagementPolicyName managementPolicyName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -531,7 +583,10 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String managementPolicyName = "default";
+        if (managementPolicyName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managementPolicyName is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -554,6 +609,7 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -561,7 +617,8 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accountName, Context context) {
+    public Mono<Response<Void>> deleteWithResponseAsync(
+        String resourceGroupName, String accountName, ManagementPolicyName managementPolicyName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -581,7 +638,10 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String managementPolicyName = "default";
+        if (managementPolicyName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managementPolicyName is required and cannot be null."));
+        }
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -600,32 +660,16 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String resourceGroupName, String accountName) {
-        return deleteWithResponseAsync(resourceGroupName, accountName).flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes the managementpolicy associated with the specified storage account.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String resourceGroupName, String accountName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, accountName, context)
+    public Mono<Void> deleteAsync(
+        String resourceGroupName, String accountName, ManagementPolicyName managementPolicyName) {
+        return deleteWithResponseAsync(resourceGroupName, accountName, managementPolicyName)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -636,13 +680,18 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String accountName) {
-        deleteAsync(resourceGroupName, accountName).block();
+    public Mono<Void> deleteAsync(
+        String resourceGroupName, String accountName, ManagementPolicyName managementPolicyName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, accountName, managementPolicyName, context)
+            .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -652,13 +701,32 @@ public final class ManagementPoliciesClient implements InnerSupportsDelete<Void>
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String accountName, ManagementPolicyName managementPolicyName) {
+        deleteAsync(resourceGroupName, accountName, managementPolicyName).block();
+    }
+
+    /**
+     * Deletes the managementpolicy associated with the specified storage account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String accountName, Context context) {
-        deleteAsync(resourceGroupName, accountName, context).block();
+    public void delete(
+        String resourceGroupName, String accountName, ManagementPolicyName managementPolicyName, Context context) {
+        deleteAsync(resourceGroupName, accountName, managementPolicyName, context).block();
     }
 }

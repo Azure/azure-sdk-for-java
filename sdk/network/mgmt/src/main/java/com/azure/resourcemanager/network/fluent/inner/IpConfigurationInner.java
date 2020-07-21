@@ -9,6 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -28,7 +29,7 @@ public class IpConfigurationInner extends SubResource {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag")
+    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
@@ -44,23 +45,22 @@ public class IpConfigurationInner extends SubResource {
     private IpAllocationMethod privateIpAllocationMethod;
 
     /*
-     * The reference of the subnet resource.
+     * The reference to the subnet resource.
      */
     @JsonProperty(value = "properties.subnet")
     private SubnetInner subnet;
 
     /*
-     * The reference of the public IP resource.
+     * The reference to the public IP resource.
      */
     @JsonProperty(value = "properties.publicIPAddress")
     private PublicIpAddressInner publicIpAddress;
 
     /*
-     * Gets the provisioning state of the public IP resource. Possible values
-     * are: 'Updating', 'Deleting', and 'Failed'.
+     * The provisioning state of the IP configuration resource.
      */
-    @JsonProperty(value = "properties.provisioningState")
-    private String provisioningState;
+    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private ProvisioningState provisioningState;
 
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
@@ -91,17 +91,6 @@ public class IpConfigurationInner extends SubResource {
      */
     public String etag() {
         return this.etag;
-    }
-
-    /**
-     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
-     * @param etag the etag value to set.
-     * @return the IpConfigurationInner object itself.
-     */
-    public IpConfigurationInner withEtag(String etag) {
-        this.etag = etag;
-        return this;
     }
 
     /**
@@ -145,7 +134,7 @@ public class IpConfigurationInner extends SubResource {
     }
 
     /**
-     * Get the subnet property: The reference of the subnet resource.
+     * Get the subnet property: The reference to the subnet resource.
      *
      * @return the subnet value.
      */
@@ -154,7 +143,7 @@ public class IpConfigurationInner extends SubResource {
     }
 
     /**
-     * Set the subnet property: The reference of the subnet resource.
+     * Set the subnet property: The reference to the subnet resource.
      *
      * @param subnet the subnet value to set.
      * @return the IpConfigurationInner object itself.
@@ -165,7 +154,7 @@ public class IpConfigurationInner extends SubResource {
     }
 
     /**
-     * Get the publicIpAddress property: The reference of the public IP resource.
+     * Get the publicIpAddress property: The reference to the public IP resource.
      *
      * @return the publicIpAddress value.
      */
@@ -174,7 +163,7 @@ public class IpConfigurationInner extends SubResource {
     }
 
     /**
-     * Set the publicIpAddress property: The reference of the public IP resource.
+     * Set the publicIpAddress property: The reference to the public IP resource.
      *
      * @param publicIpAddress the publicIpAddress value to set.
      * @return the IpConfigurationInner object itself.
@@ -185,25 +174,12 @@ public class IpConfigurationInner extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: Gets the provisioning state of the public IP resource. Possible values are:
-     * 'Updating', 'Deleting', and 'Failed'.
+     * Get the provisioningState property: The provisioning state of the IP configuration resource.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Set the provisioningState property: Gets the provisioning state of the public IP resource. Possible values are:
-     * 'Updating', 'Deleting', and 'Failed'.
-     *
-     * @param provisioningState the provisioningState value to set.
-     * @return the IpConfigurationInner object itself.
-     */
-    public IpConfigurationInner withProvisioningState(String provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
     }
 
     /**

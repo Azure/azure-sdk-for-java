@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus.implementation;
 
+import com.azure.core.amqp.AmqpLink;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.implementation.AmqpConstants;
@@ -15,6 +16,7 @@ import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -41,10 +43,14 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
 
     private static final Symbol LINK_TIMEOUT_PROPERTY = Symbol.getSymbol(AmqpConstants.VENDOR + ":timeout");
     private static final Symbol ENTITY_TYPE_PROPERTY = Symbol.getSymbol(AmqpConstants.VENDOR + ":entity-type");
+    private static final Symbol LINK_TRANSFER_DESTINATION_PROPERTY = Symbol.getSymbol(AmqpConstants.VENDOR
+        + ":transfer-destination-address");
 
     private final ClientLogger logger = new ClientLogger(ServiceBusReactorSession.class);
     private final Duration openTimeout;
     private final AmqpRetryPolicy retryPolicy;
+    private final TokenManagerProvider tokenManagerProvider;
+    private final Mono<ClaimsBasedSecurityNode> cbsNodeSupplier;
 
     /**
      * Creates a new AMQP session using proton-j.
@@ -67,6 +73,8 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
             messageSerializer, openTimeout, retryPolicy);
         this.openTimeout = openTimeout;
         this.retryPolicy = retryPolicy;
+        this.tokenManagerProvider = tokenManagerProvider;
+        this.cbsNodeSupplier = cbsNodeSupplier;
     }
 
     @Override
@@ -86,6 +94,34 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
         filter.put(SESSION_FILTER, sessionId);
 
         return createConsumer(linkName, entityPath, entityType, timeout, retry, receiveMode, filter);
+    }
+
+    @Override
+    public Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout,
+        AmqpRetryPolicy retry, String transferEntityPath) {
+        Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
+        Objects.requireNonNull(timeout, "'timeout' cannot be null.");
+        Objects.requireNonNull(retry, "'retry' cannot be null.");
+
+        final Duration serverTimeout = adjustServerTimeout(timeout);
+        Map<Symbol, Object> linkProperties = new HashMap<>();
+
+        linkProperties.put(LINK_TIMEOUT_PROPERTY, UnsignedInteger.valueOf(serverTimeout.toMillis()));
+
+        if (!CoreUtils.isNullOrEmpty(transferEntityPath)) {
+            linkProperties.put(LINK_TRANSFER_DESTINATION_PROPERTY, transferEntityPath);
+            logger.verbose("Get or create sender link {} for via entity path: '{}'", linkName, entityPath);
+
+            final TokenManager tokenManager = tokenManagerProvider.getTokenManager(cbsNodeSupplier,
+                transferEntityPath);
+
+            return tokenManager.authorize()
+                .doFinally(signalType -> tokenManager.close())
+                .then(createProducer(linkName, entityPath, timeout, retry, linkProperties));
+        } else {
+            logger.verbose("Get or create sender link {} for entity path: '{}'", linkName, entityPath);
+            return createProducer(linkName, entityPath, timeout, retry, linkProperties);
+        }
     }
 
     @Override

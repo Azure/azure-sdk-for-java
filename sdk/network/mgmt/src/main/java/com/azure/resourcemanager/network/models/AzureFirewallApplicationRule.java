@@ -51,6 +51,12 @@ public final class AzureFirewallApplicationRule {
     @JsonProperty(value = "fqdnTags")
     private List<String> fqdnTags;
 
+    /*
+     * List of source IpGroups for this rule.
+     */
+    @JsonProperty(value = "sourceIpGroups")
+    private List<String> sourceIpGroups;
+
     /**
      * Get the name property: Name of the application rule.
      *
@@ -168,6 +174,26 @@ public final class AzureFirewallApplicationRule {
      */
     public AzureFirewallApplicationRule withFqdnTags(List<String> fqdnTags) {
         this.fqdnTags = fqdnTags;
+        return this;
+    }
+
+    /**
+     * Get the sourceIpGroups property: List of source IpGroups for this rule.
+     *
+     * @return the sourceIpGroups value.
+     */
+    public List<String> sourceIpGroups() {
+        return this.sourceIpGroups;
+    }
+
+    /**
+     * Set the sourceIpGroups property: List of source IpGroups for this rule.
+     *
+     * @param sourceIpGroups the sourceIpGroups value to set.
+     * @return the AzureFirewallApplicationRule object itself.
+     */
+    public AzureFirewallApplicationRule withSourceIpGroups(List<String> sourceIpGroups) {
+        this.sourceIpGroups = sourceIpGroups;
         return this;
     }
 

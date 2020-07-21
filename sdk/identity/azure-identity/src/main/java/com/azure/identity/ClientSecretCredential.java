@@ -7,9 +7,11 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
+import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;
@@ -26,6 +28,7 @@ import java.util.Objects;
 @Immutable
 public class ClientSecretCredential implements TokenCredential {
     private final IdentityClient identityClient;
+    private final ClientLogger logger = new ClientLogger(ClientSecretCredential.class);
 
     /**
      * Creates a ClientSecretCredential with the given identity client options.
@@ -51,6 +54,8 @@ public class ClientSecretCredential implements TokenCredential {
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         return identityClient.authenticateWithConfidentialClientCache(request)
             .onErrorResume(t -> Mono.empty())
-            .switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithConfidentialClient(request)));
+            .switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithConfidentialClient(request)))
+            .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
+            .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
     }
 }

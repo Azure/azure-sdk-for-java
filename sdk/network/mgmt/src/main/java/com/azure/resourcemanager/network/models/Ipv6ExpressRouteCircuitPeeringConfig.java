@@ -34,7 +34,7 @@ public final class Ipv6ExpressRouteCircuitPeeringConfig {
     private ExpressRouteCircuitPeeringConfig microsoftPeeringConfig;
 
     /*
-     * The reference of the RouteFilter resource.
+     * The reference to the RouteFilter resource.
      */
     @JsonProperty(value = "routeFilter")
     private SubResource routeFilter;
@@ -107,7 +107,7 @@ public final class Ipv6ExpressRouteCircuitPeeringConfig {
     }
 
     /**
-     * Get the routeFilter property: The reference of the RouteFilter resource.
+     * Get the routeFilter property: The reference to the RouteFilter resource.
      *
      * @return the routeFilter value.
      */
@@ -116,7 +116,7 @@ public final class Ipv6ExpressRouteCircuitPeeringConfig {
     }
 
     /**
-     * Set the routeFilter property: The reference of the RouteFilter resource.
+     * Set the routeFilter property: The reference to the RouteFilter resource.
      *
      * @param routeFilter the routeFilter value to set.
      * @return the Ipv6ExpressRouteCircuitPeeringConfig object itself.

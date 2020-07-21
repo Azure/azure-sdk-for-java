@@ -21,15 +21,14 @@ public class FirewallPolicyRuleGroupInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(FirewallPolicyRuleGroupInner.class);
 
     /*
-     * Gets name of the resource that is unique within a resource group. This
+     * The name of the resource that is unique within a resource group. This
      * name can be used to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;
 
     /*
-     * Gets a unique read-only string that changes whenever the resource is
-     * updated.
+     * A unique read-only string that changes whenever the resource is updated.
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
@@ -53,13 +52,13 @@ public class FirewallPolicyRuleGroupInner extends SubResource {
     private List<FirewallPolicyRule> rules;
 
     /*
-     * The provisioning state of the resource.
+     * The provisioning state of the firewall policy rule group resource.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
-     * Get the name property: Gets name of the resource that is unique within a resource group. This name can be used to
+     * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
      *
      * @return the name value.
@@ -69,7 +68,7 @@ public class FirewallPolicyRuleGroupInner extends SubResource {
     }
 
     /**
-     * Set the name property: Gets name of the resource that is unique within a resource group. This name can be used to
+     * Set the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
      *
      * @param name the name value to set.
@@ -81,7 +80,7 @@ public class FirewallPolicyRuleGroupInner extends SubResource {
     }
 
     /**
-     * Get the etag property: Gets a unique read-only string that changes whenever the resource is updated.
+     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value.
      */
@@ -139,7 +138,7 @@ public class FirewallPolicyRuleGroupInner extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the resource.
+     * Get the provisioningState property: The provisioning state of the firewall policy rule group resource.
      *
      * @return the provisioningState value.
      */

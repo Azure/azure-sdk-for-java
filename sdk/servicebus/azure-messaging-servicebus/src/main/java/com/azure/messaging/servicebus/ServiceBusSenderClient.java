@@ -99,9 +99,9 @@ public class ServiceBusSenderClient implements AutoCloseable {
      *
      * @throws NullPointerException if {@code message} is {@code null}.
      */
-    public void send(ServiceBusMessage message) {
+    public void sendMessage(ServiceBusMessage message) {
         Objects.requireNonNull(message, "'message' cannot be null.");
-        asyncClient.send(message).block(tryTimeout);
+        asyncClient.sendMessage(message).block(tryTimeout);
     }
 
     /**
@@ -114,8 +114,8 @@ public class ServiceBusSenderClient implements AutoCloseable {
      * @throws NullPointerException if {@code messages} is {@code null}.
      * @throws AmqpException if {@code messages} is larger than the maximum allowed size of a single batch.
      */
-    public void send(Iterable<ServiceBusMessage> messages) {
-        asyncClient.send(messages).block(tryTimeout);
+    public void sendMessages(Iterable<ServiceBusMessage> messages) {
+        asyncClient.sendMessages(messages).block(tryTimeout);
     }
 
     /**
@@ -125,9 +125,9 @@ public class ServiceBusSenderClient implements AutoCloseable {
      *
      * @throws NullPointerException if {@code batch} is {@code null}.
      */
-    public void send(ServiceBusMessageBatch batch) {
+    public void sendMessages(ServiceBusMessageBatch batch) {
         Objects.requireNonNull(batch, "'batch' cannot be null.");
-        asyncClient.send(batch).block(tryTimeout);
+        asyncClient.sendMessages(batch).block(tryTimeout);
     }
     /**
      * Sends a message to a Service Bus queue or topic.
@@ -138,8 +138,8 @@ public class ServiceBusSenderClient implements AutoCloseable {
      * @throws NullPointerException if {@code message}, {@code transactionContext} or
      * {@code transactionContext.transactionId} is {@code null}.
      */
-    public void send(ServiceBusMessage message, ServiceBusTransactionContext transactionContext) {
-        asyncClient.send(message, transactionContext).block(tryTimeout);
+    public void sendMessage(ServiceBusMessage message, ServiceBusTransactionContext transactionContext) {
+        asyncClient.sendMessage(message, transactionContext).block(tryTimeout);
     }
 
     /**
@@ -154,8 +154,8 @@ public class ServiceBusSenderClient implements AutoCloseable {
      * {@code transactionContext.transactionId} is {@code null}.
      * @throws AmqpException if {@code messages} is larger than the maximum allowed size of a single batch.
      */
-    public void send(Iterable<ServiceBusMessage> messages, ServiceBusTransactionContext transactionContext) {
-        asyncClient.send(messages, transactionContext).block(tryTimeout);
+    public void sendMessages(Iterable<ServiceBusMessage> messages, ServiceBusTransactionContext transactionContext) {
+        asyncClient.sendMessages(messages, transactionContext).block(tryTimeout);
     }
 
     /**
@@ -167,8 +167,8 @@ public class ServiceBusSenderClient implements AutoCloseable {
      * @throws NullPointerException if {@code batch}, {@code transactionContext} or
      * {@code transactionContext.transactionId} is {@code null}.
      */
-    public void send(ServiceBusMessageBatch batch, ServiceBusTransactionContext transactionContext) {
-        asyncClient.send(batch, transactionContext).block(tryTimeout);
+    public void sendMessages(ServiceBusMessageBatch batch, ServiceBusTransactionContext transactionContext) {
+        asyncClient.sendMessages(batch, transactionContext).block(tryTimeout);
     }
 
     /**
@@ -215,8 +215,7 @@ public class ServiceBusSenderClient implements AutoCloseable {
 
     /**
      * Starts a new transaction on Service Bus. The {@link ServiceBusTransactionContext} should be passed along with
-     * {@link ServiceBusReceivedMessage} or {@link MessageLockToken} to all operations that needs to be in
-     * this transaction.
+     * {@link ServiceBusReceivedMessage} or {@code lockToken} to all operations that needs to be in this transaction.
      *
      * @return a new {@link ServiceBusTransactionContext}.
      */

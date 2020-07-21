@@ -2,11 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.encryption.api.DataEncryptionKeyProvider;
+
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.implementation.encryption.api.EncryptionOptions;
 import com.azure.cosmos.implementation.query.PipelinedDocumentQueryExecutionContext;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -16,7 +20,6 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.SqlParameter;
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
@@ -122,6 +125,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private StoreClientFactory storeClientFactory;
 
     private GatewayServiceConfigurationReader gatewayConfigurationReader;
+    public DataEncryptionKeyProvider dataEncryptionKeyProvider;
 
     public RxDocumentClientImpl(URI serviceEndpoint,
                                 String masterKeyOrResourceToken,
@@ -254,6 +258,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         this.resetSessionTokenRetryPolicy = retryPolicy;
     }
 
+    void registerDataEncryptionKeyProvider(DataEncryptionKeyProvider dataEncryptionKeyProvider) {
+        this.dataEncryptionKeyProvider = dataEncryptionKeyProvider;
+    }
+
     private void initializeGatewayConfigurationReader() {
         this.gatewayConfigurationReader = new GatewayServiceConfigurationReader(this.globalEndpointManager);
         DatabaseAccount databaseAccount = this.globalEndpointManager.getLatestDatabaseAccount();
@@ -357,7 +365,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private HttpClient httpClient() {
 
         HttpClientConfig httpClientConfig = new HttpClientConfig(this.configs)
-                .withMaxIdleConnectionTimeout(this.connectionPolicy.getIdleConnectionTimeout())
+                .withMaxIdleConnectionTimeout(this.connectionPolicy.getIdleHttpConnectionTimeout())
                 .withPoolSize(this.connectionPolicy.getMaxConnectionPoolSize())
                 .withProxy(this.connectionPolicy.getProxy())
                 .withRequestTimeout(this.connectionPolicy.getRequestTimeout());
@@ -560,18 +568,42 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private <T extends Resource> Flux<FeedResponse<T>> createQuery(
-            String parentResourceLink,
+        String parentResourceLink,
+        SqlQuerySpec sqlQuery,
+        CosmosQueryRequestOptions options,
+        Class<T> klass,
+        ResourceType resourceTypeEnum) {
+
+        String resourceLink = parentResourceLinkToQueryLink(parentResourceLink, resourceTypeEnum);
+        UUID activityId = Utils.randomUUID();
+        IDocumentQueryClient queryClient = documentQueryClientImpl(RxDocumentClientImpl.this);
+
+        // Trying to put this logic as low as the query pipeline
+        // Since for parallelQuery, each partition will have its own request, so at this point, there will be no request associate with this retry policy.
+        // For default document context, it already wired up InvalidPartitionExceptionRetry, but there is no harm to wire it again here
+        InvalidPartitionExceptionRetryPolicy invalidPartitionExceptionRetryPolicy = new InvalidPartitionExceptionRetryPolicy(
+            this.collectionCache,
+            null,
+            resourceLink,
+            options);
+
+        return ObservableHelper.fluxInlineIfPossibleAsObs(
+            () -> createQueryInternal(resourceLink, sqlQuery, options, klass, resourceTypeEnum, queryClient, activityId),
+            invalidPartitionExceptionRetryPolicy);
+    }
+
+    private <T extends Resource> Flux<FeedResponse<T>> createQueryInternal(
+            String resourceLink,
             SqlQuerySpec sqlQuery,
             CosmosQueryRequestOptions options,
             Class<T> klass,
-            ResourceType resourceTypeEnum) {
+            ResourceType resourceTypeEnum,
+            IDocumentQueryClient queryClient,
+            UUID activityId) {
 
-        String queryResourceLink = parentResourceLinkToQueryLink(parentResourceLink, resourceTypeEnum);
-
-        UUID activityId = Utils.randomUUID();
-        IDocumentQueryClient queryClient = documentQueryClientImpl(RxDocumentClientImpl.this);
         Flux<? extends IDocumentQueryExecutionContext<T>> executionContext =
-                DocumentQueryExecutionContextFactory.createDocumentQueryExecutionContextAsync(queryClient, resourceTypeEnum, klass, sqlQuery , options, queryResourceLink, false, activityId);
+                DocumentQueryExecutionContextFactory.createDocumentQueryExecutionContextAsync(queryClient, resourceTypeEnum, klass, sqlQuery , options, resourceLink, false, activityId);
+
         return executionContext.flatMap(iDocumentQueryExecutionContext -> {
             QueryInfo queryInfo = null;
             if (iDocumentQueryExecutionContext instanceof PipelinedDocumentQueryExecutionContext) {
@@ -1086,8 +1118,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         Instant serializationStartTimeUTC = Instant.now();
-        ByteBuffer content = BridgeInternal.serializeJsonToByteBuffer(document, mapper);
+        ByteBuffer content = BridgeInternal.serializeJsonToByteBuffer(document, mapper, dataEncryptionKeyProvider, options == null ? null : options.getEncryptionOptions());
         Instant serializationEndTimeUTC = Instant.now();
+
         SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
             serializationStartTimeUTC,
             serializationEndTimeUTC,
@@ -3160,5 +3193,19 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             logger.warn("shutting down reactorHttpClient failed", e);
         }
         logger.info("Shutting down completed.");
+    }
+
+    @Override
+    public ItemDeserializer getItemDeserializer() {
+        if (dataEncryptionKeyProvider == null) {
+            return new ItemDeserializer.JsonDeserializer();
+        } else {
+            return new ItemDeserializer.EncryptionDeserializer(dataEncryptionKeyProvider, new ItemDeserializer.JsonDeserializer());
+        }
+    }
+
+    @Override
+    public ItemDeserializer getItemDeserializerWithoutDecryption() {
+        return new ItemDeserializer.JsonDeserializer();
     }
 }

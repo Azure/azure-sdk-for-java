@@ -31,6 +31,12 @@ public class AzureFirewallIpConfiguration extends SubResource {
     private String etag;
 
     /*
+     * Type of the resource.
+     */
+    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
+    private String type;
+
+    /*
      * The Firewall Internal Load Balancer IP to be used as the next hop in
      * User Defined Routes.
      */
@@ -38,21 +44,21 @@ public class AzureFirewallIpConfiguration extends SubResource {
     private String privateIpAddress;
 
     /*
-     * Reference of the subnet resource. This resource must be named
-     * 'AzureFirewallSubnet'.
+     * Reference to the subnet resource. This resource must be named
+     * 'AzureFirewallSubnet' or 'AzureFirewallManagementSubnet'.
      */
     @JsonProperty(value = "properties.subnet")
     private SubResource subnet;
 
     /*
-     * Reference of the PublicIP resource. This field is a mandatory input if
+     * Reference to the PublicIP resource. This field is a mandatory input if
      * subnet is not null.
      */
     @JsonProperty(value = "properties.publicIPAddress")
     private SubResource publicIpAddress;
 
     /*
-     * The provisioning state of the resource.
+     * The provisioning state of the Azure firewall IP configuration resource.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
@@ -89,6 +95,15 @@ public class AzureFirewallIpConfiguration extends SubResource {
     }
 
     /**
+     * Get the type property: Type of the resource.
+     *
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the privateIpAddress property: The Firewall Internal Load Balancer IP to be used as the next hop in User
      * Defined Routes.
      *
@@ -99,7 +114,8 @@ public class AzureFirewallIpConfiguration extends SubResource {
     }
 
     /**
-     * Get the subnet property: Reference of the subnet resource. This resource must be named 'AzureFirewallSubnet'.
+     * Get the subnet property: Reference to the subnet resource. This resource must be named 'AzureFirewallSubnet' or
+     * 'AzureFirewallManagementSubnet'.
      *
      * @return the subnet value.
      */
@@ -108,7 +124,8 @@ public class AzureFirewallIpConfiguration extends SubResource {
     }
 
     /**
-     * Set the subnet property: Reference of the subnet resource. This resource must be named 'AzureFirewallSubnet'.
+     * Set the subnet property: Reference to the subnet resource. This resource must be named 'AzureFirewallSubnet' or
+     * 'AzureFirewallManagementSubnet'.
      *
      * @param subnet the subnet value to set.
      * @return the AzureFirewallIpConfiguration object itself.
@@ -119,7 +136,7 @@ public class AzureFirewallIpConfiguration extends SubResource {
     }
 
     /**
-     * Get the publicIpAddress property: Reference of the PublicIP resource. This field is a mandatory input if subnet
+     * Get the publicIpAddress property: Reference to the PublicIP resource. This field is a mandatory input if subnet
      * is not null.
      *
      * @return the publicIpAddress value.
@@ -129,7 +146,7 @@ public class AzureFirewallIpConfiguration extends SubResource {
     }
 
     /**
-     * Set the publicIpAddress property: Reference of the PublicIP resource. This field is a mandatory input if subnet
+     * Set the publicIpAddress property: Reference to the PublicIP resource. This field is a mandatory input if subnet
      * is not null.
      *
      * @param publicIpAddress the publicIpAddress value to set.
@@ -141,7 +158,7 @@ public class AzureFirewallIpConfiguration extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the resource.
+     * Get the provisioningState property: The provisioning state of the Azure firewall IP configuration resource.
      *
      * @return the provisioningState value.
      */

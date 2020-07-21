@@ -22,20 +22,19 @@ public class FirewallPolicyInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(FirewallPolicyInner.class);
 
     /*
-     * Gets a unique read-only string that changes whenever the resource is
-     * updated.
+     * A unique read-only string that changes whenever the resource is updated.
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
-     * List of references to FirewallPolicyRuleGroups
+     * List of references to FirewallPolicyRuleGroups.
      */
     @JsonProperty(value = "properties.ruleGroups", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> ruleGroups;
 
     /*
-     * The provisioning state of the resource.
+     * The provisioning state of the firewall policy resource.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
@@ -48,13 +47,13 @@ public class FirewallPolicyInner extends Resource {
 
     /*
      * List of references to Azure Firewalls that this Firewall Policy is
-     * associated with
+     * associated with.
      */
     @JsonProperty(value = "properties.firewalls", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> firewalls;
 
     /*
-     * List of references to Child Firewall Policies
+     * List of references to Child Firewall Policies.
      */
     @JsonProperty(value = "properties.childPolicies", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> childPolicies;
@@ -72,7 +71,7 @@ public class FirewallPolicyInner extends Resource {
     private String id;
 
     /**
-     * Get the etag property: Gets a unique read-only string that changes whenever the resource is updated.
+     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value.
      */
@@ -90,7 +89,7 @@ public class FirewallPolicyInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the resource.
+     * Get the provisioningState property: The provisioning state of the firewall policy resource.
      *
      * @return the provisioningState value.
      */

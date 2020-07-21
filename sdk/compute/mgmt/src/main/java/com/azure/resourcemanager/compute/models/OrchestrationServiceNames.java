@@ -4,41 +4,28 @@
 
 package com.azure.resourcemanager.compute.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for OrchestrationServiceNames. */
-public enum OrchestrationServiceNames {
-    /** Enum value AutomaticRepairs. */
-    AUTOMATIC_REPAIRS("AutomaticRepairs");
-
-    /** The actual serialized value for a OrchestrationServiceNames instance. */
-    private final String value;
-
-    OrchestrationServiceNames(String value) {
-        this.value = value;
-    }
+public final class OrchestrationServiceNames extends ExpandableStringEnum<OrchestrationServiceNames> {
+    /** Static value AutomaticRepairs for OrchestrationServiceNames. */
+    public static final OrchestrationServiceNames AUTOMATIC_REPAIRS = fromString("AutomaticRepairs");
 
     /**
-     * Parses a serialized value to a OrchestrationServiceNames instance.
+     * Creates or finds a OrchestrationServiceNames from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed OrchestrationServiceNames object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding OrchestrationServiceNames.
      */
     @JsonCreator
-    public static OrchestrationServiceNames fromString(String value) {
-        OrchestrationServiceNames[] items = OrchestrationServiceNames.values();
-        for (OrchestrationServiceNames item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static OrchestrationServiceNames fromString(String name) {
+        return fromString(name, OrchestrationServiceNames.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /** @return known OrchestrationServiceNames values. */
+    public static Collection<OrchestrationServiceNames> values() {
+        return values(OrchestrationServiceNames.class);
     }
 }

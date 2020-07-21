@@ -11,14 +11,17 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.AzureFirewallApplicationRuleCollection;
 import com.azure.resourcemanager.network.models.AzureFirewallIpConfiguration;
+import com.azure.resourcemanager.network.models.AzureFirewallIpGroups;
 import com.azure.resourcemanager.network.models.AzureFirewallNatRuleCollection;
 import com.azure.resourcemanager.network.models.AzureFirewallNetworkRuleCollection;
+import com.azure.resourcemanager.network.models.AzureFirewallSku;
 import com.azure.resourcemanager.network.models.AzureFirewallThreatIntelMode;
 import com.azure.resourcemanager.network.models.HubIpAddresses;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** The AzureFirewall model. */
 @JsonFlatten
@@ -34,8 +37,7 @@ public class AzureFirewallInner extends Resource {
     private List<String> zones;
 
     /*
-     * Gets a unique read-only string that changes whenever the resource is
-     * updated.
+     * A unique read-only string that changes whenever the resource is updated.
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
@@ -65,7 +67,13 @@ public class AzureFirewallInner extends Resource {
     private List<AzureFirewallIpConfiguration> ipConfigurations;
 
     /*
-     * The provisioning state of the resource.
+     * IP configuration of the Azure Firewall used for management traffic.
+     */
+    @JsonProperty(value = "properties.managementIpConfiguration")
+    private AzureFirewallIpConfiguration managementIpConfiguration;
+
+    /*
+     * The provisioning state of the Azure firewall resource.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
@@ -95,6 +103,24 @@ public class AzureFirewallInner extends Resource {
     private HubIpAddresses hubIpAddresses;
 
     /*
+     * IpGroups associated with AzureFirewall.
+     */
+    @JsonProperty(value = "properties.ipGroups", access = JsonProperty.Access.WRITE_ONLY)
+    private List<AzureFirewallIpGroups> ipGroups;
+
+    /*
+     * The Azure Firewall Resource SKU.
+     */
+    @JsonProperty(value = "properties.sku")
+    private AzureFirewallSku sku;
+
+    /*
+     * The additional properties used to further config this azure firewall.
+     */
+    @JsonProperty(value = "properties.additionalProperties")
+    private Map<String, String> additionalProperties;
+
+    /*
      * Resource ID.
      */
     @JsonProperty(value = "id")
@@ -121,7 +147,7 @@ public class AzureFirewallInner extends Resource {
     }
 
     /**
-     * Get the etag property: Gets a unique read-only string that changes whenever the resource is updated.
+     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value.
      */
@@ -212,7 +238,27 @@ public class AzureFirewallInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the resource.
+     * Get the managementIpConfiguration property: IP configuration of the Azure Firewall used for management traffic.
+     *
+     * @return the managementIpConfiguration value.
+     */
+    public AzureFirewallIpConfiguration managementIpConfiguration() {
+        return this.managementIpConfiguration;
+    }
+
+    /**
+     * Set the managementIpConfiguration property: IP configuration of the Azure Firewall used for management traffic.
+     *
+     * @param managementIpConfiguration the managementIpConfiguration value to set.
+     * @return the AzureFirewallInner object itself.
+     */
+    public AzureFirewallInner withManagementIpConfiguration(AzureFirewallIpConfiguration managementIpConfiguration) {
+        this.managementIpConfiguration = managementIpConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the Azure firewall resource.
      *
      * @return the provisioningState value.
      */
@@ -290,6 +336,55 @@ public class AzureFirewallInner extends Resource {
     }
 
     /**
+     * Get the ipGroups property: IpGroups associated with AzureFirewall.
+     *
+     * @return the ipGroups value.
+     */
+    public List<AzureFirewallIpGroups> ipGroups() {
+        return this.ipGroups;
+    }
+
+    /**
+     * Get the sku property: The Azure Firewall Resource SKU.
+     *
+     * @return the sku value.
+     */
+    public AzureFirewallSku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku property: The Azure Firewall Resource SKU.
+     *
+     * @param sku the sku value to set.
+     * @return the AzureFirewallInner object itself.
+     */
+    public AzureFirewallInner withSku(AzureFirewallSku sku) {
+        this.sku = sku;
+        return this;
+    }
+
+    /**
+     * Get the additionalProperties property: The additional properties used to further config this azure firewall.
+     *
+     * @return the additionalProperties value.
+     */
+    public Map<String, String> additionalProperties() {
+        return this.additionalProperties;
+    }
+
+    /**
+     * Set the additionalProperties property: The additional properties used to further config this azure firewall.
+     *
+     * @param additionalProperties the additionalProperties value to set.
+     * @return the AzureFirewallInner object itself.
+     */
+    public AzureFirewallInner withAdditionalProperties(Map<String, String> additionalProperties) {
+        this.additionalProperties = additionalProperties;
+        return this;
+    }
+
+    /**
      * Get the id property: Resource ID.
      *
      * @return the id value.
@@ -327,8 +422,17 @@ public class AzureFirewallInner extends Resource {
         if (ipConfigurations() != null) {
             ipConfigurations().forEach(e -> e.validate());
         }
+        if (managementIpConfiguration() != null) {
+            managementIpConfiguration().validate();
+        }
         if (hubIpAddresses() != null) {
             hubIpAddresses().validate();
+        }
+        if (ipGroups() != null) {
+            ipGroups().forEach(e -> e.validate());
+        }
+        if (sku() != null) {
+            sku().validate();
         }
     }
 }

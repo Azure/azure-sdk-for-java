@@ -35,6 +35,7 @@ import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmen
 import com.azure.storage.blob.implementation.models.ContainersListBlobHierarchySegmentResponse;
 import com.azure.storage.blob.implementation.models.ContainersReleaseLeaseResponse;
 import com.azure.storage.blob.implementation.models.ContainersRenewLeaseResponse;
+import com.azure.storage.blob.implementation.models.ContainersRestoreResponse;
 import com.azure.storage.blob.implementation.models.ContainersSetAccessPolicyResponse;
 import com.azure.storage.blob.implementation.models.ContainersSetMetadataResponse;
 import com.azure.storage.blob.models.BlobStorageException;
@@ -108,6 +109,11 @@ public final class ContainersImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<ContainersSetAccessPolicyResponse> setAccessPolicy(@PathParam("containerName") String containerName, @HostParam("url") String url, @BodyParam("application/xml; charset=utf-8") SignedIdentifiersWrapper containerAcl, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-blob-public-access") PublicAccessType access, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
+
+        @Put("{containerName}")
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        Mono<ContainersRestoreResponse> restore(@PathParam("containerName") String containerName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-deleted-container-name") String deletedContainerName, @HeaderParam("x-ms-deleted-container-version") String deletedContainerVersion, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
         @Put("{containerName}")
         @ExpectedResponses({201})
@@ -393,6 +399,44 @@ public final class ContainersImpl {
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return service.setAccessPolicy(containerName, this.client.getUrl(), containerAclConverted, timeout, leaseId, access, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(), requestId, restype, comp, context);
+    }
+
+    /**
+     * Restores a previously-deleted container.
+     *
+     * @param containerName The container name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ContainersRestoreResponse> restoreWithRestResponseAsync(String containerName, Context context) {
+        final Integer timeout = null;
+        final String requestId = null;
+        final String deletedContainerName = null;
+        final String deletedContainerVersion = null;
+        final String restype = "container";
+        final String comp = "undelete";
+        return service.restore(containerName, this.client.getUrl(), timeout, this.client.getVersion(), requestId, deletedContainerName, deletedContainerVersion, restype, comp, context);
+    }
+
+    /**
+     * Restores a previously-deleted container.
+     *
+     * @param containerName The container name.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param deletedContainerName Optional.  Version 2019-12-12 and laster.  Specifies the name of the deleted container to restore.
+     * @param deletedContainerVersion Optional.  Version 2019-12-12 and laster.  Specifies the version of the deleted container to restore.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ContainersRestoreResponse> restoreWithRestResponseAsync(String containerName, Integer timeout, String requestId, String deletedContainerName, String deletedContainerVersion, Context context) {
+        final String restype = "container";
+        final String comp = "undelete";
+        return service.restore(containerName, this.client.getUrl(), timeout, this.client.getVersion(), requestId, deletedContainerName, deletedContainerVersion, restype, comp, context);
     }
 
     /**

@@ -8,7 +8,7 @@ import com.google.gson.Gson;
 /**
  * Fluent builder class that configures and instantiates instances of {@link GsonJsonSerializer}.
  */
-public class GsonJsonSerializerBuilder {
+public final class GsonJsonSerializerBuilder {
     private Gson gson;
 
     /**

@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.TransportProtocol;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -19,7 +20,7 @@ public class InboundNatRuleInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(InboundNatRuleInner.class);
 
     /*
-     * Gets name of the resource that is unique within the set of inbound NAT
+     * The name of the resource that is unique within the set of inbound NAT
      * rules used by the load balancer. This name can be used to access the
      * resource.
      */
@@ -29,7 +30,7 @@ public class InboundNatRuleInner extends SubResource {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag")
+    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
@@ -99,14 +100,13 @@ public class InboundNatRuleInner extends SubResource {
     private Boolean enableTcpReset;
 
     /*
-     * Gets the provisioning state of the public IP resource. Possible values
-     * are: 'Updating', 'Deleting', and 'Failed'.
+     * The provisioning state of the inbound NAT rule resource.
      */
-    @JsonProperty(value = "properties.provisioningState")
-    private String provisioningState;
+    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private ProvisioningState provisioningState;
 
     /**
-     * Get the name property: Gets name of the resource that is unique within the set of inbound NAT rules used by the
+     * Get the name property: The name of the resource that is unique within the set of inbound NAT rules used by the
      * load balancer. This name can be used to access the resource.
      *
      * @return the name value.
@@ -116,7 +116,7 @@ public class InboundNatRuleInner extends SubResource {
     }
 
     /**
-     * Set the name property: Gets name of the resource that is unique within the set of inbound NAT rules used by the
+     * Set the name property: The name of the resource that is unique within the set of inbound NAT rules used by the
      * load balancer. This name can be used to access the resource.
      *
      * @param name the name value to set.
@@ -134,17 +134,6 @@ public class InboundNatRuleInner extends SubResource {
      */
     public String etag() {
         return this.etag;
-    }
-
-    /**
-     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
-     * @param etag the etag value to set.
-     * @return the InboundNatRuleInner object itself.
-     */
-    public InboundNatRuleInner withEtag(String etag) {
-        this.etag = etag;
-        return this;
     }
 
     /**
@@ -317,25 +306,12 @@ public class InboundNatRuleInner extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: Gets the provisioning state of the public IP resource. Possible values are:
-     * 'Updating', 'Deleting', and 'Failed'.
+     * Get the provisioningState property: The provisioning state of the inbound NAT rule resource.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Set the provisioningState property: Gets the provisioning state of the public IP resource. Possible values are:
-     * 'Updating', 'Deleting', and 'Failed'.
-     *
-     * @param provisioningState the provisioningState value to set.
-     * @return the InboundNatRuleInner object itself.
-     */
-    public InboundNatRuleInner withProvisioningState(String provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
     }
 
     /**

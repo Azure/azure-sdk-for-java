@@ -31,6 +31,12 @@ public final class VirtualNetworkGatewaySkuTier extends ExpandableStringEnum<Vir
     /** Static value VpnGw3 for VirtualNetworkGatewaySkuTier. */
     public static final VirtualNetworkGatewaySkuTier VPN_GW3 = fromString("VpnGw3");
 
+    /** Static value VpnGw4 for VirtualNetworkGatewaySkuTier. */
+    public static final VirtualNetworkGatewaySkuTier VPN_GW4 = fromString("VpnGw4");
+
+    /** Static value VpnGw5 for VirtualNetworkGatewaySkuTier. */
+    public static final VirtualNetworkGatewaySkuTier VPN_GW5 = fromString("VpnGw5");
+
     /** Static value VpnGw1AZ for VirtualNetworkGatewaySkuTier. */
     public static final VirtualNetworkGatewaySkuTier VPN_GW1AZ = fromString("VpnGw1AZ");
 
@@ -39,6 +45,12 @@ public final class VirtualNetworkGatewaySkuTier extends ExpandableStringEnum<Vir
 
     /** Static value VpnGw3AZ for VirtualNetworkGatewaySkuTier. */
     public static final VirtualNetworkGatewaySkuTier VPN_GW3AZ = fromString("VpnGw3AZ");
+
+    /** Static value VpnGw4AZ for VirtualNetworkGatewaySkuTier. */
+    public static final VirtualNetworkGatewaySkuTier VPN_GW4AZ = fromString("VpnGw4AZ");
+
+    /** Static value VpnGw5AZ for VirtualNetworkGatewaySkuTier. */
+    public static final VirtualNetworkGatewaySkuTier VPN_GW5AZ = fromString("VpnGw5AZ");
 
     /** Static value ErGw1AZ for VirtualNetworkGatewaySkuTier. */
     public static final VirtualNetworkGatewaySkuTier ER_GW1AZ = fromString("ErGw1AZ");

@@ -49,7 +49,7 @@ public class BastionHostIpConfiguration extends SubResource {
     private SubResource publicIpAddress;
 
     /*
-     * The provisioning state of the resource.
+     * The provisioning state of the bastion host IP configuration resource.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
@@ -141,7 +141,7 @@ public class BastionHostIpConfiguration extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the resource.
+     * Get the provisioningState property: The provisioning state of the bastion host IP configuration resource.
      *
      * @return the provisioningState value.
      */

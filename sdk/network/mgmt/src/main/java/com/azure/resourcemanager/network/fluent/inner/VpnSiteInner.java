@@ -24,8 +24,7 @@ public class VpnSiteInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnSiteInner.class);
 
     /*
-     * Gets a unique read-only string that changes whenever the resource is
-     * updated.
+     * A unique read-only string that changes whenever the resource is updated.
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
@@ -67,7 +66,7 @@ public class VpnSiteInner extends Resource {
     private BgpSettings bgpProperties;
 
     /*
-     * The provisioning state of the resource.
+     * The provisioning state of the VPN site resource.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
@@ -79,7 +78,7 @@ public class VpnSiteInner extends Resource {
     private Boolean isSecuritySite;
 
     /*
-     * List of all vpn site links
+     * List of all vpn site links.
      */
     @JsonProperty(value = "properties.vpnSiteLinks")
     private List<VpnSiteLinkInner> vpnSiteLinks;
@@ -91,7 +90,7 @@ public class VpnSiteInner extends Resource {
     private String id;
 
     /**
-     * Get the etag property: Gets a unique read-only string that changes whenever the resource is updated.
+     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value.
      */
@@ -220,7 +219,7 @@ public class VpnSiteInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the resource.
+     * Get the provisioningState property: The provisioning state of the VPN site resource.
      *
      * @return the provisioningState value.
      */

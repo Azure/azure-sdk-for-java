@@ -71,7 +71,7 @@ public final class CopyAuthorization {
         this.resourceId = resourceId;
         this.resourceRegion = resourceRegion;
         this.expirationDateTimeTicks = expiresOn;
-        this.expiresOn = OffsetDateTime.ofInstant(Instant.ofEpochMilli(expiresOn), ZoneOffset.UTC);
+        this.expiresOn = OffsetDateTime.ofInstant(Instant.ofEpochSecond(expiresOn), ZoneOffset.UTC);
     }
 
     /**

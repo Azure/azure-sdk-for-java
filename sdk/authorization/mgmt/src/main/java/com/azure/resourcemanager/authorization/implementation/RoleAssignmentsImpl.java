@@ -5,7 +5,6 @@ package com.azure.resourcemanager.authorization.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.authorization.models.RoleAssignments;
@@ -41,7 +40,6 @@ public class RoleAssignmentsImpl extends CreatableResourcesImpl<RoleAssignment, 
     public Mono<RoleAssignment> getByIdAsync(String id) {
         return inner()
             .getByIdAsync(id)
-            .onErrorResume(ManagementException.class, e -> Mono.empty())
             .map(
                 roleAssignmentInner ->
                     new RoleAssignmentImpl(roleAssignmentInner.name(), roleAssignmentInner, manager()));
@@ -66,7 +64,6 @@ public class RoleAssignmentsImpl extends CreatableResourcesImpl<RoleAssignment, 
     public Mono<RoleAssignment> getByScopeAsync(String scope, String name) {
         return inner()
             .getAsync(scope, name)
-            .onErrorResume(ManagementException.class, e -> Mono.empty())
             .map(
                 roleAssignmentInner ->
                     new RoleAssignmentImpl(roleAssignmentInner.name(), roleAssignmentInner, manager()));
@@ -81,7 +78,6 @@ public class RoleAssignmentsImpl extends CreatableResourcesImpl<RoleAssignment, 
     public Mono<RoleAssignment> deleteByIdAsync(String id) {
         return inner()
             .deleteByIdAsync(id)
-            .onErrorResume(ManagementException.class, e -> Mono.empty())
             .map(
                 roleAssignmentInner ->
                     new RoleAssignmentImpl(roleAssignmentInner.name(), roleAssignmentInner, manager()));

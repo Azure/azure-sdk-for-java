@@ -17,12 +17,12 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.VpnSiteLinkConnectionInner;
-import com.azure.resourcemanager.network.models.ErrorException;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in VpnSiteLinkConnections. */
@@ -59,7 +59,7 @@ public final class VpnSiteLinkConnectionsClient {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnGateways"
                 + "/{gatewayName}/vpnConnections/{connectionName}/vpnLinkConnections/{linkConnectionName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VpnSiteLinkConnectionInner>> get(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
@@ -79,7 +79,7 @@ public final class VpnSiteLinkConnectionsClient {
      * @param connectionName The name of the vpn connection.
      * @param linkConnectionName The name of the vpn connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnSiteLinkConnection Resource.
      */
@@ -112,7 +112,7 @@ public final class VpnSiteLinkConnectionsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter linkConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -138,7 +138,7 @@ public final class VpnSiteLinkConnectionsClient {
      * @param linkConnectionName The name of the vpn connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnSiteLinkConnection Resource.
      */
@@ -175,7 +175,7 @@ public final class VpnSiteLinkConnectionsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter linkConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-11-01";
         return service
             .get(
                 this.client.getEndpoint(),
@@ -196,7 +196,7 @@ public final class VpnSiteLinkConnectionsClient {
      * @param connectionName The name of the vpn connection.
      * @param linkConnectionName The name of the vpn connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnSiteLinkConnection Resource.
      */
@@ -223,7 +223,7 @@ public final class VpnSiteLinkConnectionsClient {
      * @param linkConnectionName The name of the vpn connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnSiteLinkConnection Resource.
      */
@@ -253,7 +253,7 @@ public final class VpnSiteLinkConnectionsClient {
      * @param connectionName The name of the vpn connection.
      * @param linkConnectionName The name of the vpn connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnSiteLinkConnection Resource.
      */
@@ -272,7 +272,7 @@ public final class VpnSiteLinkConnectionsClient {
      * @param linkConnectionName The name of the vpn connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnSiteLinkConnection Resource.
      */

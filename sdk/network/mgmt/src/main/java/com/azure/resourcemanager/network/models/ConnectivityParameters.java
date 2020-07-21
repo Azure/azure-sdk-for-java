@@ -15,13 +15,13 @@ public final class ConnectivityParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectivityParameters.class);
 
     /*
-     * Describes the source of the connection.
+     * The source of the connection.
      */
     @JsonProperty(value = "source", required = true)
     private ConnectivitySource source;
 
     /*
-     * Describes the destination of connection.
+     * The destination of connection.
      */
     @JsonProperty(value = "destination", required = true)
     private ConnectivityDestination destination;
@@ -38,8 +38,14 @@ public final class ConnectivityParameters {
     @JsonProperty(value = "protocolConfiguration")
     private ProtocolConfiguration protocolConfiguration;
 
+    /*
+     * Preferred IP version of the connection.
+     */
+    @JsonProperty(value = "preferredIPVersion")
+    private IpVersion preferredIpVersion;
+
     /**
-     * Get the source property: Describes the source of the connection.
+     * Get the source property: The source of the connection.
      *
      * @return the source value.
      */
@@ -48,7 +54,7 @@ public final class ConnectivityParameters {
     }
 
     /**
-     * Set the source property: Describes the source of the connection.
+     * Set the source property: The source of the connection.
      *
      * @param source the source value to set.
      * @return the ConnectivityParameters object itself.
@@ -59,7 +65,7 @@ public final class ConnectivityParameters {
     }
 
     /**
-     * Get the destination property: Describes the destination of connection.
+     * Get the destination property: The destination of connection.
      *
      * @return the destination value.
      */
@@ -68,7 +74,7 @@ public final class ConnectivityParameters {
     }
 
     /**
-     * Set the destination property: Describes the destination of connection.
+     * Set the destination property: The destination of connection.
      *
      * @param destination the destination value to set.
      * @return the ConnectivityParameters object itself.
@@ -115,6 +121,26 @@ public final class ConnectivityParameters {
      */
     public ConnectivityParameters withProtocolConfiguration(ProtocolConfiguration protocolConfiguration) {
         this.protocolConfiguration = protocolConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the preferredIpVersion property: Preferred IP version of the connection.
+     *
+     * @return the preferredIpVersion value.
+     */
+    public IpVersion preferredIpVersion() {
+        return this.preferredIpVersion;
+    }
+
+    /**
+     * Set the preferredIpVersion property: Preferred IP version of the connection.
+     *
+     * @param preferredIpVersion the preferredIpVersion value to set.
+     * @return the ConnectivityParameters object itself.
+     */
+    public ConnectivityParameters withPreferredIpVersion(IpVersion preferredIpVersion) {
+        this.preferredIpVersion = preferredIpVersion;
         return this;
     }
 

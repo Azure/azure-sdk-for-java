@@ -23,7 +23,7 @@ public class PrivateEndpointInner extends Resource {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag")
+    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
@@ -33,14 +33,14 @@ public class PrivateEndpointInner extends Resource {
     private SubnetInner subnet;
 
     /*
-     * Gets an array of references to the network interfaces created for this
+     * An array of references to the network interfaces created for this
      * private endpoint.
      */
     @JsonProperty(value = "properties.networkInterfaces", access = JsonProperty.Access.WRITE_ONLY)
     private List<NetworkInterfaceInner> networkInterfaces;
 
     /*
-     * The provisioning state of the private endpoint.
+     * The provisioning state of the private endpoint resource.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
@@ -75,17 +75,6 @@ public class PrivateEndpointInner extends Resource {
     }
 
     /**
-     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
-     * @param etag the etag value to set.
-     * @return the PrivateEndpointInner object itself.
-     */
-    public PrivateEndpointInner withEtag(String etag) {
-        this.etag = etag;
-        return this;
-    }
-
-    /**
      * Get the subnet property: The ID of the subnet from which the private IP will be allocated.
      *
      * @return the subnet value.
@@ -106,8 +95,8 @@ public class PrivateEndpointInner extends Resource {
     }
 
     /**
-     * Get the networkInterfaces property: Gets an array of references to the network interfaces created for this
-     * private endpoint.
+     * Get the networkInterfaces property: An array of references to the network interfaces created for this private
+     * endpoint.
      *
      * @return the networkInterfaces value.
      */
@@ -116,7 +105,7 @@ public class PrivateEndpointInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the private endpoint.
+     * Get the provisioningState property: The provisioning state of the private endpoint resource.
      *
      * @return the provisioningState value.
      */

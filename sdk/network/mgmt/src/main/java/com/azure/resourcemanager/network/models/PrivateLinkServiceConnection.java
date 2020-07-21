@@ -38,7 +38,7 @@ public class PrivateLinkServiceConnection extends SubResource {
     private String etag;
 
     /*
-     * The provisioning state of the private link service connection.
+     * The provisioning state of the private link service connection resource.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
@@ -111,7 +111,7 @@ public class PrivateLinkServiceConnection extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the private link service connection.
+     * Get the provisioningState property: The provisioning state of the private link service connection resource.
      *
      * @return the provisioningState value.
      */

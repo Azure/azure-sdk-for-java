@@ -148,13 +148,13 @@ public class ServiceBusSenderClientTest {
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString(),
             contents);
 
-        when(asyncSender.send(messages, transactionContext)).thenReturn(Mono.empty());
+        when(asyncSender.sendMessages(messages, transactionContext)).thenReturn(Mono.empty());
 
         // Act
-        sender.send(messages, transactionContext);
+        sender.sendMessages(messages, transactionContext);
 
         // Assert
-        verify(asyncSender).send(messages, transactionContext);
+        verify(asyncSender).sendMessages(messages, transactionContext);
     }
 
     /**
@@ -168,13 +168,13 @@ public class ServiceBusSenderClientTest {
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString(),
             contents);
 
-        when(asyncSender.send(messages)).thenReturn(Mono.empty());
+        when(asyncSender.sendMessages(messages)).thenReturn(Mono.empty());
 
         // Act
-        sender.send(messages);
+        sender.sendMessages(messages);
 
         // Assert
-        verify(asyncSender).send(messages);
+        verify(asyncSender).sendMessages(messages);
     }
 
     /**
@@ -188,16 +188,16 @@ public class ServiceBusSenderClientTest {
             new ServiceBusMessage(TEST_CONTENTS.getBytes(UTF_8));
         List<ServiceBusMessage> messages = new ArrayList<>();
         messages.add(testData);
-        when(asyncSender.send(messages, transactionContext)).thenReturn(Mono.empty());
+        when(asyncSender.sendMessages(messages, transactionContext)).thenReturn(Mono.empty());
 
         // Act & Assert
         try {
-            sender.send(messages, nullTransaction);
+            sender.sendMessages(messages, nullTransaction);
             Assertions.fail("This should have failed with NullPointerException.");
         } catch (Exception ex) {
             Assertions.assertTrue(ex instanceof NullPointerException);
         }
-        verify(asyncSender).send(messages, nullTransaction);
+        verify(asyncSender).sendMessages(messages, nullTransaction);
     }
 
     /**
@@ -210,16 +210,16 @@ public class ServiceBusSenderClientTest {
         final ServiceBusMessage testData =
             new ServiceBusMessage(TEST_CONTENTS.getBytes(UTF_8));
 
-        when(asyncSender.send(testData, transactionContext)).thenReturn(Mono.empty());
+        when(asyncSender.sendMessage(testData, transactionContext)).thenReturn(Mono.empty());
 
         // Act & Assert
         try {
-            sender.send(testData, nullTransaction);
+            sender.sendMessage(testData, nullTransaction);
             Assertions.fail("This should have failed with NullPointerException.");
         } catch (Exception ex) {
             Assertions.assertTrue(ex instanceof NullPointerException);
         }
-        verify(asyncSender).send(testData, nullTransaction);
+        verify(asyncSender).sendMessage(testData, nullTransaction);
     }
 
     /**
@@ -231,13 +231,13 @@ public class ServiceBusSenderClientTest {
         final ServiceBusMessage testData =
             new ServiceBusMessage(TEST_CONTENTS.getBytes(UTF_8));
 
-        when(asyncSender.send(testData, transactionContext)).thenReturn(Mono.empty());
+        when(asyncSender.sendMessage(testData, transactionContext)).thenReturn(Mono.empty());
 
         // Act
-        sender.send(testData, transactionContext);
+        sender.sendMessage(testData, transactionContext);
 
         // Assert
-        verify(asyncSender).send(testData, transactionContext);
+        verify(asyncSender).sendMessage(testData, transactionContext);
     }
 
     /**
@@ -249,13 +249,13 @@ public class ServiceBusSenderClientTest {
         final ServiceBusMessage testData =
             new ServiceBusMessage(TEST_CONTENTS.getBytes(UTF_8));
 
-        when(asyncSender.send(testData)).thenReturn(Mono.empty());
+        when(asyncSender.sendMessage(testData)).thenReturn(Mono.empty());
 
         // Act
-        sender.send(testData);
+        sender.sendMessage(testData);
 
         // Assert
-        verify(asyncSender).send(testData);
+        verify(asyncSender).sendMessage(testData);
     }
 
     /**

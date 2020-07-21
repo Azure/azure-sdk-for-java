@@ -26,6 +26,11 @@ package com.azure.storage.file.share.models;
  *         and will be identifiable by {@link ShareItem#getSnapshot()}  snapshot} having a value. The base share will
  *         contain {@code null} for the snapshot.
  *     </li>
+ *     <li>
+ *         Setting {@link ListSharesOptions#setIncludeDeleted(boolean) includeDeleted} to true will include
+ *         deleted {@link ShareItem shares}, the deleted shares will be included as separate items in the response
+ *         and will be identifiable by {@link ShareItem#isDeleted()} having a <code>true</code>value.
+ *     </li>
  * </ul>
  */
 public final class ListSharesOptions {
@@ -33,6 +38,7 @@ public final class ListSharesOptions {
     private Integer maxResultsPerPage;
     private boolean includeMetadata;
     private boolean includeSnapshots;
+    private boolean includeDeleted;
 
     /**
      * Sets the prefix that a share must match to be included in the listing.
@@ -107,5 +113,23 @@ public final class ListSharesOptions {
      */
     public boolean isIncludeSnapshots() {
         return includeSnapshots;
+    }
+
+    /**
+     * Sets the status of including deleted shares when listing shares
+     *
+     * @param includeDeleted Flag indicating if deleted shares should be included in the listing
+     * @return An updated ListSharesOptions object
+     */
+    public ListSharesOptions setIncludeDeleted(boolean includeDeleted) {
+        this.includeDeleted = includeDeleted;
+        return this;
+    }
+
+    /**
+     * @return the status of including deleted shares when listing shares
+     */
+    public boolean isIncludeDeleted() {
+        return includeDeleted;
     }
 }

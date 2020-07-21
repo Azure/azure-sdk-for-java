@@ -17,8 +17,8 @@ public final class VirtualNetworkGatewayListConnectionsResultInner {
     private final ClientLogger logger = new ClientLogger(VirtualNetworkGatewayListConnectionsResultInner.class);
 
     /*
-     * Gets a list of VirtualNetworkGatewayConnection resources that exists in
-     * a resource group.
+     * A list of VirtualNetworkGatewayConnection resources that exists in a
+     * resource group.
      */
     @JsonProperty(value = "value")
     private List<VirtualNetworkGatewayConnectionListEntityInner> value;
@@ -30,7 +30,7 @@ public final class VirtualNetworkGatewayListConnectionsResultInner {
     private String nextLink;
 
     /**
-     * Get the value property: Gets a list of VirtualNetworkGatewayConnection resources that exists in a resource group.
+     * Get the value property: A list of VirtualNetworkGatewayConnection resources that exists in a resource group.
      *
      * @return the value value.
      */
@@ -39,7 +39,7 @@ public final class VirtualNetworkGatewayListConnectionsResultInner {
     }
 
     /**
-     * Set the value property: Gets a list of VirtualNetworkGatewayConnection resources that exists in a resource group.
+     * Set the value property: A list of VirtualNetworkGatewayConnection resources that exists in a resource group.
      *
      * @param value the value value to set.
      * @return the VirtualNetworkGatewayListConnectionsResultInner object itself.

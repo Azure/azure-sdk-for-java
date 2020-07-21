@@ -23,6 +23,7 @@ import com.azure.resourcemanager.network.models.ApplicationGatewaySslPolicy;
 import com.azure.resourcemanager.network.models.ApplicationGatewayTrustedRootCertificate;
 import com.azure.resourcemanager.network.models.ApplicationGatewayWebApplicationFirewallConfiguration;
 import com.azure.resourcemanager.network.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -36,7 +37,7 @@ public class ApplicationGatewayInner extends Resource {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag")
+    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
@@ -183,7 +184,7 @@ public class ApplicationGatewayInner extends Resource {
     private ApplicationGatewayWebApplicationFirewallConfiguration webApplicationFirewallConfiguration;
 
     /*
-     * Reference of the FirewallPolicy resource.
+     * Reference to the FirewallPolicy resource.
      */
     @JsonProperty(value = "properties.firewallPolicy")
     private SubResource firewallPolicy;
@@ -207,17 +208,16 @@ public class ApplicationGatewayInner extends Resource {
     private ApplicationGatewayAutoscaleConfiguration autoscaleConfiguration;
 
     /*
-     * Resource GUID property of the application gateway resource.
+     * The resource GUID property of the application gateway resource.
      */
-    @JsonProperty(value = "properties.resourceGuid")
+    @JsonProperty(value = "properties.resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGuid;
 
     /*
-     * Provisioning state of the application gateway resource. Possible values
-     * are: 'Updating', 'Deleting', and 'Failed'.
+     * The provisioning state of the application gateway resource.
      */
-    @JsonProperty(value = "properties.provisioningState")
-    private String provisioningState;
+    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private ProvisioningState provisioningState;
 
     /*
      * Custom error configurations of the application gateway resource.
@@ -238,17 +238,6 @@ public class ApplicationGatewayInner extends Resource {
      */
     public String etag() {
         return this.etag;
-    }
-
-    /**
-     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
-     * @param etag the etag value to set.
-     * @return the ApplicationGatewayInner object itself.
-     */
-    public ApplicationGatewayInner withEtag(String etag) {
-        this.etag = etag;
-        return this;
     }
 
     /**
@@ -694,7 +683,7 @@ public class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Get the firewallPolicy property: Reference of the FirewallPolicy resource.
+     * Get the firewallPolicy property: Reference to the FirewallPolicy resource.
      *
      * @return the firewallPolicy value.
      */
@@ -703,7 +692,7 @@ public class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Set the firewallPolicy property: Reference of the FirewallPolicy resource.
+     * Set the firewallPolicy property: Reference to the FirewallPolicy resource.
      *
      * @param firewallPolicy the firewallPolicy value to set.
      * @return the ApplicationGatewayInner object itself.
@@ -775,7 +764,7 @@ public class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Get the resourceGuid property: Resource GUID property of the application gateway resource.
+     * Get the resourceGuid property: The resource GUID property of the application gateway resource.
      *
      * @return the resourceGuid value.
      */
@@ -784,36 +773,12 @@ public class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Set the resourceGuid property: Resource GUID property of the application gateway resource.
-     *
-     * @param resourceGuid the resourceGuid value to set.
-     * @return the ApplicationGatewayInner object itself.
-     */
-    public ApplicationGatewayInner withResourceGuid(String resourceGuid) {
-        this.resourceGuid = resourceGuid;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: Provisioning state of the application gateway resource. Possible values are:
-     * 'Updating', 'Deleting', and 'Failed'.
+     * Get the provisioningState property: The provisioning state of the application gateway resource.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Set the provisioningState property: Provisioning state of the application gateway resource. Possible values are:
-     * 'Updating', 'Deleting', and 'Failed'.
-     *
-     * @param provisioningState the provisioningState value to set.
-     * @return the ApplicationGatewayInner object itself.
-     */
-    public ApplicationGatewayInner withProvisioningState(String provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
     }
 
     /**

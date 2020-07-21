@@ -13,6 +13,7 @@ import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.MsalAuthenticationAccount;
 import com.azure.identity.implementation.MsalToken;
+import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -41,17 +42,19 @@ public class InteractiveBrowserCredential implements TokenCredential {
      * {@code http://localhost:{port}} must be registered as a valid reply URL on the application.
      *
      * @param clientId the client ID of the application
+     * @param clientSecret the client secret of the application
      * @param tenantId the tenant ID of the application
      * @param port the port on which the credential will listen for the browser authentication result
      * @param automaticAuthentication indicates whether automatic authentication should be attempted or not.
      * @param identityClientOptions the options for configuring the identity client
      */
     InteractiveBrowserCredential(String clientId, String tenantId, int port, boolean automaticAuthentication,
-                                 IdentityClientOptions identityClientOptions) {
+                                 String clientSecret, IdentityClientOptions identityClientOptions) {
         this.port = port;
         identityClient = new IdentityClientBuilder()
             .tenantId(tenantId)
             .clientId(clientId)
+            .clientSecret(clientSecret)
             .identityClientOptions(identityClientOptions)
             .build();
         cachedToken = new AtomicReference<>();
@@ -78,7 +81,9 @@ public class InteractiveBrowserCredential implements TokenCredential {
                              + "code authentication.", request)));
             }
             return identityClient.authenticateWithBrowserInteraction(request, port);
-        })).map(this::updateCache);
+        })).map(this::updateCache)
+            .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
+            .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
     }
 
     /**
@@ -112,7 +117,7 @@ public class InteractiveBrowserCredential implements TokenCredential {
         return authenticate(new TokenRequestContext().addScopes(defaultScope));
     }
 
-    private MsalToken updateCache(MsalToken msalToken) {
+    private AccessToken updateCache(MsalToken msalToken) {
         cachedToken.set(
                 new MsalAuthenticationAccount(
                         new AuthenticationRecord(msalToken.getAuthenticationResult(),

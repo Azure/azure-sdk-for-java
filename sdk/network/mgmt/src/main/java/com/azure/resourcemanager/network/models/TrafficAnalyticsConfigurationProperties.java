@@ -17,25 +17,25 @@ public final class TrafficAnalyticsConfigurationProperties {
     /*
      * Flag to enable/disable traffic analytics.
      */
-    @JsonProperty(value = "enabled", required = true)
-    private boolean enabled;
+    @JsonProperty(value = "enabled")
+    private Boolean enabled;
 
     /*
      * The resource guid of the attached workspace.
      */
-    @JsonProperty(value = "workspaceId", required = true)
+    @JsonProperty(value = "workspaceId")
     private String workspaceId;
 
     /*
      * The location of the attached workspace.
      */
-    @JsonProperty(value = "workspaceRegion", required = true)
+    @JsonProperty(value = "workspaceRegion")
     private String workspaceRegion;
 
     /*
      * Resource Id of the attached workspace.
      */
-    @JsonProperty(value = "workspaceResourceId", required = true)
+    @JsonProperty(value = "workspaceResourceId")
     private String workspaceResourceId;
 
     /*
@@ -50,7 +50,7 @@ public final class TrafficAnalyticsConfigurationProperties {
      *
      * @return the enabled value.
      */
-    public boolean enabled() {
+    public Boolean enabled() {
         return this.enabled;
     }
 
@@ -60,7 +60,7 @@ public final class TrafficAnalyticsConfigurationProperties {
      * @param enabled the enabled value to set.
      * @return the TrafficAnalyticsConfigurationProperties object itself.
      */
-    public TrafficAnalyticsConfigurationProperties withEnabled(boolean enabled) {
+    public TrafficAnalyticsConfigurationProperties withEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
     }
@@ -153,24 +153,5 @@ public final class TrafficAnalyticsConfigurationProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (workspaceId() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property workspaceId in model TrafficAnalyticsConfigurationProperties"));
-        }
-        if (workspaceRegion() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property workspaceRegion in model TrafficAnalyticsConfigurationProperties"));
-        }
-        if (workspaceResourceId() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property workspaceResourceId in model"
-                            + " TrafficAnalyticsConfigurationProperties"));
-        }
     }
 }

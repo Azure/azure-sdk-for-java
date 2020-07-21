@@ -16,6 +16,7 @@ import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
+import com.azure.security.keyvault.keys.models.KeyCurveName;
 import com.azure.security.keyvault.keys.models.KeyOperation;
 import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.KeyType;
@@ -198,12 +199,20 @@ public interface Key extends Indexable, HasInner<KeyVaultKey>, HasId, HasName, U
         /** The stage of a key definition allowing to specify the key size. */
         interface WithKeySize {
             /**
-             * Specifies the size of the key to create.
+             * Specifies the size of the RSA key to create.
              *
              * @param size the size of the key in integer
              * @return the next stage of the definition
              */
             WithCreate withKeySize(int size);
+
+            /**
+             * Specifies the name of the key curve for elliptic-curve key to create.
+             *
+             * @param keyCurveName name of the key curve
+             * @return the next stage of the definition
+             */
+            WithCreate withKeyCurveName(KeyCurveName keyCurveName);
         }
 
         /** The stage of a key definition allowing to specify the allowed operations for the key. */

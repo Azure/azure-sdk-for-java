@@ -16,7 +16,7 @@ public final class VirtualNetworkListResultInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkListResultInner.class);
 
     /*
-     * Gets a list of VirtualNetwork resources in a resource group.
+     * A list of VirtualNetwork resources in a resource group.
      */
     @JsonProperty(value = "value")
     private List<VirtualNetworkInner> value;
@@ -28,7 +28,7 @@ public final class VirtualNetworkListResultInner {
     private String nextLink;
 
     /**
-     * Get the value property: Gets a list of VirtualNetwork resources in a resource group.
+     * Get the value property: A list of VirtualNetwork resources in a resource group.
      *
      * @return the value value.
      */
@@ -37,7 +37,7 @@ public final class VirtualNetworkListResultInner {
     }
 
     /**
-     * Set the value property: Gets a list of VirtualNetwork resources in a resource group.
+     * Set the value property: A list of VirtualNetwork resources in a resource group.
      *
      * @param value the value value to set.
      * @return the VirtualNetworkListResultInner object itself.
