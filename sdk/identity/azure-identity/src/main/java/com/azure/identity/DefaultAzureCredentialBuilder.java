@@ -4,6 +4,7 @@
 package com.azure.identity;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -21,6 +22,11 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     private String managedIdentityClientId;
     private final ClientLogger logger = new ClientLogger(DefaultAzureCredentialBuilder.class);
 
+    public DefaultAzureCredentialBuilder() {
+        Configuration configuration = Configuration.getGlobalConfiguration().clone();
+        tenantId = configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID);
+        managedIdentityClientId = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID);
+    }
 
     /**
      * Sets the tenant id of the user to authenticate through the {@link DefaultAzureCredential}. The default is null
