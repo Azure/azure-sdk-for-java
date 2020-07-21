@@ -3,11 +3,13 @@
 package com.azure.spring.data.cosmos.core;
 
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.common.ResponseDiagnosticsTestUtils;
 import com.azure.spring.data.cosmos.common.TestConstants;
+import com.azure.spring.data.cosmos.config.CosmosClientConfig;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
 import com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext;
@@ -87,14 +89,17 @@ public class ReactiveCosmosTemplateIT {
     @Autowired
     private CosmosConfig cosmosConfig;
     @Autowired
+    private CosmosClientConfig cosmosClientConfig;
+    @Autowired
     private ResponseDiagnosticsTestUtils responseDiagnosticsTestUtils;
 
     @Before
     public void setUp() throws ClassNotFoundException {
         if (!initialized) {
             azureKeyCredential = new AzureKeyCredential(cosmosDbKey);
-            cosmosConfig.getCosmosClientBuilder().credential(azureKeyCredential);
-            final CosmosFactory dbFactory = new CosmosFactory(cosmosConfig);
+            cosmosClientConfig.getCosmosClientBuilder().credential(azureKeyCredential);
+            CosmosAsyncClient client = CosmosFactory.createCosmosAsyncClient(cosmosClientConfig);
+            final CosmosFactory dbFactory = new CosmosFactory(client, cosmosClientConfig.getDatabase());
 
             final CosmosMappingContext mappingContext = new CosmosMappingContext();
             personInfo = new CosmosEntityInformation<>(Person.class);
@@ -104,8 +109,7 @@ public class ReactiveCosmosTemplateIT {
 
             final MappingCosmosConverter dbConverter =
                 new MappingCosmosConverter(mappingContext, null);
-            cosmosTemplate = new ReactiveCosmosTemplate(dbFactory, dbConverter,
-                cosmosConfig.getDatabase());
+            cosmosTemplate = new ReactiveCosmosTemplate(dbFactory, cosmosConfig, dbConverter);
             cosmosTemplate.createContainerIfNotExists(personInfo).block();
             initialized = true;
         }

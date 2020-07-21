@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.cosmos.multidatasource.primarydatasource;
+package com.azure.cosmos.multidatasource.primarydatasource.first;
 
 import com.azure.spring.data.cosmos.core.mapping.Document;
 import com.azure.spring.data.cosmos.core.mapping.PartitionKey;

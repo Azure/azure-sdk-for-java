@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.cosmos.multidatasource.secondarydatasource;
+package com.azure.cosmos.multidatasource.secondarydatasource.first;
 
 import com.azure.spring.data.cosmos.core.mapping.Document;
 import org.springframework.data.annotation.Id;
