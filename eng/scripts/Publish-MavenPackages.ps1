@@ -5,8 +5,8 @@ param(
   [Parameter(Mandatory=$true)][string]$RepositoryPassword,
   [Parameter(Mandatory=$true)][string]$GPGExecutablePath,
   [Parameter(Mandatory=$false)][switch]$StageOnly,
-  [Parameter(Mandatory=$false)][string]$GroupIDFilter,
-  [Parameter(Mandatory=$false)][string]$ArtifactIDFilter
+  [Parameter(Mandatory=$false)][AllowNull()][string]$GroupIDFilter,
+  [Parameter(Mandatory=$false)][AllowNull()][string]$ArtifactIDFilter
 )
 
 $ErrorActionPreference = "Stop"
