@@ -5,7 +5,6 @@ package com.azure.resourcemanager;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.implementation.annotation.Beta;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
 import com.azure.resourcemanager.appplatform.models.SpringServices;
