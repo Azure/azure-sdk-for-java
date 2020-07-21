@@ -1,11 +1,18 @@
 package com.azure.messaging.eventgrid;
 
+import com.azure.core.experimental.serializer.JsonSerializer;
+
 public class EventGridConsumerBuilder {
 
     public EventGridConsumerBuilder() {
         // TODO: implement method
     }
 
+    /**
+     * Constructs an instance of the consumer for use in deserialization.
+     * @return an instance of the EventConsumer with the current settings as well as the standard system event data
+     * mappings.
+     */
     public EventGridConsumer build() {
         // TODO: implement method
         return null;
@@ -22,6 +29,18 @@ public class EventGridConsumerBuilder {
      * @return the builder itself.
      */
     public <T> EventGridConsumerBuilder putDataMapping(String eventType, Class<T> dataType) {
+        // TODO: implement method
+        return this;
+    }
+
+    /**
+     * Add a custom deserializer to interpret the json as a rich event object. If this value is not set, the default
+     * is loaded from the classpath.
+     * @param jsonSerializer the serializer to use.
+     *
+     * @return the builder itself.
+     */
+    public EventGridConsumerBuilder serializer(JsonSerializer jsonSerializer) {
         // TODO: implement method
         return this;
     }
