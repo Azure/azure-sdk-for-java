@@ -266,7 +266,9 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             }
             switch (expectedFieldValue.getType()) {
                 case NUMBER:
-                    assertEquals(expectedFieldValue.getValueNumber(), actualFormField.getValue().asDouble());
+                    if (expectedFieldValue.getValueNumber() != null) {
+                        assertEquals((double) expectedFieldValue.getValueNumber(), actualFormField.getValue().asDouble());
+                    }
                     break;
                 case DATE:
                     assertEquals(expectedFieldValue.getValueDate(), actualFormField.getValue().asDate());

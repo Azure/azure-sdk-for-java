@@ -200,7 +200,7 @@ final class Transforms {
      */
     private static Map<String, FormField<?>> getUnlabeledFieldMap(DocumentResult documentResultItem,
         List<ReadResult> readResults, boolean includeFieldElements) {
-        Map<String, FormField<?>>  extractedFieldMap = new LinkedHashMap<>();
+        Map<String, FormField<?>> extractedFieldMap = new LinkedHashMap<>();
         // add receipt fields
         if (!CoreUtils.isNullOrEmpty(documentResultItem.getFields())) {
             documentResultItem.getFields().forEach((key, fieldValue) -> {
@@ -266,14 +266,25 @@ final class Transforms {
                 );
                 break;
             case INTEGER:
-                value = new FormField<>(key, labelText, valueText, new com.azure.ai.formrecognizer.models.FieldValue(FieldValueType.LONG)
-                .setFormFieldLong(fieldValue.getValueInteger()), setDefaultConfidenceValue(fieldValue.getConfidence())
+                com.azure.ai.formrecognizer.models.FieldValue longFieldValue;
+                // TODO (savaity): service bug
+                if (fieldValue.getValueInteger() == null) {
+                    longFieldValue = new com.azure.ai.formrecognizer.models.FieldValue(FieldValueType.LONG).setFormFieldLong(null);
+                } else {
+                    longFieldValue = new com.azure.ai.formrecognizer.models.FieldValue(FieldValueType.LONG).setFormFieldLong(Long.valueOf(fieldValue.getValueInteger()));
+                }
+                value = new FormField<>(key, labelText, valueText, longFieldValue, setDefaultConfidenceValue(fieldValue.getConfidence())
                 );
                 break;
             case NUMBER:
-                value = new FormField<>(key, labelText, valueText, new com.azure.ai.formrecognizer.models.FieldValue(FieldValueType.DOUBLE)
-                .setFormFieldDouble(fieldValue.getValueNumber()), setDefaultConfidenceValue(fieldValue.getConfidence())
-                );
+                com.azure.ai.formrecognizer.models.FieldValue doubleFieldValue;
+                // TODO (savaity): service bug
+                if (fieldValue.getValueNumber() == null) {
+                    doubleFieldValue = new com.azure.ai.formrecognizer.models.FieldValue(FieldValueType.DOUBLE).setFormFieldDouble(null);
+                } else {
+                    doubleFieldValue = new com.azure.ai.formrecognizer.models.FieldValue(FieldValueType.DOUBLE).setFormFieldDouble(Double.valueOf(fieldValue.getValueNumber()));
+                }
+                value = new FormField<>(key, labelText, valueText, doubleFieldValue, setDefaultConfidenceValue(fieldValue.getConfidence()));
                 break;
             case ARRAY:
                 value = new FormField<>(key, null, null, new com.azure.ai.formrecognizer.models.FieldValue(FieldValueType.LIST)
