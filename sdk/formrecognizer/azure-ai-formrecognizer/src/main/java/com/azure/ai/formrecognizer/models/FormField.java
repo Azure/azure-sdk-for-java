@@ -14,7 +14,7 @@ public final class FormField<T> {
     private final float confidence;
     private final FieldData labelData;
     private final String name;
-    private final FieldValue fieldValue;
+    private final FieldValue value;
     private final FieldData valueData;
 
     /**
@@ -23,15 +23,15 @@ public final class FormField<T> {
      * @param name The name the field or label.
      * @param labelData The text, bounding box, and field elements for the field label.
      * @param valueData The text, bounding box, and field elements for the field value.
-     * @param fieldValue The value of the recognized field.
+     * @param value The value of the recognized field.
      * @param confidence The confidence of the recognized field.
      */
     public FormField(final String name, final FieldData labelData, final FieldData valueData,
-        final FieldValue fieldValue, final float confidence) {
+        final FieldValue value, final float confidence) {
         this.confidence = confidence;
         this.labelData = labelData;
         this.name = name;
-        this.fieldValue = fieldValue;
+        this.value = value;
         this.valueData = valueData;
     }
 
@@ -67,8 +67,8 @@ public final class FormField<T> {
      *
      * @return Value of the recognized field.
      */
-    public FieldValue getFieldValue() {
-        return this.fieldValue;
+    public FieldValue getValue() {
+        return this.value;
     }
 
     /**

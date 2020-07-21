@@ -92,7 +92,7 @@ public class AdvancedDiffLabeledUnlabeledData {
                 .findAny()
                 .ifPresent(formFieldEntry ->
                     System.out.printf("The Merchant name is: %s%n", formFieldEntry.getValue()
-                        .getFieldValue().asString()));
+                        .getValue().asString()));
                 // @since 9
                 // .ifPresentOrElse(
                 //     formFieldEntry -> System.out.printf("The Merchant name is: %s%n", formFieldEntry.getValue()),
@@ -134,7 +134,7 @@ public class AdvancedDiffLabeledUnlabeledData {
                 //filter by label text
                 .findAny()
                 .ifPresent(formFieldEntry -> System.out.printf("The Vendor name is: %s%n", formFieldEntry.getValue()
-                    .getFieldValue().asString()));
+                    .getValue().asString()));
                 // @since 9
                 // .ifPresentOrElse(
                 //     formFieldEntry -> System.out.printf("The Vendor name is: %s%n", formFieldEntry.getValue()),

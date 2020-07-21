@@ -41,40 +41,40 @@ public class StronglyTypedRecognizedForm {
             System.out.printf("----------- Recognized receipt info for page %d -----------%n", i);
             // Use Receipt model transform the recognized form to strongly typed US receipt fields
             Receipt usReceipt = new Receipt(recognizedForm);
-            System.out.printf("Merchant Name: %s, confidence: %.2f%n", usReceipt.getMerchantName().getFieldValue(),
+            System.out.printf("Merchant Name: %s, confidence: %.2f%n", usReceipt.getMerchantName().getValue(),
                 usReceipt.getMerchantName().getConfidence());
             System.out.printf("Merchant Address: %s, confidence: %.2f%n",
-                usReceipt.getMerchantAddress().getFieldValue(),
+                usReceipt.getMerchantAddress().getValue(),
                 usReceipt.getMerchantAddress().getConfidence());
             // It will have to be this way?
             // System.out.printf("Merchant Address: %s, confidence: %.2f%n",
             //     usReceipt.getMerchantAddress().getFieldValue().asString(),
             //     usReceipt.getMerchantAddress().getConfidence());
             System.out.printf("Merchant Phone Number %s, confidence: %.2f%n",
-                usReceipt.getMerchantPhoneNumber().getFieldValue(), usReceipt.getMerchantPhoneNumber().getConfidence());
-            System.out.printf("Total: %.2f confidence: %.2f%n", usReceipt.getTotal().getFieldValue(),
+                usReceipt.getMerchantPhoneNumber().getValue(), usReceipt.getMerchantPhoneNumber().getConfidence());
+            System.out.printf("Total: %.2f confidence: %.2f%n", usReceipt.getTotal().getValue(),
                 usReceipt.getTotal().getConfidence());
             System.out.printf("Transaction Date: %s, confidence: %.2f%n",
-                usReceipt.getTransactionDate().getFieldValue(), usReceipt.getTransactionDate().getConfidence());
+                usReceipt.getTransactionDate().getValue(), usReceipt.getTransactionDate().getConfidence());
             System.out.printf("Transaction Time: %s, confidence: %.2f%n",
-                usReceipt.getTransactionTime().getFieldValue(), usReceipt.getTransactionTime().getConfidence());
+                usReceipt.getTransactionTime().getValue(), usReceipt.getTransactionTime().getConfidence());
             System.out.printf("Receipt Items: %n");
             usReceipt.getReceiptItems().forEach(receiptItem -> {
                 if (receiptItem.getName() != null) {
-                    System.out.printf("Name: %s, confidence: %.2f%n", receiptItem.getName().getFieldValue(),
+                    System.out.printf("Name: %s, confidence: %.2f%n", receiptItem.getName().getValue(),
                         receiptItem.getName().getConfidence());
                 }
                 if (receiptItem.getQuantity() != null) {
-                    System.out.printf("Quantity: %f, confidence: %.2f%n", receiptItem.getQuantity().getFieldValue(),
+                    System.out.printf("Quantity: %f, confidence: %.2f%n", receiptItem.getQuantity().getValue(),
                         receiptItem.getQuantity().getConfidence());
                 }
                 if (receiptItem.getPrice() != null) {
-                    System.out.printf("Price: %f, confidence: %.2f%n", receiptItem.getPrice().getFieldValue(),
+                    System.out.printf("Price: %f, confidence: %.2f%n", receiptItem.getPrice().getValue(),
                         receiptItem.getPrice().getConfidence());
                 }
                 if (receiptItem.getTotalPrice() != null) {
                     System.out.printf("Total Price: %f, confidence: %.2f%n",
-                        receiptItem.getTotalPrice().getFieldValue(), receiptItem.getTotalPrice().getConfidence());
+                        receiptItem.getTotalPrice().getValue(), receiptItem.getTotalPrice().getConfidence());
                 }
             });
             System.out.println("-----------------------------------");

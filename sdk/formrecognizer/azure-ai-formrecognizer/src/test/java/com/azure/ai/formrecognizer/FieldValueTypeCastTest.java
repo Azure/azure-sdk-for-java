@@ -31,7 +31,7 @@ public class FieldValueTypeCastTest {
         LocalDate inputDate = LocalDate.of(2006, 6, 6);
         FormField<?> formField = new FormField<>(null, null, null, new FieldValue(FieldValueType.DATE)
             .setFormFieldDate(inputDate), 0);
-        LocalDate actualDate = formField.getFieldValue().asDate();
+        LocalDate actualDate = formField.getValue().asDate();
         assertEquals(inputDate, actualDate);
     }
 
@@ -45,7 +45,7 @@ public class FieldValueTypeCastTest {
             new FieldValue(FieldValueType.STRING).setFormFieldString(inputDateString), 0);
         final UnsupportedOperationException unsupportedOperationException =
             assertThrows(UnsupportedOperationException.class, () ->
-                formField.getFieldValue().asDate());
+                formField.getValue().asDate());
         assertEquals(unsupportedOperationException.getMessage(), "Cannot get field as DATE from field value "
             + "of type STRING");
     }
@@ -57,7 +57,7 @@ public class FieldValueTypeCastTest {
     public void toDateFromNull() {
         FormField<?> formField = new FormField<>(null, null, null, new FieldValue(FieldValueType.DATE)
             .setFormFieldDate(null), 0);
-        assertNull(formField.getFieldValue().asDate());
+        assertNull(formField.getValue().asDate());
     }
 
 
@@ -69,7 +69,7 @@ public class FieldValueTypeCastTest {
         LocalTime inputTime = LocalTime.parse("13:59:00", DateTimeFormatter.ofPattern("HH:mm:ss"));
         FormField<?> formField = new FormField<>(null, null, null,
             new FieldValue(FieldValueType.TIME).setFormFieldTime(inputTime), 0);
-        LocalTime actualTime = formField.getFieldValue().asTime();
+        LocalTime actualTime = formField.getValue().asTime();
         assertEquals(inputTime, actualTime);
     }
 
@@ -83,7 +83,7 @@ public class FieldValueTypeCastTest {
             new FieldValue(FieldValueType.STRING).setFormFieldString(inputTimeString), 0);
         final UnsupportedOperationException unsupportedOperationException =
             assertThrows(UnsupportedOperationException.class, () ->
-                formField.getFieldValue().asTime());
+                formField.getValue().asTime());
         assertEquals(unsupportedOperationException.getMessage(), "Cannot get field as TIME from field"
             + " value of type STRING");
     }
@@ -94,7 +94,7 @@ public class FieldValueTypeCastTest {
     @Test
     public void toTimeFromNull() {
         assertNull(new FormField<>(null, null, null,
-            new FieldValue(FieldValueType.TIME), 0).getFieldValue().asTime());
+            new FieldValue(FieldValueType.TIME), 0).getValue().asTime());
     }
 
 
@@ -106,7 +106,7 @@ public class FieldValueTypeCastTest {
         List<FormField<?>> inputList = new ArrayList<>(Arrays.asList(new FormField<>(null, null, null, null, 0)));
         FormField<?> formField = new FormField<>(null, null, null,
             new FieldValue(FieldValueType.LIST).setFormFieldList(inputList), 0);
-        List<FormField<?>> actualList = formField.getFieldValue().asList();
+        List<FormField<?>> actualList = formField.getValue().asList();
         assertEquals(inputList, actualList);
     }
 
@@ -119,7 +119,7 @@ public class FieldValueTypeCastTest {
         final UnsupportedOperationException unsupportedOperationException =
             assertThrows(UnsupportedOperationException.class, () ->
                 new FormField<>(null, null, null,
-                    new FieldValue(FieldValueType.STRING).setFormFieldString(test), 0).getFieldValue().asList());
+                    new FieldValue(FieldValueType.STRING).setFormFieldString(test), 0).getValue().asList());
         assertEquals(unsupportedOperationException.getMessage(), "Cannot get field as a LIST from field value "
             + "of type STRING");
     }
@@ -129,7 +129,7 @@ public class FieldValueTypeCastTest {
      */
     @Test
     public void toListFromNull() {
-        assertNull(new FormField<>(null, null, null, new FieldValue(FieldValueType.LIST), 0).getFieldValue().asList());
+        assertNull(new FormField<>(null, null, null, new FieldValue(FieldValueType.LIST), 0).getValue().asList());
     }
 
     /**
@@ -140,7 +140,7 @@ public class FieldValueTypeCastTest {
         String phoneNumber = "19876543210";
         String actualPhoneNumber = new FormField<>(null, null, null,
             new FieldValue(FieldValueType.PHONE_NUMBER).setFormFieldPhoneNumber(phoneNumber), 0)
-            .getFieldValue().asPhoneNumber();
+            .getValue().asPhoneNumber();
         assertEquals(phoneNumber, actualPhoneNumber);
     }
 
@@ -154,7 +154,7 @@ public class FieldValueTypeCastTest {
             assertThrows(UnsupportedOperationException.class, () ->
                 new FormField<>(null, null, null,
                     new FieldValue(FieldValueType.STRING).setFormFieldString(phoneNumber), 0)
-                    .getFieldValue().asPhoneNumber());
+                    .getValue().asPhoneNumber());
         assertEquals(unsupportedOperationException.getMessage(), "Cannot get field as aPHONE_NUMBER "
             + "from field value of type STRING");
     }
@@ -165,7 +165,7 @@ public class FieldValueTypeCastTest {
     @Test
     public void toPhoneNumberFromNull() {
         assertNull(new FormField<>(null, null, null,
-            new FieldValue(FieldValueType.PHONE_NUMBER), 0).getFieldValue().asPhoneNumber());
+            new FieldValue(FieldValueType.PHONE_NUMBER), 0).getValue().asPhoneNumber());
     }
 
     /**
@@ -179,7 +179,7 @@ public class FieldValueTypeCastTest {
             }
         };
         Map<String, FormField<?>> actualList = new FormField<>(null, null, null,
-            new FieldValue(FieldValueType.MAP).setFormFieldMap(inputMap), 0).getFieldValue().asMap();
+            new FieldValue(FieldValueType.MAP).setFormFieldMap(inputMap), 0).getValue().asMap();
         assertEquals(inputMap, actualList);
     }
 
@@ -192,7 +192,7 @@ public class FieldValueTypeCastTest {
         final UnsupportedOperationException unsupportedOperationException =
             assertThrows(UnsupportedOperationException.class, () ->
                 new FormField<>(null, null, null,
-                    new FieldValue(FieldValueType.STRING).setFormFieldString(str), 0).getFieldValue().asMap());
+                    new FieldValue(FieldValueType.STRING).setFormFieldString(str), 0).getValue().asMap());
         assertEquals(unsupportedOperationException.getMessage(), "Cannot get field as a MAP from field "
             + "value of type STRING");
     }
@@ -203,7 +203,7 @@ public class FieldValueTypeCastTest {
     @Test
     public void toMapFromNull() {
         assertNull(new FormField<>(null, null, null,
-            new FieldValue(FieldValueType.MAP), 0).getFieldValue().asMap());
+            new FieldValue(FieldValueType.MAP), 0).getValue().asMap());
     }
 
     /**
@@ -213,7 +213,7 @@ public class FieldValueTypeCastTest {
     public void toDoubleFromDouble() {
         Double inputDouble = 2.2;
         Double actualDoubleValue = new FormField<>(null, null, null,
-            new FieldValue(FieldValueType.DOUBLE).setFormFieldDouble(inputDouble), 0).getFieldValue().asDouble();
+            new FieldValue(FieldValueType.DOUBLE).setFormFieldDouble(inputDouble), 0).getValue().asDouble();
         assertEquals(inputDouble, actualDoubleValue);
     }
 
@@ -226,7 +226,7 @@ public class FieldValueTypeCastTest {
         final UnsupportedOperationException unsupportedOperationException =
             assertThrows(UnsupportedOperationException.class, () ->
                 new FormField<>(null, null, null,
-                    new FieldValue(FieldValueType.STRING).setFormFieldString(doubleString), 0).getFieldValue().asDouble());
+                    new FieldValue(FieldValueType.STRING).setFormFieldString(doubleString), 0).getValue().asDouble());
         assertEquals(unsupportedOperationException.getMessage(), "Cannot get field as DOUBLE from "
             + "field value of type STRING");
     }
@@ -237,7 +237,7 @@ public class FieldValueTypeCastTest {
     @Test
     public void toDoubleFromNull() {
         assertNull(new FormField<>(null, null, null,
-            new FieldValue(FieldValueType.DOUBLE), 0).getFieldValue().asDouble());
+            new FieldValue(FieldValueType.DOUBLE), 0).getValue().asDouble());
     }
 
     /**
@@ -247,7 +247,7 @@ public class FieldValueTypeCastTest {
     public void toLongFromLong() {
         long inputLong = 22;
         Long actualLongValue = new FormField<>(null, null, null,
-            new FieldValue(FieldValueType.LONG).setFormFieldLong(inputLong), 0).getFieldValue().asLong();
+            new FieldValue(FieldValueType.LONG).setFormFieldLong(inputLong), 0).getValue().asLong();
         assertEquals(inputLong, actualLongValue);
     }
 
@@ -260,7 +260,7 @@ public class FieldValueTypeCastTest {
         final UnsupportedOperationException unsupportedOperationException =
             assertThrows(UnsupportedOperationException.class, () ->
                 new FormField<>(null, null, null,
-                    new FieldValue(FieldValueType.STRING).setFormFieldString(inputLongString), 0).getFieldValue().asLong());
+                    new FieldValue(FieldValueType.STRING).setFormFieldString(inputLongString), 0).getValue().asLong());
         assertEquals(unsupportedOperationException.getMessage(), "Cannot get field as LONG from field value of "
             + "type STRING");
     }
@@ -271,7 +271,7 @@ public class FieldValueTypeCastTest {
     @Test
     public void toLongFromNull() {
         assertNull(new FormField<>(null, null, null,
-            new FieldValue(FieldValueType.LONG), 0).getFieldValue().asLong());
+            new FieldValue(FieldValueType.LONG), 0).getValue().asLong());
     }
 
     /**
@@ -283,7 +283,7 @@ public class FieldValueTypeCastTest {
         final UnsupportedOperationException unsupportedOperationException =
             assertThrows(UnsupportedOperationException.class, () ->
                 new FormField<>(null, null, null,
-                    new FieldValue(FieldValueType.TIME).setFormFieldTime(inputTime), 0).getFieldValue().asString());
+                    new FieldValue(FieldValueType.TIME).setFormFieldTime(inputTime), 0).getValue().asString());
         assertEquals(unsupportedOperationException.getMessage(), "Cannot get field as STRING from field "
             + "value of type TIME");
     }
@@ -295,7 +295,7 @@ public class FieldValueTypeCastTest {
     public void toStringFromString() {
         String stringValue = "String value";
         String actualStringValue = new FormField<>(null, null, null,
-            new FieldValue(FieldValueType.STRING).setFormFieldString(stringValue), 0).getFieldValue().asString();
+            new FieldValue(FieldValueType.STRING).setFormFieldString(stringValue), 0).getValue().asString();
         assertEquals(stringValue, actualStringValue);
     }
 }
