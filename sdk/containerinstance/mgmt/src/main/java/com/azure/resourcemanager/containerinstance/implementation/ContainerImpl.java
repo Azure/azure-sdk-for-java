@@ -1,7 +1,6 @@
 /**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
+ * Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT License. See License.txt in the
+ * project root for license information.
  */
 package com.azure.resourcemanager.containerinstance.implementation;
 
@@ -19,26 +18,23 @@ import com.azure.resourcemanager.containerinstance.models.Port;
 import com.azure.resourcemanager.containerinstance.models.ResourceRequests;
 import com.azure.resourcemanager.containerinstance.models.ResourceRequirements;
 import com.azure.resourcemanager.containerinstance.models.VolumeMount;
-
 import java.util.ArrayList;
 import java.util.Map;
 
-/**
- * Implementation for container group's container instance definition stages interface.
- */
-class ContainerImpl implements
-        ContainerGroup.DefinitionStages.ContainerInstanceDefinitionStages.ContainerInstanceDefinition<ContainerGroup.DefinitionStages.WithNextContainerInstance> {
+/** Implementation for container group's container instance definition stages interface. */
+class ContainerImpl
+    implements ContainerGroup.DefinitionStages.ContainerInstanceDefinitionStages.ContainerInstanceDefinition<
+        ContainerGroup.DefinitionStages.WithNextContainerInstance> {
     private Container innerContainer;
     private ContainerGroupImpl parent;
 
     ContainerImpl(ContainerGroupImpl parent, String containerName) {
         this.parent = parent;
-        this.innerContainer = new Container()
+        this.innerContainer =
+            new Container()
                 .withName(containerName)
-                .withResources(new ResourceRequirements()
-                        .withRequests(new ResourceRequests()
-                                .withCpu(1)
-                                .withMemoryInGB(1.5)));
+                .withResources(
+                    new ResourceRequirements().withRequests(new ResourceRequests().withCpu(1).withMemoryInGB(1.5)));
     }
 
     @Override
@@ -75,9 +71,7 @@ class ContainerImpl implements
 
     @Override
     public ContainerImpl withExternalTcpPort(int port) {
-        ensureParentIpAddress().ports().add(new Port()
-                .withPort(port)
-                .withProtocol(ContainerGroupNetworkProtocol.TCP));
+        ensureParentIpAddress().ports().add(new Port().withPort(port).withProtocol(ContainerGroupNetworkProtocol.TCP));
         this.withInternalTcpPort(port);
 
         return this;
@@ -110,9 +104,7 @@ class ContainerImpl implements
 
     @Override
     public ContainerImpl withExternalUdpPort(int port) {
-        ensureParentIpAddress().ports().add(new Port()
-                .withPort(port)
-                .withProtocol(ContainerGroupNetworkProtocol.UDP));
+        ensureParentIpAddress().ports().add(new Port().withPort(port).withProtocol(ContainerGroupNetworkProtocol.UDP));
         this.withInternalUdpPort(port);
 
         return this;
@@ -212,9 +204,7 @@ class ContainerImpl implements
             innerContainer.withEnvironmentVariables(new ArrayList<EnvironmentVariable>());
         }
 
-        innerContainer.environmentVariables().add(new EnvironmentVariable()
-                .withName(envName)
-                .withValue(envValue));
+        innerContainer.environmentVariables().add(new EnvironmentVariable().withName(envName).withValue(envValue));
 
         return this;
     }
@@ -234,9 +224,9 @@ class ContainerImpl implements
             innerContainer.withEnvironmentVariables(new ArrayList<EnvironmentVariable>());
         }
 
-        innerContainer.environmentVariables().add(new EnvironmentVariable()
-                .withName(envName)
-                .withSecureValue(securedValue));
+        innerContainer
+            .environmentVariables()
+            .add(new EnvironmentVariable().withName(envName).withSecureValue(securedValue));
 
         return this;
     }
@@ -246,10 +236,9 @@ class ContainerImpl implements
         if (innerContainer.volumeMounts() == null) {
             innerContainer.withVolumeMounts(new ArrayList<VolumeMount>());
         }
-        innerContainer.volumeMounts().add(new VolumeMount()
-                .withName(volumeName)
-                .withMountPath(mountPath)
-                .withReadOnly(false));
+        innerContainer
+            .volumeMounts()
+            .add(new VolumeMount().withName(volumeName).withMountPath(mountPath).withReadOnly(false));
 
         return this;
     }
@@ -268,10 +257,9 @@ class ContainerImpl implements
         if (innerContainer.volumeMounts() == null) {
             innerContainer.withVolumeMounts(new ArrayList<VolumeMount>());
         }
-        innerContainer.volumeMounts().add(new VolumeMount()
-                .withName(volumeName)
-                .withMountPath(mountPath)
-                .withReadOnly(true));
+        innerContainer
+            .volumeMounts()
+            .add(new VolumeMount().withName(volumeName).withMountPath(mountPath).withReadOnly(true));
 
         return this;
     }

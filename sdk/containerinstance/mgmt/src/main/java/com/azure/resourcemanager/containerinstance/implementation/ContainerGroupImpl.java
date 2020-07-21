@@ -1,9 +1,7 @@
 /**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
+ * Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT License. See License.txt in the
+ * project root for license information.
  */
-
 package com.azure.resourcemanager.containerinstance.implementation;
 
 import com.azure.core.management.Resource;
@@ -43,9 +41,6 @@ import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.storage.file.share.ShareServiceAsyncClient;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -54,19 +49,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-/**
- * Implementation for ContainerGroup and its create interfaces.
- */
+/** Implementation for ContainerGroup and its create interfaces. */
 public class ContainerGroupImpl
     extends GroupableParentResourceImpl<
-        ContainerGroup,
-        ContainerGroupInner,
-        ContainerGroupImpl,
-        ContainerInstanceManager>
-    implements ContainerGroup,
-        ContainerGroup.Definition,
-        ContainerGroup.Update {
+        ContainerGroup, ContainerGroupInner, ContainerGroupImpl, ContainerInstanceManager>
+    implements ContainerGroup, ContainerGroup.Definition, ContainerGroup.Update {
 
     private String creatableStorageAccountKey;
     private Creatable<Network> creatableVirtualNetwork;
@@ -89,22 +79,31 @@ public class ContainerGroupImpl
     private Mono<Void> beforeCreation() {
         Mono<Void> mono = Mono.empty();
         if (creatableVirtualNetwork != null) {
-            mono = mono.then(creatableVirtualNetwork.createAsync().last())
-                .flatMap(network -> {
-                    creatableVirtualNetwork = null;
-                    return Mono.empty();
-                });
+            mono =
+                mono
+                    .then(creatableVirtualNetwork.createAsync().last())
+                    .flatMap(
+                        network -> {
+                            creatableVirtualNetwork = null;
+                            return Mono.empty();
+                        });
         }
         if (creatableNetworkProfileName != null && creatableNetworkProfileInner != null) {
-            mono = mono.then(
-                manager().networkManager().inner().getNetworkProfiles()
-                    .createOrUpdateAsync(resourceGroupName(), creatableNetworkProfileName, creatableNetworkProfileInner)
-                    .flatMap(profile -> {
-                        creatableNetworkProfileName = null;
-                        creatableNetworkProfileInner = null;
-                        return Mono.empty();
-                    })
-            );
+            mono =
+                mono
+                    .then(
+                        manager()
+                            .networkManager()
+                            .inner()
+                            .getNetworkProfiles()
+                            .createOrUpdateAsync(
+                                resourceGroupName(), creatableNetworkProfileName, creatableNetworkProfileInner)
+                            .flatMap(
+                                profile -> {
+                                    creatableNetworkProfileName = null;
+                                    creatableNetworkProfileInner = null;
+                                    return Mono.empty();
+                                }));
         }
         return mono;
     }
@@ -120,25 +119,32 @@ public class ContainerGroupImpl
             resource.withLocation(self.regionName());
             resource.withTags(self.tags());
             return beforeCreation()
-                .then(manager().inner().getContainerGroups()
-                    .updateAsync(self.resourceGroupName(), self.name(), resource));
+                .then(
+                    manager()
+                        .inner()
+                        .getContainerGroups()
+                        .updateAsync(self.resourceGroupName(), self.name(), resource));
         } else if (newFileShares == null || creatableStorageAccountKey == null) {
             return beforeCreation()
-                .then(manager().inner().getContainerGroups()
-                .createOrUpdateAsync(resourceGroupName(), name(), inner()));
+                .then(manager().inner().getContainerGroups().createOrUpdateAsync(resourceGroupName(), name(), inner()));
         } else {
             final StorageAccount storageAccount = this.taskResult(this.creatableStorageAccountKey);
             return beforeCreation()
-                    .thenMany(createFileShareAsync(storageAccount))
-                    .map(volumeParameters ->
-                        this.defineVolume(volumeParameters.volumeName)
+                .thenMany(createFileShareAsync(storageAccount))
+                .map(
+                    volumeParameters ->
+                        this
+                            .defineVolume(volumeParameters.volumeName)
                             .withExistingReadWriteAzureFileShare(volumeParameters.fileShareName)
                             .withStorageAccountName(storageAccount.name())
                             .withStorageAccountKey(volumeParameters.storageAccountKey)
-                            .attach()
-                    )
-                    .then(this.manager().inner().getContainerGroups().createOrUpdateAsync(
-                        resourceGroupName(), name(), inner()));
+                            .attach())
+                .then(
+                    this
+                        .manager()
+                        .inner()
+                        .getContainerGroups()
+                        .createOrUpdateAsync(resourceGroupName(), name(), inner()));
         }
     }
 
@@ -155,24 +161,34 @@ public class ContainerGroupImpl
     }
 
     private Flux<VolumeParameters> createFileShareAsync(final StorageAccount storageAccount) {
-        return storageAccount.getKeysAsync()
-                .map(storageAccountKeys -> storageAccountKeys.get(0).value())
-                .flatMapMany(key -> {
-                    ShareServiceAsyncClient shareServiceAsyncClient = new ShareServiceClientBuilder()
-                        .connectionString(Utils.getStorageConnectionString(
-                            storageAccount.name(), key, manager().environment()))
-                        .httpClient(manager().httpPipeline().getHttpClient())
-                        .buildAsyncClient();
+        return storageAccount
+            .getKeysAsync()
+            .map(storageAccountKeys -> storageAccountKeys.get(0).value())
+            .flatMapMany(
+                key -> {
+                    ShareServiceAsyncClient shareServiceAsyncClient =
+                        new ShareServiceClientBuilder()
+                            .connectionString(
+                                Utils.getStorageConnectionString(storageAccount.name(), key, manager().environment()))
+                            .httpClient(manager().httpPipeline().getHttpClient())
+                            .buildAsyncClient();
 
-                    return Flux.fromIterable(newFileShares.entrySet())
-                        .flatMap(fileShareEntry -> createSingleFileShareAsync(
-                            shareServiceAsyncClient, fileShareEntry.getKey(), fileShareEntry.getValue(), key));
+                    return Flux
+                        .fromIterable(newFileShares.entrySet())
+                        .flatMap(
+                            fileShareEntry ->
+                                createSingleFileShareAsync(
+                                    shareServiceAsyncClient, fileShareEntry.getKey(), fileShareEntry.getValue(), key));
                 });
     }
 
-    private Mono<VolumeParameters> createSingleFileShareAsync(final ShareServiceAsyncClient client,
-            final String volumeName, final String fileShareName, final String storageAccountKey) {
-        return client.createShare(fileShareName)
+    private Mono<VolumeParameters> createSingleFileShareAsync(
+        final ShareServiceAsyncClient client,
+        final String volumeName,
+        final String fileShareName,
+        final String storageAccountKey) {
+        return client
+            .createShare(fileShareName)
             .then(Mono.just(new VolumeParameters(volumeName, fileShareName, storageAccountKey)));
     }
 
@@ -236,16 +252,22 @@ public class ContainerGroupImpl
 
     @Override
     public Mono<ContainerGroup> refreshAsync() {
-        return super.refreshAsync().map(containerGroup -> {
-            ContainerGroupImpl impl = (ContainerGroupImpl) containerGroup;
-            impl.initializeChildrenFromInner();
-            return impl;
-        });
+        return super
+            .refreshAsync()
+            .map(
+                containerGroup -> {
+                    ContainerGroupImpl impl = (ContainerGroupImpl) containerGroup;
+                    impl.initializeChildrenFromInner();
+                    return impl;
+                });
     }
 
     @Override
     protected Mono<ContainerGroupInner> getInnerAsync() {
-        return this.manager().inner().getContainerGroups()
+        return this
+            .manager()
+            .inner()
+            .getContainerGroups()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
@@ -317,10 +339,10 @@ public class ContainerGroupImpl
         if (this.inner().imageRegistryCredentials() == null) {
             this.inner().withImageRegistryCredentials(new ArrayList<ImageRegistryCredential>());
         }
-        this.inner().imageRegistryCredentials().add(new ImageRegistryCredential()
-                .withServer(server)
-                .withUsername(username)
-                .withPassword(password));
+        this
+            .inner()
+            .imageRegistryCredentials()
+            .add(new ImageRegistryCredential().withServer(server).withUsername(username).withPassword(password));
 
         return this;
     }
@@ -328,7 +350,9 @@ public class ContainerGroupImpl
     @Override
     public ContainerGroupImpl withNewAzureFileShareVolume(String volumeName, String shareName) {
         if (this.newFileShares == null || this.creatableStorageAccountKey == null) {
-            StorageAccount.DefinitionStages.WithGroup definitionWithGroup = manager().storageManager()
+            StorageAccount.DefinitionStages.WithGroup definitionWithGroup =
+                manager()
+                    .storageManager()
                     .storageAccounts()
                     .define(manager().sdkContext().randomResourceName("fs", 24))
                     .withRegion(this.regionName());
@@ -351,9 +375,7 @@ public class ContainerGroupImpl
         if (this.inner().volumes() == null) {
             this.inner().withVolumes(new ArrayList<Volume>());
         }
-        this.inner().volumes().add(new Volume()
-                .withName(volumeName)
-                .withEmptyDir(new Object()));
+        this.inner().volumes().add(new Volume().withName(volumeName).withEmptyDir(new Object()));
 
         return this;
     }
@@ -377,22 +399,24 @@ public class ContainerGroupImpl
 
     @Override
     public ContainerGroupImpl withContainerInstance(String imageName) {
-        return this.defineContainerInstance(this.name())
-                .withImage(imageName)
-                .withoutPorts()
-                .withCpuCoreCount(1)
-                .withMemorySizeInGB(1.5)
-                .attach();
+        return this
+            .defineContainerInstance(this.name())
+            .withImage(imageName)
+            .withoutPorts()
+            .withCpuCoreCount(1)
+            .withMemorySizeInGB(1.5)
+            .attach();
     }
 
     @Override
     public ContainerGroupImpl withContainerInstance(String imageName, int port) {
-        return this.defineContainerInstance(this.name())
-                .withImage(imageName)
-                .withExternalTcpPort(port)
-                .withCpuCoreCount(1)
-                .withMemorySizeInGB(1.5)
-                .attach();
+        return this
+            .defineContainerInstance(this.name())
+            .withImage(imageName)
+            .withExternalTcpPort(port)
+            .withCpuCoreCount(1)
+            .withMemorySizeInGB(1.5)
+            .attach();
     }
 
     @Override
@@ -413,8 +437,15 @@ public class ContainerGroupImpl
     }
 
     @Override
-    public ContainerGroupImpl withNetworkProfileId(String subscriptionId, String resourceGroupName, String networkProfileName) {
-        String networkProfileId = "/subscriptions/" + subscriptionId + "/resourceGroups/" + resourceGroupName + "/providers/Microsoft.Network/networkProfiles/" + networkProfileName;
+    public ContainerGroupImpl withNetworkProfileId(
+        String subscriptionId, String resourceGroupName, String networkProfileName) {
+        String networkProfileId =
+            "/subscriptions/"
+                + subscriptionId
+                + "/resourceGroups/"
+                + resourceGroupName
+                + "/providers/Microsoft.Network/networkProfiles/"
+                + networkProfileName;
         this.inner().withNetworkProfile(new ContainerGroupNetworkProfile().withId(networkProfileId));
         if (this.inner().ipAddress() == null) {
             this.inner().withIpAddress(new IpAddress());
@@ -427,19 +458,19 @@ public class ContainerGroupImpl
     public ContainerGroupImpl withExistingVirtualNetwork(String virtualNetworkId, String subnetName) {
         creatableNetworkProfileName = manager().sdkContext().randomResourceName("aci-profile-", 20);
         String subnetId = String.format("%s/subnets/%s", virtualNetworkId, subnetName);
-        creatableNetworkProfileInner = new NetworkProfileInner()
-            .withContainerNetworkInterfaceConfigurations(Collections.singletonList(
-                new ContainerNetworkInterfaceConfiguration()
-                    .withName("eth0")
-                    .withIpConfigurations(Collections.singletonList(
-                        new IpConfigurationProfileInner()
-                            .withName("ipconfig0")
-                            .withSubnet(
-                                (SubnetInner) new SubnetInner()
-                                    .withId(subnetId)
-                            )
-                    ))
-            ));
+        creatableNetworkProfileInner =
+            new NetworkProfileInner()
+                .withContainerNetworkInterfaceConfigurations(
+                    Collections
+                        .singletonList(
+                            new ContainerNetworkInterfaceConfiguration()
+                                .withName("eth0")
+                                .withIpConfigurations(
+                                    Collections
+                                        .singletonList(
+                                            new IpConfigurationProfileInner()
+                                                .withName("ipconfig0")
+                                                .withSubnet((SubnetInner) new SubnetInner().withId(subnetId))))));
         creatableNetworkProfileInner.withLocation(regionName());
 
         return this.withNetworkProfileId(manager().subscriptionId(), resourceGroupName(), creatableNetworkProfileName);
@@ -450,19 +481,24 @@ public class ContainerGroupImpl
         String virtualNetworkName = manager().sdkContext().randomResourceName("net", 20);
         String subnetName = "subnet0";
 
-        creatableVirtualNetwork = manager().networkManager().networks()
-            .define(virtualNetworkName)
-            .withRegion(region())
-            .withExistingResourceGroup(resourceGroupName())
-            .withAddressSpace(addressSpace)
-            .defineSubnet(subnetName)
+        creatableVirtualNetwork =
+            manager()
+                .networkManager()
+                .networks()
+                .define(virtualNetworkName)
+                .withRegion(region())
+                .withExistingResourceGroup(resourceGroupName())
+                .withAddressSpace(addressSpace)
+                .defineSubnet(subnetName)
                 .withAddressPrefix(addressSpace)
                 .withDelegation("Microsoft.ContainerInstance/containerGroups")
                 .attach();
 
-        String virtualNetworkId = String.format(
-            "/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Network/virtualNetworks/%s",
-            manager().subscriptionId(), resourceGroupName(), virtualNetworkName);
+        String virtualNetworkId =
+            String
+                .format(
+                    "/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Network/virtualNetworks/%s",
+                    manager().subscriptionId(), resourceGroupName(), virtualNetworkName);
         return withExistingVirtualNetwork(virtualNetworkId, subnetName);
     }
 
@@ -473,20 +509,41 @@ public class ContainerGroupImpl
     }
 
     @Override
-    public ContainerGroupImpl withDnsConfiguration(List<String> dnsServerNames, String dnsSearchDomains, String dnsOptions) {
-        this.inner().withDnsConfig(new DnsConfiguration().withNameServers(dnsServerNames).withSearchDomains(dnsSearchDomains).withOptions(dnsOptions));
+    public ContainerGroupImpl withDnsConfiguration(
+        List<String> dnsServerNames, String dnsSearchDomains, String dnsOptions) {
+        this
+            .inner()
+            .withDnsConfig(
+                new DnsConfiguration()
+                    .withNameServers(dnsServerNames)
+                    .withSearchDomains(dnsSearchDomains)
+                    .withOptions(dnsOptions));
         return this;
     }
 
     @Override
     public ContainerGroupImpl withLogAnalytics(String workspaceId, String workspaceKey) {
-        this.inner().withDiagnostics(new ContainerGroupDiagnostics().withLogAnalytics(new LogAnalytics().withWorkspaceId(workspaceId).withWorkspaceKey(workspaceKey)));
+        this
+            .inner()
+            .withDiagnostics(
+                new ContainerGroupDiagnostics()
+                    .withLogAnalytics(new LogAnalytics().withWorkspaceId(workspaceId).withWorkspaceKey(workspaceKey)));
         return this;
     }
 
     @Override
-    public ContainerGroupImpl withLogAnalytics(String workspaceId, String workspaceKey, LogAnalyticsLogType logType, Map<String, String> metadata) {
-        this.inner().withDiagnostics(new ContainerGroupDiagnostics().withLogAnalytics(new LogAnalytics().withWorkspaceId(workspaceId).withWorkspaceKey(workspaceKey).withLogType(logType).withMetadata(metadata)));
+    public ContainerGroupImpl withLogAnalytics(
+        String workspaceId, String workspaceKey, LogAnalyticsLogType logType, Map<String, String> metadata) {
+        this
+            .inner()
+            .withDiagnostics(
+                new ContainerGroupDiagnostics()
+                    .withLogAnalytics(
+                        new LogAnalytics()
+                            .withWorkspaceId(workspaceId)
+                            .withWorkspaceKey(workspaceKey)
+                            .withLogType(logType)
+                            .withMetadata(metadata)));
         return this;
     }
 
@@ -497,9 +554,11 @@ public class ContainerGroupImpl
 
     @Override
     public Set<Port> externalPorts() {
-        return Collections.unmodifiableSet(this.inner().ipAddress() != null && this.inner().ipAddress().ports() != null
-                ? new HashSet<Port>(this.inner().ipAddress().ports())
-                : new HashSet<Port>());
+        return Collections
+            .unmodifiableSet(
+                this.inner().ipAddress() != null && this.inner().ipAddress().ports() != null
+                    ? new HashSet<Port>(this.inner().ipAddress().ports())
+                    : new HashSet<Port>());
     }
 
     @Override
@@ -556,12 +615,16 @@ public class ContainerGroupImpl
 
     @Override
     public boolean isIPAddressPublic() {
-        return this.inner().ipAddress() != null && this.inner().ipAddress().type() != null && this.inner().ipAddress().type() == ContainerGroupIpAddressType.PUBLIC;
+        return this.inner().ipAddress() != null
+            && this.inner().ipAddress().type() != null
+            && this.inner().ipAddress().type() == ContainerGroupIpAddressType.PUBLIC;
     }
 
     @Override
     public boolean isIPAddressPrivate() {
-        return this.inner().ipAddress() != null && this.inner().ipAddress().type() != null && this.inner().ipAddress().type() == ContainerGroupIpAddressType.PRIVATE;
+        return this.inner().ipAddress() != null
+            && this.inner().ipAddress().type() != null
+            && this.inner().ipAddress().type() == ContainerGroupIpAddressType.PRIVATE;
     }
 
     @Override
@@ -589,9 +652,11 @@ public class ContainerGroupImpl
 
     @Override
     public Set<Event> events() {
-        return Collections.unmodifiableSet(this.inner().instanceView() != null && this.inner().instanceView().events() != null
-                ? new HashSet<Event>(this.inner().instanceView().events())
-                : new HashSet<Event>());
+        return Collections
+            .unmodifiableSet(
+                this.inner().instanceView() != null && this.inner().instanceView().events() != null
+                    ? new HashSet<Event>(this.inner().instanceView().events())
+                    : new HashSet<Event>());
     }
 
     @Override
@@ -637,7 +702,8 @@ public class ContainerGroupImpl
     @Override
     public Set<String> userAssignedManagedServiceIdentityIds() {
         if (this.inner().identity() != null && this.inner().identity().userAssignedIdentities() != null) {
-            return Collections.unmodifiableSet(new HashSet<String>(this.inner().identity().userAssignedIdentities().keySet()));
+            return Collections
+                .unmodifiableSet(new HashSet<String>(this.inner().identity().userAssignedIdentities().keySet()));
         }
         return Collections.unmodifiableSet(new HashSet<String>());
     }
@@ -674,17 +740,26 @@ public class ContainerGroupImpl
 
     @Override
     public String getLogContent(String containerName, int tailLineCount) {
-        return this.manager().containerGroups().getLogContent(this.resourceGroupName(), this.name(), containerName, tailLineCount);
+        return this
+            .manager()
+            .containerGroups()
+            .getLogContent(this.resourceGroupName(), this.name(), containerName, tailLineCount);
     }
 
     @Override
     public Mono<String> getLogContentAsync(String containerName) {
-        return this.manager().containerGroups().getLogContentAsync(this.resourceGroupName(), this.name(), containerName);
+        return this
+            .manager()
+            .containerGroups()
+            .getLogContentAsync(this.resourceGroupName(), this.name(), containerName);
     }
 
     @Override
     public Mono<String> getLogContentAsync(String containerName, int tailLineCount) {
-        return this.manager().containerGroups().getLogContentAsync(this.resourceGroupName(), this.name(), containerName, tailLineCount);
+        return this
+            .manager()
+            .containerGroups()
+            .getLogContentAsync(this.resourceGroupName(), this.name(), containerName, tailLineCount);
     }
 
     @Override
@@ -694,14 +769,18 @@ public class ContainerGroupImpl
 
     @Override
     public Mono<ContainerExecResponse> executeCommandAsync(String containerName, String command, int row, int column) {
-        return this.manager().inner().getContainers()
-                .executeCommandAsync(this.resourceGroupName(), this.name(), containerName,
-                        new ContainerExecRequest()
-                                .withCommand(command)
-                                .withTerminalSize(new ContainerExecRequestTerminalSize()
-                                        .withRows(row)
-                                        .withCols(column)))
-                .map(ContainerExecResponseImpl::new);
+        return this
+            .manager()
+            .inner()
+            .getContainers()
+            .executeCommandAsync(
+                this.resourceGroupName(),
+                this.name(),
+                containerName,
+                new ContainerExecRequest()
+                    .withCommand(command)
+                    .withTerminalSize(new ContainerExecRequestTerminalSize().withRows(row).withCols(column)))
+            .map(ContainerExecResponseImpl::new);
     }
 
     RoleAssignmentHelper.IdProvider idProvider() {

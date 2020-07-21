@@ -1,9 +1,7 @@
 /**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
+ * Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT License. See License.txt in the
+ * project root for license information.
  */
-
 package com.azure.resourcemanager.containerinstance;
 
 import com.azure.core.credential.TokenCredential;
@@ -20,9 +18,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.storage.StorageManager;
 
-/**
- * Entry point to Azure container instance management.
- */
+/** Entry point to Azure container instance management. */
 public final class ContainerInstanceManager
     extends Manager<ContainerInstanceManager, ContainerInstanceManagementClient> {
 
@@ -76,9 +72,7 @@ public final class ContainerInstanceManager
         return new ContainerInstanceManager(httpPipeline, profile, sdkContext);
     }
 
-    /**
-     * The interface allowing configurations to be set.
-     */
+    /** The interface allowing configurations to be set. */
     public interface Configurable extends AzureConfigurable<Configurable> {
         /**
          * Creates an instance of ContainerInstanceManager that exposes resource management API entry points.
@@ -90,10 +84,8 @@ public final class ContainerInstanceManager
         ContainerInstanceManager authenticate(TokenCredential credential, AzureProfile profile);
     }
 
-    /**
-     * The implementation for Configurable interface.
-     */
-    private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements  Configurable {
+    /** The implementation for Configurable interface. */
+    private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         @Override
         public ContainerInstanceManager authenticate(TokenCredential credential, AzureProfile profile) {
             return ContainerInstanceManager.authenticate(buildHttpPipeline(credential, profile), profile);
@@ -131,9 +123,7 @@ public final class ContainerInstanceManager
         return networkManager;
     }
 
-    /**
-     * @return the resource management API entry point
-     */
+    /** @return the resource management API entry point */
     public ContainerGroups containerGroups() {
         if (this.containerGroups == null) {
             this.containerGroups = new ContainerGroupsImpl(this);

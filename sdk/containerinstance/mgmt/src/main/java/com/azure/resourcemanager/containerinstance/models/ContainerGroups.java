@@ -1,7 +1,6 @@
 /**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
+ * Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT License. See License.txt in the
+ * project root for license information.
  */
 package com.azure.resourcemanager.containerinstance.models;
 
@@ -24,23 +23,21 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
 
-/**
- * Entry point to the container instance management API.
- */
+/** Entry point to the container instance management API. */
 @Fluent
 @Beta
-public interface ContainerGroups extends
-    SupportsCreating<ContainerGroup.DefinitionStages.Blank>,
-    HasManager<ContainerInstanceManager>,
-    HasInner<ContainerGroupsClient>,
-    SupportsBatchCreation<ContainerGroup>,
-    SupportsGettingByResourceGroup<ContainerGroup>,
-    SupportsGettingById<ContainerGroup>,
-    SupportsDeletingByResourceGroup,
-    SupportsDeletingById,
-    SupportsBatchDeletion,
-    SupportsListingByResourceGroup<ContainerGroup>,
-    SupportsListing<ContainerGroup> {
+public interface ContainerGroups
+    extends SupportsCreating<ContainerGroup.DefinitionStages.Blank>,
+        HasManager<ContainerInstanceManager>,
+        HasInner<ContainerGroupsClient>,
+        SupportsBatchCreation<ContainerGroup>,
+        SupportsGettingByResourceGroup<ContainerGroup>,
+        SupportsGettingById<ContainerGroup>,
+        SupportsDeletingByResourceGroup,
+        SupportsDeletingById,
+        SupportsBatchDeletion,
+        SupportsListingByResourceGroup<ContainerGroup>,
+        SupportsListing<ContainerGroup> {
 
     /**
      * Get the log content for the specified container instance within a container group.
@@ -86,7 +83,8 @@ public interface ContainerGroups extends
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return a representation of the future computation of this call
      */
-    Mono<String> getLogContentAsync(String resourceGroupName, String containerGroupName, String containerName, int tailLineCount);
+    Mono<String> getLogContentAsync(
+        String resourceGroupName, String containerGroupName, String containerName, int tailLineCount);
 
     /**
      * Lists all operations for Azure Container Instance service.

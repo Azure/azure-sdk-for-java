@@ -1,7 +1,6 @@
 /**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
+ * Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT License. See License.txt in the
+ * project root for license information.
  */
 package com.azure.resourcemanager.containerinstance.models;
 
@@ -18,148 +17,100 @@ import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
-import reactor.core.publisher.Mono;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import reactor.core.publisher.Mono;
 
-/**
- * An immutable client-side representation of an Azure Container Group.
- */
+/** An immutable client-side representation of an Azure Container Group. */
 @Fluent
 @Beta
-public interface ContainerGroup extends
-        GroupableResource<ContainerInstanceManager, ContainerGroupInner>,
-    Refreshable<ContainerGroup>,
-    Updatable<ContainerGroup.Update> {
+public interface ContainerGroup
+    extends GroupableResource<ContainerInstanceManager, ContainerGroupInner>,
+        Refreshable<ContainerGroup>,
+        Updatable<ContainerGroup.Update> {
 
     /***********************************************************
      * Getters
      ***********************************************************/
 
-    /**
-     * @return the container instances in this container group
-     */
+    /** @return the container instances in this container group */
     Map<String, Container> containers();
 
-    /**
-     * @return all the ports publicly exposed for this container group
-     */
+    /** @return all the ports publicly exposed for this container group */
     Set<Port> externalPorts();
 
-    /**
-     * @return the TCP ports publicly exposed for this container group
-     */
+    /** @return the TCP ports publicly exposed for this container group */
     int[] externalTcpPorts();
 
-    /**
-     * @return the UDP ports publicly exposed for this container group
-     */
+    /** @return the UDP ports publicly exposed for this container group */
     int[] externalUdpPorts();
 
-    /**
-     * @return the volumes for this container group
-     */
+    /** @return the volumes for this container group */
     Map<String, Volume> volumes();
 
-    /**
-     * @return the Docker image registry servers by which the container group is created from
-     */
+    /** @return the Docker image registry servers by which the container group is created from */
     Collection<String> imageRegistryServers();
 
-    /**
-     * @return the container group restart policy
-     */
+    /** @return the container group restart policy */
     ContainerGroupRestartPolicy restartPolicy();
 
-    /**
-     * @return the DNS prefix which was specified at creation time
-     */
+    /** @return the DNS prefix which was specified at creation time */
     String dnsPrefix();
 
-    /**
-     * @return the FQDN for the container group
-     */
+    /** @return the FQDN for the container group */
     String fqdn();
 
-    /**
-     * @return the IP address
-     */
+    /** @return the IP address */
     String ipAddress();
 
-    /**
-     * @return true if IP address is public
-     */
+    /** @return true if IP address is public */
     boolean isIPAddressPublic();
 
-    /**
-     * @return true if IP address is private
-     */
+    /** @return true if IP address is private */
     boolean isIPAddressPrivate();
 
-    /**
-     * @return the base level OS type required by the containers in the group
-     */
+    /** @return the base level OS type required by the containers in the group */
     OperatingSystemTypes osType();
 
-    /**
-     * @return the state of the container group; only valid in response
-     */
+    /** @return the state of the container group; only valid in response */
     String state();
 
-    /**
-     * @return the provisioningState of the container group
-     */
+    /** @return the provisioningState of the container group */
     String provisioningState();
 
-    /**
-     * @return the container group events
-     */
+    /** @return the container group events */
     Set<Event> events();
 
-    /**
-     * @return the DNS configuration for the container group
-     */
+    /** @return the DNS configuration for the container group */
     DnsConfiguration dnsConfig();
 
-    /**
-     * @return the id of the network profile for the container group
-     */
+    /** @return the id of the network profile for the container group */
     String networkProfileId();
 
-    /**
-     * @return whether managed service identity is enabled for the container group
-     */
+    /** @return whether managed service identity is enabled for the container group */
     boolean isManagedServiceIdentityEnabled();
 
     /**
-     * @return the tenant id of the system assigned managed service identity. Null if managed
-     * service identity is not configured.
+     * @return the tenant id of the system assigned managed service identity. Null if managed service identity is not
+     *     configured.
      */
     String systemAssignedManagedServiceIdentityTenantId();
 
     /**
-     * @return the principal id of the system assigned managed service identity. Null if managed
-     * service identity is not configured.
+     * @return the principal id of the system assigned managed service identity. Null if managed service identity is not
+     *     configured.
      */
     String systemAssignedManagedServiceIdentityPrincipalId();
 
-    /**
-     * @return whether managed service identity is system assigned, user assigned, both, or neither
-     */
+    /** @return whether managed service identity is system assigned, user assigned, both, or neither */
     ResourceIdentityType managedServiceIdentityType();
 
-    /**
-     * @return the ids of the user assigned managed service identities. Returns an empty set if no
-     * MSIs are set.
-     */
+    /** @return the ids of the user assigned managed service identities. Returns an empty set if no MSIs are set. */
     Set<String> userAssignedManagedServiceIdentityIds();
 
-    /**
-     * @return the log analytics information of the container group.
-     */
+    /** @return the log analytics information of the container group. */
     LogAnalytics logAnalytics();
 
     /***********************************************************
@@ -167,24 +118,25 @@ public interface ContainerGroup extends
      ***********************************************************/
 
     /**
-     * Restarts all containers in a container group in place. If container image has updates, new image will be downloaded.
+     * Restarts all containers in a container group in place. If container image has updates, new image will be
+     * downloaded.
      */
     void restart();
 
     /**
-     * Restarts all containers in a container group in place asynchronously. If container image has updates, new image will be downloaded.
+     * Restarts all containers in a container group in place asynchronously. If container image has updates, new image
+     * will be downloaded.
      *
      * @return a representation of the deferred computation of this call
      */
     Mono<Void> restartAsync();
 
-    /**
-     * Stops all containers in a container group. Compute resources will be de-allocated and billing will stop.
-     */
+    /** Stops all containers in a container group. Compute resources will be de-allocated and billing will stop. */
     void stop();
 
     /**
-     * Stops all containers in a container group asynchronously. Compute resources will be de-allocated and billing will stop.
+     * Stops all containers in a container group asynchronously. Compute resources will be de-allocated and billing will
+     * stop.
      *
      * @return a representation of the deferred computation of this call
      */
@@ -252,12 +204,9 @@ public interface ContainerGroup extends
      */
     Mono<ContainerExecResponse> executeCommandAsync(String containerName, String command, int row, int column);
 
-
-    /**
-     * Starts the exec command for a specific container instance within the current group asynchronously.
-     */
-    interface Definition extends
-            DefinitionStages.Blank,
+    /** Starts the exec command for a specific container instance within the current group asynchronously. */
+    interface Definition
+        extends DefinitionStages.Blank,
             DefinitionStages.WithGroup,
             DefinitionStages.WithOsType,
             DefinitionStages.WithPublicOrPrivateImageRegistry,
@@ -271,27 +220,17 @@ public interface ContainerGroup extends
             DefinitionStages.WithCreate {
     }
 
-    /**
-     * Grouping of the container group definition stages.
-     */
+    /** Grouping of the container group definition stages. */
     interface DefinitionStages {
-        /**
-         * The first stage of the container group definition.
-         */
-        interface Blank
-                extends GroupableResource.DefinitionWithRegion<WithGroup> {
+        /** The first stage of the container group definition. */
+        interface Blank extends GroupableResource.DefinitionWithRegion<WithGroup> {
         }
 
-        /**
-         * The stage of the container group definition allowing to specify the resource group.
-         */
-        interface WithGroup
-                extends GroupableResource.DefinitionStages.WithGroup<DefinitionStages.WithOsType> {
+        /** The stage of the container group definition allowing to specify the resource group. */
+        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<DefinitionStages.WithOsType> {
         }
 
-        /**
-         * The stage of the container group definition allowing to specify the OS type.
-         */
+        /** The stage of the container group definition allowing to specify the OS type. */
         interface WithOsType {
             /**
              * Specifies this is a Linux container group.
@@ -308,27 +247,22 @@ public interface ContainerGroup extends
             WithPublicOrPrivateImageRegistry withWindows();
         }
 
-        /**
-         * The stage of the container group definition allowing to specify a public only or private image registry.
-         */
+        /** The stage of the container group definition allowing to specify a public only or private image registry. */
         interface WithPublicOrPrivateImageRegistry extends WithPublicImageRegistryOnly, WithPrivateImageRegistry {
         }
 
-        /**
-         * The stage of the container group definition allowing to skip the private image registry.
-         */
+        /** The stage of the container group definition allowing to skip the private image registry. */
         interface WithPublicImageRegistryOnly {
             /**
-             * Only public container image repository will be used to create the container instances in the container group.
+             * Only public container image repository will be used to create the container instances in the container
+             * group.
              *
              * @return the next stage of the definition
              */
             WithPrivateImageRegistryOrVolume withPublicImageRegistryOnly();
         }
 
-        /**
-         * The stage of the container group definition allowing to specify a private image registry.
-         */
+        /** The stage of the container group definition allowing to specify a private image registry. */
         interface WithPrivateImageRegistry {
             /**
              * Specifies the private container image registry server login for the container group.
@@ -341,15 +275,14 @@ public interface ContainerGroup extends
             WithPrivateImageRegistryOrVolume withPrivateImageRegistry(String server, String username, String password);
         }
 
-        /**
-         * The stage of the container group definition allowing to specify a private image registry or a volume.
-         */
+        /** The stage of the container group definition allowing to specify a private image registry or a volume. */
         interface WithPrivateImageRegistryOrVolume extends WithPrivateImageRegistry {
             /**
              * Skips the definition of volumes to be shared by the container instances.
              *
-             * <p>
-             * An IllegalArgumentException will be thrown if a container instance attempts to define a volume mounting.
+             * <p>An IllegalArgumentException will be thrown if a container instance attempts to define a volume
+             * mounting.
+             *
              * @return the next stage of the definition
              */
             WithFirstContainerInstance withoutVolume();
@@ -374,34 +307,33 @@ public interface ContainerGroup extends
             /**
              * Begins the definition of a volume that can be shared by the container instances in the container group.
              *
-             * <p>
-             * The definition must be completed with a call to {@link VolumeDefinitionStages.WithVolumeAttach#attach()}
+             * <p>The definition must be completed with a call to {@link
+             * VolumeDefinitionStages.WithVolumeAttach#attach()}
+             *
              * @param name the name of the volume
              * @return the next stage of the definition
              */
             VolumeDefinitionStages.VolumeDefinitionBlank<WithVolume> defineVolume(String name);
         }
 
-
-
         /**
-         * The stage of the container group definition allowing to specify a volume that can be mounted by a container instance.
+         * The stage of the container group definition allowing to specify a volume that can be mounted by a container
+         * instance.
          */
         interface WithVolume extends WithFirstContainerInstance {
             /**
              * Begins the definition of a volume that can be shared by the container instances in the container group.
              *
-             * <p>
-             * The definition must be completed with a call to {@link VolumeDefinitionStages.WithVolumeAttach#attach()}
+             * <p>The definition must be completed with a call to {@link
+             * VolumeDefinitionStages.WithVolumeAttach#attach()}
+             *
              * @param name the name of the volume
              * @return the next stage of the definition
              */
             VolumeDefinitionStages.VolumeDefinitionBlank<WithVolume> defineVolume(String name);
         }
 
-        /**
-         * Grouping of volume definition stages.
-         */
+        /** Grouping of volume definition stages. */
         interface VolumeDefinitionStages {
             /**
              * The first stage of the volume definition.
@@ -413,6 +345,7 @@ public interface ContainerGroup extends
 
             /**
              * The stage of the volume definition allowing to specify a read only Azure File Share name.
+             *
              * @param <ParentT> the stage of the parent definition to return to after attaching this definition
              */
             interface WithAzureFileShare<ParentT> {
@@ -434,7 +367,9 @@ public interface ContainerGroup extends
             }
 
             /**
-             * The stage of the volume definition allowing to specify the storage account name to access to the Azure file.
+             * The stage of the volume definition allowing to specify the storage account name to access to the Azure
+             * file.
+             *
              * @param <ParentT> the stage of the parent definition to return to after attaching this definition
              */
             interface WithStorageAccountName<ParentT> {
@@ -448,7 +383,8 @@ public interface ContainerGroup extends
             }
 
             /**
-             * The stage of the volume definition allowing to specify the storage account key to access to the Azure file.
+             * The stage of the volume definition allowing to specify the storage account key to access to the Azure
+             * file.
              *
              * @param <ParentT> the stage of the parent definition to return to after attaching this definition
              */
@@ -470,8 +406,8 @@ public interface ContainerGroup extends
             interface WithSecretsMap<ParentT> {
                 /**
                  * Specifies the secrets map.
-                 * <p>
-                 * The secret value must be specified in Base64 encoding
+                 *
+                 * <p>The secret value must be specified in Base64 encoding
                  *
                  * @param secrets the new volume secrets map; value must be in Base64 encoding
                  * @return the next stage of the definition
@@ -502,10 +438,10 @@ public interface ContainerGroup extends
             interface WithGitDirectoryName<ParentT> extends WithGitRevision<ParentT> {
                 /**
                  * Specifies the Git target directory name for the new volume.
-                 * <p>
-                 * Must not contain or start with '..'.  If '.' is supplied, the volume directory will be the
-                 * git repository.  Otherwise, if specified, the volume will contain the git repository in the
-                 * subdirectory with the given name.
+                 *
+                 * <p>Must not contain or start with '..'. If '.' is supplied, the volume directory will be the git
+                 * repository. Otherwise, if specified, the volume will contain the git repository in the subdirectory
+                 * with the given name.
                  *
                  * @param gitDirectoryName the Git target directory name for the new volume
                  * @return the next stage of the definition
@@ -528,21 +464,20 @@ public interface ContainerGroup extends
                 WithVolumeAttach<ParentT> withGitRevision(String gitRevision);
             }
 
-            /** The final stage of the volume definition.
-             * <p>
-             * At this stage, any remaining optional settings can be specified, or the subnet definition
-             * can be attached to the parent virtual network definition.
+            /**
+             * The final stage of the volume definition.
+             *
+             * <p>At this stage, any remaining optional settings can be specified, or the subnet definition can be
+             * attached to the parent virtual network definition.
+             *
              * @param <ParentT> the stage of the parent definition to return to after attaching this definition
              */
-            interface WithVolumeAttach<ParentT> extends
-                    Attachable.InDefinition<ParentT> {
+            interface WithVolumeAttach<ParentT> extends Attachable.InDefinition<ParentT> {
             }
 
-            /**
-             * Grouping of the container group's volume definition stages.
-             */
-            interface VolumeDefinition<ParentT> extends
-                    VolumeDefinitionBlank<ParentT>,
+            /** Grouping of the container group's volume definition stages. */
+            interface VolumeDefinition<ParentT>
+                extends VolumeDefinitionBlank<ParentT>,
                     WithAzureFileShare<ParentT>,
                     WithStorageAccountName<ParentT>,
                     WithStorageAccountKey<ParentT>,
@@ -554,9 +489,7 @@ public interface ContainerGroup extends
             }
         }
 
-        /**
-         * The stage of the container group definition allowing to specify first required container instance.
-         */
+        /** The stage of the container group definition allowing to specify first required container instance. */
         interface WithFirstContainerInstance {
             /**
              * Begins the definition of a container instance.
@@ -564,10 +497,12 @@ public interface ContainerGroup extends
              * @param name the name of the container instance
              * @return the next stage of the definition
              */
-            ContainerInstanceDefinitionStages.ContainerInstanceDefinitionBlank<WithNextContainerInstance> defineContainerInstance(String name);
+            ContainerInstanceDefinitionStages.ContainerInstanceDefinitionBlank<WithNextContainerInstance>
+                defineContainerInstance(String name);
 
             /**
-             * Defines one container instance for the specified image with one CPU count and 1.5 GB memory, with TCP port 80 opened externally.
+             * Defines one container instance for the specified image with one CPU count and 1.5 GB memory, with TCP
+             * port 80 opened externally.
              *
              * @param imageName the name of the container image
              * @return the next stage of the definition
@@ -575,7 +510,8 @@ public interface ContainerGroup extends
             WithCreate withContainerInstance(String imageName);
 
             /**
-             * Defines one container instance for the specified image with one CPU count and 1.5 GB memory, with a custom TCP port opened externally.
+             * Defines one container instance for the specified image with one CPU count and 1.5 GB memory, with a
+             * custom TCP port opened externally.
              *
              * @param imageName the name of the container image
              * @param port the external port to be opened
@@ -584,9 +520,7 @@ public interface ContainerGroup extends
             WithCreate withContainerInstance(String imageName, int port);
         }
 
-        /**
-         * The stage of the container group definition allowing to specify a container instance.
-         */
+        /** The stage of the container group definition allowing to specify a container instance. */
         interface WithNextContainerInstance extends WithCreate {
             /**
              * Begins the definition of a container instance.
@@ -594,12 +528,11 @@ public interface ContainerGroup extends
              * @param name the name of the volume
              * @return the next stage of the definition
              */
-            ContainerInstanceDefinitionStages.ContainerInstanceDefinitionBlank<WithNextContainerInstance> defineContainerInstance(String name);
+            ContainerInstanceDefinitionStages.ContainerInstanceDefinitionBlank<WithNextContainerInstance>
+                defineContainerInstance(String name);
         }
 
-        /**
-         * Grouping of volume definition stages.
-         */
+        /** Grouping of volume definition stages. */
         interface ContainerInstanceDefinitionStages {
             /**
              * The first stage of the container instance definition.
@@ -629,13 +562,12 @@ public interface ContainerGroup extends
              *
              * @param <ParentT> the stage of the parent definition to return to after attaching this definition
              */
-            interface WithOrWithoutPorts<ParentT> extends
-                    WithPorts<ParentT>,
-                    WithoutPorts<ParentT> {
+            interface WithOrWithoutPorts<ParentT> extends WithPorts<ParentT>, WithoutPorts<ParentT> {
             }
 
             /**
-             * The stage of the container instance definition allowing not to specify any container ports internal or external.
+             * The stage of the container instance definition allowing not to specify any container ports internal or
+             * external.
              *
              * @param <ParentT> the stage of the parent definition to return to after attaching this definition
              */
@@ -653,9 +585,8 @@ public interface ContainerGroup extends
              *
              * @param <ParentT> the stage of the parent definition to return to after attaching this definition
              */
-            interface WithPortsOrContainerInstanceAttach<ParentT> extends
-                    WithPorts<ParentT>,
-                    WithContainerInstanceAttach<ParentT> {
+            interface WithPortsOrContainerInstanceAttach<ParentT>
+                extends WithPorts<ParentT>, WithContainerInstanceAttach<ParentT> {
             }
 
             /**
@@ -666,11 +597,11 @@ public interface ContainerGroup extends
             interface WithPorts<ParentT> {
                 /**
                  * Specifies the container's TCP ports available to external clients.
-                 * <p>
-                 * A public IP address will be create to allow external clients to reach the containers within the group.
-                 * To enable external clients to reach a container within the group, you must expose the port on the
-                 *   IP address and from the container. Because containers within the group share a port namespace, port
-                 *   mapping is not supported.
+                 *
+                 * <p>A public IP address will be create to allow external clients to reach the containers within the
+                 * group. To enable external clients to reach a container within the group, you must expose the port on
+                 * the IP address and from the container. Because containers within the group share a port namespace,
+                 * port mapping is not supported.
                  *
                  * @param ports array of TCP ports to be exposed externally
                  * @return the next stage of the definition
@@ -679,11 +610,11 @@ public interface ContainerGroup extends
 
                 /**
                  * Specifies the container's TCP port available to external clients.
-                 * <p>
-                 * A public IP address will be create to allow external clients to reach the containers within the group.
-                 * To enable external clients to reach a container within the group, you must expose the port on the
-                 *   IP address and from the container. Because containers within the group share a port namespace, port
-                 *   mapping is not supported.
+                 *
+                 * <p>A public IP address will be create to allow external clients to reach the containers within the
+                 * group. To enable external clients to reach a container within the group, you must expose the port on
+                 * the IP address and from the container. Because containers within the group share a port namespace,
+                 * port mapping is not supported.
                  *
                  * @param port TCP port to be exposed externally
                  * @return the next stage of the definition
@@ -692,11 +623,11 @@ public interface ContainerGroup extends
 
                 /**
                  * Specifies the container's UDP ports available to external clients.
-                 * <p>
-                 * A public IP address will be create to allow external clients to reach the containers within the group.
-                 * To enable external clients to reach a container within the group, you must expose the port on the
-                 *   IP address and from the container. Because containers within the group share a port namespace, port
-                 *   mapping is not supported.
+                 *
+                 * <p>A public IP address will be create to allow external clients to reach the containers within the
+                 * group. To enable external clients to reach a container within the group, you must expose the port on
+                 * the IP address and from the container. Because containers within the group share a port namespace,
+                 * port mapping is not supported.
                  *
                  * @param ports array of UDP ports to be exposed externally
                  * @return the next stage of the definition
@@ -705,11 +636,11 @@ public interface ContainerGroup extends
 
                 /**
                  * Specifies the container's UDP port available to external clients.
-                 * <p>
-                 * A public IP address will be create to allow external clients to reach the containers within the group.
-                 * To enable external clients to reach a container within the group, you must expose the port on the
-                 *   IP address and from the container. Because containers within the group share a port namespace, port
-                 *   mapping is not supported.
+                 *
+                 * <p>A public IP address will be create to allow external clients to reach the containers within the
+                 * group. To enable external clients to reach a container within the group, you must expose the port on
+                 * the IP address and from the container. Because containers within the group share a port namespace,
+                 * port mapping is not supported.
                  *
                  * @param port UDP port to be exposed externally
                  * @return the next stage of the definition
@@ -717,10 +648,11 @@ public interface ContainerGroup extends
                 WithPortsOrContainerInstanceAttach<ParentT> withExternalUdpPort(int port);
 
                 /**
-                 * Specifies the container's TCP ports are available to internal clients only (other container instances within the container group).
-                 * <p>
-                 * Containers within a group can reach each other via localhost on the ports that they have exposed,
-                 *   even if those ports are not exposed externally on the group's IP address.
+                 * Specifies the container's TCP ports are available to internal clients only (other container instances
+                 * within the container group).
+                 *
+                 * <p>Containers within a group can reach each other via localhost on the ports that they have exposed,
+                 * even if those ports are not exposed externally on the group's IP address.
                  *
                  * @param ports array of TCP ports to be exposed internally
                  * @return the next stage of the definition
@@ -728,10 +660,11 @@ public interface ContainerGroup extends
                 WithPortsOrContainerInstanceAttach<ParentT> withInternalTcpPorts(int... ports);
 
                 /**
-                 * Specifies the container's Udp ports are available to internal clients only (other container instances within the container group).
-                 * <p>
-                 * Containers within a group can reach each other via localhost on the ports that they have exposed,
-                 *   even if those ports are not exposed externally on the group's IP address.
+                 * Specifies the container's Udp ports are available to internal clients only (other container instances
+                 * within the container group).
+                 *
+                 * <p>Containers within a group can reach each other via localhost on the ports that they have exposed,
+                 * even if those ports are not exposed externally on the group's IP address.
                  *
                  * @param ports array of UDP ports to be exposed internally
                  * @return the next stage of the definition
@@ -739,10 +672,11 @@ public interface ContainerGroup extends
                 WithPortsOrContainerInstanceAttach<ParentT> withInternalUdpPorts(int... ports);
 
                 /**
-                 * Specifies the container's TCP port is available to internal clients only (other container instances within the container group).
-                 * <p>
-                 * Containers within a group can reach each other via localhost on the ports that they have exposed,
-                 *   even if those ports are not exposed externally on the group's IP address.
+                 * Specifies the container's TCP port is available to internal clients only (other container instances
+                 * within the container group).
+                 *
+                 * <p>Containers within a group can reach each other via localhost on the ports that they have exposed,
+                 * even if those ports are not exposed externally on the group's IP address.
                  *
                  * @param port TCP port to be exposed internally
                  * @return the next stage of the definition
@@ -750,10 +684,11 @@ public interface ContainerGroup extends
                 WithPortsOrContainerInstanceAttach<ParentT> withInternalTcpPort(int port);
 
                 /**
-                 * Specifies the container's UDP port is available to internal clients only (other container instances within the container group).
-                 * <p>
-                 * Containers within a group can reach each other via localhost on the ports that they have exposed,
-                 *   even if those ports are not exposed externally on the group's IP address.
+                 * Specifies the container's UDP port is available to internal clients only (other container instances
+                 * within the container group).
+                 *
+                 * <p>Containers within a group can reach each other via localhost on the ports that they have exposed,
+                 * even if those ports are not exposed externally on the group's IP address.
                  *
                  * @param port UDP port to be exposed internally
                  * @return the next stage of the definition
@@ -763,9 +698,9 @@ public interface ContainerGroup extends
 
             /**
              * The stage of the container instance definition allowing to specify the number of CPU cores.
-             * <p>
-             * The CPU cores can be specified as a fraction, i.e. 1.5 represents one and a half atomic CPU cores
-             *   will be assigned to this container instance.
+             *
+             * <p>The CPU cores can be specified as a fraction, i.e. 1.5 represents one and a half atomic CPU cores will
+             * be assigned to this container instance.
              *
              * @param <ParentT> the stage of the parent definition to return to after attaching this definition
              */
@@ -785,8 +720,8 @@ public interface ContainerGroup extends
 
             /**
              * The stage of the container instance definition allowing to specify the memory size in GB.
-             * <p>
-             * The memory size can be specified as a fraction, i.e. 1.5 represents one and a half GB of memory.
+             *
+             * <p>The memory size can be specified as a fraction, i.e. 1.5 represents one and a half GB of memory.
              *
              * @param <ParentT> the stage of the parent definition to return to after attaching this definition
              */
@@ -818,7 +753,8 @@ public interface ContainerGroup extends
                 /**
                  * Specifies the starting command line.
                  *
-                 * @param executable the executable or path to the executable that will be called after initializing the container
+                 * @param executable the executable or path to the executable that will be called after initializing the
+                 *     container
                  * @return the next stage of the definition
                  */
                 WithContainerInstanceAttach<ParentT> withStartingCommandLine(String executable);
@@ -833,7 +769,8 @@ public interface ContainerGroup extends
                 /**
                  * Specifies the environment variables.
                  *
-                 * @param environmentVariables the environment variables in a name and value pair to be set after the container gets initialized
+                 * @param environmentVariables the environment variables in a name and value pair to be set after the
+                 *     container gets initialized
                  * @return the next stage of the definition
                  */
                 WithContainerInstanceAttach<ParentT> withEnvironmentVariables(Map<String, String> environmentVariables);
@@ -850,10 +787,12 @@ public interface ContainerGroup extends
                 /**
                  * Specifies a collection of name and secure value pairs for the environment variables.
                  *
-                 * @param environmentVariables the environment variables in a name and value pair to be set after the container gets initialized
+                 * @param environmentVariables the environment variables in a name and value pair to be set after the
+                 *     container gets initialized
                  * @return the next stage of the definition
                  */
-                WithContainerInstanceAttach<ParentT> withEnvironmentVariableWithSecuredValue(Map<String, String> environmentVariables);
+                WithContainerInstanceAttach<ParentT> withEnvironmentVariableWithSecuredValue(
+                    Map<String, String> environmentVariables);
 
                 /**
                  * Specifies the environment variable that has a secured value.
@@ -862,7 +801,8 @@ public interface ContainerGroup extends
                  * @param securedValue the environment variable secured value
                  * @return the next stage of the definition
                  */
-                WithContainerInstanceAttach<ParentT> withEnvironmentVariableWithSecuredValue(String envName, String securedValue);
+                WithContainerInstanceAttach<ParentT> withEnvironmentVariableWithSecuredValue(
+                    String envName, String securedValue);
             }
 
             /**
@@ -872,68 +812,82 @@ public interface ContainerGroup extends
              */
             interface WithVolumeMountSetting<ParentT> {
                 /**
-                 * Specifies the container group's volume to be mounted by the container instance at a specified mount path.
-                 * <p>
-                 * Mounting an Azure file share as a volume in a container is a two-step process. First, you provide
-                 *   the details of the share as part of defining the container group, then you specify how you wan
-                 *   the volume mounted within one or more of the containers in the group.
+                 * Specifies the container group's volume to be mounted by the container instance at a specified mount
+                 * path.
+                 *
+                 * <p>Mounting an Azure file share as a volume in a container is a two-step process. First, you provide
+                 * the details of the share as part of defining the container group, then you specify how you wan the
+                 * volume mounted within one or more of the containers in the group.
                  *
                  * @param volumeName the volume name as defined in the volumes of the container group
                  * @param mountPath the local path the volume will be mounted at
                  * @return the next stage of the definition
-                 * @throws IllegalArgumentException thrown if volumeName was not defined in the respective container group definition stage.
+                 * @throws IllegalArgumentException thrown if volumeName was not defined in the respective container
+                 *     group definition stage.
                  */
                 WithContainerInstanceAttach<ParentT> withVolumeMountSetting(String volumeName, String mountPath);
 
                 /**
-                 * Specifies the container group's volume to be mounted by the container instance at a specified mount path.
-                 * <p>
-                 * Mounting an Azure file share as a volume in a container is a two-step process. First, you provide
-                 *   the details of the share as part of defining the container group, then you specify how you wan
-                 *   the volume mounted within one or more of the containers in the group.
+                 * Specifies the container group's volume to be mounted by the container instance at a specified mount
+                 * path.
                  *
-                 * @param volumeMountSetting the name and value pair representing volume names as defined in the volumes of the container group and the local paths the volume will be mounted at
+                 * <p>Mounting an Azure file share as a volume in a container is a two-step process. First, you provide
+                 * the details of the share as part of defining the container group, then you specify how you wan the
+                 * volume mounted within one or more of the containers in the group.
+                 *
+                 * @param volumeMountSetting the name and value pair representing volume names as defined in the volumes
+                 *     of the container group and the local paths the volume will be mounted at
                  * @return the next stage of the definition
-                 * @throws IllegalArgumentException thrown if volumeName was not defined in the respective container group definition stage.
+                 * @throws IllegalArgumentException thrown if volumeName was not defined in the respective container
+                 *     group definition stage.
                  */
                 WithContainerInstanceAttach<ParentT> withVolumeMountSetting(Map<String, String> volumeMountSetting);
 
                 /**
-                 * Specifies the container group's volume to be mounted by the container instance at a specified mount path.
-                 * <p>
-                 * Mounting an Azure file share as a volume in a container is a two-step process. First, you provide
-                 *   the details of the share as part of defining the container group, then you specify how you wan
-                 *   the volume mounted within one or more of the containers in the group.
+                 * Specifies the container group's volume to be mounted by the container instance at a specified mount
+                 * path.
+                 *
+                 * <p>Mounting an Azure file share as a volume in a container is a two-step process. First, you provide
+                 * the details of the share as part of defining the container group, then you specify how you wan the
+                 * volume mounted within one or more of the containers in the group.
                  *
                  * @param volumeName the volume name as defined in the volumes of the container group
                  * @param mountPath the local path the volume will be mounted at
                  * @return the next stage of the definition
-                 * @throws IllegalArgumentException thrown if volumeName was not defined in the respective container group definition stage.
+                 * @throws IllegalArgumentException thrown if volumeName was not defined in the respective container
+                 *     group definition stage.
                  */
-                WithContainerInstanceAttach<ParentT> withReadOnlyVolumeMountSetting(String volumeName, String mountPath);
+                WithContainerInstanceAttach<ParentT> withReadOnlyVolumeMountSetting(
+                    String volumeName, String mountPath);
 
                 /**
-                 * Specifies the container group's volume to be mounted by the container instance at a specified mount path.
-                 * <p>
-                 * Mounting an Azure file share as a volume in a container is a two-step process. First, you provide
-                 *   the details of the share as part of defining the container group, then you specify how you wan
-                 *   the volume mounted within one or more of the containers in the group.
+                 * Specifies the container group's volume to be mounted by the container instance at a specified mount
+                 * path.
                  *
-                 * @param volumeMountSetting the name and value pair representing volume names as defined in the volumes of the container group and the local paths the volume will be mounted at
+                 * <p>Mounting an Azure file share as a volume in a container is a two-step process. First, you provide
+                 * the details of the share as part of defining the container group, then you specify how you wan the
+                 * volume mounted within one or more of the containers in the group.
+                 *
+                 * @param volumeMountSetting the name and value pair representing volume names as defined in the volumes
+                 *     of the container group and the local paths the volume will be mounted at
                  * @return the next stage of the definition
-                 * @throws IllegalArgumentException thrown if volumeName was not defined in the respective container group definition stage.
+                 * @throws IllegalArgumentException thrown if volumeName was not defined in the respective container
+                 *     group definition stage.
                  */
-                WithContainerInstanceAttach<ParentT> withReadOnlyVolumeMountSetting(Map<String, String> volumeMountSetting);
+                WithContainerInstanceAttach<ParentT> withReadOnlyVolumeMountSetting(
+                    Map<String, String> volumeMountSetting);
             }
 
-            /** The final stage of the container instance definition.
-             * <p>
-             * At this stage, any remaining optional settings can be specified, or the subnet definition
-             * can be attached to the parent virtual network definition.
+            /**
+             * The final stage of the container instance definition.
+             *
+             * <p>At this stage, any remaining optional settings can be specified, or the subnet definition can be
+             * attached to the parent virtual network definition.
+             *
              * @param <ParentT> the stage of the parent definition to return to after attaching this definition
              */
-            interface WithContainerInstanceAttach<ParentT> extends
-                    WithCpuCoreCount<ParentT>,
+            interface WithContainerInstanceAttach<ParentT>
+                extends WithCpuCoreCount<ParentT>,
                     WithGpuResource<ParentT>,
                     WithMemorySize<ParentT>,
                     WithStartingCommandLine<ParentT>,
@@ -942,11 +896,9 @@ public interface ContainerGroup extends
                     Attachable.InDefinition<ParentT> {
             }
 
-            /**
-             * Grouping of the container group's volume definition stages.
-             */
-            interface ContainerInstanceDefinition<ParentT> extends
-                    ContainerInstanceDefinitionBlank<ParentT>,
+            /** Grouping of the container group's volume definition stages. */
+            interface ContainerInstanceDefinition<ParentT>
+                extends ContainerInstanceDefinitionBlank<ParentT>,
                     WithImage<ParentT>,
                     WithOrWithoutPorts<ParentT>,
                     WithPortsOrContainerInstanceAttach<ParentT>,
@@ -955,7 +907,8 @@ public interface ContainerGroup extends
         }
 
         /**
-         * The stage of the container instance definition allowing to specify having system assigned managed service identity.
+         * The stage of the container instance definition allowing to specify having system assigned managed service
+         * identity.
          */
         interface WithSystemAssignedManagedServiceIdentity {
             /**
@@ -967,43 +920,51 @@ public interface ContainerGroup extends
         }
 
         /**
-         * The stage of the container instance definition allowing to specify system assigned managed service identity with specific
-         * role based access.
+         * The stage of the container instance definition allowing to specify system assigned managed service identity
+         * with specific role based access.
          */
         interface WithSystemAssignedIdentityBasedAccessOrCreate extends WithCreate {
             /**
-             * Specifies a system assigned managed service identity with access to a specific resource with a specified role.
+             * Specifies a system assigned managed service identity with access to a specific resource with a specified
+             * role.
              *
              * @param resourceId the id of the resource you are setting up access to
              * @param role access role to be assigned to the identity
              * @return the next stage of the definition
              */
-            WithSystemAssignedIdentityBasedAccessOrCreate withSystemAssignedIdentityBasedAccessTo(String resourceId, BuiltInRole role);
+            WithSystemAssignedIdentityBasedAccessOrCreate withSystemAssignedIdentityBasedAccessTo(
+                String resourceId, BuiltInRole role);
 
             /**
-             * Specifies a system assigned managed service identity with access to the current resource group and with the specified role.
+             * Specifies a system assigned managed service identity with access to the current resource group and with
+             * the specified role.
              *
              * @param role access role to be assigned to the identity
              * @return the next stage of the definition
              */
-            WithSystemAssignedIdentityBasedAccessOrCreate withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(BuiltInRole role);
+            WithSystemAssignedIdentityBasedAccessOrCreate withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(
+                BuiltInRole role);
 
             /**
-             * Specifies a system assigned managed service identity with access to a specific resource with a specified role from the id.
+             * Specifies a system assigned managed service identity with access to a specific resource with a specified
+             * role from the id.
              *
              * @param resourceId the id of the resource you are setting up access to
              * @param roleDefinitionId id of the access role to be assigned to the identity
              * @return the next stage of the definition
              */
-            WithSystemAssignedIdentityBasedAccessOrCreate withSystemAssignedIdentityBasedAccessTo(String resourceId, String roleDefinitionId);
+            WithSystemAssignedIdentityBasedAccessOrCreate withSystemAssignedIdentityBasedAccessTo(
+                String resourceId, String roleDefinitionId);
 
             /**
-             * Specifies a system assigned managed service identity with access to the current resource group and with the specified role from the id.
+             * Specifies a system assigned managed service identity with access to the current resource group and with
+             * the specified role from the id.
              *
              * @param roleDefinitionId id of the access role to be assigned to the identity
              * @return the next stage of the definition
              */
-            WithSystemAssignedIdentityBasedAccessOrCreate withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(String roleDefinitionId);
+            WithSystemAssignedIdentityBasedAccessOrCreate withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(
+                String roleDefinitionId);
         }
 
         /**
@@ -1011,7 +972,8 @@ public interface ContainerGroup extends
          */
         interface WithUserAssignedManagedServiceIdentity {
             /**
-             * Specifies the definition of a not-yet-created user assigned identity to be associated with the virtual machine.
+             * Specifies the definition of a not-yet-created user assigned identity to be associated with the virtual
+             * machine.
              *
              * @param creatableIdentity a creatable identity definition
              * @return the next stage of the definition
@@ -1027,9 +989,7 @@ public interface ContainerGroup extends
             WithCreate withExistingUserAssignedManagedServiceIdentity(Identity identity);
         }
 
-        /**
-         * The stage of the container group definition allowing to specify the container group restart policy.
-         */
+        /** The stage of the container group definition allowing to specify the container group restart policy. */
         interface WithRestartPolicy {
             /**
              * Specifies the restart policy for all the container instances within the container group.
@@ -1040,9 +1000,7 @@ public interface ContainerGroup extends
             WithCreate withRestartPolicy(ContainerGroupRestartPolicy restartPolicy);
         }
 
-        /**
-         * The stage of the container group definition allowing to specify the DNS prefix label.
-         */
+        /** The stage of the container group definition allowing to specify the DNS prefix label. */
         interface WithDnsPrefix {
             /**
              * Specifies the DNS prefix to be used to create the FQDN for the container group.
@@ -1053,9 +1011,7 @@ public interface ContainerGroup extends
             WithCreate withDnsPrefix(String dnsPrefix);
         }
 
-        /**
-         * The stage of the container group definition allowing to specify the network profile id.
-         */
+        /** The stage of the container group definition allowing to specify the network profile id. */
         interface WithNetworkProfile {
             /**
              * Specifies the network profile information for a container group.
@@ -1065,14 +1021,15 @@ public interface ContainerGroup extends
              * @param networkProfileName the name of the network profile
              * @return the next stage of the definition
              */
-            DnsConfigFork withNetworkProfileId(String subscriptionId, String resourceGroupName, String networkProfileName);
+            DnsConfigFork withNetworkProfileId(
+                String subscriptionId, String resourceGroupName, String networkProfileName);
 
             /**
              * Specifies the virtual network in network profile for a container group.
              *
              * @param virtualNetworkId the ID of the virtual network
              * @param subnetName the name of the subnet within the virtual network.; the subnet must have the service
-             *                   endpoints enabled for 'Microsoft.ContainerInstance/containerGroups'.
+             *     endpoints enabled for 'Microsoft.ContainerInstance/containerGroups'.
              * @return the next stage of the definition
              */
             DnsConfigFork withExistingVirtualNetwork(String virtualNetworkId, String subnetName);
@@ -1087,7 +1044,6 @@ public interface ContainerGroup extends
         }
 
         interface DnsConfigFork extends WithDnsConfig, WithCreate {
-
         }
 
         /**
@@ -1114,7 +1070,8 @@ public interface ContainerGroup extends
         }
 
         /**
-         * The stage of the container group definition allowing to specify the log analytics platform for the container group.
+         * The stage of the container group definition allowing to specify the log analytics platform for the container
+         * group.
          */
         interface WithLogAnalytics {
             /**
@@ -1131,35 +1088,32 @@ public interface ContainerGroup extends
              *
              * @param workspaceId the id of the previously-created log analytics workspace
              * @param workspaceKey the key of the previously-created log analytics workspace
-             * @param logType the log type to be used. Possible values include: 'ContainerInsights', 'ContainerInstanceLogs'.
+             * @param logType the log type to be used. Possible values include: 'ContainerInsights',
+             *     'ContainerInstanceLogs'.
              * @param metadata the metadata for log analytics
              * @return the next stage of the definition
              */
-            WithCreate withLogAnalytics(String workspaceId, String workspaceKey, LogAnalyticsLogType logType, Map<String, String> metadata);
+            WithCreate withLogAnalytics(
+                String workspaceId, String workspaceKey, LogAnalyticsLogType logType, Map<String, String> metadata);
         }
 
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created
-         *   (via {@link WithCreate#create()}), but also allows for any other optional settings to be specified.
+         * (via {@link WithCreate#create()}), but also allows for any other optional settings to be specified.
          */
-        interface WithCreate extends
-            WithRestartPolicy,
-            WithSystemAssignedManagedServiceIdentity,
-            WithUserAssignedManagedServiceIdentity,
-            WithDnsPrefix,
-            WithNetworkProfile,
-            WithLogAnalytics,
-            Creatable<ContainerGroup>,
-            Resource.DefinitionWithTags<WithCreate> {
+        interface WithCreate
+            extends WithRestartPolicy,
+                WithSystemAssignedManagedServiceIdentity,
+                WithUserAssignedManagedServiceIdentity,
+                WithDnsPrefix,
+                WithNetworkProfile,
+                WithLogAnalytics,
+                Creatable<ContainerGroup>,
+                Resource.DefinitionWithTags<WithCreate> {
         }
     }
 
-    /**
-     * The template for an update operation, containing all the settings that can be modified.
-     */
-    interface Update extends
-        Resource.UpdateWithTags<Update>,
-        Appliable<ContainerGroup> {
+    /** The template for an update operation, containing all the settings that can be modified. */
+    interface Update extends Resource.UpdateWithTags<Update>, Appliable<ContainerGroup> {
     }
-
 }

@@ -14,15 +14,18 @@ public class ContainerGroupTest extends ContainerInstanceManagementTest {
         String containerGroupName = generateRandomResourceName("container", 20);
         Region region = Region.US_EAST;
 
-        ContainerGroup containerGroup = containerInstanceManager.containerGroups().define(containerGroupName)
-            .withRegion(region)
-            .withNewResourceGroup(rgName)
-            .withLinux()
-            .withPublicImageRegistryOnly()
-            .withoutVolume()
-            .withContainerInstance("nginx", 80)
-            .withNewVirtualNetwork("10.0.0.0/24")
-            .create();
+        ContainerGroup containerGroup =
+            containerInstanceManager
+                .containerGroups()
+                .define(containerGroupName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withLinux()
+                .withPublicImageRegistryOnly()
+                .withoutVolume()
+                .withContainerInstance("nginx", 80)
+                .withNewVirtualNetwork("10.0.0.0/24")
+                .create();
 
         Assertions.assertNotNull(containerGroup.networkProfileId());
     }

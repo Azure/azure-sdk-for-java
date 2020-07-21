@@ -1,7 +1,6 @@
 /**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
+ * Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT License. See License.txt in the
+ * project root for license information.
  */
 package com.azure.resourcemanager.containerinstance.implementation;
 
@@ -13,7 +12,6 @@ import com.azure.resourcemanager.containerinstance.models.ResourceIdentityType;
 import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,9 +47,8 @@ class ContainerGroupMsiHandler extends RoleAssignmentHelper {
     }
 
     /**
-     * Specifies that Local Managed Service Identity needs to be enabled in the virtual machine.
-     * If MSI extension is not already installed then it will be installed with access token
-     * port as 50342.
+     * Specifies that Local Managed Service Identity needs to be enabled in the virtual machine. If MSI extension is not
+     * already installed then it will be installed with access token port as 50342.
      *
      * @return ContainerGroupMsiHandler
      */
@@ -61,8 +58,8 @@ class ContainerGroupMsiHandler extends RoleAssignmentHelper {
     }
 
     /**
-     * Specifies that given identity should be set as one of the External Managed Service Identity
-     * of the container instance.
+     * Specifies that given identity should be set as one of the External Managed Service Identity of the container
+     * instance.
      *
      * @param creatableIdentity yet-to-be-created identity to be associated with the container instance
      * @return ContainerGroupMsiHandler
@@ -80,8 +77,8 @@ class ContainerGroupMsiHandler extends RoleAssignmentHelper {
     }
 
     /**
-     * Specifies that given identity should be set as one of the External Managed Service Identity
-     * of the container instance.
+     * Specifies that given identity should be set as one of the External Managed Service Identity of the container
+     * instance.
      *
      * @param identity an identity to associate
      * @return ContainerGroupMsiHandler
@@ -99,7 +96,7 @@ class ContainerGroupMsiHandler extends RoleAssignmentHelper {
      */
     private void initContainerInstanceIdentity(ResourceIdentityType identityType) {
         if (!identityType.equals(ResourceIdentityType.USER_ASSIGNED)
-                && !identityType.equals(ResourceIdentityType.SYSTEM_ASSIGNED)) {
+            && !identityType.equals(ResourceIdentityType.SYSTEM_ASSIGNED)) {
             throw new IllegalArgumentException("Invalid argument: " + identityType);
         }
 
@@ -108,8 +105,8 @@ class ContainerGroupMsiHandler extends RoleAssignmentHelper {
             containerGroupInner.withIdentity(new ContainerGroupIdentity());
         }
         if (containerGroupInner.identity().type() == null
-                || containerGroupInner.identity().type().equals(ResourceIdentityType.NONE)
-                || containerGroupInner.identity().type().equals(identityType)) {
+            || containerGroupInner.identity().type().equals(ResourceIdentityType.NONE)
+            || containerGroupInner.identity().type().equals(identityType)) {
             containerGroupInner.identity().withType(identityType);
         } else {
             containerGroupInner.identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED);

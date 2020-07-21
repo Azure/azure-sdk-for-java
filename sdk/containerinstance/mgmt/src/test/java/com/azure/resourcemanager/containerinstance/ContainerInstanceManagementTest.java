@@ -6,7 +6,6 @@ package com.azure.resourcemanager.containerinstance;
 import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.resources.core.TestBase;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
-
 import java.io.IOException;
 
 public class ContainerInstanceManagementTest extends TestBase {
@@ -30,6 +29,7 @@ public class ContainerInstanceManagementTest extends TestBase {
     protected void cleanUpResources() {
         try {
             containerInstanceManager.resourceManager().resourceGroups().beginDeleteByName(rgName);
-        } catch (Exception e) { }
+        } catch (Exception e) {
+        }
     }
 }

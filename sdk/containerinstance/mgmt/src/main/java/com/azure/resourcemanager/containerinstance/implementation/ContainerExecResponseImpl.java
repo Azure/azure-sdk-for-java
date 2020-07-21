@@ -1,7 +1,6 @@
 /**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
+ * Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT License. See License.txt in the
+ * project root for license information.
  */
 package com.azure.resourcemanager.containerinstance.implementation;
 
@@ -9,9 +8,7 @@ import com.azure.resourcemanager.containerinstance.fluent.inner.ContainerExecRes
 import com.azure.resourcemanager.containerinstance.models.ContainerExecResponse;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 
-/**
- * Implementation for RegistryCredentials.
- */
+/** Implementation for RegistryCredentials. */
 public class ContainerExecResponseImpl extends WrapperImpl<ContainerExecResponseInner>
     implements ContainerExecResponse {
     protected ContainerExecResponseImpl(ContainerExecResponseInner innerObject) {

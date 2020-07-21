@@ -1,7 +1,6 @@
 /**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
+ * Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT License. See License.txt in the
+ * project root for license information.
  */
 package com.azure.resourcemanager.containerinstance.implementation;
 
@@ -9,14 +8,13 @@ import com.azure.resourcemanager.containerinstance.models.AzureFileVolume;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroup;
 import com.azure.resourcemanager.containerinstance.models.GitRepoVolume;
 import com.azure.resourcemanager.containerinstance.models.Volume;
-
 import java.util.ArrayList;
 import java.util.Map;
 
-/**
- * Implementation for container group's volume definition stages interface.
- */
-class VolumeImpl implements ContainerGroup.DefinitionStages.VolumeDefinitionStages.VolumeDefinition<ContainerGroup.DefinitionStages.WithVolume> {
+/** Implementation for container group's volume definition stages interface. */
+class VolumeImpl
+    implements ContainerGroup.DefinitionStages.VolumeDefinitionStages.VolumeDefinition<
+        ContainerGroup.DefinitionStages.WithVolume> {
     private Volume innerVolume;
     private ContainerGroupImpl parent;
 
@@ -37,18 +35,14 @@ class VolumeImpl implements ContainerGroup.DefinitionStages.VolumeDefinitionStag
 
     @Override
     public VolumeImpl withExistingReadWriteAzureFileShare(String shareName) {
-        ensureAzureFileVolume()
-            .withReadOnly(false)
-            .withShareName(shareName);
+        ensureAzureFileVolume().withReadOnly(false).withShareName(shareName);
 
         return this;
     }
 
     @Override
     public VolumeImpl withExistingReadOnlyAzureFileShare(String shareName) {
-        ensureAzureFileVolume()
-            .withReadOnly(true)
-            .withShareName(shareName);
+        ensureAzureFileVolume().withReadOnly(true).withShareName(shareName);
 
         return this;
     }

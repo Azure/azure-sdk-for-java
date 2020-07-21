@@ -1,9 +1,7 @@
 /**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
+ * Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT License. See License.txt in the
+ * project root for license information.
  */
-
 package com.azure.resourcemanager.containerinstance.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
@@ -20,16 +18,10 @@ import com.azure.resourcemanager.containerinstance.models.Operation;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import reactor.core.publisher.Mono;
 
-/**
- * Implementation for ContainerGroups.
- */
+/** Implementation for ContainerGroups. */
 public class ContainerGroupsImpl
     extends TopLevelModifiableResourcesImpl<
-        ContainerGroup,
-        ContainerGroupImpl,
-        ContainerGroupInner,
-        ContainerGroupsClient,
-        ContainerInstanceManager>
+        ContainerGroup, ContainerGroupImpl, ContainerGroupInner, ContainerGroupsClient, ContainerInstanceManager>
     implements ContainerGroups {
 
     public ContainerGroupsImpl(final ContainerInstanceManager manager) {
@@ -38,8 +30,7 @@ public class ContainerGroupsImpl
 
     @Override
     protected ContainerGroupImpl wrapModel(String name) {
-        return new ContainerGroupImpl(
-            name, new ContainerGroupInner(), this.manager());
+        return new ContainerGroupImpl(name, new ContainerGroupInner(), this.manager());
     }
 
     @Override
@@ -47,8 +38,7 @@ public class ContainerGroupsImpl
         if (inner == null) {
             return null;
         }
-        return new ContainerGroupImpl(
-            inner.name(), inner, this.manager());
+        return new ContainerGroupImpl(inner.name(), inner, this.manager());
     }
 
     @Override
@@ -63,28 +53,44 @@ public class ContainerGroupsImpl
 
     @Override
     public String getLogContent(String resourceGroupName, String containerGroupName, String containerName) {
-        LogsInner logsInner = this.manager().inner().getContainers().listLogs(resourceGroupName, containerGroupName, containerName);
+        LogsInner logsInner =
+            this.manager().inner().getContainers().listLogs(resourceGroupName, containerGroupName, containerName);
 
         return logsInner != null ? logsInner.content() : null;
     }
 
     @Override
-    public String getLogContent(String resourceGroupName, String containerGroupName, String containerName, int tailLineCount) {
-        LogsInner logsInner = this.manager().inner().getContainers().listLogs(resourceGroupName, containerGroupName, containerName, tailLineCount);
+    public String getLogContent(
+        String resourceGroupName, String containerGroupName, String containerName, int tailLineCount) {
+        LogsInner logsInner =
+            this
+                .manager()
+                .inner()
+                .getContainers()
+                .listLogs(resourceGroupName, containerGroupName, containerName, tailLineCount);
 
         return logsInner != null ? logsInner.content() : null;
     }
 
     @Override
     public Mono<String> getLogContentAsync(String resourceGroupName, String containerGroupName, String containerName) {
-        return this.manager().inner().getContainers().listLogsAsync(resourceGroupName, containerGroupName, containerName)
-                .map(LogsInner::content);
+        return this
+            .manager()
+            .inner()
+            .getContainers()
+            .listLogsAsync(resourceGroupName, containerGroupName, containerName)
+            .map(LogsInner::content);
     }
 
     @Override
-    public Mono<String> getLogContentAsync(String resourceGroupName, String containerGroupName, String containerName, int tailLineCount) {
-        return this.manager().inner().getContainers().listLogsAsync(resourceGroupName, containerGroupName, containerName, tailLineCount)
-                .map(LogsInner::content);
+    public Mono<String> getLogContentAsync(
+        String resourceGroupName, String containerGroupName, String containerName, int tailLineCount) {
+        return this
+            .manager()
+            .inner()
+            .getContainers()
+            .listLogsAsync(resourceGroupName, containerGroupName, containerName, tailLineCount)
+            .map(LogsInner::content);
     }
 
     @Override
