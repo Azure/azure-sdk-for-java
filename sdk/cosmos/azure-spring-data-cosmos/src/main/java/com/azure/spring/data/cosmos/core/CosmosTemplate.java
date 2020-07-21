@@ -35,6 +35,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.data.auditing.IsNewAwareAuditingHandler;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.parser.Part;
@@ -59,6 +60,8 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosTemplate.class);
 
     private final MappingCosmosConverter mappingCosmosConverter;
+    private final IsNewAwareAuditingHandler cosmosAuditingHandler;
+
     private final String databaseName;
     private final ResponseDiagnosticsProcessor responseDiagnosticsProcessor;
     private final boolean queryMetricsEnabled;
@@ -76,7 +79,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
      */
     public CosmosTemplate(CosmosAsyncClient client, String databaseName,
                           CosmosConfig cosmosConfig, MappingCosmosConverter mappingCosmosConverter) {
-        this(new CosmosFactory(client, databaseName), cosmosConfig, mappingCosmosConverter);
+        this(new CosmosFactory(client, databaseName), cosmosConfig, mappingCosmosConverter, null);
     }
 
     /**
@@ -88,10 +91,12 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
      */
     public CosmosTemplate(CosmosFactory cosmosFactory,
                           CosmosConfig cosmosConfig,
-                          MappingCosmosConverter mappingCosmosConverter) {
+                          MappingCosmosConverter mappingCosmosConverter,
+                          IsNewAwareAuditingHandler cosmosAuditingHandler) {
         Assert.notNull(cosmosFactory, "CosmosFactory must not be null!");
         Assert.notNull(mappingCosmosConverter, "MappingCosmosConverter must not be null!");
         this.mappingCosmosConverter = mappingCosmosConverter;
+        this.cosmosAuditingHandler = cosmosAuditingHandler;
         this.cosmosAsyncClient = cosmosFactory.getCosmosAsyncClient();
         this.databaseName = cosmosFactory.getDatabaseName();
         this.responseDiagnosticsProcessor = cosmosConfig.getResponseDiagnosticsProcessor();
@@ -134,7 +139,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         Assert.hasText(containerName, "containerName should not be null, empty or only whitespaces");
         Assert.notNull(objectToSave, "objectToSave should not be null");
 
-        final JsonNode originalItem = mappingCosmosConverter.writeJsonNode(objectToSave);
+        final JsonNode originalItem = prepareToPersistAndConvertToItemProperties(objectToSave);
 
         LOGGER.debug("execute createItem in database {} container {}", this.databaseName,
             containerName);
@@ -263,7 +268,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         Assert.hasText(containerName, "containerName should not be null, empty or only whitespaces");
         Assert.notNull(object, "Upsert object should not be null");
 
-        final JsonNode originalItem = mappingCosmosConverter.writeJsonNode(object);
+        final JsonNode originalItem = prepareToPersistAndConvertToItemProperties(object);
 
         LOGGER.debug("execute upsert item in database {} container {}", this.databaseName,
             containerName);
@@ -641,6 +646,13 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     @Override
     public MappingCosmosConverter getConverter() {
         return this.mappingCosmosConverter;
+    }
+
+    private JsonNode prepareToPersistAndConvertToItemProperties(Object object) {
+        if (cosmosAuditingHandler != null) {
+            cosmosAuditingHandler.markAudited(object);
+        }
+        return mappingCosmosConverter.writeJsonNode(object);
     }
 
     private Long getCountValue(DocumentQuery query, String containerName) {
