@@ -47,6 +47,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -73,6 +74,7 @@ public class ContainerGroupImpl
     protected ContainerGroupImpl(String name, ContainerGroupInner innerObject, ContainerInstanceManager manager) {
         super(name, innerObject, manager);
         this.containerGroupMsiHandler = new ContainerGroupMsiHandler(this);
+        initializeChildrenFromInner();
     }
 
     private Mono<Void> beforeCreation() {
@@ -172,6 +174,7 @@ public class ContainerGroupImpl
                             .httpClient(manager().httpPipeline().getHttpClient())
                             .buildAsyncClient();
 
+                    Objects.requireNonNull(newFileShares);
                     return Flux
                         .fromIterable(newFileShares.entrySet())
                         .flatMap(
@@ -457,6 +460,8 @@ public class ContainerGroupImpl
     public ContainerGroupImpl withExistingVirtualNetwork(String virtualNetworkId, String subnetName) {
         creatableNetworkProfileName = manager().sdkContext().randomResourceName("aci-profile-", 20);
         String subnetId = String.format("%s/subnets/%s", virtualNetworkId, subnetName);
+        SubnetInner subnetInner = new SubnetInner();
+        subnetInner.withId(subnetId);
         creatableNetworkProfileInner =
             new NetworkProfileInner()
                 .withContainerNetworkInterfaceConfigurations(
@@ -469,7 +474,7 @@ public class ContainerGroupImpl
                                         .singletonList(
                                             new IpConfigurationProfileInner()
                                                 .withName("ipconfig0")
-                                                .withSubnet((SubnetInner) new SubnetInner().withId(subnetId))))));
+                                                .withSubnet(subnetInner)))));
         creatableNetworkProfileInner.withLocation(regionName());
 
         return this.withNetworkProfileId(manager().subscriptionId(), resourceGroupName(), creatableNetworkProfileName);
@@ -562,12 +567,12 @@ public class ContainerGroupImpl
 
     @Override
     public int[] externalTcpPorts() {
-        return this.externalTcpPorts;
+        return this.externalTcpPorts.clone();
     }
 
     @Override
     public int[] externalUdpPorts() {
-        return this.externalUdpPorts;
+        return this.externalUdpPorts.clone();
     }
 
     @Override

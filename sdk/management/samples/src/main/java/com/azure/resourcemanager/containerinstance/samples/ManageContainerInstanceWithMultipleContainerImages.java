@@ -78,9 +78,9 @@ public class ManageContainerInstanceWithMultipleContainerImages {
             // Check the container instance logs
 
             String logContent = containerGroup.getLogContent(aciName + "-1");
-            System.out.format("Logs for container instance: %s\n%s", aciName + "-1", logContent);
+            System.out.format("Logs for container instance: %s%n%s", aciName + "-1", logContent);
             logContent = containerGroup.getLogContent(aciName + "-2");
-            System.out.format("Logs for container instance: %s\n%s", aciName + "-2", logContent);
+            System.out.format("Logs for container instance: %s%n%s", aciName + "-2", logContent);
 
             //=============================================================
             // Remove the container group

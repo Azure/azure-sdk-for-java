@@ -75,7 +75,7 @@ public class ManageContainerInstanceWithAzureFileShareMount {
             // Check the container instance logs
 
             String logContent = containerGroup.getLogContent(aciName);
-            System.out.format("Logs for container instance: %s\n%s", aciName, logContent);
+            System.out.format("Logs for container instance: %s%n%s", aciName, logContent);
 
             //=============================================================
             // List the file share content
@@ -94,7 +94,7 @@ public class ManageContainerInstanceWithAzureFileShareMount {
             Iterable<ShareFileItem> shareContent = shareClient.getRootDirectoryClient().listFilesAndDirectories();
 
             for (ShareFileItem item : shareContent) {
-                System.out.format("Found shared file %s:\n", item.getName());
+                System.out.format("Found shared file %s:%n", item.getName());
             }
 
             //=============================================================

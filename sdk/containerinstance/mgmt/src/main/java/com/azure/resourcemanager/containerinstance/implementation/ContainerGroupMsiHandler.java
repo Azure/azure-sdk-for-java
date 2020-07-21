@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.containerinstance.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.implementation.RoleAssignmentHelper;
 import com.azure.resourcemanager.containerinstance.fluent.inner.ContainerGroupInner;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupIdentity;
@@ -19,6 +20,7 @@ import java.util.Objects;
 
 class ContainerGroupMsiHandler extends RoleAssignmentHelper {
     private final ContainerGroupImpl containerGroup;
+    private final ClientLogger logger = new ClientLogger(getClass());
 
     private List<String> creatableIdentityKeys;
     private Map<String, ContainerGroupIdentityUserAssignedIdentities> userAssignedIdentities;
@@ -96,7 +98,7 @@ class ContainerGroupMsiHandler extends RoleAssignmentHelper {
     private void initContainerInstanceIdentity(ResourceIdentityType identityType) {
         if (!identityType.equals(ResourceIdentityType.USER_ASSIGNED)
             && !identityType.equals(ResourceIdentityType.SYSTEM_ASSIGNED)) {
-            throw new IllegalArgumentException("Invalid argument: " + identityType);
+            throw logger.logExceptionAsError(new IllegalArgumentException("Invalid argument: " + identityType));
         }
 
         ContainerGroupInner containerGroupInner = this.containerGroup.inner();

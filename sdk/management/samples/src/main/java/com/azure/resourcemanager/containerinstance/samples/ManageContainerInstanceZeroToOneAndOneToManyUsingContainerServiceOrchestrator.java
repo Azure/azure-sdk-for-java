@@ -45,10 +45,12 @@ import org.apache.commons.codec.binary.Base64;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -141,7 +143,7 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
             System.out.println("List local Docker images:");
             List<Image> images = dockerClient.listImagesCmd().withShowAll(true).exec();
             for (Image image : images) {
-                System.out.format("\tFound Docker image %s (%s)\n", image.getRepoTags()[0], image.getId());
+                System.out.format("\tFound Docker image %s (%s)%n", image.getRepoTags()[0], image.getId());
             }
 
             CreateContainerResponse dockerContainerInstance = dockerClient.createContainerCmd(containerImageName + ":" + containerImageTag)
@@ -152,14 +154,14 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
                 .withShowAll(true)
                 .exec();
             for (Container container : dockerContainers) {
-                System.out.format("\tFound Docker container %s (%s)\n", container.getImage(), container.getId());
+                System.out.format("\tFound Docker container %s (%s)%n", container.getImage(), container.getId());
             }
 
             //=============================================================
             // Commit the new container
 
             String privateRepoUrl = azureRegistry.loginServerUrl() + "/samples/" + dockerContainerName;
-            String dockerImageId = dockerClient.commitCmd(dockerContainerInstance.getId())
+            dockerClient.commitCmd(dockerContainerInstance.getId())
                 .withRepository(privateRepoUrl)
                 .withTag("latest").exec();
 
@@ -216,7 +218,7 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
             // Check the container instance logs
 
             String logContent = containerGroup.getLogContent(aciName);
-            System.out.format("Logs for container instance: %s\n%s", aciName, logContent);
+            System.out.format("Logs for container instance: %s%n%s", aciName, logContent);
 
             //=============================================================
             // If service principal client id and secret are not set via the local variables, attempt to read the service
@@ -246,8 +248,8 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
             System.out.println("Creating an SSH private and public key pair");
 
             SSHShell.SshPublicPrivateKey sshKeys = SSHShell.generateSSHKeys("", "ACS");
-            System.out.println("SSH private key value: \n" + sshKeys.getSshPrivateKey());
-            System.out.println("SSH public key value: \n" + sshKeys.getSshPublicKey());
+            System.out.println("SSH private key value: %n" + sshKeys.getSshPrivateKey());
+            System.out.println("SSH public key value: %n" + sshKeys.getSshPublicKey());
 
 
             //=============================================================
@@ -287,7 +289,7 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
             System.out.println("Found Kubernetes master at: " + azureKubernetesCluster.fqdn());
 
             byte[] kubeConfigContent = azureKubernetesCluster.adminKubeConfigContent();
-            System.out.println("Found Kubernetes config:\n" + kubeConfigContent);
+            System.out.println("Found Kubernetes config:%n" + Arrays.toString(kubeConfigContent));
 
 
             //=============================================================
@@ -297,7 +299,7 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
 
             File tempKubeConfigFile = File.createTempFile("kube", ".config", new File(System.getProperty("java.io.tmpdir")));
             tempKubeConfigFile.deleteOnExit();
-            try (BufferedWriter buffOut = new BufferedWriter(new FileWriter(tempKubeConfigFile))) {
+            try (BufferedWriter buffOut = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(tempKubeConfigFile), StandardCharsets.UTF_8))) {
                 buffOut.write(new String(kubeConfigContent, StandardCharsets.UTF_8));
             }
 
@@ -326,7 +328,8 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
                 .build();
             try {
                 System.out.println("Created namespace" + kubernetesClient.namespaces().create(ns));
-            } catch (Exception ignored) {
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
             }
 
             SdkContext.sleep(5000);
@@ -339,7 +342,7 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
             // Create a secret of type "docker-repository" that will be used for downloading the container image from
             //     our Azure private container repo
 
-            String basicAuth = new String(Base64.encodeBase64((acrCredentials.username() + ":" + acrCredentials.accessKeys().get(AccessKeyType.PRIMARY)).getBytes()));
+            String basicAuth = new String(Base64.encodeBase64((acrCredentials.username() + ":" + acrCredentials.accessKeys().get(AccessKeyType.PRIMARY)).getBytes(StandardCharsets.UTF_8)), StandardCharsets.UTF_8);
             HashMap<String, String> secretData = new HashMap<>(1);
             String dockerCfg = String.format("{ \"%s\": { \"auth\": \"%s\", \"email\": \"%s\" } }",
                 azureRegistry.loginServerUrl(),
@@ -446,7 +449,8 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
                         System.out.println("\tFound ingress IP: " + serviceIP);
                         timeout = 0;
                     }
-                } catch (Exception ignored) {
+                } catch (Exception e) {
+                    System.err.println(e.getMessage());
                 }
 
                 if (timeout > 0) {
