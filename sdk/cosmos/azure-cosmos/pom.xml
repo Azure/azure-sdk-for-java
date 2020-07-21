@@ -128,7 +128,6 @@ Licensed under the MIT License.
         </exclusion>
       </exclusions>
     </dependency>
-
     <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>
       <artifactId>jackson-module-afterburner</artifactId>
