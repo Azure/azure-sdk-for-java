@@ -24,7 +24,6 @@ import reactor.core.publisher.Mono;
 
 /** An immutable client-side representation of an Azure Container Group. */
 @Fluent
-@Beta
 public interface ContainerGroup
     extends GroupableResource<ContainerInstanceManager, ContainerGroupInner>,
         Refreshable<ContainerGroup>,

@@ -24,7 +24,6 @@ import reactor.core.publisher.Mono;
 
 /** Entry point to the container instance management API. */
 @Fluent
-@Beta
 public interface ContainerGroups
     extends SupportsCreating<ContainerGroup.DefinitionStages.Blank>,
         HasManager<ContainerInstanceManager>,

@@ -10,7 +10,6 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 
 /** Response containing the container exec command. */
 @Fluent
-@Beta
 public interface ContainerExecResponse extends HasInner<ContainerExecResponseInner> {
     /**
      * Get the webSocketUri value.

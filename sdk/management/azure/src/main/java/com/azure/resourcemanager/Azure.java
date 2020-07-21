@@ -687,7 +687,6 @@ public final class Azure {
     /**
      * @return entry point to managing Azure Container Instances.
      */
-    @Beta
     public ContainerGroups containerGroups() {
         return containerInstanceManager.containerGroups();
     }

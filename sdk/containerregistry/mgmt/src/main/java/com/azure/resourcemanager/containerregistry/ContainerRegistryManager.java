@@ -126,7 +126,6 @@ public final class ContainerRegistryManager
      *
      * @return the tasks of the current instance of ContainerRegistryManager.
      */
-    @Beta
     public RegistryTasks containerRegistryTasks() {
         if (this.tasks == null) {
             this.tasks = new RegistryTasksImpl(this);
@@ -139,7 +138,6 @@ public final class ContainerRegistryManager
      *
      * @return the registry task runs of the current instance of ContainerRegistryManager.
      */
-    @Beta
     public RegistryTaskRuns registryTaskRuns() {
         if (this.registryTaskRuns == null) {
             this.registryTaskRuns = new RegistryTaskRunsImpl(this);
