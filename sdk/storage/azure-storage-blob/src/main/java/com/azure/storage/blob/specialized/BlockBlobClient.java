@@ -18,6 +18,7 @@ import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.options.BlockBlobCommitBlockListOptions;
 import com.azure.storage.blob.models.BlockBlobItem;
+import com.azure.storage.blob.options.BlockBlobListBlocksOptions;
 import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
 import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
 import com.azure.storage.blob.models.BlockList;
@@ -471,7 +472,26 @@ public final class BlockBlobClient extends BlobClientBase {
      */
     public Response<BlockList> listBlocksWithResponse(BlockListType listType, String leaseId, Duration timeout,
         Context context) {
-        return blockWithOptionalTimeout(client.listBlocksWithResponse(listType, leaseId, context), timeout);
+        return listBlocksWithResponse(new BlockBlobListBlocksOptions(listType).setLeaseId(leaseId), timeout, context);
+    }
+
+    /**
+     * Returns the list of blocks that have been uploaded as part of a block blob using the specified block list
+     * filter. For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/get-block-list">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.listBlocksWithResponse#BlockBlobListBlocksOptions-Duration-Context}
+     *
+     * @param options {@link BlockBlobListBlocksOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return The list of blocks.
+     */
+    public Response<BlockList> listBlocksWithResponse(BlockBlobListBlocksOptions options, Duration timeout,
+        Context context) {
+        return blockWithOptionalTimeout(client.listBlocksWithResponse(options, context), timeout);
     }
 
     /**

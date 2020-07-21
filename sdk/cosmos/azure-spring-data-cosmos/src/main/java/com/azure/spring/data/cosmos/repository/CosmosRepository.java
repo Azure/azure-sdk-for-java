@@ -3,7 +3,7 @@
 
 package com.azure.spring.data.cosmos.repository;
 
-import com.azure.data.cosmos.PartitionKey;
+import com.azure.cosmos.models.PartitionKey;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.PagingAndSortingRepository;
 

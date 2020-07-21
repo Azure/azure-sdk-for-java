@@ -191,6 +191,15 @@ public final class Constants {
         public static final String SSL_COMPLETION_HANDLER_NAME = "ssl-completion-handler";
         public static final String HTTP_PROXY_HANDLER_NAME = "http-proxy-handler";
         public static final String LOGGING_HANDLER_NAME = "logging-handler";
+
+        // encryption
+        public static final String WrappedDataEncryptionKey = "wrappedDataEncryptionKey";
+        public static final String  EncryptionAlgorithmId = "encryptionAlgorithmId";
+        public static final String  KeyWrapMetadata = "keyWrapMetadata";
+        public static final String  KeyWrapMetadataType = "type";
+        public static final String  KeyWrapMetadataValue = "value";
+        public static final String  EncryptedInfo = "_ei";
+
     }
 
     public static final class UrlEncodingInfo {

@@ -42,17 +42,19 @@ public class InteractiveBrowserCredential implements TokenCredential {
      * {@code http://localhost:{port}} must be registered as a valid reply URL on the application.
      *
      * @param clientId the client ID of the application
+     * @param clientSecret the client secret of the application
      * @param tenantId the tenant ID of the application
      * @param port the port on which the credential will listen for the browser authentication result
      * @param automaticAuthentication indicates whether automatic authentication should be attempted or not.
      * @param identityClientOptions the options for configuring the identity client
      */
     InteractiveBrowserCredential(String clientId, String tenantId, int port, boolean automaticAuthentication,
-                                 IdentityClientOptions identityClientOptions) {
+                                 String clientSecret, IdentityClientOptions identityClientOptions) {
         this.port = port;
         identityClient = new IdentityClientBuilder()
             .tenantId(tenantId)
             .clientId(clientId)
+            .clientSecret(clientSecret)
             .identityClientOptions(identityClientOptions)
             .build();
         cachedToken = new AtomicReference<>();

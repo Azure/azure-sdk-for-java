@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.repository;
 
-import com.azure.spring.data.cosmos.repository.CosmosRepository;
 import com.azure.spring.data.cosmos.domain.Customer;
+import com.azure.spring.data.cosmos.repository.CosmosRepository;
 
 import java.util.List;
 
