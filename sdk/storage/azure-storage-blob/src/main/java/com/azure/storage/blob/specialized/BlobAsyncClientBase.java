@@ -453,7 +453,7 @@ public class BlobAsyncClientBase {
         BlobRequestConditions destRequestConditions, Duration pollInterval) {
         return this.beginCopy(new BlobBeginCopyOptions(sourceUrl).setMetadata(metadata).setTier(tier)
             .setRehydratePriority(priority).setSourceRequestConditions(
-                ModelHelper.populateBlobLeaseRequestConditions(sourceModifiedRequestConditions))
+                ModelHelper.populateBlobRequestConditions(sourceModifiedRequestConditions))
             .setDestinationRequestConditions(destRequestConditions).setPollInterval(pollInterval));
     }
 
@@ -480,8 +480,8 @@ public class BlobAsyncClientBase {
         StorageImplUtils.assertNotNull("options", options);
         final Duration interval = options.getPollInterval() != null
             ? options.getPollInterval() : Duration.ofSeconds(1);
-        final BlobLeaseRequestConditions sourceModifiedCondition = options.getSourceRequestConditions() == null
-            ? new BlobLeaseRequestConditions()
+        final BlobRequestConditions sourceModifiedCondition = options.getSourceRequestConditions() == null
+            ? new BlobRequestConditions()
             : options.getSourceRequestConditions();
         final BlobRequestConditions destinationRequestConditions =
             options.getDestinationRequestConditions() == null

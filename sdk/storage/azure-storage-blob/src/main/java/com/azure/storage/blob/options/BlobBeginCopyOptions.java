@@ -25,7 +25,7 @@ public class BlobBeginCopyOptions {
     private Map<String, String> tags;
     private AccessTier tier;
     private RehydratePriority rehydratePriority;
-    private BlobLeaseRequestConditions sourceRequestConditions;
+    private BlobRequestConditions sourceRequestConditions;
     private BlobRequestConditions destinationRequestConditions;
     private Duration pollInterval;
     private Boolean sealDestination;
@@ -112,7 +112,7 @@ public class BlobBeginCopyOptions {
     /**
      * @return {@link RequestConditions} for the source.
      */
-    public BlobLeaseRequestConditions getSourceRequestConditions() {
+    public BlobRequestConditions getSourceRequestConditions() {
         return sourceRequestConditions;
     }
 
@@ -120,7 +120,7 @@ public class BlobBeginCopyOptions {
      * @param sourceRequestConditions {@link BlobLeaseRequestConditions} for the source.
      * @return The updated options.
      */
-    public BlobBeginCopyOptions setSourceRequestConditions(BlobLeaseRequestConditions sourceRequestConditions) {
+    public BlobBeginCopyOptions setSourceRequestConditions(BlobRequestConditions sourceRequestConditions) {
         this.sourceRequestConditions = sourceRequestConditions;
         return this;
     }

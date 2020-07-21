@@ -316,7 +316,7 @@ public class BlobClientBase {
             BlobRequestConditions destRequestConditions, Duration pollInterval) {
         return this.beginCopy(new BlobBeginCopyOptions(sourceUrl).setMetadata(metadata).setTier(tier)
             .setRehydratePriority(priority).setSourceRequestConditions(
-                ModelHelper.populateBlobLeaseRequestConditions(sourceModifiedRequestConditions))
+                ModelHelper.populateBlobRequestConditions(sourceModifiedRequestConditions))
             .setDestinationRequestConditions(destRequestConditions).setPollInterval(pollInterval));
     }
 
