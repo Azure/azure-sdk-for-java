@@ -18,6 +18,7 @@ import java.util.concurrent.ForkJoinPool;
  */
 public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<DefaultAzureCredentialBuilder> {
     private String tenantId;
+    private String managedIdentityClientId;
     private final ClientLogger logger = new ClientLogger(DefaultAzureCredentialBuilder.class);
 
 
@@ -67,6 +68,17 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
         return this;
     }
 
+    /**
+     * Specifies the client ID of user assigned or system assigned identity, when this credential is running
+     * in an environment with managed identities.
+     *
+     * @param clientId the client ID
+     * @return the DefaultAzureCredentialBuilder itself
+     */
+    public DefaultAzureCredentialBuilder managedIdentityClientId(String clientId) {
+        this.managedIdentityClientId = clientId;
+        return this;
+    }
 
     /**
      * Specifies the ExecutorService to be used to execute the authentication requests.
@@ -101,7 +113,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     private ArrayList<TokenCredential> getCredentialsChain() {
         ArrayList<TokenCredential> output = new ArrayList<TokenCredential>(6);
         output.add(new EnvironmentCredential(identityClientOptions));
-        output.add(new ManagedIdentityCredential(null, identityClientOptions));
+        output.add(new ManagedIdentityCredential(managedIdentityClientId, identityClientOptions));
         output.add(new SharedTokenCacheCredential(null, "04b07795-8ddb-461a-bbee-02f9e1bf7b46",
             null, identityClientOptions));
         output.add(new IntelliJCredential(tenantId, identityClientOptions));
