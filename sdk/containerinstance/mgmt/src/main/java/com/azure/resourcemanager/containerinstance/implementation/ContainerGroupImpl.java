@@ -439,7 +439,7 @@ public class ContainerGroupImpl
     }
 
     @Override
-    public ContainerGroupImpl withNetworkProfileId(
+    public ContainerGroupImpl withExistingNetworkProfile(
         String subscriptionId, String resourceGroupName, String networkProfileName) {
         String networkProfileId =
             "/subscriptions/"
@@ -448,6 +448,11 @@ public class ContainerGroupImpl
                 + resourceGroupName
                 + "/providers/Microsoft.Network/networkProfiles/"
                 + networkProfileName;
+        return this.withExistingNetworkProfile(networkProfileId);
+    }
+
+    @Override
+    public ContainerGroupImpl withExistingNetworkProfile(String networkProfileId) {
         this.inner().withNetworkProfile(new ContainerGroupNetworkProfile().withId(networkProfileId));
         if (this.inner().ipAddress() == null) {
             this.inner().withIpAddress(new IpAddress());
@@ -457,7 +462,8 @@ public class ContainerGroupImpl
     }
 
     @Override
-    public ContainerGroupImpl withExistingVirtualNetwork(String virtualNetworkId, String subnetName) {
+    public ContainerGroupImpl withNewNetworkProfileOnExistingVirtualNetwork(
+        String virtualNetworkId, String subnetName) {
         creatableNetworkProfileName = manager().sdkContext().randomResourceName("aci-profile-", 20);
         String subnetId = String.format("%s/subnets/%s", virtualNetworkId, subnetName);
         SubnetInner subnetInner = new SubnetInner();
@@ -477,7 +483,8 @@ public class ContainerGroupImpl
                                                 .withSubnet(subnetInner)))));
         creatableNetworkProfileInner.withLocation(regionName());
 
-        return this.withNetworkProfileId(manager().subscriptionId(), resourceGroupName(), creatableNetworkProfileName);
+        return this.withExistingNetworkProfile(
+            manager().subscriptionId(), resourceGroupName(), creatableNetworkProfileName);
     }
 
     @Override
@@ -503,7 +510,7 @@ public class ContainerGroupImpl
                 .format(
                     "/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Network/virtualNetworks/%s",
                     manager().subscriptionId(), resourceGroupName(), virtualNetworkName);
-        return withExistingVirtualNetwork(virtualNetworkId, subnetName);
+        return withNewNetworkProfileOnExistingVirtualNetwork(virtualNetworkId, subnetName);
     }
 
     @Override

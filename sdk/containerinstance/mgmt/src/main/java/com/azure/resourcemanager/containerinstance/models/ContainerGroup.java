@@ -1020,18 +1020,26 @@ public interface ContainerGroup
              * @param networkProfileName the name of the network profile
              * @return the next stage of the definition
              */
-            DnsConfigFork withNetworkProfileId(
+            DnsConfigFork withExistingNetworkProfile(
                 String subscriptionId, String resourceGroupName, String networkProfileName);
+
+            /**
+             * Specifies the network profile information for a container group.
+             *
+             * @param networkProfileId the ID of the network profile
+             * @return the next stage of the definition
+             */
+            DnsConfigFork withExistingNetworkProfile(String networkProfileId);
 
             /**
              * Specifies the virtual network in network profile for a container group.
              *
              * @param virtualNetworkId the ID of the virtual network
-             * @param subnetName the name of the subnet within the virtual network.; the subnet must have the service
-             *     endpoints enabled for 'Microsoft.ContainerInstance/containerGroups'.
+             * @param subnetName the name of the subnet within the virtual network.;
+             *                   the subnet must have delegation for 'Microsoft.ContainerInstance/containerGroups'.
              * @return the next stage of the definition
              */
-            DnsConfigFork withExistingVirtualNetwork(String virtualNetworkId, String subnetName);
+            DnsConfigFork withNewNetworkProfileOnExistingVirtualNetwork(String virtualNetworkId, String subnetName);
 
             /**
              * Creates a new virtual network to associate with network profile in a container group.
