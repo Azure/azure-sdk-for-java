@@ -54,13 +54,25 @@ public abstract class AzureServiceClient {
         SDK_VERSION = PROPERTIES.getOrDefault("version", "UnknownVersion");
     }
 
-    private final SerializerAdapter serializerAdapter = new AzureJacksonAdapter();
+    private final SerializerAdapter serializerAdapter;
 
     private final String sdkName;
 
     protected AzureServiceClient(HttpPipeline httpPipeline, AzureEnvironment environment) {
         sdkName = this.getClass().getPackage().getName();
+
+        this.serializerAdapter = new AzureJacksonAdapter();
         ((AzureJacksonAdapter) serializerAdapter).serializer().registerModule(DateTimeDeserializer.getModule());
+    }
+
+    protected AzureServiceClient(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+                                 AzureEnvironment environment) {
+        sdkName = this.getClass().getPackage().getName();
+
+        this.serializerAdapter = serializerAdapter;
+        if (serializerAdapter instanceof AzureJacksonAdapter) {
+            ((AzureJacksonAdapter) serializerAdapter).serializer().registerModule(DateTimeDeserializer.getModule());
+        }
     }
 
     /**

@@ -943,6 +943,7 @@ class BlobAPITest extends APISpec {
         properties.getCreationTime() != null
         properties.getTagCount() == 1
         properties.getRehydratePriority() == null // tested in setTier rehydrate priority
+        !properties.isSealed() // tested in AppendBlob. "seal blob"
     }
 
     def "Get properties min"() {
@@ -1683,6 +1684,35 @@ class BlobAPITest extends APISpec {
         null                | null       | null   | null
         "foo"               | "bar"      | "fizz" | "buzz"
         " +-./:=_  +-./:=_" | " +-./:=_" | null   | null
+    }
+
+    @Unroll
+    def "Copy seal"() {
+        setup:
+        def appendBlobClient = cc.getBlobClient(generateBlobName()).getAppendBlobClient()
+        appendBlobClient.create()
+        if (source) {
+            appendBlobClient.seal()
+        }
+
+        def bu2 = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient()
+
+        when:
+        def poller = bu2.beginCopy(new BlobBeginCopyOptions(appendBlobClient.getBlobUrl()).sealDestination(destination)
+            .setPollInterval(Duration.ofSeconds(1)))
+        poller.blockLast()
+
+        then:
+        StepVerifier.create(bu2.getProperties())
+            .assertNext({ assert Boolean.TRUE.equals(it.isSealed()) == destination })
+            .verifyComplete()
+
+        where:
+        source | destination
+        true   | true
+        true   | false
+        false  | true
+        false  | false
     }
 
     @Unroll
@@ -2498,7 +2528,6 @@ class BlobAPITest extends APISpec {
 
         when:
         def undeleteHeaders = bc.undeleteWithResponse(null, null).getHeaders()
-
         bc.getProperties()
 
         then:

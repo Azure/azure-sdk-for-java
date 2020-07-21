@@ -32,6 +32,7 @@
         "primaryAccountName": "[concat('prim', parameters('baseName'))]",
         "secondaryAccountName": "[concat('sec', parameters('baseName'))]",
         "premiumAccountName": "[concat('prem', parameters('baseName'))]",
+        "versionedAccountName": "[concat('ver', parameters('baseName'))]",
         "dataLakeAccountName": "[concat('dtlk', parameters('baseName'))]",
         "premiumFileAccountName": "[concat('premf', parameters('baseName'))]",
         "keyvaultName": "[concat(parameters('baseName'), 'kvlt')]",
@@ -94,22 +95,6 @@
                 },
                 "accessTier": "Hot"
             }
-        },
-        {
-            "type": "Microsoft.Storage/storageAccounts/blobServices",
-            "apiVersion": "[variables('storageApiVersion')]",
-            "name": "[concat(variables('primaryAccountName'), '/default')]",
-            "properties": {
-                  "isVersioningEnabled": true,
-                  "deleteRetentionPolicy": {
-                    "enabled": true,
-                    "days": 1
-                  }
-
-        },
-            "dependsOn": [
-                  "[variables('primaryAccountName')]"
-            ]
         },
         {
             "type": "Microsoft.Storage/storageAccounts/fileServices",
@@ -188,6 +173,49 @@
                 },
                 "accessTier": "Hot"
             }
+        },
+        {
+          "type": "Microsoft.Storage/storageAccounts",
+          "apiVersion": "[variables('storageApiVersion')]",
+          "name": "[variables('versionedAccountName')]",
+          "location": "[variables('location')]",
+          "sku": {
+            "name": "Standard_RAGRS",
+            "tier": "Standard"
+          },
+          "kind": "StorageV2",
+          "properties": {
+            "networkAcls": {
+              "bypass": "AzureServices",
+              "virtualNetworkRules": [],
+              "ipRules": [],
+              "defaultAction": "Allow"
+            },
+            "supportsHttpsTrafficOnly": true,
+            "encryption": {
+              "services": {
+                "file": {
+                  "enabled": true
+                },
+                "blob": {
+                  "enabled": true
+                }
+              },
+              "keySource": "Microsoft.Storage"
+            },
+            "accessTier": "Hot"
+          }
+        },
+        {
+          "type": "Microsoft.Storage/storageAccounts/blobServices",
+          "apiVersion": "[variables('storageApiVersion')]",
+          "name": "[concat(variables('versionedAccountName'), '/default')]",
+          "properties": {
+            "isVersioningEnabled": true
+          },
+          "dependsOn": [
+            "[variables('versionedAccountName')]"
+          ]
         },
         {
             "type": "Microsoft.Storage/storageAccounts",
@@ -354,6 +382,14 @@
         "PREMIUM_STORAGE_ACCOUNT_KEY": {
             "type": "string",
             "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('premiumAccountName')), variables('storageApiVersion')).keys[0].value]"
+        },
+        "VERSIONED_STORAGE_ACCOUNT_NAME": {
+          "type": "string",
+          "value": "[variables('versionedAccountName')]"
+        },
+        "VERSIONED_STORAGE_ACCOUNT_KEY": {
+          "type": "string",
+          "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('versionedAccountName')), variables('storageApiVersion')).keys[0].value]"
         },
         "AZURE_STORAGE_FILE_ACCOUNT_NAME": {
             "type": "string",

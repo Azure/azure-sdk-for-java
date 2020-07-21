@@ -9,7 +9,7 @@ The Azure Batch Libraries for Java is a higher-level, object-oriented API for in
 
 **Azure Batch Authentication**
 
-You need to create a Batch account through the [Azure portal](https://portal.azure.com) or Azure cli. 
+You need to create a Batch account through the [Azure portal](https://portal.azure.com) or Azure cli.
 
 * Use the account name, key, and URL to create a `BatchSharedKeyCredentials` instance for authentication with the Azure Batch service.
 The `BatchClient` class is the simplest entry point for creating and interacting with Azure Batch objects.
@@ -71,7 +71,7 @@ You can find sample code that illustrates Batch usage scenarios in https://githu
 
 - A Java Developer Kit (JDK), v 1.7 or later
 - Maven
-- Azure Service Principal - see [how to create authentication info](./AUTH.md).
+- Azure Service Principal - see [how to create authentication info](https://docs.microsoft.com/en-us/azure/batch/batch-aad-auth#use-a-service-principal).
 
 
 ## Help

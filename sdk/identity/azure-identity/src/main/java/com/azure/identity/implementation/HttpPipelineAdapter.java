@@ -44,7 +44,7 @@ class HttpPipelineAdapter implements IHttpClient {
                     com.microsoft.aad.msal4j.HttpResponse httpResponse = new com.microsoft.aad.msal4j.HttpResponse()
                         .body(body)
                         .statusCode(response.getStatusCode());
-                    httpResponse.headers(response.getHeaders().stream().collect(Collectors.toMap(HttpHeader::getName,
+                    httpResponse.addHeaders(response.getHeaders().stream().collect(Collectors.toMap(HttpHeader::getName,
                         h -> Collections.singletonList(h.getValue()))));
                     return httpResponse;
                 })
@@ -52,7 +52,7 @@ class HttpPipelineAdapter implements IHttpClient {
                 .switchIfEmpty(Mono.defer(() -> {
                     com.microsoft.aad.msal4j.HttpResponse httpResponse = new com.microsoft.aad.msal4j.HttpResponse()
                         .statusCode(response.getStatusCode());
-                    httpResponse.headers(response.getHeaders().stream().collect(Collectors.toMap(HttpHeader::getName,
+                    httpResponse.addHeaders(response.getHeaders().stream().collect(Collectors.toMap(HttpHeader::getName,
                         h -> Collections.singletonList(h.getValue()))));
                     return Mono.just(httpResponse);
                 })))

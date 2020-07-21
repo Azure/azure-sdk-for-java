@@ -235,7 +235,7 @@ public final class BlobItemPropertiesInternal {
     /*
      * The isSealed property.
      */
-    @JsonProperty(value = "IsSealed")
+    @JsonProperty(value = "Sealed")
     private Boolean isSealed;
 
     /*
