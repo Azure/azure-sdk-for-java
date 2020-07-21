@@ -62,7 +62,7 @@ public class TestContainerInstanceWithPrivateIpAddress extends TestTemplate<Cont
                 .withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR)
                 .withRestartPolicy(ContainerGroupRestartPolicy.NEVER)
                 .withLogAnalytics(logAnalyticsWorkspaceId, logAnalyticsWorkspaceKey)
-                .withNetworkProfileId(networkProfileSubscriptionId, networkProfileResourceGroupName, networkProfileName)
+                .withExistingNetworkProfile(networkProfileSubscriptionId, networkProfileResourceGroupName, networkProfileName)
                 .withDnsConfiguration(dnsServerNames, "dnsSearchDomains", "dnsOptions")
                 .withTag("tag1", "value1")
                 .create();
