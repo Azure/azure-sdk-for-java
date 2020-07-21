@@ -48,7 +48,7 @@ public class ObjectBatchTest {
                 },
                 null,
                 null);
-            batch.tryAdd((Integer)null).block();
+            batch.tryAdd((Integer) null).block();
         });
     }
 }
