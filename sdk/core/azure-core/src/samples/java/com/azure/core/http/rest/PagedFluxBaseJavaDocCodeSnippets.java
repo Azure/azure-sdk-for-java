@@ -31,18 +31,19 @@ public final class PagedFluxBaseJavaDocCodeSnippets {
         // BEGIN: com.azure.core.http.rest.pagedfluxbase.items
         pagedFluxBase
             .log()
-            .subscribe(item -> System.out.println("Processing item " + item),
-                error -> System.err.println("Error occurred " + error),
-                () -> System.out.println("Completed processing."));
+            .subscribe(item -> System.out.println("Processing item with value: " + item),
+                error -> System.err.println("An error occurred: " + error),
+                () -> System.out.println("Processing complete."));
         // END: com.azure.core.http.rest.pagedfluxbase.items
 
         // BEGIN: com.azure.core.http.rest.pagedfluxbase.pages
         pagedFluxBase
             .byPage()
             .log()
-            .subscribe(page -> System.out.println("Processing page containing " + page.getItems()),
-                error -> System.err.println("Error occurred " + error),
-                () -> System.out.println("Completed processing."));
+            .subscribe(page -> System.out.printf("Processing page containing item values: %s%n",
+                page.getElements().stream().map(String::valueOf).collect(Collectors.joining(", "))),
+                error -> System.err.println("An error occurred: " + error),
+                () -> System.out.println("Processing complete."));
         // END: com.azure.core.http.rest.pagedfluxbase.pages
 
         // BEGIN: com.azure.core.http.rest.pagedfluxbase.pagesWithContinuationToken
@@ -52,9 +53,10 @@ public final class PagedFluxBaseJavaDocCodeSnippets {
             .log()
             .doOnSubscribe(ignored -> System.out.println(
                 "Subscribed to paged flux processing pages starting from: " + continuationToken))
-            .subscribe(page -> System.out.println("Processing page containing " + page.getItems()),
-                error -> System.err.println("Error occurred " + error),
-                () -> System.out.println("Completed processing."));
+            .subscribe(page -> System.out.printf("Processing page containing item values: %s%n",
+                page.getElements().stream().map(String::valueOf).collect(Collectors.joining(", "))),
+                error -> System.err.println("An error occurred: " + error),
+                () -> System.out.println("Processing complete."));
         // END: com.azure.core.http.rest.pagedfluxbase.pagesWithContinuationToken
     }
 
@@ -98,9 +100,10 @@ public final class PagedFluxBaseJavaDocCodeSnippets {
             .log()
             .doOnSubscribe(ignoredVal -> System.out.println(
                 "Subscribed to paged flux processing pages starting from first page"))
-            .subscribe(page -> System.out.println("Processing page containing " + page.getItems()),
-                error -> System.err.println("Error occurred " + error),
-                () -> System.out.println("Completed processing."));
+            .subscribe(page -> System.out.printf("Processing page containing item values: %s%n",
+                page.getElements().stream().map(String::valueOf).collect(Collectors.joining(", "))),
+                error -> System.err.println("An error occurred: " + error),
+                () -> System.out.println("Processing complete."));
         // END: com.azure.core.http.rest.pagedfluxbase.bypage
 
         // BEGIN: com.azure.core.http.rest.pagedfluxbase.bypage#String
@@ -110,9 +113,10 @@ public final class PagedFluxBaseJavaDocCodeSnippets {
             .log()
             .doOnSubscribe(ignoredVal -> System.out.println(
                 "Subscribed to paged flux processing page starting from " + continuationToken))
-            .subscribe(page -> System.out.println("Processing page containing " + page.getItems()),
-                error -> System.err.println("Error occurred " + error),
-                () -> System.out.println("Completed processing."));
+            .subscribe(page -> System.out.printf("Processing page containing item values: %s%n",
+                page.getElements().stream().map(String::valueOf).collect(Collectors.joining(", "))),
+                error -> System.err.println("An error occurred: " + error),
+                () -> System.out.println("Processing complete."));
         // END: com.azure.core.http.rest.pagedfluxbase.bypage#String
     }
 
