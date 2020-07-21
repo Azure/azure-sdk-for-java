@@ -29,7 +29,8 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     }
 
     /**
-     * Sets the tenant id of the user to authenticate through the {@link DefaultAzureCredential}. The default is null
+     * Sets the tenant id of the user to authenticate through the {@link DefaultAzureCredential}. If unset, the value
+     * in the AZURE_TENANT_ID environment variable will be used. If neither is set, the default is null
      * and will authenticate users to their default tenant.
      *
      * @param tenantId the tenant ID to set.
@@ -76,7 +77,9 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
 
     /**
      * Specifies the client ID of user assigned or system assigned identity, when this credential is running
-     * in an environment with managed identities.
+     * in an environment with managed identities. If unset, the value in the AZURE_CLIENT_ID environment variable
+     * will be used. If neither is set, the default value is null and will only work with system assigned
+     * managed identities and not user assigned managed identities.
      *
      * @param clientId the client ID
      * @return the DefaultAzureCredentialBuilder itself
