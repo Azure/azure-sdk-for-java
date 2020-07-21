@@ -51,11 +51,11 @@ This repository only supports Spring Data 2.x. Version mapping between spring bo
 `spring-data-gremlin` is published on Maven Central Repository.  
 If you are using Maven, add the following dependency.  
 
-[//]: # ({x-version-update-start;com.microsoft.spring.data.gremlin:spring-data-gremlin;current})
+[//]: # ({x-version-update-start;com.azure:azure-spring-data-gremlin;current})
 ```xml
 <dependency>
-    <groupId>com.microsoft.spring.data.gremlin</groupId>
-    <artifactId>spring-data-gremlin</artifactId>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-spring-data-gremlin</artifactId>
     <version>2.3.1-beta.1</version>
 </dependency>
 ```
