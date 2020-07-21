@@ -173,7 +173,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.netty:netty-tcnative-boringssl-static:[2.0.29.Final]
+                <include>io.netty:netty-tcnative-boringssl-static:[2.0.31.Final]
                 </include> <!-- {x-include-update;io.netty:netty-tcnative-boringssl-static;external_dependency} -->
                 <include>io.projectreactor:reactor-core:[3.3.8.RELEASE]</include> <!-- {x-include-update;io.projectreactor:reactor-core;external_dependency} -->
                 <include>com.fasterxml.jackson.dataformat:jackson-dataformat-xml:[2.10.1]
