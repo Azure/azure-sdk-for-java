@@ -2,14 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.core.generator;
 
-import static com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter.toCosmosDbValue;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.stream.Collectors;
-
+import com.azure.cosmos.models.SqlParameter;
+import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.spring.data.cosmos.core.query.Criteria;
+import com.azure.spring.data.cosmos.core.query.CriteriaType;
+import com.azure.spring.data.cosmos.core.query.DocumentQuery;
+import com.azure.spring.data.cosmos.exception.IllegalQueryException;
 import org.javatuples.Pair;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.parser.Part;
@@ -17,12 +15,13 @@ import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
-import com.azure.cosmos.models.SqlParameter;
-import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.spring.data.cosmos.core.query.Criteria;
-import com.azure.spring.data.cosmos.core.query.CriteriaType;
-import com.azure.spring.data.cosmos.core.query.DocumentQuery;
-import com.azure.spring.data.cosmos.exception.IllegalQueryException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter.toCosmosDbValue;
 
 /**
  * Base class for generating sql query
@@ -69,6 +68,7 @@ public abstract class AbstractQueryGenerator {
 
     /**
      * Get condition string with function
+     *
      * @param ignoreCase ignore case flag
      * @param sqlKeyword sql key word, operation name
      * @param subject sql column name
@@ -86,6 +86,7 @@ public abstract class AbstractQueryGenerator {
 
     /**
      * Get condition string without function
+     *
      * @param ignoreCase ignore case flag
      * @param sqlKeyword sql key word, operation name
      * @param subject sql column name
@@ -120,7 +121,7 @@ public abstract class AbstractQueryGenerator {
     private String generateClosedQuery(@NonNull String left, @NonNull String right, CriteriaType type) {
         Assert.isTrue(CriteriaType.isClosed(type)
                 && CriteriaType.isBinary(type),
-                "Criteria type should be binary and closure operation");
+            "Criteria type should be binary and closure operation");
 
         return String.join(" ", left, type.getSqlKeyword(), right);
     }
@@ -133,7 +134,7 @@ public abstract class AbstractQueryGenerator {
             throw new IllegalQueryException("IN keyword requires Collection type in parameters");
         }
 
-        final Collection<Object> values = (Collection<Object>) criteria.getSubjectValues().get(0);
+        final Collection<Object> values = (Collection<Object>)criteria.getSubjectValues().get(0);
 
         final StringBuilder builder = new StringBuilder();
         int index = 0;
@@ -154,7 +155,8 @@ public abstract class AbstractQueryGenerator {
             }
         }
 
-        return String.format("r.%s %s (%s)", criteria.getSubject(), criteria.getType().getSqlKeyword(), builder.toString());
+        return String.format("r.%s %s (%s)", criteria.getSubject(), criteria.getType().getSqlKeyword(),
+            builder.toString());
     }
 
     private String generateQueryBody(@NonNull Criteria criteria, @NonNull List<Pair<String, Object>> parameters) {
@@ -201,9 +203,8 @@ public abstract class AbstractQueryGenerator {
     }
 
     /**
-     * Generate a query body for interface QuerySpecGenerator.
-     * The query body compose of Sql query String and its' parameters.
-     * The parameters organized as a list of Pair, for each pair compose parameter name and value.
+     * Generate a query body for interface QuerySpecGenerator. The query body compose of Sql query String and its'
+     * parameters. The parameters organized as a list of Pair, for each pair compose parameter name and value.
      *
      * @param query the representation for query method.
      * @return A pair tuple compose of Sql query.
@@ -237,8 +238,8 @@ public abstract class AbstractQueryGenerator {
         final List<String> subjects = sort.stream().map(this::getParameter).collect(Collectors.toList());
 
         return queryTail
-                    + " "
-                    + String.join(",", subjects);
+            + " "
+            + String.join(",", subjects);
     }
 
     @NonNull
@@ -258,9 +259,9 @@ public abstract class AbstractQueryGenerator {
         final List<Pair<String, Object>> parameters = queryBody.getValue1();
 
         List<SqlParameter> sqlParameters = parameters.stream()
-                                               .map(p -> new SqlParameter("@" + p.getValue0(),
-                                                   toCosmosDbValue(p.getValue1())))
-                                               .collect(Collectors.toList());
+                                                     .map(p -> new SqlParameter("@" + p.getValue0(),
+                                                         toCosmosDbValue(p.getValue1())))
+                                                     .collect(Collectors.toList());
 
         return new SqlQuerySpec(queryString, sqlParameters);
     }
