@@ -26,6 +26,7 @@ public class BlobBeginCopyOptions {
     private RequestConditions sourceRequestConditions;
     private BlobRequestConditions destinationRequestConditions;
     private Duration pollInterval;
+    private Boolean sealDestination;
 
     /**
      * @param sourceUrl The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
@@ -153,6 +154,25 @@ public class BlobBeginCopyOptions {
      */
     public BlobBeginCopyOptions setPollInterval(Duration pollInterval) {
         this.pollInterval = pollInterval;
+        return this;
+    }
+
+    /**
+     *  Only applicable for Append Blobs.
+     * @return Whether or not the destination blob should be sealed.
+     */
+    public Boolean isSealingDestination() {
+        return sealDestination;
+    }
+
+    /**
+     * Only applicable for Append Blobs.
+     *
+     * @param sealDestination Whether or not the destination blob should be sealed.
+     * @return The updated options.
+     */
+    public BlobBeginCopyOptions sealDestination(Boolean sealDestination) {
+        this.sealDestination = sealDestination;
         return this;
     }
 }

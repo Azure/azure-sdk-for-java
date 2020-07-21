@@ -550,13 +550,19 @@ public class IdentityClient {
      */
     public Mono<MsalToken> authenticateWithAuthorizationCode(TokenRequestContext request, String authorizationCode,
                                                              URI redirectUrl) {
-        return publicClientApplicationAccessor.getValue()
-                .flatMap(pc -> Mono.fromFuture(() -> pc.acquireToken(
-                AuthorizationCodeParameters.builder(authorizationCode, redirectUrl)
-                    .scopes(new HashSet<>(request.getScopes()))
-                    .build()))
-                .onErrorMap(t -> new ClientAuthenticationException("Failed to acquire token with authorization code",
-                    null, t)).map(ar -> new MsalToken(ar, options)));
+        AuthorizationCodeParameters parameters = AuthorizationCodeParameters.builder(authorizationCode, redirectUrl)
+            .scopes(new HashSet<>(request.getScopes()))
+            .build();
+        Mono<IAuthenticationResult> acquireToken;
+        if (clientSecret != null) {
+            acquireToken = confidentialClientApplicationAccessor.getValue()
+                .flatMap(pc -> Mono.fromFuture(() -> pc.acquireToken(parameters)));
+        } else {
+            acquireToken = publicClientApplicationAccessor.getValue()
+                .flatMap(pc -> Mono.fromFuture(() -> pc.acquireToken(parameters)));
+        }
+        return acquireToken.onErrorMap(t -> new ClientAuthenticationException(
+            "Failed to acquire token with authorization code", null, t)).map(ar -> new MsalToken(ar, options));
     }
 
 

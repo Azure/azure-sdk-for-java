@@ -1,6 +1,9 @@
 # Release History
 
-## 11.0.0 (2020-07-10)
+## 11.1.0-beta.1 (Unreleased)
+
+
+## 11.0.0 (2020-07-13)
 
 - Changed version to 11.0.0.
 - Removed preview version `SearchClientOptions.ServiceVersion.V2019_05_06_Preview` and added version `SearchClientOptions.ServiceVersion.V2020_06_30`.

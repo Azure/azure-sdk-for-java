@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Offer;
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.implementation.ItemDeserializer;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.models.CosmosContainerResponse;
@@ -229,7 +230,7 @@ public class CosmosAsyncContainer {
                                    item,
                                    requestOptions,
                                    true)
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType))
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType, getItemDeserializer()))
                    .single();
     }
 
@@ -270,7 +271,7 @@ public class CosmosAsyncContainer {
                    .upsertDocument(this.getLink(), item,
                        ModelBridgeInternal.toRequestOptions(options),
                                    true)
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType))
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType, getItemDeserializer()))
                    .single();
     }
 
@@ -453,11 +454,14 @@ public class CosmosAsyncContainer {
         if (options == null) {
             options = new CosmosItemRequestOptions();
         }
+
         ModelBridgeInternal.setPartitionKey(options, partitionKey);
         RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(options);
+
         return this.getDatabase().getDocClientWrapper()
                    .readDocument(getItemLink(itemId), requestOptions)
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType))
+                   // TODO: add a deserializer and pass down?
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType, this.getItemDeserializer()))
                    .single();
     }
 
@@ -503,7 +507,7 @@ public class CosmosAsyncContainer {
         return this.getDatabase()
                    .getDocClientWrapper()
                    .replaceDocument(getItemLink(itemId), doc, ModelBridgeInternal.toRequestOptions(options))
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType))
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType, getItemDeserializer()))
                    .single();
     }
 
@@ -708,5 +712,9 @@ public class CosmosAsyncContainer {
 
     String getLink() {
         return this.link;
+    }
+
+    ItemDeserializer getItemDeserializer() {
+        return getDatabase().getDocClientWrapper().getItemDeserializer();
     }
 }

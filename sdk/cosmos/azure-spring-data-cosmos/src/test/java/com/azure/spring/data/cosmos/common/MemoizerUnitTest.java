@@ -13,11 +13,6 @@ import java.util.stream.IntStream;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- *
- * @author Domenico Sibilio
- *
- */
 public class MemoizerUnitTest {
     private static final String KEY = "key_1";
     private static final Map<String, AtomicInteger> countMap = new HashMap<>();

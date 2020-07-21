@@ -93,7 +93,6 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
             .inner()
             .getSnapshots()
             .grantAccessAsync(resourceGroupName(), name(), grantAccessDataInner)
-            .onErrorResume(e -> Mono.empty())
             .map(accessUriInner -> accessUriInner.accessSas());
     }
 

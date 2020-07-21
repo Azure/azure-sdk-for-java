@@ -8,7 +8,6 @@ import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.training.FormTrainingAsyncClient;
 import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import reactor.core.publisher.Mono;
 
@@ -31,25 +30,24 @@ public class TrainModelWithLabelsAsync {
      */
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
-
         FormTrainingAsyncClient client = new FormTrainingClientBuilder()
-            .credential(new AzureKeyCredential("{api_Key}"))
+            .credential(new AzureKeyCredential("{key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
-        // Train custom model
-        String trainingFilesUrl = "{CONTAINER_SAS_URL}"; // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
+        String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
+        // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
         PollerFlux<OperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingFilesUrl, true);
 
         Mono<CustomFormModel> customFormModelResult = trainingPoller
             .last()
-            .flatMap(trainingOperationResponse -> {
-                if (trainingOperationResponse.getStatus().equals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)) {
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
                     // training completed successfully, retrieving final result.
-                    return trainingOperationResponse.getFinalResult();
+                    return pollResponse.getFinalResult();
                 } else {
                     return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"
-                        + trainingOperationResponse.getStatus()));
+                        + pollResponse.getStatus()));
                 }
             });
 
@@ -65,15 +63,16 @@ public class TrainModelWithLabelsAsync {
             System.out.println("Recognized Fields:");
             // Since the data is labeled, we are able to return the accuracy of the model
             customFormModel.getSubmodels().forEach(customFormSubmodel -> {
-                System.out.printf("Sub-model accuracy: %.2f%n", customFormSubmodel.getAccuracy());
+                System.out.printf("The subModel with form type %s has accuracy: %.2f%n",
+                    customFormSubmodel.getFormType(), customFormSubmodel.getAccuracy());
                 customFormSubmodel.getFields().forEach((label, customFormModelField) ->
-                    System.out.printf("Field: %s Field Name: %s Field Accuracy: %.2f%n",
+                    System.out.printf("The model found field '%s' to have name: %s with an accuracy: %.2f%n",
                         label, customFormModelField.getName(), customFormModelField.getAccuracy()));
             });
             System.out.println();
             customFormModel.getTrainingDocuments().forEach(trainingDocumentInfo -> {
                 System.out.printf("Document name: %s%n", trainingDocumentInfo.getName());
-                System.out.printf("Document status: %s%n", trainingDocumentInfo.getName());
+                System.out.printf("Document status: %s%n", trainingDocumentInfo.getTrainingStatus());
                 System.out.printf("Document page count: %d%n", trainingDocumentInfo.getPageCount());
                 if (!trainingDocumentInfo.getDocumentErrors().isEmpty()) {
                     System.out.println("Document Errors:");

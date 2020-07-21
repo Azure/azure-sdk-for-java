@@ -2,11 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.encryption.api.DataEncryptionKeyProvider;
+
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.implementation.encryption.api.EncryptionOptions;
 import com.azure.cosmos.implementation.query.PipelinedDocumentQueryExecutionContext;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -16,7 +20,6 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.SqlParameter;
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
@@ -122,6 +125,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private StoreClientFactory storeClientFactory;
 
     private GatewayServiceConfigurationReader gatewayConfigurationReader;
+    public DataEncryptionKeyProvider dataEncryptionKeyProvider;
 
     public RxDocumentClientImpl(URI serviceEndpoint,
                                 String masterKeyOrResourceToken,
@@ -252,6 +256,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         this.globalEndpointManager = new GlobalEndpointManager(asDatabaseAccountManagerInternal(), this.connectionPolicy, /**/configs);
         this.retryPolicy = new RetryPolicy(this.globalEndpointManager, this.connectionPolicy);
         this.resetSessionTokenRetryPolicy = retryPolicy;
+    }
+
+    void registerDataEncryptionKeyProvider(DataEncryptionKeyProvider dataEncryptionKeyProvider) {
+        this.dataEncryptionKeyProvider = dataEncryptionKeyProvider;
     }
 
     private void initializeGatewayConfigurationReader() {
@@ -1110,8 +1118,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         Instant serializationStartTimeUTC = Instant.now();
-        ByteBuffer content = BridgeInternal.serializeJsonToByteBuffer(document, mapper);
+        ByteBuffer content = BridgeInternal.serializeJsonToByteBuffer(document, mapper, dataEncryptionKeyProvider, options == null ? null : options.getEncryptionOptions());
         Instant serializationEndTimeUTC = Instant.now();
+
         SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
             serializationStartTimeUTC,
             serializationEndTimeUTC,
@@ -3184,5 +3193,19 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             logger.warn("shutting down reactorHttpClient failed", e);
         }
         logger.info("Shutting down completed.");
+    }
+
+    @Override
+    public ItemDeserializer getItemDeserializer() {
+        if (dataEncryptionKeyProvider == null) {
+            return new ItemDeserializer.JsonDeserializer();
+        } else {
+            return new ItemDeserializer.EncryptionDeserializer(dataEncryptionKeyProvider, new ItemDeserializer.JsonDeserializer());
+        }
+    }
+
+    @Override
+    public ItemDeserializer getItemDeserializerWithoutDecryption() {
+        return new ItemDeserializer.JsonDeserializer();
     }
 }

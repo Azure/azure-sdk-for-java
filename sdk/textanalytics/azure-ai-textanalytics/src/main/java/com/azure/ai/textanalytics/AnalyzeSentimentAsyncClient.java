@@ -105,12 +105,12 @@ class AnalyzeSentimentAsyncClient {
      * Helper method to convert the service response of {@link SentimentResponse} to {@link Response} that contains
      * {@link AnalyzeSentimentResultCollection}.
      *
-     * @param response The {@link SimpleResponse} of {@link SentimentResponse} returned by the service.
+     * @param response The {@link Response} of {@link SentimentResponse} returned by the service.
      *
      * @return A {@link Response} contains {@link AnalyzeSentimentResultCollection}.
      */
     private Response<AnalyzeSentimentResultCollection> toAnalyzeSentimentResultCollectionResponse(
-        SimpleResponse<SentimentResponse> response) {
+        Response<SentimentResponse> response) {
         final SentimentResponse sentimentResponse = response.getValue();
         final List<AnalyzeSentimentResult> analyzeSentimentResults = new ArrayList<>();
         for (DocumentSentiment documentSentiment : sentimentResponse.getDocuments()) {
@@ -125,7 +125,8 @@ class AnalyzeSentimentAsyncClient {
             if (documentError.getId().isEmpty()) {
                 throw logger.logExceptionAsError(
                     new HttpResponseException(documentError.getError().getInnererror().getMessage(),
-                    getEmptyErrorIdHttpResponse(response), documentError.getError().getInnererror().getCode()));
+                    getEmptyErrorIdHttpResponse(new SimpleResponse<>(response, response.getValue())),
+                        documentError.getError().getInnererror().getCode()));
             }
             analyzeSentimentResults.add(new AnalyzeSentimentResult(documentError.getId(), null,
                 toTextAnalyticsError(documentError.getError()), null));
@@ -194,11 +195,13 @@ class AnalyzeSentimentAsyncClient {
      */
     private Mono<Response<AnalyzeSentimentResultCollection>> getAnalyzedSentimentResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        // TODO: add opinion mining in the following PR
         return service.sentimentWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-            context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE),
             options == null ? null : options.getModelVersion(),
-            options == null ? null : options.isIncludeStatistics())
+            options == null ? null : options.isIncludeStatistics(),
+            null,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
             .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents.toString()))
             .doOnSuccess(response -> logger.info("Analyzed sentiment for a batch of documents - {}", response))
             .doOnError(error -> logger.warning("Failed to analyze sentiment - {}", error))

@@ -46,7 +46,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
     private final static int TIMEOUT = 300000;
     // Delete collections in emulator is not instant,
     // so to avoid get 500 back, we are adding delay for creating the collection with same name, since in this case we want to test 410/1000
-    private final static int COLLECTION_RECREATION_TIME_DELAY = 2000;
+    private final static int COLLECTION_RECREATION_TIME_DELAY = 5000;
     private CosmosAsyncClient client;
     private CosmosAsyncDatabase createdDatabase;
 
@@ -146,7 +146,6 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public <T> void changeFeed() throws Exception {
-
         ObjectMapper objectMapper = Utils.getSimpleObjectMapper();
         BiConsumer<CosmosAsyncContainer, CosmosAsyncContainer> func = (feedContainer, leaseContainer) -> {
             String hostName = RandomStringUtils.randomAlphabetic(6);
@@ -187,12 +186,8 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
                 changeFeedProcessor.start().subscribeOn(Schedulers.elastic())
                     .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
                     .subscribe();
-            } catch (Exception ex) {
-                throw ex;
-            }
 
-            // Wait for the feed processor to receive and process the documents.
-            try {
+                // Wait for the feed processor to receive and process the documents.
                 Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
                 assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
 
@@ -203,14 +198,16 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
                 }
 
                 assertThat(remainingWork >= 0).as("Failed to receive all the feed documents").isTrue();
-
+            } catch (InterruptedException e) {
+                throw new RuntimeException("Interrupted exception", e);
+            } finally {
                 changeFeedProcessor.stop().subscribeOn(Schedulers.elastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
 
                 // Wait for the feed processor to shutdown.
-                Thread.sleep(CHANGE_FEED_PROCESSOR_TIMEOUT);
-
-            } catch (InterruptedException e) {
-                throw new RuntimeException("Interrupted exception", e);
+                try {
+                    Thread.sleep(CHANGE_FEED_PROCESSOR_TIMEOUT);
+                } catch (InterruptedException e) {
+                }
             }
         };
 

@@ -8,7 +8,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryGroup;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryGroups;
-import com.azure.resourcemanager.authorization.models.GraphErrorException;
 import com.azure.resourcemanager.authorization.fluent.inner.ADGroupInner;
 import com.azure.resourcemanager.authorization.fluent.GroupsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
@@ -48,7 +47,6 @@ public class ActiveDirectoryGroupsImpl
             .inner()
             .getGroups()
             .getAsync(id)
-            .onErrorResume(GraphErrorException.class, e -> Mono.empty())
             .map(groupInner -> new ActiveDirectoryGroupImpl(groupInner, manager()));
     }
 

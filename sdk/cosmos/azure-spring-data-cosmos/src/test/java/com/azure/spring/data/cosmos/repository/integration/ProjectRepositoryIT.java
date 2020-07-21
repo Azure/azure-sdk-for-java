@@ -2,21 +2,29 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.integration;
 
-import com.azure.data.cosmos.PartitionKey;
+import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
-import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
-import com.google.common.collect.Lists;
 import com.azure.spring.data.cosmos.domain.Project;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.ProjectRepository;
-import org.junit.*;
+import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -497,7 +505,10 @@ public class ProjectRepositoryIT {
             repository.findAll(new PartitionKey(CREATOR_0));
         //  Since there are two projects with creator_0
         assertThat(findAll.size()).isEqualTo(2);
-        assertThat(findAll.containsAll(Lists.newArrayList(PROJECT_0, PROJECT_4))).isTrue();
+        List<Project> projectList = new ArrayList<>();
+        projectList.add(PROJECT_0);
+        projectList.add(PROJECT_4);
+        assertThat(findAll.containsAll(projectList)).isTrue();
 
         findAll = repository.findAll(new PartitionKey(CREATOR_1));
         //  Since there is one projects with creator_1

@@ -34,6 +34,7 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -51,6 +52,8 @@ public class AzureADGraphClient {
     private static final String DEFAULT_ROLE_PREFIX = "ROLE_";
     private static final String MICROSOFT_GRAPH_SCOPE = "https://graph.microsoft.com/user.read";
     private static final String AAD_GRAPH_API_SCOPE = "https://graph.windows.net/user.read";
+    // We use "aadfeed5" as suffix when client library is ADAL, upgrade to "aadfeed6" for MSAL
+    private static final String REQUEST_ID_SUFFIX = "aadfeed6";
 
     private final String clientId;
     private final String clientSecret;
@@ -206,6 +209,7 @@ public class AzureADGraphClient {
             final ConfidentialClientApplication application = ConfidentialClientApplication
                 .builder(clientId, clientCredential)
                 .authority(serviceEndpoints.getAadSigninUri() + tenantId + "/")
+                .correlationId(getCorrelationId())
                 .build();
 
             final Set<String> scopes = new HashSet<>();
@@ -237,5 +241,10 @@ public class AzureADGraphClient {
             throw new ServiceUnavailableException("unable to acquire on-behalf-of token for client " + clientId);
         }
         return result;
+    }
+
+    private static String getCorrelationId() {
+        final String uuid = UUID.randomUUID().toString();
+        return uuid.substring(0, uuid.length() - REQUEST_ID_SUFFIX.length()) + REQUEST_ID_SUFFIX;
     }
 }

@@ -25,7 +25,7 @@ public class StronglyTypedRecognizedForm {
     public static void main(final String[] args) {
         // Instantiate a client that will be used to call the service.
         FormRecognizerClient client = new FormRecognizerClientBuilder()
-            .credential(new AzureKeyCredential("{api_Key}"))
+            .credential(new AzureKeyCredential("{key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();
 
@@ -38,7 +38,7 @@ public class StronglyTypedRecognizedForm {
 
         for (int i = 0; i < receiptPageResults.size(); i++) {
             final RecognizedForm recognizedForm = receiptPageResults.get(i);
-            System.out.printf("----------- Recognized Receipt page %d -----------%n", i);
+            System.out.printf("----------- Recognized receipt info for page %d -----------%n", i);
             // Use Receipt model transform the recognized form to strongly typed US receipt fields
             Receipt usReceipt = new Receipt(recognizedForm);
             System.out.printf("Merchant Name: %s, confidence: %.2f%n", usReceipt.getMerchantName().getValue(),
@@ -48,7 +48,7 @@ public class StronglyTypedRecognizedForm {
                 usReceipt.getMerchantAddress().getConfidence());
             System.out.printf("Merchant Phone Number %s, confidence: %.2f%n",
                 usReceipt.getMerchantPhoneNumber().getValue(), usReceipt.getMerchantPhoneNumber().getConfidence());
-            System.out.printf("Total: %s confidence: %.2f%n", usReceipt.getTotal().getValue(),
+            System.out.printf("Total: %.2f confidence: %.2f%n", usReceipt.getTotal().getValue(),
                 usReceipt.getTotal().getConfidence());
             System.out.printf("Transaction Date: %s, confidence: %.2f%n",
                 usReceipt.getTransactionDate().getValue(), usReceipt.getTransactionDate().getConfidence());
@@ -73,7 +73,7 @@ public class StronglyTypedRecognizedForm {
                         receiptItem.getTotalPrice().getValue(), receiptItem.getTotalPrice().getConfidence());
                 }
             });
-            System.out.print("-----------------------------------");
+            System.out.println("-----------------------------------");
         }
     }
 }
