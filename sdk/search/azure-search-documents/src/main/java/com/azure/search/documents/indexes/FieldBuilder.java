@@ -3,6 +3,9 @@
 
 package com.azure.search.documents.indexes;
 
+import com.azure.core.experimental.serializer.JsonSerializer;
+import com.azure.core.experimental.serializer.JsonSerializerProviders;
+import com.azure.core.experimental.spatial.PointGeometry;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.SearchField;
@@ -25,6 +28,7 @@ import java.util.stream.Collectors;
 public final class FieldBuilder {
     private static final int MAX_DEPTH = 10000;
     private static final Map<Class<?>, SearchFieldDataType> SUPPORTED_NONE_PARAMETERIZED_TYPE = new HashMap<>();
+    private static final JsonSerializer SERIALIZER = JsonSerializerProviders.createInstance();
 
     static {
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(Integer.class, SearchFieldDataType.INT32);
@@ -38,7 +42,7 @@ public final class FieldBuilder {
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(String.class, SearchFieldDataType.STRING);
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(Date.class, SearchFieldDataType.DATE_TIME_OFFSET);
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(OffsetDateTime.class, SearchFieldDataType.DATE_TIME_OFFSET);
-//        SUPPORTED_NONE_PARAMETERIZED_TYPE.put(PointGeometry.class, SearchFieldDataType.GEOGRAPHY_POINT);
+        SUPPORTED_NONE_PARAMETERIZED_TYPE.put(PointGeometry.class, SearchFieldDataType.GEOGRAPHY_POINT);
     }
 
     private static final List<Class<?>> UNSUPPORTED_TYPES = Arrays.asList(Byte.class,
@@ -154,7 +158,8 @@ public final class FieldBuilder {
         ClientLogger logger) {
 
         SearchFieldDataType dataType = covertToSearchFieldDataType(classField.getGenericType(), false, logger);
-        SearchField searchField = new SearchField(classField.getName(), dataType);
+        String fieldName = SERIALIZER.getSerializerMemberName(classField).block();
+        SearchField searchField = new SearchField(fieldName, dataType);
         return searchField;
     }
 

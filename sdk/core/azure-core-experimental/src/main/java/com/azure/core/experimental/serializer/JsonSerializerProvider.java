@@ -14,4 +14,13 @@ public interface JsonSerializerProvider {
      * @return A new {@link JsonSerializer} instance.
      */
     JsonSerializer createInstance();
+
+
+    /**
+     * Creates a new instance of the {@link JsonSerializer} that this JsonSerializerProvider is configured to create.
+     *
+     * @param jsonOptions The json options for the serializer.
+     * @return A new {@link JsonSerializer} instance.
+     */
+    JsonSerializer createInstance(JsonOptions jsonOptions);
 }

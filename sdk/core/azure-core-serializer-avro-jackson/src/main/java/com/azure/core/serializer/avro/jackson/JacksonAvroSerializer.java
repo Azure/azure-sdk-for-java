@@ -4,6 +4,8 @@
 package com.azure.core.serializer.avro.jackson;
 
 import com.azure.core.experimental.serializer.ObjectSerializer;
+import com.azure.core.experimental.serializer.Type;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.dataformat.avro.AvroMapper;
 import com.fasterxml.jackson.dataformat.avro.AvroSchema;
 import reactor.core.publisher.Mono;

@@ -7,6 +7,8 @@ import com.azure.core.experimental.serializer.JsonNode;
 import com.azure.core.experimental.serializer.JsonSerializer;
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.reflect.TypeToken;
 import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
@@ -14,7 +16,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
 /**
  * GSON based implementation of the {@link JsonSerializer} interface.
@@ -37,8 +41,20 @@ public final class GsonJsonSerializer implements JsonSerializer {
     }
 
     @Override
+    public Mono<Map<Object, Object>> deserializeToMap(InputStream stream) {
+        return Mono.fromCallable(() -> gson.fromJson(new InputStreamReader(stream, StandardCharsets.UTF_8),
+            new TypeToken<Map<Object, Object>>() { }.getType()));
+    }
+
+    @Override
     public <T> Mono<T> deserializeTree(JsonNode jsonNode, Class<T> clazz) {
         return Mono.fromCallable(() -> gson.fromJson(JsonNodeUtils.toGsonElement(jsonNode), clazz));
+    }
+
+    @Override
+    public Mono<Map<Object, Object>> deserializeTreeToMap(JsonNode jsonNode) {
+        return Mono.fromCallable(() -> gson.fromJson(JsonNodeUtils.toGsonElement(jsonNode),
+            new TypeToken<Map<Object, Object>>() { }.getType()));
     }
 
     @Override
@@ -68,5 +84,13 @@ public final class GsonJsonSerializer implements JsonSerializer {
         return Mono.fromCallable(() -> JsonNodeUtils.fromGsonElement(gson.toJsonTree(value)));
     }
 
-
+    @Override
+    public Mono<String> getSerializerMemberName(Field field) {
+        return Mono.fromCallable(() -> {
+            if (!field.isAnnotationPresent(SerializedName.class)) {
+                return field.getName();
+            }
+            return field.getDeclaredAnnotation(SerializedName.class).value();
+        });
+    }
 }

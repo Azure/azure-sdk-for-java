@@ -3,30 +3,25 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.search.documents.implementation.SerializationUtil;
+import com.azure.core.experimental.serializer.JsonOptions;
+import com.azure.core.experimental.serializer.JsonSerializer;
 import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
+import com.azure.search.documents.implementation.util.Utility;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.azure.search.documents.serializer.SearchSerializerProviders;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.Map;
 
 /**
  * A converter between {@link com.azure.search.documents.implementation.models.IndexAction} and {@link IndexAction}.
  */
 public final class IndexActionConverter {
-    private static final ObjectMapper DYNAMIC_TYPE_MAPPER;
-    private static final ObjectMapper STRONGLY_TYPE_MAPPER;
 
-    static {
-        DYNAMIC_TYPE_MAPPER = new JacksonAdapter().serializer();
-        STRONGLY_TYPE_MAPPER = new JacksonAdapter().serializer();
-        SerializationUtil.configureMapper(DYNAMIC_TYPE_MAPPER);
-        SerializationUtil.configureMapper(STRONGLY_TYPE_MAPPER);
-    }
+    private static final JsonSerializer SERIALIZER = SearchSerializerProviders.createInstance(
+        new JsonOptions().includeNulls());
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.IndexAction} to {@link IndexAction}.
@@ -67,15 +62,18 @@ public final class IndexActionConverter {
         }
 
         Map<String, Object> additionalProperties;
-        TypeReference<Map<String, Object>> typeRef = new TypeReference<Map<String, Object>>() {};
-
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         Map<String, Object> mapProperties = PrivateFieldAccessHelper.get(obj, "properties", Map.class);
         if (mapProperties != null) {
-            DYNAMIC_TYPE_MAPPER.setSerializationInclusion(JsonInclude.Include.ALWAYS);
-            additionalProperties = DYNAMIC_TYPE_MAPPER.convertValue(mapProperties, typeRef);
+            additionalProperties = SERIALIZER.serialize(outputStream, mapProperties)
+                .flatMap(sourceStream -> SERIALIZER.deserializeToMap(new ByteArrayInputStream(sourceStream.toByteArray()))
+                    .map(Utility::convertMaps)).block();
         } else {
             T properties = obj.getDocument();
-            additionalProperties = STRONGLY_TYPE_MAPPER.convertValue(properties, typeRef);
+            JsonSerializer searchSerializer = SearchSerializerProviders.createInstance();
+            additionalProperties = searchSerializer.serialize(outputStream, properties)
+                .flatMap(sourceStream -> searchSerializer.deserializeToMap(new ByteArrayInputStream(
+                    sourceStream.toByteArray())).map(Utility::convertMaps)).block();
         }
 
         indexAction.setAdditionalProperties(additionalProperties);

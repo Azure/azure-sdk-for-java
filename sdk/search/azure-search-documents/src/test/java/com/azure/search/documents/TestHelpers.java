@@ -4,13 +4,16 @@
 package com.azure.search.documents;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.experimental.serializer.JsonOptions;
+import com.azure.core.experimental.serializer.JsonSerializer;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.serializer.json.jackson.JacksonJsonArray;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.search.documents.implementation.SerializationUtil;
-import com.fasterxml.jackson.core.type.TypeReference;
+import com.azure.search.documents.implementation.util.Utility;
+import com.azure.search.documents.serializer.SearchSerializerProviders;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -18,9 +21,7 @@ import org.reactivestreams.Publisher;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.UncheckedIOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -33,6 +34,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -50,9 +53,12 @@ public final class TestHelpers {
     public static final String BLOB_DATASOURCE_TEST_NAME = "azs-java-test-blob";
     public static final String SQL_DATASOURCE_NAME = "azs-java-test-sql";
     public static final String ISO8601_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+    public static final JsonSerializer SERIALIZER = SearchSerializerProviders.createInstance(
+        new JsonOptions().includeNulls());
 
-//    public static PointGeometry createPointGeometryString(Double latitude, Double longitude) {
-//        return new PointGeometry(new GeometryPosition(longitude, latitude), null, Collections.singletonMap("crs", new HashMap<String, Object>() {
+//    public static PointGeometry createPointGeometry(Double latitude, Double longitude) {
+//        return new PointGeometry(new GeometryPosition(longitude, latitude), null,
+//            Collections.singletonMap("crs", new HashMap<String, Object>() {
 //            {
 //                put("type", "name");
 //                put("properties", Collections.singletonMap("name", "EPSG:4326"));
@@ -60,12 +66,6 @@ public final class TestHelpers {
 //        }));
 //    }
 
-    private static final ObjectMapper MAPPER;
-
-    static {
-        MAPPER = new JacksonAdapter().serializer();
-        SerializationUtil.configureMapper(MAPPER);
-    }
     /**
      * Assert whether two objects are equal.
      *
@@ -288,12 +288,15 @@ public final class TestHelpers {
     }
 
     private static List<Map<String, Object>> readJsonFileToList(String filename) {
-        Reader reader = new InputStreamReader(Objects.requireNonNull(TestHelpers.class.getClassLoader()
-            .getResourceAsStream(filename)));
-        try {
-            return MAPPER.readValue(reader, new TypeReference<List<Map<String, Object>>>() { });
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+        InputStream inputStream = Objects.requireNonNull(TestHelpers.class.getClassLoader()
+            .getResourceAsStream(filename));
+        return convertStreamToList(inputStream);
+    }
+
+    public static List<Map<String, Object>> convertStreamToList(InputStream sourceStream) {
+        Stream<com.azure.core.experimental.serializer.JsonNode> jsonArray =
+            ((JacksonJsonArray) Objects.requireNonNull(SERIALIZER.toTree(sourceStream).block())).elements();
+        return jsonArray.map(node -> SERIALIZER.deserializeTreeToMap(node).map(Utility::convertMaps).block())
+            .collect(Collectors.toList());
     }
 }

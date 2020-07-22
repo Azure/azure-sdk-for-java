@@ -8,6 +8,7 @@ import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.test.environment.models.HotelAnalyzerException;
 import com.azure.search.documents.test.environment.models.HotelCircularDependencies;
+import com.azure.search.documents.test.environment.models.HotelRenameProperty;
 import com.azure.search.documents.test.environment.models.HotelSearchException;
 import com.azure.search.documents.test.environment.models.HotelSearchableExceptionOnList;
 import com.azure.search.documents.test.environment.models.HotelTwoDimensional;
@@ -83,6 +84,16 @@ public class FieldBuilderTests {
         List<SearchField> actualFields = sortByFieldName(FieldBuilder.build(HotelWithArray.class));
         List<SearchField> expectedFields = sortByFieldName(buildHotelWithArrayModel());
         assertListFieldEquals(expectedFields, actualFields);
+    }
+
+    @Test
+    public void propertyRename() {
+        List<SearchField> actualFields = sortByFieldName(FieldBuilder.build(HotelRenameProperty.class));
+        List<String> expectedFieldNames = Arrays.asList("HotelName", "hotelId", "description");
+        Collections.sort(expectedFieldNames);
+        assertEquals(actualFields.get(0).getName(), expectedFieldNames.get(0));
+        assertEquals(actualFields.get(1).getName(), expectedFieldNames.get(1));
+        assertEquals(actualFields.get(2).getName(), expectedFieldNames.get(2));
     }
 
     private void assertListFieldEquals(List<SearchField> expected, List<SearchField> actual) {

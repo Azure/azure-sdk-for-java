@@ -7,6 +7,8 @@ import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Field;
+import java.util.Map;
 
 /**
  * Generic interface covering basic JSON serialization and deserialization methods.
@@ -24,6 +26,14 @@ public interface JsonSerializer extends ObjectSerializer {
     <T> Mono<T> deserialize(InputStream stream, Class<T> clazz);
 
     /**
+     * Reads a JSON stream into its map representation..
+     *
+     * @param stream JSON stream.
+     * @return The map object represented by the deserialized JSON stream.
+     */
+    Mono<Map<Object, Object>> deserializeToMap(InputStream stream);
+
+    /**
      * Reads a JSON tree into its object representation.
      *
      * @param jsonNode The JSON tree.
@@ -32,6 +42,14 @@ public interface JsonSerializer extends ObjectSerializer {
      * @return The object represented by the deserialized JSON tree.
      */
     <T> Mono<T> deserializeTree(JsonNode jsonNode, Class<T> clazz);
+
+    /**
+     * Reads a JSON tree into its map representation.
+     *
+     * @param jsonNode The JSON tree.
+     * @return The amp represented by the deserialized JSON tree.
+     */
+    Mono<Map<Object, Object>> deserializeTreeToMap(JsonNode jsonNode);
 
     /**
      * Writes an object's JSON into a stream..
@@ -68,4 +86,12 @@ public interface JsonSerializer extends ObjectSerializer {
      * @return The JSON tree representing the object.
      */
     Mono<JsonNode> toTree(Object value);
+
+    /**
+     * Get member name from the class field.
+     *
+     * @param field Gets member name from the class field.
+     * @return The serializer member name.
+     */
+    Mono<String> getSerializerMemberName(Field field);
 }

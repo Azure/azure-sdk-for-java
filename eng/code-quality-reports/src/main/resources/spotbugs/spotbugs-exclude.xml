@@ -2036,4 +2036,11 @@
     <Bug pattern="IP_PARAMETER_IS_DEAD_BUT_OVERWRITTEN"/>
   </Match>
 
+  <Match>
+    <Or>
+      <Class name="com.azure.core.serializer.json.jackson.JacksonJsonSerializer"/>
+      <Class name="com.azure.core.serializer.json.gson.GsonJsonSerializer"/>
+    </Or>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
 </FindBugsFilter>

@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class GsonJsonSerializerTests {
     private static final GsonJsonSerializer DEFAULT_SERIALIZER = new GsonJsonSerializerBuilder().build();
     private static final GsonJsonSerializer CUSTOM_SERIALIZER = new GsonJsonSerializerBuilder()
-        .serializer(new GsonBuilder().registerTypeAdapter(Person.class, new PersonAdapter()).create())
+        .serializer(new GsonBuilder().registerTypeAdapter(Person.class, new PersonAdapter()))
         .build();
 
     @Test

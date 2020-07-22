@@ -3,6 +3,7 @@
 
 package com.azure.core.serializer.json.jackson;
 
+import com.azure.core.experimental.serializer.JsonOptions;
 import com.azure.core.experimental.serializer.JsonSerializer;
 import com.azure.core.experimental.serializer.JsonSerializerProvider;
 
@@ -13,5 +14,10 @@ public class JacksonJsonSerializerProvider implements JsonSerializerProvider {
     @Override
     public JsonSerializer createInstance() {
         return new JacksonJsonSerializerBuilder().build();
+    }
+
+    @Override
+    public JsonSerializer createInstance(JsonOptions jsonOptions) {
+        return new JacksonJsonSerializerBuilder().options(jsonOptions).build();
     }
 }

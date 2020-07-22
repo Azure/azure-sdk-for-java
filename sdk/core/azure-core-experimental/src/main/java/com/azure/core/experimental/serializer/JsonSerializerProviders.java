@@ -30,6 +30,22 @@ public final class JsonSerializerProviders {
         return defaultProvider.createInstance();
     }
 
+
+    /**
+     * Creates an instance of {@link JsonSerializer} using the first {@link JsonSerializerProvider} found in the
+     * classpath.
+     *
+     * @param jsonOptions The json options for the serializer.
+     * @return A new instance of {@link JsonSerializer}.
+     */
+    public static JsonSerializer createInstance(JsonOptions jsonOptions) {
+        if (defaultProvider == null) {
+            loadFromClasspath();
+        }
+
+        return defaultProvider.createInstance(jsonOptions);
+    }
+
     private static synchronized void loadFromClasspath() {
         if (attemptedLoad && defaultProvider != null) {
             return;

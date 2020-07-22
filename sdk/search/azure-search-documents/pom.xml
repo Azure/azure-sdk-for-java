@@ -35,6 +35,11 @@
       <artifactId>azure-core-http-netty</artifactId>
       <version>1.5.3</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-search-documents-serializer</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure:azure-search-documents-serializer;dependency} -->
+    </dependency>
 
     <!-- Added this dependency to include necessary annotations used by reactor core.
     Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
@@ -51,6 +56,12 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
       <version>1.3.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-search-documents-serializer-jackson</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure:azure-search-documents-serializer-jackson;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

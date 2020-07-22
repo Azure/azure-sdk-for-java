@@ -48,6 +48,7 @@ public class ApacheAvroSerializer implements ObjectSerializer {
         });
     }
 
+
     @Override
     public <S extends OutputStream> Mono<S> serialize(S stream, Object value) {
         return Mono.fromCallable(() -> {
