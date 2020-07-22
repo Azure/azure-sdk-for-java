@@ -80,6 +80,12 @@ class Configuration {
     @Parameter(names = "-throughput", description = "provisioned throughput for test container")
     private int throughput = 100000;
 
+    @Parameter(names = "-numberOfCollectionForCtl", description = "Number of collections for ctl load")
+    private int numberOfCollectionForCtl = 4;
+
+    @Parameter(names = "-readWriteQueryPct", description = "Comma separated read write query workload percent")
+    private String readWriteQueryPct = "90,9,1";
+
     @Parameter(names = "-operation", description = "Type of Workload:\n"
         + "\tReadThroughput- run a READ workload that prints only throughput *\n"
         + "\tReadThroughputWithMultipleClients - run a READ workload that prints throughput and latency for multiple client read.*\n"
@@ -97,6 +103,7 @@ class Configuration {
         + "\tQueryTopOrderby - run a 'Select top 1000 * from c order by c._ts' workload that prints throughput\n"
         + "\tMixed - runa workload of 90 reads, 9 writes and 1 QueryTopOrderby per 100 operations *\n"
         + "\tReadMyWrites - run a workflow of writes followed by reads and queries attempting to read the write.*\n"
+        + "\tCtlWorkload - run a ctl workflow.*\n"
         + "\n\t* writes 10k documents initially, which are used in the reads", converter = OperationTypeConverter.class)
     private Operation operation = Operation.WriteThroughput;
 
@@ -155,7 +162,8 @@ class Configuration {
         QueryTopOrderby,
         Mixed,
         ReadMyWrites,
-        ReadThroughputWithMultipleClients;
+        ReadThroughputWithMultipleClients,
+        CtlWorkload;
 
         static Operation fromString(String code) {
 
@@ -344,6 +352,14 @@ class Configuration {
         } else {
             return Integer.parseInt(portAsString);
         }
+    }
+
+    public int getNumberOfCollectionForCtl(){
+        return this.numberOfCollectionForCtl;
+    }
+
+    public String getReadWriteQueryPct() {
+        return this.readWriteQueryPct;
     }
 
     public String toString() {

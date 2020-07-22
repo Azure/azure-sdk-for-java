@@ -38,7 +38,6 @@ import java.net.InetSocketAddress;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.Semaphore;
@@ -47,7 +46,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 abstract class AsyncBenchmark<T> {
     private final MetricRegistry metricsRegistry = new MetricRegistry();
-    private final ScheduledReporter reporter;
+    public ScheduledReporter reporter;
 
     private Meter successMeter;
     private Meter failureMeter;
@@ -131,8 +130,8 @@ abstract class AsyncBenchmark<T> {
             String dataFieldValue = RandomStringUtils.randomAlphabetic(cfg.getDocumentDataFieldSize());
             for (int i = 0; i < cfg.getNumberOfPreCreatedDocuments(); i++) {
                 String uuid = UUID.randomUUID().toString();
-                PojoizedJson newDoc = generateDocument(uuid, dataFieldValue);
-
+                PojoizedJson newDoc = BenchmarkHelper.generateDocument(uuid, dataFieldValue, partitionKey,
+                    configuration.getDocumentDataFieldCount());
                 Flux<PojoizedJson> obs = cosmosAsyncContainer.createItem(newDoc).map(resp -> {
                     PojoizedJson x =
                         resp.getItem();
@@ -320,18 +319,5 @@ abstract class AsyncBenchmark<T> {
 
         reporter.report();
         reporter.close();
-    }
-
-    public PojoizedJson generateDocument(String idString, String dataFieldValue) {
-        PojoizedJson instance = new PojoizedJson();
-        Map<String, String> properties = instance.getInstance();
-        properties.put("id", idString);
-        properties.put(partitionKey, idString);
-
-        for (int i = 0; i < configuration.getDocumentDataFieldCount(); i++) {
-            properties.put("dataField" + i, dataFieldValue);
-        }
-
-        return instance;
     }
 }

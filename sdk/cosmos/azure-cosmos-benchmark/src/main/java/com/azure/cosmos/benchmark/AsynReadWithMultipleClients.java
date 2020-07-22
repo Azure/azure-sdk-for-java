@@ -181,19 +181,6 @@ public class AsynReadWithMultipleClients<T> {
     protected void onError(Throwable throwable) {
     }
 
-    private PojoizedJson generateDocument(String idString, String dataFieldValue, String partitionKey) {
-        com.azure.cosmos.benchmark.PojoizedJson instance = new com.azure.cosmos.benchmark.PojoizedJson();
-        Map<String, String> properties = instance.getInstance();
-        properties.put("id", idString);
-        properties.put(partitionKey, idString);
-
-        for (int i = 0; i < configuration.getDocumentDataFieldCount(); i++) {
-            properties.put("dataField" + i, dataFieldValue);
-        }
-
-        return instance;
-    }
-
     private boolean shouldContinue(long startTimeMillis, long iterationCount) {
 
         Duration maxDurationTime = configuration.getMaxRunningTimeDuration();
@@ -285,7 +272,8 @@ public class AsynReadWithMultipleClients<T> {
 
                     for (int i = 0; i < this.configuration.getNumberOfPreCreatedDocuments(); i++) {
                         String uuid = UUID.randomUUID().toString();
-                        com.azure.cosmos.benchmark.PojoizedJson newDoc = generateDocument(uuid, dataFieldValue, partitionKey);
+                        PojoizedJson newDoc = BenchmarkHelper.generateDocument(uuid,
+                            dataFieldValue, partitionKey, configuration.getDocumentDataFieldCount());
 
                         Flux<PojoizedJson> obs = cosmosAsyncContainer.createItem(newDoc).map(resp -> {
                                 com.azure.cosmos.benchmark.PojoizedJson x =
