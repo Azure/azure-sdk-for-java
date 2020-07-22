@@ -5,6 +5,7 @@ package com.azure.resourcemanager;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.compute.models.CachingTypes;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.PowerState;
@@ -14,7 +15,13 @@ import com.azure.resourcemanager.compute.models.VirtualMachineOffer;
 import com.azure.resourcemanager.compute.models.VirtualMachinePublisher;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineSku;
+import com.azure.resourcemanager.containerinstance.models.Container;
+import com.azure.resourcemanager.containerinstance.models.ContainerGroup;
+import com.azure.resourcemanager.containerinstance.models.ContainerGroupRestartPolicy;
+import com.azure.resourcemanager.containerinstance.models.Operation;
+import com.azure.resourcemanager.containerinstance.models.ResourceIdentityType;
 import com.azure.resourcemanager.msi.MSIManager;
+import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.network.models.Access;
 import com.azure.resourcemanager.network.models.ConnectionMonitor;
 import com.azure.resourcemanager.network.models.ConnectionMonitorQueryResult;
@@ -32,31 +39,35 @@ import com.azure.resourcemanager.network.models.PcStatus;
 import com.azure.resourcemanager.network.models.SecurityGroupView;
 import com.azure.resourcemanager.network.models.Topology;
 import com.azure.resourcemanager.network.models.VerificationIPFlow;
+import com.azure.resourcemanager.resources.core.TestBase;
+import com.azure.resourcemanager.resources.core.TestUtilities;
+import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
+import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
+import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.models.Deployment;
 import com.azure.resourcemanager.resources.models.DeploymentMode;
 import com.azure.resourcemanager.resources.models.GenericResource;
 import com.azure.resourcemanager.resources.models.Location;
 import com.azure.resourcemanager.resources.models.RegionType;
 import com.azure.resourcemanager.resources.models.Subscription;
-import com.azure.resourcemanager.resources.core.TestBase;
-import com.azure.resourcemanager.resources.core.TestUtilities;
-import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.storage.models.SkuName;
 import com.azure.resourcemanager.storage.models.StorageAccount;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 public class AzureTests extends TestBase {
     private Azure azure;
@@ -64,8 +75,7 @@ public class AzureTests extends TestBase {
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
-        Azure.Authenticated azureAuthed =
-            Azure.authenticate(httpPipeline, profile).withSdkContext(sdkContext);
+        Azure.Authenticated azureAuthed = Azure.authenticate(httpPipeline, profile).withSdkContext(sdkContext);
         azure = azureAuthed.withDefaultSubscription();
         this.msiManager = MSIManager.authenticate(httpPipeline, profile, sdkContext);
     }
@@ -274,7 +284,7 @@ public class AzureTests extends TestBase {
     //            resourceGroup = azure.resourceGroups().define(rgName)
     //                    .withRegion(region)
     //                    .create();
-    //            Assert.assertNotNull(resourceGroup);
+    //            Assertions.assertNotNull(resourceGroup);
     //
     //            Creatable<Network> netDefinition = azure.networks().define(netName)
     //                    .withRegion(region)
@@ -360,72 +370,72 @@ public class AzureTests extends TestBase {
     //                    .create();
     //
     //            // Verify VM lock
-    //            Assert.assertEquals(2, azure.managementLocks().listForResource(vm.id()).size());
+    //            Assertions.assertEquals(2, azure.managementLocks().listForResource(vm.id()).size());
     //
-    //            Assert.assertNotNull(lockVM);
+    //            Assertions.assertNotNull(lockVM);
     //            lockVM = azure.managementLocks().getById(lockVM.id());
-    //            Assert.assertNotNull(lockVM);
+    //            Assertions.assertNotNull(lockVM);
     //            TestUtils.print(lockVM);
-    //            Assert.assertEquals(LockLevel.READ_ONLY, lockVM.level());
-    //            Assert.assertTrue(vm.id().equalsIgnoreCase(lockVM.lockedResourceId()));
+    //            Assertions.assertEquals(LockLevel.READ_ONLY, lockVM.level());
+    //            Assertions.assertTrue(vm.id().equalsIgnoreCase(lockVM.lockedResourceId()));
     //
     //            // Verify resource group lock
-    //            Assert.assertNotNull(lockGroup);
+    //            Assertions.assertNotNull(lockGroup);
     //            lockGroup = azure.managementLocks().getByResourceGroup(resourceGroup.name(), "rglock");
-    //            Assert.assertNotNull(lockGroup);
+    //            Assertions.assertNotNull(lockGroup);
     //            TestUtils.print(lockVM);
-    //            Assert.assertEquals(LockLevel.CAN_NOT_DELETE, lockGroup.level());
-    //            Assert.assertTrue(resourceGroup.id().equalsIgnoreCase(lockGroup.lockedResourceId()));
+    //            Assertions.assertEquals(LockLevel.CAN_NOT_DELETE, lockGroup.level());
+    //            Assertions.assertTrue(resourceGroup.id().equalsIgnoreCase(lockGroup.lockedResourceId()));
     //
     //            // Verify storage account lock
-    //            Assert.assertEquals(2, azure.managementLocks().listForResource(storage.id()).size());
+    //            Assertions.assertEquals(2, azure.managementLocks().listForResource(storage.id()).size());
     //
-    //            Assert.assertNotNull(lockStorage);
+    //            Assertions.assertNotNull(lockStorage);
     //            lockStorage = azure.managementLocks().getById(lockStorage.id());
-    //            Assert.assertNotNull(lockStorage);
+    //            Assertions.assertNotNull(lockStorage);
     //            TestUtils.print(lockStorage);
-    //            Assert.assertEquals(LockLevel.CAN_NOT_DELETE, lockStorage.level());
-    //            Assert.assertTrue(storage.id().equalsIgnoreCase(lockStorage.lockedResourceId()));
+    //            Assertions.assertEquals(LockLevel.CAN_NOT_DELETE, lockStorage.level());
+    //            Assertions.assertTrue(storage.id().equalsIgnoreCase(lockStorage.lockedResourceId()));
     //
     //            // Verify disk lock
-    //            Assert.assertEquals(3, azure.managementLocks().listForResource(disk.id()).size());
+    //            Assertions.assertEquals(3, azure.managementLocks().listForResource(disk.id()).size());
     //
-    //            Assert.assertNotNull(lockDiskRO);
+    //            Assertions.assertNotNull(lockDiskRO);
     //            lockDiskRO = azure.managementLocks().getById(lockDiskRO.id());
-    //            Assert.assertNotNull(lockDiskRO);
+    //            Assertions.assertNotNull(lockDiskRO);
     //            TestUtils.print(lockDiskRO);
-    //            Assert.assertEquals(LockLevel.READ_ONLY, lockDiskRO.level());
-    //            Assert.assertTrue(disk.id().equalsIgnoreCase(lockDiskRO.lockedResourceId()));
+    //            Assertions.assertEquals(LockLevel.READ_ONLY, lockDiskRO.level());
+    //            Assertions.assertTrue(disk.id().equalsIgnoreCase(lockDiskRO.lockedResourceId()));
     //
-    //            Assert.assertNotNull(lockDiskDel);
+    //            Assertions.assertNotNull(lockDiskDel);
     //            lockDiskDel = azure.managementLocks().getById(lockDiskDel.id());
-    //            Assert.assertNotNull(lockDiskDel);
+    //            Assertions.assertNotNull(lockDiskDel);
     //            TestUtils.print(lockDiskDel);
-    //            Assert.assertEquals(LockLevel.CAN_NOT_DELETE, lockDiskDel.level());
-    //            Assert.assertTrue(disk.id().equalsIgnoreCase(lockDiskDel.lockedResourceId()));
+    //            Assertions.assertEquals(LockLevel.CAN_NOT_DELETE, lockDiskDel.level());
+    //            Assertions.assertTrue(disk.id().equalsIgnoreCase(lockDiskDel.lockedResourceId()));
     //
     //            // Verify subnet lock
-    //            Assert.assertEquals(2, azure.managementLocks().listForResource(network.id()).size());
+    //            Assertions.assertEquals(2, azure.managementLocks().listForResource(network.id()).size());
     //
     //            lockSubnet = azure.managementLocks().getById(lockSubnet.id());
-    //            Assert.assertNotNull(lockSubnet);
+    //            Assertions.assertNotNull(lockSubnet);
     //            TestUtils.print(lockSubnet);
-    //            Assert.assertEquals(LockLevel.READ_ONLY, lockSubnet.level());
-    //            Assert.assertTrue(subnet.inner().id().equalsIgnoreCase(lockSubnet.lockedResourceId()));
+    //            Assertions.assertEquals(LockLevel.READ_ONLY, lockSubnet.level());
+    //            Assertions.assertTrue(subnet.inner().id().equalsIgnoreCase(lockSubnet.lockedResourceId()));
     //
     //            // Verify lock collection
     //            List<ManagementLock> locksSubscription = azure.managementLocks().list();
     //            List<ManagementLock> locksGroup = azure.managementLocks().listByResourceGroup(vm.resourceGroupName());
-    //            Assert.assertNotNull(locksSubscription);
-    //            Assert.assertNotNull(locksGroup);
+    //            Assertions.assertNotNull(locksSubscription);
+    //            Assertions.assertNotNull(locksGroup);
     //
     //            int locksAllCount = locksSubscription.size();
     //            System.out.println("All locks: " + locksAllCount);
-    //            Assert.assertTrue(6 <= locksAllCount);
+    //            Assertions.assertTrue(6 <= locksAllCount);
     //
     //            int locksGroupCount = locksGroup.size();
     //            System.out.println("Group locks: " + locksGroupCount);
-    //            Assert.assertEquals(6, locksGroup.size());
+    //            Assertions.assertEquals(6, locksGroup.size());
     //        } catch (Exception ex) {
     //            ex.printStackTrace(System.out);
     //        } finally {
@@ -861,7 +871,7 @@ public class AzureTests extends TestBase {
 
             azure.virtualMachines().deleteById(virtualMachines[1].id());
             topology.execute();
-            //            Assert.assertEquals(10, topology.resources().size());     // not sure why it is 18 now
+            //            Assertions.assertEquals(10, topology.resources().size());     // not sure why it is 18 now
         } finally {
             if (nwrg != null) {
                 azure.resourceGroups().beginDeleteByName(nwrg);
@@ -1085,134 +1095,141 @@ public class AzureTests extends TestBase {
         new TestKubernetesCluster().runTest(azure.kubernetesClusters(), azure.resourceGroups());
     }
 
-    //    @Test
-    //    public void testContainerInstanceWithPublicIpAddressWithSystemAssignedMsi() throws Exception {
-    //        new TestContainerInstanceWithPublicIpAddressWithSystemAssignedMSI().runTest(azure.containerGroups(),
-    // azure.resourceGroups(), azure.subscriptionId());
-    //    }
-    //
-    //    @Test
-    //    public void testContainerInstanceWithPublicIpAddressWithUserAssignedMsi() throws Exception {
-    //        final String cgName = SdkContext.randomResourceName("aci", 10);
-    //        final String rgName = SdkContext.randomResourceName("rgaci", 10);
-    //        String identityName1 = generateRandomResourceName("msi-id", 15);
-    //        String identityName2 = generateRandomResourceName("msi-id", 15);
-    //
-    //        final Identity createdIdentity = msiManager.identities()
-    //                .define(identityName1)
-    //                .withRegion(Region.US_WEST)
-    //                .withNewResourceGroup(rgName)
-    //                .withAccessToCurrentResourceGroup(BuiltInRole.READER)
-    //                .create();
-    //
-    //        Creatable<Identity> creatableIdentity = msiManager.identities()
-    //                .define(identityName2)
-    //                .withRegion(Region.US_WEST)
-    //                .withExistingResourceGroup(rgName)
-    //                .withAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR);
-    //
-    //
-    //        List<String> dnsServers = new ArrayList<String>();
-    //        dnsServers.add("dnsServer1");
-    //        ContainerGroup containerGroup = azure.containerGroups().define(cgName)
-    //                .withRegion(Region.US_EAST2)
-    //                .withExistingResourceGroup(rgName)
-    //                .withLinux()
-    //                .withPublicImageRegistryOnly()
-    //                .withEmptyDirectoryVolume("emptydir1")
-    //                .defineContainerInstance("tomcat")
-    //                .withImage("tomcat")
-    //                .withExternalTcpPort(8080)
-    //                .withCpuCoreCount(1)
-    //                .withEnvironmentVariable("ENV1", "value1")
-    //                .attach()
-    //                .defineContainerInstance("nginx")
-    //                .withImage("nginx")
-    //                .withExternalTcpPort(80)
-    //                .withEnvironmentVariableWithSecuredValue("ENV2", "securedValue1")
-    //                .attach()
-    //                .withExistingUserAssignedManagedServiceIdentity(createdIdentity)
-    //                .withNewUserAssignedManagedServiceIdentity(creatableIdentity)
-    //                .withRestartPolicy(ContainerGroupRestartPolicy.NEVER)
-    //                .withDnsPrefix(cgName)
-    //                .withTag("tag1", "value1")
-    //                .create();
-    //
-    //        Assert.assertEquals(cgName, containerGroup.name());
-    //        Assert.assertEquals("Linux", containerGroup.osType().toString());
-    //        Assert.assertEquals(0, containerGroup.imageRegistryServers().size());
-    //        Assert.assertEquals(1, containerGroup.volumes().size());
-    //        Assert.assertNotNull(containerGroup.volumes().get("emptydir1"));
-    //        Assert.assertNotNull(containerGroup.ipAddress());
-    //        Assert.assertTrue(containerGroup.isIPAddressPublic());
-    //        Assert.assertEquals(2, containerGroup.externalTcpPorts().length);
-    //        Assert.assertEquals(2, containerGroup.externalPorts().size());
-    //        Assert.assertEquals(2, containerGroup.externalTcpPorts().length);
-    //        Assert.assertEquals(8080, containerGroup.externalTcpPorts()[0]);
-    //        Assert.assertEquals(80, containerGroup.externalTcpPorts()[1]);
-    //        Assert.assertEquals(2, containerGroup.containers().size());
-    //        Container tomcatContainer = containerGroup.containers().get("tomcat");
-    //        Assert.assertNotNull(tomcatContainer);
-    //        Container nginxContainer = containerGroup.containers().get("nginx");
-    //        Assert.assertNotNull(nginxContainer);
-    //        Assert.assertEquals("tomcat", tomcatContainer.name());
-    //        Assert.assertEquals("tomcat", tomcatContainer.image());
-    //        Assert.assertEquals(1.0, tomcatContainer.resources().requests().cpu(), .1);
-    //        Assert.assertEquals(1.5, tomcatContainer.resources().requests().memoryInGB(), .1);
-    //        Assert.assertEquals(1, tomcatContainer.ports().size());
-    //        Assert.assertEquals(8080, tomcatContainer.ports().get(0).port());
-    //        Assert.assertNull(tomcatContainer.volumeMounts());
-    //        Assert.assertNull(tomcatContainer.command());
-    //        Assert.assertNotNull(tomcatContainer.environmentVariables());
-    //        Assert.assertEquals(1, tomcatContainer.environmentVariables().size());
-    //        Assert.assertEquals("nginx", nginxContainer.name());
-    //        Assert.assertEquals("nginx", nginxContainer.image());
-    //        Assert.assertEquals(1.0, nginxContainer.resources().requests().cpu(), .1);
-    //        Assert.assertEquals(1.5, nginxContainer.resources().requests().memoryInGB(), .1);
-    //        Assert.assertEquals(1, nginxContainer.ports().size());
-    //        Assert.assertEquals(80, nginxContainer.ports().get(0).port());
-    //        Assert.assertNull(nginxContainer.volumeMounts());
-    //        Assert.assertNull(nginxContainer.command());
-    //        Assert.assertNotNull(nginxContainer.environmentVariables());
-    //        Assert.assertEquals(1, nginxContainer.environmentVariables().size());
-    //        Assert.assertTrue(containerGroup.tags().containsKey("tag1"));
-    //        Assert.assertEquals(ContainerGroupRestartPolicy.NEVER, containerGroup.restartPolicy());
-    //        Assert.assertTrue(containerGroup.isManagedServiceIdentityEnabled());
-    //        Assert.assertEquals(ResourceIdentityType.USER_ASSIGNED, containerGroup.managedServiceIdentityType());
-    //        Assert.assertNull(containerGroup.systemAssignedManagedServiceIdentityPrincipalId()); // No Local MSI
-    // enabled
-    //
-    //        // Ensure the "User Assigned (External) MSI" id can be retrieved from the virtual machine
-    //        //
-    //        Set<String> emsiIds = containerGroup.userAssignedManagedServiceIdentityIds();
-    //        Assert.assertNotNull(emsiIds);
-    //        Assert.assertEquals(2, emsiIds.size());
-    //        Assert.assertEquals(cgName, containerGroup.dnsPrefix());
-    //
-    //        //TODO: add network and dns testing when questions have been answered
-    //
-    //        ContainerGroup containerGroup2 = azure.containerGroups().getByResourceGroup(rgName, cgName);
-    //
-    //        List<ContainerGroup> containerGroupList = azure.containerGroups().listByResourceGroup(rgName);
-    //        Assert.assertTrue(containerGroupList.size() > 0);
-    //        Assert.assertNotNull(containerGroupList.get(0).state());
-    //
-    //        containerGroup.refresh();
-    //
-    //        Set<Operation> containerGroupOperations = azure.containerGroups().listOperations();
-    //        // Number of supported operation can change hence don't assert with a predefined number.
-    //        Assert.assertTrue(containerGroupOperations.size() > 0);
-    //    }
+    @Test
+    public void testContainerInstanceWithPublicIpAddressWithSystemAssignedMsi() throws Exception {
+        new TestContainerInstanceWithPublicIpAddressWithSystemAssignedMSI()
+            .runTest(azure.containerGroups(), azure.resourceGroups(), azure.subscriptionId());
+    }
 
-    //    @Test
-    //    public void testContainerInstanceWithPrivateIpAddress() throws Exception {
-    //        //LIVE ONLY TEST BECAUSE IT REQUIRES SUBSCRIPTION ID
-    //        if (!isPlaybackMode()) {
-    //            new TestContainerInstanceWithPrivateIpAddress()
-    //                    .runTest(azure.containerGroups(), azure.resourceGroups(), azure.subscriptionId());
-    //        }
-    //    }
-    //
+    @Test
+    public void testContainerInstanceWithPublicIpAddressWithUserAssignedMsi() throws Exception {
+        final String cgName = generateRandomResourceName("aci", 10);
+        final String rgName = generateRandomResourceName("rgaci", 10);
+        String identityName1 = generateRandomResourceName("msi-id", 15);
+        String identityName2 = generateRandomResourceName("msi-id", 15);
+
+        final Identity createdIdentity =
+            msiManager
+                .identities()
+                .define(identityName1)
+                .withRegion(Region.US_WEST)
+                .withNewResourceGroup(rgName)
+                .withAccessToCurrentResourceGroup(BuiltInRole.READER)
+                .create();
+
+        Creatable<Identity> creatableIdentity =
+            msiManager
+                .identities()
+                .define(identityName2)
+                .withRegion(Region.US_WEST)
+                .withExistingResourceGroup(rgName)
+                .withAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR);
+
+        List<String> dnsServers = new ArrayList<String>();
+        dnsServers.add("dnsServer1");
+        ContainerGroup containerGroup =
+            azure
+                .containerGroups()
+                .define(cgName)
+                .withRegion(Region.US_EAST2)
+                .withExistingResourceGroup(rgName)
+                .withLinux()
+                .withPublicImageRegistryOnly()
+                .withEmptyDirectoryVolume("emptydir1")
+                .defineContainerInstance("tomcat")
+                .withImage("tomcat")
+                .withExternalTcpPort(8080)
+                .withCpuCoreCount(1)
+                .withEnvironmentVariable("ENV1", "value1")
+                .attach()
+                .defineContainerInstance("nginx")
+                .withImage("nginx")
+                .withExternalTcpPort(80)
+                .withEnvironmentVariableWithSecuredValue("ENV2", "securedValue1")
+                .attach()
+                .withExistingUserAssignedManagedServiceIdentity(createdIdentity)
+                .withNewUserAssignedManagedServiceIdentity(creatableIdentity)
+                .withRestartPolicy(ContainerGroupRestartPolicy.NEVER)
+                .withDnsPrefix(cgName)
+                .withTag("tag1", "value1")
+                .create();
+
+        Assertions.assertEquals(cgName, containerGroup.name());
+        Assertions.assertEquals("Linux", containerGroup.osType().toString());
+        Assertions.assertEquals(0, containerGroup.imageRegistryServers().size());
+        Assertions.assertEquals(1, containerGroup.volumes().size());
+        Assertions.assertNotNull(containerGroup.volumes().get("emptydir1"));
+        Assertions.assertNotNull(containerGroup.ipAddress());
+        Assertions.assertTrue(containerGroup.isIPAddressPublic());
+        Assertions.assertEquals(2, containerGroup.externalTcpPorts().length);
+        Assertions.assertEquals(2, containerGroup.externalPorts().size());
+        Assertions.assertEquals(2, containerGroup.externalTcpPorts().length);
+        Assertions.assertEquals(8080, containerGroup.externalTcpPorts()[0]);
+        Assertions.assertEquals(80, containerGroup.externalTcpPorts()[1]);
+        Assertions.assertEquals(2, containerGroup.containers().size());
+        Container tomcatContainer = containerGroup.containers().get("tomcat");
+        Assertions.assertNotNull(tomcatContainer);
+        Container nginxContainer = containerGroup.containers().get("nginx");
+        Assertions.assertNotNull(nginxContainer);
+        Assertions.assertEquals("tomcat", tomcatContainer.name());
+        Assertions.assertEquals("tomcat", tomcatContainer.image());
+        Assertions.assertEquals(1.0, tomcatContainer.resources().requests().cpu(), .1);
+        Assertions.assertEquals(1.5, tomcatContainer.resources().requests().memoryInGB(), .1);
+        Assertions.assertEquals(1, tomcatContainer.ports().size());
+        Assertions.assertEquals(8080, tomcatContainer.ports().get(0).port());
+        Assertions.assertNull(tomcatContainer.volumeMounts());
+        Assertions.assertNull(tomcatContainer.command());
+        Assertions.assertNotNull(tomcatContainer.environmentVariables());
+        Assertions.assertEquals(1, tomcatContainer.environmentVariables().size());
+        Assertions.assertEquals("nginx", nginxContainer.name());
+        Assertions.assertEquals("nginx", nginxContainer.image());
+        Assertions.assertEquals(1.0, nginxContainer.resources().requests().cpu(), .1);
+        Assertions.assertEquals(1.5, nginxContainer.resources().requests().memoryInGB(), .1);
+        Assertions.assertEquals(1, nginxContainer.ports().size());
+        Assertions.assertEquals(80, nginxContainer.ports().get(0).port());
+        Assertions.assertNull(nginxContainer.volumeMounts());
+        Assertions.assertNull(nginxContainer.command());
+        Assertions.assertNotNull(nginxContainer.environmentVariables());
+        Assertions.assertEquals(1, nginxContainer.environmentVariables().size());
+        Assertions.assertTrue(containerGroup.tags().containsKey("tag1"));
+        Assertions.assertEquals(ContainerGroupRestartPolicy.NEVER, containerGroup.restartPolicy());
+        Assertions.assertTrue(containerGroup.isManagedServiceIdentityEnabled());
+        Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, containerGroup.managedServiceIdentityType());
+        Assertions.assertNull(containerGroup.systemAssignedManagedServiceIdentityPrincipalId()); // No Local MSI enabled
+
+        // Ensure the "User Assigned (External) MSI" id can be retrieved from the virtual machine
+        //
+        Set<String> emsiIds = containerGroup.userAssignedManagedServiceIdentityIds();
+        Assertions.assertNotNull(emsiIds);
+        Assertions.assertEquals(2, emsiIds.size());
+        Assertions.assertEquals(cgName, containerGroup.dnsPrefix());
+
+        // TODO: add network and dns testing when questions have been answered
+
+        ContainerGroup containerGroup2 = azure.containerGroups().getByResourceGroup(rgName, cgName);
+
+        List<ContainerGroup> containerGroupList =
+            azure.containerGroups().listByResourceGroup(rgName).stream().collect(Collectors.toList());
+        Assertions.assertTrue(containerGroupList.size() > 0);
+
+        containerGroup.refresh();
+
+        Set<Operation> containerGroupOperations =
+            azure.containerGroups().listOperations().stream().collect(Collectors.toSet());
+        // Number of supported operation can change hence don't assert with a predefined number.
+        Assertions.assertTrue(containerGroupOperations.size() > 0);
+    }
+
+    @Disabled("Cannot run test due to unknown parameter")
+    @Test
+    public void testContainerInstanceWithPrivateIpAddress() throws Exception {
+        // LIVE ONLY TEST BECAUSE IT REQUIRES SUBSCRIPTION ID
+        if (!isPlaybackMode()) {
+            new TestContainerInstanceWithPrivateIpAddress()
+                .runTest(azure.containerGroups(), azure.resourceGroups(), azure.subscriptionId());
+        }
+    }
+
     @Test
     public void testContainerRegistry() throws Exception {
         new TestContainerRegistry().runTest(azure.containerRegistries(), azure.resourceGroups());
