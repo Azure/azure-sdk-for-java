@@ -40,7 +40,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     private CosmosContainer container;
     private CosmosAsyncContainer cosmosAsyncContainer;
 
-    @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
         assertThat(this.gatewayClient).isNull();
         gatewayClient = new CosmosClientBuilder()
@@ -59,7 +59,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         container = gatewayClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
     }
 
-    @AfterClass(groups = {"emulator"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         assertThat(this.gatewayClient).isNotNull();
         this.gatewayClient.close();
@@ -68,7 +68,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"emulator"})
+    @Test(groups = {"simple"})
     public void gatewayDiagnostics() {
         InternalObjectNode internalObjectNode = getInternalObjectNode();
         CosmosItemResponse<InternalObjectNode> createResponse = this.container.createItem(internalObjectNode);
@@ -84,7 +84,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         validateJson(diagnostics);
     }
 
-    @Test(groups = {"emulator"})
+    @Test(groups = {"simple"})
     public void gatewayDiagnosticsOnException() {
         InternalObjectNode internalObjectNode = getInternalObjectNode();
         CosmosItemResponse<InternalObjectNode> createResponse = null;
@@ -123,7 +123,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"emulator"})
+    @Test(groups = {"simple"})
     public void systemDiagnosticsForSystemStateInformation() {
         InternalObjectNode internalObjectNode = getInternalObjectNode();
         CosmosItemResponse<InternalObjectNode> createResponse = this.container.createItem(internalObjectNode);
@@ -137,7 +137,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(createResponse.getDiagnostics().getDuration()).isNotNull();
     }
 
-    @Test(groups = {"emulator"})
+    @Test(groups = {"simple"})
     public void directDiagnostics() {
         CosmosContainer cosmosContainer = directClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
         InternalObjectNode internalObjectNode = getInternalObjectNode();
@@ -157,7 +157,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         validateJson(diagnostics);
     }
 
-    @Test(groups = {"emulator"})
+    @Test(groups = {"simple"})
     public void directDiagnosticsOnException() {
         CosmosContainer cosmosContainer = directClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
         InternalObjectNode internalObjectNode = getInternalObjectNode();
@@ -195,7 +195,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"emulator"})
+    @Test(groups = {"simple"})
     public void supplementalResponseStatisticsList() throws Exception {
         ClientSideRequestStatistics clientSideRequestStatistics = new ClientSideRequestStatistics();
         for (int i = 0; i < 15; i++) {
@@ -226,7 +226,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(supplementalResponseStatisticsListNode.size()).isEqualTo(7);
     }
 
-    @Test(groups = {"emulator"})
+    @Test(groups = {"simple"})
     public void serializationOnVariousScenarios() {
         //checking database serialization
         CosmosDatabaseResponse cosmosDatabase = gatewayClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).read();
