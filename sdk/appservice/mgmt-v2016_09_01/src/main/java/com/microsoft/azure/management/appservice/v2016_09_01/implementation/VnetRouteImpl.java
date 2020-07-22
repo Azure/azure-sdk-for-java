@@ -14,13 +14,13 @@ import rx.Observable;
 import com.microsoft.azure.management.appservice.v2016_09_01.RouteType;
 
 class VnetRouteImpl extends CreatableUpdatableImpl<VnetRoute, VnetRouteInner, VnetRouteImpl> implements VnetRoute, VnetRoute.Definition, VnetRoute.Update {
-    private final AppServiceManager manager;
+    private final WebManager manager;
     private String resourceGroupName;
     private String name;
     private String vnetName;
     private String routeName;
 
-    VnetRouteImpl(String name, AppServiceManager manager) {
+    VnetRouteImpl(String name, WebManager manager) {
         super(name, new VnetRouteInner());
         this.manager = manager;
         // Set resource name
@@ -28,7 +28,7 @@ class VnetRouteImpl extends CreatableUpdatableImpl<VnetRoute, VnetRouteInner, Vn
         //
     }
 
-    VnetRouteImpl(VnetRouteInner inner, AppServiceManager manager) {
+    VnetRouteImpl(VnetRouteInner inner, WebManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -42,7 +42,7 @@ class VnetRouteImpl extends CreatableUpdatableImpl<VnetRoute, VnetRouteInner, Vn
     }
 
     @Override
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 

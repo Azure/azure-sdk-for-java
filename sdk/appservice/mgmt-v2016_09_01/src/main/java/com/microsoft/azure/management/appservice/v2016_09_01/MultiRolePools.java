@@ -11,13 +11,13 @@ package com.microsoft.azure.management.appservice.v2016_09_01;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.appservice.v2016_09_01.implementation.WorkerPoolResourceInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2016_09_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2016_09_01.implementation.WebManager;
 import java.util.List;
 
 /**
  * Type representing MultiRolePools.
  */
-public interface MultiRolePools extends HasInner<WorkerPoolResourceInner>, HasManager<AppServiceManager> {
+public interface MultiRolePools extends HasInner<WorkerPoolResourceInner>, HasManager<WebManager> {
     /**
      * @return the computeMode value.
      */
