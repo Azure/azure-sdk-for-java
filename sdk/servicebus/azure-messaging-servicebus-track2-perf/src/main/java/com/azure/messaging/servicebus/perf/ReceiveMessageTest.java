@@ -8,6 +8,8 @@ import com.azure.messaging.servicebus.perf.core.ServiceTest;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.concurrent.TimeUnit;
+
 
 public class ReceiveMessageTest extends ServiceTest<ServiceBusStressOptions> {
 
@@ -52,5 +54,14 @@ public class ReceiveMessageTest extends ServiceTest<ServiceBusStressOptions> {
                  return messageContext;
              })
              .then();
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        ServiceBusStressOptions options  = new ServiceBusStressOptions();
+        ReceiveMessageTest test = new ReceiveMessageTest(options);
+
+        test.runAsync().subscribe();
+
+        TimeUnit.SECONDS.sleep(20);
     }
 }
