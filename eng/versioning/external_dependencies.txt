@@ -85,8 +85,8 @@ org.springframework.boot:spring-boot-starter;2.3.0.RELEASE
 org.springframework.boot:spring-boot;2.3.0.RELEASE
 org.springframework.boot:spring-boot-starter-parent;2.3.0.RELEASE
 org.springframework.data:spring-data-commons;2.3.0.RELEASE
-org.springframework.cloud:spring-cloud-bus:2.2.0.RELEASE
-org.springframework.cloud:spring-cloud-context:2.2.0.RELEASE
+org.springframework.cloud:spring-cloud-bus;2.2.0.RELEASE
+org.springframework.cloud:spring-cloud-context;2.2.0.RELEASE
 org.springframework.security:spring-security-config;5.3.2.RELEASE
 org.springframework.security:spring-security-core;5.3.2.RELEASE
 org.springframework.security:spring-security-web;5.3.2.RELEASE
