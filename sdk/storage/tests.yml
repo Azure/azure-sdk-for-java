@@ -35,7 +35,7 @@ jobs:
         - name: azure-storage-queue
           groupId: com.azure
           safeName: azurestoragequeue
-      TimeoutInMinutes: 240
+      TimeoutInMinutes: 120
       Location: canadacentral
       SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)
       EnvVars:
