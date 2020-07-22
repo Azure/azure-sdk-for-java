@@ -8,7 +8,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Configuration;
 import com.azure.identity.AuthenticationRecord;
-import com.azure.identity.KnownAuthorityHosts;
+import com.azure.identity.AzureAuthorityHosts;
 import com.microsoft.aad.msal4jextensions.PersistenceSettings;
 import com.sun.jna.Platform;
 
@@ -58,11 +58,10 @@ public final class IdentityClientOptions {
      */
     public IdentityClientOptions() {
         Configuration configuration = Configuration.getGlobalConfiguration();
-        authorityHost = configuration.get(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, KnownAuthorityHosts.AZURE_CLOUD);
+        authorityHost = configuration.get(Configuration.PROPERTY_AZURE_AUTHORITY_HOST,
+            AzureAuthorityHosts.AZURE_PUBLIC_CLOUD);
         maxRetry = MAX_RETRY_DEFAULT_LIMIT;
         retryTimeout = i -> Duration.ofSeconds((long) Math.pow(2, i.getSeconds() - 1));
-        allowUnencryptedCache = false;
-        sharedTokenCacheEnabled = false;
     }
 
     /**
@@ -238,16 +237,15 @@ public final class IdentityClientOptions {
             .build();
     }
 
+
     /**
-     * Sets whether to use an unprotected file specified by <code>cacheFileLocation()</code> instead of
-     * Gnome keyring on Linux. This is false by default.
-     *
-     * @param allowUnencryptedCache whether to use an unprotected file for cache storage.
+     * Allows to use an unprotected file specified by <code>cacheFileLocation()</code> instead of
+     * Gnome keyring on Linux. This is restricted by default.
      *
      * @return The updated identity client options.
      */
-    public IdentityClientOptions allowUnencryptedCache(boolean allowUnencryptedCache) {
-        this.allowUnencryptedCache = allowUnencryptedCache;
+    public IdentityClientOptions allowUnencryptedCache() {
+        this.allowUnencryptedCache = true;
         return this;
     }
 
@@ -270,14 +268,14 @@ public final class IdentityClientOptions {
     }
 
     /**
-     * Sets whether to enable using the shared token cache. This is disabled by default.
-     *
-     * @param enabled whether to enable using the shared token cache.
+     * Enables the shared token cache which is disabled by default. If enabled, the client will store tokens
+     * in a cache persisted to the machine, protected to the current user, which can be shared by other credentials
+     * and processes.
      *
      * @return The updated identity client options.
      */
-    public IdentityClientOptions enablePersistentCache(boolean enabled) {
-        this.sharedTokenCacheEnabled = enabled;
+    public IdentityClientOptions enablePersistentCache() {
+        this.sharedTokenCacheEnabled = true;
         return this;
     }
 
