@@ -135,25 +135,19 @@ public abstract class AbstractQueryGenerator {
 
         final Collection<Object> values = (Collection<Object>) criteria.getSubjectValues().get(0);
 
-        final StringBuilder builder = new StringBuilder();
-        int index = 0;
+        final List<String> paras = new ArrayList<>();
         for (Object o : values) {
             if (o instanceof String || o instanceof Integer || o instanceof Long || o instanceof Boolean) {
-                String key = "p" + index;
-                if (index == 0) {
-                    builder.append("@").append(key);
-                } else {
-                    builder.append(",@").append(key);
-                }
+                String key = "p" + parameters.size();
+                paras.add("@" + key);
                 parameters.add(Pair.with(key, o));
-                index++;
             } else {
                 throw new IllegalQueryException("IN keyword Range only support Number and String type.");
             }
         }
 
         return String.format("r.%s %s (%s)", criteria.getSubject(), criteria.getType().getSqlKeyword(),
-            builder.toString());
+            String.join(",", paras));
     }
 
     private String generateQueryBody(@NonNull Criteria criteria, @NonNull List<Pair<String, Object>> parameters) {
