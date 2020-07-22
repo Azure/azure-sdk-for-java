@@ -263,7 +263,7 @@ public final class BlobBatch {
      *
      * <p><strong>Code sample</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.batch.BlobBatch.setBlobAccessTier#String-AccessTier-String}
+     * {@codesnippet com.azure.storage.blob.batch.BlobBatch.setBlobAccessTier#BlobBatchSetBlobAccessTierOptions}
      *
      * @param options {@link BlobBatchSetBlobAccessTierOptions}
      * @return a {@link Response} that will be used to associate this operation to the response when the batch is
