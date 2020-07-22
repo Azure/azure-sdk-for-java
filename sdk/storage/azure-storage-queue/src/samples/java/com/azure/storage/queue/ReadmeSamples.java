@@ -19,10 +19,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md
- * FILE. LINE NUMBERS ARE USED TO EXTRACT APPROPRIATE CODE SEGMENTS FROM THIS
- * FILE. ADD NEW CODE AT THE BOTTOM TO AVOID CHANGING LINE NUMBERS OF EXISTING
- * CODE SAMPLES.
+ * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS
+ * ARE USED TO EXTRACT APPROPRIATE CODE SEGMENTS FROM THIS FILE. ADD NEW CODE AT THE BOTTOM TO AVOID CHANGING
+ * LINE NUMBERS OF EXISTING CODE SAMPLES.
  *
  * Code samples for the README.md
  */
@@ -51,8 +50,7 @@ public class ReadmeSamples {
     private Logger logger = LoggerFactory.getLogger(ReadmeSamples.class);
 
     public void getQueueServiceClient1() {
-        // Only one "?" is needed here. If the sastoken starts with "?", please removing
-        // one "?".
+        // Only one "?" is needed here. If the sastoken starts with "?", please removing one "?".
         String queueServiceURL = String.format("https://%s.queue.core.windows.net/?%s", ACCOUNT_NAME, SAS_TOKEN);
         QueueServiceClient queueServiceClient = new QueueServiceClientBuilder().endpoint(queueServiceURL).buildClient();
     }
@@ -104,8 +102,7 @@ public class ReadmeSamples {
     }
 
     public void createWithResponse2() {
-        // Only one "?" is needed here. If the sastoken starts with "?", please removing
-        // one "?".
+        // Only one "?" is needed here. If the sastoken starts with "?", please removing one "?".
         String queueAsyncURL = String.format("https://%s.queue.core.windows.net/%s?%s", ACCOUNT_NAME, queueAsyncName,
                 SAS_TOKEN);
         QueueAsyncClient queueAsyncClient = new QueueClientBuilder().endpoint(queueAsyncURL).buildAsyncClient();
@@ -133,8 +130,7 @@ public class ReadmeSamples {
         // @param marker: Starting point to list the queues
         // @param options: Filter for queue selection
         // @param timeout: An optional timeout applied to the operation.
-        // @param context: Additional context that is passed through the Http pipeline
-        // during the service call.
+        // @param context: Additional context that is passed through the Http pipeline during the service call.
         queueServiceClient.listQueues(markers, options, timeout, context).stream().forEach(queueItem -> {
             System.out.printf("Queue %s exists in the account.", queueItem.getName());
         });
@@ -178,11 +174,9 @@ public class ReadmeSamples {
         String queueURL = String.format("https://%s.queue.core.windows.net", ACCOUNT_NAME);
         QueueClient queueClient = new QueueClientBuilder().endpoint(queueURL).sasToken(SAS_TOKEN).queueName("myqueue")
                 .buildClient();
-        // @param messageId Id of the message
-        // @param popReceipt Unique identifier that must match the message for it to be
-        // updated
-        // @param visibilityTimeout How long the message will be invisible in the queue
-        // in seconds
+        // @param messageId: Id of the message
+        // @param popReceipt: Unique identifier that must match the message for it to be updated
+        // @param visibilityTimeout: How long the message will be invisible in the queue in seconds
         queueClient.updateMessage(messageId, popReceipt, "new message", visibilityTimeout);
     }
 
@@ -190,8 +184,8 @@ public class ReadmeSamples {
         String queueURL = String.format("https://%s.queue.core.windows.net", ACCOUNT_NAME);
         QueueClient queueClient = new QueueClientBuilder().endpoint(queueURL).sasToken(SAS_TOKEN).queueName("myqueue")
                 .buildClient();
-        // @param key The key with which the specified value should be associated.
-        // @param value The value to be associated with the specified key.
+        // @param key: The key with which the specified value should be associated.
+        // @param value: The value to be associated with the specified key.
         queueClient.peekMessages(5, Duration.ofSeconds(1), new Context(key, value)).forEach(message -> {
             System.out.println(message.getMessageText());
         });
