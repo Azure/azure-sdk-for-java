@@ -47,6 +47,15 @@ public class UploadUtils {
             // First buffer is emitted after threshold is breached or there's no more data.
             // Therefore we can make a decision how to upload data on first element.
             .switchOnFirst((signal, flux) -> {
+                // If there is an error before the threshold is reached, propagate the error
+                if (signal.isOnError()) {
+                    Throwable t = signal.getThrowable();
+                    if (t != null) {
+                        return Flux.error(t);
+                    } else {
+                        return Flux.error(new IllegalStateException("Source flux failed but cause is unretrievable"));
+                    }
+                }
                 if (gate.isThresholdBreached()) {
                     // In this case we can pass a flux that can have just one subscriber because
                     // the chunked upload is going to cache the data downstream before sending chunks over the wire.

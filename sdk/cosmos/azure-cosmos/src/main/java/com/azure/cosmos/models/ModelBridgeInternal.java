@@ -33,6 +33,8 @@ import com.azure.cosmos.implementation.UserDefinedFunction;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.Warning;
 import com.azure.cosmos.implementation.directconnectivity.Address;
+import com.azure.cosmos.implementation.ItemDeserializer;
+import com.azure.cosmos.implementation.encryption.api.EncryptionOptions;
 import com.azure.cosmos.implementation.query.PartitionedQueryExecutionInfoInternal;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.query.QueryItem;
@@ -79,13 +81,13 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> CosmosItemResponse<T> createCosmosAsyncItemResponse(ResourceResponse<Document> response, Class<T> classType) {
-        return new CosmosItemResponse<>(response, classType);
+    public static <T> CosmosItemResponse<T> createCosmosAsyncItemResponse(ResourceResponse<Document> response, Class<T> classType, ItemDeserializer itemDeserializer) {
+        return new CosmosItemResponse<>(response, classType, itemDeserializer);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosItemResponse<Object> createCosmosAsyncItemResponseWithObjectType(ResourceResponse<Document> response) {
-        return new CosmosItemResponse<>(response, Object.class);
+        return new CosmosItemResponse<>(response, Object.class, null);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -608,6 +610,13 @@ public final class ModelBridgeInternal {
         } else {
             throw new IllegalArgumentException("getJsonSerializable method does not exists in class " + t.getClass());
         }
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static CosmosItemRequestOptions setEncryptionOptions(CosmosItemRequestOptions options,
+                                                                EncryptionOptions encryptionOptions) {
+        options.setEncryptionOptions(encryptionOptions);
+        return options;
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

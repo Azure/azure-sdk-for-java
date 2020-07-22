@@ -12,6 +12,7 @@ import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.util.Context;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -82,19 +83,18 @@ public class FormRecognizerClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link FormRecognizerClient#beginRecognizeCustomFormsFromUrl(String, String, RecognizeOptions)}
+     * Code snippet for {@link FormRecognizerClient#beginRecognizeCustomFormsFromUrl(String, String, RecognizeOptions, Context)}
      */
     public void beginRecognizeCustomFormsFromUrlWithOptions() {
-        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomFormsFromUrl#string-string-recognizeOptions
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomFormsFromUrl#string-string-recognizeOptions-Context
         String analyzeFilePath = "{file_source_url}";
         String modelId = "{model_id}";
         boolean includeFieldElements = true;
 
         formRecognizerClient.beginRecognizeCustomFormsFromUrl(analyzeFilePath, modelId,
             new RecognizeOptions()
-                .setContentType(FormContentType.IMAGE_JPEG)
                 .setIncludeFieldElements(includeFieldElements)
-                .setPollInterval(Duration.ofSeconds(10)))
+                .setPollInterval(Duration.ofSeconds(10)), Context.NONE)
             .getFinalResult()
             .stream()
             .map(RecognizedForm::getFields)
@@ -103,7 +103,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                 System.out.printf("Field value: %s%n", formField.getValue());
                 System.out.printf("Confidence score: %.2f%n", formField.getConfidence());
             }));
-        // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomFormsFromUrl#string-string-recognizeOptions
+        // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomFormsFromUrl#string-string-recognizeOptions-Context
     }
 
     /**
@@ -134,12 +134,12 @@ public class FormRecognizerClientJavaDocCodeSnippets {
 
     /**
      * Code snippet for
-     * {@link FormRecognizerClient#beginRecognizeCustomForms(InputStream, long, String, RecognizeOptions)} with options
+     * {@link FormRecognizerClient#beginRecognizeCustomForms(InputStream, long, String, RecognizeOptions, Context)} with options
      *
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public void beginRecognizeCustomFormsWithOptions() throws IOException {
-        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomForms#InputStream-long-string-recognizeOptions
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomForms#InputStream-long-string-recognizeOptions-Context
         File form = new File("{local/file_path/fileName.jpg}");
         String modelId = "{custom_trained_model_id}";
         boolean includeFieldElements = true;
@@ -150,7 +150,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                 new RecognizeOptions()
                     .setContentType(FormContentType.IMAGE_JPEG)
                     .setIncludeFieldElements(includeFieldElements)
-                    .setPollInterval(Duration.ofSeconds(10)))
+                    .setPollInterval(Duration.ofSeconds(10)), Context.NONE)
                 .getFinalResult()
                 .stream()
                 .map(RecognizedForm::getFields)
@@ -160,7 +160,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                     System.out.printf("Confidence score: %.2f%n", formField.getConfidence());
                 }));
         }
-        // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomForms#InputStream-long-string-recognizeOptions
+        // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomForms#InputStream-long-string-recognizeOptions-Context
     }
 
     // Recognize Content
@@ -187,15 +187,16 @@ public class FormRecognizerClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link FormRecognizerClient#beginRecognizeContentFromUrl(String, RecognizeOptions)} with
+     * Code snippet for {@link FormRecognizerClient#beginRecognizeContentFromUrl(String, RecognizeOptions, Context)} with
      * options.
      */
     public void beginRecognizeContentFromUrlWithOptions() {
-        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContentFromUrl#string-recognizeOptions
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContentFromUrl#string-recognizeOptions-Context
         String formPath = "{file_source_url}";
         formRecognizerClient.beginRecognizeContentFromUrl(formPath,
             new RecognizeOptions()
-                .setPollInterval(Duration.ofSeconds(5)))
+                .setPollInterval(Duration.ofSeconds(5))
+                .setIncludeFieldElements(true), Context.NONE)
             .getFinalResult()
             .forEach(formPage -> {
                 System.out.printf("Page Angle: %s%n", formPage.getTextAngle());
@@ -207,7 +208,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                     .flatMap(formTable -> formTable.getCells().stream())
                     .forEach(recognizedTableCell -> System.out.printf("%s ", recognizedTableCell.getText()));
             });
-        // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContentFromUrl#string-recognizeOptions
+        // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContentFromUrl#string-recognizeOptions-Context
     }
 
     /**
@@ -237,20 +238,21 @@ public class FormRecognizerClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link FormRecognizerClient#beginRecognizeContent(InputStream, long, RecognizeOptions)} with
+     * Code snippet for {@link FormRecognizerClient#beginRecognizeContent(InputStream, long, RecognizeOptions, Context)} with
      * options.
      *
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public void beginRecognizeContentWithOptions() throws IOException {
-        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContent#InputStream-long-recognizeOptions
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContent#InputStream-long-recognizeOptions-Context
         File form = new File("{file_source_url}");
         byte[] fileContent = Files.readAllBytes(form.toPath());
         try (InputStream targetStream = new ByteArrayInputStream(fileContent)) {
 
             for (FormPage formPage : formRecognizerClient.beginRecognizeContent(targetStream, form.length(),
                 new RecognizeOptions()
-                    .setPollInterval(Duration.ofSeconds(5)))
+                    .setPollInterval(Duration.ofSeconds(5))
+                    .setIncludeFieldElements(true), Context.NONE)
                 .getFinalResult()) {
                 System.out.printf("Page Angle: %s%n", formPage.getTextAngle());
                 System.out.printf("Page Dimension unit: %s%n", formPage.getUnit());
@@ -262,7 +264,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                     .forEach(recognizedTableCell -> System.out.printf("%s ", recognizedTableCell.getText()));
             }
         }
-        // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContent#InputStream-long-recognizeOptions
+        // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContent#InputStream-long-recognizeOptions-Context
     }
 
     // Recognize Receipts
@@ -330,12 +332,15 @@ public class FormRecognizerClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link FormRecognizerClient#beginRecognizeReceiptsFromUrl(String, RecognizeOptions)}
+     * Code snippet for {@link FormRecognizerClient#beginRecognizeReceiptsFromUrl(String, RecognizeOptions, Context)}
      */
     public void beginRecognizeReceiptsFromUrlWithOptions() {
-        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceiptsFromUrl#string-recognizeOptions
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceiptsFromUrl#string-recognizeOptions-Context
         String receiptUrl = "{receipt_url}";
-        formRecognizerClient.beginRecognizeReceiptsFromUrl(receiptUrl).getFinalResult()
+        formRecognizerClient.beginRecognizeReceiptsFromUrl(receiptUrl,
+            new RecognizeOptions()
+                .setPollInterval(Duration.ofSeconds(5))
+                .setIncludeFieldElements(true), Context.NONE).getFinalResult()
             .forEach(recognizedReceipt -> {
                 Map<String, FormField<?>> recognizedFields = recognizedReceipt.getFields();
                 FormField<?> merchantNameField = recognizedFields.get("MerchantName");
@@ -385,7 +390,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                     }
                 }
             });
-        // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceiptsFromUrl#string-recognizeOptions
+        // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceiptsFromUrl#string-recognizeOptions-Context
     }
 
     /**
@@ -454,14 +459,14 @@ public class FormRecognizerClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link FormRecognizerClient#beginRecognizeReceipts(InputStream, long, RecognizeOptions)}
+     * Code snippet for {@link FormRecognizerClient#beginRecognizeReceipts(InputStream, long, RecognizeOptions, Context)}
      * with options
      *
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public void beginRecognizeReceiptsWithOptions() throws IOException {
 
-        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceipts#InputStream-long-recognizeOptions
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceipts#InputStream-long-recognizeOptions-Context
         File receipt = new File("{local/file_path/fileName.jpg}");
         boolean includeFieldElements = true;
         byte[] fileContent = Files.readAllBytes(receipt.toPath());
@@ -470,7 +475,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                 new RecognizeOptions()
                     .setContentType(FormContentType.IMAGE_JPEG)
                     .setIncludeFieldElements(includeFieldElements)
-                    .setPollInterval(Duration.ofSeconds(5)))
+                    .setPollInterval(Duration.ofSeconds(5)), Context.NONE)
                 .getFinalResult()) {
                 Map<String, FormField<?>> recognizedFields = recognizedForm.getFields();
                 FormField<?> merchantNameField = recognizedFields.get("MerchantName");
@@ -518,6 +523,6 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                 }
             }
         }
-        // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceipts#InputStream-long-recognizeOptions
+        // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceipts#InputStream-long-recognizeOptions-Context
     }
 }

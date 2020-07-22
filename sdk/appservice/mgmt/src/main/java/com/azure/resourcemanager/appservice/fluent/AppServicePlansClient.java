@@ -115,7 +115,7 @@ public final class AppServicePlansClient
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
                 + "/{name}")
-        @ExpectedResponses({200, 404})
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<AppServicePlanInner>> getByResourceGroup(
             @HostParam("$host") String endpoint,
@@ -354,7 +354,7 @@ public final class AppServicePlansClient
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
                 + "/{name}/virtualNetworkConnections/{vnetName}")
-        @ExpectedResponses({200, 404})
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<VnetInfoInner>> getVnetFromServerFarm(
             @HostParam("$host") String endpoint,
@@ -417,7 +417,7 @@ public final class AppServicePlansClient
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
                 + "/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}")
-        @ExpectedResponses({200, 404})
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<List<VnetRouteInner>>> getRouteForVnet(
             @HostParam("$host") String endpoint,

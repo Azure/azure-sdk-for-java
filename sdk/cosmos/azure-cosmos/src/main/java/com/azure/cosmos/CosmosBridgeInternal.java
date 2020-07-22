@@ -6,6 +6,7 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.Warning;
+import com.azure.cosmos.implementation.encryption.api.DataEncryptionKeyProvider;
 
 import static com.azure.cosmos.implementation.Warning.INTERNAL_USE_ONLY_WARNING;
 
@@ -93,5 +94,12 @@ public final class CosmosBridgeInternal {
             .readRequestsFallbackEnabled(builder.isReadRequestsFallbackEnabled());
 
         return copy;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static CosmosClientBuilder setDateKeyProvider(CosmosClientBuilder cosmosClientBuilder,
+                                                         DataEncryptionKeyProvider dataEncryptionKeyProvider) {
+        cosmosClientBuilder.dataEncryptionKeyProvider(dataEncryptionKeyProvider);
+        return cosmosClientBuilder;
     }
 }
