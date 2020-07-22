@@ -14,5 +14,21 @@ public class ServiceBusStressOptions extends PerfStressOptions {
     private int messagesToReceive = 10;
 
     @Parameter(names = { "-ms", "--messageSend" }, description = "Messages to send")
-    private int getMessagesToSend = 10;
+    private int messagesToSend = 10;
+
+    /**
+     * Get the configured messagesToSend option for performance test.
+     * @return The size.
+     */
+    public int getMessagesToSend() {
+        return messagesToSend;
+    }
+
+    /**
+     * Get the configured messagesToReceive option for performance test.
+     * @return The size.
+     */
+    public int getMessagesToReceive() {
+        return messagesToReceive;
+    }
 }

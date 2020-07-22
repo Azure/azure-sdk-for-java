@@ -26,14 +26,14 @@ public class SendAndReceiveTest extends ServiceTest<ServiceBusStressOptions> {
 
     public Mono<Void> globalSetupAsync() {
         ServiceBusMessage message =  new ServiceBusMessage(CONTENTS.getBytes());
-        return Flux.range(0, options.getCount())
+        return Flux.range(0, options.getMessagesToSend())
             .flatMap(count -> senderAsync.sendMessage(message))
             .then();
     }
 
     @Override
     public void run() {
-        IterableStream<ServiceBusReceivedMessageContext> messages = receiver.receiveMessages(1);
+        IterableStream<ServiceBusReceivedMessageContext> messages = receiver.receiveMessages(options.getMessagesToReceive());
         int receivedMessage = 0;
         for(ServiceBusReceivedMessageContext messageContext : messages) {
             ++receivedMessage;
