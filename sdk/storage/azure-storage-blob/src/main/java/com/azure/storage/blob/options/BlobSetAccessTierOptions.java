@@ -17,7 +17,7 @@ public class BlobSetAccessTierOptions {
     private final AccessTier tier;
     private RehydratePriority priority;
     private String leaseId;
-    private String ifTagsMatch;
+    private String tagsConditions;
 
     /**
      * @param tier The new tier for the blob.
@@ -69,16 +69,16 @@ public class BlobSetAccessTierOptions {
     /**
      * @return The SQL statement that apply to the tags of the blob.
      */
-    public String getIfTagsMatch() {
-        return ifTagsMatch;
+    public String getTagsConditions() {
+        return tagsConditions;
     }
 
     /**
-     * @param ifTagsMatch The SQL statement that apply to the tags of the blob.
+     * @param tagsConditions The SQL statement that apply to the tags of the blob.
      * @return The updated BlobSetAccessTierOptions.
      */
-    public BlobSetAccessTierOptions setIfTagsMatch(String ifTagsMatch) {
-        this.ifTagsMatch = ifTagsMatch;
+    public BlobSetAccessTierOptions setTagsConditions(String tagsConditions) {
+        this.tagsConditions = tagsConditions;
         return this;
     }
 }
