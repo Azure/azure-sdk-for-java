@@ -459,7 +459,8 @@
           "type": "object",
           "properties": {
             "id": {
-              "type": "string"
+              "type": "string",
+              "description": "The id of the schema."
             }
           }
         },
@@ -470,18 +471,22 @@
           "type": "object",
           "properties": {
             "name": {
-              "type": "string"
+              "type": "string",
+              "description": "The name of the schema group."
             },
             "createdTimeUtc": {
               "type": "string",
-              "format": "date-time"
+              "format": "date-time",
+              "description": "The creation time in UTC of the schema group."
             },
             "updatedTimeUtc": {
               "type": "string",
-              "format": "date-time"
+              "format": "date-time",
+              "description": "The update time in UTC of the schema group."
             },
             "schemaType": {
-              "type": "string"
+              "type": "string",
+              "description": "The schema type of the schema group."
             },
             "etag": {
               "type": "string",
