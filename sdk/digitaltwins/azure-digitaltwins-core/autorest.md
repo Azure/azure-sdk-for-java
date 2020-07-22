@@ -8,5 +8,9 @@ Run `generate.ps1` in this directory to generate the code.
 
 ``` yaml
 input-file: swagger/digitaltwins.json
-output-folder: ""
+output-folder: "./"
+java:
+    namespace: com.azure.digitaltwins.core
+    add-credentials: true
+    sync-methods: none
 ```

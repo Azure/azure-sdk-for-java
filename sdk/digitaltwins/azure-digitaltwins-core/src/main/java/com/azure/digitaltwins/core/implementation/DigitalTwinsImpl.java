@@ -68,59 +68,59 @@ public class DigitalTwinsImpl implements DigitalTwins {
      * used by Retrofit to perform actually REST calls.
      */
     interface DigitalTwinsService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: .DigitalTwins getById" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.azure.digitaltwins.core.DigitalTwins getById" })
         @GET("digitaltwins/{id}")
         Observable<Response<ResponseBody>> getById(@Path("id") String id, @Query("api-version") String apiVersion);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: .DigitalTwins add" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.azure.digitaltwins.core.DigitalTwins add" })
         @PUT("digitaltwins/{id}")
         Observable<Response<ResponseBody>> add(@Path("id") String id, @Body Object twin, @Header("If-None-Match") String ifNoneMatch, @Query("api-version") String apiVersion);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: .DigitalTwins delete" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.azure.digitaltwins.core.DigitalTwins delete" })
         @HTTP(path = "digitaltwins/{id}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("id") String id, @Header("If-Match") String ifMatch, @Query("api-version") String apiVersion);
 
-        @Headers({ "Content-Type: application/json-patch+json; charset=utf-8", "x-ms-logging-context: .DigitalTwins update" })
+        @Headers({ "Content-Type: application/json-patch+json; charset=utf-8", "x-ms-logging-context: com.azure.digitaltwins.core.DigitalTwins update" })
         @PATCH("digitaltwins/{id}")
         Observable<Response<ResponseBody>> update(@Path("id") String id, @Body List<Object> patchDocument, @Header("If-Match") String ifMatch, @Query("api-version") String apiVersion);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: .DigitalTwins getRelationshipById" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.azure.digitaltwins.core.DigitalTwins getRelationshipById" })
         @GET("digitaltwins/{id}/relationships/{relationshipId}")
         Observable<Response<ResponseBody>> getRelationshipById(@Path("id") String id, @Path("relationshipId") String relationshipId, @Query("api-version") String apiVersion);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: .DigitalTwins addRelationship" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.azure.digitaltwins.core.DigitalTwins addRelationship" })
         @PUT("digitaltwins/{id}/relationships/{relationshipId}")
         Observable<Response<ResponseBody>> addRelationship(@Path("id") String id, @Path("relationshipId") String relationshipId, @Body Object relationship, @Header("If-None-Match") String ifNoneMatch, @Query("api-version") String apiVersion);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: .DigitalTwins deleteRelationship" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.azure.digitaltwins.core.DigitalTwins deleteRelationship" })
         @HTTP(path = "digitaltwins/{id}/relationships/{relationshipId}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteRelationship(@Path("id") String id, @Path("relationshipId") String relationshipId, @Header("If-Match") String ifMatch, @Query("api-version") String apiVersion);
 
-        @Headers({ "Content-Type: application/json-patch+json; charset=utf-8", "x-ms-logging-context: .DigitalTwins updateRelationship" })
+        @Headers({ "Content-Type: application/json-patch+json; charset=utf-8", "x-ms-logging-context: com.azure.digitaltwins.core.DigitalTwins updateRelationship" })
         @PATCH("digitaltwins/{id}/relationships/{relationshipId}")
         Observable<Response<ResponseBody>> updateRelationship(@Path("id") String id, @Path("relationshipId") String relationshipId, @Body List<Object> patchDocument, @Header("If-Match") String ifMatch, @Query("api-version") String apiVersion);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: .DigitalTwins listRelationships" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.azure.digitaltwins.core.DigitalTwins listRelationships" })
         @GET("digitaltwins/{id}/relationships")
         Observable<Response<ResponseBody>> listRelationships(@Path("id") String id, @Query("relationshipName") String relationshipName, @Query("api-version") String apiVersion);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: .DigitalTwins listIncomingRelationships" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.azure.digitaltwins.core.DigitalTwins listIncomingRelationships" })
         @GET("digitaltwins/{id}/incomingrelationships")
         Observable<Response<ResponseBody>> listIncomingRelationships(@Path("id") String id, @Query("api-version") String apiVersion);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: .DigitalTwins sendTelemetry" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.azure.digitaltwins.core.DigitalTwins sendTelemetry" })
         @POST("digitaltwins/{id}/telemetry")
         Observable<Response<ResponseBody>> sendTelemetry(@Path("id") String id, @Body Object telemetry, @Header("dt-id") String dtId, @Header("dt-timestamp") String dtTimestamp, @Query("api-version") String apiVersion);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: .DigitalTwins sendComponentTelemetry" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.azure.digitaltwins.core.DigitalTwins sendComponentTelemetry" })
         @POST("digitaltwins/{id}/components/{componentPath}/telemetry")
         Observable<Response<ResponseBody>> sendComponentTelemetry(@Path("id") String id, @Path("componentPath") String componentPath, @Body Object telemetry, @Header("dt-id") String dtId, @Header("dt-timestamp") String dtTimestamp, @Query("api-version") String apiVersion);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: .DigitalTwins getComponent" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.azure.digitaltwins.core.DigitalTwins getComponent" })
         @GET("digitaltwins/{id}/components/{componentPath}")
         Observable<Response<ResponseBody>> getComponent(@Path("id") String id, @Path("componentPath") String componentPath, @Query("api-version") String apiVersion);
 
-        @Headers({ "Content-Type: application/json-patch+json; charset=utf-8", "x-ms-logging-context: .DigitalTwins updateComponent" })
+        @Headers({ "Content-Type: application/json-patch+json; charset=utf-8", "x-ms-logging-context: com.azure.digitaltwins.core.DigitalTwins updateComponent" })
         @PATCH("digitaltwins/{id}/components/{componentPath}")
         Observable<Response<ResponseBody>> updateComponent(@Path("id") String id, @Path("componentPath") String componentPath, @Body List<Object> patchDocument, @Header("If-Match") String ifMatch, @Query("api-version") String apiVersion);
 
