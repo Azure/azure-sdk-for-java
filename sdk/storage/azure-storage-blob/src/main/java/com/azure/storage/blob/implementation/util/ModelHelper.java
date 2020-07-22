@@ -175,6 +175,7 @@ public class ModelHelper {
             objectReplicationSourcePolicies.add(new ObjectReplicationPolicy(entry.getKey(), entry.getValue()));
         }
         headers.setObjectReplicationSourcePolicies(objectReplicationSourcePolicies);
+        headers.setSealed(internalHeaders.isSealed());
 
         return headers;
     }
@@ -252,6 +253,7 @@ public class ModelHelper {
         blobItemProperties.setAccessTierChangeTime(blobItemPropertiesInternal.getAccessTierChangeTime());
         blobItemProperties.setTagCount(blobItemPropertiesInternal.getTagCount());
         blobItemProperties.setRehydratePriority(blobItemPropertiesInternal.getRehydratePriority());
+        blobItemProperties.setSealed(blobItemPropertiesInternal.isSealed());
 
         return blobItemProperties;
     }

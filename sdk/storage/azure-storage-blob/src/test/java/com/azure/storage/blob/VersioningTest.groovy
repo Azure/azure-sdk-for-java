@@ -30,7 +30,7 @@ class VersioningTest extends APISpec {
     def setup() {
         blobName = generateBlobName()
         containerName = generateContainerName()
-        blobContainerClient = primaryBlobServiceClient.createBlobContainer(containerName)
+        blobContainerClient = versionedBlobServiceClient.createBlobContainer(containerName)
         blobClient = blobContainerClient.getBlobClient(blobName)
     }
 

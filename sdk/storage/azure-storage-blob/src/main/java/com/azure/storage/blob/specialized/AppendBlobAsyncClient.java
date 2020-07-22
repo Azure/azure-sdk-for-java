@@ -26,6 +26,7 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.CpkInfo;
+import com.azure.storage.blob.options.AppendBlobSealOptions;
 import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -366,5 +367,56 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
                     hd.getBlobAppendOffset(), hd.getBlobCommittedBlockCount());
                 return new SimpleResponse<>(rb, item);
             });
+    }
+
+    /**
+     * Seals an append blob, making it read only. Any subsequent appends will fail.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.seal}
+     *
+     * @return A reactive response signalling completion.
+     */
+    public Mono<Void> seal() {
+        try {
+            return sealWithResponse(new AppendBlobSealOptions())
+                .flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Seals an append blob, making it read only. Any subsequent appends will fail.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.sealWithResponse#AppendBlobSealOptions}
+     *
+     * @param options {@link AppendBlobSealOptions}
+     * @return A reactive response signalling completion.
+     */
+    public Mono<Response<Void>> sealWithResponse(AppendBlobSealOptions options) {
+        try {
+            return withContext(context -> sealWithResponse(options, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<Void>> sealWithResponse(AppendBlobSealOptions options, Context context) {
+        options = (options == null) ? new AppendBlobSealOptions() : options;
+
+        AppendBlobRequestConditions requestConditions = options.getRequestConditions();
+        requestConditions = (requestConditions == null) ? new AppendBlobRequestConditions() : requestConditions;
+        context = context == null ? Context.NONE : context;
+
+        return this.azureBlobStorage.appendBlobs().sealWithRestResponseAsync(null, null, null, null,
+            requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
+            requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
+            requestConditions.getIfNoneMatch(), requestConditions.getAppendPosition(),
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            .map(response -> new SimpleResponse<>(response, null));
     }
 }

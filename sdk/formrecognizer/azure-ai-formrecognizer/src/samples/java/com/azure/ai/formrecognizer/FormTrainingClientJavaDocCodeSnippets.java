@@ -50,17 +50,17 @@ public class FormTrainingClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link FormTrainingClient#beginTraining(String, boolean, TrainingFileFilter, Duration)}
+     * Code snippet for {@link FormTrainingClient#beginTraining(String, boolean, TrainingFileFilter, Duration, Context)}
      * with options
      */
     public void beginTrainingWithOptions() {
-        // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingClient.beginTraining#string-boolean-trainingFileFilter-Duration
+        // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingClient.beginTraining#string-boolean-trainingFileFilter-Duration-Context
         String trainingFilesUrl = "{SAS-URL-of-your-container-in-blob-storage}";
         TrainingFileFilter trainingFileFilter = new TrainingFileFilter().setIncludeSubFolders(false).setPrefix("Invoice");
         boolean useTrainingLabels = true;
 
         CustomFormModel customFormModel = formTrainingClient.beginTraining(trainingFilesUrl, useTrainingLabels,
-                trainingFileFilter, Duration.ofSeconds(5)).getFinalResult();
+                trainingFileFilter, Duration.ofSeconds(5), Context.NONE).getFinalResult();
 
         System.out.printf("Model Id: %s%n", customFormModel.getModelId());
         System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
@@ -69,7 +69,7 @@ public class FormTrainingClientJavaDocCodeSnippets {
                 .forEach((key, customFormModelField) ->
                     System.out.printf("Form Type: %s Field Text: %s Field Accuracy: %f%n",
                         key, customFormModelField.getName(), customFormModelField.getAccuracy())));
-        // END: com.azure.ai.formrecognizer.training.FormTrainingClient.beginTraining#string-boolean-trainingFileFilter-Duration
+        // END: com.azure.ai.formrecognizer.training.FormTrainingClient.beginTraining#string-boolean-trainingFileFilter-Duration-Context
     }
 
     /**
@@ -214,10 +214,10 @@ public class FormTrainingClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link FormTrainingClient#beginCopyModel(String, CopyAuthorization, Duration)}
+     * Code snippet for {@link FormTrainingClient#beginCopyModel(String, CopyAuthorization, Duration, Context)}
      */
     public void beginCopyOverload() {
-        // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingClient.beginCopyModel#string-copyAuthorization-Duration
+        // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingClient.beginCopyModel#string-copyAuthorization-Duration-Context
         // The resource to copy model to
         String resourceId = "target-resource-Id";
         String resourceRegion = "target-resource-region";
@@ -226,7 +226,8 @@ public class FormTrainingClientJavaDocCodeSnippets {
 
         CopyAuthorization copyAuthorization = targetFormTrainingClient.getCopyAuthorization(resourceId,
             resourceRegion);
-        formTrainingClient.beginCopyModel(copyModelId, copyAuthorization, Duration.ofSeconds(5)).waitForCompletion();
+        formTrainingClient.beginCopyModel(copyModelId, copyAuthorization, Duration.ofSeconds(5), Context.NONE)
+            .waitForCompletion();
         CustomFormModel modelCopy = targetFormTrainingClient.getCustomModel(copyAuthorization.getModelId());
         System.out.printf("Copied model has model Id: %s, model status: %s, was requested on: %s,"
                 + " transfer completed on: %s.%n",
@@ -234,7 +235,7 @@ public class FormTrainingClientJavaDocCodeSnippets {
             modelCopy.getModelStatus(),
             modelCopy.getTrainingStartedOn(),
             modelCopy.getTrainingCompletedOn());
-        // END: com.azure.ai.formrecognizer.training.FormTrainingClient.beginCopyModel#string-copyAuthorization-Duration
+        // END: com.azure.ai.formrecognizer.training.FormTrainingClient.beginCopyModel#string-copyAuthorization-Duration-Context
     }
 
     /**
