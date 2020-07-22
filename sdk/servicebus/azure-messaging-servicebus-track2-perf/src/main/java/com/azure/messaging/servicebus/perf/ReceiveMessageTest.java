@@ -2,19 +2,16 @@ package com.azure.messaging.servicebus.perf;
 
 import com.azure.core.util.IterableStream;
 import com.azure.messaging.servicebus.ServiceBusMessage;
-import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.messaging.servicebus.perf.core.ServiceBusStressOptions;
 import com.azure.messaging.servicebus.perf.core.ServiceTest;
-import com.azure.perf.test.core.PerfStressOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.UUID;
 
-public class SendAndReceiveTest extends ServiceTest<ServiceBusStressOptions> {
+public class ReceiveMessageTest extends ServiceTest<ServiceBusStressOptions> {
 
-    public SendAndReceiveTest(ServiceBusStressOptions options) {
+    public ReceiveMessageTest(ServiceBusStressOptions options) {
         super(options);
     }
 
