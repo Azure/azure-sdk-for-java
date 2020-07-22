@@ -549,8 +549,8 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                                 }));
                         }
                     }
-                }));
-
+                }
+            });
         // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceipts#Flux-long-recognizeOptions
     }
 }
