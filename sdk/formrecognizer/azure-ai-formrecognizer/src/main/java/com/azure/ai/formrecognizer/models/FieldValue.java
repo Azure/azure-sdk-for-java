@@ -8,7 +8,6 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -40,107 +39,40 @@ public final class FieldValue {
     /**
      * Constructs a FieldValue object
      *
+     * @param value The actual value of the field.
      * @param type The type of the field.
      */
-    public FieldValue(final FieldValueType type) {
+    @SuppressWarnings("unchecked")
+    public FieldValue(final Object value, final FieldValueType type) {
         this.type = type;
-    }
-
-    /**
-     * Set the map value of the field.
-     *
-     * @param formFieldMap the map value of the field.
-     *
-     * @return the FieldValue object itself.
-     */
-    public FieldValue setFormFieldMap(final Map<String, FormField<?>> formFieldMap) {
-        this.formFieldMap = formFieldMap == null ? null : Collections.unmodifiableMap(formFieldMap);
-        return this;
-    }
-
-    /**
-     * Set the list value of the field.
-     *
-     * @param formFieldList the list of the field.
-     *
-     * @return the FieldValue object itself.
-     */
-    public FieldValue setFormFieldList(final List<FormField<?>> formFieldList) {
-        this.formFieldList = formFieldList == null ? null
-            : Collections.unmodifiableList(formFieldList);
-        return this;
-    }
-
-    /**
-     * Set the double value of the field.
-     *
-     * @param formFieldDouble the float value of the field.
-     *
-     * @return the FieldValue object itself.
-     */
-    public FieldValue setFormFieldDouble(final Double formFieldDouble) {
-        this.formFieldDouble = formFieldDouble;
-        return this;
-    }
-
-    /**
-     * Set the long value of the field.
-     *
-     * @param formFieldLong the integer value of the field.
-     *
-     * @return the FieldValue object itself.
-     */
-    public FieldValue setFormFieldLong(final Long formFieldLong) {
-        this.formFieldLong = formFieldLong;
-        return this;
-    }
-
-    /**
-     * Set the date value of the field.
-     *
-     * @param formFieldDate the date value of the field.
-     *
-     * @return the FieldValue object itself.
-     */
-    public FieldValue setFormFieldDate(final LocalDate formFieldDate) {
-        this.formFieldDate = formFieldDate;
-        return this;
-    }
-
-    /**
-     * Set the time value of the field.
-     *
-     * @param formFieldTime the time value of the field.
-     *
-     * @return the FieldValue object itself.
-     */
-    public FieldValue setFormFieldTime(final LocalTime formFieldTime) {
-        this.formFieldTime = formFieldTime;
-        return this;
-    }
-
-    /**
-     * Set the string value of the field.
-     *
-     * @param formFieldString the string value of the field.
-     *
-     * @return the FieldValue object itself.
-     */
-    public FieldValue setFormFieldString(final String formFieldString) {
-        this.formFieldString = formFieldString;
-        return this;
-    }
-
-    /**
-     * Set the phone number value of the field.
-     *
-     * @param formFieldPhoneNumber the phone number value of the field.
-     *
-     * @return the FieldValue object itself.
-     */
-    public FieldValue setFormFieldPhoneNumber(final String formFieldPhoneNumber) {
-        this.formFieldPhoneNumber = formFieldPhoneNumber;
-        return this;
+        switch (type) {
+            case STRING:
+                formFieldString = (String) value;
+                break;
+            case DATE:
+                formFieldDate = (LocalDate) value;
+                break;
+            case TIME:
+                formFieldTime = (LocalTime) value;
+                break;
+            case PHONE_NUMBER:
+                formFieldPhoneNumber = (String) value;
+                break;
+            case DOUBLE:
+                formFieldDouble = (Double) value;
+                break;
+            case LONG:
+                formFieldLong = (Long) value;
+                break;
+            case LIST:
+                formFieldList = (List<FormField<?>>) value;
+                break;
+            case MAP:
+                formFieldMap = (Map<String, FormField<?>>) value;
+                break;
+            default:
+                throw logger.logExceptionAsError(new IllegalStateException("Unexpected type value: " + type));
+        }
     }
 
     /**
@@ -156,6 +88,7 @@ public final class FieldValue {
      * Gets the value of the field as a {@link String}.
      *
      * @return the value of the field as a {@link String}.
+     * @throws UnsupportedOperationException if {@link FieldValue#getType()} is not {@link FieldValueType#STRING}.
      */
     public String asString() {
         if (STRING != this.getType()) {
@@ -169,6 +102,7 @@ public final class FieldValue {
      * Gets the value of the field as a {@link Long}.
      *
      * @return the value of the field as a {@link Long}.
+     * @throws UnsupportedOperationException if {@link FieldValue#getType()} is not {@link FieldValueType#LONG}.
      */
     public Long asLong() {
         if (LONG != this.getType()) {
@@ -182,6 +116,7 @@ public final class FieldValue {
      * Gets the value of the field as a {@link Double}.
      *
      * @return the value of the field as a {@link Double}.
+     * @throws UnsupportedOperationException if {@link FieldValue#getType()} is not {@link FieldValueType#DOUBLE}.
      */
     public Double asDouble() {
         if (DOUBLE != this.getType()) {
@@ -195,6 +130,7 @@ public final class FieldValue {
      * Gets the value of the field as a {@link LocalDate}.
      *
      * @return the value of the field as a {@link LocalDate}.
+     * @throws UnsupportedOperationException if {@link FieldValue#getType()} is not {@link FieldValueType#DATE}.
      */
     public LocalDate asDate() {
         if (DATE != this.getType()) {
@@ -208,6 +144,7 @@ public final class FieldValue {
      * Gets the value of the field as a {@link LocalTime}.
      *
      * @return the value of the field as a {@link LocalTime}.
+     * @throws UnsupportedOperationException if {@link FieldValue#getType()} is not {@link FieldValueType#TIME}.
      */
     public LocalTime asTime() {
         if (TIME != this.getType()) {
@@ -221,6 +158,7 @@ public final class FieldValue {
      * Gets the value of the field as a phone number.
      *
      * @return the value of the field as a phone number.
+     * @throws UnsupportedOperationException if {@link FieldValue#getType()} is not {@link FieldValueType#PHONE_NUMBER}.
      */
     public String asPhoneNumber() {
         if (PHONE_NUMBER != this.getType()) {
@@ -234,6 +172,7 @@ public final class FieldValue {
      * Gets the value of the field as a {@link List}.
      *
      * @return the value of the field as an unmodifiable {@link List}.
+     * @throws UnsupportedOperationException if {@link FieldValue#getType()} is not {@link FieldValueType#LIST}.
      */
     public List<FormField<?>> asList() {
         if (LIST != this.getType()) {
@@ -247,6 +186,7 @@ public final class FieldValue {
      * Gets the value of the field as a {@link Map}.
      *
      * @return the value of the field as an unmodifiable {@link Map}.
+     * @throws UnsupportedOperationException if {@link FieldValue#getType()} is not {@link FieldValueType#MAP}.
      */
     public Map<String, FormField<?>> asMap() {
         if (MAP != this.getType()) {

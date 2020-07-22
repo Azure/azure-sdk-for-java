@@ -14,6 +14,8 @@ import java.util.List;
  * See
  * <a href="https://aka.ms/formrecognizer/receiptfields"></a>
  * for information on the strongly typed fields returned by service when recognizing receipts.
+ * More information on the Receipt used in the example below can be found
+ * <a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/Receipt.java">here</a>
  */
 public class StronglyTypedRecognizedForm {
 
@@ -39,17 +41,13 @@ public class StronglyTypedRecognizedForm {
         for (int i = 0; i < receiptPageResults.size(); i++) {
             final RecognizedForm recognizedForm = receiptPageResults.get(i);
             System.out.printf("----------- Recognized receipt info for page %d -----------%n", i);
-            // Use Receipt model transform the recognized form to strongly typed US receipt fields
+            // Use Receipt model to transform the recognized form to a strongly typed US receipt
             Receipt usReceipt = new Receipt(recognizedForm);
             System.out.printf("Merchant Name: %s, confidence: %.2f%n", usReceipt.getMerchantName().getValue(),
                 usReceipt.getMerchantName().getConfidence());
             System.out.printf("Merchant Address: %s, confidence: %.2f%n",
                 usReceipt.getMerchantAddress().getValue(),
                 usReceipt.getMerchantAddress().getConfidence());
-            // It will have to be this way?
-            // System.out.printf("Merchant Address: %s, confidence: %.2f%n",
-            //     usReceipt.getMerchantAddress().getFieldValue().asString(),
-            //     usReceipt.getMerchantAddress().getConfidence());
             System.out.printf("Merchant Phone Number %s, confidence: %.2f%n",
                 usReceipt.getMerchantPhoneNumber().getValue(), usReceipt.getMerchantPhoneNumber().getConfidence());
             System.out.printf("Total: %.2f confidence: %.2f%n", usReceipt.getTotal().getValue(),
