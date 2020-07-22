@@ -287,9 +287,9 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
                     assertEquals(expectedFieldValue.getValuePhoneNumber(), actualFormField.getValue().asPhoneNumber());
                     break;
                 case OBJECT:
-                    expectedFieldValue.getValueObject().forEach((key, fieldValue) -> {
+                    expectedFieldValue.getValueObject().forEach((key, formField) -> {
                         FormField<?> actualFormFieldValue = actualFormField.getValue().asMap().get(key);
-                        validateFieldValueTransforms(fieldValue, actualFormFieldValue, readResults, includeFieldElements);
+                        validateFieldValueTransforms(formField, actualFormFieldValue, readResults, includeFieldElements);
                     });
                     break;
                 case ARRAY:

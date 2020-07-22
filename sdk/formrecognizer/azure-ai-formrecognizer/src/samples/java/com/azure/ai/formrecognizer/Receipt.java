@@ -356,6 +356,4 @@ public final class Receipt {
             return totalPrice;
         }
     }
-
-
 }

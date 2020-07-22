@@ -72,7 +72,7 @@ public final class FieldValue {
     }
 
     /**
-     * Set the float value of the field.
+     * Set the double value of the field.
      *
      * @param formFieldDouble the float value of the field.
      *
@@ -84,7 +84,7 @@ public final class FieldValue {
     }
 
     /**
-     * Set the integer value of the field.
+     * Set the long value of the field.
      *
      * @param formFieldLong the integer value of the field.
      *
@@ -166,9 +166,9 @@ public final class FieldValue {
     }
 
     /**
-     * Gets the value of the field as a {@link Integer}.
+     * Gets the value of the field as a {@link Long}.
      *
-     * @return the value of the field as a {@link Integer}.
+     * @return the value of the field as a {@link Long}.
      */
     public Long asLong() {
         if (LONG != this.getType()) {

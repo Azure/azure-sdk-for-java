@@ -178,9 +178,9 @@ public class FieldValueExtensionMethodTest {
                 put("key", new FormField<>(null, null, null, null, 0));
             }
         };
-        Map<String, FormField<?>> actualList = new FormField<>(null, null, null,
+        Map<String, FormField<?>> actualMap = new FormField<>(null, null, null,
             new FieldValue(FieldValueType.MAP).setFormFieldMap(inputMap), 0).getValue().asMap();
-        assertEquals(inputMap, actualList);
+        assertEquals(inputMap, actualMap);
     }
 
     /**

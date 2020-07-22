@@ -93,11 +93,11 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl#string-string-recognizeOptions
         String formUrl = "{formUrl}";
         String modelId = "{model_id}";
-        boolean includeTextContent = true;
+        boolean includeFieldElements = true;
 
         formRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl(formUrl, modelId,
             new RecognizeOptions()
-                .setIncludeFieldElements(includeTextContent)
+                .setIncludeFieldElements(includeFieldElements)
                 .setPollInterval(Duration.ofSeconds(10)))
             // if training polling operation completed, retrieve the final result.
             .flatMap(AsyncPollResponse::getFinalResult)
@@ -348,11 +348,11 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
     public void beginRecognizeReceiptsFromUrlWithOptions() {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceiptsFromUrl#string-recognizeOptions
         String receiptUrl = "{receiptUrl}";
-        boolean includeTextContent = true;
+        boolean includeFieldElements = true;
         // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeReceiptsFromUrl(receiptUrl,
             new RecognizeOptions()
-                .setIncludeFieldElements(includeTextContent)
+                .setIncludeFieldElements(includeFieldElements)
                 .setPollInterval(Duration.ofSeconds(5)))
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(recognizedReceipts -> {

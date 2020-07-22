@@ -218,7 +218,8 @@ final class Transforms {
                         readResults));
                 } else {
                     FieldData labelText = new FieldData(key, null, null, null);
-                    extractedFieldMap.put(key, new FormField<String>(key, labelText, null, null, DEFAULT_CONFIDENCE_VALUE
+                    extractedFieldMap.put(key, new FormField<String>(key, labelText, null, null,
+                        DEFAULT_CONFIDENCE_VALUE
                     ));
                 }
             });
@@ -244,56 +245,73 @@ final class Transforms {
         FormField<?> value;
         switch (fieldValue.getType()) {
             case PHONE_NUMBER:
-                value = new FormField<>(key, labelText, valueText, new com.azure.ai.formrecognizer.models.FieldValue(FieldValueType.PHONE_NUMBER).
-                setFormFieldPhoneNumber(fieldValue.getValuePhoneNumber()), setDefaultConfidenceValue(fieldValue.getConfidence())
-                );
+                value = new FormField<>(key, labelText, valueText,
+                    new com.azure.ai.formrecognizer.models.FieldValue(FieldValueType.PHONE_NUMBER)
+                        .setFormFieldPhoneNumber(fieldValue.getValuePhoneNumber()),
+                    setDefaultConfidenceValue(fieldValue.getConfidence()));
                 break;
             case STRING:
-                value = new FormField<>(key, labelText, valueText, new com.azure.ai.formrecognizer.models.FieldValue(FieldValueType.STRING)
-                .setFormFieldString(fieldValue.getValueString()), setDefaultConfidenceValue(fieldValue.getConfidence())
-                );
+                value = new FormField<>(key, labelText, valueText,
+                    new com.azure.ai.formrecognizer.models.FieldValue(FieldValueType.STRING)
+                        .setFormFieldString(fieldValue.getValueString()),
+                    setDefaultConfidenceValue(fieldValue.getConfidence()));
                 break;
             case TIME:
                 LocalTime fieldTime = fieldValue.getValueTime() == null ? null : LocalTime
                     .parse(fieldValue.getValueTime(), DateTimeFormatter.ofPattern("HH:mm:ss"));
-                value = new FormField<>(key, labelText, valueText, new com.azure.ai.formrecognizer.models.FieldValue(FieldValueType.TIME)
-                .setFormFieldTime(fieldTime), setDefaultConfidenceValue(fieldValue.getConfidence())
-                );
+                value = new FormField<>(key, labelText, valueText,
+                    new com.azure.ai.formrecognizer.models.FieldValue(FieldValueType.TIME)
+                        .setFormFieldTime(fieldTime), setDefaultConfidenceValue(fieldValue.getConfidence()));
                 break;
             case DATE:
-                value = new FormField<>(key, labelText, valueText, new com.azure.ai.formrecognizer.models.FieldValue(FieldValueType.DATE)
-                .setFormFieldDate(fieldValue.getValueDate()), setDefaultConfidenceValue(fieldValue.getConfidence())
+                value = new FormField<>(key, labelText, valueText,
+                    new com.azure.ai.formrecognizer.models.FieldValue(FieldValueType.DATE)
+                        .setFormFieldDate(fieldValue.getValueDate()),
+                    setDefaultConfidenceValue(fieldValue.getConfidence())
                 );
                 break;
             case INTEGER:
                 com.azure.ai.formrecognizer.models.FieldValue longFieldValue;
                 // TODO (savaity): service bug
                 if (fieldValue.getValueInteger() == null) {
-                    longFieldValue = new com.azure.ai.formrecognizer.models.FieldValue(FieldValueType.LONG).setFormFieldLong(null);
+                    longFieldValue =
+                        new com.azure.ai.formrecognizer.models.FieldValue(FieldValueType.LONG).setFormFieldLong(null);
                 } else {
-                    longFieldValue = new com.azure.ai.formrecognizer.models.FieldValue(FieldValueType.LONG).setFormFieldLong(Long.valueOf(fieldValue.getValueInteger()));
+                    longFieldValue =
+                        new com.azure.ai.formrecognizer.models.FieldValue(FieldValueType.LONG)
+                            .setFormFieldLong(Long.valueOf(fieldValue.getValueInteger()));
                 }
-                value = new FormField<>(key, labelText, valueText, longFieldValue, setDefaultConfidenceValue(fieldValue.getConfidence())
+                value = new FormField<>(key, labelText, valueText, longFieldValue,
+                    setDefaultConfidenceValue(fieldValue.getConfidence())
                 );
                 break;
             case NUMBER:
                 com.azure.ai.formrecognizer.models.FieldValue doubleFieldValue;
                 // TODO (savaity): service bug
                 if (fieldValue.getValueNumber() == null) {
-                    doubleFieldValue = new com.azure.ai.formrecognizer.models.FieldValue(FieldValueType.DOUBLE).setFormFieldDouble(null);
+                    doubleFieldValue =
+                        new com.azure.ai.formrecognizer.models.FieldValue(FieldValueType.DOUBLE)
+                            .setFormFieldDouble(null);
                 } else {
-                    doubleFieldValue = new com.azure.ai.formrecognizer.models.FieldValue(FieldValueType.DOUBLE).setFormFieldDouble(Double.valueOf(fieldValue.getValueNumber()));
+                    doubleFieldValue =
+                        new com.azure.ai.formrecognizer.models.FieldValue(FieldValueType.DOUBLE)
+                            .setFormFieldDouble(Double.valueOf(fieldValue.getValueNumber()));
                 }
-                value = new FormField<>(key, labelText, valueText, doubleFieldValue, setDefaultConfidenceValue(fieldValue.getConfidence()));
+                value = new FormField<>(key, labelText, valueText, doubleFieldValue,
+                    setDefaultConfidenceValue(fieldValue.getConfidence()));
                 break;
             case ARRAY:
-                value = new FormField<>(key, null, null, new com.azure.ai.formrecognizer.models.FieldValue(FieldValueType.LIST)
-                    .setFormFieldList(toFormFieldArray(fieldValue.getValueArray(), readResults)), setDefaultConfidenceValue(fieldValue.getConfidence())
+                value = new FormField<>(key, null, null,
+                    new com.azure.ai.formrecognizer.models.FieldValue(FieldValueType.LIST)
+                        .setFormFieldList(toFormFieldArray(fieldValue.getValueArray(), readResults)),
+                    setDefaultConfidenceValue(fieldValue.getConfidence())
                 );
                 break;
             case OBJECT:
-                value = new FormField<>(key, labelText, valueText, new com.azure.ai.formrecognizer.models.FieldValue(FieldValueType.MAP)
-                .setFormFieldMap(toFormFieldObject(fieldValue.getValueObject(), pageNumber, readResults)), setDefaultConfidenceValue(fieldValue.getConfidence())
+                value = new FormField<>(key, labelText, valueText,
+                    new com.azure.ai.formrecognizer.models.FieldValue(FieldValueType.MAP)
+                        .setFormFieldMap(toFormFieldObject(fieldValue.getValueObject(), pageNumber, readResults)),
+                    setDefaultConfidenceValue(fieldValue.getConfidence())
                 );
                 break;
             default:
@@ -402,8 +420,10 @@ final class Transforms {
                 toBoundingBox(keyValuePair.getValue().getBoundingBox()), pageNumber, formValueContentList);
 
             String fieldName = "field-" + index;
-            FormField<?> formField = new FormField<String>(fieldName, labelFieldData, valueText, new com.azure.ai.formrecognizer.models.FieldValue(FieldValueType.STRING)
-                .setFormFieldString(keyValuePair.getValue().getText()), setDefaultConfidenceValue(keyValuePair.getConfidence())
+            FormField<?> formField = new FormField<String>(fieldName, labelFieldData, valueText,
+                new com.azure.ai.formrecognizer.models.FieldValue(FieldValueType.STRING)
+                    .setFormFieldString(keyValuePair.getValue().getText()),
+                setDefaultConfidenceValue(keyValuePair.getConfidence())
             );
             formFieldMap.put(fieldName, formField);
         }));
