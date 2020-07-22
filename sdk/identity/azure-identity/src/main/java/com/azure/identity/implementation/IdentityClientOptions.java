@@ -58,7 +58,8 @@ public final class IdentityClientOptions {
      */
     public IdentityClientOptions() {
         Configuration configuration = Configuration.getGlobalConfiguration();
-        authorityHost = configuration.get(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, AzureAuthorityHosts.AZURE_PUBLIC_CLOUD);
+        authorityHost = configuration.get(Configuration.PROPERTY_AZURE_AUTHORITY_HOST,
+            AzureAuthorityHosts.AZURE_PUBLIC_CLOUD);
         maxRetry = MAX_RETRY_DEFAULT_LIMIT;
         retryTimeout = i -> Duration.ofSeconds((long) Math.pow(2, i.getSeconds() - 1));
     }

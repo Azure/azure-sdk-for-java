@@ -16,7 +16,6 @@ import java.util.HashMap;
 public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBase<InteractiveBrowserCredentialBuilder> {
     private int port;
     private boolean automaticAuthentication = true;
-    private String clientSecret;
 
     /**
      * Sets the port for the local HTTP server, for which {@code http://localhost:{port}} must be
