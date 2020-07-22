@@ -8,6 +8,7 @@ module com.azure.core.management {
     exports com.azure.core.management.polling;
     exports com.azure.core.management.serializer;
     exports com.azure.core.management.exception;
+    exports com.azure.core.management.profile;
 
     opens com.azure.core.management to
         com.fasterxml.jackson.databind,
