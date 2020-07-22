@@ -11,14 +11,14 @@ package com.microsoft.azure.management.appservice.v2016_08_01;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.appservice.v2016_08_01.implementation.ResourceMetricInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2016_08_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2016_08_01.implementation.WebManager;
 import org.joda.time.DateTime;
 import java.util.List;
 
 /**
  * Type representing ResourceMetric.
  */
-public interface ResourceMetric extends HasInner<ResourceMetricInner>, HasManager<AppServiceManager> {
+public interface ResourceMetric extends HasInner<ResourceMetricInner>, HasManager<WebManager> {
     /**
      * @return the endTime value.
      */

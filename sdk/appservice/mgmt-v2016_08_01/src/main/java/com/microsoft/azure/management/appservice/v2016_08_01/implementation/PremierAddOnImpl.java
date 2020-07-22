@@ -14,12 +14,12 @@ import rx.Observable;
 import java.util.Map;
 
 class PremierAddOnImpl extends CreatableUpdatableImpl<PremierAddOn, PremierAddOnInner, PremierAddOnImpl> implements PremierAddOn, PremierAddOn.Definition, PremierAddOn.Update {
-    private final AppServiceManager manager;
+    private final WebManager manager;
     private String resourceGroupName;
     private String name;
     private String premierAddOnName;
 
-    PremierAddOnImpl(String name, AppServiceManager manager) {
+    PremierAddOnImpl(String name, WebManager manager) {
         super(name, new PremierAddOnInner());
         this.manager = manager;
         // Set resource name
@@ -27,7 +27,7 @@ class PremierAddOnImpl extends CreatableUpdatableImpl<PremierAddOn, PremierAddOn
         //
     }
 
-    PremierAddOnImpl(PremierAddOnInner inner, AppServiceManager manager) {
+    PremierAddOnImpl(PremierAddOnInner inner, WebManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -40,7 +40,7 @@ class PremierAddOnImpl extends CreatableUpdatableImpl<PremierAddOn, PremierAddOn
     }
 
     @Override
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 

@@ -16,7 +16,7 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2016_08_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2016_08_01.implementation.WebManager;
 import java.util.List;
 import org.joda.time.DateTime;
 import java.util.Map;
@@ -24,7 +24,7 @@ import java.util.Map;
 /**
  * Type representing Slots.
  */
-public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots>, Updatable<Slots.Update>, HasManager<AppServiceManager> {
+public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots>, Updatable<Slots.Update>, HasManager<WebManager> {
     /**
      * @return the availabilityState value.
      */
