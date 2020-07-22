@@ -61,14 +61,14 @@ The following sections provide several code snippets covering some of the most c
 
 Create a BlobBatchClient from a [BlobServiceClient][blob_service_client].
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/batch/ReadmeSamples.java#L43-L43 -->
+<!-- embedme ./src/samples/java/com/azure/storage/blob/batch/ReadmeSamples.java#L42-L42 -->
 ```java
 BlobBatchClient blobBatchClient = new BlobBatchClientBuilder(blobServiceClient).buildClient();
 ```
 
 ### Bulk Deleting Blobs
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/batch/ReadmeSamples.java#L47-L49 -->
+<!-- embedme ./src/samples/java/com/azure/storage/blob/batch/ReadmeSamples.java#L46-L48 -->
 ```java
 blobBatchClient.deleteBlobs(blobUrls, DeleteSnapshotsOptionType.INCLUDE).forEach(response ->
     System.out.printf("Deleting blob with URL %s completed with status code %d%n",
@@ -77,7 +77,7 @@ blobBatchClient.deleteBlobs(blobUrls, DeleteSnapshotsOptionType.INCLUDE).forEach
 
 ### Bulk Setting AccessTier
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/batch/ReadmeSamples.java#L53-L55 -->
+<!-- embedme ./src/samples/java/com/azure/storage/blob/batch/ReadmeSamples.java#L52-L54 -->
 ```java
 blobBatchClient.setBlobsAccessTier(blobUrls, AccessTier.HOT).forEach(response ->
     System.out.printf("Setting blob access tier with URL %s completed with status code %d%n",
@@ -88,7 +88,7 @@ blobBatchClient.setBlobsAccessTier(blobUrls, AccessTier.HOT).forEach(response ->
 
 Deleting blobs in a batch that have different pre-requisites.
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/batch/ReadmeSamples.java#L59-L78 -->
+<!-- embedme ./src/samples/java/com/azure/storage/blob/batch/ReadmeSamples.java#L58-L77 -->
 ```java
 BlobBatch blobBatch = blobBatchClient.getBlobBatch();
 
@@ -114,7 +114,7 @@ System.out.printf("Deleting blob with lease completed with status code %d%n",
 
 Setting `AccessTier` on blobs in batch that have different pre-requisites.
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/batch/ReadmeSamples.java#L82-L98 -->
+<!-- embedme ./src/samples/java/com/azure/storage/blob/batch/ReadmeSamples.java#L81-L97 -->
 ```java
 BlobBatch blobBatch = blobBatchClient.getBlobBatch();
 
