@@ -57,19 +57,19 @@ public class EventRoutesImpl implements EventRoutes {
      * used by Retrofit to perform actually REST calls.
      */
     interface EventRoutesService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: .EventRoutes list" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.azure.digitaltwins.core.EventRoutes list" })
         @GET("eventroutes")
         Observable<Response<ResponseBody>> list(@Query("api-version") String apiVersion, @Header("x-ms-max-item-count") Integer maxItemCount);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: .EventRoutes getById" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.azure.digitaltwins.core.EventRoutes getById" })
         @GET("eventroutes/{id}")
         Observable<Response<ResponseBody>> getById(@Path("id") String id, @Query("api-version") String apiVersion);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: .EventRoutes add" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.azure.digitaltwins.core.EventRoutes add" })
         @PUT("eventroutes/{id}")
         Observable<Response<ResponseBody>> add(@Path("id") String id, @Body EventRoute eventRoute, @Query("api-version") String apiVersion);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: .EventRoutes delete" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.azure.digitaltwins.core.EventRoutes delete" })
         @HTTP(path = "eventroutes/{id}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("id") String id, @Query("api-version") String apiVersion);
 

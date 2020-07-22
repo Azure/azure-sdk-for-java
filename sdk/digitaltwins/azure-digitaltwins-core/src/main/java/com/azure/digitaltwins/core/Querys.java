@@ -4,7 +4,7 @@
  * regenerated.
  */
 
-package com.azure.digitaltwins.core;;
+package com.azure.digitaltwins.core;
 
 import com.azure.digitaltwins.core.models.ErrorResponseException;
 import com.azure.digitaltwins.core.models.QueryQueryTwinsHeaders;

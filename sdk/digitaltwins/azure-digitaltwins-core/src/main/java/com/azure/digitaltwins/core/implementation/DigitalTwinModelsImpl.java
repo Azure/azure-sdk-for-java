@@ -60,23 +60,23 @@ public class DigitalTwinModelsImpl implements DigitalTwinModels {
      * used by Retrofit to perform actually REST calls.
      */
     interface DigitalTwinModelsService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: .DigitalTwinModels add" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.azure.digitaltwins.core.DigitalTwinModels add" })
         @POST("models")
         Observable<Response<ResponseBody>> add(@Body List<Object> models, @Query("api-version") String apiVersion);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: .DigitalTwinModels list" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.azure.digitaltwins.core.DigitalTwinModels list" })
         @GET("models")
         Observable<Response<ResponseBody>> list(@Query("dependenciesFor") String dependenciesFor, @Query("includeModelDefinition") Boolean includeModelDefinition, @Query("api-version") String apiVersion, @Header("x-ms-max-item-count") Integer maxItemCount);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: .DigitalTwinModels getById" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.azure.digitaltwins.core.DigitalTwinModels getById" })
         @GET("models/{id}")
         Observable<Response<ResponseBody>> getById(@Path("id") String id, @Query("includeModelDefinition") Boolean includeModelDefinition, @Query("api-version") String apiVersion);
 
-        @Headers({ "Content-Type: application/json-patch+json; charset=utf-8", "x-ms-logging-context: .DigitalTwinModels update" })
+        @Headers({ "Content-Type: application/json-patch+json; charset=utf-8", "x-ms-logging-context: com.azure.digitaltwins.core.DigitalTwinModels update" })
         @PATCH("models/{id}")
         Observable<Response<ResponseBody>> update(@Path("id") String id, @Body List<Object> updateModel, @Query("api-version") String apiVersion);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: .DigitalTwinModels delete" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.azure.digitaltwins.core.DigitalTwinModels delete" })
         @HTTP(path = "models/{id}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("id") String id, @Query("api-version") String apiVersion);
 

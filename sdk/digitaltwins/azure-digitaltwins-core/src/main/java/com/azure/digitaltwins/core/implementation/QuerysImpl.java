@@ -53,7 +53,7 @@ public class QuerysImpl implements Querys {
      * used by Retrofit to perform actually REST calls.
      */
     interface QuerysService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: .Querys queryTwins" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.azure.digitaltwins.core.Querys queryTwins" })
         @POST("query")
         Observable<Response<ResponseBody>> queryTwins(@Body QuerySpecification querySpecification, @Query("api-version") String apiVersion);
 
