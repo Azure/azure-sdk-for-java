@@ -58,7 +58,7 @@ public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<Device
      *
      * @param authenticationRecord the authentication record to be configured.
      *
-     * @return An updated instance of this builder with if the shared token cache enabled specified.
+     * @return An updated instance of this builder with the configured authentication record.
      */
     public DeviceCodeCredentialBuilder authenticationRecord(AuthenticationRecord authenticationRecord) {
         this.identityClientOptions.setAuthenticationRecord(authenticationRecord);
