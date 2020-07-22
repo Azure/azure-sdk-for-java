@@ -27,7 +27,6 @@ public class SharedTokenCacheCredential implements TokenCredential {
     private final String username;
     private final String clientId;
     private final String tenantId;
-//    private final AtomicReference<MsalToken> cachedToken;
     private final AtomicReference<MsalAuthenticationAccount> cachedToken;
 
 
