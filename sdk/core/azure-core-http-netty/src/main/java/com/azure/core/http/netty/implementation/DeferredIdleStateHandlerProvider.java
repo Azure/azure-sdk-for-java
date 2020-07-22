@@ -10,7 +10,6 @@ import reactor.netty.ConnectionObserver;
 
 import java.time.Duration;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
@@ -30,8 +29,7 @@ public class DeferredIdleStateHandlerProvider implements Function<Bootstrap, BiC
 
     @Override
     public BiConsumer<ConnectionObserver, Channel> apply(Bootstrap bootstrap) {
-        IdleStateHandler idleStateHandler = new IdleStateHandler(true, readTimeout.getSeconds(),
-            writeTimeout.getSeconds(), 0, TimeUnit.SECONDS);
+        IdleStateHandler idleStateHandler = new AzureIdleStateHandler(readTimeout, writeTimeout);
 
         return (connectionObserver, channel) -> channel.pipeline().addFirst(HANDLER_NAME, idleStateHandler);
     }
