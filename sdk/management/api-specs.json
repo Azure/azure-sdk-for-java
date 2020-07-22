@@ -87,8 +87,8 @@
   "containerinstance": {
     "dir": "../containerinstance/mgmt",
     "source": "specification/containerinstance/resource-manager/readme.md",
-    "package": "com.microsoft.azure.resourcemanager.containerinstance",
-    "args": "--payload-flattening-threshold=1 --tag=package-2018-10"
+    "package": "com.azure.resourcemanager.containerinstance",
+    "args": "--payload-flattening-threshold=1 --tag=package-2019-12 --remove-inner=Operation,CachedImages,Capabilities"
   },
   "containerregistry": {
     "dir": "../containerregistry/mgmt",
