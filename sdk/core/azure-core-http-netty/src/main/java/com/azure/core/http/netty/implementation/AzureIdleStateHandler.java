@@ -26,9 +26,9 @@ public class AzureIdleStateHandler extends IdleStateHandler {
             System.out.printf("Processing idle state: %s%n", evt.state());
 
             if (evt.state() == IdleState.READER_IDLE) {
-                ctx.fireExceptionCaught(ReadTimeoutException.INSTANCE);
+                throw ReadTimeoutException.INSTANCE;
             } else if (evt.state() == IdleState.WRITER_IDLE) {
-                ctx.fireExceptionCaught(WriteTimeoutException.INSTANCE);
+                throw WriteTimeoutException.INSTANCE;
             } else {
                 ctx.fireExceptionCaught(new RuntimeException("Unknown idle state."));
             }
