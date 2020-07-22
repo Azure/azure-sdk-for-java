@@ -103,11 +103,12 @@ public abstract class FormTrainingClientTestBase extends TestBase {
             .serviceVersion(serviceVersion)
             .addPolicy(interceptorManager.getRecordPolicy());
 
-        if (getTestMode() == TestMode.PLAYBACK) {
-            builder.credential(new AzureKeyCredential(INVALID_KEY));
-        } else {
-            builder.credential(new DefaultAzureCredentialBuilder().build());
-        }
+        // if (getTestMode() == TestMode.PLAYBACK) {
+        //     builder.credential(new AzureKeyCredential(INVALID_KEY));
+        // } else {
+        //     builder.credential(new DefaultAzureCredentialBuilder().build());
+        // }// fix for testing until AAd fixed in V2.0
+        builder.credential(new AzureKeyCredential(getAPIKey()));
         return builder;
     }
 
@@ -343,6 +344,11 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         return interceptorManager.isPlaybackMode()
             ? "https://localhost:8080"
             : Configuration.getGlobalConfiguration().get(AZURE_FORM_RECOGNIZER_ENDPOINT);
+    }
+
+    protected String getAPIKey() {
+        return interceptorManager.isPlaybackMode() ? INVALID_KEY
+            : Configuration.getGlobalConfiguration().get(AZURE_FORM_RECOGNIZER_API_KEY);
     }
 
     void validateBlankPdfResultData(List<RecognizedForm> actualReceiptList) {

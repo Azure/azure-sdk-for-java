@@ -20,7 +20,8 @@ autorest --java --use=C:/work/autorest.java
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/cognitiveservices/data-plane/FormRecognizer/preview/v2.0/FormRecognizer.json
+// TODO change after service swagger update
+input-file: https://gist.githubusercontent.com/samvaity/dace4dac2737657f1a93183193c1f762/raw/744945a449676b292f33d4123a91a849064584f5/frGA.json
 java: true
 output-folder: ..\
 generate-client-as-impl: true

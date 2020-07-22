@@ -578,7 +578,7 @@ public final class FormTrainingAsyncClient {
     }
 
     private Mono<PollResponse<OperationResult>> processCopyModelResponse(
-        SimpleResponse<CopyOperationResult> copyModel,
+        Response<CopyOperationResult> copyModel,
         PollResponse<OperationResult> copyModelOperationResponse) {
         LongRunningOperationStatus status;
         switch (copyModel.getValue().getStatus()) {

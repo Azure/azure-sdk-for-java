@@ -25,7 +25,7 @@ public final class FormRecognizerClientImplBuilder {
      * https://westus2.api.cognitive.microsoft.com).
      *
      * @param endpoint the endpoint value.
-     * @return the FormRecognizerClientBuilder.
+     * @return the FormRecognizerClientImplBuilder.
      */
     public FormRecognizerClientImplBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
@@ -41,7 +41,7 @@ public final class FormRecognizerClientImplBuilder {
      * Sets The HTTP pipeline to send requests through.
      *
      * @param pipeline the pipeline value.
-     * @return the FormRecognizerClientBuilder.
+     * @return the FormRecognizerClientImplBuilder.
      */
     public FormRecognizerClientImplBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
@@ -60,8 +60,7 @@ public final class FormRecognizerClientImplBuilder {
                             .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                             .build();
         }
-        FormRecognizerClientImpl client = new FormRecognizerClientImpl(pipeline);
-        client.setEndpoint(this.endpoint);
+        FormRecognizerClientImpl client = new FormRecognizerClientImpl(pipeline, endpoint);
         return client;
     }
 }
