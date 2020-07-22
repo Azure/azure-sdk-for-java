@@ -79,10 +79,10 @@ public class ReactiveLongIdDomainPartitionPartitionRepositoryIT {
 
         Mono<LongIdDomainPartition> idMono = this.repository.findById(ID_1,
             new PartitionKey(entityInformation.getPartitionKeyFieldValue(DOMAIN_1)));
-        StepVerifier.create(idMono).verifyComplete();
+        StepVerifier.create(idMono).expectNextCount(0).verifyComplete();
 
         Mono<LongIdDomainPartition> saveMono = this.repository.save(DOMAIN_1);
-        StepVerifier.create(saveMono).thenConsumeWhile(domain -> true).expectComplete().verify();
+        StepVerifier.create(saveMono).expectNext(DOMAIN_1).expectComplete().verify();
 
         Mono<LongIdDomainPartition> findIdMono = this.repository.findById(ID_1,
             new PartitionKey(entityInformation.getPartitionKeyFieldValue(DOMAIN_1)));
@@ -93,7 +93,7 @@ public class ReactiveLongIdDomainPartitionPartitionRepositoryIT {
 
         Mono<LongIdDomainPartition> afterDelIdMono = this.repository.findById(ID_1,
             new PartitionKey(entityInformation.getPartitionKeyFieldValue(DOMAIN_1)));
-        StepVerifier.create(afterDelIdMono).verifyComplete();
+        StepVerifier.create(afterDelIdMono).expectNextCount(0).verifyComplete();
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -107,7 +107,7 @@ public class ReactiveLongIdDomainPartitionPartitionRepositoryIT {
         StepVerifier.create(deletedMono).thenAwait().verifyComplete();
 
         Flux<LongIdDomainPartition> savedAllFlux = this.repository.saveAll(Arrays.asList(DOMAIN_1, DOMAIN_2));
-        StepVerifier.create(savedAllFlux).thenConsumeWhile(domain -> true).expectComplete().verify();
+        StepVerifier.create(savedAllFlux).expectNextCount(2).verifyComplete();
 
         final Flux<LongIdDomainPartition> allFlux = repository.findAll();
         StepVerifier.create(allFlux).expectNextCount(2).verifyComplete();
@@ -133,7 +133,7 @@ public class ReactiveLongIdDomainPartitionPartitionRepositoryIT {
 
         Mono<LongIdDomainPartition> findIdMono = this.repository.findById(ID_1,
             new PartitionKey(entityInformation.getPartitionKeyFieldValue(DOMAIN_1)));
-        StepVerifier.create(findIdMono).verifyComplete();
+        StepVerifier.create(findIdMono).expectNextCount(0).verifyComplete();
     }
 
     @Test
@@ -149,7 +149,7 @@ public class ReactiveLongIdDomainPartitionPartitionRepositoryIT {
     @Test
     public void testDelete() {
         Mono<LongIdDomainPartition> saveMono = this.repository.save(DOMAIN_1);
-        StepVerifier.create(saveMono).thenConsumeWhile(domain -> true).expectComplete().verify();
+        StepVerifier.create(saveMono).expectNext(DOMAIN_1).expectComplete().verify();
 
         Mono<Void> deleteMono = this.repository.delete(DOMAIN_1);
         StepVerifier.create(deleteMono).verifyComplete();
@@ -170,7 +170,7 @@ public class ReactiveLongIdDomainPartitionPartitionRepositoryIT {
     @Test
     public void testDeleteAll() {
         Flux<LongIdDomainPartition> savedAllFlux = this.repository.saveAll(Arrays.asList(DOMAIN_1, DOMAIN_2));
-        StepVerifier.create(savedAllFlux).thenConsumeWhile(domain -> true).expectComplete().verify();
+        StepVerifier.create(savedAllFlux).expectNextCount(2).verifyComplete();
 
         final Mono<Void> deletedMono = repository.deleteAll();
         StepVerifier.create(deletedMono).thenAwait().verifyComplete();
@@ -182,7 +182,7 @@ public class ReactiveLongIdDomainPartitionPartitionRepositoryIT {
     @Test
     public void testExistsById() {
         Mono<LongIdDomainPartition> saveMono = this.repository.save(DOMAIN_1);
-        StepVerifier.create(saveMono).thenConsumeWhile(domain -> true).expectComplete().verify();
+        StepVerifier.create(saveMono).expectNext(DOMAIN_1).expectComplete().verify();
 
         Mono<Boolean> booleanMono = this.repository.existsById(DOMAIN_1.getNumber());
         StepVerifier.create(booleanMono).expectNext(true).expectComplete().verify();
