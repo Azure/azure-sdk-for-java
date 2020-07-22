@@ -50,7 +50,7 @@
               <archive>
                 <manifest>
                   <mainClass>
-                    com.azure.storage.blob.perf.App
+                    com.azure.messaging.servicebus.perf.App
                   </mainClass>
                 </manifest>
               </archive>

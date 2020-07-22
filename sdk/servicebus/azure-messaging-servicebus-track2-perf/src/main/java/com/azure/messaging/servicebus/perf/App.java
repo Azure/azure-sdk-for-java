@@ -21,7 +21,7 @@ public class App {
 
         try {
             testClasses = new Class<?>[]{
-                Class.forName("com.azure.messaging.servicebus.perf.SendAndReceiveTest"),
+                Class.forName("com.azure.messaging.servicebus.perf.SendAndReceiveTest")
             };
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
