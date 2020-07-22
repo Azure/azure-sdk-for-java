@@ -65,7 +65,6 @@ public final class RntbdRequestArgs {
         return this.activityId;
     }
 
-    @JsonSerialize(using = ToStringSerializer.class)
     @JsonProperty
     public Duration lifetime() {
         return this.lifetime.elapsed();
@@ -122,7 +121,10 @@ public final class RntbdRequestArgs {
     }
 
     public void traceOperation(
-        final Logger logger, final ChannelHandlerContext context, final String operationName, final Object... args) {
+        final Logger logger,
+        final ChannelHandlerContext context,
+        final String operationName,
+        final Object... args) {
 
         checkNotNull(logger, "expected non-null logger");
 

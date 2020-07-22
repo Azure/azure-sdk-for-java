@@ -98,7 +98,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
     private final Bootstrap bootstrap;
     private final EventExecutor executor;
     private final ChannelHealthChecker healthChecker;
-    // private final ScheduledFuture<?> idleStateDetectionScheduledFuture;
     private final int maxChannels;
     private final int maxPendingAcquisitions;
     private final int maxRequestsPerChannel;
@@ -148,7 +147,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
         });
 
         // TODO (DANOBLE) Consider moving or removing this.allocatorMetric
-        //  This metric is redundant in the scope of this class and should be pulled up to RntbdServiceEndpoint or
+        //  The metric is redundant in the scope of this class and should be pulled up to RntbdServiceEndpoint or
         //  entirely removed.
 
         this.acquisitionTimeoutInNanos = config.connectionAcquisitionTimeoutInNanos();
