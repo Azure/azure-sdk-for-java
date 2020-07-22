@@ -17,7 +17,7 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 @Fluent
 public class BlobBatchSetBlobAccessTierOptions {
 
-    private static ClientLogger logger = new ClientLogger(BlobBatchSetBlobAccessTierOptions.class);
+    private final ClientLogger logger = new ClientLogger(BlobBatchSetBlobAccessTierOptions.class);
 
     private final BlobUrlParts blobUrlParts;
     private final AccessTier tier;

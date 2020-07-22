@@ -36,7 +36,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.core.util.FluxUtil.readFile;
 
 /**
  * This class allows for batching of multiple Azure Storage operations in a single request via {@link
