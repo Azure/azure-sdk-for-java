@@ -123,7 +123,7 @@ public class DeviceCodeCredential implements TokenCredential {
         cachedToken.set(
                 new MsalAuthenticationAccount(
                         new AuthenticationRecord(msalToken.getAuthenticationResult(),
-                                identityClient.getTenantId())));
+                                identityClient.getTenantId(), identityClient.getClientId())));
         return msalToken;
     }
 }
