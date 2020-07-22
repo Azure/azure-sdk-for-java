@@ -29,14 +29,14 @@ import static com.azure.core.util.FluxUtil.withContext;
 @ServiceClient(builder = EventGridPublisherClientBuilder.class, isAsync = true)
 public class EventGridPublisherAsyncClient {
 
-    private String endpoint;
+    private final String hostname;
 
-    private EventGridPublisherClientImpl impl;
+    private final EventGridPublisherClientImpl impl;
 
-    EventGridPublisherAsyncClient(HttpPipeline pipeline, String endpoint) {
+    EventGridPublisherAsyncClient(HttpPipeline pipeline, String hostname) {
         this.impl = new EventGridPublisherClientImplBuilder().pipeline(pipeline).buildClient();
 
-        this.endpoint = endpoint;
+        this.hostname = hostname;
     }
 
     /**
@@ -55,7 +55,7 @@ public class EventGridPublisherAsyncClient {
         for (EventGridEvent event : events) {
             implList.add(event.toImpl());
         }
-        return impl.publishEventsAsync(endpoint, implList, context);
+        return impl.publishEventsAsync(hostname, implList, context);
     }
 
     /**
@@ -75,7 +75,7 @@ public class EventGridPublisherAsyncClient {
             implList.add(event.toImpl());
         }
 
-        return impl.publishCloudEventEventsAsync(endpoint, implList, context);
+        return impl.publishCloudEventEventsAsync(hostname, implList, context);
     }
 
     /**
@@ -95,7 +95,7 @@ public class EventGridPublisherAsyncClient {
         for (Object event : events) {
             objList.add(event);
         }
-        return impl.publishCustomEventEventsAsync(endpoint, objList, context);
+        return impl.publishCustomEventEventsAsync(hostname, objList, context);
     }
 
     /**
@@ -114,7 +114,7 @@ public class EventGridPublisherAsyncClient {
         for (EventGridEvent event : events) {
             implList.add(event.toImpl());
         }
-        return impl.publishEventsWithResponseAsync(endpoint, implList, context);
+        return impl.publishEventsWithResponseAsync(hostname, implList, context);
     }
 
     /**
@@ -134,7 +134,7 @@ public class EventGridPublisherAsyncClient {
             implList.add(event.toImpl());
         }
 
-        return impl.publishCloudEventEventsWithResponseAsync(endpoint, implList, context);
+        return impl.publishCloudEventEventsWithResponseAsync(hostname, implList, context);
     }
 
     /**
@@ -154,6 +154,6 @@ public class EventGridPublisherAsyncClient {
         for (Object event : events) {
             objList.add(event);
         }
-        return impl.publishCustomEventEventsWithResponseAsync(endpoint, objList, context);
+        return impl.publishCustomEventEventsWithResponseAsync(hostname, objList, context);
     }
 }

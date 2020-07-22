@@ -14,8 +14,8 @@ import com.azure.core.util.Context;
  * A service client that publishes events to an EventGrid topic or domain. Use {@link EventGridPublisherClientBuilder}
  * to create an instance of this client. Note that this is simply a synchronous convenience layer over the
  * {@link EventGridPublisherAsyncClient}, which has more efficient asynchronous functionality and is recommended.
- * @see EventGridEventBuilder
- * @see CloudEventBuilder
+ * @see EventGridEvent
+ * @see CloudEvent
  */
 @ServiceClient(builder = EventGridPublisherClientBuilder.class)
 public class EventGridPublisherClient {

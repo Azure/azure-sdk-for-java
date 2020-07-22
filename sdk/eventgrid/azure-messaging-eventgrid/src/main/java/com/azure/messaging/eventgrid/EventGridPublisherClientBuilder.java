@@ -50,7 +50,7 @@ public class EventGridPublisherClientBuilder {
 
     private EventGridSharedAccessSignatureCredential sasToken;
 
-    private String endpoint;
+    private String hostname;
 
     private HttpClient httpClient;
 
@@ -82,10 +82,10 @@ public class EventGridPublisherClientBuilder {
      * @return a publisher client with asynchronous publishing methods.
      */
     public EventGridPublisherAsyncClient buildAsyncClient() {
-        Objects.requireNonNull(endpoint, "endpoint cannot be null");
+        Objects.requireNonNull(hostname, "endpoint cannot be null");
 
         if (httpPipeline != null) {
-            return new EventGridPublisherAsyncClient(httpPipeline, endpoint);
+            return new EventGridPublisherAsyncClient(httpPipeline, hostname);
         }
 
         Configuration buildConfiguration = (configuration == null)
@@ -125,7 +125,7 @@ public class EventGridPublisherClientBuilder {
             .policies(httpPipelinePolicies.toArray(new HttpPipelinePolicy[0]))
             .build();
 
-        return new EventGridPublisherAsyncClient(buildPipeline, endpoint);
+        return new EventGridPublisherAsyncClient(buildPipeline, hostname);
     }
 
     /**
@@ -197,7 +197,7 @@ public class EventGridPublisherClientBuilder {
     public EventGridPublisherClientBuilder endpoint(String endpoint) {
         try {
             URL url = new URL(endpoint);
-            this.endpoint = url.getHost();
+            this.hostname = url.getHost();
         } catch (MalformedURLException e) {
             throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL"));
         }
