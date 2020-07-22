@@ -7,6 +7,7 @@ import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.RecognizeOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.Context;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -49,18 +50,20 @@ public class AdvancedDiffLabeledUnlabeledData {
         List<RecognizedForm> formsWithLabeledModel =
             client.beginRecognizeCustomForms(
                 new FileInputStream(analyzeFile), analyzeFile.length(),
-                "{labeled_model_Id}", new RecognizeOptions()
+                "{labeled_model_Id}",
+                new RecognizeOptions()
                     .setContentType(FormContentType.APPLICATION_PDF)
                     .setIncludeFieldElements(true)
-                    .setPollInterval(Duration.ofSeconds(5)))
+                    .setPollInterval(Duration.ofSeconds(5)), Context.NONE)
                 .getFinalResult();
 
         List<RecognizedForm> formsWithUnlabeledModel =
             client.beginRecognizeCustomForms(new FileInputStream(analyzeFile), analyzeFile.length(),
-                "{unlabeled_model_Id}", new RecognizeOptions()
+                "{unlabeled_model_Id}",
+                new RecognizeOptions()
                     .setContentType(FormContentType.APPLICATION_PDF)
                     .setIncludeFieldElements(true)
-                    .setPollInterval(Duration.ofSeconds(5)))
+                    .setPollInterval(Duration.ofSeconds(5)), Context.NONE)
                 .getFinalResult();
 
         System.out.println("--------Recognizing forms with labeled custom model--------");
@@ -109,15 +112,14 @@ public class AdvancedDiffLabeledUnlabeledData {
                     String.format("[%.2f, %.2f]", point.getX(), point.getY())).forEach(boundingBoxStr::append);
             }
 
-            final StringBuilder boundingBoxLabelStr = new StringBuilder();
             if (formField.getLabelData() != null && formField.getLabelData().getBoundingBox() != null) {
                 formField.getLabelData().getBoundingBox().getPoints().stream().map(point ->
                     String.format("[%.2f, %.2f]", point.getX(), point.getY())).forEach(boundingBoxStr::append);
-            }
-            System.out.printf("Field %s has label %s  within bounding box %s with a confidence score "
-                    + "of %.2f.%n",
-                label, formField.getLabelData().getText(), boundingBoxLabelStr, formField.getConfidence());
 
+                System.out.printf("Field %s has label %s within bounding box %s with a confidence score "
+                        + "of %.2f.%n",
+                    label, formField.getLabelData().getText(), "", formField.getConfidence());
+            }
             System.out.printf("Field %s has value %s based on %s within bounding box %s with a confidence score "
                     + "of %.2f.%n",
                 label, formField.getValue(), formField.getValueData().getText(), boundingBoxStr,

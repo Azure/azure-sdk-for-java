@@ -416,7 +416,7 @@ public class DeployImageFromContainerRegistryToKubernetes {
                         System.out.println("\tFound ingress IP: " + lbIngressList.get(0).getIp());
                         timeout = 0;
                     }
-                } catch (Exception ignored) {
+                } catch (Exception e) {
                 }
 
                 if (timeout > 0) {

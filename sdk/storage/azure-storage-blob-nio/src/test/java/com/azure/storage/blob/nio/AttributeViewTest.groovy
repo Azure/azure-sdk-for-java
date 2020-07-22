@@ -97,7 +97,6 @@ class AttributeViewTest extends APISpec {
         props.getArchiveStatus() == attr.archiveStatus()
         props.getAccessTierChangeTime() == attr.accessTierChangeTime()
         props.getMetadata() == attr.metadata()
-        props.getCommittedBlockCount() == attr.committedBlockCount()
 
         /*
         suppliers. Used in FileSystemProvider.readAttributes(String)
@@ -133,7 +132,6 @@ class AttributeViewTest extends APISpec {
         props.getArchiveStatus() == suppliers.get("archiveStatus").get()
         props.getAccessTierChangeTime() == suppliers.get("accessTierChangeTime").get()
         props.getMetadata() == suppliers.get("metadata").get()
-        props.getCommittedBlockCount() == suppliers.get("committedBlockCount").get()
     }
 
     @Unroll

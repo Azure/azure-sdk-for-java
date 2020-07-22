@@ -27,6 +27,8 @@ public final class BlobSasPermission {
 
     private boolean deleteVersionPermission;
 
+    private boolean tagsPermission;
+
     /**
      * Initializes a {@code BlobSasPermission} object with all fields set to false.
      */
@@ -39,7 +41,7 @@ public final class BlobSasPermission {
      *
      * @param permString A {@code String} which represents the {@code BlobSasPermission}.
      * @return A {@code BlobSasPermission} generated from the given {@code String}.
-     * @throws IllegalArgumentException If {@code permString} contains a character other than r, a, c, w, d or x.
+     * @throws IllegalArgumentException If {@code permString} contains a character other than r, a, c, w, d, x or t.
      */
     public static BlobSasPermission parse(String permString) {
         BlobSasPermission permissions = new BlobSasPermission();
@@ -64,6 +66,9 @@ public final class BlobSasPermission {
                     break;
                 case 'x':
                     permissions.deleteVersionPermission = true;
+                    break;
+                case 't':
+                    permissions.tagsPermission = true;
                     break;
                 default:
                     throw new IllegalArgumentException(
@@ -183,6 +188,24 @@ public final class BlobSasPermission {
     }
 
     /**
+     * @return the tags permission status.
+     */
+    public boolean hasTagsPermission() {
+        return tagsPermission;
+    }
+
+    /**
+     * Sets the tags permission status.
+     *
+     * @param tagsPermission Permission status to set
+     * @return the updated BlobSasPermission object.
+     */
+    public BlobSasPermission setTagsPermission(boolean tagsPermission) {
+        this.tagsPermission = tagsPermission;
+        return this;
+    }
+
+    /**
      * Converts the given permissions to a {@code String}. Using this method will guarantee the permissions are in an
      * order accepted by the service.
      *
@@ -217,6 +240,10 @@ public final class BlobSasPermission {
 
         if (this.deleteVersionPermission) {
             builder.append('x');
+        }
+
+        if (this.tagsPermission) {
+            builder.append('t');
         }
 
         return builder.toString();

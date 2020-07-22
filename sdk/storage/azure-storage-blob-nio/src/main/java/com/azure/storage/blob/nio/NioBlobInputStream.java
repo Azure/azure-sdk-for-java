@@ -12,7 +12,7 @@ import java.io.InputStream;
 /**
  * Provides an InputStream to read a file stored as an Azure Blob.
  */
-public class NioBlobInputStream extends InputStream {
+public final class NioBlobInputStream extends InputStream {
     private final ClientLogger logger = new ClientLogger(NioBlobInputStream.class);
 
     private final BlobInputStream blobInputStream;

@@ -117,8 +117,7 @@ class LinuxDiskVolumeLegacyEncryptionMonitorImpl implements DiskVolumeEncryption
         return computeManager
             .inner()
             .getVirtualMachineExtensions()
-            .getAsync(rgName, vmName, extension.name(), "instanceView")
-            .onErrorResume(e -> Mono.empty());
+            .getAsync(rgName, vmName, extension.name(), "instanceView");
     }
 
     /**
@@ -133,12 +132,7 @@ class LinuxDiskVolumeLegacyEncryptionMonitorImpl implements DiskVolumeEncryption
             .inner()
             .getVirtualMachines()
             .getByResourceGroupAsync(rgName, vmName)
-            .onErrorResume(
-                e ->
-                    Mono
-                        .error(
-                            new Exception(
-                                String.format("VM with name '%s' not found (resource group '%s')", vmName, rgName))))
+            // Exception if vm not found
             .flatMap(
                 virtualMachine -> {
                     if (virtualMachine.resources() != null) {

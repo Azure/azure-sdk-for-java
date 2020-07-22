@@ -152,13 +152,8 @@ class WindowsVolumeLegacyEncryptionMonitorImpl implements DiskVolumeEncryptionMo
             .computeManager
             .inner()
             .getVirtualMachines()
-            .getByResourceGroupAsync(rgName, vmName)
-            .onErrorResume(
-                e ->
-                    Mono
-                        .error(
-                            new Exception(
-                                String.format("VM with name '%s' not found (resource group '%s')", vmName, rgName))));
+            .getByResourceGroupAsync(rgName, vmName);
+            // Exception if vm not found
     }
 
     private boolean hasEncryptionDetails() {
