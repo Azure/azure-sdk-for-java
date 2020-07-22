@@ -3,13 +3,19 @@
 
 package com.azure.cosmos.util;
 
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.paging.ContinuablePagedFlux;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
+import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.models.FeedResponse;
 import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Signal;
 
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 /**
@@ -37,24 +43,21 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
     @Override
     public Flux<FeedResponse<T>> byPage() {
         CosmosPagedFluxOptions cosmosPagedFluxOptions = new CosmosPagedFluxOptions();
-
-        return this.optionsFluxFunction.apply(cosmosPagedFluxOptions);
+        return FluxUtil.fluxContext(context -> byPage(cosmosPagedFluxOptions, context));
     }
 
     @Override
     public Flux<FeedResponse<T>> byPage(String continuationToken) {
         CosmosPagedFluxOptions cosmosPagedFluxOptions = new CosmosPagedFluxOptions();
         cosmosPagedFluxOptions.setRequestContinuation(continuationToken);
-
-        return this.optionsFluxFunction.apply(cosmosPagedFluxOptions);
+        return FluxUtil.fluxContext(context -> byPage(cosmosPagedFluxOptions, context));
     }
 
     @Override
     public Flux<FeedResponse<T>> byPage(int preferredPageSize) {
         CosmosPagedFluxOptions cosmosPagedFluxOptions = new CosmosPagedFluxOptions();
         cosmosPagedFluxOptions.setMaxItemCount(preferredPageSize);
-
-        return this.optionsFluxFunction.apply(cosmosPagedFluxOptions);
+        return FluxUtil.fluxContext(context -> byPage(cosmosPagedFluxOptions, context));
     }
 
     @Override
@@ -62,8 +65,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
         CosmosPagedFluxOptions cosmosPagedFluxOptions = new CosmosPagedFluxOptions();
         cosmosPagedFluxOptions.setRequestContinuation(continuationToken);
         cosmosPagedFluxOptions.setMaxItemCount(preferredPageSize);
-
-        return this.optionsFluxFunction.apply(cosmosPagedFluxOptions);
+        return FluxUtil.fluxContext(context -> byPage(cosmosPagedFluxOptions, context));
     }
 
     /**
@@ -83,5 +85,26 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
             }
             return Flux.fromIterable(elements);
         }).subscribe(coreSubscriber);
+    }
+
+    private Flux<FeedResponse<T>> byPage(CosmosPagedFluxOptions pagedFluxOptions, Context context) {
+        final AtomicReference<Context> parentContext = new AtomicReference<>(Context.NONE);
+        return this.optionsFluxFunction.apply(pagedFluxOptions).doOnSubscribe(ignoredValue -> {
+            if (pagedFluxOptions.getTracerProvider().isEnabled()) {
+                parentContext.set(pagedFluxOptions.getTracerProvider().startSpan(pagedFluxOptions.getTracerSpanName(),
+                    pagedFluxOptions.getDatabaseId(), pagedFluxOptions.getServiceEndpoint(),
+                    context));
+            }
+        }).doOnComplete(() -> {
+            if (pagedFluxOptions.getTracerProvider().isEnabled()) {
+                pagedFluxOptions.getTracerProvider().endSpan(parentContext.get(), Signal.complete(),
+                    HttpConstants.StatusCodes.OK);
+            }
+        }).doOnError(throwable -> {
+            if (pagedFluxOptions.getTracerProvider().isEnabled()) {
+                pagedFluxOptions.getTracerProvider().endSpan(parentContext.get(), Signal.error(throwable),
+                    TracerProvider.ERROR_CODE);
+            }
+        });
     }
 }

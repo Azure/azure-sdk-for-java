@@ -275,6 +275,20 @@ directive:
     }
 ```
 
+### /{containerName}/{blob}?comp=seal
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=seal"]
+  transform: >
+    let param = $.put.parameters[0];
+    if (!param["$ref"].endsWith("ContainerName")) {
+      const path = param["$ref"].replace(/[#].*$/, "#/parameters/");
+      $.put.parameters.splice(0, 0, { "$ref": path + "ContainerName" });
+      $.put.parameters.splice(1, 0, { "$ref": path + "Blob" });
+    }
+```
+
 ### /{containerName}/{blob}?comp=properties&SetHTTPHeaders
 ``` yaml
 directive:

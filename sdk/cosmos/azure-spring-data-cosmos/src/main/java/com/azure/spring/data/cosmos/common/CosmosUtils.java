@@ -6,8 +6,10 @@ import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.spring.data.cosmos.core.ResponseDiagnostics;
 import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
+import com.azure.spring.data.cosmos.exception.IllegalQueryException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.Assert;
 
 /**
  * Util class to fill and process response diagnostics
@@ -44,5 +46,27 @@ public class CosmosUtils {
 
         //  Process response diagnostics
         responseDiagnosticsProcessor.processResponseDiagnostics(responseDiagnostics);
+    }
+
+    /**
+     * ID value should be string value, real id type will be String, Integer, Long,
+     * all of these must be converted to String type.
+     * @param idValue id value to find
+     * @throws IllegalArgumentException thrown if id value fail the validation.
+     * @throws IllegalQueryException thrown if id value fail the validation.
+     * @return String id value
+     */
+    public static String getStringIDValue(Object idValue) {
+        Assert.notNull(idValue, "id should not be null");
+        if (idValue instanceof String) {
+            Assert.hasText(idValue.toString(), "id should not be empty or only whitespaces.");
+            return (String) idValue;
+        } else if (idValue instanceof Integer) {
+            return Integer.toString((Integer) idValue);
+        } else if (idValue instanceof Long) {
+            return Long.toString((Long) idValue);
+        } else {
+            throw new IllegalQueryException("Type of id field must be String or Integer or Long");
+        }
     }
 }

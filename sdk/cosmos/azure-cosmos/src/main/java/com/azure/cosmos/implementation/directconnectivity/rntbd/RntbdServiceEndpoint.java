@@ -213,7 +213,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             if (released.isDone()) {
                 ensureSuccessWhenReleasedToPool(channel, released);
             } else {
-                this.channelPool.release(channel).addListener(ignored -> ensureSuccessWhenReleasedToPool(channel, released));
+                released.addListener(ignored -> ensureSuccessWhenReleasedToPool(channel, released));
             }
         }
     }

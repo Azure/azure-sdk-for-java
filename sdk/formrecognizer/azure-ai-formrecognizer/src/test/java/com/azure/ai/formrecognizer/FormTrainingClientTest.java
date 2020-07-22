@@ -57,7 +57,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
         blankPdfDataRunner(data -> {
             SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
                 formRecognizerClient.beginRecognizeReceipts(data, BLANK_FORM_FILE_LENGTH, new RecognizeOptions()
-                    .setContentType(FormContentType.APPLICATION_PDF).setPollInterval(durationTestMode));
+                    .setContentType(FormContentType.APPLICATION_PDF).setPollInterval(durationTestMode), Context.NONE);
             syncPoller.waitForCompletion();
             validateBlankPdfResultData(syncPoller.getFinalResult());
         });
@@ -93,7 +93,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
         client = getFormTrainingClient(httpClient, serviceVersion);
         beginTrainingUnlabeledRunner((trainingDataSasUrl, useTrainingLabels) -> {
             CustomFormModel trainedUnlabeledModel = client.beginTraining(trainingDataSasUrl, useTrainingLabels,
-                null, durationTestMode).getFinalResult();
+                null, durationTestMode, Context.NONE).getFinalResult();
             Response<CustomFormModel> customModelWithResponse =
                 client.getCustomModelWithResponse(trainedUnlabeledModel.getModelId(),
                     Context.NONE);
@@ -111,7 +111,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
         client = getFormTrainingClient(httpClient, serviceVersion);
         beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<OperationResult, CustomFormModel> syncPoller = client.beginTraining(trainingFilesUrl,
-                useTrainingLabels, null, durationTestMode);
+                useTrainingLabels, null, durationTestMode, Context.NONE);
             syncPoller.waitForCompletion();
             CustomFormModel trainedUnlabeledModel = syncPoller.getFinalResult();
             validateCustomModelData(client.getCustomModel(trainedUnlabeledModel.getModelId()), false);
@@ -127,7 +127,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
         client = getFormTrainingClient(httpClient, serviceVersion);
         beginTrainingLabeledRunner((trainingDataSASUrl, useTrainingLabels) -> {
             CustomFormModel customFormModel = client.beginTraining(trainingDataSASUrl, useTrainingLabels,
-                null, durationTestMode).getFinalResult();
+                null, durationTestMode, Context.NONE).getFinalResult();
             validateCustomModelData(client.getCustomModel(customFormModel.getModelId()), true);
         });
     }
@@ -172,7 +172,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
         client = getFormTrainingClient(httpClient, serviceVersion);
         beginTrainingLabeledRunner((trainingDataSASUrl, useTrainingLabels) -> {
             SyncPoller<OperationResult, CustomFormModel> syncPoller = client.beginTraining(trainingDataSASUrl,
-                useTrainingLabels, null, durationTestMode);
+                useTrainingLabels, null, durationTestMode, Context.NONE);
             syncPoller.waitForCompletion();
             CustomFormModel createdModel = syncPoller.getFinalResult();
 
@@ -233,7 +233,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
         client = getFormTrainingClient(httpClient, serviceVersion);
         beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<OperationResult, CustomFormModel> syncPoller =
-                client.beginTraining(trainingFilesUrl, useTrainingLabels, null, durationTestMode);
+                client.beginTraining(trainingFilesUrl, useTrainingLabels, null, durationTestMode, Context.NONE);
             syncPoller.waitForCompletion();
             CustomFormModel actualModel = syncPoller.getFinalResult();
 
@@ -260,7 +260,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
         client = getFormTrainingClient(httpClient, serviceVersion);
         beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<OperationResult, CustomFormModel> syncPoller =
-                client.beginTraining(trainingFilesUrl, useTrainingLabels, null, durationTestMode);
+                client.beginTraining(trainingFilesUrl, useTrainingLabels, null, durationTestMode, Context.NONE);
             syncPoller.waitForCompletion();
             final CustomFormModel actualModel = syncPoller.getFinalResult();
 
@@ -283,7 +283,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
         client = getFormTrainingClient(httpClient, serviceVersion);
         beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<OperationResult, CustomFormModel> syncPoller =
-                client.beginTraining(trainingFilesUrl, useTrainingLabels, null, durationTestMode);
+                client.beginTraining(trainingFilesUrl, useTrainingLabels, null, durationTestMode, Context.NONE);
             syncPoller.waitForCompletion();
             CustomFormModel actualModel = syncPoller.getFinalResult();
 
@@ -337,7 +337,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
         client = getFormTrainingClient(httpClient, serviceVersion);
         beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<OperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingFilesUrl,
-                useTrainingLabels, null, durationTestMode);
+                useTrainingLabels, null, durationTestMode, Context.NONE);
             trainingPoller.waitForCompletion();
             validateCustomModelData(trainingPoller.getFinalResult(), true);
         });
@@ -353,7 +353,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
         client = getFormTrainingClient(httpClient, serviceVersion);
         beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<OperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingFilesUrl,
-                useTrainingLabels, null, durationTestMode);
+                useTrainingLabels, null, durationTestMode, Context.NONE);
             trainingPoller.waitForCompletion();
             validateCustomModelData(trainingPoller.getFinalResult(), false);
         });
@@ -369,7 +369,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
         client = getFormTrainingClient(httpClient, serviceVersion);
         beginTrainingMultipageRunner(trainingFilesUrl -> {
             SyncPoller<OperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingFilesUrl,
-                true, null, durationTestMode);
+                true, null, durationTestMode, Context.NONE);
             trainingPoller.waitForCompletion();
             validateCustomModelData(trainingPoller.getFinalResult(), true);
         });
@@ -385,7 +385,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
         client = getFormTrainingClient(httpClient, serviceVersion);
         beginTrainingMultipageRunner(trainingFilesUrl -> {
             SyncPoller<OperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingFilesUrl,
-                false, null, durationTestMode);
+                false, null, durationTestMode, Context.NONE);
             trainingPoller.waitForCompletion();
             validateCustomModelData(trainingPoller.getFinalResult(), false);
         });
@@ -403,7 +403,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
         beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<OperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingFilesUrl,
                 useTrainingLabels, new TrainingFileFilter().setIncludeSubFolders(true).setPrefix(PREFIX_SUBFOLDER),
-                durationTestMode);
+                durationTestMode, Context.NONE);
             trainingPoller.waitForCompletion();
             validateCustomModelData(trainingPoller.getFinalResult(), false);
         });
@@ -421,7 +421,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
         beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<OperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingFilesUrl,
                 useTrainingLabels, new TrainingFileFilter().setPrefix(PREFIX_SUBFOLDER),
-                durationTestMode);
+                durationTestMode, Context.NONE);
             trainingPoller.waitForCompletion();
             validateCustomModelData(trainingPoller.getFinalResult(), false);
         });
@@ -440,7 +440,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
             FormRecognizerException thrown = assertThrows(FormRecognizerException.class, () ->
                 client.beginTraining(trainingFilesUrl, false,
                     new TrainingFileFilter().setIncludeSubFolders(true).setPrefix(INVALID_PREFIX_FILE_NAME),
-                    durationTestMode).getFinalResult());
+                    durationTestMode, Context.NONE).getFinalResult());
             assertEquals(NO_VALID_BLOB_FOUND, thrown.getErrorInformation().get(0).getMessage());
         });
     }
@@ -457,7 +457,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
         beginTrainingMultipageRunner(trainingFilesUrl -> {
             FormRecognizerException thrown = assertThrows(FormRecognizerException.class, () ->
                 client.beginTraining(trainingFilesUrl, false,
-                    new TrainingFileFilter().setPrefix(INVALID_PREFIX_FILE_NAME), durationTestMode)
+                    new TrainingFileFilter().setPrefix(INVALID_PREFIX_FILE_NAME), durationTestMode, Context.NONE)
                     .getFinalResult());
             assertEquals(NO_VALID_BLOB_FOUND, thrown.getErrorInformation().get(0).getMessage());
         });

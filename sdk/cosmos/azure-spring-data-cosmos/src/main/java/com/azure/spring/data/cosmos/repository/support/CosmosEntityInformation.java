@@ -201,8 +201,10 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
             throw new IllegalArgumentException("domain should contain @Id field or field named id");
         } else if (idField.getType() != String.class
                 && idField.getType() != Integer.class
-                && idField.getType() != int.class) {
-            throw new IllegalArgumentException("type of id field must be String or Integer");
+                && idField.getType() != int.class
+                && idField.getType() != Long.class
+                && idField.getType() != long.class) {
+            throw new IllegalArgumentException("type of id field must be String, Integer or Long");
         }
 
         return idField;

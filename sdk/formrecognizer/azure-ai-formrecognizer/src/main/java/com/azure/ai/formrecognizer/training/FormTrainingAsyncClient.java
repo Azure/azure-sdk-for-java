@@ -174,16 +174,21 @@ public final class FormTrainingAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<OperationResult, CustomFormModel> beginTraining(String trainingFilesUrl,
         boolean useTrainingLabels, TrainingFileFilter trainingFileFilter, Duration pollInterval) {
+        return beginTraining(trainingFilesUrl, useTrainingLabels, trainingFileFilter, pollInterval, Context.NONE);
+    }
+
+    PollerFlux<OperationResult, CustomFormModel> beginTraining(String trainingFilesUrl,
+        boolean useTrainingLabels, TrainingFileFilter trainingFileFilter, Duration pollInterval, Context context) {
         final Duration interval = pollInterval != null ? pollInterval : DEFAULT_DURATION;
         return new PollerFlux<OperationResult, CustomFormModel>(
             interval,
             getTrainingActivationOperation(trainingFilesUrl,
                 trainingFileFilter != null ? trainingFileFilter.isIncludeSubFolders() : false,
                 trainingFileFilter != null ? trainingFileFilter.getPrefix() : null,
-                useTrainingLabels),
-            createTrainingPollOperation(),
-            (activationResponse, context) -> Mono.error(new RuntimeException("Cancellation is not supported")),
-            fetchTrainingModelResultOperation());
+                useTrainingLabels, context),
+            createTrainingPollOperation(context),
+            (activationResponse, pollingContext) -> Mono.error(new RuntimeException("Cancellation is not supported")),
+            fetchTrainingModelResultOperation(context));
     }
 
     /**
@@ -405,13 +410,18 @@ public final class FormTrainingAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<OperationResult, CustomFormModelInfo> beginCopyModel(String modelId,
         CopyAuthorization target, Duration pollInterval) {
+        return beginCopyModel(modelId, target, pollInterval, Context.NONE);
+    }
+
+    PollerFlux<OperationResult, CustomFormModelInfo> beginCopyModel(String modelId,
+        CopyAuthorization target, Duration pollInterval, Context context) {
         final Duration interval = pollInterval != null ? pollInterval : DEFAULT_DURATION;
         return new PollerFlux<OperationResult, CustomFormModelInfo>(
             interval,
-            getCopyActivationOperation(modelId, target),
-            createCopyPollOperation(modelId),
-            (activationResponse, context) -> Mono.error(new RuntimeException("Cancellation is not supported")),
-            fetchCopyModelResultOperation(modelId, target.getModelId()));
+            getCopyActivationOperation(modelId, target, context),
+            createCopyPollOperation(modelId, context),
+            (activationResponse, pollingContext) -> Mono.error(new RuntimeException("Cancellation is not supported")),
+            fetchCopyModelResultOperation(modelId, target.getModelId(), context));
     }
 
     /**
@@ -507,12 +517,12 @@ public final class FormTrainingAsyncClient {
     }
 
     private Function<PollingContext<OperationResult>, Mono<CustomFormModelInfo>> fetchCopyModelResultOperation(
-        String modelId, String copyModelId) {
+        String modelId, String copyModelId, Context context) {
         return (pollingContext) -> {
             try {
                 final UUID resultUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
                 Objects.requireNonNull(modelId, "'modelId' cannot be null.");
-                return service.getCustomModelCopyResultWithResponseAsync(UUID.fromString(modelId), resultUid)
+                return service.getCustomModelCopyResultWithResponseAsync(UUID.fromString(modelId), resultUid, context)
                     .map(modelSimpleResponse -> {
                         CopyOperationResult copyOperationResult = modelSimpleResponse.getValue();
                         throwIfCopyOperationStatusInvalid(copyOperationResult);
@@ -531,12 +541,12 @@ public final class FormTrainingAsyncClient {
     }
 
     private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>>
-        createCopyPollOperation(String modelId) {
+        createCopyPollOperation(String modelId, Context context) {
         return (pollingContext) -> {
             try {
                 PollResponse<OperationResult> operationResultPollResponse = pollingContext.getLatestResponse();
                 UUID targetId = UUID.fromString(operationResultPollResponse.getValue().getResultId());
-                return service.getCustomModelCopyResultWithResponseAsync(UUID.fromString(modelId), targetId)
+                return service.getCustomModelCopyResultWithResponseAsync(UUID.fromString(modelId), targetId, context)
                         .flatMap(modelSimpleResponse ->
                             processCopyModelResponse(modelSimpleResponse, operationResultPollResponse))
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
@@ -547,7 +557,7 @@ public final class FormTrainingAsyncClient {
     }
 
     private Function<PollingContext<OperationResult>, Mono<OperationResult>> getCopyActivationOperation(
-        String modelId, CopyAuthorization target) {
+        String modelId, CopyAuthorization target, Context context) {
         return (pollingContext) -> {
             try {
                 Objects.requireNonNull(modelId, "'modelId' cannot be null.");
@@ -559,7 +569,7 @@ public final class FormTrainingAsyncClient {
                         .setModelId(target.getModelId())
                         .setAccessToken(target.getAccessToken())
                         .setExpirationDateTimeTicks(target.getExpiresOn().toEpochSecond()));
-                return service.copyCustomModelWithResponseAsync(UUID.fromString(modelId), copyRequest)
+                return service.copyCustomModelWithResponseAsync(UUID.fromString(modelId), copyRequest, context)
                     .map(response ->
                         new OperationResult(parseModelId(response.getDeserializedHeaders().getOperationLocation())))
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
@@ -591,11 +601,12 @@ public final class FormTrainingAsyncClient {
         return Mono.just(new PollResponse<>(status, copyModelOperationResponse.getValue()));
     }
 
-    private Function<PollingContext<OperationResult>, Mono<CustomFormModel>> fetchTrainingModelResultOperation() {
+    private Function<PollingContext<OperationResult>, Mono<CustomFormModel>>
+        fetchTrainingModelResultOperation(Context context) {
         return (pollingContext) -> {
             try {
                 final UUID modelUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
-                return service.getCustomModelWithResponseAsync(modelUid, true)
+                return service.getCustomModelWithResponseAsync(modelUid, true, context)
                     .map(modelSimpleResponse -> {
                         throwIfModelStatusInvalid(modelSimpleResponse.getValue());
                         return toCustomFormModel(modelSimpleResponse.getValue());
@@ -608,12 +619,12 @@ public final class FormTrainingAsyncClient {
     }
 
     private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>>
-        createTrainingPollOperation() {
+        createTrainingPollOperation(Context context) {
         return (pollingContext) -> {
             try {
                 PollResponse<OperationResult> operationResultPollResponse = pollingContext.getLatestResponse();
                 UUID modelUid = UUID.fromString(operationResultPollResponse.getValue().getResultId());
-                return service.getCustomModelWithResponseAsync(modelUid, true)
+                return service.getCustomModelWithResponseAsync(modelUid, true, context)
                     .flatMap(modelSimpleResponse ->
                         processTrainingModelResponse(modelSimpleResponse, operationResultPollResponse))
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
@@ -625,7 +636,8 @@ public final class FormTrainingAsyncClient {
     }
 
     private Function<PollingContext<OperationResult>, Mono<OperationResult>> getTrainingActivationOperation(
-        String trainingFilesUrl, boolean includeSubFolders, String filePrefix, boolean useTrainingLabels) {
+        String trainingFilesUrl, boolean includeSubFolders, String filePrefix, boolean useTrainingLabels,
+        Context context) {
         return (pollingContext) -> {
             try {
                 Objects.requireNonNull(trainingFilesUrl, "'trainingFilesUrl' cannot be null.");
@@ -633,7 +645,7 @@ public final class FormTrainingAsyncClient {
                     .setPrefix(filePrefix);
                 TrainRequest serviceTrainRequest = new TrainRequest().setSource(trainingFilesUrl).
                     setSourceFilter(trainSourceFilter).setUseLabelFile(useTrainingLabels);
-                return service.trainCustomModelAsyncWithResponseAsync(serviceTrainRequest)
+                return service.trainCustomModelAsyncWithResponseAsync(serviceTrainRequest, context)
                     .map(response ->
                         new OperationResult(parseModelId(response.getDeserializedHeaders().getLocation())))
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);

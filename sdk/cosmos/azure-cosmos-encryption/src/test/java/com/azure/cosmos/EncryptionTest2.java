@@ -12,7 +12,6 @@ import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
@@ -74,7 +73,7 @@ public class EncryptionTest2 extends TestSuiteBase {
         simpleInMemoryProvider.addKey(keyId, dataEncryptionKey);
 
         encryptionOptions.setDataEncryptionKeyId(keyId);
-        encryptionOptions.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAes256CbcHmacSha256Randomized);
+        encryptionOptions.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256_RANDOMIZED);
         ModelBridgeInternal.setEncryptionOptions(requestOptions, encryptionOptions);
 
         Pojo properties = getItem(UUID.randomUUID().toString());
@@ -100,7 +99,7 @@ public class EncryptionTest2 extends TestSuiteBase {
 
         encryptionOptions.setDataEncryptionKeyId(keyId);
         ModelBridgeInternal.setEncryptionOptions(requestOptions, encryptionOptions);
-        encryptionOptions.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAes256CbcHmacSha256Randomized);
+        encryptionOptions.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256_RANDOMIZED);
 
         Pojo properties = getItem(UUID.randomUUID().toString());
         CosmosItemResponse<Pojo> itemResponse = container.upsertItem(properties, requestOptions);

@@ -29,7 +29,7 @@ class SymmetricKey {
     }
 
     /**
-     * Returns a copy of the plain text key
+     * Gets a copy of the plain text key
      * This is needed for actual encryption/decryption.
      *
      * @return root key byte array

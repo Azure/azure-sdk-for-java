@@ -212,10 +212,9 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     public <T> Mono<T> findById(String containerName, Object id, Class<T> domainType) {
         Assert.hasText(containerName, "containerName should not be null, empty or only whitespaces");
         Assert.notNull(domainType, "domainType should not be null");
-        assertValidId(id);
 
         final String query = String.format("select * from root where root.id = '%s'",
-            id.toString());
+            CosmosUtils.getStringIDValue(id));
         final CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setQueryMetricsEnabled(isPopulateQueryMetrics);
 
@@ -249,12 +248,12 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     @Override
     public <T> Mono<T> findById(Object id, Class<T> domainType, PartitionKey partitionKey) {
         Assert.notNull(domainType, "domainType should not be null");
-        assertValidId(id);
+        String idToFind = CosmosUtils.getStringIDValue(id);
 
         final String containerName = getContainerName(domainType);
         return cosmosAsyncClient.getDatabase(databaseName)
                                 .getContainer(containerName)
-                                .readItem(id.toString(), partitionKey, JsonNode.class)
+                                .readItem(idToFind, partitionKey, JsonNode.class)
                                 .flatMap(cosmosItemResponse -> {
                                     CosmosUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
                                         cosmosItemResponse.getDiagnostics(), null);
@@ -390,7 +389,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     @Override
     public Mono<Void> deleteById(String containerName, Object id, PartitionKey partitionKey) {
         Assert.hasText(containerName, "container name should not be null, empty or only whitespaces");
-        assertValidId(id);
+        String idToDelete = CosmosUtils.getStringIDValue(id);
 
         if (partitionKey == null) {
             partitionKey = PartitionKey.NONE;
@@ -398,7 +397,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
 
         return cosmosAsyncClient.getDatabase(this.databaseName)
                                 .getContainer(containerName)
-                                .deleteItem(id.toString(), partitionKey)
+                                .deleteItem(idToDelete, partitionKey)
                                 .doOnNext(cosmosItemResponse ->
                                     CosmosUtils.fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
                                         cosmosItemResponse.getDiagnostics(), null))
@@ -587,13 +586,6 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
             })
             .onErrorResume(throwable ->
                 CosmosExceptionUtils.exceptionHandler("Failed to query items", throwable));
-    }
-
-    private void assertValidId(Object id) {
-        Assert.notNull(id, "id should not be null");
-        if (id instanceof String) {
-            Assert.hasText(id.toString(), "id should not be empty or only whitespaces.");
-        }
     }
 
     private List<String> getPartitionKeyNames(Class<?> domainType) {
