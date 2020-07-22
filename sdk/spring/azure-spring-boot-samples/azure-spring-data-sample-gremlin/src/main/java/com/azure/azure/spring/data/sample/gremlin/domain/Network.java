@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.microsoft.spring.data.gremlin.domain;
+package com.azure.azure.spring.data.sample.gremlin.domain;
 
 import com.microsoft.spring.data.gremlin.annotation.EdgeSet;
 import com.microsoft.spring.data.gremlin.annotation.Graph;

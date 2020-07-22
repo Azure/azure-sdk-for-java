@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.microsoft.spring.data.gremlin.config;
+package com.azure.azure.spring.data.sample.gremlin.config;
 
 import org.apache.tinkerpop.gremlin.driver.ser.Serializers;
 import org.springframework.boot.context.properties.ConfigurationProperties;

@@ -72,18 +72,41 @@ Click `OK`.
 
    ![spring-initializr](readme-images/spring-initializr.png)
 
-1. 
+1. Unzip the file then import to your IDE.
 
+## Update code according to this sample project
 
+1. Add dependency of `azure-spring-data-gremlin`, just like the repo does. Choose the correct version.
 
+1. Delete all contents in `src/test/`
 
+1. Add all java files in `src/main/java`, just like this sample does.
 
+1. Update config in `src/main/resorces/application.properties`, where:
 
-   
+   | Field              | Description                                                                                                                                                                                                             |
+   |--------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+   | `endpoint`         | Specifies the Gremlin URI for your database, which is derived from the unique **ID** that you specified when you created your Azure Cosmos DB earlier in this tutorial.                                                 |
+   | `port`             | Specifies the TCP/IP port, which should be **443** for HTTPS.                                                                                                                                                           |
+   | `username`         | Specifies the unique **Database id** and **Graph id** that you used when you added your graph earlier in this tutorial; this must be entered using the following syntax: "/dbs/**{Database id}**/colls/**{Graph id}**". |
+   | `password`         | Specifies either the primary or secondary **Access key** that you copied earlier in this tutorial.                                                                                                                      |
+   | `sslEnabled`       | Specifies whether enable ssl.                                                                                                                                                                                           |
+   | `telemetryAllowed` | Specify **true** if you want to enable telemetry; otherwise, **false**.
+   | `maxContentLength` | Specifies max content length.                                                                                                                                                                                           |
 
+1. About how to get password:
 
-1. When your database has been created, Click `Go to resource`. It is also listed on your Azure `Dashboard`, as well as under the `All Resources` and `Azure Cosmos DB` pages. You can click on your database on any of those locations to open the properties page for your cache.
+   ![get-password](readme-images/get-password.png)
 
-1. In CosmosDb overview page, click `Keys` and copy your URI and access keys for your database; you will use these values in your Spring Boot application.
+## Build and run the project
 
-   ![Access keys][AZ05]
+1. Build your Spring Boot application with Maven and run it; for example:
+
+   ```shell
+   mvn clean package
+   mvn spring-boot:run
+   ```
+
+1. If your app start successfully, you can check the graph in Azure portal:
+
+   ![execute-result](readme-images/execute-result.png)

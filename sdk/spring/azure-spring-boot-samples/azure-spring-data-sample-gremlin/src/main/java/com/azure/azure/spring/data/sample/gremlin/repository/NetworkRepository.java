@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.microsoft.spring.data.gremlin.repository;
+package com.azure.azure.spring.data.sample.gremlin.repository;
 
-import com.microsoft.spring.data.gremlin.domain.Network;
+import com.azure.azure.spring.data.sample.gremlin.domain.Network;
+import com.microsoft.spring.data.gremlin.repository.GremlinRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
