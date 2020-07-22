@@ -111,7 +111,7 @@ public class DeviceCodeCredential implements TokenCredential {
      * {@link DeviceCodeCredentialBuilder#enablePersistentCache()} when credential was instantiated.
      */
     public Mono<AuthenticationRecord> authenticate() {
-        String defaultScope = KnownAuthorityHosts.getDefaultScope(authorityHost);
+        String defaultScope = AzureAuthorityHosts.getDefaultScope(authorityHost);
         if (defaultScope == null) {
             return Mono.error(logger.logExceptionAsError(new CredentialUnavailableException("Authenticating in this "
                                                     + "environment requires specifying a TokenRequestContext.")));

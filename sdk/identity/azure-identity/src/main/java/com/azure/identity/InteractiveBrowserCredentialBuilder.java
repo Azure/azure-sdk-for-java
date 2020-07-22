@@ -67,17 +67,6 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
     }
 
     /**
-     * Sets the client secret for the authentication. This is required for AAD web apps. Do not set this for AAD native
-     * apps.
-     * @param clientSecret the secret value of the AAD application.
-     * @return the InteractiveBrowserCredentialBuilder itself
-     */
-    public InteractiveBrowserCredentialBuilder clientSecret(String clientSecret) {
-        this.clientSecret = clientSecret;
-        return this;
-    }
-
-    /**
      * Disables the automatic authentication and prevents the {@link InteractiveBrowserCredential} from automatically
      * prompting the user. If automatic authentication is disabled a {@link AuthenticationRequiredException}
      * will be thrown from {@link InteractiveBrowserCredential#getToken(TokenRequestContext)} in the case that
@@ -102,7 +91,7 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
                 put("clientId", clientId);
                 put("port", port);
             }});
-        return new InteractiveBrowserCredential(clientId, tenantId, port, automaticAuthentication, clientSecret,
-                identityClientOptions);
+        return new InteractiveBrowserCredential(clientId, tenantId, port, automaticAuthentication,
+            identityClientOptions);
     }
 }

@@ -30,10 +30,13 @@ public class AuthenticationRecord {
     @JsonProperty("username")
     private String username;
 
+    @JsonProperty("clientId")
+    private String clientId;
+
 
     AuthenticationRecord() { }
 
-    AuthenticationRecord(IAuthenticationResult authenticationResult, String tenantId) {
+    AuthenticationRecord(IAuthenticationResult authenticationResult, String tenantId, String clientId) {
         authority = authenticationResult.account().environment();
         homeAccountId = authenticationResult.account().homeAccountId();
         username = authenticationResult.account().username();
@@ -65,6 +68,15 @@ public class AuthenticationRecord {
      */
     public String getTenantId() {
         return tenantId;
+    }
+
+    /**
+     * Get the client id, which the account authenticated for.
+     *
+     * @return the client id.
+     */
+    public String getClientId() {
+        return clientId;
     }
 
     /**
