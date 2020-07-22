@@ -72,7 +72,7 @@ public class AuthenticationRecord {
     }
 
     /**
-     * Get the client id, which the account authenticated for.
+     * Get the client id of the application used for authentication.
      *
      * @return the client id.
      */
