@@ -83,4 +83,11 @@ public interface ProjectRepository extends CosmosRepository<Project, String> {
     List<Project> findByNameIsNotNullAndHasReleased(boolean hasReleased);
 
     Page<Project> findByForkCount(Long forkCount, Pageable pageable);
+   
+    
+    List<Project> findAllByNameIn(Collection<String> names);
+    
+    List<Project> findAllByStarCountIn(Collection<Long> startCounts);
+    
+    List<Project> findAllByHasReleasedIn(Collection<Boolean> releases);
 }

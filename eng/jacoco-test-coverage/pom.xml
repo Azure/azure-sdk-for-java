@@ -88,11 +88,6 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-core-serializer-avro-jackson</artifactId>
-      <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-core-serializer-avro-jackson;current} -->
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
       <artifactId>azure-core-serializer-json-gson</artifactId>
       <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-gson;current} -->
     </dependency>
@@ -281,6 +276,11 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-spring-data-cosmos</artifactId>
       <version>3.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-spring-data-gremlin</artifactId>
+      <version>2.3.1-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-gremlin;current} -->
     </dependency>
   </dependencies>
   <build>
