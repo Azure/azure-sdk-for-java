@@ -281,7 +281,7 @@ public final class BlobBatch {
                 .setLeaseId(options.getLeaseId())
                 .setPriority(options.getPriority())
                 .setTagsConditions(options.getTagsConditions())),
-            getUrlPath(options.getBlobUrl()), EXPECTED_SET_TIER_STATUS_CODES);
+            options.getBlobPath(), EXPECTED_SET_TIER_STATUS_CODES);
     }
 
     private <T> Response<T> createBatchOperation(Mono<Response<T>> response, String urlPath,
@@ -293,21 +293,7 @@ public final class BlobBatch {
     }
 
     private String getUrlPath(String url) {
-        UrlBuilder urlBuilder = UrlBuilder.parse(url);
-        String blobUrl = urlBuilder.getPath();
-        String snapshot = urlBuilder.getQuery().getOrDefault("snapshot", null);
-        String versionId = urlBuilder.getQuery().getOrDefault("versionid", null);
-        if (snapshot != null && versionId != null) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("'snapshot' and 'versionId' cannot be used at the same time."));
-        }
-        if (snapshot != null) {
-            blobUrl = Utility.appendQueryParameter(blobUrl, "snapshot", snapshot);
-        }
-        if (versionId != null) {
-            blobUrl = Utility.appendQueryParameter(blobUrl, "versionid", versionId);
-        }
-        return blobUrl;
+        return UrlBuilder.parse(url).getPath();
     }
 
     private void setBatchType(BlobBatchType batchType) {
