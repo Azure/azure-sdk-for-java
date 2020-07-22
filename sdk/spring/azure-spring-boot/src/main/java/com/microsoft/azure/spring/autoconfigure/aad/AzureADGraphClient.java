@@ -189,7 +189,7 @@ public class AzureADGraphClient {
      * true.
      *
      * @param group - User Group to check if valid to grant an authority to.
-     * @return true if either of allowed-groups contains the UserGroup display name
+     * @return true if allowed-groups contains the UserGroup display name
      */
     private boolean isValidUserGroupToGrantAuthority(final UserGroup group) {
         return aadAuthenticationProperties.getUserGroup().getAllowedGroups().contains(group.getDisplayName());
