@@ -9,6 +9,7 @@ import com.azure.messaging.servicebus.ServiceBusReceiverAsyncClient;
 import com.azure.messaging.servicebus.ServiceBusReceiverClient;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.messaging.servicebus.ServiceBusSenderClient;
+import com.azure.messaging.servicebus.models.ReceiveMode;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.perf.test.core.PerfStressTest;
 import reactor.core.scheduler.Scheduler;
@@ -55,6 +56,7 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
 
         ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = baseBuilder
             .receiver()
+           // .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
             .queueName(queueName);
 
         ServiceBusClientBuilder.ServiceBusSenderClientBuilder senderBuilder = baseBuilder

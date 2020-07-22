@@ -24,7 +24,10 @@ public class ReceiveMessageTest extends ServiceTest<ServiceBusStressOptions> {
     public Mono<Void> globalSetupAsync() {
         ServiceBusMessage message =  new ServiceBusMessage(CONTENTS.getBytes());
         return Flux.range(0, options.getMessagesToSend())
-            .flatMap(count -> senderAsync.sendMessage(message))
+            .flatMap(count -> {
+
+                return senderAsync.sendMessage(message);
+            })
             .then();
     }
 
@@ -34,6 +37,7 @@ public class ReceiveMessageTest extends ServiceTest<ServiceBusStressOptions> {
         int receivedMessage = 0;
         for(ServiceBusReceivedMessageContext messageContext : messages) {
             ++receivedMessage;
+            System.out.println(" Sync Messages Received Sequence No: " + messageContext.getMessage().getSequenceNumber());
         }
         System.out.println(" Messages Received : " + receivedMessage);
     }
@@ -42,7 +46,11 @@ public class ReceiveMessageTest extends ServiceTest<ServiceBusStressOptions> {
     public Mono<Void> runAsync() {
          return receiverAsync
              .receiveMessages()
-             .next()
+             .take(options.getMessagesToReceive())
+             .map(messageContext -> {
+                 System.out.println(" Async Messages Received Sequence No: " + messageContext.getMessage().getSequenceNumber());
+                 return messageContext;
+             })
              .then();
     }
 }
