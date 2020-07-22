@@ -36,14 +36,10 @@ class DateTimeDeserializer extends JsonDeserializer<OffsetDateTime> {
     }
 
     @Override
-    public OffsetDateTime deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
-        throws IOException {
-        return deserialize(jsonParser.getValueAsString());
-    }
-
-    static OffsetDateTime deserialize(String offsetDateTimeString) {
+    public OffsetDateTime deserialize(JsonParser parser, DeserializationContext context) throws IOException {
         TemporalAccessor temporal = DateTimeFormatter.ISO_DATE_TIME
-            .parseBest(offsetDateTimeString, OffsetDateTime::from, LocalDateTime::from);
+            .parseBest(parser.getValueAsString(), OffsetDateTime::from, LocalDateTime::from);
+
         if (temporal.query(TemporalQueries.offset()) == null) {
             return LocalDateTime.from(temporal).atOffset(ZoneOffset.UTC);
         } else {
