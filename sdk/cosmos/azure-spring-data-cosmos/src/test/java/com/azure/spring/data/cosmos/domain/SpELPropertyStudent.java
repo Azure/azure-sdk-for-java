@@ -7,7 +7,7 @@ import com.azure.spring.data.cosmos.core.mapping.Document;
 
 import java.util.Objects;
 
-@Document(collection = "${dynamic.collection.name}")
+@Document(container = "${dynamic.collection.name}")
 public class SpELPropertyStudent {
     private String id;
     private String firstName;

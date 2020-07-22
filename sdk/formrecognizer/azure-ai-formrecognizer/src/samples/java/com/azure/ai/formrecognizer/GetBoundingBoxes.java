@@ -10,6 +10,7 @@ import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.models.RecognizeOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 
 import java.util.List;
@@ -36,7 +37,7 @@ public class GetBoundingBoxes {
         String formUrl = "{form_url}";
         SyncPoller<OperationResult, List<RecognizedForm>> recognizeFormPoller =
             client.beginRecognizeCustomFormsFromUrl(formUrl, modelId, new RecognizeOptions()
-                .setIncludeFieldElements(true));
+                .setIncludeFieldElements(true), Context.NONE);
 
         List<RecognizedForm> recognizedForms = recognizeFormPoller.getFinalResult();
 

@@ -44,7 +44,6 @@ public final class PolicyDefinitionsImpl
     @Override
     public Mono<PolicyDefinition> getByNameAsync(String name) {
         return client.getAsync(name)
-                .onErrorResume(e -> Mono.empty())
                 .map(this::wrapModel);
     }
 

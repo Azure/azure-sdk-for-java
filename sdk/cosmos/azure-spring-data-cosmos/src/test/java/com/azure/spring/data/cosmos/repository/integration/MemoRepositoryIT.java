@@ -2,16 +2,22 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.integration;
 
-import com.azure.spring.data.cosmos.core.CosmosTemplate;
-import com.azure.spring.data.cosmos.exception.CosmosDBAccessException;
-import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.common.TestUtils;
+import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.domain.Importance;
 import com.azure.spring.data.cosmos.domain.Memo;
+import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.MemoRepository;
-import org.junit.*;
+import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -240,7 +246,7 @@ public class MemoRepositoryIT {
         Assert.assertEquals(reference, memos);
     }
 
-    @Test(expected = CosmosDBAccessException.class)
+    @Test(expected = CosmosAccessException.class)
     @Ignore // TODO(pan): Ignore this test case for now, will update this from service update.
     public void testFindByStartsWithWithException() {
         repository.findByMessageStartsWith(testMemo1.getMessage());

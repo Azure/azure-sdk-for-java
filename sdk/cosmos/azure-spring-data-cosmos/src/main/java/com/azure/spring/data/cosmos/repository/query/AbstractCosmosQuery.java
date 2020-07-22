@@ -6,6 +6,7 @@ import com.azure.spring.data.cosmos.core.CosmosOperations;
 import com.azure.spring.data.cosmos.core.query.DocumentQuery;
 import org.springframework.data.repository.query.RepositoryQuery;
 import org.springframework.data.repository.query.ResultProcessor;
+import org.springframework.data.repository.query.ReturnedType;
 
 /**
  * Abstract class for cosmos query.
@@ -39,20 +40,30 @@ public abstract class AbstractCosmosQuery implements RepositoryQuery {
         final ResultProcessor processor = method.getResultProcessor().withDynamicProjection(accessor);
         final String container = ((CosmosEntityMetadata) method.getEntityInformation()).getContainerName();
 
-        final CosmosQueryExecution execution = getExecution(accessor);
+        final CosmosQueryExecution execution = getExecution(accessor, processor.getReturnedType());
+
         return execution.execute(query, processor.getReturnedType().getDomainType(), container);
     }
 
 
-    private CosmosQueryExecution getExecution(CosmosParameterAccessor accessor) {
+    /**
+     * Determines the appropriate execution path for a query
+     *
+     * @param returnedType The return type of the method
+     * @param accessor Object for accessing method parameters
+     * @return the execution type needed to handle the query
+     */
+    protected CosmosQueryExecution getExecution(CosmosParameterAccessor accessor, ReturnedType returnedType) {
         if (isDeleteQuery()) {
             return new CosmosQueryExecution.DeleteExecution(operations);
-        } else if (method.isPageQuery()) {
+        } else if (isPageQuery()) {
             return new CosmosQueryExecution.PagedExecution(operations, accessor.getPageable());
         } else if (isExistsQuery()) {
             return new CosmosQueryExecution.ExistsExecution(operations);
-        } else {
+        } else if (isCollectionQuery()) {
             return new CosmosQueryExecution.MultiEntityExecution(operations);
+        } else {
+            return new CosmosQueryExecution.SingleEntityExecution(operations, returnedType);
         }
     }
 
@@ -70,5 +81,13 @@ public abstract class AbstractCosmosQuery implements RepositoryQuery {
     protected abstract boolean isDeleteQuery();
 
     protected abstract boolean isExistsQuery();
+
+    protected boolean isPageQuery() {
+        return method.isPageQuery();
+    }
+
+    protected boolean isCollectionQuery() {
+        return method.isCollectionQuery();
+    }
 
 }

@@ -2,14 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.core.convert;
 
-import com.azure.data.cosmos.CosmosItemProperties;
-import com.azure.spring.data.cosmos.core.mapping.CosmosPersistentProperty;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.azure.spring.data.cosmos.Constants;
 import com.azure.spring.data.cosmos.core.mapping.CosmosPersistentEntity;
-import com.azure.spring.data.cosmos.exception.CosmosDBAccessException;
-import org.json.JSONObject;
+import com.azure.spring.data.cosmos.core.mapping.CosmosPersistentProperty;
+import com.azure.spring.data.cosmos.exception.CosmosAccessException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -22,7 +22,6 @@ import org.springframework.data.mapping.context.MappingContext;
 import org.springframework.data.mapping.model.ConvertingPropertyAccessor;
 import org.springframework.util.Assert;
 
-import java.io.IOException;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -32,26 +31,26 @@ import static com.azure.spring.data.cosmos.Constants.ISO_8601_COMPATIBLE_DATE_PA
 /**
  * A converter class between common types and cosmosItemProperties
  */
-@SuppressWarnings("unchecked")
 public class MappingCosmosConverter
-    implements EntityConverter<CosmosPersistentEntity<?>, CosmosPersistentProperty,
-    Object, CosmosItemProperties>,
+    implements EntityConverter<CosmosPersistentEntity<?>, CosmosPersistentProperty, Object,
+    JsonNode>,
     ApplicationContextAware {
 
     protected final MappingContext<? extends CosmosPersistentEntity<?>,
-                                          CosmosPersistentProperty> mappingContext;
+        CosmosPersistentProperty> mappingContext;
     protected GenericConversionService conversionService;
     private ApplicationContext applicationContext;
     private final ObjectMapper objectMapper;
 
     /**
      * Initialization
+     *
      * @param mappingContext must not be {@literal null}
      * @param objectMapper must not be {@literal null}
      */
     public MappingCosmosConverter(
         MappingContext<? extends CosmosPersistentEntity<?>, CosmosPersistentProperty> mappingContext,
-        @Qualifier(Constants.OBJECTMAPPER_BEAN_NAME) ObjectMapper objectMapper) {
+        @Qualifier(Constants.OBJECT_MAPPER_BEAN_NAME) ObjectMapper objectMapper) {
         this.mappingContext = mappingContext;
         this.conversionService = new GenericConversionService();
         this.objectMapper = objectMapper == null ? ObjectMapperFactory.getObjectMapper()
@@ -59,54 +58,48 @@ public class MappingCosmosConverter
     }
 
     @Override
-    public <R> R read(Class<R> type, CosmosItemProperties cosmosItemProperties) {
-        if (cosmosItemProperties == null) {
-            return null;
-        }
+    public <R> R read(Class<R> type, JsonNode jsonNode) {
 
         final CosmosPersistentEntity<?> entity = mappingContext.getPersistentEntity(type);
         Assert.notNull(entity, "Entity is null.");
 
-        return readInternal(entity, type, cosmosItemProperties);
+        return readInternal(entity, type, jsonNode);
+    }
+
+    @Override
+    public void write(Object source, JsonNode sink) {
+        throw new UnsupportedOperationException("The feature is not implemented yet");
     }
 
     private <R> R readInternal(final CosmosPersistentEntity<?> entity, Class<R> type,
-                               final CosmosItemProperties cosmosItemProperties) {
-
+                               final JsonNode jsonNode) {
+        final ObjectNode objectNode = jsonNode.deepCopy();
         try {
             final CosmosPersistentProperty idProperty = entity.getIdProperty();
-            final Object idValue = cosmosItemProperties.id();
-            final JSONObject jsonObject = new JSONObject(cosmosItemProperties.toJson());
-
+            final JsonNode idValue = jsonNode.get("id");
             if (idProperty != null) {
                 // Replace the key id to the actual id field name in domain
-                jsonObject.remove(Constants.ID_PROPERTY_NAME);
-                jsonObject.put(idProperty.getName(), idValue);
+                objectNode.remove(Constants.ID_PROPERTY_NAME);
+                objectNode.set(idProperty.getName(), idValue);
             }
-
-            return objectMapper.readValue(jsonObject.toString(), type);
-        } catch (IOException e) {
+            return objectMapper.treeToValue(objectNode, type);
+        } catch (JsonProcessingException e) {
             throw new IllegalStateException("Failed to read the source document "
-                + cosmosItemProperties.toJson()
+                + objectNode.toPrettyString()
                 + "  to target type "
                 + type, e);
         }
     }
 
-    @Override
-    @Deprecated
-    public void write(Object sourceEntity, CosmosItemProperties document) {
-        throw new UnsupportedOperationException("The feature is not implemented yet");
-    }
-
     /**
      * To write source entity as a cosmos item
+     *
      * @param sourceEntity must not be {@literal null}
      * @return CosmosItemProperties
      * @throws MappingException no mapping metadata for entity type
-     * @throws CosmosDBAccessException fail to map document value
+     * @throws CosmosAccessException fail to map document value
      */
-    public CosmosItemProperties writeCosmosItemProperties(Object sourceEntity) {
+    public JsonNode writeJsonNode(Object sourceEntity) {
         if (sourceEntity == null) {
             return null;
         }
@@ -121,26 +114,26 @@ public class MappingCosmosConverter
 
         final ConvertingPropertyAccessor<?> accessor = getPropertyAccessor(sourceEntity);
         final CosmosPersistentProperty idProperty = persistentEntity.getIdProperty();
-        final CosmosItemProperties cosmosItemProperties;
+        final ObjectNode cosmosObjectNode;
 
         try {
-            cosmosItemProperties =
-                new CosmosItemProperties(objectMapper.writeValueAsString(sourceEntity));
+            cosmosObjectNode = (ObjectNode) objectMapper.readTree(objectMapper.writeValueAsString(sourceEntity));
         } catch (JsonProcessingException e) {
-            throw new CosmosDBAccessException("Failed to map document value.", e);
+            throw new CosmosAccessException("Failed to map document value.", e);
         }
 
         if (idProperty != null) {
             final Object value = accessor.getProperty(idProperty);
             final String id = value == null ? null : value.toString();
-            cosmosItemProperties.id(id);
+            cosmosObjectNode.put("id", id);
         }
 
-        return cosmosItemProperties;
+        return cosmosObjectNode;
     }
 
     /**
      * To get application context
+     *
      * @return ApplicationContext
      */
     public ApplicationContext getApplicationContext() {
@@ -159,6 +152,7 @@ public class MappingCosmosConverter
 
     /**
      * To get mapping context
+     *
      * @return MappingContext
      */
     public MappingContext<? extends CosmosPersistentEntity<?>, CosmosPersistentProperty> getMappingContext() {
@@ -171,7 +165,8 @@ public class MappingCosmosConverter
             mappingContext.getPersistentEntity(entity.getClass());
 
         Assert.notNull(entityInformation, "EntityInformation should not be null.");
-        final PersistentPropertyAccessor<?> accessor = entityInformation.getPropertyAccessor(entity);
+        final PersistentPropertyAccessor<?> accessor =
+            entityInformation.getPropertyAccessor(entity);
         return new ConvertingPropertyAccessor<>(accessor, conversionService);
     }
 
@@ -186,13 +181,14 @@ public class MappingCosmosConverter
             return null;
         }
 
-        // com.microsoft.azure.data.cosmos.JsonSerializable#set(String, T) cannot set values for Date and Enum correctly
+        // com.microsoft.azure.data.cosmos.JsonSerializable#set(String, T) cannot set values for
+        // Date and Enum correctly
 
         if (fromPropertyValue instanceof Date) {
             fromPropertyValue = ((Date) fromPropertyValue).getTime();
         } else if (fromPropertyValue instanceof ZonedDateTime) {
             fromPropertyValue = ((ZonedDateTime) fromPropertyValue)
-                                        .format(DateTimeFormatter.ofPattern(ISO_8601_COMPATIBLE_DATE_PATTERN));
+                .format(DateTimeFormatter.ofPattern(ISO_8601_COMPATIBLE_DATE_PATTERN));
         } else if (fromPropertyValue instanceof Enum) {
             fromPropertyValue = fromPropertyValue.toString();
         }

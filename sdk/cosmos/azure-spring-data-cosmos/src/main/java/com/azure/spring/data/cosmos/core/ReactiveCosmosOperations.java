@@ -3,8 +3,8 @@
 
 package com.azure.spring.data.cosmos.core;
 
-import com.azure.data.cosmos.CosmosContainerResponse;
-import com.azure.data.cosmos.PartitionKey;
+import com.azure.cosmos.models.CosmosContainerResponse;
+import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
 import com.azure.spring.data.cosmos.core.query.DocumentQuery;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
@@ -23,15 +23,6 @@ public interface ReactiveCosmosOperations {
      * @return container name
      */
     String getContainerName(Class<?> domainType);
-
-    /**
-     * Use createContainerIfNotExists() instead
-     * @param information cosmos entity information
-     * @return Mono of cosmos container response
-     * @deprecated use {@link #createContainerIfNotExists(CosmosEntityInformation)} instead.
-     */
-    @Deprecated
-    Mono<CosmosContainerResponse> createCollectionIfNotExists(CosmosEntityInformation<?, ?> information);
 
     /**
      * Creates a container if it doesn't already exist
@@ -124,25 +115,23 @@ public interface ReactiveCosmosOperations {
     <T> Mono<T> insert(String containerName, Object objectToSave, PartitionKey partitionKey);
 
     /**
-     * Upsert
+     * Upsert an item with partition key
      *
      * @param object the object to upsert
-     * @param partitionKey the partition key
      * @param <T> type class of object
      * @return Mono
      */
-    <T> Mono<T> upsert(T object, PartitionKey partitionKey);
+    <T> Mono<T> upsert(T object);
 
     /**
-     * Upsert
+     * Upsert an item to container with partition key
      *
      * @param containerName the container name
      * @param object the object to save
-     * @param partitionKey the partition key
      * @param <T> type class of object
      * @return Mono
      */
-    <T> Mono<T> upsert(String containerName, T object, PartitionKey partitionKey);
+    <T> Mono<T> upsert(String containerName, T object);
 
     /**
      * Delete an item by id
@@ -158,10 +147,10 @@ public interface ReactiveCosmosOperations {
      * Delete all items in a container
      *
      * @param containerName the container name
-     * @param partitionKey the partition key path
+     * @param domainType the domainType
      * @return void Mono
      */
-    Mono<Void> deleteAll(String containerName, String partitionKey);
+    Mono<Void> deleteAll(String containerName, Class<?> domainType);
 
     /**
      * Delete container

@@ -8,13 +8,13 @@ package com.azure.cosmos;
  * LINE NUMBERS OF EXISTING CODE SAMPLES.
  */
 
-import com.azure.data.cosmos.IndexingMode;
+import com.azure.cosmos.models.IndexingMode;
 import com.azure.spring.data.cosmos.Constants;
 
 public @interface DocumentIndexingPolicyCodeSnippet {
 
     // Indicate if indexing policy use automatic or not
-    boolean automatic() default Constants.DEFAULT_INDEXINGPOLICY_AUTOMATIC;
+    boolean automatic() default Constants.DEFAULT_INDEXING_POLICY_AUTOMATIC;
 
     // Indexing policy mode, option Consistent|Lazy|None.
     IndexingMode mode() default IndexingMode.CONSISTENT;
