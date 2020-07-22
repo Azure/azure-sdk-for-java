@@ -25,8 +25,8 @@ jobs:
           - name: azure-spring-boot-test-keyvault
             groupId: com.azure
             safeName: azurespringboottestkeyvault
-          - name: spring-data-gremlin
-            groupId: com.microsoft.spring.data.gremlin
+          - name: azure-spring-data-gremlin
+            groupId: com.azure
             safeName: azurespringdatagremlin
         EnvVars:
           AZURE_TEST_MODE: LIVE
