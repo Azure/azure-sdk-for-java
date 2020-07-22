@@ -18,14 +18,14 @@ import com.microsoft.azure.management.appservice.v2018_02_01.ApplicationStack;
 import com.microsoft.azure.management.appservice.v2018_02_01.CsmOperationDescription;
 
 class ProvidersImpl extends WrapperImpl<ProvidersInner> implements Providers {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
 
-    ProvidersImpl(AppServiceManager manager) {
+    ProvidersImpl(CertificateRegistrationManager manager) {
         super(manager.inner().providers());
         this.manager = manager;
     }
 
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 

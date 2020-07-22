@@ -10,13 +10,13 @@ package com.microsoft.azure.management.appservice.v2018_02_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.SiteLogsConfigInner;
 
 /**
  * Type representing SiteLogsConfig.
  */
-public interface SiteLogsConfig extends HasInner<SiteLogsConfigInner>, HasManager<AppServiceManager> {
+public interface SiteLogsConfig extends HasInner<SiteLogsConfigInner>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the applicationLogs value.
      */

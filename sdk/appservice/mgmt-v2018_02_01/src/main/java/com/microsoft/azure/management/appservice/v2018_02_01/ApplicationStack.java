@@ -10,14 +10,14 @@ package com.microsoft.azure.management.appservice.v2018_02_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.ApplicationStackInner;
 import java.util.List;
 
 /**
  * Type representing ApplicationStack.
  */
-public interface ApplicationStack extends HasInner<ApplicationStackInner>, HasManager<AppServiceManager> {
+public interface ApplicationStack extends HasInner<ApplicationStackInner>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the dependency value.
      */
