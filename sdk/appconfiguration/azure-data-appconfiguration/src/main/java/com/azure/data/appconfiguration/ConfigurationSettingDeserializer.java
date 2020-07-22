@@ -66,22 +66,26 @@ class ConfigurationSettingDeserializer extends JsonDeserializer<ConfigurationSet
                 setting.setReadOnly(parser.nextBooleanValue());
                 break;
             case "tags":
-                JsonToken nextToken = parser.nextToken();
+                parser.nextToken();
 
-                if (nextToken.id() == JsonTokenId.ID_NULL) {
+                if (parser.currentTokenId() == JsonTokenId.ID_NULL) {
                     return;
                 }
 
                 Map<String, String> tags = new HashMap<>();
 
-                while ((nextToken = parser.nextToken()).id() != JsonTokenId.ID_END_OBJECT) {
-                    tags.put(nextToken.asString(), parser.nextTextValue());
+                parser.nextToken();
+                while (parser.currentToken() != JsonToken.END_OBJECT) {
+                    tags.put(parser.getValueAsString(), parser.nextTextValue());
+                    parser.nextToken();
                 }
 
                 setting.setTags(tags);
                 break;
             case "value":
                 setting.setValue(parser.nextTextValue());
+                break;
+            default:
                 break;
         }
     }
