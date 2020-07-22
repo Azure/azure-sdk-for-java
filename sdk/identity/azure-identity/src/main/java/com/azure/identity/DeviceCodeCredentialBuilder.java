@@ -56,7 +56,7 @@ public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<Device
     /**
      * Sets the {@link AuthenticationRecord} captured from a previous authentication.
      *
-     * @param authenticationRecord the authentication record to ser.
+     * @param authenticationRecord the authentication record to be configured.
      *
      * @return An updated instance of this builder with if the shared token cache enabled specified.
      */
