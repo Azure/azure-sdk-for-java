@@ -6,16 +6,25 @@
 
 package com.azure.messaging.eventgrid;
 
+import com.azure.core.annotation.Fluent;
+import com.azure.core.experimental.serializer.ObjectSerializer;
+import com.azure.core.util.CoreUtils;
+
+import java.io.ByteArrayOutputStream;
 import java.time.OffsetDateTime;
-import java.util.Collections;
-import java.util.Map;
+import java.util.*;
 
 /**
- * The CloudEvent model. See {@link CloudEventBuilder} for instructions on how to build. This represents
- * a cloud event as specified by the CNCF, for sending event based data.
- * @see CloudEventBuilder
+ * The CloudEvent model. This represents a cloud event as specified by the CNCF, for sending event based data.
+ * @see EventGridPublisherAsyncClient
+ * @see EventGridPublisherClient
  **/
+@Fluent
 public final class CloudEvent {
+
+    private static final String SPEC_VERSION = "1.0";
+
+    private static final String JSON_TYPE = "application/json";
 
     private final com.azure.messaging.eventgrid.implementation.models.CloudEvent cloudEvent;
 
@@ -28,11 +37,44 @@ public final class CloudEvent {
     }
 
     /**
+     * Create an instance of a CloudEvent. The source and type are required fields to publish.
+     * @param source a URI identifying the origin of the event.
+     * @param type   the type of event, e.g. "Contoso.Items.ItemReceived".
+     */
+    public CloudEvent(String source, String type) {
+        if (CoreUtils.isNullOrEmpty(source)) {
+            throw new IllegalArgumentException("Source cannot be null or empty");
+        } else if (CoreUtils.isNullOrEmpty(type)) {
+            throw new IllegalArgumentException("type cannot be null or empty");
+        }
+
+        this.cloudEvent = new com.azure.messaging.eventgrid.implementation.models.CloudEvent()
+            .setId(UUID.randomUUID().toString())
+            .setSource(source)
+            .setType(type)
+            .setSpecversion(SPEC_VERSION);
+    }
+
+    /**
      * Get the id of the cloud event.
      * @return the id.
      */
     public String getId() {
         return this.cloudEvent.getId();
+    }
+
+    /**
+     * Set a custom id. Note that a random id is already set by default.
+     * @param id the id to set.
+     *
+     * @return the cloud event itself.
+     */
+    public CloudEvent setId(String id) {
+        if (CoreUtils.isNullOrEmpty(id)) {
+            throw new IllegalArgumentException("id cannot be null or empty");
+        }
+        this.cloudEvent.setId(id);
+        return this;
     }
 
     /**
@@ -48,7 +90,62 @@ public final class CloudEvent {
      * @return the data associated with this event, or null if this event type does not contain data.
      */
     public Object getData() {
-        return this.cloudEvent.getData();
+        if (this.cloudEvent.getDataBase64() != null) {
+            return this.cloudEvent.getDataBase64();
+        } else {
+            return this.cloudEvent.getData();
+        }
+    }
+
+    /**
+     * Set the data associated with this event, to be serialized in Json format.
+     * @param data the data to set.
+     *
+     * @return the cloud event itself.
+     */
+    public CloudEvent setData(Object data) {
+        return setData(data, null, JSON_TYPE);
+    }
+
+    /**
+     * Set data using a custom serializer. This can be used for non-JSON data fields, and the dataContentType should
+     * indicate the format of the data, such as "text/xml" for XML data.
+     * @param data            the data to serialize and set.
+     * @param serializer      the {@link ObjectSerializer} to serialize the data. If this is not given, the data will be
+     *                        serialized as a json using the default serializer that all other fields use.
+     * @param dataContentType the content type of the data, indicating the format it is in. If not given, this will
+     *                        default to an "application/json" type.
+     *
+     * @return the cloud event itself.
+     */
+    public CloudEvent setData(Object data, ObjectSerializer serializer, String dataContentType) {
+        if (serializer == null) {
+            // expect the data to already be serialized as a string or similar type
+            this.cloudEvent.setData(data);
+        } else {
+            this.cloudEvent.setData(serializer.serialize(new ByteArrayOutputStream(), data)
+                .defaultIfEmpty(new ByteArrayOutputStream())
+                .block().toString());
+        }
+        this.cloudEvent
+            .setDatacontenttype(dataContentType)
+            .setDataBase64(null);
+        return this;
+    }
+
+    /**
+     * Set binary data associated with this event, as well as the content type of the binary data.
+     * @param data            the data to set.
+     * @param dataContentType the format that the data is written in, since the data is no longer in json format.
+     *
+     * @return the cloud event itself.
+     */
+    public CloudEvent setData(byte[] data, String dataContentType) {
+        this.cloudEvent
+            .setDataBase64(Base64.getEncoder().encodeToString(data))
+            .setData(null)
+            .setDatacontenttype(dataContentType);
+        return this;
     }
 
     /**
@@ -65,6 +162,17 @@ public final class CloudEvent {
      */
     public OffsetDateTime getTime() {
         return this.cloudEvent.getTime();
+    }
+
+    /**
+     * Set the time associated with the occurrence of the event.
+     * @param time the time to set.
+     *
+     * @return the cloud event itself.
+     */
+    public CloudEvent setTime(OffsetDateTime time) {
+        this.cloudEvent.setTime(time);
+        return this;
     }
 
     /**
@@ -85,6 +193,17 @@ public final class CloudEvent {
     }
 
     /**
+     * Set the schema that the data adheres to.
+     * @param dataSchema a URI identifying the schema of the data.
+     *
+     * @return the cloud event itself.
+     */
+    public CloudEvent setDataSchema(String dataSchema) {
+        this.cloudEvent.setDataschema(dataSchema);
+        return this;
+    }
+
+    /**
      * Get the subject associated with this event.
      * @return the subject, or null if the subject was not set.
      */
@@ -93,11 +212,46 @@ public final class CloudEvent {
     }
 
     /**
+     * Set the subject of the event.
+     * @param subject the subject to set.
+     *
+     * @return the cloud event itself.
+     */
+    public CloudEvent setSubject(String subject) {
+        this.cloudEvent.setSubject(subject);
+        return this;
+    }
+
+    /**
      * Get a map of the additional user-defined properties associated with this event.
      * @return the additional properties as an unmodifiable map.
      */
     public Map<String, Object> getAdditionalProperties() {
         return Collections.unmodifiableMap(this.cloudEvent.getAdditionalProperties());
+    }
+
+    /**
+     * Set a single additional property to the cloud event envelope. The property must be named in all lowercase and not
+     * share a name with any already existing properties.
+     * @param name  the lowercase name of the property.
+     * @param value the value to associate with the name.
+     *
+     * @return the cloud event itself.
+     */
+    public CloudEvent setAdditionalProperty(String name, Object value) {
+        this.cloudEvent.getAdditionalProperties().put(name, value);
+        return this;
+    }
+
+    /**
+     * Set all of the additional properties, overriding ones that are already set.
+     * @param additionalProperties the map of properties to set.
+     *
+     * @return the cloud event itself.
+     */
+    public CloudEvent setAdditionalProperties(Map<String, Object> additionalProperties) {
+        this.cloudEvent.setAdditionalProperties(new HashMap<>(additionalProperties));
+        return this;
     }
 
     /**

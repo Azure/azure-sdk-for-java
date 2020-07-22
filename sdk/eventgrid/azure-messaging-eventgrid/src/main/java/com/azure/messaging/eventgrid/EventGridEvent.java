@@ -6,13 +6,18 @@
 
 package com.azure.messaging.eventgrid;
 
+import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 /**
- * The EventGridEvent model. See {@link EventGridEventBuilder} for information on how to build. This represents events
- * in the EventGrid schema to be used with the EventGrid service.
- * @see EventGridEventBuilder
+ * The EventGridEvent model. This represents events in the EventGrid schema to be used with the EventGrid service.
+ * @see EventGridPublisherAsyncClient
+ * @see EventGridPublisherClient
  **/
+@Fluent
 public final class EventGridEvent {
 
     private final com.azure.messaging.eventgrid.implementation.models.EventGridEvent event;
@@ -26,6 +31,29 @@ public final class EventGridEvent {
     }
 
     /**
+     * Create a new instance of the EventGridEvent, with the given required fields.
+     * @param subject     the subject of the event.
+     * @param eventType   the type of the event, e.g. "Contoso.Items.ItemReceived".
+     * @param dataVersion the version of the data sent along with the event.
+     */
+    public EventGridEvent(String subject, String eventType, String dataVersion) {
+        if (CoreUtils.isNullOrEmpty(subject)) {
+            throw new IllegalArgumentException("subject cannot be null or empty");
+        } else if (CoreUtils.isNullOrEmpty(eventType)) {
+            throw new IllegalArgumentException("event type cannot be null or empty");
+        } else if (CoreUtils.isNullOrEmpty(dataVersion)) {
+            throw new IllegalArgumentException("data version cannot be null or empty");
+        }
+
+        this.event = new com.azure.messaging.eventgrid.implementation.models.EventGridEvent()
+            .setEventTime(OffsetDateTime.now())
+            .setId(UUID.randomUUID().toString())
+            .setSubject(subject)
+            .setEventType(eventType)
+            .setDataVersion(dataVersion);
+    }
+
+    /**
      * Get the unique id associated with this event.
      * @return the id.
      */
@@ -34,11 +62,36 @@ public final class EventGridEvent {
     }
 
     /**
+     * Set the unique id of the event. Note that a random id has already been set by default.
+     * @param id the unique id to set.
+     *
+     * @return the event itself.
+     */
+    public EventGridEvent setId(String id) {
+        if (CoreUtils.isNullOrEmpty(id)) {
+            throw new IllegalArgumentException("id cannot be null or empty");
+        }
+        this.event.setId(id);
+        return this;
+    }
+
+    /**
      * Get the topic associated with this event if it is associated with a domain.
      * @return the topic, or null if the topic is not set (i.e. the event came from or is going to a domain).
      */
     public String getTopic() {
         return this.event.getTopic();
+    }
+
+    /**
+     * Set the topic associated with this event. Used to route events from domain endpoints.
+     * @param topic the topic to set.
+     *
+     * @return the event itself.
+     */
+    public EventGridEvent setTopic(String topic) {
+        this.event.setTopic(topic);
+        return this;
     }
 
     /**
@@ -58,6 +111,17 @@ public final class EventGridEvent {
     }
 
     /**
+     * Set the data associated with this event. It will be serialized into Json format using a default Json serializer.
+     * @param data the data to set.
+     *
+     * @return the event itself.
+     */
+    public EventGridEvent setData(Object data) {
+        this.event.setData(data);
+        return this;
+    }
+
+    /**
      * Get the type of this event.
      * @return the event type.
      */
@@ -71,6 +135,18 @@ public final class EventGridEvent {
      */
     public OffsetDateTime getEventTime() {
         return this.event.getEventTime();
+    }
+
+    /**
+     * Set the time associated with the event. Note that a default time has already been set when the event was
+     * constructed.
+     * @param time the time to set.
+     *
+     * @return the event itself.
+     */
+    public EventGridEvent setEventTime(OffsetDateTime time) {
+        this.event.setEventTime(time);
+        return this;
     }
 
     /**

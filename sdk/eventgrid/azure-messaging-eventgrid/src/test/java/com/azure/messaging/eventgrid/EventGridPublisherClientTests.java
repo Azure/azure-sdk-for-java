@@ -2,7 +2,9 @@ package com.azure.messaging.eventgrid;
 
 
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.experimental.serializer.JsonSerializerProviders;
 import com.azure.core.http.rest.Response;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -11,7 +13,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -20,7 +21,7 @@ public class EventGridPublisherClientTests {
 
     @Test
     @Ignore
-    public void testPublishEventGridEvents() throws InterruptedException {
+    public void testPublishEventGridEvents() {
         // using @Ignore because it requires the correct environment variables
         String endpoint = System.getenv("EG_ENDPOINT");
         String key = System.getenv("EG_KEY");
@@ -30,32 +31,25 @@ public class EventGridPublisherClientTests {
             .buildAsyncClient();
 
         List<EventGridEvent> events = new ArrayList<>();
-        events.add(new EventGridEventBuilder()
-            .id(UUID.randomUUID().toString())
-            .subject("Test")
-            .eventType("Microsoft.MockPublisher.TestEvent")
-            .data(new HashMap<String, String>() {{
+        events.add(new EventGridEvent("Test", "Microsoft.MockPublisher.TestEvent", "1.0")
+            .setData(new HashMap<String, String>() {{
                 put("Field1", "Value1");
                 put("Field2", "Value2");
                 put("Field3", "Value3");
             }})
-            .dataVersion("1.0")
-            .eventTime(OffsetDateTime.now())
-            .build());
-        egClient.sendEventsWithResponse(events).
-            subscribe(response -> {
-                assertNotNull(response);
-                System.out.println("Got response " + response.getStatusCode());
-                assertEquals(response.getStatusCode(), 200);
-            }, Throwable::printStackTrace);
+            .setEventTime(OffsetDateTime.now()));
 
-        TimeUnit.SECONDS.sleep(3);
+        Response<Void> response = egClient.sendEventsWithResponse(events).block();
+
+        assertNotNull(response);
+        System.out.println("Got response " + response.getStatusCode());
+        assertEquals(response.getStatusCode(), 200);
 
     }
 
     @Test
     @Ignore
-    public void testPublishCloudEvents() throws InterruptedException {
+    public void testPublishCloudEvents() {
         // using @Ignore because it requires the correct environment variables
         String endpoint = System.getenv("EG_CLOUD_ENDPOINT");
         String key = System.getenv("EG_CLOUD_KEY");
@@ -65,30 +59,64 @@ public class EventGridPublisherClientTests {
             .buildAsyncClient();
 
         List<CloudEvent> events = new ArrayList<>();
-        events.add(new CloudEventBuilder()
-            .id(UUID.randomUUID().toString())
-            .subject("Test")
-            .type("Microsoft.MockPublisher.TestEvent")
-            .data(new HashMap<String, String>() {{
+        events.add(new CloudEvent("/microsoft/testEvent", "Microsoft.MockPublisher.TestEvent")
+            .setSubject("Test")
+            .setData(new HashMap<String, String>() {{
                 put("Field1", "Value1");
                 put("Field2", "Value2");
                 put("Field3", "Value3");
             }})
-            .time(OffsetDateTime.now())
-            .build());
-        egClient.sendCloudEventsWithResponse(events).
-            subscribe(response -> {
-                assertNotNull(response);
-                System.out.println("Got response " + response.getStatusCode());
-                assertEquals(response.getStatusCode(), 200);
-            }, Throwable::printStackTrace);
+            .setTime(OffsetDateTime.now()));
+        Response<Void> response = egClient.sendCloudEventsWithResponse(events).block();
 
-        TimeUnit.SECONDS.sleep(3);
+        assertNotNull(response);
+        System.out.println("Got response " + response.getStatusCode());
+        assertEquals(response.getStatusCode(), 200);
+    }
+
+    public static class TestData {
+        @JsonProperty
+        private String name;
+
+        public TestData setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public String getName() {
+            return this.name;
+        }
     }
 
     @Test
     @Ignore
-    public void TestPublishCustomEvents() throws InterruptedException {
+    public void testPublishCloudEventsCustomSerializer() {
+        String endpoint = System.getenv("EG_CLOUD_ENDPOINT");
+        String key = System.getenv("EG_CLOUD_KEY");
+        EventGridPublisherAsyncClient egClient = new EventGridPublisherClientBuilder()
+            .keyCredential(new AzureKeyCredential(key))
+            .endpoint(endpoint)
+            .buildAsyncClient();
+
+        List<CloudEvent> events = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            events.add(new CloudEvent("/microsoft/testEvent", "Microsoft.MockPublisher.TestEvent")
+                    .setSubject("Test " + i)
+                /*.setData(new TestData().setName("Hello " + i),
+                    JsonSerializerProviders.createInstance(), null)*/);
+        }
+
+        Response<Void> response = egClient.sendCloudEventsWithResponse(events).block();
+
+        assertNotNull(response);
+        System.out.println("Got response " + response.getStatusCode());
+        assertEquals(response.getStatusCode(), 200);
+    }
+
+
+    @Test
+    @Ignore
+    public void testPublishCustomEvents() {
         // using @Ignore because it requires the correct environment variables
         String endpoint = System.getenv("EG_CUSTOM_ENDPOINT");
         String key = System.getenv("EG_CUSTOM_KEY");
@@ -106,14 +134,11 @@ public class EventGridPublisherClientTests {
                 put("type", "Microsoft.MockPublisher.TestEvent");
             }});
         }
-        egClient.sendCustomEventsWithResponse(events).
-            subscribe(response -> {
-                assertNotNull(response);
-                System.out.println("Got response " + response.getStatusCode());
-                assertEquals(response.getStatusCode(), 200);
-            }, Throwable::printStackTrace);
+        Response<Void> response = egClient.sendCustomEventsWithResponse(events).block();
 
-        TimeUnit.SECONDS.sleep(3);
+        assertNotNull(response);
+        System.out.println("Got response " + response.getStatusCode());
+        assertEquals(response.getStatusCode(), 200);
     }
 
     @Test
@@ -128,18 +153,14 @@ public class EventGridPublisherClientTests {
             .buildClient();
 
         List<EventGridEvent> events = new ArrayList<>();
-        events.add(new EventGridEventBuilder()
-            .id(UUID.randomUUID().toString())
-            .subject("Test")
-            .eventType("Microsoft.MockPublisher.TestEvent")
-            .data(new HashMap<String, String>() {{
+        events.add(new EventGridEvent("Test", "Microsoft.MockPublisher.TestEvent", "1.0")
+            .setData(new HashMap<String, String>() {{
                 put("Field1", "Value1");
                 put("Field2", "Value2");
                 put("Field3", "Value3");
             }})
-            .dataVersion("1.0")
-            .eventTime(OffsetDateTime.now())
-            .build());
+            .setEventTime(OffsetDateTime.now()));
+
         Response<Void> response = egClient.sendEventsWithResponse(events);
         assertNotNull(response);
         System.out.println("Got response " + response.getStatusCode());
@@ -160,17 +181,15 @@ public class EventGridPublisherClientTests {
             .buildClient();
 
         List<CloudEvent> events = new ArrayList<>();
-        events.add(new CloudEventBuilder()
-            .id(UUID.randomUUID().toString())
-            .subject("Test")
-            .type("Microsoft.MockPublisher.TestEvent")
-            .data(new HashMap<String, String>() {{
+        events.add(new CloudEvent("/microsoft/testEvent", "Microsoft.MockPublisher.TestEvent")
+            .setId(UUID.randomUUID().toString())
+            .setSubject("Test")
+            .setData(new HashMap<String, String>() {{
                 put("Field1", "Value1");
                 put("Field2", "Value2");
                 put("Field3", "Value3");
             }})
-            .time(OffsetDateTime.now())
-            .build());
+            .setTime(OffsetDateTime.now()));
 
         Response<Void> response = egClient.sendCloudEventsWithResponse(events);
         assertNotNull(response);
@@ -180,7 +199,7 @@ public class EventGridPublisherClientTests {
 
     @Test
     @Ignore
-    public void TestPublishCustomEventsSync() {
+    public void testPublishCustomEventsSync() {
         // using @Ignore because it requires the correct environment variables
         String endpoint = System.getenv("EG_CUSTOM_ENDPOINT");
         String key = System.getenv("EG_CUSTOM_KEY");
