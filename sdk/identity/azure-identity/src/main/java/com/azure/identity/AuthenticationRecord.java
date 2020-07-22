@@ -41,6 +41,7 @@ public class AuthenticationRecord {
         homeAccountId = authenticationResult.account().homeAccountId();
         username = authenticationResult.account().username();
         this.tenantId = tenantId;
+        this.clientId = clientId;
     }
 
     /**
