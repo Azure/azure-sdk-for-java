@@ -57,6 +57,8 @@
 
 # PRLabel: %Cognitive - Text Analytics
 /sdk/textanalytics/                                 @samvaity @mssfang @sima-zhu
+
+# PRLabel: %azure-spring
 /sdk/spring/                                        @saragluna @yiliuTo @chenrujun @zhoufenqin @jialindai  
 
 # end to end tests
