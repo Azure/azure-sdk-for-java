@@ -34,11 +34,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
 public class CosmosDiagnosticsTest extends TestSuiteBase {
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private CosmosClient gatewayClient;
     private CosmosClient directClient;
     private CosmosContainer container;
     private CosmosAsyncContainer cosmosAsyncContainer;
-    private CosmosClientBuilder cosmosClientBuilder;
 
     @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
@@ -305,8 +305,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
     private void validateJson(String jsonInString) {
         try {
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.readTree(jsonInString);
+            OBJECT_MAPPER.readTree(jsonInString);
         } catch(JsonProcessingException ex) {
             fail("Diagnostic string is not in json format");
         }
