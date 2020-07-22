@@ -48,20 +48,20 @@ public class ReadmeSamples {
 
     private Logger logger = LoggerFactory.getLogger(ReadmeSamples.class);
     
-    public void createShareSeviceClient(){
+    public void createShareSeviceClient() {
         String shareServiceURL = String.format("https://%s.file.core.windows.net", ACCOUNT_NAME);
         ShareServiceClient shareServiceClient = new ShareServiceClientBuilder().endpoint(shareServiceURL)
                 .sasToken(SAS_TOKEN).buildClient();
     }
 
-    public void createShareClient(){
+    public void createShareClient() {
         String shareName = "testshare";
         String shareURL = String.format("https://%s.file.core.windows.net", ACCOUNT_NAME);
         ShareClient shareClient = new ShareClientBuilder().endpoint(shareURL)
                 .sasToken(SAS_TOKEN).shareName(shareName).buildClient();
     }
 
-    public void createDirectoryClient(){
+    public void createDirectoryClient() {
         String shareName = "testshare";
         String directoryPath = "directoryPath";
         String directoryURL = String.format("https://%s.file.core.windows.net", ACCOUNT_NAME);
@@ -69,7 +69,7 @@ public class ReadmeSamples {
                 .sasToken(SAS_TOKEN).shareName(shareName).resourcePath(directoryPath).buildDirectoryClient();
     }
 
-    public void createFileClient(){
+    public void createFileClient() {
         String shareName = "testshare";
         String directoryPath = "directoryPath";
         String fileName = "fileName";
@@ -78,101 +78,101 @@ public class ReadmeSamples {
                 .endpoint(fileURL).shareName(shareName).resourcePath(directoryPath + "/" + fileName).buildFileClient();
     }
 
-    public void createShare(){
+    public void createShare() {
         String shareName = "testshare";
         shareServiceClient.createShare(shareName);
     }
 
-    public void createSnapshotOnShare(){
+    public void createSnapshotOnShare() {
         String shareName = "testshare";
         ShareClient shareClient = shareServiceClient.getShareClient(shareName);
         shareClient.createSnapshot();
     }
 
-    public void createDirectory(){
+    public void createDirectory() {
         String dirName = "testdir";
         shareClient.createDirectory(dirName);
     }
 
-    public void createSubDirectory(){
+    public void createSubDirectory() {
         String subDirName = "testsubdir";
         directoryClient.createSubdirectory(subDirName);
     }
 
-    public void createFile(){
+    public void createFile() {
         String fileName = "testfile";
         long maxSize = 1024;
         directoryClient.createFile(fileName, maxSize);
     }
 
-    public void getShareList(){
+    public void getShareList() {
         shareServiceClient.listShares();
     }
     
-    public void getSubDirectoryAndFileList(){
+    public void getSubDirectoryAndFileList() {
         directoryClient.listFilesAndDirectories();
     }
 
-    public void getRangeList(){
+    public void getRangeList() {
         fileClient.listRanges();
     }
 
-    public void deleteShare(){
+    public void deleteShare() {
         shareClient.delete();
     }
 
-    public void deleteDirectory(){
+    public void deleteDirectory() {
         String dirName = "testdir";
         shareClient.deleteDirectory(dirName);
     }
 
-    public void deleteSubDirectory(){
+    public void deleteSubDirectory() {
         String subDirName = "testsubdir";
         directoryClient.deleteSubdirectory(subDirName);
     }
 
-    public void deleteFile(){
+    public void deleteFile() {
         String fileName = "testfile";
         directoryClient.deleteFile(fileName);
     }
 
-    public void copyFile(){
+    public void copyFile() {
         String sourceURL = "https://myaccount.file.core.windows.net/myshare/myfile";
         Duration pollInterval = Duration.ofSeconds(2);
         SyncPoller<ShareFileCopyInfo, Void> poller = fileClient.beginCopy(sourceURL, null, pollInterval);
     }
 
-    public void abortCopyFile(){
+    public void abortCopyFile() {
         fileClient.abortCopy("copyId");
     }
 
-    public void uploadDataToStorage(){
+    public void uploadDataToStorage() {
         String uploadText = "default";
         InputStream data = new ByteArrayInputStream(uploadText.getBytes(StandardCharsets.UTF_8));
         fileClient.upload(data, uploadText.length());
     }
 
-    public void uploadFileToStorage(){
+    public void uploadFileToStorage() {
         String filePath = "${myLocalFilePath}";
         fileClient.uploadFromFile(filePath);
     }
 
-    public void downloadDataFromFileRange(){
+    public void downloadDataFromFileRange() {
         ShareFileRange fileRange = new ShareFileRange(0L, 2048L);
         OutputStream stream = new ByteArrayOutputStream();
         fileClient.downloadWithResponse(stream, fileRange, false, null, Context.NONE);
     }
 
-    public void downloadFileFromFileRange(){
+    public void downloadFileFromFileRange() {
         String filePath = "${myLocalFilePath}";
         fileClient.downloadToFile(filePath);
     }
     
-    public void getShareServiceProperties(){
+    public void getShareServiceProperties() {
         shareServiceClient.getProperties();
     }
 
-    public void setShareServiceProperties(){
+    public void setShareServiceProperties() {
         ShareServiceProperties properties = shareServiceClient.getProperties();
 
         properties.getMinuteMetrics().setEnabled(true).setIncludeApis(true); 
@@ -181,16 +181,16 @@ public class ReadmeSamples {
         shareServiceClient.setProperties(properties);
     }
 
-    public void setShareMetadata(){
+    public void setShareMetadata() {
         Map<String, String> metadata = Collections.singletonMap("directory", "metadata");
         shareClient.setMetadata(metadata);
     }
 
-    public void getAccessPolicy(){
+    public void getAccessPolicy() {
         shareClient.getAccessPolicy();
     }
 
-    public void setAccessPolicy(){
+    public void setAccessPolicy() {
         ShareAccessPolicy accessPolicy = new ShareAccessPolicy().setPermissions("r")
                 .setStartsOn(OffsetDateTime.now(ZoneOffset.UTC))
                 .setExpiresOn(OffsetDateTime.now(ZoneOffset.UTC).plusDays(10));
@@ -198,27 +198,27 @@ public class ReadmeSamples {
         shareClient.setAccessPolicy(Collections.singletonList(permission));
     }
 
-    public void getHaHandleList(){
+    public void getHaHandleList() {
         PagedIterable<HandleItem> handleItems = directoryClient.listHandles(null, true, Duration.ofSeconds(30), Context.NONE);
     }
 
-    public void forceCloseHandleWithResponse(){
+    public void forceCloseHandleWithResponse() {
         PagedIterable<HandleItem> handleItems = directoryClient.listHandles(null, true, Duration.ofSeconds(30), Context.NONE);
         String handleId = handleItems.iterator().next().getHandleId();
         directoryClient.forceCloseHandleWithResponse(handleId, Duration.ofSeconds(30), Context.NONE);
     }
 
-    public void setQuotaOnShare(){
+    public void setQuotaOnShare() {
         int quotaOnGB = 1;
         shareClient.setQuota(quotaOnGB);
     }
 
-    public void setFileHttpHeaders(){
+    public void setFileHttpHeaders() {
         ShareFileHttpHeaders httpHeaders = new ShareFileHttpHeaders().setContentType("text/plain");
         fileClient.setProperties(1024, httpHeaders, null, null);
     }
 
-    public void handleException(){
+    public void handleException() {
         try {
             shareServiceClient.createShare("myShare");
         } catch (StorageErrorException e) {
