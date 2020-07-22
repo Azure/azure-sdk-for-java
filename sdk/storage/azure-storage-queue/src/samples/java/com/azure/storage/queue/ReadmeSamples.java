@@ -88,9 +88,9 @@ public class ReadmeSamples {
             // do something when new queue created
         }, error -> {
             // do something if something wrong happened
-        }, () -> {
+            }, () -> {
             // completed, do something
-        });
+            });
     }
 
     public void createWithResponse1() {
@@ -110,9 +110,9 @@ public class ReadmeSamples {
             // do something when new queue created
         }, error -> {
             // do something if something wrong happened
-        }, () -> {
+            }, () -> {
             // completed, do something
-        });
+            });
     }
 
     public void deleteQueue() {

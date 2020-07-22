@@ -151,9 +151,9 @@ queueServiceAsyncClient.createQueue("newAsyncQueue").subscribe(result -> {
     // do something when new queue created
 }, error -> {
     // do something if something wrong happened
-}, () -> {
+    }, () -> {
     // completed, do something
-});
+    });
 ```
 
 ### Queue
@@ -184,9 +184,9 @@ queueAsyncClient.createWithResponse(metadata).subscribe(result -> {
     // do something when new queue created
 }, error -> {
     // do something if something wrong happened
-}, () -> {
+    }, () -> {
     // completed, do something
-});
+    });
 ```
 
 ## Examples
