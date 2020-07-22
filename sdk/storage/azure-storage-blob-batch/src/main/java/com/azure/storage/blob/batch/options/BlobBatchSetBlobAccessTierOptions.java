@@ -97,7 +97,7 @@ public class BlobBatchSetBlobAccessTierOptions {
      * @return Version id of the blob to set its access tier.
      */
     public String getVersionId() {
-        return blobUrlParts.toUrl().toString();
+        return blobUrlParts.getVersionId();
     }
 
     /**
@@ -110,10 +110,10 @@ public class BlobBatchSetBlobAccessTierOptions {
     }
 
     /**
-     * @return Snapshot id of the blob to set its access tier.
+     * @return Snapshot of the blob to set its access tier.
      */
-    public String getSnapshotId() {
-        return blobUrlParts.toUrl().toString();
+    public String getSnapshot() {
+        return blobUrlParts.getSnapshot();
     }
 
     /**
