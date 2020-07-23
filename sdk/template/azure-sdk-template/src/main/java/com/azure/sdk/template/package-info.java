@@ -4,4 +4,4 @@
 /**
  * This package contains classes for the template project.
  */
-package com.microsoft.azure.template;
+package com.azure.sdk.template;
