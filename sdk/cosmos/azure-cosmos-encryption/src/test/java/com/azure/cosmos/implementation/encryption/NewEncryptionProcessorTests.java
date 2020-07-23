@@ -112,7 +112,7 @@ public class NewEncryptionProcessorTests {
         TestCommon.TestDoc testDoc = TestCommon.TestDoc.Create();
 
         ObjectNode encryptedDoc = NewEncryptionProcessorTests.VerifyEncryptionSucceeded(testDoc);
-        ObjectNode decryptedDoc = EncryptionProcessor.DecryptAsync(
+        ObjectNode decryptedDoc = EncryptionProcessor.decryptAsync(
             encryptedDoc,
             NewEncryptionProcessorTests.mockEncryptor);
 

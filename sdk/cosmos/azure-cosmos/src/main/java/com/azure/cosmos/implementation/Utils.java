@@ -624,9 +624,7 @@ public class Utils {
         }
     }
 
-    public static byte[] serializeJsonToByteArray(ObjectMapper objectMapper, Object object) {
-        return Utils.toByteArray(Utils.serializeJsonToByteBuffer(objectMapper, object));
-    }
+
 
     public static boolean isEmpty(byte[] bytes) {
         return bytes == null || bytes.length == 0;
@@ -682,14 +680,6 @@ public class Utils {
         byte[] bytes = new byte[buf.readableBytes()];
         buf.readBytes(bytes);
         return bytes;
-    }
-
-    public static byte[] toByteArray(ByteBuffer buf) {
-        buf.position(0);
-        byte[] arr = new byte[buf.remaining()];
-         buf.get(arr);
-         return  arr;
-        // TODO fixme
     }
 
     public static ByteBuffer toByteBuffer(byte[] bytes) {

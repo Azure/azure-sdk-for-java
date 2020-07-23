@@ -39,7 +39,7 @@ public class TestCommon {
 //    internal
     public static <T> byte[] ToStream(T input)
     {
-        return Utils.serializeJsonToByteArray(Utils.getSimpleObjectMapper(), input);
+        return EncryptionUtils.serializeJsonToByteArray(Utils.getSimpleObjectMapper(), input);
     }
 //
 //    internal

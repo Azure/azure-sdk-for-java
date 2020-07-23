@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.encryption.EncryptionProperties;
+import com.azure.cosmos.implementation.encryption.EncryptionUtils;
 import com.azure.cosmos.implementation.encryption.Encryptor;
 import com.azure.cosmos.implementation.encryption.api.EncryptionOptions;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
@@ -77,18 +78,18 @@ public class EncryptionProcessor {
 
         // TODO:             return EncryptionProcessor.BaseSerializer.ToStream(itemJObj);
 
-        return Utils.toByteArray(Utils.serializeJsonToByteBuffer(Utils.getSimpleObjectMapper(), itemJObj));
+        return EncryptionUtils.serializeJsonToByteArray(Utils.getSimpleObjectMapper(), itemJObj);
 
     }
 
-    public static byte[] DecryptAsync(byte[] input, Encryptor encryptor) {
+    public static byte[] decryptAsync(byte[] input, Encryptor encryptor) {
         ObjectNode itemJObj = Utils.parse(input, ObjectNode.class);
-        itemJObj = DecryptAsync(itemJObj, encryptor);
+        itemJObj = decryptAsync(itemJObj, encryptor);
 
-        return Utils.toByteArray(Utils.serializeJsonToByteBuffer(Utils.getSimpleObjectMapper(), itemJObj));
+        return EncryptionUtils.serializeJsonToByteArray(Utils.getSimpleObjectMapper(), itemJObj);
     }
 
-    public static ObjectNode DecryptAsync(ObjectNode itemJObj, Encryptor encryptor) {
+    public static ObjectNode decryptAsync(ObjectNode itemJObj, Encryptor encryptor) {
         assert (itemJObj != null);
         assert (encryptor != null);
 

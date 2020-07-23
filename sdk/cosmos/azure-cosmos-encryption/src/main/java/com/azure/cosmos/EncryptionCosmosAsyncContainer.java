@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.encryption.CosmosResponseFactoryCore;
 import com.azure.cosmos.implementation.encryption.DecryptionResult;
 import com.azure.cosmos.implementation.encryption.EncryptionItemRequestOptions;
+import com.azure.cosmos.implementation.encryption.EncryptionUtils;
 import com.azure.cosmos.implementation.encryption.Encryptor;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -138,9 +139,8 @@ public class EncryptionCosmosAsyncContainer extends CosmosAsyncContainer {
 
     private <T> byte[] cosmosSerializerToStream(T item) {
         // TODO:
-        return Utils.serializeJsonToByteArray(Utils.getSimpleObjectMapper(), item);
+        return EncryptionUtils.serializeJsonToByteArray(Utils.getSimpleObjectMapper(), item);
     }
-
 
     ItemDeserializer getItemDeserializer() {
         return getDatabase().getDocClientWrapper().getItemDeserializer();
@@ -155,7 +155,7 @@ public class EncryptionCosmosAsyncContainer extends CosmosAsyncContainer {
         }
 
         try {
-            return EncryptionProcessor.DecryptAsync(
+            return EncryptionProcessor.decryptAsync(
                 input,
                 this.encryptor);
         } catch (Exception exception) {

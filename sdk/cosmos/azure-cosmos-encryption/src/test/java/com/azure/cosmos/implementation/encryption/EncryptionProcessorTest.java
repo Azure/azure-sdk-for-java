@@ -96,7 +96,7 @@ public class EncryptionProcessorTest {
 
 
         byte[] itemObjectWithEncryptedSensitiveDataAsByteArray = EncryptionProcessor.encryptAsync(inputAsByteArray, encryptor, encryptionOptions);
-        byte[] itemObjectWithDecryptedSensitiveDataAsByteArray = EncryptionProcessor.DecryptAsync(itemObjectWithEncryptedSensitiveDataAsByteArray, encryptor);
+        byte[] itemObjectWithDecryptedSensitiveDataAsByteArray = EncryptionProcessor.decryptAsync(itemObjectWithEncryptedSensitiveDataAsByteArray, encryptor);
 
         assertThat(itemObjectWithDecryptedSensitiveDataAsByteArray).isEqualTo(inputAsByteArray);
     }
