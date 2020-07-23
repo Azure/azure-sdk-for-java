@@ -2,11 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository;
 
+import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
 import com.azure.spring.data.cosmos.domain.Person;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
+import java.lang.reflect.Field;
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -33,6 +36,9 @@ public class MultiCosmosTemplateIT {
     @Autowired
     @Qualifier("secondaryReactiveCosmosTemplate")
     private ReactiveCosmosTemplate secondaryReactiveCosmosTemplate;
+    @Autowired
+    @Qualifier("secondaryReactiveCosmosTemplate1")
+    private ReactiveCosmosTemplate secondaryDiffDatabaseReactiveCosmosTemplate;
     @Autowired
     @Qualifier("reactiveCosmosTemplate")
     private ReactiveCosmosTemplate primaryReactiveCosmosTemplate;
@@ -75,4 +81,23 @@ public class MultiCosmosTemplateIT {
         secondaryReactiveCosmosTemplate.deleteContainer(personInfo.getContainerName());
     }
 
+    @Test
+    public void testSecondaryTemplateWithDiffDatabase() {
+        secondaryDiffDatabaseReactiveCosmosTemplate.createContainerIfNotExists(personInfo).block();
+        secondaryDiffDatabaseReactiveCosmosTemplate.insert(SECONDARY_TEST_PERSON,
+            new PartitionKey(personInfo.getPartitionKeyFieldValue(SECONDARY_TEST_PERSON))).block();
+        final Mono<Person> findById = secondaryDiffDatabaseReactiveCosmosTemplate.findById(SECONDARY_TEST_PERSON.getId(), Person.class);
+        Assertions.assertThat(findById.block().getFirstName()).isEqualTo(TestConstants.NEW_FIRST_NAME);
+        secondaryDiffDatabaseReactiveCosmosTemplate.deleteAll(Person.class.getSimpleName(), Person.class).block();
+        secondaryDiffDatabaseReactiveCosmosTemplate.deleteContainer(personInfo.getContainerName());
+    }
+
+    @Test
+    public void testSingleCosmosClientForMultipleCosmosTemplate() throws IllegalAccessException {
+        final Field cosmosAsyncClient = FieldUtils.getDeclaredField(ReactiveCosmosTemplate.class,
+            "cosmosAsyncClient", true);
+        CosmosAsyncClient client1 = (CosmosAsyncClient) cosmosAsyncClient.get(secondaryReactiveCosmosTemplate);
+        CosmosAsyncClient client2 = (CosmosAsyncClient) cosmosAsyncClient.get(secondaryDiffDatabaseReactiveCosmosTemplate);
+        Assertions.assertThat(client1).isEqualTo(client2);
+    }
 }
