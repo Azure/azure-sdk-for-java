@@ -17,7 +17,8 @@ public class AzureIdleStateHandler extends IdleStateHandler {
     private boolean closed;
 
     public AzureIdleStateHandler(Duration readTimeout, Duration writeTimeout) {
-        super(true, readTimeout.getSeconds(), writeTimeout.getSeconds(), 0, TimeUnit.SECONDS);
+        super(true, readTimeout.getSeconds(), writeTimeout.getSeconds(),
+            Math.max(readTimeout.getSeconds(), writeTimeout.getSeconds()), TimeUnit.SECONDS);
     }
 
     @Override
@@ -26,11 +27,11 @@ public class AzureIdleStateHandler extends IdleStateHandler {
             System.out.printf("Processing idle state: %s%n", evt.state());
 
             if (evt.state() == IdleState.READER_IDLE) {
-                throw ReadTimeoutException.INSTANCE;
+                ctx.fireExceptionCaught(ReadTimeoutException.INSTANCE);
             } else if (evt.state() == IdleState.WRITER_IDLE) {
-                throw WriteTimeoutException.INSTANCE;
+                ctx.fireExceptionCaught(WriteTimeoutException.INSTANCE);
             } else {
-                ctx.fireExceptionCaught(new RuntimeException("Unknown idle state."));
+                ctx.fireExceptionCaught(new RuntimeException("All idle"));
             }
 
             ctx.close();
