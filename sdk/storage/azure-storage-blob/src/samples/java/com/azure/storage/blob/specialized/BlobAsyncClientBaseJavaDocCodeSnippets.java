@@ -8,7 +8,6 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.AccessTier;
-import com.azure.storage.blob.models.BlobLeaseRequestConditions;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.models.BlobCopyInfo;

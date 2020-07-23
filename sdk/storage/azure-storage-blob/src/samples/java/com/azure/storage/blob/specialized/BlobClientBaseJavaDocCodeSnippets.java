@@ -9,7 +9,6 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.blob.BlobServiceClientBuilder;
-import com.azure.storage.blob.models.BlobLeaseRequestConditions;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.models.BlobProperties;
