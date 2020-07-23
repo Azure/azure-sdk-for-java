@@ -11,7 +11,7 @@ package com.azure.cosmos;
 import com.azure.spring.data.cosmos.core.mapping.Document;
 import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
 
-@Document(collection = "myCollection", ru = "400")
+@Document(container = "myContainer", ru = "400")
 public class User {
     private String id;
     private String firstName;

@@ -3,8 +3,7 @@
 
 package com.azure.spring.data.cosmos.common;
 
-import com.azure.data.cosmos.CosmosResponseDiagnostics;
-import com.azure.data.cosmos.FeedResponseDiagnostics;
+import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.spring.data.cosmos.core.ResponseDiagnostics;
 import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
 
@@ -20,12 +19,8 @@ public class ResponseDiagnosticsTestUtils {
         };
     }
 
-    public CosmosResponseDiagnostics getCosmosResponseDiagnostics() {
-        return diagnostics == null ? null : diagnostics.getCosmosResponseDiagnostics();
-    }
-
-    public FeedResponseDiagnostics getFeedResponseDiagnostics() {
-        return diagnostics == null ? null : diagnostics.getFeedResponseDiagnostics();
+    public CosmosDiagnostics getCosmosDiagnostics() {
+        return diagnostics == null ? null : diagnostics.getCosmosDiagnostics();
     }
 
     public ResponseDiagnostics.CosmosResponseStatistics getCosmosResponseStatistics() {

@@ -56,9 +56,9 @@ public class DefaultAzureCredentialTest {
 
             IntelliJCredential intelliJCredential = PowerMockito.mock(IntelliJCredential.class);
             when(intelliJCredential.getToken(request1))
-                    .thenReturn(Mono.empty());
+                .thenReturn(Mono.empty());
             PowerMockito.whenNew(IntelliJCredential.class).withAnyArguments()
-                    .thenReturn(intelliJCredential);
+                .thenReturn(intelliJCredential);
 
             // test
             DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
@@ -88,9 +88,9 @@ public class DefaultAzureCredentialTest {
 
         IntelliJCredential intelliJCredential = PowerMockito.mock(IntelliJCredential.class);
         when(intelliJCredential.getToken(request))
-                .thenReturn(Mono.empty());
+            .thenReturn(Mono.empty());
         PowerMockito.whenNew(IntelliJCredential.class).withAnyArguments()
-                .thenReturn(intelliJCredential);
+            .thenReturn(intelliJCredential);
 
         // test
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
@@ -110,9 +110,9 @@ public class DefaultAzureCredentialTest {
         // mock
         IntelliJCredential intelliJCredential = PowerMockito.mock(IntelliJCredential.class);
         when(intelliJCredential.getToken(request))
-                .thenReturn(Mono.empty());
+            .thenReturn(Mono.empty());
         PowerMockito.whenNew(IntelliJCredential.class).withAnyArguments()
-                .thenReturn(intelliJCredential);
+            .thenReturn(intelliJCredential);
 
         IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
         when(identityClient.authenticateWithAzureCli(request)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
@@ -156,22 +156,22 @@ public class DefaultAzureCredentialTest {
 
         IntelliJCredential intelliJCredential = PowerMockito.mock(IntelliJCredential.class);
         when(intelliJCredential.getToken(request))
-                .thenReturn(Mono.error(
-                        new CredentialUnavailableException("Cannot get token from IntelliJ Credential")));
+            .thenReturn(Mono.error(
+                new CredentialUnavailableException("Cannot get token from IntelliJ Credential")));
         PowerMockito.whenNew(IntelliJCredential.class).withAnyArguments()
-                .thenReturn(intelliJCredential);
+            .thenReturn(intelliJCredential);
 
         VisualStudioCodeCredential vscodeCredential = PowerMockito.mock(VisualStudioCodeCredential.class);
         when(vscodeCredential.getToken(request))
-                .thenReturn(Mono.error(new CredentialUnavailableException("Cannot get token from VS Code credential")));
+            .thenReturn(Mono.error(new CredentialUnavailableException("Cannot get token from VS Code credential")));
         PowerMockito.whenNew(VisualStudioCodeCredential.class).withAnyArguments()
-                .thenReturn(vscodeCredential);
+            .thenReturn(vscodeCredential);
 
         // test
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
         StepVerifier.create(credential.getToken(request))
             .expectErrorMatches(t -> t instanceof CredentialUnavailableException && t.getMessage()
-                                      .startsWith("EnvironmentCredential authentication unavailable. "))
+                .startsWith("EnvironmentCredential authentication unavailable. "))
             .verify();
     }
 
@@ -190,22 +190,22 @@ public class DefaultAzureCredentialTest {
 
         IntelliJCredential intelliJCredential = PowerMockito.mock(IntelliJCredential.class);
         when(intelliJCredential.getToken(request))
-                .thenReturn(Mono.error(
-                        new CredentialUnavailableException("Cannot get token from IntelliJ Credential")));
+            .thenReturn(Mono.error(
+                new CredentialUnavailableException("Cannot get token from IntelliJ Credential")));
         PowerMockito.whenNew(IntelliJCredential.class).withAnyArguments()
-                .thenReturn(intelliJCredential);
+            .thenReturn(intelliJCredential);
         VisualStudioCodeCredential vscodeCredential = PowerMockito.mock(VisualStudioCodeCredential.class);
         when(vscodeCredential.getToken(request))
-                .thenReturn(Mono.error(new CredentialUnavailableException("Cannot get token from VS Code credential")));
+            .thenReturn(Mono.error(new CredentialUnavailableException("Cannot get token from VS Code credential")));
         PowerMockito.whenNew(VisualStudioCodeCredential.class).withAnyArguments()
-                .thenReturn(vscodeCredential);
+            .thenReturn(vscodeCredential);
 
         // test
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder()
-                                                .build();
+            .build();
         StepVerifier.create(credential.getToken(request))
             .expectErrorMatches(t -> t instanceof CredentialUnavailableException && t.getMessage()
-                                        .startsWith("EnvironmentCredential authentication unavailable. "))
+                .startsWith("EnvironmentCredential authentication unavailable. "))
             .verify();
     }
 }

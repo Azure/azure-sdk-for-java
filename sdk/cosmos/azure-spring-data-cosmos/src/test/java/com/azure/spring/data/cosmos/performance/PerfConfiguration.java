@@ -2,8 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.performance;
 
+import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration;
-import com.azure.spring.data.cosmos.config.CosmosDBConfig;
+import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.performance.utils.Constants;
 import com.azure.spring.data.cosmos.repository.config.EnableCosmosRepositories;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,7 +23,12 @@ public class PerfConfiguration extends AbstractCosmosConfiguration {
     private String cosmosDbKey;
 
     @Bean
-    public CosmosDBConfig getConfig() {
-        return CosmosDBConfig.builder(cosmosDbUri, cosmosDbKey, Constants.PERF_DATABASE_NAME).build();
+    public CosmosConfig getConfig() {
+        return CosmosConfig.builder()
+                           .cosmosClientBuilder(new CosmosClientBuilder()
+                                                          .endpoint(cosmosDbUri)
+                                                          .key(cosmosDbKey))
+                           .database(Constants.PERF_DATABASE_NAME)
+                           .build();
     }
 }

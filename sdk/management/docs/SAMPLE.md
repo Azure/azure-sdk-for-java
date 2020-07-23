@@ -443,11 +443,6 @@ SqlDatabase database = sqlServer.databases().define("myNewDatabase")
 <li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/samples/src/main/java/com/azure/resourcemanager/kubernetescluster/samples/DeployImageFromContainerRegistryToKubernetes.java">Deploy an image from container registry to Kubernetes cluster (AKS)</a></li>
 <li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/samples/src/main/java/com/azure/resourcemanager/kubernetescluster/samples/ManagedKubernetesClusterWithAdvancedNetworking.java">Manage Kubernetes clusters with advanced networking</a></li>
 
-<!--
-<li><a href="https://github.com/Azure-Samples/acs-java-deploy-image-from-acr-to-swarm">Deploy an image from container registry to Swarm cluster</li>
-<li><a href="https://github.com/Azure-Samples/acs-java-deploy-image-from-docker-hub-to-kubernetes">Deploy an image from Docker hub to Kubernetes cluster</a></li>
-<li><a href="https://github.com/Azure-Samples/acs-java-deploy-image-from-docker-hub-to-swarm">Deploy an image from Docker hub to Swarm cluster</li>
--->
 <!--li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/samples/src/main/java/com/azure/resourcemanager/containerinstance/samples/ManageContainerInstanceWithAzureFileShareMount.java">Manage Azure Container Instances with new Azure File Share</li>
 <li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/samples/src/main/java/com/azure/resourcemanager/containerinstance/samples/ManageContainerInstanceWithManualAzureFileShareMountCreation.java">Manage Azure Container Instances with an existing Azure File Share</li>
 <li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/samples/src/main/java/com/azure/resourcemanager/containerinstance/samples/ManageContainerInstanceWithMultipleContainerImages.java">Create Container Group with multiple instances and container images</li>
@@ -504,42 +499,5 @@ SqlDatabase database = sqlServer.databases().define("myNewDatabase")
 <li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/samples/src/main/java/com/azure/resourcemanager/monitor/samples/AutoscaleSettingsBasedOnPerformanceOrSchedule.java">Configuring autoscale settings to scale out based on webapp request count statistic.</a></li>
 </ul></td>
   </tr>
-
-  <!--tr>
-    <td>CDN</td>
-    <td><ul style="list-style-type:circle">
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/samples/src/main/java/com/azure/resourcemanager/cdn/samples/ManageCdn.java">Manage CDNs</a></li>
-</ul></td>
-  </tr>
-
-  <tr>
-    <td>Batch</td>
-    <td><ul style="list-style-type:circle">
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/samples/src/main/java/com/azure/resourcemanager/batch/samples/ManageBatchAccount.java">Manage batch accounts</a></li>
-</ul></td>
-  </tr>
-
-  <tr>
-    <td>Batch AI</td>
-    <td><ul style="list-style-type:circle">
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/samples/src/main/java/com/azure/resourcemanager/batchai/samples/ManageBatchAI.java">Create Batch AI cluster and execute AI job</a></li>
-</ul></td>
-  </tr>
-
-  <tr>
-    <td>Search</td>
-    <td><ul style="list-style-type:circle">
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/samples/src/main/java/com/azure/resourcemanager/search/samples/ManageSearchService.java">Manage Azure search</a></li>
-</ul></td>
-  </tr>
-
-  <tr>
-    <td>Event Hub</td>
-    <td><ul style="list-style-type:circle">
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/samples/src/main/java/com/azure/resourcemanager/eventhub/samples/ManageEventHub.java">Manage event hub and associated resources</a></li>
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/samples/src/main/java/com/azure/resourcemanager/eventhub/samples/ManageEventHubGeoDisasterRecovery.java">Manage event hub geo-disaster recovery</a></li>
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/samples/src/main/java/com/azure/resourcemanager/eventhub/samples/ManageEventHubEvents.java">Stream Azure Service Logs and Metrics for consumption through Event Hub</a></li>
-</ul></td>
-  </tr-->
 
 </table>

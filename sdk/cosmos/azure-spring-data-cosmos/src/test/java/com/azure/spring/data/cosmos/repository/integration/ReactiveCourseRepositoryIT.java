@@ -2,13 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.integration;
 
-import com.azure.data.cosmos.PartitionKey;
+import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
-import com.azure.spring.data.cosmos.exception.CosmosDBAccessException;
-import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import com.azure.spring.data.cosmos.domain.Course;
+import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.ReactiveCourseRepository;
+import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -134,6 +134,28 @@ public class ReactiveCourseRepositoryIT {
     }
 
     @Test
+    public void testFindOneShouldFailIfMultipleResultsReturned() {
+        final Course course = new Course("unusedId", COURSE_1.getName(), COURSE_1.getDepartment());
+        final Mono<Course> saveSecond = repository.save(course);
+        StepVerifier.create(saveSecond).expectNext(course).verifyComplete();
+
+        final Mono<Course> find = repository.findOneByName(COURSE_1.getName());
+        StepVerifier.create(find).expectError(CosmosAccessException.class).verify();
+    }
+
+    @Test
+    public void testShouldFindSingleEntity() {
+        final Mono<Course> find = repository.findOneByName(COURSE_1.getName());
+        StepVerifier.create(find).expectNext(COURSE_1).expectComplete().verify();
+    }
+
+    @Test
+    public void testShouldReturnEmptyMonoWhenNoResults() {
+        final Mono<Course> find = repository.findOneByName("unusedName");
+        StepVerifier.create(find).verifyComplete();
+    }
+
+    @Test
     public void testInsert() {
         final Mono<Course> save = repository.save(COURSE_5);
         StepVerifier.create(save).expectNext(COURSE_5).verifyComplete();
@@ -151,7 +173,7 @@ public class ReactiveCourseRepositoryIT {
     @Test
     public void testDeleteByIdWithoutPartitionKey() {
         final Mono<Void> deleteMono = repository.deleteById(COURSE_1.getCourseId());
-        StepVerifier.create(deleteMono).expectError(CosmosDBAccessException.class).verify();
+        StepVerifier.create(deleteMono).expectError(CosmosAccessException.class).verify();
     }
 
     @Test
@@ -179,13 +201,13 @@ public class ReactiveCourseRepositoryIT {
     @Test
     public void testDeleteByIdNotFound() {
         final Mono<Void> deleteMono = repository.deleteById(COURSE_ID_5);
-        StepVerifier.create(deleteMono).expectError(CosmosDBAccessException.class).verify();
+        StepVerifier.create(deleteMono).expectError(CosmosAccessException.class).verify();
     }
 
     @Test
     public void testDeleteByEntityNotFound() {
         final Mono<Void> deleteMono = repository.delete(COURSE_5);
-        StepVerifier.create(deleteMono).expectError(CosmosDBAccessException.class).verify();
+        StepVerifier.create(deleteMono).expectError(CosmosAccessException.class).verify();
     }
 
     @Test
@@ -274,7 +296,7 @@ public class ReactiveCourseRepositoryIT {
     @Test
     public void testFindByNameOrDepartmentAllIgnoreCase() {
         final Flux<Course> findResult = repository.findByNameOrDepartmentAllIgnoreCase(
-            COURSE_NAME_3.toLowerCase(), DEPARTMENT_NAME_3.toLowerCase());
-        StepVerifier.create(findResult).expectNext(COURSE_1, COURSE_3).verifyComplete();
+            COURSE_NAME_1.toLowerCase(), DEPARTMENT_NAME_3.toLowerCase());
+        StepVerifier.create(findResult).expectNext(COURSE_1).verifyComplete();
     }
 }

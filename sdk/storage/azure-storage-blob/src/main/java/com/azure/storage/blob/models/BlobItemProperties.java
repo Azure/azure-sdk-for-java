@@ -218,6 +218,18 @@ public final class BlobItemProperties {
     @JsonProperty(value = "TagCount")
     private Integer tagCount;
 
+    /*
+     * Possible values include: 'High', 'Standard'
+     */
+    @JsonProperty(value = "RehydratePriority")
+    private RehydratePriority rehydratePriority;
+
+    /*
+     * The sealed property.
+     */
+    @JsonProperty(value = "Sealed")
+    private Boolean sealed;
+
     /**
      * Get the creationTime property: The creationTime property.
      *
@@ -902,6 +914,48 @@ public final class BlobItemProperties {
      */
     public BlobItemProperties setTagCount(Integer tagCount) {
         this.tagCount = tagCount;
+        return this;
+    }
+
+    /**
+     * Get the rehydratePriority property: Possible values include: 'High',
+     * 'Standard'.
+     *
+     * @return the rehydratePriority value.
+     */
+    public RehydratePriority getRehydratePriority() {
+        return this.rehydratePriority;
+    }
+
+    /**
+     * Set the rehydratePriority property: Possible values include: 'High',
+     * 'Standard'.
+     *
+     * @param rehydratePriority the rehydratePriority value to set.
+     * @return the BlobItemProperties object itself.
+     */
+    public BlobItemProperties setRehydratePriority(RehydratePriority rehydratePriority) {
+        this.rehydratePriority = rehydratePriority;
+        return this;
+    }
+
+    /**
+     * Get the sealed property: The sealed property.
+     *
+     * @return the isSealed value.
+     */
+    public Boolean isSealed() {
+        return this.sealed;
+    }
+
+    /**
+     * Set the sealed property: The sealed property.
+     *
+     * @param sealed the sealed value to set.
+     * @return the BlobItemProperties object itself.
+     */
+    public BlobItemProperties setSealed(Boolean sealed) {
+        this.sealed = sealed;
         return this;
     }
 }

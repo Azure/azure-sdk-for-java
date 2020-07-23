@@ -2,45 +2,45 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.performance.utils;
 
-import com.azure.data.cosmos.*;
-import com.azure.data.cosmos.internal.RequestOptions;
-import com.azure.data.cosmos.sync.CosmosSyncClient;
+import com.azure.cosmos.CosmosClient;
+import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.IncludedPath;
+import com.azure.cosmos.models.IndexingPolicy;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 
 import java.util.Collections;
 
 import static com.azure.spring.data.cosmos.common.TestConstants.ORDER_BY_STRING_PATH;
 
 public class DatabaseUtils {
-    public static void createDatabase(CosmosSyncClient documentClient, String databaseName)
-            throws CosmosClientException {
+    public static void createDatabase(CosmosClient cosmosClient, String databaseName)
+            throws CosmosException {
         try {
             // Can use sync api once ready
-            documentClient.getDatabase(databaseName).delete();
+            cosmosClient.getDatabase(databaseName).delete();
         } catch (Exception e) {
             // Ignore delete failure
         }
 
-        documentClient.createDatabase(databaseName);
+        cosmosClient.createDatabase(databaseName);
     }
 
-    public static void deleteContainer(CosmosSyncClient documentClient, String databaseName, String containerName)
-            throws CosmosClientException {
-        final RequestOptions requestOptions = new RequestOptions();
-        requestOptions.setOfferThroughput(1000);
-
-        documentClient.getDatabase(databaseName).getContainer(containerName).delete();
+    public static void deleteContainer(CosmosClient cosmosClient, String databaseName, String containerName)
+            throws CosmosException {
+        cosmosClient.getDatabase(databaseName).getContainer(containerName).delete();
     }
 
-    public static void createContainer(CosmosSyncClient documentClient, String databaseName, String containerName)
-            throws CosmosClientException {
+    public static void createContainer(CosmosClient cosmosClient, String databaseName, String containerName)
+            throws CosmosException {
         final CosmosContainerProperties containerProperties = new CosmosContainerProperties(containerName,
-                new PartitionKeyDefinition().paths(Collections.singletonList("/mypk")));
+                new PartitionKeyDefinition().setPaths(Collections.singletonList("/mypk")));
 
         final IndexingPolicy policy = new IndexingPolicy();
         policy.setIncludedPaths(Collections.singletonList(new IncludedPath(ORDER_BY_STRING_PATH)));
-        containerProperties.indexingPolicy(policy);
+        containerProperties.setIndexingPolicy(policy);
 
-        documentClient.getDatabase(databaseName).createContainer(containerProperties);
+        cosmosClient.getDatabase(databaseName).createContainer(containerProperties);
     }
 
     public static String getDocumentLink(String databaseName, String containerName, Object documentId) {
