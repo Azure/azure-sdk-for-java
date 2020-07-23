@@ -6,6 +6,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.ItemDeserializer;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedException;
 import com.azure.cosmos.implementation.encryption.CosmosResponseFactoryCore;
 import com.azure.cosmos.implementation.encryption.DecryptionResult;
 import com.azure.cosmos.implementation.encryption.EncryptionItemRequestOptions;
@@ -54,8 +55,8 @@ public class EncryptionCosmosAsyncContainer extends CosmosAsyncContainer {
             );
 
         } else {
-            return null;
-            // TODO
+            throw new NotImplementedException("TODO not implemented yet");
+            // TODO moderakh compelte the non encryption branch
             // return super.createItem()
         }
     }
@@ -63,13 +64,13 @@ public class EncryptionCosmosAsyncContainer extends CosmosAsyncContainer {
     // TODO ensure all other apis call this guy
     public <T> Mono<CosmosItemResponse<T>> createItem(T item,
                                                       PartitionKey partitionKey,
-                                                      CosmosItemRequestOptions option) {
+                                                      CosmosItemRequestOptions requestOptions) {
         Preconditions.checkNotNull(item, "item");
-        if (option == null) {
-            option = new CosmosItemRequestOptions();
+        if (requestOptions == null) {
+            requestOptions = new CosmosItemRequestOptions();
         }
 
-        EncryptionItemRequestOptions encryptionItemRequestOptions = Utils.as(option, EncryptionItemRequestOptions.class);
+        EncryptionItemRequestOptions encryptionItemRequestOptions = Utils.as(requestOptions, EncryptionItemRequestOptions.class);
 
         if (encryptionItemRequestOptions != null && encryptionItemRequestOptions.getEncryptionOptions() != null) {
             Preconditions.checkArgument(partitionKey != null, "partitionKey cannot be null for operations using EncryptionContainer.");
@@ -80,13 +81,13 @@ public class EncryptionCosmosAsyncContainer extends CosmosAsyncContainer {
             String payloadAsString = new String(payload);
 
 
-            Mono<CosmosItemResponse<byte[]>> result = this.createItemStream(payload, partitionKey, option);
+            Mono<CosmosItemResponse<byte[]>> result = this.createItemStream(payload, partitionKey, requestOptions);
 
 
             return result.map(rsp -> (CosmosItemResponse<T>) this.responseFactory.createItemResponse(rsp, item.getClass()));
 
         } else {
-            return super.createItem(item, partitionKey, option);
+            return super.createItem(item, partitionKey, requestOptions);
         }
     }
 

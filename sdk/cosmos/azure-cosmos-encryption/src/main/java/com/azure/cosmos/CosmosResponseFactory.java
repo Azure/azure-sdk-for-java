@@ -11,6 +11,5 @@ import com.azure.cosmos.models.CosmosItemResponse;
  * CosmosClient serializer
  */
 public interface CosmosResponseFactory {
-
-    <T> CosmosItemResponse<T> createItemResponse(CosmosItemResponse<byte[]> responseMessage, Class<T> classTypee);
+    <T> CosmosItemResponse<T> createItemResponse(CosmosItemResponse<byte[]> responseMessage, Class<T> classType);
 }

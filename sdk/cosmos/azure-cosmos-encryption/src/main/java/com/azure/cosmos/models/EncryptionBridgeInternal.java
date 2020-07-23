@@ -11,8 +11,10 @@ import com.azure.cosmos.implementation.Warning;
 import static com.azure.cosmos.implementation.Warning.INTERNAL_USE_ONLY_WARNING;
 
 /**
- * This is an internal class in the encryption project
+ * This is an internal class in the encryption project.
+ * This is meant to be used only internally as a bridge access to classes in implementation.
  */
+@Warning(value = INTERNAL_USE_ONLY_WARNING)
 public class EncryptionBridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
