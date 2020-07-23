@@ -250,6 +250,7 @@ public class JacksonAdapter implements SerializerAdapter {
             .registerModule(ByteArraySerializer.getModule())
             .registerModule(Base64UrlSerializer.getModule())
             .registerModule(DateTimeSerializer.getModule())
+            .registerModule(DateTimeDeserializer.getModule())
             .registerModule(DateTimeRfc1123Serializer.getModule())
             .registerModule(DurationSerializer.getModule())
             .registerModule(HttpHeadersSerializer.getModule())

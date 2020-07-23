@@ -4,19 +4,14 @@
 package com.azure.spring.data.cosmos;
 
 import com.azure.cosmos.CosmosAsyncClient;
-import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.spring.data.cosmos.common.MacAddress;
 import com.azure.spring.data.cosmos.common.PropertyLoader;
-import com.azure.spring.data.cosmos.common.TelemetrySender;
-import com.azure.spring.data.cosmos.config.CosmosConfig;
+import com.azure.spring.data.cosmos.config.CosmosClientConfig;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 
-import javax.annotation.PostConstruct;
 import java.lang.reflect.Field;
 
 /**
@@ -26,67 +21,72 @@ public class CosmosFactory {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosFactory.class);
 
-    private final CosmosConfig config;
+    private final CosmosAsyncClient cosmosAsyncClient;
 
-    private static final boolean IS_TELEMETRY_ALLOWED =
-        PropertyLoader.isApplicationTelemetryAllowed();
+    private final String databaseName;
 
     private static final String USER_AGENT_SUFFIX =
         Constants.USER_AGENT_SUFFIX + PropertyLoader.getProjectVersion();
 
-    private String getUserAgentSuffix() {
-        String suffix = ";" + USER_AGENT_SUFFIX;
-
-        if (IS_TELEMETRY_ALLOWED || config.isAllowTelemetry()) {
-            suffix += ";" + MacAddress.getHashMac();
-        }
-
-        return suffix;
+    private static String getUserAgentSuffix() {
+        return ";" + USER_AGENT_SUFFIX;
     }
 
     /**
      * Validate config and initialization
      *
-     * @param cosmosConfig cosmosConfig
+     * @param cosmosAsyncClient cosmosAsyncClient
+     * @param databaseName databaseName
      */
-    public CosmosFactory(@NonNull CosmosConfig cosmosConfig) {
-        validateConfig(cosmosConfig);
+    public CosmosFactory(CosmosAsyncClient cosmosAsyncClient, String databaseName) {
+        Assert.notNull(cosmosAsyncClient, "cosmosAsyncClient must not be null!");
+        Assert.notNull(databaseName, "databaseName must not be null!");
 
-        this.config = cosmosConfig;
+        this.cosmosAsyncClient = cosmosAsyncClient;
+        this.databaseName = databaseName;
     }
 
     /**
      * To create a CosmosAsyncClient
      *
-     * @return CosmosClient
+     * @return CosmosAsyncClient
      */
     public CosmosAsyncClient getCosmosAsyncClient() {
-        final CosmosClientBuilder cosmosClientBuilderFromConfig =
-            getCosmosClientBuilderFromConfig(config);
-        return cosmosClientBuilderFromConfig.buildAsyncClient();
+        return this.cosmosAsyncClient;
     }
 
     /**
-     * To create a CosmosClient
-     *
-     * @return CosmosSyncClient
+     * Get Cosmos Database Name
+     * @return Cosmos Database Name
      */
-    public CosmosClient getCosmosSyncClient() {
-        final CosmosClientBuilder cosmosClientBuilderFromConfig =
-            getCosmosClientBuilderFromConfig(config);
-        return cosmosClientBuilderFromConfig.buildClient();
+    public String getDatabaseName() {
+        return this.databaseName;
     }
 
-    private CosmosClientBuilder getCosmosClientBuilderFromConfig(CosmosConfig cosmosConfig) {
-        final CosmosClientBuilder cosmosClientBuilder = cosmosConfig.getCosmosClientBuilder();
+    /**
+     * Create Cosmos Async Client
+     *
+     * @param config CosmosClientConfig
+     * @return CosmosAsyncClient
+     */
+    public static CosmosAsyncClient createCosmosAsyncClient(CosmosClientConfig config) {
+        final CosmosClientBuilder cosmosClientBuilder = getCosmosClientBuilderFromConfig(config);
+        return cosmosClientBuilder.buildAsyncClient();
+    }
+
+    private static CosmosClientBuilder getCosmosClientBuilderFromConfig(CosmosClientConfig cosmosClientConfig) {
+        final CosmosClientBuilder cosmosClientBuilder = cosmosClientConfig.getCosmosClientBuilder();
         cosmosClientBuilder.contentResponseOnWriteEnabled(true);
         final String userAgentSuffixValue = getUserAgentSuffixValue(cosmosClientBuilder);
-        final String userAgentSuffix = getUserAgentSuffix() + userAgentSuffixValue;
+        String userAgentSuffix = getUserAgentSuffix();
+        if (!userAgentSuffixValue.contains(userAgentSuffix)) {
+            userAgentSuffix += userAgentSuffixValue;
+        }
 
-        return cosmosConfig.getCosmosClientBuilder().userAgentSuffix(userAgentSuffix);
+        return cosmosClientConfig.getCosmosClientBuilder().userAgentSuffix(userAgentSuffix);
     }
 
-    private String getUserAgentSuffixValue(CosmosClientBuilder cosmosClientBuilder) {
+    private static String getUserAgentSuffixValue(CosmosClientBuilder cosmosClientBuilder) {
         final Field userAgentSuffix = FieldUtils.getDeclaredField(CosmosClientBuilder.class,
             "userAgentSuffix", true);
         try {
@@ -96,28 +96,5 @@ public class CosmosFactory {
                 e);
         }
         return "";
-    }
-
-    private void validateConfig(@NonNull CosmosConfig config) {
-        Assert.hasText(config.getDatabase(), "cosmos database should have text!");
-    }
-
-    @PostConstruct
-    private void sendTelemetry() {
-        //  If any one of them is enabled, send telemetry data
-        if (IS_TELEMETRY_ALLOWED || config.isAllowTelemetry()) {
-            final TelemetrySender sender = new TelemetrySender();
-
-            sender.send(this.getClass().getSimpleName());
-        }
-    }
-
-    /**
-     * To get config object of Cosmos
-     *
-     * @return CosmosConfig
-     */
-    public CosmosConfig getConfig() {
-        return config;
     }
 }

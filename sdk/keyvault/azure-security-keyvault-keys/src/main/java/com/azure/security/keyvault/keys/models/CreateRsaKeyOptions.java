@@ -6,7 +6,6 @@ package com.azure.security.keyvault.keys.models;
 import com.azure.core.annotation.Fluent;
 
 import java.time.OffsetDateTime;
-import java.util.Arrays;
 import java.util.Map;
 
 /**
@@ -30,8 +29,7 @@ public class CreateRsaKeyOptions extends CreateKeyOptions {
      * @param name The name of the key.
      */
     public CreateRsaKeyOptions(String name) {
-        super.name = name;
-        this.keyType = KeyType.RSA;
+        super(name, KeyType.RSA);
     }
 
     /**
@@ -62,7 +60,7 @@ public class CreateRsaKeyOptions extends CreateKeyOptions {
      */
     @Override
     public CreateRsaKeyOptions setKeyOperations(KeyOperation... keyOperations) {
-        this.keyOperations = Arrays.asList(keyOperations);
+        super.setKeyOperations(keyOperations);
         return this;
     }
 
@@ -120,7 +118,8 @@ public class CreateRsaKeyOptions extends CreateKeyOptions {
      */
     public CreateRsaKeyOptions setHardwareProtected(Boolean hardwareProtected) {
         this.hardwareProtected = hardwareProtected;
-        this.keyType = hardwareProtected ? KeyType.RSA_HSM : KeyType.RSA;
+        KeyType keyType = hardwareProtected ? KeyType.RSA_HSM : KeyType.RSA;
+        setKeyType(keyType);
         return this;
     }
 
