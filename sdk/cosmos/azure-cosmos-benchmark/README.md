@@ -7,9 +7,6 @@
 ```bash
 git clone https://github.com/Azure/azure-sdk-for-java.git
 cd azure-sdk-for-java
-mvn -e -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dspotbugs.skip=true  -Dcheckstyle.skip=true  -Drevapi.skip=true clean install
-cd sdk/cosmos/
-mvn clean install -f ../../eng/code-quality-reports/pom.xml
 mvn clean package -f pom.xml -DskipTests -Dgpg.skip -Ppackage-assembly
 ```
 
