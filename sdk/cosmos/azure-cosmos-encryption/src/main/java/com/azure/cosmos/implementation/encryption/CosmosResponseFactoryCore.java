@@ -12,7 +12,7 @@ public class CosmosResponseFactoryCore extends CosmosResponseFactoryInternal {
     @Override
     public <T> CosmosItemResponse<T> createItemResponse(CosmosItemResponse<byte[]> responseMessage, Class<T> classType) {
         return EncryptionBridgeInternal.createCosmosItemResponse(
-            responseMessage.resourceResponse,
+            EncryptionBridgeInternal.getResourceResponse(responseMessage),
             EncryptionBridgeInternal.getByteArrayContent(responseMessage),
             classType,
             new ItemDeserializer.JsonDeserializer());

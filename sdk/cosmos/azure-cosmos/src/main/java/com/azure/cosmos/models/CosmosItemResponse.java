@@ -25,7 +25,7 @@ public class CosmosItemResponse<T> {
     private final ItemDeserializer itemDeserializer;
     byte[] responseBodyAsByteArray;
     private T item;
-    public final ResourceResponse<Document> resourceResponse;
+    final ResourceResponse<Document> resourceResponse;
     private InternalObjectNode props;
 
     CosmosItemResponse(ResourceResponse<Document> response, Class<T> classType, ItemDeserializer itemDeserializer) {

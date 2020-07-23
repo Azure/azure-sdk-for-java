@@ -29,4 +29,9 @@ public class EncryptionBridgeInternal {
     public static byte[] setByteArrayContent(CosmosItemResponse response, byte[] content) {
         return response.responseBodyAsByteArray = content;
     }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static ResourceResponse<Document> getResourceResponse(CosmosItemResponse response) {
+        return response.resourceResponse;
+    }
 }
