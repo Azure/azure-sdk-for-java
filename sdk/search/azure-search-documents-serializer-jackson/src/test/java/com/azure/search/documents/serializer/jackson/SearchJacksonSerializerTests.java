@@ -30,7 +30,7 @@ public class SearchJacksonSerializerTests {
     private static Date date;
     @BeforeAll
     public static void setup() {
-        jacksonJsonSerializer = SearchJacksonSerializerProviders.createInstance();
+        jacksonJsonSerializer = SearchJacksonSerializerProvider.createInstance();
 
         Date dateEpoch = Date.from(Instant.ofEpochMilli(1468800000L));
         date = new Date(dateEpoch.getYear(), dateEpoch.getMonth(), dateEpoch.getDate(),

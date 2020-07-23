@@ -19,7 +19,7 @@ public class SearchGsonWithPropertyBagTests {
     private static GsonJsonSerializer gsonJsonSerializer;
     @BeforeAll
     public static void setup() {
-        gsonJsonSerializer = SearchGsonSerializerProviders.createInstance(new JsonOptions().includeNulls());
+        gsonJsonSerializer = SearchGsonSerializerProvider.createInstance(new JsonOptions().includeNulls());
     }
 
     @Test

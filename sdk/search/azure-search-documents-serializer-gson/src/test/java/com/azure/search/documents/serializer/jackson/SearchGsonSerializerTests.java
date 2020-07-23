@@ -33,7 +33,7 @@ public class SearchGsonSerializerTests {
     private static Date date;
     @BeforeAll
     public static void setup() {
-        gsonJsonSerializer = SearchGsonSerializerProviders.createInstance();
+        gsonJsonSerializer = SearchGsonSerializerProvider.createInstance();
 
         Date dateEpoch = Date.from(Instant.ofEpochMilli(1468800000L));
         date = new Date(dateEpoch.getYear(), dateEpoch.getMonth(), dateEpoch.getDate(),

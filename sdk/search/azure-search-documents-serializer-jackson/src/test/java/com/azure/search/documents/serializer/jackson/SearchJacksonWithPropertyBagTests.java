@@ -19,7 +19,7 @@ public class SearchJacksonWithPropertyBagTests {
     private static JacksonJsonSerializer jacksonJsonSerializer;
     @BeforeAll
     public static void setup() {
-        jacksonJsonSerializer = SearchJacksonSerializerProviders.createInstance(new JsonOptions().includeNulls());
+        jacksonJsonSerializer = SearchJacksonSerializerProvider.createInstance(new JsonOptions().includeNulls());
     }
 
     @Test

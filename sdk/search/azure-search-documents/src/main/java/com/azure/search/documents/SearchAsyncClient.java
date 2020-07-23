@@ -75,6 +75,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  *
  * @see SearchClientBuilder
  */
+@SuppressWarnings("checkstyle:LineLength")
 @ServiceClient(builder = SearchClientBuilder.class, isAsync = true)
 public final class SearchAsyncClient {
     /*
