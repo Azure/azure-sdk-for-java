@@ -126,7 +126,7 @@ stages:
           jdkVersionOption: $(JavaTestVersion)
 
         PreRunSteps:
-        - template: ../steps/cosmos-emulator.yml
+        - template: ../../../common/pipelines/templates/steps/cosmos-emulator.yml
           parameters:
             StartParameters: '-PartitionCount 50 -Consistency Strong -Timeout 600'
         - powershell: |
