@@ -26,6 +26,7 @@
     "variables": {
         "storageApiVersion": "2019-06-01",
         "keyVaultApiVersion": "2016-10-01",
+        "httpLogLevel": "VERBOSE",
         "authorizationApiVersion": "2018-09-01-preview",
         "blobDataContributorRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/ba92f5b4-2d11-453d-a403-e96b0029c9fe')]",
         "contributorRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c')]",
@@ -351,6 +352,10 @@
         }
     ],
     "outputs": {
+        "HTTP_LOG_LEVEL": {
+            "type": "string",
+            "value": "[variables('httpLogLevel')]"
+        },
         "PRIMARY_STORAGE_ACCOUNT_NAME": {
             "type": "string",
             "value": "[variables('primaryAccountName')]"

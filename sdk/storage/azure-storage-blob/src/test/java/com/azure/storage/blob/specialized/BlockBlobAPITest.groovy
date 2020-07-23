@@ -8,6 +8,8 @@ import com.azure.core.http.HttpMethod
 import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpRequest
+import com.azure.core.http.policy.HttpLogDetailLevel
+import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.util.Context
 import com.azure.core.util.FluxUtil
 import com.azure.identity.DefaultAzureCredentialBuilder
@@ -1293,17 +1295,25 @@ class BlockBlobAPITest extends APISpec {
         it will be chunked appropriately.
          */
         setup:
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(bufferSize * Constants.MB).setMaxConcurrency(numBuffers).setMaxSingleUploadSizeLong(4 * Constants.MB)
+        System.setProperty("AZURE_LOG_LEVEL", "VERBOSE")
+        blobAsyncClient = getServiceClientBuilder(primaryCredential, primaryBlobServiceClient.getAccountUrl())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.HEADERS))
+        .buildAsyncClient().getBlobContainerAsyncClient(blobAsyncClient.getContainerName())
+        .getBlobAsyncClient(blobAsyncClient.getBlobName())
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
+            .setBlockSizeLong(bufferSize * Constants.MB).setMaxConcurrency(numBuffers)
+            .setMaxSingleUploadSizeLong(4 * Constants.MB)
+            //.setProgressReceiver{bytes -> System.out.println(bytes)}
         def dataList = [] as List<ByteBuffer>
         dataSizeList.each { size -> dataList.add(getRandomData(size * Constants.MB)) }
         def uploadOperation = blobAsyncClient.upload(Flux.fromIterable(dataList), parallelTransferOptions, true)
 
         expect:
-        StepVerifier.create(uploadOperation.then(collectBytesInBuffer(blockBlobAsyncClient.download())))
+        StepVerifier.create(uploadOperation.then(collectBytesInBuffer(blobAsyncClient.download())))
             .assertNext({ assert compareListToBuffer(dataList, it) })
             .verifyComplete()
 
-        StepVerifier.create(blockBlobAsyncClient.listBlocks(BlockListType.ALL))
+        StepVerifier.create(blobAsyncClient.getBlockBlobAsyncClient().listBlocks(BlockListType.ALL))
             .assertNext({ assert it.getCommittedBlocks().size() == blockCount })
             .verifyComplete()
 
