@@ -23,7 +23,7 @@ import java.util.function.Consumer;
 // TODO: for now basic functionality is in. some APIs and some logic branch is not complete yet.
 public class EncryptionCosmosAsyncContainer extends CosmosAsyncContainer {
     private final Encryptor encryptor;
-    private final CosmosResponseFactory resposeFactory = new CosmosResponseFactoryCore();
+    private final CosmosResponseFactory responseFactory = new CosmosResponseFactoryCore();
 
     EncryptionCosmosAsyncContainer(String id, CosmosAsyncDatabase database, Encryptor encryptor) {
         super(id, database);
@@ -82,7 +82,7 @@ public class EncryptionCosmosAsyncContainer extends CosmosAsyncContainer {
             Mono<CosmosItemResponse<byte[]>> result = this.createItemStream(payload, partitionKey, option);
 
 
-            return result.map(rsp -> (CosmosItemResponse<T>) this.resposeFactory.createItemResponse(rsp, item.getClass()));
+            return result.map(rsp -> (CosmosItemResponse<T>) this.responseFactory.createItemResponse(rsp, item.getClass()));
 
         } else {
             return super.createItem(item, partitionKey, option);
@@ -131,7 +131,7 @@ public class EncryptionCosmosAsyncContainer extends CosmosAsyncContainer {
         return asyncResult.map(
             responseMessage -> {
 
-                return this.resposeFactory.createItemResponse(responseMessage, classType);
+                return this.responseFactory.createItemResponse(responseMessage, classType);
             }
         );
     }
