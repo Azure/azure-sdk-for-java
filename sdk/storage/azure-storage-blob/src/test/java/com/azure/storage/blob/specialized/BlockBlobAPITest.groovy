@@ -37,6 +37,7 @@ import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.options.BlobUploadFromFileOptions
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.policy.RequestRetryOptions
+import com.azure.storage.common.policy.RetryPolicyType
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
@@ -1298,7 +1299,7 @@ class BlockBlobAPITest extends APISpec {
         System.setProperty("AZURE_LOG_LEVEL", "VERBOSE")
         blobAsyncClient = getServiceClientBuilder(primaryCredential, primaryBlobServiceClient.getAccountUrl())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.HEADERS))
-            .retryOptions(new RequestRetryOptions())
+            .retryOptions(new RequestRetryOptions(RetryPolicyType.EXPONENTIAL, null, 1, null, null, null))
         .buildAsyncClient().getBlobContainerAsyncClient(blobAsyncClient.getContainerName())
         .getBlobAsyncClient(blobAsyncClient.getBlobName())
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
