@@ -36,7 +36,7 @@ public class SqlServerManager extends Manager<SqlServerManager, SqlManagementCli
         this.tenantId = profile.tenantId();
     }
 
-    /** @return the storage manager in sql manager*/
+    /** @return the storage manager in sql manager */
     public StorageManager storageManager() {
         return storageManager;
     }

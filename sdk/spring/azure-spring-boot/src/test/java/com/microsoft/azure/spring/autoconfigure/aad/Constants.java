@@ -10,7 +10,7 @@ public class Constants {
     public static final String SERVICE_ENVIRONMENT_PROPERTY = "azure.activedirectory.environment";
     public static final String CLIENT_ID_PROPERTY = "azure.activedirectory.client-id";
     public static final String CLIENT_SECRET_PROPERTY = "azure.activedirectory.client-secret";
-    public static final String TARGETED_GROUPS_PROPERTY = "azure.activedirectory.active-directory-groups";
+    public static final String TARGETED_GROUPS_PROPERTY = "azure.activedirectory.user-group.allowed-groups";
     public static final String TENANT_ID_PROPERTY = "azure.activedirectory.tenant-id";
     public static final String ALLOW_TELEMETRY_PROPERTY = "azure.activedirectory.allow-telemetry";
 

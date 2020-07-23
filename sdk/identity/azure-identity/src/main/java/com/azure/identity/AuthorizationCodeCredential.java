@@ -67,7 +67,7 @@ public class AuthorizationCodeCredential implements TokenCredential {
                .map(msalToken -> {
                    cachedToken.set(new MsalAuthenticationAccount(
                                 new AuthenticationRecord(msalToken.getAuthenticationResult(),
-                                        identityClient.getTenantId())));
+                                        identityClient.getTenantId(), identityClient.getClientId())));
                    return (AccessToken) msalToken;
                })
             .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))

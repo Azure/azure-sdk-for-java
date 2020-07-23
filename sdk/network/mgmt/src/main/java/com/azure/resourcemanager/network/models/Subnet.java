@@ -137,6 +137,22 @@ public interface Subnet extends HasInner<SubnetInner>, ChildResource<Network> {
         }
 
         /**
+         * The stage of the subnet definition allowing to specify the subnet delegation.
+         *
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+         */
+        interface WithDelegation<ParentT> {
+
+            /**
+             * Specifies a subnet delegation.
+             *
+             * @param serviceName the service name for the delegation
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withDelegation(String serviceName);
+        }
+
+        /**
          * The stage of a subnet definition allowing to enable access from a service endpoint to the subnet.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
@@ -163,6 +179,7 @@ public interface Subnet extends HasInner<SubnetInner>, ChildResource<Network> {
             extends Attachable.InDefinition<ParentT>,
                 WithNetworkSecurityGroup<ParentT>,
                 WithRouteTable<ParentT>,
+                WithDelegation<ParentT>,
                 WithServiceEndpoint<ParentT> {
         }
     }
@@ -247,6 +264,28 @@ public interface Subnet extends HasInner<SubnetInner>, ChildResource<Network> {
         }
 
         /**
+         * The stage of the subnet definition allowing to specify the subnet delegation.
+         */
+        interface WithDelegation {
+
+            /**
+             * Specifies a subnet delegation.
+             *
+             * @param serviceName the service name for the delegation
+             * @return the next stage of the definition
+             */
+            Update withDelegation(String serviceName);
+
+            /**
+             * Removes a subnet delegation.
+             *
+             * @param serviceName the service name for the delegation
+             * @return the next stage of the definition
+             */
+            Update withoutDelegation(String serviceName);
+        }
+
+        /**
          * The stage of a subnet definition allowing to enable or disable access from a service endpoint to the subnet.
          */
         interface WithServiceEndpoint {
@@ -273,6 +312,7 @@ public interface Subnet extends HasInner<SubnetInner>, ChildResource<Network> {
         extends UpdateStages.WithAddressPrefix,
             UpdateStages.WithNetworkSecurityGroup,
             UpdateStages.WithRouteTable,
+            UpdateStages.WithDelegation,
             UpdateStages.WithServiceEndpoint,
             Settable<Network.Update> {
     }
@@ -349,6 +389,22 @@ public interface Subnet extends HasInner<SubnetInner>, ChildResource<Network> {
         }
 
         /**
+         * The stage of the subnet definition allowing to specify the subnet delegation.
+         *
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+         */
+        interface WithDelegation<ParentT> {
+
+            /**
+             * Specifies a subnet delegation.
+             *
+             * @param serviceName the service name for the delegation
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withDelegation(String serviceName);
+        }
+
+        /**
          * The stage of a subnet definition allowing to enable access from a service endpoint to the subnet.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
@@ -375,6 +431,7 @@ public interface Subnet extends HasInner<SubnetInner>, ChildResource<Network> {
             extends Attachable.InUpdate<ParentT>,
                 WithNetworkSecurityGroup<ParentT>,
                 WithRouteTable<ParentT>,
+                WithDelegation<ParentT>,
                 WithServiceEndpoint<ParentT> {
         }
     }

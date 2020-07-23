@@ -28,6 +28,9 @@ extends:
   parameters:
     ServiceDirectory: spring
     Artifacts:
+      - name: azure-spring-data-gremlin
+        groupId: com.azure
+        safeName: azurespringdatagremlin
       - name: azure-spring-boot
         groupId: com.microsoft.azure
         safeName: azurespringboot
@@ -81,4 +84,8 @@ extends:
       - name: azure-spring-boot-sample-servicebus-jms-topic
         groupId: com.azure
       - name: azure-spring-boot-sample-storage-blob
+        groupId: com.azure
+      - name: azure-spring-data-sample-gremlin
+        groupId: com.azure
+      - name: azure-spring-data-sample-gremlin-web-service
         groupId: com.azure

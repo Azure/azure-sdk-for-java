@@ -35,6 +35,8 @@ import com.azure.resourcemanager.compute.models.VirtualMachineCustomImages;
 import com.azure.resourcemanager.compute.models.VirtualMachineImages;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSets;
 import com.azure.resourcemanager.compute.models.VirtualMachines;
+import com.azure.resourcemanager.containerinstance.ContainerInstanceManager;
+import com.azure.resourcemanager.containerinstance.models.ContainerGroups;
 import com.azure.resourcemanager.containerregistry.ContainerRegistryManager;
 import com.azure.resourcemanager.containerregistry.models.Registries;
 import com.azure.resourcemanager.containerregistry.models.RegistryTaskRuns;
@@ -117,7 +119,7 @@ public final class Azure {
     private final AppServiceManager appServiceManager;
     private final SqlServerManager sqlServerManager;
     //    private final ServiceBusManager serviceBusManager;
-    //    private final ContainerInstanceManager containerInstanceManager;
+    private final ContainerInstanceManager containerInstanceManager;
     private final ContainerRegistryManager containerRegistryManager;
     private final ContainerServiceManager containerServiceManager;
     //    private final SearchServiceManager searchServiceManager;
@@ -360,8 +362,7 @@ public final class Azure {
         this.appServiceManager = AppServiceManager.authenticate(httpPipeline, profile, sdkContext);
         this.sqlServerManager = SqlServerManager.authenticate(httpPipeline, profile, sdkContext);
         //        this.serviceBusManager = ServiceBusManager.authenticate(restClient, subscriptionId, sdkContext);
-        //        this.containerInstanceManager = ContainerInstanceManager.authenticate(restClient, subscriptionId,
-        // sdkContext);
+        this.containerInstanceManager = ContainerInstanceManager.authenticate(httpPipeline, profile, sdkContext);
         this.containerRegistryManager = ContainerRegistryManager.authenticate(httpPipeline, profile, sdkContext);
         this.containerServiceManager = ContainerServiceManager.authenticate(httpPipeline, profile, sdkContext);
         this.cosmosManager = CosmosManager.authenticate(httpPipeline, profile, sdkContext);
@@ -682,13 +683,12 @@ public final class Azure {
         return containerServiceManager.kubernetesClusters();
     }
 
-    //    /**
-    //     * @return entry point to managing Azure Container Instances.
-    //     */
-    //    @Beta(SinceVersion.V1_3_0)
-    //    public ContainerGroups containerGroups() {
-    //        return containerInstanceManager.containerGroups();
-    //    }
+    /**
+     * @return entry point to managing Azure Container Instances.
+     */
+    public ContainerGroups containerGroups() {
+        return containerInstanceManager.containerGroups();
+    }
 
     /** @return entry point to managing Container Registries. */
     public Registries containerRegistries() {

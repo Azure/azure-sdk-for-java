@@ -9,15 +9,17 @@ package com.azure.cosmos;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration;
+import com.azure.spring.data.cosmos.config.CosmosClientConfig;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.ResponseDiagnostics;
 import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
 import com.azure.spring.data.cosmos.repository.config.EnableCosmosRepositories;
-import io.micrometer.core.lang.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.lang.Nullable;
 
 @Configuration
 @EnableCosmosRepositories
@@ -42,7 +44,8 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
 
     private AzureKeyCredential azureKeyCredential;
 
-    public CosmosConfig getConfig() {
+    @Bean
+    public CosmosClientConfig getClientConfig() {
         this.azureKeyCredential = new AzureKeyCredential(key);
         DirectConnectionConfig directConnectionConfig = new DirectConnectionConfig();
         GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
@@ -50,16 +53,27 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
             .endpoint(uri)
             .credential(azureKeyCredential)
             .directMode(directConnectionConfig, gatewayConnectionConfig);
+        return CosmosClientConfig.builder()
+            .cosmosClientBuilder(cosmosClientBuilder)
+            .database(getDatabaseName())
+            .build();
+    }
+
+    @Override
+    public CosmosConfig cosmosConfig() {
         return CosmosConfig.builder()
-                           .database(dbName)
-                           .enableQueryMetrics(queryMetricsEnabled)
-                           .cosmosClientBuilder(cosmosClientBuilder)
-                           .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
-                           .build();
+            .enableQueryMetrics(queryMetricsEnabled)
+            .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
+            .build();
     }
 
     public void switchToSecondaryKey() {
         this.azureKeyCredential.update(secondaryKey);
+    }
+
+    @Override
+    protected String getDatabaseName() {
+        return "testdb";
     }
 
     private static class ResponseDiagnosticsProcessorImplementation implements ResponseDiagnosticsProcessor {
