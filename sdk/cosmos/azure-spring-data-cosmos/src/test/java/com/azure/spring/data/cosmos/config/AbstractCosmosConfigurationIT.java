@@ -16,7 +16,6 @@ import org.assertj.core.api.Assertions;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.mockito.Mock;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -44,7 +43,7 @@ public class AbstractCosmosConfigurationIT {
     }
 
     @Test
-    public void containsCosmosDbFactory() {
+    public void containsCosmosFactory() {
         final AbstractApplicationContext context = new AnnotationConfigApplicationContext(
             TestCosmosConfiguration.class);
 
@@ -76,13 +75,13 @@ public class AbstractCosmosConfigurationIT {
 
         Assertions.assertThat(factory).isNotNull();
 
-        final CosmosClientBuilder cosmosClientBuilder = factory.getConfig().getCosmosClientBuilder();
+        final CosmosAsyncClient cosmosAsyncClient =  factory.getCosmosAsyncClient();
 
-        Assertions.assertThat(cosmosClientBuilder).isNotNull();
-        final Field consistencyLevelField = FieldUtils.getDeclaredField(CosmosClientBuilder.class,
+        Assertions.assertThat(cosmosAsyncClient).isNotNull();
+        final Field consistencyLevelField = FieldUtils.getDeclaredField(CosmosAsyncClient.class,
             "desiredConsistencyLevel", true);
         ConsistencyLevel consistencyLevel =
-            (ConsistencyLevel) consistencyLevelField.get(cosmosClientBuilder);
+            (ConsistencyLevel) consistencyLevelField.get(cosmosAsyncClient);
         Assertions.assertThat(consistencyLevel).isEqualTo(ConsistencyLevel.CONSISTENT_PREFIX);
     }
 
@@ -99,23 +98,19 @@ public class AbstractCosmosConfigurationIT {
         @Value("${cosmosdb.database:}")
         private String database;
 
-        @Mock
-        private CosmosAsyncClient mockClient;
-
         @Bean
-        public CosmosConfig getConfig() {
-            final String dbName = StringUtils.hasText(this.database) ? this.database : TestConstants.DB_NAME;
-            return CosmosConfig.builder()
-                               .cosmosClientBuilder(new CosmosClientBuilder()
-                                   .endpoint(cosmosDbUri)
-                                   .key(cosmosDbKey))
-                               .database(dbName)
-                               .build();
+        public CosmosClientConfig getClientConfig() {
+            return CosmosClientConfig.builder()
+                .cosmosClientBuilder(new CosmosClientBuilder()
+                    .endpoint(cosmosDbUri)
+                    .key(cosmosDbKey))
+                .database(getDatabaseName())
+                .build();
         }
 
         @Override
-        public CosmosAsyncClient cosmosAsyncClient(CosmosFactory cosmosFactory) {
-            return mockClient;
+        protected String getDatabaseName() {
+            return StringUtils.hasText(this.database) ? this.database : TestConstants.DB_NAME;
         }
     }
 
@@ -141,17 +136,21 @@ public class AbstractCosmosConfigurationIT {
         private String database;
 
         @Bean
-        public CosmosConfig getConfig() {
-            final String dbName = StringUtils.hasText(this.database) ? this.database : TestConstants.DB_NAME;
+        public CosmosClientConfig getClientConfig() {
             final CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
                 .key(cosmosDbKey)
                 .endpoint(cosmosDbUri)
                 .consistencyLevel(ConsistencyLevel.CONSISTENT_PREFIX);
-            return CosmosConfig.builder()
-                               .database(dbName)
-                               .cosmosClientBuilder(cosmosClientBuilder)
-                               .build();
+            return CosmosClientConfig.builder()
+                .cosmosClientBuilder(cosmosClientBuilder)
+                .database(getDatabaseName())
+                .build();
+
         }
 
+        @Override
+        protected String getDatabaseName() {
+            return StringUtils.hasText(this.database) ? this.database : TestConstants.DB_NAME;
+        }
     }
 }

@@ -1,6 +1,10 @@
 # Release History
 
 ## 1.7.0-beta.2 (Unreleased)
+- Updated reactor-core version to `3.3.8.RELEASE`
+- Updated reactor-netty version to `0.9.10.RELEASE`
+- Updated netty version to `4.1.51.Final`
+- Updated netty-tcnative version to `2.0.31.Final`
 
 ## 1.7.0-beta.1 (2020-07-08)
 

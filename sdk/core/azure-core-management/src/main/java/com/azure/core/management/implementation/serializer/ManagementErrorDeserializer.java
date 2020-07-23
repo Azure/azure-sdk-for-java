@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.management.serializer;
+package com.azure.core.management.implementation.serializer;
 
 import com.azure.core.management.exception.ManagementError;
 import com.fasterxml.jackson.core.JsonFactory;
@@ -21,7 +21,7 @@ import java.io.IOException;
 /**
  * Custom serializer for serializing {@link ManagementError} objects.
  */
-final class ManagementErrorDeserializer extends StdDeserializer<Object> {
+public final class ManagementErrorDeserializer extends StdDeserializer<Object> {
 
     private static final long serialVersionUID = 1L;
 
@@ -45,7 +45,7 @@ final class ManagementErrorDeserializer extends StdDeserializer<Object> {
      * @param mapper the object mapper for default deserializations.
      * @return a simple module to be plugged onto Jackson ObjectMapper.
      */
-    static SimpleModule getModule(ObjectMapper mapper) {
+    public static SimpleModule getModule(ObjectMapper mapper) {
         SimpleModule module = new SimpleModule();
         module.setDeserializerModifier(new BeanDeserializerModifier() {
             @Override
