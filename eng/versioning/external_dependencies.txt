@@ -120,7 +120,7 @@ com.microsoft.azure:msal4j-persistence-extension;0.2.0
 com.sun.activation:jakarta.activation;1.2.1
 io.opentelemetry:opentelemetry-api;0.2.4
 io.opentelemetry:opentelemetry-sdk;0.2.4
-io.projectreactor:reactor-test;3.3.5.RELEASE
+io.projectreactor:reactor-test;3.3.8.RELEASE
 junit:junit;4.13-beta-3
 org.apache.maven:maven-compat;3.6.2
 org.apache.maven:maven-embedder;3.6.2
