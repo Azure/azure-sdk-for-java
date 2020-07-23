@@ -61,10 +61,8 @@ public class EncryptionCosmosAsyncContainer extends CosmosAsyncContainer {
             // return super.createItem()
         }
     }
-
-
+    
     // TODO ensure all other apis call this guy
-
     /**
      * create item and encrypts the requested fields
      * @param item the Cosmos item represented as a POJO or Cosmos item object.
