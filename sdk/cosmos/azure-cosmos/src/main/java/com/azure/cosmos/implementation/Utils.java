@@ -623,7 +623,7 @@ public class Utils {
             throw new IllegalArgumentException("Failed to serialize the object into json", e);
         }
     }
-    
+
     public static boolean isEmpty(byte[] bytes) {
         return bytes == null || bytes.length == 0;
     }
