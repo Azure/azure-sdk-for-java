@@ -163,7 +163,7 @@ Once you have the SASToken, you can construct the `shareServiceClient` with `${a
 ```java
 String shareServiceURL = String.format("https://%s.file.core.windows.net", ACCOUNT_NAME);
 ShareServiceClient shareServiceClient = new ShareServiceClientBuilder().endpoint(shareServiceURL)
-        .sasToken(SAS_TOKEN).buildClient();
+    .sasToken(SAS_TOKEN).buildClient();
 ```
 
 ### Share
@@ -174,7 +174,7 @@ Once you have the SASToken, you can construct the file service client with `${ac
 ```java
 String shareURL = String.format("https://%s.file.core.windows.net", ACCOUNT_NAME);
 ShareClient shareClient = new ShareClientBuilder().endpoint(shareURL)
-        .sasToken(SAS_TOKEN).shareName(shareName).buildClient();
+    .sasToken(SAS_TOKEN).shareName(shareName).buildClient();
 ```
 
 ### Directory
@@ -185,7 +185,7 @@ ShareClient shareClient = new ShareClientBuilder().endpoint(shareURL)
 ```java
 String directoryURL = String.format("https://%s.file.core.windows.net", ACCOUNT_NAME);
 ShareDirectoryClient directoryClient = new ShareFileClientBuilder().endpoint(directoryURL)
-        .sasToken(SAS_TOKEN).shareName(shareName).resourcePath(directoryPath).buildDirectoryClient();
+    .sasToken(SAS_TOKEN).shareName(shareName).resourcePath(directoryPath).buildDirectoryClient();
 ```
 
 ### File
@@ -196,7 +196,7 @@ ShareDirectoryClient directoryClient = new ShareFileClientBuilder().endpoint(dir
 ```java
 String fileURL = String.format("https://%s.file.core.windows.net", ACCOUNT_NAME);
 ShareFileClient fileClient = new ShareFileClientBuilder().connectionString(CONNECTION_STRING)
-        .endpoint(fileURL).shareName(shareName).resourcePath(directoryPath + "/" + fileName).buildFileClient();
+    .endpoint(fileURL).shareName(shareName).resourcePath(directoryPath + "/" + fileName).buildFileClient();
 ```
 
 ## Examples
@@ -437,8 +437,8 @@ Taking the shareClient in KeyConcept, [`${shareClient}`](#Share) .
 <!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L194-L198 -->
 ```java
 ShareAccessPolicy accessPolicy = new ShareAccessPolicy().setPermissions("r")
-        .setStartsOn(OffsetDateTime.now(ZoneOffset.UTC))
-        .setExpiresOn(OffsetDateTime.now(ZoneOffset.UTC).plusDays(10));
+    .setStartsOn(OffsetDateTime.now(ZoneOffset.UTC))
+    .setExpiresOn(OffsetDateTime.now(ZoneOffset.UTC).plusDays(10));
 ShareSignedIdentifier permission = new ShareSignedIdentifier().setId("mypolicy").setAccessPolicy(accessPolicy);
 shareClient.setAccessPolicy(Collections.singletonList(permission));
 ```

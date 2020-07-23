@@ -51,14 +51,14 @@ public class ReadmeSamples {
     public void createShareSeviceClient() {
         String shareServiceURL = String.format("https://%s.file.core.windows.net", ACCOUNT_NAME);
         ShareServiceClient shareServiceClient = new ShareServiceClientBuilder().endpoint(shareServiceURL)
-                .sasToken(SAS_TOKEN).buildClient();
+            .sasToken(SAS_TOKEN).buildClient();
     }
 
     public void createShareClient() {
         String shareName = "testshare";
         String shareURL = String.format("https://%s.file.core.windows.net", ACCOUNT_NAME);
         ShareClient shareClient = new ShareClientBuilder().endpoint(shareURL)
-                .sasToken(SAS_TOKEN).shareName(shareName).buildClient();
+            .sasToken(SAS_TOKEN).shareName(shareName).buildClient();
     }
 
     public void createDirectoryClient() {
@@ -66,7 +66,7 @@ public class ReadmeSamples {
         String directoryPath = "directoryPath";
         String directoryURL = String.format("https://%s.file.core.windows.net", ACCOUNT_NAME);
         ShareDirectoryClient directoryClient = new ShareFileClientBuilder().endpoint(directoryURL)
-                .sasToken(SAS_TOKEN).shareName(shareName).resourcePath(directoryPath).buildDirectoryClient();
+            .sasToken(SAS_TOKEN).shareName(shareName).resourcePath(directoryPath).buildDirectoryClient();
     }
 
     public void createFileClient() {
@@ -75,7 +75,7 @@ public class ReadmeSamples {
         String fileName = "fileName";
         String fileURL = String.format("https://%s.file.core.windows.net", ACCOUNT_NAME);
         ShareFileClient fileClient = new ShareFileClientBuilder().connectionString(CONNECTION_STRING)
-                .endpoint(fileURL).shareName(shareName).resourcePath(directoryPath + "/" + fileName).buildFileClient();
+            .endpoint(fileURL).shareName(shareName).resourcePath(directoryPath + "/" + fileName).buildFileClient();
     }
 
     public void createShare() {
@@ -192,8 +192,8 @@ public class ReadmeSamples {
 
     public void setAccessPolicy() {
         ShareAccessPolicy accessPolicy = new ShareAccessPolicy().setPermissions("r")
-                .setStartsOn(OffsetDateTime.now(ZoneOffset.UTC))
-                .setExpiresOn(OffsetDateTime.now(ZoneOffset.UTC).plusDays(10));
+            .setStartsOn(OffsetDateTime.now(ZoneOffset.UTC))
+            .setExpiresOn(OffsetDateTime.now(ZoneOffset.UTC).plusDays(10));
         ShareSignedIdentifier permission = new ShareSignedIdentifier().setId("mypolicy").setAccessPolicy(accessPolicy);
         shareClient.setAccessPolicy(Collections.singletonList(permission));
     }
