@@ -1,6 +1,6 @@
 # Release History
 
-## 1.7.0-beta.2 (Unreleased)
+## 1.7.0-beta.2 (2020-07-23)
 
 - Removed `tokenRefreshOptions()` from `TokenCredential`, defaulting token refresh offset to 5 minutes, and a default token refresh retry timeout of 30 seconds.
 
