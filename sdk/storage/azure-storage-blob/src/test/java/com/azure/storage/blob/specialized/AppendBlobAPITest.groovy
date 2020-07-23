@@ -6,6 +6,7 @@ package com.azure.storage.blob.specialized
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.util.Context
 import com.azure.storage.blob.APISpec
+
 import com.azure.storage.blob.options.AppendBlobCreateOptions
 import com.azure.storage.blob.models.AppendBlobRequestConditions
 import com.azure.storage.blob.models.BlobErrorCode
@@ -14,6 +15,7 @@ import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.PublicAccessType
+import com.azure.storage.blob.options.AppendBlobSealOptions
 import com.azure.storage.blob.options.BlobGetTagsOptions
 import spock.lang.Unroll
 
@@ -331,7 +333,6 @@ class AppendBlobAPITest extends APISpec {
         null     | null       | null        | null         | null           | 1          | null       | null
         null     | null       | null        | null         | null           | null       | 1          | null
         null     | null       | null        | null         | null           | null       | null       | "\"notfoo\" = 'notbar'"
-
     }
 
     def "Append block error"() {
@@ -579,4 +580,92 @@ class AppendBlobAPITest extends APISpec {
         then:
         notThrown(Throwable)
     }
+
+    def "Seal defaults"() {
+        when:
+        def sealResponse = bc.sealWithResponse(null, null, null)
+
+        then:
+        sealResponse.getStatusCode() == 200
+        sealResponse.getHeaders().getValue("x-ms-blob-sealed")
+    }
+
+    def "Seal min"() {
+        when:
+        bc.seal()
+
+        then:
+        bc.getProperties().isSealed()
+        bc.downloadWithResponse(new ByteArrayOutputStream(), null, null, null, false, null, null).getDeserializedHeaders().isSealed()
+    }
+
+    def "Seal error"() {
+        setup:
+        bc = cc.getBlobClient(generateBlobName()).getAppendBlobClient()
+
+        when:
+        bc.seal()
+
+        then:
+        thrown(BlobStorageException)
+    }
+
+    @Unroll
+    def "Seal AC"() {
+        setup:
+        match = setupBlobMatchCondition(bc, match)
+        leaseID = setupBlobLeaseCondition(bc, leaseID)
+        def bac = new AppendBlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setAppendPosition(appendPosE)
+
+        expect:
+        bc.sealWithResponse(new AppendBlobSealOptions().setRequestConditions(bac), null, null)
+            .getStatusCode() == 200
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID         | appendPosE
+        null     | null       | null         | null        | null            | null
+        oldDate  | null       | null         | null        | null            | null
+        null     | newDate    | null         | null        | null            | null
+        null     | null       | receivedEtag | null        | null            | null
+        null     | null       | null         | garbageEtag | null            | null
+        null     | null       | null         | null        | receivedLeaseID | null
+        null     | null       | null         | null        | null            | 0
+    }
+
+    @Unroll
+    def "Seal AC fail"() {
+        setup:
+        noneMatch = setupBlobMatchCondition(bc, noneMatch)
+        setupBlobLeaseCondition(bc, leaseID)
+
+        def bac = new AppendBlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setAppendPosition(appendPosE)
+
+        when:
+        bc.sealWithResponse(new AppendBlobSealOptions().setRequestConditions(bac), null, null)
+
+        then:
+        thrown(BlobStorageException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID        | appendPosE
+        newDate  | null       | null        | null         | null           | null
+        null     | oldDate    | null        | null         | null           | null
+        null     | null       | garbageEtag | null         | null           | null
+        null     | null       | null        | receivedEtag | null           | null
+        null     | null       | null        | null         | garbageLeaseID | null
+        null     | null       | null        | null         | null           | 1
+    }
+
 }

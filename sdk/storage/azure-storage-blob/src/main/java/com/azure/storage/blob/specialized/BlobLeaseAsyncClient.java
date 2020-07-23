@@ -241,7 +241,7 @@ public final class BlobLeaseAsyncClient {
     }
 
     Mono<Response<String>> renewLeaseWithResponse(BlobRenewLeaseOptions options, Context context) {
-        StorageImplUtils.assertNotNull("options", options);
+        options = (options == null) ? new BlobRenewLeaseOptions() : options;
         BlobLeaseRequestConditions requestConditions = (options.getRequestConditions() == null)
             ? new BlobLeaseRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
@@ -321,7 +321,7 @@ public final class BlobLeaseAsyncClient {
     }
 
     Mono<Response<Void>> releaseLeaseWithResponse(BlobReleaseLeaseOptions options, Context context) {
-        StorageImplUtils.assertNotNull("options", options);
+        options = (options == null) ? new BlobReleaseLeaseOptions() : options;
         BlobLeaseRequestConditions requestConditions = (options.getRequestConditions() == null)
             ? new BlobLeaseRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
@@ -414,7 +414,7 @@ public final class BlobLeaseAsyncClient {
     }
 
     Mono<Response<Integer>> breakLeaseWithResponse(BlobBreakLeaseOptions options, Context context) {
-        StorageImplUtils.assertNotNull("options", options);
+        options = (options == null) ? new BlobBreakLeaseOptions() : options;
         BlobLeaseRequestConditions requestConditions = (options.getRequestConditions() == null)
             ? new BlobLeaseRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;

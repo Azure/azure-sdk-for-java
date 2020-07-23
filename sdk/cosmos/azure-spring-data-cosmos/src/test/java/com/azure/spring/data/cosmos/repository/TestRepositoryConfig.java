@@ -7,6 +7,7 @@ import com.azure.spring.data.cosmos.common.DynamicContainer;
 import com.azure.spring.data.cosmos.common.ResponseDiagnosticsTestUtils;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration;
+import com.azure.spring.data.cosmos.config.CosmosClientConfig;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.repository.config.EnableCosmosRepositories;
 import com.azure.spring.data.cosmos.repository.config.EnableReactiveCosmosRepositories;
@@ -39,21 +40,32 @@ public class TestRepositoryConfig extends AbstractCosmosConfiguration {
     }
 
     @Bean
-    public CosmosConfig getConfig() {
-        final String dbName = StringUtils.hasText(this.database) ? this.database : TestConstants.DB_NAME;
+    public CosmosClientConfig cosmosClientConfig() {
+        return CosmosClientConfig.builder()
+            .cosmosClientBuilder(new CosmosClientBuilder()
+                .key(cosmosDbKey)
+                .endpoint(cosmosDbUri)
+                .contentResponseOnWriteEnabled(true))
+            .database(getDatabaseName())
+            .build();
+    }
+
+    @Bean
+    @Override
+    public CosmosConfig cosmosConfig() {
         return CosmosConfig.builder()
-                           .cosmosClientBuilder(new CosmosClientBuilder()
-                               .key(cosmosDbKey)
-                               .endpoint(cosmosDbUri)
-                               .contentResponseOnWriteEnabled(true))
-                           .database(dbName)
-                           .enableQueryMetrics(queryMetricsEnabled)
-                           .responseDiagnosticsProcessor(responseDiagnosticsTestUtils().getResponseDiagnosticsProcessor())
-                           .build();
+            .enableQueryMetrics(queryMetricsEnabled)
+            .responseDiagnosticsProcessor(responseDiagnosticsTestUtils().getResponseDiagnosticsProcessor())
+            .build();
     }
 
     @Bean
     public DynamicContainer dynamicContainer() {
         return new DynamicContainer(TestConstants.DYNAMIC_BEAN_COLLECTION_NAME);
+    }
+
+    @Override
+    protected String getDatabaseName() {
+        return StringUtils.hasText(this.database) ? this.database : TestConstants.DB_NAME;
     }
 }

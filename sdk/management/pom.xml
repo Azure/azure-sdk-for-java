@@ -114,7 +114,7 @@
             <dependency>
                 <groupId>com.azure</groupId>
                 <artifactId>azure-identity</artifactId>
-                <version>1.0.8</version>
+                <version>1.0.9</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>
@@ -479,6 +479,7 @@
         <module>../storage/mgmt</module>
         <module>../sql/mgmt</module>
         <module>../cosmos/mgmt</module>
+        <module>../containerinstance/mgmt</module>
         <module>../containerregistry/mgmt</module>
         <module>../containerservice/mgmt</module>
         <module>../monitor/mgmt</module>

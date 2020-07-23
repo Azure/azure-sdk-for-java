@@ -574,15 +574,7 @@ class ContainerAPITest extends APISpec {
         when:
         def blobs = cc.listBlobs(new ListBlobsOptions().setPrefix(blobPrefix), null).iterator()
 
-        //ContainerListBlobFlatSegmentHeaders headers = response.headers()
-        //List<BlobItem> blobs = responseiterator()()
-
         then:
-//        response.getStatusCode() == 200
-//        headers.contentType() != null
-//        headers.requestId() != null
-//        headers.getVersion() != null
-//        headers.date() != null
         def blob = blobs.next()
         !blobs.hasNext()
         blob.getName() == name
@@ -611,6 +603,48 @@ class ContainerAPITest extends APISpec {
         blob.getProperties().getAccessTier() == AccessTier.HOT
         blob.getProperties().getArchiveStatus() == null
         blob.getProperties().getCreationTime() != null
+    }
+
+    def "List append blobs flat"() {
+        setup:
+        def name = generateBlobName()
+        def bu = cc.getBlobClient(name).getAppendBlobClient()
+        bu.create()
+        bu.seal()
+
+        when:
+        def blobs = cc.listBlobs(new ListBlobsOptions().setPrefix(blobPrefix), null).iterator()
+
+        then:
+        def blob = blobs.next()
+        !blobs.hasNext()
+        blob.getName() == name
+        blob.getProperties().getBlobType() == BlobType.APPEND_BLOB
+        blob.getProperties().getCopyCompletionTime() == null
+        blob.getProperties().getCopyStatusDescription() == null
+        blob.getProperties().getCopyId() == null
+        blob.getProperties().getCopyProgress() == null
+        blob.getProperties().getCopySource() == null
+        blob.getProperties().getCopyStatus() == null
+        blob.getProperties().isIncrementalCopy() == null
+        blob.getProperties().getDestinationSnapshot() == null
+        blob.getProperties().getLeaseDuration() == null
+        blob.getProperties().getLeaseState() == LeaseStateType.AVAILABLE
+        blob.getProperties().getLeaseStatus() == LeaseStatusType.UNLOCKED
+        blob.getProperties().getContentLength() != null
+        blob.getProperties().getContentType() != null
+        blob.getProperties().getContentMd5() == null
+        blob.getProperties().getContentEncoding() == null
+        blob.getProperties().getContentDisposition() == null
+        blob.getProperties().getContentLanguage() == null
+        blob.getProperties().getCacheControl() == null
+        blob.getProperties().getBlobSequenceNumber() == null
+        blob.getProperties().isServerEncrypted()
+        blob.getProperties().isAccessTierInferred() == null
+        blob.getProperties().getAccessTier() == null
+        blob.getProperties().getArchiveStatus() == null
+        blob.getProperties().getCreationTime() != null
+        blob.getProperties().isSealed()
     }
 
     def "List page blobs flat"() {
@@ -1369,6 +1403,48 @@ class ContainerAPITest extends APISpec {
         null                       || _
         RehydratePriority.STANDARD || _
         RehydratePriority.HIGH     || _
+    }
+
+    def "List append blobs hier"() {
+        setup:
+        def name = generateBlobName()
+        def bu = cc.getBlobClient(name).getAppendBlobClient()
+        bu.create()
+        bu.seal()
+
+        when:
+        def blobs = cc.listBlobsByHierarchy(null, new ListBlobsOptions().setPrefix(blobPrefix), null).iterator()
+
+        then:
+        def blob = blobs.next()
+        !blobs.hasNext()
+        blob.getName() == name
+        blob.getProperties().getBlobType() == BlobType.APPEND_BLOB
+        blob.getProperties().getCopyCompletionTime() == null
+        blob.getProperties().getCopyStatusDescription() == null
+        blob.getProperties().getCopyId() == null
+        blob.getProperties().getCopyProgress() == null
+        blob.getProperties().getCopySource() == null
+        blob.getProperties().getCopyStatus() == null
+        blob.getProperties().isIncrementalCopy() == null
+        blob.getProperties().getDestinationSnapshot() == null
+        blob.getProperties().getLeaseDuration() == null
+        blob.getProperties().getLeaseState() == LeaseStateType.AVAILABLE
+        blob.getProperties().getLeaseStatus() == LeaseStatusType.UNLOCKED
+        blob.getProperties().getContentLength() != null
+        blob.getProperties().getContentType() != null
+        blob.getProperties().getContentMd5() == null
+        blob.getProperties().getContentEncoding() == null
+        blob.getProperties().getContentDisposition() == null
+        blob.getProperties().getContentLanguage() == null
+        blob.getProperties().getCacheControl() == null
+        blob.getProperties().getBlobSequenceNumber() == null
+        blob.getProperties().isServerEncrypted()
+        blob.getProperties().isAccessTierInferred() == null
+        blob.getProperties().getAccessTier() == null
+        blob.getProperties().getArchiveStatus() == null
+        blob.getProperties().getCreationTime() != null
+        blob.getProperties().isSealed()
     }
 
     def "List blobs hier error"() {

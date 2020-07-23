@@ -274,8 +274,11 @@ class ServiceAPITest extends APISpec {
         blobClient = containerClient.getBlobClient(generateBlobName())
         blobClient.upload(defaultInputStream.get(), defaultDataSize)
 
+        sleepIfRecord(10 * 1000) // To allow tags to index
+
         when:
-        def results = primaryBlobServiceClient.findBlobsByTags("\"bar\"='foo'")
+        def results = primaryBlobServiceClient.findBlobsByTags(String.format("@container='%s' AND \"bar\"='foo'",
+            containerClient.getBlobContainerName()))
 
         then:
         results.size() == 1
@@ -292,6 +295,8 @@ class ServiceAPITest extends APISpec {
             cc.getBlobClient(generateBlobName()).uploadWithResponse(
                 new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize).setTags(tags), null, null)
         }
+
+        sleepIfRecord(10 * 1000) // To allow tags to index
 
         def firstPage = primaryBlobServiceClient.findBlobsByTags(new FindBlobsOptions("\"tag\"='value'")
             .setMaxResultsPerPage(5), null, Context.NONE)

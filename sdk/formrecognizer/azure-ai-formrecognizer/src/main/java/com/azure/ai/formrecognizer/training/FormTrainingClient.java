@@ -87,7 +87,7 @@ public final class FormTrainingClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<OperationResult, CustomFormModel> beginTraining(String trainingFilesUrl,
         boolean useTrainingLabels) {
-        return beginTraining(trainingFilesUrl, useTrainingLabels, null, null);
+        return beginTraining(trainingFilesUrl, useTrainingLabels, null, null, Context.NONE);
     }
 
     /**
@@ -99,7 +99,7 @@ public final class FormTrainingClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.beginTraining#string-boolean-trainingFileFilter-Duration}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.beginTraining#string-boolean-trainingFileFilter-Duration-Context}
      *
      * @param trainingFilesUrl an externally accessible Azure storage blob container Uri (preferably a
      * Shared Access Signature Uri).
@@ -109,6 +109,7 @@ public final class FormTrainingClient {
      * @param trainingFileFilter Filter to apply to the documents in the source path for training.
      * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
      * 5 seconds is used.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return A {@link SyncPoller} that polls the training model operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns the trained {@link CustomFormModel custom form model}.
@@ -117,8 +118,8 @@ public final class FormTrainingClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<OperationResult, CustomFormModel> beginTraining(String trainingFilesUrl,
-        boolean useTrainingLabels, TrainingFileFilter trainingFileFilter, Duration pollInterval) {
-        return client.beginTraining(trainingFilesUrl, useTrainingLabels, trainingFileFilter, pollInterval)
+        boolean useTrainingLabels, TrainingFileFilter trainingFileFilter, Duration pollInterval, Context context) {
+        return client.beginTraining(trainingFilesUrl, useTrainingLabels, trainingFileFilter, pollInterval, context)
             .getSyncPoller();
     }
 
@@ -268,7 +269,7 @@ public final class FormTrainingClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<OperationResult, CustomFormModelInfo> beginCopyModel(String modelId,
         CopyAuthorization target) {
-        return beginCopyModel(modelId, target, null);
+        return beginCopyModel(modelId, target, null, Context.NONE);
     }
 
     /**
@@ -283,21 +284,22 @@ public final class FormTrainingClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.beginCopyModel#string-copyAuthorization-Duration}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.beginCopyModel#string-copyAuthorization-Duration-Context}
      *
      * @param modelId Model identifier of the model to copy to the target Form Recognizer resource
      * @param target the copy authorization to the target Form Recognizer resource. The copy authorization can be
      * generated from the target resource's call to {@link FormTrainingClient#getCopyAuthorization(String, String)}
      * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
      * 5 seconds is used.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return A {@link SyncPoller} that polls the copy model operation until it has completed, has failed,
      * or has been cancelled.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<OperationResult, CustomFormModelInfo> beginCopyModel(String modelId,
-        CopyAuthorization target, Duration pollInterval) {
-        return client.beginCopyModel(modelId, target, pollInterval).getSyncPoller();
+        CopyAuthorization target, Duration pollInterval, Context context) {
+        return client.beginCopyModel(modelId, target, pollInterval, context).getSyncPoller();
     }
 
     /**

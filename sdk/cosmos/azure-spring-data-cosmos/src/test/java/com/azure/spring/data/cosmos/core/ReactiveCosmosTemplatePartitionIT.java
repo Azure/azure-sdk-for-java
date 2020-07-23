@@ -2,9 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.core;
 
+import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.common.TestConstants;
+import com.azure.spring.data.cosmos.config.CosmosClientConfig;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
 import com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext;
@@ -57,11 +59,14 @@ public class ReactiveCosmosTemplatePartitionIT {
     private ApplicationContext applicationContext;
     @Autowired
     private CosmosConfig cosmosConfig;
+    @Autowired
+    private CosmosClientConfig cosmosClientConfig;
 
     @Before
     public void setUp() throws ClassNotFoundException {
         if (!initialized) {
-            final CosmosFactory dbFactory = new CosmosFactory(cosmosConfig);
+            CosmosAsyncClient client = CosmosFactory.createCosmosAsyncClient(cosmosClientConfig);
+            final CosmosFactory dbFactory = new CosmosFactory(client, cosmosClientConfig.getDatabase());
 
             final CosmosMappingContext mappingContext = new CosmosMappingContext();
             personInfo =
@@ -72,7 +77,7 @@ public class ReactiveCosmosTemplatePartitionIT {
 
             final MappingCosmosConverter dbConverter = new MappingCosmosConverter(mappingContext,
                 null);
-            cosmosTemplate = new ReactiveCosmosTemplate(dbFactory, dbConverter, cosmosConfig.getDatabase());
+            cosmosTemplate = new ReactiveCosmosTemplate(dbFactory, cosmosConfig, dbConverter);
             cosmosTemplate.createContainerIfNotExists(personInfo).block();
 
             initialized = true;

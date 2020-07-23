@@ -9,6 +9,7 @@ package com.azure.cosmos;
  */
 
 import com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration;
+import com.azure.spring.data.cosmos.config.CosmosClientConfig;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.ResponseDiagnostics;
 import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
@@ -16,6 +17,7 @@ import com.azure.spring.data.cosmos.repository.config.EnableCosmosRepositories;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.Nullable;
 
@@ -41,18 +43,31 @@ public class AppConfigurationCodeSnippet extends AbstractCosmosConfiguration {
     @Value("${azure.cosmos.queryMetricsEnabled}")
     private boolean queryMetricsEnabled;
 
-    public CosmosConfig getConfig() {
+    @Bean
+    public CosmosClientConfig getClientConfig() {
+
         DirectConnectionConfig directConnectionConfig = new DirectConnectionConfig();
         GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
             .endpoint(uri)
             .directMode(directConnectionConfig, gatewayConnectionConfig);
+        return CosmosClientConfig.builder()
+            .cosmosClientBuilder(cosmosClientBuilder)
+            .database(getDatabaseName())
+            .build();
+    }
+
+    @Override
+    public CosmosConfig cosmosConfig() {
         return CosmosConfig.builder()
-                           .database(dbName)
-                           .enableQueryMetrics(queryMetricsEnabled)
-                           .cosmosClientBuilder(cosmosClientBuilder)
-                           .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
-                           .build();
+            .enableQueryMetrics(queryMetricsEnabled)
+            .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
+            .build();
+    }
+
+    @Override
+    protected String getDatabaseName() {
+        return dbName;
     }
 
     private static class ResponseDiagnosticsProcessorImplementation implements ResponseDiagnosticsProcessor {

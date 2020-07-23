@@ -113,10 +113,7 @@ public class EncryptionProcessor {
                 "Unknown encryption format version: %s. Please upgrade your SDK to the latest version.", encryptionProperties.getEncryptionFormatVersion()));
         }
 
-        // get key
-
         byte[] plainText = encryptor.decryptAsync(encryptionProperties.getEncryptedData(), encryptionProperties.getDataEncryptionKeyId(), encryptionProperties.getEncryptionAlgorithm());
-
 
         SensitiveDataTransformer parser = new SensitiveDataTransformer();
         ObjectNode plainTextJObj = parser.toObjectNode(plainText);
