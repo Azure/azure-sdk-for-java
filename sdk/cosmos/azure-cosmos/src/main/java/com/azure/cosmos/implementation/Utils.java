@@ -4,7 +4,6 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.encryption.api.EncryptionOptions;
 import com.azure.cosmos.implementation.uuid.EthernetAddress;
 import com.azure.cosmos.implementation.uuid.Generators;
 import com.azure.cosmos.implementation.uuid.impl.TimeBasedGenerator;
@@ -614,15 +613,6 @@ public class Utils {
         return itemDeserializer.parseFrom(itemClassType, item);
     }
 
-    public static <T> T parse(byte[] item, Class<T> itemClassType, EncryptionOptions encryptionOptions) {
-
-        try {
-            return getSimpleObjectMapper().readValue(item, itemClassType);
-        } catch (IOException e) {
-            throw new IllegalStateException("Failed to get POJO.", e);
-        }
-    }
-
     public static ByteBuffer serializeJsonToByteBuffer(ObjectMapper objectMapper, Object object) {
         try {
             ByteBufferOutputStream byteBufferOutputStream = new ByteBufferOutputStream(ONE_KB);
@@ -632,6 +622,10 @@ public class Utils {
             // TODO moderakh: on serialization/deserialization failure we should throw CosmosException here and elsewhere
             throw new IllegalArgumentException("Failed to serialize the object into json", e);
         }
+    }
+
+    public static byte[] serializeJsonToByteArray(ObjectMapper objectMapper, Object object) {
+        return Utils.toByteArray(Utils.serializeJsonToByteBuffer(objectMapper, object));
     }
 
     public static boolean isEmpty(byte[] bytes) {
@@ -688,6 +682,14 @@ public class Utils {
         byte[] bytes = new byte[buf.readableBytes()];
         buf.readBytes(bytes);
         return bytes;
+    }
+
+    public static byte[] toByteArray(ByteBuffer buf) {
+        buf.position(0);
+        byte[] arr = new byte[buf.remaining()];
+         buf.get(arr);
+         return  arr;
+        // TODO fixme
     }
 
     public static ByteBuffer toByteBuffer(byte[] bytes) {

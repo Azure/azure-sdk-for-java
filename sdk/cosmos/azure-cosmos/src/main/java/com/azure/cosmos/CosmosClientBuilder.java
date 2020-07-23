@@ -8,7 +8,6 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.encryption.api.DataEncryptionKeyProvider;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 
 import java.util.Collections;
@@ -89,7 +88,6 @@ public class CosmosClientBuilder {
     private CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver;
     private AzureKeyCredential credential;
     private boolean sessionCapturingOverrideEnabled;
-    private DataEncryptionKeyProvider dataEncryptionKeyProvider;
     private boolean connectionSharingAcrossClientsEnabled;
     private boolean contentResponseOnWriteEnabled;
     private String userAgentSuffix;
@@ -490,15 +488,6 @@ public class CosmosClientBuilder {
     public CosmosClientBuilder preferredRegions(List<String> preferredRegions) {
         this.preferredRegions = preferredRegions;
         return this;
-    }
-
-    CosmosClientBuilder dataEncryptionKeyProvider(DataEncryptionKeyProvider dataEncryptionKeyProvider) {
-        this.dataEncryptionKeyProvider = dataEncryptionKeyProvider;
-        return this;
-    }
-
-    DataEncryptionKeyProvider getDataEncryptionKeyProvider() {
-        return this.dataEncryptionKeyProvider;
     }
 
     /**
