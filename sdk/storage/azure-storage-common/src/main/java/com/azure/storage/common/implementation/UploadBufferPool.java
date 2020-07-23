@@ -88,20 +88,25 @@ public final class UploadBufferPool {
      * @return The {@code Flux<BufferAggregator>}
      */
     public Flux<BufferAggregator> write(ByteBuffer buf) {
+        System.out.println("Write to pool");
         // Check if there's a buffer holding any data from a previous call to write. If not, get a new one.
         if (this.currentBuf == null) {
+            System.out.println("currentBuf was null. Getting buffer");
             this.currentBuf = this.getBuffer();
         }
 
         Flux<BufferAggregator> result;
         // We can fit this whole write in the buffer we currently have.
         if (this.currentBuf.remainingCapacity() >= buf.remaining()) {
+            System.out.println("Data fits in current buffer");
             this.currentBuf.append(buf);
             if (this.currentBuf.remainingCapacity() == 0) {
+                System.out.println("current buffer is full");
                 result = Flux.just(this.currentBuf);
                 // This will force us to get a new buffer next time we try to write.
                 this.currentBuf = null;
             } else {
+                System.out.println("Current buffer has remaining space");
                 /*
                 We are still filling the current buffer, so we have no data to return. We will return the buffer once it
                 is filled
@@ -109,6 +114,7 @@ public final class UploadBufferPool {
                 result = Flux.empty();
             }
         } else {
+            System.out.println("Current buffer does not have enough space");
             // We will overflow the current buffer and require another one.
             // Duplicate and adjust the window of buf so that we fill up currentBuf without going out of bounds.
             ByteBuffer duplicate = buf.duplicate();
@@ -126,6 +132,7 @@ public final class UploadBufferPool {
             means we'll only have to over flow once, and the buffer we overflow into will not be filled. This is the
             buffer we will write to on the next call to write().
              */
+            System.out.println("Getting a new buffer after filling last buffer");
             this.currentBuf = this.getBuffer();
             this.currentBuf.append(buf);
         }
@@ -137,6 +144,7 @@ public final class UploadBufferPool {
     and calling write. Hence there is only one worker calling getBuffer at any time.
      */
     private BufferAggregator getBuffer() {
+        System.out.println("In getBuffer");
         BufferAggregator result;
         /*
          There are no buffers in the queue and we have space to allocate one. We do not add the new buffer to the queue
@@ -145,10 +153,12 @@ public final class UploadBufferPool {
          we just created. The new buffer will be added to buffers when it is returned to the pool.
          */
         if (this.buffers.isEmpty() && this.numBuffs < this.maxBuffs) {
+            System.out.println("Allocating buffer aggregator");
             result = new BufferAggregator(this.buffSize);
             this.numBuffs++;
         } else {
             try {
+                System.out.println("Attempting to take buffer aggregator from queue");
                 // If empty, this will wait for an upload to finish and return a buffer.
                 result = this.buffers.take();
 
