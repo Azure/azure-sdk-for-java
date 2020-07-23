@@ -1,7 +1,12 @@
 # Release History
 
 ## 4.3.0-beta.1 (Unreleased)
-
+### New Features
+* Updated reactor-core version to `3.3.8.RELEASE`
+* Updated reactor-netty version to `0.9.10.RELEASE`
+* Updated netty version to `4.1.51.Final`
+### Key Bug Fixes
+* Fixed issue where SSLException gets thrown in case of cancellation of requests in GATEWAY mode. 
 
 ## 4.2.0 (2020-07-14)
 ### New Features
