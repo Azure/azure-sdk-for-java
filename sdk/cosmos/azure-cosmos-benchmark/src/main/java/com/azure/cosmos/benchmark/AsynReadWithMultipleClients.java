@@ -92,7 +92,7 @@ public class AsynReadWithMultipleClients<T> {
         AtomicLong count = new AtomicLong(0);
         long i;
         long startTime = System.currentTimeMillis();
-        for (i = 0; shouldContinue(startTime, i); i++) {
+        for (i = 0; BenchmarkHelper.shouldContinue(startTime, i, configuration); i++) {
 
             BaseSubscriber<PojoizedJson> baseSubscriber = new BaseSubscriber<PojoizedJson>() {
                 @Override
@@ -179,26 +179,6 @@ public class AsynReadWithMultipleClients<T> {
     }
 
     protected void onError(Throwable throwable) {
-    }
-
-    private boolean shouldContinue(long startTimeMillis, long iterationCount) {
-
-        Duration maxDurationTime = configuration.getMaxRunningTimeDuration();
-        int maxNumberOfOperations = configuration.getNumberOfOperations();
-
-        if (maxDurationTime == null) {
-            return iterationCount < maxNumberOfOperations;
-        }
-
-        if (startTimeMillis + maxDurationTime.toMillis() < System.currentTimeMillis()) {
-            return false;
-        }
-
-        if (maxNumberOfOperations < 0) {
-            return true;
-        }
-
-        return iterationCount < maxNumberOfOperations;
     }
 
     private void createClients() {

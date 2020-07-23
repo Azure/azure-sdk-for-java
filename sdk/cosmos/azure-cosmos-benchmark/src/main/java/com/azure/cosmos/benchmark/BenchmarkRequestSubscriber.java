@@ -38,6 +38,7 @@ public class BenchmarkRequestSubscriber<T> extends BaseSubscriber<T> {
     protected void hookOnNext(T value) {
         logger.debug("hookOnNext: {}, count:{}", value, count.get());
     }
+
     @Override
     protected void hookOnComplete() {
         context.stop();

@@ -237,26 +237,6 @@ abstract class SyncBenchmark<T> {
 
     protected abstract T performWorkload(long i) throws Exception;
 
-    private boolean shouldContinue(long startTimeMillis, long iterationCount) {
-
-        Duration maxDurationTime = configuration.getMaxRunningTimeDuration();
-        int maxNumberOfOperations = configuration.getNumberOfOperations();
-
-        if (maxDurationTime == null) {
-            return iterationCount < maxNumberOfOperations;
-        }
-
-        if (startTimeMillis + maxDurationTime.toMillis() < System.currentTimeMillis()) {
-            return false;
-        }
-
-        if (maxNumberOfOperations < 0) {
-            return true;
-        }
-
-        return iterationCount < maxNumberOfOperations;
-    }
-
     void run() throws Exception {
 
         successMeter = metricsRegistry.meter("#Successful Operations");
@@ -288,7 +268,7 @@ abstract class SyncBenchmark<T> {
         AtomicLong count = new AtomicLong(0);
         long i;
 
-        for ( i = 0; shouldContinue(startTime, i); i++) {
+        for ( i = 0; BenchmarkHelper.shouldContinue(startTime, i, configuration); i++) {
 
             ResultHandler<T, Throwable> resultHandler = new ResultHandler<T, Throwable>() {
                 @Override

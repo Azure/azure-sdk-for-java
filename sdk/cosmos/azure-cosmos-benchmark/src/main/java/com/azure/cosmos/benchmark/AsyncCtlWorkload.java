@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.cosmos.benchmark;
 
 import com.azure.cosmos.BridgeInternal;
@@ -49,7 +52,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class AsyncCtlWorkload {
     private final String PERCENT_PARSING_ERROR = "Unable to parse user provided readWriteQueryPct, using default {} {} {}";
-    private final String uuid;
+    private final String prefixUuidForCreate;
     private final String dataFieldValue;
     private final String partitionKey;
     private final MetricRegistry metricsRegistry = new MetricRegistry();
@@ -58,7 +61,7 @@ public class AsyncCtlWorkload {
     private final Configuration configuration;
     private final Map<String, List<PojoizedJson>> docsToRead = new HashMap<>();
     private final Semaphore concurrencyControlSemaphore;
-    private final Random r;
+    private final Random random;
 
     private Timer readLatency;
     private Timer writeLatency;
@@ -114,7 +117,7 @@ public class AsyncCtlWorkload {
             metricsRegistry.register("memory", new MemoryUsageGaugeSet());
         }
 
-        initializedReporter(cfg);
+        initializeReporter(cfg);
 
         MeterRegistry registry = configuration.getAzureMonitorMeterRegistry();
 
@@ -127,8 +130,8 @@ public class AsyncCtlWorkload {
         if (registry != null) {
             BridgeInternal.monitorTelemetry(registry);
         }
-        uuid = UUID.randomUUID().toString();
-        r = new Random();
+        prefixUuidForCreate = UUID.randomUUID().toString();
+        random = new Random();
         parsedReadWriteQueryPct(configuration.getReadWriteQueryPct());
     }
 
@@ -149,7 +152,7 @@ public class AsyncCtlWorkload {
         Flux<? extends Object> obs;
         CosmosAsyncContainer container = containers.get((int) i % containers.size());
         if (type.equals(OperationType.Create)) {
-            PojoizedJson data = BenchmarkHelper.generateDocument(uuid + i, dataFieldValue, partitionKey,
+            PojoizedJson data = BenchmarkHelper.generateDocument(prefixUuidForCreate + i, dataFieldValue, partitionKey,
                 configuration.getDocumentDataFieldCount());
             obs = container.createItem(data).flux();
         } else if (type.equals(OperationType.Query)) {
@@ -157,7 +160,7 @@ public class AsyncCtlWorkload {
             String sqlQuery = "Select top 100 * from c order by c._ts";
             obs = container.queryItems(sqlQuery, options, PojoizedJson.class).byPage(10);
         } else {
-            int index = r.nextInt(1000);
+            int index = random.nextInt(1000);
             RequestOptions options = new RequestOptions();
             String partitionKeyValue = docsToRead.get(container.getId()).get(index).getId();
             options.setPartitionKey(new PartitionKey(partitionKeyValue));
@@ -170,26 +173,6 @@ public class AsyncCtlWorkload {
         concurrencyControlSemaphore.acquire();
 
         obs.subscribeOn(Schedulers.parallel()).subscribe(documentSubscriber);
-    }
-
-    private boolean shouldContinue(long startTimeMillis, long iterationCount) {
-
-        Duration maxDurationTime = configuration.getMaxRunningTimeDuration();
-        int maxNumberOfOperations = configuration.getNumberOfOperations();
-
-        if (maxDurationTime == null) {
-            return iterationCount < maxNumberOfOperations;
-        }
-
-        if (startTimeMillis + maxDurationTime.toMillis() < System.currentTimeMillis()) {
-            return false;
-        }
-
-        if (maxNumberOfOperations < 0) {
-            return true;
-        }
-
-        return iterationCount < maxNumberOfOperations;
     }
 
     void run() throws Exception {
@@ -209,7 +192,7 @@ public class AsyncCtlWorkload {
         AtomicLong count = new AtomicLong(0);
         long i;
         int writeRange = readPct + writePct;
-        for (i = 0; shouldContinue(startTime, i); i++) {
+        for (i = 0; BenchmarkHelper.shouldContinue(startTime, i, configuration); i++) {
             int index = (int) i % 100;
             if (index < readPct) {
                 BenchmarkRequestSubscriber<Object> readSubscriber = new BenchmarkRequestSubscriber<>(readSuccessMeter,
@@ -337,7 +320,7 @@ public class AsyncCtlWorkload {
         }
     }
 
-    private void initializedReporter(Configuration configuration) {
+    private void initializeReporter(Configuration configuration) {
         if (configuration.getGraphiteEndpoint() != null) {
             final Graphite graphite = new Graphite(new InetSocketAddress(
                 configuration.getGraphiteEndpoint(),

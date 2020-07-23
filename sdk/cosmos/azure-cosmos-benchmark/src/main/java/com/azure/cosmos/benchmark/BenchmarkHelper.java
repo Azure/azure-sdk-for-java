@@ -3,10 +3,12 @@
 
 package com.azure.cosmos.benchmark;
 
+import java.time.Duration;
 import java.util.Map;
 
 public class BenchmarkHelper {
-    static PojoizedJson generateDocument(String idString, String dataFieldValue, String partitionKey, int dataFieldCount) {
+    static PojoizedJson generateDocument(String idString, String dataFieldValue, String partitionKey,
+                                         int dataFieldCount) {
         PojoizedJson instance = new PojoizedJson();
         Map<String, String> properties = instance.getInstance();
         properties.put("id", idString);
@@ -16,5 +18,25 @@ public class BenchmarkHelper {
         }
 
         return instance;
+    }
+
+    static boolean shouldContinue(long startTimeMillis, long iterationCount, Configuration configuration) {
+
+        Duration maxDurationTime = configuration.getMaxRunningTimeDuration();
+        int maxNumberOfOperations = configuration.getNumberOfOperations();
+
+        if (maxDurationTime == null) {
+            return iterationCount < maxNumberOfOperations;
+        }
+
+        if (startTimeMillis + maxDurationTime.toMillis() < System.currentTimeMillis()) {
+            return false;
+        }
+
+        if (maxNumberOfOperations < 0) {
+            return true;
+        }
+
+        return iterationCount < maxNumberOfOperations;
     }
 }
