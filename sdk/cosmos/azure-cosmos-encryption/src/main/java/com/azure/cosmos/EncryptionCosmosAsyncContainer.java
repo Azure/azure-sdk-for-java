@@ -49,10 +49,10 @@ public class EncryptionCosmosAsyncContainer extends CosmosAsyncContainer {
                 .subscribeOn(Schedulers.elastic())
                 .publishOn(Schedulers.elastic())
                 .map(rsp -> {
-                    EncryptionBridgeInternal.setByteArrayContent(rsp, decryptResponseAsync(EncryptionBridgeInternal.getByteArrayContent(rsp), encryptionItemRequestOptions.getDecryptionResultHandler()));
-                    return rsp;
-                }
-            );
+                        EncryptionBridgeInternal.setByteArrayContent(rsp, decryptResponseAsync(EncryptionBridgeInternal.getByteArrayContent(rsp), encryptionItemRequestOptions.getDecryptionResultHandler()));
+                        return rsp;
+                    }
+                );
 
         } else {
             throw new NotImplementedException("TODO not implemented yet");
@@ -77,12 +77,7 @@ public class EncryptionCosmosAsyncContainer extends CosmosAsyncContainer {
 
 
             byte[] payload = cosmosSerializerToStream(item);
-
-            String payloadAsString = new String(payload);
-
-
             Mono<CosmosItemResponse<byte[]>> result = this.createItemStream(payload, partitionKey, requestOptions);
-
 
             return result.map(rsp -> (CosmosItemResponse<T>) this.responseFactory.createItemResponse(rsp, item.getClass()));
 
@@ -92,8 +87,8 @@ public class EncryptionCosmosAsyncContainer extends CosmosAsyncContainer {
     }
 
     private Mono<CosmosItemResponse<byte[]>> readItemStream(String id,
-                                                              PartitionKey partitionKey,
-                                                              CosmosItemRequestOptions requestOptions) {
+                                                            PartitionKey partitionKey,
+                                                            CosmosItemRequestOptions requestOptions) {
 
 
         Mono<CosmosItemResponse<byte[]>> responseMessageAsync = super.readItem(id, partitionKey, requestOptions, byte[].class);
@@ -102,32 +97,31 @@ public class EncryptionCosmosAsyncContainer extends CosmosAsyncContainer {
             .publishOn(Schedulers.elastic())
             .subscribeOn(Schedulers.elastic())
             .map(
-            responseMessage ->
+                responseMessage ->
 
-            {
-                Consumer<DecryptionResult> decryptionErroHandler = null;
-                EncryptionItemRequestOptions encryptionItemRequestOptions = Utils.as(requestOptions, EncryptionItemRequestOptions.class);
-
-                if (encryptionItemRequestOptions != null)
                 {
-                    decryptionErroHandler = encryptionItemRequestOptions.getDecryptionResultHandler();
+                    Consumer<DecryptionResult> decryptionErroHandler = null;
+                    EncryptionItemRequestOptions encryptionItemRequestOptions = Utils.as(requestOptions, EncryptionItemRequestOptions.class);
+
+                    if (encryptionItemRequestOptions != null) {
+                        decryptionErroHandler = encryptionItemRequestOptions.getDecryptionResultHandler();
+                    }
+
+                    EncryptionBridgeInternal.setByteArrayContent(responseMessage, this.decryptResponseAsync(
+                        EncryptionBridgeInternal.getByteArrayContent(responseMessage), decryptionErroHandler));
+
+                    return responseMessage;
+
                 }
-
-                EncryptionBridgeInternal.setByteArrayContent(responseMessage, this.decryptResponseAsync(
-                    EncryptionBridgeInternal.getByteArrayContent(responseMessage), decryptionErroHandler));
-
-                return responseMessage;
-
-            }
-        );
+            );
 
     }
 
     @Override
     public <T> Mono<CosmosItemResponse<T>> readItem(String id,
-                                                      PartitionKey partitionKey,
-                                                      CosmosItemRequestOptions option,
-                                                        Class<T> classType) {
+                                                    PartitionKey partitionKey,
+                                                    CosmosItemRequestOptions option,
+                                                    Class<T> classType) {
         Mono<CosmosItemResponse<byte[]>> asyncResult = readItemStream(id, partitionKey, option);
 
         return asyncResult.map(
@@ -176,5 +170,4 @@ public class EncryptionCosmosAsyncContainer extends CosmosAsyncContainer {
             return input;
         }
     }
-
 }
