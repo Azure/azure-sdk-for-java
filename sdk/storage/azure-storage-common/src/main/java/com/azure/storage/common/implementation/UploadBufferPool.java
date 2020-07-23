@@ -200,6 +200,7 @@ public final class UploadBufferPool {
         b.reset();
 
         try {
+            System.out.println("Returning buffer");
             this.buffers.put(new BufferAggregator(this.buffSize));
         } catch (InterruptedException e) {
             throw logger.logExceptionAsError(new IllegalStateException("UploadFromStream thread interrupted."));
