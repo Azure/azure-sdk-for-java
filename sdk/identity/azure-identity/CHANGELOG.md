@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.7 (Unreleased)
+## 1.1.0-beta.7 (2020-07-23)
 
 ### Features
 - Added support for web apps (confidential apps) for `AuthorizationCodeCredential`. A client secret is required on the builder for web apps.
