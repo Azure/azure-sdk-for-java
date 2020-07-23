@@ -20,8 +20,10 @@ import com.azure.storage.blob.batch.options.BlobBatchSetBlobAccessTierOptions;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
+import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.options.BlobSetAccessTierOptions;
 import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
@@ -196,7 +198,8 @@ public final class BlobBatch {
      * @throws UnsupportedOperationException If this batch has already added an operation of another type.
      */
     public Response<Void> setBlobAccessTier(String containerName, String blobName, AccessTier accessTier) {
-        return setBlobAccessTier(containerName, blobName, accessTier, null);
+        return setBlobAccessTierHelper(String.format(PATH_TEMPLATE, containerName,
+            Utility.urlEncode(Utility.urlDecode(blobName))), accessTier, null, null, null);
     }
 
     /**
@@ -216,10 +219,8 @@ public final class BlobBatch {
      */
     public Response<Void> setBlobAccessTier(String containerName, String blobName, AccessTier accessTier,
         String leaseId) {
-        BlobUrlParts parts = BlobUrlParts.parse(blobAsyncClient.getBlobUrl())
-            .setContainerName(containerName)
-            .setBlobName(blobName);
-        return setBlobAccessTier(parts.toUrl().toString(), accessTier, leaseId);
+        return setBlobAccessTierHelper(String.format(PATH_TEMPLATE, containerName,
+            Utility.urlEncode(Utility.urlDecode(blobName))), accessTier, null, leaseId, null);
     }
 
     /**
@@ -236,7 +237,7 @@ public final class BlobBatch {
      * @throws UnsupportedOperationException If this batch has already added an operation of another type.
      */
     public Response<Void> setBlobAccessTier(String blobUrl, AccessTier accessTier) {
-        return setBlobAccessTier(blobUrl, accessTier, null);
+        return setBlobAccessTierHelper(getUrlPath(blobUrl), accessTier, null, null, null);
     }
 
     /**
@@ -254,7 +255,7 @@ public final class BlobBatch {
      * @throws UnsupportedOperationException If this batch has already added an operation of another type.
      */
     public Response<Void> setBlobAccessTier(String blobUrl, AccessTier accessTier, String leaseId) {
-        return setBlobAccessTier(new BlobBatchSetBlobAccessTierOptions(blobUrl, accessTier).setLeaseId(leaseId));
+        return setBlobAccessTierHelper(getUrlPath(blobUrl), accessTier, null, leaseId, null);
     }
 
     /**
@@ -270,17 +271,20 @@ public final class BlobBatch {
      * @throws UnsupportedOperationException If this batch has already added an operation of another type.
      */
     public Response<Void> setBlobAccessTier(BlobBatchSetBlobAccessTierOptions options) {
-        return setBlobAccessTierHelper(options);
+        StorageImplUtils.assertNotNull("options", options);
+        return setBlobAccessTierHelper(options.getBlobPath(), options.getTier(), options.getPriority(),
+            options.getLeaseId(), options.getTagsConditions());
     }
 
-    private Response<Void> setBlobAccessTierHelper(BlobBatchSetBlobAccessTierOptions options) {
+    private Response<Void> setBlobAccessTierHelper(String blobPath, AccessTier tier, RehydratePriority priority,
+        String leaseId, String tagsConditions) {
         setBatchType(BlobBatchType.SET_TIER);
         return createBatchOperation(blobAsyncClient.setAccessTierWithResponse(
-            new BlobSetAccessTierOptions(options.getTier())
-                .setLeaseId(options.getLeaseId())
-                .setPriority(options.getPriority())
-                .setTagsConditions(options.getTagsConditions())),
-            options.getBlobPath(), EXPECTED_SET_TIER_STATUS_CODES);
+            new BlobSetAccessTierOptions(tier)
+                .setLeaseId(leaseId)
+                .setPriority(priority)
+                .setTagsConditions(tagsConditions)),
+            blobPath, EXPECTED_SET_TIER_STATUS_CODES);
     }
 
     private <T> Response<T> createBatchOperation(Mono<Response<T>> response, String urlPath,
