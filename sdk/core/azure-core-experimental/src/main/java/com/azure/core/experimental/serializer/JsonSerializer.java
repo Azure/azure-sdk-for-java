@@ -7,6 +7,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Type;
 
 /**
  * Generic interface covering basic JSON serialization and deserialization methods.
@@ -16,22 +17,22 @@ public interface JsonSerializer extends ObjectSerializer {
      * Reads a JSON stream into its object representation.
      *
      * @param stream JSON stream.
-     * @param clazz {@link Class} representing the object.
+     * @param type {@link Type} representing the object.
      * @param <T> Type of the object.
      * @return The object represented by the deserialized JSON stream.
      */
     @Override
-    <T> Mono<T> deserialize(InputStream stream, Class<T> clazz);
+    <T> Mono<T> deserialize(InputStream stream, Type type);
 
     /**
      * Reads a JSON tree into its object representation.
      *
      * @param jsonNode The JSON tree.
-     * @param clazz {@link Class} representing the object.
+     * @param type {@link Type} representing the object.
      * @param <T> Type of the object.
      * @return The object represented by the deserialized JSON tree.
      */
-    <T> Mono<T> deserializeTree(JsonNode jsonNode, Class<T> clazz);
+    <T> Mono<T> deserializeTree(JsonNode jsonNode, Type type);
 
     /**
      * Writes an object's JSON into a stream..

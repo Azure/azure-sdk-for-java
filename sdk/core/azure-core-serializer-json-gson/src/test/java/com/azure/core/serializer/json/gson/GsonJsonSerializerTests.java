@@ -21,6 +21,7 @@ import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -64,8 +65,10 @@ public class GsonJsonSerializerTests {
 
         StepVerifier.create(DEFAULT_SERIALIZER.deserialize(jsonStream, JsonObject.class))
             .assertNext(actual -> {
-                assertEquals(50, actual.get("age").getAsInt());
-                assertTrue(actual.get("name").isJsonNull());
+                assertTrue(actual instanceof JsonObject);
+                JsonObject jsonObject = (JsonObject) actual;
+                assertEquals(50, jsonObject.get("age").getAsInt());
+                assertTrue(jsonObject.get("name").isJsonNull());
             }).verifyComplete();
     }
 
@@ -76,7 +79,7 @@ public class GsonJsonSerializerTests {
 
         StepVerifier.create(DEFAULT_SERIALIZER.serialize(new ByteArrayOutputStream(), person))
             .assertNext(actual -> {
-                assertTrue(actual != null);
+                assertNotNull(actual);
                 assertArrayEquals(expected, actual.toByteArray());
             }).verifyComplete();
     }
@@ -88,7 +91,7 @@ public class GsonJsonSerializerTests {
 
         StepVerifier.create(CUSTOM_SERIALIZER.serialize(new ByteArrayOutputStream(), person))
             .assertNext(actual -> {
-                assertTrue(actual != null);
+                assertNotNull(actual);
                 assertArrayEquals(expected, actual.toByteArray());
             }).verifyComplete();
     }

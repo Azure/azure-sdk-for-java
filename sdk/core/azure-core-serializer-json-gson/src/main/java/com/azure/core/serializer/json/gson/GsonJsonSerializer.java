@@ -14,6 +14,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -32,13 +33,13 @@ public final class GsonJsonSerializer implements JsonSerializer {
     }
 
     @Override
-    public <T> Mono<T> deserialize(InputStream stream, Class<T> clazz) {
-        return Mono.fromCallable(() -> gson.fromJson(new InputStreamReader(stream, StandardCharsets.UTF_8), clazz));
+    public <T> Mono<T> deserialize(InputStream stream, Type type) {
+        return Mono.fromCallable(() -> gson.fromJson(new InputStreamReader(stream, StandardCharsets.UTF_8), type));
     }
 
     @Override
-    public <T> Mono<T> deserializeTree(JsonNode jsonNode, Class<T> clazz) {
-        return Mono.fromCallable(() -> gson.fromJson(JsonNodeUtils.toGsonElement(jsonNode), clazz));
+    public <T> Mono<T> deserializeTree(JsonNode jsonNode, Type type) {
+        return Mono.fromCallable(() -> gson.fromJson(JsonNodeUtils.toGsonElement(jsonNode), type));
     }
 
     @Override

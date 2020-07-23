@@ -17,6 +17,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Type;
 
 /**
  * Apache Avro based implementation of the {@link ObjectSerializer} interface.
@@ -36,7 +37,7 @@ public class ApacheAvroSerializer implements ObjectSerializer {
     }
 
     @Override
-    public <T> Mono<T> deserialize(InputStream stream, Class<T> clazz) {
+    public <T> Mono<T> deserialize(InputStream stream, Type type) {
         return Mono.fromCallable(() -> {
             if (stream == null) {
                 return null;
@@ -44,7 +45,7 @@ public class ApacheAvroSerializer implements ObjectSerializer {
 
             DatumReader<T> reader = new SpecificDatumReader<>(schema, schema, specificData);
 
-            return clazz.cast(reader.read(null, decoderFactory.binaryDecoder(stream, null)));
+            return reader.read(null, decoderFactory.binaryDecoder(stream, null));
         });
     }
 

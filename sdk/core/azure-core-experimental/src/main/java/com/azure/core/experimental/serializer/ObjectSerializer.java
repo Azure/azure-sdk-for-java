@@ -7,6 +7,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Type;
 
 /**
  * Generic interface covering serializing and deserialization objects.
@@ -16,11 +17,11 @@ public interface ObjectSerializer {
      * Reads a stream into its object representation.
      *
      * @param stream {@link InputStream} of data.
-     * @param clazz {@link Class} representing the object.
+     * @param type {@link Type} representing the object.
      * @param <T> Type of the object.
      * @return The object represented by the deserialized stream.
      */
-    <T> Mono<T> deserialize(InputStream stream, Class<T> clazz);
+    <T> Mono<T> deserialize(InputStream stream, Type type);
 
     /**
      * Writes the object into a stream.

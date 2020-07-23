@@ -10,6 +10,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Type;
 
 /**
  * Jackson based implementation of the {@link JsonSerializer} interface.
@@ -27,19 +28,20 @@ public final class JacksonJsonSerializer implements JsonSerializer {
     }
 
     @Override
-    public <T> Mono<T> deserialize(InputStream stream, Class<T> clazz) {
+    public <T> Mono<T> deserialize(InputStream stream, Type type) {
         return Mono.fromCallable(() -> {
             if (stream == null) {
                 return null;
             }
 
-            return mapper.readValue(stream, clazz);
+            return mapper.readValue(stream, mapper.getTypeFactory().constructType(type));
         });
     }
 
     @Override
-    public <T> Mono<T> deserializeTree(JsonNode jsonNode, Class<T> clazz) {
-        return Mono.fromCallable(() -> mapper.treeToValue(JsonNodeUtils.toJacksonNode(jsonNode), clazz));
+    public <T> Mono<T> deserializeTree(JsonNode jsonNode, Type type) {
+        return Mono.fromCallable(() -> mapper.readerFor(mapper.getTypeFactory().constructType(type))
+                .readValue(JsonNodeUtils.toJacksonNode(jsonNode)));
     }
 
     @Override
