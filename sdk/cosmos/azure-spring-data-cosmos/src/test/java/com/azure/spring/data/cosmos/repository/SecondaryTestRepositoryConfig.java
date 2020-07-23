@@ -2,24 +2,26 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository;
 
+import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.spring.data.cosmos.CosmosFactory;
-import com.azure.spring.data.cosmos.common.TestConstants;
+import com.azure.spring.data.cosmos.config.CosmosClientConfig;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
-import com.azure.spring.data.cosmos.repository.config.EnableCosmosRepositories;
 import com.azure.spring.data.cosmos.repository.config.EnableReactiveCosmosRepositories;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.util.StringUtils;
 
+/**
+ * Secondary Database Account
+ */
 @Configuration
 @PropertySource(value = {"classpath:application.properties"})
-@EnableCosmosRepositories
-@EnableReactiveCosmosRepositories(reactiveCosmosTemplateRef = "secondaryReactiveCosmosTemplate")
 public class SecondaryTestRepositoryConfig {
     @Value("${cosmos.secondary.uri:}")
     private String cosmosDbUri;
@@ -34,16 +36,60 @@ public class SecondaryTestRepositoryConfig {
     private boolean queryMetricsEnabled;
 
     @Bean
-    public ReactiveCosmosTemplate secondaryReactiveCosmosTemplate(MappingCosmosConverter mappingCosmosConverter) {
-        final String dbName = StringUtils.hasText(this.database) ? this.database : TestConstants.SECONDARY_DB_NAME;
-        CosmosConfig config =  CosmosConfig.builder()
-                                            .cosmosClientBuilder(new CosmosClientBuilder()
-                                                .key(cosmosDbKey)
-                                                .endpoint(cosmosDbUri)
-                                                .contentResponseOnWriteEnabled(true))
-                                            .database(dbName)
-                                            .enableQueryMetrics(queryMetricsEnabled)
-                                            .build();
-        return new ReactiveCosmosTemplate(new CosmosFactory(config), mappingCosmosConverter, config.getDatabase());
+    public CosmosClientConfig secondaryCosmosClientConfig() {
+        CosmosClientConfig cosmosClientConfig = CosmosClientConfig.builder()
+            .cosmosClientBuilder(new CosmosClientBuilder()
+                .key(cosmosDbKey)
+                .endpoint(cosmosDbUri)
+                .contentResponseOnWriteEnabled(true))
+            .database(getFirstDatabase())
+            .build();
+        return cosmosClientConfig;
     }
+
+    @Bean("secondaryCosmosAsyncClient")
+    public CosmosAsyncClient getCosmosAsyncClient(CosmosClientConfig secondaryCosmosClientConfig) {
+        return CosmosFactory.createCosmosAsyncClient(secondaryCosmosClientConfig);
+    }
+
+    /**
+     * First database for this account
+     */
+    @EnableReactiveCosmosRepositories(reactiveCosmosTemplateRef = "secondaryReactiveCosmosTemplate")
+    public class SecondaryDataSourceConfiguration {
+        @Bean
+        public ReactiveCosmosTemplate secondaryReactiveCosmosTemplate(@Qualifier("secondaryCosmosAsyncClient") CosmosAsyncClient client, MappingCosmosConverter mappingCosmosConverter) {
+
+            CosmosConfig config =  CosmosConfig.builder()
+                .enableQueryMetrics(queryMetricsEnabled)
+                .build();
+
+            return new ReactiveCosmosTemplate(new CosmosFactory(client, getFirstDatabase()), config, mappingCosmosConverter);
+        }
+    }
+
+    /**
+     * Second database for this account
+     */
+    @EnableReactiveCosmosRepositories(reactiveCosmosTemplateRef = "secondaryReactiveCosmosTemplate1")
+    public class SecondaryDataSourceConfiguration1 {
+        @Bean
+        public ReactiveCosmosTemplate secondaryReactiveCosmosTemplate1(@Qualifier("secondaryCosmosAsyncClient") CosmosAsyncClient client, MappingCosmosConverter mappingCosmosConverter) {
+
+            CosmosConfig config =  CosmosConfig.builder()
+                .enableQueryMetrics(queryMetricsEnabled)
+                .build();
+
+            return new ReactiveCosmosTemplate(new CosmosFactory(client, getSecondDatabase()), config, mappingCosmosConverter);
+        }
+    }
+
+    private String getFirstDatabase() {
+        return StringUtils.hasText(this.database) ? this.database : "test_db_1";
+    }
+
+    private String getSecondDatabase() {
+        return "test_db_2";
+    }
+
 }

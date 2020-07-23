@@ -177,7 +177,6 @@
         <filtering>true</filtering>
         <includes>
           <include>META-INF/project.properties</include>
-          <include>telemetry.config</include>
         </includes>
       </resource>
     </resources>
