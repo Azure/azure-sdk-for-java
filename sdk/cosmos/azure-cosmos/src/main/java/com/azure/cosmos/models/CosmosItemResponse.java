@@ -23,25 +23,21 @@ import java.util.Map;
 public class CosmosItemResponse<T> {
     private final Class<T> itemClassType;
     private final ItemDeserializer itemDeserializer;
-    // TODO: make this non public (blocking for merge to master)
-
-    public byte[] responseBodyAsByteArray;
+    byte[] responseBodyAsByteArray;
     private T item;
     public final ResourceResponse<Document> resourceResponse;
     private InternalObjectNode props;
 
-
-    public CosmosItemResponse(ResourceResponse<Document> response, Class<T> classType, ItemDeserializer itemDeserializer) {
+    CosmosItemResponse(ResourceResponse<Document> response, Class<T> classType, ItemDeserializer itemDeserializer) {
         this(response, response.getBodyAsByteArray(), classType, itemDeserializer);
     }
 
-    public CosmosItemResponse(ResourceResponse<Document> response, byte[] responseBodyAsByteArray, Class<T> classType, ItemDeserializer itemDeserializer) {
+    CosmosItemResponse(ResourceResponse<Document> response, byte[] responseBodyAsByteArray, Class<T> classType, ItemDeserializer itemDeserializer) {
         this.itemClassType = classType;
         this.responseBodyAsByteArray = responseBodyAsByteArray;
         this.resourceResponse = response;
         this.itemDeserializer = itemDeserializer;
     }
-
 
     /**
      * Gets the resource.

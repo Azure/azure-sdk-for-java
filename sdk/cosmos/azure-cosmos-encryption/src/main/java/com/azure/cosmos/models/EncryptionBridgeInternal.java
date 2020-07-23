@@ -1,0 +1,32 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.cosmos.models;
+
+import com.azure.cosmos.implementation.Document;
+import com.azure.cosmos.implementation.ItemDeserializer;
+import com.azure.cosmos.implementation.ResourceResponse;
+import com.azure.cosmos.implementation.Warning;
+
+import static com.azure.cosmos.implementation.Warning.INTERNAL_USE_ONLY_WARNING;
+
+/**
+ * This is an internal class in the encryption project
+ */
+public class EncryptionBridgeInternal {
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <T> CosmosItemResponse<T> createCosmosItemResponse(ResourceResponse<Document> response, byte[] contentAsByteArray, Class<T> classType, ItemDeserializer itemDeserializer) {
+        return new CosmosItemResponse<>(response, contentAsByteArray, classType, itemDeserializer);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static byte[] getByteArrayContent(CosmosItemResponse response) {
+        return response.responseBodyAsByteArray;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static byte[] setByteArrayContent(CosmosItemResponse response, byte[] content) {
+        return response.responseBodyAsByteArray = content;
+    }
+}

@@ -13,6 +13,7 @@ import com.azure.cosmos.implementation.encryption.Encryptor;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.EncryptionBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -46,7 +47,7 @@ public class EncryptionCosmosAsyncContainer extends CosmosAsyncContainer {
                 .subscribeOn(Schedulers.elastic())
                 .publishOn(Schedulers.elastic())
                 .map(rsp -> {
-                    rsp.responseBodyAsByteArray = decryptResponseAsync(rsp.responseBodyAsByteArray, encryptionItemRequestOptions.getDecryptionResultHandler());
+                    EncryptionBridgeInternal.setByteArrayContent(rsp, decryptResponseAsync(EncryptionBridgeInternal.getByteArrayContent(rsp), encryptionItemRequestOptions.getDecryptionResultHandler()));
                     return rsp;
                 }
             );
@@ -110,8 +111,8 @@ public class EncryptionCosmosAsyncContainer extends CosmosAsyncContainer {
                     decryptionErroHandler = encryptionItemRequestOptions.getDecryptionResultHandler();
                 }
 
-                responseMessage.responseBodyAsByteArray =  this.decryptResponseAsync(
-                responseMessage.responseBodyAsByteArray, decryptionErroHandler);
+                EncryptionBridgeInternal.setByteArrayContent(responseMessage, this.decryptResponseAsync(
+                    EncryptionBridgeInternal.getByteArrayContent(responseMessage), decryptionErroHandler));
 
                 return responseMessage;
 
