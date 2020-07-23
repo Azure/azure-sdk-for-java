@@ -63,15 +63,15 @@ public class StronglyTypedRecognizedForm {
                         receiptItem.getName().getConfidence());
                 }
                 if (receiptItem.getQuantity() != null) {
-                    System.out.printf("Quantity: %f, confidence: %.2f%n", receiptItem.getQuantity().getValue(),
+                    System.out.printf("Quantity: %.2f, confidence: %.2f%n", receiptItem.getQuantity().getValue(),
                         receiptItem.getQuantity().getConfidence());
                 }
                 if (receiptItem.getPrice() != null) {
-                    System.out.printf("Price: %f, confidence: %.2f%n", receiptItem.getPrice().getValue(),
+                    System.out.printf("Price: %.2f, confidence: %.2f%n", receiptItem.getPrice().getValue(),
                         receiptItem.getPrice().getConfidence());
                 }
                 if (receiptItem.getTotalPrice() != null) {
-                    System.out.printf("Total Price: %f, confidence: %.2f%n",
+                    System.out.printf("Total Price: %.2f, confidence: %.2f%n",
                         receiptItem.getTotalPrice().getValue(), receiptItem.getTotalPrice().getConfidence());
                 }
             });

@@ -9,7 +9,7 @@ import com.azure.core.annotation.Immutable;
  * The FormField model.
  */
 @Immutable
-public final class FormField<T> {
+public final class FormField {
 
     private final float confidence;
     private final FieldData labelData;

@@ -76,14 +76,12 @@ public class GetBoundingBoxes {
                                 .filter(formContent -> formContent instanceof FormWord)
                                 .map(formContent -> (FormWord) (formContent))
                                 .forEach(formWordElement -> {
-                                    StringBuilder boundingBoxStr = new StringBuilder();
+                                    String boundingBoxStr = null;
                                     if (formWordElement.getBoundingBox() != null) {
-                                        formWordElement.getBoundingBox().getPoints()
-                                            .forEach(point -> boundingBoxStr.append(
-                                                String.format("[%.2f, %.2f]", point.getX(), point.getY())));
+                                        boundingBoxStr = formWordElement.getBoundingBox().toString();
                                     }
                                     System.out.printf("Word '%s' within bounding box %s with a confidence of %.2f.%n",
-                                        formWordElement.getText(), boundingBoxStr.toString(), formWordElement.getConfidence());
+                                        formWordElement.getText(), boundingBoxStr, formWordElement.getConfidence());
                                 });
                         });
                     System.out.println();

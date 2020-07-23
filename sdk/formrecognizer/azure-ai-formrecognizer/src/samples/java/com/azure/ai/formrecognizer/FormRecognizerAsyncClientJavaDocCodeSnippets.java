@@ -289,9 +289,9 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
             .subscribe(recognizedReceipts -> {
                 for (int i = 0; i < recognizedReceipts.size(); i++) {
                     RecognizedForm recognizedForm = recognizedReceipts.get(i);
-                    Map<String, FormField<?>> recognizedFields = recognizedForm.getFields();
+                    Map<String, FormField> recognizedFields = recognizedForm.getFields();
                     System.out.printf("----------- Recognized Receipt page %d -----------%n", i);
-                    FormField<?> merchantNameField = recognizedFields.get("MerchantName");
+                    FormField merchantNameField = recognizedFields.get("MerchantName");
                     if (merchantNameField != null) {
                         if (FieldValueType.STRING == merchantNameField.getValue().getType()) {
                             String merchantName = merchantNameField.getValue().asString();
@@ -300,7 +300,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                         }
                     }
 
-                    FormField<?> merchantPhoneNumberField = recognizedFields.get("MerchantPhoneNumber");
+                    FormField merchantPhoneNumberField = recognizedFields.get("MerchantPhoneNumber");
                     if (merchantPhoneNumberField != null) {
                         if (FieldValueType.PHONE_NUMBER == merchantPhoneNumberField.getValue().getType()) {
                             String merchantAddress = merchantPhoneNumberField.getValue().asPhoneNumber();
@@ -309,7 +309,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                         }
                     }
 
-                    FormField<?> transactionDateField = recognizedFields.get("TransactionDate");
+                    FormField transactionDateField = recognizedFields.get("TransactionDate");
                     if (transactionDateField != null) {
                         if (FieldValueType.DATE == transactionDateField.getValue().getType()) {
                             LocalDate transactionDate = transactionDateField.getValue().asDate();
@@ -318,11 +318,11 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                         }
                     }
 
-                    FormField<?> receiptItemsField = recognizedFields.get("Items");
+                    FormField receiptItemsField = recognizedFields.get("Items");
                     if (receiptItemsField != null) {
                         System.out.printf("Receipt Items: %n");
                         if (FieldValueType.LIST == receiptItemsField.getValue().getType()) {
-                            List<FormField<?>> receiptItems = receiptItemsField.getValue().asList();
+                            List<FormField> receiptItems = receiptItemsField.getValue().asList();
                             receiptItems.stream()
                                 .filter(receiptItem -> FieldValueType.MAP == receiptItem.getValue().getType())
                                 .map(formField -> formField.getValue().asMap())
@@ -358,9 +358,9 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
             .subscribe(recognizedReceipts -> {
                 for (int i = 0; i < recognizedReceipts.size(); i++) {
                     RecognizedForm recognizedReceipt = recognizedReceipts.get(i);
-                    Map<String, FormField<?>> recognizedFields = recognizedReceipt.getFields();
+                    Map<String, FormField> recognizedFields = recognizedReceipt.getFields();
                     System.out.printf("----------- Recognized Receipt page %d -----------%n", i);
-                    FormField<?> merchantNameField = recognizedFields.get("MerchantName");
+                    FormField merchantNameField = recognizedFields.get("MerchantName");
                     if (merchantNameField != null) {
                         if (FieldValueType.STRING == merchantNameField.getValue().getType()) {
                             String merchantName = merchantNameField.getValue().asString();
@@ -369,7 +369,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                         }
                     }
 
-                    FormField<?> merchantPhoneNumberField = recognizedFields.get("MerchantPhoneNumber");
+                    FormField merchantPhoneNumberField = recognizedFields.get("MerchantPhoneNumber");
                     if (merchantPhoneNumberField != null) {
                         if (FieldValueType.PHONE_NUMBER == merchantPhoneNumberField.getValue().getType()) {
                             String merchantAddress = merchantPhoneNumberField.getValue().asPhoneNumber();
@@ -378,7 +378,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                         }
                     }
 
-                    FormField<?> transactionDateField = recognizedFields.get("TransactionDate");
+                    FormField transactionDateField = recognizedFields.get("TransactionDate");
                     if (transactionDateField != null) {
                         if (FieldValueType.DATE == transactionDateField.getValue().getType()) {
                             LocalDate transactionDate = transactionDateField.getValue().asDate();
@@ -387,11 +387,11 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                         }
                     }
 
-                    FormField<?> receiptItemsField = recognizedFields.get("Items");
+                    FormField receiptItemsField = recognizedFields.get("Items");
                     if (receiptItemsField != null) {
                         System.out.printf("Receipt Items: %n");
                         if (FieldValueType.LIST == receiptItemsField.getValue().getType()) {
-                            List<FormField<?>> receiptItems = receiptItemsField.getValue().asList();
+                            List<FormField> receiptItems = receiptItemsField.getValue().asList();
                             receiptItems.stream()
                                 .filter(receiptItem -> FieldValueType.MAP == receiptItem.getValue().getType())
                                 .map(formField -> formField.getValue().asMap())
@@ -426,9 +426,9 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                     .subscribe(recognizedReceipts -> {
                         for (int i = 0; i < recognizedReceipts.size(); i++) {
                             RecognizedForm recognizedForm = recognizedReceipts.get(i);
-                            Map<String, FormField<?>> recognizedFields = recognizedForm.getFields();
+                            Map<String, FormField> recognizedFields = recognizedForm.getFields();
                             System.out.printf("----------- Recognized Receipt page %d -----------%n", i);
-                            FormField<?> merchantNameField = recognizedFields.get("MerchantName");
+                            FormField merchantNameField = recognizedFields.get("MerchantName");
                             if (merchantNameField != null) {
                                 if (FieldValueType.STRING == merchantNameField.getValue().getType()) {
                                     String merchantName = merchantNameField.getValue().asString();
@@ -437,7 +437,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                                 }
                             }
 
-                            FormField<?> merchantPhoneNumberField = recognizedFields.get("MerchantPhoneNumber");
+                            FormField merchantPhoneNumberField = recognizedFields.get("MerchantPhoneNumber");
                             if (merchantPhoneNumberField != null) {
                                 if (FieldValueType.PHONE_NUMBER == merchantPhoneNumberField.getValue().getType()) {
                                     String merchantAddress = merchantPhoneNumberField.getValue().asPhoneNumber();
@@ -446,7 +446,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                                 }
                             }
 
-                            FormField<?> transactionDateField = recognizedFields.get("TransactionDate");
+                            FormField transactionDateField = recognizedFields.get("TransactionDate");
                             if (transactionDateField != null) {
                                 if (FieldValueType.DATE == transactionDateField.getValue().getType()) {
                                     LocalDate transactionDate = transactionDateField.getValue().asDate();
@@ -455,11 +455,11 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                                 }
                             }
 
-                            FormField<?> receiptItemsField = recognizedFields.get("Items");
+                            FormField receiptItemsField = recognizedFields.get("Items");
                             if (receiptItemsField != null) {
                                 System.out.printf("Receipt Items: %n");
                                 if (FieldValueType.LIST == receiptItemsField.getValue().getType()) {
-                                    List<FormField<?>> receiptItems = receiptItemsField.getValue().asList();
+                                    List<FormField> receiptItems = receiptItemsField.getValue().asList();
                                     receiptItems.stream()
                                         .filter(receiptItem -> FieldValueType.MAP == receiptItem.getValue().getType())
                                         .map(formField -> formField.getValue().asMap())
@@ -501,9 +501,9 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
             .subscribe(recognizedReceipts -> {
                 for (int i = 0; i < recognizedReceipts.size(); i++) {
                     RecognizedForm recognizedForm = recognizedReceipts.get(i);
-                    Map<String, FormField<?>> recognizedFields = recognizedForm.getFields();
+                    Map<String, FormField> recognizedFields = recognizedForm.getFields();
                     System.out.printf("----------- Recognized Receipt page %d -----------%n", i);
-                    FormField<?> merchantNameField = recognizedFields.get("MerchantName");
+                    FormField merchantNameField = recognizedFields.get("MerchantName");
                     if (merchantNameField != null) {
                         if (FieldValueType.STRING == merchantNameField.getValue().getType()) {
                             String merchantName = merchantNameField.getValue().asString();
@@ -512,7 +512,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                         }
                     }
 
-                    FormField<?> merchantPhoneNumberField = recognizedFields.get("MerchantPhoneNumber");
+                    FormField merchantPhoneNumberField = recognizedFields.get("MerchantPhoneNumber");
                     if (merchantPhoneNumberField != null) {
                         if (FieldValueType.PHONE_NUMBER == merchantPhoneNumberField.getValue().getType()) {
                             String merchantAddress = merchantPhoneNumberField.getValue().asPhoneNumber();
@@ -521,7 +521,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                         }
                     }
 
-                    FormField<?> transactionDateField = recognizedFields.get("TransactionDate");
+                    FormField transactionDateField = recognizedFields.get("TransactionDate");
                     if (transactionDateField != null) {
                         if (FieldValueType.DATE == transactionDateField.getValue().getType()) {
                             LocalDate transactionDate = transactionDateField.getValue().asDate();
@@ -530,11 +530,11 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                         }
                     }
 
-                    FormField<?> receiptItemsField = recognizedFields.get("Items");
+                    FormField receiptItemsField = recognizedFields.get("Items");
                     if (receiptItemsField != null) {
                         System.out.printf("Receipt Items: %n");
                         if (FieldValueType.LIST == receiptItemsField.getValue().getType()) {
-                            List<FormField<?>> receiptItems = receiptItemsField.getValue().asList();
+                            List<FormField> receiptItems = receiptItemsField.getValue().asList();
                             receiptItems.stream()
                                 .filter(receiptItem -> FieldValueType.MAP == receiptItem.getValue().getType())
                                 .map(formField -> formField.getValue().asMap())

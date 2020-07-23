@@ -27,8 +27,8 @@ import static com.azure.ai.formrecognizer.models.FieldValueType.TIME;
 public final class FieldValue {
     private final ClientLogger logger = new ClientLogger(FieldValue.class);
     private final FieldValueType type;
-    private Map<String, FormField<?>> formFieldMap;
-    private List<FormField<?>> formFieldList;
+    private Map<String, FormField> formFieldMap;
+    private List<FormField> formFieldList;
     private Double formFieldDouble;
     private Long formFieldLong;
     private LocalDate formFieldDate;
@@ -65,10 +65,10 @@ public final class FieldValue {
                 formFieldLong = (Long) value;
                 break;
             case LIST:
-                formFieldList = (List<FormField<?>>) value;
+                formFieldList = (List<FormField>) value;
                 break;
             case MAP:
-                formFieldMap = (Map<String, FormField<?>>) value;
+                formFieldMap = (Map<String, FormField>) value;
                 break;
             default:
                 throw logger.logExceptionAsError(new IllegalStateException("Unexpected type value: " + type));
@@ -174,7 +174,7 @@ public final class FieldValue {
      * @return the value of the field as an unmodifiable {@link List}.
      * @throws UnsupportedOperationException if {@link FieldValue#getType()} is not {@link FieldValueType#LIST}.
      */
-    public List<FormField<?>> asList() {
+    public List<FormField> asList() {
         if (LIST != this.getType()) {
             throw logger.logExceptionAsError((new UnsupportedOperationException(String.format("Cannot get field as a "
                 + "%s from field value of type %s", LIST, this.getType()))));
@@ -188,7 +188,7 @@ public final class FieldValue {
      * @return the value of the field as an unmodifiable {@link Map}.
      * @throws UnsupportedOperationException if {@link FieldValue#getType()} is not {@link FieldValueType#MAP}.
      */
-    public Map<String, FormField<?>> asMap() {
+    public Map<String, FormField> asMap() {
         if (MAP != this.getType()) {
             throw logger.logExceptionAsError((new UnsupportedOperationException(String.format("Cannot get field as a "
                 + "%s from field value of type %s", MAP, this.getType()))));

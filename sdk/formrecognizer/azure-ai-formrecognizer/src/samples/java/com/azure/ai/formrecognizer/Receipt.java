@@ -77,9 +77,9 @@ public final class Receipt {
     private TypedFormField<LocalTime> transactionTime;
 
     public Receipt(RecognizedForm recognizedForm) {
-        for (Map.Entry<String, FormField<?>> entry : recognizedForm.getFields().entrySet()) {
+        for (Map.Entry<String, FormField> entry : recognizedForm.getFields().entrySet()) {
             String key = entry.getKey();
-            FormField<?> formField = entry.getValue();
+            FormField formField = entry.getValue();
             switch (key) {
                 case "ReceiptType":
                     receiptType = new ReceiptType(formField.getValue().asString(), formField.getConfidence());
@@ -226,17 +226,17 @@ public final class Receipt {
      *
      * @return An unmodifiable list of {@link ReceiptItem}.
      */
-    private static List<ReceiptItem> toReceiptItems(FormField<?> fieldValueItems) {
-        List<FormField<?>> fieldValueArray = fieldValueItems.getValue().asList();
+    private static List<ReceiptItem> toReceiptItems(FormField fieldValueItems) {
+        List<FormField> fieldValueArray = fieldValueItems.getValue().asList();
         List<ReceiptItem> receiptItemList = new ArrayList<>();
 
-        for (FormField<?> eachFieldValue : fieldValueArray) {
-            Map<String, FormField<?>> objectValue = eachFieldValue.getValue().asMap();
+        for (FormField eachFieldValue : fieldValueArray) {
+            Map<String, FormField> objectValue = eachFieldValue.getValue().asMap();
             TypedFormField<String> name = null;
             TypedFormField<Double> quantity = null;
             TypedFormField<Double> price = null;
             TypedFormField<Double> totalPrice = null;
-            for (Map.Entry<String, FormField<?>> entry : objectValue.entrySet()) {
+            for (Map.Entry<String, FormField> entry : objectValue.entrySet()) {
                 String key = entry.getKey();
                 if ("Quantity".equals(key)) {
                     quantity = new TypedFormField<>(entry.getValue(), Double.class);
@@ -259,7 +259,7 @@ public final class Receipt {
      * @param <T> The type of value returned from the service call.
      */
     public static class TypedFormField<T> {
-        private final FormField<?> formField;
+        private final FormField formField;
         private final Class<T> type;
 
         /**
@@ -268,7 +268,7 @@ public final class Receipt {
          * @param formField the SDK returned FormField object.
          * @param type The type of the field value returned from the service call.
          */
-        public TypedFormField(FormField<?> formField, Class<T> type) {
+        public TypedFormField(FormField formField, Class<T> type) {
             this.formField = formField;
             this.type = type;
         }
