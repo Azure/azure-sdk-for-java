@@ -130,7 +130,7 @@ public class EncryptionCosmosAsyncContainer extends CosmosAsyncContainer {
 
     /**
      * Reads item and decrypt the encrypted fields
-     * @param id
+     * @param id item id
      * @param partitionKey the partition key.
      * @param option request options
      * @param classType deserialization class type
