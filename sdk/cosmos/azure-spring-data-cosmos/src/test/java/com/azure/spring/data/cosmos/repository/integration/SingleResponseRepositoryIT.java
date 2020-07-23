@@ -4,10 +4,10 @@
 package com.azure.spring.data.cosmos.repository.integration;
 
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
-import com.azure.spring.data.cosmos.domain.Contact;
+import com.azure.spring.data.cosmos.domain.SingleResponseEntity;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
-import com.azure.spring.data.cosmos.repository.repository.ContactRepository;
+import com.azure.spring.data.cosmos.repository.repository.SingleResponseRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -27,16 +27,17 @@ import java.util.Optional;
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class SingleResponseRepositoryIT {
 
-    private static final Contact TEST_CONTACT = new Contact("testId", "faketitle");
+    private static final SingleResponseEntity TEST_SINGLE_RESPONSE_ENTITY = new SingleResponseEntity("testId",
+        "faketitle");
 
-    private static final CosmosEntityInformation<Contact, String> entityInformation =
-        new CosmosEntityInformation<>(Contact.class);
+    private static final CosmosEntityInformation<SingleResponseEntity, String> entityInformation =
+        new CosmosEntityInformation<>(SingleResponseEntity.class);
 
     private static CosmosTemplate staticTemplate;
     private static boolean isSetupDone;
 
     @Autowired
-    private ContactRepository repository;
+    private SingleResponseRepository repository;
 
     @Autowired
     private CosmosTemplate template;
@@ -47,7 +48,7 @@ public class SingleResponseRepositoryIT {
             staticTemplate = template;
             template.createContainerIfNotExists(entityInformation);
         }
-        repository.save(TEST_CONTACT);
+        repository.save(TEST_SINGLE_RESPONSE_ENTITY);
         isSetupDone = true;
     }
 
@@ -63,37 +64,41 @@ public class SingleResponseRepositoryIT {
 
     @Test
     public void testShouldFindSingleEntity() {
-        final Contact contact = repository.findOneByTitle(TEST_CONTACT.getTitle());
+        final SingleResponseEntity entity =
+            repository.findOneByEntityTitle(TEST_SINGLE_RESPONSE_ENTITY.getEntityTitle());
 
-        Assert.assertEquals(TEST_CONTACT, contact);
+        Assert.assertEquals(TEST_SINGLE_RESPONSE_ENTITY, entity);
     }
 
     @Test
     public void testShouldFindSingleOptionalEntity() {
-        final Optional<Contact> contact = repository.findOptionallyByTitle(TEST_CONTACT.getTitle());
-        Assert.assertTrue(contact.isPresent());
-        Assert.assertEquals(TEST_CONTACT, contact.get());
+        final Optional<SingleResponseEntity> entity =
+            repository.findOptionallyByEntityTitle(TEST_SINGLE_RESPONSE_ENTITY.getEntityTitle());
+        Assert.assertTrue(entity.isPresent());
+        Assert.assertEquals(TEST_SINGLE_RESPONSE_ENTITY, entity.get());
 
-        Assert.assertFalse(repository.findOptionallyByTitle("not here").isPresent());
+        Assert.assertFalse(repository.findOptionallyByEntityTitle("not here").isPresent());
     }
 
     @Test(expected = CosmosAccessException.class)
     public void testShouldFailIfMultipleResultsReturned() {
-        repository.save(new Contact("testId2", TEST_CONTACT.getTitle()));
+        repository.save(new SingleResponseEntity("testId2", TEST_SINGLE_RESPONSE_ENTITY.getEntityTitle()));
 
-        repository.findOneByTitle(TEST_CONTACT.getTitle());
+        repository.findOneByEntityTitle(TEST_SINGLE_RESPONSE_ENTITY.getEntityTitle());
     }
 
     @Test
     public void testShouldAllowListAndIterableResponses() {
-        final List<Contact> contactList = repository.findByTitle(TEST_CONTACT.getTitle());
-        Assert.assertEquals(TEST_CONTACT, contactList.get(0));
-        Assert.assertEquals(1, contactList.size());
+        final List<SingleResponseEntity> entityList =
+            repository.findByEntityTitle(TEST_SINGLE_RESPONSE_ENTITY.getEntityTitle());
+        Assert.assertEquals(TEST_SINGLE_RESPONSE_ENTITY, entityList.get(0));
+        Assert.assertEquals(1, entityList.size());
 
-        final Iterator<Contact> contactIterator = repository.findByLogicId(TEST_CONTACT.getLogicId()).iterator();
-        Assert.assertTrue(contactIterator.hasNext());
-        Assert.assertEquals(TEST_CONTACT, contactIterator.next());
-        Assert.assertFalse(contactIterator.hasNext());
+        final Iterator<SingleResponseEntity> entityIterator =
+            repository.findByEntityId(TEST_SINGLE_RESPONSE_ENTITY.getEntityId()).iterator();
+        Assert.assertTrue(entityIterator.hasNext());
+        Assert.assertEquals(TEST_SINGLE_RESPONSE_ENTITY, entityIterator.next());
+        Assert.assertFalse(entityIterator.hasNext());
     }
 
 }

@@ -56,11 +56,11 @@ public class CosmosAnnotationIT {
 
             roleInfo = new CosmosEntityInformation<>(Role.class);
             sampleInfo = new CosmosEntityInformation<>(TimeToLiveSample.class);
-            final CosmosMappingContext dbContext = new CosmosMappingContext();
+            final CosmosMappingContext mappingContext = new CosmosMappingContext();
 
-            dbContext.setInitialEntitySet(new EntityScanner(this.applicationContext).scan(Persistent.class));
+            mappingContext.setInitialEntitySet(new EntityScanner(this.applicationContext).scan(Persistent.class));
 
-            final MappingCosmosConverter mappingConverter = new MappingCosmosConverter(dbContext, null);
+            final MappingCosmosConverter mappingConverter = new MappingCosmosConverter(mappingContext, null);
 
             cosmosTemplate = new CosmosTemplate(cosmosFactory, mappingConverter, cosmosConfig.getDatabase());
             initialized = true;
