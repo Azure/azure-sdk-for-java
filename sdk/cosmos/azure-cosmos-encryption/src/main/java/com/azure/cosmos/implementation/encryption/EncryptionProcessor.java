@@ -1,15 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos;
+package com.azure.cosmos.implementation.encryption;
 
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.encryption.EncryptionProperties;
-import com.azure.cosmos.implementation.encryption.EncryptionUtils;
-import com.azure.cosmos.implementation.encryption.Encryptor;
+import com.azure.cosmos.Encryptor;
 import com.azure.cosmos.implementation.encryption.api.EncryptionOptions;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.implementation.guava27.Strings;

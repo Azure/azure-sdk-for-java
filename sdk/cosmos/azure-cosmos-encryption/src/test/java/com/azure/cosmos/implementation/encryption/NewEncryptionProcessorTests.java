@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation.encryption;
 
-import com.azure.cosmos.EncryptionProcessor;
+import com.azure.cosmos.Encryptor;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.encryption.TestCommon.TestDoc;
 import com.azure.cosmos.implementation.encryption.api.Constants;

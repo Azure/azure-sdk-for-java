@@ -8,9 +8,7 @@ import com.azure.cosmos.implementation.encryption.api.DataEncryptionKey;
 import com.azure.cosmos.implementation.encryption.api.DataEncryptionKeyProvider;
 import com.azure.cosmos.implementation.encryption.api.EncryptionOptions;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
-import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

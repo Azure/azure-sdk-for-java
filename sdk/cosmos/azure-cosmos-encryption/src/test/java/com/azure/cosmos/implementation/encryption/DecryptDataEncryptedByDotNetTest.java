@@ -6,7 +6,6 @@ package com.azure.cosmos.implementation.encryption;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.EncryptionCosmosAsyncContainer;
 import com.azure.cosmos.WithEncryption;

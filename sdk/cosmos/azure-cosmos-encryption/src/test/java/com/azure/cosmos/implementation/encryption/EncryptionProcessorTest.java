@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation.encryption;
 
-import com.azure.cosmos.EncryptionProcessor;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.encryption.api.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.implementation.encryption.api.DataEncryptionKey;

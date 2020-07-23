@@ -7,11 +7,12 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.ItemDeserializer;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedException;
+import com.azure.cosmos.implementation.encryption.CosmosResponseFactory;
 import com.azure.cosmos.implementation.encryption.CosmosResponseFactoryCore;
 import com.azure.cosmos.implementation.encryption.DecryptionResult;
 import com.azure.cosmos.implementation.encryption.EncryptionItemRequestOptions;
+import com.azure.cosmos.implementation.encryption.EncryptionProcessor;
 import com.azure.cosmos.implementation.encryption.EncryptionUtils;
-import com.azure.cosmos.implementation.encryption.Encryptor;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -61,7 +62,17 @@ public class EncryptionCosmosAsyncContainer extends CosmosAsyncContainer {
         }
     }
 
+
     // TODO ensure all other apis call this guy
+
+    /**
+     * create item and encrypts the requested fields
+     * @param item the Cosmos item represented as a POJO or Cosmos item object.
+     * @param partitionKey the partition key.
+     * @param requestOptions request option
+     * @param <T> serialization class type
+     * @return result
+     */
     public <T> Mono<CosmosItemResponse<T>> createItem(T item,
                                                       PartitionKey partitionKey,
                                                       CosmosItemRequestOptions requestOptions) {
@@ -117,6 +128,15 @@ public class EncryptionCosmosAsyncContainer extends CosmosAsyncContainer {
 
     }
 
+    /**
+     * Reads item and decrypt the encrypted fields
+     * @param id
+     * @param partitionKey the partition key.
+     * @param option request options
+     * @param classType deserialization class type
+     * @param <T> type
+     * @return result
+     */
     @Override
     public <T> Mono<CosmosItemResponse<T>> readItem(String id,
                                                     PartitionKey partitionKey,
