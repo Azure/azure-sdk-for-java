@@ -47,8 +47,8 @@ public class SingleResponseEntity {
             return false;
         }
         SingleResponseEntity that = (SingleResponseEntity) o;
-        return Objects.equals(entityId, that.entityId) &&
-            Objects.equals(entityTitle, that.entityTitle);
+        return Objects.equals(entityId, that.entityId)
+            && Objects.equals(entityTitle, that.entityTitle);
     }
 
     @Override
@@ -58,9 +58,9 @@ public class SingleResponseEntity {
 
     @Override
     public String toString() {
-        return "SingleResponseEntity{" +
-            "entityId='" + entityId + '\'' +
-            ", entityTitle='" + entityTitle + '\'' +
-            '}';
+        return "SingleResponseEntity{"
+            + "entityId='" + entityId + '\''
+            + ", entityTitle='" + entityTitle + '\''
+            + '}';
     }
 }
