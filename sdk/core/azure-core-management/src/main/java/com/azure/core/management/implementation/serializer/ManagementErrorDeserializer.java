@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import java.io.IOException;
 
 /**
- * Custom de-serializer for de-serializing {@link ManagementError} objects.
+ * Custom serializer for serializing {@link ManagementError} objects.
  */
 public final class ManagementErrorDeserializer extends StdDeserializer<Object> {
 
