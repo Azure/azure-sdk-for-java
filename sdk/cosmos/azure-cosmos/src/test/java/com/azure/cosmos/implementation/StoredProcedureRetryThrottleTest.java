@@ -28,7 +28,7 @@ public class StoredProcedureRetryThrottleTest extends TestSuiteBase {
     public StoredProcedureRetryThrottleTest() {}
 
     @Test(groups = { "long" }, timeOut = TIMEOUT)
-    public void StoredProcedureRetryThrottle() {
+    public void storedProcedureRetryThrottle() {
         client = SpyClientUnderTestFactory.createClientWithGatewaySpy(createGatewayRxDocumentClient());
 
         StoredProcedure storedProcedure = new StoredProcedure();
