@@ -159,6 +159,9 @@ public final class UploadBufferPool {
         } else {
             try {
                 System.out.println("Attempting to take buffer aggregator from queue");
+                System.out.println("Size of buffer: " + this.buffers.remainingCapacity());
+                System.out.println("Num buffs: " + this.numBuffs);
+                System.out.println("Max buffs: " + this.maxBuffs);
                 // If empty, this will wait for an upload to finish and return a buffer.
                 result = this.buffers.take();
 
