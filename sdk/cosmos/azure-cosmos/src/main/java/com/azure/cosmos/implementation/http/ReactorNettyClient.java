@@ -256,7 +256,7 @@ class ReactorNettyClient implements HttpClient {
          * reading was delayed for some reason.
          */
         private void releaseAfterCancel(HttpMethod method) {
-            if (mayHaveBody(method) && this.state.compareAndSet(ReactorNettyResponseState.NOT_SUBSCRIBED, ReactorNettyResponseState.CANCELLED)) {
+            if (this.state.compareAndSet(ReactorNettyResponseState.NOT_SUBSCRIBED, ReactorNettyResponseState.CANCELLED)) {
                 if (logger.isDebugEnabled()) {
                     logger.debug("Releasing body, not yet subscribed");
                 }
@@ -264,12 +264,6 @@ class ReactorNettyClient implements HttpClient {
                     .doOnNext(byteBuf -> {})
                     .subscribe(byteBuf -> {}, ex -> {});
             }
-        }
-
-        private boolean mayHaveBody(HttpMethod method) {
-            int code = this.statusCode();
-            return !((code >= 100 && code < 200) || code == 204 || code == 205 ||
-                method.equals(HttpMethod.HEAD) || headers().getContentLength() == 0);
         }
     }
 
