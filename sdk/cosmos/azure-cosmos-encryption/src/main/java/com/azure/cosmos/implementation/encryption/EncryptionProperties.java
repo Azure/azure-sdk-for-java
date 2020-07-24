@@ -27,7 +27,7 @@ import java.io.IOException;
 
 @JsonSerialize(using = EncryptionProperties.JsonSerializer.class)
 @JsonDeserialize(using = EncryptionProperties.JsonDeserializer.class)
-class EncryptionProperties {
+public class EncryptionProperties {
     private final static ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     public static ObjectReader getObjectReader() {

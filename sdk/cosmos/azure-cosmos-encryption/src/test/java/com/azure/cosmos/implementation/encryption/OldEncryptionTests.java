@@ -8,14 +8,11 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.EncryptionCosmosAsyncContainer;
-import com.azure.cosmos.Encryptor;
 import com.azure.cosmos.WithEncryption;
 import com.azure.cosmos.implementation.DatabaseForTest;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.encryption.api.CosmosEncryptionAlgorithm;
-import com.azure.cosmos.implementation.encryption.api.DataEncryptionKey;
-import com.azure.cosmos.implementation.encryption.api.DataEncryptionKeyProvider;
 import com.azure.cosmos.implementation.encryption.api.EncryptionOptions;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -31,27 +28,23 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
 
-public class EncryptionTests extends TestSuiteBase {
+public class OldEncryptionTests extends TestSuiteBase {
 
     private static EncryptionKeyWrapMetadata metadata1 = new EncryptionKeyWrapMetadata("metadata1");
     private static EncryptionKeyWrapMetadata metadata2 = new EncryptionKeyWrapMetadata("metadata2");
     private final static String metadataUpdateSuffix = "updated";
     private static Duration cacheTTL = Duration.ofDays(1);
-    private static TestEncryptor encryptor;
-    private static EncryptionCosmosAsyncContainer encyptionContainer;
 
     private final String databaseForTestId = DatabaseForTest.generateId();
     private final String itemContainerId = UUID.randomUUID().toString();
     private final String keyContainerId = UUID.randomUUID().toString();
 
-    private static final String dekId = "mydek";
+    private final String dekId = "mydek";
 
     private static CosmosAsyncClient client;
 
@@ -61,20 +54,20 @@ public class EncryptionTests extends TestSuiteBase {
     private static CosmosAsyncContainer itemContainer;
     private static CosmosAsyncContainer keyContainer;
     private static CosmosDataEncryptionKeyProvider dekProvider;
+    private EncryptionTests.TestEncryptor encryptor;
+    private EncryptionCosmosAsyncContainer encyptionContainer;
 //    private static TestEncryptor encryptor;
 
     @Factory(dataProvider = "clientBuilders")
-    public EncryptionTests(CosmosClientBuilder clientBuilder) {
+    public OldEncryptionTests(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
 
     @BeforeTest(groups = {"encryption"})
     public void beforeTest() {
-        dekProvider = new CosmosDataEncryptionKeyProvider(new TestKeyWrapProvider());
-
-        EncryptionTests.encryptor = new TestEncryptor(EncryptionTests.dekProvider);
+        TestKeyWrapProvider keyWrapProvider = new TestKeyWrapProvider();
+        dekProvider = new CosmosDataEncryptionKeyProvider(keyWrapProvider);
         client = getClientBuilder().buildAsyncClient();
-
 
         client.createDatabaseIfNotExists(databaseForTestId).block();
         databaseCore = client.getDatabase(databaseForTestId);
@@ -83,10 +76,12 @@ public class EncryptionTests extends TestSuiteBase {
         databaseCore.createContainerIfNotExists(itemContainerId, "/PK", ThroughputProperties.createManualThroughput(400)).block();
         itemContainer = databaseCore.getContainer(itemContainerId);
 
-        dekProvider.initialize(databaseCore, EncryptionTests.keyContainer.getId());
+        encryptor = new EncryptionTests.TestEncryptor(dekProvider);
+        encyptionContainer = WithEncryption.withEncryptor(itemContainer, encryptor);
 
-        EncryptionTests.encyptionContainer = WithEncryption.withEncryptor(EncryptionTests.itemContainer, encryptor);
-        EncryptionTests.dekProperties = EncryptionTests.createDek(EncryptionTests.dekProvider, dekId);
+        dekProvider.initialize(databaseCore, OldEncryptionTests.keyContainer.getId());
+
+        OldEncryptionTests.dekProperties = OldEncryptionTests.createDek(OldEncryptionTests.dekProvider, dekId);
     }
 
     @BeforeClass(groups = {"encryption"})
@@ -106,7 +101,6 @@ public class EncryptionTests extends TestSuiteBase {
     }
 
     static public class TestDoc {
-        public static List<String> PathsToEncrypt = ImmutableList.of("/Sensitive");
 
         @JsonProperty("id")
         public String id;
@@ -138,20 +132,6 @@ public class EncryptionTests extends TestSuiteBase {
                 Objects.equals(sensitive, testDoc.sensitive);
         }
 
-        public static TestDoc Create() {
-            return TestDoc.Create(null);
-        }
-
-        public static TestDoc Create(String partitionKey) {
-            TestDoc testDoc = new TestDoc();
-            testDoc.id = UUID.randomUUID().toString();
-            testDoc.pk = partitionKey == null ? UUID.randomUUID().toString(): partitionKey;
-            testDoc.nonSensitive = UUID.randomUUID().toString();
-            testDoc.sensitive = UUID.randomUUID().toString();
-
-            return testDoc;
-        }
-
         @Override
         public int hashCode() {
             return Objects.hash(id, pk, nonSensitive, sensitive);
@@ -161,7 +141,7 @@ public class EncryptionTests extends TestSuiteBase {
     @Test(groups = {"encryption"})
     public void encryptionCreateDek() {
         String dekId = "anotherDek";
-        DataEncryptionKeyProperties dekProperties = EncryptionTests.createDek(EncryptionTests.dekProvider, dekId);
+        DataEncryptionKeyProperties dekProperties = OldEncryptionTests.createDek(OldEncryptionTests.dekProvider, dekId);
 
         assertThat(dekProperties).isNotNull();
         assertThat(dekProperties.createdTime).isNotNull();
@@ -174,64 +154,20 @@ public class EncryptionTests extends TestSuiteBase {
         assertThat(dekProperties.lastModified).isEqualTo(dekProperties.lastModified);
 
         assertThat(
-            new EncryptionKeyWrapMetadata(EncryptionTests.metadata1.value + EncryptionTests.metadataUpdateSuffix)).isEqualTo(
+            new EncryptionKeyWrapMetadata(OldEncryptionTests.metadata1.value + OldEncryptionTests.metadataUpdateSuffix)).isEqualTo(
             dekProperties.encryptionKeyWrapMetadata);
 
         // Use different DEK provider to avoid (unintentional) cache impact
         CosmosDataEncryptionKeyProvider dekProvider = new CosmosDataEncryptionKeyProvider(new TestKeyWrapProvider());
 
-        dekProvider.initialize(databaseCore, EncryptionTests.keyContainer.getId());
+
+        dekProvider.initialize(databaseCore, OldEncryptionTests.keyContainer.getId());
 
         DataEncryptionKeyProperties readProperties = dekProvider.getDataEncryptionKeyContainer().readDataEncryptionKeyAsync(dekId, null).block().getItem();
         assertThat(dekProperties).isEqualTo(readProperties);
     }
 
-    @Test(enabled = false)
-    public void EncryptionRewrapDek() {
-    }
-
-    @Test(enabled = false)
-    public void EncryptionDekReadFeed() {
-    }
-
-    @Test
-    public void EncryptionCreateItemWithoutEncryptionOptions() {
-        TestDoc testDoc = TestDoc.Create();
-
-        CosmosItemResponse<TestDoc> createResponse = EncryptionTests.encyptionContainer.createItem(testDoc, new PartitionKey(testDoc.pk), null).block();
-
-        assertThat(createResponse.getStatusCode()).isEqualTo(201);
-        assertThat(createResponse.getItem()).isEqualTo(testDoc);
-    }
-
-    @Test
-    public void EncryptionCreateItemWithNullEncryptionOptions() {
-        TestDoc testDoc = TestDoc.Create();
-        CosmosItemResponse<TestDoc> createResponse =  EncryptionTests.encyptionContainer.createItem(
-            testDoc,
-            new PartitionKey(testDoc.pk),
-            new EncryptionItemRequestOptions()).block();
-
-        assertThat(createResponse.getStatusCode()).isEqualTo(201);
-        assertThat(createResponse.getItem()).isEqualTo(testDoc);
-    }
-
-    @Test
-    public void EncryptionCreateItemWithoutPartitionKey() {
-        TestDoc testDoc = TestDoc.Create();
-        try {
-            // TODO: moderakh invoke this without passing null PK
-            EncryptionTests.encyptionContainer.createItem(
-                testDoc,
-                null,
-                EncryptionTests.GetRequestOptions(EncryptionTests.dekId, TestDoc.PathsToEncrypt));
-            fail("CreateItem should've failed because PartitionKey was not provided.");
-        } catch (Exception ex) {
-            assertThat(ex.getMessage()).isEqualTo("partitionKey cannot be null for operations using EncryptionContainer.");
-        }
-    }
-
-    @Test(groups = {"encryption"}, timeOut = TIMEOUT * 100)
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT)
     public void createItemEncrypt_readItemDecrypt() throws Exception {
         EncryptionItemRequestOptions requestOptions = new EncryptionItemRequestOptions();
         EncryptionOptions encryptionOptions = new EncryptionOptions();
@@ -242,7 +178,7 @@ public class EncryptionTests extends TestSuiteBase {
         requestOptions.setEncryptionOptions(encryptionOptions);
 
         TestDoc properties = getItem(UUID.randomUUID().toString());
-        CosmosItemResponse<TestDoc> itemResponse = encyptionContainer.createItem(properties, new PartitionKey(properties.pk), requestOptions).block();
+        CosmosItemResponse<TestDoc> itemResponse = encyptionContainer.createItem(properties, requestOptions).block();
         assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
 
         TestDoc responseItem = itemResponse.getItem();
@@ -250,10 +186,6 @@ public class EncryptionTests extends TestSuiteBase {
 
         TestDoc readItem = encyptionContainer.readItem(properties.id, new PartitionKey(properties.pk), requestOptions, TestDoc.class).block().getItem();
         validateReadResponseIsValid(properties, readItem);
-
-        TestDoc readWithoutDecryption = itemContainer.readItem(properties.id, new PartitionKey(properties.pk), requestOptions, TestDoc.class).block().getItem();
-
-        assertThat(readWithoutDecryption.sensitive).isNull();
     }
 
     private void validateWriteResponseIsValid(TestDoc originalItem, TestDoc result) {
@@ -293,7 +225,7 @@ public class EncryptionTests extends TestSuiteBase {
         CosmosItemResponse<DataEncryptionKeyProperties> dekResponse = dekProvider.getDataEncryptionKeyContainer().createDataEncryptionKeyAsync(
             dekId,
             CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256_RANDOMIZED,
-            EncryptionTests.metadata1, null).block();
+            OldEncryptionTests.metadata1, null).block();
 
         assertThat(dekResponse.getRequestCharge()).isGreaterThan(0);
         assertThat(dekResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.E_TAG)).isNotNull();
@@ -304,54 +236,20 @@ public class EncryptionTests extends TestSuiteBase {
         return dekProperties;
     }
 
-
-    private static EncryptionItemRequestOptions GetRequestOptions(
-        String dekId,
-        List<String> pathsToEncrypt) {
-        return GetRequestOptions(dekId, pathsToEncrypt, null);
-    }
-
-    private static EncryptionItemRequestOptions GetRequestOptions(
-        String dekId,
-        List<String> pathsToEncrypt,
-        String ifMatchEtag)
-    {
-        EncryptionItemRequestOptions options = new EncryptionItemRequestOptions();
-        options.setIfMatchETag(ifMatchEtag);
-
-        EncryptionOptions encryptionOptions = EncryptionTests.GetEncryptionOptions(dekId, pathsToEncrypt);
-        options.setEncryptionOptions(encryptionOptions);
-        return options;
-    }
-
-
-    private static EncryptionOptions GetEncryptionOptions(
-        String dekId,
-        List<String> pathsToEncrypt)
-    {
-        EncryptionOptions encryptionOptions = new EncryptionOptions();
-        encryptionOptions.setPathsToEncrypt(pathsToEncrypt)
-            .setDataEncryptionKeyId(dekId)
-            .setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256_RANDOMIZED);
-
-        return encryptionOptions;
-    }
-
-
     private class TestKeyWrapProvider implements EncryptionKeyWrapProvider {
         public EncryptionKeyUnwrapResult unwrapKey(byte[] wrappedKey, EncryptionKeyWrapMetadata metadata) {
-            int moveBy = StringUtils.equals(metadata.value, EncryptionTests.metadata1.value + EncryptionTests.metadataUpdateSuffix) ? 1 : 2;
+            int moveBy = StringUtils.equals(metadata.value, OldEncryptionTests.metadata1.value + OldEncryptionTests.metadataUpdateSuffix) ? 1 : 2;
 
             for (int i = 0; i < wrappedKey.length; i++) {
                 wrappedKey[i] = (byte) (wrappedKey[i] - moveBy);
             }
 
-            return new EncryptionKeyUnwrapResult(wrappedKey, EncryptionTests.cacheTTL);
+            return new EncryptionKeyUnwrapResult(wrappedKey, OldEncryptionTests.cacheTTL);
         }
 
         public EncryptionKeyWrapResult wrapKey(byte[] key, EncryptionKeyWrapMetadata metadata) {
-            EncryptionKeyWrapMetadata responseMetadata = new EncryptionKeyWrapMetadata(metadata.value + EncryptionTests.metadataUpdateSuffix);
-            int moveBy = StringUtils.equals(metadata.value, EncryptionTests.metadata1.value) ? 1 : 2;
+            EncryptionKeyWrapMetadata responseMetadata = new EncryptionKeyWrapMetadata(metadata.value + OldEncryptionTests.metadataUpdateSuffix);
+            int moveBy = StringUtils.equals(metadata.value, OldEncryptionTests.metadata1.value) ? 1 : 2;
 
             for (int i = 0; i < key.length; i++) {
                 key[i] = (byte) (key[i] + moveBy);
@@ -359,63 +257,5 @@ public class EncryptionTests extends TestSuiteBase {
 
             return new EncryptionKeyWrapResult(key, responseMetadata);
         }
-    }
-
-
-    // This class is same as CosmosEncryptor but copied so as to induce decryption failure easily for testing.
-    public static class TestEncryptor implements Encryptor {
-        public final DataEncryptionKeyProvider dataEncryptionKeyProvider;
-        public boolean FailDecryption;
-
-        public TestEncryptor(DataEncryptionKeyProvider dataEncryptionKeyProvider) {
-            this.dataEncryptionKeyProvider = dataEncryptionKeyProvider;
-            this.FailDecryption = false;
-        }
-
-        public byte[] decryptAsync(
-            byte[] cipherText,
-            String dataEncryptionKeyId,
-            String encryptionAlgorithm) {
-            if (this.FailDecryption && dataEncryptionKeyId.equals("failDek")) {
-                throw new IllegalArgumentException("Null {nameof(DataEncryptionKey)} returned.");
-            }
-
-            DataEncryptionKey dek = this.dataEncryptionKeyProvider.getDataEncryptionKey(
-                dataEncryptionKeyId,
-                encryptionAlgorithm);
-
-            if (dek == null) {
-                throw new IllegalArgumentException("Null {nameof(DataEncryptionKey)} returned from {nameof(this.DataEncryptionKeyProvider.FetchDataEncryptionKeyAsync)}.");
-            }
-
-            return dek.decryptData(cipherText);
-        }
-
-        public byte[] encryptAsync(
-            byte[] plainText,
-            String dataEncryptionKeyId,
-            String encryptionAlgorithm) {
-            DataEncryptionKey dek = this.dataEncryptionKeyProvider.getDataEncryptionKey(
-                dataEncryptionKeyId,
-                encryptionAlgorithm);
-
-            return dek.encryptData(plainText);
-        }
-    }
-
-    private static  CosmosItemResponse<TestDoc> CreateItemAsync(
-        CosmosAsyncContainer container,
-        String dekId,
-        List<String> pathsToEncrypt,
-        String partitionKey) {
-        TestDoc testDoc = TestDoc.Create(partitionKey);
-        CosmosItemResponse<TestDoc> createResponse =  container.createItem(
-        testDoc,
-        new PartitionKey(testDoc.pk),
-        EncryptionTests.GetRequestOptions(dekId, pathsToEncrypt)).block();
-
-        assertThat(createResponse.getStatusCode()).isEqualTo(201);
-        assertThat(createResponse.getItem()).isEqualTo(testDoc);
-        return createResponse;
     }
 }

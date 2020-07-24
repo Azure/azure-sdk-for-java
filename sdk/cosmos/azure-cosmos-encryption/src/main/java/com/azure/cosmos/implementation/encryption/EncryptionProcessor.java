@@ -5,13 +5,11 @@ package com.azure.cosmos.implementation.encryption;
 
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.InternalServerErrorException;
-import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.encryption.api.CosmosEncryptionAlgorithm;
-import com.azure.cosmos.implementation.encryption.api.DataEncryptionKey;
-import com.azure.cosmos.implementation.encryption.api.DataEncryptionKeyProvider;
+import com.azure.cosmos.Encryptor;
 import com.azure.cosmos.implementation.encryption.api.EncryptionOptions;
+import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.implementation.guava27.Strings;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -22,13 +20,11 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
 
-// TODO: can this be moved to encryption package?
 public class EncryptionProcessor {
+    public static byte[] encryptAsync(byte[] payload, Encryptor encryptor, EncryptionOptions encryptionOptions) {
 
-    public ObjectNode encryptAsync(
-        ObjectNode itemJObj,
-        EncryptionOptions encryptionOptions,
-        DataEncryptionKeyProvider dataEncryptionKeyProvider) {
+        ObjectNode itemJObj = Utils.parse(payload, ObjectNode.class);
+
         assert (itemJObj != null);
         assert (encryptionOptions != null);
         assert (encryptionOptions.getPathsToEncrypt() != null);
@@ -48,10 +44,6 @@ public class EncryptionProcessor {
             throw new IllegalArgumentException("Invalid encryption options: encryptionOptions.getEncryptionAlgorithm." + encryptionOptions.getEncryptionAlgorithm());
         }
 
-        if (dataEncryptionKeyProvider == null) {
-            throw new IllegalArgumentException(RMResources.EncryptionKeyProviderNotConfigured);
-        }
-
         ObjectNode toEncryptJObj = Utils.getSimpleObjectMapper().createObjectNode();
 
         for (String pathToEncrypt : encryptionOptions.getPathsToEncrypt()) {
@@ -69,25 +61,35 @@ public class EncryptionProcessor {
         SensitiveDataTransformer serializer = new SensitiveDataTransformer();
         byte[] plainText = serializer.toByteArray(toEncryptJObj);
 
-        DataEncryptionKey dataEncryptionKey = dataEncryptionKeyProvider.getDataEncryptionKey(encryptionOptions.getDataEncryptionKeyId(), encryptionOptions.getEncryptionAlgorithm());
+        byte[] cipherText = encryptor.encryptAsync(plainText, encryptionOptions.getDataEncryptionKeyId(), encryptionOptions.getEncryptionAlgorithm());
+
+        Preconditions.checkNotNull(cipherText, "cipherText");
+
 
         EncryptionProperties encryptionProperties = new EncryptionProperties(
             /* encryptionFormatVersion: */ 2,
             encryptionOptions.getEncryptionAlgorithm(),
             encryptionOptions.getDataEncryptionKeyId(),
-            dataEncryptionKey.encryptData(plainText));
+            cipherText);
 
         itemJObj.set(Constants.Properties.EncryptedInfo, encryptionProperties.toObjectNode());
 
-        return itemJObj;
+        // TODO:             return EncryptionProcessor.BaseSerializer.ToStream(itemJObj);
+
+        return EncryptionUtils.serializeJsonToByteArray(Utils.getSimpleObjectMapper(), itemJObj);
+
     }
 
+    public static byte[] decryptAsync(byte[] input, Encryptor encryptor) {
+        ObjectNode itemJObj = Utils.parse(input, ObjectNode.class);
+        itemJObj = decryptAsync(itemJObj, encryptor);
 
-    public ObjectNode decryptAsync(
-        ObjectNode itemJObj,
-        DataEncryptionKeyProvider keyProvider) {
+        return EncryptionUtils.serializeJsonToByteArray(Utils.getSimpleObjectMapper(), itemJObj);
+    }
+
+    public static ObjectNode decryptAsync(ObjectNode itemJObj, Encryptor encryptor) {
         assert (itemJObj != null);
-        assert (keyProvider != null);
+        assert (encryptor != null);
 
         JsonNode encryptionPropertiesJProp = itemJObj.get(Constants.Properties.EncryptedInfo);
         ObjectNode encryptionPropertiesJObj = null;
@@ -110,10 +112,7 @@ public class EncryptionProcessor {
                 "Unknown encryption format version: %s. Please upgrade your SDK to the latest version.", encryptionProperties.getEncryptionFormatVersion()));
         }
 
-        // get key
-        DataEncryptionKey inMemoryRawDek = keyProvider.getDataEncryptionKey(encryptionProperties.getDataEncryptionKeyId(), CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256_RANDOMIZED);
-
-        byte[] plainText = inMemoryRawDek.decryptData(encryptionProperties.getEncryptedData());
+        byte[] plainText = encryptor.decryptAsync(encryptionProperties.getEncryptedData(), encryptionProperties.getDataEncryptionKeyId(), encryptionProperties.getEncryptionAlgorithm());
 
         SensitiveDataTransformer parser = new SensitiveDataTransformer();
         ObjectNode plainTextJObj = parser.toObjectNode(plainText);
@@ -128,7 +127,7 @@ public class EncryptionProcessor {
         return itemJObj;
     }
 
-    static class SensitiveDataTransformer {
+    public static class SensitiveDataTransformer {
         public <T> ObjectNode toObjectNode(byte[] plainText) {
             if (Utils.isEmpty(plainText)) {
                 return null;
