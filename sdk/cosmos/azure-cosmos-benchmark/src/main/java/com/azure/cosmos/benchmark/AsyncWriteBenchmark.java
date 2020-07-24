@@ -3,8 +3,8 @@
 
 package com.azure.cosmos.benchmark;
 
-import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.codahale.metrics.Timer;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -64,12 +64,18 @@ class AsyncWriteBenchmark extends AsyncBenchmark<CosmosItemResponse> {
         Mono<CosmosItemResponse<PojoizedJson>> obs;
         if (configuration.isDisablePassingPartitionKeyAsOptionOnWrite()) {
             // require parsing partition key from the doc
-            obs = cosmosAsyncContainer.createItem(generateDocument(partitionKey, dataFieldValue));
+            obs = cosmosAsyncContainer.createItem(BenchmarkHelper.generateDocument(partitionKey,
+                dataFieldValue,
+                partitionKey,
+                configuration.getDocumentDataFieldCount()));
         } else {
             // more optimized for write as partition ke is already passed as config
-            obs = cosmosAsyncContainer.createItem(generateDocument(partitionKey, dataFieldValue),
-                                                  new PartitionKey(partitionKey),
-                                                  new CosmosItemRequestOptions());
+            obs = cosmosAsyncContainer.createItem(BenchmarkHelper.generateDocument(partitionKey,
+                dataFieldValue,
+                partitionKey,
+                configuration.getDocumentDataFieldCount()),
+                new PartitionKey(partitionKey),
+                new CosmosItemRequestOptions());
         }
 
         concurrencyControlSemaphore.acquire();
