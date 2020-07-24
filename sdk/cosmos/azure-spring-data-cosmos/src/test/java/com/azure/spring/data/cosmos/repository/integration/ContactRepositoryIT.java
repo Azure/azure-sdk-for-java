@@ -5,6 +5,7 @@ package com.azure.spring.data.cosmos.repository.integration;
 import com.azure.spring.data.cosmos.common.TestUtils;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.domain.Contact;
+import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.ContactRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
@@ -21,6 +22,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -198,5 +200,40 @@ public class ContactRepositoryIT {
         final Optional<Contact> optional = repository.findById("unknown-id");
 
         Assert.assertFalse(optional.isPresent());
+    }
+
+    @Test
+    public void testShouldFindSingleEntity() {
+        final Contact contact = repository.findOneByTitle(TEST_CONTACT.getTitle());
+
+        Assert.assertEquals(TEST_CONTACT, contact);
+    }
+
+    @Test
+    public void testShouldFindSingleOptionalEntity() {
+        final Optional<Contact> contact = repository.findOptionallyByTitle(TEST_CONTACT.getTitle());
+        Assert.assertTrue(contact.isPresent());
+        Assert.assertEquals(TEST_CONTACT, contact.get());
+
+        Assert.assertFalse(repository.findOptionallyByTitle("not here").isPresent());
+    }
+
+    @Test(expected = CosmosAccessException.class)
+    public void testShouldFailIfMultipleResultsReturned() {
+        repository.save(new Contact("testId2", TEST_CONTACT.getTitle()));
+
+        repository.findOneByTitle(TEST_CONTACT.getTitle());
+    }
+
+    @Test
+    public void testShouldAllowListAndIterableResponses() {
+        final List<Contact> contactList = repository.findByTitle(TEST_CONTACT.getTitle());
+        Assert.assertEquals(TEST_CONTACT, contactList.get(0));
+        Assert.assertEquals(1, contactList.size());
+
+        final Iterator<Contact> contactIterator = repository.findByLogicId(TEST_CONTACT.getLogicId()).iterator();
+        Assert.assertTrue(contactIterator.hasNext());
+        Assert.assertEquals(TEST_CONTACT, contactIterator.next());
+        Assert.assertFalse(contactIterator.hasNext());
     }
 }

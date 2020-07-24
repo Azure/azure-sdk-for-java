@@ -5,7 +5,6 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.ConsistencyPolicy;
-import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.CosmosResourceType;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.DatabaseAccount;
@@ -14,6 +13,8 @@ import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Index;
+import com.azure.cosmos.implementation.InternalObjectNode;
+import com.azure.cosmos.implementation.ItemDeserializer;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Offer;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -33,8 +34,6 @@ import com.azure.cosmos.implementation.UserDefinedFunction;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.Warning;
 import com.azure.cosmos.implementation.directconnectivity.Address;
-import com.azure.cosmos.implementation.ItemDeserializer;
-import com.azure.cosmos.implementation.encryption.api.EncryptionOptions;
 import com.azure.cosmos.implementation.query.PartitionedQueryExecutionInfoInternal;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.query.QueryItem;
@@ -610,13 +609,6 @@ public final class ModelBridgeInternal {
         } else {
             throw new IllegalArgumentException("getJsonSerializable method does not exists in class " + t.getClass());
         }
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosItemRequestOptions setEncryptionOptions(CosmosItemRequestOptions options,
-                                                                EncryptionOptions encryptionOptions) {
-        options.setEncryptionOptions(encryptionOptions);
-        return options;
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

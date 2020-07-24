@@ -279,7 +279,8 @@ class ClientSideRequestStatistics {
             IOException {
             generator.writeStartObject();
             long requestLatency = statistics.getDuration().toMillis();
-            generator.writeNumberField("requestLatency", requestLatency);
+            generator.writeStringField("userAgent", CosmosDiagnostics.USER_AGENT);
+            generator.writeNumberField("requestLatencyInMs", requestLatency);
             generator.writeStringField("requestStartTimeUTC", DiagnosticsInstantSerializer.formatDateTime(statistics.requestStartTimeUTC));
             generator.writeStringField("requestEndTimeUTC", DiagnosticsInstantSerializer.formatDateTime(statistics.requestEndTimeUTC));
             generator.writeObjectField("connectionMode", statistics.connectionMode);
