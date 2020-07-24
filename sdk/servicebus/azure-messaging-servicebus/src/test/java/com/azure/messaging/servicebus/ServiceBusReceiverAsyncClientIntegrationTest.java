@@ -976,6 +976,36 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         }
     }
 
+    @Test
+    void receiveTwoMessagesAutoCompleteTestHemant() throws InterruptedException {
+        // Arrange
+        MessagingEntityType entityType = MessagingEntityType.QUEUE;
+        boolean isSessionEnabled = false;
+        setSenderAndReceiver(entityType, 0, isSessionEnabled);
+        final String messageId = UUID.randomUUID().toString();
+        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
+/*
+        sendMessage(message).block(TIMEOUT);
+        sendMessage(message).block(TIMEOUT);
+        sendMessage(message).block(TIMEOUT);
+        sendMessage(message).block(TIMEOUT);
+        sendMessage(message).block(TIMEOUT);
+*/
+        // Assert & Act
+        receiver.receiveMessages()
+            .take(5)
+            .timeout(Duration.ofSeconds(30))
+            .map(messageContext -> {
+                System.out.println(" !!!!! Received Message SQ: " + messageContext.getMessage().getSequenceNumber());
+                return messageContext;
+            })
+            .subscribe();
+
+            TimeUnit.SECONDS.sleep(30);
+
+        System.out.println(" !!! Done Exit after wait ..... ");
+    }
+
     /**
      * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created.
      */

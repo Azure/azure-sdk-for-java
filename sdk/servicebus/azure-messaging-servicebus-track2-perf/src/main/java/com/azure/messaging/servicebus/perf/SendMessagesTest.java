@@ -1,6 +1,7 @@
 package com.azure.messaging.servicebus.perf;
 
 import com.azure.messaging.servicebus.ServiceBusMessage;
+import com.azure.messaging.servicebus.models.ReceiveMode;
 import com.azure.messaging.servicebus.perf.core.ServiceBusStressOptions;
 import com.azure.messaging.servicebus.perf.core.ServiceTest;
 import reactor.core.publisher.Flux;
@@ -13,7 +14,7 @@ public class SendMessagesTest extends ServiceTest<ServiceBusStressOptions> {
     private List<ServiceBusMessage> messages = new ArrayList<>();
 
     public SendMessagesTest(ServiceBusStressOptions options) {
-        super(options);
+        super(options, ReceiveMode.PEEK_LOCK);
     }
 
     private  Mono<Void> sendMessages()
@@ -26,6 +27,7 @@ public class SendMessagesTest extends ServiceTest<ServiceBusStressOptions> {
         ServiceBusMessage message =  new ServiceBusMessage(CONTENTS.getBytes());
         return Flux.range(0, options.getMessagesToSend())
             .flatMap(count -> {
+                System.out.println(count + ". Adding message in List." );
                 messages.add(message);
                 return Mono.empty();
             })

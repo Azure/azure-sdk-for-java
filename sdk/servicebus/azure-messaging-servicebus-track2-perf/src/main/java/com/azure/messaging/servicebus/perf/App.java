@@ -21,7 +21,8 @@ public class App {
 
         try {
             testClasses = new Class<?>[]{
-                Class.forName("com.azure.messaging.servicebus.perf.ReceiveMessageTest"),
+                Class.forName("com.azure.messaging.servicebus.perf.ReceiveAndDeleteMessageTest"),
+                Class.forName("com.azure.messaging.servicebus.perf.ReceiveAndLockMessageTest"),
                 Class.forName("com.azure.messaging.servicebus.perf.SendMessageTest"),
                 Class.forName("com.azure.messaging.servicebus.perf.SendMessagesTest")
             };

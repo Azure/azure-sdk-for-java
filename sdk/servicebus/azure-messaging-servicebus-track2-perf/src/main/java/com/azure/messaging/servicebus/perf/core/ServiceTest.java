@@ -33,7 +33,7 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
 
     protected final String CONTENTS = "Performance Test Message";
 
-    public ServiceTest(TOptions options) {
+    public ServiceTest(TOptions options, ReceiveMode receiveMode) {
         super(options);
         String connectionString = System.getenv(AZURE_SERVICE_BUS_CONNECTION_STRING);
         if (CoreUtils.isNullOrEmpty(connectionString)) {
@@ -56,7 +56,7 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
 
         ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = baseBuilder
             .receiver()
-           // .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
+            .receiveMode(receiveMode)
             .queueName(queueName);
 
         ServiceBusClientBuilder.ServiceBusSenderClientBuilder senderBuilder = baseBuilder
