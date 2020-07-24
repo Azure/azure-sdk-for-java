@@ -85,11 +85,11 @@ public class InternalObjectNode extends Resource {
     public static ByteBuffer serializeJsonToByteBuffer(Object cosmosItem, ObjectMapper objectMapper) {
         if (cosmosItem instanceof InternalObjectNode) {
             return ((InternalObjectNode) cosmosItem).serializeJsonToByteBuffer();
+        } else if (cosmosItem instanceof Document) {
+            return ModelBridgeInternal.serializeJsonToByteBuffer((Document) cosmosItem);
+        } else if (cosmosItem instanceof byte[]) {
+            return ByteBuffer.wrap((byte[]) cosmosItem);
         } else {
-            if (cosmosItem instanceof Document) {
-                return ModelBridgeInternal.serializeJsonToByteBuffer((Document) cosmosItem);
-            }
-
             return Utils.serializeJsonToByteBuffer(objectMapper, cosmosItem);
         }
     }

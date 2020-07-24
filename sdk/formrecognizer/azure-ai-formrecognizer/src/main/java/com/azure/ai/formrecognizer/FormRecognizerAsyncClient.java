@@ -354,7 +354,7 @@ public final class FormRecognizerAsyncClient {
      * model.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
-     * See <a href="https://aka.ms/azsdk/python/formrecognizer/receiptfields">here</a> for fields found on a receipt.
+     * See <a href="https://aka.ms/formrecognizer/receiptfields">here</a> for fields found on a receipt.
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceiptsFromUrl#string}
@@ -419,7 +419,7 @@ public final class FormRecognizerAsyncClient {
      * trained model.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
-     * See <a href="https://aka.ms/azsdk/python/formrecognizer/receiptfields">here</a> for fields found on a receipt.
+     * See <a href="https://aka.ms/formrecognizer/receiptfields">here</a> for fields found on a receipt.
      *
      * Note that the {@code receipt} passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flux} must produce the same data each time it is subscribed to.
@@ -447,7 +447,7 @@ public final class FormRecognizerAsyncClient {
      * and a prebuilt receipt trained model.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
-     * See <a href="https://aka.ms/azsdk/python/formrecognizer/receiptfields">here</a> for fields found on a receipt.
+     * See <a href="https://aka.ms/formrecognizer/receiptfields">here</a> for fields found on a receipt.
      *
      * Note that the {@code data} passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flux} must produce the same data each time it is subscribed to.
