@@ -8,21 +8,6 @@ import java.time.Duration;
  * The DelayProvider to help thread sleep.
  */
 public interface DelayProvider {
-
-    /**
-     * Thread sleep.
-     *
-     * @param milliseconds time for sleep
-     */
-    void sleep(int milliseconds);
-
-    /**
-     * Get the retry timeout for long running operation.
-     *
-     * @return the timeout value.
-     */
-    Duration getLroRetryTimeout();
-
     /**
      * Get the duration for delay.
      *

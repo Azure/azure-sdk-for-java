@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.core.management.provider;
 
-import java.time.OffsetDateTime;
-
 /**
  * The IdentifierProvider to help generate distinct values.
  */
@@ -23,9 +21,4 @@ public interface IdentifierProvider {
      * @return the UUID string.
      */
     String randomUuid();
-
-    /**
-     * @return the current time offset.
-     */
-    OffsetDateTime dateTimeNow();
 }
