@@ -127,7 +127,7 @@ For reactive repository support, use `@EnableReactiveCosmosRepositories`
 2.2.x supports Response Diagnostics String and Query Metrics. 
 Set `queryMetricsEnabled` flag to true in application.properties to enable query metrics.
 In addition to setting the flag, implement `ResponseDiagnosticsProcessor` to log diagnostics information. 
-<!-- embedme src/samples/java/com/azure/cosmos/AppConfiguration.java#L22-L73 -->
+<!-- embedme src/samples/java/com/azure/cosmos/AppConfiguration.java#L24-L87 -->
 
 ```java
 @Configuration
@@ -153,7 +153,8 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
 
     private AzureKeyCredential azureKeyCredential;
 
-    public CosmosConfig getConfig() {
+    @Bean
+    public CosmosClientConfig getClientConfig() {
         this.azureKeyCredential = new AzureKeyCredential(key);
         DirectConnectionConfig directConnectionConfig = new DirectConnectionConfig();
         GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
@@ -161,16 +162,27 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
             .endpoint(uri)
             .credential(azureKeyCredential)
             .directMode(directConnectionConfig, gatewayConnectionConfig);
+        return CosmosClientConfig.builder()
+            .cosmosClientBuilder(cosmosClientBuilder)
+            .database(getDatabaseName())
+            .build();
+    }
+
+    @Override
+    public CosmosConfig cosmosConfig() {
         return CosmosConfig.builder()
-                           .database(dbName)
-                           .enableQueryMetrics(queryMetricsEnabled)
-                           .cosmosClientBuilder(cosmosClientBuilder)
-                           .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
-                           .build();
+            .enableQueryMetrics(queryMetricsEnabled)
+            .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
+            .build();
     }
 
     public void switchToSecondaryKey() {
         this.azureKeyCredential.update(secondaryKey);
+    }
+
+    @Override
+    protected String getDatabaseName() {
+        return "testdb";
     }
 
     private static class ResponseDiagnosticsProcessorImplementation implements ResponseDiagnosticsProcessor {
@@ -184,20 +196,29 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
 }
 ```
 Or if you want to customize your config:
-<!-- embedme src/samples/java/com/azure/cosmos/AppConfigurationCodeSnippet.java#L44-L56 -->
+<!-- embedme src/samples/java/com/azure/cosmos/AppConfigurationCodeSnippet.java#L46-L66 -->
+
 ```java
-public CosmosConfig getConfig() {
+@Bean
+public CosmosClientConfig getClientConfig() {
+
     DirectConnectionConfig directConnectionConfig = new DirectConnectionConfig();
     GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
     CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
         .endpoint(uri)
         .directMode(directConnectionConfig, gatewayConnectionConfig);
+    return CosmosClientConfig.builder()
+        .cosmosClientBuilder(cosmosClientBuilder)
+        .database(getDatabaseName())
+        .build();
+}
+
+@Override
+public CosmosConfig cosmosConfig() {
     return CosmosConfig.builder()
-                       .database(dbName)
-                       .enableQueryMetrics(queryMetricsEnabled)
-                       .cosmosClientBuilder(cosmosClientBuilder)
-                       .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
-                       .build();
+        .enableQueryMetrics(queryMetricsEnabled)
+        .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
+        .build();
 }
 ```
 By default, `@EnableCosmosRepositories` will scan the current package for any interfaces that extend one of Spring Data's repository interfaces. Using it to annotate your Configuration class to scan a different root package by `@EnableCosmosRepositories(basePackageClass=UserRepository.class)` if your project layout has multiple projects and it's not finding your repositories.
@@ -335,10 +356,10 @@ public class SampleApplication implements CommandLineRunner {
 Autowired UserRepository interface, then can do save, delete and find operations. Spring Data Azure Cosmos DB uses the CosmosTemplate to execute the queries behind *find*, *save* methods. You can use the template yourself for more complex queries.
 
 ## Support multi-database configuration
-The `azure-spring-data-cosmos` support multi-database configuration, here is a sample to config multiple account database
+The `azure-spring-data-cosmos` support multi-database configuration, includes "multiple account" and "single account, multiple database". Here is an example.
 
 ### Add the dependency
-[//]: # ({x-version-update-start;com.azure:azure-spring-data-cosmos;current})
+[//]: # "{x-version-update-start;com.azure:azure-spring-data-cosmos;current}"
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
@@ -351,12 +372,14 @@ The `azure-spring-data-cosmos` support multi-database configuration, here is a s
 ### Config application properties
 The example uses the `application.properties` file
 ```properties
+# primary account cosmos config
 azure.cosmos.primary.uri=your-primary-cosmosDb-uri
 azure.cosmos.primary.key=your-primary-cosmosDb-key
 azure.cosmos.primary.secondaryKey=your-primary-cosmosDb-secondary-key
 azure.cosmos.primary.database=your-primary-cosmosDb-dbName
 azure.cosmos.primary.populateQueryMetrics=if-populate-query-metrics
 
+# secondary account cosmos config
 azure.cosmos.secondary.uri=your-secondary-cosmosDb-uri
 azure.cosmos.secondary.key=your-secondary-cosmosDb-key
 azure.cosmos.secondary.secondaryKey=your-secondary-cosmosDb-secondary-key
@@ -365,16 +388,20 @@ azure.cosmos.secondary.populateQueryMetrics=if-populate-query-metrics
 ```
 
 ### Define Entities and Repositories
-The [Entity](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-spring-data-cosmos#create-repositories) definition is same as above.
+The [Entity](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-spring-data-cosmos#define-an-entity)  and [Repository](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-spring-data-cosmos#create-repositories) definition is similar as above.
 You can put different database entities into different packages.
 
 ### Setup configuration
 The `@EnableReactiveCosmosRepositories` or `@EnableCosmosRepositories` support user-define the cosmos template, use `reactiveCosmosTemplateRef` or `cosmosTemplateRef` to config the name of the `ReactiveCosmosTemplate` or `CosmosTemplate` bean to be used with the repositories detected.
-<!-- embedme src/samples/java/com/azure/cosmos/multidatasource/DatabaseConfiguration.java#L25-L76 -->
+If you have multiple cosmos database accounts, you can define multiple `CosmosAsyncClient`. If the single cosmos account has multiple databases, you can use the same `CosmosAsyncClient` to initialize the cosmos template.
+<!-- embedme src/samples/java/com/azure/cosmos/multidatasource/DatabaseConfiguration.java#L33-L132 -->
+
 ```java
 @Configuration
 @PropertySource("classpath:application.properties")
 public class DatabaseConfiguration extends AbstractCosmosConfiguration {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseConfiguration.class);
 
     @Bean
     @ConfigurationProperties(prefix = "azure.cosmos.primary")
@@ -388,45 +415,117 @@ public class DatabaseConfiguration extends AbstractCosmosConfiguration {
         return new CosmosProperties();
     }
 
-    @EnableReactiveCosmosRepositories(basePackages = "com.azure.cosmos.multidatasource.primarydatasource")
+    @Autowired
+    @Qualifier("primaryDataSourceConfiguration")
+    CosmosProperties primaryProperties;
+
+    @Autowired
+    @Qualifier("secondaryDataSourceConfiguration")
+    CosmosProperties secondaryProperties;
+
+    @Bean
+    public CosmosClientConfig cosmosClientConfig() {
+        CosmosClientConfig cosmosClientConfig = CosmosClientConfig.builder()
+            .cosmosClientBuilder(new CosmosClientBuilder()
+                .key(primaryProperties.getKey()).endpoint(primaryProperties.getUri()))
+            .database(primaryProperties.getDatabase())
+            .build();
+
+        return cosmosClientConfig;
+    }
+    @Bean
+    public CosmosClientConfig secondaryCosmosClientConfig() {
+        CosmosClientConfig cosmosClientConfig = CosmosClientConfig.builder()
+            .cosmosClientBuilder(new CosmosClientBuilder()
+                .key(secondaryProperties.getKey()).endpoint(secondaryProperties.getUri()))
+            .database(secondaryProperties.getDatabase())
+            .build();
+        return cosmosClientConfig;
+    }
+    // -------------------------First Cosmos Client for First Cosmos Account---------------------------
+    @EnableReactiveCosmosRepositories(basePackages = "com.azure.cosmos.multidatasource.primarydatasource.first")
     public class PrimaryDataSourceConfiguration {
-        @Autowired
-        @Qualifier("primaryDataSourceConfiguration")
-        CosmosProperties properties;
-        @Bean
-        public CosmosConfig cosmosConfig() {
-            CosmosConfig cosmosConfig = CosmosConfig.builder()
-                .cosmosClientBuilder(new CosmosClientBuilder()
-                    .key(properties.getKey()).endpoint(properties.getUri()))
-                .database(properties.getDatabase())
-                .enableQueryMetrics(properties.isQueryMetricsEnabled())
-                .build();
-            return cosmosConfig;
-        }
 
     }
-
-    @EnableReactiveCosmosRepositories(basePackages = "com.azure.cosmos.multidatasource.secondarydatasource", reactiveCosmosTemplateRef = "secondaryReactiveCosmosTemplate")
-    public class SecondaryDataSourceConfiguration {
-        @Autowired
-        @Qualifier("secondaryDataSourceConfiguration")
-        CosmosProperties properties;
+    @EnableReactiveCosmosRepositories(basePackages = "com.azure.cosmos.multidatasource.primarydatasource.second", reactiveCosmosTemplateRef = "primaryReactiveCosmosTemplate")
+    public class PrimaryDataSourceConfiguration2 {
         @Bean
-        public ReactiveCosmosTemplate secondaryReactiveCosmosTemplate(MappingCosmosConverter mappingCosmosConverter) {
-            CosmosConfig cosmosConfig = CosmosConfig.builder()
-                .cosmosClientBuilder(new CosmosClientBuilder()
-                    .key(properties.getKey()).endpoint(properties.getUri()))
-                .database(properties.getDatabase())
-                .enableQueryMetrics(properties.isQueryMetricsEnabled())
-                .build();
-
-            return new ReactiveCosmosTemplate(new CosmosFactory(cosmosConfig), mappingCosmosConverter, cosmosConfig.getDatabase());
+        public ReactiveCosmosTemplate primaryReactiveCosmosTemplate(CosmosAsyncClient cosmosAsyncClient, CosmosConfig cosmosConfig, MappingCosmosConverter mappingCosmosConverter) {
+            return new ReactiveCosmosTemplate(cosmosAsyncClient, "test1_2", cosmosConfig, mappingCosmosConverter);
         }
+    }
+
+    // -------------------------Second Cosmos Client for Secondary Cosmos Account---------------------------
+    @Bean("secondaryCosmosAsyncClient")
+    public CosmosAsyncClient getCosmosAsyncClient(CosmosClientConfig secondaryCosmosClientConfig) {
+        return CosmosFactory.createCosmosAsyncClient(secondaryCosmosClientConfig);
+    }
+
+    @Bean("secondaryCosmosConfig")
+    public CosmosConfig getCosmosConfig() {
+        return CosmosConfig.builder()
+            .enableQueryMetrics(true)
+            .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
+            .build();
+    }
+
+    @EnableReactiveCosmosRepositories(basePackages = "com.azure.cosmos.multidatasource.secondarydatasource.first", reactiveCosmosTemplateRef = "secondaryReactiveCosmosTemplate")
+    public class SecondaryDataSourceConfiguration {
+        @Bean
+        public CosmosTemplate secondaryReactiveCosmosTemplate(@Qualifier("secondaryCosmosAsyncClient") CosmosAsyncClient client, @Qualifier("secondaryCosmosConfig") CosmosConfig cosmosConfig, MappingCosmosConverter mappingCosmosConverter) {
+            return new CosmosTemplate(client, "test2_1", cosmosConfig, mappingCosmosConverter);
+        }
+    }
+    @EnableReactiveCosmosRepositories(basePackages = "com.azure.cosmos.multidatasource.secondarydatasource.second", reactiveCosmosTemplateRef = "secondaryReactiveCosmosTemplate1")
+    public class SecondaryDataSourceConfiguration1 {
+        @Bean
+        public CosmosTemplate secondaryReactiveCosmosTemplate1(@Qualifier("secondaryCosmosAsyncClient") CosmosAsyncClient client, @Qualifier("secondaryCosmosConfig") CosmosConfig cosmosConfig, MappingCosmosConverter mappingCosmosConverter) {
+            return new CosmosTemplate(client, "test2_2", cosmosConfig, mappingCosmosConverter);
+        }
+    }
+
+    private static class ResponseDiagnosticsProcessorImplementation implements ResponseDiagnosticsProcessor {
+
+        @Override
+        public void processResponseDiagnostics(@Nullable ResponseDiagnostics responseDiagnostics) {
+            LOGGER.info("Response Diagnostics {}", responseDiagnostics);
+        }
+    }
+
+    @Override
+    protected String getDatabaseName() {
+        return "test1_1";
     }
 }
 ```
 
+In the above example, we have two cosmos account, each account has two databases. For each account, we can use the same Cosmos Client. You can create the `CosmosAsyncClient` like this:
+
+<!-- embedme src/samples/java/com/azure/cosmos/multidatasource/DatabaseConfiguration.java#L92-L95 -->
+
+```java
+@Bean("secondaryCosmosAsyncClient")
+public CosmosAsyncClient getCosmosAsyncClient(CosmosClientConfig secondaryCosmosClientConfig) {
+    return CosmosFactory.createCosmosAsyncClient(secondaryCosmosClientConfig);
+}
+```
+
+Besides, if you want to define `queryMetricsEnabled` or `ResponseDiagnosticsProcessor` , you can create the `CosmosConfig` for your cosmos template.
+
+<!-- embedme src/samples/java/com/azure/cosmos/multidatasource/DatabaseConfiguration.java#L97-L103 -->
+
+```java
+@Bean("secondaryCosmosConfig")
+public CosmosConfig getCosmosConfig() {
+    return CosmosConfig.builder()
+        .enableQueryMetrics(true)
+        .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
+        .build();
+}
+```
+
 ### Create an Application class
+
 <!-- embedme src/samples/java/com/azure/cosmos/multidatasource/MultiDatasourceApplication.java#L23-L61 -->
 
 ```java
@@ -490,7 +589,7 @@ Contribution is welcome. Please follow [this instruction](./CONTRIBUTING.md) to 
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
-### Data/Telemetry
+### Data
 
  This project collects usage data and sends it to Microsoft to help improve our products and services. Read our [privacy](https://privacy.microsoft.com/privacystatement) statement to learn more.
 

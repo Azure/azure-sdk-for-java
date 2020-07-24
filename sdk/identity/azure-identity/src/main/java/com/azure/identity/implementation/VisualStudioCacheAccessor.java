@@ -6,7 +6,7 @@ package com.azure.identity.implementation;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.CredentialUnavailableException;
-import com.azure.identity.KnownAuthorityHosts;
+import com.azure.identity.AzureAuthorityHosts;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.aad.msal4jextensions.persistence.mac.KeyChainAccessor;
@@ -161,15 +161,15 @@ public class VisualStudioCacheAccessor {
 
         switch (cloud) {
             case "Azure":
-                return KnownAuthorityHosts.AZURE_CLOUD;
+                return AzureAuthorityHosts.AZURE_PUBLIC_CLOUD;
             case "AzureChina":
-                return KnownAuthorityHosts.AZURE_CHINA_CLOUD;
+                return AzureAuthorityHosts.AZURE_CHINA;
             case "AzureGermanCloud":
-                return KnownAuthorityHosts.AZURE_GERMAN_CLOUD;
+                return AzureAuthorityHosts.AZURE_GERMANY;
             case "AzureUSGovernment":
-                return KnownAuthorityHosts.AZURE_US_GOVERNMENT;
+                return AzureAuthorityHosts.AZURE_GOVERNMENT;
             default:
-                return KnownAuthorityHosts.AZURE_CLOUD;
+                return AzureAuthorityHosts.AZURE_PUBLIC_CLOUD;
         }
     }
 
