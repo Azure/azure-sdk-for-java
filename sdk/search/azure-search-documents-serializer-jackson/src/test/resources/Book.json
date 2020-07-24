@@ -1,9 +1,0 @@
-{
-  "ISBN": "1",
-  "Title": "Book1",
-  "Author": {
-    "FirstName": "my",
-    "LastName": "name"
-  },
-  "PublishDate": "2010-06-27T00:00:00Z"
-}
