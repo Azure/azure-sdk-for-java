@@ -6,7 +6,6 @@ package com.azure.search.documents;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.experimental.serializer.JsonOptions;
 import com.azure.core.experimental.serializer.JsonSerializer;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
@@ -14,6 +13,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.ServiceVersion;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.search.documents.implementation.SearchIndexClientImpl;
 import com.azure.search.documents.implementation.SearchIndexClientImplBuilder;
 import com.azure.search.documents.implementation.converters.AutocompleteModeConverter;
@@ -34,7 +34,6 @@ import com.azure.search.documents.implementation.models.SuggestRequest;
 import com.azure.search.documents.implementation.util.DocumentResponseConversions;
 import com.azure.search.documents.implementation.util.MappingUtils;
 import com.azure.search.documents.implementation.util.SuggestOptionsHandler;
-import com.azure.search.documents.implementation.util.Utility;
 import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.AutocompleteOptions;
 import com.azure.search.documents.models.FacetResult;
@@ -48,7 +47,6 @@ import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
 import com.azure.search.documents.models.SuggestOptions;
 import com.azure.search.documents.models.SuggestResult;
-import com.azure.search.documents.serializer.SearchSerializerProviders;
 import com.azure.search.documents.util.AutocompletePagedFlux;
 import com.azure.search.documents.util.AutocompletePagedResponse;
 import com.azure.search.documents.util.SearchPagedFlux;
@@ -68,6 +66,7 @@ import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.search.documents.implementation.util.Utility.initializeSerializerAdapter;
 
 /**
  * This class provides a client that contains the operations for querying an index and uploading, merging, or deleting
@@ -113,22 +112,26 @@ public final class SearchAsyncClient {
      */
     private final HttpPipeline httpPipeline;
 
-    private static final JsonSerializer SERIALIZER = createSerializerInstance();
+    private final JsonSerializer serializer;
+
+    private static final SerializerAdapter ADAPTER = initializeSerializerAdapter();
 
     /**
      * Package private constructor to be used by {@link SearchClientBuilder}
      */
     SearchAsyncClient(String endpoint, String indexName, SearchServiceVersion serviceVersion,
-        HttpPipeline httpPipeline) {
+        HttpPipeline httpPipeline, JsonSerializer serializer) {
         this.endpoint = endpoint;
         this.indexName = indexName;
         this.serviceVersion = serviceVersion;
         this.httpPipeline = httpPipeline;
+        this.serializer = serializer;
 
         restClient = new SearchIndexClientImplBuilder()
             .endpoint(endpoint)
             .indexName(indexName)
             .pipeline(httpPipeline)
+            .serializer(ADAPTER)
             .buildClient();
     }
 
@@ -465,7 +468,7 @@ public final class SearchAsyncClient {
         try {
             IndexDocumentsOptions documentsOptions = (options == null) ? new IndexDocumentsOptions() : options;
             return restClient.getDocuments()
-                .indexWithResponseAsync(IndexBatchBaseConverter.map(batch), null, context)
+                .indexWithResponseAsync(IndexBatchBaseConverter.map(batch, serializer), null, context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .flatMap(response -> (response.getStatusCode() == MULTI_STATUS_CODE
                     && documentsOptions.throwOnAnyError())
@@ -533,15 +536,10 @@ public final class SearchAsyncClient {
                 .onErrorMap(DocumentResponseConversions::exceptionMapper)
                 .flatMap(res -> {
                     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                    return SERIALIZER.serialize(outputStream, res.getValue()).flatMap(source -> {
-                        if (SearchDocument.class == modelClass) {
-                            return SERIALIZER.deserializeToMap(new ByteArrayInputStream(source.toByteArray()))
-                                .map(Utility::convertMaps)
-                                .map(map -> new SimpleResponse<>(res, (T) new SearchDocument(map)));
-                        }
-                        return SERIALIZER.deserialize(new ByteArrayInputStream(source.toByteArray()), modelClass)
-                            .map(map -> new SimpleResponse<>(res, map));
-                    }).map(Function.identity());
+                    return serializer.serialize(outputStream, res.getValue()).flatMap(source ->
+                         serializer.deserialize(new ByteArrayInputStream(source.toByteArray()), modelClass)
+                            .map(instance -> new SimpleResponse<>(res, (T) instance))
+                    ).map(Function.identity());
                 });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -681,9 +679,9 @@ public final class SearchAsyncClient {
             });
     }
 
-    private static List<SearchResult> getSearchResults(SearchDocumentsResult result) {
+    private List<SearchResult> getSearchResults(SearchDocumentsResult result) {
         return result.getResults().stream()
-            .map(SearchResultConverter::map)
+            .map(searchResult -> SearchResultConverter.map(searchResult, serializer))
             .collect(Collectors.toList());
     }
 
@@ -954,7 +952,4 @@ public final class SearchAsyncClient {
         return new IndexDocumentsBatch<T>().addActions(actions);
     }
 
-    private static JsonSerializer createSerializerInstance() {
-        return SearchSerializerProviders.createInstance(new JsonOptions().includeNulls());
-    }
 }

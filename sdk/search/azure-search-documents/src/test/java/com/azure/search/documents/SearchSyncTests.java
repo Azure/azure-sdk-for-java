@@ -237,9 +237,9 @@ public class SearchSyncTests extends SearchTestBase {
 
         List<Hotel> hotelsList = hotels.stream().map(hotel ->
             SERIALIZER.serialize(new ByteArrayOutputStream(), hotel).flatMap(sourceStream ->
-                SERIALIZER.deserialize(new ByteArrayInputStream(sourceStream.toByteArray()), Hotel.class)).block())
+                SERIALIZER.deserialize(new ByteArrayInputStream(sourceStream.toByteArray()), Hotel.class))
+                .map(object -> (Hotel) object).block())
             .collect(Collectors.toList());
-
         assertEquals(hotelsList.size(), actualResults.size());
         actualResults.sort(Comparator.comparing(doc -> Integer.parseInt(doc.hotelId())));
         for (int i = 0; i < hotelsList.size(); i++) {

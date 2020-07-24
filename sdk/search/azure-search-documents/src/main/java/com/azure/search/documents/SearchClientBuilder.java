@@ -5,6 +5,7 @@ package com.azure.search.documents;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.experimental.serializer.JsonSerializer;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
@@ -23,6 +24,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.search.documents.implementation.util.Utility;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -35,7 +37,7 @@ import java.util.Objects;
  * This class provides a fluent builder API to help aid the configuration and instantiation of {@link SearchClient
  * SearchClients} and {@link SearchAsyncClient SearchAsyncClients}. Call {@link #buildClient() buildClient} and {@link
  * #buildAsyncClient() buildAsyncClient} respectively to construct an instance of the desired client.
- * <p>
+ *
  * The following must be provided to construct a client instance.
  * <ul>
  * <li>The Azure Cognitive Search service URL.</li>
@@ -84,7 +86,7 @@ public final class SearchClientBuilder {
     private Configuration configuration;
     private String indexName;
     private RetryPolicy retryPolicy;
-
+    private JsonSerializer jsonSerializer;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link SearchClient SearchClients} and {@link
@@ -99,7 +101,7 @@ public final class SearchClientBuilder {
     /**
      * Creates a {@link SearchClient} based on options set in the builder. Every time {@code buildClient()} is called a
      * new instance of {@link SearchClient} is created.
-     * <p>
+     *
      * If {@link #pipeline(HttpPipeline) pipeline} is set, then only the {@code pipeline}, {@link #endpoint(String)
      * endpoint}, and {@link #indexName(String) indexName} are used to create the {@link SearchClient client}. All other
      * builder settings are ignored.
@@ -114,7 +116,7 @@ public final class SearchClientBuilder {
     /**
      * Creates a {@link SearchAsyncClient} based on options set in the builder. Every time {@code buildAsyncClient()} is
      * called a new instance of {@link SearchAsyncClient} is created.
-     * <p>
+     *
      * If {@link #pipeline(HttpPipeline) pipeline} is set, then only the {@code pipeline}, {@link #endpoint(String)
      * endpoint}, and {@link #indexName(String) indexName} are used to create the {@link SearchAsyncClient client}. All
      * other builder settings are ignored.
@@ -129,8 +131,12 @@ public final class SearchClientBuilder {
             ? SearchServiceVersion.getLatest()
             : serviceVersion;
 
+        if (jsonSerializer == null) {
+            jsonSerializer = Utility.creatDefaultJsonSerializerInstance();
+        }
+
         if (httpPipeline != null) {
-            return new SearchAsyncClient(endpoint, indexName, buildVersion, httpPipeline);
+            return new SearchAsyncClient(endpoint, indexName, buildVersion, httpPipeline, jsonSerializer);
         }
 
         Objects.requireNonNull(credential, "'credential' cannot be null.");
@@ -164,7 +170,7 @@ public final class SearchClientBuilder {
             .policies(httpPipelinePolicies.toArray(new HttpPipelinePolicy[0]))
             .build();
 
-        return new SearchAsyncClient(endpoint, indexName, buildVersion, buildPipeline);
+        return new SearchAsyncClient(endpoint, indexName, buildVersion, buildPipeline, jsonSerializer);
     }
 
     /**
@@ -215,7 +221,7 @@ public final class SearchClientBuilder {
 
     /**
      * Sets the logging configuration for HTTP requests and responses.
-     * <p>
+     *
      * If logging configurations aren't provided HTTP requests and responses won't be logged.
      *
      * @param logOptions The logging configuration for HTTP requests and responses.
@@ -228,7 +234,7 @@ public final class SearchClientBuilder {
 
     /**
      * Adds a pipeline policy to apply to each request sent.
-     * <p>
+     *
      * This method may be called multiple times, each time it is called the policy will be added to the end of added
      * policy list. All policies will be added after the retry policy.
      *
@@ -238,6 +244,18 @@ public final class SearchClientBuilder {
      */
     public SearchClientBuilder addPolicy(HttpPipelinePolicy policy) {
         policies.add(Objects.requireNonNull(policy));
+        return this;
+    }
+
+    /**
+     * Adds customer serializer to apply to external defined models.
+     *
+     * @param jsonSerializer The serializer to serialize user defined models.
+     * @return The updated SearchClientBuilder object.
+     * @throws NullPointerException If {@code policy} is {@code null}.
+     */
+    public SearchClientBuilder serializer(JsonSerializer jsonSerializer) {
+        this.jsonSerializer = jsonSerializer;
         return this;
     }
 
@@ -258,7 +276,7 @@ public final class SearchClientBuilder {
 
     /**
      * Sets the HTTP pipeline to use for the service client.
-     * <p>
+     *
      * If {@code pipeline} is set, all other settings are ignored, aside from {@link #endpoint(String) endpoint} and
      * {@link #indexName(String) index} when building a {@link SearchClient} or {@link SearchAsyncClient}.
      *
@@ -276,7 +294,7 @@ public final class SearchClientBuilder {
 
     /**
      * Sets the configuration store that is used during construction of the service client.
-     * <p>
+     *
      * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
      * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
      *
@@ -290,7 +308,7 @@ public final class SearchClientBuilder {
 
     /**
      * Sets the {@link HttpPipelinePolicy} that will attempt to retry requests when needed.
-     * <p>
+     *
      * A default retry policy will be supplied if one isn't provided.
      *
      * @param retryPolicy The {@link RetryPolicy} that will attempt to retry requests when needed.
@@ -303,7 +321,7 @@ public final class SearchClientBuilder {
 
     /**
      * Sets the {@link SearchServiceVersion} that is used when making API requests.
-     * <p>
+     *
      * If a service version is not provided, {@link SearchServiceVersion#getLatest()} will be used as a default. When
      * the default is used, updating to a newer client library may implicitly use a newer version of the service.
      *

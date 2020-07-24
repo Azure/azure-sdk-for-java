@@ -9,4 +9,5 @@ module com.azure.core.experimental {
 
     uses com.azure.core.experimental.serializer.AvroSerializerProvider;
     uses com.azure.core.experimental.serializer.JsonSerializerProvider;
+    uses com.azure.core.experimental.serializer.PropertyNameSerializerProvider;
 }

@@ -3,22 +3,36 @@
 
 package com.azure.search.documents.implementation.util;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.azure.core.experimental.serializer.JsonSerializer;
+import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.search.documents.implementation.serializer.SerializationUtil;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public final class Utility {
     /**
-     * The utility of converting key of the map from object to string.
-     *
-     * @param sourceMap The source map to convert
-     * @return The map which has String as a key.
+     * Helper class to initialize the SerializerAdapter.
+     * @return The SerializeAdapter instance.
      */
-    public static Map<String, Object> convertMaps(Map<Object, Object> sourceMap) {
-        Map<String, Object> result = new HashMap<>();
-        for (Map.Entry<Object, Object> entry: sourceMap.entrySet()) {
-            result.put((String) entry.getKey(), entry.getValue());
-        }
-        return result;
+    public static SerializerAdapter initializeSerializerAdapter() {
+        JacksonAdapter adapter = (JacksonAdapter) JacksonAdapter.createDefaultSerializerAdapter();
+
+        ObjectMapper mapper = adapter.serializer();
+        SerializationUtil.configureMapper(mapper);
+
+        return adapter;
+    }
+
+    public static JsonSerializer creatDefaultJsonSerializerInstance() {
+        JacksonAdapter adapter = (JacksonAdapter) JacksonAdapter.createDefaultSerializerAdapter();
+
+        ObjectMapper mapper = adapter.serializer();
+        mapper.setSerializationInclusion(JsonInclude.Include.ALWAYS);
+        SerializationUtil.configureMapper(mapper);
+
+        return new JacksonJsonSerializerBuilder().serializer(mapper).build();
     }
 
     private Utility() {

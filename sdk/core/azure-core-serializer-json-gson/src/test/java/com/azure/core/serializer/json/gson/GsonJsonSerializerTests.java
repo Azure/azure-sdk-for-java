@@ -64,8 +64,8 @@ public class GsonJsonSerializerTests {
 
         StepVerifier.create(DEFAULT_SERIALIZER.deserialize(jsonStream, JsonObject.class))
             .assertNext(actual -> {
-                assertEquals(50, actual.get("age").getAsInt());
-                assertTrue(actual.get("name").isJsonNull());
+                assertEquals(50, ((JsonObject) actual).get("age").getAsInt());
+                assertTrue(((JsonObject) actual).get("name").isJsonNull());
             }).verifyComplete();
     }
 

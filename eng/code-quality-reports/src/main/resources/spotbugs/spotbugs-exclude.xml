@@ -2117,6 +2117,12 @@
     <Bug pattern="IP_PARAMETER_IS_DEAD_BUT_OVERWRITTEN"/>
   </Match>
 
+  <!-- Use the property to take the custom serializer from SearchClient. -->
+  <Match>
+    <Class name="~com\.azure\.search\.documents\.models\.(SearchResult|SuggestResult)" />
+    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" />
+  </Match>
+
   <Match>
     <Or>
       <Class name="com.azure.core.serializer.json.jackson.JacksonJsonSerializer"/>

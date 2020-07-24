@@ -12,11 +12,13 @@ import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Type;
 
 /**
  * Jackson Avro based implementation of the {@link ObjectSerializer} interface.
  */
 public final class JacksonAvroSerializer implements ObjectSerializer {
+    private final ClientLogger logger = new ClientLogger(JacksonAvroSerializer.class);
     private final AvroSchema avroSchema;
     private final AvroMapper avroMapper;
 
@@ -26,7 +28,7 @@ public final class JacksonAvroSerializer implements ObjectSerializer {
     }
 
     @Override
-    public <T> Mono<T> deserialize(InputStream stream, Class<T> clazz) {
+    public <T> Mono<T> deserialize(InputStream stream, Type type) {
         return Mono.fromCallable(() -> {
             if (stream == null) {
                 return null;
@@ -35,8 +37,7 @@ public final class JacksonAvroSerializer implements ObjectSerializer {
             if ("null".equalsIgnoreCase(avroSchema.getAvroSchema().getType().getName())) {
                 return null;
             }
-
-            return avroMapper.readerFor(clazz).with(avroSchema).readValue(stream);
+            return avroMapper.readerFor((Class<T> type)).with(avroSchema).readValue(stream);
         });
     }
 

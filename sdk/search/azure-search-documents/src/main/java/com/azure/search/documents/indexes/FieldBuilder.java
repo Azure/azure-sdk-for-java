@@ -3,8 +3,8 @@
 
 package com.azure.search.documents.indexes;
 
-import com.azure.core.experimental.serializer.JsonSerializer;
-import com.azure.core.experimental.serializer.JsonSerializerProviders;
+import com.azure.core.experimental.serializer.PropertyNameSerializer;
+import com.azure.core.experimental.serializer.PropertyNameSerializerProviders;
 import com.azure.core.experimental.spatial.PointGeometry;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 public final class FieldBuilder {
     private static final int MAX_DEPTH = 10000;
     private static final Map<Class<?>, SearchFieldDataType> SUPPORTED_NONE_PARAMETERIZED_TYPE = new HashMap<>();
-    private static final JsonSerializer SERIALIZER = JsonSerializerProviders.createInstance();
+    private static final PropertyNameSerializer SERIALIZER = PropertyNameSerializerProviders.createInstance();
 
     static {
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(Integer.class, SearchFieldDataType.INT32);

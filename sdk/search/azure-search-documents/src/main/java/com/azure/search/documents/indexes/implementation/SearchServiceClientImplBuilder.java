@@ -12,6 +12,8 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 
 /** A builder for creating a new instance of the SearchServiceClient type. */
 @ServiceClientBuilder(serviceClients = {SearchServiceClientImpl.class})
@@ -48,6 +50,13 @@ public final class SearchServiceClientImplBuilder {
         return this;
     }
 
+    private SerializerAdapter serializerAdapter;
+
+    public SearchServiceClientImplBuilder serializer(SerializerAdapter serializerAdapter) {
+        this.serializerAdapter = serializerAdapter;
+        return this;
+    }
+
     /**
      * Builds an instance of SearchServiceClientImpl with the provided parameters.
      *
@@ -60,7 +69,10 @@ public final class SearchServiceClientImplBuilder {
                             .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                             .build();
         }
-        SearchServiceClientImpl client = new SearchServiceClientImpl(pipeline, endpoint);
+        if (serializerAdapter == null) {
+            serializerAdapter = new JacksonAdapter();
+        }
+        SearchServiceClientImpl client = new SearchServiceClientImpl(pipeline, endpoint, serializerAdapter);
         return client;
     }
 }

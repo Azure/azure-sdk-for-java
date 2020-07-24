@@ -6,8 +6,9 @@ package com.azure.search.documents.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.experimental.serializer.JsonSerializer;
 import com.azure.search.documents.SearchDocument;
-import com.azure.search.documents.serializer.SearchSerializerProviders;
+import com.azure.search.documents.implementation.util.Utility;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.ByteArrayInputStream;
@@ -20,7 +21,6 @@ import java.util.Map;
  */
 @Fluent
 public final class SearchResult {
-    private static final JsonSerializer SERIALIZER = SearchSerializerProviders.createInstance();
 
     /*
      * Unmatched properties from the message are deserialized this collection
@@ -43,6 +43,9 @@ public final class SearchResult {
     @JsonProperty(value = "@search.highlights", access = JsonProperty.Access.WRITE_ONLY)
     private Map<String, List<String>> highlights;
 
+    @JsonIgnore
+    private JsonSerializer jsonSerializer;
+
     /**
      * Constructor of {@link SearchResult}.
      *
@@ -63,9 +66,13 @@ public final class SearchResult {
      * @param <T> Convert document to the generic type.
      * @return the additionalProperties value.
      */
+    @SuppressWarnings("unchecked")
     public <T> T getDocument(Class<T> modelClass) {
-        return SERIALIZER.serialize(new ByteArrayOutputStream(), additionalProperties).flatMap(
-            sourceStream -> SERIALIZER.deserialize(new ByteArrayInputStream(sourceStream.toByteArray()), modelClass))
+        if (jsonSerializer == null) {
+            jsonSerializer = Utility.creatDefaultJsonSerializerInstance();
+        }
+        return (T) jsonSerializer.serialize(new ByteArrayOutputStream(), additionalProperties).flatMap(
+            sourceStream -> jsonSerializer.deserialize(new ByteArrayInputStream(sourceStream.toByteArray()), modelClass))
             .block();
     }
 

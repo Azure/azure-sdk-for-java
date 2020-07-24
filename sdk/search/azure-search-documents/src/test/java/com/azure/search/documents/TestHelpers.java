@@ -4,16 +4,14 @@
 package com.azure.search.documents;
 
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.experimental.serializer.JsonOptions;
 import com.azure.core.experimental.serializer.JsonSerializer;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.serializer.json.jackson.JacksonJsonArray;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.search.documents.implementation.serializer.TypeRef;
 import com.azure.search.documents.implementation.util.Utility;
-import com.azure.search.documents.serializer.SearchSerializerProviders;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -34,8 +32,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -53,8 +49,7 @@ public final class TestHelpers {
     public static final String BLOB_DATASOURCE_TEST_NAME = "azs-java-test-blob";
     public static final String SQL_DATASOURCE_NAME = "azs-java-test-sql";
     public static final String ISO8601_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
-    public static final JsonSerializer SERIALIZER = SearchSerializerProviders.createInstance(
-        new JsonOptions().includeNulls());
+    public static final JsonSerializer SERIALIZER = Utility.creatDefaultJsonSerializerInstance();
 
 //    public static PointGeometry createPointGeometry(Double latitude, Double longitude) {
 //        return new PointGeometry(new GeometryPosition(longitude, latitude), null,
@@ -287,16 +282,22 @@ public final class TestHelpers {
         return searchAsyncClient.getHttpPipeline();
     }
 
+    @SuppressWarnings("unchecked")
     private static List<Map<String, Object>> readJsonFileToList(String filename) {
         InputStream inputStream = Objects.requireNonNull(TestHelpers.class.getClassLoader()
             .getResourceAsStream(filename));
-        return convertStreamToList(inputStream);
+        return SERIALIZER.deserialize(inputStream, new TypeRef<List<Map<String, Object>>>() { }.getJavaType())
+                .map(object -> (List<Map<String, Object>>) object).block();
     }
 
+    @SuppressWarnings("unchecked")
     public static List<Map<String, Object>> convertStreamToList(InputStream sourceStream) {
-        Stream<com.azure.core.experimental.serializer.JsonNode> jsonArray =
-            ((JacksonJsonArray) Objects.requireNonNull(SERIALIZER.toTree(sourceStream).block())).elements();
-        return jsonArray.map(node -> SERIALIZER.deserializeTreeToMap(node).map(Utility::convertMaps).block())
-            .collect(Collectors.toList());
+        return SERIALIZER.deserialize(sourceStream, new TypeRef<List<Map<String, Object>>>() { }.getJavaType())
+            .map(object -> (List<Map<String, Object>>) object).block();
+    }
+
+    @SuppressWarnings("unchecked")
+    public static SearchDocument convertObjectToSearchDocument(Object obj) {
+        return new SearchDocument((Map<String, Object>) obj);
     }
 }

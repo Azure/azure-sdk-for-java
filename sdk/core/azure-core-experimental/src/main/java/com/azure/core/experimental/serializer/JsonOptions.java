@@ -7,15 +7,16 @@ package com.azure.core.experimental.serializer;
  * The json serializer options.
  */
 public class JsonOptions {
-    private boolean serializeNulls;
+    private boolean includeNull;
 
     /**
      * The option of taking nulls when serialize.
      *
+     * @param includeNull The boolean indicate whether to serialize null or not.
      * @return The {@link JsonOptions} object itself.
      */
-    public JsonOptions includeNulls() {
-        serializeNulls = true;
+    public JsonOptions setIncludeNull(boolean includeNull) {
+        this.includeNull = includeNull;
         return this;
     }
 
@@ -25,6 +26,8 @@ public class JsonOptions {
      * @return true if set serialize nulls, otherwise false.
      */
     public boolean isNullIncluded() {
-        return serializeNulls;
+        return includeNull;
     }
+
+
 }

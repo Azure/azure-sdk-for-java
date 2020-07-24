@@ -4,6 +4,7 @@
 package com.azure.core.serializer.avro.apache;
 
 import com.azure.core.experimental.serializer.ObjectSerializer;
+import com.azure.core.util.logging.ClientLogger;
 import org.apache.avro.Schema;
 import org.apache.avro.io.DatumReader;
 import org.apache.avro.io.DatumWriter;
@@ -17,11 +18,13 @@ import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Type;
 
 /**
  * Apache Avro based implementation of the {@link ObjectSerializer} interface.
  */
 public class ApacheAvroSerializer implements ObjectSerializer {
+    private final ClientLogger logger = new ClientLogger(ApacheAvroSerializer.class);
     private final Schema schema;
     private final DecoderFactory decoderFactory;
     private final EncoderFactory encoderFactory;
@@ -36,15 +39,14 @@ public class ApacheAvroSerializer implements ObjectSerializer {
     }
 
     @Override
-    public <T> Mono<T> deserialize(InputStream stream, Class<T> clazz) {
+    public <T> Mono<T> deserialize(InputStream stream, Type type) {
         return Mono.fromCallable(() -> {
             if (stream == null) {
                 return null;
             }
 
             DatumReader<T> reader = new SpecificDatumReader<>(schema, schema, specificData);
-
-            return clazz.cast(reader.read(null, decoderFactory.binaryDecoder(stream, null)));
+            return reader.read(null, decoderFactory.binaryDecoder(stream, null));
         });
     }
 

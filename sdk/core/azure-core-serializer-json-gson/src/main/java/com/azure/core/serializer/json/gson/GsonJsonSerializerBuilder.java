@@ -21,7 +21,6 @@ public final class GsonJsonSerializerBuilder {
      */
     public GsonJsonSerializer build() {
         GsonBuilder gsonBuilder = (this.gsonBuilder == null) ? new GsonBuilder() : this.gsonBuilder;
-
         if (serializeNulls) {
             gsonBuilder.serializeNulls();
         }
@@ -51,7 +50,7 @@ public final class GsonJsonSerializerBuilder {
      * @return The updated GsonJsonSerializerBuilder class.
      */
     public GsonJsonSerializerBuilder options(JsonOptions options) {
-        this.serializeNulls = options == null ? false : options.isNullIncluded();
+        this.serializeNulls = options != null && options.isNullIncluded();
         return this;
     }
 }

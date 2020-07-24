@@ -49,7 +49,7 @@ public final class JacksonJsonSerializerBuilder {
      * @return The updated JacksonJsonSerializerBuilder class.
      */
     public JacksonJsonSerializerBuilder options(JsonOptions options) {
-        this.serializeNulls = options == null ? false : options.isNullIncluded();
+        this.serializeNulls = options != null && options.isNullIncluded();
         return this;
     }
 }

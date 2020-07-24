@@ -11,6 +11,8 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 
 /** Initializes a new instance of the SearchIndexClient type. */
 public final class SearchIndexClientImpl {
@@ -81,6 +83,7 @@ public final class SearchIndexClientImpl {
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
                 endpoint,
+                new JacksonAdapter(),
                 indexName);
     }
 
@@ -89,11 +92,12 @@ public final class SearchIndexClientImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      */
-    SearchIndexClientImpl(HttpPipeline httpPipeline, String endpoint, String indexName) {
+    SearchIndexClientImpl(HttpPipeline httpPipeline, String endpoint, SerializerAdapter serializerAdapter,
+        String indexName) {
         this.httpPipeline = httpPipeline;
         this.endpoint = endpoint;
         this.indexName = indexName;
         this.apiVersion = "2020-06-30";
-        this.documents = new DocumentsImpl(this);
+        this.documents = new DocumentsImpl(this, serializerAdapter);
     }
 }

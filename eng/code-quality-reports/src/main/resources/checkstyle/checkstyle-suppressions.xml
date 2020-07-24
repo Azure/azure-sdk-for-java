@@ -201,7 +201,7 @@
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
             files="com.azure.core.serializer.json.gson.GsonJsonSerializerBuilder"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
-            files="com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder"/>
+            files="com.azure.core.serializer.json.jackson.JacksonPropertyNameSerializerBuilder"/>
 
   <!-- Suppress external dependency checkstyle for test classes as JUnit 5 has TestInfo dependency injection and should be part of method args -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"

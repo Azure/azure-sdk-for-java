@@ -27,7 +27,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * Tests {@link GsonJsonArray}.
  */
 public class GsonJsonArrayTests {
-
     @Test
     public void emptyConstructor() {
         GsonJsonArray gsonJsonArray = new GsonJsonArray();

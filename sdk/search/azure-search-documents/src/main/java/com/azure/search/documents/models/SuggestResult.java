@@ -6,12 +6,14 @@ package com.azure.search.documents.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.experimental.serializer.JsonSerializer;
 import com.azure.search.documents.SearchDocument;
-import com.azure.search.documents.serializer.SearchSerializerProviders;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+
+import static com.azure.search.documents.implementation.util.Utility.creatDefaultJsonSerializerInstance;
 
 /**
  * A result containing a document found by a suggestion query, plus associated
@@ -19,7 +21,6 @@ import java.io.ByteArrayOutputStream;
  */
 @Fluent
 public final class SuggestResult {
-    private static final JsonSerializer SERIALIZER = SearchSerializerProviders.createInstance();
 
     /*
      * Unmatched properties from the message are deserialized this collection
@@ -32,6 +33,9 @@ public final class SuggestResult {
      */
     @JsonProperty(value = "@search.text", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String text;
+
+    @JsonIgnore
+    private JsonSerializer jsonSerializer;
 
     /**
      * Constructor of {@link SuggestResult}.
@@ -53,9 +57,13 @@ public final class SuggestResult {
      * @param <T> Convert document to the generic type.
      * @return the additionalProperties value.
      */
+    @SuppressWarnings("unchecked")
     public <T> T getDocument(Class<T> modelClass) {
-        return SERIALIZER.serialize(new ByteArrayOutputStream(), additionalProperties).flatMap(
-            sourceStream -> SERIALIZER.deserialize(new ByteArrayInputStream(sourceStream.toByteArray()), modelClass))
+        if (jsonSerializer == null) {
+            jsonSerializer = creatDefaultJsonSerializerInstance();
+        }
+        return (T) jsonSerializer.serialize(new ByteArrayOutputStream(), additionalProperties).flatMap(
+            sourceStream -> jsonSerializer.deserialize(new ByteArrayInputStream(sourceStream.toByteArray()), modelClass))
             .block();
     }
 

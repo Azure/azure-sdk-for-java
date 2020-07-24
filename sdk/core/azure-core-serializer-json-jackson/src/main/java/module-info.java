@@ -11,4 +11,6 @@ module com.azure.core.serializer.json.jackson {
 
     provides com.azure.core.experimental.serializer.JsonSerializerProvider
         with JacksonJsonSerializerProvider;
+    provides com.azure.core.experimental.serializer.PropertyNameSerializerProvider
+        with com.azure.core.serializer.json.jackson.JacksonPropertyNameSerializerProvider;
 }

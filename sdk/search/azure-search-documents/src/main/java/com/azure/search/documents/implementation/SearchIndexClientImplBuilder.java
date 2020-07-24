@@ -12,6 +12,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.serializer.SerializerAdapter;
 
 /** A builder for creating a new instance of the SearchIndexClient type. */
 @ServiceClientBuilder(serviceClients = {SearchIndexClientImpl.class})
@@ -64,6 +65,13 @@ public final class SearchIndexClientImplBuilder {
         return this;
     }
 
+    private SerializerAdapter serializerAdapter;
+
+    public SearchIndexClientImplBuilder serializer(SerializerAdapter serializerAdapter) {
+        this.serializerAdapter = serializerAdapter;
+        return this;
+    }
+
     /**
      * Builds an instance of SearchIndexClientImpl with the provided parameters.
      *
@@ -76,7 +84,7 @@ public final class SearchIndexClientImplBuilder {
                             .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                             .build();
         }
-        SearchIndexClientImpl client = new SearchIndexClientImpl(pipeline, endpoint, indexName);
+        SearchIndexClientImpl client = new SearchIndexClientImpl(pipeline, endpoint, serializerAdapter, indexName);
         return client;
     }
 }
