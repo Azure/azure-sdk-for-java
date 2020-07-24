@@ -14,10 +14,6 @@
 	<name>azure-spring-data-sample-gremlin</name>
 	<description>Sample project for cosmos gremlin</description>
 
-	<properties>
-		<java.version>1.8</java.version>
-	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
