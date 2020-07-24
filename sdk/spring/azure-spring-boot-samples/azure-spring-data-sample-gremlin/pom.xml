@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.azure</groupId>
 	<artifactId>azure-spring-data-sample-gremlin</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>azure-spring-data-sample-gremlin</name>
 	<description>Sample project for cosmos gremlin</description>
 
