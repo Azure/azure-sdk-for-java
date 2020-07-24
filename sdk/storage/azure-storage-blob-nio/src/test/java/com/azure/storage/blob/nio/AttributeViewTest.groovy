@@ -59,6 +59,18 @@ class AttributeViewTest extends APISpec {
         !attr.isSymbolicLink()
     }
 
+    def "AzureBasicFileAttributeView filesystem closed"() {
+        setup:
+        def path = fs.getPath(generateBlobName())
+
+        when:
+        fs.close()
+        new AzureBasicFileAttributeView(path).readAttributes()
+
+        then:
+        thrown(IOException)
+    }
+
     def "AzureBlobFileAttributeView readAttributes"() {
         setup:
         def path = fs.getPath(bc.getBlobName())
