@@ -10,14 +10,14 @@ package com.microsoft.azure.management.redis.v2018_03_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.redis.v2018_03_01.implementation.RedisManager;
+import com.microsoft.azure.management.redis.v2018_03_01.implementation.CacheManager;
 import com.microsoft.azure.management.redis.v2018_03_01.implementation.NotificationListResponseInner;
 import java.util.List;
 
 /**
  * Type representing NotificationListResponse.
  */
-public interface NotificationListResponse extends HasInner<NotificationListResponseInner>, HasManager<RedisManager> {
+public interface NotificationListResponse extends HasInner<NotificationListResponseInner>, HasManager<CacheManager> {
     /**
      * @return the nextLink value.
      */
