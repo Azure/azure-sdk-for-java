@@ -50,13 +50,6 @@ public final class SearchServiceClientImplBuilder {
         return this;
     }
 
-    private SerializerAdapter serializerAdapter;
-
-    public SearchServiceClientImplBuilder serializer(SerializerAdapter serializerAdapter) {
-        this.serializerAdapter = serializerAdapter;
-        return this;
-    }
-
     /**
      * Builds an instance of SearchServiceClientImpl with the provided parameters.
      *
@@ -69,10 +62,8 @@ public final class SearchServiceClientImplBuilder {
                             .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                             .build();
         }
-        if (serializerAdapter == null) {
-            serializerAdapter = new JacksonAdapter();
-        }
-        SearchServiceClientImpl client = new SearchServiceClientImpl(pipeline, endpoint, serializerAdapter);
+
+        SearchServiceClientImpl client = new SearchServiceClientImpl(pipeline, endpoint);
         return client;
     }
 }

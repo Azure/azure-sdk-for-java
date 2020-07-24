@@ -17,7 +17,7 @@ public final class Utility {
      * @return The SerializeAdapter instance.
      */
     public static SerializerAdapter initializeSerializerAdapter() {
-        JacksonAdapter adapter = (JacksonAdapter) JacksonAdapter.createDefaultSerializerAdapter();
+        JacksonAdapter adapter = new JacksonAdapter();
 
         ObjectMapper mapper = adapter.serializer();
         SerializationUtil.configureMapper(mapper);
@@ -26,7 +26,7 @@ public final class Utility {
     }
 
     public static JsonSerializer creatDefaultJsonSerializerInstance() {
-        JacksonAdapter adapter = (JacksonAdapter) JacksonAdapter.createDefaultSerializerAdapter();
+        JacksonAdapter adapter = new JacksonAdapter();
 
         ObjectMapper mapper = adapter.serializer();
         mapper.setSerializationInclusion(JsonInclude.Include.ALWAYS);

@@ -24,8 +24,6 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.search.documents.indexes.implementation.models.RequestOptions;
 import com.azure.search.documents.indexes.implementation.models.SearchErrorException;
 import com.azure.search.documents.indexes.implementation.models.ServiceStatistics;
@@ -140,7 +138,7 @@ public final class SearchServiceClientImpl {
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
-                endpoint, new JacksonAdapter());
+                endpoint);
     }
 
     /**
@@ -148,7 +146,7 @@ public final class SearchServiceClientImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      */
-    SearchServiceClientImpl(HttpPipeline httpPipeline, String endpoint, SerializerAdapter serializerAdapter) {
+    SearchServiceClientImpl(HttpPipeline httpPipeline, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.endpoint = endpoint;
         this.apiVersion = "2020-06-30";
@@ -157,7 +155,7 @@ public final class SearchServiceClientImpl {
         this.skillsets = new SkillsetsImpl(this);
         this.synonymMaps = new SynonymMapsImpl(this);
         this.indexes = new IndexesImpl(this);
-        this.service = RestProxy.create(SearchServiceClientService.class, this.httpPipeline, serializerAdapter);
+        this.service = RestProxy.create(SearchServiceClientService.class, this.httpPipeline);
     }
 
     /**

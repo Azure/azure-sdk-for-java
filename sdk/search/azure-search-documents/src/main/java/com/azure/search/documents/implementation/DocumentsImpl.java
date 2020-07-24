@@ -60,6 +60,9 @@ public final class DocumentsImpl {
      * @param client the instance of the service client containing this operation class.
      */
     DocumentsImpl(SearchIndexClientImpl client, SerializerAdapter serializerAdapter) {
+        if (serializerAdapter == null) {
+            serializerAdapter = new JacksonAdapter();
+        }
         this.service = RestProxy.create(DocumentsService.class, client.getHttpPipeline(), serializerAdapter);
         this.client = client;
     }
