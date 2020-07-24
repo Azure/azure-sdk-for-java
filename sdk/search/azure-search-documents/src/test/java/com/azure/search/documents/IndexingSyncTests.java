@@ -799,7 +799,7 @@ public class IndexingSyncTests extends SearchTestBase {
         waitForIndexing();
 
         SearchDocument actualDoc = client.getDocument("1", SearchDocument.class);
-        assertEquals(expectedDoc, actualDoc);
+        assertObjectEquals(expectedDoc, actualDoc, true);
 
         client.mergeOrUploadDocuments(originalDocs);
         waitForIndexing();

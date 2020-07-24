@@ -150,7 +150,7 @@ public class LookupSyncTests extends SearchTestBase {
 
         Response<SearchDocument> response = client.getDocumentWithResponse("1", SearchDocument.class,
             selectedFields, Context.NONE);
-        assertEquals(expectedDoc, response.getValue());
+        assertObjectEquals(expectedDoc, response.getValue(), true);
     }
 
     @Test
@@ -179,7 +179,7 @@ public class LookupSyncTests extends SearchTestBase {
 
         Response<SearchDocument> response = client.getDocumentWithResponse("1", SearchDocument.class,
             selectedFields, Context.NONE);
-        assertEquals(expectedDoc, response.getValue());
+        assertObjectEquals(expectedDoc, response.getValue(), true);
     }
 
     @Test
@@ -259,7 +259,7 @@ public class LookupSyncTests extends SearchTestBase {
 
         Response<SearchDocument> response = client.getDocumentWithResponse("1", SearchDocument.class,
             selectedFields, Context.NONE);
-        assertEquals(expectedDoc, response.getValue());
+        assertObjectEquals(expectedDoc, response.getValue(), true);
     }
 
     @Test
@@ -351,7 +351,7 @@ public class LookupSyncTests extends SearchTestBase {
 
         Response<SearchDocument> response = client.getDocumentWithResponse("1", SearchDocument.class,
             selectedFields, Context.NONE);
-        assertEquals(expectedDoc, response.getValue());
+        assertObjectEquals(expectedDoc, response.getValue(), true);
     }
 
     @Test

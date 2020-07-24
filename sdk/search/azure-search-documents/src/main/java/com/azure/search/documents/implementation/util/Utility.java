@@ -8,7 +8,6 @@ import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.search.documents.implementation.serializer.SerializationUtil;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public final class Utility {
@@ -17,7 +16,7 @@ public final class Utility {
      * @return The SerializeAdapter instance.
      */
     public static SerializerAdapter initializeSerializerAdapter() {
-        JacksonAdapter adapter = new JacksonAdapter();
+        JacksonAdapter adapter = (JacksonAdapter) JacksonAdapter.createDefaultSerializerAdapter();
 
         ObjectMapper mapper = adapter.serializer();
         SerializationUtil.configureMapper(mapper);
@@ -26,13 +25,8 @@ public final class Utility {
     }
 
     public static JsonSerializer creatDefaultJsonSerializerInstance() {
-        JacksonAdapter adapter = new JacksonAdapter();
-
-        ObjectMapper mapper = adapter.serializer();
-        mapper.setSerializationInclusion(JsonInclude.Include.ALWAYS);
-        SerializationUtil.configureMapper(mapper);
-
-        return new JacksonJsonSerializerBuilder().serializer(mapper).build();
+        JacksonAdapter adapter = (JacksonAdapter) initializeSerializerAdapter();
+        return new JacksonJsonSerializerBuilder().serializer(adapter.serializer()).build();
     }
 
     private Utility() {
