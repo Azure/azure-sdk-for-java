@@ -15,25 +15,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static com.azure.core.experimental.spatial.GeometryTestHelpers.SQUARE_LINE;
-import static com.azure.core.experimental.spatial.GeometryTestHelpers.TRIANGLE_LINE;
+import static com.azure.core.experimental.spatial.GeoTestHelpers.SQUARE_LINE;
+import static com.azure.core.experimental.spatial.GeoTestHelpers.TRIANGLE_LINE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 /**
- * Tests {@link PolygonGeometry}.
+ * Tests {@link GeoPolygon}.
  */
-public class PolygonGeometryTests {
+public class GeoPolygonTests {
     @Test
     public void nullRingsThrows() {
-        Assertions.assertThrows(NullPointerException.class, () -> new PolygonGeometry(null));
+        Assertions.assertThrows(NullPointerException.class, () -> new GeoPolygon(null));
     }
 
     @Test
     public void simpleConstructor() {
-        List<LineGeometry> rings = Collections.singletonList(SQUARE_LINE.get());
+        List<GeoLine> rings = Collections.singletonList(SQUARE_LINE.get());
 
-        PolygonGeometry polygon = new PolygonGeometry(rings);
+        GeoPolygon polygon = new GeoPolygon(rings);
 
         assertEquals(rings, polygon.getRings());
 
@@ -43,11 +43,11 @@ public class PolygonGeometryTests {
 
     @Test
     public void complexConstructor() {
-        List<LineGeometry> rings = Collections.singletonList(SQUARE_LINE.get());
-        GeometryBoundingBox boundingBox = new GeometryBoundingBox(0, 0, 1, 1);
+        List<GeoLine> rings = Collections.singletonList(SQUARE_LINE.get());
+        GeoBoundingBox boundingBox = new GeoBoundingBox(0, 0, 1, 1);
         Map<String, Object> properties = Collections.singletonMap("key", "value");
 
-        PolygonGeometry polygon = new PolygonGeometry(rings, boundingBox, properties);
+        GeoPolygon polygon = new GeoPolygon(rings, boundingBox, properties);
 
         assertEquals(rings, polygon.getRings());
         assertEquals(boundingBox, polygon.getBoundingBox());
@@ -56,10 +56,10 @@ public class PolygonGeometryTests {
 
     @Test
     public void constructorCopiesRings() {
-        List<LineGeometry> rings = new ArrayList<>();
+        List<GeoLine> rings = new ArrayList<>();
         rings.add(SQUARE_LINE.get());
 
-        PolygonGeometry polygon = new PolygonGeometry(rings);
+        GeoPolygon polygon = new GeoPolygon(rings);
         assertEquals(rings, polygon.getRings());
 
         rings.add(TRIANGLE_LINE.get());
@@ -68,19 +68,19 @@ public class PolygonGeometryTests {
 
     @ParameterizedTest
     @MethodSource("equalsSupplier")
-    public void polygonGeometriesEquals(PolygonGeometry polygon, Object obj, boolean expected) {
+    public void polygonGeometriesEquals(GeoPolygon polygon, Object obj, boolean expected) {
         assertEquals(expected, polygon.equals(obj));
     }
 
     private static Stream<Arguments> equalsSupplier() {
-        List<LineGeometry> squareLine = Collections.singletonList(SQUARE_LINE.get());
-        List<LineGeometry> triangleLine = Collections.singletonList(TRIANGLE_LINE.get());
+        List<GeoLine> squareLine = Collections.singletonList(SQUARE_LINE.get());
+        List<GeoLine> triangleLine = Collections.singletonList(TRIANGLE_LINE.get());
 
-        GeometryBoundingBox boundingBox = new GeometryBoundingBox(0, 0, 1, 1);
+        GeoBoundingBox boundingBox = new GeoBoundingBox(0, 0, 1, 1);
         Map<String, Object> properties = Collections.singletonMap("key", "value");
 
-        PolygonGeometry polygon = new PolygonGeometry(squareLine);
-        PolygonGeometry polygon1 = new PolygonGeometry(triangleLine, boundingBox, properties);
+        GeoPolygon polygon = new GeoPolygon(squareLine);
+        GeoPolygon polygon1 = new GeoPolygon(triangleLine, boundingBox, properties);
 
         return Stream.of(
             // Other is null.
@@ -98,8 +98,8 @@ public class PolygonGeometryTests {
             Arguments.of(polygon1, polygon, false),
 
             // Other is the same value.
-            Arguments.of(polygon, new PolygonGeometry(squareLine), true),
-            Arguments.of(polygon1, new PolygonGeometry(triangleLine, boundingBox, properties), true)
+            Arguments.of(polygon, new GeoPolygon(squareLine), true),
+            Arguments.of(polygon1, new GeoPolygon(triangleLine, boundingBox, properties), true)
         );
     }
 }

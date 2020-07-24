@@ -10,30 +10,30 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Represents a multi-point geometry.
+ * Represents a collection of {@link GeoPoint GeoPoints}.
  */
-public final class MultiPointGeometry extends Geometry {
-    private final List<PointGeometry> points;
+public final class GeoPointCollection extends GeoObject {
+    private final List<GeoPoint> points;
 
     /**
-     * Constructs a multi-point geometry.
+     * Constructs a {@link GeoPointCollection}.
      *
      * @param points The points that define the multi-point.
      * @throws NullPointerException If {@code points} is {@code null}.
      */
-    public MultiPointGeometry(List<PointGeometry> points) {
+    public GeoPointCollection(List<GeoPoint> points) {
         this(points, null, null);
     }
 
     /**
-     * Constructs a multi-point geometry.
+     * Constructs a {@link GeoPointCollection}.
      *
      * @param points The points that define the multi-point.
      * @param boundingBox Bounding box for the multi-point.
      * @param properties Additional properties of the multi-point.
      * @throws NullPointerException If {@code points} is {@code null}.
      */
-    public MultiPointGeometry(List<PointGeometry> points, GeometryBoundingBox boundingBox,
+    public GeoPointCollection(List<GeoPoint> points, GeoBoundingBox boundingBox,
         Map<String, Object> properties) {
         super(boundingBox, properties);
 
@@ -42,12 +42,12 @@ public final class MultiPointGeometry extends Geometry {
     }
 
     /**
-     * Unmodifiable representation of the {@link PointGeometry geometric points} representing this multi-point.
+     * Unmodifiable representation of the {@link GeoPoint geometric points} representing this multi-point.
      *
-     * @return An unmodifiable representation of the {@link PointGeometry geometric points} representing this
+     * @return An unmodifiable representation of the {@link GeoPoint geometric points} representing this
      * multi-point.
      */
-    public List<PointGeometry> getPoints() {
+    public List<GeoPoint> getPoints() {
         return points;
     }
 
@@ -58,7 +58,7 @@ public final class MultiPointGeometry extends Geometry {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof MultiPointGeometry)) {
+        if (!(obj instanceof GeoPointCollection)) {
             return false;
         }
 
@@ -66,7 +66,7 @@ public final class MultiPointGeometry extends Geometry {
             return true;
         }
 
-        MultiPointGeometry other = (MultiPointGeometry) obj;
+        GeoPointCollection other = (GeoPointCollection) obj;
 
         return super.equals(obj) && Objects.equals(points, other.points);
     }

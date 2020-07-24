@@ -12,34 +12,34 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * Test helpers for {@link GeometryDeserializerTests} and {@link GeometrySerializerTests}.
+ * Test helpers for {@link GeoJsonDeserializerTests} and {@link GeoJsonSerializerTests}.
  */
-public class GeometrySerializationTestHelpers {
+public class GeoSerializationTestHelpers {
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
-    static String geometryToJson(Geometry geometry) {
-        if (geometry instanceof PointGeometry) {
-            return pointToJson((PointGeometry) geometry);
-        } else if (geometry instanceof LineGeometry) {
-            return lineToJson((LineGeometry) geometry);
-        } else if (geometry instanceof PolygonGeometry) {
-            return polygonToJson((PolygonGeometry) geometry);
-        } else if (geometry instanceof MultiPointGeometry) {
-            return multiPointToJson((MultiPointGeometry) geometry);
-        } else if (geometry instanceof MultiLineGeometry) {
-            return multiLineToJson((MultiLineGeometry) geometry);
-        } else if (geometry instanceof MultiPolygonGeometry) {
-            return multiPolygonToJson((MultiPolygonGeometry) geometry);
-        } else if (geometry instanceof CollectionGeometry) {
-            return collectionToJson((CollectionGeometry) geometry);
+    static String geoToJson(GeoObject geoObject) {
+        if (geoObject instanceof GeoPoint) {
+            return pointToJson((GeoPoint) geoObject);
+        } else if (geoObject instanceof GeoLine) {
+            return lineToJson((GeoLine) geoObject);
+        } else if (geoObject instanceof GeoPolygon) {
+            return polygonToJson((GeoPolygon) geoObject);
+        } else if (geoObject instanceof GeoPointCollection) {
+            return multiPointToJson((GeoPointCollection) geoObject);
+        } else if (geoObject instanceof GeoLineCollection) {
+            return multiLineToJson((GeoLineCollection) geoObject);
+        } else if (geoObject instanceof GeoPolygonCollection) {
+            return multiPolygonToJson((GeoPolygonCollection) geoObject);
+        } else if (geoObject instanceof GeoCollection) {
+            return collectionToJson((GeoCollection) geoObject);
         } else {
-            throw new IllegalStateException("Unknown geometry type.");
+            throw new IllegalStateException("Unknown geo type.");
         }
     }
 
-    private static String pointToJson(PointGeometry point) {
+    private static String pointToJson(GeoPoint point) {
         StringBuilder builder = new StringBuilder("{");
-        addType(GeometryDeserializer.POINT_TYPE, builder);
+        addType(GeoJsonDeserializer.POINT_TYPE, builder);
 
         builder.append(",\"coordinates\":");
         addPosition(point.getPosition(), builder);
@@ -51,9 +51,9 @@ public class GeometrySerializationTestHelpers {
         return builder.toString();
     }
 
-    private static String lineToJson(LineGeometry line) {
+    private static String lineToJson(GeoLine line) {
         StringBuilder builder = new StringBuilder("{");
-        addType(GeometryDeserializer.LINE_STRING_TYPE, builder);
+        addType(GeoJsonDeserializer.LINE_STRING_TYPE, builder);
 
         builder.append(",\"coordinates\":");
         addLine(line.getPositions(), builder);
@@ -65,9 +65,9 @@ public class GeometrySerializationTestHelpers {
         return builder.toString();
     }
 
-    private static String polygonToJson(PolygonGeometry polygon) {
+    private static String polygonToJson(GeoPolygon polygon) {
         StringBuilder builder = new StringBuilder("{");
-        addType(GeometryDeserializer.POLYGON_TYPE, builder);
+        addType(GeoJsonDeserializer.POLYGON_TYPE, builder);
 
         builder.append(",\"coordinates\":");
         addPolygon(polygon.getRings(), builder);
@@ -79,12 +79,12 @@ public class GeometrySerializationTestHelpers {
         return builder.toString();
     }
 
-    private static String multiPointToJson(MultiPointGeometry multiPoint) {
+    private static String multiPointToJson(GeoPointCollection multiPoint) {
         StringBuilder builder = new StringBuilder("{");
-        addType(GeometryDeserializer.MULTI_POINT_TYPE, builder);
+        addType(GeoJsonDeserializer.MULTI_POINT_TYPE, builder);
 
         builder.append(",\"coordinates\":");
-        addLine(multiPoint.getPoints().stream().map(PointGeometry::getPosition).collect(Collectors.toList()), builder);
+        addLine(multiPoint.getPoints().stream().map(GeoPoint::getPosition).collect(Collectors.toList()), builder);
 
         addAdditionalProperties(multiPoint, builder);
 
@@ -94,9 +94,9 @@ public class GeometrySerializationTestHelpers {
 
     }
 
-    private static String multiLineToJson(MultiLineGeometry multiLine) {
+    private static String multiLineToJson(GeoLineCollection multiLine) {
         StringBuilder builder = new StringBuilder("{");
-        addType(GeometryDeserializer.MULTI_LINE_STRING_TYPE, builder);
+        addType(GeoJsonDeserializer.MULTI_LINE_STRING_TYPE, builder);
 
         builder.append(",\"coordinates\":");
         addPolygon(multiLine.getLines(), builder);
@@ -108,9 +108,9 @@ public class GeometrySerializationTestHelpers {
         return builder.toString();
     }
 
-    private static String multiPolygonToJson(MultiPolygonGeometry multiPolygon) {
+    private static String multiPolygonToJson(GeoPolygonCollection multiPolygon) {
         StringBuilder builder = new StringBuilder("{");
-        addType(GeometryDeserializer.MULTI_POLYGON_TYPE, builder);
+        addType(GeoJsonDeserializer.MULTI_POLYGON_TYPE, builder);
 
         builder.append(",\"coordinates\":[");
 
@@ -131,9 +131,9 @@ public class GeometrySerializationTestHelpers {
         return builder.toString();
     }
 
-    private static String collectionToJson(CollectionGeometry collection) {
+    private static String collectionToJson(GeoCollection collection) {
         StringBuilder builder = new StringBuilder("{");
-        addType(GeometryDeserializer.GEOMETRY_COLLECTION_TYPE, builder);
+        addType(GeoJsonDeserializer.GEOMETRY_COLLECTION_TYPE, builder);
 
         builder.append(",\"geometries\":[");
 
@@ -142,7 +142,7 @@ public class GeometrySerializationTestHelpers {
                 builder.append(",");
             }
 
-            builder.append(geometryToJson(collection.getGeometries().get(i)));
+            builder.append(geoToJson(collection.getGeometries().get(i)));
         }
 
         builder.append("]");
@@ -158,7 +158,7 @@ public class GeometrySerializationTestHelpers {
         builder.append("\"type\":\"").append(type).append("\"");
     }
 
-    private static void addPosition(GeometryPosition position, StringBuilder builder) {
+    private static void addPosition(GeoPosition position, StringBuilder builder) {
         builder.append("[")
             .append(position.getLongitude())
             .append(",")
@@ -172,7 +172,7 @@ public class GeometrySerializationTestHelpers {
         builder.append("]");
     }
 
-    private static void addLine(List<GeometryPosition> positions, StringBuilder builder) {
+    private static void addLine(List<GeoPosition> positions, StringBuilder builder) {
         builder.append("[");
 
         for (int i = 0; i < positions.size(); i++) {
@@ -186,7 +186,7 @@ public class GeometrySerializationTestHelpers {
         builder.append("]");
     }
 
-    private static void addPolygon(List<LineGeometry> lines, StringBuilder builder) {
+    private static void addPolygon(List<GeoLine> lines, StringBuilder builder) {
         builder.append("[");
 
         for (int i = 0; i < lines.size(); i++) {
@@ -200,12 +200,12 @@ public class GeometrySerializationTestHelpers {
         builder.append("]");
     }
 
-    private static void addAdditionalProperties(Geometry geometry, StringBuilder builder) {
-        addBoundingBox(geometry.getBoundingBox(), builder);
-        addProperties(geometry.getProperties(), builder);
+    private static void addAdditionalProperties(GeoObject geoObject, StringBuilder builder) {
+        addBoundingBox(geoObject.getBoundingBox(), builder);
+        addProperties(geoObject.getProperties(), builder);
     }
 
-    private static void addBoundingBox(GeometryBoundingBox boundingBox, StringBuilder builder) {
+    private static void addBoundingBox(GeoBoundingBox boundingBox, StringBuilder builder) {
         if (boundingBox == null) {
             return;
         }

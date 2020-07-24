@@ -6,32 +6,32 @@ package com.azure.core.experimental.spatial;
 import java.util.Objects;
 
 /**
- * Represents a geometric position.
+ * Represents a geo position.
  */
-public final class GeometryPosition {
+public final class GeoPosition {
     private final double longitude;
     private final double latitude;
 
     private final Double altitude;
 
     /**
-     * Constructs a geometric position.
+     * Constructs a geo position.
      *
      * @param longitude Longitudinal position.
      * @param latitude Latitudinal position.
      */
-    public GeometryPosition(double longitude, double latitude) {
+    public GeoPosition(double longitude, double latitude) {
         this(longitude, latitude, null);
     }
 
     /**
-     * Constructs a geometric position.
+     * Constructs a geo position.
      *
      * @param longitude Longitudinal position.
      * @param latitude Latitudinal position.
      * @param altitude Altitude position.
      */
-    public GeometryPosition(double longitude, double latitude, Double altitude) {
+    public GeoPosition(double longitude, double latitude, Double altitude) {
         this.longitude = longitude;
         this.latitude = latitude;
         this.altitude = altitude;
@@ -71,7 +71,7 @@ public final class GeometryPosition {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof GeometryPosition)) {
+        if (!(obj instanceof GeoPosition)) {
             return false;
         }
 
@@ -79,7 +79,7 @@ public final class GeometryPosition {
             return true;
         }
 
-        GeometryPosition other = (GeometryPosition) obj;
+        GeoPosition other = (GeoPosition) obj;
         return longitude == other.longitude
             && latitude == other.latitude
             && Objects.equals(altitude, other.altitude);

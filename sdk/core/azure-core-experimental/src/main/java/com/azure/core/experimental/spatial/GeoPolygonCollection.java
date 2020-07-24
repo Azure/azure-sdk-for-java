@@ -10,30 +10,30 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Represents a multi-polygon geometry.
+ * Represents a collection of {@link GeoPolygon GeoPolygons}.
  */
-public final class MultiPolygonGeometry extends Geometry {
-    private final List<PolygonGeometry> polygons;
+public final class GeoPolygonCollection extends GeoObject {
+    private final List<GeoPolygon> polygons;
 
     /**
-     * Constructs a multi-polygon geometry.
+     * Constructs a {@link GeoPolygonCollection}.
      *
      * @param polygons The polygons that define the multi-polygon.
      * @throws NullPointerException If {@code polygons} is {@code null}.
      */
-    public MultiPolygonGeometry(List<PolygonGeometry> polygons) {
+    public GeoPolygonCollection(List<GeoPolygon> polygons) {
         this(polygons, null, null);
     }
 
     /**
-     * Constructs a multi-polygon geometry.
+     * Constructs a {@link GeoPolygonCollection}.
      *
      * @param polygons The polygons that define the multi-polygon.
      * @param boundingBox Bounding box for the multi-polygon.
      * @param properties Additional properties of the multi-polygon.
      * @throws NullPointerException If {@code polygons} is {@code null}.
      */
-    public MultiPolygonGeometry(List<PolygonGeometry> polygons, GeometryBoundingBox boundingBox,
+    public GeoPolygonCollection(List<GeoPolygon> polygons, GeoBoundingBox boundingBox,
         Map<String, Object> properties) {
         super(boundingBox, properties);
 
@@ -42,12 +42,12 @@ public final class MultiPolygonGeometry extends Geometry {
     }
 
     /**
-     * Unmodifiable representation of the {@link PolygonGeometry geometric polygons} representing this multi-polygon.
+     * Unmodifiable representation of the {@link GeoPolygon geometric polygons} representing this multi-polygon.
      *
-     * @return An unmodifiable representation of the {@link PolygonGeometry geometric polygons} representing this
+     * @return An unmodifiable representation of the {@link GeoPolygon geometric polygons} representing this
      * multi-polygon.
      */
-    public List<PolygonGeometry> getPolygons() {
+    public List<GeoPolygon> getPolygons() {
         return polygons;
     }
 
@@ -58,7 +58,7 @@ public final class MultiPolygonGeometry extends Geometry {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof MultiPolygonGeometry)) {
+        if (!(obj instanceof GeoPolygonCollection)) {
             return false;
         }
 
@@ -66,7 +66,7 @@ public final class MultiPolygonGeometry extends Geometry {
             return true;
         }
 
-        MultiPolygonGeometry other = (MultiPolygonGeometry) obj;
+        GeoPolygonCollection other = (GeoPolygonCollection) obj;
 
         return super.equals(obj) && Objects.equals(polygons, other.polygons);
     }

@@ -16,19 +16,19 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * Tests {@link PointGeometry}.
+ * Tests {@link GeoPoint}.
  */
-public class PointGeometryTests {
+public class GeoPointTests {
     @Test
     public void nullPositionThrows() {
-        Assertions.assertThrows(NullPointerException.class, () -> new PointGeometry(null));
+        Assertions.assertThrows(NullPointerException.class, () -> new GeoPoint(null));
     }
 
     @Test
     public void simpleConstructor() {
-        GeometryPosition position = new GeometryPosition(0, 0);
+        GeoPosition position = new GeoPosition(0, 0);
 
-        PointGeometry point = new PointGeometry(position);
+        GeoPoint point = new GeoPoint(position);
 
         assertEquals(position, point.getPosition());
 
@@ -38,11 +38,11 @@ public class PointGeometryTests {
 
     @Test
     public void complexConstructor() {
-        GeometryPosition position = new GeometryPosition(0, 0);
-        GeometryBoundingBox boundingBox = new GeometryBoundingBox(0, 0, 1, 1);
+        GeoPosition position = new GeoPosition(0, 0);
+        GeoBoundingBox boundingBox = new GeoBoundingBox(0, 0, 1, 1);
         Map<String, Object> properties = Collections.singletonMap("key", "value");
 
-        PointGeometry point = new PointGeometry(position, boundingBox, properties);
+        GeoPoint point = new GeoPoint(position, boundingBox, properties);
 
         assertEquals(position, point.getPosition());
         assertEquals(boundingBox, point.getBoundingBox());
@@ -51,19 +51,19 @@ public class PointGeometryTests {
 
     @ParameterizedTest
     @MethodSource("equalsSupplier")
-    public void pointGeometriesEquals(PointGeometry point, Object obj, boolean expected) {
+    public void pointGeometriesEquals(GeoPoint point, Object obj, boolean expected) {
         assertEquals(expected, point.equals(obj));
     }
 
     private static Stream<Arguments> equalsSupplier() {
-        GeometryPosition position = new GeometryPosition(0, 0);
-        GeometryPosition position1 = new GeometryPosition(1, 1);
+        GeoPosition position = new GeoPosition(0, 0);
+        GeoPosition position1 = new GeoPosition(1, 1);
 
-        GeometryBoundingBox boundingBox = new GeometryBoundingBox(0, 0, 1, 1);
+        GeoBoundingBox boundingBox = new GeoBoundingBox(0, 0, 1, 1);
         Map<String, Object> properties = Collections.singletonMap("key", "value");
 
-        PointGeometry point = new PointGeometry(position);
-        PointGeometry point1 = new PointGeometry(position1, boundingBox, properties);
+        GeoPoint point = new GeoPoint(position);
+        GeoPoint point1 = new GeoPoint(position1, boundingBox, properties);
 
         return Stream.of(
             // Other is null.
@@ -81,8 +81,8 @@ public class PointGeometryTests {
             Arguments.of(point1, point, false),
 
             // Other is the same value.
-            Arguments.of(point, new PointGeometry(position), true),
-            Arguments.of(point1, new PointGeometry(position1, boundingBox, properties), true)
+            Arguments.of(point, new GeoPoint(position), true),
+            Arguments.of(point1, new GeoPoint(position1, boundingBox, properties), true)
         );
     }
 }

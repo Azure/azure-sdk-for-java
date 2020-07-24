@@ -10,30 +10,30 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Represents a multi-line geometry.
+ * Represents a collection of {@link GeoLine GeoLines}.
  */
-public final class MultiLineGeometry extends Geometry {
-    private final List<LineGeometry> lines;
+public final class GeoLineCollection extends GeoObject {
+    private final List<GeoLine> lines;
 
     /**
-     * Constructs a multi-line geometry.
+     * Constructs a {@link GeoLineCollection}.
      *
      * @param lines The geometric lines that define the multi-line.
      * @throws NullPointerException If {@code lines} is {@code null}.
      */
-    public MultiLineGeometry(List<LineGeometry> lines) {
+    public GeoLineCollection(List<GeoLine> lines) {
         this(lines, null, null);
     }
 
     /**
-     * Constructs a multi-line geometry.
+     * Constructs a {@link GeoLineCollection}.
      *
      * @param lines The geometric lines that define the multi-line.
      * @param boundingBox Bounding box for the multi-line.
      * @param properties Additional properties of the multi-line.
      * @throws NullPointerException If {@code lines} is {@code null}.
      */
-    public MultiLineGeometry(List<LineGeometry> lines, GeometryBoundingBox boundingBox,
+    public GeoLineCollection(List<GeoLine> lines, GeoBoundingBox boundingBox,
         Map<String, Object> properties) {
         super(boundingBox, properties);
 
@@ -42,11 +42,11 @@ public final class MultiLineGeometry extends Geometry {
     }
 
     /**
-     * Unmodifiable representation of the {@link LineGeometry geometric lines} representing this multi-line.
+     * Unmodifiable representation of the {@link GeoLine geometric lines} representing this multi-line.
      *
-     * @return An unmodifiable representation of the {@link LineGeometry geometric lines} representing this multi-line.
+     * @return An unmodifiable representation of the {@link GeoLine geometric lines} representing this multi-line.
      */
-    public List<LineGeometry> getLines() {
+    public List<GeoLine> getLines() {
         return lines;
     }
 
@@ -57,7 +57,7 @@ public final class MultiLineGeometry extends Geometry {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof MultiLineGeometry)) {
+        if (!(obj instanceof GeoLineCollection)) {
             return false;
         }
 
@@ -65,7 +65,7 @@ public final class MultiLineGeometry extends Geometry {
             return true;
         }
 
-        MultiLineGeometry other = (MultiLineGeometry) obj;
+        GeoLineCollection other = (GeoLineCollection) obj;
 
         return super.equals(obj) && Objects.equals(lines, other.lines);
     }

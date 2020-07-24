@@ -12,8 +12,8 @@ import java.util.Objects;
 /**
  * Represents a geometric line.
  */
-public final class LineGeometry extends Geometry {
-    private final List<GeometryPosition> positions;
+public final class GeoLine extends GeoObject {
+    private final List<GeoPosition> positions;
 
     /**
      * Constructs a geometric line.
@@ -21,7 +21,7 @@ public final class LineGeometry extends Geometry {
      * @param positions Geometric positions that define the line.
      * @throws NullPointerException If {@code positions} is {@code null}.
      */
-    public LineGeometry(List<GeometryPosition> positions) {
+    public GeoLine(List<GeoPosition> positions) {
         this(positions, null, null);
     }
 
@@ -33,7 +33,7 @@ public final class LineGeometry extends Geometry {
      * @param properties Additional properties of the geometric line.
      * @throws NullPointerException If {@code positions} is {@code null}.
      */
-    public LineGeometry(List<GeometryPosition> positions, GeometryBoundingBox boundingBox,
+    public GeoLine(List<GeoPosition> positions, GeoBoundingBox boundingBox,
         Map<String, Object> properties) {
         super(boundingBox, properties);
 
@@ -42,12 +42,12 @@ public final class LineGeometry extends Geometry {
     }
 
     /**
-     * Unmodifiable representation of the {@link GeometryPosition geometric positions} representing this line.
+     * Unmodifiable representation of the {@link GeoPosition geometric positions} representing this line.
      *
-     * @return An unmodifiable representation of the {@link GeometryPosition geometric positions} representing this
+     * @return An unmodifiable representation of the {@link GeoPosition geometric positions} representing this
      * line.
      */
-    public List<GeometryPosition> getPositions() {
+    public List<GeoPosition> getPositions() {
         return positions;
     }
 
@@ -58,7 +58,7 @@ public final class LineGeometry extends Geometry {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof LineGeometry)) {
+        if (!(obj instanceof GeoLine)) {
             return false;
         }
 
@@ -66,7 +66,7 @@ public final class LineGeometry extends Geometry {
             return true;
         }
 
-        LineGeometry other = (LineGeometry) obj;
+        GeoLine other = (GeoLine) obj;
         return super.equals(other) && Objects.equals(positions, other.positions);
     }
 }

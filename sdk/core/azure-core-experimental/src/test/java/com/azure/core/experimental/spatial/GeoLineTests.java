@@ -20,20 +20,20 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 /**
- * Tests {@link LineGeometry}.
+ * Tests {@link GeoLine}.
  */
-public class LineGeometryTests {
+public class GeoLineTests {
     @Test
     public void nullPositionsThrows() {
-        Assertions.assertThrows(NullPointerException.class, () -> new LineGeometry(null));
+        Assertions.assertThrows(NullPointerException.class, () -> new GeoLine(null));
     }
 
     @Test
     public void simpleConstructor() {
-        List<GeometryPosition> expectedPositions = Arrays.asList(new GeometryPosition(0, 0),
-            new GeometryPosition(0, 1));
+        List<GeoPosition> expectedPositions = Arrays.asList(new GeoPosition(0, 0),
+            new GeoPosition(0, 1));
 
-        LineGeometry line = new LineGeometry(expectedPositions);
+        GeoLine line = new GeoLine(expectedPositions);
 
         assertEquals(expectedPositions, line.getPositions());
 
@@ -43,12 +43,12 @@ public class LineGeometryTests {
 
     @Test
     public void complexConstructor() {
-        List<GeometryPosition> expectedPositions = Arrays.asList(new GeometryPosition(0, 0),
-            new GeometryPosition(0, 1));
-        GeometryBoundingBox expectedBoundingBox = new GeometryBoundingBox(0, 0, 1, 1);
+        List<GeoPosition> expectedPositions = Arrays.asList(new GeoPosition(0, 0),
+            new GeoPosition(0, 1));
+        GeoBoundingBox expectedBoundingBox = new GeoBoundingBox(0, 0, 1, 1);
         Map<String, Object> expectedProperties = Collections.singletonMap("key", "value");
 
-        LineGeometry line = new LineGeometry(expectedPositions, expectedBoundingBox, expectedProperties);
+        GeoLine line = new GeoLine(expectedPositions, expectedBoundingBox, expectedProperties);
 
         assertEquals(expectedPositions, line.getPositions());
         assertEquals(expectedBoundingBox, line.getBoundingBox());
@@ -57,32 +57,32 @@ public class LineGeometryTests {
 
     @Test
     public void constructorCopiesPositions() {
-        List<GeometryPosition> expectedPositions = new ArrayList<>();
-        expectedPositions.add(new GeometryPosition(0, 0));
-        expectedPositions.add(new GeometryPosition(0, 1));
+        List<GeoPosition> expectedPositions = new ArrayList<>();
+        expectedPositions.add(new GeoPosition(0, 0));
+        expectedPositions.add(new GeoPosition(0, 1));
 
-        LineGeometry line = new LineGeometry(expectedPositions);
+        GeoLine line = new GeoLine(expectedPositions);
         assertEquals(expectedPositions, line.getPositions());
 
-        expectedPositions.add(new GeometryPosition(1, 1));
+        expectedPositions.add(new GeoPosition(1, 1));
         assertNotEquals(expectedPositions, line.getPositions());
     }
 
     @ParameterizedTest
     @MethodSource("equalsSupplier")
-    public void lineGeometriesEqual(LineGeometry line, Object obj, boolean expected) {
+    public void lineGeometriesEqual(GeoLine line, Object obj, boolean expected) {
         assertEquals(expected, line.equals(obj));
     }
 
     private static Stream<Arguments> equalsSupplier() {
-        List<GeometryPosition> positions = Arrays.asList(new GeometryPosition(0, 0), new GeometryPosition(0, 1));
-        List<GeometryPosition> positions1 = Arrays.asList(new GeometryPosition(0, 0), new GeometryPosition(1, 1));
+        List<GeoPosition> positions = Arrays.asList(new GeoPosition(0, 0), new GeoPosition(0, 1));
+        List<GeoPosition> positions1 = Arrays.asList(new GeoPosition(0, 0), new GeoPosition(1, 1));
 
-        GeometryBoundingBox boundingBox = new GeometryBoundingBox(0, 0, 1, 1);
+        GeoBoundingBox boundingBox = new GeoBoundingBox(0, 0, 1, 1);
         Map<String, Object> properties = Collections.singletonMap("key", "value");
 
-        LineGeometry line = new LineGeometry(positions);
-        LineGeometry line1 = new LineGeometry(positions1, boundingBox, properties);
+        GeoLine line = new GeoLine(positions);
+        GeoLine line1 = new GeoLine(positions1, boundingBox, properties);
 
         return Stream.of(
             // Other is null.
@@ -100,8 +100,8 @@ public class LineGeometryTests {
             Arguments.of(line1, line, false),
 
             // Other is the same value.
-            Arguments.of(line, new LineGeometry(positions), true),
-            Arguments.of(line1, new LineGeometry(positions1, boundingBox, properties), true)
+            Arguments.of(line, new GeoLine(positions), true),
+            Arguments.of(line1, new GeoLine(positions1, boundingBox, properties), true)
         );
     }
 }

@@ -12,8 +12,8 @@ import java.util.Objects;
 /**
  * Represents a geometric polygon.
  */
-public final class PolygonGeometry extends Geometry {
-    private final List<LineGeometry> rings;
+public final class GeoPolygon extends GeoObject {
+    private final List<GeoLine> rings;
 
     /**
      * Constructs a geometric polygon.
@@ -21,7 +21,7 @@ public final class PolygonGeometry extends Geometry {
      * @param rings The lines that define the polygon.
      * @throws NullPointerException If {@code rings} is {@code null}.
      */
-    public PolygonGeometry(List<LineGeometry> rings) {
+    public GeoPolygon(List<GeoLine> rings) {
         this(rings, null, null);
     }
 
@@ -33,7 +33,7 @@ public final class PolygonGeometry extends Geometry {
      * @param properties Additional properties of the polygon.
      * @throws NullPointerException If {@code rings} is {@code null}.
      */
-    public PolygonGeometry(List<LineGeometry> rings, GeometryBoundingBox boundingBox, Map<String, Object> properties) {
+    public GeoPolygon(List<GeoLine> rings, GeoBoundingBox boundingBox, Map<String, Object> properties) {
         super(boundingBox, properties);
 
         Objects.requireNonNull(rings, "'rings' cannot be null.");
@@ -41,11 +41,11 @@ public final class PolygonGeometry extends Geometry {
     }
 
     /**
-     * Unmodifiable representation of the {@link LineGeometry geometric lines} representing this polygon.
+     * Unmodifiable representation of the {@link GeoLine geometric lines} representing this polygon.
      *
-     * @return An unmodifiable representation of the {@link LineGeometry geometric lines} representing this polygon.
+     * @return An unmodifiable representation of the {@link GeoLine geometric lines} representing this polygon.
      */
-    public List<LineGeometry> getRings() {
+    public List<GeoLine> getRings() {
         return rings;
     }
 
@@ -56,7 +56,7 @@ public final class PolygonGeometry extends Geometry {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof PolygonGeometry)) {
+        if (!(obj instanceof GeoPolygon)) {
             return false;
         }
 
@@ -64,7 +64,7 @@ public final class PolygonGeometry extends Geometry {
             return true;
         }
 
-        PolygonGeometry other = (PolygonGeometry) obj;
+        GeoPolygon other = (GeoPolygon) obj;
 
         return super.equals(obj) && Objects.equals(rings, other.rings);
     }

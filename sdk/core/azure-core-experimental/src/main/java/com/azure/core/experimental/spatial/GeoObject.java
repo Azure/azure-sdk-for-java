@@ -11,22 +11,22 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * An abstract representation of a geometry.
+ * An abstract geo object.
  */
 @JsonSubTypes({
-    @JsonSubTypes.Type(PointGeometry.class),
-    @JsonSubTypes.Type(LineGeometry.class),
-    @JsonSubTypes.Type(PolygonGeometry.class),
-    @JsonSubTypes.Type(MultiPointGeometry.class),
-    @JsonSubTypes.Type(MultiLineGeometry.class),
-    @JsonSubTypes.Type(MultiPolygonGeometry.class),
-    @JsonSubTypes.Type(CollectionGeometry.class)
+    @JsonSubTypes.Type(GeoPoint.class),
+    @JsonSubTypes.Type(GeoLine.class),
+    @JsonSubTypes.Type(GeoPolygon.class),
+    @JsonSubTypes.Type(GeoPointCollection.class),
+    @JsonSubTypes.Type(GeoLineCollection.class),
+    @JsonSubTypes.Type(GeoPolygonCollection.class),
+    @JsonSubTypes.Type(GeoCollection.class)
 })
-public abstract class Geometry {
-    private final GeometryBoundingBox boundingBox;
+public abstract class GeoObject {
+    private final GeoBoundingBox boundingBox;
     private final Map<String, Object> properties;
 
-    protected Geometry(GeometryBoundingBox boundingBox, Map<String, Object> properties) {
+    protected GeoObject(GeoBoundingBox boundingBox, Map<String, Object> properties) {
         this.boundingBox = boundingBox;
 
         if (properties == null) {
@@ -37,18 +37,18 @@ public abstract class Geometry {
     }
 
     /**
-     * Bounding box for this geometry.
+     * Bounding box for this {@link GeoObject}.
      *
-     * @return The bounding box for this geometry.
+     * @return The bounding box for this {@link GeoObject}.
      */
-    public GeometryBoundingBox getBoundingBox() {
+    public GeoBoundingBox getBoundingBox() {
         return boundingBox;
     }
 
     /**
-     * Additional properties about this geometry.
+     * Additional properties about this {@link GeoObject}.
      *
-     * @return An unmodifiable representation of the additional properties associated with this geometry.
+     * @return An unmodifiable representation of the additional properties associated with this {@link GeoObject}.
      */
     public Map<String, Object> getProperties() {
         return properties;
@@ -61,7 +61,7 @@ public abstract class Geometry {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof Geometry)) {
+        if (!(obj instanceof GeoObject)) {
             return false;
         }
 
@@ -69,7 +69,7 @@ public abstract class Geometry {
             return true;
         }
 
-        Geometry other = (Geometry) obj;
+        GeoObject other = (GeoObject) obj;
 
         return Objects.equals(boundingBox, other.boundingBox) && Objects.equals(properties, other.properties);
     }
