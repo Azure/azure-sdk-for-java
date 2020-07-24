@@ -42,6 +42,9 @@ extends:
       - name: azure-resourcemanager-compute
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagercompute
+      - name: azure-resourcemanager-containerinstance
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagercontainerinstance
       - name: azure-resourcemanager-containerregistry
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagercontainerregistry
