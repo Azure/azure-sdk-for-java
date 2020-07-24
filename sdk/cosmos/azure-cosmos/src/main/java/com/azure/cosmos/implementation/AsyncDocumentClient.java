@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.encryption.api.DataEncryptionKeyProvider;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
@@ -74,6 +75,7 @@ public interface AsyncDocumentClient {
         AzureKeyCredential credential;
         boolean sessionCapturingOverride;
         boolean transportClientSharing;
+        private DataEncryptionKeyProvider dataEncryptionKeyProvider;
         boolean contentResponseOnWriteEnabled;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
@@ -147,6 +149,12 @@ public interface AsyncDocumentClient {
             this.transportClientSharing = transportClientSharing;
             return this;
         }
+
+        public Builder withDataEncryptionKeyProvider(DataEncryptionKeyProvider dataEncryptionKeyProvider) {
+            this.dataEncryptionKeyProvider = dataEncryptionKeyProvider;
+            return this;
+        }
+
 
         public Builder withCredential(AzureKeyCredential credential) {
             if (credential != null && StringUtils.isEmpty(credential.getKey())) {

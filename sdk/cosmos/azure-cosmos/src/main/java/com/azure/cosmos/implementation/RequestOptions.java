@@ -3,6 +3,8 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.implementation.encryption.api.EncryptionOptions;
+
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.models.IndexingDirective;
 import com.azure.cosmos.models.PartitionKey;
@@ -32,6 +34,7 @@ public class RequestOptions {
     private boolean scriptLoggingEnabled;
     private boolean quotaInfoEnabled;
     private Map<String, Object> properties;
+    private EncryptionOptions encryptionOptions;
     private ThroughputProperties throughputProperties;
 
     /**

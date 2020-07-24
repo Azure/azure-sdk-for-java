@@ -34,6 +34,8 @@ import com.azure.cosmos.implementation.UserDefinedFunction;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.Warning;
 import com.azure.cosmos.implementation.directconnectivity.Address;
+import com.azure.cosmos.implementation.ItemDeserializer;
+import com.azure.cosmos.implementation.encryption.api.EncryptionOptions;
 import com.azure.cosmos.implementation.query.PartitionedQueryExecutionInfoInternal;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.query.QueryItem;
@@ -609,6 +611,13 @@ public final class ModelBridgeInternal {
         } else {
             throw new IllegalArgumentException("getJsonSerializable method does not exists in class " + t.getClass());
         }
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static CosmosItemRequestOptions setEncryptionOptions(CosmosItemRequestOptions options,
+                                                                EncryptionOptions encryptionOptions) {
+        options.setEncryptionOptions(encryptionOptions);
+        return options;
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
