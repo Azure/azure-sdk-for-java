@@ -14,6 +14,8 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.EventLoopGroup;
 import io.netty.handler.codec.http.HttpMethod;
+import io.netty.handler.timeout.ReadTimeoutException;
+import io.netty.handler.timeout.WriteTimeoutException;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -23,6 +25,7 @@ import reactor.netty.NettyOutbound;
 import reactor.netty.http.client.HttpClientRequest;
 import reactor.netty.http.client.HttpClientResponse;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.Objects;
@@ -74,6 +77,17 @@ class NettyAsyncHttpClient implements HttpClient {
             .uri(request.getUrl().toString())
             .send(bodySendDelegate(request))
             .responseConnection(responseDelegate(request, disableBufferCopy))
+            .onErrorMap(throwable -> {
+                if (throwable instanceof ReadTimeoutException) {
+                    System.out.println("Converting ReadTimeoutException to IOException.");
+                    return new IOException(throwable);
+                } else if (throwable instanceof  WriteTimeoutException) {
+                    System.out.println("Converting WriteTimeoutException to IOException.");
+                    return new IOException(throwable);
+                } else {
+                    return throwable;
+                }
+            })
             .single();
     }
 

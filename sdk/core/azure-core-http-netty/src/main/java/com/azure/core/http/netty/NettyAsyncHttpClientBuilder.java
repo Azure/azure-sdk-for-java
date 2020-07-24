@@ -6,12 +6,13 @@ package com.azure.core.http.netty;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.implementation.ChallengeHolder;
 import com.azure.core.http.netty.implementation.DeferredHttpProxyProvider;
-import com.azure.core.http.netty.implementation.DeferredIdleStateHandlerProvider;
 import com.azure.core.util.AuthorizationChallengeHandler;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.handler.timeout.ReadTimeoutHandler;
+import io.netty.handler.timeout.WriteTimeoutHandler;
 import reactor.netty.NettyPipeline;
 import reactor.netty.channel.BootstrapHandlers;
 import reactor.netty.http.client.HttpClient;
@@ -19,7 +20,6 @@ import reactor.netty.resources.ConnectionProvider;
 import reactor.netty.tcp.ProxyProvider;
 
 import java.nio.ByteBuffer;
-import java.time.Duration;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -131,9 +131,8 @@ public class NettyAsyncHttpClientBuilder {
                 }
             }
 
-            return tcpClient.bootstrap(bootstrap -> BootstrapHandlers.updateConfiguration(bootstrap,
-                DeferredIdleStateHandlerProvider.HANDLER_NAME,
-                new DeferredIdleStateHandlerProvider(Duration.ofSeconds(60), Duration.ofSeconds(60))));
+            return tcpClient.doOnConnected(connection -> connection.addHandlerLast(new ReadTimeoutHandler(60))
+                .addHandlerLast(new WriteTimeoutHandler(60)));
         });
 
         return new NettyAsyncHttpClient(nettyHttpClient, disableBufferCopy);
