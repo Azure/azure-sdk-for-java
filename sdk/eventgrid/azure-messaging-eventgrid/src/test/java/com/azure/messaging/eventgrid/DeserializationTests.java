@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class DeserializationTests {
 
-    // Using @Ignore until Consumer is actually implemented
+    // TODO: fix OffsetDateTime deserialization and remove @Ignore
 
     @Test
     @Ignore
@@ -30,13 +30,29 @@ public class DeserializationTests {
     }
 
     @Test
+    //@Ignore
+    public void consumeCloudEventWithNullData() throws IOException {
+        String jsonData = getTestPayloadFromFile("NullData.json");
+        EventGridConsumer consumer = new EventGridConsumer()
+            .putDataMapping("Contoso.Items.ItemRecieved", Void.TYPE);
+
+        List<CloudEvent> events = consumer.deserializeCloudEvents(jsonData);
+
+        Assert.assertNotNull(events);
+        Assert.assertEquals(1, events.size());
+
+        Assert.assertEquals(events.get(0).getSpecVersion(), "1.0");
+
+        Assert.assertNull(events.get(0).getData());
+    }
+
+    @Test
     @Ignore
     public void consumeCloudEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("CloudEvent.json");
 
-        EventGridConsumer consumer = new EventGridConsumerBuilder()
-            .putDataMapping("Contoso.Items.ItemReceived", ContosoItemReceivedEventData.class)
-            .build();
+        EventGridConsumer consumer = new EventGridConsumer()
+            .putDataMapping("Contoso.Items.ItemReceived", ContosoItemReceivedEventData.class);
 
         List<CloudEvent> events = consumer.deserializeCloudEvents(jsonData);
 
@@ -62,9 +78,8 @@ public class DeserializationTests {
     public void consumeCustomSchemaEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("CustomSchemaEvent.json");
 
-        EventGridConsumer consumer = new EventGridConsumerBuilder()
-            .putDataMapping("Contoso.Items.ItemReceived", ContosoItemReceivedEventData.class)
-            .build();
+        EventGridConsumer consumer = new EventGridConsumer()
+            .putDataMapping("Contoso.Items.ItemReceived", ContosoItemReceivedEventData.class);
 
         List<CustomSchema> events = consumer.deserializeCustomEvents(jsonData, CustomSchema.class);
 
@@ -92,10 +107,9 @@ public class DeserializationTests {
     public void consumeCustomEvents() throws IOException {
         String jsonData = getTestPayloadFromFile("CustomEvents.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder()
+        EventGridConsumer consumer = new EventGridConsumer()
             .putDataMapping("Contoso.Items.ItemSent", ContosoItemSentEventData.class)
-            .putDataMapping("Contoso.Items.ItemReceived", ContosoItemReceivedEventData.class)
-            .build();
+            .putDataMapping("Contoso.Items.ItemReceived", ContosoItemReceivedEventData.class);
 
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
@@ -114,9 +128,8 @@ public class DeserializationTests {
 
         ContosoItemReceivedEventData[] arr = {new ContosoItemReceivedEventData()};
 
-        EventGridConsumer consumer = new EventGridConsumerBuilder()
-            .putDataMapping("Contoso.Items.ItemReceived", arr.getClass())
-            .build();
+        EventGridConsumer consumer = new EventGridConsumer()
+            .putDataMapping("Contoso.Items.ItemReceived", arr.getClass());
 
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
@@ -132,9 +145,8 @@ public class DeserializationTests {
     public void consumeCustomEventWithBooleanData() throws IOException {
         String jsonData = getTestPayloadFromFile("CustomEventWithBooleanData.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder()
-            .putDataMapping("Contoso.Items.ItemReceived", Boolean.class)
-            .build();
+        EventGridConsumer consumer = new EventGridConsumer()
+            .putDataMapping("Contoso.Items.ItemReceived", Boolean.class);
 
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
@@ -166,9 +178,8 @@ public class DeserializationTests {
     public void consumeCustomEventWithPolymorphicData() throws IOException {
         String jsonData = getTestPayloadFromFile("CustomEventWithPolymorphicData.json");
         //
-        EventGridConsumer consumer = new EventGridConsumerBuilder()
-            .putDataMapping("Contoso.Items.ItemSent", ContosoItemSentEventData.class)
-            .build();
+        EventGridConsumer consumer = new EventGridConsumer()
+            .putDataMapping("Contoso.Items.ItemSent", ContosoItemSentEventData.class);
 
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
@@ -1066,13 +1077,9 @@ public class DeserializationTests {
 
     // TODO: When new event types are introduced, add one test here for each event type
 
-    private String getTestPayloadFromFile(String fileName) {
+    private String getTestPayloadFromFile(String fileName) throws IOException {
         ClassLoader classLoader = getClass().getClassLoader();
-        try {
-            byte[] bytes = IOUtils.toByteArray(classLoader.getResourceAsStream("customization/" + fileName));
-            return new String(bytes);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        byte[] bytes = IOUtils.toByteArray(classLoader.getResourceAsStream("customization/" + fileName));
+        return new String(bytes);
     }
 }
