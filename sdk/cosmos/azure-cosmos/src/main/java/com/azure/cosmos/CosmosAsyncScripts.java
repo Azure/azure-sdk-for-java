@@ -138,6 +138,10 @@ public class CosmosAsyncScripts {
     public CosmosPagedFlux<CosmosStoredProcedureProperties> queryStoredProcedures(
         String query,
             CosmosQueryRequestOptions options) {
+        if (options == null) {
+            options = new CosmosQueryRequestOptions();
+        }
+
         return queryStoredProceduresInternal(new SqlQuerySpec(query), options);
     }
 
@@ -157,6 +161,10 @@ public class CosmosAsyncScripts {
     public CosmosPagedFlux<CosmosStoredProcedureProperties> queryStoredProcedures(
         SqlQuerySpec querySpec,
         CosmosQueryRequestOptions options) {
+        if (options == null) {
+            options = new CosmosQueryRequestOptions();
+        }
+
         return queryStoredProceduresInternal(querySpec, options);
     }
 
@@ -251,6 +259,10 @@ public class CosmosAsyncScripts {
     public CosmosPagedFlux<CosmosUserDefinedFunctionProperties> queryUserDefinedFunctions(
         String query,
         CosmosQueryRequestOptions options) {
+        if (options == null) {
+            options = new CosmosQueryRequestOptions();
+        }
+
         return queryUserDefinedFunctions(new SqlQuerySpec(query), options);
     }
 
@@ -271,6 +283,10 @@ public class CosmosAsyncScripts {
     public CosmosPagedFlux<CosmosUserDefinedFunctionProperties> queryUserDefinedFunctions(
         SqlQuerySpec querySpec,
         CosmosQueryRequestOptions options) {
+        if (options == null) {
+            options = new CosmosQueryRequestOptions();
+        }
+
         return queryUserDefinedFunctionsInternal(querySpec, options);
     }
 
@@ -358,6 +374,10 @@ public class CosmosAsyncScripts {
      * error.
      */
     public CosmosPagedFlux<CosmosTriggerProperties> queryTriggers(String query, CosmosQueryRequestOptions options) {
+        if (options == null) {
+            options = new CosmosQueryRequestOptions();
+        }
+
         return queryTriggersInternal(false, new SqlQuerySpec(query), options);
     }
 
@@ -376,6 +396,10 @@ public class CosmosAsyncScripts {
     public CosmosPagedFlux<CosmosTriggerProperties> queryTriggers(
         SqlQuerySpec querySpec,
         CosmosQueryRequestOptions options) {
+        if (options == null) {
+            options = new CosmosQueryRequestOptions();
+        }
+
         return queryTriggersInternal(true, querySpec, options);
     }
 

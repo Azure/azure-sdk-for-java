@@ -562,6 +562,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             case UserDefinedFunction:
                 return Utils.joinPath(parentResouceLink, Paths.USER_DEFINED_FUNCTIONS_PATH_SEGMENT);
 
+            case Conflict:
+                return Utils.joinPath(parentResouceLink, Paths.CONFLICTS_PATH_SEGMENT);
+
             default:
                 throw new IllegalArgumentException("resource type not supported");
         }
