@@ -410,13 +410,12 @@ public class CosmosAsyncDatabase {
      * containers or an error.
      */
     public CosmosPagedFlux<CosmosContainerProperties> readAllContainers(CosmosQueryRequestOptions options) {
-        CosmosQueryRequestOptions requestOptions = options == null ? new CosmosQueryRequestOptions() : options;
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             String spanName = "readAllContainers." + this.getId();
             pagedFluxOptions.setTracerInformation(this.getClient().getTracerProvider(), spanName,
                 this.getClient().getServiceEndpoint(), getId());
-            setContinuationTokenAndMaxItemCount(pagedFluxOptions, requestOptions);
-            return getDocClientWrapper().readCollections(getLink(), requestOptions)
+            setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
+            return getDocClientWrapper().readCollections(getLink(), options)
                 .map(response -> BridgeInternal.createFeedResponse(
                     ModelBridgeInternal.getCosmosContainerPropertiesFromV2Results(response.getResults()),
                     response.getResponseHeaders()));
@@ -465,10 +464,6 @@ public class CosmosAsyncDatabase {
      * obtained containers or an error.
      */
     public CosmosPagedFlux<CosmosContainerProperties> queryContainers(String query, CosmosQueryRequestOptions options) {
-        if (options == null) {
-            options = new CosmosQueryRequestOptions();
-        }
-
         return queryContainersInternal(new SqlQuerySpec(query), options);
     }
 
@@ -501,10 +496,6 @@ public class CosmosAsyncDatabase {
      */
     public CosmosPagedFlux<CosmosContainerProperties> queryContainers(SqlQuerySpec querySpec
         , CosmosQueryRequestOptions options) {
-        if (options == null) {
-            options = new CosmosQueryRequestOptions();
-        }
-
         return queryContainersInternal(querySpec, options);
     }
 
@@ -613,10 +604,6 @@ public class CosmosAsyncDatabase {
      * obtained users or an error.
      */
     public CosmosPagedFlux<CosmosUserProperties> queryUsers(String query, CosmosQueryRequestOptions options) {
-        if (options == null) {
-            options = new CosmosQueryRequestOptions();
-        }
-
         return queryUsersInternal(new SqlQuerySpec(query), options);
     }
 
@@ -648,10 +635,6 @@ public class CosmosAsyncDatabase {
      * obtained users or an error.
      */
     public CosmosPagedFlux<CosmosUserProperties> queryUsers(SqlQuerySpec querySpec, CosmosQueryRequestOptions options) {
-        if (options == null) {
-            options = new CosmosQueryRequestOptions();
-        }
-
         return queryUsersInternal(querySpec, options);
     }
 
