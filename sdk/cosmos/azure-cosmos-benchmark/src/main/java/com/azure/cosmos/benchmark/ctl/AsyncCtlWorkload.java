@@ -82,9 +82,9 @@ public class AsyncCtlWorkload {
     private List<CosmosAsyncContainer> containers = new ArrayList<>();
     private List<String> containerToClearAfterTest = new ArrayList<>();
     private boolean databaseCreated;
-    private int readPct = 90;
-    private int writePct = 9;
-    private int queryPct = 1;
+    private int readPct;
+    private int writePct;
+    private int queryPct;
 
     public AsyncCtlWorkload(Configuration cfg) {
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
