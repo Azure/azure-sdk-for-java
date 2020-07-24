@@ -261,11 +261,6 @@ jobs:
             DisplayName: Session Integration
             OSVmImage: 'ubuntu-18.04'
             ProfileFlag: '-P integration-test-azure'
-          Strong_Integration:
-            ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }"
-            DisplayName: Strong Integration
-            OSVmImage: 'ubuntu-18.04'
-            ProfileFlag: '-P integration-test-azure'
 
         EnvVars:
             AZURE_TEST_MODE: LIVE
