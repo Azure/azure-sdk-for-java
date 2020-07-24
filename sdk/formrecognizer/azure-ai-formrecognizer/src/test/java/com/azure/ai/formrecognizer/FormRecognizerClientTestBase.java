@@ -61,6 +61,7 @@ import static com.azure.ai.formrecognizer.TestUtils.BLANK_FORM_FILE_LENGTH;
 import static com.azure.ai.formrecognizer.TestUtils.BLANK_PDF;
 import static com.azure.ai.formrecognizer.TestUtils.CUSTOM_FORM_FILE_LENGTH;
 import static com.azure.ai.formrecognizer.TestUtils.DEFAULT_DURATION;
+import static com.azure.ai.formrecognizer.TestUtils.FAKE_ENCODED_EMPTY_SPACE_URL;
 import static com.azure.ai.formrecognizer.TestUtils.FORM_1_JPG_FILE_LENGTH;
 import static com.azure.ai.formrecognizer.TestUtils.FORM_JPG;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
@@ -87,6 +88,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     private static final String EXPECTED_MULTIPAGE_PHONE_NUMBER_VALUE = "+15555555555";
     private static final String ITEMIZED_RECEIPT_VALUE = "Itemized";
     private static final String IS_PLAYBACK_MODE = "isPlaybackMode";
+
     static final String OCR_EXTRACTION_INVALID_URL_ERROR = "OCR extraction error: [Wrong response code: "
         + "InvalidImageURL. Message: Image URL is badly formatted..]";
     static final String EXPECTED_INVALID_URL_ERROR_CODE = "3014";
@@ -94,10 +96,20 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         "Analyze operation failed, " + "errorCode: [" + EXPECTED_INVALID_URL_ERROR_CODE + "], "
             + "message: " + OCR_EXTRACTION_INVALID_URL_ERROR;
     static final String INVALID_ENDPOINT = "https://notreal.azure.com";
+    static final String EXPECTED_BAD_ARGUMENT_CODE = "BadArgument";
+    static final String EXPECTED_BAD_ARGUMENT_ERROR_MESSAGE = "Bad or unrecognizable request JSON or binary file.";
     static final String EXPECTED_HTTPS_EXCEPTION_MESSAGE =
         "Max retries 3 times exceeded. Error Details: Key credentials require HTTPS to prevent leaking the key.";
+    static final String EXPECTED_INVALID_IMAGE_CODE = "InvalidImage";
+    static final String EXPECTED_INVALID_IMAGE_ERROR_MESSAGE = "The input data is not a valid image or password protected.";
+    static final String EXPECTED_INVALID_MODEL_ID_ERROR_CODE = "1001";
+    static final String EXPECTED_INVALID_MODEL_ID_ERROR_MESSAGE =
+        "Specified model not found or not ready, Model Id: 00000000-0000-0000-0000-000000000000";
     static final String EXPECTED_INVALID_UUID_EXCEPTION_MESSAGE = "Invalid UUID string: ";
     static final String EXPECTED_MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE = "'modelId' is required and cannot be null.";
+    static final String EXPECTED_UNABLE_TO_READ_FILE = "Analyze operation failed, errorCode: [2005], message: Unable to read file.";
+
+    static final String ENCODED_EMPTY_SPACE = "{\"source\":\"https://fakeuri.com/blank%20space\"}";
 
     Duration durationTestMode;
 
@@ -650,6 +662,10 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         testRunner.accept(getStorageTestingFileUrl(INVOICE_1_PDF));
     }
 
+    void encodedBlankSpaceSourceUrlRunner(Consumer<String> testRunner) {
+        testRunner.accept(FAKE_ENCODED_EMPTY_SPACE_URL);
+    }
+
     void customFormDataRunner(BiConsumer<InputStream, Long> testRunner) {
         if (interceptorManager.isPlaybackMode()) {
             testRunner.accept(new ByteArrayInputStream(TEST_DATA_PNG.getBytes(StandardCharsets.UTF_8)),
@@ -679,6 +695,10 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         } else {
             testRunner.accept(getFileData(getStorageTestingFileUrl(BLANK_PDF)), BLANK_FORM_FILE_LENGTH);
         }
+    }
+
+    void damagedPdfDataRunner(BiConsumer<InputStream, Integer> testRunner) {
+        testRunner.accept(new ByteArrayInputStream(new byte[]{0x25, 0x50, 0x44, 0x46, 0x55, 0x55, 0x55}), 7);
     }
 
     void beginTrainingUnlabeledRunner(BiConsumer<String, Boolean> testRunner) {
