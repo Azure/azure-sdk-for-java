@@ -611,7 +611,7 @@ public class CosmosAsyncContainer {
      * obtained conflicts or an error.
      */
     public CosmosPagedFlux<CosmosConflictProperties> readAllConflicts(CosmosQueryRequestOptions options) {
-        final CosmosQueryRequestOptions requestOptions = options == null ? new CosmosQueryRequestOptions() : options;
+        CosmosQueryRequestOptions requestOptions = options == null ? new CosmosQueryRequestOptions() : options;
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             pagedFluxOptions.setTracerInformation(this.getDatabase().getClient().getTracerProvider(),
                 this.readAllConflictsSpanName,
