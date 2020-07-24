@@ -12,8 +12,10 @@ import java.util.List;
 /**
  * Sample demonstrating converting recognized form fields to strongly typed US receipt field values.
  * See
- * <a href="https://aka.ms/azsdk/python/formrecognizer/receiptfields"></a>
+ * <a href="https://aka.ms/formrecognizer/receiptfields"></a>
  * for information on the strongly typed fields returned by service when recognizing receipts.
+ * More information on the Receipt used in the example below can be found
+ * <a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/Receipt.java">here</a>
  */
 public class StronglyTypedRecognizedForm {
 
@@ -39,7 +41,7 @@ public class StronglyTypedRecognizedForm {
         for (int i = 0; i < receiptPageResults.size(); i++) {
             final RecognizedForm recognizedForm = receiptPageResults.get(i);
             System.out.printf("----------- Recognized receipt info for page %d -----------%n", i);
-            // Use Receipt model transform the recognized form to strongly typed US receipt fields
+            // Use Receipt model to transform the recognized form to a strongly typed US receipt
             Receipt usReceipt = new Receipt(recognizedForm);
             System.out.printf("Merchant Name: %s, confidence: %.2f%n", usReceipt.getMerchantName().getValue(),
                 usReceipt.getMerchantName().getConfidence());
@@ -61,15 +63,15 @@ public class StronglyTypedRecognizedForm {
                         receiptItem.getName().getConfidence());
                 }
                 if (receiptItem.getQuantity() != null) {
-                    System.out.printf("Quantity: %f, confidence: %.2f%n", receiptItem.getQuantity().getValue(),
+                    System.out.printf("Quantity: %.2f, confidence: %.2f%n", receiptItem.getQuantity().getValue(),
                         receiptItem.getQuantity().getConfidence());
                 }
                 if (receiptItem.getPrice() != null) {
-                    System.out.printf("Price: %f, confidence: %.2f%n", receiptItem.getPrice().getValue(),
+                    System.out.printf("Price: %.2f, confidence: %.2f%n", receiptItem.getPrice().getValue(),
                         receiptItem.getPrice().getConfidence());
                 }
                 if (receiptItem.getTotalPrice() != null) {
-                    System.out.printf("Total Price: %f, confidence: %.2f%n",
+                    System.out.printf("Total Price: %.2f, confidence: %.2f%n",
                         receiptItem.getTotalPrice().getValue(), receiptItem.getTotalPrice().getConfidence());
                 }
             });
