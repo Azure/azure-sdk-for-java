@@ -243,7 +243,9 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     }
 
     private void throwIfClosed() {
-        checkState(!this.closed.get(), "%s is closed", this);
+        if (this.closed.get()) {
+            throw new TransportException(lenientFormat("%s is closed", this), new IllegalArgumentException());
+        }
     }
 
     private RntbdRequestRecord write(final RntbdRequestArgs requestArgs) {
@@ -315,14 +317,25 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         }
 
         @Override
-        public void serialize(RntbdServiceEndpoint value, JsonGenerator generator, SerializerProvider provider)
-            throws IOException {
+        public void serialize(
+            final RntbdServiceEndpoint value,
+            final JsonGenerator generator,
+            final SerializerProvider provider) throws IOException {
+
+            final RntbdTransportClient transportClient = value.provider.transportClient;
+
             generator.writeStartObject();
             generator.writeNumberField("id", value.id);
-            generator.writeBooleanField("isClosed", value.isClosed());
+            generator.writeBooleanField("closed", value.isClosed());
             generator.writeNumberField("concurrentRequests", value.concurrentRequests());
             generator.writeStringField("remoteAddress", value.remoteAddress.toString());
             generator.writeObjectField("channelPool", value.channelPool);
+            generator.writeObjectFieldStart("transportClient");
+            generator.writeNumberField("id", transportClient.id());
+            generator.writeBooleanField("closed", transportClient.isClosed());
+            generator.writeNumberField("endpointCount", transportClient.endpointCount());
+            generator.writeNumberField("endpointEvictionCount", transportClient.endpointEvictionCount());
+            generator.writeEndObject();
             generator.writeEndObject();
         }
     }
