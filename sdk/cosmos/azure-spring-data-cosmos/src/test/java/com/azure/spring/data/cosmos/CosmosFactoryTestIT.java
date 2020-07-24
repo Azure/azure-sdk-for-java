@@ -28,29 +28,44 @@ public class CosmosFactoryTestIT {
     @Value("${cosmos.key:}")
     private String cosmosDbKey;
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testEmptyKey() {
-        final CosmosClientConfig cosmosClientConfig = CosmosClientConfig.builder()
-            .database(TestConstants.DB_NAME)
-            .cosmosClientBuilder(new CosmosClientBuilder()
-                .endpoint(TestConstants.DB_NAME)
-                .key(""))
-            .build();
-        CosmosFactory.createCosmosAsyncClient(cosmosClientConfig);
+    @Test
+    public void testNullKey() {
+        CosmosAsyncClient cosmosAsyncClient = null;
+        try {
+            final CosmosClientConfig cosmosClientConfig = CosmosClientConfig.builder()
+                                                                            .database(TestConstants.DB_NAME)
+                                                                            .cosmosClientBuilder(new CosmosClientBuilder()
+                                                                                .endpoint(cosmosDbUri)
+                                                                                .key(null))
+                                                                            .build();
+            cosmosAsyncClient =  CosmosFactory.createCosmosAsyncClient(cosmosClientConfig);
+        } catch (Exception e) {
+            assertThat(e instanceof IllegalArgumentException).isTrue();
+        } finally {
+            if (cosmosAsyncClient != null) {
+                cosmosAsyncClient.close();
+            }
+        }
     }
 
-    @Test(expected = AssertionError.class)
-    public void testInvalidEndpoint() {
-        final CosmosClientConfig cosmosClientConfig = CosmosClientConfig.builder()
-            .database(TestConstants.DB_NAME)
-            .cosmosClientBuilder(new CosmosClientBuilder()
-                .endpoint(TestConstants.COSMOSDB_FAKE_HOST)
-                .key(cosmosDbKey))
-            .build();
-        CosmosAsyncClient client =  CosmosFactory.createCosmosAsyncClient(cosmosClientConfig);
-        final CosmosFactory factory = new CosmosFactory(client, TestConstants.DB_NAME);
-
-        assertThat(factory).isNotNull();
+    @Test
+    public void testNullEndpoint() {
+        CosmosAsyncClient cosmosAsyncClient = null;
+        try {
+            final CosmosClientConfig cosmosClientConfig = CosmosClientConfig.builder()
+                                                                            .database(TestConstants.DB_NAME)
+                                                                            .cosmosClientBuilder(new CosmosClientBuilder()
+                                                                                .endpoint(null)
+                                                                                .key(cosmosDbKey))
+                                                                            .build();
+            cosmosAsyncClient =  CosmosFactory.createCosmosAsyncClient(cosmosClientConfig);
+        } catch (Exception e) {
+            assertThat(e instanceof IllegalArgumentException).isTrue();
+        } finally {
+            if (cosmosAsyncClient != null) {
+                cosmosAsyncClient.close();
+            }
+        }
     }
 
     @Test
