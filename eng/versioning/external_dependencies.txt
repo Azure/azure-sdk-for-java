@@ -269,3 +269,6 @@ media_com.microsoft.azure:adal4j;1.2.0
 
 # sdk\storage\azure-storage-blob-cryptography\pom.xml
 storage_com.microsoft.azure:azure-storage;8.4.0
+
+# sdk\spring\azure-spring-boot\pom.xml
+spring_com.microsoft.azure:azure;1.34.0
