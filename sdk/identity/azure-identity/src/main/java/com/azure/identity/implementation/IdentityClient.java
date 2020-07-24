@@ -561,7 +561,7 @@ public class IdentityClient {
                 .flatMap(pc -> Mono.fromFuture(() -> pc.acquireToken(parameters)));
         }
         return acquireToken.onErrorMap(t -> new ClientAuthenticationException(
-            "Failed to acquire token with authorization code", null, t)).map(ar -> new MsalToken(ar, options));
+            "Failed to acquire token with authorization code", null, t)).map(MsalToken::new);
     }
 
 

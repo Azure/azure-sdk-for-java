@@ -1,12 +1,7 @@
 # Release History
 
-## 1.1.0-beta.7 (Unreleased)
-- Added support for web apps (confidential apps) for `InteractiveBrowserCredential` and `AuthorizationCodeCredential`. A client secret is required on the builder for web apps.
-- Added support for user assigned managed identities for `DefaultAzureCredential` with `.managedIdentityClientId()`.
+## 1.1.0-beta.8 (Unreleased)
 
-## 1.1.0-beta.6 (2020-07-10)
-- Added `.getCredentials()` method to `DefaultAzureCredential` and `ChainedTokenCredential` and added option `.addAll(Collection<? extends TokenCredential>)` on `ChainedtokenCredentialBuilder`.
-- Added logging information in credentials and improved error messages in `DefaultAzureCredential`.
 
 ## 1.1.0-beta.7 (2020-07-23)
 
