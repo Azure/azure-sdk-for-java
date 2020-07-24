@@ -4,6 +4,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.ItemDeserializer;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedException;
@@ -12,16 +13,21 @@ import com.azure.cosmos.implementation.encryption.CosmosResponseFactoryCore;
 import com.azure.cosmos.implementation.encryption.DecryptionResult;
 import com.azure.cosmos.implementation.encryption.EncryptionItemRequestOptions;
 import com.azure.cosmos.implementation.encryption.EncryptionProcessor;
+import com.azure.cosmos.implementation.encryption.EncryptionQueryRequestOption;
 import com.azure.cosmos.implementation.encryption.EncryptionUtils;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.EncryptionBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 // TODO: for now basic functionality is in. some APIs and some logic branch is not complete yet.
 public class EncryptionCosmosAsyncContainer extends CosmosAsyncContainer {
@@ -144,11 +150,55 @@ public class EncryptionCosmosAsyncContainer extends CosmosAsyncContainer {
 
         return asyncResult.map(
             responseMessage -> {
-
                 return this.responseFactory.createItemResponse(responseMessage, classType);
             }
         );
     }
+
+    /**
+     * Query for items in the current container using a string.
+     * <p>
+     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
+     * contain one or several feed response of the obtained items. In case of
+     * failure the {@link CosmosPagedFlux} will error.
+     *
+     * @param <T> the type parameter.
+     * @param query the query.
+     * @param options the query request options.
+     * @param classType the class type.
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained items or an
+     * error.
+     */
+    public <T> CosmosPagedFlux<T> queryItems(SqlQuerySpec query, CosmosQueryRequestOptions options, Class<T> classType) {
+        EncryptionQueryRequestOption encryptionQueryRequestOptions = Utils.as(options, EncryptionQueryRequestOption.class);
+
+        Consumer<DecryptionResult> decryptionResultConsumer = null;
+        if (encryptionQueryRequestOptions != null) {
+            decryptionResultConsumer = encryptionQueryRequestOptions.getDecryptionResultHandler();
+        }
+
+        return queryItemsInternal(query, options, classType, createTransformer(decryptionResultConsumer));
+    }
+
+    private Function<Document, Document> createTransformer(Consumer<DecryptionResult> decryptionResultConsumer) {
+
+        return document -> {
+            try {
+                byte[] contentAsByteArray = EncryptionUtils.toByteArray(document.serializeJsonToByteBuffer());
+                byte[] result = decryptResponseAsync(contentAsByteArray, decryptionResultConsumer);
+                return new Document(result);
+            } catch (Exception e) {
+                if (decryptionResultConsumer != null) {
+                    decryptionResultConsumer.accept(DecryptionResult.createFailure(null, e));
+                } else {
+                    throw e;
+                }
+            }
+
+            return document;
+        };
+    }
+
 
     private <T> byte[] cosmosSerializerToStream(T item) {
         // TODO:

@@ -3,10 +3,6 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.EncryptionCosmosAsyncContainer;
-import com.azure.cosmos.Encryptor;
-
 public class WithEncryption {
 
     /**

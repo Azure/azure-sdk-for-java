@@ -33,6 +33,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.withContext;
@@ -411,8 +412,13 @@ public class CosmosAsyncContainer {
         return queryItemsInternal(querySpec, options, classType);
     }
 
-    private <T> CosmosPagedFlux<T> queryItemsInternal(
-       SqlQuerySpec sqlQuerySpec, CosmosQueryRequestOptions cosmosQueryRequestOptions, Class<T> classType) {
+    <T> CosmosPagedFlux<T> queryItemsInternal(
+        SqlQuerySpec sqlQuerySpec, CosmosQueryRequestOptions cosmosQueryRequestOptions, Class<T> classType) {
+        return queryItemsInternal(sqlQuerySpec, cosmosQueryRequestOptions, classType, null);
+    }
+
+    <T> CosmosPagedFlux<T> queryItemsInternal(
+        SqlQuerySpec sqlQuerySpec, CosmosQueryRequestOptions cosmosQueryRequestOptions, Class<T> classType, Function<Document, Document> transformer) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             String spanName = this.queryItemsSpanName;
             pagedFluxOptions.setTracerInformation(this.getDatabase().getClient().getTracerProvider(), spanName,
@@ -421,18 +427,22 @@ public class CosmosAsyncContainer {
             return getDatabase().getDocClientWrapper()
                 .queryDocuments(CosmosAsyncContainer.this.getLink(), sqlQuerySpec, cosmosQueryRequestOptions)
                 .map(response ->
-                    prepareFeedResponse(response, classType));
+                    prepareFeedResponse(response, classType, transformer));
         });
     }
 
     private <T> FeedResponse<T> prepareFeedResponse(FeedResponse<Document> response, Class<T> classType) {
+        return prepareFeedResponse(response, classType, null);
+    }
+
+    private <T> FeedResponse<T> prepareFeedResponse(FeedResponse<Document> response, Class<T> classType, Function<Document, Document> transformer) {
         QueryInfo queryInfo = ModelBridgeInternal.getQueryInfoFromFeedResponse(response);
         if (queryInfo != null && queryInfo.hasSelectValue()) {
             List<T> transformedResults = response.getResults()
                                              .stream()
-                                             .map(d -> d.has(Constants.Properties.VALUE) ?
+                                              .map(d -> d.has(Constants.Properties.VALUE) ?
                                                  transform(d.get(Constants.Properties.VALUE), classType) :
-                                                 ModelBridgeInternal.toObjectFromJsonSerializable(d, classType))
+                                                 ModelBridgeInternal.toObjectFromJsonSerializable(d, classType, transformer))
                                              .collect(Collectors.toList());
 
             return BridgeInternal.createFeedResponseWithQueryMetrics(transformedResults,
