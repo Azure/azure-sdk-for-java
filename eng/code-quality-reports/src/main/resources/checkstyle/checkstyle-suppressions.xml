@@ -506,5 +506,6 @@
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.search.documents.indexes.SearchIndexerClient.java"
             lines="495,513,529,547"/>
 
-  <!-- ServiceMethod return type for Collection doesn't check for sub-types -->
+  <!-- Static logger instances for short lived objects. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.experimental.serializer.Type.java" />
 </suppressions>

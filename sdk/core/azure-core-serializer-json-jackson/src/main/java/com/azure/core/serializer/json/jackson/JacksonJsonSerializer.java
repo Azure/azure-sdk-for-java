@@ -5,7 +5,9 @@ package com.azure.core.serializer.json.jackson;
 
 import com.azure.core.experimental.serializer.JsonNode;
 import com.azure.core.experimental.serializer.JsonSerializer;
+import com.azure.core.experimental.serializer.Type;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
@@ -16,6 +18,7 @@ import java.io.OutputStream;
  */
 public final class JacksonJsonSerializer implements JsonSerializer {
     private final ObjectMapper mapper;
+    private final TypeFactory typeFactory;
 
     /**
      * Constructs a {@link JsonSerializer} using the passed Jackson serializer.
@@ -24,22 +27,24 @@ public final class JacksonJsonSerializer implements JsonSerializer {
      */
     JacksonJsonSerializer(ObjectMapper mapper) {
         this.mapper = mapper;
+        this.typeFactory = mapper.getTypeFactory();
     }
 
     @Override
-    public <T> Mono<T> deserialize(InputStream stream, Class<T> clazz) {
+    public <T> Mono<T> deserialize(InputStream stream, Type<T> type) {
         return Mono.fromCallable(() -> {
             if (stream == null) {
                 return null;
             }
 
-            return mapper.readValue(stream, clazz);
+            return mapper.readValue(stream, typeFactory.constructType(type.getJavaType()));
         });
     }
 
     @Override
-    public <T> Mono<T> deserializeTree(JsonNode jsonNode, Class<T> clazz) {
-        return Mono.fromCallable(() -> mapper.treeToValue(JsonNodeUtils.toJacksonNode(jsonNode), clazz));
+    public <T> Mono<T> deserializeTree(JsonNode jsonNode, Type<T> type) {
+        return Mono.fromCallable(() -> mapper.readerFor(typeFactory.constructType(type.getJavaType()))
+            .readValue(JsonNodeUtils.toJacksonNode(jsonNode)));
     }
 
     @Override
