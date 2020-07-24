@@ -7,7 +7,7 @@ import java.time.Duration;
 import java.util.Map;
 
 public class BenchmarkHelper {
-    static PojoizedJson generateDocument(String idString, String dataFieldValue, String partitionKey,
+    public static PojoizedJson generateDocument(String idString, String dataFieldValue, String partitionKey,
                                          int dataFieldCount) {
         PojoizedJson instance = new PojoizedJson();
         Map<String, String> properties = instance.getInstance();
@@ -20,7 +20,7 @@ public class BenchmarkHelper {
         return instance;
     }
 
-    static boolean shouldContinue(long startTimeMillis, long iterationCount, Configuration configuration) {
+    public static boolean shouldContinue(long startTimeMillis, long iterationCount, Configuration configuration) {
 
         Duration maxDurationTime = configuration.getMaxRunningTimeDuration();
         int maxNumberOfOperations = configuration.getNumberOfOperations();

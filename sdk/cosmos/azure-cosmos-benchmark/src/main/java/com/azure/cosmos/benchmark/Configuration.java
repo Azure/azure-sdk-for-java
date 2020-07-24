@@ -30,9 +30,9 @@ import java.net.UnknownHostException;
 import java.time.Duration;
 import java.util.Arrays;
 
-class Configuration {
+public class Configuration {
 
-    final static String DEFAULT_PARTITION_KEY_PATH = "/pk";
+    public final static String DEFAULT_PARTITION_KEY_PATH = "/pk";
     private final static int DEFAULT_GRAPHITE_SERVER_PORT = 2003;
     private MeterRegistry azureMonitorMeterRegistry;
     private MeterRegistry graphiteMeterRegistry;
@@ -146,7 +146,7 @@ class Configuration {
     @Parameter(names = {"-h", "-help", "--help"}, description = "Help", help = true)
     private boolean help = false;
 
-    enum Operation {
+    public enum Operation {
         ReadThroughput,
         WriteThroughput,
         ReadLatency,
@@ -223,87 +223,87 @@ class Configuration {
     }
 
 
-    boolean isDisablePassingPartitionKeyAsOptionOnWrite() {
+    public boolean isDisablePassingPartitionKeyAsOptionOnWrite() {
         return disablePassingPartitionKeyAsOptionOnWrite;
     }
 
-    boolean isSync() {
+    public boolean isSync() {
         return useSync;
     }
 
-    Duration getMaxRunningTimeDuration() {
+    public Duration getMaxRunningTimeDuration() {
         return maxRunningTimeDuration;
     }
 
-    Operation getOperationType() {
+    public Operation getOperationType() {
         return operation;
     }
 
-    int getNumberOfOperations() {
+    public int getNumberOfOperations() {
         return numberOfOperations;
     }
 
-    int getThroughput() {
+    public int getThroughput() {
         return throughput;
     }
 
-    String getServiceEndpoint() {
+    public String getServiceEndpoint() {
         return serviceEndpoint;
     }
 
-    String getMasterKey() {
+    public String getMasterKey() {
         return masterKey;
     }
 
-    boolean isHelp() {
+    public boolean isHelp() {
         return help;
     }
 
-    int getDocumentDataFieldSize() {
+    public int getDocumentDataFieldSize() {
         return documentDataFieldSize;
     }
 
-    int getDocumentDataFieldCount() {
+    public int getDocumentDataFieldCount() {
         return documentDataFieldCount;
     }
 
-    Integer getMaxConnectionPoolSize() {
+    public Integer getMaxConnectionPoolSize() {
         return maxConnectionPoolSize;
     }
 
-    ConnectionMode getConnectionMode() {
+    public ConnectionMode getConnectionMode() {
         return connectionMode;
     }
 
-    ConsistencyLevel getConsistencyLevel() {
+    public ConsistencyLevel getConsistencyLevel() {
         return consistencyLevel;
     }
 
-    String isContentResponseOnWriteEnabled() {
+    public String isContentResponseOnWriteEnabled() {
         return contentResponseOnWriteEnabled;
     }
 
-    String getDatabaseId() {
+    public String getDatabaseId() {
         return databaseId;
     }
 
-    String getCollectionId() {
+    public String getCollectionId() {
         return collectionId;
     }
 
-    int getNumberOfPreCreatedDocuments() {
+    public int getNumberOfPreCreatedDocuments() {
         return numberOfPreCreatedDocuments;
     }
 
-    int getPrintingInterval() {
+    public int getPrintingInterval() {
         return printingInterval;
     }
 
-    File getReportingDirectory() {
+    public File getReportingDirectory() {
         return reportingDirectory == null ? null : new File(reportingDirectory);
     }
 
-    int getConcurrency() {
+    public int getConcurrency() {
         if (this.concurrency != null) {
             return concurrency;
         } else {
@@ -311,7 +311,7 @@ class Configuration {
         }
     }
 
-    boolean isUseNameLink() {
+    public boolean isUseNameLink() {
         return useNameLink;
     }
 
@@ -366,7 +366,7 @@ class Configuration {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
     }
 
-    void tryGetValuesFromSystem() {
+    public void tryGetValuesFromSystem() {
         serviceEndpoint = StringUtils.defaultString(Strings.emptyToNull(System.getenv().get("SERVICE_END_POINT")),
                                                     serviceEndpoint);
 

@@ -14,19 +14,18 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class BenchmarkRequestSubscriber<T> extends BaseSubscriber<T> {
-    final Logger logger;
+    final static Logger logger = LoggerFactory.getLogger(BenchmarkRequestSubscriber.class);
     private Meter successMeter;
     private Meter failureMeter;
     private Semaphore concurrencyControlSemaphore;
-    private  AtomicLong count;
-    Timer.Context context;
+    private AtomicLong count;
+    public Timer.Context context;
 
     public BenchmarkRequestSubscriber(Meter successMeter, Meter failureMeter, Semaphore concurrencyControlSemaphore,  AtomicLong count) {
         this.successMeter = successMeter;
         this.failureMeter = failureMeter;
         this.concurrencyControlSemaphore = concurrencyControlSemaphore;
         this.count = count;
-        logger = LoggerFactory.getLogger(this.getClass());
     }
 
     @Override

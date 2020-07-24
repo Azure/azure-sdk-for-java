@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.benchmark;
+package com.azure.cosmos.benchmark.ctl;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
@@ -12,6 +12,10 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
+import com.azure.cosmos.benchmark.BenchmarkHelper;
+import com.azure.cosmos.benchmark.BenchmarkRequestSubscriber;
+import com.azure.cosmos.benchmark.Configuration;
+import com.azure.cosmos.benchmark.PojoizedJson;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RequestOptions;
@@ -83,7 +87,7 @@ public class AsyncCtlWorkload {
     private int writePct = 9;
     private int queryPct = 1;
 
-    AsyncCtlWorkload(Configuration cfg) {
+    public AsyncCtlWorkload(Configuration cfg) {
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
             .endpoint(cfg.getServiceEndpoint())
             .key(cfg.getMasterKey())
@@ -135,7 +139,7 @@ public class AsyncCtlWorkload {
         parsedReadWriteQueryPct(configuration.getReadWriteQueryPct());
     }
 
-    void shutdown() {
+    public void shutdown() {
         if (this.databaseCreated) {
             cosmosAsyncDatabase.delete().block();
             logger.info("Deleted temporary database {} created for this test", this.configuration.getDatabaseId());
@@ -175,7 +179,7 @@ public class AsyncCtlWorkload {
         obs.subscribeOn(Schedulers.parallel()).subscribe(documentSubscriber);
     }
 
-    void run() throws Exception {
+    public void run() throws Exception {
         readSuccessMeter = metricsRegistry.meter("#Read Successful Operations");
         readFailureMeter = metricsRegistry.meter("#Read Unsuccessful Operations");
         writeSuccessMeter = metricsRegistry.meter("#Write Successful Operations");

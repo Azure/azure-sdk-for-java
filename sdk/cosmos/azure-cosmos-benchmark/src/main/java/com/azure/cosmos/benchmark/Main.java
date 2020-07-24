@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.benchmark;
 
+import com.azure.cosmos.benchmark.ctl.AsyncCtlWorkload;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
 import org.slf4j.Logger;
