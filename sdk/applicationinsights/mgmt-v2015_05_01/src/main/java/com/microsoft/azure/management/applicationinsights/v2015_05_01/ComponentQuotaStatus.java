@@ -19,7 +19,7 @@ public interface ComponentQuotaStatus extends HasInner<ComponentQuotaStatusInner
     /**
      * Returns daily data volume cap (quota) status for an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request

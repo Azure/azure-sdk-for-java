@@ -60,7 +60,7 @@ public class ComponentQuotaStatusInner {
     /**
      * Returns daily data volume cap (quota) status for an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -74,7 +74,7 @@ public class ComponentQuotaStatusInner {
     /**
      * Returns daily data volume cap (quota) status for an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -87,7 +87,7 @@ public class ComponentQuotaStatusInner {
     /**
      * Returns daily data volume cap (quota) status for an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ApplicationInsightsComponentQuotaStatusInner object
@@ -104,7 +104,7 @@ public class ComponentQuotaStatusInner {
     /**
      * Returns daily data volume cap (quota) status for an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ApplicationInsightsComponentQuotaStatusInner object

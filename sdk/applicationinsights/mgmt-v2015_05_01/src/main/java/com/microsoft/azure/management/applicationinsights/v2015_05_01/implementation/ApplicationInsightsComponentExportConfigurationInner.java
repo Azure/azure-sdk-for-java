@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ApplicationInsightsComponentExportConfigurationInner {
     /**
-     * The unique ID of the export configuration inside an Applciation Insights
+     * The unique ID of the export configuration inside an Application Insights
      * component. It is auto generated when the Continuous Export configuration
      * is created.
      */
@@ -138,7 +138,7 @@ public class ApplicationInsightsComponentExportConfigurationInner {
     private String containerName;
 
     /**
-     * Get the unique ID of the export configuration inside an Applciation Insights component. It is auto generated when the Continuous Export configuration is created.
+     * Get the unique ID of the export configuration inside an Application Insights component. It is auto generated when the Continuous Export configuration is created.
      *
      * @return the exportId value
      */

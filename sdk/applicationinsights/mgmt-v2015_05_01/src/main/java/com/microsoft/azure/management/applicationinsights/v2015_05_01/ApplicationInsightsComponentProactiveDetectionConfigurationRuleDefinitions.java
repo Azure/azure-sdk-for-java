@@ -34,7 +34,7 @@ public class ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefi
     private String description;
 
     /**
-     * URL which displays aditional info about the proactive detection rule.
+     * URL which displays additional info about the proactive detection rule.
      */
     @JsonProperty(value = "HelpUrl")
     private String helpUrl;
@@ -125,7 +125,7 @@ public class ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefi
     }
 
     /**
-     * Get uRL which displays aditional info about the proactive detection rule.
+     * Get uRL which displays additional info about the proactive detection rule.
      *
      * @return the helpUrl value
      */
@@ -134,7 +134,7 @@ public class ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefi
     }
 
     /**
-     * Set uRL which displays aditional info about the proactive detection rule.
+     * Set uRL which displays additional info about the proactive detection rule.
      *
      * @param helpUrl the helpUrl value to set
      * @return the ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions object itself.

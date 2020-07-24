@@ -17,9 +17,9 @@ import com.microsoft.azure.arm.model.HasInner;
  */
 public interface ComponentFeatureCapabilities extends HasInner<ComponentFeatureCapabilitiesInner> {
     /**
-     * Returns feature capabilites of the application insights component.
+     * Returns feature capabilities of the application insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
