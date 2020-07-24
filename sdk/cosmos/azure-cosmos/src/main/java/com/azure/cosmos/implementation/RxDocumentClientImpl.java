@@ -2078,6 +2078,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     procedureParams != null && !procedureParams.isEmpty() ? RxDocumentClientImpl.serializeProcedureParams(procedureParams) : "",
                     requestHeaders, options);
 
+            if (retryPolicy != null) {
+                retryPolicy.onBeforeSendRequest(request);
+            }
+
             Mono<RxDocumentServiceRequest> reqObs = addPartitionKeyInformation(request, null, null, options);
             return reqObs.flatMap(req -> create(request, retryPolicy)
                     .map(response -> {

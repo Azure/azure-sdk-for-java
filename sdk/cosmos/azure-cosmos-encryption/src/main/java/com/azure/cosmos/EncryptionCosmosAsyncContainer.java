@@ -29,6 +29,7 @@ import reactor.core.scheduler.Schedulers;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+
 // TODO: for now basic functionality is in. some APIs and some logic branch is not complete yet.
 public class EncryptionCosmosAsyncContainer extends CosmosAsyncContainer {
     private final Encryptor encryptor;
@@ -69,12 +70,14 @@ public class EncryptionCosmosAsyncContainer extends CosmosAsyncContainer {
     }
 
     // TODO ensure all other apis call this guy
+
     /**
      * create item and encrypts the requested fields
-     * @param item the Cosmos item represented as a POJO or Cosmos item object.
-     * @param partitionKey the partition key.
+     *
+     * @param item           the Cosmos item represented as a POJO or Cosmos item object.
+     * @param partitionKey   the partition key.
      * @param requestOptions request option
-     * @param <T> serialization class type
+     * @param <T>            serialization class type
      * @return result
      */
     public <T> Mono<CosmosItemResponse<T>> createItem(T item,
@@ -134,11 +137,12 @@ public class EncryptionCosmosAsyncContainer extends CosmosAsyncContainer {
 
     /**
      * Reads item and decrypt the encrypted fields
-     * @param id item id
+     *
+     * @param id           item id
      * @param partitionKey the partition key.
-     * @param option request options
-     * @param classType deserialization class type
-     * @param <T> type
+     * @param option       request options
+     * @param classType    deserialization class type
+     * @param <T>          type
      * @return result
      */
     @Override
@@ -162,9 +166,9 @@ public class EncryptionCosmosAsyncContainer extends CosmosAsyncContainer {
      * contain one or several feed response of the obtained items. In case of
      * failure the {@link CosmosPagedFlux} will error.
      *
-     * @param <T> the type parameter.
-     * @param query the query.
-     * @param options the query request options.
+     * @param <T>       the type parameter.
+     * @param query     the query.
+     * @param options   the query request options.
      * @param classType the class type.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained items or an
      * error.
@@ -198,7 +202,6 @@ public class EncryptionCosmosAsyncContainer extends CosmosAsyncContainer {
             return document;
         };
     }
-
 
     private <T> byte[] cosmosSerializerToStream(T item) {
         // TODO:
