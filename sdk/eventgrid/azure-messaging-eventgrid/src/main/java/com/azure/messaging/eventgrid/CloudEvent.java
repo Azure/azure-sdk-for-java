@@ -9,8 +9,10 @@ package com.azure.messaging.eventgrid;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.experimental.serializer.ObjectSerializer;
 import com.azure.core.util.CoreUtils;
+import reactor.core.publisher.Flux;
 
 import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.*;
 
@@ -91,7 +93,7 @@ public final class CloudEvent {
      */
     public Object getData() {
         if (this.cloudEvent.getDataBase64() != null) {
-            return this.cloudEvent.getDataBase64();
+            return Base64.getDecoder().decode(this.cloudEvent.getDataBase64());
         } else {
             return this.cloudEvent.getData();
         }
@@ -123,9 +125,9 @@ public final class CloudEvent {
             // expect the data to already be serialized as a string or similar type
             this.cloudEvent.setData(data);
         } else {
-            this.cloudEvent.setData(serializer.serialize(new ByteArrayOutputStream(), data)
-                .defaultIfEmpty(new ByteArrayOutputStream())
-                .block().toString());
+            serializer.serialize(new ByteArrayOutputStream(), data)
+                .map(Objects::toString)
+                .subscribe(this.cloudEvent::setData);
         }
         this.cloudEvent
             .setDatacontenttype(dataContentType)
@@ -231,26 +233,29 @@ public final class CloudEvent {
     }
 
     /**
-     * Set a single additional property to the cloud event envelope. The property must be named in all lowercase and not
-     * share a name with any already existing properties.
-     * @param name  the lowercase name of the property.
+     * Set a single additional property to the cloud event envelope. The property name will be transformed to lowercase
+     * and must not share a name with any reserved cloud event properties.
+     * @param name  the name of the property.
      * @param value the value to associate with the name.
      *
      * @return the cloud event itself.
      */
     public CloudEvent setAdditionalProperty(String name, Object value) {
-        this.cloudEvent.getAdditionalProperties().put(name, value);
+        this.cloudEvent.getAdditionalProperties().put(name.toLowerCase(Locale.ENGLISH), value);
         return this;
     }
 
     /**
-     * Set all of the additional properties, overriding ones that are already set.
+     * Set multiple additional properties to the cloud event envelope. The property names will be transformed
+     * to lowercase and must not share a name with any reserved cloud event properties.
      * @param additionalProperties the map of properties to set.
      *
      * @return the cloud event itself.
      */
     public CloudEvent setAdditionalProperties(Map<String, Object> additionalProperties) {
-        this.cloudEvent.setAdditionalProperties(new HashMap<>(additionalProperties));
+        for (Map.Entry<String, Object> entry : additionalProperties.entrySet()) {
+            setAdditionalProperty(entry.getKey(), entry.getValue());
+        }
         return this;
     }
 

@@ -27,6 +27,14 @@ public class EventGridPublisherClient {
     }
 
     /**
+     * Get the service version of the Rest API.
+     * @return the Service version of the rest API
+     */
+    public EventGridServiceVersion getServiceVersion() {
+        return asyncClient.getServiceVersion();
+    }
+
+    /**
      * Publishes the given EventGrid events to the given topic or domain.
      * @param events the EventGrid events to publish.
      */

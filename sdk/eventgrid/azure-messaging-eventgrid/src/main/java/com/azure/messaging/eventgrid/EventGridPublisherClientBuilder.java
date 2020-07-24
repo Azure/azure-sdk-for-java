@@ -4,6 +4,7 @@
 
 package com.azure.messaging.eventgrid;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.*;
@@ -26,6 +27,7 @@ import java.util.Objects;
  * @see CloudEvent
  */
 @ServiceClientBuilder(serviceClients = {EventGridPublisherClient.class, EventGridPublisherAsyncClient.class})
+@Fluent
 public class EventGridPublisherClientBuilder {
 
     private static final String AEG_SAS_KEY = "aeg-sas-key";
@@ -50,7 +52,7 @@ public class EventGridPublisherClientBuilder {
 
     private EventGridSharedAccessSignatureCredential sasToken;
 
-    private String hostname;
+    private String endpoint;
 
     private HttpClient httpClient;
 
@@ -82,7 +84,13 @@ public class EventGridPublisherClientBuilder {
      * @return a publisher client with asynchronous publishing methods.
      */
     public EventGridPublisherAsyncClient buildAsyncClient() {
-        Objects.requireNonNull(hostname, "endpoint cannot be null");
+        String hostname;
+        try {
+            hostname = new URL(Objects.requireNonNull(endpoint, "endpoint cannot be null")).getHost();
+        } catch (MalformedURLException e) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Cannot parse endpoint"));
+        }
+
 
         if (httpPipeline != null) {
             return new EventGridPublisherAsyncClient(httpPipeline, hostname);
@@ -107,7 +115,7 @@ public class EventGridPublisherClientBuilder {
         // Using token before key if both are set
         if (sasToken != null) {
             httpPipelinePolicies.add((context, next) -> {
-                context.getHttpRequest().getHeaders().put(AEG_SAS_TOKEN, sasToken.getToken());
+                context.getHttpRequest().getHeaders().put(AEG_SAS_TOKEN, sasToken.getSignature());
                 return next.process();
             });
         } else {
@@ -195,12 +203,7 @@ public class EventGridPublisherClientBuilder {
      * @return the builder itself.
      */
     public EventGridPublisherClientBuilder endpoint(String endpoint) {
-        try {
-            URL url = new URL(endpoint);
-            this.hostname = url.getHost();
-        } catch (MalformedURLException e) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL"));
-        }
+        this.endpoint = endpoint;
         return this;
     }
 

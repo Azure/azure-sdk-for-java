@@ -101,9 +101,9 @@ public class EventGridPublisherClientTests {
         List<CloudEvent> events = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             events.add(new CloudEvent("/microsoft/testEvent", "Microsoft.MockPublisher.TestEvent")
-                    .setSubject("Test " + i)
-                /*.setData(new TestData().setName("Hello " + i),
-                    JsonSerializerProviders.createInstance(), null)*/);
+                .setSubject("Test " + i)
+                .setData(new TestData().setName("Hello " + i),
+                    JsonSerializerProviders.createInstance(), null));
         }
 
         Response<Void> response = egClient.sendCloudEventsWithResponse(events).block();

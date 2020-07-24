@@ -30,6 +30,13 @@
     </license>
   </licenses>
 
+  <distributionManagement>
+    <site>
+      <id>azure-java-build-docs</id>
+      <url>${site.url}/site/${project.artifactId}</url>
+    </site>
+  </distributionManagement>
+
   <scm>
     <url>scm:git:https://github.com/Azure/azure-sdk-for-java</url>
     <connection>scm:git:git@github.com:Azure/azure-sdk-for-java.git</connection>
@@ -52,26 +59,27 @@
 
   <dependencies>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.13-beta-3</version> <!-- {x-version-update;junit:junit;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.microsoft.azure.v2</groupId>
-      <artifactId>azure-client-runtime</artifactId>
-      <version>2.0.0-beta4</version> <!-- {x-version-update;com.microsoft.azure:azure-client-runtime;external_dependency} -->
-    </dependency>
-    <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.6.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;external_dependency} -->
+      <version>1.6.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-core-http-netty</artifactId> <!-- {x-version-update;com.azure:azure-core-http-netty;external_dependency} -->
+      <artifactId>azure-core-http-netty</artifactId> <!-- {x-version-update;unreleased_com.azure:azure-core-http-netty;dependency} -->
       <version>1.6.0-beta.1</version>
     </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-experimental</artifactId> <!-- {x-version-update;unreleased_com.azure:azure-core-experimental;dependency} -->
+      <version>1.0.0-beta.1</version>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-serializer-json-jackson</artifactId> <!-- {x-version-update;unreleased_com.azure:azure-core-serializer-json-jackson;dependency} -->
+      <version>1.0.0-beta.2</version>
+    </dependency>
+
+    <!-- test -->
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
@@ -79,14 +87,10 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-experimental</artifactId> <!-- {x-version-update;com.azure:azure-core-experimental;external_dependency} -->
-      <version>1.0.0-beta.1</version>
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-serializer-json-jackson</artifactId>
-      <version>1.0.0-beta.2</version>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.13-beta-3</version> <!-- {x-version-update;junit:junit;external_dependency} -->
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
@@ -117,11 +121,6 @@
         <configuration>
           <source>1.8</source>
           <target>1.8</target>
-          <annotationProcessors>
-            <annotationProcessor>
-              com.microsoft.azure.management.apigeneration.LangDefinitionProcessor
-            </annotationProcessor>
-          </annotationProcessors>
           <debug>true</debug>
           <optimize>true</optimize>
           <compilerArguments>
