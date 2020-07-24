@@ -35,7 +35,6 @@ import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 
 import java.net.InetSocketAddress;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -130,7 +129,9 @@ abstract class AsyncBenchmark<T> {
             String dataFieldValue = RandomStringUtils.randomAlphabetic(cfg.getDocumentDataFieldSize());
             for (int i = 0; i < cfg.getNumberOfPreCreatedDocuments(); i++) {
                 String uuid = UUID.randomUUID().toString();
-                PojoizedJson newDoc = BenchmarkHelper.generateDocument(uuid, dataFieldValue, partitionKey,
+                PojoizedJson newDoc = BenchmarkHelper.generateDocument(uuid,
+                    dataFieldValue,
+                    partitionKey,
                     configuration.getDocumentDataFieldCount());
                 Flux<PojoizedJson> obs = cosmosAsyncContainer.createItem(newDoc).map(resp -> {
                     PojoizedJson x =

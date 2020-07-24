@@ -253,7 +253,9 @@ public class AsynReadWithMultipleClients<T> {
                     for (int i = 0; i < this.configuration.getNumberOfPreCreatedDocuments(); i++) {
                         String uuid = UUID.randomUUID().toString();
                         PojoizedJson newDoc = BenchmarkHelper.generateDocument(uuid,
-                            dataFieldValue, partitionKey, configuration.getDocumentDataFieldCount());
+                            dataFieldValue,
+                            partitionKey,
+                            configuration.getDocumentDataFieldCount());
 
                         Flux<PojoizedJson> obs = cosmosAsyncContainer.createItem(newDoc).map(resp -> {
                                 com.azure.cosmos.benchmark.PojoizedJson x =

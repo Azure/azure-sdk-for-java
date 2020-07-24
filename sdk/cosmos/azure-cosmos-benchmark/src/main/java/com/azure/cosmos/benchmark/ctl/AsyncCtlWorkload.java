@@ -43,7 +43,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 
 import java.net.InetSocketAddress;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -55,7 +54,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class AsyncCtlWorkload {
-    private final String PERCENT_PARSING_ERROR = "Unable to parse user provided readWriteQueryPct, using default {} {} {}";
+    private final String PERCENT_PARSING_ERROR = "Unable to parse user provided readWriteQueryPct ";
     private final String prefixUuidForCreate;
     private final String dataFieldValue;
     private final String partitionKey;
@@ -104,6 +103,8 @@ public class AsyncCtlWorkload {
         configuration = cfg;
         logger = LoggerFactory.getLogger(this.getClass());
 
+        parsedReadWriteQueryPct(configuration.getReadWriteQueryPct());
+
         createDatabaseAndContainers(configuration);
 
         partitionKey = containers.get(0).read().block().getProperties().getPartitionKeyDefinition()
@@ -136,7 +137,6 @@ public class AsyncCtlWorkload {
         }
         prefixUuidForCreate = UUID.randomUUID().toString();
         random = new Random();
-        parsedReadWriteQueryPct(configuration.getReadWriteQueryPct());
     }
 
     public void shutdown() {
@@ -156,7 +156,9 @@ public class AsyncCtlWorkload {
         Flux<? extends Object> obs;
         CosmosAsyncContainer container = containers.get((int) i % containers.size());
         if (type.equals(OperationType.Create)) {
-            PojoizedJson data = BenchmarkHelper.generateDocument(prefixUuidForCreate + i, dataFieldValue, partitionKey,
+            PojoizedJson data = BenchmarkHelper.generateDocument(prefixUuidForCreate + i,
+                dataFieldValue,
+                partitionKey,
                 configuration.getDocumentDataFieldCount());
             obs = container.createItem(data).flux();
         } else if (type.equals(OperationType.Query)) {
@@ -200,18 +202,24 @@ public class AsyncCtlWorkload {
             int index = (int) i % 100;
             if (index < readPct) {
                 BenchmarkRequestSubscriber<Object> readSubscriber = new BenchmarkRequestSubscriber<>(readSuccessMeter,
-                    readFailureMeter, concurrencyControlSemaphore, count);
+                    readFailureMeter,
+                    concurrencyControlSemaphore,
+                    count);
                 readSubscriber.context = readLatency.time();
                 performWorkload(readSubscriber, OperationType.Read, i);
             } else if (index < writeRange) {
                 BenchmarkRequestSubscriber<Object> writeSubscriber = new BenchmarkRequestSubscriber<>(writeSuccessMeter,
-                    writeFailureMeter, concurrencyControlSemaphore, count);
+                    writeFailureMeter,
+                    concurrencyControlSemaphore,
+                    count);
                 writeSubscriber.context = writeLatency.time();
                 performWorkload(writeSubscriber, OperationType.Create, i);
 
             } else {
                 BenchmarkRequestSubscriber<Object> querySubscriber = new BenchmarkRequestSubscriber<>(querySuccessMeter,
-                    queryFailureMeter, concurrencyControlSemaphore, count);
+                    queryFailureMeter,
+                    concurrencyControlSemaphore,
+                    count);
                 querySubscriber.context = queryLatency.time();
                 performWorkload(querySubscriber, OperationType.Query, i);
             }
@@ -240,16 +248,13 @@ public class AsyncCtlWorkload {
                     writePct = Integer.valueOf(readWriteQueryPctList[1]);
                     queryPct = Integer.valueOf(readWriteQueryPctList[2]);
                 } else {
-                    logger.warn(PERCENT_PARSING_ERROR, readPct,
-                        writePct, queryPct);
+                    throw new IllegalArgumentException(PERCENT_PARSING_ERROR + readWriteQueryPct);
                 }
             } catch (NumberFormatException ex) {
-                logger.warn(PERCENT_PARSING_ERROR, readPct,
-                    writePct, queryPct);
+                throw new IllegalArgumentException(PERCENT_PARSING_ERROR + readWriteQueryPct);
             }
         } else {
-            logger.warn(PERCENT_PARSING_ERROR, readPct, writePct,
-                queryPct);
+            throw new IllegalArgumentException(PERCENT_PARSING_ERROR + readWriteQueryPct);
         }
     }
 
@@ -258,7 +263,9 @@ public class AsyncCtlWorkload {
             ArrayList<Flux<PojoizedJson>> createDocumentObservables = new ArrayList<>();
             for (int i = 0; i < numberOfPreCreatedDocuments; i++) {
                 String uId = UUID.randomUUID().toString();
-                PojoizedJson newDoc = BenchmarkHelper.generateDocument(uId, dataFieldValue, partitionKey,
+                PojoizedJson newDoc = BenchmarkHelper.generateDocument(uId,
+                    dataFieldValue,
+                    partitionKey,
                     configuration.getDocumentDataFieldCount());
 
                 Flux<PojoizedJson> obs = container.createItem(newDoc).map(resp -> {

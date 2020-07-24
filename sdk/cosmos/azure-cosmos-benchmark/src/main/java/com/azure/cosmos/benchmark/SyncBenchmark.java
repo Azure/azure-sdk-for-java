@@ -160,7 +160,9 @@ abstract class SyncBenchmark<T> {
             String dataFieldValue = RandomStringUtils.randomAlphabetic(cfg.getDocumentDataFieldSize());
             for (int i = 0; i < cfg.getNumberOfPreCreatedDocuments(); i++) {
                 String uuid = UUID.randomUUID().toString();
-                PojoizedJson newDoc = BenchmarkHelper.generateDocument(uuid, dataFieldValue, partitionKey,
+                PojoizedJson newDoc = BenchmarkHelper.generateDocument(uuid,
+                    dataFieldValue,
+                    partitionKey,
                     configuration.getDocumentDataFieldCount());
                 CompletableFuture<PojoizedJson> futureResult = CompletableFuture.supplyAsync(() -> {
 

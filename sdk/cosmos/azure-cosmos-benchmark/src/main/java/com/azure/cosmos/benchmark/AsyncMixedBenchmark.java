@@ -32,7 +32,9 @@ class AsyncMixedBenchmark extends AsyncBenchmark<Object> {
         Flux<? extends Object> obs;
         if (i % 10 == 0 && i % 100 != 0) {
 
-            PojoizedJson data = BenchmarkHelper.generateDocument(uuid + i, dataFieldValue, partitionKey,
+            PojoizedJson data = BenchmarkHelper.generateDocument(uuid + i,
+                dataFieldValue,
+                partitionKey,
                 configuration.getDocumentDataFieldCount());
             obs = cosmosAsyncContainer.createItem(data).flux();
 
