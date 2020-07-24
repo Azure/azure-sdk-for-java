@@ -3,7 +3,7 @@
 
 package com.azure.core.serializer.json.gson;
 
-import com.azure.core.experimental.serializer.Type;
+import com.azure.core.experimental.serializer.TypeReference;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.TypeAdapter;
@@ -41,7 +41,7 @@ public class GsonJsonSerializerTests {
 
         InputStream jsonStream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
 
-        StepVerifier.create(DEFAULT_SERIALIZER.deserialize(jsonStream, new Type<Person>() { }))
+        StepVerifier.create(DEFAULT_SERIALIZER.deserialize(jsonStream, new TypeReference<Person>() { }))
             .assertNext(actual -> assertEquals(expected, actual))
             .verifyComplete();
     }
@@ -53,7 +53,7 @@ public class GsonJsonSerializerTests {
 
         InputStream jsonStream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
 
-        StepVerifier.create(CUSTOM_SERIALIZER.deserialize(jsonStream, new Type<Person>() { }))
+        StepVerifier.create(CUSTOM_SERIALIZER.deserialize(jsonStream, new TypeReference<Person>() { }))
             .assertNext(actual -> assertEquals(expected, actual))
             .verifyComplete();
     }
@@ -64,7 +64,7 @@ public class GsonJsonSerializerTests {
 
         InputStream jsonStream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
 
-        StepVerifier.create(DEFAULT_SERIALIZER.deserialize(jsonStream, new Type<JsonObject>() { }))
+        StepVerifier.create(DEFAULT_SERIALIZER.deserialize(jsonStream, new TypeReference<JsonObject>() { }))
             .assertNext(actual -> {
                 assertEquals(50, actual.get("age").getAsInt());
                 assertTrue(actual.get("name").isJsonNull());

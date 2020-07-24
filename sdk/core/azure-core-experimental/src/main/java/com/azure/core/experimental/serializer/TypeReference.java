@@ -12,18 +12,18 @@ import java.lang.reflect.ParameterizedType;
  *
  * @param <T> The type being represented.
  */
-public abstract class Type<T> {
-    private static final ClientLogger LOGGER = new ClientLogger(Type.class);
+public abstract class TypeReference<T> {
+    private static final ClientLogger LOGGER = new ClientLogger(TypeReference.class);
     private static final String MISSING_TYPE = "Type constructed without type information.";
 
     private final java.lang.reflect.Type javaType;
 
     /**
-     * Constructs a new {@link Type} which maintains generic information.
+     * Constructs a new {@link TypeReference} which maintains generic information.
      *
      * @throws IllegalArgumentException If the reference is constructed without type information.
      */
-    public Type() {
+    public TypeReference() {
         java.lang.reflect.Type superClass = this.getClass().getGenericSuperclass();
         if (superClass instanceof Class) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(MISSING_TYPE));

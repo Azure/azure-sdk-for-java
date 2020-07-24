@@ -5,7 +5,7 @@ package com.azure.core.serializer.json.gson;
 
 import com.azure.core.experimental.serializer.JsonNode;
 import com.azure.core.experimental.serializer.JsonSerializer;
-import com.azure.core.experimental.serializer.Type;
+import com.azure.core.experimental.serializer.TypeReference;
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
 import reactor.core.publisher.Mono;
@@ -33,14 +33,15 @@ public final class GsonJsonSerializer implements JsonSerializer {
     }
 
     @Override
-    public <T> Mono<T> deserialize(InputStream stream, Type<T> type) {
+    public <T> Mono<T> deserialize(InputStream stream, TypeReference<T> typeReference) {
         return Mono.fromCallable(() -> gson.fromJson(new InputStreamReader(stream, StandardCharsets.UTF_8),
-            type.getJavaType()));
+            typeReference.getJavaType()));
     }
 
     @Override
-    public <T> Mono<T> deserializeTree(JsonNode jsonNode, Type<T> type) {
-        return Mono.fromCallable(() -> gson.fromJson(JsonNodeUtils.toGsonElement(jsonNode), type.getJavaType()));
+    public <T> Mono<T> deserializeTree(JsonNode jsonNode, TypeReference<T> typeReference) {
+        return Mono.fromCallable(() -> gson.fromJson(JsonNodeUtils.toGsonElement(jsonNode),
+            typeReference.getJavaType()));
     }
 
     @Override

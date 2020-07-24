@@ -3,7 +3,7 @@
 
 package com.azure.core.serializer.avro.jackson;
 
-import com.azure.core.experimental.serializer.Type;
+import com.azure.core.experimental.serializer.TypeReference;
 import com.azure.core.serializer.avro.jackson.generatedtestsources.HandOfCards;
 import com.azure.core.serializer.avro.jackson.generatedtestsources.LongLinkedList;
 import com.azure.core.serializer.avro.jackson.generatedtestsources.PlayingCard;
@@ -54,7 +54,7 @@ public class JacksonAvroSerializerTests {
 
     @ParameterizedTest
     @MethodSource("deserializePrimitiveTypesSupplier")
-    public <T> void deserializePrimitiveTypes(InputStream avro, String schema, Type<T> type, T expected) {
+    public <T> void deserializePrimitiveTypes(InputStream avro, String schema, TypeReference<T> type, T expected) {
         StepVerifier.create(getSerializer(schema).deserialize(avro, type))
             .assertNext(actual -> assertEquals(expected, actual))
             .verifyComplete();
@@ -62,32 +62,32 @@ public class JacksonAvroSerializerTests {
 
     private static Stream<Arguments> deserializePrimitiveTypesSupplier() {
         return Stream.of(
-            Arguments.of(streamCreator(0), schemaCreator("boolean"), new Type<Boolean>() { }, false),
-            Arguments.of(streamCreator(1), schemaCreator("boolean"), new Type<Boolean>() { }, true),
+            Arguments.of(streamCreator(0), schemaCreator("boolean"), new TypeReference<Boolean>() { }, false),
+            Arguments.of(streamCreator(1), schemaCreator("boolean"), new TypeReference<Boolean>() { }, true),
 
             // INT and LONG use zigzag encoding.
-            Arguments.of(streamCreator(42), schemaCreator("int"), new Type<Integer>() { }, 21),
-            Arguments.of(streamCreator(42), schemaCreator("long"), new Type<Long>() { }, 21L),
+            Arguments.of(streamCreator(42), schemaCreator("int"), new TypeReference<Integer>() { }, 21),
+            Arguments.of(streamCreator(42), schemaCreator("long"), new TypeReference<Long>() { }, 21L),
 
             // FLOAT and DOUBLE use little endian.
-            Arguments.of(streamCreator(0x00, 0x00, 0x28, 0x42), schemaCreator("float"), new Type<Float>() { }, 42F),
+            Arguments.of(streamCreator(0x00, 0x00, 0x28, 0x42), schemaCreator("float"), new TypeReference<Float>() { }, 42F),
             Arguments.of(streamCreator(0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x45, 0x40), schemaCreator("double"),
-                new Type<Double>() { }, 42D),
+                new TypeReference<Double>() { }, 42D),
 
             // STRING has an additional property 'avro.java.string' which indicates the deserialization type.
             // Using Java's String class.
-            Arguments.of(streamCreator(0), SPECIFIED_STRING_SCHEMA, new Type<String>() { }, ""),
-            Arguments.of(streamCreator(0x06, 0x66, 0x6F, 0x6F), SPECIFIED_STRING_SCHEMA, new Type<String>() { }, "foo"),
+            Arguments.of(streamCreator(0), SPECIFIED_STRING_SCHEMA, new TypeReference<String>() { }, ""),
+            Arguments.of(streamCreator(0x06, 0x66, 0x6F, 0x6F), SPECIFIED_STRING_SCHEMA, new TypeReference<String>() { }, "foo"),
 
             // Using Jackson doesn't use CharSequence, so it won't use Utf8.
-            Arguments.of(streamCreator(0), SPECIFIED_CHAR_SEQUENCE_SCHEMA, new Type<String>() { }, ""),
+            Arguments.of(streamCreator(0), SPECIFIED_CHAR_SEQUENCE_SCHEMA, new TypeReference<String>() { }, ""),
             Arguments.of(streamCreator(0x06, 0x66, 0x6F, 0x6F), SPECIFIED_CHAR_SEQUENCE_SCHEMA,
-                new Type<String>() { }, "foo"),
+                new TypeReference<String>() { }, "foo"),
 
             // BYTES deserializes into ByteBuffers.
-            Arguments.of(streamCreator(0), schemaCreator("bytes"), new Type<ByteBuffer>() { },
+            Arguments.of(streamCreator(0), schemaCreator("bytes"), new TypeReference<ByteBuffer>() { },
                 ByteBuffer.wrap(new byte[0])),
-            Arguments.of(streamCreator(4, 42, 42), schemaCreator("bytes"), new Type<ByteBuffer>() { },
+            Arguments.of(streamCreator(4, 42, 42), schemaCreator("bytes"), new TypeReference<ByteBuffer>() { },
                 ByteBuffer.wrap(new byte[] { 42, 42 }))
         );
     }
@@ -95,14 +95,14 @@ public class JacksonAvroSerializerTests {
     @Test
     public void deserializeNull() {
         StepVerifier.create(getSerializer(schemaCreator("null")).deserialize(new ByteArrayInputStream(new byte[0]),
-            new Type<Void>() { })).verifyComplete();
+            new TypeReference<Void>() { })).verifyComplete();
     }
 
     @ParameterizedTest
     @MethodSource("deserializeEnumSupplier")
     public void deserializeEnum(InputStream avro, PlayingCardSuit expected) {
         StepVerifier.create(getSerializer(PlayingCardSuit.getClassSchema().toString()).deserialize(avro,
-            new Type<PlayingCardSuit>() { }))
+            new TypeReference<PlayingCardSuit>() { }))
             .assertNext(actual -> assertEquals(expected, actual))
             .verifyComplete();
     }
@@ -119,13 +119,13 @@ public class JacksonAvroSerializerTests {
     @Test
     public void deserializeInvalidEnum() {
         StepVerifier.create(getSerializer(PlayingCardSuit.getClassSchema().toString()).deserialize(streamCreator(8),
-            new Type<PlayingCardSuit>() { }))
+            new TypeReference<PlayingCardSuit>() { }))
             .verifyError();
     }
 
     @ParameterizedTest
     @MethodSource("deserializeListAndMapSupplier")
-    public <T> void deserializeListAndMap(InputStream avro, String schema, Type<T> type, T expected) {
+    public <T> void deserializeListAndMap(InputStream avro, String schema, TypeReference<T> type, T expected) {
         StepVerifier.create(getSerializer(schema).deserialize(avro, type))
             .assertNext(actual -> assertEquals(expected, actual))
             .verifyComplete();
@@ -142,13 +142,13 @@ public class JacksonAvroSerializerTests {
 //        expectedMultiBlockMap.put("bar", 2);
 
         return Stream.of(
-            Arguments.of(streamCreator(0), INT_ARRAY_SCHEMA, new Type<List<Integer>>() { }, Collections.emptyList()),
-            Arguments.of(streamCreator(6, 20, 40, 60, 0), INT_ARRAY_SCHEMA, new Type<List<Integer>>() { },
+            Arguments.of(streamCreator(0), INT_ARRAY_SCHEMA, new TypeReference<List<Integer>>() { }, Collections.emptyList()),
+            Arguments.of(streamCreator(6, 20, 40, 60, 0), INT_ARRAY_SCHEMA, new TypeReference<List<Integer>>() { },
                 Arrays.asList(10, 20, 30)),
-            Arguments.of(streamCreator(0), INT_MAP_SCHEMA, new Type<Map<String, Integer>>() { },
+            Arguments.of(streamCreator(0), INT_MAP_SCHEMA, new TypeReference<Map<String, Integer>>() { },
                 Collections.emptyMap()),
             Arguments.of(streamCreator(2, 0x06, 0x66, 0x6F, 0x6F, 2, 0), INT_MAP_SCHEMA,
-                new Type<Map<String, Integer>>() { }, Collections.singletonMap("foo", 1))
+                new TypeReference<Map<String, Integer>>() { }, Collections.singletonMap("foo", 1))
 
             /*
              * This test is commented out as there appears to be a bug with multi block maps in Jackson's Avro
@@ -164,7 +164,7 @@ public class JacksonAvroSerializerTests {
 
     @ParameterizedTest
     @MethodSource("deserializeRecordSupplier")
-    public <T> void deserializeRecord(InputStream avro, String schema, Type<T> type, T expected) {
+    public <T> void deserializeRecord(InputStream avro, String schema, TypeReference<T> type, T expected) {
         StepVerifier.create(getSerializer(schema).deserialize(avro, type))
             .assertNext(actual -> assertEquals(expected, actual))
             .verifyComplete();
@@ -213,20 +213,20 @@ public class JacksonAvroSerializerTests {
         LongLinkedList expectedTwoNodeLinkedList = new LongLinkedList(0L, new LongLinkedList(1L, null));
 
         return Stream.of(
-            Arguments.of(streamCreator(0), handOfCardsSchema, new Type<HandOfCards>() { },
+            Arguments.of(streamCreator(0), handOfCardsSchema, new TypeReference<HandOfCards>() { },
                 new HandOfCards(Collections.emptyList())),
-            Arguments.of(pairOfAcesHand, handOfCardsSchema, new Type<HandOfCards>() { }, expectedPairOfAces),
-            Arguments.of(royalFlushHand, handOfCardsSchema, new Type<HandOfCards>() { }, expectedRoyalFlushHand),
-            Arguments.of(streamCreator(0, 0), longLinkedListSchema, new Type<LongLinkedList>() { },
+            Arguments.of(pairOfAcesHand, handOfCardsSchema, new TypeReference<HandOfCards>() { }, expectedPairOfAces),
+            Arguments.of(royalFlushHand, handOfCardsSchema, new TypeReference<HandOfCards>() { }, expectedRoyalFlushHand),
+            Arguments.of(streamCreator(0, 0), longLinkedListSchema, new TypeReference<LongLinkedList>() { },
                 new LongLinkedList(0L, null)),
-            Arguments.of(twoNodeLinkedList, longLinkedListSchema, new Type<LongLinkedList>() { },
+            Arguments.of(twoNodeLinkedList, longLinkedListSchema, new TypeReference<LongLinkedList>() { },
                 expectedTwoNodeLinkedList)
         );
     }
 
     @Test
     public void deserializeNullReturnsNull() {
-        StepVerifier.create(getSerializer(schemaCreator("null")).deserialize(null, new Type<Void>() { }))
+        StepVerifier.create(getSerializer(schemaCreator("null")).deserialize(null, new TypeReference<Void>() { }))
             .verifyComplete();
     }
 

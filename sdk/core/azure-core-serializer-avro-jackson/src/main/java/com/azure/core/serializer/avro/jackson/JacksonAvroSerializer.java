@@ -4,7 +4,7 @@
 package com.azure.core.serializer.avro.jackson;
 
 import com.azure.core.experimental.serializer.ObjectSerializer;
-import com.azure.core.experimental.serializer.Type;
+import com.azure.core.experimental.serializer.TypeReference;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.dataformat.avro.AvroMapper;
 import com.fasterxml.jackson.dataformat.avro.AvroSchema;
@@ -28,7 +28,7 @@ public final class JacksonAvroSerializer implements ObjectSerializer {
     }
 
     @Override
-    public <T> Mono<T> deserialize(InputStream stream, Type<T> type) {
+    public <T> Mono<T> deserialize(InputStream stream, TypeReference<T> typeReference) {
         return Mono.fromCallable(() -> {
             if (stream == null) {
                 return null;
@@ -38,7 +38,7 @@ public final class JacksonAvroSerializer implements ObjectSerializer {
                 return null;
             }
 
-            return avroMapper.readerFor(typeFactory.constructType(type.getJavaType()))
+            return avroMapper.readerFor(typeFactory.constructType(typeReference.getJavaType()))
                 .with(avroSchema)
                 .readValue(stream);
         });

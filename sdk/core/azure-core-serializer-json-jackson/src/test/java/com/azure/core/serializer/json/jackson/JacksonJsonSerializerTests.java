@@ -3,7 +3,7 @@
 
 package com.azure.core.serializer.json.jackson;
 
-import com.azure.core.experimental.serializer.Type;
+import com.azure.core.experimental.serializer.TypeReference;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
@@ -41,7 +41,7 @@ public class JacksonJsonSerializerTests {
 
     @Test
     public void deserializeNull() {
-        StepVerifier.create(DEFAULT_SERIALIZER.deserialize(null, new Type<Person>() { }))
+        StepVerifier.create(DEFAULT_SERIALIZER.deserialize(null, new TypeReference<Person>() { }))
             .verifyComplete();
     }
 
@@ -52,7 +52,7 @@ public class JacksonJsonSerializerTests {
 
         InputStream jsonStream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
 
-        StepVerifier.create(DEFAULT_SERIALIZER.deserialize(jsonStream, new Type<Person>() { }))
+        StepVerifier.create(DEFAULT_SERIALIZER.deserialize(jsonStream, new TypeReference<Person>() { }))
             .assertNext(actual -> assertEquals(expected, actual))
             .verifyComplete();
     }
@@ -64,7 +64,7 @@ public class JacksonJsonSerializerTests {
 
         InputStream jsonStream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
 
-        StepVerifier.create(CUSTOM_SERIALIZER.deserialize(jsonStream, new Type<Person>() { }))
+        StepVerifier.create(CUSTOM_SERIALIZER.deserialize(jsonStream, new TypeReference<Person>() { }))
             .assertNext(actual -> assertEquals(expected, actual))
             .verifyComplete();
     }
@@ -75,7 +75,7 @@ public class JacksonJsonSerializerTests {
 
         InputStream jsonStream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
 
-        StepVerifier.create(DEFAULT_SERIALIZER.deserialize(jsonStream, new Type<ObjectNode>() { }))
+        StepVerifier.create(DEFAULT_SERIALIZER.deserialize(jsonStream, new TypeReference<ObjectNode>() { }))
             .assertNext(actual -> {
                 assertEquals(50, actual.get("age").asInt());
                 assertTrue(actual.get("name").isNull());
