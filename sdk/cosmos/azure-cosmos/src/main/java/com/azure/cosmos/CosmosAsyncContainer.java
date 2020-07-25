@@ -316,7 +316,7 @@ public class CosmosAsyncContainer {
      */
     public <T> Mono<CosmosItemResponse<T>> upsertItem(T item, PartitionKey partitionKey, CosmosItemRequestOptions options) {
         final CosmosItemRequestOptions requestOptions = options == null ? new CosmosItemRequestOptions() : options;
-        ModelBridgeInternal.setPartitionKey(options, partitionKey);
+        ModelBridgeInternal.setPartitionKey(requestOptions, partitionKey);
         return withContext(context -> upsertItemInternal(item, requestOptions, context));
     }
 
