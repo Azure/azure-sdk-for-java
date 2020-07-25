@@ -409,9 +409,6 @@ public final class RntbdTransportClient extends TransportClient {
         private final Duration receiveHangDetectionTime;
 
         @JsonProperty()
-        private final Duration requestExpiryInterval;
-
-        @JsonProperty()
         private final Duration requestTimeout;
 
         @JsonProperty()
@@ -449,7 +446,6 @@ public final class RntbdTransportClient extends TransportClient {
             this.maxChannelsPerEndpoint = builder.maxChannelsPerEndpoint;
             this.maxRequestsPerChannel = builder.maxRequestsPerChannel;
             this.receiveHangDetectionTime = builder.receiveHangDetectionTime;
-            this.requestExpiryInterval = builder.requestExpiryInterval;
             this.requestTimeout = builder.requestTimeout;
             this.requestTimerResolution = builder.requestTimerResolution;
             this.sendHangDetectionTime = builder.sendHangDetectionTime;
@@ -473,7 +469,6 @@ public final class RntbdTransportClient extends TransportClient {
             this.maxChannelsPerEndpoint = connectionPolicy.getMaxConnectionsPerEndpoint();
             this.maxRequestsPerChannel = connectionPolicy.getMaxRequestsPerConnection();
             this.receiveHangDetectionTime = Duration.ofSeconds(65L);
-            this.requestExpiryInterval = Duration.ofSeconds(5L);
             this.requestTimeout = connectionPolicy.getRequestTimeout();
             this.requestTimerResolution = Duration.ofMillis(100L);
             this.sendHangDetectionTime = Duration.ofSeconds(10L);
@@ -524,10 +519,6 @@ public final class RntbdTransportClient extends TransportClient {
 
         public Duration receiveHangDetectionTime() {
             return this.receiveHangDetectionTime;
-        }
-
-        public Duration requestExpiryInterval() {
-            return this.requestExpiryInterval;
         }
 
         public Duration requestTimeout() {
@@ -598,7 +589,6 @@ public final class RntbdTransportClient extends TransportClient {
          *   "maxChannelsPerEndpoint": 10,
          *   "maxRequestsPerChannel": 30,
          *   "receiveHangDetectionTime": "PT1M5S",
-         *   "requestExpiryInterval": "PT5S",
          *   "requestTimeout": "PT5S",
          *   "requestTimerResolution": "PT0.5S",
          *   "sendHangDetectionTime": "PT10S",
@@ -686,7 +676,6 @@ public final class RntbdTransportClient extends TransportClient {
             private int maxChannelsPerEndpoint;
             private int maxRequestsPerChannel;
             private Duration receiveHangDetectionTime;
-            private Duration requestExpiryInterval;
             private Duration requestTimeout;
             private Duration requestTimerResolution;
             private Duration sendHangDetectionTime;
@@ -710,7 +699,6 @@ public final class RntbdTransportClient extends TransportClient {
                 this.maxChannelsPerEndpoint = connectionPolicy.getMaxConnectionsPerEndpoint();
                 this.maxRequestsPerChannel = connectionPolicy.getMaxRequestsPerConnection();
                 this.receiveHangDetectionTime = DEFAULT_OPTIONS.receiveHangDetectionTime;
-                this.requestExpiryInterval = DEFAULT_OPTIONS.requestExpiryInterval;
                 this.requestTimeout = connectionPolicy.getRequestTimeout();
                 this.requestTimerResolution = DEFAULT_OPTIONS.requestTimerResolution;
                 this.sendHangDetectionTime = DEFAULT_OPTIONS.sendHangDetectionTime;
@@ -797,14 +785,6 @@ public final class RntbdTransportClient extends TransportClient {
                     "expected positive value, not %s",
                     value);
                 this.receiveHangDetectionTime = value;
-                return this;
-            }
-
-            public Builder requestExpiryInterval(final Duration value) {
-                checkArgument(value != null && value.compareTo(Duration.ZERO) > 0,
-                    "expected positive value, not %s",
-                    value);
-                this.requestExpiryInterval = value;
                 return this;
             }
 
