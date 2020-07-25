@@ -394,6 +394,9 @@ public final class RntbdTransportClient extends TransportClient {
         private final Duration idleChannelTimeout;
 
         @JsonProperty()
+        private final Duration idleChannelTimerResolution;
+
+        @JsonProperty()
         private final Duration idleEndpointTimeout;
 
         @JsonProperty()
@@ -441,6 +444,7 @@ public final class RntbdTransportClient extends TransportClient {
             this.connectionAcquisitionTimeout = builder.connectionAcquisitionTimeout;
             this.connectionEndpointRediscovery = builder.connectionEndpointRediscovery;
             this.idleChannelTimeout = builder.idleChannelTimeout;
+            this.idleChannelTimerResolution = builder.idleChannelTimerResolution;
             this.idleEndpointTimeout = builder.idleEndpointTimeout;
             this.maxBufferCapacity = builder.maxBufferCapacity;
             this.maxChannelsPerEndpoint = builder.maxChannelsPerEndpoint;
@@ -464,6 +468,7 @@ public final class RntbdTransportClient extends TransportClient {
             this.connectionEndpointRediscovery = connectionPolicy.getEnableTcpConnectionEndpointRediscovery();
             this.connectTimeout = connectionPolicy.getConnectTimeout();
             this.idleChannelTimeout = connectionPolicy.getIdleTcpConnectionTimeout();
+            this.idleChannelTimerResolution = Duration.ofMillis(100);
             this.idleEndpointTimeout = connectionPolicy.getIdleTcpEndpointTimeout();
             this.maxBufferCapacity = 8192 << 10;
             this.maxChannelsPerEndpoint = connectionPolicy.getMaxConnectionsPerEndpoint();
@@ -499,6 +504,10 @@ public final class RntbdTransportClient extends TransportClient {
 
         public Duration idleChannelTimeout() {
             return this.idleChannelTimeout;
+        }
+
+        public Duration idleChannelTimerResolution() {
+            return this.idleChannelTimerResolution;
         }
 
         public Duration idleEndpointTimeout() {
@@ -671,6 +680,7 @@ public final class RntbdTransportClient extends TransportClient {
             private boolean connectionEndpointRediscovery;
             private Duration connectTimeout;
             private Duration idleChannelTimeout;
+            private Duration idleChannelTimerResolution;
             private Duration idleEndpointTimeout;
             private int maxBufferCapacity;
             private int maxChannelsPerEndpoint;
@@ -694,6 +704,7 @@ public final class RntbdTransportClient extends TransportClient {
                 this.connectionEndpointRediscovery = DEFAULT_OPTIONS.connectionEndpointRediscovery;
                 this.connectTimeout = connectionPolicy.getConnectTimeout();
                 this.idleChannelTimeout = connectionPolicy.getIdleTcpConnectionTimeout();
+                this.idleChannelTimerResolution = DEFAULT_OPTIONS.idleChannelTimerResolution;
                 this.idleEndpointTimeout = DEFAULT_OPTIONS.idleEndpointTimeout;
                 this.maxBufferCapacity = DEFAULT_OPTIONS.maxBufferCapacity;
                 this.maxChannelsPerEndpoint = connectionPolicy.getMaxConnectionsPerEndpoint();
@@ -749,6 +760,12 @@ public final class RntbdTransportClient extends TransportClient {
             public Builder idleChannelTimeout(final Duration value) {
                 checkNotNull(value, "expected non-null value");
                 this.idleChannelTimeout = value;
+                return this;
+            }
+
+            public Builder idleChannelTimerResolution(final Duration value) {
+                checkNotNull(value, "expected non-null value");
+                this.idleChannelTimerResolution = value;
                 return this;
             }
 

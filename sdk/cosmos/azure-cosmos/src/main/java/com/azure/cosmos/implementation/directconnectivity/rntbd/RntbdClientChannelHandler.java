@@ -99,9 +99,7 @@ public class RntbdClientChannelHandler extends ChannelInitializer<Channel> imple
             this.healthChecker,
             this.config.maxRequestsPerChannel());
 
-        final long readerIdleTime = 100_000_000;  // this.config.receiveHangDetectionTimeInNanos();
-        final long writerIdleTime = 100_000_000;  // this.config.sendHangDetectionTimeInNanos();
-        final long allIdleTime = 0;  //this.config.idleConnectionTimeoutInNanos();
+        final long idleConnectionTimerResolutionInNanos = config.idleConnectionTimerResolutionInNanos();
         final ChannelPipeline pipeline = channel.pipeline();
 
         pipeline.addFirst(
@@ -117,7 +115,11 @@ public class RntbdClientChannelHandler extends ChannelInitializer<Channel> imple
 
         pipeline.addFirst(
             this.config.sslContext().newHandler(channel.alloc()),
-            new IdleStateHandler(readerIdleTime, writerIdleTime, allIdleTime, TimeUnit.NANOSECONDS)
+            new IdleStateHandler(
+                idleConnectionTimerResolutionInNanos,
+                idleConnectionTimerResolutionInNanos,
+                0,
+                TimeUnit.NANOSECONDS)
         );
 
         channel.attr(REQUEST_MANAGER).set(requestManager);
