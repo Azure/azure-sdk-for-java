@@ -10,7 +10,7 @@ package com.microsoft.azure.management.containerregistry.v2019_06_01_preview.imp
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.containerregistry.v2019_06_01_preview.ErrorResponseException;
 import com.microsoft.azure.management.containerregistry.v2019_06_01_preview.RunRequest;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
@@ -75,7 +75,7 @@ public class RegistriesInner {
      * @param registryName The name of the container registry.
      * @param runRequest The parameters of a run that needs to scheduled.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RunInner object if successful.
      */
@@ -152,7 +152,7 @@ public class RegistriesInner {
      * @param registryName The name of the container registry.
      * @param runRequest The parameters of a run that needs to scheduled.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RunInner object if successful.
      */
@@ -232,11 +232,11 @@ public class RegistriesInner {
             });
     }
 
-    private ServiceResponse<RunInner> beginScheduleRunDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<RunInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<RunInner> beginScheduleRunDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<RunInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<RunInner>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -246,7 +246,7 @@ public class RegistriesInner {
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SourceUploadDefinitionInner object if successful.
      */
@@ -319,10 +319,10 @@ public class RegistriesInner {
             });
     }
 
-    private ServiceResponse<SourceUploadDefinitionInner> getBuildSourceUploadUrlDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<SourceUploadDefinitionInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<SourceUploadDefinitionInner> getBuildSourceUploadUrlDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SourceUploadDefinitionInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SourceUploadDefinitionInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 

@@ -133,6 +133,19 @@ public class ContainerRegistryManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The AgentPoolsInner object to access its operations.
+     */
+    private AgentPoolsInner agentPools;
+
+    /**
+     * Gets the AgentPoolsInner object to access its operations.
+     * @return the AgentPoolsInner object.
+     */
+    public AgentPoolsInner agentPools() {
+        return this.agentPools;
+    }
+
+    /**
      * The RegistriesInner object to access its operations.
      */
     private RegistriesInner registries;
@@ -156,6 +169,19 @@ public class ContainerRegistryManagementClientImpl extends AzureServiceClient {
      */
     public RunsInner runs() {
         return this.runs;
+    }
+
+    /**
+     * The TaskRunsInner object to access its operations.
+     */
+    private TaskRunsInner taskRuns;
+
+    /**
+     * Gets the TaskRunsInner object to access its operations.
+     * @return the TaskRunsInner object.
+     */
+    public TaskRunsInner taskRuns() {
+        return this.taskRuns;
     }
 
     /**
@@ -206,8 +232,10 @@ public class ContainerRegistryManagementClientImpl extends AzureServiceClient {
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
+        this.agentPools = new AgentPoolsInner(restClient().retrofit(), this);
         this.registries = new RegistriesInner(restClient().retrofit(), this);
         this.runs = new RunsInner(restClient().retrofit(), this);
+        this.taskRuns = new TaskRunsInner(restClient().retrofit(), this);
         this.tasks = new TasksInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
