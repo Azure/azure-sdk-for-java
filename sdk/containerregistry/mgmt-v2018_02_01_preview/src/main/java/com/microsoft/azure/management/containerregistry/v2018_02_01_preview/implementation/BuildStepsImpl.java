@@ -83,10 +83,14 @@ class BuildStepsImpl extends WrapperImpl<BuildStepsInner> implements BuildSteps 
     public Observable<BuildStep> getAsync(String resourceGroupName, String registryName, String buildTaskName, String stepName) {
         BuildStepsInner client = this.inner();
         return client.getAsync(resourceGroupName, registryName, buildTaskName, stepName)
-        .map(new Func1<BuildStepInner, BuildStep>() {
+        .flatMap(new Func1<BuildStepInner, Observable<BuildStep>>() {
             @Override
-            public BuildStep call(BuildStepInner inner) {
-                return wrapModel(inner);
+            public Observable<BuildStep> call(BuildStepInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((BuildStep)wrapModel(inner));
+                }
             }
        });
     }

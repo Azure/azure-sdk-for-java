@@ -25,6 +25,12 @@ public final class WebhookAction extends ExpandableStringEnum<WebhookAction> {
     /** Static value quarantine for WebhookAction. */
     public static final WebhookAction QUARANTINE = fromString("quarantine");
 
+    /** Static value chart_push for WebhookAction. */
+    public static final WebhookAction CHART_PUSH = fromString("chart_push");
+
+    /** Static value chart_delete for WebhookAction. */
+    public static final WebhookAction CHART_DELETE = fromString("chart_delete");
+
     /**
      * Creates or finds a WebhookAction from its string representation.
      * @param name a name to look for

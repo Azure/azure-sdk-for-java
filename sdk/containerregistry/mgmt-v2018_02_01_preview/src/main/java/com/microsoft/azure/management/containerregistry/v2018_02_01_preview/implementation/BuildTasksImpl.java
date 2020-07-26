@@ -77,10 +77,14 @@ class BuildTasksImpl extends WrapperImpl<BuildTasksInner> implements BuildTasks 
     public Observable<BuildTask> getAsync(String resourceGroupName, String registryName, String buildTaskName) {
         BuildTasksInner client = this.inner();
         return client.getAsync(resourceGroupName, registryName, buildTaskName)
-        .map(new Func1<BuildTaskInner, BuildTask>() {
+        .flatMap(new Func1<BuildTaskInner, Observable<BuildTask>>() {
             @Override
-            public BuildTask call(BuildTaskInner inner) {
-                return wrapModel(inner);
+            public Observable<BuildTask> call(BuildTaskInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((BuildTask)wrapModel(inner));
+                }
             }
        });
     }
