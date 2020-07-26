@@ -20,6 +20,7 @@ import com.microsoft.azure.management.containerregistry.v2018_09_01.PlatformProp
 import com.microsoft.azure.management.containerregistry.v2018_09_01.AgentProperties;
 import com.microsoft.azure.management.containerregistry.v2018_09_01.TaskStepProperties;
 import com.microsoft.azure.management.containerregistry.v2018_09_01.TriggerProperties;
+import com.microsoft.azure.management.containerregistry.v2018_09_01.Credentials;
 import com.microsoft.azure.management.containerregistry.v2018_09_01.PlatformUpdateParameters;
 import com.microsoft.azure.management.containerregistry.v2018_09_01.TaskStepUpdateParameters;
 import com.microsoft.azure.management.containerregistry.v2018_09_01.TriggerUpdateParameters;
@@ -110,6 +111,11 @@ class TaskImpl extends CreatableUpdatableImpl<Task, TaskInner, TaskImpl> impleme
     @Override
     public DateTime creationDate() {
         return this.inner().creationDate();
+    }
+
+    @Override
+    public Credentials credentials() {
+        return this.inner().credentials();
     }
 
     @Override
@@ -222,6 +228,16 @@ class TaskImpl extends CreatableUpdatableImpl<Task, TaskInner, TaskImpl> impleme
             this.inner().withAgentConfiguration(agentConfiguration);
         } else {
             this.updateParameter.withAgentConfiguration(agentConfiguration);
+        }
+        return this;
+    }
+
+    @Override
+    public TaskImpl withCredentials(Credentials credentials) {
+        if (isInCreateMode()) {
+            this.inner().withCredentials(credentials);
+        } else {
+            this.updateParameter.withCredentials(credentials);
         }
         return this;
     }
