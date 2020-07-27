@@ -271,7 +271,7 @@ public final class BlobBatch {
      */
     public Response<Void> setBlobAccessTier(BlobBatchSetBlobAccessTierOptions options) {
         StorageImplUtils.assertNotNull("options", options);
-        return setBlobAccessTierHelper(options.getBlobPath(), options.getTier(), options.getPriority(),
+        return setBlobAccessTierHelper(options.getBlobIdentifier(), options.getTier(), options.getPriority(),
             options.getLeaseId(), options.getTagsConditions());
     }
 

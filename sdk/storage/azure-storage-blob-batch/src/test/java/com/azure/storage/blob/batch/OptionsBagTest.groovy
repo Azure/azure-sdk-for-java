@@ -36,8 +36,8 @@ class OptionsBagTest extends Specification {
         options1.getBlobContainerName() == container
         options2.getBlobContainerName() == container
 
-        options1.getBlobPath() == "container/blob"
-        options2.getBlobPath() == "container/blob"
+        options1.getBlobIdentifier() == "container/blob"
+        options2.getBlobIdentifier() == "container/blob"
     }
 
     def "SetAccessTier snapshot"() {
@@ -65,8 +65,8 @@ class OptionsBagTest extends Specification {
         options1.getSnapshot() == snapshot
         options2.getSnapshot() == snapshot
 
-        options1.getBlobPath() == "container/blob?snapshot=snapshot"
-        options2.getBlobPath() == "container/blob?snapshot=snapshot"
+        options1.getBlobIdentifier() == "container/blob?snapshot=snapshot"
+        options2.getBlobIdentifier() == "container/blob?snapshot=snapshot"
     }
 
     def "SetAccessTier version"() {
@@ -94,8 +94,8 @@ class OptionsBagTest extends Specification {
         options1.getVersionId() == version
         options2.getVersionId() == version
 
-        options1.getBlobPath() == "container/blob?versionid=version"
-        options2.getBlobPath() == "container/blob?versionid=version"
+        options1.getBlobIdentifier() == "container/blob?versionid=version"
+        options2.getBlobIdentifier() == "container/blob?versionid=version"
     }
 
     def "SetAccessTier version snapshot error"() {
@@ -111,13 +111,13 @@ class OptionsBagTest extends Specification {
             .setSnapshot(snapshot)
 
         when:
-        options1.getBlobPath()
+        options1.getBlobIdentifier()
 
         then:
         thrown(IllegalArgumentException)
 
         when:
-        options2.getBlobPath()
+        options2.getBlobIdentifier()
 
         then:
         thrown(IllegalArgumentException)
