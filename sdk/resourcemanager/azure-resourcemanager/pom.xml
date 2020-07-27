@@ -221,12 +221,6 @@
           <!-- RMfailOnWarning set to false in azure-resourcemanager-parent's definition, set here to allow compilation
                but should be using the azure-client-sdk-parent's setting which is true -->
           <failOnWarning>false</failOnWarning>
-          <!-- RMshowDeprecation set in azure-resourcemanager-parent but not in azure-client-sdk-parent -->
-          <showDeprecation>true</showDeprecation>
-          <compilerArgs>
-              <arg>-AaddGeneratedAnnotation=true</arg>
-              <arg>-Adebug=true</arg>
-          </compilerArgs>
         </configuration>
       </plugin>
 
