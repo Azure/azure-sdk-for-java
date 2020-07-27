@@ -302,6 +302,25 @@ public class CosmosAsyncContainer {
     }
 
     /**
+     * Upserts an item.
+     * <p>
+     * After subscription the operation will be performed. The {@link Mono} upon
+     * successful completion will contain a single resource response with the
+     * upserted item. In case of failure the {@link Mono} will error.
+     *
+     * @param <T> the type parameter.
+     * @param item the item represented as a POJO or Item object to upsert.
+     * @param partitionKey the partition key.
+     * @param options the request options.
+     * @return an {@link Mono} containing the single resource response with the upserted item or an error.
+     */
+    public <T> Mono<CosmosItemResponse<T>> upsertItem(T item, PartitionKey partitionKey, CosmosItemRequestOptions options) {
+        final CosmosItemRequestOptions requestOptions = options == null ? new CosmosItemRequestOptions() : options;
+        ModelBridgeInternal.setPartitionKey(requestOptions, partitionKey);
+        return withContext(context -> upsertItemInternal(item, requestOptions, context));
+    }
+
+    /**
      * Reads all the items in the current container.
      * <p>
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
