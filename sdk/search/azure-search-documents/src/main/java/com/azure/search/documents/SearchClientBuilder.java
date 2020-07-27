@@ -276,7 +276,7 @@ public final class SearchClientBuilder {
 
     /**
      * Sets the HTTP pipeline to use for the service client.
-     *
+     * <p>
      * If {@code pipeline} is set, all other settings are ignored, aside from {@link #endpoint(String) endpoint} and
      * {@link #indexName(String) index} when building a {@link SearchClient} or {@link SearchAsyncClient}.
      *
