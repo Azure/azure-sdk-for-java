@@ -204,15 +204,19 @@ public class DAGraph<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Graph<D
      * in the DAG with no dependencies.
      */
     private void initializeDependentKeys() {
-        visit(new Visitor<NodeT>() {
+        visit(new Visitor<Node<DataT, NodeT>>() {
             @Override
-            public void visitNode(NodeT node) {
-                if (node.dependencyKeys().isEmpty()) {
+            public void visitNode(Node<DataT, NodeT> node) {
+                if (!(node instanceof DAGNode)) {
+                    throw logger.logExceptionAsError(new IllegalStateException("Unexpected node type"));
+                }
+                DAGNode<DataT, NodeT> dagNode = (DAGNode<DataT, NodeT>) node;
+                if (dagNode.dependencyKeys().isEmpty()) {
                     return;
                 }
 
                 String dependentKey = node.key();
-                for (String dependencyKey : node.dependencyKeys()) {
+                for (String dependencyKey : dagNode.dependencyKeys()) {
                     nodeTable.get(dependencyKey)
                             .addDependent(dependentKey);
                 }

@@ -90,7 +90,7 @@ public class Graph<DataT, NodeT extends Node<DataT, NodeT>> {
      *
      * @param visitor the graph visitor
      */
-    public void visit(Visitor visitor) {
+    public void visit(Visitor<Node<DataT, NodeT>> visitor) {
         for (Map.Entry<String, NodeT> item : nodeTable.entrySet()) {
             if (!visited.contains(item.getKey())) {
                 this.dfs(visitor, item.getValue());
@@ -104,7 +104,7 @@ public class Graph<DataT, NodeT extends Node<DataT, NodeT>> {
         processed.clear();
     }
 
-    private void dfs(Visitor visitor, Node<DataT, NodeT> node) {
+    private void dfs(Visitor<Node<DataT, NodeT>> visitor, Node<DataT, NodeT> node) {
         visitor.visitNode(node);
 
         String fromKey = node.key();
