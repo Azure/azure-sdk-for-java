@@ -6,12 +6,17 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClient;
+import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.http.HttpClient;
 import org.apache.commons.lang3.reflect.FieldUtils;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /**
  *
@@ -28,6 +33,20 @@ public class ReflectionUtils {
         try {
             FieldUtils.writeField(object, fieldName, newValue, true);
         } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static void invokeMethod(Class klass, Object object, String methodName) {
+        try {
+            Method method = klass.getDeclaredMethod(methodName);
+            method.setAccessible(true);
+            method.invoke(object);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        } catch (InvocationTargetException e) {
             throw new RuntimeException(e);
         }
     }
@@ -108,5 +127,13 @@ public class ReflectionUtils {
 
     public static void setTracerProvider(CosmosAsyncClient cosmosAsyncClient, TracerProvider tracerProvider){
         set(cosmosAsyncClient, tracerProvider, "tracerProvider");
+    }
+
+    public static ConnectionPolicy getConnectionPolicy(CosmosClientBuilder cosmosClientBuilder){
+        return get(ConnectionPolicy.class, cosmosClientBuilder, "connectionPolicy");
+    }
+
+    public static void buildConnectionPolicy(CosmosClientBuilder cosmosClientBuilder) {
+        invokeMethod(CosmosClientBuilder.class, cosmosClientBuilder, "buildConnectionPolicy");
     }
 }
