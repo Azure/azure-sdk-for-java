@@ -64,18 +64,21 @@ public abstract class TopLevelModifiableResourcesImpl<
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Flux<String> deleteByIdsAsync(Collection<String> ids) {
         if (ids == null || ids.isEmpty()) {
             return Flux.empty();
         }
 
-        return Flux.mergeDelayError(32, Flux.fromIterable(ids)
-            .flatMap(id ->
-                ReactorMapper.map(
-                    inner().deleteAsync(
-                        ResourceUtils.groupFromResourceId(id),
-                        ResourceUtils.nameFromResourceId(id)
-                    ), id)));
+        Collection<Mono<String>> observables = new ArrayList<>();
+        for (String id : ids) {
+            final String resourceGroupName = ResourceUtils.groupFromResourceId(id);
+            final String name = ResourceUtils.nameFromResourceId(id);
+            Mono<String> o = ReactorMapper.map(this.inner().deleteAsync(resourceGroupName, name), id);
+            observables.add(o);
+        }
+
+        return Flux.mergeDelayError(32, observables.toArray(new Mono[0]));
     }
 
     @Override
