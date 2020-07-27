@@ -3042,7 +3042,7 @@ class FileAPITest extends APISpec {
 
         /* Input Stream. */
         when:
-        InputStream qqStream = fc.openQueryInputStreamWithResponse(optionsIs).get
+        InputStream qqStream = fc.openQueryInputStreamWithResponse(optionsIs).getValue()
         byte[] queryData = readFromInputStream(qqStream, expectedData.length)
 
         then:
