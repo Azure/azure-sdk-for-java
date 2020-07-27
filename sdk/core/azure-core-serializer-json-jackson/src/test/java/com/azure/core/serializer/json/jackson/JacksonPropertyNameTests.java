@@ -8,13 +8,13 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
-import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class JacksonPropertyNameTests {
+    private static final String expectValueInField = "expectFieldName";
+    private static final String expectValueInMethod = "expectMethodName";
     private static JacksonPropertyNameSerializer serializer;
 
     @BeforeAll
@@ -22,131 +22,128 @@ public class JacksonPropertyNameTests {
         serializer = new JacksonPropertyNameSerializer();
     }
 
+//    @Test
+//    public void testPropertyNameOnFieldName() throws NoSuchFieldException {
+//        class Hotel {
+//            String hotelName;
+//        }
+//        Field f = Hotel.class.getDeclaredField("hotelName");
+//
+//        StepVerifier.create(serializer.getSerializerMemberName(f))
+//            .assertNext(actual -> assertEquals("hotelName", actual))
+//            .verifyComplete();
+//
+//    }
+//
+//    @Test
+//    public void testPropertyNameOnFieldAnnotation() throws NoSuchFieldException {
+//        class Hotel {
+//            @JsonProperty(value = expectValueInField)
+//            String hotelName;
+//        }
+//        Field f = Hotel.class.getDeclaredField("hotelName");
+//
+//        StepVerifier.create(serializer.getSerializerMemberName(f))
+//            .assertNext(actual -> assertEquals(expectValueInField, actual))
+//            .verifyComplete();
+//
+//    }
+//
+//    @Test
+//    public void testPropertyNameOnFieldAnnotationWithEmptyValue() throws NoSuchFieldException {
+//        class Hotel {
+//            @JsonProperty(value = "")
+//            String hotelName;
+//        }
+//        Field f = Hotel.class.getDeclaredField("hotelName");
+//
+//        StepVerifier.create(serializer.getSerializerMemberName(f))
+//            .assertNext(actual -> assertEquals("hotelName", actual))
+//            .verifyComplete();
+//    }
+//
+//    @Test
+//    public void testPropertyNameOnFieldAnnotationWithNullValue() throws NoSuchFieldException {
+//        class Hotel {
+//            @JsonProperty()
+//            String hotelName;
+//        }
+//        Field f = Hotel.class.getDeclaredField("hotelName");
+//
+//        StepVerifier.create(serializer.getSerializerMemberName(f))
+//            .assertNext(actual -> assertEquals("hotelName", actual))
+//            .verifyComplete();
+//
+//    }
+//
+//    @Test
+//    public void testPropertyNameOnMethodName() throws NoSuchMethodException {
+//        class Hotel {
+//            String hotelName;
+//
+//            public String getHotelName() {
+//                return hotelName;
+//            }
+//        }
+//
+//        Method m = Hotel.class.getDeclaredMethod("getHotelName");
+//
+//        StepVerifier.create(serializer.getSerializerMemberName(m))
+//            .assertNext(actual -> assertEquals("getHotelName", actual))
+//            .verifyComplete();
+//    }
+//
+//    @Test
+//    public void testPropertyNameOnMethodAnnotation() throws NoSuchMethodException {
+//        class Hotel {
+//            String hotelName;
+//
+//            @JsonProperty(value = expectValueInMethod)
+//            public String getHotelName() {
+//                return hotelName;
+//            }
+//        }
+//
+//        Method m = Hotel.class.getDeclaredMethod("getHotelName");
+//
+//        StepVerifier.create(serializer.getSerializerMemberName(m))
+//            .assertNext(actual -> assertEquals(expectValueInMethod, actual))
+//            .verifyComplete();
+//    }
+//
+//
+//    @Test
+//    public void testPropertyNameOnMethodAnnotationWithEmptyValue() throws NoSuchMethodException {
+//        class Hotel {
+//            String hotelName;
+//
+//            @JsonProperty(value = "")
+//            public String getHotelName() {
+//                return hotelName;
+//            }
+//        }
+//
+//        Method m = Hotel.class.getDeclaredMethod("getHotelName");
+//        StepVerifier.create(serializer.getSerializerMemberName(m))
+//            .assertNext(actual -> assertEquals("getHotelName", actual))
+//            .verifyComplete();
+//    }
+
     @Test
-    public void testPropertyNameOnFieldName() throws NoSuchFieldException {
-        String fieldName = "fieldName";
-        Field f = mock(Field.class);
+    public void testPropertyNameOnMethodAnnotationWithNullValue() throws NoSuchMethodException {
+        class Hotel {
+            String hotelName;
 
-        when(f.isAnnotationPresent(JsonProperty.class)).thenReturn(false);
+            @JsonProperty()
+            public String getHotelName() {
+                return hotelName;
+            }
+        }
 
-        when(f.getName()).thenReturn(fieldName);
-
-        StepVerifier.create(serializer.getSerializerMemberName(f))
-            .assertNext(actual -> assertEquals(fieldName, actual))
+        Method m = Hotel.class.getDeclaredMethod("getHotelName");
+        StepVerifier.create(serializer.getSerializerMemberName(m))
+            .assertNext(actual -> assertEquals("getHotelName", actual))
             .verifyComplete();
     }
 
-//
-//    @Test
-//    public void testPropertyNameOnFieldAnnotation() {
-//        Field f = Mockito.spy(Field.class);
-//        // Field f = mock(Field.class);
-//        String expectValue = "hasAnnotation";
-//
-//        when(f.isAnnotationPresent(JsonProperty.class)).thenReturn(true);
-//        JsonProperty annotation = mock(JsonProperty.class);
-//        when(f.getDeclaredAnnotation(JsonProperty.class)).thenReturn(annotation);
-//        when(annotation.value()).thenReturn(expectValue);
-//
-//        StepVerifier.create(serializer.getSerializerMemberName(f))
-//            .assertNext(actual -> assertEquals(expectValue, actual))
-//            .verifyComplete();
-//    }
-//
-//    @Test
-//    public void testPropertyNameOnFieldAnnotationWithEmptyValue() {
-//        Field f = Mockito.spy(Field.class);
-//        //Field f = mock(Field.class);
-//        String fieldName = "fieldName";
-//
-//        when(f.isAnnotationPresent(JsonProperty.class)).thenReturn(true);
-//        JsonProperty annotation = mock(JsonProperty.class);
-//        when(f.getDeclaredAnnotation(JsonProperty.class)).thenReturn(annotation);
-//        when(annotation.value()).thenReturn("");
-//        when(f.getName()).thenReturn(fieldName);
-//
-//        StepVerifier.create(serializer.getSerializerMemberName(f))
-//            .assertNext(actual -> assertEquals(fieldName, actual))
-//            .verifyComplete();
-//    }
-//
-//
-//    @Test
-//    public void testPropertyNameOnFieldAnnotationWithNullValue() {
-//        Field f = Mockito.spy(Field.class);
-//        //Field f = mock(Field.class);
-//        String fieldName = "fieldName";
-//
-//        when(f.isAnnotationPresent(JsonProperty.class)).thenReturn(true);
-//        JsonProperty annotation = mock(JsonProperty.class);
-//        when(f.getDeclaredAnnotation(JsonProperty.class)).thenReturn(annotation);
-//        when(annotation.value()).thenReturn(null);
-//        when(annotation.value()).thenReturn(fieldName);
-//
-//        StepVerifier.create(serializer.getSerializerMemberName(f))
-//            .assertNext(actual -> assertEquals(fieldName, actual))
-//            .verifyComplete();
-//    }
-//
-//    @Test
-//    public void testPropertyNameOnMethodName() {
-//        Method m = Mockito.spy(Method.class);
-//        //Method m = mock(Method.class);
-//        String methodName = "methodName";
-//
-//        when(m.isAnnotationPresent(JsonProperty.class)).thenReturn(false);
-//
-//        when(m.getName()).thenReturn(methodName);
-//
-//        StepVerifier.create(serializer.getSerializerMemberName(m))
-//            .assertNext(actual -> assertEquals(methodName, actual))
-//            .verifyComplete();
-//    }
-//
-//    @Test
-//    public void testPropertyNameOnMethodAnnotation() {
-//        Method m = Mockito.spy(Method.class);
-//        //Method m = mock(Method.class);
-//        String expectValue = "hasAnnotation";
-//
-//        when(m.isAnnotationPresent(JsonProperty.class)).thenReturn(true);
-//        JsonProperty annotation = mock(JsonProperty.class);
-//        when(m.getDeclaredAnnotation(JsonProperty.class)).thenReturn(annotation);
-//        when(annotation.value()).thenReturn(expectValue);
-//
-//        StepVerifier.create(serializer.getSerializerMemberName(m))
-//            .assertNext(actual -> assertEquals(expectValue, actual))
-//            .verifyComplete();
-//    }
-//
-//    @Test
-//    public void testPropertyNameOnMethodAnnotationWithEmptyValue() {
-//        Method m = Mockito.spy(Method.class);
-//        //Method m = mock(Method.class);
-//        String methodName = "methodName";
-//
-//        when(m.isAnnotationPresent(JsonProperty.class)).thenReturn(true);
-//        JsonProperty annotation = mock(JsonProperty.class);
-//        when(m.getDeclaredAnnotation(JsonProperty.class)).thenReturn(annotation);
-//        when(annotation.value()).thenReturn("");
-//        when(m.getName()).thenReturn(methodName);
-//        StepVerifier.create(serializer.getSerializerMemberName(m))
-//            .assertNext(actual -> assertEquals(methodName, actual))
-//            .verifyComplete();
-//    }
-//
-//    @Test
-//    public void testPropertyNameOnMethodAnnotationWithNullValue() {
-//        Method m = Mockito.spy(Method.class);
-//        //Method m = mock(Method.class);
-//        String methodName = "methodName";
-//        when(m.isAnnotationPresent(JsonProperty.class)).thenReturn(true);
-//        JsonProperty annotation = mock(JsonProperty.class);
-//        when(m.getDeclaredAnnotation(JsonProperty.class)).thenReturn(annotation);
-//        when(annotation.value()).thenReturn(null);
-//        when(m.getName()).thenReturn(methodName);
-//        StepVerifier.create(serializer.getSerializerMemberName(m))
-//            .assertNext(actual -> assertEquals(methodName, actual))
-//            .verifyComplete();
-//    }
 }

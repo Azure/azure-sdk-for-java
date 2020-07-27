@@ -12,10 +12,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class GsonPropertyNameTests {
+    private static final String expectValueInField = "expectFieldName";
     private static GsonPropertyNameSerializer serializer;
 
     @BeforeAll
@@ -24,79 +23,59 @@ public class GsonPropertyNameTests {
     }
 
     @Test
-    public void testPropertyNameOnFieldName() {
-        Field f = mock(Field.class);
-        String fieldName = "fieldName";
-
-        when(f.isAnnotationPresent(SerializedName.class)).thenReturn(false);
-
-        when(f.getName()).thenReturn(fieldName);
+    public void testPropertyNameOnFieldName() throws NoSuchFieldException {
+        class Hotel {
+            String hotelName;
+        }
+        Field f = Hotel.class.getDeclaredField("hotelName");
 
         StepVerifier.create(serializer.getSerializerMemberName(f))
-            .assertNext(actual -> assertEquals(fieldName, actual))
+            .assertNext(actual -> assertEquals("hotelName", actual))
             .verifyComplete();
-    }
 
-
-    @Test
-    public void testPropertyNameOnFieldAnnotation() {
-        Field f = mock(Field.class);
-        String expectValue = "hasAnnotation";
-
-        when(f.isAnnotationPresent(SerializedName.class)).thenReturn(true);
-        SerializedName annotation = mock(SerializedName.class);
-        when(f.getDeclaredAnnotation(SerializedName.class)).thenReturn(annotation);
-        when(annotation.value()).thenReturn(expectValue);
-
-        StepVerifier.create(serializer.getSerializerMemberName(f))
-            .assertNext(actual -> assertEquals(expectValue, actual))
-            .verifyComplete();
     }
 
     @Test
-    public void testPropertyNameOnFieldAnnotationWithEmptyValue() {
-        Field f = mock(Field.class);
-        String fieldName = "fieldName";
-
-        when(f.isAnnotationPresent(SerializedName.class)).thenReturn(true);
-        SerializedName annotation = mock(SerializedName.class);
-        when(f.getDeclaredAnnotation(SerializedName.class)).thenReturn(annotation);
-        when(annotation.value()).thenReturn("");
-        when(f.getName()).thenReturn(fieldName);
+    public void testPropertyNameOnFieldAnnotation() throws NoSuchFieldException {
+        class Hotel {
+            @SerializedName(value = expectValueInField)
+            String hotelName;
+        }
+        Field f = Hotel.class.getDeclaredField("hotelName");
 
         StepVerifier.create(serializer.getSerializerMemberName(f))
-            .assertNext(actual -> assertEquals(fieldName, actual))
+            .assertNext(actual -> assertEquals(expectValueInField, actual))
             .verifyComplete();
+
     }
 
-
     @Test
-    public void testPropertyNameOnFieldAnnotationWithNullValue() {
-        Field f = mock(Field.class);
-        String fieldName = "fieldName";
-
-        when(f.isAnnotationPresent(SerializedName.class)).thenReturn(true);
-        SerializedName annotation = mock(SerializedName.class);
-        when(f.getDeclaredAnnotation(SerializedName.class)).thenReturn(annotation);
-        when(annotation.value()).thenReturn(null);
-        when(annotation.value()).thenReturn(fieldName);
+    public void testPropertyNameOnFieldAnnotationWithEmptyValue() throws NoSuchFieldException {
+        class Hotel {
+            @SerializedName(value = "")
+            String hotelName;
+        }
+        Field f = Hotel.class.getDeclaredField("hotelName");
 
         StepVerifier.create(serializer.getSerializerMemberName(f))
-            .assertNext(actual -> assertEquals(fieldName, actual))
+            .assertNext(actual -> assertEquals("hotelName", actual))
             .verifyComplete();
     }
 
     @Test
-    public void testPropertyNameOnMethodName() {
-        Method m = mock(Method.class);
-        String methodName = "methodName";
+    public void testPropertyNameOnMethodName() throws NoSuchMethodException {
+        class Hotel {
+            String hotelName;
 
-        when(m.isAnnotationPresent(SerializedName.class)).thenReturn(false);
+            public String getHotelName() {
+                return hotelName;
+            }
+        }
 
-        when(m.getName()).thenReturn(methodName);
+        Method m = Hotel.class.getDeclaredMethod("getHotelName");
 
         StepVerifier.create(serializer.getSerializerMemberName(m))
-            .assertNext(actual -> assertEquals(methodName, actual))
+            .assertNext(actual -> assertEquals("getHotelName", actual))
             .verifyComplete();
     }
 }
