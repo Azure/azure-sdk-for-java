@@ -55,7 +55,7 @@ public class AzureProfile {
      *
      * @return the tenant ID
      */
-    public String tenantId() {
+    public String getTenantId() {
         return this.tenantId;
     }
 
@@ -64,7 +64,7 @@ public class AzureProfile {
      *
      * @return the subscription ID
      */
-    public String subscriptionId() {
+    public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
@@ -73,7 +73,7 @@ public class AzureProfile {
      *
      * @return the Azure environment
      */
-    public AzureEnvironment environment() {
+    public AzureEnvironment getEnvironment() {
         return environment;
     }
 }
