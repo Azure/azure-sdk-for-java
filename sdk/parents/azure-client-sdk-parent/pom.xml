@@ -497,7 +497,6 @@
                 <exclude>*:*:*:*:provided</exclude>
               </excludes>
               <includes combine.children="append">
-                <include>com.microsoft.azure:azure-servicebus</include>
                 <include>com.azure:*</include>
 
                 <!-- Used by many libraries to bring in annotations used by Reactor -->
