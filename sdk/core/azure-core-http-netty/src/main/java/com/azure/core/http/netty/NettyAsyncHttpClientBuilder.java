@@ -6,6 +6,7 @@ package com.azure.core.http.netty;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.implementation.ChallengeHolder;
 import com.azure.core.http.netty.implementation.DeferredHttpProxyProvider;
+import com.azure.core.http.netty.implementation.DeferredTimeoutProvider;
 import com.azure.core.util.AuthorizationChallengeHandler;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -18,6 +19,8 @@ import reactor.netty.resources.ConnectionProvider;
 import reactor.netty.tcp.ProxyProvider;
 
 import java.nio.ByteBuffer;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -42,6 +45,9 @@ public class NettyAsyncHttpClientBuilder {
     private EventLoopGroup eventLoopGroup;
     private Configuration configuration;
     private boolean disableBufferCopy;
+    private Duration writeTimeout;
+    private Duration responseTimeout;
+    private Duration readTimeout;
 
     /**
      * Creates a new builder instance, where a builder is capable of generating multiple instances of {@link
@@ -129,7 +135,13 @@ public class NettyAsyncHttpClientBuilder {
                 }
             }
 
-            return tcpClient;
+            long writeTimeoutNanos = (writeTimeout == null) ? 0 : writeTimeout.get(ChronoUnit.NANOS);
+            long responseTimeoutNanos = (responseTimeout == null) ? 0 : responseTimeout.get(ChronoUnit.NANOS);
+            long readTimeoutNanos = (readTimeout == null) ? 0 : readTimeout.get(ChronoUnit.NANOS);
+
+            return tcpClient.bootstrap(bootstrap -> BootstrapHandlers.updateConfiguration(bootstrap,
+                DeferredTimeoutProvider.NAME,
+                new DeferredTimeoutProvider(writeTimeoutNanos, responseTimeoutNanos, readTimeoutNanos)));
         });
 
         return new NettyAsyncHttpClient(nettyHttpClient, disableBufferCopy);
@@ -243,6 +255,62 @@ public class NettyAsyncHttpClientBuilder {
      */
     public NettyAsyncHttpClientBuilder disableBufferCopy(boolean disableBufferCopy) {
         this.disableBufferCopy = disableBufferCopy;
+        return this;
+    }
+
+    /**
+     * Sets the write operation timeout duration for each write request sent.
+     * <p>
+     * The write timeout does not apply to the entire request but each write processed in the request. For example a
+     * request body which emits {@code 10} {@code 8KB} buffers will trigger {@code 10} write operations, the timeout
+     * duration will be applied individually to each body emission.
+     * <p>
+     * If {@code writeTimeout} is {@code null} or a {@link Duration} with value {@code 0} then no timeout period will be
+     * applied to write operations. When applying the timeout the greater of one millisecond and the value of {@code
+     * writeTimeout} will be used.
+     *
+     * @param writeTimeout Write operation timeout duration.
+     * @return The updated {@link NettyAsyncHttpClientBuilder} object.
+     */
+    public NettyAsyncHttpClientBuilder writeTimeout(Duration writeTimeout) {
+        this.writeTimeout = writeTimeout;
+        return this;
+    }
+
+    /**
+     * Sets the response timeout duration used when waiting for a server to reply.
+     * <p>
+     * The response timeout begins once the request write completes and finishes once the first response read is
+     * triggered when the server response is received.
+     * <p>
+     * If {@code responseTimeout} is {@code null} or a {@link Duration} with value {@code 0} then no timeout period will
+     * be applied to the response. When applying the timeout the greater of one millisecond and the value of {@code
+     * responseTimeout} will be used.
+     *
+     * @param responseTimeout Response timeout duration.
+     * @return The updated {@link NettyAsyncHttpClientBuilder} object.
+     */
+    public NettyAsyncHttpClientBuilder responseTimeout(Duration responseTimeout) {
+        this.responseTimeout = responseTimeout;
+        return this;
+    }
+
+    /**
+     * Sets the read timeout duration used when reading the server response.
+     * <p>
+     * The read timeout begins once the first response read is triggered after the server response is received. This
+     * timeout triggers periodically but won't fire its operation if another read operation has completed between when
+     * the timeout is triggered and completes.
+     * <p>
+     * If {@code readTimeout} is {@code null} or a {@link Duration} with value {@code 0} then no timeout period will
+     * be applied to read operations. When applying the timeout the greater of one millisecond and the value of {@code
+     * readTimeout} will be used.
+     *
+     * @param readTimeout Read timeout duration.
+     * @return The updated {@link NettyAsyncHttpClientBuilder} object.
+     */
+    public NettyAsyncHttpClientBuilder readTimeout(Duration readTimeout) {
+        this.readTimeout = readTimeout;
         return this;
     }
 
