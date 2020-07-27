@@ -672,6 +672,7 @@ public class CosmosClientBuilder {
                 //   as gateway connection config will overwrite direct connection config settings
                 this.connectionPolicy.setRequestTimeout(this.gatewayConnectionConfig.getRequestTimeout());
                 this.connectionPolicy.setIdleHttpConnectionTimeout(this.gatewayConnectionConfig.getIdleConnectionTimeout());
+                this.connectionPolicy.setProxy(this.gatewayConnectionConfig.getProxy());
             }
         } else if (gatewayConnectionConfig != null) {
             this.connectionPolicy = new ConnectionPolicy(gatewayConnectionConfig);
