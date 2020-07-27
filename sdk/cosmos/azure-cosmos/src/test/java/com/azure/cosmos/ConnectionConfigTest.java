@@ -3,12 +3,15 @@
 
 package com.azure.cosmos;
 
+import com.azure.core.http.ProxyOptions;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.rx.TestSuiteBase;
 import org.testng.annotations.Test;
 
+import java.net.InetSocketAddress;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -135,6 +138,25 @@ public class ConnectionConfigTest extends TestSuiteBase {
         assertThat(connectionPolicy.getConnectionMode()).isEqualTo(ConnectionMode.DIRECT);
         validateDirectAndGatewayConnectionConfig(connectionPolicy, cosmosClientBuilder, directConnectionConfig, gatewayConnectionConfig);
         safeCloseSyncClient(cosmosClient);
+    }
+
+    @Test(groups = { "unit" })
+    public void buildConnectionPolicy_withDirectAndGatewayConnectionConfig() throws Exception {
+        ProxyOptions proxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("127.0.0.0", 8080));
+        DirectConnectionConfig directConnectionConfig = DirectConnectionConfig.getDefaultConfig();
+        GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
+        gatewayConnectionConfig.setMaxConnectionPoolSize(MAX_CONNECTION_POOL_SIZE);
+        gatewayConnectionConfig.setRequestTimeout(REQUEST_TIME_OUT);
+        gatewayConnectionConfig.setIdleConnectionTimeout(IDLE_CONNECTION_TIME_OUT);
+        gatewayConnectionConfig.setProxy(proxyOptions);
+        CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
+            .endpoint(TestConfigurations.HOST)
+            .key(TestConfigurations.MASTER_KEY)
+            .directMode(directConnectionConfig, gatewayConnectionConfig);
+        ReflectionUtils.buildConnectionPolicy(cosmosClientBuilder);
+        ConnectionPolicy connectionPolicy = ReflectionUtils.getConnectionPolicy(cosmosClientBuilder);
+        assertThat(connectionPolicy.getConnectionMode()).isEqualTo(ConnectionMode.DIRECT);
+        validateDirectAndGatewayConnectionConfig(connectionPolicy, cosmosClientBuilder, directConnectionConfig, gatewayConnectionConfig);
     }
 
     @Test(groups = { "emulator" })

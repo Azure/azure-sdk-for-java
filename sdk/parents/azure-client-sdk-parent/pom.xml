@@ -452,7 +452,7 @@
       <plugin>
         <groupId>net.jonathangiles.tools</groupId>
         <artifactId>whitelistgenerator-maven-plugin</artifactId>
-        <version>1.0.1</version> <!-- {x-version-update;net.jonathangiles.tools:whitelistgenerator-maven-plugin;external_dependency} -->
+        <version>1.0.2</version> <!-- {x-version-update;net.jonathangiles.tools:whitelistgenerator-maven-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>generateAllowlistReport</id>
