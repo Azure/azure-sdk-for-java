@@ -384,7 +384,7 @@ public final class BlobLeaseAsyncClient {
         RequestConditions modifiedRequestConditions) {
         try {
             return withContext(context -> breakLeaseWithResponse(new BlobBreakLeaseOptions()
-                .setBreakPeriod(Duration.ofSeconds(breakPeriodInSeconds))
+                .setBreakPeriod(breakPeriodInSeconds == null ? null : Duration.ofSeconds(breakPeriodInSeconds))
                 .setRequestConditions(ModelHelper.populateBlobLeaseRequestConditions(modifiedRequestConditions)),
                 context));
         } catch (RuntimeException ex) {
