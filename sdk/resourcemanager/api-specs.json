@@ -266,7 +266,7 @@
     "dir": "azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-resources-2019-08 --payload-flattening-threshold=1 --add-inner=Deployment"
+    "args": "--tag=package-resources-2020-06 --payload-flattening-threshold=1 --add-inner=Deployment"
   },
   "scheduler": {
     "dir": "azure-resourcemanager-scheduler",
