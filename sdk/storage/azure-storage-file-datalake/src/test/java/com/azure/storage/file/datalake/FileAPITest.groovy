@@ -2844,7 +2844,7 @@ class FileAPITest extends APISpec {
 
         /* Input Stream. */
         when:
-        InputStream qqStream = fc.openQueryInputStream(new FileQueryOptions(expression).setInputSerialization(ser).setOutputSerialization(ser))
+        InputStream qqStream = fc.openQueryInputStream(new FileQueryOptions(expression).setInputSerialization(ser).setOutputSerialization(ser)).getValue()
         byte[] queryData = readFromInputStream(qqStream, downloadedData.length)
 
         then:
@@ -2920,7 +2920,7 @@ class FileAPITest extends APISpec {
 
         /* Input Stream. */
         when:
-        InputStream qqStream = fc.openQueryInputStream(new FileQueryOptions(expression).setInputSerialization(ser).setOutputSerialization(ser))
+        InputStream qqStream = fc.openQueryInputStream(new FileQueryOptions(expression).setInputSerialization(ser).setOutputSerialization(ser)).getValue()
         byte[] queryData = readFromInputStream(qqStream, downloadedData.length)
 
         then:
@@ -2959,7 +2959,7 @@ class FileAPITest extends APISpec {
 
         /* Input Stream. */
         when:
-        InputStream qqStream = fc.openQueryInputStream(optionsIs)
+        InputStream qqStream = fc.openQueryInputStream(optionsIs).getValue()
         byte[] queryData = readFromInputStream(qqStream, downloadedData.length)
 
         then:
@@ -3002,7 +3002,7 @@ class FileAPITest extends APISpec {
 
         /* Input Stream. */
         when:
-        InputStream qqStream = fc.openQueryInputStream(optionsIs)
+        InputStream qqStream = fc.openQueryInputStream(optionsIs).getValue()
         byte[] queryData = readFromInputStream(qqStream, expectedData.length)
 
         then:
@@ -3042,7 +3042,7 @@ class FileAPITest extends APISpec {
 
         /* Input Stream. */
         when:
-        InputStream qqStream = fc.openQueryInputStream(optionsIs)
+        InputStream qqStream = fc.openQueryInputStream(optionsIs).get
         byte[] queryData = readFromInputStream(qqStream, expectedData.length)
 
         then:
@@ -3080,7 +3080,7 @@ class FileAPITest extends APISpec {
 
         /* Input Stream. */
         when:
-        InputStream qqStream = fc.openQueryInputStream(options)
+        InputStream qqStream = fc.openQueryInputStream(options).getValue()
         readFromInputStream(qqStream, Constants.KB)
 
         then:
@@ -3115,7 +3115,7 @@ class FileAPITest extends APISpec {
 
         /* Input Stream. */
         when:
-        InputStream qqStream = fc.openQueryInputStream(options)
+        InputStream qqStream = fc.openQueryInputStream(options).getValue()
         readFromInputStream(qqStream, Constants.KB)
 
         then:
@@ -3149,7 +3149,7 @@ class FileAPITest extends APISpec {
 
         /* Input Stream. */
         when:
-        InputStream qqStream = fc.openQueryInputStream(options)
+        InputStream qqStream = fc.openQueryInputStream(options).getValue()
 
         /* The QQ Avro stream has the following pattern
            n * (data record -> progress record) -> end record */
@@ -3191,7 +3191,7 @@ class FileAPITest extends APISpec {
 
         /* Input Stream. */
         when:
-        InputStream qqStream = fc.openQueryInputStream(options)
+        InputStream qqStream = fc.openQueryInputStream(options).getValue()
 
         /* The Avro stream has the following pattern
            n * (data record -> progress record) -> end record */
@@ -3238,7 +3238,7 @@ class FileAPITest extends APISpec {
             .setOutputSerialization(outSer)
 
         when:
-        InputStream stream = fc.openQueryInputStream(options)  /* Don't need to call read. */
+        InputStream stream = fc.openQueryInputStream(options).getValue()  /* Don't need to call read. */
 
         then:
         thrown(IllegalArgumentException)
@@ -3274,7 +3274,7 @@ class FileAPITest extends APISpec {
             .setRequestConditions(bac)
 
         when:
-        InputStream stream = fc.openQueryInputStream(options)
+        InputStream stream = fc.openQueryInputStream(options).getValue()
         stream.read()
         stream.close()
 
@@ -3314,7 +3314,7 @@ class FileAPITest extends APISpec {
             .setRequestConditions(bac)
 
         when:
-        fc.openQueryInputStream(options) /* Don't need to call read. */
+        fc.openQueryInputStream(options).getValue() /* Don't need to call read. */
 
         then:
         thrown(DataLakeStorageException)

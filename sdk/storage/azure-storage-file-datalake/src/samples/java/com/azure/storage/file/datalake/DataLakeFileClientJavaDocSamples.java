@@ -285,7 +285,7 @@ public class DataLakeFileClientJavaDocSamples {
             .setErrorConsumer(errorConsumer)
             .setProgressConsumer(progressConsumer);
 
-        InputStream inputStream = client.openQueryInputStream(queryOptions);
+        InputStream inputStream = client.openQueryInputStream(queryOptions).getValue();
         // Now you can read from the input stream like you would normally.
         // END: com.azure.storage.file.datalake.DataLakeFileClient.openQueryInputStream#FileQueryOptions
     }
