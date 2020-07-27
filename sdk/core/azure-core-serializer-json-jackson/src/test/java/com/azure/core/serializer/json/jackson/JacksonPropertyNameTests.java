@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -29,11 +30,7 @@ public class JacksonPropertyNameTests {
             String hotelName;
         }
         Field f = Hotel.class.getDeclaredField("hotelName");
-
-        StepVerifier.create(serializer.getSerializerMemberName(f))
-            .assertNext(actual -> assertEquals("hotelName", actual))
-            .verifyComplete();
-
+        assertMemberValue(f, "hotelName");
     }
 
     @Test
@@ -43,11 +40,7 @@ public class JacksonPropertyNameTests {
             String hotelName;
         }
         Field f = Hotel.class.getDeclaredField("hotelName");
-
-        StepVerifier.create(serializer.getSerializerMemberName(f))
-            .assertNext(actual -> assertEquals(expectValueInField, actual))
-            .verifyComplete();
-
+        assertMemberValue(f, expectValueInField);
     }
 
     @Test
@@ -58,9 +51,7 @@ public class JacksonPropertyNameTests {
         }
         Field f = Hotel.class.getDeclaredField("hotelName");
 
-        StepVerifier.create(serializer.getSerializerMemberName(f))
-            .assertNext(actual -> assertEquals("hotelName", actual))
-            .verifyComplete();
+        assertMemberValue(f, "hotelName");
     }
 
     @Test
@@ -70,11 +61,7 @@ public class JacksonPropertyNameTests {
             String hotelName;
         }
         Field f = Hotel.class.getDeclaredField("hotelName");
-
-        StepVerifier.create(serializer.getSerializerMemberName(f))
-            .assertNext(actual -> assertEquals("hotelName", actual))
-            .verifyComplete();
-
+        assertMemberValue(f, "hotelName");
     }
 
     @Test
@@ -88,10 +75,7 @@ public class JacksonPropertyNameTests {
         }
 
         Method m = Hotel.class.getDeclaredMethod("getHotelName");
-
-        StepVerifier.create(serializer.getSerializerMemberName(m))
-            .assertNext(actual -> assertEquals("getHotelName", actual))
-            .verifyComplete();
+        assertMemberValue(m, "getHotelName");
     }
 
     @Test
@@ -106,10 +90,7 @@ public class JacksonPropertyNameTests {
         }
 
         Method m = Hotel.class.getDeclaredMethod("getHotelName");
-
-        StepVerifier.create(serializer.getSerializerMemberName(m))
-            .assertNext(actual -> assertEquals(expectValueInMethod, actual))
-            .verifyComplete();
+        assertMemberValue(m, expectValueInMethod);
     }
 
 
@@ -125,9 +106,7 @@ public class JacksonPropertyNameTests {
         }
 
         Method m = Hotel.class.getDeclaredMethod("getHotelName");
-        StepVerifier.create(serializer.getSerializerMemberName(m))
-            .assertNext(actual -> assertEquals("getHotelName", actual))
-            .verifyComplete();
+        assertMemberValue(m, "getHotelName");
     }
 
     @Test
@@ -142,8 +121,12 @@ public class JacksonPropertyNameTests {
         }
 
         Method m = Hotel.class.getDeclaredMethod("getHotelName");
+        assertMemberValue(m, "getHotelName");
+    }
+
+    public void assertMemberValue(Member m, String expectValue) {
         StepVerifier.create(serializer.getSerializerMemberName(m))
-            .assertNext(actual -> assertEquals("getHotelName", actual))
+            .assertNext(actual -> assertEquals(expectValue, actual))
             .verifyComplete();
     }
 }
