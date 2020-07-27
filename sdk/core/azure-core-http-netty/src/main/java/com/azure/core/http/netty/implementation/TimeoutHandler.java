@@ -107,8 +107,8 @@ public final class TimeoutHandler extends ChannelDuplexHandler {
          * If a write operation timeout is set add a write timeout task. Otherwise, add a write watcher that tracks the
          * write operation completing to determine if the response timeout should begin.
          */
+        promise = promise.unvoid();
         if (writeTimeoutNanos > 0) {
-            promise = promise.unvoid();
             addWriteTimeoutTask(ctx, promise);
         } else {
             addWriteWatcherTask(promise);

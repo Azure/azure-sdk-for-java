@@ -20,8 +20,8 @@ import reactor.netty.tcp.ProxyProvider;
 
 import java.nio.ByteBuffer;
 import java.time.Duration;
-import java.time.temporal.ChronoUnit;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -135,13 +135,15 @@ public class NettyAsyncHttpClientBuilder {
                 }
             }
 
-            long writeTimeoutNanos = (writeTimeout == null) ? 0 : writeTimeout.get(ChronoUnit.NANOS);
-            long responseTimeoutNanos = (responseTimeout == null) ? 0 : responseTimeout.get(ChronoUnit.NANOS);
-            long readTimeoutNanos = (readTimeout == null) ? 0 : readTimeout.get(ChronoUnit.NANOS);
+//            long writeTimeoutNanos = (writeTimeout == null) ? 0 : writeTimeout.get(ChronoUnit.NANOS);
+//            long responseTimeoutNanos = (responseTimeout == null) ? 0 : responseTimeout.get(ChronoUnit.NANOS);
+//            long readTimeoutNanos = (readTimeout == null) ? 0 : readTimeout.get(ChronoUnit.NANOS);
+
+            long sixtySeconds = TimeUnit.SECONDS.toNanos(60);
 
             return tcpClient.bootstrap(bootstrap -> BootstrapHandlers.updateConfiguration(bootstrap,
                 DeferredTimeoutProvider.NAME,
-                new DeferredTimeoutProvider(writeTimeoutNanos, responseTimeoutNanos, readTimeoutNanos)));
+                new DeferredTimeoutProvider(sixtySeconds, sixtySeconds, sixtySeconds)));
         });
 
         return new NettyAsyncHttpClient(nettyHttpClient, disableBufferCopy);
