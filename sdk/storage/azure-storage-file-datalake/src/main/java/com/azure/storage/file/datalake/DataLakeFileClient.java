@@ -569,7 +569,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @return An <code>InputStream</code> object that represents the stream to use for reading the query response.
      */
     public InputStream openQueryInputStream(String expression) {
-        return openQueryInputStream(new FileQueryOptions(expression)).getValue();
+        return openQueryInputStreamWithResponse(new FileQueryOptions(expression)).getValue();
     }
 
     /**
@@ -586,7 +586,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @return A response containing status code and HTTP headers including an <code>InputStream</code> object
      * that represents the stream to use for reading the query response.
      */
-    public Response<InputStream> openQueryInputStream(FileQueryOptions queryOptions) {
+    public Response<InputStream> openQueryInputStreamWithResponse(FileQueryOptions queryOptions) {
 
         // Data to subscribe to and read from.
         FileQueryAsyncResponse response = dataLakeFileAsyncClient.queryWithResponse(queryOptions)
