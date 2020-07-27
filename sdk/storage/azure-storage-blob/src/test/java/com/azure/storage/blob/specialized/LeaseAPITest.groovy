@@ -340,7 +340,7 @@ class LeaseAPITest extends APISpec {
 
         when:
         leaseClient.acquireLease(leaseTime)
-        def breakLeaseResponse = leaseClient.breakLeaseWithResponse(new BlobBreakLeaseOptions().setBreakPeriod(Duration.ofSeconds(breakPeriod)), null, null)
+        def breakLeaseResponse = leaseClient.breakLeaseWithResponse(new BlobBreakLeaseOptions().setBreakPeriod(breakPeriod == null ? null : Duration.ofSeconds(breakPeriod)), null, null)
         def leaseState = bc.getProperties().getLeaseState()
 
         then:
