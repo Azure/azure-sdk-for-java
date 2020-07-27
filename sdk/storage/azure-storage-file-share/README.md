@@ -120,8 +120,8 @@ Uses the `shareServiceClient` generated from [shareSeviceClient](#share-service)
 ```java
 try {
     shareServiceClient.createShare("myShare");
-} catch (StorageErrorException e) {
-    logger.error("Failed to create a share with error code: " + e.getMessage());
+} catch (ShareStorageException e) {
+    logger.error("Failed to create a share with error code: " + e.getErrorCode());
 }
 ```
 

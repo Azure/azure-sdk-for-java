@@ -17,7 +17,6 @@ import java.util.Map;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.storage.file.share.implementation.models.StorageErrorException;
 import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.ShareAccessPolicy;
 import com.azure.storage.file.share.models.ShareFileCopyInfo;
@@ -25,6 +24,7 @@ import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFileRange;
 import com.azure.storage.file.share.models.ShareServiceProperties;
 import com.azure.storage.file.share.models.ShareSignedIdentifier;
+import com.azure.storage.file.share.models.ShareStorageException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -221,8 +221,8 @@ public class ReadmeSamples {
     public void handleException() {
         try {
             shareServiceClient.createShare("myShare");
-        } catch (StorageErrorException e) {
-            logger.error("Failed to create a share with error code: " + e.getMessage());
+        } catch (ShareStorageException e) {
+            logger.error("Failed to create a share with error code: " + e.getErrorCode());
         }
     }
 }
