@@ -1,4 +1,5 @@
 # Azure File Share client library for Java
+
 The Server Message Block (SMB) protocol is the preferred file share protocol used on-premises today.
 The Microsoft Azure File Share service enables customers to leverage the availability and scalability of Azure's Cloud Infrastructure as a Service (IaaS) SMB without having to rewrite SMB client applications.
 
@@ -49,7 +50,7 @@ To make this possible you'll need the Account SAS (shared access signature) stri
 - **SAS Token**
     * Use the [Azure CLI][azure_cli] snippet below to get the SAS token from the Storage account.
 
-        ```powershell
+        ```bash
         az storage file generate-sas
             --name {account name}
             --expiry {date/time to expire SAS token}
@@ -57,7 +58,7 @@ To make this possible you'll need the Account SAS (shared access signature) stri
             --connection-string {connection string of the storage account}
         ```
 
-        ```powershell
+        ```bash
         CONNECTION_STRING=<connection-string>
 
         az storage file generate-sas
