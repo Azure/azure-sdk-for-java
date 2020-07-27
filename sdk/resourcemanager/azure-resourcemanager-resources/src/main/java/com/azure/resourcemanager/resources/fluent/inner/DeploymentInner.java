@@ -9,6 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.models.DeploymentProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** The Deployment model. */
 @Fluent
@@ -26,6 +27,12 @@ public final class DeploymentInner {
      */
     @JsonProperty(value = "properties", required = true)
     private DeploymentProperties properties;
+
+    /*
+     * Deployment tags
+     */
+    @JsonProperty(value = "tags")
+    private Map<String, String> tags;
 
     /**
      * Get the location property: The location to store the deployment data.
@@ -64,6 +71,26 @@ public final class DeploymentInner {
      */
     public DeploymentInner withProperties(DeploymentProperties properties) {
         this.properties = properties;
+        return this;
+    }
+
+    /**
+     * Get the tags property: Deployment tags.
+     *
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: Deployment tags.
+     *
+     * @param tags the tags value to set.
+     * @return the DeploymentInner object itself.
+     */
+    public DeploymentInner withTags(Map<String, String> tags) {
+        this.tags = tags;
         return this;
     }
 

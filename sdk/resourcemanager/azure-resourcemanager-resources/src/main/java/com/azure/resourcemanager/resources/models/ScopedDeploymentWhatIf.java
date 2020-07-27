@@ -8,12 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.Map;
 
-/** The ScopedDeployment model. */
+/** The ScopedDeploymentWhatIf model. */
 @Fluent
-public final class ScopedDeployment {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScopedDeployment.class);
+public final class ScopedDeploymentWhatIf {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScopedDeploymentWhatIf.class);
 
     /*
      * The location to store the deployment data.
@@ -25,13 +24,7 @@ public final class ScopedDeployment {
      * The deployment properties.
      */
     @JsonProperty(value = "properties", required = true)
-    private DeploymentProperties properties;
-
-    /*
-     * Deployment tags
-     */
-    @JsonProperty(value = "tags")
-    private Map<String, String> tags;
+    private DeploymentWhatIfProperties properties;
 
     /**
      * Get the location property: The location to store the deployment data.
@@ -46,9 +39,9 @@ public final class ScopedDeployment {
      * Set the location property: The location to store the deployment data.
      *
      * @param location the location value to set.
-     * @return the ScopedDeployment object itself.
+     * @return the ScopedDeploymentWhatIf object itself.
      */
-    public ScopedDeployment withLocation(String location) {
+    public ScopedDeploymentWhatIf withLocation(String location) {
         this.location = location;
         return this;
     }
@@ -58,7 +51,7 @@ public final class ScopedDeployment {
      *
      * @return the properties value.
      */
-    public DeploymentProperties properties() {
+    public DeploymentWhatIfProperties properties() {
         return this.properties;
     }
 
@@ -66,30 +59,10 @@ public final class ScopedDeployment {
      * Set the properties property: The deployment properties.
      *
      * @param properties the properties value to set.
-     * @return the ScopedDeployment object itself.
+     * @return the ScopedDeploymentWhatIf object itself.
      */
-    public ScopedDeployment withProperties(DeploymentProperties properties) {
+    public ScopedDeploymentWhatIf withProperties(DeploymentWhatIfProperties properties) {
         this.properties = properties;
-        return this;
-    }
-
-    /**
-     * Get the tags property: Deployment tags.
-     *
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: Deployment tags.
-     *
-     * @param tags the tags value to set.
-     * @return the ScopedDeployment object itself.
-     */
-    public ScopedDeployment withTags(Map<String, String> tags) {
-        this.tags = tags;
         return this;
     }
 
@@ -102,12 +75,13 @@ public final class ScopedDeployment {
         if (location() == null) {
             throw logger
                 .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property location in model ScopedDeployment"));
+                    new IllegalArgumentException("Missing required property location in model ScopedDeploymentWhatIf"));
         }
         if (properties() == null) {
             throw logger
                 .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property properties in model ScopedDeployment"));
+                    new IllegalArgumentException(
+                        "Missing required property properties in model ScopedDeploymentWhatIf"));
         } else {
             properties().validate();
         }

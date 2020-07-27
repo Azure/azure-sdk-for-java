@@ -215,6 +215,7 @@ public final class ProvidersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .unregister(
                 this.client.getEndpoint(),
@@ -370,6 +371,7 @@ public final class ProvidersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .register(
                 this.client.getEndpoint(),
@@ -529,6 +531,7 @@ public final class ProvidersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
@@ -709,6 +712,7 @@ public final class ProvidersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listAtTenantScope(this.client.getEndpoint(), top, expand, this.client.getApiVersion(), context)
             .map(
@@ -906,6 +910,7 @@ public final class ProvidersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -1104,6 +1109,7 @@ public final class ProvidersClient {
                     new IllegalArgumentException(
                         "Parameter resourceProviderNamespace is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getAtTenantScope(
                 this.client.getEndpoint(), expand, resourceProviderNamespace, this.client.getApiVersion(), context);
@@ -1274,6 +1280,7 @@ public final class ProvidersClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listNext(nextLink, context)
             .map(
@@ -1330,6 +1337,7 @@ public final class ProvidersClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listAtTenantScopeNext(nextLink, context)
             .map(

@@ -19,7 +19,7 @@ public final class DeploymentValidateResultInner {
     /*
      * The deployment validation error.
      */
-    @JsonProperty(value = "error")
+    @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private ManagementError error;
 
     /*
@@ -35,17 +35,6 @@ public final class DeploymentValidateResultInner {
      */
     public ManagementError error() {
         return this.error;
-    }
-
-    /**
-     * Set the error property: The deployment validation error.
-     *
-     * @param error the error value to set.
-     * @return the DeploymentValidateResultInner object itself.
-     */
-    public DeploymentValidateResultInner withError(ManagementError error) {
-        this.error = error;
-        return this;
     }
 
     /**

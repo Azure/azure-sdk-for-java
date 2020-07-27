@@ -391,6 +391,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(
                 this.client.getEndpoint(),
@@ -669,6 +670,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         } else {
             parameters.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .moveResources(
                 this.client.getEndpoint(),
@@ -922,6 +924,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         } else {
             parameters.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .validateMoveResources(
                 this.client.getEndpoint(),
@@ -1202,6 +1205,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
@@ -1512,6 +1516,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .checkExistence(
                 this.client.getEndpoint(),
@@ -1824,6 +1829,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -2263,6 +2269,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         } else {
             parameters.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -2727,6 +2734,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         } else {
             parameters.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .update(
                 this.client.getEndpoint(),
@@ -3178,6 +3186,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -3403,6 +3412,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         if (apiVersion == null) {
             return Mono.error(new IllegalArgumentException("Parameter apiVersion is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service.checkExistenceById(this.client.getEndpoint(), resourceId, apiVersion, context);
     }
 
@@ -3561,6 +3571,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         if (apiVersion == null) {
             return Mono.error(new IllegalArgumentException("Parameter apiVersion is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service.deleteById(this.client.getEndpoint(), resourceId, apiVersion, context);
     }
 
@@ -3781,6 +3792,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         } else {
             parameters.validate();
         }
+        context = this.client.mergeContext(context);
         return service.createOrUpdateById(this.client.getEndpoint(), resourceId, apiVersion, parameters, context);
     }
 
@@ -4026,6 +4038,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         } else {
             parameters.validate();
         }
+        context = this.client.mergeContext(context);
         return service.updateById(this.client.getEndpoint(), resourceId, apiVersion, parameters, context);
     }
 
@@ -4256,6 +4269,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         if (apiVersion == null) {
             return Mono.error(new IllegalArgumentException("Parameter apiVersion is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service.getById(this.client.getEndpoint(), resourceId, apiVersion, context);
     }
 
@@ -4389,6 +4403,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByResourceGroupNext(nextLink, context)
             .map(
@@ -4445,6 +4460,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listNext(nextLink, context)
             .map(

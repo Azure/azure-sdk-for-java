@@ -65,7 +65,7 @@ public final class DeploymentOperationsClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DeploymentOperationInner>> getAtScope(
             @HostParam("$host") String endpoint,
-            @PathParam("scope") String scope,
+            @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("deploymentName") String deploymentName,
             @PathParam("operationId") String operationId,
             @QueryParam("api-version") String apiVersion,
@@ -77,7 +77,7 @@ public final class DeploymentOperationsClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DeploymentOperationsListResultInner>> listAtScope(
             @HostParam("$host") String endpoint,
-            @PathParam("scope") String scope,
+            @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("deploymentName") String deploymentName,
             @QueryParam("$top") Integer top,
             @QueryParam("api-version") String apiVersion,
@@ -228,7 +228,7 @@ public final class DeploymentOperationsClient {
     /**
      * Gets a deployments operation.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -271,7 +271,7 @@ public final class DeploymentOperationsClient {
     /**
      * Gets a deployments operation.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
      * @param context The context to associate with this operation.
@@ -298,6 +298,7 @@ public final class DeploymentOperationsClient {
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getAtScope(
                 this.client.getEndpoint(), scope, deploymentName, operationId, this.client.getApiVersion(), context);
@@ -306,7 +307,7 @@ public final class DeploymentOperationsClient {
     /**
      * Gets a deployments operation.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -330,7 +331,7 @@ public final class DeploymentOperationsClient {
     /**
      * Gets a deployments operation.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
      * @param context The context to associate with this operation.
@@ -356,7 +357,7 @@ public final class DeploymentOperationsClient {
     /**
      * Gets a deployments operation.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -372,7 +373,7 @@ public final class DeploymentOperationsClient {
     /**
      * Gets a deployments operation.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
      * @param context The context to associate with this operation.
@@ -390,7 +391,7 @@ public final class DeploymentOperationsClient {
     /**
      * Gets all deployments operations for a deployment.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -439,7 +440,7 @@ public final class DeploymentOperationsClient {
     /**
      * Gets all deployments operations for a deployment.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
      * @param context The context to associate with this operation.
@@ -463,6 +464,7 @@ public final class DeploymentOperationsClient {
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listAtScope(this.client.getEndpoint(), scope, deploymentName, top, this.client.getApiVersion(), context)
             .map(
@@ -479,7 +481,7 @@ public final class DeploymentOperationsClient {
     /**
      * Gets all deployments operations for a deployment.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -497,7 +499,7 @@ public final class DeploymentOperationsClient {
     /**
      * Gets all deployments operations for a deployment.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
      * @param context The context to associate with this operation.
@@ -517,7 +519,7 @@ public final class DeploymentOperationsClient {
     /**
      * Gets all deployments operations for a deployment.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -536,7 +538,7 @@ public final class DeploymentOperationsClient {
     /**
      * Gets all deployments operations for a deployment.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -552,7 +554,7 @@ public final class DeploymentOperationsClient {
     /**
      * Gets all deployments operations for a deployment.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
      * @param context The context to associate with this operation.
@@ -570,7 +572,7 @@ public final class DeploymentOperationsClient {
     /**
      * Gets all deployments operations for a deployment.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -648,6 +650,7 @@ public final class DeploymentOperationsClient {
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getAtTenantScope(
                 this.client.getEndpoint(), deploymentName, operationId, this.client.getApiVersion(), context);
@@ -795,6 +798,7 @@ public final class DeploymentOperationsClient {
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listAtTenantScope(this.client.getEndpoint(), deploymentName, top, this.client.getApiVersion(), context)
             .map(
@@ -983,6 +987,7 @@ public final class DeploymentOperationsClient {
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getAtManagementGroupScope(
                 this.client.getEndpoint(), groupId, deploymentName, operationId, this.client.getApiVersion(), context);
@@ -1150,6 +1155,7 @@ public final class DeploymentOperationsClient {
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listAtManagementGroupScope(
                 this.client.getEndpoint(), groupId, deploymentName, top, this.client.getApiVersion(), context)
@@ -1351,6 +1357,7 @@ public final class DeploymentOperationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getAtSubscriptionScope(
                 this.client.getEndpoint(),
@@ -1520,6 +1527,7 @@ public final class DeploymentOperationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listAtSubscriptionScope(
                 this.client.getEndpoint(),
@@ -1729,6 +1737,7 @@ public final class DeploymentOperationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -1916,6 +1925,7 @@ public final class DeploymentOperationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(
                 this.client.getEndpoint(),
@@ -2092,6 +2102,7 @@ public final class DeploymentOperationsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listAtScopeNext(nextLink, context)
             .map(
@@ -2149,6 +2160,7 @@ public final class DeploymentOperationsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listAtTenantScopeNext(nextLink, context)
             .map(
@@ -2207,6 +2219,7 @@ public final class DeploymentOperationsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listAtManagementGroupScopeNext(nextLink, context)
             .map(
@@ -2264,6 +2277,7 @@ public final class DeploymentOperationsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listAtSubscriptionScopeNext(nextLink, context)
             .map(
@@ -2320,6 +2334,7 @@ public final class DeploymentOperationsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listNext(nextLink, context)
             .map(

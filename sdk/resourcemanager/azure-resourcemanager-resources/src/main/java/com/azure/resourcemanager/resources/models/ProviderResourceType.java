@@ -32,7 +32,7 @@ public final class ProviderResourceType {
      * The aliases that are supported by this resource type.
      */
     @JsonProperty(value = "aliases")
-    private List<AliasType> aliases;
+    private List<Alias> aliases;
 
     /*
      * The API version.
@@ -97,7 +97,7 @@ public final class ProviderResourceType {
      *
      * @return the aliases value.
      */
-    public List<AliasType> aliases() {
+    public List<Alias> aliases() {
         return this.aliases;
     }
 
@@ -107,7 +107,7 @@ public final class ProviderResourceType {
      * @param aliases the aliases value to set.
      * @return the ProviderResourceType object itself.
      */
-    public ProviderResourceType withAliases(List<AliasType> aliases) {
+    public ProviderResourceType withAliases(List<Alias> aliases) {
         this.aliases = aliases;
         return this;
     }

@@ -5,39 +5,39 @@
 package com.azure.resourcemanager.resources.fluent.inner;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.Resource;
+import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.resources.models.DeploymentPropertiesExtended;
+import com.azure.resourcemanager.resources.models.Tags;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DeploymentExtended model. */
+/** The TagsResource model. */
 @Fluent
-public final class DeploymentExtendedInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentExtendedInner.class);
+public final class TagsResourceInner extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(TagsResourceInner.class);
 
     /*
-     * Deployment properties.
+     * The set of tags.
      */
-    @JsonProperty(value = "properties")
-    private DeploymentPropertiesExtended properties;
+    @JsonProperty(value = "properties", required = true)
+    private Tags properties;
 
     /**
-     * Get the properties property: Deployment properties.
+     * Get the properties property: The set of tags.
      *
      * @return the properties value.
      */
-    public DeploymentPropertiesExtended properties() {
+    public Tags properties() {
         return this.properties;
     }
 
     /**
-     * Set the properties property: Deployment properties.
+     * Set the properties property: The set of tags.
      *
      * @param properties the properties value to set.
-     * @return the DeploymentExtendedInner object itself.
+     * @return the TagsResourceInner object itself.
      */
-    public DeploymentExtendedInner withProperties(DeploymentPropertiesExtended properties) {
+    public TagsResourceInner withProperties(Tags properties) {
         this.properties = properties;
         return this;
     }
@@ -48,7 +48,11 @@ public final class DeploymentExtendedInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (properties() != null) {
+        if (properties() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property properties in model TagsResourceInner"));
+        } else {
             properties().validate();
         }
     }

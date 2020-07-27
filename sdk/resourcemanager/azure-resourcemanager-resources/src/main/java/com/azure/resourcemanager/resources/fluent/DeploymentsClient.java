@@ -46,6 +46,7 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGe
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import com.azure.resourcemanager.resources.models.DeploymentWhatIf;
 import com.azure.resourcemanager.resources.models.ScopedDeployment;
+import com.azure.resourcemanager.resources.models.ScopedDeploymentWhatIf;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -87,7 +88,7 @@ public final class DeploymentsClient
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> deleteAtScope(
             @HostParam("$host") String endpoint,
-            @PathParam("scope") String scope,
+            @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("deploymentName") String deploymentName,
             @QueryParam("api-version") String apiVersion,
             Context context);
@@ -98,7 +99,7 @@ public final class DeploymentsClient
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Boolean>> checkExistenceAtScope(
             @HostParam("$host") String endpoint,
-            @PathParam("scope") String scope,
+            @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("deploymentName") String deploymentName,
             @QueryParam("api-version") String apiVersion,
             Context context);
@@ -109,7 +110,7 @@ public final class DeploymentsClient
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdateAtScope(
             @HostParam("$host") String endpoint,
-            @PathParam("scope") String scope,
+            @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("deploymentName") String deploymentName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") DeploymentInner parameters,
@@ -121,7 +122,7 @@ public final class DeploymentsClient
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DeploymentExtendedInner>> getAtScope(
             @HostParam("$host") String endpoint,
-            @PathParam("scope") String scope,
+            @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("deploymentName") String deploymentName,
             @QueryParam("api-version") String apiVersion,
             Context context);
@@ -132,18 +133,18 @@ public final class DeploymentsClient
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> cancelAtScope(
             @HostParam("$host") String endpoint,
-            @PathParam("scope") String scope,
+            @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("deploymentName") String deploymentName,
             @QueryParam("api-version") String apiVersion,
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Post("/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}/validate")
-        @ExpectedResponses({200, 400})
+        @ExpectedResponses({200, 202, 400})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentValidateResultInner>> validateAtScope(
+        Mono<Response<Flux<ByteBuffer>>> validateAtScope(
             @HostParam("$host") String endpoint,
-            @PathParam("scope") String scope,
+            @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("deploymentName") String deploymentName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") DeploymentInner parameters,
@@ -155,7 +156,7 @@ public final class DeploymentsClient
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DeploymentExportResultInner>> exportTemplateAtScope(
             @HostParam("$host") String endpoint,
-            @PathParam("scope") String scope,
+            @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("deploymentName") String deploymentName,
             @QueryParam("api-version") String apiVersion,
             Context context);
@@ -166,7 +167,7 @@ public final class DeploymentsClient
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DeploymentListResultInner>> listAtScope(
             @HostParam("$host") String endpoint,
-            @PathParam("scope") String scope,
+            @PathParam(value = "scope", encoded = true) String scope,
             @QueryParam("$filter") String filter,
             @QueryParam("$top") Integer top,
             @QueryParam("api-version") String apiVersion,
@@ -225,13 +226,24 @@ public final class DeploymentsClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Post("/providers/Microsoft.Resources/deployments/{deploymentName}/validate")
-        @ExpectedResponses({200, 400})
+        @ExpectedResponses({200, 202, 400})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentValidateResultInner>> validateAtTenantScope(
+        Mono<Response<Flux<ByteBuffer>>> validateAtTenantScope(
             @HostParam("$host") String endpoint,
             @PathParam("deploymentName") String deploymentName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ScopedDeployment parameters,
+            Context context);
+
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Post("/providers/Microsoft.Resources/deployments/{deploymentName}/whatIf")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> whatIfAtTenantScope(
+            @HostParam("$host") String endpoint,
+            @PathParam("deploymentName") String deploymentName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ScopedDeploymentWhatIf parameters,
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
@@ -325,14 +337,28 @@ public final class DeploymentsClient
         @Post(
             "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments"
                 + "/{deploymentName}/validate")
-        @ExpectedResponses({200, 400})
+        @ExpectedResponses({200, 202, 400})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentValidateResultInner>> validateAtManagementGroupScope(
+        Mono<Response<Flux<ByteBuffer>>> validateAtManagementGroupScope(
             @HostParam("$host") String endpoint,
             @PathParam("groupId") String groupId,
             @PathParam("deploymentName") String deploymentName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ScopedDeployment parameters,
+            Context context);
+
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Post(
+            "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments"
+                + "/{deploymentName}/whatIf")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> whatIfAtManagementGroupScope(
+            @HostParam("$host") String endpoint,
+            @PathParam("groupId") String groupId,
+            @PathParam("deploymentName") String deploymentName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ScopedDeploymentWhatIf parameters,
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
@@ -418,9 +444,9 @@ public final class DeploymentsClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}/validate")
-        @ExpectedResponses({200, 400})
+        @ExpectedResponses({200, 202, 400})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentValidateResultInner>> validateAtSubscriptionScope(
+        Mono<Response<Flux<ByteBuffer>>> validateAtSubscriptionScope(
             @HostParam("$host") String endpoint,
             @PathParam("deploymentName") String deploymentName,
             @QueryParam("api-version") String apiVersion,
@@ -539,9 +565,9 @@ public final class DeploymentsClient
         @Post(
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources"
                 + "/deployments/{deploymentName}/validate")
-        @ExpectedResponses({200, 400})
+        @ExpectedResponses({200, 202, 400})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentValidateResultInner>> validate(
+        Mono<Response<Flux<ByteBuffer>>> validate(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("deploymentName") String deploymentName,
@@ -648,7 +674,7 @@ public final class DeploymentsClient
      * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
      * the asynchronous request failed, the URI in the Location header returns an error-level status code.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -686,7 +712,7 @@ public final class DeploymentsClient
      * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
      * the asynchronous request failed, the URI in the Location header returns an error-level status code.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -709,6 +735,7 @@ public final class DeploymentsClient
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .deleteAtScope(this.client.getEndpoint(), scope, deploymentName, this.client.getApiVersion(), context);
     }
@@ -721,7 +748,7 @@ public final class DeploymentsClient
      * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
      * the asynchronous request failed, the URI in the Location header returns an error-level status code.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -742,7 +769,7 @@ public final class DeploymentsClient
      * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
      * the asynchronous request failed, the URI in the Location header returns an error-level status code.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -765,7 +792,7 @@ public final class DeploymentsClient
      * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
      * the asynchronous request failed, the URI in the Location header returns an error-level status code.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -785,7 +812,7 @@ public final class DeploymentsClient
      * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
      * the asynchronous request failed, the URI in the Location header returns an error-level status code.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -806,7 +833,7 @@ public final class DeploymentsClient
      * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
      * the asynchronous request failed, the URI in the Location header returns an error-level status code.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -826,7 +853,7 @@ public final class DeploymentsClient
      * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
      * the asynchronous request failed, the URI in the Location header returns an error-level status code.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -849,7 +876,7 @@ public final class DeploymentsClient
      * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
      * the asynchronous request failed, the URI in the Location header returns an error-level status code.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -868,7 +895,7 @@ public final class DeploymentsClient
      * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
      * the asynchronous request failed, the URI in the Location header returns an error-level status code.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -883,7 +910,7 @@ public final class DeploymentsClient
     /**
      * Checks whether the deployment exists.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -916,7 +943,7 @@ public final class DeploymentsClient
     /**
      * Checks whether the deployment exists.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -939,6 +966,7 @@ public final class DeploymentsClient
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .checkExistenceAtScope(
                 this.client.getEndpoint(), scope, deploymentName, this.client.getApiVersion(), context);
@@ -947,7 +975,7 @@ public final class DeploymentsClient
     /**
      * Checks whether the deployment exists.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -970,7 +998,7 @@ public final class DeploymentsClient
     /**
      * Checks whether the deployment exists.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -994,7 +1022,7 @@ public final class DeploymentsClient
     /**
      * Checks whether the deployment exists.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1014,7 +1042,7 @@ public final class DeploymentsClient
     /**
      * Checks whether the deployment exists.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1035,7 +1063,7 @@ public final class DeploymentsClient
     /**
      * You can provide the template and parameters directly in the request or link to JSON files.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1080,7 +1108,7 @@ public final class DeploymentsClient
     /**
      * You can provide the template and parameters directly in the request or link to JSON files.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @param context The context to associate with this operation.
@@ -1109,6 +1137,7 @@ public final class DeploymentsClient
         } else {
             parameters.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdateAtScope(
                 this.client.getEndpoint(), scope, deploymentName, this.client.getApiVersion(), parameters, context);
@@ -1117,7 +1146,7 @@ public final class DeploymentsClient
     /**
      * You can provide the template and parameters directly in the request or link to JSON files.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1139,7 +1168,7 @@ public final class DeploymentsClient
     /**
      * You can provide the template and parameters directly in the request or link to JSON files.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @param context The context to associate with this operation.
@@ -1162,7 +1191,7 @@ public final class DeploymentsClient
     /**
      * You can provide the template and parameters directly in the request or link to JSON files.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1179,7 +1208,7 @@ public final class DeploymentsClient
     /**
      * You can provide the template and parameters directly in the request or link to JSON files.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @param context The context to associate with this operation.
@@ -1197,7 +1226,7 @@ public final class DeploymentsClient
     /**
      * You can provide the template and parameters directly in the request or link to JSON files.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1216,7 +1245,7 @@ public final class DeploymentsClient
     /**
      * You can provide the template and parameters directly in the request or link to JSON files.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @param context The context to associate with this operation.
@@ -1236,7 +1265,7 @@ public final class DeploymentsClient
     /**
      * You can provide the template and parameters directly in the request or link to JSON files.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1253,7 +1282,7 @@ public final class DeploymentsClient
     /**
      * You can provide the template and parameters directly in the request or link to JSON files.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @param context The context to associate with this operation.
@@ -1271,7 +1300,7 @@ public final class DeploymentsClient
     /**
      * Gets a deployment.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1304,7 +1333,7 @@ public final class DeploymentsClient
     /**
      * Gets a deployment.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1327,6 +1356,7 @@ public final class DeploymentsClient
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getAtScope(this.client.getEndpoint(), scope, deploymentName, this.client.getApiVersion(), context);
     }
@@ -1334,7 +1364,7 @@ public final class DeploymentsClient
     /**
      * Gets a deployment.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1357,7 +1387,7 @@ public final class DeploymentsClient
     /**
      * Gets a deployment.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1381,7 +1411,7 @@ public final class DeploymentsClient
     /**
      * Gets a deployment.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1396,7 +1426,7 @@ public final class DeploymentsClient
     /**
      * Gets a deployment.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1414,7 +1444,7 @@ public final class DeploymentsClient
      * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
      * template deployment and leaves the resources partially deployed.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1449,7 +1479,7 @@ public final class DeploymentsClient
      * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
      * template deployment and leaves the resources partially deployed.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1471,6 +1501,7 @@ public final class DeploymentsClient
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .cancelAtScope(this.client.getEndpoint(), scope, deploymentName, this.client.getApiVersion(), context);
     }
@@ -1480,7 +1511,7 @@ public final class DeploymentsClient
      * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
      * template deployment and leaves the resources partially deployed.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1497,7 +1528,7 @@ public final class DeploymentsClient
      * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
      * template deployment and leaves the resources partially deployed.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1516,7 +1547,7 @@ public final class DeploymentsClient
      * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
      * template deployment and leaves the resources partially deployed.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1532,7 +1563,7 @@ public final class DeploymentsClient
      * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
      * template deployment and leaves the resources partially deployed.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1548,7 +1579,7 @@ public final class DeploymentsClient
      * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
      * Manager..
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1557,7 +1588,7 @@ public final class DeploymentsClient
      * @return information from validate template deployment response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeploymentValidateResultInner>> validateAtScopeWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> validateAtScopeWithResponseAsync(
         String scope, String deploymentName, DeploymentInner parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1594,7 +1625,7 @@ public final class DeploymentsClient
      * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
      * Manager..
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @param context The context to associate with this operation.
@@ -1604,7 +1635,7 @@ public final class DeploymentsClient
      * @return information from validate template deployment response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeploymentValidateResultInner>> validateAtScopeWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> validateAtScopeWithResponseAsync(
         String scope, String deploymentName, DeploymentInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1623,6 +1654,7 @@ public final class DeploymentsClient
         } else {
             parameters.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .validateAtScope(
                 this.client.getEndpoint(), scope, deploymentName, this.client.getApiVersion(), parameters, context);
@@ -1632,7 +1664,96 @@ public final class DeploymentsClient
      * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
      * Manager..
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment operation parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information from validate template deployment response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
+        beginValidateAtScopeAsync(String scope, String deploymentName, DeploymentInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = validateAtScopeWithResponseAsync(scope, deploymentName, parameters);
+        return this
+            .client
+            .<DeploymentValidateResultInner, DeploymentValidateResultInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                DeploymentValidateResultInner.class,
+                DeploymentValidateResultInner.class);
+    }
+
+    /**
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
+     * @param scope The resource scope.
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment operation parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information from validate template deployment response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
+        beginValidateAtScopeAsync(String scope, String deploymentName, DeploymentInner parameters, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            validateAtScopeWithResponseAsync(scope, deploymentName, parameters, context);
+        return this
+            .client
+            .<DeploymentValidateResultInner, DeploymentValidateResultInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                DeploymentValidateResultInner.class,
+                DeploymentValidateResultInner.class);
+    }
+
+    /**
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
+     * @param scope The resource scope.
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment operation parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information from validate template deployment response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner> beginValidateAtScope(
+        String scope, String deploymentName, DeploymentInner parameters) {
+        return beginValidateAtScopeAsync(scope, deploymentName, parameters).getSyncPoller();
+    }
+
+    /**
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
+     * @param scope The resource scope.
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment operation parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information from validate template deployment response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner> beginValidateAtScope(
+        String scope, String deploymentName, DeploymentInner parameters, Context context) {
+        return beginValidateAtScopeAsync(scope, deploymentName, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1643,22 +1764,16 @@ public final class DeploymentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeploymentValidateResultInner> validateAtScopeAsync(
         String scope, String deploymentName, DeploymentInner parameters) {
-        return validateAtScopeWithResponseAsync(scope, deploymentName, parameters)
-            .flatMap(
-                (Response<DeploymentValidateResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return beginValidateAtScopeAsync(scope, deploymentName, parameters)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
      * Manager..
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @param context The context to associate with this operation.
@@ -1670,22 +1785,16 @@ public final class DeploymentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeploymentValidateResultInner> validateAtScopeAsync(
         String scope, String deploymentName, DeploymentInner parameters, Context context) {
-        return validateAtScopeWithResponseAsync(scope, deploymentName, parameters, context)
-            .flatMap(
-                (Response<DeploymentValidateResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return beginValidateAtScopeAsync(scope, deploymentName, parameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
      * Manager..
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1703,7 +1812,7 @@ public final class DeploymentsClient
      * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
      * Manager..
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @param context The context to associate with this operation.
@@ -1721,7 +1830,7 @@ public final class DeploymentsClient
     /**
      * Exports the template used for specified deployment.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1755,7 +1864,7 @@ public final class DeploymentsClient
     /**
      * Exports the template used for specified deployment.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1778,6 +1887,7 @@ public final class DeploymentsClient
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .exportTemplateAtScope(
                 this.client.getEndpoint(), scope, deploymentName, this.client.getApiVersion(), context);
@@ -1786,7 +1896,7 @@ public final class DeploymentsClient
     /**
      * Exports the template used for specified deployment.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1809,7 +1919,7 @@ public final class DeploymentsClient
     /**
      * Exports the template used for specified deployment.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1834,7 +1944,7 @@ public final class DeploymentsClient
     /**
      * Exports the template used for specified deployment.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1849,7 +1959,7 @@ public final class DeploymentsClient
     /**
      * Exports the template used for specified deployment.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1865,7 +1975,7 @@ public final class DeploymentsClient
     /**
      * Get all the deployments at the given scope.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq
      *     '{state}'.
      * @param top The number of results to get. If null is passed, returns all deployments.
@@ -1907,7 +2017,7 @@ public final class DeploymentsClient
     /**
      * Get all the deployments at the given scope.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq
      *     '{state}'.
      * @param top The number of results to get. If null is passed, returns all deployments.
@@ -1929,6 +2039,7 @@ public final class DeploymentsClient
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listAtScope(this.client.getEndpoint(), scope, filter, top, this.client.getApiVersion(), context)
             .map(
@@ -1945,7 +2056,7 @@ public final class DeploymentsClient
     /**
      * Get all the deployments at the given scope.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq
      *     '{state}'.
      * @param top The number of results to get. If null is passed, returns all deployments.
@@ -1963,7 +2074,7 @@ public final class DeploymentsClient
     /**
      * Get all the deployments at the given scope.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq
      *     '{state}'.
      * @param top The number of results to get. If null is passed, returns all deployments.
@@ -1984,7 +2095,7 @@ public final class DeploymentsClient
     /**
      * Get all the deployments at the given scope.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2002,7 +2113,7 @@ public final class DeploymentsClient
     /**
      * Get all the deployments at the given scope.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq
      *     '{state}'.
      * @param top The number of results to get. If null is passed, returns all deployments.
@@ -2019,7 +2130,7 @@ public final class DeploymentsClient
     /**
      * Get all the deployments at the given scope.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq
      *     '{state}'.
      * @param top The number of results to get. If null is passed, returns all deployments.
@@ -2038,7 +2149,7 @@ public final class DeploymentsClient
     /**
      * Get all the deployments at the given scope.
      *
-     * @param scope The scope of a deployment.
+     * @param scope The resource scope.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2113,6 +2224,7 @@ public final class DeploymentsClient
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .deleteAtTenantScope(this.client.getEndpoint(), deploymentName, this.client.getApiVersion(), context);
     }
@@ -2326,6 +2438,7 @@ public final class DeploymentsClient
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .checkExistenceAtTenantScope(
                 this.client.getEndpoint(), deploymentName, this.client.getApiVersion(), context);
@@ -2483,6 +2596,7 @@ public final class DeploymentsClient
         } else {
             parameters.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdateAtTenantScope(
                 this.client.getEndpoint(), deploymentName, this.client.getApiVersion(), parameters, context);
@@ -2684,6 +2798,7 @@ public final class DeploymentsClient
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getAtTenantScope(this.client.getEndpoint(), deploymentName, this.client.getApiVersion(), context);
     }
@@ -2816,6 +2931,7 @@ public final class DeploymentsClient
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .cancelAtTenantScope(this.client.getEndpoint(), deploymentName, this.client.getApiVersion(), context);
     }
@@ -2897,7 +3013,7 @@ public final class DeploymentsClient
      * @return information from validate template deployment response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeploymentValidateResultInner>> validateAtTenantScopeWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> validateAtTenantScopeWithResponseAsync(
         String deploymentName, ScopedDeployment parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -2939,7 +3055,7 @@ public final class DeploymentsClient
      * @return information from validate template deployment response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeploymentValidateResultInner>> validateAtTenantScopeWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> validateAtTenantScopeWithResponseAsync(
         String deploymentName, ScopedDeployment parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -2955,6 +3071,7 @@ public final class DeploymentsClient
         } else {
             parameters.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .validateAtTenantScope(
                 this.client.getEndpoint(), deploymentName, this.client.getApiVersion(), parameters, context);
@@ -2972,17 +3089,96 @@ public final class DeploymentsClient
      * @return information from validate template deployment response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
+        beginValidateAtTenantScopeAsync(String deploymentName, ScopedDeployment parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = validateAtTenantScopeWithResponseAsync(deploymentName, parameters);
+        return this
+            .client
+            .<DeploymentValidateResultInner, DeploymentValidateResultInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                DeploymentValidateResultInner.class,
+                DeploymentValidateResultInner.class);
+    }
+
+    /**
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment operation parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information from validate template deployment response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
+        beginValidateAtTenantScopeAsync(String deploymentName, ScopedDeployment parameters, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            validateAtTenantScopeWithResponseAsync(deploymentName, parameters, context);
+        return this
+            .client
+            .<DeploymentValidateResultInner, DeploymentValidateResultInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                DeploymentValidateResultInner.class,
+                DeploymentValidateResultInner.class);
+    }
+
+    /**
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment operation parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information from validate template deployment response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
+        beginValidateAtTenantScope(String deploymentName, ScopedDeployment parameters) {
+        return beginValidateAtTenantScopeAsync(deploymentName, parameters).getSyncPoller();
+    }
+
+    /**
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment operation parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information from validate template deployment response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
+        beginValidateAtTenantScope(String deploymentName, ScopedDeployment parameters, Context context) {
+        return beginValidateAtTenantScopeAsync(deploymentName, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment operation parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information from validate template deployment response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeploymentValidateResultInner> validateAtTenantScopeAsync(
         String deploymentName, ScopedDeployment parameters) {
-        return validateAtTenantScopeWithResponseAsync(deploymentName, parameters)
-            .flatMap(
-                (Response<DeploymentValidateResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return beginValidateAtTenantScopeAsync(deploymentName, parameters)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -3000,15 +3196,9 @@ public final class DeploymentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeploymentValidateResultInner> validateAtTenantScopeAsync(
         String deploymentName, ScopedDeployment parameters, Context context) {
-        return validateAtTenantScopeWithResponseAsync(deploymentName, parameters, context)
-            .flatMap(
-                (Response<DeploymentValidateResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return beginValidateAtTenantScopeAsync(deploymentName, parameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -3043,6 +3233,230 @@ public final class DeploymentsClient
     public DeploymentValidateResultInner validateAtTenantScope(
         String deploymentName, ScopedDeployment parameters, Context context) {
         return validateAtTenantScopeAsync(deploymentName, parameters, context).block();
+    }
+
+    /**
+     * Returns changes that will be made by the deployment if executed at the scope of the tenant group.
+     *
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment What-if operation parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the What-If operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> whatIfAtTenantScopeWithResponseAsync(
+        String deploymentName, ScopedDeploymentWhatIf parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (deploymentName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .whatIfAtTenantScope(
+                            this.client.getEndpoint(),
+                            deploymentName,
+                            this.client.getApiVersion(),
+                            parameters,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Returns changes that will be made by the deployment if executed at the scope of the tenant group.
+     *
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment What-if operation parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the What-If operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> whatIfAtTenantScopeWithResponseAsync(
+        String deploymentName, ScopedDeploymentWhatIf parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (deploymentName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        context = this.client.mergeContext(context);
+        return service
+            .whatIfAtTenantScope(
+                this.client.getEndpoint(), deploymentName, this.client.getApiVersion(), parameters, context);
+    }
+
+    /**
+     * Returns changes that will be made by the deployment if executed at the scope of the tenant group.
+     *
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment What-if operation parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the What-If operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner> beginWhatIfAtTenantScopeAsync(
+        String deploymentName, ScopedDeploymentWhatIf parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = whatIfAtTenantScopeWithResponseAsync(deploymentName, parameters);
+        return this
+            .client
+            .<WhatIfOperationResultInner, WhatIfOperationResultInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                WhatIfOperationResultInner.class,
+                WhatIfOperationResultInner.class);
+    }
+
+    /**
+     * Returns changes that will be made by the deployment if executed at the scope of the tenant group.
+     *
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment What-if operation parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the What-If operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner> beginWhatIfAtTenantScopeAsync(
+        String deploymentName, ScopedDeploymentWhatIf parameters, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            whatIfAtTenantScopeWithResponseAsync(deploymentName, parameters, context);
+        return this
+            .client
+            .<WhatIfOperationResultInner, WhatIfOperationResultInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                WhatIfOperationResultInner.class,
+                WhatIfOperationResultInner.class);
+    }
+
+    /**
+     * Returns changes that will be made by the deployment if executed at the scope of the tenant group.
+     *
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment What-if operation parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the What-If operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner> beginWhatIfAtTenantScope(
+        String deploymentName, ScopedDeploymentWhatIf parameters) {
+        return beginWhatIfAtTenantScopeAsync(deploymentName, parameters).getSyncPoller();
+    }
+
+    /**
+     * Returns changes that will be made by the deployment if executed at the scope of the tenant group.
+     *
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment What-if operation parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the What-If operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner> beginWhatIfAtTenantScope(
+        String deploymentName, ScopedDeploymentWhatIf parameters, Context context) {
+        return beginWhatIfAtTenantScopeAsync(deploymentName, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * Returns changes that will be made by the deployment if executed at the scope of the tenant group.
+     *
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment What-if operation parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the What-If operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<WhatIfOperationResultInner> whatIfAtTenantScopeAsync(
+        String deploymentName, ScopedDeploymentWhatIf parameters) {
+        return beginWhatIfAtTenantScopeAsync(deploymentName, parameters)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Returns changes that will be made by the deployment if executed at the scope of the tenant group.
+     *
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment What-if operation parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the What-If operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<WhatIfOperationResultInner> whatIfAtTenantScopeAsync(
+        String deploymentName, ScopedDeploymentWhatIf parameters, Context context) {
+        return beginWhatIfAtTenantScopeAsync(deploymentName, parameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Returns changes that will be made by the deployment if executed at the scope of the tenant group.
+     *
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment What-if operation parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the What-If operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public WhatIfOperationResultInner whatIfAtTenantScope(String deploymentName, ScopedDeploymentWhatIf parameters) {
+        return whatIfAtTenantScopeAsync(deploymentName, parameters).block();
+    }
+
+    /**
+     * Returns changes that will be made by the deployment if executed at the scope of the tenant group.
+     *
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment What-if operation parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the What-If operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public WhatIfOperationResultInner whatIfAtTenantScope(
+        String deploymentName, ScopedDeploymentWhatIf parameters, Context context) {
+        return whatIfAtTenantScopeAsync(deploymentName, parameters, context).block();
     }
 
     /**
@@ -3097,6 +3511,7 @@ public final class DeploymentsClient
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .exportTemplateAtTenantScope(
                 this.client.getEndpoint(), deploymentName, this.client.getApiVersion(), context);
@@ -3234,6 +3649,7 @@ public final class DeploymentsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listAtTenantScope(this.client.getEndpoint(), filter, top, this.client.getApiVersion(), context)
             .map(
@@ -3419,6 +3835,7 @@ public final class DeploymentsClient
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .deleteAtManagementGroupScope(
                 this.client.getEndpoint(), groupId, deploymentName, this.client.getApiVersion(), context);
@@ -3656,6 +4073,7 @@ public final class DeploymentsClient
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .checkExistenceAtManagementGroupScope(
                 this.client.getEndpoint(), groupId, deploymentName, this.client.getApiVersion(), context);
@@ -3827,6 +4245,7 @@ public final class DeploymentsClient
         } else {
             parameters.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdateAtManagementGroupScope(
                 this.client.getEndpoint(), groupId, deploymentName, this.client.getApiVersion(), parameters, context);
@@ -4050,6 +4469,7 @@ public final class DeploymentsClient
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getAtManagementGroupScope(
                 this.client.getEndpoint(), groupId, deploymentName, this.client.getApiVersion(), context);
@@ -4197,6 +4617,7 @@ public final class DeploymentsClient
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .cancelAtManagementGroupScope(
                 this.client.getEndpoint(), groupId, deploymentName, this.client.getApiVersion(), context);
@@ -4285,7 +4706,7 @@ public final class DeploymentsClient
      * @return information from validate template deployment response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeploymentValidateResultInner>> validateAtManagementGroupScopeWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> validateAtManagementGroupScopeWithResponseAsync(
         String groupId, String deploymentName, ScopedDeployment parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -4332,7 +4753,7 @@ public final class DeploymentsClient
      * @return information from validate template deployment response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeploymentValidateResultInner>> validateAtManagementGroupScopeWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> validateAtManagementGroupScopeWithResponseAsync(
         String groupId, String deploymentName, ScopedDeployment parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -4351,6 +4772,7 @@ public final class DeploymentsClient
         } else {
             parameters.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .validateAtManagementGroupScope(
                 this.client.getEndpoint(), groupId, deploymentName, this.client.getApiVersion(), parameters, context);
@@ -4369,17 +4791,103 @@ public final class DeploymentsClient
      * @return information from validate template deployment response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
+        beginValidateAtManagementGroupScopeAsync(String groupId, String deploymentName, ScopedDeployment parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            validateAtManagementGroupScopeWithResponseAsync(groupId, deploymentName, parameters);
+        return this
+            .client
+            .<DeploymentValidateResultInner, DeploymentValidateResultInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                DeploymentValidateResultInner.class,
+                DeploymentValidateResultInner.class);
+    }
+
+    /**
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
+     * @param groupId The management group ID.
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment operation parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information from validate template deployment response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
+        beginValidateAtManagementGroupScopeAsync(
+            String groupId, String deploymentName, ScopedDeployment parameters, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            validateAtManagementGroupScopeWithResponseAsync(groupId, deploymentName, parameters, context);
+        return this
+            .client
+            .<DeploymentValidateResultInner, DeploymentValidateResultInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                DeploymentValidateResultInner.class,
+                DeploymentValidateResultInner.class);
+    }
+
+    /**
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
+     * @param groupId The management group ID.
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment operation parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information from validate template deployment response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
+        beginValidateAtManagementGroupScope(String groupId, String deploymentName, ScopedDeployment parameters) {
+        return beginValidateAtManagementGroupScopeAsync(groupId, deploymentName, parameters).getSyncPoller();
+    }
+
+    /**
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
+     * @param groupId The management group ID.
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment operation parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information from validate template deployment response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
+        beginValidateAtManagementGroupScope(
+            String groupId, String deploymentName, ScopedDeployment parameters, Context context) {
+        return beginValidateAtManagementGroupScopeAsync(groupId, deploymentName, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
+     * @param groupId The management group ID.
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment operation parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information from validate template deployment response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeploymentValidateResultInner> validateAtManagementGroupScopeAsync(
         String groupId, String deploymentName, ScopedDeployment parameters) {
-        return validateAtManagementGroupScopeWithResponseAsync(groupId, deploymentName, parameters)
-            .flatMap(
-                (Response<DeploymentValidateResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return beginValidateAtManagementGroupScopeAsync(groupId, deploymentName, parameters)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -4398,15 +4906,9 @@ public final class DeploymentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeploymentValidateResultInner> validateAtManagementGroupScopeAsync(
         String groupId, String deploymentName, ScopedDeployment parameters, Context context) {
-        return validateAtManagementGroupScopeWithResponseAsync(groupId, deploymentName, parameters, context)
-            .flatMap(
-                (Response<DeploymentValidateResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return beginValidateAtManagementGroupScopeAsync(groupId, deploymentName, parameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -4444,6 +4946,252 @@ public final class DeploymentsClient
     public DeploymentValidateResultInner validateAtManagementGroupScope(
         String groupId, String deploymentName, ScopedDeployment parameters, Context context) {
         return validateAtManagementGroupScopeAsync(groupId, deploymentName, parameters, context).block();
+    }
+
+    /**
+     * Returns changes that will be made by the deployment if executed at the scope of the management group.
+     *
+     * @param groupId The management group ID.
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment What-if operation parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the What-If operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> whatIfAtManagementGroupScopeWithResponseAsync(
+        String groupId, String deploymentName, ScopedDeploymentWhatIf parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (groupId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
+        }
+        if (deploymentName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .whatIfAtManagementGroupScope(
+                            this.client.getEndpoint(),
+                            groupId,
+                            deploymentName,
+                            this.client.getApiVersion(),
+                            parameters,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Returns changes that will be made by the deployment if executed at the scope of the management group.
+     *
+     * @param groupId The management group ID.
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment What-if operation parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the What-If operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> whatIfAtManagementGroupScopeWithResponseAsync(
+        String groupId, String deploymentName, ScopedDeploymentWhatIf parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (groupId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
+        }
+        if (deploymentName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        context = this.client.mergeContext(context);
+        return service
+            .whatIfAtManagementGroupScope(
+                this.client.getEndpoint(), groupId, deploymentName, this.client.getApiVersion(), parameters, context);
+    }
+
+    /**
+     * Returns changes that will be made by the deployment if executed at the scope of the management group.
+     *
+     * @param groupId The management group ID.
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment What-if operation parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the What-If operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner>
+        beginWhatIfAtManagementGroupScopeAsync(
+            String groupId, String deploymentName, ScopedDeploymentWhatIf parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            whatIfAtManagementGroupScopeWithResponseAsync(groupId, deploymentName, parameters);
+        return this
+            .client
+            .<WhatIfOperationResultInner, WhatIfOperationResultInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                WhatIfOperationResultInner.class,
+                WhatIfOperationResultInner.class);
+    }
+
+    /**
+     * Returns changes that will be made by the deployment if executed at the scope of the management group.
+     *
+     * @param groupId The management group ID.
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment What-if operation parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the What-If operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner>
+        beginWhatIfAtManagementGroupScopeAsync(
+            String groupId, String deploymentName, ScopedDeploymentWhatIf parameters, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            whatIfAtManagementGroupScopeWithResponseAsync(groupId, deploymentName, parameters, context);
+        return this
+            .client
+            .<WhatIfOperationResultInner, WhatIfOperationResultInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                WhatIfOperationResultInner.class,
+                WhatIfOperationResultInner.class);
+    }
+
+    /**
+     * Returns changes that will be made by the deployment if executed at the scope of the management group.
+     *
+     * @param groupId The management group ID.
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment What-if operation parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the What-If operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner>
+        beginWhatIfAtManagementGroupScope(String groupId, String deploymentName, ScopedDeploymentWhatIf parameters) {
+        return beginWhatIfAtManagementGroupScopeAsync(groupId, deploymentName, parameters).getSyncPoller();
+    }
+
+    /**
+     * Returns changes that will be made by the deployment if executed at the scope of the management group.
+     *
+     * @param groupId The management group ID.
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment What-if operation parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the What-If operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner>
+        beginWhatIfAtManagementGroupScope(
+            String groupId, String deploymentName, ScopedDeploymentWhatIf parameters, Context context) {
+        return beginWhatIfAtManagementGroupScopeAsync(groupId, deploymentName, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * Returns changes that will be made by the deployment if executed at the scope of the management group.
+     *
+     * @param groupId The management group ID.
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment What-if operation parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the What-If operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<WhatIfOperationResultInner> whatIfAtManagementGroupScopeAsync(
+        String groupId, String deploymentName, ScopedDeploymentWhatIf parameters) {
+        return beginWhatIfAtManagementGroupScopeAsync(groupId, deploymentName, parameters)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Returns changes that will be made by the deployment if executed at the scope of the management group.
+     *
+     * @param groupId The management group ID.
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment What-if operation parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the What-If operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<WhatIfOperationResultInner> whatIfAtManagementGroupScopeAsync(
+        String groupId, String deploymentName, ScopedDeploymentWhatIf parameters, Context context) {
+        return beginWhatIfAtManagementGroupScopeAsync(groupId, deploymentName, parameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Returns changes that will be made by the deployment if executed at the scope of the management group.
+     *
+     * @param groupId The management group ID.
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment What-if operation parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the What-If operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public WhatIfOperationResultInner whatIfAtManagementGroupScope(
+        String groupId, String deploymentName, ScopedDeploymentWhatIf parameters) {
+        return whatIfAtManagementGroupScopeAsync(groupId, deploymentName, parameters).block();
+    }
+
+    /**
+     * Returns changes that will be made by the deployment if executed at the scope of the management group.
+     *
+     * @param groupId The management group ID.
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment What-if operation parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the What-If operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public WhatIfOperationResultInner whatIfAtManagementGroupScope(
+        String groupId, String deploymentName, ScopedDeploymentWhatIf parameters, Context context) {
+        return whatIfAtManagementGroupScopeAsync(groupId, deploymentName, parameters, context).block();
     }
 
     /**
@@ -4506,6 +5254,7 @@ public final class DeploymentsClient
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .exportTemplateAtManagementGroupScope(
                 this.client.getEndpoint(), groupId, deploymentName, this.client.getApiVersion(), context);
@@ -4659,6 +5408,7 @@ public final class DeploymentsClient
         if (groupId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listAtManagementGroupScope(
                 this.client.getEndpoint(), groupId, filter, top, this.client.getApiVersion(), context)
@@ -4864,6 +5614,7 @@ public final class DeploymentsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .deleteAtSubscriptionScope(
                 this.client.getEndpoint(),
@@ -5101,6 +5852,7 @@ public final class DeploymentsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .checkExistenceAtSubscriptionScope(
                 this.client.getEndpoint(),
@@ -5275,6 +6027,7 @@ public final class DeploymentsClient
         } else {
             parameters.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdateAtSubscriptionScope(
                 this.client.getEndpoint(),
@@ -5499,6 +6252,7 @@ public final class DeploymentsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getAtSubscriptionScope(
                 this.client.getEndpoint(),
@@ -5652,6 +6406,7 @@ public final class DeploymentsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .cancelAtSubscriptionScope(
                 this.client.getEndpoint(),
@@ -5738,7 +6493,7 @@ public final class DeploymentsClient
      * @return information from validate template deployment response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeploymentValidateResultInner>> validateAtSubscriptionScopeWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> validateAtSubscriptionScopeWithResponseAsync(
         String deploymentName, DeploymentInner parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -5787,7 +6542,7 @@ public final class DeploymentsClient
      * @return information from validate template deployment response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeploymentValidateResultInner>> validateAtSubscriptionScopeWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> validateAtSubscriptionScopeWithResponseAsync(
         String deploymentName, DeploymentInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -5809,6 +6564,7 @@ public final class DeploymentsClient
         } else {
             parameters.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .validateAtSubscriptionScope(
                 this.client.getEndpoint(),
@@ -5831,17 +6587,97 @@ public final class DeploymentsClient
      * @return information from validate template deployment response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
+        beginValidateAtSubscriptionScopeAsync(String deploymentName, DeploymentInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            validateAtSubscriptionScopeWithResponseAsync(deploymentName, parameters);
+        return this
+            .client
+            .<DeploymentValidateResultInner, DeploymentValidateResultInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                DeploymentValidateResultInner.class,
+                DeploymentValidateResultInner.class);
+    }
+
+    /**
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment operation parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information from validate template deployment response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
+        beginValidateAtSubscriptionScopeAsync(String deploymentName, DeploymentInner parameters, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            validateAtSubscriptionScopeWithResponseAsync(deploymentName, parameters, context);
+        return this
+            .client
+            .<DeploymentValidateResultInner, DeploymentValidateResultInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                DeploymentValidateResultInner.class,
+                DeploymentValidateResultInner.class);
+    }
+
+    /**
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment operation parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information from validate template deployment response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
+        beginValidateAtSubscriptionScope(String deploymentName, DeploymentInner parameters) {
+        return beginValidateAtSubscriptionScopeAsync(deploymentName, parameters).getSyncPoller();
+    }
+
+    /**
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment operation parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information from validate template deployment response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
+        beginValidateAtSubscriptionScope(String deploymentName, DeploymentInner parameters, Context context) {
+        return beginValidateAtSubscriptionScopeAsync(deploymentName, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment operation parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information from validate template deployment response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeploymentValidateResultInner> validateAtSubscriptionScopeAsync(
         String deploymentName, DeploymentInner parameters) {
-        return validateAtSubscriptionScopeWithResponseAsync(deploymentName, parameters)
-            .flatMap(
-                (Response<DeploymentValidateResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return beginValidateAtSubscriptionScopeAsync(deploymentName, parameters)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -5859,15 +6695,9 @@ public final class DeploymentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeploymentValidateResultInner> validateAtSubscriptionScopeAsync(
         String deploymentName, DeploymentInner parameters, Context context) {
-        return validateAtSubscriptionScopeWithResponseAsync(deploymentName, parameters, context)
-            .flatMap(
-                (Response<DeploymentValidateResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return beginValidateAtSubscriptionScopeAsync(deploymentName, parameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -5986,6 +6816,7 @@ public final class DeploymentsClient
         } else {
             parameters.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .whatIfAtSubscriptionScope(
                 this.client.getEndpoint(),
@@ -6214,6 +7045,7 @@ public final class DeploymentsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .exportTemplateAtSubscriptionScope(
                 this.client.getEndpoint(),
@@ -6373,6 +7205,7 @@ public final class DeploymentsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
@@ -6584,6 +7417,7 @@ public final class DeploymentsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -6860,6 +7694,7 @@ public final class DeploymentsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .checkExistence(
                 this.client.getEndpoint(),
@@ -7056,6 +7891,7 @@ public final class DeploymentsClient
         } else {
             parameters.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -7308,6 +8144,7 @@ public final class DeploymentsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getByResourceGroup(
                 this.client.getEndpoint(),
@@ -7480,6 +8317,7 @@ public final class DeploymentsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .cancel(
                 this.client.getEndpoint(),
@@ -7573,7 +8411,7 @@ public final class DeploymentsClient
      * @return information from validate template deployment response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeploymentValidateResultInner>> validateWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> validateWithResponseAsync(
         String resourceGroupName, String deploymentName, DeploymentInner parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -7629,7 +8467,7 @@ public final class DeploymentsClient
      * @return information from validate template deployment response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeploymentValidateResultInner>> validateWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> validateWithResponseAsync(
         String resourceGroupName, String deploymentName, DeploymentInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -7655,6 +8493,7 @@ public final class DeploymentsClient
         } else {
             parameters.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .validate(
                 this.client.getEndpoint(),
@@ -7680,17 +8519,105 @@ public final class DeploymentsClient
      * @return information from validate template deployment response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner> beginValidateAsync(
+        String resourceGroupName, String deploymentName, DeploymentInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            validateWithResponseAsync(resourceGroupName, deploymentName, parameters);
+        return this
+            .client
+            .<DeploymentValidateResultInner, DeploymentValidateResultInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                DeploymentValidateResultInner.class,
+                DeploymentValidateResultInner.class);
+    }
+
+    /**
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
+     * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case
+     *     insensitive.
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment operation parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information from validate template deployment response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner> beginValidateAsync(
+        String resourceGroupName, String deploymentName, DeploymentInner parameters, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            validateWithResponseAsync(resourceGroupName, deploymentName, parameters, context);
+        return this
+            .client
+            .<DeploymentValidateResultInner, DeploymentValidateResultInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                DeploymentValidateResultInner.class,
+                DeploymentValidateResultInner.class);
+    }
+
+    /**
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
+     * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case
+     *     insensitive.
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment operation parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information from validate template deployment response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner> beginValidate(
+        String resourceGroupName, String deploymentName, DeploymentInner parameters) {
+        return beginValidateAsync(resourceGroupName, deploymentName, parameters).getSyncPoller();
+    }
+
+    /**
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
+     * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case
+     *     insensitive.
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment operation parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information from validate template deployment response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner> beginValidate(
+        String resourceGroupName, String deploymentName, DeploymentInner parameters, Context context) {
+        return beginValidateAsync(resourceGroupName, deploymentName, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
+     * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case
+     *     insensitive.
+     * @param deploymentName The name of the deployment.
+     * @param parameters Deployment operation parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information from validate template deployment response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeploymentValidateResultInner> validateAsync(
         String resourceGroupName, String deploymentName, DeploymentInner parameters) {
-        return validateWithResponseAsync(resourceGroupName, deploymentName, parameters)
-            .flatMap(
-                (Response<DeploymentValidateResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return beginValidateAsync(resourceGroupName, deploymentName, parameters)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -7710,15 +8637,9 @@ public final class DeploymentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeploymentValidateResultInner> validateAsync(
         String resourceGroupName, String deploymentName, DeploymentInner parameters, Context context) {
-        return validateWithResponseAsync(resourceGroupName, deploymentName, parameters, context)
-            .flatMap(
-                (Response<DeploymentValidateResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return beginValidateAsync(resourceGroupName, deploymentName, parameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -7854,6 +8775,7 @@ public final class DeploymentsClient
         } else {
             parameters.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .whatIf(
                 this.client.getEndpoint(),
@@ -8111,6 +9033,7 @@ public final class DeploymentsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .exportTemplate(
                 this.client.getEndpoint(),
@@ -8290,6 +9213,7 @@ public final class DeploymentsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(
                 this.client.getEndpoint(),
@@ -8481,6 +9405,7 @@ public final class DeploymentsClient
         if (template == null) {
             return Mono.error(new IllegalArgumentException("Parameter template is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service.calculateTemplateHash(this.client.getEndpoint(), this.client.getApiVersion(), template, context);
     }
 
@@ -8602,6 +9527,7 @@ public final class DeploymentsClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listAtScopeNext(nextLink, context)
             .map(
@@ -8659,6 +9585,7 @@ public final class DeploymentsClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listAtTenantScopeNext(nextLink, context)
             .map(
@@ -8716,6 +9643,7 @@ public final class DeploymentsClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listAtManagementGroupScopeNext(nextLink, context)
             .map(
@@ -8773,6 +9701,7 @@ public final class DeploymentsClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listAtSubscriptionScopeNext(nextLink, context)
             .map(
@@ -8830,6 +9759,7 @@ public final class DeploymentsClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByResourceGroupNext(nextLink, context)
             .map(
