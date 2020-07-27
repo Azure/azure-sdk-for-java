@@ -413,7 +413,7 @@ You can put different database entities into different packages.
 ### Setup configuration
 The `@EnableReactiveCosmosRepositories` or `@EnableCosmosRepositories` support user-define the cosmos template, use `reactiveCosmosTemplateRef` or `cosmosTemplateRef` to config the name of the `ReactiveCosmosTemplate` or `CosmosTemplate` bean to be used with the repositories detected.
 If you have multiple cosmos database accounts, you can define multiple `CosmosAsyncClient`. If the single cosmos account has multiple databases, you can use the same `CosmosAsyncClient` to initialize the cosmos template.
-<!-- embedme src/samples/java/com/azure/cosmos/multidatasource/DatabaseConfiguration.java#L33-L132 -->
+<!-- embedme src/samples/java/com/azure/cosmos/multidatasource/DatabaseConfiguration.java#L35-L138 -->
 
 ```java
 @Configuration
@@ -520,7 +520,7 @@ public class DatabaseConfiguration extends AbstractCosmosConfiguration {
 
 In the above example, we have two cosmos account, each account has two databases. For each account, we can use the same Cosmos Client. You can create the `CosmosAsyncClient` like this:
 
-<!-- embedme src/samples/java/com/azure/cosmos/multidatasource/DatabaseConfiguration.java#L92-L95 -->
+<!-- embedme src/samples/java/com/azure/cosmos/multidatasource/DatabaseConfiguration.java#L98-L101 -->
 
 ```java
 @Bean("secondaryCosmosAsyncClient")
@@ -531,7 +531,7 @@ public CosmosAsyncClient getCosmosAsyncClient(CosmosClientConfig secondaryCosmos
 
 Besides, if you want to define `queryMetricsEnabled` or `ResponseDiagnosticsProcessor` , you can create the `CosmosConfig` for your cosmos template.
 
-<!-- embedme src/samples/java/com/azure/cosmos/multidatasource/DatabaseConfiguration.java#L97-L103 -->
+<!-- embedme src/samples/java/com/azure/cosmos/multidatasource/DatabaseConfiguration.java#L103-109-->
 
 ```java
 @Bean("secondaryCosmosConfig")

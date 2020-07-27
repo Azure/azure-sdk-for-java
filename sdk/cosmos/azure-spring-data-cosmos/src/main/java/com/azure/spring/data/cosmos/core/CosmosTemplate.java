@@ -76,6 +76,21 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
      * @param databaseName must not be {@literal null}
      * @param cosmosConfig must not be {@literal null}
      * @param mappingCosmosConverter must not be {@literal null}
+     * @param cosmosAuditingHandler can be {@literal null}
+     */
+    public CosmosTemplate(CosmosAsyncClient client, String databaseName,
+                          CosmosConfig cosmosConfig, MappingCosmosConverter mappingCosmosConverter,
+                          IsNewAwareAuditingHandler cosmosAuditingHandler) {
+        this(new CosmosFactory(client, databaseName), cosmosConfig, mappingCosmosConverter, cosmosAuditingHandler);
+    }
+
+    /**
+     * Initialization
+     *
+     * @param client must not be {@literal null}
+     * @param databaseName must not be {@literal null}
+     * @param cosmosConfig must not be {@literal null}
+     * @param mappingCosmosConverter must not be {@literal null}
      */
     public CosmosTemplate(CosmosAsyncClient client, String databaseName,
                           CosmosConfig cosmosConfig, MappingCosmosConverter mappingCosmosConverter) {
