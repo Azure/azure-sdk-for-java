@@ -1299,15 +1299,14 @@ class BlockBlobAPITest extends APISpec {
     @Unroll
     @Requires({ liveMode() })
     def "Buffered upload chunked source"() {
-        setup:
-        def blobAsyncClient = getPrimaryServiceClientForWrites(blockSize)
-            .getBlobContainerAsyncClient(blobAsyncClient.getContainerName())
-            .getBlobAsyncClient(blobAsyncClient.getBlobName())
         /*
         This test should validate that the upload should work regardless of what format the passed data is in because
         it will be chunked appropriately.
          */
         setup:
+        def blobAsyncClient = getPrimaryServiceClientForWrites(bufferSize)
+            .getBlobContainerAsyncClient(blobAsyncClient.getContainerName())
+            .getBlobAsyncClient(blobAsyncClient.getBlobName())
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(bufferSize * Constants.MB).setMaxConcurrency(numBuffers).setMaxSingleUploadSizeLong(4 * Constants.MB)
         def dataList = [] as List<ByteBuffer>
         dataSizeList.each { size -> dataList.add(getRandomData(size * Constants.MB)) }
