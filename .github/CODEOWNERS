@@ -35,6 +35,7 @@
 
 # Management Plane
 /sdk/management/                                    @ChenTanyi @weidongxu-microsoft @yungezz @xccc-msft
+/sdk/resourcemanager/                               @ChenTanyi @weidongxu-microsoft @yungezz @xccc-msft
 /sdk/**/mgmt*/                                      @ChenTanyi @weidongxu-microsoft @yungezz @xccc-msft
 
 ###########
