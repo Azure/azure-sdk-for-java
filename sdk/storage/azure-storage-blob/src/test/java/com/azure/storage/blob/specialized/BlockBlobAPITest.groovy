@@ -1296,10 +1296,10 @@ class BlockBlobAPITest extends APISpec {
         it will be chunked appropriately.
          */
         setup:
-        System.setProperty("AZURE_LOG_LEVEL", "VERBOSE")
+        System.setProperty("AZURE_LOG_LEVEL", "INFO")
         blobAsyncClient = getServiceClientBuilder(primaryCredential, primaryBlobServiceClient.getAccountUrl())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.HEADERS))
-            .retryOptions(new RequestRetryOptions(RetryPolicyType.EXPONENTIAL, null, 1, null, null, null))
+//            .retryOptions(new RequestRetryOptions(RetryPolicyType.EXPONENTIAL, null, 1, null, null, null))
         .buildAsyncClient().getBlobContainerAsyncClient(blobAsyncClient.getContainerName())
         .getBlobAsyncClient(blobAsyncClient.getBlobName())
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
