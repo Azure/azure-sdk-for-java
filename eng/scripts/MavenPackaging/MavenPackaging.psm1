@@ -35,7 +35,7 @@ function Get-AssociatedArtifacts([MavenPackageDetail]$PackageDetail) {
   $associtedArtifactFileFilter = "$($PackageDetail.ArtifactID)-$($PackageDetail.Version)*"
   Write-Information "Search filter is: $associtedArtifactFileFilter (jar, aar and pom files only)"
 
-  $associatedArtifactFiles = @(Get-ChildItem -Path $PackageDetail.File.Directory -Filter $associtedArtifactFileFilter | Where-Object { $_ -match "^*\.(jar|pom|aar|module)$" })
+  $associatedArtifactFiles = @(Get-ChildItem -Path $PackageDetail.File.Directory -Filter $associtedArtifactFileFilter | Where-Object { $_ -match "^*\.(jar|pom|aar|module|md)$" })
   Write-Information "Found $($associatedArtifactFiles.Length) possible artifacts:"
 
   [AssociatedArtifact[]]$associatedArtifacts = @()
