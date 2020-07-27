@@ -175,6 +175,7 @@ public abstract class ExternalChildResourceImpl<FluentModelT extends Indexable,
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Mono<FluentModelT> refreshAsync() {
         final ExternalChildResourceImpl<FluentModelT, InnerModelT, ParentImplT, ParentT> self = this;
         return this.getInnerAsync().map(innerModelT -> {
@@ -325,6 +326,7 @@ public abstract class ExternalChildResourceImpl<FluentModelT extends Indexable,
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Mono<FluentModelT> applyAsync() {
         return taskGroup().invokeAsync(this.taskGroup().newInvocationContext())
                 .last()

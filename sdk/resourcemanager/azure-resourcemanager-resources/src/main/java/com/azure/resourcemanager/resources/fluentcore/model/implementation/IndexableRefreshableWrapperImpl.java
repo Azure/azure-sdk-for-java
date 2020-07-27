@@ -50,6 +50,7 @@ public abstract class IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Mono<FluentModelT> refreshAsync() {
         final IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT> self = this;
         return getInnerAsync().map(t -> {
