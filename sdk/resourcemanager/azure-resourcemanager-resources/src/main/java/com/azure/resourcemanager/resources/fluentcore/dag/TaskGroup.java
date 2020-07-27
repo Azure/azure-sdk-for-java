@@ -399,7 +399,7 @@ public class TaskGroup
             }
             readyTaskEntry = super.getNext();
         }
-        return Flux.mergeDelayError(32, Flux.fromIterable(observables).concatMap(x -> x));
+        return Flux.mergeDelayError(32, observables.toArray(new Flux[0]));
     }
 
     /**
