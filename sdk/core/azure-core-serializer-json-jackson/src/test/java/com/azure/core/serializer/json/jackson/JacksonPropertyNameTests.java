@@ -6,6 +6,7 @@ package com.azure.core.serializer.json.jackson;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import reactor.test.StepVerifier;
 
 import java.lang.reflect.Field;
@@ -25,7 +26,7 @@ public class JacksonPropertyNameTests {
 
     @Test
     public void testPropertyNameOnFieldName() {
-        Field f = mock(Field.class);
+        Field f = Mockito.spy(Field.class); //mock(Field.class);
         String fieldName = "fieldName";
 
         when(f.isAnnotationPresent(JsonProperty.class)).thenReturn(false);
@@ -40,7 +41,8 @@ public class JacksonPropertyNameTests {
 
     @Test
     public void testPropertyNameOnFieldAnnotation() {
-        Field f = mock(Field.class);
+        Field f = Mockito.spy(Field.class);
+        // Field f = mock(Field.class);
         String expectValue = "hasAnnotation";
 
         when(f.isAnnotationPresent(JsonProperty.class)).thenReturn(true);
@@ -55,7 +57,8 @@ public class JacksonPropertyNameTests {
 
     @Test
     public void testPropertyNameOnFieldAnnotationWithEmptyValue() {
-        Field f = mock(Field.class);
+        Field f = Mockito.spy(Field.class);
+        //Field f = mock(Field.class);
         String fieldName = "fieldName";
 
         when(f.isAnnotationPresent(JsonProperty.class)).thenReturn(true);
@@ -72,7 +75,8 @@ public class JacksonPropertyNameTests {
 
     @Test
     public void testPropertyNameOnFieldAnnotationWithNullValue() {
-        Field f = mock(Field.class);
+        Field f = Mockito.spy(Field.class);
+        //Field f = mock(Field.class);
         String fieldName = "fieldName";
 
         when(f.isAnnotationPresent(JsonProperty.class)).thenReturn(true);
@@ -88,7 +92,8 @@ public class JacksonPropertyNameTests {
 
     @Test
     public void testPropertyNameOnMethodName() {
-        Method m = mock(Method.class);
+        Method m = Mockito.spy(Method.class);
+        //Method m = mock(Method.class);
         String methodName = "methodName";
 
         when(m.isAnnotationPresent(JsonProperty.class)).thenReturn(false);
@@ -102,7 +107,8 @@ public class JacksonPropertyNameTests {
 
     @Test
     public void testPropertyNameOnMethodAnnotation() {
-        Method m = mock(Method.class);
+        Method m = Mockito.spy(Method.class);
+        //Method m = mock(Method.class);
         String expectValue = "hasAnnotation";
 
         when(m.isAnnotationPresent(JsonProperty.class)).thenReturn(true);
@@ -117,7 +123,8 @@ public class JacksonPropertyNameTests {
 
     @Test
     public void testPropertyNameOnMethodAnnotationWithEmptyValue() {
-        Method m = mock(Method.class);
+        Method m = Mockito.spy(Method.class);
+        //Method m = mock(Method.class);
         String methodName = "methodName";
 
         when(m.isAnnotationPresent(JsonProperty.class)).thenReturn(true);
@@ -132,7 +139,8 @@ public class JacksonPropertyNameTests {
 
     @Test
     public void testPropertyNameOnMethodAnnotationWithNullValue() {
-        Method m = mock(Method.class);
+        Method m = Mockito.spy(Method.class);
+        //Method m = mock(Method.class);
         String methodName = "methodName";
         when(m.isAnnotationPresent(JsonProperty.class)).thenReturn(true);
         JsonProperty annotation = mock(JsonProperty.class);
