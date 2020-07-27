@@ -10,6 +10,7 @@
 - Added RehydratePriority to BlobProperties and BlobItemProperties.
 - Fixed bug where Query Input Stream would throw when a ByteBuffer of length 0 was encountered.
 - Added support to seal an append blob. Added AppendBlob.seal. Added ability to specify destinationSealed on BlobClient.beginCopy. isSealed property returned on getProperties/getBlob/listBlob. 
+- Added support to set tier on a snapshot or version.
 
 ## 12.8.0-beta.1 (2020-07-07)
 - Added support for the 2019-12-12 service version.
