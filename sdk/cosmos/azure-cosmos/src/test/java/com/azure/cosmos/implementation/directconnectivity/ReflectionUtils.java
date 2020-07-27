@@ -37,7 +37,7 @@ public class ReflectionUtils {
         }
     }
 
-    private static void invokeMethod(Class klass, Object object, String methodName) {
+    private static <T> void invokeMethod(Class<T> klass, Object object, String methodName) {
         try {
             Method method = klass.getDeclaredMethod(methodName);
             method.setAccessible(true);
