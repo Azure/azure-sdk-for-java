@@ -146,6 +146,18 @@ class AttributeViewTest extends APISpec {
         props.getMetadata() == suppliers.get("metadata").get()
     }
 
+    def "AzureBlobFileAttributeView read fs closed"() {
+        setup:
+        def path = fs.getPath(generateBlobName())
+
+        when:
+        fs.close()
+        new AzureBlobFileAttributeView(path).readAttributes()
+
+        then:
+        thrown(IOException)
+    }
+
     @Unroll
     def "AzureBlobFileAttributeView setBlobHttpHeaders"() {
         setup:
@@ -176,6 +188,18 @@ class AttributeViewTest extends APISpec {
         "control"    | "disposition"      | "encoding"      | "language"      | Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(defaultData.array())) | "type"
     }
 
+    def "AzureBlobFileAttributeView setHeaders fs closed"() {
+        setup:
+        def path = fs.getPath(generateBlobName())
+
+        when:
+        fs.close()
+        new AzureBlobFileAttributeView(path).setBlobHttpHeaders(new BlobHttpHeaders())
+
+        then:
+        thrown(IOException)
+    }
+
     @Unroll
     def "AzureBlobFileAttributeView setMetadata"() {
         setup:
@@ -202,6 +226,18 @@ class AttributeViewTest extends APISpec {
         "i0"  | "a"    | "i_"   | "a"    || 200 /* Test culture sensitive word sort */
     }
 
+    def "AzureBlobFileAttributeView setMetadata fs closed"() {
+        setup:
+        def path = fs.getPath(generateBlobName())
+
+        when:
+        fs.close()
+        new AzureBlobFileAttributeView(path).setMetadata(Collections.emptyMap())
+
+        then:
+        thrown(IOException)
+    }
+
     @Unroll
     def "AzureBlobFileAttributeView setTier"() {
         setup:
@@ -222,6 +258,18 @@ class AttributeViewTest extends APISpec {
         We don't test archive because it takes a while to take effect, and testing these two demonstrates that the tier
         is successfully being passed to the underlying client.
          */
+    }
+
+    def "AzureBlobFileAttributeView setTier fs closed"() {
+        setup:
+        def path = fs.getPath(generateBlobName())
+
+        when:
+        fs.close()
+        new AzureBlobFileAttributeView(path).setTier(AccessTier.HOT)
+
+        then:
+        thrown(IOException)
     }
 
     @Unroll
