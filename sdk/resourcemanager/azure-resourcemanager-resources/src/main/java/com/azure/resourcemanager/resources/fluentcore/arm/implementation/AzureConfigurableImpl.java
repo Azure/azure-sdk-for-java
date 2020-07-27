@@ -46,6 +46,7 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public T withLogOptions(HttpLogOptions httpLogOptions) {
         Objects.requireNonNull(httpLogOptions);
         this.httpLogOptions = httpLogOptions;
@@ -53,6 +54,7 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public T withLogLevel(HttpLogDetailLevel logLevel) {
         Objects.requireNonNull(logLevel);
         this.httpLogOptions = httpLogOptions.setLogLevel(logLevel);
@@ -60,6 +62,7 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public T withPolicy(HttpPipelinePolicy policy) {
         Objects.requireNonNull(policy);
         policies.add(policy);
@@ -67,6 +70,7 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public T withAuxiliaryCredential(TokenCredential token) {
         Objects.requireNonNull(token);
         this.tokens.add(token);
@@ -74,6 +78,7 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public T withAuxiliaryCredentials(List<TokenCredential> tokens) {
         Objects.requireNonNull(tokens);
         this.tokens.addAll(tokens);
@@ -81,6 +86,7 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public T withRetryPolicy(RetryPolicy retryPolicy) {
         Objects.requireNonNull(retryPolicy);
         this.retryPolicy = retryPolicy;
@@ -88,6 +94,7 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public T withScope(String scope) {
         Objects.requireNonNull(scope);
         this.scopes.add(scope);
@@ -95,6 +102,7 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public T withScopes(List<String> scopes) {
         Objects.requireNonNull(scopes);
         this.scopes.addAll(scopes);
@@ -102,6 +110,7 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public T withHttpClient(HttpClient httpClient) {
         Objects.requireNonNull(httpClient);
         this.httpClient = httpClient;
@@ -109,6 +118,7 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public T withConfiguration(Configuration configuration) {
         Objects.requireNonNull(configuration);
         this.configuration = configuration;

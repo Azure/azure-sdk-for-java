@@ -26,6 +26,7 @@ public abstract class RefreshableWrapperImpl<InnerT, Impl>
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Mono<Impl> refreshAsync() {
         final RefreshableWrapperImpl<InnerT, Impl> self = this;
 

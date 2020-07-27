@@ -45,7 +45,7 @@ public abstract class ExecutableImpl<FluentModelT extends Indexable>
      */
     protected ExecutableImpl(String key) {
         super(key);
-        taskGroup = new TaskGroup(this.key(), new ExecuteTask(this));
+        taskGroup = new TaskGroup(this.key(), new ExecuteTask<FluentModelT>(this));
     }
 
     @Override
@@ -200,6 +200,7 @@ public abstract class ExecutableImpl<FluentModelT extends Indexable>
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Mono<FluentModelT> executeAsync() {
         return taskGroup.invokeAsync(taskGroup.newInvocationContext())
                 .last()

@@ -71,6 +71,7 @@ public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends 
                 .map(tCreatableUpdatableResourcesRoot -> new CreatedResourcesImpl<>(tCreatableUpdatableResourcesRoot));
     }
 
+    @SuppressWarnings("unchecked")
     private Mono<CreatedResources<T>> createAsyncNonStream(Creatable<T>... creatables) {
         return Utils.<CreatableUpdatableResourcesRoot<T>>rootResource(this.createAsync(creatables).last())
                 .map(tCreatableUpdatableResourcesRoot -> new CreatedResourcesImpl<>(tCreatableUpdatableResourcesRoot));

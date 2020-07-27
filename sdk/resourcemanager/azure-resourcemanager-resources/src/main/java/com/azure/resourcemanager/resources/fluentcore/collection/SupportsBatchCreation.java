@@ -25,6 +25,7 @@ public interface SupportsBatchCreation<ResourceT extends Indexable> {
      * @param creatables the creatables in the batch
      * @return the batch operation result from which created resources in this batch can be accessed.
      */
+    @SuppressWarnings("unchecked")
     CreatedResources<ResourceT> create(Creatable<ResourceT>... creatables);
 
     /**
@@ -42,6 +43,7 @@ public interface SupportsBatchCreation<ResourceT extends Indexable> {
      * @param creatables the creatables in the batch
      * @return a {@link Mono} that emits the found resource asynchronously.
      */
+    @SuppressWarnings("unchecked")
     Flux<Indexable> createAsync(Creatable<ResourceT>... creatables);
 
     /**

@@ -213,6 +213,7 @@ public abstract class CreatableUpdatableImpl<
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Mono<FluentModelT> applyAsync() {
         return taskGroup.invokeAsync(this.taskGroup.newInvocationContext())
                 .last()
