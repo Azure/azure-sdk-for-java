@@ -70,11 +70,13 @@ public class CryptographyAsyncClient {
     /**
      * Creates a CryptographyAsyncClient that uses {@code pipeline} to service requests
      *
-     * @param jsonWebKey the json web key to use for cryptography operations.
+     * @param key the key to use for cryptography operations.
      * @param pipeline HttpPipeline that the HTTP requests and responses flow through.
      * @param version {@link CryptographyServiceVersion} of the service to be used when making requests.
      */
-    CryptographyAsyncClient(JsonWebKey jsonWebKey, HttpPipeline pipeline, CryptographyServiceVersion version) {
+    CryptographyAsyncClient(KeyVaultKey key, HttpPipeline pipeline, CryptographyServiceVersion version) {
+        Objects.requireNonNull(key, "The key vault key is required.");
+        JsonWebKey jsonWebKey = key.getKey();
         Objects.requireNonNull(jsonWebKey, "The Json web key is required.");
         if (!jsonWebKey.isValid()) {
             throw new IllegalArgumentException("Json Web Key is not valid");
@@ -82,13 +84,14 @@ public class CryptographyAsyncClient {
         if (jsonWebKey.getKeyOps() == null) {
             throw new IllegalArgumentException("Json Web Key's key operations property is not configured");
         }
-        if (jsonWebKey.getKeyType() == null) {
+
+        if (key.getKeyType() == null) {
             throw new IllegalArgumentException("Json Web Key's key type property is not configured");
         }
         this.key = jsonWebKey;
         this.keyId = key.getId();
-        service = pipeline != null ? RestProxy.create(CryptographyService.class, pipeline) : null;
-        if (!Strings.isNullOrEmpty(key.getId()) && version != null && service != null) {
+        service = RestProxy.create(CryptographyService.class, pipeline);
+        if (!Strings.isNullOrEmpty(key.getId())) {
             unpackAndValidateId(key.getId());
             cryptographyServiceClient = new CryptographyServiceClient(key.getId(), service, version);
         } else {
