@@ -11,7 +11,6 @@ import com.azure.spring.data.cosmos.repository.repository.ReactiveLongIdDomainPa
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,13 +18,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.time.Duration;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.Arrays;
+import java.util.Objects;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
@@ -46,8 +44,6 @@ public class ReactiveLongIdDomainPartitionPartitionRepositoryIT {
     private static CosmosTemplate staticTemplate;
     private static boolean isSetupDone;
 
-    private static final Duration DEFAULT_TIME_OUT = Duration.ofSeconds(10);
-
     @Autowired
     private CosmosTemplate template;
 
@@ -60,8 +56,8 @@ public class ReactiveLongIdDomainPartitionPartitionRepositoryIT {
             staticTemplate = template;
             template.createContainerIfNotExists(entityInformation);
         }
-        this.repository.save(DOMAIN_1).block(DEFAULT_TIME_OUT);
-        this.repository.save(DOMAIN_2).block(DEFAULT_TIME_OUT);
+        Flux<LongIdDomainPartition> savedAllFlux = this.repository.saveAll(Arrays.asList(DOMAIN_1, DOMAIN_2));
+        StepVerifier.create(savedAllFlux).thenConsumeWhile(domain -> true).expectComplete().verify();
         isSetupDone = true;
     }
 
@@ -78,19 +74,26 @@ public class ReactiveLongIdDomainPartitionPartitionRepositoryIT {
 
     @Test
     public void testLongIdDomainPartition() {
-        this.repository.deleteAll().block(DEFAULT_TIME_OUT);
-        Assert.assertFalse(this.repository.findById(ID_1).blockOptional(DEFAULT_TIME_OUT).isPresent());
+        Mono<Void> deletedMono = this.repository.deleteAll();
+        StepVerifier.create(deletedMono).thenAwait().verifyComplete();
 
-        this.repository.save(DOMAIN_1).block(DEFAULT_TIME_OUT);
-        Optional<LongIdDomainPartition> foundOptional = this.repository.findById(ID_1).blockOptional(DEFAULT_TIME_OUT);
+        Mono<LongIdDomainPartition> idMono = this.repository.findById(ID_1,
+            new PartitionKey(entityInformation.getPartitionKeyFieldValue(DOMAIN_1)));
+        StepVerifier.create(idMono).expectNextCount(0).verifyComplete();
 
-        Assert.assertTrue(foundOptional.isPresent());
-        Assert.assertEquals(DOMAIN_1.getNumber(), foundOptional.get().getNumber());
-        Assert.assertEquals(DOMAIN_1.getName(), foundOptional.get().getName());
+        Mono<LongIdDomainPartition> saveMono = this.repository.save(DOMAIN_1);
+        StepVerifier.create(saveMono).expectNext(DOMAIN_1).expectComplete().verify();
 
-        this.repository.delete(DOMAIN_1).block(DEFAULT_TIME_OUT);
+        Mono<LongIdDomainPartition> findIdMono = this.repository.findById(ID_1,
+            new PartitionKey(entityInformation.getPartitionKeyFieldValue(DOMAIN_1)));
+        StepVerifier.create(findIdMono).expectNext(DOMAIN_1).expectComplete().verify();
 
-        Assert.assertFalse(this.repository.findById(ID_1).blockOptional(DEFAULT_TIME_OUT).isPresent());
+        Mono<Void> deleteMono = this.repository.delete(DOMAIN_1);
+        StepVerifier.create(deleteMono).verifyComplete();
+
+        Mono<LongIdDomainPartition> afterDelIdMono = this.repository.findById(ID_1,
+            new PartitionKey(entityInformation.getPartitionKeyFieldValue(DOMAIN_1)));
+        StepVerifier.create(afterDelIdMono).expectNextCount(0).verifyComplete();
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -99,32 +102,21 @@ public class ReactiveLongIdDomainPartitionPartitionRepositoryIT {
     }
 
     @Test
-    public void testBasicQuery() {
-        LongIdDomainPartition save = this.repository.save(DOMAIN_1).block(DEFAULT_TIME_OUT);
-        Assert.assertNotNull(save);
-    }
-
-    @Test
-    public void testSaveAndFindById() {
-        Assert.assertNotNull(this.repository.save(DOMAIN_1).block(DEFAULT_TIME_OUT));
-        Optional<LongIdDomainPartition> longIdDomainPartitionOptional = this.repository
-            .findById(DOMAIN_1.getNumber()).blockOptional(DEFAULT_TIME_OUT);
-        Assert.assertTrue(longIdDomainPartitionOptional.isPresent());
-        Assert.assertEquals(DOMAIN_1, longIdDomainPartitionOptional.get());
-    }
-
-    @Test
     public void testSaveAllAndFindAll() {
-        this.repository.deleteAll().block(DEFAULT_TIME_OUT);
-        List<LongIdDomainPartition> savedEntities = Stream.of(DOMAIN_1, DOMAIN_2).collect(Collectors.toList());
-        this.repository.saveAll(savedEntities).collectList().block(DEFAULT_TIME_OUT);
-        List<LongIdDomainPartition> longIdDomainPartitionList = this.repository.findAll().collectList().block(DEFAULT_TIME_OUT);
-        Assert.assertTrue(longIdDomainPartitionList.containsAll(savedEntities));
+        final Mono<Void> deletedMono = repository.deleteAll();
+        StepVerifier.create(deletedMono).thenAwait().verifyComplete();
+
+        Flux<LongIdDomainPartition> savedAllFlux = this.repository.saveAll(Arrays.asList(DOMAIN_1, DOMAIN_2));
+        StepVerifier.create(savedAllFlux).expectNextCount(2).verifyComplete();
+
+        final Flux<LongIdDomainPartition> allFlux = repository.findAll();
+        StepVerifier.create(allFlux).expectNextCount(2).verifyComplete();
     }
 
     @Test
     public void testCount() {
-        Assert.assertTrue(2 == repository.count().block(DEFAULT_TIME_OUT));
+        Mono<Long> countMono = repository.count();
+        StepVerifier.create(countMono).expectNext(2L).verifyComplete();
     }
 
     @Test
@@ -139,66 +131,77 @@ public class ReactiveLongIdDomainPartitionPartitionRepositoryIT {
             new PartitionKey(entityInformation.getPartitionKeyFieldValue(DOMAIN_1)));
         StepVerifier.create(deleteMono).verifyComplete();
 
-        final Mono<LongIdDomainPartition> byId = repository.findById(DOMAIN_1.getNumber(),
+        Mono<LongIdDomainPartition> findIdMono = this.repository.findById(ID_1,
             new PartitionKey(entityInformation.getPartitionKeyFieldValue(DOMAIN_1)));
-        Assert.assertNull(byId.block(DEFAULT_TIME_OUT));
+        StepVerifier.create(findIdMono).expectNextCount(0).verifyComplete();
     }
 
-    @Test(expected = CosmosAccessException.class)
+    @Test
     public void testDeleteByIdShouldFailIfNothingToDelete() {
-        this.repository.deleteAll().block(DEFAULT_TIME_OUT);
-        this.repository.deleteById(DOMAIN_1.getNumber()).block(DEFAULT_TIME_OUT);
+        final Mono<Void> deletedMono = repository.deleteAll();
+        StepVerifier.create(deletedMono).thenAwait().verifyComplete();
+
+        final Mono<Void> deleteIdMono = repository.deleteById(DOMAIN_1.getNumber(),
+            new PartitionKey(entityInformation.getPartitionKeyFieldValue(DOMAIN_1)));
+        StepVerifier.create(deleteIdMono).expectError(CosmosAccessException.class).verify();
     }
 
     @Test
     public void testDelete() {
-        this.repository.save(DOMAIN_1).block(DEFAULT_TIME_OUT);
-        this.repository.delete(DOMAIN_1).block(DEFAULT_TIME_OUT);
-        Assert.assertTrue(1 == this.repository.count().block(DEFAULT_TIME_OUT));
+        Mono<LongIdDomainPartition> saveMono = this.repository.save(DOMAIN_1);
+        StepVerifier.create(saveMono).expectNext(DOMAIN_1).expectComplete().verify();
+
+        Mono<Void> deleteMono = this.repository.delete(DOMAIN_1);
+        StepVerifier.create(deleteMono).verifyComplete();
+
+        Mono<Long> countMono = repository.count();
+        StepVerifier.create(countMono).expectNext(1L).verifyComplete();
     }
 
-    @Test(expected = CosmosAccessException.class)
+    @Test
     public void testDeleteShouldFailIfNothingToDelete() {
-        this.repository.deleteAll().block(DEFAULT_TIME_OUT);
-        this.repository.delete(DOMAIN_1).block(DEFAULT_TIME_OUT);
+        final Mono<Void> deletedMono = repository.deleteAll();
+        StepVerifier.create(deletedMono).thenAwait().verifyComplete();
+
+        Mono<Void> deleteIdMono = this.repository.delete(DOMAIN_1);
+        StepVerifier.create(deleteIdMono).expectError(CosmosAccessException.class).verify();
     }
 
     @Test
     public void testDeleteAll() {
-        this.repository.save(DOMAIN_1).block(DEFAULT_TIME_OUT);
-        this.repository.save(DOMAIN_2).block(DEFAULT_TIME_OUT);
-        this.repository.deleteAll(Arrays.asList(DOMAIN_1, DOMAIN_2)).block(DEFAULT_TIME_OUT);
-        Assert.assertTrue(0 == this.repository.count().block(DEFAULT_TIME_OUT));
+        Flux<LongIdDomainPartition> savedAllFlux = this.repository.saveAll(Arrays.asList(DOMAIN_1, DOMAIN_2));
+        StepVerifier.create(savedAllFlux).expectNextCount(2).verifyComplete();
+
+        final Mono<Void> deletedMono = repository.deleteAll();
+        StepVerifier.create(deletedMono).thenAwait().verifyComplete();
+
+        Mono<Long> countMono = repository.count();
+        StepVerifier.create(countMono).expectNext(0L).verifyComplete();
     }
 
     @Test
     public void testExistsById() {
-        this.repository.save(DOMAIN_1).block(DEFAULT_TIME_OUT);
-        Assert.assertTrue(this.repository.existsById(DOMAIN_1.getNumber()).block(DEFAULT_TIME_OUT));
+        Mono<LongIdDomainPartition> saveMono = this.repository.save(DOMAIN_1);
+        StepVerifier.create(saveMono).expectNext(DOMAIN_1).expectComplete().verify();
+
+        Mono<Boolean> booleanMono = this.repository.existsById(DOMAIN_1.getNumber());
+        StepVerifier.create(booleanMono).expectNext(true).expectComplete().verify();
     }
 
     @Test
     public void testFindAllSort() {
-        final LongIdDomainPartition other = new LongIdDomainPartition(DOMAIN_1.getNumber() + 1, "other-name");
-        this.repository.save(other).block(DEFAULT_TIME_OUT);
-        this.repository.save(DOMAIN_1).block(DEFAULT_TIME_OUT);
+        final LongIdDomainPartition other = new LongIdDomainPartition(
+            DOMAIN_1.getNumber() + 1, "other-name");
+        Flux<LongIdDomainPartition> savedAllFlux = this.repository.saveAll(Arrays.asList(DOMAIN_1, other));
+        StepVerifier.create(savedAllFlux).thenConsumeWhile(domain -> true).expectComplete().verify();
 
         final Sort ascSort = Sort.by(Sort.Direction.ASC, "number");
-        final List<LongIdDomainPartition> ascending = this.repository.findAll(ascSort)
-            .collectList().block(DEFAULT_TIME_OUT);
-        Assert.assertEquals(3, ascending.size());
-        Assert.assertEquals(DOMAIN_1, ascending.get(0));
-        Assert.assertEquals(other, ascending.get(1));
-        Assert.assertEquals(DOMAIN_2, ascending.get(2));
+        Flux<LongIdDomainPartition> ascAllFlux = this.repository.findAll(ascSort);
+        StepVerifier.create(ascAllFlux).expectNext(DOMAIN_1, other, DOMAIN_2).verifyComplete();
 
         final Sort descSort = Sort.by(Sort.Direction.DESC, "number");
-        final List<LongIdDomainPartition> descending = this.repository.findAll(descSort)
-            .collectList().block(DEFAULT_TIME_OUT);
-        Assert.assertEquals(3, descending.size());
-        Assert.assertEquals(DOMAIN_2, descending.get(0));
-        Assert.assertEquals(other, descending.get(1));
-        Assert.assertEquals(DOMAIN_1, descending.get(2));
-
+        Flux<LongIdDomainPartition> descAllFlux = this.repository.findAll(descSort);
+        StepVerifier.create(descAllFlux).expectNext(DOMAIN_2, other, DOMAIN_1).verifyComplete();
     }
 
     private static class InvalidDomain {
