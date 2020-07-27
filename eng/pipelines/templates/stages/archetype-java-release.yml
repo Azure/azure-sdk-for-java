@@ -160,11 +160,6 @@ stages:
                   deploy:
                     steps:
                       - checkout: self
-                      - template: /eng/pipelines/templates/steps/stage-artifacts.yml
-                        parameters:
-                          SourceFolder: ${{parameters.ArtifactName}}-signed
-                          TargetFolder: ${{artifact.safeName}}
-                          PackageName: ${{artifact.name}}
                       - template: /eng/common/pipelines/templates/steps/docs-metadata-release.yml
                         parameters:
                           ArtifactLocation: ${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
