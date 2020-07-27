@@ -2231,7 +2231,9 @@ class FileAPITest extends APISpec {
     @Requires({ liveMode() }) // Test uploads large amount of data
     def "Async buffered upload"() {
         setup:
-        DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
+        DataLakeFileAsyncClient fac = getPrimaryServiceClientForWrites(bufferSize)
+            .getFileSystemAsyncClient(fscAsync.getFileSystemName())
+            .getFileAsyncClient(generatePathName())
         fac.create().block()
 
         when:
@@ -2332,7 +2334,10 @@ class FileAPITest extends APISpec {
     @Requires({liveMode()}) // Test uploads large amount of data
     def "Buffered upload chunked source"() {
         setup:
-        DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
+        DataLakeFileAsyncClient fac = getPrimaryServiceClientForWrites(bufferSize)
+            .getFileSystemAsyncClient(fscAsync.getFileSystemName())
+            .getFileAsyncClient(generatePathName())
+        fac.create().block()
         /*
         This test should validate that the upload should work regardless of what format the passed data is in because
         it will be chunked appropriately.
