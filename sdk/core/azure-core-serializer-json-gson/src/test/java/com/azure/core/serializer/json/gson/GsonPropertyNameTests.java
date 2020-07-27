@@ -15,7 +15,7 @@ import java.lang.reflect.Method;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class GsonPropertyNameTests {
-    private static final String expectValueInField = "expectFieldName";
+    private static final String EXPECT_VALUE_IN_FIELD = "expectFieldName";
     private static GsonPropertyNameSerializer serializer;
 
     @BeforeAll
@@ -36,11 +36,11 @@ public class GsonPropertyNameTests {
     @Test
     public void testPropertyNameOnFieldAnnotation() throws NoSuchFieldException {
         class Hotel {
-            @SerializedName(value = expectValueInField)
+            @SerializedName(value = EXPECT_VALUE_IN_FIELD)
             String hotelName;
         }
         Field f = Hotel.class.getDeclaredField("hotelName");
-        assertMemberValue(f, expectValueInField);
+        assertMemberValue(f, EXPECT_VALUE_IN_FIELD);
 
     }
 
