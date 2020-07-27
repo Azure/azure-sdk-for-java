@@ -36,7 +36,8 @@ class AvroParserStateTest extends Specification {
 
         then:
         state.size == size
-        AvroSchema.getBytes(state.read(size)) == b
+        def list = state.read(size)
+        AvroSchema.getBytes(list) == b
 
         where:
         size || _
@@ -56,7 +57,8 @@ class AvroParserStateTest extends Specification {
         state.write(b2)
 
         expect:
-        AvroSchema.getBytes(state.read(size)) == value
+        def list = state.read(size)
+        AvroSchema.getBytes(list) == value
         state.size == remaining
         state.cache.size() == buffersLeft
 
