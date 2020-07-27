@@ -100,26 +100,6 @@ public class ChangeFeedProcessorState {
     }
 
     /**
-     * Sets time when the lease item was last updated.
-     *
-     * @param lastUpdatedTime a unique string.
-     * @return the current ChangeFeedProcessorState instance.
-     */
-    public ChangeFeedProcessorState setLastUpdatedTime(Instant lastUpdatedTime) {
-        this.lastUpdatedTime = lastUpdatedTime;
-        return this;
-    }
-
-    /**
-     * Gets a marker representing the last item that was processed.
-     *
-     * @return the marker representing the last item that was processed.
-     */
-    public String getContinuationToken() {
-        return this.continuationToken;
-    }
-
-    /**
      * Sets a marker representing the last item that was processed.
      *
      * @param continuationToken the marker representing the last item that was processed.

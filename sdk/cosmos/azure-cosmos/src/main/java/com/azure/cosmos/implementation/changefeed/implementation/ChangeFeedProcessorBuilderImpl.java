@@ -258,7 +258,6 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
                             .setId(lease.getId())
                             .setHostName(lease.getOwner())
                             .setLeaseToken(lease.getLeaseToken())
-                            .setLastUpdatedTime(ZonedDateTime.parse(lease.getTimestamp()).toInstant())
                             .setLatestToken(latestLsn);
 
                         // An empty list of documents returned means that we are current (zero lag)
