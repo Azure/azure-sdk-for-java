@@ -204,7 +204,7 @@ class APISpec extends Specification {
             def containerClient = primaryBlobServiceClient.getBlobContainerClient(container.getName())
 
             if (container.getProperties().getLeaseState() == LeaseStateType.LEASED) {
-                createLeaseClient(containerClient).breakLeaseWithResponse(new BlobBreakLeaseOptions().setBreakPeriodInSeconds(0), null, null)
+                createLeaseClient(containerClient).breakLeaseWithResponse(new BlobBreakLeaseOptions().setBreakPeriod(0), null, null)
             }
 
             containerClient.delete()

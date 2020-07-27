@@ -178,7 +178,7 @@ public class LeaseAsyncClientJavaDocCodeSnippets {
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
         BlobBreakLeaseOptions options = new BlobBreakLeaseOptions()
-            .setBreakPeriodInSeconds(retainLeaseInSeconds)
+            .setBreakPeriod(retainLeaseInSeconds)
             .setRequestConditions(requestConditions);
 
         client.breakLeaseWithResponse(options).subscribe(response ->
