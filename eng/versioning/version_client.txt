@@ -66,6 +66,8 @@ com.microsoft.azure:azure-spring-boot-starter;2.3.3-beta.1;2.3.3-beta.1
 com.microsoft.azure:azure-spring-boot;2.3.3-beta.1;2.3.3-beta.1
 com.microsoft.azure:spring-cloud-azure-appconfiguration-config-web;1.2.8-beta.1;1.2.8-beta.1
 com.microsoft.azure:spring-cloud-azure-appconfiguration-config;1.2.8-beta.1;1.2.8-beta.1
+com.microsoft.azure:spring-cloud-azure-context;1.2.8-beta.1;1.2.8-beta.1
+com.microsoft.azure:spring-cloud-azure-telemetry;1.2.8-beta.1;1.2.8-beta.1
 com.microsoft.azure:spring-cloud-azure-feature-management-web;1.2.8-beta.1;1.2.8-beta.1
 com.microsoft.azure:spring-cloud-azure-feature-management;1.2.8-beta.1;1.2.8-beta.1
 com.microsoft.azure:spring-data-cosmosdb;3.0.0-beta.1;3.0.0-beta.1
