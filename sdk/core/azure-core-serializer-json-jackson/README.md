@@ -1,6 +1,6 @@
-# Azure Search Jackson JSON Serializer plugin library for Java
+# Azure Core Jackson JSON Serializer plugin library for Java
 
-Azure Search Jackson JSON Serializer is a plugin for the `azure-search-documents` `JsonSerializer` API.
+Azure Core Jackson JSON Serializer is a plugin for the `azure-core` `JsonSerializer` API.
 
 ## Getting started
 

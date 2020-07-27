@@ -24,7 +24,6 @@ import java.lang.reflect.Type;
  * Apache Avro based implementation of the {@link ObjectSerializer} interface.
  */
 public class ApacheAvroSerializer implements ObjectSerializer {
-    private final ClientLogger logger = new ClientLogger(ApacheAvroSerializer.class);
     private final Schema schema;
     private final DecoderFactory decoderFactory;
     private final EncoderFactory encoderFactory;

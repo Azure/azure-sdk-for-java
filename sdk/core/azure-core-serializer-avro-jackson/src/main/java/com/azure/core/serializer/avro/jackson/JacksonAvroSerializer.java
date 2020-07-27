@@ -18,7 +18,6 @@ import java.lang.reflect.Type;
  * Jackson Avro based implementation of the {@link ObjectSerializer} interface.
  */
 public final class JacksonAvroSerializer implements ObjectSerializer {
-    private final ClientLogger logger = new ClientLogger(JacksonAvroSerializer.class);
     private final AvroSchema avroSchema;
     private final AvroMapper avroMapper;
 

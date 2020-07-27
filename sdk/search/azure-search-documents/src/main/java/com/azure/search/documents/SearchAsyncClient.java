@@ -74,7 +74,6 @@ import static com.azure.search.documents.implementation.util.Utility.initializeS
  *
  * @see SearchClientBuilder
  */
-@SuppressWarnings("checkstyle:LineLength")
 @ServiceClient(builder = SearchClientBuilder.class, isAsync = true)
 public final class SearchAsyncClient {
     /*
@@ -527,7 +526,7 @@ public final class SearchAsyncClient {
         return withContext(context -> getDocumentWithResponse(key, modelClass, selectedFields, context));
     }
 
-    @SuppressWarnings({"unchecked", "checkstyle:LineLength"})
+    @SuppressWarnings("unchecked")
     <T> Mono<Response<T>> getDocumentWithResponse(String key, Class<T> modelClass, List<String> selectedFields,
         Context context) {
         try {

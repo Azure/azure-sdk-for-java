@@ -41,9 +41,9 @@ public final class JacksonJsonSerializerBuilder {
     }
 
     /**
-     * Sets the {@link ObjectMapper} that will be used during serialization.
-     * <p>
-     * If this is set to {@code null} the default {@link ObjectMapper} will be used.
+     * Sets the {@link JsonOptions} that will be used during serialization.
+     *
+     * JsonOptions currently support to config whether to serialize null during serialization.
      *
      * @param options {@link JsonOptions} that will be used during serialization.
      * @return The updated JacksonJsonSerializerBuilder class.

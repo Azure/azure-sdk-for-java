@@ -15,8 +15,8 @@ import java.lang.reflect.Method;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class JacksonPropertyNameTests {
-    private static final String expectValueInField = "expectFieldName";
-    private static final String expectValueInMethod = "expectMethodName";
+    private static final String EXPECT_VALUE_IN_FIELD = "expectFieldName";
+    private static final String EXPECT_VALUE_IN_METHOD = "expectMethodName";
     private static JacksonPropertyNameSerializer serializer;
 
     @BeforeAll
@@ -36,11 +36,11 @@ public class JacksonPropertyNameTests {
     @Test
     public void testPropertyNameOnFieldAnnotation() throws NoSuchFieldException {
         class Hotel {
-            @JsonProperty(value = expectValueInField)
+            @JsonProperty(value = EXPECT_VALUE_IN_FIELD)
             String hotelName;
         }
         Field f = Hotel.class.getDeclaredField("hotelName");
-        assertMemberValue(f, expectValueInField);
+        assertMemberValue(f, EXPECT_VALUE_IN_FIELD);
     }
 
     @Test
@@ -83,14 +83,14 @@ public class JacksonPropertyNameTests {
         class Hotel {
             String hotelName;
 
-            @JsonProperty(value = expectValueInMethod)
+            @JsonProperty(value = EXPECT_VALUE_IN_METHOD)
             public String getHotelName() {
                 return hotelName;
             }
         }
 
         Method m = Hotel.class.getDeclaredMethod("getHotelName");
-        assertMemberValue(m, expectValueInMethod);
+        assertMemberValue(m, EXPECT_VALUE_IN_METHOD);
     }
 
 
