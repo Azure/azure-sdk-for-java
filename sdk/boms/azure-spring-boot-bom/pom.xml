@@ -33,6 +33,12 @@
     <url>https://github.com/azure/azure-sdk-for-java</url>
   </scm>
 
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <packageOutputDirectory>${project.build.directory}</packageOutputDirectory>
+    <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
+  </properties>
+
   <issueManagement>
     <system>GitHub</system>
     <url>https://github.com/azure/azure-sdk-for-java/issues</url>
