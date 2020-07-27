@@ -122,7 +122,7 @@ jobs:
           workingDirectory: $(Agent.BuildDirectory)
           filePath: eng/scripts/Stage-MavenPackageArtifacts.ps1
           arguments: >
-            -SourceDirectory $(System.DefaultWorkingDirectory)/out
+            -SourceDirectory $(System.DefaultWorkingDirectory)/build
             -TargetDirectory $(Build.ArtifactStagingDirectory)
             -InformationAction Continue
 
