@@ -9,10 +9,8 @@ package com.azure.messaging.eventgrid;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.experimental.serializer.ObjectSerializer;
 import com.azure.core.util.CoreUtils;
-import reactor.core.publisher.Flux;
 
 import java.io.ByteArrayOutputStream;
-import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.*;
 
@@ -22,7 +20,7 @@ import java.util.*;
  * @see EventGridPublisherClient
  **/
 @Fluent
-public final class CloudEvent {
+public class CloudEvent {
 
     private static final String SPEC_VERSION = "1.0";
 

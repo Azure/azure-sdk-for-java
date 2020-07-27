@@ -93,9 +93,9 @@ public final class EventGridConsumer {
                                                   event) {
         String eventType = SystemEventMappings.canonicalizeEventType(event.getEventType());
         if (typeMappings.containsKey(eventType)) {
-            deserializer.toTree(event.getData())
+            event.setData(deserializer.toTree(event.getData())
                 .flatMap(jsonNode -> deserializer.deserializeTree(jsonNode, typeMappings.get(eventType)))
-                .subscribe(event::setData);
+                .block());
         }
         return new EventGridEvent(event);
     }
@@ -128,9 +128,9 @@ public final class EventGridConsumer {
     private CloudEvent richDataAndConvert(com.azure.messaging.eventgrid.implementation.models.CloudEvent event) {
         String eventType = SystemEventMappings.canonicalizeEventType(event.getType());
         if (typeMappings.containsKey(eventType)) {
-            deserializer.toTree(event.getData())
+            event.setData(deserializer.toTree(event.getData())
                 .flatMap(jsonNode -> deserializer.deserializeTree(jsonNode, typeMappings.get(eventType)))
-                .subscribe(event::setData);
+                .block());
         }
         return new CloudEvent(event);
     }
