@@ -786,7 +786,7 @@ class LeaseAPITest extends APISpec {
         def leaseClient = createLeaseClient(cc, getRandomUUID())
         leaseClient.acquireLease(leaseTime)
 
-        def breakLeaseResponse = leaseClient.breakLeaseWithResponse(new BlobBreakLeaseOptions().setBreakPeriod(breakPeriod), null, null)
+        def breakLeaseResponse = leaseClient.breakLeaseWithResponse(new BlobBreakLeaseOptions().setBreakPeriod(Duration.ofSeconds(breakPeriod)), null, null)
         def state = cc.getProperties().getLeaseState()
 
         expect:
