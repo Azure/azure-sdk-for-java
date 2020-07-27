@@ -1,12 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.data.cosmos.config;
+package com.azure.spring.data.cosmos.core.mapping;
 
 import com.azure.spring.data.cosmos.Constants;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
-import com.azure.spring.data.cosmos.core.mapping.CosmosPersistentEntity;
-import com.azure.spring.data.cosmos.core.mapping.CosmosPersistentProperty;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
