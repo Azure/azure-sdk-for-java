@@ -105,6 +105,19 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     }
 
     /**
+     * Initialization
+     *
+     * @param cosmosFactory must not be {@literal null}
+     * @param cosmosConfig must not be {@literal null}
+     * @param mappingCosmosConverter must not be {@literal null}
+     */
+    public CosmosTemplate(CosmosFactory cosmosFactory,
+                          CosmosConfig cosmosConfig,
+                          MappingCosmosConverter mappingCosmosConverter) {
+        this(cosmosFactory, cosmosConfig, mappingCosmosConverter, null);
+    }
+
+    /**
      * Sets the application context
      *
      * @param applicationContext must not be {@literal null}

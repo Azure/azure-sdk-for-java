@@ -93,7 +93,7 @@ public abstract class AbstractCosmosConfiguration extends CosmosConfigurationSup
     public ReactiveCosmosTemplate reactiveCosmosTemplate(CosmosFactory cosmosFactory,
                                                          CosmosConfig cosmosConfig,
                                                          MappingCosmosConverter mappingCosmosConverter) {
-        return new ReactiveCosmosTemplate(cosmosFactory, cosmosConfig, mappingCosmosConverter);
+        return new ReactiveCosmosTemplate(cosmosFactory, cosmosConfig, mappingCosmosConverter, cosmosAuditingHandler);
     }
 
     /**

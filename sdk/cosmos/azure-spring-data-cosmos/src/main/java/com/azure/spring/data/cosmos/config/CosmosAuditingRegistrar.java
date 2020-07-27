@@ -57,7 +57,7 @@ class CosmosAuditingRegistrar extends AuditingBeanDefinitionRegistrarSupport {
             BeanDefinitionBuilder.rootBeanDefinition(IsNewAwareAuditingHandler.class);
 
         final BeanDefinitionBuilder definition =
-            BeanDefinitionBuilder.genericBeanDefinition(DocumentDbMappingContextLookup.class);
+            BeanDefinitionBuilder.genericBeanDefinition(CosmosMappingContextLookup.class);
         definition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_CONSTRUCTOR);
 
         builder.addConstructorArgValue(definition.getBeanDefinition());
@@ -78,12 +78,12 @@ class CosmosAuditingRegistrar extends AuditingBeanDefinitionRegistrarSupport {
         // the spring eventing system which would be a chunk of work beyond the scope of this PR
     }
 
-    static class DocumentDbMappingContextLookup implements
+    static class CosmosMappingContextLookup implements
         FactoryBean<MappingContext<? extends CosmosPersistentEntity<?>, CosmosPersistentProperty>> {
 
         private final MappingCosmosConverter converter;
 
-        DocumentDbMappingContextLookup(MappingCosmosConverter converter) {
+        CosmosMappingContextLookup(MappingCosmosConverter converter) {
             this.converter = converter;
         }
 
