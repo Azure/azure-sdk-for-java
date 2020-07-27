@@ -3,16 +3,23 @@ package com.azure.messaging.eventgrid;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.CoreUtils;
 
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.Base64;
 
 /**
  * A way to use a generated shared access signature as a credential to publish events to a topic through a client.
  */
-public final class EventGridSharedAccessSignatureCredential {
+public final class EventGridSasTokenCredential {
 
     private String accessToken;
 
@@ -23,16 +30,27 @@ public final class EventGridSharedAccessSignatureCredential {
             String expKey = "e";
             String signKey = "s";
 
-            String encoder = StandardCharsets.UTF_8.name();
-            String encodedResource = URLEncoder.encode(resource, encoder);
-            String encodedExpiration = URLEncoder.encode(expiration.format(DateTimeFormatter.BASIC_ISO_DATE), encoder);
+            Charset charset = StandardCharsets.UTF_8;
+            String encodedResource = URLEncoder.encode(resource, charset.name());
+            String encodedExpiration = URLEncoder.encode(expiration.atZoneSameInstant(ZoneOffset.UTC).format(
+                DateTimeFormatter.ofPattern("M/d/yyyy h:m:s a")),
+                charset.name());
 
             String unsignedSas = String.format("%s=%s&%s=%s", resKey, encodedResource, expKey, encodedExpiration);
 
-        } catch (UnsupportedEncodingException e) {
+            Mac hmac = Mac.getInstance("hmacSHA256");
+            hmac.init(new SecretKeySpec(Base64.getDecoder().decode(key.getKey()), "hmacSHA256"));
+            String signature = new String(Base64.getEncoder().encode(
+                hmac.doFinal(unsignedSas.getBytes(charset))),
+                charset);
+
+            String encodedSignature = URLEncoder.encode(signature, charset.name());
+
+            return String.format("%s&%s=%s", unsignedSas, signKey, encodedSignature);
+
+        } catch (NoSuchAlgorithmException | UnsupportedEncodingException | InvalidKeyException e) {
             e.printStackTrace();
         }
-        //TODO: finish
         return null;
     }
 
@@ -40,7 +58,7 @@ public final class EventGridSharedAccessSignatureCredential {
      * Create an instance of this object to authenticate calls to the EventGrid service.
      * @param accessToken the shared access signature to use.
      */
-    public EventGridSharedAccessSignatureCredential(String accessToken) {
+    public EventGridSasTokenCredential(String accessToken) {
         if (CoreUtils.isNullOrEmpty(accessToken)) {
             throw new IllegalArgumentException("the access token cannot be null or empty");
         }
@@ -51,7 +69,7 @@ public final class EventGridSharedAccessSignatureCredential {
      * Get the token string to authenticate service calls
      * @return the SharedAccessSignature token as a string
      */
-    public String getSignature() {
+    public String getAccessToken() {
         return accessToken;
     }
 
