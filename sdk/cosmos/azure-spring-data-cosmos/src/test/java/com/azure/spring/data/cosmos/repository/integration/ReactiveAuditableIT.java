@@ -56,6 +56,7 @@ public class ReactiveAuditableIT {
                 now))
             .verifyComplete();
     }
+
     @Test
     public void testUpdateShouldNotOverwriteCreatedEntries() {
         final AuditableEntity entity = new AuditableEntity();

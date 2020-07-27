@@ -94,6 +94,25 @@ public ObjectMapper objectMapper() {
     return new ObjectMapper(); // Do configuration to the ObjectMapper if required
 }
 ```
+- Supports Audit fields on database entities using the standard spring-data annotations. This feature is enabled by adding 
+the `@EnableCosmosAuditing` annotation to your application configuration. Entities can annotate fields using `@CreatedBy` 
+`@CreatedDate` `@LastModifiedBy` and `@LastModifiedDate`. These fields will be updated automatically.
+<!-- embedme src/samples/java/com/azure/cosmos/AuditableUser.java#L11-L23 -->
+```java
+@Document(container = "myContainer")
+public class AuditableUser {
+    private String id;
+    private String firstName;
+    @CreatedBy
+    private String createdBy;
+    @CreatedDate
+    private OffsetDateTime createdDate;
+    @LastModifiedBy
+    private String lastModifiedBy;
+    @LastModifiedDate
+    private OffsetDateTime lastModifiedByDate;
+}
+```
 
 ## Quick Start
 
