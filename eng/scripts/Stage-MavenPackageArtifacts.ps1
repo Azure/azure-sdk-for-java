@@ -8,7 +8,7 @@ $ErrorActionPreference = "Stop"
 Write-Host "Source Directory is: $SourceDirectory"
 Write-host "Target Directory is: $TargetDirectory"
 
-Import-Module $PSScriptRoot\MavenPackaging
+. $PSScriptRoot\MavenPackaging.ps1
 
 Write-Host "Searching for packages in: $SourceDirectory"
 $packageDetails = Get-MavenPackageDetails -ArtifactDirectory $SourceDirectory

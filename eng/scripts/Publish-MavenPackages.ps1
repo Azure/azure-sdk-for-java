@@ -11,7 +11,7 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-Import-Module .\MavenPackaging
+. $PSScriptRoot\MavenPackaging.ps1
 
 # The Resolve-Path will normalize the path separators and throw if they don't exist.
 # This is necessary because, the yml passes in ${{parameters.BuildToolsPath}}/ which
