@@ -2,11 +2,22 @@
 
 ## 4.3.0-beta.1 (Unreleased)
 ### New Features
-* Updated reactor-core version to `3.3.8.RELEASE`
-* Updated reactor-netty version to `0.9.10.RELEASE`
-* Updated netty version to `4.1.51.Final`
+* Updated reactor-core library version to `3.3.8.RELEASE`
+* Updated reactor-netty library version to `0.9.10.RELEASE`
+* Updated netty library version to `4.1.51.Final`
+* Added new APIs for `upsertItem` with `partitionKey`
+* Added open telemetry tracing support 
 ### Key Bug Fixes
-* Fixed issue where SSLException gets thrown in case of cancellation of requests in GATEWAY mode. 
+* Fixed issue where SSLException gets thrown in case of cancellation of requests in GATEWAY mode.
+* Fixed resource throttle retry policy on stored procedures execution.
+* Fixed issue where SDK hangs in log level DEBUG mode. 
+* Fixed periodic spikes in latency in Direct mode. 
+* Fixed high client initialization time issue. 
+* Fixed http proxy bug when customizing client with direct mode and gateway mode. 
+* Fixed potential NPE in users passes null options. 
+* Added timeUnit to `requestLatency` in diagnostics string.
+* Removed duplicate uri string from diagnostics string. 
+* Fixed diagnostics string in proper JSON format for point operations.
 
 ## 4.2.0 (2020-07-14)
 ### New Features
