@@ -55,7 +55,7 @@ class RoleDefinitionImpl extends WrapperImpl<RoleDefinitionInner> implements Rol
 
     @Override
     public Set<String> assignableScopes() {
-        return Collections.unmodifiableSet(new HashSet(inner().assignableScopes()));
+        return Collections.unmodifiableSet(new HashSet<>(inner().assignableScopes()));
     }
 
     @Override

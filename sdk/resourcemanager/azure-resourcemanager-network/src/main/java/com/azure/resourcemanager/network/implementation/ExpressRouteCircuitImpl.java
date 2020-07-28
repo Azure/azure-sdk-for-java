@@ -104,8 +104,8 @@ class ExpressRouteCircuitImpl
                 expressRouteCircuitPeerings
                     .put(
                         peering.name(),
-                        new ExpressRouteCircuitPeeringImpl(
-                            this, peering, manager().inner().getExpressRouteCircuitPeerings(), peering.peeringType()));
+                        new ExpressRouteCircuitPeeringImpl<>(this, peering,
+                            manager().inner().getExpressRouteCircuitPeerings(), peering.peeringType()));
             }
         }
     }

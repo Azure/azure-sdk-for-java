@@ -29,6 +29,7 @@ import reactor.core.publisher.Mono;
 public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
 
     @Test
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public void canUseMultipleIPConfigs() throws Exception {
         String networkName = sdkContext.randomResourceName("net", 15);
         String[] nicNames = new String[3];
@@ -177,7 +178,7 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
 
         List<NetworkInterface> updatedNics =
             Flux
-                .mergeDelayError(32, (Mono<NetworkInterface>[]) nicUpdates.toArray(new Mono[nicUpdates.size()]))
+                .mergeDelayError(32, (Mono<NetworkInterface>[]) nicUpdates.toArray(new Mono[0]))
                 .collectList()
                 .block();
 

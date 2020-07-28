@@ -38,7 +38,7 @@ public class GalleriesImpl
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public Flux<String> deleteByIdsAsync(Collection<String> ids) {
         if (ids == null || ids.isEmpty()) {
             return Flux.empty();

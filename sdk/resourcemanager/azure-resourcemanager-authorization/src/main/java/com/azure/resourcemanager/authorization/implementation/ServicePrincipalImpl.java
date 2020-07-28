@@ -277,13 +277,13 @@ class ServicePrincipalImpl extends CreatableUpdatableImpl<ServicePrincipal, Serv
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public CertificateCredentialImpl defineCertificateCredential(String name) {
         return new CertificateCredentialImpl<>(name, this);
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public PasswordCredentialImpl definePasswordCredential(String name) {
         return new PasswordCredentialImpl<>(name, this);
     }

@@ -38,7 +38,7 @@ public class LoadBalancerTests extends NetworkManagementTest {
                 .withSubnet(SUBNET_NAME, "172.18.0.0/28")
                 .create();
 
-        LoadBalancer loadBalancer = this.createLoadBalancer(networkManager, resourceGroup, network, lbName);
+        LoadBalancer loadBalancer = createLoadBalancer(networkManager, resourceGroup, network, lbName);
 
         // verify created probes
         Assertions.assertEquals(2, loadBalancer.loadBalancingRules().size());

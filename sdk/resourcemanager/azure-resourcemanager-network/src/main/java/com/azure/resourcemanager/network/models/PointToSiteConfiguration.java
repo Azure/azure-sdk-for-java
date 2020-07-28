@@ -139,10 +139,8 @@ public interface PointToSiteConfiguration extends HasInner<VpnClientConfiguratio
     interface UpdateStages {
         /**
          * The stage of the point-to-site configuration definition allowing to specify address pool.
-         *
-         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithAddressPool<ParentT> {
+        interface WithAddressPool {
             /**
              * Specifies address pool.
              *
@@ -210,10 +208,8 @@ public interface PointToSiteConfiguration extends HasInner<VpnClientConfiguratio
 
         /**
          * The stage of a point-to-site configuration definition allowing to specify which tunnel type will be used.
-         *
-         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithTunnelType<ParentT> {
+        interface WithTunnelType {
             /**
              * Specifies that only SSTP tunnel type will be used.
              *

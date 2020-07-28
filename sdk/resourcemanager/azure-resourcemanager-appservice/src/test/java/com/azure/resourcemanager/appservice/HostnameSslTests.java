@@ -58,7 +58,7 @@ public class HostnameSslTests extends AppServiceTest {
         // hostname binding shortcut
         webApp.update().withManagedHostnameBindings(domain, webappName + "-1", webappName + "-2").apply();
         if (!isPlaybackMode()) {
-            Response response = curl("http://" + webappName + "-1." + domainName);
+            Response<String> response = curl("http://" + webappName + "-1." + domainName);
             Assertions.assertEquals(200, response.getStatusCode());
             Assertions.assertNotNull(response.getValue());
             response = curl("http://" + webappName + "-2." + domainName);

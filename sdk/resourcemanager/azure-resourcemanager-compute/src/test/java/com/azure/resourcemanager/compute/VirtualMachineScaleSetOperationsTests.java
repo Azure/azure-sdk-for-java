@@ -207,7 +207,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         Assertions.assertNotNull(extension.publicSettingsAsJsonString());
         // Update VMSS capacity
         //
-        int newCapacity = (int) (scaleSet.capacity() + 1);
+        int newCapacity = scaleSet.capacity() + 1;
         virtualMachineScaleSet.update().withCapacity(newCapacity).apply();
         // Validate extensions after update
         //

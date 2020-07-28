@@ -15,7 +15,8 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.
 /** The implementation for KubernetesClusterAgentPool and its create and update interfaces. */
 public class KubernetesClusterAgentPoolImpl
     extends ChildResourceImpl<ManagedClusterAgentPoolProfile, KubernetesClusterImpl, OrchestratorServiceBase>
-    implements KubernetesClusterAgentPool, KubernetesClusterAgentPool.Definition {
+    implements KubernetesClusterAgentPool,
+    KubernetesClusterAgentPool.Definition<KubernetesCluster.DefinitionStages.WithCreate> {
 
     private String subnetName;
 
@@ -101,7 +102,7 @@ public class KubernetesClusterAgentPoolImpl
     }
 
     @Override
-    public DefinitionStages.WithAttach withAgentPoolVirtualMachineCount(int count) {
+    public KubernetesClusterAgentPoolImpl withAgentPoolVirtualMachineCount(int count) {
         this.inner().withCount(count);
         return this;
     }
@@ -121,7 +122,7 @@ public class KubernetesClusterAgentPoolImpl
     }
 
     @Override
-    public KubernetesCluster.Definition attach() {
+    public KubernetesClusterImpl attach() {
         this.parent().inner().agentPoolProfiles().add(this.inner());
         return this.parent();
     }

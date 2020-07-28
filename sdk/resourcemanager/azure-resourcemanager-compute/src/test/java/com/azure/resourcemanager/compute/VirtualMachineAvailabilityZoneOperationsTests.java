@@ -269,6 +269,7 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
 
     @Test
     @Disabled("Though valid scenario, ignoring it due to network service bug")
+    @SuppressWarnings("unchecked")
     public void
         canCreateRegionalNonAvailSetVirtualMachinesAndAssociateThemWithSingleBackendPoolOfZoneResilientLoadBalancer()
             throws Exception {
@@ -423,6 +424,7 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
 
     @Test
     @Disabled("Though valid scenario, ignoring it due to network service bug")
+    @SuppressWarnings("unchecked")
     public void canCreateZonedVirtualMachinesAndAssociateThemWithSingleBackendPoolOfZoneResilientLoadBalancer()
         throws Exception {
         final String networkName = generateRandomResourceName("net", 10);

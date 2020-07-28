@@ -55,6 +55,7 @@ public class VirtualMachineScaleSetExtensionImpl
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Map<String, Object> publicSettings() {
         if (this.inner().settings() == null) {
             return Collections.unmodifiableMap(new LinkedHashMap<String, Object>());
@@ -160,6 +161,7 @@ public class VirtualMachineScaleSetExtensionImpl
     //       are used to ensure we initialize settings/protectedSettings of an extension only if user choose to update
     // it.
     //
+    @SuppressWarnings("unchecked")
     private HashMap<String, Object> ensurePublicSettings() {
         if (this.inner().settings() == null) {
             this.inner().withSettings(new LinkedHashMap<String, Object>());
@@ -167,6 +169,7 @@ public class VirtualMachineScaleSetExtensionImpl
         return (LinkedHashMap<String, Object>) this.inner().settings();
     }
 
+    @SuppressWarnings("unchecked")
     private HashMap<String, Object> ensureProtectedSettings() {
         if (this.inner().protectedSettings() == null) {
             this.inner().withProtectedSettings(new LinkedHashMap<String, Object>());
