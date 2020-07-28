@@ -234,18 +234,18 @@ public class TableAsyncClient {
         Context context) {
         Integer timeoutInt = timeout == null ? null : (int) timeout.getSeconds();
         if (entity == null) {
-            monoError(logger, new NullPointerException("TableEntity cannot be null"));
+            return monoError(logger, new NullPointerException("TableEntity cannot be null"));
         }
         if (updateMode == UpdateMode.REPLACE) {
-            return tableImplementation.updateEntityWithResponseAsync(tableName, entity.getPartitionKey().toString(),
-                entity.getRowKey().toString(), timeoutInt, null, "*",
+            return tableImplementation.updateEntityWithResponseAsync(tableName, entity.getPartitionKey(),
+                entity.getRowKey(), timeoutInt, null, "*",
                 entity.getProperties(), null, context).map(response -> {
                     return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                     null);
                 });
         } else {
-            return tableImplementation.mergeEntityWithResponseAsync(tableName, entity.getPartitionKey().toString(),
-                entity.getRowKey().toString(), timeoutInt, null, "*",
+            return tableImplementation.mergeEntityWithResponseAsync(tableName, entity.getPartitionKey(),
+                entity.getRowKey(), timeoutInt, null, "*",
                 entity.getProperties(), null, context).map(response -> {
                     return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                     null);
@@ -315,17 +315,17 @@ public class TableAsyncClient {
         Integer timeoutInt = timeout == null ? null : (int) timeout.getSeconds();
         if (updateMode == null || updateMode == UpdateMode.MERGE) {
             if (ifUnchanged) {
-                return tableImplementation.mergeEntityWithResponseAsync(tableName, entity.getPartitionKey().toString(),
-                    entity.getRowKey().toString(), timeoutInt, null, entity.getETag(), entity.getProperties(), null,
+                return tableImplementation.mergeEntityWithResponseAsync(tableName, entity.getPartitionKey(),
+                    entity.getRowKey(), timeoutInt, null, entity.getETag(), entity.getProperties(), null,
                     context).map(response -> {
                         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                         response.getHeaders(), null);
                     });
             } else {
-                return getEntity(entity.getPartitionKey().toString(), entity.getRowKey().toString())
+                return getEntity(entity.getPartitionKey(), entity.getRowKey())
                     .flatMap(entityReturned -> {
                         return tableImplementation.mergeEntityWithResponseAsync(tableName,
-                            entity.getPartitionKey().toString(), entity.getRowKey().toString(), timeoutInt, null,
+                            entity.getPartitionKey(), entity.getRowKey(), timeoutInt, null,
                             "*", entity.getProperties(), null, context);
                     }).map(response -> {
                         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
@@ -334,17 +334,17 @@ public class TableAsyncClient {
             }
         } else {
             if (ifUnchanged) {
-                return tableImplementation.updateEntityWithResponseAsync(tableName, entity.getPartitionKey().toString(),
-                    entity.getRowKey().toString(), timeoutInt, null, entity.getETag(), entity.getProperties(),
+                return tableImplementation.updateEntityWithResponseAsync(tableName, entity.getPartitionKey(),
+                    entity.getRowKey(), timeoutInt, null, entity.getETag(), entity.getProperties(),
                     null, context).map(response -> {
                         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                         response.getHeaders(), null);
                     });
             } else {
-                return getEntity(entity.getPartitionKey().toString(), entity.getRowKey().toString())
+                return getEntity(entity.getPartitionKey(), entity.getRowKey())
                     .flatMap(entityReturned -> {
                         return tableImplementation.updateEntityWithResponseAsync(tableName,
-                            entity.getPartitionKey().toString(), entity.getRowKey().toString(),
+                            entity.getPartitionKey(), entity.getRowKey(),
                             timeoutInt, null, "*", entity.getProperties(), null,
                             context);
                     }).map(response -> {
@@ -398,8 +398,8 @@ public class TableAsyncClient {
         String matchParam = ifUnchanged ? entity.getETag() : "*";
         Integer timeoutInt = timeout == null ? null : (int) timeout.getSeconds();
         context = context == null ? Context.NONE : context;
-        return tableImplementation.deleteEntityWithResponseAsync(tableName, entity.getPartitionKey().toString(),
-            entity.getRowKey().toString(),
+        return tableImplementation.deleteEntityWithResponseAsync(tableName, entity.getPartitionKey(),
+            entity.getRowKey(),
             matchParam, timeoutInt, null, null, context).map(response -> {
                 return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                 null);
