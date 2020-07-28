@@ -228,7 +228,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         //verifying all components from StoreResponseStatistics
         for(JsonNode node : supplementalResponseStatisticsListNode) {
             assertThat(node.get("storeResult")).isNotNull();
-            assertThat(node.get("requestResponseTime")).isNotNull();
+            assertThat(node.get("requestResponseTimeUTC")).isNotNull();
             assertThat(node.get("requestOperationType")).isNotNull();
             assertThat(node.get("requestOperationType")).isNotNull();
         }
