@@ -122,6 +122,11 @@ public interface RntbdEndpoint extends AutoCloseable {
         }
 
         @JsonProperty
+        public long idleConnectionTimerResolutionInNanos() {
+            return this.options.idleChannelTimerResolution().toNanos();
+        }
+
+        @JsonProperty
         public long idleEndpointTimeoutInNanos() {
             return this.options.idleEndpointTimeout().toNanos();
         }
