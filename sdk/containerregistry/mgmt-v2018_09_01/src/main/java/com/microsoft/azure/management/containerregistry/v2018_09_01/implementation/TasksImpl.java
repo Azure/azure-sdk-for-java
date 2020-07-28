@@ -76,10 +76,14 @@ class TasksImpl extends WrapperImpl<TasksInner> implements Tasks {
     public Observable<Task> getAsync(String resourceGroupName, String registryName, String taskName) {
         TasksInner client = this.inner();
         return client.getAsync(resourceGroupName, registryName, taskName)
-        .map(new Func1<TaskInner, Task>() {
+        .flatMap(new Func1<TaskInner, Observable<Task>>() {
             @Override
-            public Task call(TaskInner inner) {
-                return wrapModel(inner);
+            public Observable<Task> call(TaskInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((Task)wrapModel(inner));
+                }
             }
        });
     }

@@ -74,10 +74,14 @@ class RunsImpl extends WrapperImpl<RunsInner> implements Runs {
     public Observable<Run> getAsync(String resourceGroupName, String registryName, String runId) {
         RunsInner client = this.inner();
         return client.getAsync(resourceGroupName, registryName, runId)
-        .map(new Func1<RunInner, Run>() {
+        .flatMap(new Func1<RunInner, Observable<Run>>() {
             @Override
-            public Run call(RunInner inner) {
-                return wrapModel(inner);
+            public Observable<Run> call(RunInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((Run)wrapModel(inner));
+                }
             }
        });
     }
