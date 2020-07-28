@@ -31,6 +31,12 @@ public interface DeploymentOperation extends
     String provisioningState();
 
     /**
+     *
+     * @return the name of the current provisioning operation
+     */
+    ProvisioningOperation provisioningOperation();
+
+    /**
      * @return the date and time of the operation
      */
     OffsetDateTime timestamp();

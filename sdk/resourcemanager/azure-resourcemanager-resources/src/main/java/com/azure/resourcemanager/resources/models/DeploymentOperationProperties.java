@@ -16,6 +16,12 @@ public final class DeploymentOperationProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentOperationProperties.class);
 
     /*
+     * The name of the current provisioning operation.
+     */
+    @JsonProperty(value = "provisioningOperation", access = JsonProperty.Access.WRITE_ONLY)
+    private ProvisioningOperation provisioningOperation;
+
+    /*
      * The state of the provisioning.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
@@ -40,16 +46,19 @@ public final class DeploymentOperationProperties {
     private String serviceRequestId;
 
     /*
-     * Operation status code.
+     * Operation status code from the resource provider. This property may not
+     * be set if a response has not yet been received.
      */
     @JsonProperty(value = "statusCode", access = JsonProperty.Access.WRITE_ONLY)
     private String statusCode;
 
     /*
-     * Operation status message.
+     * Operation status message from the resource provider. This property is
+     * optional.  It will only be provided if an error was received from the
+     * resource provider.
      */
     @JsonProperty(value = "statusMessage", access = JsonProperty.Access.WRITE_ONLY)
-    private Object statusMessage;
+    private StatusMessage statusMessage;
 
     /*
      * The target resource.
@@ -68,6 +77,15 @@ public final class DeploymentOperationProperties {
      */
     @JsonProperty(value = "response", access = JsonProperty.Access.WRITE_ONLY)
     private HttpMessage response;
+
+    /**
+     * Get the provisioningOperation property: The name of the current provisioning operation.
+     *
+     * @return the provisioningOperation value.
+     */
+    public ProvisioningOperation provisioningOperation() {
+        return this.provisioningOperation;
+    }
 
     /**
      * Get the provisioningState property: The state of the provisioning.
@@ -106,7 +124,8 @@ public final class DeploymentOperationProperties {
     }
 
     /**
-     * Get the statusCode property: Operation status code.
+     * Get the statusCode property: Operation status code from the resource provider. This property may not be set if a
+     * response has not yet been received.
      *
      * @return the statusCode value.
      */
@@ -115,11 +134,12 @@ public final class DeploymentOperationProperties {
     }
 
     /**
-     * Get the statusMessage property: Operation status message.
+     * Get the statusMessage property: Operation status message from the resource provider. This property is optional.
+     * It will only be provided if an error was received from the resource provider.
      *
      * @return the statusMessage value.
      */
-    public Object statusMessage() {
+    public StatusMessage statusMessage() {
         return this.statusMessage;
     }
 
@@ -156,6 +176,9 @@ public final class DeploymentOperationProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (statusMessage() != null) {
+            statusMessage().validate();
+        }
         if (targetResource() != null) {
             targetResource().validate();
         }

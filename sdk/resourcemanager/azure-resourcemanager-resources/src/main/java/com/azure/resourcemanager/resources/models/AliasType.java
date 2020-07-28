@@ -4,77 +4,47 @@
 
 package com.azure.resourcemanager.resources.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 
-/** The AliasType model. */
-@Fluent
-public final class AliasType {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AliasType.class);
+/** Defines values for AliasType. */
+public enum AliasType {
+    /** Enum value NotSpecified. */
+    NOT_SPECIFIED("NotSpecified"),
 
-    /*
-     * The alias name.
-     */
-    @JsonProperty(value = "name")
-    private String name;
+    /** Enum value PlainText. */
+    PLAIN_TEXT("PlainText"),
 
-    /*
-     * The paths for an alias.
-     */
-    @JsonProperty(value = "paths")
-    private List<AliasPathType> paths;
+    /** Enum value Mask. */
+    MASK("Mask");
 
-    /**
-     * Get the name property: The alias name.
-     *
-     * @return the name value.
-     */
-    public String name() {
-        return this.name;
+    /** The actual serialized value for a AliasType instance. */
+    private final String value;
+
+    AliasType(String value) {
+        this.value = value;
     }
 
     /**
-     * Set the name property: The alias name.
+     * Parses a serialized value to a AliasType instance.
      *
-     * @param name the name value to set.
-     * @return the AliasType object itself.
+     * @param value the serialized value to parse.
+     * @return the parsed AliasType object, or null if unable to parse.
      */
-    public AliasType withName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
-     * Get the paths property: The paths for an alias.
-     *
-     * @return the paths value.
-     */
-    public List<AliasPathType> paths() {
-        return this.paths;
-    }
-
-    /**
-     * Set the paths property: The paths for an alias.
-     *
-     * @param paths the paths value to set.
-     * @return the AliasType object itself.
-     */
-    public AliasType withPaths(List<AliasPathType> paths) {
-        this.paths = paths;
-        return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (paths() != null) {
-            paths().forEach(e -> e.validate());
+    @JsonCreator
+    public static AliasType fromString(String value) {
+        AliasType[] items = AliasType.values();
+        for (AliasType item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
         }
+        return null;
+    }
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.value;
     }
 }

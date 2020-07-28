@@ -4,7 +4,8 @@
 
 package com.azure.resourcemanager.resources.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.management.exception.ManagementError;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluent.inner.ProviderInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -13,15 +14,15 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 /** The DeploymentPropertiesExtended model. */
-@Fluent
+@Immutable
 public final class DeploymentPropertiesExtended {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentPropertiesExtended.class);
 
     /*
-     * The state of the provisioning.
+     * Denotes the state of provisioning.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * The correlation ID of the deployment.
@@ -44,71 +45,87 @@ public final class DeploymentPropertiesExtended {
     /*
      * Key/value pairs that represent deployment output.
      */
-    @JsonProperty(value = "outputs")
+    @JsonProperty(value = "outputs", access = JsonProperty.Access.WRITE_ONLY)
     private Object outputs;
 
     /*
      * The list of resource providers needed for the deployment.
      */
-    @JsonProperty(value = "providers")
+    @JsonProperty(value = "providers", access = JsonProperty.Access.WRITE_ONLY)
     private List<ProviderInner> providers;
 
     /*
      * The list of deployment dependencies.
      */
-    @JsonProperty(value = "dependencies")
+    @JsonProperty(value = "dependencies", access = JsonProperty.Access.WRITE_ONLY)
     private List<Dependency> dependencies;
 
     /*
-     * The template content. Use only one of Template or TemplateLink.
+     * The URI referencing the template.
      */
-    @JsonProperty(value = "template")
-    private Object template;
-
-    /*
-     * The URI referencing the template. Use only one of Template or
-     * TemplateLink.
-     */
-    @JsonProperty(value = "templateLink")
+    @JsonProperty(value = "templateLink", access = JsonProperty.Access.WRITE_ONLY)
     private TemplateLink templateLink;
 
     /*
-     * Deployment parameters. Use only one of Parameters or ParametersLink.
+     * Deployment parameters.
      */
-    @JsonProperty(value = "parameters")
+    @JsonProperty(value = "parameters", access = JsonProperty.Access.WRITE_ONLY)
     private Object parameters;
 
     /*
-     * The URI referencing the parameters. Use only one of Parameters or
-     * ParametersLink.
+     * The URI referencing the parameters.
      */
-    @JsonProperty(value = "parametersLink")
+    @JsonProperty(value = "parametersLink", access = JsonProperty.Access.WRITE_ONLY)
     private ParametersLink parametersLink;
 
     /*
      * The deployment mode. Possible values are Incremental and Complete.
      */
-    @JsonProperty(value = "mode")
+    @JsonProperty(value = "mode", access = JsonProperty.Access.WRITE_ONLY)
     private DeploymentMode mode;
 
     /*
      * The debug setting of the deployment.
      */
-    @JsonProperty(value = "debugSetting")
+    @JsonProperty(value = "debugSetting", access = JsonProperty.Access.WRITE_ONLY)
     private DebugSetting debugSetting;
 
     /*
      * The deployment on error behavior.
      */
-    @JsonProperty(value = "onErrorDeployment")
+    @JsonProperty(value = "onErrorDeployment", access = JsonProperty.Access.WRITE_ONLY)
     private OnErrorDeploymentExtended onErrorDeployment;
 
+    /*
+     * The hash produced for the template.
+     */
+    @JsonProperty(value = "templateHash", access = JsonProperty.Access.WRITE_ONLY)
+    private String templateHash;
+
+    /*
+     * Array of provisioned resources.
+     */
+    @JsonProperty(value = "outputResources", access = JsonProperty.Access.WRITE_ONLY)
+    private List<ResourceReference> outputResources;
+
+    /*
+     * Array of validated resources.
+     */
+    @JsonProperty(value = "validatedResources", access = JsonProperty.Access.WRITE_ONLY)
+    private List<ResourceReference> validatedResources;
+
+    /*
+     * The deployment error.
+     */
+    @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
+    private ManagementError error;
+
     /**
-     * Get the provisioningState property: The state of the provisioning.
+     * Get the provisioningState property: Denotes the state of provisioning.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -149,34 +166,12 @@ public final class DeploymentPropertiesExtended {
     }
 
     /**
-     * Set the outputs property: Key/value pairs that represent deployment output.
-     *
-     * @param outputs the outputs value to set.
-     * @return the DeploymentPropertiesExtended object itself.
-     */
-    public DeploymentPropertiesExtended withOutputs(Object outputs) {
-        this.outputs = outputs;
-        return this;
-    }
-
-    /**
      * Get the providers property: The list of resource providers needed for the deployment.
      *
      * @return the providers value.
      */
     public List<ProviderInner> providers() {
         return this.providers;
-    }
-
-    /**
-     * Set the providers property: The list of resource providers needed for the deployment.
-     *
-     * @param providers the providers value to set.
-     * @return the DeploymentPropertiesExtended object itself.
-     */
-    public DeploymentPropertiesExtended withProviders(List<ProviderInner> providers) {
-        this.providers = providers;
-        return this;
     }
 
     /**
@@ -189,38 +184,7 @@ public final class DeploymentPropertiesExtended {
     }
 
     /**
-     * Set the dependencies property: The list of deployment dependencies.
-     *
-     * @param dependencies the dependencies value to set.
-     * @return the DeploymentPropertiesExtended object itself.
-     */
-    public DeploymentPropertiesExtended withDependencies(List<Dependency> dependencies) {
-        this.dependencies = dependencies;
-        return this;
-    }
-
-    /**
-     * Get the template property: The template content. Use only one of Template or TemplateLink.
-     *
-     * @return the template value.
-     */
-    public Object template() {
-        return this.template;
-    }
-
-    /**
-     * Set the template property: The template content. Use only one of Template or TemplateLink.
-     *
-     * @param template the template value to set.
-     * @return the DeploymentPropertiesExtended object itself.
-     */
-    public DeploymentPropertiesExtended withTemplate(Object template) {
-        this.template = template;
-        return this;
-    }
-
-    /**
-     * Get the templateLink property: The URI referencing the template. Use only one of Template or TemplateLink.
+     * Get the templateLink property: The URI referencing the template.
      *
      * @return the templateLink value.
      */
@@ -229,18 +193,7 @@ public final class DeploymentPropertiesExtended {
     }
 
     /**
-     * Set the templateLink property: The URI referencing the template. Use only one of Template or TemplateLink.
-     *
-     * @param templateLink the templateLink value to set.
-     * @return the DeploymentPropertiesExtended object itself.
-     */
-    public DeploymentPropertiesExtended withTemplateLink(TemplateLink templateLink) {
-        this.templateLink = templateLink;
-        return this;
-    }
-
-    /**
-     * Get the parameters property: Deployment parameters. Use only one of Parameters or ParametersLink.
+     * Get the parameters property: Deployment parameters.
      *
      * @return the parameters value.
      */
@@ -249,36 +202,12 @@ public final class DeploymentPropertiesExtended {
     }
 
     /**
-     * Set the parameters property: Deployment parameters. Use only one of Parameters or ParametersLink.
-     *
-     * @param parameters the parameters value to set.
-     * @return the DeploymentPropertiesExtended object itself.
-     */
-    public DeploymentPropertiesExtended withParameters(Object parameters) {
-        this.parameters = parameters;
-        return this;
-    }
-
-    /**
-     * Get the parametersLink property: The URI referencing the parameters. Use only one of Parameters or
-     * ParametersLink.
+     * Get the parametersLink property: The URI referencing the parameters.
      *
      * @return the parametersLink value.
      */
     public ParametersLink parametersLink() {
         return this.parametersLink;
-    }
-
-    /**
-     * Set the parametersLink property: The URI referencing the parameters. Use only one of Parameters or
-     * ParametersLink.
-     *
-     * @param parametersLink the parametersLink value to set.
-     * @return the DeploymentPropertiesExtended object itself.
-     */
-    public DeploymentPropertiesExtended withParametersLink(ParametersLink parametersLink) {
-        this.parametersLink = parametersLink;
-        return this;
     }
 
     /**
@@ -291,34 +220,12 @@ public final class DeploymentPropertiesExtended {
     }
 
     /**
-     * Set the mode property: The deployment mode. Possible values are Incremental and Complete.
-     *
-     * @param mode the mode value to set.
-     * @return the DeploymentPropertiesExtended object itself.
-     */
-    public DeploymentPropertiesExtended withMode(DeploymentMode mode) {
-        this.mode = mode;
-        return this;
-    }
-
-    /**
      * Get the debugSetting property: The debug setting of the deployment.
      *
      * @return the debugSetting value.
      */
     public DebugSetting debugSetting() {
         return this.debugSetting;
-    }
-
-    /**
-     * Set the debugSetting property: The debug setting of the deployment.
-     *
-     * @param debugSetting the debugSetting value to set.
-     * @return the DeploymentPropertiesExtended object itself.
-     */
-    public DeploymentPropertiesExtended withDebugSetting(DebugSetting debugSetting) {
-        this.debugSetting = debugSetting;
-        return this;
     }
 
     /**
@@ -331,14 +238,39 @@ public final class DeploymentPropertiesExtended {
     }
 
     /**
-     * Set the onErrorDeployment property: The deployment on error behavior.
+     * Get the templateHash property: The hash produced for the template.
      *
-     * @param onErrorDeployment the onErrorDeployment value to set.
-     * @return the DeploymentPropertiesExtended object itself.
+     * @return the templateHash value.
      */
-    public DeploymentPropertiesExtended withOnErrorDeployment(OnErrorDeploymentExtended onErrorDeployment) {
-        this.onErrorDeployment = onErrorDeployment;
-        return this;
+    public String templateHash() {
+        return this.templateHash;
+    }
+
+    /**
+     * Get the outputResources property: Array of provisioned resources.
+     *
+     * @return the outputResources value.
+     */
+    public List<ResourceReference> outputResources() {
+        return this.outputResources;
+    }
+
+    /**
+     * Get the validatedResources property: Array of validated resources.
+     *
+     * @return the validatedResources value.
+     */
+    public List<ResourceReference> validatedResources() {
+        return this.validatedResources;
+    }
+
+    /**
+     * Get the error property: The deployment error.
+     *
+     * @return the error value.
+     */
+    public ManagementError error() {
+        return this.error;
     }
 
     /**
@@ -364,6 +296,12 @@ public final class DeploymentPropertiesExtended {
         }
         if (onErrorDeployment() != null) {
             onErrorDeployment().validate();
+        }
+        if (outputResources() != null) {
+            outputResources().forEach(e -> e.validate());
+        }
+        if (validatedResources() != null) {
+            validatedResources().forEach(e -> e.validate());
         }
     }
 }

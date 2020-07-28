@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgcosmosdbfda27824f?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgcosmosdbfda27824f?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (ResourceManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -783,7 +783,7 @@
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgcosmosdbfda27824f?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgcosmosdbfda27824f?api-version=2020-06-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9cc036e5627b47f1226db264b19f71f32dfb7a4fac78a6902ca4f9fedae7623f Java:11.0.3 (ResourceManagementClient, 2019-08-01)",
       "Content-Type" : "application/json; charset=utf-8"

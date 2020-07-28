@@ -229,6 +229,7 @@ public final class ResourceGroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .checkExistence(
                 this.client.getEndpoint(),
@@ -409,6 +410,7 @@ public final class ResourceGroupsClient {
         } else {
             parameters.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -576,6 +578,7 @@ public final class ResourceGroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -777,6 +780,7 @@ public final class ResourceGroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -945,6 +949,7 @@ public final class ResourceGroupsClient {
         } else {
             parameters.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .update(
                 this.client.getEndpoint(),
@@ -1121,6 +1126,7 @@ public final class ResourceGroupsClient {
         } else {
             parameters.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .exportTemplate(
                 this.client.getEndpoint(),
@@ -1354,6 +1360,7 @@ public final class ResourceGroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
@@ -1513,6 +1520,7 @@ public final class ResourceGroupsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listNext(nextLink, context)
             .map(

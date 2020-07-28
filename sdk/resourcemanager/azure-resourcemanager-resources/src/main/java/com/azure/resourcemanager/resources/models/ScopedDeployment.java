@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** The ScopedDeployment model. */
 @Fluent
@@ -25,6 +26,12 @@ public final class ScopedDeployment {
      */
     @JsonProperty(value = "properties", required = true)
     private DeploymentProperties properties;
+
+    /*
+     * Deployment tags
+     */
+    @JsonProperty(value = "tags")
+    private Map<String, String> tags;
 
     /**
      * Get the location property: The location to store the deployment data.
@@ -63,6 +70,26 @@ public final class ScopedDeployment {
      */
     public ScopedDeployment withProperties(DeploymentProperties properties) {
         this.properties = properties;
+        return this;
+    }
+
+    /**
+     * Get the tags property: Deployment tags.
+     *
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: Deployment tags.
+     *
+     * @param tags the tags value to set.
+     * @return the ScopedDeployment object itself.
+     */
+    public ScopedDeployment withTags(Map<String, String> tags) {
+        this.tags = tags;
         return this;
     }
 

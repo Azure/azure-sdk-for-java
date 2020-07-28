@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.resources.implementation;
 
 import com.azure.resourcemanager.resources.models.DeploymentOperation;
+import com.azure.resourcemanager.resources.models.ProvisioningOperation;
 import com.azure.resourcemanager.resources.models.TargetResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableRefreshableWrapperImpl;
@@ -43,6 +44,14 @@ final class DeploymentOperationImpl extends
             return null;
         }
         return this.inner().properties().provisioningState();
+    }
+
+    @Override
+    public ProvisioningOperation provisioningOperation() {
+        if (this.inner().properties() == null) {
+            return null;
+        }
+        return this.inner().properties().provisioningOperation();
     }
 
     @Override

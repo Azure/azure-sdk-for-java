@@ -73,9 +73,9 @@ public interface Deployment extends
     List<Dependency> dependencies();
 
     /**
-     * @return the template content
+     * @return the hash produced for the template
      */
-    Object template();
+    String templateHash();
 
     /**
      * @return the URI referencing the template
@@ -97,6 +97,13 @@ public interface Deployment extends
      * 'Incremental', 'Complete'.
      */
     DeploymentMode mode();
+
+    /**
+     * Get array of provisioned resources.
+     *
+     * @return the outputResources value
+     */
+    List<ResourceReference> outputResources();
 
     /**
      * @return the operations related to this deployment

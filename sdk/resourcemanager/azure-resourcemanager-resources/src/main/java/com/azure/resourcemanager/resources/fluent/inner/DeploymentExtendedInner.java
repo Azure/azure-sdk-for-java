@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.resources.fluent.inner;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
+import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.models.DeploymentPropertiesExtended;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -13,40 +13,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The DeploymentExtended model. */
 @Fluent
-public final class DeploymentExtendedInner extends ProxyResource {
+public final class DeploymentExtendedInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentExtendedInner.class);
-
-    /*
-     * the location of the deployment.
-     */
-    @JsonProperty(value = "location")
-    private String location;
 
     /*
      * Deployment properties.
      */
     @JsonProperty(value = "properties")
     private DeploymentPropertiesExtended properties;
-
-    /**
-     * Get the location property: the location of the deployment.
-     *
-     * @return the location value.
-     */
-    public String location() {
-        return this.location;
-    }
-
-    /**
-     * Set the location property: the location of the deployment.
-     *
-     * @param location the location value to set.
-     * @return the DeploymentExtendedInner object itself.
-     */
-    public DeploymentExtendedInner withLocation(String location) {
-        this.location = location;
-        return this;
-    }
 
     /**
      * Get the properties property: Deployment properties.

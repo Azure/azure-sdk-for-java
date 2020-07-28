@@ -16,7 +16,7 @@ public final class TagValueInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TagValueInner.class);
 
     /*
-     * The tag ID.
+     * The tag value ID.
      */
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
@@ -34,7 +34,7 @@ public final class TagValueInner {
     private TagCount count;
 
     /**
-     * Get the id property: The tag ID.
+     * Get the id property: The tag value ID.
      *
      * @return the id value.
      */
