@@ -134,7 +134,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
     private boolean diagnosticLogsToUpdate;
     private FunctionalTaskItem msiHandler;
     private boolean isInCreateMode;
-    private WebAppMsiHandler webAppMsiHandler;
+    private WebAppMsiHandler<FluentT, FluentImplT> webAppMsiHandler;
 
     WebAppBaseImpl(
         String name,
@@ -151,7 +151,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
             this.diagnosticLogs = new WebAppDiagnosticLogsImpl<>(logConfig, this);
         }
 
-        webAppMsiHandler = new WebAppMsiHandler(manager.authorizationManager(), this);
+        webAppMsiHandler = new WebAppMsiHandler<>(manager.authorizationManager(), this);
         normalizeProperties();
         isInCreateMode = inner() == null || inner().id() == null;
         if (!isInCreateMode) {

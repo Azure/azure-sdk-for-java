@@ -9,6 +9,7 @@ import com.azure.resourcemanager.appservice.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.appservice.models.ManagedServiceIdentityUserAssignedIdentities;
 import com.azure.resourcemanager.appservice.fluent.inner.SiteInner;
 import com.azure.resourcemanager.appservice.fluent.inner.SitePatchResourceInner;
+import com.azure.resourcemanager.appservice.models.WebAppBase;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.implementation.RoleAssignmentHelper;
 import com.azure.resourcemanager.msi.models.Identity;
@@ -27,12 +28,12 @@ import java.util.Set;
  * Utility class to set Managed Service Identity (MSI) property on a web app, install or update MSI extension and create
  * role assignments for the service principal associated with the web app.
  */
-@SuppressWarnings("rawtypes")
-public class WebAppMsiHandler extends RoleAssignmentHelper {
+public class WebAppMsiHandler<FluentT extends WebAppBase, FluentImplT extends WebAppBaseImpl<FluentT, FluentImplT>>
+    extends RoleAssignmentHelper {
 
     private final ClientLogger logger = new ClientLogger(getClass());
 
-    private WebAppBaseImpl webAppBase;
+    private WebAppBaseImpl<FluentT, FluentImplT> webAppBase;
 
     private List<String> creatableIdentityKeys;
     private Map<String, ManagedServiceIdentityUserAssignedIdentities> userAssignedIdentities;
@@ -44,8 +45,7 @@ public class WebAppMsiHandler extends RoleAssignmentHelper {
      * @param webAppBase the web app to which MSI extension needs to be installed and for which role assignments needs
      *     to be created
      */
-    @SuppressWarnings("rawtypes")
-    WebAppMsiHandler(final AuthorizationManager authorizationManager, WebAppBaseImpl webAppBase) {
+    WebAppMsiHandler(final AuthorizationManager authorizationManager, WebAppBaseImpl<FluentT, FluentImplT> webAppBase) {
         super(authorizationManager, webAppBase.taskGroup(), webAppBase.idProvider());
         this.webAppBase = webAppBase;
         this.creatableIdentityKeys = new ArrayList<>();
@@ -58,7 +58,7 @@ public class WebAppMsiHandler extends RoleAssignmentHelper {
      *
      * @return WebAppMsiHandler
      */
-    WebAppMsiHandler withLocalManagedServiceIdentity() {
+    WebAppMsiHandler<FluentT, FluentImplT> withLocalManagedServiceIdentity() {
         this.initSiteIdentity(ManagedServiceIdentityType.SYSTEM_ASSIGNED);
         return this;
     }
@@ -68,8 +68,8 @@ public class WebAppMsiHandler extends RoleAssignmentHelper {
      *
      * @return WebAppMsiHandler
      */
-    WebAppMsiHandler withoutLocalManagedServiceIdentity() {
-        SiteInner siteInner = (SiteInner) this.webAppBase.inner();
+    WebAppMsiHandler<FluentT, FluentImplT> withoutLocalManagedServiceIdentity() {
+        SiteInner siteInner = this.webAppBase.inner();
 
         if (siteInner.identity() == null
             || siteInner.identity().type() == null
@@ -90,7 +90,7 @@ public class WebAppMsiHandler extends RoleAssignmentHelper {
      * @param creatableIdentity yet-to-be-created identity to be associated with the virtual machine
      * @return WebAppMsiHandler
      */
-    WebAppMsiHandler withNewExternalManagedServiceIdentity(Creatable<Identity> creatableIdentity) {
+    WebAppMsiHandler<FluentT, FluentImplT> withNewExternalManagedServiceIdentity(Creatable<Identity> creatableIdentity) {
         this.initSiteIdentity(ManagedServiceIdentityType.USER_ASSIGNED);
 
         TaskGroup.HasTaskGroup dependency = (TaskGroup.HasTaskGroup) creatableIdentity;
@@ -108,7 +108,7 @@ public class WebAppMsiHandler extends RoleAssignmentHelper {
      * @param identity an identity to associate
      * @return WebAppMsiHandler
      */
-    WebAppMsiHandler withExistingExternalManagedServiceIdentity(Identity identity) {
+    WebAppMsiHandler<FluentT, FluentImplT> withExistingExternalManagedServiceIdentity(Identity identity) {
         this.initSiteIdentity(ManagedServiceIdentityType.USER_ASSIGNED);
         this.userAssignedIdentities.put(identity.id(), new ManagedServiceIdentityUserAssignedIdentities());
         return this;
@@ -121,7 +121,7 @@ public class WebAppMsiHandler extends RoleAssignmentHelper {
      * @param identityId resource id of the identity
      * @return WebAppMsiHandler
      */
-    WebAppMsiHandler withoutExternalManagedServiceIdentity(String identityId) {
+    WebAppMsiHandler<FluentT, FluentImplT> withoutExternalManagedServiceIdentity(String identityId) {
         this.userAssignedIdentities.put(identityId, null);
         return this;
     }
@@ -136,7 +136,7 @@ public class WebAppMsiHandler extends RoleAssignmentHelper {
     }
 
     void handleExternalIdentities() {
-        SiteInner siteInner = (SiteInner) this.webAppBase.inner();
+        SiteInner siteInner = this.webAppBase.inner();
         if (!this.userAssignedIdentities.isEmpty()) {
             siteInner.identity().withUserAssignedIdentities(this.userAssignedIdentities);
         }
@@ -159,7 +159,7 @@ public class WebAppMsiHandler extends RoleAssignmentHelper {
             // 4. User want to add and remove (all or subset) some identities in 'Site.Identity.userAssignedIdentities'
             //      [this.userAssignedIdentities.empty() == false and this.webAppBase.inner().identity() != null]
             //
-            SiteInner siteInner = (SiteInner) this.webAppBase.inner();
+            SiteInner siteInner = this.webAppBase.inner();
             ManagedServiceIdentity currentIdentity = siteInner.identity();
             siteUpdate.withIdentity(currentIdentity);
             if (!this.userAssignedIdentities.isEmpty()) {
@@ -189,7 +189,7 @@ public class WebAppMsiHandler extends RoleAssignmentHelper {
      * @return true if user indented to remove all the identities.
      */
     private boolean handleRemoveAllExternalIdentitiesCase(SitePatchResourceInner siteUpdate) {
-        SiteInner siteInner = (SiteInner) this.webAppBase.inner();
+        SiteInner siteInner = this.webAppBase.inner();
         if (!this.userAssignedIdentities.isEmpty()) {
             int rmCount = 0;
             for (ManagedServiceIdentityUserAssignedIdentities v : this.userAssignedIdentities.values()) {
@@ -262,7 +262,7 @@ public class WebAppMsiHandler extends RoleAssignmentHelper {
             throw logger.logExceptionAsError(new IllegalArgumentException("Invalid argument: " + identityType));
         }
 
-        SiteInner siteInner = (SiteInner) this.webAppBase.inner();
+        SiteInner siteInner = this.webAppBase.inner();
         if (siteInner.identity() == null) {
             siteInner.withIdentity(new ManagedServiceIdentity());
         }
