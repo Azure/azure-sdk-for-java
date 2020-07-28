@@ -16,22 +16,22 @@ public interface JsonSerializer extends ObjectSerializer {
      * Reads a JSON stream into its object representation.
      *
      * @param stream JSON stream.
-     * @param clazz {@link Class} representing the object.
+     * @param typeReference {@link TypeReference} representing the object.
      * @param <T> Type of the object.
      * @return The object represented by the deserialized JSON stream.
      */
     @Override
-    <T> Mono<T> deserialize(InputStream stream, Class<T> clazz);
+    <T> Mono<T> deserialize(InputStream stream, TypeReference<T> typeReference);
 
     /**
      * Reads a JSON tree into its object representation.
      *
      * @param jsonNode The JSON tree.
-     * @param clazz {@link Class} representing the object.
+     * @param typeReference {@link TypeReference} representing the object.
      * @param <T> Type of the object.
      * @return The object represented by the deserialized JSON tree.
      */
-    <T> Mono<T> deserializeTree(JsonNode jsonNode, Class<T> clazz);
+    <T> Mono<T> deserializeTree(JsonNode jsonNode, TypeReference<T> typeReference);
 
     /**
      * Writes an object's JSON into a stream..
