@@ -38,12 +38,12 @@ Please refer to [sample project here](../azure-spring-boot-samples/azure-spring-
 `azure-cosmosdb-spring-boot-starter` is published on Maven Central Repository.  
 If you are using Maven, add the following dependency.  
 
-[//]: # ({x-version-update-start;com.azure:azure-cosmosdb-spring-boot-starter;current})
+[//]: # ({x-version-update-start;com.microsoft.azure:azure-cosmosdb-spring-boot-starter;current})
 ```xml
 <dependency>
-    <groupId>com.azure</groupId>
+    <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-cosmosdb-spring-boot-starter</artifactId>
-    <version>2.3.3-beta.1</version>
+    <version>2.3.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

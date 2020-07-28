@@ -9,12 +9,12 @@ Azure Key Vault Secrets Spring boot starter is Spring starter for [Azure Key Vau
 `azure-keyvault-secrets-spring-boot-starter` is published on Maven Central Repository.  
 If you are using Maven, add the following dependency.  
 
-[//]: # ({x-version-update-start;com.azure:azure-keyvault-secrets-spring-boot-starter;current})
+[//]: # ({x-version-update-start;com.microsoft.azure:azure-keyvault-secrets-spring-boot-starter;current})
 ```xml
 <dependency>
-    <groupId>com.azure</groupId>
+    <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-keyvault-secrets-spring-boot-starter</artifactId>
-    <version>2.3.3-beta.1</version>
+    <version>2.3.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

@@ -19,12 +19,12 @@ https://docs.microsoft.com/azure/azure-monitor/app/java-in-process-agent
 `azure-servicebus-jms-spring-boot-starter` is published on Maven Central Repository.  
 Add the following dependency to your project:
 
-[//]: # ({x-version-update-start;com.azure:azure-spring-boot-metrics-starter;current})
+[//]: # ({x-version-update-start;com.microsoft.azure:azure-spring-boot-metrics-starter;current})
 ```xml
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-servicebus-jms-spring-boot-starter</artifactId>
-    <version>2.3.3-beta.1</version>
+    <version>2.3.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
