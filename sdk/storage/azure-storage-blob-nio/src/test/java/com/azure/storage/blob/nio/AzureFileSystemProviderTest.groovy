@@ -1137,6 +1137,22 @@ class AzureFileSystemProviderTest extends APISpec {
         thrown(IOException)
     }
 
+    def "ReadAttributes fs closed"() {
+        setup:
+        def fs = createFS(config)
+        def path = ((AzurePath) fs.getPath(getNonDefaultRootDir(fs), generateBlobName()))
+        def blobClient = path.toBlobClient().getBlockBlobClient()
+
+        blobClient.upload(defaultInputStream.get(), defaultDataSize)
+
+        when:
+        fs.close()
+        fs.provider().readAttributes(path, AzureBasicFileAttributes.class)
+
+        then:
+        thrown(IOException)
+    }
+
     @Unroll
     def "ReadAttributes str parsing"() {
         /*
