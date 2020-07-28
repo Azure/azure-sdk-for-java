@@ -49,14 +49,12 @@ class ExpressRouteCircuitPeeringsImpl
     }
 
     @Override
-    @SuppressWarnings("rawtypes")
     protected ExpressRouteCircuitPeeringImpl<ExpressRouteCircuit, ExpressRouteCircuitInner, ExpressRouteCircuitImpl>
         wrapModel(String name) {
         return new ExpressRouteCircuitPeeringImpl<>(
             parent, new ExpressRouteCircuitPeeringInner(), inner(), ExpressRoutePeeringType.fromString(name));
     }
 
-    @SuppressWarnings("rawtypes")
     protected ExpressRouteCircuitPeeringImpl<ExpressRouteCircuit, ExpressRouteCircuitInner, ExpressRouteCircuitImpl>
         wrapModel(ExpressRouteCircuitPeeringInner inner) {
         return (inner == null) ? null
@@ -64,22 +62,22 @@ class ExpressRouteCircuitPeeringsImpl
     }
 
     @Override
-    @SuppressWarnings("rawtypes")
-    public ExpressRouteCircuitPeeringImpl defineAzurePrivatePeering() {
+    public ExpressRouteCircuitPeeringImpl<ExpressRouteCircuit, ExpressRouteCircuitInner, ExpressRouteCircuitImpl>
+        defineAzurePrivatePeering() {
         return new ExpressRouteCircuitPeeringImpl<>(
             parent, new ExpressRouteCircuitPeeringInner(), inner(), ExpressRoutePeeringType.AZURE_PRIVATE_PEERING);
     }
 
     @Override
-    @SuppressWarnings("rawtypes")
-    public ExpressRouteCircuitPeeringImpl defineAzurePublicPeering() {
+    public ExpressRouteCircuitPeeringImpl<ExpressRouteCircuit, ExpressRouteCircuitInner, ExpressRouteCircuitImpl>
+        defineAzurePublicPeering() {
         return new ExpressRouteCircuitPeeringImpl<>(
             parent, new ExpressRouteCircuitPeeringInner(), inner(), ExpressRoutePeeringType.AZURE_PUBLIC_PEERING);
     }
 
     @Override
-    @SuppressWarnings("rawtypes")
-    public ExpressRouteCircuitPeeringImpl defineMicrosoftPeering() {
+    public ExpressRouteCircuitPeeringImpl<ExpressRouteCircuit, ExpressRouteCircuitInner, ExpressRouteCircuitImpl>
+        defineMicrosoftPeering() {
         return new ExpressRouteCircuitPeeringImpl<>(
             parent, new ExpressRouteCircuitPeeringInner(), inner(), ExpressRoutePeeringType.MICROSOFT_PEERING);
     }

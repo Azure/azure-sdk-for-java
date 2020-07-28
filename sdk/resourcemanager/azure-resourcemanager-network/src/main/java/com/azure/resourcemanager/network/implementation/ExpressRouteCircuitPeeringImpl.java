@@ -42,8 +42,8 @@ class ExpressRouteCircuitPeeringImpl
     }
 
     @Override
-    @SuppressWarnings("rawtypes")
-    public ExpressRouteCircuitPeeringImpl withAdvertisedPublicPrefixes(String publicPrefix) {
+    public ExpressRouteCircuitPeeringImpl<ParentModelT, ParentInnerT, ParentT>
+        withAdvertisedPublicPrefixes(String publicPrefix) {
         ensureMicrosoftPeeringConfig().withAdvertisedPublicPrefixes(Arrays.asList(publicPrefix));
         return this;
     }
@@ -56,29 +56,29 @@ class ExpressRouteCircuitPeeringImpl
     }
 
     @Override
-    @SuppressWarnings("rawtypes")
-    public ExpressRouteCircuitPeeringImpl withPrimaryPeerAddressPrefix(String addressPrefix) {
+    public ExpressRouteCircuitPeeringImpl<ParentModelT, ParentInnerT, ParentT>
+        withPrimaryPeerAddressPrefix(String addressPrefix) {
         inner().withPrimaryPeerAddressPrefix(addressPrefix);
         return this;
     }
 
     @Override
-    @SuppressWarnings("rawtypes")
-    public ExpressRouteCircuitPeeringImpl withSecondaryPeerAddressPrefix(String addressPrefix) {
+    public ExpressRouteCircuitPeeringImpl<ParentModelT, ParentInnerT, ParentT>
+        withSecondaryPeerAddressPrefix(String addressPrefix) {
         inner().withSecondaryPeerAddressPrefix(addressPrefix);
         return this;
     }
 
     @Override
-    @SuppressWarnings("rawtypes")
-    public ExpressRouteCircuitPeeringImpl withVlanId(int vlanId) {
+    public ExpressRouteCircuitPeeringImpl<ParentModelT, ParentInnerT, ParentT>
+        withVlanId(int vlanId) {
         inner().withVlanId(vlanId);
         return this;
     }
 
     @Override
-    @SuppressWarnings("rawtypes")
-    public ExpressRouteCircuitPeeringImpl withPeerAsn(long peerASN) {
+    public ExpressRouteCircuitPeeringImpl<ParentModelT, ParentInnerT, ParentT>
+        withPeerAsn(long peerASN) {
         inner().withPeerAsn(peerASN);
         return this;
     }
