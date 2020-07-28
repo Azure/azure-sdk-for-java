@@ -8,11 +8,14 @@
 
 package com.microsoft.azure.management.applicationinsights.v2015_05_01.implementation;
 
+import com.microsoft.azure.arm.collection.InnerSupportsGet;
 import com.microsoft.azure.arm.collection.InnerSupportsDelete;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.management.applicationinsights.v2015_05_01.CategoryType;
 import com.microsoft.azure.management.applicationinsights.v2015_05_01.WorkbookErrorException;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.CollectionFormat;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
@@ -38,7 +41,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in Workbooks.
  */
-public class WorkbooksInner implements InnerSupportsDelete<Void> {
+public class WorkbooksInner implements InnerSupportsGet<WorkbookInner>, InnerSupportsDelete<Void> {
     /** The Retrofit service to perform REST calls. */
     private WorkbooksService service;
     /** The service client containing this operation class. */
@@ -61,23 +64,23 @@ public class WorkbooksInner implements InnerSupportsDelete<Void> {
      */
     interface WorkbooksService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.applicationinsights.v2015_05_01.Workbooks listByResourceGroup" })
-        @GET("subscriptions/{subscriptionId}/resourceGroup/{resourceGroupName}/providers/microsoft.insights/workbooks")
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/workbooks")
         Observable<Response<ResponseBody>> listByResourceGroup(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Query("category") CategoryType category, @Query("tags") String tags, @Query("canFetchContent") Boolean canFetchContent, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.applicationinsights.v2015_05_01.Workbooks get" })
-        @GET("subscriptions/{subscriptionId}/resourceGroup/{resourceGroupName}/providers/microsoft.insights/workbooks/{resourceName}")
-        Observable<Response<ResponseBody>> get(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceName") String resourceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.applicationinsights.v2015_05_01.Workbooks getByResourceGroup" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/workbooks/{resourceName}")
+        Observable<Response<ResponseBody>> getByResourceGroup(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceName") String resourceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.applicationinsights.v2015_05_01.Workbooks delete" })
-        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroup/{resourceGroupName}/providers/microsoft.insights/workbooks/{resourceName}", method = "DELETE", hasBody = true)
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/workbooks/{resourceName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceName") String resourceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.applicationinsights.v2015_05_01.Workbooks createOrUpdate" })
-        @PUT("subscriptions/{subscriptionId}/resourceGroup/{resourceGroupName}/providers/microsoft.insights/workbooks/{resourceName}")
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/workbooks/{resourceName}")
         Observable<Response<ResponseBody>> createOrUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceName") String resourceName, @Query("api-version") String apiVersion, @Body WorkbookInner workbookProperties, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.applicationinsights.v2015_05_01.Workbooks update" })
-        @PATCH("subscriptions/{subscriptionId}/resourceGroup/{resourceGroupName}/providers/microsoft.insights/workbooks/{resourceName}")
+        @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/workbooks/{resourceName}")
         Observable<Response<ResponseBody>> update(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceName") String resourceName, @Query("api-version") String apiVersion, @Body WorkbookInner workbookProperties, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
@@ -85,24 +88,28 @@ public class WorkbooksInner implements InnerSupportsDelete<Void> {
     /**
      * Get all Workbooks defined within a specified resource group and category.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param category Category of workbook to return. Possible values include: 'workbook', 'TSG', 'performance', 'retention'
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws WorkbookErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the List&lt;WorkbookInner&gt; object if successful.
+     * @return the PagedList<WorkbookInner> object if successful.
      */
-    public List<WorkbookInner> listByResourceGroup(String resourceGroupName, CategoryType category) {
-        return listByResourceGroupWithServiceResponseAsync(resourceGroupName, category).toBlocking().single().body();
+    public PagedList<WorkbookInner> listByResourceGroup(String resourceGroupName, CategoryType category) {
+        PageImpl1<WorkbookInner> page = new PageImpl1<>();
+        page.setItems(listByResourceGroupWithServiceResponseAsync(resourceGroupName, category).toBlocking().single().body());
+        page.setNextPageLink(null);
+        return new PagedList<WorkbookInner>(page) {
+            @Override
+            public Page<WorkbookInner> nextPage(String nextPageLink) {
+                return null;
+            }
+        };
     }
 
     /**
      * Get all Workbooks defined within a specified resource group and category.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param category Category of workbook to return. Possible values include: 'workbook', 'TSG', 'performance', 'retention'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<WorkbookInner>> listByResourceGroupAsync(String resourceGroupName, CategoryType category, final ServiceCallback<List<WorkbookInner>> serviceCallback) {
@@ -112,16 +119,17 @@ public class WorkbooksInner implements InnerSupportsDelete<Void> {
     /**
      * Get all Workbooks defined within a specified resource group and category.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param category Category of workbook to return. Possible values include: 'workbook', 'TSG', 'performance', 'retention'
-     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;WorkbookInner&gt; object
      */
-    public Observable<List<WorkbookInner>> listByResourceGroupAsync(String resourceGroupName, CategoryType category) {
-        return listByResourceGroupWithServiceResponseAsync(resourceGroupName, category).map(new Func1<ServiceResponse<List<WorkbookInner>>, List<WorkbookInner>>() {
+    public Observable<Page<WorkbookInner>> listByResourceGroupAsync(String resourceGroupName, CategoryType category) {
+        return listByResourceGroupWithServiceResponseAsync(resourceGroupName, category).map(new Func1<ServiceResponse<List<WorkbookInner>>, Page<WorkbookInner>>() {
             @Override
-            public List<WorkbookInner> call(ServiceResponse<List<WorkbookInner>> response) {
-                return response.body();
+            public Page<WorkbookInner> call(ServiceResponse<List<WorkbookInner>> response) {
+                PageImpl1<WorkbookInner> page = new PageImpl1<>();
+                page.setItems(response.body());
+                return page;
             }
         });
     }
@@ -129,9 +137,8 @@ public class WorkbooksInner implements InnerSupportsDelete<Void> {
     /**
      * Get all Workbooks defined within a specified resource group and category.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param category Category of workbook to return. Possible values include: 'workbook', 'TSG', 'performance', 'retention'
-     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;WorkbookInner&gt; object
      */
     public Observable<ServiceResponse<List<WorkbookInner>>> listByResourceGroupWithServiceResponseAsync(String resourceGroupName, CategoryType category) {
@@ -172,28 +179,32 @@ public class WorkbooksInner implements InnerSupportsDelete<Void> {
     /**
      * Get all Workbooks defined within a specified resource group and category.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param category Category of workbook to return. Possible values include: 'workbook', 'TSG', 'performance', 'retention'
      * @param tags Tags presents on each workbook returned.
      * @param canFetchContent Flag indicating whether or not to return the full content for each applicable workbook. If false, only return summary content for workbooks.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws WorkbookErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the List&lt;WorkbookInner&gt; object if successful.
+     * @return the PagedList<WorkbookInner> object if successful.
      */
-    public List<WorkbookInner> listByResourceGroup(String resourceGroupName, CategoryType category, List<String> tags, Boolean canFetchContent) {
-        return listByResourceGroupWithServiceResponseAsync(resourceGroupName, category, tags, canFetchContent).toBlocking().single().body();
+    public PagedList<WorkbookInner> listByResourceGroup(String resourceGroupName, CategoryType category, List<String> tags, Boolean canFetchContent) {
+        PageImpl1<WorkbookInner> page = new PageImpl1<>();
+        page.setItems(listByResourceGroupWithServiceResponseAsync(resourceGroupName, category, tags, canFetchContent).toBlocking().single().body());
+        page.setNextPageLink(null);
+        return new PagedList<WorkbookInner>(page) {
+            @Override
+            public Page<WorkbookInner> nextPage(String nextPageLink) {
+                return null;
+            }
+        };
     }
 
     /**
      * Get all Workbooks defined within a specified resource group and category.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param category Category of workbook to return. Possible values include: 'workbook', 'TSG', 'performance', 'retention'
      * @param tags Tags presents on each workbook returned.
      * @param canFetchContent Flag indicating whether or not to return the full content for each applicable workbook. If false, only return summary content for workbooks.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<WorkbookInner>> listByResourceGroupAsync(String resourceGroupName, CategoryType category, List<String> tags, Boolean canFetchContent, final ServiceCallback<List<WorkbookInner>> serviceCallback) {
@@ -203,18 +214,19 @@ public class WorkbooksInner implements InnerSupportsDelete<Void> {
     /**
      * Get all Workbooks defined within a specified resource group and category.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param category Category of workbook to return. Possible values include: 'workbook', 'TSG', 'performance', 'retention'
      * @param tags Tags presents on each workbook returned.
      * @param canFetchContent Flag indicating whether or not to return the full content for each applicable workbook. If false, only return summary content for workbooks.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;WorkbookInner&gt; object
      */
-    public Observable<List<WorkbookInner>> listByResourceGroupAsync(String resourceGroupName, CategoryType category, List<String> tags, Boolean canFetchContent) {
-        return listByResourceGroupWithServiceResponseAsync(resourceGroupName, category, tags, canFetchContent).map(new Func1<ServiceResponse<List<WorkbookInner>>, List<WorkbookInner>>() {
+    public Observable<Page<WorkbookInner>> listByResourceGroupAsync(String resourceGroupName, CategoryType category, List<String> tags, Boolean canFetchContent) {
+        return listByResourceGroupWithServiceResponseAsync(resourceGroupName, category, tags, canFetchContent).map(new Func1<ServiceResponse<List<WorkbookInner>>, Page<WorkbookInner>>() {
             @Override
-            public List<WorkbookInner> call(ServiceResponse<List<WorkbookInner>> response) {
-                return response.body();
+            public Page<WorkbookInner> call(ServiceResponse<List<WorkbookInner>> response) {
+                PageImpl1<WorkbookInner> page = new PageImpl1<>();
+                page.setItems(response.body());
+                return page;
             }
         });
     }
@@ -222,11 +234,10 @@ public class WorkbooksInner implements InnerSupportsDelete<Void> {
     /**
      * Get all Workbooks defined within a specified resource group and category.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param category Category of workbook to return. Possible values include: 'workbook', 'TSG', 'performance', 'retention'
      * @param tags Tags presents on each workbook returned.
      * @param canFetchContent Flag indicating whether or not to return the full content for each applicable workbook. If false, only return summary content for workbooks.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;WorkbookInner&gt; object
      */
     public Observable<ServiceResponse<List<WorkbookInner>>> listByResourceGroupWithServiceResponseAsync(String resourceGroupName, CategoryType category, List<String> tags, Boolean canFetchContent) {
@@ -273,40 +284,40 @@ public class WorkbooksInner implements InnerSupportsDelete<Void> {
     /**
      * Get a single workbook by its resourceName.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws WorkbookErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the WorkbookInner object if successful.
      */
-    public WorkbookInner get(String resourceGroupName, String resourceName) {
-        return getWithServiceResponseAsync(resourceGroupName, resourceName).toBlocking().single().body();
+    public WorkbookInner getByResourceGroup(String resourceGroupName, String resourceName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, resourceName).toBlocking().single().body();
     }
 
     /**
      * Get a single workbook by its resourceName.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<WorkbookInner> getAsync(String resourceGroupName, String resourceName, final ServiceCallback<WorkbookInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, resourceName), serviceCallback);
+    public ServiceFuture<WorkbookInner> getByResourceGroupAsync(String resourceGroupName, String resourceName, final ServiceCallback<WorkbookInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getByResourceGroupWithServiceResponseAsync(resourceGroupName, resourceName), serviceCallback);
     }
 
     /**
      * Get a single workbook by its resourceName.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the WorkbookInner object
      */
-    public Observable<WorkbookInner> getAsync(String resourceGroupName, String resourceName) {
-        return getWithServiceResponseAsync(resourceGroupName, resourceName).map(new Func1<ServiceResponse<WorkbookInner>, WorkbookInner>() {
+    public Observable<WorkbookInner> getByResourceGroupAsync(String resourceGroupName, String resourceName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, resourceName).map(new Func1<ServiceResponse<WorkbookInner>, WorkbookInner>() {
             @Override
             public WorkbookInner call(ServiceResponse<WorkbookInner> response) {
                 return response.body();
@@ -317,12 +328,12 @@ public class WorkbooksInner implements InnerSupportsDelete<Void> {
     /**
      * Get a single workbook by its resourceName.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the WorkbookInner object
      */
-    public Observable<ServiceResponse<WorkbookInner>> getWithServiceResponseAsync(String resourceGroupName, String resourceName) {
+    public Observable<ServiceResponse<WorkbookInner>> getByResourceGroupWithServiceResponseAsync(String resourceGroupName, String resourceName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -335,12 +346,12 @@ public class WorkbooksInner implements InnerSupportsDelete<Void> {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.get(this.client.subscriptionId(), resourceGroupName, resourceName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.getByResourceGroup(this.client.subscriptionId(), resourceGroupName, resourceName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<WorkbookInner>>>() {
                 @Override
                 public Observable<ServiceResponse<WorkbookInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<WorkbookInner> clientResponse = getDelegate(response);
+                        ServiceResponse<WorkbookInner> clientResponse = getByResourceGroupDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -349,7 +360,7 @@ public class WorkbooksInner implements InnerSupportsDelete<Void> {
             });
     }
 
-    private ServiceResponse<WorkbookInner> getDelegate(Response<ResponseBody> response) throws WorkbookErrorException, IOException, IllegalArgumentException {
+    private ServiceResponse<WorkbookInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws WorkbookErrorException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<WorkbookInner, WorkbookErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<WorkbookInner>() { }.getType())
                 .registerError(WorkbookErrorException.class)
@@ -359,7 +370,7 @@ public class WorkbooksInner implements InnerSupportsDelete<Void> {
     /**
      * Delete a workbook.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws WorkbookErrorException thrown if the request is rejected by server
@@ -372,7 +383,7 @@ public class WorkbooksInner implements InnerSupportsDelete<Void> {
     /**
      * Delete a workbook.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -385,7 +396,7 @@ public class WorkbooksInner implements InnerSupportsDelete<Void> {
     /**
      * Delete a workbook.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
@@ -402,7 +413,7 @@ public class WorkbooksInner implements InnerSupportsDelete<Void> {
     /**
      * Delete a workbook.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
@@ -445,7 +456,7 @@ public class WorkbooksInner implements InnerSupportsDelete<Void> {
     /**
      * Create a new workbook.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workbookProperties Properties that need to be specified to create a new workbook.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -460,7 +471,7 @@ public class WorkbooksInner implements InnerSupportsDelete<Void> {
     /**
      * Create a new workbook.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workbookProperties Properties that need to be specified to create a new workbook.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -474,7 +485,7 @@ public class WorkbooksInner implements InnerSupportsDelete<Void> {
     /**
      * Create a new workbook.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workbookProperties Properties that need to be specified to create a new workbook.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -492,7 +503,7 @@ public class WorkbooksInner implements InnerSupportsDelete<Void> {
     /**
      * Create a new workbook.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workbookProperties Properties that need to be specified to create a new workbook.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -540,7 +551,7 @@ public class WorkbooksInner implements InnerSupportsDelete<Void> {
     /**
      * Updates a workbook that has already been added.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workbookProperties Properties that need to be specified to create a new workbook.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -555,7 +566,7 @@ public class WorkbooksInner implements InnerSupportsDelete<Void> {
     /**
      * Updates a workbook that has already been added.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workbookProperties Properties that need to be specified to create a new workbook.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -569,7 +580,7 @@ public class WorkbooksInner implements InnerSupportsDelete<Void> {
     /**
      * Updates a workbook that has already been added.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workbookProperties Properties that need to be specified to create a new workbook.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -587,7 +598,7 @@ public class WorkbooksInner implements InnerSupportsDelete<Void> {
     /**
      * Updates a workbook that has already been added.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workbookProperties Properties that need to be specified to create a new workbook.
      * @throws IllegalArgumentException thrown if parameters fail the validation
