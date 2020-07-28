@@ -238,7 +238,9 @@ class ClientSideRequestStatistics {
         StoreResult storeResult;
         @JsonSerialize(using = DiagnosticsInstantSerializer.class)
         Instant requestResponseTime;
+        @JsonSerialize
         ResourceType requestResourceType;
+        @JsonSerialize
         OperationType requestOperationType;
     }
 
@@ -331,6 +333,7 @@ class ClientSideRequestStatistics {
         Instant startTime;
         @JsonSerialize(using = DiagnosticsInstantSerializer.class)
         Instant endTime;
+        @JsonSerialize
         String targetEndpoint;
     }
 

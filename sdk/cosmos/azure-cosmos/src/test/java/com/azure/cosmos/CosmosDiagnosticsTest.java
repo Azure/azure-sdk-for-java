@@ -224,6 +224,14 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         supplementalResponseStatisticsListNode = (ArrayNode) jsonNode.get("supplementalResponseStatisticsList");
         assertThat(storeResponseStatistics.size()).isEqualTo(7);
         assertThat(supplementalResponseStatisticsListNode.size()).isEqualTo(7);
+
+        //verifying all components from StoreResponseStatistics
+        for(JsonNode node : supplementalResponseStatisticsListNode) {
+            assertThat(node.get("storeResult")).isNotNull();
+            assertThat(node.get("requestResponseTime")).isNotNull();
+            assertThat(node.get("requestOperationType")).isNotNull();
+            assertThat(node.get("requestOperationType")).isNotNull();
+        }
     }
 
     @Test(groups = {"simple"})
