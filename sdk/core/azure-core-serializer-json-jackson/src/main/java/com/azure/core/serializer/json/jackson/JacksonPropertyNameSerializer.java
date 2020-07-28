@@ -23,7 +23,7 @@ public class JacksonPropertyNameSerializer implements PropertyNameSerializer {
         return Mono.fromCallable(() -> {
             String propertyName = null;
             if (member instanceof Field) {
-                if (!((Field) member).isAnnotationPresent(JsonIgnore.class)){
+                if (((Field) member).isAnnotationPresent(JsonIgnore.class)){
                     return null;
                 }
                 if (!((Field) member).isAnnotationPresent(JsonProperty.class)) {
@@ -32,7 +32,7 @@ public class JacksonPropertyNameSerializer implements PropertyNameSerializer {
                 propertyName = ((Field) member).getDeclaredAnnotation(JsonProperty.class).value();
                 propertyName = CoreUtils.isNullOrEmpty(propertyName) ? ((Field) member).getName() : propertyName;
             } else if (member instanceof Method) {
-                if (!((Method) member).isAnnotationPresent(JsonIgnore.class)) {
+                if (((Method) member).isAnnotationPresent(JsonIgnore.class)) {
                     return null;
                 }
                 if (!((Method) member).isAnnotationPresent(JsonProperty.class)) {

@@ -3,6 +3,7 @@
 
 package com.azure.core.serializer.json.jackson;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -31,6 +32,16 @@ public class JacksonPropertyNameTests {
         }
         Field f = Hotel.class.getDeclaredField("hotelName");
         assertMemberValue(f, "hotelName");
+    }
+
+    @Test
+    public void testPropertyNameOnIgnoredFieldName() throws NoSuchFieldException {
+        class Hotel {
+            @JsonIgnore
+            String hotelName;
+        }
+        Field f = Hotel.class.getDeclaredField("hotelName");
+        assertMemberNull(f);
     }
 
     @Test
@@ -76,6 +87,20 @@ public class JacksonPropertyNameTests {
 
         Method m = Hotel.class.getDeclaredMethod("getHotelName");
         assertMemberValue(m, "getHotelName");
+    }
+
+    @Test
+    public void testPropertyNameOnIgnoredMethodName() throws NoSuchMethodException {
+        class Hotel {
+            String hotelName;
+
+            @JsonIgnore
+            public String getHotelName() {
+                return hotelName;
+            }
+        }
+        Method m = Hotel.class.getDeclaredMethod("getHotelName");
+        assertMemberNull(m);
     }
 
     @Test
@@ -127,6 +152,11 @@ public class JacksonPropertyNameTests {
     public void assertMemberValue(Member m, String expectValue) {
         StepVerifier.create(serializer.getSerializerMemberName(m))
             .assertNext(actual -> assertEquals(expectValue, actual))
+            .verifyComplete();
+    }
+
+    public void assertMemberNull(Member m) {
+        StepVerifier.create(serializer.getSerializerMemberName(m))
             .verifyComplete();
     }
 }

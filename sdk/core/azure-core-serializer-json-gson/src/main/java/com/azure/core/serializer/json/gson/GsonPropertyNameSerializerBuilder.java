@@ -11,9 +11,9 @@ public class GsonPropertyNameSerializerBuilder {
     private GsonBuilder gsonBuilder;
 
     /**
-     * Constructs a new instance of {@link GsonJsonSerializer} with the configurations set in this builder.
+     * Constructs a new instance of {@link GsonPropertyNameSerializer} with the configurations set in this builder.
      *
-     * @return A new instance of {@link GsonJsonSerializer}.
+     * @return A new instance of {@link GsonPropertyNameSerializer}.
      */
     public GsonPropertyNameSerializer build() {
         GsonBuilder gsonBuilder = (this.gsonBuilder == null) ? new GsonBuilder() : this.gsonBuilder;
@@ -26,7 +26,7 @@ public class GsonPropertyNameSerializerBuilder {
      * If this is set to {@code null} the default {@link Gson} will be used.
      *
      * @param gsonBuilder {@link GsonBuilder} that will be used during serialization.
-     * @return The updated GsonJsonSerializerBuilder class.
+     * @return The updated GsonPropertyNameSerializer class.
      */
     public GsonPropertyNameSerializerBuilder serializer(GsonBuilder gsonBuilder) {
         this.gsonBuilder = gsonBuilder;

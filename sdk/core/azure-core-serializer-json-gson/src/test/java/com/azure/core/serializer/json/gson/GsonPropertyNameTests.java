@@ -3,6 +3,9 @@
 
 package com.azure.core.serializer.json.gson;
 
+import com.azure.core.experimental.serializer.PropertyNameSerializer;
+import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -16,11 +19,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class GsonPropertyNameTests {
     private static final String EXPECT_VALUE_IN_FIELD = "expectFieldName";
-    private static GsonPropertyNameSerializer serializer;
+    private static PropertyNameSerializer serializer;
 
     @BeforeAll
     public static void setup() {
-        serializer = new GsonPropertyNameSerializer();
+        serializer = new GsonPropertyNameSerializerProvider().createInstance();
     }
 
     @Test
@@ -31,6 +34,33 @@ public class GsonPropertyNameTests {
         Field f = Hotel.class.getDeclaredField("hotelName");
 
         assertMemberValue(f, "hotelName");
+    }
+
+    @Test
+    public void testPropertyNameOnTransientIgnoredFieldName() throws NoSuchFieldException {
+        class Hotel {
+            transient String hotelName;
+        }
+        Field f = Hotel.class.getDeclaredField("hotelName");
+        assertMemberNull(f);
+    }
+
+    @Test
+    public void testPropertyNameOnExposeIgnoredFieldName() throws NoSuchFieldException {
+        class Hotel {
+            String hotelName;
+
+            @Expose
+            String hotelId;
+        }
+        Field f1 = Hotel.class.getDeclaredField("hotelName");
+        Field f2 = Hotel.class.getDeclaredField("hotelId");
+
+        PropertyNameSerializer serializerWithSetting = new GsonPropertyNameSerializerBuilder()
+            .serializer(new GsonBuilder().excludeFieldsWithoutExposeAnnotation()).build();
+        StepVerifier.create(serializerWithSetting.getSerializerMemberName(f1))
+            .verifyComplete();
+        assertMemberValue(f2, "hotelId");
     }
 
     @Test
@@ -73,6 +103,11 @@ public class GsonPropertyNameTests {
     public void assertMemberValue(Member m, String expectValue) {
         StepVerifier.create(serializer.getSerializerMemberName(m))
             .assertNext(actual -> assertEquals(expectValue, actual))
+            .verifyComplete();
+    }
+
+    public void assertMemberNull(Member m) {
+        StepVerifier.create(serializer.getSerializerMemberName(m))
             .verifyComplete();
     }
 }

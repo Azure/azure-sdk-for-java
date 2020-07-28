@@ -7,7 +7,6 @@ import com.azure.core.experimental.serializer.JsonSerializer;
 import com.azure.core.experimental.serializer.PropertyNameSerializer;
 import com.azure.core.util.CoreUtils;
 import com.google.gson.Gson;
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import reactor.core.publisher.Mono;
 
@@ -39,9 +38,6 @@ public class GsonPropertyNameSerializer implements PropertyNameSerializer {
             }
             if (member instanceof Field) {
                 if (gson.excluder().excludeField((Field) member, true)) {
-                    return null;
-                }
-                if (!((Field) member).isAnnotationPresent(Expose.class)) {
                     return null;
                 }
                 if (!((Field) member).isAnnotationPresent(SerializedName.class)) {

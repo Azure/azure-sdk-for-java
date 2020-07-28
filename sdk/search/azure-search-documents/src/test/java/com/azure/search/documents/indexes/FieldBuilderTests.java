@@ -14,6 +14,7 @@ import com.azure.search.documents.test.environment.models.HotelSearchableExcepti
 import com.azure.search.documents.test.environment.models.HotelTwoDimensional;
 import com.azure.search.documents.test.environment.models.HotelWithArray;
 import com.azure.search.documents.test.environment.models.HotelWithEmptyInSynonymMaps;
+import com.azure.search.documents.test.environment.models.HotelWithIgnoredFields;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -30,20 +31,20 @@ public class FieldBuilderTests {
     @Test
     public void hotelSearchableThrowException() {
         Exception exception = assertThrows(RuntimeException.class, () ->
-            FieldBuilder.build(HotelSearchException.class));
+            FieldBuilder.build(HotelSearchException.class, null));
         assertExceptionMassageAndDataType(exception, SearchFieldDataType.INT32, "hotelId");
     }
 
     @Test
     public void hotelListFieldSearchableThrowException() {
         Exception exception = assertThrows(RuntimeException.class, () ->
-            FieldBuilder.build(HotelSearchableExceptionOnList.class));
+            FieldBuilder.build(HotelSearchableExceptionOnList.class, null));
         assertExceptionMassageAndDataType(exception, SearchFieldDataType.collection(SearchFieldDataType.INT32), "passcode");
     }
 
     @Test
     public void hotelCircularDependencies() {
-        List<SearchField> actualFields = sortByFieldName(FieldBuilder.build(HotelCircularDependencies.class));
+        List<SearchField> actualFields = sortByFieldName(FieldBuilder.build(HotelCircularDependencies.class, null));
         List<SearchField> expectedFields = sortByFieldName(buildHotelCircularDependenciesModel());
         assertListFieldEquals(expectedFields, actualFields);
     }
@@ -51,7 +52,7 @@ public class FieldBuilderTests {
     @Test
     public void hotelWithEmptySynonymMaps() {
         // We cannot put null in the annotation. So no need to test null case.
-        List<SearchField> actualFields = FieldBuilder.build(HotelWithEmptyInSynonymMaps.class);
+        List<SearchField> actualFields = FieldBuilder.build(HotelWithEmptyInSynonymMaps.class, null);
 
         List<SearchField> expectedFields = Collections.singletonList(new SearchField("tags",
             SearchFieldDataType.collection(SearchFieldDataType.STRING))
@@ -67,33 +68,41 @@ public class FieldBuilderTests {
 
     @Test
     public void hotelWithTwoDimensionalType() {
-        Exception exception = assertThrows(RuntimeException.class, () -> FieldBuilder.build(HotelTwoDimensional.class));
+        Exception exception = assertThrows(RuntimeException.class, () -> FieldBuilder.build(HotelTwoDimensional.class,
+            null));
         assertExceptionMassageAndDataType(exception, null, "single-dimensional");
     }
 
     @Test
     public void hotelAnalyzerException() {
         Exception exception = assertThrows(RuntimeException.class, () ->
-            FieldBuilder.build(HotelAnalyzerException.class));
+            FieldBuilder.build(HotelAnalyzerException.class, null));
         assertExceptionMassageAndDataType(exception, null,
             "either analyzer or both searchAnalyzer and indexAnalyzer");
     }
 
     @Test
     public void hotelWithArrayType() {
-        List<SearchField> actualFields = sortByFieldName(FieldBuilder.build(HotelWithArray.class));
+        List<SearchField> actualFields = sortByFieldName(FieldBuilder.build(HotelWithArray.class, null));
         List<SearchField> expectedFields = sortByFieldName(buildHotelWithArrayModel());
         assertListFieldEquals(expectedFields, actualFields);
     }
 
     @Test
     public void propertyRename() {
-        List<SearchField> actualFields = sortByFieldName(FieldBuilder.build(HotelRenameProperty.class));
+        List<SearchField> actualFields = sortByFieldName(FieldBuilder.build(HotelRenameProperty.class, null));
         List<String> expectedFieldNames = Arrays.asList("HotelName", "hotelId", "description");
         Collections.sort(expectedFieldNames);
-        assertEquals(actualFields.get(0).getName(), expectedFieldNames.get(0));
-        assertEquals(actualFields.get(1).getName(), expectedFieldNames.get(1));
-        assertEquals(actualFields.get(2).getName(), expectedFieldNames.get(2));
+        assertEquals(expectedFieldNames.get(0), actualFields.get(0).getName());
+        assertEquals(expectedFieldNames.get(1), actualFields.get(1).getName());
+        assertEquals(expectedFieldNames.get(2), actualFields.get(2).getName());
+    }
+
+    @Test
+    public void ignoredPropertyName() {
+        List<SearchField> actualFields = sortByFieldName(FieldBuilder.build(HotelWithIgnoredFields.class, null));
+        assertEquals(1, actualFields.size());
+        assertEquals("notIgnoredName", actualFields.get(0).getName());
     }
 
     private void assertListFieldEquals(List<SearchField> expected, List<SearchField> actual) {

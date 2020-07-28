@@ -59,6 +59,8 @@ public final class FieldBuilder {
      * Creates a collection of {@link SearchField} objects corresponding to the properties of the type supplied.
      *
      * @param modelClass The class for which fields will be created, based on its properties.
+     * @param serializer Optional serializer which allow to use customized serializer library. Default to take Jackson
+     * serialization.
      * @param <T> The generic type of the model class.
      * @return A collection of fields.
      */

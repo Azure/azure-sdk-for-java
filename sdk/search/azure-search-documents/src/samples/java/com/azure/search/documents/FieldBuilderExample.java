@@ -4,6 +4,8 @@
 package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.experimental.serializer.PropertyNameSerializer;
+import com.azure.core.serializer.json.jackson.JacksonPropertyNameSerializerProvider;
 import com.azure.core.util.Configuration;
 import com.azure.search.documents.indexes.FieldBuilder;
 import com.azure.search.documents.indexes.SearchIndexClient;
@@ -25,8 +27,10 @@ public class FieldBuilderExample {
             .credential(new AzureKeyCredential(API_KEY))
             .buildClient();
 
+        PropertyNameSerializer serializer = new JacksonPropertyNameSerializerProvider().createInstance();
         // Prepare the hotel index schema. The schema pull from Hotel.java.
-        List<SearchField> searchFields = FieldBuilder.build(Hotel.class);
+        // If you don't want to use the default Jackson serializer, pass null for serializer param.
+        List<SearchField> searchFields = FieldBuilder.build(Hotel.class, serializer);
 
         searchIndexClient.createIndex(new SearchIndex("hotel", searchFields));
     }

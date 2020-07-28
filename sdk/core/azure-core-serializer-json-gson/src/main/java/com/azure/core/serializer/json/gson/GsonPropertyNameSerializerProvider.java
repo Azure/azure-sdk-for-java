@@ -13,6 +13,6 @@ public class GsonPropertyNameSerializerProvider implements PropertyNameSerialize
 
     @Override
     public PropertyNameSerializer createInstance() {
-        return new GsonPropertyNameSerializer();
+        return new GsonPropertyNameSerializerBuilder().build();
     }
 }
