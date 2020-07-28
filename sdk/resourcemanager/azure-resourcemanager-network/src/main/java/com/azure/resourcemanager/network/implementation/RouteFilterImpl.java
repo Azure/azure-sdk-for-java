@@ -52,7 +52,7 @@ class RouteFilterImpl
         if (this.inner().peerings() != null) {
             this.peerings = this.inner().peerings().stream().collect(Collectors.toMap(
                 ExpressRouteCircuitPeeringInner::name,
-                peering -> new ExpressRouteCircuitPeeringImpl(this, peering,
+                peering -> new ExpressRouteCircuitPeeringImpl<>(this, peering,
                     manager().inner().getExpressRouteCircuitPeerings(), peering.peeringType())
             ));
         } else {
