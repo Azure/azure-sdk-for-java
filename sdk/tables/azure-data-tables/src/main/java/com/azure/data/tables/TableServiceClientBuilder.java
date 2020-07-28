@@ -151,25 +151,6 @@ public class TableServiceClientBuilder {
     }
 
     /**
-     * gets the connection string
-     *
-     * @return the connection string
-     */
-    private String getConnectionString() {
-        return this.connectionString;
-    }
-
-    private String getEndpoint() {
-        if (endpoint != null) {
-            return endpoint;
-        } else if (tokenCredential != null) {
-            return null; // tablesSharedKeyCredential.getCanonicalizedResource();
-        } else {
-            return null;
-        }
-    }
-
-    /**
      * Sets the configuration object used to retrieve environment configuration values during building of the client.
      *
      * @param configuration Configuration store used to retrieve environment configurations.

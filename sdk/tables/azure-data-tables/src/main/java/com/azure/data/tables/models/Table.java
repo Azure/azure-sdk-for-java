@@ -2,14 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.data.tables.models;
 
-import com.azure.data.tables.TableClient;
-
 /**
  * class for a table object
  */
 public class Table {
     private final String name;
-    private TableClient tableClient;
 
     /**
      * crete a table

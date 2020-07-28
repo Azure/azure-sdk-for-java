@@ -195,7 +195,7 @@ public class TableClientBuilder {
      * @return The updated TableClientBuilder object.
      */
     public TableClientBuilder httpClient(HttpClient client) {
-        if (this.httpClient != null && httpClient == null) {
+        if (this.httpClient != null && client == null) {
             logger.error("'httpClient' is being set to 'null' when it was previously configured.");
         }
         this.httpClient = client;
