@@ -130,7 +130,7 @@ public final class SearchAsyncClient {
             .endpoint(endpoint)
             .indexName(indexName)
             .pipeline(httpPipeline)
-            .serializer(ADAPTER)
+            .serializerAdapter(ADAPTER)
             .buildClient();
     }
 

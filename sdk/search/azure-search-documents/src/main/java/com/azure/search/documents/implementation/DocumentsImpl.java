@@ -24,7 +24,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.search.documents.implementation.models.AutocompleteMode;
 import com.azure.search.documents.implementation.models.AutocompleteOptions;
 import com.azure.search.documents.implementation.models.AutocompleteRequest;
@@ -41,10 +40,9 @@ import com.azure.search.documents.implementation.models.SearchRequest;
 import com.azure.search.documents.implementation.models.SuggestDocumentsResult;
 import com.azure.search.documents.implementation.models.SuggestOptions;
 import com.azure.search.documents.implementation.models.SuggestRequest;
-import reactor.core.publisher.Mono;
-
 import java.util.List;
 import java.util.UUID;
+import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Documents. */
 public final class DocumentsImpl {
@@ -59,11 +57,9 @@ public final class DocumentsImpl {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    DocumentsImpl(SearchIndexClientImpl client, SerializerAdapter serializerAdapter) {
-        if (serializerAdapter == null) {
-            serializerAdapter = new JacksonAdapter();
-        }
-        this.service = RestProxy.create(DocumentsService.class, client.getHttpPipeline(), serializerAdapter);
+    DocumentsImpl(SearchIndexClientImpl client) {
+        this.service =
+                RestProxy.create(DocumentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 

@@ -64,6 +64,18 @@ public final class SearchIndexClientImpl {
         return this.httpPipeline;
     }
 
+    /** The serializer to serialize an object into a string. */
+    private final SerializerAdapter serializerAdapter;
+
+    /**
+     * Gets The serializer to serialize an object into a string.
+     *
+     * @return the serializerAdapter value.
+     */
+    public SerializerAdapter getSerializerAdapter() {
+        return this.serializerAdapter;
+    }
+
     /** The DocumentsImpl object to access its operations. */
     private final DocumentsImpl documents;
 
@@ -82,8 +94,8 @@ public final class SearchIndexClientImpl {
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
+                JacksonAdapter.createDefaultSerializerAdapter(),
                 endpoint,
-                new JacksonAdapter(),
                 indexName);
     }
 
@@ -92,12 +104,23 @@ public final class SearchIndexClientImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      */
-    SearchIndexClientImpl(HttpPipeline httpPipeline, String endpoint, SerializerAdapter serializerAdapter,
-        String indexName) {
+    SearchIndexClientImpl(HttpPipeline httpPipeline, String endpoint, String indexName) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, indexName);
+    }
+
+    /**
+     * Initializes an instance of SearchIndexClient client.
+     *
+     * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param serializerAdapter The serializer to serialize an object into a string.
+     */
+    SearchIndexClientImpl(
+            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint, String indexName) {
         this.httpPipeline = httpPipeline;
+        this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
         this.indexName = indexName;
         this.apiVersion = "2020-06-30";
-        this.documents = new DocumentsImpl(this, serializerAdapter);
+        this.documents = new DocumentsImpl(this);
     }
 }
