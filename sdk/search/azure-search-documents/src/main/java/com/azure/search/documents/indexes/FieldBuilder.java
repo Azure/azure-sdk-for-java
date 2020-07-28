@@ -4,13 +4,14 @@
 package com.azure.search.documents.indexes;
 
 import com.azure.core.experimental.serializer.PropertyNameSerializer;
-import com.azure.core.experimental.serializer.PropertyNameSerializerProviders;
 import com.azure.core.experimental.spatial.PointGeometry;
+import com.azure.core.serializer.json.jackson.JacksonPropertyNameSerializerProvider;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.time.OffsetDateTime;
@@ -19,6 +20,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Stack;
 import java.util.stream.Collectors;
 
@@ -28,7 +30,6 @@ import java.util.stream.Collectors;
 public final class FieldBuilder {
     private static final int MAX_DEPTH = 10000;
     private static final Map<Class<?>, SearchFieldDataType> SUPPORTED_NONE_PARAMETERIZED_TYPE = new HashMap<>();
-    private static final PropertyNameSerializer SERIALIZER = PropertyNameSerializerProviders.createInstance();
 
     static {
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(Integer.class, SearchFieldDataType.INT32);
@@ -61,9 +62,9 @@ public final class FieldBuilder {
      * @param <T> The generic type of the model class.
      * @return A collection of fields.
      */
-    public static <T> List<SearchField> build(Class<T> modelClass) {
+    public static <T> List<SearchField> build(Class<T> modelClass, PropertyNameSerializer serializer) {
         ClientLogger logger = new ClientLogger(FieldBuilder.class);
-        return build(modelClass, new Stack<>(), logger);
+        return build(modelClass, new Stack<>(), serializer, logger);
     }
 
     /**
@@ -74,7 +75,8 @@ public final class FieldBuilder {
      * @param logger {@link ClientLogger}.
      * @return A list of {@link SearchField} that currentClass is built to.
      */
-    private static List<SearchField> build(Class<?> currentClass, Stack<Class<?>> classChain, ClientLogger logger) {
+    private static List<SearchField> build(Class<?> currentClass, Stack<Class<?>> classChain,
+        PropertyNameSerializer serializer, ClientLogger logger) {
         if (classChain.contains(currentClass)) {
             logger.warning(String.format("There is circular dependencies %s, %s", classChain, currentClass));
             return null;
@@ -86,31 +88,45 @@ public final class FieldBuilder {
         classChain.push(currentClass);
         List<SearchField> searchFields = Arrays.stream(currentClass.getDeclaredFields())
             .filter(classField -> !classField.isAnnotationPresent(FieldIgnore.class))
-            .map(classField -> buildField(classField, classChain, logger))
+            .map(classField -> buildField(classField, classChain, serializer, logger))
+            .filter(Objects::nonNull)
             .collect(Collectors.toList());
         classChain.pop();
         return searchFields;
     }
 
-    private static SearchField buildField(java.lang.reflect.Field classField, Stack<Class<?>> classChain,
-        ClientLogger logger) {
+    private static SearchField buildField(Field classField, Stack<Class<?>> classChain,
+        PropertyNameSerializer serializer, ClientLogger logger) {
+        if (serializer == null) {
+            serializer = new JacksonPropertyNameSerializerProvider().createInstance();
+        }
+        String fieldName = serializer.getSerializerMemberName(classField).block();
+        if (fieldName == null) {
+            return null;
+        }
         Type type = classField.getGenericType();
 
         if (SUPPORTED_NONE_PARAMETERIZED_TYPE.containsKey(type)) {
-            return buildNoneParameterizedType(classField, logger);
+            return buildNoneParameterizedType(fieldName, classField, logger);
         }
         if (isArrayOrList(type)) {
-            return buildCollectionField(classField, classChain, logger);
+            return buildCollectionField(fieldName, classField, classChain, serializer, logger);
         }
-        List<SearchField> childFields = build((Class<?>) type, classChain, logger);
-        SearchField searchField = convertToBasicSearchField(classField, logger);
+        List<SearchField> childFields = build((Class<?>) type, classChain, serializer, logger);
+        SearchField searchField = convertToBasicSearchField(fieldName, classField, logger);
+        if (searchField == null) {
+            return null;
+        }
         searchField.setFields(childFields);
         return searchField;
     }
 
-    private static SearchField buildNoneParameterizedType(java.lang.reflect.Field classField,
+    private static SearchField buildNoneParameterizedType(String fieldName, Field classField,
         ClientLogger logger) {
-        SearchField searchField = convertToBasicSearchField(classField, logger);
+        SearchField searchField = convertToBasicSearchField(fieldName, classField, logger);
+        if (searchField == null) {
+            return null;
+        }
         return enrichWithAnnotation(searchField, classField, logger);
     }
 
@@ -128,16 +144,22 @@ public final class FieldBuilder {
         return List.class.isAssignableFrom((Class<?>) rawType);
     }
 
-    private static SearchField buildCollectionField(java.lang.reflect.Field classField,
-        Stack<Class<?>> classChain, ClientLogger logger) {
+    private static SearchField buildCollectionField(String fieldName, Field classField,
+        Stack<Class<?>> classChain, PropertyNameSerializer serializer, ClientLogger logger) {
         Type componentOrElementType = getComponentOrElementType(classField.getGenericType(), logger);
         validateType(componentOrElementType, true, logger);
         if (SUPPORTED_NONE_PARAMETERIZED_TYPE.containsKey(componentOrElementType)) {
-            SearchField searchField = convertToBasicSearchField(classField, logger);
+            SearchField searchField = convertToBasicSearchField(fieldName, classField, logger);
+            if (searchField == null) {
+                return null;
+            }
             return enrichWithAnnotation(searchField, classField, logger);
         }
-        List<SearchField> childFields = build((Class<?>) componentOrElementType, classChain, logger);
-        SearchField searchField = convertToBasicSearchField(classField, logger);
+        List<SearchField> childFields = build((Class<?>) componentOrElementType, classChain, serializer, logger);
+        SearchField searchField = convertToBasicSearchField(fieldName, classField, logger);
+        if (searchField == null) {
+            return null;
+        }
         searchField.setFields(childFields);
         return searchField;
     }
@@ -154,11 +176,14 @@ public final class FieldBuilder {
             "Collection type %s is not supported.", arrayOrListType.getTypeName())));
     }
 
-    private static SearchField convertToBasicSearchField(java.lang.reflect.Field classField,
+    private static SearchField convertToBasicSearchField(String fieldName, Field classField,
         ClientLogger logger) {
 
         SearchFieldDataType dataType = covertToSearchFieldDataType(classField.getGenericType(), false, logger);
-        String fieldName = SERIALIZER.getSerializerMemberName(classField).block();
+        if (dataType == null) {
+            return null;
+        }
+
         SearchField searchField = new SearchField(fieldName, dataType);
         return searchField;
     }
@@ -225,10 +250,6 @@ public final class FieldBuilder {
 
     private static void validateType(Type type, boolean hasArrayOrCollectionWrapped, ClientLogger logger) {
         if (!(type instanceof ParameterizedType)) {
-            if (UNSUPPORTED_TYPES.contains(type)) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(String.format("%s is not supported",
-                    type.getTypeName())));
-            }
             return;
         }
         ParameterizedType parameterizedType = (ParameterizedType) type;
@@ -248,6 +269,9 @@ public final class FieldBuilder {
     private static SearchFieldDataType covertToSearchFieldDataType(Type type, boolean hasArrayOrCollectionWrapped,
         ClientLogger logger) {
         validateType(type, hasArrayOrCollectionWrapped, logger);
+        if (UNSUPPORTED_TYPES.contains(type)) {
+            return null;
+        }
         if (SUPPORTED_NONE_PARAMETERIZED_TYPE.containsKey(type)) {
             return SUPPORTED_NONE_PARAMETERIZED_TYPE.get(type);
         }

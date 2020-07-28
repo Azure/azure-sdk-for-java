@@ -3,24 +3,47 @@
 
 package com.azure.core.serializer.json.gson;
 
+import com.azure.core.experimental.serializer.JsonSerializer;
 import com.azure.core.experimental.serializer.PropertyNameSerializer;
 import com.azure.core.util.CoreUtils;
+import com.google.gson.Gson;
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import reactor.core.publisher.Mono;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 
 /**
  * GSON based get property name implementation of the {@link PropertyNameSerializer} interface.
  */
 public class GsonPropertyNameSerializer implements PropertyNameSerializer {
+    private final Gson gson;
+
+    /**
+     * Constructs a {@link JsonSerializer} using the passed {@link Gson} serializer.
+     *
+     * @param gson Configured {@link Gson} serializer.
+     */
+    GsonPropertyNameSerializer(Gson gson) {
+        this.gson = gson;
+    }
 
     @Override
     public Mono<String> getSerializerMemberName(Member member) {
         return Mono.fromCallable(() -> {
+            if (Modifier.isTransient(member.getModifiers())) {
+                return null;
+            }
             if (member instanceof Field) {
+                if (gson.excluder().excludeField((Field) member, true)) {
+                    return null;
+                }
+                if (!((Field) member).isAnnotationPresent(Expose.class)) {
+                    return null;
+                }
                 if (!((Field) member).isAnnotationPresent(SerializedName.class)) {
                     return member.getName();
                 }
