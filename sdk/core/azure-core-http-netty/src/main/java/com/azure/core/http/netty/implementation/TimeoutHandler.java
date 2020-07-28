@@ -181,15 +181,14 @@ public final class TimeoutHandler extends ChannelDuplexHandler {
     }
 
     @Override
-    public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
+    public void handlerRemoved(ChannelHandlerContext ctx) {
         cleanupHandler();
-        super.handlerRemoved(ctx);
     }
 
     @Override
-    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+    public void channelInactive(ChannelHandlerContext ctx) {
         cleanupHandler();
-        super.channelInactive(ctx);
+        ctx.fireChannelInactive();
     }
 
     /*

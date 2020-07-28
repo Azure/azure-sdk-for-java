@@ -6,7 +6,7 @@ package com.azure.core.http.netty;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.implementation.ChallengeHolder;
 import com.azure.core.http.netty.implementation.DeferredHttpProxyProvider;
-import com.azure.core.http.netty.implementation.DeferredTimeoutProvider;
+import com.azure.core.http.netty.implementation.TimeoutHandler;
 import com.azure.core.util.AuthorizationChallengeHandler;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -141,9 +141,8 @@ public class NettyAsyncHttpClientBuilder {
 
             long sixtySeconds = TimeUnit.SECONDS.toNanos(60);
 
-            return tcpClient.bootstrap(bootstrap -> BootstrapHandlers.updateConfiguration(bootstrap,
-                DeferredTimeoutProvider.NAME,
-                new DeferredTimeoutProvider(sixtySeconds, sixtySeconds, sixtySeconds)));
+            return tcpClient.doOnConnected(connection -> connection.addHandlerLast(
+                new TimeoutHandler(sixtySeconds, sixtySeconds, sixtySeconds, TimeUnit.NANOSECONDS)));
         });
 
         return new NettyAsyncHttpClient(nettyHttpClient, disableBufferCopy);
@@ -304,8 +303,8 @@ public class NettyAsyncHttpClientBuilder {
      * timeout triggers periodically but won't fire its operation if another read operation has completed between when
      * the timeout is triggered and completes.
      * <p>
-     * If {@code readTimeout} is {@code null} or a {@link Duration} with value {@code 0} then no timeout period will
-     * be applied to read operations. When applying the timeout the greater of one millisecond and the value of {@code
+     * If {@code readTimeout} is {@code null} or a {@link Duration} with value {@code 0} then no timeout period will be
+     * applied to read operations. When applying the timeout the greater of one millisecond and the value of {@code
      * readTimeout} will be used.
      *
      * @param readTimeout Read timeout duration.
