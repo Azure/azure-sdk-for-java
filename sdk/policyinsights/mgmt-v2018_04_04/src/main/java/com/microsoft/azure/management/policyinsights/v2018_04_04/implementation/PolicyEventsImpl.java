@@ -11,7 +11,6 @@ package com.microsoft.azure.management.policyinsights.v2018_04_04.implementation
 
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.policyinsights.v2018_04_04.PolicyEvents;
-import rx.Completable;
 import rx.functions.Func1;
 import rx.Observable;
 import com.microsoft.azure.management.policyinsights.v2018_04_04.PolicyEventsQueryResults;
@@ -125,9 +124,9 @@ class PolicyEventsImpl extends WrapperImpl<PolicyEventsInner> implements PolicyE
     }
 
     @Override
-    public Completable getMetadataAsync(String scope) {
+    public Observable<String> getMetadataAsync(String scope) {
         PolicyEventsInner client = this.inner();
-        return client.getMetadataAsync(scope).toCompletable();
-    }
+        return client.getMetadataAsync(scope)
+    ;}
 
 }

@@ -36,7 +36,7 @@ public class PolicyStatesQueryResultsInner {
     private List<PolicyStateInner> value;
 
     /**
-     * Get the odatacontext value.
+     * Get oData context string; used by OData clients to resolve type information based on metadata.
      *
      * @return the odatacontext value
      */
@@ -45,7 +45,7 @@ public class PolicyStatesQueryResultsInner {
     }
 
     /**
-     * Set the odatacontext value.
+     * Set oData context string; used by OData clients to resolve type information based on metadata.
      *
      * @param odatacontext the odatacontext value to set
      * @return the PolicyStatesQueryResultsInner object itself.
@@ -56,7 +56,7 @@ public class PolicyStatesQueryResultsInner {
     }
 
     /**
-     * Get the odatacount value.
+     * Get oData entity count; represents the number of policy state records returned.
      *
      * @return the odatacount value
      */
@@ -65,7 +65,7 @@ public class PolicyStatesQueryResultsInner {
     }
 
     /**
-     * Set the odatacount value.
+     * Set oData entity count; represents the number of policy state records returned.
      *
      * @param odatacount the odatacount value to set
      * @return the PolicyStatesQueryResultsInner object itself.
@@ -76,7 +76,7 @@ public class PolicyStatesQueryResultsInner {
     }
 
     /**
-     * Get the value value.
+     * Get query results.
      *
      * @return the value value
      */
@@ -85,7 +85,7 @@ public class PolicyStatesQueryResultsInner {
     }
 
     /**
-     * Set the value value.
+     * Set query results.
      *
      * @param value the value value to set
      * @return the PolicyStatesQueryResultsInner object itself.

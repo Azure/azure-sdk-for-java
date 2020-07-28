@@ -40,7 +40,7 @@ public class PolicyAssignmentSummary {
     private List<PolicyDefinitionSummary> policyDefinitions;
 
     /**
-     * Get the policyAssignmentId value.
+     * Get policy assignment ID.
      *
      * @return the policyAssignmentId value
      */
@@ -49,7 +49,7 @@ public class PolicyAssignmentSummary {
     }
 
     /**
-     * Set the policyAssignmentId value.
+     * Set policy assignment ID.
      *
      * @param policyAssignmentId the policyAssignmentId value to set
      * @return the PolicyAssignmentSummary object itself.
@@ -60,7 +60,7 @@ public class PolicyAssignmentSummary {
     }
 
     /**
-     * Get the policySetDefinitionId value.
+     * Get policy set definition ID, if the policy assignment is for a policy set.
      *
      * @return the policySetDefinitionId value
      */
@@ -69,7 +69,7 @@ public class PolicyAssignmentSummary {
     }
 
     /**
-     * Set the policySetDefinitionId value.
+     * Set policy set definition ID, if the policy assignment is for a policy set.
      *
      * @param policySetDefinitionId the policySetDefinitionId value to set
      * @return the PolicyAssignmentSummary object itself.
@@ -80,7 +80,7 @@ public class PolicyAssignmentSummary {
     }
 
     /**
-     * Get the results value.
+     * Get non-compliance summary for the policy assignment.
      *
      * @return the results value
      */
@@ -89,7 +89,7 @@ public class PolicyAssignmentSummary {
     }
 
     /**
-     * Set the results value.
+     * Set non-compliance summary for the policy assignment.
      *
      * @param results the results value to set
      * @return the PolicyAssignmentSummary object itself.
@@ -100,7 +100,7 @@ public class PolicyAssignmentSummary {
     }
 
     /**
-     * Get the policyDefinitions value.
+     * Get policy definitions summary.
      *
      * @return the policyDefinitions value
      */
@@ -109,7 +109,7 @@ public class PolicyAssignmentSummary {
     }
 
     /**
-     * Set the policyDefinitions value.
+     * Set policy definitions summary.
      *
      * @param policyDefinitions the policyDefinitions value to set
      * @return the PolicyAssignmentSummary object itself.

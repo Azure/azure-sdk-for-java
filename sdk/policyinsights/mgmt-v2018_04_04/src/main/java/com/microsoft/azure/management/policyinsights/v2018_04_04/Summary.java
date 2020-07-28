@@ -42,7 +42,7 @@ public class Summary {
     private List<PolicyAssignmentSummary> policyAssignments;
 
     /**
-     * Get the odataid value.
+     * Get oData entity ID; always set to null since summaries do not have an entity ID.
      *
      * @return the odataid value
      */
@@ -51,7 +51,7 @@ public class Summary {
     }
 
     /**
-     * Set the odataid value.
+     * Set oData entity ID; always set to null since summaries do not have an entity ID.
      *
      * @param odataid the odataid value to set
      * @return the Summary object itself.
@@ -62,7 +62,7 @@ public class Summary {
     }
 
     /**
-     * Get the odatacontext value.
+     * Get oData context string; used by OData clients to resolve type information based on metadata.
      *
      * @return the odatacontext value
      */
@@ -71,7 +71,7 @@ public class Summary {
     }
 
     /**
-     * Set the odatacontext value.
+     * Set oData context string; used by OData clients to resolve type information based on metadata.
      *
      * @param odatacontext the odatacontext value to set
      * @return the Summary object itself.
@@ -82,7 +82,7 @@ public class Summary {
     }
 
     /**
-     * Get the results value.
+     * Get non-compliance summary for all policy assignments.
      *
      * @return the results value
      */
@@ -91,7 +91,7 @@ public class Summary {
     }
 
     /**
-     * Set the results value.
+     * Set non-compliance summary for all policy assignments.
      *
      * @param results the results value to set
      * @return the Summary object itself.
@@ -102,7 +102,7 @@ public class Summary {
     }
 
     /**
-     * Get the policyAssignments value.
+     * Get policy assignments summary.
      *
      * @return the policyAssignments value
      */
@@ -111,7 +111,7 @@ public class Summary {
     }
 
     /**
-     * Set the policyAssignments value.
+     * Set policy assignments summary.
      *
      * @param policyAssignments the policyAssignments value to set
      * @return the Summary object itself.
