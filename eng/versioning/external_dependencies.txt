@@ -31,7 +31,7 @@ com.squareup.okhttp3:okhttp;4.2.2
 commons-codec:commons-codec;1.13
 io.micrometer:micrometer-core;1.3.0
 io.micrometer:micrometer-registry-azure-monitor;1.3.0
-io.micrometer:micrometer-registry-graphite;1.2.0
+io.micrometer:micrometer-registry-graphite;1.3.0
 io.netty:netty-buffer;4.1.51.Final
 io.netty:netty-codec-http;4.1.51.Final
 io.netty:netty-codec-http2;4.1.51.Final
