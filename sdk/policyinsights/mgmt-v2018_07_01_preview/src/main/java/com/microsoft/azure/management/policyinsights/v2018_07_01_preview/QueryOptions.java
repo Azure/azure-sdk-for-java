@@ -64,6 +64,13 @@ public class QueryOptions {
     private String apply;
 
     /**
+     * Skiptoken is only provided if a previous response returned a partial
+     * result as a part of nextLink element.
+     */
+    @JsonProperty(value = "")
+    private String skipToken;
+
+    /**
      * The $expand query parameter. For example, to expand
      * policyEvaluationDetails, use $expand=policyEvaluationDetails.
      */
@@ -207,6 +214,26 @@ public class QueryOptions {
      */
     public QueryOptions withApply(String apply) {
         this.apply = apply;
+        return this;
+    }
+
+    /**
+     * Get skiptoken is only provided if a previous response returned a partial result as a part of nextLink element.
+     *
+     * @return the skipToken value
+     */
+    public String skipToken() {
+        return this.skipToken;
+    }
+
+    /**
+     * Set skiptoken is only provided if a previous response returned a partial result as a part of nextLink element.
+     *
+     * @param skipToken the skipToken value to set
+     * @return the QueryOptions object itself.
+     */
+    public QueryOptions withSkipToken(String skipToken) {
+        this.skipToken = skipToken;
         return this;
     }
 
