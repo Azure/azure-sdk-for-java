@@ -20,6 +20,16 @@ public interface ObjectSerializer {
      * @param <T> Type of the object.
      * @return The object represented by the deserialized stream.
      */
+    <T> T deserializeSync(InputStream stream, Class<T> clazz);
+
+    /**
+     * Reads a stream into its object representation.
+     *
+     * @param stream {@link InputStream} of data.
+     * @param clazz {@link Class} representing the object.
+     * @param <T> Type of the object.
+     * @return The object represented by the deserialized stream.
+     */
     <T> Mono<T> deserialize(InputStream stream, Class<T> clazz);
 
     /**
@@ -27,7 +37,17 @@ public interface ObjectSerializer {
      *
      * @param stream {@link OutputStream} where the object will be written.
      * @param value The object.
-     * @param <S> Type of the output stream
+     * @param <S> Type of the output stream.
+     * @return The stream where the object was written.
+     */
+    <S extends OutputStream> S serializeSync(S stream, Object value);
+
+    /**
+     * Writes the object into a stream.
+     *
+     * @param stream {@link OutputStream} where the object will be written.
+     * @param value The object.
+     * @param <S> Type of the output stream.
      * @return The stream where the object was written.
      */
     <S extends OutputStream> Mono<S> serialize(S stream, Object value);
