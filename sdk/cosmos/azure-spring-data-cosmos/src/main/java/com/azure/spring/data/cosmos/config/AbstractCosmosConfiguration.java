@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.auditing.IsNewAwareAuditingHandler;
 
 /**
  * To configure cosmos with client, cosmos factory and template
@@ -61,6 +62,10 @@ public abstract class AbstractCosmosConfiguration extends CosmosConfigurationSup
     @Autowired(required = false)
     private ObjectMapper objectMapper;
 
+    @Qualifier(Constants.AUDITING_HANDLER_BEAN_NAME)
+    @Autowired(required = false)
+    private IsNewAwareAuditingHandler cosmosAuditingHandler;
+
     /**
      * Declare CosmosTemplate bean.
      *
@@ -73,7 +78,7 @@ public abstract class AbstractCosmosConfiguration extends CosmosConfigurationSup
     public CosmosTemplate cosmosTemplate(CosmosFactory cosmosFactory,
                                          CosmosConfig cosmosConfig,
                                          MappingCosmosConverter mappingCosmosConverter) {
-        return new CosmosTemplate(cosmosFactory, cosmosConfig, mappingCosmosConverter);
+        return new CosmosTemplate(cosmosFactory, cosmosConfig, mappingCosmosConverter, cosmosAuditingHandler);
     }
 
     /**
@@ -88,7 +93,7 @@ public abstract class AbstractCosmosConfiguration extends CosmosConfigurationSup
     public ReactiveCosmosTemplate reactiveCosmosTemplate(CosmosFactory cosmosFactory,
                                                          CosmosConfig cosmosConfig,
                                                          MappingCosmosConverter mappingCosmosConverter) {
-        return new ReactiveCosmosTemplate(cosmosFactory, cosmosConfig, mappingCosmosConverter);
+        return new ReactiveCosmosTemplate(cosmosFactory, cosmosConfig, mappingCosmosConverter, cosmosAuditingHandler);
     }
 
     /**
