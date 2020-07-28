@@ -1,0 +1,123 @@
+package com.azure.messaging.eventgrid;
+
+import com.azure.core.annotation.Fluent;
+import com.azure.core.experimental.serializer.JsonSerializer;
+import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
+import com.azure.core.util.CoreUtils;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+
+import java.io.IOException;
+import java.time.DateTimeException;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * This class is used to construct instances of the immutable classes {@link EventGridConsumer} and
+ * {@link EventGridAsyncConsumer}, which are used to receive and deserialize events sent from the EventGrid service.
+ */
+@Fluent
+public class EventGridConsumerBuilder {
+
+    private final Map<String, Class<?>> typeMappings;
+
+    private JsonSerializer deserializer;
+
+    /**
+     * Create the Consumer Builder with system event mappings already loaded.
+     */
+    public EventGridConsumerBuilder() {
+        typeMappings = new HashMap<>(SystemEventMappings.getSystemEventMappings());
+    }
+
+    /**
+     * Build an instance of the async consumer. If no deserializer is provided, then a default Jackson one is provided.
+     * @return the async consumer with the settings that were already set.
+     */
+    public EventGridAsyncConsumer buildAsync() {
+        JsonSerializer buildDeserializer = deserializer;
+        if (buildDeserializer == null) {
+            buildDeserializer = new JacksonJsonSerializerBuilder()
+                .serializer(new ObjectMapper().registerModule(
+                    new SimpleModule().addDeserializer(OffsetDateTime.class, new JsonDeserializer<OffsetDateTime>() {
+                        @Override
+                        public OffsetDateTime deserialize(JsonParser jsonParser,
+                                                          DeserializationContext deserializationContext)
+                            throws IOException {
+                            TemporalAccessor time = DateTimeFormatter.ISO_DATE_TIME.parse(jsonParser.getValueAsString());
+                            try {
+                                return OffsetDateTime.from(time);
+                            } catch (DateTimeException e) {
+                                return OffsetDateTime.of(LocalDateTime.from(time), ZoneOffset.UTC);
+                            }
+                        }
+                    }))
+                    .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false))
+                .build();
+        }
+
+        return new EventGridAsyncConsumer(typeMappings, buildDeserializer);
+    }
+
+    /**
+     * Build an instance of the sync consumer. If no deserializer is provided, then a default Jackson one is provided.
+     * @return the sync consumer with the settings that were already set.
+     */
+    public EventGridConsumer build() {
+        return new EventGridConsumer(buildAsync());
+    }
+
+    /**
+     * Add a mapping from the event data type string to the object class for the deserializer to deserialize.
+     * @param eventType the event data type identifier string, e.g. "Contoso.Items.ItemRecieved". In EventGridEvents,
+     *                  this is the <code>eventType</code> field. In CloudEvents, this is the <code>type</code> field.
+     *                  The event data type will be converted to lowercase.
+     * @param dataClass the data type class of the object to be decoded. The deserializer must be able to deserialize
+     *                  this type, meaning it should have {@link com.fasterxml.jackson.annotation.JsonProperty}
+     *                  annotations if the default serializer is used.
+     *
+     * @return the builder itself.
+     */
+    public EventGridConsumerBuilder putDataMapping(String eventType, Class<?> dataClass) {
+        if (CoreUtils.isNullOrEmpty(eventType)) {
+            throw new IllegalArgumentException("event type cannot be null or empty");
+        }
+        typeMappings.put(SystemEventMappings.canonicalizeEventType(eventType), dataClass);
+        return this;
+    }
+
+    /**
+     * Add/Overwrite the current data mappings with the provided ones. All mapping keys will be converted to lowercase.
+     * @param dataMappings the mappings to add/overwrite on top of ones already provided.
+     *
+     * @return the builder itself.
+     */
+    public EventGridConsumerBuilder putDataMappings(Map<String, Class<?>> dataMappings) {
+        for (Map.Entry<String, Class<?>> entry : dataMappings.entrySet()) {
+            typeMappings.put(SystemEventMappings.canonicalizeEventType(entry.getKey()), entry.getValue());
+        }
+        return this;
+    }
+
+    /**
+     * Set the custom serializer to use when deserializing events. This deserializer should be able to decode all events
+     * expected to be in the payload, including the {@link OffsetDateTime} that is included in most events
+     * @param deserializer the deserializer to use.
+     *
+     * @return the builder itself.
+     */
+    public EventGridConsumerBuilder deserializer(JsonSerializer deserializer) {
+        this.deserializer = deserializer;
+        return this;
+    }
+}

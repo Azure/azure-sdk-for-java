@@ -349,6 +349,13 @@ public class SystemEventMappings {
         put(canonicalizeEventType(STORAGE_BLOB_DELETED_EVENT), StorageBlobDeletedEventData.class);
     }};
 
+    /**
+     * Turn a given event type string into it's canonical string, used to convert strings
+     * when they may have been changed to upper/lower case.
+     * @param eventType the string to canonicalize.
+     *
+     * @return the canonicalized version.
+     */
     public static String canonicalizeEventType(String eventType) {
         if (eventType == null) {
             return null;
@@ -357,7 +364,15 @@ public class SystemEventMappings {
         }
     }
 
+    /**
+     * Get a mapping of all the system event type strings to their respective class. This is used by default in
+     * the {@link EventGridAsyncConsumer} and {@link EventGridConsumer} classes.
+     * @return a mapping of all the system event strings to system event objects.
+     */
     public static Map<String, Class<?>> getSystemEventMappings() {
         return Collections.unmodifiableMap(systemEventMappings);
+    }
+
+    private SystemEventMappings() {
     }
 }
