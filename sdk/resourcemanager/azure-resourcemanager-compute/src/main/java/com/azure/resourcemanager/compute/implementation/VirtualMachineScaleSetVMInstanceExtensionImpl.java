@@ -79,6 +79,7 @@ class VirtualMachineScaleSetVMInstanceExtensionImpl
         return Collections.unmodifiableMap(this.inner().tags());
     }
 
+    @SuppressWarnings("unchecked")
     private void initializeSettings() {
         if (this.inner().settings() == null) {
             this.publicSettings = new LinkedHashMap<>();

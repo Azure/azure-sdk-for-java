@@ -86,6 +86,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -2211,10 +2212,8 @@ public class VirtualMachineScaleSetImpl
         }
     }
 
-    private static <T> void addToList(List<T> list, T... items) {
-        for (T item : items) {
-            list.add(item);
-        }
+    private static <T> void addToList(List<T> list, T[] items) {
+        list.addAll(Arrays.asList(items));
     }
 
     private static String mergePath(String... segments) {

@@ -80,6 +80,7 @@ class WindowsVolumeLegacyEncryptionMonitorImpl implements DiskVolumeEncryptionMo
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public EncryptionStatus dataDiskStatus() {
         if (!hasEncryptionDetails()) {
             return EncryptionStatus.NOT_ENCRYPTED;

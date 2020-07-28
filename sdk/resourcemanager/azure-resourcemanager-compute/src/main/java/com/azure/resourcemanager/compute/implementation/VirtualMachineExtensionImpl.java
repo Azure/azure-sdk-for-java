@@ -231,6 +231,7 @@ class VirtualMachineExtensionImpl
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Mono<VirtualMachineExtension> updateResourceAsync() {
         this.nullifySettingsIfEmpty();
         if (this.isReference()) {
@@ -294,6 +295,7 @@ class VirtualMachineExtensionImpl
         }
     }
 
+    @SuppressWarnings("unchecked")
     private void initializeSettings() {
         if (this.inner().settings() == null) {
             this.publicSettings = new LinkedHashMap<>();
