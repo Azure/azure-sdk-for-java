@@ -63,6 +63,7 @@ class MetricAlertConditionBaseImpl<
         return this.parent;
     }
 
+    @SuppressWarnings("unchecked")
     public SubclassT withMetricName(String metricName) {
         this.inner().withMetricName(metricName);
         return (SubclassT) this;
@@ -70,9 +71,10 @@ class MetricAlertConditionBaseImpl<
 
     public SubclassT withMetricName(String metricName, String metricNamespace) {
         this.inner().withMetricNamespace(metricNamespace);
-        return (SubclassT) this.withMetricName(metricName);
+        return this.withMetricName(metricName);
     }
 
+    @SuppressWarnings("unchecked")
     public SubclassT withDimension(String dimensionName, String... values) {
         if (this.dimensions.containsKey(dimensionName)) {
             dimensions.remove(dimensionName);
@@ -85,6 +87,7 @@ class MetricAlertConditionBaseImpl<
         return (SubclassT) this;
     }
 
+    @SuppressWarnings("unchecked")
     public SubclassT withoutDimension(String dimensionName) {
         if (this.dimensions.containsKey(dimensionName)) {
             dimensions.remove(dimensionName);

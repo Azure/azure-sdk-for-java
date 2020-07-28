@@ -191,7 +191,10 @@ public interface ActionGroup
     }
 
     /** The entirety of a Action Group definition. */
-    interface Definition extends DefinitionStages.Blank, ActionDefinition, DefinitionStages.WithCreate {
+    @SuppressWarnings("rawtypes")
+    interface Definition extends DefinitionStages.Blank,
+        ActionDefinition,
+        DefinitionStages.WithCreate {
     }
 
     /** Grouping of Action Group definition stages. */

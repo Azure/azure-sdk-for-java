@@ -139,6 +139,7 @@ class ActionGroupImpl
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public ActionGroupImpl defineReceiver(String actionNamePrefix) {
         return this.updateReceiver(actionNamePrefix);
     }
