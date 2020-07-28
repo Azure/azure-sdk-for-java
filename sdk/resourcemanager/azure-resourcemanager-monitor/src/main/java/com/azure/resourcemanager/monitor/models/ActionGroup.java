@@ -191,9 +191,8 @@ public interface ActionGroup
     }
 
     /** The entirety of a Action Group definition. */
-    @SuppressWarnings("rawtypes")
-    interface Definition extends DefinitionStages.Blank,
-        ActionDefinition,
+    interface Definition<ParentT> extends DefinitionStages.Blank,
+        ActionDefinition<ParentT>,
         DefinitionStages.WithCreate {
     }
 
@@ -215,7 +214,7 @@ public interface ActionGroup
              * @param actionNamePrefix prefix for each receiver name.
              * @return the next stage of the definition
              */
-            ActionDefinition<ActionGroup.DefinitionStages.WithCreate> defineReceiver(String actionNamePrefix);
+            ActionDefinition<? extends ActionGroup.DefinitionStages.WithCreate> defineReceiver(String actionNamePrefix);
 
             /**
              * Sets the short name of the action group. This will be used in SMS messages. Maximum length cannot exceed
@@ -247,7 +246,7 @@ public interface ActionGroup
              * @param actionNamePrefix the actionNamePrefix value to use during receiver name creation.
              * @return the next stage of the update
              */
-            ActionDefinition<Update> defineReceiver(String actionNamePrefix);
+            ActionDefinition<? extends Update> defineReceiver(String actionNamePrefix);
 
             /**
              * Begins an update flow for an existing receiver group.
