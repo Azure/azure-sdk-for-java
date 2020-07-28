@@ -12,6 +12,7 @@ import java.util.Map;
 import com.microsoft.azure.management.datafactory.v2018_06_01.FactoryIdentity;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.datafactory.v2018_06_01.FactoryRepoConfiguration;
+import com.microsoft.azure.management.datafactory.v2018_06_01.GlobalParameterSpecification;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.rest.SkipParentValidation;
@@ -58,6 +59,12 @@ public class FactoryInner extends Resource {
      */
     @JsonProperty(value = "properties.repoConfiguration")
     private FactoryRepoConfiguration repoConfiguration;
+
+    /**
+     * List of parameters for factory.
+     */
+    @JsonProperty(value = "properties.globalParameters")
+    private Map<String, GlobalParameterSpecification> globalParameters;
 
     /**
      * Etag identifies change in the resource.
@@ -149,6 +156,26 @@ public class FactoryInner extends Resource {
      */
     public FactoryInner withRepoConfiguration(FactoryRepoConfiguration repoConfiguration) {
         this.repoConfiguration = repoConfiguration;
+        return this;
+    }
+
+    /**
+     * Get list of parameters for factory.
+     *
+     * @return the globalParameters value
+     */
+    public Map<String, GlobalParameterSpecification> globalParameters() {
+        return this.globalParameters;
+    }
+
+    /**
+     * Set list of parameters for factory.
+     *
+     * @param globalParameters the globalParameters value to set
+     * @return the FactoryInner object itself.
+     */
+    public FactoryInner withGlobalParameters(Map<String, GlobalParameterSpecification> globalParameters) {
+        this.globalParameters = globalParameters;
         return this;
     }
 

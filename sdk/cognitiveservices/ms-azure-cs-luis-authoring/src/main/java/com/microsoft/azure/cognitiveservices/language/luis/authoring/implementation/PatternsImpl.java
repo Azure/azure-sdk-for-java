@@ -8,8 +8,8 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.implementation;
 
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.GetPatternsOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.GetIntentPatternsOptionalParameter;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ListPatternsOptionalParameter;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ListIntentPatternsOptionalParameter;
 import retrofit2.Retrofit;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.Patterns;
 import com.google.common.base.Joiner;
@@ -70,9 +70,9 @@ public class PatternsImpl implements Patterns {
         @POST("apps/{appId}/versions/{versionId}/patternrule")
         Observable<Response<ResponseBody>> addPattern(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body PatternRuleCreateObject pattern, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Patterns getPatterns" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Patterns listPatterns" })
         @GET("apps/{appId}/versions/{versionId}/patternrules")
-        Observable<Response<ResponseBody>> getPatterns(@Path("appId") UUID appId, @Path("versionId") String versionId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listPatterns(@Path("appId") UUID appId, @Path("versionId") String versionId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Patterns updatePatterns" })
         @PUT("apps/{appId}/versions/{versionId}/patternrules")
@@ -94,14 +94,14 @@ public class PatternsImpl implements Patterns {
         @HTTP(path = "apps/{appId}/versions/{versionId}/patternrules/{patternId}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deletePattern(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("patternId") UUID patternId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Patterns getIntentPatterns" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Patterns listIntentPatterns" })
         @GET("apps/{appId}/versions/{versionId}/intents/{intentId}/patternrules")
-        Observable<Response<ResponseBody>> getIntentPatterns(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("intentId") UUID intentId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listIntentPatterns(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("intentId") UUID intentId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
     }
 
     /**
-     * Adds one pattern to the specified application.
+     * Adds a pattern to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -116,7 +116,7 @@ public class PatternsImpl implements Patterns {
     }
 
     /**
-     * Adds one pattern to the specified application.
+     * Adds a pattern to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -130,7 +130,7 @@ public class PatternsImpl implements Patterns {
     }
 
     /**
-     * Adds one pattern to the specified application.
+     * Adds a pattern to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -148,7 +148,7 @@ public class PatternsImpl implements Patterns {
     }
 
     /**
-     * Adds one pattern to the specified application.
+     * Adds a pattern to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -194,45 +194,45 @@ public class PatternsImpl implements Patterns {
 
 
     /**
-     * Returns an application version's patterns.
+     * Gets patterns in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param getPatternsOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param listPatternsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;PatternRuleInfo&gt; object if successful.
      */
-    public List<PatternRuleInfo> getPatterns(UUID appId, String versionId, GetPatternsOptionalParameter getPatternsOptionalParameter) {
-        return getPatternsWithServiceResponseAsync(appId, versionId, getPatternsOptionalParameter).toBlocking().single().body();
+    public List<PatternRuleInfo> listPatterns(UUID appId, String versionId, ListPatternsOptionalParameter listPatternsOptionalParameter) {
+        return listPatternsWithServiceResponseAsync(appId, versionId, listPatternsOptionalParameter).toBlocking().single().body();
     }
 
     /**
-     * Returns an application version's patterns.
+     * Gets patterns in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param getPatternsOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param listPatternsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<PatternRuleInfo>> getPatternsAsync(UUID appId, String versionId, GetPatternsOptionalParameter getPatternsOptionalParameter, final ServiceCallback<List<PatternRuleInfo>> serviceCallback) {
-        return ServiceFuture.fromResponse(getPatternsWithServiceResponseAsync(appId, versionId, getPatternsOptionalParameter), serviceCallback);
+    public ServiceFuture<List<PatternRuleInfo>> listPatternsAsync(UUID appId, String versionId, ListPatternsOptionalParameter listPatternsOptionalParameter, final ServiceCallback<List<PatternRuleInfo>> serviceCallback) {
+        return ServiceFuture.fromResponse(listPatternsWithServiceResponseAsync(appId, versionId, listPatternsOptionalParameter), serviceCallback);
     }
 
     /**
-     * Returns an application version's patterns.
+     * Gets patterns in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param getPatternsOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param listPatternsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;PatternRuleInfo&gt; object
      */
-    public Observable<List<PatternRuleInfo>> getPatternsAsync(UUID appId, String versionId, GetPatternsOptionalParameter getPatternsOptionalParameter) {
-        return getPatternsWithServiceResponseAsync(appId, versionId, getPatternsOptionalParameter).map(new Func1<ServiceResponse<List<PatternRuleInfo>>, List<PatternRuleInfo>>() {
+    public Observable<List<PatternRuleInfo>> listPatternsAsync(UUID appId, String versionId, ListPatternsOptionalParameter listPatternsOptionalParameter) {
+        return listPatternsWithServiceResponseAsync(appId, versionId, listPatternsOptionalParameter).map(new Func1<ServiceResponse<List<PatternRuleInfo>>, List<PatternRuleInfo>>() {
             @Override
             public List<PatternRuleInfo> call(ServiceResponse<List<PatternRuleInfo>> response) {
                 return response.body();
@@ -241,15 +241,15 @@ public class PatternsImpl implements Patterns {
     }
 
     /**
-     * Returns an application version's patterns.
+     * Gets patterns in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param getPatternsOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param listPatternsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;PatternRuleInfo&gt; object
      */
-    public Observable<ServiceResponse<List<PatternRuleInfo>>> getPatternsWithServiceResponseAsync(UUID appId, String versionId, GetPatternsOptionalParameter getPatternsOptionalParameter) {
+    public Observable<ServiceResponse<List<PatternRuleInfo>>> listPatternsWithServiceResponseAsync(UUID appId, String versionId, ListPatternsOptionalParameter listPatternsOptionalParameter) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -259,14 +259,14 @@ public class PatternsImpl implements Patterns {
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        final Integer skip = getPatternsOptionalParameter != null ? getPatternsOptionalParameter.skip() : null;
-        final Integer take = getPatternsOptionalParameter != null ? getPatternsOptionalParameter.take() : null;
+        final Integer skip = listPatternsOptionalParameter != null ? listPatternsOptionalParameter.skip() : null;
+        final Integer take = listPatternsOptionalParameter != null ? listPatternsOptionalParameter.take() : null;
 
-        return getPatternsWithServiceResponseAsync(appId, versionId, skip, take);
+        return listPatternsWithServiceResponseAsync(appId, versionId, skip, take);
     }
 
     /**
-     * Returns an application version's patterns.
+     * Gets patterns in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -275,7 +275,7 @@ public class PatternsImpl implements Patterns {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;PatternRuleInfo&gt; object
      */
-    public Observable<ServiceResponse<List<PatternRuleInfo>>> getPatternsWithServiceResponseAsync(UUID appId, String versionId, Integer skip, Integer take) {
+    public Observable<ServiceResponse<List<PatternRuleInfo>>> listPatternsWithServiceResponseAsync(UUID appId, String versionId, Integer skip, Integer take) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -286,12 +286,12 @@ public class PatternsImpl implements Patterns {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.getPatterns(appId, versionId, skip, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.listPatterns(appId, versionId, skip, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<PatternRuleInfo>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<PatternRuleInfo>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<List<PatternRuleInfo>> clientResponse = getPatternsDelegate(response);
+                        ServiceResponse<List<PatternRuleInfo>> clientResponse = listPatternsDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -300,7 +300,7 @@ public class PatternsImpl implements Patterns {
             });
     }
 
-    private ServiceResponse<List<PatternRuleInfo>> getPatternsDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+    private ServiceResponse<List<PatternRuleInfo>> listPatternsDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<List<PatternRuleInfo>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<PatternRuleInfo>>() { }.getType())
                 .registerError(ErrorResponseException.class)
@@ -308,14 +308,14 @@ public class PatternsImpl implements Patterns {
     }
 
     @Override
-    public PatternsGetPatternsParameters getPatterns() {
-        return new PatternsGetPatternsParameters(this);
+    public PatternsListPatternsParameters listPatterns() {
+        return new PatternsListPatternsParameters(this);
     }
 
     /**
-     * Internal class implementing PatternsGetPatternsDefinition.
+     * Internal class implementing PatternsListPatternsDefinition.
      */
-    class PatternsGetPatternsParameters implements PatternsGetPatternsDefinition {
+    class PatternsListPatternsParameters implements PatternsListPatternsDefinition {
         private PatternsImpl parent;
         private UUID appId;
         private String versionId;
@@ -326,42 +326,42 @@ public class PatternsImpl implements Patterns {
          * Constructor.
          * @param parent the parent object.
          */
-        PatternsGetPatternsParameters(PatternsImpl parent) {
+        PatternsListPatternsParameters(PatternsImpl parent) {
             this.parent = parent;
         }
 
         @Override
-        public PatternsGetPatternsParameters withAppId(UUID appId) {
+        public PatternsListPatternsParameters withAppId(UUID appId) {
             this.appId = appId;
             return this;
         }
 
         @Override
-        public PatternsGetPatternsParameters withVersionId(String versionId) {
+        public PatternsListPatternsParameters withVersionId(String versionId) {
             this.versionId = versionId;
             return this;
         }
 
         @Override
-        public PatternsGetPatternsParameters withSkip(Integer skip) {
+        public PatternsListPatternsParameters withSkip(Integer skip) {
             this.skip = skip;
             return this;
         }
 
         @Override
-        public PatternsGetPatternsParameters withTake(Integer take) {
+        public PatternsListPatternsParameters withTake(Integer take) {
             this.take = take;
             return this;
         }
 
         @Override
         public List<PatternRuleInfo> execute() {
-        return getPatternsWithServiceResponseAsync(appId, versionId, skip, take).toBlocking().single().body();
+        return listPatternsWithServiceResponseAsync(appId, versionId, skip, take).toBlocking().single().body();
     }
 
         @Override
         public Observable<List<PatternRuleInfo>> executeAsync() {
-            return getPatternsWithServiceResponseAsync(appId, versionId, skip, take).map(new Func1<ServiceResponse<List<PatternRuleInfo>>, List<PatternRuleInfo>>() {
+            return listPatternsWithServiceResponseAsync(appId, versionId, skip, take).map(new Func1<ServiceResponse<List<PatternRuleInfo>>, List<PatternRuleInfo>>() {
                 @Override
                 public List<PatternRuleInfo> call(ServiceResponse<List<PatternRuleInfo>> response) {
                     return response.body();
@@ -371,7 +371,7 @@ public class PatternsImpl implements Patterns {
     }
 
     /**
-     * Updates patterns.
+     * Updates patterns in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -386,7 +386,7 @@ public class PatternsImpl implements Patterns {
     }
 
     /**
-     * Updates patterns.
+     * Updates patterns in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -400,7 +400,7 @@ public class PatternsImpl implements Patterns {
     }
 
     /**
-     * Updates patterns.
+     * Updates patterns in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -418,7 +418,7 @@ public class PatternsImpl implements Patterns {
     }
 
     /**
-     * Updates patterns.
+     * Updates patterns in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -463,7 +463,7 @@ public class PatternsImpl implements Patterns {
     }
 
     /**
-     * Adds a batch of patterns to the specified application.
+     * Adds a batch of patterns in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -478,7 +478,7 @@ public class PatternsImpl implements Patterns {
     }
 
     /**
-     * Adds a batch of patterns to the specified application.
+     * Adds a batch of patterns in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -492,7 +492,7 @@ public class PatternsImpl implements Patterns {
     }
 
     /**
-     * Adds a batch of patterns to the specified application.
+     * Adds a batch of patterns in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -510,7 +510,7 @@ public class PatternsImpl implements Patterns {
     }
 
     /**
-     * Adds a batch of patterns to the specified application.
+     * Adds a batch of patterns in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -555,7 +555,7 @@ public class PatternsImpl implements Patterns {
     }
 
     /**
-     * Deletes the patterns with the specified IDs.
+     * Deletes a list of patterns in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -570,7 +570,7 @@ public class PatternsImpl implements Patterns {
     }
 
     /**
-     * Deletes the patterns with the specified IDs.
+     * Deletes a list of patterns in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -584,7 +584,7 @@ public class PatternsImpl implements Patterns {
     }
 
     /**
-     * Deletes the patterns with the specified IDs.
+     * Deletes a list of patterns in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -602,7 +602,7 @@ public class PatternsImpl implements Patterns {
     }
 
     /**
-     * Deletes the patterns with the specified IDs.
+     * Deletes a list of patterns in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -647,7 +647,7 @@ public class PatternsImpl implements Patterns {
     }
 
     /**
-     * Updates a pattern.
+     * Updates a pattern in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -663,7 +663,7 @@ public class PatternsImpl implements Patterns {
     }
 
     /**
-     * Updates a pattern.
+     * Updates a pattern in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -678,7 +678,7 @@ public class PatternsImpl implements Patterns {
     }
 
     /**
-     * Updates a pattern.
+     * Updates a pattern in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -697,7 +697,7 @@ public class PatternsImpl implements Patterns {
     }
 
     /**
-     * Updates a pattern.
+     * Updates a pattern in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -746,7 +746,7 @@ public class PatternsImpl implements Patterns {
     }
 
     /**
-     * Deletes the pattern with the specified ID.
+     * Deletes the pattern with the specified ID from a version of the application..
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -761,7 +761,7 @@ public class PatternsImpl implements Patterns {
     }
 
     /**
-     * Deletes the pattern with the specified ID.
+     * Deletes the pattern with the specified ID from a version of the application..
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -775,7 +775,7 @@ public class PatternsImpl implements Patterns {
     }
 
     /**
-     * Deletes the pattern with the specified ID.
+     * Deletes the pattern with the specified ID from a version of the application..
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -793,7 +793,7 @@ public class PatternsImpl implements Patterns {
     }
 
     /**
-     * Deletes the pattern with the specified ID.
+     * Deletes the pattern with the specified ID from a version of the application..
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -838,48 +838,48 @@ public class PatternsImpl implements Patterns {
 
 
     /**
-     * Returns patterns to be retrieved for the specific intent.
+     * Returns patterns for the specific intent in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param intentId The intent classifier ID.
-     * @param getIntentPatternsOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param listIntentPatternsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;PatternRuleInfo&gt; object if successful.
      */
-    public List<PatternRuleInfo> getIntentPatterns(UUID appId, String versionId, UUID intentId, GetIntentPatternsOptionalParameter getIntentPatternsOptionalParameter) {
-        return getIntentPatternsWithServiceResponseAsync(appId, versionId, intentId, getIntentPatternsOptionalParameter).toBlocking().single().body();
+    public List<PatternRuleInfo> listIntentPatterns(UUID appId, String versionId, UUID intentId, ListIntentPatternsOptionalParameter listIntentPatternsOptionalParameter) {
+        return listIntentPatternsWithServiceResponseAsync(appId, versionId, intentId, listIntentPatternsOptionalParameter).toBlocking().single().body();
     }
 
     /**
-     * Returns patterns to be retrieved for the specific intent.
+     * Returns patterns for the specific intent in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param intentId The intent classifier ID.
-     * @param getIntentPatternsOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param listIntentPatternsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<PatternRuleInfo>> getIntentPatternsAsync(UUID appId, String versionId, UUID intentId, GetIntentPatternsOptionalParameter getIntentPatternsOptionalParameter, final ServiceCallback<List<PatternRuleInfo>> serviceCallback) {
-        return ServiceFuture.fromResponse(getIntentPatternsWithServiceResponseAsync(appId, versionId, intentId, getIntentPatternsOptionalParameter), serviceCallback);
+    public ServiceFuture<List<PatternRuleInfo>> listIntentPatternsAsync(UUID appId, String versionId, UUID intentId, ListIntentPatternsOptionalParameter listIntentPatternsOptionalParameter, final ServiceCallback<List<PatternRuleInfo>> serviceCallback) {
+        return ServiceFuture.fromResponse(listIntentPatternsWithServiceResponseAsync(appId, versionId, intentId, listIntentPatternsOptionalParameter), serviceCallback);
     }
 
     /**
-     * Returns patterns to be retrieved for the specific intent.
+     * Returns patterns for the specific intent in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param intentId The intent classifier ID.
-     * @param getIntentPatternsOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param listIntentPatternsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;PatternRuleInfo&gt; object
      */
-    public Observable<List<PatternRuleInfo>> getIntentPatternsAsync(UUID appId, String versionId, UUID intentId, GetIntentPatternsOptionalParameter getIntentPatternsOptionalParameter) {
-        return getIntentPatternsWithServiceResponseAsync(appId, versionId, intentId, getIntentPatternsOptionalParameter).map(new Func1<ServiceResponse<List<PatternRuleInfo>>, List<PatternRuleInfo>>() {
+    public Observable<List<PatternRuleInfo>> listIntentPatternsAsync(UUID appId, String versionId, UUID intentId, ListIntentPatternsOptionalParameter listIntentPatternsOptionalParameter) {
+        return listIntentPatternsWithServiceResponseAsync(appId, versionId, intentId, listIntentPatternsOptionalParameter).map(new Func1<ServiceResponse<List<PatternRuleInfo>>, List<PatternRuleInfo>>() {
             @Override
             public List<PatternRuleInfo> call(ServiceResponse<List<PatternRuleInfo>> response) {
                 return response.body();
@@ -888,16 +888,16 @@ public class PatternsImpl implements Patterns {
     }
 
     /**
-     * Returns patterns to be retrieved for the specific intent.
+     * Returns patterns for the specific intent in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param intentId The intent classifier ID.
-     * @param getIntentPatternsOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param listIntentPatternsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;PatternRuleInfo&gt; object
      */
-    public Observable<ServiceResponse<List<PatternRuleInfo>>> getIntentPatternsWithServiceResponseAsync(UUID appId, String versionId, UUID intentId, GetIntentPatternsOptionalParameter getIntentPatternsOptionalParameter) {
+    public Observable<ServiceResponse<List<PatternRuleInfo>>> listIntentPatternsWithServiceResponseAsync(UUID appId, String versionId, UUID intentId, ListIntentPatternsOptionalParameter listIntentPatternsOptionalParameter) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -910,14 +910,14 @@ public class PatternsImpl implements Patterns {
         if (intentId == null) {
             throw new IllegalArgumentException("Parameter intentId is required and cannot be null.");
         }
-        final Integer skip = getIntentPatternsOptionalParameter != null ? getIntentPatternsOptionalParameter.skip() : null;
-        final Integer take = getIntentPatternsOptionalParameter != null ? getIntentPatternsOptionalParameter.take() : null;
+        final Integer skip = listIntentPatternsOptionalParameter != null ? listIntentPatternsOptionalParameter.skip() : null;
+        final Integer take = listIntentPatternsOptionalParameter != null ? listIntentPatternsOptionalParameter.take() : null;
 
-        return getIntentPatternsWithServiceResponseAsync(appId, versionId, intentId, skip, take);
+        return listIntentPatternsWithServiceResponseAsync(appId, versionId, intentId, skip, take);
     }
 
     /**
-     * Returns patterns to be retrieved for the specific intent.
+     * Returns patterns for the specific intent in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -927,7 +927,7 @@ public class PatternsImpl implements Patterns {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;PatternRuleInfo&gt; object
      */
-    public Observable<ServiceResponse<List<PatternRuleInfo>>> getIntentPatternsWithServiceResponseAsync(UUID appId, String versionId, UUID intentId, Integer skip, Integer take) {
+    public Observable<ServiceResponse<List<PatternRuleInfo>>> listIntentPatternsWithServiceResponseAsync(UUID appId, String versionId, UUID intentId, Integer skip, Integer take) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -941,12 +941,12 @@ public class PatternsImpl implements Patterns {
             throw new IllegalArgumentException("Parameter intentId is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.getIntentPatterns(appId, versionId, intentId, skip, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.listIntentPatterns(appId, versionId, intentId, skip, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<PatternRuleInfo>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<PatternRuleInfo>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<List<PatternRuleInfo>> clientResponse = getIntentPatternsDelegate(response);
+                        ServiceResponse<List<PatternRuleInfo>> clientResponse = listIntentPatternsDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -955,7 +955,7 @@ public class PatternsImpl implements Patterns {
             });
     }
 
-    private ServiceResponse<List<PatternRuleInfo>> getIntentPatternsDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+    private ServiceResponse<List<PatternRuleInfo>> listIntentPatternsDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<List<PatternRuleInfo>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<PatternRuleInfo>>() { }.getType())
                 .registerError(ErrorResponseException.class)
@@ -963,14 +963,14 @@ public class PatternsImpl implements Patterns {
     }
 
     @Override
-    public PatternsGetIntentPatternsParameters getIntentPatterns() {
-        return new PatternsGetIntentPatternsParameters(this);
+    public PatternsListIntentPatternsParameters listIntentPatterns() {
+        return new PatternsListIntentPatternsParameters(this);
     }
 
     /**
-     * Internal class implementing PatternsGetIntentPatternsDefinition.
+     * Internal class implementing PatternsListIntentPatternsDefinition.
      */
-    class PatternsGetIntentPatternsParameters implements PatternsGetIntentPatternsDefinition {
+    class PatternsListIntentPatternsParameters implements PatternsListIntentPatternsDefinition {
         private PatternsImpl parent;
         private UUID appId;
         private String versionId;
@@ -982,48 +982,48 @@ public class PatternsImpl implements Patterns {
          * Constructor.
          * @param parent the parent object.
          */
-        PatternsGetIntentPatternsParameters(PatternsImpl parent) {
+        PatternsListIntentPatternsParameters(PatternsImpl parent) {
             this.parent = parent;
         }
 
         @Override
-        public PatternsGetIntentPatternsParameters withAppId(UUID appId) {
+        public PatternsListIntentPatternsParameters withAppId(UUID appId) {
             this.appId = appId;
             return this;
         }
 
         @Override
-        public PatternsGetIntentPatternsParameters withVersionId(String versionId) {
+        public PatternsListIntentPatternsParameters withVersionId(String versionId) {
             this.versionId = versionId;
             return this;
         }
 
         @Override
-        public PatternsGetIntentPatternsParameters withIntentId(UUID intentId) {
+        public PatternsListIntentPatternsParameters withIntentId(UUID intentId) {
             this.intentId = intentId;
             return this;
         }
 
         @Override
-        public PatternsGetIntentPatternsParameters withSkip(Integer skip) {
+        public PatternsListIntentPatternsParameters withSkip(Integer skip) {
             this.skip = skip;
             return this;
         }
 
         @Override
-        public PatternsGetIntentPatternsParameters withTake(Integer take) {
+        public PatternsListIntentPatternsParameters withTake(Integer take) {
             this.take = take;
             return this;
         }
 
         @Override
         public List<PatternRuleInfo> execute() {
-        return getIntentPatternsWithServiceResponseAsync(appId, versionId, intentId, skip, take).toBlocking().single().body();
+        return listIntentPatternsWithServiceResponseAsync(appId, versionId, intentId, skip, take).toBlocking().single().body();
     }
 
         @Override
         public Observable<List<PatternRuleInfo>> executeAsync() {
-            return getIntentPatternsWithServiceResponseAsync(appId, versionId, intentId, skip, take).map(new Func1<ServiceResponse<List<PatternRuleInfo>>, List<PatternRuleInfo>>() {
+            return listIntentPatternsWithServiceResponseAsync(appId, versionId, intentId, skip, take).map(new Func1<ServiceResponse<List<PatternRuleInfo>>, List<PatternRuleInfo>>() {
                 @Override
                 public List<PatternRuleInfo> call(ServiceResponse<List<PatternRuleInfo>> response) {
                     return response.body();

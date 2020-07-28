@@ -60,6 +60,18 @@ public final class ShareProperties {
     private DateTimeRfc1123 nextAllowedQuotaDowngradeTime;
 
     /*
+     * The deletedTime property.
+     */
+    @JsonProperty(value = "DeletedTime")
+    private DateTimeRfc1123 deletedTime;
+
+    /*
+     * The remainingRetentionDays property.
+     */
+    @JsonProperty(value = "RemainingRetentionDays")
+    private Integer remainingRetentionDays;
+
+    /*
      * The metadata property.
      */
     @JsonProperty(value = "Metadata")
@@ -223,6 +235,55 @@ public final class ShareProperties {
         } else {
             this.nextAllowedQuotaDowngradeTime = new DateTimeRfc1123(nextAllowedQuotaDowngradeTime);
         }
+        return this;
+    }
+
+    /**
+     * Get the deletedTime property: The deletedTime property.
+     *
+     * @return the deletedTime value.
+     */
+    public OffsetDateTime getDeletedTime() {
+        if (this.deletedTime == null) {
+            return null;
+        }
+        return this.deletedTime.getDateTime();
+    }
+
+    /**
+     * Set the deletedTime property: The deletedTime property.
+     *
+     * @param deletedTime the deletedTime value to set.
+     * @return the ShareProperties object itself.
+     */
+    public ShareProperties setDeletedTime(OffsetDateTime deletedTime) {
+        if (deletedTime == null) {
+            this.deletedTime = null;
+        } else {
+            this.deletedTime = new DateTimeRfc1123(deletedTime);
+        }
+        return this;
+    }
+
+    /**
+     * Get the remainingRetentionDays property: The remainingRetentionDays
+     * property.
+     *
+     * @return the remainingRetentionDays value.
+     */
+    public Integer getRemainingRetentionDays() {
+        return this.remainingRetentionDays;
+    }
+
+    /**
+     * Set the remainingRetentionDays property: The remainingRetentionDays
+     * property.
+     *
+     * @param remainingRetentionDays the remainingRetentionDays value to set.
+     * @return the ShareProperties object itself.
+     */
+    public ShareProperties setRemainingRetentionDays(Integer remainingRetentionDays) {
+        this.remainingRetentionDays = remainingRetentionDays;
         return this;
     }
 

@@ -3,8 +3,6 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpRetryOptions;
-import com.azure.core.amqp.exception.AmqpErrorContext;
-import com.azure.core.amqp.exception.LinkErrorContext;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -12,7 +10,6 @@ import com.azure.messaging.servicebus.implementation.MessageLockContainer;
 import com.azure.messaging.servicebus.implementation.MessageManagementOperations;
 import com.azure.messaging.servicebus.implementation.MessageUtils;
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
-import com.azure.messaging.servicebus.implementation.ServiceBusMessageProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import reactor.core.Disposable;
@@ -41,6 +38,7 @@ class UnnamedSessionReceiver implements AutoCloseable {
     private final AtomicReference<String> sessionId = new AtomicReference<>();
     private final ClientLogger logger = new ClientLogger(UnnamedSessionReceiver.class);
     private final ServiceBusReceiveLink receiveLink;
+    private final boolean enableSessionLockRenewal;
     private final Duration maxSessionLockRenewDuration;
     private final Function<String, Mono<Instant>> renewSessionLock;
     private final Disposable.Composite subscriptions;
@@ -49,37 +47,54 @@ class UnnamedSessionReceiver implements AutoCloseable {
     private final DirectProcessor<String> messageReceivedEmitter = DirectProcessor.create();
     private final FluxSink<String> messageReceivedSink = messageReceivedEmitter.sink(FluxSink.OverflowStrategy.BUFFER);
 
+    /**
+     * Creates a receiver for the first available session.
+     *
+     * @param receiveLink Service Bus receive link for available session.
+     * @param messageSerializer Serializes and deserializes messages from Service Bus.
+     * @param retryOptions Retry options for the receiver.
+     * @param prefetch Number of messages to prefetch from session.
+     * @param disposeOnIdle true to dispose the session receiver if there are no more messages and the receiver is
+     *     idle.
+     * @param scheduler The scheduler to publish messages on.
+     * @param maxSessionLockRenewDuration Maximum time to renew the session lock for. {@code null} or {@link
+     *     Duration#ZERO} to disable session lock renewal.
+     * @param renewSessionLock Function to renew the session lock.
+     */
     UnnamedSessionReceiver(ServiceBusReceiveLink receiveLink, MessageSerializer messageSerializer,
-        boolean isAutoComplete, Duration maxSessionLockRenewDuration, AmqpRetryOptions retryOptions, int prefetch,
-        Scheduler scheduler, Function<String, Mono<Instant>> renewSessionLock) {
+        AmqpRetryOptions retryOptions, int prefetch, boolean disposeOnIdle, Scheduler scheduler,
+        boolean enableSessionLockRenewal, Duration maxSessionLockRenewDuration,
+        Function<String, Mono<Instant>> renewSessionLock) {
+
         this.receiveLink = receiveLink;
+        this.enableSessionLockRenewal = enableSessionLockRenewal;
         this.maxSessionLockRenewDuration = maxSessionLockRenewDuration;
         this.renewSessionLock = renewSessionLock;
         this.lockContainer = new MessageLockContainer(ServiceBusConstants.OPERATION_TIMEOUT);
-
-        final AmqpErrorContext errorContext = new LinkErrorContext(receiveLink.getHostname(),
-            receiveLink.getEntityPath(), null, null);
-        final SessionMessageManagement messageManagement = new SessionMessageManagement(receiveLink);
 
         receiveLink.setEmptyCreditListener(() -> 1);
 
         final Flux<ServiceBusReceivedMessageContext> receivedMessagesFlux = receiveLink
             .receive()
             .publishOn(scheduler)
-            .doOnSubscribe(subscription ->  {
+            .doOnSubscribe(subscription -> {
                 logger.verbose("Adding prefetch to receive link.");
                 receiveLink.addCredits(prefetch);
             })
             .takeUntilOther(cancelReceiveProcessor)
-            .map(message -> messageSerializer.deserialize(message, ServiceBusReceivedMessage.class))
-            .subscribeWith(new ServiceBusMessageProcessor(receiveLink.getLinkName(), isAutoComplete, false,
-                Duration.ZERO, retryOptions, errorContext, messageManagement))
             .map(message -> {
-                if (!CoreUtils.isNullOrEmpty(message.getLockToken())) {
-                    lockContainer.addOrUpdate(message.getLockToken(), message.getLockedUntil());
+                final ServiceBusReceivedMessage deserialized = messageSerializer.deserialize(message,
+                    ServiceBusReceivedMessage.class);
+
+                //TODO (conniey): For session receivers, do they have a message lock token?
+                if (!CoreUtils.isNullOrEmpty(deserialized.getLockToken())) {
+                    lockContainer.addOrUpdate(deserialized.getLockToken(), deserialized.getLockedUntil());
+                } else {
+                    logger.info("sessionId[{}] message[{}]. There is no lock token.",
+                        deserialized.getSessionId(), deserialized.getMessageId());
                 }
 
-                return new ServiceBusReceivedMessageContext(message);
+                return new ServiceBusReceivedMessageContext(deserialized);
             })
             .onErrorResume(error -> {
                 logger.warning("sessionId[{}]. Error occurred. Ending session.", sessionId, error);
@@ -90,24 +105,37 @@ class UnnamedSessionReceiver implements AutoCloseable {
                     return;
                 }
 
-                final String token = CoreUtils.isNullOrEmpty(context.getMessage().getLockToken())
-                    ? context.getMessage().getLockToken()
+                final ServiceBusReceivedMessage message = context.getMessage();
+                final String token = !CoreUtils.isNullOrEmpty(message.getLockToken())
+                    ? message.getLockToken()
                     : "";
+
+                logger.verbose("Received sessionId[{}] messageId[{}]", context.getSessionId(), message.getMessageId());
                 messageReceivedSink.next(token);
             });
 
         this.receivedMessages = Flux.concat(receivedMessagesFlux, cancelReceiveProcessor);
         this.subscriptions = Disposables.composite();
-        this.subscriptions.add(Flux.switchOnNext(messageReceivedEmitter
-            .flatMap(lockToken -> Mono.delay(retryOptions.getTryTimeout()))
-            .handle((l, sink) -> {
-                logger.info("entityPath[{}]. sessionId[{}]. Did not a receive message within timeout {}.",
-                    receiveLink.getEntityPath(), sessionId.get(), retryOptions.getTryTimeout());
-                cancelReceiveProcessor.onComplete();
-                sink.complete();
-            }))
-            .subscribe());
-        this.subscriptions.add(receiveLink.getSessionId().subscribe(id -> sessionId.set(id)));
+
+        // Creates a subscription that disposes/closes the receiver when there are no more messages in the session and
+        // receiver is idle.
+        if (disposeOnIdle) {
+            this.subscriptions.add(Flux.switchOnNext(messageReceivedEmitter
+                .flatMap(lockToken -> Mono.delay(retryOptions.getTryTimeout()))
+                .handle((l, sink) -> {
+                    logger.info("entityPath[{}]. sessionId[{}]. Did not a receive message within timeout {}.",
+                        receiveLink.getEntityPath(), sessionId.get(), retryOptions.getTryTimeout());
+                    cancelReceiveProcessor.onComplete();
+                    sink.complete();
+                }))
+                .subscribe());
+        }
+
+        this.subscriptions.add(receiveLink.getSessionId().subscribe(id -> {
+            if (!sessionId.compareAndSet(null, id)) {
+                logger.warning("Another method set sessionId. Existing: {}. Returned: {}.", sessionId.get(), id);
+            }
+        }));
         this.subscriptions.add(receiveLink.getSessionLockedUntil().subscribe(lockedUntil -> {
             if (!sessionLockedUntil.compareAndSet(null, lockedUntil)) {
                 logger.info("SessionLockedUntil was already set: {}", sessionLockedUntil);
@@ -121,8 +149,9 @@ class UnnamedSessionReceiver implements AutoCloseable {
      * Gets whether or not the receiver contains the lock token.
      *
      * @param lockToken Lock token for the message.
+     *
      * @return {@code true} if the session receiver contains the lock token to the unsettled delivery; {@code false}
-     * otherwise.
+     *     otherwise.
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws IllegalArgumentException if {@code lockToken} is empty.
      */
@@ -153,6 +182,11 @@ class UnnamedSessionReceiver implements AutoCloseable {
         return receivedMessages;
     }
 
+    /**
+     * Updates the session lock time.
+     *
+     * @param lockedUntil Gets the time when the session is locked until.
+     */
     void setSessionLockedUntil(Instant lockedUntil) {
         sessionLockedUntil.set(lockedUntil);
     }
@@ -192,25 +226,15 @@ class UnnamedSessionReceiver implements AutoCloseable {
         // Adjust the interval, so we can buffer time for the time it'll take to refresh.
         sink.next(MessageUtils.adjustServerTimeout(initialInterval));
 
-        // TODO (conniey): Do we need to stop processing lock renewal after a max duration??
-        // if (maxSessionLockRenewDuration == null || maxSessionLockRenewDuration.isZero()) {
-        //     return Disposables.disposed();
-        // }
-        //
-        // final Disposable timeoutOperation = Mono.delay(maxSessionLockRenewDuration)
-        //     .subscribe(l -> {
-        //         if (!sink.isCancelled()) {
-        //             sink.error(new AmqpException(true, AmqpErrorCondition.TIMEOUT_ERROR,
-        //                 "Could not complete session processing within renewal time. Max session renewal time: "
-        //                     + maxSessionLockRenewDuration,
-        //                 new LinkErrorContext(receiveLink.getHostname(), receiveLink.getEntityPath(), null, null)));
-        //         }
-        //     });
-        //
-        // return Disposables.composite(renewLockSubscription, timeoutOperation);
+        final Flux<Object> cancellationSignals;
+        if (enableSessionLockRenewal) {
+            cancellationSignals = Flux.first(cancelReceiveProcessor, Mono.delay(maxSessionLockRenewDuration));
+        } else {
+            cancellationSignals = Flux.first(cancelReceiveProcessor);
+        }
 
-        return Flux.switchOnNext(emitterProcessor.map(i -> Flux.interval(i)))
-            .takeUntilOther(cancelReceiveProcessor)
+        return Flux.switchOnNext(emitterProcessor.map(Flux::interval))
+            .takeUntilOther(cancellationSignals)
             .flatMap(delay -> {
                 final String id = sessionId.get();
 
@@ -228,14 +252,14 @@ class UnnamedSessionReceiver implements AutoCloseable {
                 sink.next(MessageUtils.adjustServerTimeout(next));
                 return instant;
             })
-            .subscribe(
-                lockedUntil -> logger.verbose("lockToken[{}]. lockedUntil[{}]. Lock renewal successful.", sessionId,
-                    lockedUntil),
-                error -> {
+            .subscribe(lockedUntil -> {
+                logger.verbose("lockToken[{}]. lockedUntil[{}]. Lock renewal successful.", sessionId,
+                    lockedUntil);
+                sessionLockedUntil.set(lockedUntil);
+            }, error -> {
                     logger.error("Error occurred while renewing lock token.", error);
                     cancelReceiveProcessor.onNext(new ServiceBusReceivedMessageContext(sessionId.get(), error));
-                },
-                () -> {
+                }, () -> {
                     logger.verbose("Renewing session lock task completed.");
                     cancelReceiveProcessor.onComplete();
                 });

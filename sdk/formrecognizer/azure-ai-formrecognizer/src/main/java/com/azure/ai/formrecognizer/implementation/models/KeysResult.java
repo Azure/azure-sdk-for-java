@@ -9,9 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/**
- * The KeysResult model.
- */
+/** The KeysResult model. */
 @Fluent
 public final class KeysResult {
     /*
@@ -22,7 +20,7 @@ public final class KeysResult {
 
     /**
      * Get the clusters property: Object mapping clusterIds to a list of keys.
-     * 
+     *
      * @return the clusters value.
      */
     public Map<String, List<String>> getClusters() {
@@ -31,7 +29,7 @@ public final class KeysResult {
 
     /**
      * Set the clusters property: Object mapping clusterIds to a list of keys.
-     * 
+     *
      * @param clusters the clusters value to set.
      * @return the KeysResult object itself.
      */

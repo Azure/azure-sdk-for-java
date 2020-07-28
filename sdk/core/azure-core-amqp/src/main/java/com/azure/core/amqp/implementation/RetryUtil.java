@@ -74,9 +74,8 @@ public class RetryUtil {
         return source.zipWith(Flux.range(1, retryPolicy.getMaxRetries() + 1),
             (error, attempt) -> {
                 if (attempt > retryPolicy.getMaxRetries()) {
-                    LOGGER.warning("Retry attempts are exhausted. Current: {}. Max: {}.", retryPolicy.getMaxRetries(),
-                        attempt);
-
+                    LOGGER.warning("Retry attempts are exhausted. Current: {}. Max: {}.", attempt,
+                        retryPolicy.getMaxRetries());
                     throw Exceptions.propagate(error);
                 }
 

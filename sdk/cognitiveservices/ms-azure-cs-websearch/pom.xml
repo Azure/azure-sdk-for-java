@@ -9,7 +9,7 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-data-sdk-parent</artifactId>
       <version>1.3.0</version> <!-- {x-version-update;com.azure:azure-data-sdk-parent;current} -->
-      <relativePath>../../parents/azure-data-sdk-client</relativePath>
+      <relativePath>../../parents/azure-data-sdk-parent</relativePath>
     </parent>
     <artifactId>azure-cognitiveservices-websearch</artifactId>
     <groupId>com.microsoft.azure.cognitiveservices</groupId>

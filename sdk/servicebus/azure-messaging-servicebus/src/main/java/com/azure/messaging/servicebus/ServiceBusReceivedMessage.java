@@ -16,7 +16,7 @@ import java.util.UUID;
 /**
  * This class represents a received message from Service Bus.
  */
-public final class ServiceBusReceivedMessage implements MessageLockToken {
+public final class ServiceBusReceivedMessage {
     private UUID lockToken;
     private long sequenceNumber;
     private long deliveryCount;
@@ -192,14 +192,13 @@ public final class ServiceBusReceivedMessage implements MessageLockToken {
      * href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Deferral API</a> and, with that,
      * take the message out of the regular delivery state flow. This property is read-only.
      *
-     * @return Lock-token for this message.
+     * @return Lock-token for this message. Could return {@code null} for {@link ReceiveMode#RECEIVE_AND_DELETE} mode.
      *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement">Message
      * transfers, locks, and settlement</a>
      */
-    @Override
     public String getLockToken() {
-        return lockToken.toString();
+        return lockToken != null ? lockToken.toString() : null;
     }
 
     /**

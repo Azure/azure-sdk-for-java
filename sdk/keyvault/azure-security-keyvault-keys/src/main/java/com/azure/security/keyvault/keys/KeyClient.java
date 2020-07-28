@@ -757,8 +757,7 @@ public final class KeyClient {
      * @param name The name of the key.
      * @return {@link PagedIterable} of {@link KeyProperties key} of all the versions of the specified key in the vault. List
      *     is empty if key with {@code name} does not exist in key vault.
-     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpResponseException when a key with {@code name} is empty string.
+     * @throws ResourceNotFoundException when a given key {@code name} is null or an empty string.
      */
     public PagedIterable<KeyProperties> listPropertiesOfKeyVersions(String name) {
         return listPropertiesOfKeyVersions(name, Context.NONE);
@@ -785,8 +784,7 @@ public final class KeyClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return {@link PagedIterable} of {@link KeyProperties key} of all the versions of the specified key in the vault. List
      *     is empty if key with {@code name} does not exist in key vault.
-     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpResponseException when a key with {@code name} is empty string.
+     * @throws ResourceNotFoundException when a given key {@code name} is null or an empty string.
      */
     public PagedIterable<KeyProperties> listPropertiesOfKeyVersions(String name, Context context) {
         return new PagedIterable<>(client.listPropertiesOfKeyVersions(name, context));

@@ -3,23 +3,25 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Conflict;
-import com.azure.cosmos.implementation.Constants;
-import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.OperationKind;
+import com.azure.cosmos.implementation.Resource;
 
-import java.lang.reflect.InvocationTargetException;
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  * The type Cosmos conflict properties.
  */
-public final class CosmosConflictProperties extends Resource {
+public final class CosmosConflictProperties {
+
+    private Conflict conflict;
 
     /**
      * Initialize a conflict object.
      */
     CosmosConflictProperties() {
-        super();
+        this.conflict = new Conflict();
     }
 
     /**
@@ -28,7 +30,7 @@ public final class CosmosConflictProperties extends Resource {
      * @param jsonString the json string that represents the conflict.
      */
     CosmosConflictProperties(String jsonString) {
-        super(jsonString);
+        this.conflict = new Conflict(jsonString);
     }
 
     /**
@@ -36,8 +38,8 @@ public final class CosmosConflictProperties extends Resource {
      *
      * @return the operation kind.
      */
-    public String getOperationKind() {
-        return super.getString(Constants.Properties.OPERATION_TYPE);
+    public OperationKind getOperationKind() {
+        return this.conflict.getOperationKind();
     }
 
     /**
@@ -45,40 +47,61 @@ public final class CosmosConflictProperties extends Resource {
      *
      * @return the resource type.
      */
-    public String getResourceType() {
-        return super.getString(Constants.Properties.RESOURCE_TYPE);
+    String getResourceType() {
+        return this.conflict.getResourceType();
+    }
+
+    Resource getResource() {
+        return this.conflict;
     }
 
     /**
-     * Gets the resource ID for the conflict in the Azure Cosmos DB service.
+     * Gets the name of the resource.
      *
-     * @return resource Id for the conflict.
+     * @return the name of the resource.
      */
-    String getSourceResourceId() {
-        return super.getString(Constants.Properties.SOURCE_RESOURCE_ID);
+    public String getId() {
+        return this.conflict.getId();
     }
 
     /**
-     * Gets the conflicting resource in the Azure Cosmos DB service.
+     * Sets the name of the resource.
      *
-     * @param <T> the type of the object.
-     * @param classType The returned type of conflicting resource.
-     * @return The conflicting resource.
-     * @throws IllegalStateException thrown if an error occurs
+     * @param id the name of the resource.
+     * @return the current instance of {@link CosmosConflictProperties}.
      */
-    public <T extends Resource> T getResource(Class<T> classType) {
-        String resourceAsString = super.getString(Constants.Properties.CONTENT);
+    public CosmosConflictProperties setId(String id) {
+        this.conflict.setId(id);
+        return this;
+    }
 
-        if (!Strings.isNullOrEmpty(resourceAsString)) {
-            try {
-                return classType.getConstructor(String.class).newInstance(resourceAsString);
-            } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-                         | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-                throw new IllegalStateException("Failed to instantiate class object.", e);
-            }
-        } else {
-            return null;
-        }
+    /**
+     * Gets the ID associated with the resource.
+     *
+     * @return the ID associated with the resource.
+     */
+    String getResourceId() {
+        return this.conflict.getResourceId();
+    }
+
+    /**
+     * Get the last modified timestamp associated with the resource.
+     * This is only relevant when getting response from the server.
+     *
+     * @return the timestamp.
+     */
+    public Instant getTimestamp() {
+        return this.conflict.getTimestamp();
+    }
+
+    /**
+     * Get the entity tag associated with the resource.
+     * This is only relevant when getting response from the server.
+     *
+     * @return the e tag.
+     */
+    public String getETag() {
+        return this.conflict.getETag();
     }
 
     static List<CosmosConflictProperties> getFromV2Results(List<Conflict> results) {

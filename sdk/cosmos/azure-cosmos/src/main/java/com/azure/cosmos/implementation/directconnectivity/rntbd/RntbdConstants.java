@@ -5,7 +5,6 @@ package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
-import com.azure.cosmos.implementation.guava27.Strings;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableSet;
 import com.azure.cosmos.implementation.guava25.collect.Sets;
@@ -572,7 +571,8 @@ public final class RntbdConstants {
         ContentSerializationFormat((short) 0x0065, RntbdTokenType.Byte, false),
         AllowTentativeWrites((short) 0x0066, RntbdTokenType.Byte, false),
         IsUserRequest((short) 0x0067, RntbdTokenType.Byte, false),
-        SharedOfferThroughput((short) 0x0068, RntbdTokenType.ULong, false);
+        SharedOfferThroughput((short) 0x0068, RntbdTokenType.ULong, false),
+        ReturnPreference((short) 0x0082, RntbdTokenType.Byte, false);
 
         public static final ImmutableMap<Short, RntbdRequestHeader> map;
         public static final ImmutableSet<RntbdRequestHeader> set = Sets.immutableEnumSet(EnumSet.allOf(RntbdRequestHeader.class));

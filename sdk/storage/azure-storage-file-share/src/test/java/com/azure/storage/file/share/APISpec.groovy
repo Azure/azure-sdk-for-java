@@ -64,9 +64,6 @@ class APISpec extends Specification {
     static TestMode testMode = getTestMode()
     String connectionString
 
-    // If debugging is enabled, recordings cannot run as there can only be one proxy at a time.
-    static boolean enableDebugging = false
-
     /*
     Note that this value is only used to check if we are depending on the received etag. This value will not actually
     be used.

@@ -11,7 +11,7 @@ package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Object model for creating an explicit list item.
+ * Object model for creating an explicit (exception) list item.
  */
 public class ExplicitListItemCreateObject {
     /**

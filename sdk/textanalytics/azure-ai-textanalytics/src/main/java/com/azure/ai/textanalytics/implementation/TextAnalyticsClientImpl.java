@@ -11,6 +11,7 @@ import com.azure.ai.textanalytics.implementation.models.LanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.LanguageResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.SentimentResponse;
+import com.azure.ai.textanalytics.implementation.models.TextAnalyticsErrorException;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Host;
@@ -21,33 +22,30 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import reactor.core.publisher.Mono;
 
-/**
- * Initializes a new instance of the TextAnalyticsClient type.
- */
+/** Initializes a new instance of the TextAnalyticsClient type. */
 public final class TextAnalyticsClientImpl {
-    /**
-     * The proxy service used to perform REST calls.
-     */
-    private TextAnalyticsClientService service;
+    /** The proxy service used to perform REST calls. */
+    private final TextAnalyticsClientService service;
 
     /**
-     * Supported Cognitive Services endpoints (protocol and hostname, for example: https://westus.api.cognitive.microsoft.com).
+     * Supported Cognitive Services endpoints (protocol and hostname, for example:
+     * https://westus.api.cognitive.microsoft.com).
      */
-    private String endpoint;
+    private final String endpoint;
 
     /**
-     * Gets Supported Cognitive Services endpoints (protocol and hostname, for example: https://westus.api.cognitive.microsoft.com).
+     * Gets Supported Cognitive Services endpoints (protocol and hostname, for example:
+     * https://westus.api.cognitive.microsoft.com).
      *
      * @return the endpoint value.
      */
@@ -55,20 +53,8 @@ public final class TextAnalyticsClientImpl {
         return this.endpoint;
     }
 
-    /**
-     * Sets Supported Cognitive Services endpoints (protocol and hostname, for example: https://westus.api.cognitive.microsoft.com).
-     *
-     * @param endpoint the endpoint value.
-     */
-    TextAnalyticsClientImpl setEndpoint(String endpoint) {
-        this.endpoint = endpoint;
-        return this;
-    }
-
-    /**
-     * The HTTP pipeline to send requests through.
-     */
-    private HttpPipeline httpPipeline;
+    /** The HTTP pipeline to send requests through. */
+    private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
@@ -79,11 +65,13 @@ public final class TextAnalyticsClientImpl {
         return this.httpPipeline;
     }
 
-    /**
-     * Initializes an instance of TextAnalyticsClient client.
-     */
-    public TextAnalyticsClientImpl() {
-        new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build();
+    /** Initializes an instance of TextAnalyticsClient client. */
+    TextAnalyticsClientImpl(String endpoint) {
+        this(
+                new HttpPipelineBuilder()
+                        .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
+                        .build(),
+                endpoint);
     }
 
     /**
@@ -91,238 +79,213 @@ public final class TextAnalyticsClientImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      */
-    public TextAnalyticsClientImpl(HttpPipeline httpPipeline) {
+    TextAnalyticsClientImpl(HttpPipeline httpPipeline, String endpoint) {
         this.httpPipeline = httpPipeline;
+        this.endpoint = endpoint;
         this.service = RestProxy.create(TextAnalyticsClientService.class, this.httpPipeline);
     }
 
     /**
-     * The interface defining all the services for TextAnalyticsClient to be
-     * used by the proxy service to perform REST calls.
+     * The interface defining all the services for TextAnalyticsClient to be used by the proxy service to perform REST
+     * calls.
      */
-    @Host("{Endpoint}/text/analytics/v3.0-preview.1")
+    @Host("{Endpoint}/text/analytics/v3.1-preview.1")
     @ServiceInterface(name = "TextAnalyticsClient")
     private interface TextAnalyticsClientService {
-        @Post("entities/recognition/general")
+        @Post("/entities/recognition/general")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<SimpleResponse<EntitiesResult>> entitiesRecognitionGeneral(@HostParam("Endpoint") String endpoint, @QueryParam("model-version") String modelVersion, @QueryParam("showStats") Boolean showStats, @BodyParam("application/json; charset=utf-8") MultiLanguageBatchInput input, Context context);
+        @UnexpectedResponseExceptionType(TextAnalyticsErrorException.class)
+        Mono<Response<EntitiesResult>> entitiesRecognitionGeneral(
+                @HostParam("Endpoint") String endpoint,
+                @QueryParam("model-version") String modelVersion,
+                @QueryParam("showStats") Boolean showStats,
+                @BodyParam("application/json") MultiLanguageBatchInput input,
+                Context context);
 
-        @Post("entities/recognition/pii")
+        @Post("/entities/recognition/pii")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<SimpleResponse<EntitiesResult>> entitiesRecognitionPii(@HostParam("Endpoint") String endpoint, @QueryParam("model-version") String modelVersion, @QueryParam("showStats") Boolean showStats, @BodyParam("application/json; charset=utf-8") MultiLanguageBatchInput input, Context context);
+        @UnexpectedResponseExceptionType(TextAnalyticsErrorException.class)
+        Mono<Response<EntitiesResult>> entitiesRecognitionPii(
+                @HostParam("Endpoint") String endpoint,
+                @QueryParam("model-version") String modelVersion,
+                @QueryParam("showStats") Boolean showStats,
+                @QueryParam("domain") String domain,
+                @BodyParam("application/json") MultiLanguageBatchInput input,
+                Context context);
 
-        @Post("entities/linking")
+        @Post("/entities/linking")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<SimpleResponse<EntityLinkingResult>> entitiesLinking(@HostParam("Endpoint") String endpoint, @QueryParam("model-version") String modelVersion, @QueryParam("showStats") Boolean showStats, @BodyParam("application/json; charset=utf-8") MultiLanguageBatchInput input, Context context);
+        @UnexpectedResponseExceptionType(TextAnalyticsErrorException.class)
+        Mono<Response<EntityLinkingResult>> entitiesLinking(
+                @HostParam("Endpoint") String endpoint,
+                @QueryParam("model-version") String modelVersion,
+                @QueryParam("showStats") Boolean showStats,
+                @BodyParam("application/json") MultiLanguageBatchInput input,
+                Context context);
 
-        @Post("keyPhrases")
+        @Post("/keyPhrases")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<SimpleResponse<KeyPhraseResult>> keyPhrases(@HostParam("Endpoint") String endpoint, @QueryParam("model-version") String modelVersion, @QueryParam("showStats") Boolean showStats, @BodyParam("application/json; charset=utf-8") MultiLanguageBatchInput input, Context context);
+        @UnexpectedResponseExceptionType(TextAnalyticsErrorException.class)
+        Mono<Response<KeyPhraseResult>> keyPhrases(
+                @HostParam("Endpoint") String endpoint,
+                @QueryParam("model-version") String modelVersion,
+                @QueryParam("showStats") Boolean showStats,
+                @BodyParam("application/json") MultiLanguageBatchInput input,
+                Context context);
 
-        @Post("languages")
+        @Post("/languages")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<SimpleResponse<LanguageResult>> languages(@HostParam("Endpoint") String endpoint, @QueryParam("model-version") String modelVersion, @QueryParam("showStats") Boolean showStats, @BodyParam("application/json; charset=utf-8") LanguageBatchInput input, Context context);
+        @UnexpectedResponseExceptionType(TextAnalyticsErrorException.class)
+        Mono<Response<LanguageResult>> languages(
+                @HostParam("Endpoint") String endpoint,
+                @QueryParam("model-version") String modelVersion,
+                @QueryParam("showStats") Boolean showStats,
+                @BodyParam("application/json") LanguageBatchInput input,
+                Context context);
 
-        @Post("sentiment")
+        @Post("/sentiment")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<SimpleResponse<SentimentResponse>> sentiment(@HostParam("Endpoint") String endpoint, @QueryParam("model-version") String modelVersion, @QueryParam("showStats") Boolean showStats, @BodyParam("application/json; charset=utf-8") MultiLanguageBatchInput input, Context context);
+        @UnexpectedResponseExceptionType(TextAnalyticsErrorException.class)
+        Mono<Response<SentimentResponse>> sentiment(
+                @HostParam("Endpoint") String endpoint,
+                @QueryParam("model-version") String modelVersion,
+                @QueryParam("showStats") Boolean showStats,
+                @QueryParam("opinionMining") Boolean opinionMining,
+                @BodyParam("application/json") MultiLanguageBatchInput input,
+                Context context);
     }
 
     /**
-     * Named Entity Recognition
-     * The API returns a list of general named entities in a given document. For the list of supported entity types, check &lt;a href="https://aka.ms/taner"&gt;Supported Entity Types in Text Analytics API&lt;/a&gt;. See the &lt;a href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
+     * The API returns a list of general named entities in a given document. For the list of supported entity types,
+     * check &lt;a href="https://aka.ms/taner"&gt;Supported Entity Types in Text Analytics API&lt;/a&gt;. See the &lt;a
+     * href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled
+     * languages.
      *
-     * @param input Collection of documents to analyze.
+     * @param input Contains a set of input documents to be analyzed by the service.
+     * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is
+     *     not specified, the API should default to the latest, non-preview version.
+     * @param showStats (Optional) if set to true, response will contain input and document level statistics.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
+     * @throws TextAnalyticsErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<EntitiesResult>> entitiesRecognitionGeneralWithRestResponseAsync(MultiLanguageBatchInput input, Context context) {
-        final String modelVersion = null;
-        final Boolean showStats = null;
+    public Mono<Response<EntitiesResult>> entitiesRecognitionGeneralWithResponseAsync(
+            MultiLanguageBatchInput input, String modelVersion, Boolean showStats, Context context) {
         return service.entitiesRecognitionGeneral(this.getEndpoint(), modelVersion, showStats, input, context);
     }
 
     /**
-     * Named Entity Recognition
-     * The API returns a list of general named entities in a given document. For the list of supported entity types, check &lt;a href="https://aka.ms/taner"&gt;Supported Entity Types in Text Analytics API&lt;/a&gt;. See the &lt;a href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
+     * The API returns a list of entities with personal information (\"SSN\", \"Bank Account\" etc) in the document. For
+     * the list of supported entity types, check &lt;a href="https://aka.ms/tanerpii"&gt;Supported Entity Types in Text
+     * Analytics API&lt;/a&gt;. See the &lt;a href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics
+     * API&lt;/a&gt; for the list of enabled languages.
      *
-     * @param input Collection of documents to analyze.
-     * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is not specified, the API should default to the latest, non-preview version.
+     * @param input Contains a set of input documents to be analyzed by the service.
+     * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is
+     *     not specified, the API should default to the latest, non-preview version.
+     * @param showStats (Optional) if set to true, response will contain input and document level statistics.
+     * @param domain (Optional) if set to 'PHI', response will contain only PHI entities.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TextAnalyticsErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<EntitiesResult>> entitiesRecognitionPiiWithResponseAsync(
+            MultiLanguageBatchInput input, String modelVersion, Boolean showStats, String domain, Context context) {
+        return service.entitiesRecognitionPii(this.getEndpoint(), modelVersion, showStats, domain, input, context);
+    }
+
+    /**
+     * The API returns a list of recognized entities with links to a well-known knowledge base. See the &lt;a
+     * href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled
+     * languages.
+     *
+     * @param input Contains a set of input documents to be analyzed by the service.
+     * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is
+     *     not specified, the API should default to the latest, non-preview version.
      * @param showStats (Optional) if set to true, response will contain input and document level statistics.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
+     * @throws TextAnalyticsErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<EntitiesResult>> entitiesRecognitionGeneralWithRestResponseAsync(MultiLanguageBatchInput input, String modelVersion, Boolean showStats, Context context) {
-        return service.entitiesRecognitionGeneral(this.getEndpoint(), modelVersion, showStats, input, context);
-    }
-
-    /**
-     * Entities containing personal information
-     * The API returns a list of entities with personal information (\"SSN\", \"Bank Account\" etc) in the document. For the list of supported entity types, check &lt;a href="https://aka.ms/tanerpii"&gt;Supported Entity Types in Text Analytics API&lt;/a&gt;. See the &lt;a href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
-     *
-     * @param input Collection of documents to analyze.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<EntitiesResult>> entitiesRecognitionPiiWithRestResponseAsync(MultiLanguageBatchInput input, Context context) {
-        final String modelVersion = null;
-        final Boolean showStats = null;
-        return service.entitiesRecognitionPii(this.getEndpoint(), modelVersion, showStats, input, context);
-    }
-
-    /**
-     * Entities containing personal information
-     * The API returns a list of entities with personal information (\"SSN\", \"Bank Account\" etc) in the document. For the list of supported entity types, check &lt;a href="https://aka.ms/tanerpii"&gt;Supported Entity Types in Text Analytics API&lt;/a&gt;. See the &lt;a href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
-     *
-     * @param input Collection of documents to analyze.
-     * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is not specified, the API should default to the latest, non-preview version.
-     * @param showStats (Optional) if set to true, response will contain input and document level statistics.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<EntitiesResult>> entitiesRecognitionPiiWithRestResponseAsync(MultiLanguageBatchInput input, String modelVersion, Boolean showStats, Context context) {
-        return service.entitiesRecognitionPii(this.getEndpoint(), modelVersion, showStats, input, context);
-    }
-
-    /**
-     * Linked entities from a well-known knowledge base
-     * The API returns a list of recognized entities with links to a well-known knowledge base. See the &lt;a href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
-     *
-     * @param input Collection of documents to analyze.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<EntityLinkingResult>> entitiesLinkingWithRestResponseAsync(MultiLanguageBatchInput input, Context context) {
-        final String modelVersion = null;
-        final Boolean showStats = null;
+    public Mono<Response<EntityLinkingResult>> entitiesLinkingWithResponseAsync(
+            MultiLanguageBatchInput input, String modelVersion, Boolean showStats, Context context) {
         return service.entitiesLinking(this.getEndpoint(), modelVersion, showStats, input, context);
     }
 
     /**
-     * Linked entities from a well-known knowledge base
-     * The API returns a list of recognized entities with links to a well-known knowledge base. See the &lt;a href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
+     * The API returns a list of strings denoting the key phrases in the input text. See the &lt;a
+     * href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled
+     * languages.
      *
-     * @param input Collection of documents to analyze.
-     * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is not specified, the API should default to the latest, non-preview version.
+     * @param input Contains a set of input documents to be analyzed by the service.
+     * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is
+     *     not specified, the API should default to the latest, non-preview version.
      * @param showStats (Optional) if set to true, response will contain input and document level statistics.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
+     * @throws TextAnalyticsErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<EntityLinkingResult>> entitiesLinkingWithRestResponseAsync(MultiLanguageBatchInput input, String modelVersion, Boolean showStats, Context context) {
-        return service.entitiesLinking(this.getEndpoint(), modelVersion, showStats, input, context);
-    }
-
-    /**
-     * Key Phrases
-     * The API returns a list of strings denoting the key phrases in the input text. See the &lt;a href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
-     *
-     * @param input Collection of documents to analyze. Documents can now contain a language field to indicate the text language.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<KeyPhraseResult>> keyPhrasesWithRestResponseAsync(MultiLanguageBatchInput input, Context context) {
-        final String modelVersion = null;
-        final Boolean showStats = null;
+    public Mono<Response<KeyPhraseResult>> keyPhrasesWithResponseAsync(
+            MultiLanguageBatchInput input, String modelVersion, Boolean showStats, Context context) {
         return service.keyPhrases(this.getEndpoint(), modelVersion, showStats, input, context);
     }
 
     /**
-     * Key Phrases
-     * The API returns a list of strings denoting the key phrases in the input text. See the &lt;a href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
+     * The API returns the detected language and a numeric score between 0 and 1. Scores close to 1 indicate 100%
+     * certainty that the identified language is true. See the &lt;a href="https://aka.ms/talangs"&gt;Supported
+     * languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
      *
-     * @param input Collection of documents to analyze. Documents can now contain a language field to indicate the text language.
-     * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is not specified, the API should default to the latest, non-preview version.
+     * @param input Collection of documents to analyze.
+     * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is
+     *     not specified, the API should default to the latest, non-preview version.
      * @param showStats (Optional) if set to true, response will contain input and document level statistics.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
+     * @throws TextAnalyticsErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<KeyPhraseResult>> keyPhrasesWithRestResponseAsync(MultiLanguageBatchInput input, String modelVersion, Boolean showStats, Context context) {
-        return service.keyPhrases(this.getEndpoint(), modelVersion, showStats, input, context);
-    }
-
-    /**
-     * Detect Language
-     * The API returns the detected language and a numeric score between 0 and 1. Scores close to 1 indicate 100% certainty that the identified language is true. See the &lt;a href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
-     *
-     * @param input Collection of documents to analyze.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<LanguageResult>> languagesWithRestResponseAsync(LanguageBatchInput input, Context context) {
-        final String modelVersion = null;
-        final Boolean showStats = null;
+    public Mono<Response<LanguageResult>> languagesWithResponseAsync(
+            LanguageBatchInput input, String modelVersion, Boolean showStats, Context context) {
         return service.languages(this.getEndpoint(), modelVersion, showStats, input, context);
     }
 
     /**
-     * Detect Language
-     * The API returns the detected language and a numeric score between 0 and 1. Scores close to 1 indicate 100% certainty that the identified language is true. See the &lt;a href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
+     * The API returns a detailed sentiment analysis for the input text. The analysis is done in multiple levels of
+     * granularity, start from the a document level, down to sentence and key terms (aspects) and opinions.
      *
-     * @param input Collection of documents to analyze.
-     * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is not specified, the API should default to the latest, non-preview version.
+     * @param input Contains a set of input documents to be analyzed by the service.
+     * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is
+     *     not specified, the API should default to the latest, non-preview version.
      * @param showStats (Optional) if set to true, response will contain input and document level statistics.
+     * @param opinionMining (Optional) if set to true, response will contain input and document level statistics
+     *     including aspect-based sentiment analysis results.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
+     * @throws TextAnalyticsErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<LanguageResult>> languagesWithRestResponseAsync(LanguageBatchInput input, String modelVersion, Boolean showStats, Context context) {
-        return service.languages(this.getEndpoint(), modelVersion, showStats, input, context);
-    }
-
-    /**
-     * Sentiment
-     * The API returns a sentiment prediction, as well as sentiment scores for each sentiment class (Positive, Negative, and Neutral) for the document and each sentence within it. See the &lt;a href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
-     *
-     * @param input Collection of documents to analyze.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<SentimentResponse>> sentimentWithRestResponseAsync(MultiLanguageBatchInput input, Context context) {
-        final String modelVersion = null;
-        final Boolean showStats = null;
-        return service.sentiment(this.getEndpoint(), modelVersion, showStats, input, context);
-    }
-
-    /**
-     * Sentiment
-     * The API returns a sentiment prediction, as well as sentiment scores for each sentiment class (Positive, Negative, and Neutral) for the document and each sentence within it. See the &lt;a href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
-     *
-     * @param input Collection of documents to analyze.
-     * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is not specified, the API should default to the latest, non-preview version.
-     * @param showStats (Optional) if set to true, response will contain input and document level statistics.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<SentimentResponse>> sentimentWithRestResponseAsync(MultiLanguageBatchInput input, String modelVersion, Boolean showStats, Context context) {
-        return service.sentiment(this.getEndpoint(), modelVersion, showStats, input, context);
+    public Mono<Response<SentimentResponse>> sentimentWithResponseAsync(
+            MultiLanguageBatchInput input,
+            String modelVersion,
+            Boolean showStats,
+            Boolean opinionMining,
+            Context context) {
+        return service.sentiment(this.getEndpoint(), modelVersion, showStats, opinionMining, input, context);
     }
 }

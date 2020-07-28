@@ -7,7 +7,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.uuid.EthernetAddress;
 import com.azure.cosmos.implementation.uuid.Generators;
 import com.azure.cosmos.implementation.uuid.impl.TimeBasedGenerator;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -16,11 +16,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import io.netty.buffer.ByteBuf;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -29,7 +34,9 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Base64;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -42,6 +49,9 @@ import java.util.UUID;
  * This is meant to be internally used only by our sdk.
  */
 public class Utils {
+
+    private final static Logger logger = LoggerFactory.getLogger(Utils.class);
+
     private static final int ONE_KB = 1024;
     private static final ZoneId GMT_ZONE_ID = ZoneId.of("GMT");
     public static final Base64.Encoder Base64Encoder = Base64.getEncoder();
@@ -63,6 +73,7 @@ public class Utils {
         Utils.simpleObjectMapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
         Utils.simpleObjectMapper.configure(JsonParser.Feature.ALLOW_TRAILING_COMMA, true);
         Utils.simpleObjectMapper.configure(JsonParser.Feature.STRICT_DUPLICATE_DETECTION, true);
+        Utils.simpleObjectMapper.configure(DeserializationFeature.ACCEPT_FLOAT_AS_INT, false);
 
         Utils.simpleObjectMapper.registerModule(new AfterburnerModule());
     }
@@ -80,6 +91,10 @@ public class Utils {
 
     }
 
+    public static byte[] getUtf16Bytes(String str) {
+        return str.getBytes(StandardCharsets.UTF_16LE);
+    }
+
     public static String encodeBase64String(byte[] binaryData) {
         String encodedString = Base64Encoder.encodeToString(binaryData);
 
@@ -87,6 +102,18 @@ public class Utils {
             encodedString = encodedString.substring(0, encodedString.length() - 2);
         }
         return encodedString;
+    }
+
+    public static String decodeAsUTF8String(String inputString) {
+        if (inputString == null || inputString.isEmpty()) {
+            return inputString;
+        }
+        try {
+            return URLDecoder.decode(inputString, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException e) {
+            logger.warn("Error while decoding input string", e);
+            return inputString;
+        }
     }
 
     /**
@@ -289,6 +316,13 @@ public class Utils {
         return resourceFullName;
     }
 
+    public static <T> int getCollectionSize(Collection<T> collection) {
+        if (collection == null) {
+            return 0;
+        }
+        return collection.size();
+    }
+
     public static Boolean isCollectionPartitioned(DocumentCollection collection) {
         if (collection == null) {
             throw new IllegalArgumentException("collection");
@@ -363,6 +397,10 @@ public class Utils {
             default:
                 throw new IllegalArgumentException("backendConsistency");
         }
+    }
+
+    public static String getUserAgent() {
+        return getUserAgent(HttpConstants.Versions.SDK_NAME, HttpConstants.Versions.SDK_VERSION);
     }
 
     public static String getUserAgent(String sdkName, String sdkVersion) {
@@ -545,7 +583,8 @@ public class Utils {
         try {
             return getSimpleObjectMapper().readValue(itemResponseBodyAsString, itemClassType);
         } catch (IOException e) {
-            throw new IllegalStateException("Failed to get POJO.", e);
+            throw new IllegalStateException(
+                String.format("Failed to parse string [%s] to POJO.", itemResponseBodyAsString, e));
         }
     }
 
@@ -553,11 +592,25 @@ public class Utils {
         if (Utils.isEmpty(item)) {
             return null;
         }
+
         try {
             return getSimpleObjectMapper().readValue(item, itemClassType);
         } catch (IOException e) {
-            throw new IllegalStateException("Failed to get POJO.", e);
+            throw new IllegalStateException(
+                String.format("Failed to parse byte-array %s to POJO.", Arrays.toString(item)), e);
         }
+    }
+
+    public static <T> T parse(byte[] item, Class<T> itemClassType, ItemDeserializer itemDeserializer) {
+        if (Utils.isEmpty(item)) {
+            return null;
+        }
+
+        if (itemDeserializer == null) {
+            return Utils.parse(item, itemClassType);
+        }
+
+        return itemDeserializer.parseFrom(itemClassType, item);
     }
 
     public static ByteBuffer serializeJsonToByteBuffer(ObjectMapper objectMapper, Object object) {
@@ -566,6 +619,7 @@ public class Utils {
             objectMapper.writeValue(byteBufferOutputStream, object);
             return byteBufferOutputStream.asByteBuffer();
         } catch (IOException e) {
+            // TODO moderakh: on serialization/deserialization failure we should throw CosmosException here and elsewhere
             throw new IllegalArgumentException("Failed to serialize the object into json", e);
         }
     }
@@ -582,15 +636,15 @@ public class Utils {
         return new String(bytes, StandardCharsets.UTF_8);
     }
 
-    public static void setContinuationTokenAndMaxItemCount(CosmosPagedFluxOptions pagedFluxOptions, FeedOptions feedOptions) {
+    public static void setContinuationTokenAndMaxItemCount(CosmosPagedFluxOptions pagedFluxOptions, CosmosQueryRequestOptions cosmosQueryRequestOptions) {
         if (pagedFluxOptions == null) {
             return;
         }
         if (pagedFluxOptions.getRequestContinuation() != null) {
-            ModelBridgeInternal.setFeedOptionsContinuationToken(feedOptions, pagedFluxOptions.getRequestContinuation());
+            ModelBridgeInternal.setQueryRequestOptionsContinuationToken(cosmosQueryRequestOptions, pagedFluxOptions.getRequestContinuation());
         }
         if (pagedFluxOptions.getMaxItemCount() != null) {
-            ModelBridgeInternal.setFeedOptionsMaxItemCount(feedOptions, pagedFluxOptions.getMaxItemCount());
+            ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(cosmosQueryRequestOptions, pagedFluxOptions.getMaxItemCount());
         }
     }
 
@@ -620,10 +674,14 @@ public class Utils {
         }
     }
 
-    static byte[] toByteArray(ByteBuf buf) {
+    public static byte[] toByteArray(ByteBuf buf) {
         byte[] bytes = new byte[buf.readableBytes()];
         buf.readBytes(bytes);
         return bytes;
+    }
+
+    public static ByteBuffer toByteBuffer(byte[] bytes) {
+        return ByteBuffer.wrap(bytes);
     }
 
     public static String toJson(ObjectMapper mapper, ObjectNode object) {
@@ -632,5 +690,12 @@ public class Utils {
         } catch (JsonProcessingException e) {
             throw new IllegalStateException("Unable to convert JSON to STRING", e);
         }
+    }
+
+    public static byte[] serializeObjectToByteArray(Object obj) throws IOException {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        ObjectOutputStream os = new ObjectOutputStream(out);
+        os.writeObject(obj);
+        return out.toByteArray();
     }
 }

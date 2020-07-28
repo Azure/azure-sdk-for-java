@@ -1,0 +1,139 @@
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title type="text">Queues</title>
+  <id>feed-id</id>
+  <updated>2020-12-05T07:17:21Z</updated>
+  <link rel="self" href="https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2017-04&amp;enrich=false&amp;$skip=0&amp;$top=5"/>
+  <link rel="next" href="https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2017-04&amp;enrich=false&amp;%24skip=5&amp;%24top=5"/>
+  <entry xml:base="https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2017-04&amp;enrich=false&amp;$skip=0&amp;$top=5">
+    <id>https://sb-java.servicebus.windows.net/q-0?api-version=2017-04</id>
+    <title type="text">q-0</title>
+    <published>2020-03-05T07:17:04Z</published>
+    <updated>2020-01-05T07:17:04Z</updated>
+    <author>
+      <name>sb-java</name>
+    </author>
+    <link rel="self" href="../q-0?api-version=2017-04"/>
+    <content type="application/xml">
+      <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+      >
+        <LockDuration>PT10M</LockDuration>
+        <MaxSizeInMegabytes>102</MaxSizeInMegabytes>
+        <RequiresDuplicateDetection>true</RequiresDuplicateDetection>
+        <RequiresSession>true</RequiresSession>
+        <DefaultMessageTimeToLive>PT10S</DefaultMessageTimeToLive>
+        <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+        <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+        <MaxDeliveryCount>10</MaxDeliveryCount>
+        <EnableBatchedOperations>true</EnableBatchedOperations>
+        <SizeInBytes>0</SizeInBytes>
+        <MessageCount>0</MessageCount>
+        <IsAnonymousAccessible>false</IsAnonymousAccessible>
+        <AuthorizationRules></AuthorizationRules>
+        <Status>Active</Status>
+        <CreatedAt>2020-06-05T07:17:04.29Z</CreatedAt>
+        <UpdatedAt>2020-06-05T07:17:04.353Z</UpdatedAt>
+        <AccessedAt>0001-01-01T00:00:00Z</AccessedAt>
+        <SupportOrdering>true</SupportOrdering>
+        <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+          <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
+          <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+          <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+          <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+          <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+        </CountDetails>
+        <AutoDeleteOnIdle>PT5S</AutoDeleteOnIdle>
+        <EnablePartitioning>true</EnablePartitioning>
+        <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+        <EnableExpress>true</EnableExpress>
+      </QueueDescription>
+    </content>
+  </entry>
+  <entry xml:base="https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2017-04&amp;enrich=false&amp;$skip=0&amp;$top=5">
+    <id>https://sb-java.servicebus.windows.net/q-1?api-version=2017-04</id>
+    <title type="text">q-1</title>
+    <published>2020-06-10T07:16:25Z</published>
+    <updated>2020-06-15T07:16:25Z</updated>
+    <author>
+      <name>sb-java2</name>
+    </author>
+    <link rel="self" href="../q-1?api-version=2017-04"/>
+    <content type="application/xml">
+      <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+      >
+        <LockDuration>PT10M</LockDuration>
+        <MaxSizeInMegabytes>102</MaxSizeInMegabytes>
+        <RequiresDuplicateDetection>true</RequiresDuplicateDetection>
+        <RequiresSession>true</RequiresSession>
+        <DefaultMessageTimeToLive>PT10S</DefaultMessageTimeToLive>
+        <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+        <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+        <MaxDeliveryCount>10</MaxDeliveryCount>
+        <EnableBatchedOperations>true</EnableBatchedOperations>
+        <SizeInBytes>0</SizeInBytes>
+        <MessageCount>0</MessageCount>
+        <IsAnonymousAccessible>false</IsAnonymousAccessible>
+        <AuthorizationRules></AuthorizationRules>
+        <Status>Active</Status>
+        <CreatedAt>2020-06-05T07:17:04.29Z</CreatedAt>
+        <UpdatedAt>2020-06-05T07:17:04.353Z</UpdatedAt>
+        <AccessedAt>0001-01-01T00:00:00Z</AccessedAt>
+        <SupportOrdering>true</SupportOrdering>
+        <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+          <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
+          <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+          <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+          <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+          <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+        </CountDetails>
+        <AutoDeleteOnIdle>PT5S</AutoDeleteOnIdle>
+        <EnablePartitioning>true</EnablePartitioning>
+        <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+        <EnableExpress>true</EnableExpress>
+      </QueueDescription>
+    </content>
+  </entry>
+  <entry xml:base="https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2017-04&amp;enrich=false&amp;$skip=0&amp;$top=5">
+    <id>https://sb-java.servicebus.windows.net/q-2?api-version=2017-04</id>
+    <title type="text">q-2</title>
+    <published>2020-06-05T07:17:06Z</published>
+    <updated>2020-06-05T07:17:06Z</updated>
+    <author>
+      <name>sb-java3</name>
+    </author>
+    <link rel="self" href="../q-2?api-version=2017-04"/>
+    <content type="application/xml">
+      <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+      >
+        <LockDuration>PT10M</LockDuration>
+        <MaxSizeInMegabytes>102</MaxSizeInMegabytes>
+        <RequiresDuplicateDetection>true</RequiresDuplicateDetection>
+        <RequiresSession>true</RequiresSession>
+        <DefaultMessageTimeToLive>PT10S</DefaultMessageTimeToLive>
+        <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+        <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+        <MaxDeliveryCount>10</MaxDeliveryCount>
+        <EnableBatchedOperations>true</EnableBatchedOperations>
+        <SizeInBytes>0</SizeInBytes>
+        <MessageCount>0</MessageCount>
+        <IsAnonymousAccessible>false</IsAnonymousAccessible>
+        <AuthorizationRules></AuthorizationRules>
+        <Status>Active</Status>
+        <CreatedAt>2020-06-05T07:17:04.29Z</CreatedAt>
+        <UpdatedAt>2020-06-05T07:17:04.353Z</UpdatedAt>
+        <AccessedAt>0001-01-01T00:00:00Z</AccessedAt>
+        <SupportOrdering>true</SupportOrdering>
+        <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+          <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
+          <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+          <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+          <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+          <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+        </CountDetails>
+        <AutoDeleteOnIdle>PT5S</AutoDeleteOnIdle>
+        <EnablePartitioning>true</EnablePartitioning>
+        <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+        <EnableExpress>true</EnableExpress>
+      </QueueDescription>
+    </content>
+  </entry>
+</feed>

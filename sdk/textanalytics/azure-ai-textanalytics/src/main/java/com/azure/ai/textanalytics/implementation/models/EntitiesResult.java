@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The EntitiesResult model.
- */
+/** The EntitiesResult model. */
 @Fluent
 public final class EntitiesResult {
     /*
@@ -26,7 +24,8 @@ public final class EntitiesResult {
     private List<DocumentError> errors;
 
     /*
-     * The statistics property.
+     * if showStats=true was specified in the request this field will contain
+     * information about the request payload.
      */
     @JsonProperty(value = "statistics")
     private RequestStatistics statistics;
@@ -78,7 +77,8 @@ public final class EntitiesResult {
     }
 
     /**
-     * Get the statistics property: The statistics property.
+     * Get the statistics property: if showStats=true was specified in the request this field will contain information
+     * about the request payload.
      *
      * @return the statistics value.
      */
@@ -87,7 +87,8 @@ public final class EntitiesResult {
     }
 
     /**
-     * Set the statistics property: The statistics property.
+     * Set the statistics property: if showStats=true was specified in the request this field will contain information
+     * about the request payload.
      *
      * @param statistics the statistics value to set.
      * @return the EntitiesResult object itself.
@@ -98,8 +99,7 @@ public final class EntitiesResult {
     }
 
     /**
-     * Get the modelVersion property: This field indicates which model is used
-     * for scoring.
+     * Get the modelVersion property: This field indicates which model is used for scoring.
      *
      * @return the modelVersion value.
      */
@@ -108,8 +108,7 @@ public final class EntitiesResult {
     }
 
     /**
-     * Set the modelVersion property: This field indicates which model is used
-     * for scoring.
+     * Set the modelVersion property: This field indicates which model is used for scoring.
      *
      * @param modelVersion the modelVersion value to set.
      * @return the EntitiesResult object itself.

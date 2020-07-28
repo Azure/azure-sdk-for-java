@@ -11,39 +11,37 @@ import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 
-/**
- * A builder for creating a new instance of the FormRecognizerClient type.
- */
+/** A builder for creating a new instance of the FormRecognizerClient type. */
 @ServiceClientBuilder(serviceClients = {FormRecognizerClientImpl.class})
 public final class FormRecognizerClientImplBuilder {
-
     /*
-     * Supported Cognitive Services endpoints (protocol and hostname, for example: https://westus2.api.cognitive.microsoft.com).
+     * Supported Cognitive Services endpoints (protocol and hostname, for
+     * example: https://westus2.api.cognitive.microsoft.com).
      */
     private String endpoint;
-    /*
-     * The HTTP pipeline to send requests through
-     */
-    private HttpPipeline pipeline;
 
     /**
-     * Sets Supported Cognitive Services endpoints (protocol and hostname, for example: https://westus2.api.cognitive.microsoft.com).
+     * Sets Supported Cognitive Services endpoints (protocol and hostname, for example:
+     * https://westus2.api.cognitive.microsoft.com).
      *
      * @param endpoint the endpoint value.
-     *
-     * @return the FormRecognizerClientImplBuilder.
+     * @return the FormRecognizerClientBuilder.
      */
     public FormRecognizerClientImplBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
     }
 
+    /*
+     * The HTTP pipeline to send requests through
+     */
+    private HttpPipeline pipeline;
+
     /**
      * Sets The HTTP pipeline to send requests through.
      *
      * @param pipeline the pipeline value.
-     *
-     * @return the FormRecognizerClientImplBuilder.
+     * @return the FormRecognizerClientBuilder.
      */
     public FormRecognizerClientImplBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
@@ -55,9 +53,12 @@ public final class FormRecognizerClientImplBuilder {
      *
      * @return an instance of FormRecognizerClientImpl.
      */
-    public FormRecognizerClientImpl build() {
+    public FormRecognizerClientImpl buildClient() {
         if (pipeline == null) {
-            this.pipeline = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build();
+            this.pipeline =
+                    new HttpPipelineBuilder()
+                            .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
+                            .build();
         }
         FormRecognizerClientImpl client = new FormRecognizerClientImpl(pipeline);
         client.setEndpoint(this.endpoint);

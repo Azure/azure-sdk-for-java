@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ServiceBusMessageTest {
@@ -14,13 +15,33 @@ public class ServiceBusMessageTest {
     private static final String PAYLOAD = new String(new char[10000]).replace("\0", "a");
     private static final byte[] PAYLOAD_BYTES = PAYLOAD.getBytes(UTF_8);
 
+    /**
+     * Verify UTF_8 encoded body is created.
+     */
     @Test
-    public void byteArrayNotNull() {
+    void bodyAsString() {
+        // Arrange
+        String body = "some-contents";
+        byte[] encoded = body.getBytes(UTF_8);
+
+        // Act
+        ServiceBusMessage message = new ServiceBusMessage(body);
+
+        // Assert
+        assertArrayEquals(encoded, message.getBody());
+    }
+
+    /**
+     * Verify that expected exceptions are thrown.
+     */
+    @Test
+    void bodyNotNull() {
+        assertThrows(NullPointerException.class, () -> new ServiceBusMessage((String) null));
         assertThrows(NullPointerException.class, () -> new ServiceBusMessage((byte[]) null));
     }
 
     @Test
-    public void messagePropertiesShouldNotBeNull() {
+    void messagePropertiesShouldNotBeNull() {
         // Act
         final ServiceBusMessage serviceBusMessageData = new ServiceBusMessage(PAYLOAD_BYTES);
 
@@ -34,7 +55,7 @@ public class ServiceBusMessageTest {
      * Verify that we can create an Message with an empty byte array.
      */
     @Test
-    public void canCreateWithEmptyArray() {
+    void canCreateWithEmptyArray() {
         // Arrange
         byte[] byteArray = new byte[0];
 
@@ -51,7 +72,7 @@ public class ServiceBusMessageTest {
      * Verify that we can create an Message with the correct body contents.
      */
     @Test
-    public void canCreateWithBytePayload() {
+    void canCreateWithBytePayload() {
         // Act
         final ServiceBusMessage serviceBusMessageData = new ServiceBusMessage(PAYLOAD_BYTES);
 

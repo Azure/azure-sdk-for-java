@@ -1,4 +1,4 @@
-# Migration Guide (Event Hubs v3 to v5)
+# Guide to migrate from `azure-eventhubs` to `azure-messaging-eventhubs` (Event Hubs v3 to v5)
 
 This document is intended for users that are familiar with v3 of the Java SDK for Event Hubs library
 ([`azure-eventhubs`][azure-eventhubs] and [`azure-eventhubs-eph`][azure-eventhubs-eph]) and wish to migrate their
@@ -25,29 +25,18 @@ For users new to the Java SDK for Event Hubs, please see the [README for azure-m
 - [Additional samples](#additional-samples)
 
 ## Prerequisites
-Java Development Kit (JDK) with version 8 or above
+Java Development Kit (JDK) with version 8 or above.
 
 ## Updated Maven dependencies
 
-Dependencies for Event Hubs has been updated to:
-```xml
-<dependencies>
-  <dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-messaging-eventhubs</artifactId>
-    <version>5.0.0-beta.6</version>
-  </dependency>
-
-  <!-- Contains Azure Storage Blobs checkpoint store when using EventProcessorClient -->
-  <dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
-    <version>1.0.0-beta.4</version>
-  </dependency>
-</dependencies>
-```
+- The latest dependency for `azure-messaging-eventhubs` is available [here](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/eventhubs/azure-messaging-eventhubs#including-the-package).
+- The latest dependency for `azure-messaging-eventhubs-checkpointstore-blob` is available [here](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob#including-the-package).
 
 ## General changes
+
+Version 5 of the Azure Event Hubs SDK is a result of our efforts to create a client library that is user-friendly and idiomatic to the Java ecosystem.
+
+Apart from redesigns resulting from the new [Azure SDK Design Guidelines for Java](https://azure.github.io/azure-sdk/java_introduction.html), the latest version improves on several areas from V3.
 
 In the interest of simplifying the API surface, we've made three clients, each with an asynchronous and synchronous
 variant. One client is for producing events, `EventHubProducerAsyncClient`, while two are intended for reading events.

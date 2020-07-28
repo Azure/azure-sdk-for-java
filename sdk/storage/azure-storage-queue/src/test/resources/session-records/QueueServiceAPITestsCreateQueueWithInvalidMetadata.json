@@ -1,26 +1,26 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.queue.core.windows.net/7741fee3c1c54b26",
+    "Uri" : "https://REDACTED.queue.core.windows.net/9ef1c32fb31846ec",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.3.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "44abe4ca-dd43-4278-b65d-293edd38c28d"
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "6c3f19f0-15db-4063-934c-c53206650959"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "x-ms-version" : "2019-12-12",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "InvalidMetadata",
       "retry-after" : "0",
       "Content-Length" : "260",
       "StatusCode" : "400",
-      "x-ms-request-id" : "bf1280ae-7003-000c-5571-e00533000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidMetadata</Code><Message>The metadata specified is invalid. It has characters that are not permitted.\nRequestId:bf1280ae-7003-000c-5571-e00533000000\nTime:2020-02-11T00:26:17.0549908Z</Message></Error>",
-      "Date" : "Tue, 11 Feb 2020 00:26:16 GMT",
-      "x-ms-client-request-id" : "44abe4ca-dd43-4278-b65d-293edd38c28d",
+      "x-ms-request-id" : "37a3aeb1-3003-009b-0604-3a8ca5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidMetadata</Code><Message>The metadata specified is invalid. It has characters that are not permitted.\nRequestId:37a3aeb1-3003-009b-0604-3a8ca5000000\nTime:2020-06-04T00:06:42.6644681Z</Message></Error>",
+      "Date" : "Thu, 04 Jun 2020 00:06:42 GMT",
+      "x-ms-client-request-id" : "6c3f19f0-15db-4063-934c-c53206650959",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "7741fee3c1c54b26" ]
+  "variables" : [ "9ef1c32fb31846ec" ]
 }

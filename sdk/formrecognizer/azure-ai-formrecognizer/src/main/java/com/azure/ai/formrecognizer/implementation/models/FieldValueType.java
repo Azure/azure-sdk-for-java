@@ -7,53 +7,33 @@ package com.azure.ai.formrecognizer.implementation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for FieldValueType.
- */
+/** Defines values for FieldValueType. */
 public enum FieldValueType {
-    /**
-     * Enum value string.
-     */
+    /** Enum value string. */
     STRING("string"),
 
-    /**
-     * Enum value date.
-     */
+    /** Enum value date. */
     DATE("date"),
 
-    /**
-     * Enum value time.
-     */
+    /** Enum value time. */
     TIME("time"),
 
-    /**
-     * Enum value phoneNumber.
-     */
+    /** Enum value phoneNumber. */
     PHONE_NUMBER("phoneNumber"),
 
-    /**
-     * Enum value number.
-     */
+    /** Enum value number. */
     NUMBER("number"),
 
-    /**
-     * Enum value integer.
-     */
+    /** Enum value integer. */
     INTEGER("integer"),
 
-    /**
-     * Enum value array.
-     */
+    /** Enum value array. */
     ARRAY("array"),
 
-    /**
-     * Enum value object.
-     */
+    /** Enum value object. */
     OBJECT("object");
 
-    /**
-     * The actual serialized value for a FieldValueType instance.
-     */
+    /** The actual serialized value for a FieldValueType instance. */
     private final String value;
 
     FieldValueType(String value) {
@@ -62,7 +42,7 @@ public enum FieldValueType {
 
     /**
      * Parses a serialized value to a FieldValueType instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed FieldValueType object, or null if unable to parse.
      */

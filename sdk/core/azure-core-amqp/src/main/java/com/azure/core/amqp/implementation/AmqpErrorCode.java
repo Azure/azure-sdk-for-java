@@ -31,6 +31,8 @@ public final class AmqpErrorCode {
     // connection errors
     public static final Symbol CONNECTION_FORCED =
         Symbol.getSymbol(AmqpErrorCondition.CONNECTION_FORCED.getErrorCondition());
+    public static final Symbol CONNECTION_FRAMING_ERROR =
+        Symbol.getSymbol(AmqpErrorCondition.CONNECTION_FRAMING_ERROR.getErrorCondition());
 
     // proton library introduced this AMQP symbol in their code-base to communicate IOExceptions
     // while performing operations on SocketChannel (in IOHandler.java)

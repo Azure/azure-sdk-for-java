@@ -69,7 +69,7 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
         });
 
         this.emitterProcessor = amqpReceiveLinkProcessor
-            .map(message -> onMessageReceived(message))
+            .map(this::onMessageReceived)
             .doOnNext(event -> {
                 // Keep track of the last position so if the link goes down, we don't start from the original location.
                 final Long offset = event.getData().getOffset();
@@ -92,7 +92,11 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
     public void close() {
         if (!isDisposed.getAndSet(true)) {
             emitterProcessor.onComplete();
-            amqpReceiveLinkProcessor.cancel();
+            if (!amqpReceiveLinkProcessor.isTerminated()) {
+                // cancel only if the processor is not already terminated.
+                amqpReceiveLinkProcessor.cancel();
+            }
+            logger.info("Closed consumer for partition {}", this.partitionId);
         }
     }
 

@@ -25,19 +25,25 @@ public class HierarchicalModel {
      * The children property.
      */
     @JsonProperty(value = "children")
-    private List<String> children;
+    private List<JsonChild> children;
 
     /**
-     * The inherits property.
+     * The features property.
      */
-    @JsonProperty(value = "inherits")
-    private PrebuiltDomainObject inherits;
+    @JsonProperty(value = "features")
+    private List<JsonModelFeatureInformation> features;
 
     /**
      * The roles property.
      */
     @JsonProperty(value = "roles")
     private List<String> roles;
+
+    /**
+     * The inherits property.
+     */
+    @JsonProperty(value = "inherits")
+    private PrebuiltDomainObject inherits;
 
     /**
      * Get the name value.
@@ -64,7 +70,7 @@ public class HierarchicalModel {
      *
      * @return the children value
      */
-    public List<String> children() {
+    public List<JsonChild> children() {
         return this.children;
     }
 
@@ -74,28 +80,28 @@ public class HierarchicalModel {
      * @param children the children value to set
      * @return the HierarchicalModel object itself.
      */
-    public HierarchicalModel withChildren(List<String> children) {
+    public HierarchicalModel withChildren(List<JsonChild> children) {
         this.children = children;
         return this;
     }
 
     /**
-     * Get the inherits value.
+     * Get the features value.
      *
-     * @return the inherits value
+     * @return the features value
      */
-    public PrebuiltDomainObject inherits() {
-        return this.inherits;
+    public List<JsonModelFeatureInformation> features() {
+        return this.features;
     }
 
     /**
-     * Set the inherits value.
+     * Set the features value.
      *
-     * @param inherits the inherits value to set
+     * @param features the features value to set
      * @return the HierarchicalModel object itself.
      */
-    public HierarchicalModel withInherits(PrebuiltDomainObject inherits) {
-        this.inherits = inherits;
+    public HierarchicalModel withFeatures(List<JsonModelFeatureInformation> features) {
+        this.features = features;
         return this;
     }
 
@@ -116,6 +122,26 @@ public class HierarchicalModel {
      */
     public HierarchicalModel withRoles(List<String> roles) {
         this.roles = roles;
+        return this;
+    }
+
+    /**
+     * Get the inherits value.
+     *
+     * @return the inherits value
+     */
+    public PrebuiltDomainObject inherits() {
+        return this.inherits;
+    }
+
+    /**
+     * Set the inherits value.
+     *
+     * @param inherits the inherits value to set
+     * @return the HierarchicalModel object itself.
+     */
+    public HierarchicalModel withInherits(PrebuiltDomainObject inherits) {
+        this.inherits = inherits;
         return this;
     }
 

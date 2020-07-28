@@ -3,9 +3,8 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
+import com.azure.cosmos.implementation.CosmosError;
 import com.azure.cosmos.implementation.directconnectivity.TransportException;
-import com.azure.cosmos.models.CosmosError;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
@@ -21,7 +20,7 @@ public final class RntbdContextException extends TransportException {
 
         super(status + ": " + details, null);
 
-        this.cosmosError = ModelBridgeInternal.createCosmosError(details);
+        this.cosmosError = new CosmosError(details);
         this.responseHeaders = responseHeaders;
         this.status = status;
     }

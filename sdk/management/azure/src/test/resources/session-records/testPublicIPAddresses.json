@@ -1,357 +1,351 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/publicIPAddresses?api-version=2019-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/publicIPAddresses?api-version=2019-11-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.management/null (1.8.0_231; Windows 10 10.0)"
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.0.0-SNAPSHOT (11.0.6; Windows 10 10.0)",
+      "Content-Type" : "application/json"
     },
     "Response" : {
-      "date" : "Fri, 13 Mar 2020 07:41:12 GMT",
-      "content-length" : "12",
+      "date" : "Tue, 30 Jun 2020 02:30:33 GMT",
+      "content-length" : "1701",
       "expires" : "-1",
+      "x-ms-original-request-ids" : "af0bd6ef-cf81-46f2-a20d-e59a7578eff8",
       "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "11998",
       "StatusCode" : "200",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "aeefbc20-b444-456e-b965-29844961a24b",
+      "x-ms-correlation-request-id" : "8923c6c1-1139-48ec-9e9a-3e2a57f6318c",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "JAPANEAST:20200313T074113Z:aeefbc20-b444-456e-b965-29844961a24b",
-      "connection" : "keep-alive",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200630T023034Z:8923c6c1-1139-48ec-9e9a-3e2a57f6318c",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "aeefbc20-b444-456e-b965-29844961a24b",
-      "Body" : "{\"value\":[]}"
+      "x-ms-request-id" : "8923c6c1-1139-48ec-9e9a-3e2a57f6318c",
+      "Body" : "{\"value\":[{\"name\":\"pipw2j34g\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/tanyi/providers/Microsoft.Network/publicIPAddresses/pipw2j34g\",\"etag\":\"W/\\\"9c42ea96-77e1-406e-be6e-cafcaf887124\\\"\",\"location\":\"japaneast\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"d3acd0ea-0ee2-4bcd-9ab4-e78a38f77a98\",\"ipAddress\":\"52.243.45.67\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"dnsSettings\":{\"domainNameLabel\":\"webtool\",\"fqdn\":\"webtool.japaneast.cloudapp.azure.com\"},\"ipTags\":[],\"ipConfiguration\":{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/tanyi/providers/Microsoft.Network/networkInterfaces/xcverlkjsld/ipConfigurations/primary\"}},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"pip18881302\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove99780349/providers/Microsoft.Network/publicIPAddresses/pip18881302\",\"etag\":\"W/\\\"1ed0e384-95c7-4f4e-87fa-7014b629f2b3\\\"\",\"location\":\"westcentralus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"458ce8ab-8093-4d28-b86d-fe4058a6ca3f\",\"ipAddress\":\"13.78.137.5\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"dnsSettings\":{\"domainNameLabel\":\"rgpip14f768954019be\",\"fqdn\":\"rgpip14f768954019be.westcentralus.cloudapp.azure.com\"},\"ipTags\":[],\"ipConfiguration\":{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove99780349/providers/Microsoft.Network/networkInterfaces/nic96774490f32/ipConfigurations/primary\"}},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}}]}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/publicIPAddresses?api-version=2019-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/publicIPAddresses?api-version=2019-11-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.management/null (1.8.0_231; Windows 10 10.0)"
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.0.0-SNAPSHOT (11.0.6; Windows 10 10.0)",
+      "Content-Type" : "application/json"
     },
     "Response" : {
-      "date" : "Fri, 13 Mar 2020 07:41:21 GMT",
-      "server" : "Microsoft-HTTPAPI/2.0",
-      "content-length" : "19",
+      "date" : "Tue, 30 Jun 2020 02:30:47 GMT",
+      "content-length" : "2316",
       "expires" : "-1",
+      "x-ms-original-request-ids" : "0044048f-34e0-42e4-8a41-f858c611a043",
       "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "11995",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11989",
       "StatusCode" : "200",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "eb9f66ae-665b-4017-b3a7-7d693aa012a1",
+      "x-ms-correlation-request-id" : "29d6c109-d84b-4921-a47c-708bd7200592",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-arm-service-request-id" : "e1253e2d-d82d-48e4-9034-e0b744f14cb4",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "JAPANEAST:20200313T074122Z:eb9f66ae-665b-4017-b3a7-7d693aa012a1",
-      "connection" : "keep-alive",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200630T023047Z:29d6c109-d84b-4921-a47c-708bd7200592",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "96776767-d82c-4c60-93db-8920916b7375",
-      "Body" : "{\r\n  \"value\": []\r\n}"
+      "x-ms-request-id" : "29d6c109-d84b-4921-a47c-708bd7200592",
+      "Body" : "{\"value\":[{\"name\":\"pip71524b7b\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg24312f/providers/Microsoft.Network/publicIPAddresses/pip71524b7b\",\"etag\":\"W/\\\"10b5c93b-8f49-462e-b7af-2d7315b03fe8\\\"\",\"location\":\"eastus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Updating\",\"resourceGuid\":\"bcdbe0e7-44b9-492c-8ec1-4a5b13d1b678\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"dnsSettings\":{\"domainNameLabel\":\"pipvm60242e\",\"fqdn\":\"pipvm60242e.eastus.cloudapp.azure.com\"},\"ipTags\":[]},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"pipw2j34g\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/tanyi/providers/Microsoft.Network/publicIPAddresses/pipw2j34g\",\"etag\":\"W/\\\"9c42ea96-77e1-406e-be6e-cafcaf887124\\\"\",\"location\":\"japaneast\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"d3acd0ea-0ee2-4bcd-9ab4-e78a38f77a98\",\"ipAddress\":\"52.243.45.67\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"dnsSettings\":{\"domainNameLabel\":\"webtool\",\"fqdn\":\"webtool.japaneast.cloudapp.azure.com\"},\"ipTags\":[],\"ipConfiguration\":{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/tanyi/providers/Microsoft.Network/networkInterfaces/xcverlkjsld/ipConfigurations/primary\"}},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"pip18881302\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove99780349/providers/Microsoft.Network/publicIPAddresses/pip18881302\",\"etag\":\"W/\\\"1ed0e384-95c7-4f4e-87fa-7014b629f2b3\\\"\",\"location\":\"westcentralus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"458ce8ab-8093-4d28-b86d-fe4058a6ca3f\",\"ipAddress\":\"13.78.137.5\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"dnsSettings\":{\"domainNameLabel\":\"rgpip14f768954019be\",\"fqdn\":\"rgpip14f768954019be.westcentralus.cloudapp.azure.com\"},\"ipTags\":[],\"ipConfiguration\":{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove99780349/providers/Microsoft.Network/networkInterfaces/nic96774490f32/ipConfigurations/primary\"}},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}}]}"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/pip371568group?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/pip100251group?api-version=2019-08-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.management/null (1.8.0_231; Windows 10 10.0)",
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.0.0-SNAPSHOT (11.0.6; Windows 10 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "date" : "Fri, 13 Mar 2020 07:41:25 GMT",
-      "content-length" : "309",
+      "date" : "Tue, 30 Jun 2020 02:30:50 GMT",
+      "content-length" : "225",
       "expires" : "-1",
-      "x-ms-ratelimit-remaining-subscription-writes" : "1196",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1192",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "a4baee4c-1c78-4046-9135-587a4995bb10",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "c6068871-2f61-4a68-ba24-0f1964249fb6",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "JAPANEAST:20200313T074126Z:a4baee4c-1c78-4046-9135-587a4995bb10",
-      "connection" : "keep-alive",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200630T023050Z:c6068871-2f61-4a68-ba24-0f1964249fb6",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "a4baee4c-1c78-4046-9135-587a4995bb10",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/pip371568group\",\"name\":\"pip371568group\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"westus\",\"tags\":{\"date\":\"2020-03-13T07:41:22.381Z\",\"product\":\"javasdk\",\"cause\":\"automation\"},\"properties\":{\"provisioningState\":\"Succeeded\"}}"
+      "x-ms-request-id" : "c6068871-2f61-4a68-ba24-0f1964249fb6",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/pip100251group\",\"name\":\"pip100251group\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}}"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/pip371568group/providers/Microsoft.Network/publicIPAddresses/pip371568?api-version=2019-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/pip100251group/providers/Microsoft.Network/publicIPAddresses/pip100251?api-version=2019-11-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.management/null (1.8.0_231; Windows 10 10.0)",
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.0.0-SNAPSHOT (11.0.6; Windows 10 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "date" : "Fri, 13 Mar 2020 07:41:31 GMT",
+      "date" : "Tue, 30 Jun 2020 02:30:57 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "azure-asyncnotification" : "Enabled",
       "content-length" : "743",
       "expires" : "-1",
-      "x-ms-ratelimit-remaining-subscription-writes" : "1198",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1190",
       "retry-after" : "0",
       "StatusCode" : "201",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "3f1d0e27-d6d9-4a8f-b18b-d3de48e3be8e",
+      "x-ms-correlation-request-id" : "7b26dc7a-c332-4753-ad8d-686f1d97cef6",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-arm-service-request-id" : "fe169b1b-213c-4e9e-812a-5358abb997d6",
+      "x-ms-arm-service-request-id" : "7fbe0830-6f56-4966-a12d-1d2198fd16c3",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "EASTASIA:20200313T074132Z:3f1d0e27-d6d9-4a8f-b18b-d3de48e3be8e",
-      "connection" : "keep-alive",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200630T023058Z:7b26dc7a-c332-4753-ad8d-686f1d97cef6",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "96d98ca3-165c-4ade-9625-3b2c490104aa",
-      "Body" : "{\r\n  \"name\": \"pip371568\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/pip371568group/providers/Microsoft.Network/publicIPAddresses/pip371568\",\r\n  \"etag\": \"W/\\\"1d12e42b-4a1d-45d2-b065-dbe85b38e025\\\"\",\r\n  \"location\": \"westus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Updating\",\r\n    \"resourceGuid\": \"3acde0ea-3b38-4d6f-8d92-a5bf052729cd\",\r\n    \"publicIPAddressVersion\": \"IPv4\",\r\n    \"publicIPAllocationMethod\": \"Dynamic\",\r\n    \"idleTimeoutInMinutes\": 10,\r\n    \"dnsSettings\": {\r\n      \"domainNameLabel\": \"pip371568\",\r\n      \"fqdn\": \"pip371568.westus.cloudapp.azure.com\"\r\n    },\r\n    \"ipTags\": []\r\n  },\r\n  \"type\": \"Microsoft.Network/publicIPAddresses\",\r\n  \"sku\": {\r\n    \"name\": \"Basic\"\r\n  }\r\n}",
-      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/operations/96d98ca3-165c-4ade-9625-3b2c490104aa?api-version=2019-06-01"
+      "x-ms-request-id" : "cffb45d7-1430-4c15-a001-4b1e674f9335",
+      "Body" : "{\r\n  \"name\": \"pip100251\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/pip100251group/providers/Microsoft.Network/publicIPAddresses/pip100251\",\r\n  \"etag\": \"W/\\\"60e1cc14-79bf-4a6d-9f82-a203c0379131\\\"\",\r\n  \"location\": \"westus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Updating\",\r\n    \"resourceGuid\": \"6c664d31-1985-4ee5-b927-9bc5cb796ed5\",\r\n    \"publicIPAddressVersion\": \"IPv4\",\r\n    \"publicIPAllocationMethod\": \"Dynamic\",\r\n    \"idleTimeoutInMinutes\": 10,\r\n    \"dnsSettings\": {\r\n      \"domainNameLabel\": \"pip100251\",\r\n      \"fqdn\": \"pip100251.westus.cloudapp.azure.com\"\r\n    },\r\n    \"ipTags\": []\r\n  },\r\n  \"type\": \"Microsoft.Network/publicIPAddresses\",\r\n  \"sku\": {\r\n    \"name\": \"Basic\"\r\n  }\r\n}",
+      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/operations/cffb45d7-1430-4c15-a001-4b1e674f9335?api-version=2019-11-01"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/operations/96d98ca3-165c-4ade-9625-3b2c490104aa?api-version=2019-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/operations/cffb45d7-1430-4c15-a001-4b1e674f9335?api-version=2019-11-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.management/null (1.8.0_231; Windows 10 10.0)"
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.6; Windows 10 10.0)"
     },
     "Response" : {
-      "date" : "Fri, 13 Mar 2020 07:42:03 GMT",
+      "date" : "Tue, 30 Jun 2020 02:30:58 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "content-length" : "29",
       "expires" : "-1",
       "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "11998",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11963",
       "StatusCode" : "200",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "6e6c4029-10d0-4ed5-a103-7f20ab7726cd",
+      "x-ms-correlation-request-id" : "869afa13-6b7e-4840-ae30-c08fc761fe5d",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-arm-service-request-id" : "58588aee-d81f-427a-9bfb-b73ed9551b0a",
+      "x-ms-arm-service-request-id" : "b81f1d3f-4fb6-478b-831d-7108dfda82e5",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "EASTASIA:20200313T074203Z:6e6c4029-10d0-4ed5-a103-7f20ab7726cd",
-      "connection" : "keep-alive",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200630T023059Z:869afa13-6b7e-4840-ae30-c08fc761fe5d",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "7e9a9477-5e93-4fb6-ab4a-6552b285d8e6",
+      "x-ms-request-id" : "0566fc5b-41ff-433e-805b-c0544106425b",
       "Body" : "{\r\n  \"status\": \"Succeeded\"\r\n}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/pip371568group/providers/Microsoft.Network/publicIPAddresses/pip371568?api-version=2019-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/pip100251group/providers/Microsoft.Network/publicIPAddresses/pip100251?api-version=2019-11-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.management/null (1.8.0_231; Windows 10 10.0)"
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.6; Windows 10 10.0)"
     },
     "Response" : {
-      "date" : "Fri, 13 Mar 2020 07:42:34 GMT",
+      "date" : "Tue, 30 Jun 2020 02:30:59 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "content-length" : "744",
       "expires" : "-1",
       "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "11999",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11993",
       "StatusCode" : "200",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "a8bc82cc-a990-4f80-b191-f670c6dc3a6e",
+      "x-ms-correlation-request-id" : "07b85c40-54b2-437c-a335-79dead7777a9",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-arm-service-request-id" : "98cde357-45b7-483e-86af-531231042d17",
+      "x-ms-arm-service-request-id" : "469f34fd-6713-4b20-8498-88f2c0b542b0",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "EASTASIA:20200313T074235Z:a8bc82cc-a990-4f80-b191-f670c6dc3a6e",
-      "connection" : "keep-alive",
-      "etag" : "W/\"a58db324-a2de-4756-9eb7-aba0722dd6c8\"",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200630T023059Z:07b85c40-54b2-437c-a335-79dead7777a9",
+      "etag" : "W/\"bf2cb2ae-9a60-4258-b438-8d5661035947\"",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "a1b5ba31-9aa3-434b-b3e5-74103ffb19cc",
-      "Body" : "{\r\n  \"name\": \"pip371568\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/pip371568group/providers/Microsoft.Network/publicIPAddresses/pip371568\",\r\n  \"etag\": \"W/\\\"a58db324-a2de-4756-9eb7-aba0722dd6c8\\\"\",\r\n  \"location\": \"westus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Succeeded\",\r\n    \"resourceGuid\": \"3acde0ea-3b38-4d6f-8d92-a5bf052729cd\",\r\n    \"publicIPAddressVersion\": \"IPv4\",\r\n    \"publicIPAllocationMethod\": \"Dynamic\",\r\n    \"idleTimeoutInMinutes\": 10,\r\n    \"dnsSettings\": {\r\n      \"domainNameLabel\": \"pip371568\",\r\n      \"fqdn\": \"pip371568.westus.cloudapp.azure.com\"\r\n    },\r\n    \"ipTags\": []\r\n  },\r\n  \"type\": \"Microsoft.Network/publicIPAddresses\",\r\n  \"sku\": {\r\n    \"name\": \"Basic\"\r\n  }\r\n}"
+      "x-ms-request-id" : "ce857014-40bd-4665-b25b-23af6a9c231a",
+      "Body" : "{\r\n  \"name\": \"pip100251\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/pip100251group/providers/Microsoft.Network/publicIPAddresses/pip100251\",\r\n  \"etag\": \"W/\\\"bf2cb2ae-9a60-4258-b438-8d5661035947\\\"\",\r\n  \"location\": \"westus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Succeeded\",\r\n    \"resourceGuid\": \"6c664d31-1985-4ee5-b927-9bc5cb796ed5\",\r\n    \"publicIPAddressVersion\": \"IPv4\",\r\n    \"publicIPAllocationMethod\": \"Dynamic\",\r\n    \"idleTimeoutInMinutes\": 10,\r\n    \"dnsSettings\": {\r\n      \"domainNameLabel\": \"pip100251\",\r\n      \"fqdn\": \"pip100251.westus.cloudapp.azure.com\"\r\n    },\r\n    \"ipTags\": []\r\n  },\r\n  \"type\": \"Microsoft.Network/publicIPAddresses\",\r\n  \"sku\": {\r\n    \"name\": \"Basic\"\r\n  }\r\n}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/publicIPAddresses?api-version=2019-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/publicIPAddresses?api-version=2019-11-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.management/null (1.8.0_231; Windows 10 10.0)"
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.0.0-SNAPSHOT (11.0.6; Windows 10 10.0)",
+      "Content-Type" : "application/json"
     },
     "Response" : {
-      "date" : "Fri, 13 Mar 2020 07:42:35 GMT",
-      "content-length" : "5538",
+      "date" : "Tue, 30 Jun 2020 02:31:00 GMT",
+      "content-length" : "10304",
       "expires" : "-1",
-      "x-ms-original-request-ids" : "7c672672-240c-4da3-8ae1-90fd663667b6",
+      "x-ms-original-request-ids" : "08da8aa5-5826-4f86-979a-d73f0ed3dd55",
       "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "11995",
       "StatusCode" : "200",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "3f29b2a3-4338-4bb0-a4e0-78ce3247def8",
+      "x-ms-correlation-request-id" : "d8d15986-45a1-4b2f-ba4d-14117a30ddbd",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "EASTASIA:20200313T074236Z:3f29b2a3-4338-4bb0-a4e0-78ce3247def8",
-      "connection" : "keep-alive",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200630T023100Z:d8d15986-45a1-4b2f-ba4d-14117a30ddbd",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "3f29b2a3-4338-4bb0-a4e0-78ce3247def8",
-      "Body" : "{\"value\":[{\"name\":\"pip371568\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/pip371568group/providers/Microsoft.Network/publicIPAddresses/pip371568\",\"etag\":\"W/\\\"a58db324-a2de-4756-9eb7-aba0722dd6c8\\\"\",\"location\":\"westus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"3acde0ea-3b38-4d6f-8d92-a5bf052729cd\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":10,\"dnsSettings\":{\"domainNameLabel\":\"pip371568\",\"fqdn\":\"pip371568.westus.cloudapp.azure.com\"},\"ipTags\":[]},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"abcf537719735\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/abcf537719735group/providers/Microsoft.Network/publicIPAddresses/abcf537719735\",\"etag\":\"W/\\\"9a6277b0-7128-4bd6-9ac2-0e4b136cde95\\\"\",\"location\":\"eastus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"82f46d3d-4599-4155-99c6-81283232b9bb\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"dnsSettings\":{\"domainNameLabel\":\"abcf537719735\",\"fqdn\":\"abcf537719735.eastus.cloudapp.azure.com\"},\"ipTags\":[]},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"pip185054908\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nsg2d9193545group/providers/Microsoft.Network/publicIPAddresses/pip185054908\",\"etag\":\"W/\\\"7467c82e-06cb-4d32-9abf-b09b56b0eaad\\\"\",\"location\":\"eastus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"881cb1f5-10f7-4869-937b-4bef0eb86e9e\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"ipTags\":[]},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"pip30586a4b\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgb31990847/providers/Microsoft.Network/publicIPAddresses/pip30586a4b\",\"etag\":\"W/\\\"0b66be06-fbaa-4474-a031-5272bb7ec1e4\\\"\",\"location\":\"eastus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"bcecfbdf-80bf-4c00-a947-7770f8a3c060\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"dnsSettings\":{\"domainNameLabel\":\"pip-e5f43963a15\",\"fqdn\":\"pip-e5f43963a15.eastus.cloudapp.azure.com\"},\"ipTags\":[],\"ipConfiguration\":{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgb31990847/providers/Microsoft.Network/networkInterfaces/nic216436d9ea6/ipConfigurations/primary\"}},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"pip683870d1\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgvm3535297a5472161/providers/Microsoft.Network/publicIPAddresses/pip683870d1\",\"etag\":\"W/\\\"64334377-cbc5-4227-bfa8-c4ef4ba90026\\\"\",\"location\":\"eastus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"04e3eb36-b4ac-4f1a-adcb-2e5550301876\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"dnsSettings\":{\"domainNameLabel\":\"pip3d4872611aa9\",\"fqdn\":\"pip3d4872611aa9.eastus.cloudapp.azure.com\"},\"ipTags\":[]},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"pip06379\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg32562e/providers/Microsoft.Network/publicIPAddresses/pip06379\",\"etag\":\"W/\\\"01481298-3754-4a1a-8bb2-cd3e73c5eb3a\\\"\",\"location\":\"northcentralus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"8291ab76-7d4c-4ee3-8af2-e7d13582e6db\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"ipTags\":[]},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"pip66470\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg32562e/providers/Microsoft.Network/publicIPAddresses/pip66470\",\"etag\":\"W/\\\"ee451513-f8f1-4c12-9fb5-4ba049122ea5\\\"\",\"location\":\"northcentralus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"9f9ca425-2cd1-47f7-9340-1c844e6c9b80\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"ipTags\":[]},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"pip50017\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg463769/providers/Microsoft.Network/publicIPAddresses/pip50017\",\"etag\":\"W/\\\"ddce060c-4288-4817-9dcf-405e0d277061\\\"\",\"location\":\"northcentralus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"949a5634-6255-4975-b25d-e1c7c67a148e\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"ipTags\":[],\"ipConfiguration\":{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg463769/providers/Microsoft.Network/virtualNetworkGateways/vngw463769/ipConfigurations/ipcfg33444\"}},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"pip89713\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/vngw41068egroup/providers/Microsoft.Network/publicIPAddresses/pip89713\",\"etag\":\"W/\\\"3969aee3-f9e1-4062-8f7f-2f7cf30d7cf4\\\"\",\"location\":\"northcentralus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"b0c313e1-bc5a-45c3-8692-ea32a6681160\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"ipTags\":[]},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}}]}"
+      "x-ms-request-id" : "d8d15986-45a1-4b2f-ba4d-14117a30ddbd",
+      "Body" : "{\"value\":[{\"name\":\"pip100251\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/pip100251group/providers/Microsoft.Network/publicIPAddresses/pip100251\",\"etag\":\"W/\\\"bf2cb2ae-9a60-4258-b438-8d5661035947\\\"\",\"location\":\"westus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"6c664d31-1985-4ee5-b927-9bc5cb796ed5\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":10,\"dnsSettings\":{\"domainNameLabel\":\"pip100251\",\"fqdn\":\"pip100251.westus.cloudapp.azure.com\"},\"ipTags\":[]},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"pipa06644e\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg06644e/providers/Microsoft.Network/publicIPAddresses/pipa06644e\",\"etag\":\"W/\\\"6ce29bcf-7b97-4449-9b66-faa16ab6e7e9\\\"\",\"location\":\"westus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"2ac519d8-9991-4306-b936-8f687dcbdf19\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"ipTags\":[]},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"pipb06644e\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg06644e/providers/Microsoft.Network/publicIPAddresses/pipb06644e\",\"etag\":\"W/\\\"fb98ebff-6771-4e5f-bcec-17e950d0d23f\\\"\",\"location\":\"westus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"00aacebc-f116-40ba-aacd-8bc450914446\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"ipTags\":[]},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"pip80166\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg265196/providers/Microsoft.Network/publicIPAddresses/pip80166\",\"etag\":\"W/\\\"bd14a0fd-2cce-44d0-8205-e2bec24e3805\\\"\",\"location\":\"westus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"39513734-9d91-4d8c-9e90-b9509402ce0b\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"ipTags\":[]},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"pipa784941\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg784941/providers/Microsoft.Network/publicIPAddresses/pipa784941\",\"etag\":\"W/\\\"7c60da75-1c18-47ba-9c24-d82bc374d0cf\\\"\",\"location\":\"westus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"cf29643e-6be3-4aff-abc5-ed72a3bfc4e4\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"ipTags\":[]},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"pipb784941\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg784941/providers/Microsoft.Network/publicIPAddresses/pipb784941\",\"etag\":\"W/\\\"2da6743c-0edb-4cb1-9728-226b51109ce3\\\"\",\"location\":\"westus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"087c5c71-1c10-4fad-808e-7921fb9381b6\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"ipTags\":[]},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"pip79997\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg84995d/providers/Microsoft.Network/publicIPAddresses/pip79997\",\"etag\":\"W/\\\"61966355-99fe-4e34-a06c-ac3a416d0edb\\\"\",\"location\":\"westus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"0b45fa82-63b4-465e-b7de-8fc84833031e\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"ipTags\":[]},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"abc78675147c2\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/abc78675147c2group/providers/Microsoft.Network/publicIPAddresses/abc78675147c2\",\"etag\":\"W/\\\"f838e7b8-0c0f-4a3d-99e2-a5a50b78bdaf\\\"\",\"location\":\"eastus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"1db1acd2-b191-4727-809f-d74faeda7496\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"dnsSettings\":{\"domainNameLabel\":\"abc78675147c2\",\"fqdn\":\"abc78675147c2.eastus.cloudapp.azure.com\"},\"ipTags\":[]},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"pip17456d1f\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/net364325group/providers/Microsoft.Network/publicIPAddresses/pip17456d1f\",\"etag\":\"W/\\\"4fc98916-5fea-481a-9946-6cfb07457ee4\\\"\",\"location\":\"eastus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"ec61fba1-f48d-48c2-bd2a-fd1229f1215f\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"dnsSettings\":{\"domainNameLabel\":\"pip364325\",\"fqdn\":\"pip364325.eastus.cloudapp.azure.com\"},\"ipTags\":[],\"ipConfiguration\":{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/net364325group/providers/Microsoft.Network/networkInterfaces/nic364325/ipConfigurations/primary\"}},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"pip38e80143d\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nsge0c60808egroup/providers/Microsoft.Network/publicIPAddresses/pip38e80143d\",\"etag\":\"W/\\\"e508ffba-9f90-4a64-8072-cc6928889c85\\\"\",\"location\":\"eastus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"6fc5bb1e-10da-410c-83a9-0c13505234db\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"ipTags\":[]},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"pip71524b7b\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg24312f/providers/Microsoft.Network/publicIPAddresses/pip71524b7b\",\"etag\":\"W/\\\"b6e702d5-83aa-4961-9a3b-cbfb4aed0240\\\"\",\"location\":\"eastus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"bcdbe0e7-44b9-492c-8ec1-4a5b13d1b678\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"dnsSettings\":{\"domainNameLabel\":\"pipvm60242e\",\"fqdn\":\"pipvm60242e.eastus.cloudapp.azure.com\"},\"ipTags\":[]},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"pip56210\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg309354/providers/Microsoft.Network/publicIPAddresses/pip56210\",\"etag\":\"W/\\\"90a32837-9916-4f4c-888b-0b33cb756e8b\\\"\",\"location\":\"northcentralus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"d4a51b7c-c5d6-4758-afef-e771d3f6da47\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"ipTags\":[],\"ipConfiguration\":{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg309354/providers/Microsoft.Network/virtualNetworkGateways/vngw309354/ipConfigurations/ipcfg44315\"}},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"pip03126\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg63627b/providers/Microsoft.Network/publicIPAddresses/pip03126\",\"etag\":\"W/\\\"c218f5df-0ece-4c35-9012-ee6e73decb28\\\"\",\"location\":\"northcentralus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"3835249f-9e7f-4732-941b-2e9b05755453\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"ipTags\":[]},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"pip55151\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg63627b/providers/Microsoft.Network/publicIPAddresses/pip55151\",\"etag\":\"W/\\\"0be63bbf-2d70-4b16-a0d7-0a3bc66aef0b\\\"\",\"location\":\"northcentralus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"c933f42f-4473-4888-8ec5-6f7fac8b6cd9\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"ipTags\":[]},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"pip53249\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/vngw513739group/providers/Microsoft.Network/publicIPAddresses/pip53249\",\"etag\":\"W/\\\"7b94d81c-847c-49e1-bb1b-870f4436d94f\\\"\",\"location\":\"northcentralus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"0732f507-24bd-48ca-94ab-e2b8245b8696\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"ipTags\":[]},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"pipw2j34g\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/tanyi/providers/Microsoft.Network/publicIPAddresses/pipw2j34g\",\"etag\":\"W/\\\"9c42ea96-77e1-406e-be6e-cafcaf887124\\\"\",\"location\":\"japaneast\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"d3acd0ea-0ee2-4bcd-9ab4-e78a38f77a98\",\"ipAddress\":\"52.243.45.67\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"dnsSettings\":{\"domainNameLabel\":\"webtool\",\"fqdn\":\"webtool.japaneast.cloudapp.azure.com\"},\"ipTags\":[],\"ipConfiguration\":{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/tanyi/providers/Microsoft.Network/networkInterfaces/xcverlkjsld/ipConfigurations/primary\"}},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"pip18881302\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove99780349/providers/Microsoft.Network/publicIPAddresses/pip18881302\",\"etag\":\"W/\\\"1ed0e384-95c7-4f4e-87fa-7014b629f2b3\\\"\",\"location\":\"westcentralus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"458ce8ab-8093-4d28-b86d-fe4058a6ca3f\",\"ipAddress\":\"13.78.137.5\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"dnsSettings\":{\"domainNameLabel\":\"rgpip14f768954019be\",\"fqdn\":\"rgpip14f768954019be.westcentralus.cloudapp.azure.com\"},\"ipTags\":[],\"ipConfiguration\":{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove99780349/providers/Microsoft.Network/networkInterfaces/nic96774490f32/ipConfigurations/primary\"}},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}}]}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/publicIPAddresses?api-version=2019-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/publicIPAddresses?api-version=2019-11-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.management/null (1.8.0_231; Windows 10 10.0)"
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.0.0-SNAPSHOT (11.0.6; Windows 10 10.0)",
+      "Content-Type" : "application/json"
     },
     "Response" : {
-      "date" : "Fri, 13 Mar 2020 07:42:36 GMT",
-      "content-length" : "6356",
+      "date" : "Tue, 30 Jun 2020 02:31:01 GMT",
+      "content-length" : "10498",
       "expires" : "-1",
-      "x-ms-original-request-ids" : "9fc63ae9-9f2a-4ce6-8daa-9e751313b667",
+      "x-ms-original-request-ids" : "f82d9a08-7b1d-4ed7-873d-da3b9f1f39bc",
       "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "11992",
       "StatusCode" : "200",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "b9758731-01de-4af9-a928-a4fb6a365e46",
+      "x-ms-correlation-request-id" : "7e0134fa-8fdf-4818-9a89-fee2256d9af1",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "EASTASIA:20200313T074237Z:b9758731-01de-4af9-a928-a4fb6a365e46",
-      "connection" : "keep-alive",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200630T023101Z:7e0134fa-8fdf-4818-9a89-fee2256d9af1",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "b9758731-01de-4af9-a928-a4fb6a365e46",
-      "Body" : "{\"value\":[{\"name\":\"pip371568\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/pip371568group/providers/Microsoft.Network/publicIPAddresses/pip371568\",\"etag\":\"W/\\\"a58db324-a2de-4756-9eb7-aba0722dd6c8\\\"\",\"location\":\"westus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"3acde0ea-3b38-4d6f-8d92-a5bf052729cd\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":10,\"dnsSettings\":{\"domainNameLabel\":\"pip371568\",\"fqdn\":\"pip371568.westus.cloudapp.azure.com\"},\"ipTags\":[]},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"abcf537719735\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/abcf537719735group/providers/Microsoft.Network/publicIPAddresses/abcf537719735\",\"etag\":\"W/\\\"9a6277b0-7128-4bd6-9ac2-0e4b136cde95\\\"\",\"location\":\"eastus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"82f46d3d-4599-4155-99c6-81283232b9bb\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"dnsSettings\":{\"domainNameLabel\":\"abcf537719735\",\"fqdn\":\"abcf537719735.eastus.cloudapp.azure.com\"},\"ipTags\":[]},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"pip5246223b\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/net784349group/providers/Microsoft.Network/publicIPAddresses/pip5246223b\",\"etag\":\"W/\\\"73fefba7-d03f-4300-91fa-4aab542a74c8\\\"\",\"location\":\"eastus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"116f8a99-23fa-4cb1-a7c1-ed9483a2ea08\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"dnsSettings\":{\"domainNameLabel\":\"pip784349\",\"fqdn\":\"pip784349.eastus.cloudapp.azure.com\"},\"ipTags\":[]},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"pip185054908\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nsg2d9193545group/providers/Microsoft.Network/publicIPAddresses/pip185054908\",\"etag\":\"W/\\\"7467c82e-06cb-4d32-9abf-b09b56b0eaad\\\"\",\"location\":\"eastus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"881cb1f5-10f7-4869-937b-4bef0eb86e9e\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"ipTags\":[]},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"pip30586a4b\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgb31990847/providers/Microsoft.Network/publicIPAddresses/pip30586a4b\",\"etag\":\"W/\\\"0b66be06-fbaa-4474-a031-5272bb7ec1e4\\\"\",\"location\":\"eastus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"bcecfbdf-80bf-4c00-a947-7770f8a3c060\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"dnsSettings\":{\"domainNameLabel\":\"pip-e5f43963a15\",\"fqdn\":\"pip-e5f43963a15.eastus.cloudapp.azure.com\"},\"ipTags\":[],\"ipConfiguration\":{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgb31990847/providers/Microsoft.Network/networkInterfaces/nic216436d9ea6/ipConfigurations/primary\"}},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"pip683870d1\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgvm3535297a5472161/providers/Microsoft.Network/publicIPAddresses/pip683870d1\",\"etag\":\"W/\\\"64334377-cbc5-4227-bfa8-c4ef4ba90026\\\"\",\"location\":\"eastus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"04e3eb36-b4ac-4f1a-adcb-2e5550301876\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"dnsSettings\":{\"domainNameLabel\":\"pip3d4872611aa9\",\"fqdn\":\"pip3d4872611aa9.eastus.cloudapp.azure.com\"},\"ipTags\":[]},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"pip06379\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg32562e/providers/Microsoft.Network/publicIPAddresses/pip06379\",\"etag\":\"W/\\\"01481298-3754-4a1a-8bb2-cd3e73c5eb3a\\\"\",\"location\":\"northcentralus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"8291ab76-7d4c-4ee3-8af2-e7d13582e6db\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"ipTags\":[]},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"pip66470\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg32562e/providers/Microsoft.Network/publicIPAddresses/pip66470\",\"etag\":\"W/\\\"ee451513-f8f1-4c12-9fb5-4ba049122ea5\\\"\",\"location\":\"northcentralus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"9f9ca425-2cd1-47f7-9340-1c844e6c9b80\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"ipTags\":[]},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"pip50017\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg463769/providers/Microsoft.Network/publicIPAddresses/pip50017\",\"etag\":\"W/\\\"ddce060c-4288-4817-9dcf-405e0d277061\\\"\",\"location\":\"northcentralus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"949a5634-6255-4975-b25d-e1c7c67a148e\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"ipTags\":[],\"ipConfiguration\":{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg463769/providers/Microsoft.Network/virtualNetworkGateways/vngw463769/ipConfigurations/ipcfg33444\"}},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"pip89713\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/vngw41068egroup/providers/Microsoft.Network/publicIPAddresses/pip89713\",\"etag\":\"W/\\\"638d640d-36a8-438a-a911-fd93ac71bb86\\\"\",\"location\":\"northcentralus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"b0c313e1-bc5a-45c3-8692-ea32a6681160\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"ipTags\":[],\"ipConfiguration\":{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/vngw41068egroup/providers/Microsoft.Network/virtualNetworkGateways/vngw41068e/ipConfigurations/ipcfg70863\"}},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}}]}"
+      "x-ms-request-id" : "7e0134fa-8fdf-4818-9a89-fee2256d9af1",
+      "Body" : "{\"value\":[{\"name\":\"pip100251\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/pip100251group/providers/Microsoft.Network/publicIPAddresses/pip100251\",\"etag\":\"W/\\\"bf2cb2ae-9a60-4258-b438-8d5661035947\\\"\",\"location\":\"westus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"6c664d31-1985-4ee5-b927-9bc5cb796ed5\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":10,\"dnsSettings\":{\"domainNameLabel\":\"pip100251\",\"fqdn\":\"pip100251.westus.cloudapp.azure.com\"},\"ipTags\":[]},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"pipa06644e\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg06644e/providers/Microsoft.Network/publicIPAddresses/pipa06644e\",\"etag\":\"W/\\\"6ce29bcf-7b97-4449-9b66-faa16ab6e7e9\\\"\",\"location\":\"westus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"2ac519d8-9991-4306-b936-8f687dcbdf19\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"ipTags\":[]},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"pipb06644e\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg06644e/providers/Microsoft.Network/publicIPAddresses/pipb06644e\",\"etag\":\"W/\\\"fb98ebff-6771-4e5f-bcec-17e950d0d23f\\\"\",\"location\":\"westus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"00aacebc-f116-40ba-aacd-8bc450914446\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"ipTags\":[]},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"pip80166\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg265196/providers/Microsoft.Network/publicIPAddresses/pip80166\",\"etag\":\"W/\\\"bd14a0fd-2cce-44d0-8205-e2bec24e3805\\\"\",\"location\":\"westus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"39513734-9d91-4d8c-9e90-b9509402ce0b\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"ipTags\":[]},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"pipa784941\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg784941/providers/Microsoft.Network/publicIPAddresses/pipa784941\",\"etag\":\"W/\\\"7c60da75-1c18-47ba-9c24-d82bc374d0cf\\\"\",\"location\":\"westus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"cf29643e-6be3-4aff-abc5-ed72a3bfc4e4\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"ipTags\":[]},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"pipb784941\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg784941/providers/Microsoft.Network/publicIPAddresses/pipb784941\",\"etag\":\"W/\\\"2da6743c-0edb-4cb1-9728-226b51109ce3\\\"\",\"location\":\"westus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"087c5c71-1c10-4fad-808e-7921fb9381b6\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"ipTags\":[]},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"pip79997\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg84995d/providers/Microsoft.Network/publicIPAddresses/pip79997\",\"etag\":\"W/\\\"61966355-99fe-4e34-a06c-ac3a416d0edb\\\"\",\"location\":\"westus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"0b45fa82-63b4-465e-b7de-8fc84833031e\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"ipTags\":[]},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"abc78675147c2\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/abc78675147c2group/providers/Microsoft.Network/publicIPAddresses/abc78675147c2\",\"etag\":\"W/\\\"f838e7b8-0c0f-4a3d-99e2-a5a50b78bdaf\\\"\",\"location\":\"eastus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"1db1acd2-b191-4727-809f-d74faeda7496\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"dnsSettings\":{\"domainNameLabel\":\"abc78675147c2\",\"fqdn\":\"abc78675147c2.eastus.cloudapp.azure.com\"},\"ipTags\":[]},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"pip17456d1f\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/net364325group/providers/Microsoft.Network/publicIPAddresses/pip17456d1f\",\"etag\":\"W/\\\"4fc98916-5fea-481a-9946-6cfb07457ee4\\\"\",\"location\":\"eastus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"ec61fba1-f48d-48c2-bd2a-fd1229f1215f\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"dnsSettings\":{\"domainNameLabel\":\"pip364325\",\"fqdn\":\"pip364325.eastus.cloudapp.azure.com\"},\"ipTags\":[],\"ipConfiguration\":{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/net364325group/providers/Microsoft.Network/networkInterfaces/nic364325/ipConfigurations/primary\"}},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"pip38e80143d\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/nsge0c60808egroup/providers/Microsoft.Network/publicIPAddresses/pip38e80143d\",\"etag\":\"W/\\\"e508ffba-9f90-4a64-8072-cc6928889c85\\\"\",\"location\":\"eastus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"6fc5bb1e-10da-410c-83a9-0c13505234db\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"ipTags\":[]},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"pip71524b7b\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg24312f/providers/Microsoft.Network/publicIPAddresses/pip71524b7b\",\"etag\":\"W/\\\"9f6020dd-a048-4fab-b5f9-118ecbe765a0\\\"\",\"location\":\"eastus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"bcdbe0e7-44b9-492c-8ec1-4a5b13d1b678\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"dnsSettings\":{\"domainNameLabel\":\"pipvm60242e\",\"fqdn\":\"pipvm60242e.eastus.cloudapp.azure.com\"},\"ipTags\":[],\"ipConfiguration\":{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg24312f/providers/Microsoft.Network/networkInterfaces/nicvm60242ea0281372/ipConfigurations/primary\"}},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"pip56210\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg309354/providers/Microsoft.Network/publicIPAddresses/pip56210\",\"etag\":\"W/\\\"90a32837-9916-4f4c-888b-0b33cb756e8b\\\"\",\"location\":\"northcentralus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"d4a51b7c-c5d6-4758-afef-e771d3f6da47\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"ipTags\":[],\"ipConfiguration\":{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg309354/providers/Microsoft.Network/virtualNetworkGateways/vngw309354/ipConfigurations/ipcfg44315\"}},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"pip03126\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg63627b/providers/Microsoft.Network/publicIPAddresses/pip03126\",\"etag\":\"W/\\\"c218f5df-0ece-4c35-9012-ee6e73decb28\\\"\",\"location\":\"northcentralus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"3835249f-9e7f-4732-941b-2e9b05755453\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"ipTags\":[]},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"pip55151\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg63627b/providers/Microsoft.Network/publicIPAddresses/pip55151\",\"etag\":\"W/\\\"0be63bbf-2d70-4b16-a0d7-0a3bc66aef0b\\\"\",\"location\":\"northcentralus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"c933f42f-4473-4888-8ec5-6f7fac8b6cd9\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"ipTags\":[]},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"pip53249\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/vngw513739group/providers/Microsoft.Network/publicIPAddresses/pip53249\",\"etag\":\"W/\\\"7b94d81c-847c-49e1-bb1b-870f4436d94f\\\"\",\"location\":\"northcentralus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"0732f507-24bd-48ca-94ab-e2b8245b8696\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"ipTags\":[]},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"pipw2j34g\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/tanyi/providers/Microsoft.Network/publicIPAddresses/pipw2j34g\",\"etag\":\"W/\\\"9c42ea96-77e1-406e-be6e-cafcaf887124\\\"\",\"location\":\"japaneast\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"d3acd0ea-0ee2-4bcd-9ab4-e78a38f77a98\",\"ipAddress\":\"52.243.45.67\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"dnsSettings\":{\"domainNameLabel\":\"webtool\",\"fqdn\":\"webtool.japaneast.cloudapp.azure.com\"},\"ipTags\":[],\"ipConfiguration\":{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/tanyi/providers/Microsoft.Network/networkInterfaces/xcverlkjsld/ipConfigurations/primary\"}},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}},{\"name\":\"pip18881302\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove99780349/providers/Microsoft.Network/publicIPAddresses/pip18881302\",\"etag\":\"W/\\\"1ed0e384-95c7-4f4e-87fa-7014b629f2b3\\\"\",\"location\":\"westcentralus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"458ce8ab-8093-4d28-b86d-fe4058a6ca3f\",\"ipAddress\":\"13.78.137.5\",\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Dynamic\",\"idleTimeoutInMinutes\":4,\"dnsSettings\":{\"domainNameLabel\":\"rgpip14f768954019be\",\"fqdn\":\"rgpip14f768954019be.westcentralus.cloudapp.azure.com\"},\"ipTags\":[],\"ipConfiguration\":{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcove99780349/providers/Microsoft.Network/networkInterfaces/nic96774490f32/ipConfigurations/primary\"}},\"type\":\"Microsoft.Network/publicIPAddresses\",\"sku\":{\"name\":\"Basic\"}}]}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/pip371568group/providers/Microsoft.Network/publicIPAddresses/pip371568?api-version=2019-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/pip100251group/providers/Microsoft.Network/publicIPAddresses/pip100251?api-version=2019-11-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.management/null (1.8.0_231; Windows 10 10.0)"
-    },
-    "Response" : {
-      "date" : "Fri, 13 Mar 2020 07:42:37 GMT",
-      "server" : "Microsoft-HTTPAPI/2.0",
-      "content-length" : "744",
-      "expires" : "-1",
-      "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "11994",
-      "StatusCode" : "200",
-      "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "b4a4c5a8-5d2d-4bf0-82f8-36fe3406bbfe",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-arm-service-request-id" : "cf9053e8-62f3-4e42-a33a-ac67a39c3206",
-      "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "EASTASIA:20200313T074238Z:b4a4c5a8-5d2d-4bf0-82f8-36fe3406bbfe",
-      "connection" : "keep-alive",
-      "etag" : "W/\"a58db324-a2de-4756-9eb7-aba0722dd6c8\"",
-      "content-type" : "application/json; charset=utf-8",
-      "cache-control" : "no-cache",
-      "x-ms-request-id" : "1da03f3e-e376-4e04-bdad-ff4d657359fb",
-      "Body" : "{\r\n  \"name\": \"pip371568\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/pip371568group/providers/Microsoft.Network/publicIPAddresses/pip371568\",\r\n  \"etag\": \"W/\\\"a58db324-a2de-4756-9eb7-aba0722dd6c8\\\"\",\r\n  \"location\": \"westus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Succeeded\",\r\n    \"resourceGuid\": \"3acde0ea-3b38-4d6f-8d92-a5bf052729cd\",\r\n    \"publicIPAddressVersion\": \"IPv4\",\r\n    \"publicIPAllocationMethod\": \"Dynamic\",\r\n    \"idleTimeoutInMinutes\": 10,\r\n    \"dnsSettings\": {\r\n      \"domainNameLabel\": \"pip371568\",\r\n      \"fqdn\": \"pip371568.westus.cloudapp.azure.com\"\r\n    },\r\n    \"ipTags\": []\r\n  },\r\n  \"type\": \"Microsoft.Network/publicIPAddresses\",\r\n  \"sku\": {\r\n    \"name\": \"Basic\"\r\n  }\r\n}"
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/pip371568group/providers/Microsoft.Network/publicIPAddresses/pip371568?api-version=2019-06-01",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.management/null (1.8.0_231; Windows 10 10.0)"
-    },
-    "Response" : {
-      "date" : "Fri, 13 Mar 2020 07:42:39 GMT",
-      "server" : "Microsoft-HTTPAPI/2.0",
-      "content-length" : "744",
-      "expires" : "-1",
-      "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "11997",
-      "StatusCode" : "200",
-      "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "c0725088-2512-46b4-9c17-71e01394ae2c",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-arm-service-request-id" : "95622d8b-766e-4a51-8bbe-b13fb7ed59cb",
-      "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "EASTASIA:20200313T074239Z:c0725088-2512-46b4-9c17-71e01394ae2c",
-      "connection" : "keep-alive",
-      "etag" : "W/\"a58db324-a2de-4756-9eb7-aba0722dd6c8\"",
-      "content-type" : "application/json; charset=utf-8",
-      "cache-control" : "no-cache",
-      "x-ms-request-id" : "060e4502-47c7-48e7-9d75-393664fe7d95",
-      "Body" : "{\r\n  \"name\": \"pip371568\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/pip371568group/providers/Microsoft.Network/publicIPAddresses/pip371568\",\r\n  \"etag\": \"W/\\\"a58db324-a2de-4756-9eb7-aba0722dd6c8\\\"\",\r\n  \"location\": \"westus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Succeeded\",\r\n    \"resourceGuid\": \"3acde0ea-3b38-4d6f-8d92-a5bf052729cd\",\r\n    \"publicIPAddressVersion\": \"IPv4\",\r\n    \"publicIPAllocationMethod\": \"Dynamic\",\r\n    \"idleTimeoutInMinutes\": 10,\r\n    \"dnsSettings\": {\r\n      \"domainNameLabel\": \"pip371568\",\r\n      \"fqdn\": \"pip371568.westus.cloudapp.azure.com\"\r\n    },\r\n    \"ipTags\": []\r\n  },\r\n  \"type\": \"Microsoft.Network/publicIPAddresses\",\r\n  \"sku\": {\r\n    \"name\": \"Basic\"\r\n  }\r\n}"
-    }
-  }, {
-    "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/pip371568group/providers/Microsoft.Network/publicIPAddresses/pip371568?api-version=2019-06-01",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.management/null (1.8.0_231; Windows 10 10.0)",
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.0.0-SNAPSHOT (11.0.6; Windows 10 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "date" : "Fri, 13 Mar 2020 07:42:43 GMT",
+      "date" : "Tue, 30 Jun 2020 02:31:01 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "744",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11974",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "744acc8c-89c4-45a8-9566-c39d27567655",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "0ac68191-1a3c-488f-ae9f-00068975d144",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200630T023102Z:744acc8c-89c4-45a8-9566-c39d27567655",
+      "etag" : "W/\"bf2cb2ae-9a60-4258-b438-8d5661035947\"",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "f811504f-c456-40d2-ae87-117898002892",
+      "Body" : "{\r\n  \"name\": \"pip100251\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/pip100251group/providers/Microsoft.Network/publicIPAddresses/pip100251\",\r\n  \"etag\": \"W/\\\"bf2cb2ae-9a60-4258-b438-8d5661035947\\\"\",\r\n  \"location\": \"westus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Succeeded\",\r\n    \"resourceGuid\": \"6c664d31-1985-4ee5-b927-9bc5cb796ed5\",\r\n    \"publicIPAddressVersion\": \"IPv4\",\r\n    \"publicIPAllocationMethod\": \"Dynamic\",\r\n    \"idleTimeoutInMinutes\": 10,\r\n    \"dnsSettings\": {\r\n      \"domainNameLabel\": \"pip100251\",\r\n      \"fqdn\": \"pip100251.westus.cloudapp.azure.com\"\r\n    },\r\n    \"ipTags\": []\r\n  },\r\n  \"type\": \"Microsoft.Network/publicIPAddresses\",\r\n  \"sku\": {\r\n    \"name\": \"Basic\"\r\n  }\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/pip100251group/providers/Microsoft.Network/publicIPAddresses/pip100251?api-version=2019-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.0.0-SNAPSHOT (11.0.6; Windows 10 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 30 Jun 2020 02:31:01 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "744",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11955",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "fd3d1a7e-ee40-44e5-8cb1-b6bcd5a1cc7f",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "d1287786-ca77-46b1-af3f-d2a8e66d7836",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200630T023102Z:fd3d1a7e-ee40-44e5-8cb1-b6bcd5a1cc7f",
+      "etag" : "W/\"bf2cb2ae-9a60-4258-b438-8d5661035947\"",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "ede9944b-f165-4c23-aee0-dc8230dab513",
+      "Body" : "{\r\n  \"name\": \"pip100251\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/pip100251group/providers/Microsoft.Network/publicIPAddresses/pip100251\",\r\n  \"etag\": \"W/\\\"bf2cb2ae-9a60-4258-b438-8d5661035947\\\"\",\r\n  \"location\": \"westus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Succeeded\",\r\n    \"resourceGuid\": \"6c664d31-1985-4ee5-b927-9bc5cb796ed5\",\r\n    \"publicIPAddressVersion\": \"IPv4\",\r\n    \"publicIPAllocationMethod\": \"Dynamic\",\r\n    \"idleTimeoutInMinutes\": 10,\r\n    \"dnsSettings\": {\r\n      \"domainNameLabel\": \"pip100251\",\r\n      \"fqdn\": \"pip100251.westus.cloudapp.azure.com\"\r\n    },\r\n    \"ipTags\": []\r\n  },\r\n  \"type\": \"Microsoft.Network/publicIPAddresses\",\r\n  \"sku\": {\r\n    \"name\": \"Basic\"\r\n  }\r\n}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/pip100251group/providers/Microsoft.Network/publicIPAddresses/pip100251?api-version=2019-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.0.0-SNAPSHOT (11.0.6; Windows 10 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 30 Jun 2020 02:31:04 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "azure-asyncnotification" : "Enabled",
       "content-length" : "858",
       "expires" : "-1",
-      "x-ms-ratelimit-remaining-subscription-writes" : "1195",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1190",
       "retry-after" : "0",
       "StatusCode" : "200",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "8f50bd24-5517-4254-91ff-bf49ee859c46",
+      "x-ms-correlation-request-id" : "534f3fb9-3d93-4f36-99d5-108800698588",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-arm-service-request-id" : "b3e33772-f024-426d-941f-3bb3596c75ab",
+      "x-ms-arm-service-request-id" : "062baf73-0439-4f13-be8f-62a51acd92ce",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "EASTASIA:20200313T074244Z:8f50bd24-5517-4254-91ff-bf49ee859c46",
-      "connection" : "keep-alive",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200630T023105Z:534f3fb9-3d93-4f36-99d5-108800698588",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "86fb6ccd-058a-4bd3-a89a-a151d91dc67e",
-      "Body" : "{\r\n  \"name\": \"pip371568\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/pip371568group/providers/Microsoft.Network/publicIPAddresses/pip371568\",\r\n  \"etag\": \"W/\\\"f85d30c9-7bd7-4b6b-97ba-5310df3d903a\\\"\",\r\n  \"location\": \"westus\",\r\n  \"tags\": {\r\n    \"tag1\": \"value1\",\r\n    \"tag2\": \"value2\"\r\n  },\r\n  \"properties\": {\r\n    \"provisioningState\": \"Updating\",\r\n    \"resourceGuid\": \"3acde0ea-3b38-4d6f-8d92-a5bf052729cd\",\r\n    \"publicIPAddressVersion\": \"IPv4\",\r\n    \"publicIPAllocationMethod\": \"Static\",\r\n    \"idleTimeoutInMinutes\": 15,\r\n    \"dnsSettings\": {\r\n      \"domainNameLabel\": \"pip371568xx\",\r\n      \"fqdn\": \"pip371568xx.westus.cloudapp.azure.com\",\r\n      \"reverseFqdn\": \"pip371568xx.westus.cloudapp.azure.com\"\r\n    },\r\n    \"ipTags\": []\r\n  },\r\n  \"type\": \"Microsoft.Network/publicIPAddresses\",\r\n  \"sku\": {\r\n    \"name\": \"Basic\"\r\n  }\r\n}",
-      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/operations/86fb6ccd-058a-4bd3-a89a-a151d91dc67e?api-version=2019-06-01"
+      "x-ms-request-id" : "4b3c26df-a372-4a18-8911-c1282433805f",
+      "Body" : "{\r\n  \"name\": \"pip100251\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/pip100251group/providers/Microsoft.Network/publicIPAddresses/pip100251\",\r\n  \"etag\": \"W/\\\"d034e7d9-469b-401f-820e-55da48110d7c\\\"\",\r\n  \"location\": \"westus\",\r\n  \"tags\": {\r\n    \"tag1\": \"value1\",\r\n    \"tag2\": \"value2\"\r\n  },\r\n  \"properties\": {\r\n    \"provisioningState\": \"Updating\",\r\n    \"resourceGuid\": \"6c664d31-1985-4ee5-b927-9bc5cb796ed5\",\r\n    \"publicIPAddressVersion\": \"IPv4\",\r\n    \"publicIPAllocationMethod\": \"Static\",\r\n    \"idleTimeoutInMinutes\": 15,\r\n    \"dnsSettings\": {\r\n      \"domainNameLabel\": \"pip100251xx\",\r\n      \"fqdn\": \"pip100251xx.westus.cloudapp.azure.com\",\r\n      \"reverseFqdn\": \"pip100251xx.westus.cloudapp.azure.com\"\r\n    },\r\n    \"ipTags\": []\r\n  },\r\n  \"type\": \"Microsoft.Network/publicIPAddresses\",\r\n  \"sku\": {\r\n    \"name\": \"Basic\"\r\n  }\r\n}",
+      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/operations/4b3c26df-a372-4a18-8911-c1282433805f?api-version=2019-11-01"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/pip371568group/providers/Microsoft.Network/publicIPAddresses/pip371568?api-version=2019-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/pip100251group/providers/Microsoft.Network/publicIPAddresses/pip100251?api-version=2019-11-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.management/null (1.8.0_231; Windows 10 10.0)"
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.6; Windows 10 10.0)"
     },
     "Response" : {
-      "date" : "Fri, 13 Mar 2020 07:43:15 GMT",
+      "date" : "Tue, 30 Jun 2020 02:31:05 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
-      "content-length" : "895",
+      "content-length" : "894",
       "expires" : "-1",
       "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "11992",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11969",
       "StatusCode" : "200",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "2de5e984-1ef7-420a-8ab1-4e974518c2c8",
+      "x-ms-correlation-request-id" : "024f8477-ca44-4f39-9a1d-915435a1e988",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-arm-service-request-id" : "53e3d3a9-d208-4391-a2b5-6226213e3b25",
+      "x-ms-arm-service-request-id" : "a4047ae7-9098-4d74-a6db-62f8107b5c50",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "EASTASIA:20200313T074315Z:2de5e984-1ef7-420a-8ab1-4e974518c2c8",
-      "connection" : "keep-alive",
-      "etag" : "W/\"695e0aa0-6cd3-4b10-91d3-c0080a67d25f\"",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200630T023106Z:024f8477-ca44-4f39-9a1d-915435a1e988",
+      "etag" : "W/\"ebeb148c-f1d8-48c9-a219-bcc4138337ed\"",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "5cee7d46-8638-4197-b30b-79a01a8f0f76",
-      "Body" : "{\r\n  \"name\": \"pip371568\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/pip371568group/providers/Microsoft.Network/publicIPAddresses/pip371568\",\r\n  \"etag\": \"W/\\\"695e0aa0-6cd3-4b10-91d3-c0080a67d25f\\\"\",\r\n  \"location\": \"westus\",\r\n  \"tags\": {\r\n    \"tag1\": \"value1\",\r\n    \"tag2\": \"value2\"\r\n  },\r\n  \"properties\": {\r\n    \"provisioningState\": \"Succeeded\",\r\n    \"resourceGuid\": \"3acde0ea-3b38-4d6f-8d92-a5bf052729cd\",\r\n    \"ipAddress\": \"40.118.149.247\",\r\n    \"publicIPAddressVersion\": \"IPv4\",\r\n    \"publicIPAllocationMethod\": \"Static\",\r\n    \"idleTimeoutInMinutes\": 15,\r\n    \"dnsSettings\": {\r\n      \"domainNameLabel\": \"pip371568xx\",\r\n      \"fqdn\": \"pip371568xx.westus.cloudapp.azure.com\",\r\n      \"reverseFqdn\": \"pip371568xx.westus.cloudapp.azure.com\"\r\n    },\r\n    \"ipTags\": []\r\n  },\r\n  \"type\": \"Microsoft.Network/publicIPAddresses\",\r\n  \"sku\": {\r\n    \"name\": \"Basic\"\r\n  }\r\n}"
+      "x-ms-request-id" : "6b363db6-dbe7-4a6f-88aa-c6c1a1b231ab",
+      "Body" : "{\r\n  \"name\": \"pip100251\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/pip100251group/providers/Microsoft.Network/publicIPAddresses/pip100251\",\r\n  \"etag\": \"W/\\\"ebeb148c-f1d8-48c9-a219-bcc4138337ed\\\"\",\r\n  \"location\": \"westus\",\r\n  \"tags\": {\r\n    \"tag1\": \"value1\",\r\n    \"tag2\": \"value2\"\r\n  },\r\n  \"properties\": {\r\n    \"provisioningState\": \"Succeeded\",\r\n    \"resourceGuid\": \"6c664d31-1985-4ee5-b927-9bc5cb796ed5\",\r\n    \"ipAddress\": \"104.210.37.34\",\r\n    \"publicIPAddressVersion\": \"IPv4\",\r\n    \"publicIPAllocationMethod\": \"Static\",\r\n    \"idleTimeoutInMinutes\": 15,\r\n    \"dnsSettings\": {\r\n      \"domainNameLabel\": \"pip100251xx\",\r\n      \"fqdn\": \"pip100251xx.westus.cloudapp.azure.com\",\r\n      \"reverseFqdn\": \"pip100251xx.westus.cloudapp.azure.com\"\r\n    },\r\n    \"ipTags\": []\r\n  },\r\n  \"type\": \"Microsoft.Network/publicIPAddresses\",\r\n  \"sku\": {\r\n    \"name\": \"Basic\"\r\n  }\r\n}"
     }
   }, {
     "Method" : "PATCH",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/pip371568group/providers/Microsoft.Network/publicIPAddresses/pip371568?api-version=2019-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/pip100251group/providers/Microsoft.Network/publicIPAddresses/pip100251?api-version=2019-11-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.management/null (1.8.0_231; Windows 10 10.0)",
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.0.0-SNAPSHOT (11.0.6; Windows 10 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "date" : "Fri, 13 Mar 2020 07:43:49 GMT",
+      "date" : "Tue, 30 Jun 2020 02:31:08 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "azure-asyncnotification" : "Enabled",
-      "content-length" : "895",
+      "content-length" : "894",
       "expires" : "-1",
-      "x-ms-ratelimit-remaining-subscription-writes" : "1197",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1188",
       "retry-after" : "0",
       "StatusCode" : "200",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "45d5662e-43a3-4a12-8021-e7523b0024f7",
+      "x-ms-correlation-request-id" : "34e8ee71-750e-4878-80fb-b8d0675c951b",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-arm-service-request-id" : "9126d2cc-84e0-43c7-b6e0-6b4ecd57c36d",
+      "x-ms-arm-service-request-id" : "f28b8877-c835-4175-b07d-b0ab8f7e1312",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "JAPANEAST:20200313T074350Z:45d5662e-43a3-4a12-8021-e7523b0024f7",
-      "connection" : "keep-alive",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200630T023108Z:34e8ee71-750e-4878-80fb-b8d0675c951b",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "87f6b274-a2b1-40b6-ad24-e363771ebe8b",
-      "Body" : "{\r\n  \"name\": \"pip371568\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/pip371568group/providers/Microsoft.Network/publicIPAddresses/pip371568\",\r\n  \"etag\": \"W/\\\"27920b3e-604e-4822-9fad-072ca841ff8c\\\"\",\r\n  \"location\": \"westus\",\r\n  \"tags\": {\r\n    \"tag2\": \"value2\",\r\n    \"tag3\": \"value3\"\r\n  },\r\n  \"properties\": {\r\n    \"provisioningState\": \"Succeeded\",\r\n    \"resourceGuid\": \"3acde0ea-3b38-4d6f-8d92-a5bf052729cd\",\r\n    \"ipAddress\": \"40.118.149.247\",\r\n    \"publicIPAddressVersion\": \"IPv4\",\r\n    \"publicIPAllocationMethod\": \"Static\",\r\n    \"idleTimeoutInMinutes\": 15,\r\n    \"dnsSettings\": {\r\n      \"domainNameLabel\": \"pip371568xx\",\r\n      \"fqdn\": \"pip371568xx.westus.cloudapp.azure.com\",\r\n      \"reverseFqdn\": \"pip371568xx.westus.cloudapp.azure.com\"\r\n    },\r\n    \"ipTags\": []\r\n  },\r\n  \"type\": \"Microsoft.Network/publicIPAddresses\",\r\n  \"sku\": {\r\n    \"name\": \"Basic\"\r\n  }\r\n}"
+      "x-ms-request-id" : "c2cdbda1-f725-4c64-a0df-63e3d85a4145",
+      "Body" : "{\r\n  \"name\": \"pip100251\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/pip100251group/providers/Microsoft.Network/publicIPAddresses/pip100251\",\r\n  \"etag\": \"W/\\\"e1ab682c-d210-43d0-b26c-2267c6240e25\\\"\",\r\n  \"location\": \"westus\",\r\n  \"tags\": {\r\n    \"tag2\": \"value2\",\r\n    \"tag3\": \"value3\"\r\n  },\r\n  \"properties\": {\r\n    \"provisioningState\": \"Succeeded\",\r\n    \"resourceGuid\": \"6c664d31-1985-4ee5-b927-9bc5cb796ed5\",\r\n    \"ipAddress\": \"104.210.37.34\",\r\n    \"publicIPAddressVersion\": \"IPv4\",\r\n    \"publicIPAllocationMethod\": \"Static\",\r\n    \"idleTimeoutInMinutes\": 15,\r\n    \"dnsSettings\": {\r\n      \"domainNameLabel\": \"pip100251xx\",\r\n      \"fqdn\": \"pip100251xx.westus.cloudapp.azure.com\",\r\n      \"reverseFqdn\": \"pip100251xx.westus.cloudapp.azure.com\"\r\n    },\r\n    \"ipTags\": []\r\n  },\r\n  \"type\": \"Microsoft.Network/publicIPAddresses\",\r\n  \"sku\": {\r\n    \"name\": \"Basic\"\r\n  }\r\n}"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/pip371568group/providers/Microsoft.Network/publicIPAddresses/pip371568?api-version=2019-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/pip100251group/providers/Microsoft.Network/publicIPAddresses/pip100251?api-version=2019-11-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.management/null (1.8.0_231; Windows 10 10.0)"
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.0.0-SNAPSHOT (11.0.6; Windows 10 10.0)",
+      "Content-Type" : "application/json"
     },
     "Response" : {
-      "date" : "Fri, 13 Mar 2020 07:43:50 GMT",
+      "date" : "Tue, 30 Jun 2020 02:31:09 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "azure-asyncnotification" : "Enabled",
       "content-length" : "0",
@@ -360,174 +354,93 @@
       "retry-after" : "0",
       "StatusCode" : "202",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "d5d56cca-1704-4ec0-b5f3-9d2dc5f976f8",
+      "x-ms-correlation-request-id" : "82809855-d5b1-47c8-afff-992f99bd9e57",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-arm-service-request-id" : "abf50c63-a809-4a37-8b8a-f35d6b4f9907",
+      "x-ms-arm-service-request-id" : "1fe02c61-176b-47aa-a04d-c9a6caa27350",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "JAPANEAST:20200313T074351Z:d5d56cca-1704-4ec0-b5f3-9d2dc5f976f8",
-      "connection" : "keep-alive",
-      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/operationResults/feed8ea3-0b7c-4b0e-afa4-95f047022937?api-version=2019-06-01",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200630T023110Z:82809855-d5b1-47c8-afff-992f99bd9e57",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/operationResults/0f825a73-a8c0-4f7b-9275-92700c79ff0e?api-version=2019-11-01",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "feed8ea3-0b7c-4b0e-afa4-95f047022937",
+      "x-ms-request-id" : "0f825a73-a8c0-4f7b-9275-92700c79ff0e",
       "Body" : "",
-      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/operations/feed8ea3-0b7c-4b0e-afa4-95f047022937?api-version=2019-06-01"
+      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/operations/0f825a73-a8c0-4f7b-9275-92700c79ff0e?api-version=2019-11-01"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/operations/feed8ea3-0b7c-4b0e-afa4-95f047022937?api-version=2019-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/operations/0f825a73-a8c0-4f7b-9275-92700c79ff0e?api-version=2019-11-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.management/null (1.8.0_231; Windows 10 10.0)"
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.6; Windows 10 10.0)"
     },
     "Response" : {
-      "date" : "Fri, 13 Mar 2020 07:44:21 GMT",
-      "server" : "Microsoft-HTTPAPI/2.0",
-      "content-length" : "30",
-      "expires" : "-1",
-      "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "11993",
-      "StatusCode" : "200",
-      "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "50da278f-c9ca-4b6a-b096-aae377fc35c9",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-arm-service-request-id" : "d0e0dd0e-1cc5-469a-9ee3-e85866cf0f11",
-      "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "EASTASIA:20200313T074422Z:50da278f-c9ca-4b6a-b096-aae377fc35c9",
-      "connection" : "keep-alive",
-      "content-type" : "application/json; charset=utf-8",
-      "cache-control" : "no-cache",
-      "x-ms-request-id" : "2fc1ae22-80b5-48bb-becd-d7e36f66a3c6",
-      "Body" : "{\r\n  \"status\": \"InProgress\"\r\n}"
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/operations/feed8ea3-0b7c-4b0e-afa4-95f047022937?api-version=2019-06-01",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.management/null (1.8.0_231; Windows 10 10.0)"
-    },
-    "Response" : {
-      "date" : "Fri, 13 Mar 2020 07:44:53 GMT",
-      "server" : "Microsoft-HTTPAPI/2.0",
-      "content-length" : "30",
-      "expires" : "-1",
-      "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "11991",
-      "StatusCode" : "200",
-      "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "f21f6cdd-c9e9-4927-8dfe-062897c76b41",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-arm-service-request-id" : "2c76f248-08c5-4b6e-b0e7-6c6c762c5091",
-      "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "EASTASIA:20200313T074453Z:f21f6cdd-c9e9-4927-8dfe-062897c76b41",
-      "connection" : "keep-alive",
-      "content-type" : "application/json; charset=utf-8",
-      "cache-control" : "no-cache",
-      "x-ms-request-id" : "d072a53e-8758-4b4c-9c72-9ffd7d19d3f5",
-      "Body" : "{\r\n  \"status\": \"InProgress\"\r\n}"
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/operations/feed8ea3-0b7c-4b0e-afa4-95f047022937?api-version=2019-06-01",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.management/null (1.8.0_231; Windows 10 10.0)"
-    },
-    "Response" : {
-      "date" : "Fri, 13 Mar 2020 07:45:24 GMT",
-      "server" : "Microsoft-HTTPAPI/2.0",
-      "content-length" : "30",
-      "expires" : "-1",
-      "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "11991",
-      "StatusCode" : "200",
-      "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "7d83509b-6c76-49be-ab86-c877c3d33315",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-arm-service-request-id" : "0aa9bc5a-b1b2-43ee-9373-19f4e80128af",
-      "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "EASTASIA:20200313T074524Z:7d83509b-6c76-49be-ab86-c877c3d33315",
-      "connection" : "keep-alive",
-      "content-type" : "application/json; charset=utf-8",
-      "cache-control" : "no-cache",
-      "x-ms-request-id" : "55268476-f977-4244-9aec-87fb110b6ead",
-      "Body" : "{\r\n  \"status\": \"InProgress\"\r\n}"
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/operations/feed8ea3-0b7c-4b0e-afa4-95f047022937?api-version=2019-06-01",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.management/null (1.8.0_231; Windows 10 10.0)"
-    },
-    "Response" : {
-      "date" : "Fri, 13 Mar 2020 07:45:55 GMT",
+      "date" : "Tue, 30 Jun 2020 02:31:19 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "content-length" : "29",
       "expires" : "-1",
       "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "11987",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11964",
       "StatusCode" : "200",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "2e55d67f-4385-4db5-a6eb-0b891ac81a2c",
+      "x-ms-correlation-request-id" : "ccda6db7-dc63-41ac-b865-9ffe72b7abf2",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-arm-service-request-id" : "394c7584-bc93-44d3-b81a-51d2ebc32073",
+      "x-ms-arm-service-request-id" : "ae2d81f6-5c4b-4fd7-8f77-64b39159628f",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "EASTASIA:20200313T074556Z:2e55d67f-4385-4db5-a6eb-0b891ac81a2c",
-      "connection" : "keep-alive",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200630T023120Z:ccda6db7-dc63-41ac-b865-9ffe72b7abf2",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "de5b0ed6-7600-4c31-9f11-a8ccb0f27a9a",
+      "x-ms-request-id" : "8ec72134-8a02-4c59-8e74-2cb5686010bc",
       "Body" : "{\r\n  \"status\": \"Succeeded\"\r\n}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/operationResults/feed8ea3-0b7c-4b0e-afa4-95f047022937?api-version=2019-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/operationResults/0f825a73-a8c0-4f7b-9275-92700c79ff0e?api-version=2019-11-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.management/null (1.8.0_231; Windows 10 10.0)"
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.6; Windows 10 10.0)"
     },
     "Response" : {
-      "date" : "Fri, 13 Mar 2020 07:46:26 GMT",
+      "date" : "Tue, 30 Jun 2020 02:31:21 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "azure-asyncnotification" : "Enabled",
       "expires" : "-1",
       "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "11986",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11989",
       "StatusCode" : "204",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "d5d56cca-1704-4ec0-b5f3-9d2dc5f976f8",
+      "x-ms-correlation-request-id" : "82809855-d5b1-47c8-afff-992f99bd9e57",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-arm-service-request-id" : "abf50c63-a809-4a37-8b8a-f35d6b4f9907",
+      "x-ms-arm-service-request-id" : "1fe02c61-176b-47aa-a04d-c9a6caa27350",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "EASTASIA:20200313T074627Z:210aff99-3f4f-414b-ba30-11631cf51610",
-      "connection" : "keep-alive",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200630T023121Z:6b51b3d0-df49-4b93-acc5-f386e592c7e5",
       "content-type" : "application/json; charset=utf-8",
-      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/operationResults/feed8ea3-0b7c-4b0e-afa4-95f047022937?api-version=2019-06-01",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/operationResults/0f825a73-a8c0-4f7b-9275-92700c79ff0e?api-version=2019-11-01",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "feed8ea3-0b7c-4b0e-afa4-95f047022937",
+      "x-ms-request-id" : "0f825a73-a8c0-4f7b-9275-92700c79ff0e",
       "Body" : "",
-      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/operations/feed8ea3-0b7c-4b0e-afa4-95f047022937?api-version=2019-06-01"
+      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/operations/0f825a73-a8c0-4f7b-9275-92700c79ff0e?api-version=2019-11-01"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/pip371568group?api-version=2019-08-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/pip100251group?api-version=2019-08-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.management/null (1.8.0_231; Windows 10 10.0)"
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.0.0-SNAPSHOT (11.0.6; Windows 10 10.0)",
+      "Content-Type" : "application/json"
     },
     "Response" : {
-      "date" : "Fri, 13 Mar 2020 07:46:31 GMT",
+      "date" : "Tue, 30 Jun 2020 02:31:24 GMT",
       "content-length" : "0",
       "expires" : "-1",
-      "x-ms-ratelimit-remaining-subscription-deletes" : "14997",
+      "x-ms-ratelimit-remaining-subscription-deletes" : "14999",
       "retry-after" : "0",
       "StatusCode" : "202",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "5d94ead3-eef2-4caa-b004-51d2ffbf6ade",
+      "x-ms-correlation-request-id" : "62fae46b-3164-407d-b4f6-16b4c62adc66",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "EASTASIA:20200313T074631Z:5d94ead3-eef2-4caa-b004-51d2ffbf6ade",
-      "connection" : "keep-alive",
-      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1QSVAzNzE1NjhHUk9VUC1XRVNUVVMiLCJqb2JMb2NhdGlvbiI6Indlc3R1cyJ9?api-version=2019-08-01",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200630T023124Z:62fae46b-3164-407d-b4f6-16b4c62adc66",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1QSVAxMDAyNTFHUk9VUC1XRVNUVVMiLCJqb2JMb2NhdGlvbiI6Indlc3R1cyJ9?api-version=2019-08-01",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "5d94ead3-eef2-4caa-b004-51d2ffbf6ade",
+      "x-ms-request-id" : "62fae46b-3164-407d-b4f6-16b4c62adc66",
       "Body" : ""
     }
   } ],
-  "variables" : [ "pip371568" ]
+  "variables" : [ "pip100251" ]
 }

@@ -8,7 +8,7 @@ import com.azure.core.annotation.Immutable;
  * The {@link DetectLanguageResult} model.
  */
 @Immutable
-public final class DetectLanguageResult extends DocumentResult {
+public final class DetectLanguageResult extends TextAnalyticsResult {
     private final DetectedLanguage primaryLanguage;
 
     /**
@@ -20,7 +20,7 @@ public final class DetectLanguageResult extends DocumentResult {
      * @param primaryLanguage The detected primary language.
      */
     public DetectLanguageResult(String id, TextDocumentStatistics textDocumentStatistics,
-        TextAnalyticsError error, DetectedLanguage primaryLanguage) {
+                                TextAnalyticsError error, DetectedLanguage primaryLanguage) {
         super(id, textDocumentStatistics, error);
         this.primaryLanguage = primaryLanguage;
     }

@@ -3,11 +3,9 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.PollerFlux;
 import reactor.core.publisher.Mono;
 
@@ -16,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffer;
@@ -44,37 +43,37 @@ public class RecognizeCustomFormsAsync {
         File sourceFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/java/sample-forms/"
             + "forms/Invoice_6.pdf");
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
-        InputStream targetStream = new ByteArrayInputStream(fileContent);
         String modelId = "{modelId}";
+        PollerFlux<OperationResult, List<RecognizedForm>> recognizeFormPoller;
+        try (InputStream targetStream = new ByteArrayInputStream(fileContent)) {
+            recognizeFormPoller = client.beginRecognizeCustomForms(toFluxByteBuffer(targetStream), sourceFile.length(),
+                modelId);
+        }
 
-        PollerFlux<OperationResult, IterableStream<RecognizedForm>> recognizeFormPoller =
-            client.beginRecognizeCustomForms(toFluxByteBuffer(targetStream), modelId,
-                sourceFile.length(),
-                FormContentType.APPLICATION_PDF);
-
-        Mono<IterableStream<RecognizedForm>> recognizeFormResult = recognizeFormPoller
+        Mono<List<RecognizedForm>> recognizeFormResult = recognizeFormPoller
             .last()
-            .flatMap(recognizeFormPollOperation -> {
-                if (recognizeFormPollOperation.getStatus().isComplete()) {
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
                     // training completed successfully, retrieving final result.
-                    return recognizeFormPollOperation.getFinalResult();
+                    return pollResponse.getFinalResult();
                 } else {
                     return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"
-                        + recognizeFormPollOperation.getStatus()));
+                        + pollResponse.getStatus()));
                 }
             });
 
-        recognizeFormResult.subscribe(recognizedForms ->
-            recognizedForms.forEach(form -> {
-                System.out.println("----------- Recognized Form -----------");
+        recognizeFormResult.subscribe(recognizedForms -> {
+            for (int i = 0; i < recognizedForms.size(); i++) {
+                final RecognizedForm form = recognizedForms.get(i);
+                System.out.printf("----------- Recognized custom form info for page %d -----------%n", i);
                 System.out.printf("Form type: %s%n", form.getFormType());
                 form.getFields().forEach((label, formField) -> {
-                    System.out.printf("Field %s has value %s with confidence score of %.2f.%n", label,
-                        formField.getFieldValue(),
+                    System.out.printf("Field '%s' has label '%s' with confidence score of %.2f.%n", label,
+                        formField.getLabelData().getText(),
                         formField.getConfidence());
                 });
-                System.out.print("-----------------------------------");
-            }));
+            }
+        });
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
         // the thread so the program does not end before the send operation is complete. Using .block() instead of

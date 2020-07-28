@@ -1,7 +1,17 @@
 # Release History
 
-## 12.6.0-beta.1 (Unreleased)
+## 12.6.0-beta.2 (Unreleased)
+- Added support to set tier on a snapshot or version.
+- Added support to specify tags conditions and rehydrate priority on batch set tier. 
 
+## 12.6.0-beta.1 (2020-07-07)
+- Updated azure-storage-common and azure-storage-blob dependencies to add support for the 2019-12-12 service version. 
+
+## 12.5.2 (2020-06-12)
+- Updated azure-storage-common and azure-core dependencies.
+
+## 12.5.1 (2020-05-06)
+- Updated `azure-core` version to `1.5.0` to pickup fixes for percent encoding `UTF-8` and invalid leading bytes in a body string.
 
 ## 12.5.0 (2020-04-06)
 - Fixed a bug where the Date header wouldn't be updated with a new value on request retry.

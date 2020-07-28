@@ -4,7 +4,8 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 
-import com.azure.cosmos.ConnectionPolicy;
+import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
@@ -67,7 +68,7 @@ public class GlobalAddressResolverTest {
         urlforWrite2 = new URI("http://testWrite2.com/");
         urlforWrite3 = new URI("http://testWrite3.com/");
 
-        connectionPolicy = new ConnectionPolicy();
+        connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
         connectionPolicy.setReadRequestsFallbackEnabled(true);
         httpClient = Mockito.mock(HttpClient.class);
         endpointManager = Mockito.mock(GlobalEndpointManager.class);

@@ -11,11 +11,11 @@ package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Response when adding a labeled example.
+ * Response when adding a labeled example utterance.
  */
 public class LabelExampleResponse {
     /**
-     * The sample's utterance.
+     * The example utterance.
      */
     @JsonProperty(value = "UtteranceText")
     private String utteranceText;

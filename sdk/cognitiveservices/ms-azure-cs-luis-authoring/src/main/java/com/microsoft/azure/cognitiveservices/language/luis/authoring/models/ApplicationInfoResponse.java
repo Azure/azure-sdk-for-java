@@ -34,19 +34,20 @@ public class ApplicationInfoResponse {
     private String description;
 
     /**
-     * The culture of the application. E.g.: en-us.
+     * The culture of the application. For example, "en-us".
      */
     @JsonProperty(value = "culture")
     private String culture;
 
     /**
-     * Defines the scenario for the new application. Optional. E.g.: IoT.
+     * Defines the scenario for the new application. Optional. For example,
+     * IoT.
      */
     @JsonProperty(value = "usageScenario")
     private String usageScenario;
 
     /**
-     * The domain for the new application. Optional. E.g.: Comics.
+     * The domain for the new application. Optional. For example, Comics.
      */
     @JsonProperty(value = "domain")
     private String domain;

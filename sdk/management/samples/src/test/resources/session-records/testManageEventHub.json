@@ -259,7 +259,7 @@
       "content-type" : "application/json",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "c174ab01-deb2-400b-8d08-d92c2f7b1958",
-      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"X7bKAqUyURchgqHfNnLXS2UgBni3dyVuQbpdCeUIUQo6DBFcb+MoCniuBREEfZLuyWdMncf0YqgAc4Qz3i7WhA==\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"0eKZc/pDqH3882FEQoTYKR6KPPJ6Ssh/5shCzs3p0w/w8UBAfbqGZ4yA3Ede0Mi1WJjVrhby8im5PkUCck1GBw==\",\"permissions\":\"FULL\"}]}"
+      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"}]}"
     }
   }, {
     "Method" : "PUT",

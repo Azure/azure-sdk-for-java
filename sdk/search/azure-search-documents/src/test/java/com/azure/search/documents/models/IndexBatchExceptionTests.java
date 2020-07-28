@@ -4,6 +4,7 @@
 package com.azure.search.documents.models;
 
 import com.azure.search.documents.SearchDocument;
+import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -163,9 +164,10 @@ public class IndexBatchExceptionTests {
     public Object getValueFromDocHelper(IndexAction<SearchDocument> action) {
         if (action.getDocument() != null) {
             return action.getDocument().get(KEY_FIELD_NAME);
-        } else if (action.getParamMap() != null) {
-            return action.getParamMap().get(KEY_FIELD_NAME);
         }
+//        else if (action.getParamMap() != null) {
+//            return action.getParamMap().get(KEY_FIELD_NAME);
+//        }
         return null;
     }
 

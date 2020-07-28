@@ -20,6 +20,12 @@ class SynchronousReceiveWork {
     private final Duration timeout;
     private final FluxSink<ServiceBusReceivedMessageContext> emitter;
 
+    // Indicate state that timeout has occurred for this work.
+    private boolean workTimedOut = false;
+
+    // Indicate that if processing started or not.
+    private boolean processingStarted;
+
     private volatile Throwable error = null;
 
     /**
@@ -67,13 +73,20 @@ class SynchronousReceiveWork {
     }
 
     /**
+     * @return remaining events to receive.
+     */
+    int getRemaining() {
+        return remaining.get();
+    }
+
+    /**
      * Gets whether or not the work item has reached a terminal state.
      *
      * @return {@code true} if all the events have been fetched, it has been cancelled, or an error occurred. {@code
      *     false} otherwise.
      */
     boolean isTerminal() {
-        return emitter.isCancelled() || remaining.get() == 0 || error != null;
+        return emitter.isCancelled() || remaining.get() == 0 || error != null || workTimedOut;
     }
 
     /**
@@ -100,6 +113,15 @@ class SynchronousReceiveWork {
     }
 
     /**
+     * Completes the publisher and sets the state to timeout.
+     */
+    void timeout() {
+        logger.info("[{}]: Work timeout occurred. Completing the work.", id);
+        emitter.complete();
+        workTimedOut = true;
+    }
+
+    /**
      * Publishes an error downstream. This is a terminal step.
      *
      * @param error Error to publish downstream.
@@ -107,5 +129,28 @@ class SynchronousReceiveWork {
     void error(Throwable error) {
         this.error = error;
         emitter.error(error);
+    }
+
+    /**
+     * Returns the error object.
+     * @return the error.
+     */
+    Throwable getError() {
+        return this.error;
+    }
+
+    /**
+     * Indiate that processing is started for this work.
+     */
+    void startedProcessing() {
+        this.processingStarted = true;
+    }
+
+    /**
+     *
+     * @return flag indicting that processing is started or not.
+     */
+    boolean isProcessingStarted() {
+        return this.processingStarted;
     }
 }

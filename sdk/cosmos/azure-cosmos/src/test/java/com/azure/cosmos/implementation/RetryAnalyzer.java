@@ -4,7 +4,7 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.ITestResult;
@@ -36,13 +36,13 @@ public class RetryAnalyzer extends RetryAnalyzerCount {
 
     private int getTimeToWaitInSeconds(ITestResult result) {
         Throwable throwable = result.getThrowable();
-        CosmosClientException cosmosClientException = extractCosmosClientExceptionIfAny(throwable);
+        CosmosException cosmosException = extractCosmosExceptionIfAny(throwable);
 
-        if (cosmosClientException == null) {
+        if (cosmosException == null) {
             return  waitBetweenRetriesInSeconds;
         }
 
-        Duration retryAfterDuration = cosmosClientException.getRetryAfterDuration();
+        Duration retryAfterDuration = cosmosException.getRetryAfterDuration();
         if (retryAfterDuration.toMillis() <= 0) {
             return waitBetweenRetriesInSeconds;
         }
@@ -50,15 +50,15 @@ public class RetryAnalyzer extends RetryAnalyzerCount {
         return Math.max(Math.toIntExact(retryAfterDuration.getSeconds()), waitBetweenRetriesInSeconds);
     }
 
-    private CosmosClientException extractCosmosClientExceptionIfAny(Throwable t) {
+    private CosmosException extractCosmosExceptionIfAny(Throwable t) {
         if (t == null) {
             return null;
         }
 
-        while( t != null && !(t instanceof CosmosClientException)) {
+        while( t != null && !(t instanceof CosmosException)) {
             t = t.getCause();
         }
 
-        return (CosmosClientException) t;
+        return (CosmosException) t;
     }
 }

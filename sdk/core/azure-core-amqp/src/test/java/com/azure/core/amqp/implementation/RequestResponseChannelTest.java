@@ -8,7 +8,9 @@ import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
+import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.UnsignedLong;
+import org.apache.qpid.proton.amqp.transaction.TransactionalState;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.engine.Delivery;
@@ -44,7 +46,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -225,6 +229,68 @@ class RequestResponseChannelTest {
             .expectError(IllegalArgumentException.class)
             .verify();
     }
+    /**
+     * Verifies a message is received.
+     */
+    @Test
+    void sendMessageWithTransaction() throws IOException {
+        // Arrange
+        // This message was copied from one that was received.
+        TransactionalState transactionalState = new TransactionalState();
+        transactionalState.setTxnId(new Binary("1".getBytes()));
+
+        final byte[] messageBytes = new byte[]{0, 83, 115, -64, 15, 13, 64, 64, 64, 64, 64, 83, 1, 64, 64, 64, 64, 64,
+            64, 64, 0, 83, 116, -63, 49, 4, -95, 11, 115, 116, 97, 116, 117, 115, 45, 99, 111, 100, 101, 113, 0, 0, 0,
+            -54, -95, 18, 115, 116, 97, 116, 117, 115, 45, 100, 101, 115, 99, 114, 105, 112, 116, 105, 111, 110, -95, 8,
+            65, 99, 99, 101, 112, 116, 101, 100};
+        final RequestResponseChannel channel = new RequestResponseChannel(CONNECTION_ID, NAMESPACE, LINK_NAME,
+            ENTITY_PATH, session, retryOptions, handlerProvider, reactorProvider, serializer, SenderSettleMode.SETTLED,
+            ReceiverSettleMode.SECOND);
+        final UnsignedLong messageId = UnsignedLong.valueOf(1);
+        final Message message = mock(Message.class);
+        final int encodedSize = 143;
+        when(serializer.getSize(message)).thenReturn(150);
+        when(message.encode(any(), eq(0), anyInt())).thenReturn(encodedSize);
+
+        // Creating delivery for sending.
+        final Delivery deliveryToSend = mock(Delivery.class);
+        doNothing().when(deliveryToSend).setMessageFormat(anyInt());
+        doNothing().when(deliveryToSend).disposition(any(TransactionalState.class));
+        when(sender.delivery(any(byte[].class))).thenReturn(deliveryToSend);
+
+        // Creating a received message because we decodeDelivery calls implementation details for proton-j.
+        final Delivery delivery = mock(Delivery.class);
+        when(delivery.pending()).thenReturn(messageBytes.length);
+        when(receiver.recv(any(), eq(0), eq(messageBytes.length))).thenAnswer(invocation -> {
+            final byte[] buffer = invocation.getArgument(0);
+            System.arraycopy(messageBytes, 0, buffer, 0, messageBytes.length);
+            return messageBytes.length;
+        });
+
+        // Act
+        StepVerifier.create(channel.sendWithAck(message, transactionalState))
+            .then(() -> deliverySink.next(delivery))
+            .assertNext(received -> assertEquals(messageId, received.getCorrelationId()))
+            .verifyComplete();
+
+        // Getting the runnable so we can manually invoke it and verify contents are correct.
+        verify(reactorDispatcher, atLeastOnce()).invoke(dispatcherCaptor.capture());
+        dispatcherCaptor.getAllValues().forEach(work -> {
+            assertNotNull(work);
+            work.run();
+        });
+
+        // Assert
+        verify(message).setMessageId(argThat(e -> e instanceof UnsignedLong && messageId.equals(e)));
+        verify(message).setReplyTo(argThat(path -> path != null && path.startsWith(ENTITY_PATH)));
+
+        verify(deliveryToSend).disposition(same(transactionalState));
+
+        verify(receiver).flow(1);
+        verify(sender).delivery(any());
+        verify(sender).send(any(), eq(0), eq(encodedSize));
+        verify(sender).advance();
+    }
 
     /**
      * Verifies a message is received.
@@ -245,6 +311,11 @@ class RequestResponseChannelTest {
         final int encodedSize = 143;
         when(serializer.getSize(message)).thenReturn(150);
         when(message.encode(any(), eq(0), anyInt())).thenReturn(encodedSize);
+
+        // Creating delivery for sending.
+        final Delivery deliveryToSend = mock(Delivery.class);
+        doNothing().when(deliveryToSend).setMessageFormat(anyInt());
+        when(sender.delivery(any(byte[].class))).thenReturn(deliveryToSend);
 
         // Creating a received message because we decodeDelivery calls implementation details for proton-j.
         final Delivery delivery = mock(Delivery.class);
@@ -297,4 +368,5 @@ class RequestResponseChannelTest {
         // Assert
         assertTrue(channel.isDisposed());
     }
+
 }

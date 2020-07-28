@@ -1,3 +1,4 @@
+
 # Azure SDK for Java
 
 [![Packages](https://img.shields.io/badge/packages-latest-blue.svg)](https://azure.github.io/azure-sdk/releases/latest/java.html) [![Dependencies](https://img.shields.io/badge/dependency-report-blue.svg)](https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/staging/dependencies.html) [![DepGraph](https://img.shields.io/badge/dependency-graph-blue.svg)](https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/staging/InterdependencyGraph.html) [![Build Documentation](https://img.shields.io/badge/documentation-published-blue.svg)](https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/index.html) [![SpotBugs](https://img.shields.io/badge/SpotBugs-Clean-success.svg)](https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/staging/spotbugsXml.html) [![CheckStyle](https://img.shields.io/badge/CheckStyle-Clean-success.svg)](https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/staging/checkstyle-aggregate.html)
@@ -20,7 +21,8 @@ Each service might have a number of libraries available from each of the followi
 
 - [Client: New Releases](#Client-New-Releases)
 - [Client: Previous Versions](#Client-Previous-Versions)
-- [Management](#Management)
+- [Management: New Releases](#Management-New-Releases)
+- [Management: Previous Versions](#Management-Previous-Versions)
 
 ### Client: New Releases
 
@@ -35,9 +37,16 @@ You can find the **[most up to date list of all of the new packages on our page]
 
 Last stable versions of packages that have been provided for usage with Azure and are production-ready. These libraries provide similar functionalities to the new libraries, as they allow you to use and consume existing resources and interact with them, for example: upload a blob. Previous library directories start with `microsoft-azure-`, e.g. `microsoft-azure-keyvault`. They might not implement the [guidelines](https://azure.github.io/azure-sdk/java_introduction.html) or have the same feature set as the new releases. They do however offer wider coverage of services.
 
-### Management
+### Management: New Releases
+A new set of management libraries that follow the [Azure SDK Design Guidelines for Java](https://azure.github.io/azure-sdk/java/guidelines/) are now in Public Preview. These new libraries provide a higher-level, object-oriented API for _managing_ Azure resources, that is optimized for ease of use, succinctness and consistency.
+You can find the list of new packages [on this page](https://azure.github.io/azure-sdk/releases/latest/java.html) . Documentation and code samples for these new libraries can be found [here](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/management)
 
-Libraries which enable you to provision specific resources. They are responsible for directly mirroring and consuming Azure service's REST endpoints. Management library directories contain `-mgmt-`, e.g. `azure-mgmt-keyvault`.
+> NOTE: If you need to ensure your code is ready for production use one of the stable, non-preview libraries.
+
+### Management: Previous Versions
+For a complete list of management libraries which enable you to provision and manage Azure resources, please check [here](https://azure.github.io/azure-sdk/releases/latest/all/java.html). They might not have the same feature set as the new releases but they do offer wider coverage of services.
+Management libraries can be identified by namespaces that start with `azure-mgmt-`, e.g. `azure-mgmt-compute`
+
 
 ## Need help?
 

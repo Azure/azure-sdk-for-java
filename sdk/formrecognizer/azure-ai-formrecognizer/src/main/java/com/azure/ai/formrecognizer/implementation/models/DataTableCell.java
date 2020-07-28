@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The DataTableCell model.
- */
+/** The DataTableCell model. */
 @Fluent
 public final class DataTableCell {
     /*
@@ -76,7 +74,7 @@ public final class DataTableCell {
 
     /**
      * Get the rowIndex property: Row index of the cell.
-     * 
+     *
      * @return the rowIndex value.
      */
     public int getRowIndex() {
@@ -85,7 +83,7 @@ public final class DataTableCell {
 
     /**
      * Set the rowIndex property: Row index of the cell.
-     * 
+     *
      * @param rowIndex the rowIndex value to set.
      * @return the DataTableCell object itself.
      */
@@ -96,7 +94,7 @@ public final class DataTableCell {
 
     /**
      * Get the columnIndex property: Column index of the cell.
-     * 
+     *
      * @return the columnIndex value.
      */
     public int getColumnIndex() {
@@ -105,7 +103,7 @@ public final class DataTableCell {
 
     /**
      * Set the columnIndex property: Column index of the cell.
-     * 
+     *
      * @param columnIndex the columnIndex value to set.
      * @return the DataTableCell object itself.
      */
@@ -116,7 +114,7 @@ public final class DataTableCell {
 
     /**
      * Get the rowSpan property: Number of rows spanned by this cell.
-     * 
+     *
      * @return the rowSpan value.
      */
     public Integer getRowSpan() {
@@ -125,7 +123,7 @@ public final class DataTableCell {
 
     /**
      * Set the rowSpan property: Number of rows spanned by this cell.
-     * 
+     *
      * @param rowSpan the rowSpan value to set.
      * @return the DataTableCell object itself.
      */
@@ -136,7 +134,7 @@ public final class DataTableCell {
 
     /**
      * Get the columnSpan property: Number of columns spanned by this cell.
-     * 
+     *
      * @return the columnSpan value.
      */
     public Integer getColumnSpan() {
@@ -145,7 +143,7 @@ public final class DataTableCell {
 
     /**
      * Set the columnSpan property: Number of columns spanned by this cell.
-     * 
+     *
      * @param columnSpan the columnSpan value to set.
      * @return the DataTableCell object itself.
      */
@@ -156,7 +154,7 @@ public final class DataTableCell {
 
     /**
      * Get the text property: Text content of the cell.
-     * 
+     *
      * @return the text value.
      */
     public String getText() {
@@ -165,7 +163,7 @@ public final class DataTableCell {
 
     /**
      * Set the text property: Text content of the cell.
-     * 
+     *
      * @param text the text value to set.
      * @return the DataTableCell object itself.
      */
@@ -176,7 +174,7 @@ public final class DataTableCell {
 
     /**
      * Get the boundingBox property: Bounding box of the cell.
-     * 
+     *
      * @return the boundingBox value.
      */
     public List<Float> getBoundingBox() {
@@ -185,7 +183,7 @@ public final class DataTableCell {
 
     /**
      * Set the boundingBox property: Bounding box of the cell.
-     * 
+     *
      * @param boundingBox the boundingBox value to set.
      * @return the DataTableCell object itself.
      */
@@ -196,7 +194,7 @@ public final class DataTableCell {
 
     /**
      * Get the confidence property: Confidence value.
-     * 
+     *
      * @return the confidence value.
      */
     public float getConfidence() {
@@ -205,7 +203,7 @@ public final class DataTableCell {
 
     /**
      * Set the confidence property: Confidence value.
-     * 
+     *
      * @param confidence the confidence value to set.
      * @return the DataTableCell object itself.
      */
@@ -215,9 +213,9 @@ public final class DataTableCell {
     }
 
     /**
-     * Get the elements property: When includeTextDetails is set to true, a
-     * list of references to the text elements constituting this table cell.
-     * 
+     * Get the elements property: When includeTextDetails is set to true, a list of references to the text elements
+     * constituting this table cell.
+     *
      * @return the elements value.
      */
     public List<String> getElements() {
@@ -225,9 +223,9 @@ public final class DataTableCell {
     }
 
     /**
-     * Set the elements property: When includeTextDetails is set to true, a
-     * list of references to the text elements constituting this table cell.
-     * 
+     * Set the elements property: When includeTextDetails is set to true, a list of references to the text elements
+     * constituting this table cell.
+     *
      * @param elements the elements value to set.
      * @return the DataTableCell object itself.
      */
@@ -238,7 +236,7 @@ public final class DataTableCell {
 
     /**
      * Get the isHeader property: Is the current cell a header cell?.
-     * 
+     *
      * @return the isHeader value.
      */
     public Boolean isHeader() {
@@ -247,7 +245,7 @@ public final class DataTableCell {
 
     /**
      * Set the isHeader property: Is the current cell a header cell?.
-     * 
+     *
      * @param isHeader the isHeader value to set.
      * @return the DataTableCell object itself.
      */
@@ -258,7 +256,7 @@ public final class DataTableCell {
 
     /**
      * Get the isFooter property: Is the current cell a footer cell?.
-     * 
+     *
      * @return the isFooter value.
      */
     public Boolean isFooter() {
@@ -267,7 +265,7 @@ public final class DataTableCell {
 
     /**
      * Set the isFooter property: Is the current cell a footer cell?.
-     * 
+     *
      * @param isFooter the isFooter value to set.
      * @return the DataTableCell object itself.
      */

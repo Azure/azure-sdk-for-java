@@ -1,13 +1,84 @@
 # Release History
 
-## 1.0.0-beta.2 (2020-05-06)
-- Fixed Receipt type bug to select the valueString field via fieldValue.
+## 1.0.0-beta.5 (Unreleased)
+- Added support for context passing.
+- Renamed accessors for property `includeFieldElements` to `isFieldElementsIncluded` and `setFieldElementsIncluded`
+- Moved training client models under `com.azure.ai.formrecognizer.training.models` namespace
+
+### Key Bug Fixes
+- Fixed `getFields()` to preserve service side ordering of fields.
+
+## 1.0.0-beta.4 (2020-07-07)
+### Breaking Changes
+- `beginRecognizeReceipt` APIs now return a `RecognizedForm` model instead of a `RecognizedReceipt`. See
+[this](https://github.com/Azure/azure-sdk-for-java/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/StronglyTypedRecognizedFormUSReceipt.java)
+suggested approach for extracting information from receipts.
+- Methods returning `textContent` have been renamed to `fieldElements` on `FieldData` and `FormTableCell`
+- Renamed `FormContent` to `FormElement`
+- Renamed `FieldText` to `FieldData`
+- Renamed properties `requestedOn` to `trainingStartedOn` and `completedOn` to `trainingCompletedOn` on model
+- Throw `HttpResponseException` instead of `ErrorResponseException` to model service side exceptions
+`CustomFormModel` and `CustomFormModelInfo`.
+- Changed `CopyAuthorization.getExpiresOn()` to return a `OffsetDateTime` instead of a `long` value
+- Added `RecognizeOptions` to pass configurable options when using recognize APIs on FormRecognizerClient.
+- Changed `submodels` property on `CustomFormModel` to return a `List` instead of `IterableStream`
+- Renamed `fieldMap` property to `fields` on `CustomFormSubmodel` model
+- Renamed `elements` property on model `FormTableCell` to `textContent`
+- Renamed `includeTextDetails` references in parameter and model properties to `includeFieldElements`
+- Removed `TextContentType` model and use `instanceOf` to detect the FormContent type
+
+### Key Bug Fixes
+- Fixed `textAngle` to be returned between `(-180, 180]`.
+
+## 1.0.0-beta.3 (2020-06-10)
+### New Features
+- Support to copy a custom model from one Form Recognizer resource to another
+- Added support for AAD Authentication.
+- Raise `FormRecognizerException` when a model with `ModelStatus.Invalid` is returned from the `beginTraining()` API's
+- Raise `FormRecognizerException` when an invalid analyze status is returned from the service for recognize API's
+- Add `pageNumber` property to `FormPage` and `FormTable` model
+- Add `getFormRecognizerClient()` and `getFormRecognizerAsyncClient()` in FormTrainingClient and FormTrainingAsyncClient
+- Add `FormTrainingClientBuilder` to build `FormTrainingAsyncClient` and `FormTrainingClient`
+
+### Breaking Changes
+- Update FormRecognizer API calls to return a `List` instead of `IterableStream`.
+- Adopt the `training` namespace for Form Recognizer Training Clients
+- Rename enum type `DimensionUnit` to `LengthUnit` on `FormPage`
+- `USReceipt`, `USReceiptItem`, `USReceiptType` and `FormField{T}` types removed. Information about a `RecognizedReceipt`
+must now be extracted from its `RecognizedForm`.
+- Rename parameters data and sourceUrl parameters found on methods for FormRecognizerClient to form and formUrl, respectively.
+- Rename parameters for receipt API methods to receipt and receiptUrl.
+- Update FormField property `transactionTime` on `USReceipt` to return `LocalTime` instead of `String`
+- Rename model `PageRange` to `FormPageRange`
+- Rename property `startPageNumber` to `firstPageNumber` and `endPageNumber` to `lastPageNumber` in model `PageRange`
+- Rename `getCustomModelInfos` to `listCustomModels`
+- Rename property `lastUpdatedOn` to `completedOn` and `createdOn` to `requestedOn` in `CustomFormModel` and
+`CustomFormModelInfo` model
+- Rename model `CustomFormSubModel` to `CustomFormSubmodel`
+- Rename `subModels` property on CustomFormModel to `submodels`
+- Remove `pageNumber` property from `FormField` model
+- Rename parameter `fileSourceUrl` to `trainingFilesUrl` on `beginTraining` method in FormTrainingClients
+- Rename parameter `useLabelFile` to `useTrainingLabels` on `beginTraining` method in FormTrainingClients
+- Replace parameters `filePrefix` and `includeSubFolders` with `TrainingFileFilter` model
+- Rename AccountProperties `count` and `limit` to `customModelCount` and `customModelLimit`
 - Rename `apiKey()` to `credential()` on FormRecognizerClientBuilder.
 
-This package's 
-[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-ai-formrecognizer_1.0.0-beta.2/sdk/formrecognizer/azure-ai-formrecognizer/README.md) 
-and 
-[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-ai-formrecognizer_1.0.0-beta.2/sdk/formrecognizer/azure-ai-formrecognizer/src/samples) 
+### Key Bug Fixes
+- Fix bug in FormRecognizer API's to support multipage document recognition.
+- Fix Receipt type to select the valueString field via fieldValue.
+
+This package's
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-ai-formrecognizer_1.0.0-beta.3/sdk/formrecognizer/azure-ai-formrecognizer/README.md)
+and
+[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-ai-formrecognizer_1.0.0-beta.3/sdk/formrecognizer/azure-ai-formrecognizer/src/samples)
+demonstrate the new API.
+
+## 1.0.0-beta.2 (2020-05-06)
+
+This package's
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-ai-formrecognizer_1.0.0-beta.2/sdk/formrecognizer/azure-ai-formrecognizer/README.md)
+and
+[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-ai-formrecognizer_1.0.0-beta.2/sdk/formrecognizer/azure-ai-formrecognizer/src/samples)
 demonstrate the new API.
 
 ## 1.0.0-beta.1 (2020-04-23)
@@ -29,8 +100,8 @@ https://azure.github.io/azure-sdk/releases/latest/java.html.
 - All service errors use the base type: `com.azure.ai.formrecognizer.models.ErrorResponseException`
 - Reactive streams support using [Project Reactor](https://projectreactor.io/).
 
-This package's 
-[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-ai-formrecognizer_1.0.0-beta.1/sdk/formrecognizer/azure-ai-formrecognizer/README.md) 
-and 
-[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-ai-formrecognizer_1.0.0-beta.1/sdk/formrecognizer/azure-ai-formrecognizer/src/samples) 
+This package's
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-ai-formrecognizer_1.0.0-beta.1/sdk/formrecognizer/azure-ai-formrecognizer/README.md)
+and
+[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-ai-formrecognizer_1.0.0-beta.1/sdk/formrecognizer/azure-ai-formrecognizer/src/samples)
 demonstrate the new API.

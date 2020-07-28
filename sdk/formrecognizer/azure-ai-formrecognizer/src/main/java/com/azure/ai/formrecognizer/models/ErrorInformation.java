@@ -7,11 +7,13 @@ package com.azure.ai.formrecognizer.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ErrorInformation model.
- */
+import java.io.Serializable;
+
+/** The ErrorInformation model. */
 @Fluent
-public final class ErrorInformation {
+public final class ErrorInformation implements Serializable {
+    private static final long serialVersionUID = -5217525992938366429L;
+
     /*
      * The code property.
      */
@@ -26,7 +28,7 @@ public final class ErrorInformation {
 
     /**
      * Get the code property: The code property.
-     * 
+     *
      * @return the code value.
      */
     public String getCode() {
@@ -35,7 +37,7 @@ public final class ErrorInformation {
 
     /**
      * Set the code property: The code property.
-     * 
+     *
      * @param code the code value to set.
      * @return the ErrorInformation object itself.
      */
@@ -46,7 +48,7 @@ public final class ErrorInformation {
 
     /**
      * Get the message property: The message property.
-     * 
+     *
      * @return the message value.
      */
     public String getMessage() {
@@ -55,7 +57,7 @@ public final class ErrorInformation {
 
     /**
      * Set the message property: The message property.
-     * 
+     *
      * @param message the message value to set.
      * @return the ErrorInformation object itself.
      */

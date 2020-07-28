@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ReadResult model.
- */
+/** The ReadResult model. */
 @Fluent
 public final class ReadResult {
     /*
@@ -65,7 +63,7 @@ public final class ReadResult {
 
     /**
      * Get the page property: The 1-based page number in the input document.
-     * 
+     *
      * @return the page value.
      */
     public int getPage() {
@@ -74,7 +72,7 @@ public final class ReadResult {
 
     /**
      * Set the page property: The 1-based page number in the input document.
-     * 
+     *
      * @param page the page value to set.
      * @return the ReadResult object itself.
      */
@@ -84,9 +82,9 @@ public final class ReadResult {
     }
 
     /**
-     * Get the angle property: The general orientation of the text in clockwise
-     * direction, measured in degrees between (-180, 180].
-     * 
+     * Get the angle property: The general orientation of the text in clockwise direction, measured in degrees between
+     * (-180, 180].
+     *
      * @return the angle value.
      */
     public float getAngle() {
@@ -94,9 +92,9 @@ public final class ReadResult {
     }
 
     /**
-     * Set the angle property: The general orientation of the text in clockwise
-     * direction, measured in degrees between (-180, 180].
-     * 
+     * Set the angle property: The general orientation of the text in clockwise direction, measured in degrees between
+     * (-180, 180].
+     *
      * @param angle the angle value to set.
      * @return the ReadResult object itself.
      */
@@ -106,9 +104,8 @@ public final class ReadResult {
     }
 
     /**
-     * Get the width property: The width of the image/PDF in pixels/inches,
-     * respectively.
-     * 
+     * Get the width property: The width of the image/PDF in pixels/inches, respectively.
+     *
      * @return the width value.
      */
     public float getWidth() {
@@ -116,9 +113,8 @@ public final class ReadResult {
     }
 
     /**
-     * Set the width property: The width of the image/PDF in pixels/inches,
-     * respectively.
-     * 
+     * Set the width property: The width of the image/PDF in pixels/inches, respectively.
+     *
      * @param width the width value to set.
      * @return the ReadResult object itself.
      */
@@ -128,9 +124,8 @@ public final class ReadResult {
     }
 
     /**
-     * Get the height property: The height of the image/PDF in pixels/inches,
-     * respectively.
-     * 
+     * Get the height property: The height of the image/PDF in pixels/inches, respectively.
+     *
      * @return the height value.
      */
     public float getHeight() {
@@ -138,9 +133,8 @@ public final class ReadResult {
     }
 
     /**
-     * Set the height property: The height of the image/PDF in pixels/inches,
-     * respectively.
-     * 
+     * Set the height property: The height of the image/PDF in pixels/inches, respectively.
+     *
      * @param height the height value to set.
      * @return the ReadResult object itself.
      */
@@ -150,10 +144,9 @@ public final class ReadResult {
     }
 
     /**
-     * Get the unit property: The unit used by the width, height and
-     * boundingBox properties. For images, the unit is "pixel". For PDF, the
-     * unit is "inch".
-     * 
+     * Get the unit property: The unit used by the width, height and boundingBox properties. For images, the unit is
+     * "pixel". For PDF, the unit is "inch".
+     *
      * @return the unit value.
      */
     public LengthUnit getUnit() {
@@ -161,10 +154,9 @@ public final class ReadResult {
     }
 
     /**
-     * Set the unit property: The unit used by the width, height and
-     * boundingBox properties. For images, the unit is "pixel". For PDF, the
-     * unit is "inch".
-     * 
+     * Set the unit property: The unit used by the width, height and boundingBox properties. For images, the unit is
+     * "pixel". For PDF, the unit is "inch".
+     *
      * @param unit the unit value to set.
      * @return the ReadResult object itself.
      */
@@ -175,7 +167,7 @@ public final class ReadResult {
 
     /**
      * Get the language property: The detected language on the page overall.
-     * 
+     *
      * @return the language value.
      */
     public Language getLanguage() {
@@ -184,7 +176,7 @@ public final class ReadResult {
 
     /**
      * Set the language property: The detected language on the page overall.
-     * 
+     *
      * @param language the language value to set.
      * @return the ReadResult object itself.
      */
@@ -194,14 +186,12 @@ public final class ReadResult {
     }
 
     /**
-     * Get the lines property: When includeTextDetails is set to true, a list
-     * of recognized text lines. The maximum number of lines returned is 300
-     * per page. The lines are sorted top to bottom, left to right, although in
-     * certain cases proximity is treated with higher priority. As the sorting
-     * order depends on the detected text, it may change across images and OCR
-     * version updates. Thus, business logic should be built upon the actual
-     * line location instead of order.
-     * 
+     * Get the lines property: When includeTextDetails is set to true, a list of recognized text lines. The maximum
+     * number of lines returned is 300 per page. The lines are sorted top to bottom, left to right, although in certain
+     * cases proximity is treated with higher priority. As the sorting order depends on the detected text, it may change
+     * across images and OCR version updates. Thus, business logic should be built upon the actual line location instead
+     * of order.
+     *
      * @return the lines value.
      */
     public List<TextLine> getLines() {
@@ -209,14 +199,12 @@ public final class ReadResult {
     }
 
     /**
-     * Set the lines property: When includeTextDetails is set to true, a list
-     * of recognized text lines. The maximum number of lines returned is 300
-     * per page. The lines are sorted top to bottom, left to right, although in
-     * certain cases proximity is treated with higher priority. As the sorting
-     * order depends on the detected text, it may change across images and OCR
-     * version updates. Thus, business logic should be built upon the actual
-     * line location instead of order.
-     * 
+     * Set the lines property: When includeTextDetails is set to true, a list of recognized text lines. The maximum
+     * number of lines returned is 300 per page. The lines are sorted top to bottom, left to right, although in certain
+     * cases proximity is treated with higher priority. As the sorting order depends on the detected text, it may change
+     * across images and OCR version updates. Thus, business logic should be built upon the actual line location instead
+     * of order.
+     *
      * @param lines the lines value to set.
      * @return the ReadResult object itself.
      */

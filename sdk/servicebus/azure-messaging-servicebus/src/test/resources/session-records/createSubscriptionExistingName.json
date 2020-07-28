@@ -1,0 +1,23 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.servicebus.windows.net/topic-1/subscriptions/subscription-session?api-version=2017-04",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-messaging-servicebus/7.0.0-beta.4 (11.0.5; Windows 10; 10.0)",
+      "Content-Type" : "application/xml"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Strict-Transport-Security" : "max-age=31536000",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "ETag" : "637293228523500000",
+      "retry-after" : "0",
+      "StatusCode" : "409",
+      "Body" : "<Error><Code>409</Code><Detail>Entity 'sb-java-conniey-1:Topic:topic-1|subscription-session' already exists. TrackingId:01769f7c-52a6-4783-88c1-1d7d49027d9a_G25_B7, SystemTracker:sb-java-conniey-1:Topic:topic-1|subscription-session, Timestamp:2020-07-03T00:43:40</Detail></Error>",
+      "Date" : "Fri, 03 Jul 2020 00:43:41 GMT",
+      "Content-Type" : "application/xml; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

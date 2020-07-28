@@ -4,13 +4,17 @@
 package com.azure.cosmos.benchmark;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.CosmosContainer;
 import com.azure.cosmos.CosmosDatabase;
+import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.ThroughputProperties;
 import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.Meter;
 import com.codahale.metrics.MetricFilter;
@@ -31,7 +35,6 @@ import java.net.InetSocketAddress;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
@@ -100,19 +103,28 @@ abstract class SyncBenchmark<T> {
         executorService = Executors.newFixedThreadPool(cfg.getConcurrency());
         configuration = cfg;
         logger = LoggerFactory.getLogger(this.getClass());
-        cosmosClient = new CosmosClientBuilder()
+
+        CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
             .endpoint(cfg.getServiceEndpoint())
             .key(cfg.getMasterKey())
-            .connectionPolicy(cfg.getConnectionPolicy())
             .consistencyLevel(cfg.getConsistencyLevel())
-            .buildClient();
-
+            .contentResponseOnWriteEnabled(Boolean.parseBoolean(cfg.isContentResponseOnWriteEnabled()));
+        if (cfg.getConnectionMode().equals(ConnectionMode.DIRECT)) {
+            cosmosClientBuilder = cosmosClientBuilder.directMode(DirectConnectionConfig.getDefaultConfig());
+        } else {
+            GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
+            gatewayConnectionConfig.setMaxConnectionPoolSize(cfg.getMaxConnectionPoolSize());
+            cosmosClientBuilder = cosmosClientBuilder.gatewayMode(gatewayConnectionConfig);
+        }
+        cosmosClient = cosmosClientBuilder.buildClient();
         try {
-            cosmosDatabase = cosmosClient.getDatabase(this.configuration.getDatabaseId()).read().getDatabase();
+            cosmosDatabase = cosmosClient.getDatabase(this.configuration.getDatabaseId());
+            cosmosDatabase.read();
             logger.info("Database {} is created for this test", this.configuration.getDatabaseId());
-        } catch (CosmosClientException e) {
+        } catch (CosmosException e) {
             if (e.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
-                cosmosDatabase = cosmosClient.createDatabase(cfg.getDatabaseId()).getDatabase();
+                cosmosClient.createDatabase(cfg.getDatabaseId());
+                cosmosDatabase = cosmosClient.getDatabase(cfg.getDatabaseId());
                 databaseCreated = true;
             } else {
                 throw e;
@@ -120,10 +132,14 @@ abstract class SyncBenchmark<T> {
         }
 
         try {
-            cosmosContainer = cosmosDatabase.getContainer(this.configuration.getCollectionId()).read().getContainer();
-        } catch (CosmosClientException e) {
+            cosmosContainer = cosmosDatabase.getContainer(this.configuration.getCollectionId());
+            cosmosContainer.read();
+        } catch (CosmosException e) {
             if (e.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
-                cosmosContainer = cosmosDatabase.createContainer(this.configuration.getCollectionId(), Configuration.DEFAULT_PARTITION_KEY_PATH, this.configuration.getThroughput()).getContainer();
+                cosmosDatabase.createContainer(this.configuration.getCollectionId(),
+                    Configuration.DEFAULT_PARTITION_KEY_PATH,
+                    ThroughputProperties.createManualThroughput(this.configuration.getThroughput()));
+                cosmosContainer = cosmosDatabase.getContainer(this.configuration.getCollectionId());
                 logger.info("Collection {} is created for this test", this.configuration.getCollectionId());
                 collectionCreated = true;
             } else {
@@ -144,7 +160,10 @@ abstract class SyncBenchmark<T> {
             String dataFieldValue = RandomStringUtils.randomAlphabetic(cfg.getDocumentDataFieldSize());
             for (int i = 0; i < cfg.getNumberOfPreCreatedDocuments(); i++) {
                 String uuid = UUID.randomUUID().toString();
-                PojoizedJson newDoc = generateDocument(uuid, dataFieldValue);
+                PojoizedJson newDoc = BenchmarkHelper.generateDocument(uuid,
+                    dataFieldValue,
+                    partitionKey,
+                    configuration.getDocumentDataFieldCount());
                 CompletableFuture<PojoizedJson> futureResult = CompletableFuture.supplyAsync(() -> {
 
                     try {
@@ -220,26 +239,6 @@ abstract class SyncBenchmark<T> {
 
     protected abstract T performWorkload(long i) throws Exception;
 
-    private boolean shouldContinue(long startTimeMillis, long iterationCount) {
-
-        Duration maxDurationTime = configuration.getMaxRunningTimeDuration();
-        int maxNumberOfOperations = configuration.getNumberOfOperations();
-
-        if (maxDurationTime == null) {
-            return iterationCount < maxNumberOfOperations;
-        }
-
-        if (startTimeMillis + maxDurationTime.toMillis() < System.currentTimeMillis()) {
-            return false;
-        }
-
-        if (maxNumberOfOperations < 0) {
-            return true;
-        }
-
-        return iterationCount < maxNumberOfOperations;
-    }
-
     void run() throws Exception {
 
         successMeter = metricsRegistry.meter("#Successful Operations");
@@ -271,7 +270,7 @@ abstract class SyncBenchmark<T> {
         AtomicLong count = new AtomicLong(0);
         long i;
 
-        for ( i = 0; shouldContinue(startTime, i); i++) {
+        for ( i = 0; BenchmarkHelper.shouldContinue(startTime, i, configuration); i++) {
 
             ResultHandler<T, Throwable> resultHandler = new ResultHandler<T, Throwable>() {
                 @Override
@@ -356,19 +355,6 @@ abstract class SyncBenchmark<T> {
 
         reporter.report();
         reporter.close();
-    }
-
-    public PojoizedJson generateDocument(String idString, String dataFieldValue) {
-        PojoizedJson instance = new PojoizedJson();
-        Map<String, String> properties = instance.getInstance();
-        properties.put("id", idString);
-        properties.put(partitionKey, idString);
-
-        for (int i = 0; i < configuration.getDocumentDataFieldCount(); i++) {
-            properties.put("dataField" + i, dataFieldValue);
-        }
-
-        return instance;
     }
 
     RuntimeException propagate(Exception e) {

@@ -241,7 +241,7 @@
       "content-type" : "application/json",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "f6c406bc-35f5-4d55-83e6-ba5b05041624",
-      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"XqHr/pBHeNGw1g4Q/1xUiMdnZM/YTv9HZb7iEATIHLUMsRsQTXKA0locCnIhO9PH7Lu5PxSIySN8ISmZ2hDm1w==\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"keTHOW4+bncSIRYhOayz4t+1zxKhdHa5CfPT01H3oZEQQLmt29IXsC3vW4ItwTxtUBFgqjQKUmKhKuktjcoP8A==\",\"permissions\":\"FULL\"}]}"
+      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"}]}"
     }
   }, {
     "Method" : "GET",
@@ -329,7 +329,7 @@
       "etag" : "\"1D58430B425BE0B\"",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "7a287035-c3c0-4363-b04e-b241403b3a46",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_296101569bf8/providers/Microsoft.Web/sites/webapp1-4f443512eb/config/appsettings\",\"name\":\"appsettings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"FUNCTIONS_EXTENSION_VERSION\":\"~1\",\"AzureWebJobsDashboard\":\"DefaultEndpointsProtocol=https;AccountName=f7324f9e4fcf4d05852d;AccountKey=XqHr/pBHeNGw1g4Q/1xUiMdnZM/YTv9HZb7iEATIHLUMsRsQTXKA0locCnIhO9PH7Lu5PxSIySN8ISmZ2hDm1w==\",\"AzureWebJobsStorage\":\"DefaultEndpointsProtocol=https;AccountName=f7324f9e4fcf4d05852d;AccountKey=XqHr/pBHeNGw1g4Q/1xUiMdnZM/YTv9HZb7iEATIHLUMsRsQTXKA0locCnIhO9PH7Lu5PxSIySN8ISmZ2hDm1w==\",\"WEBSITE_CONTENTSHARE\":\"webapp1-4f443512eb08010712ebf\",\"WEBSITE_CONTENTAZUREFILECONNECTIONSTRING\":\"DefaultEndpointsProtocol=https;AccountName=f7324f9e4fcf4d05852d;AccountKey=XqHr/pBHeNGw1g4Q/1xUiMdnZM/YTv9HZb7iEATIHLUMsRsQTXKA0locCnIhO9PH7Lu5PxSIySN8ISmZ2hDm1w==\"}}"
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_296101569bf8/providers/Microsoft.Web/sites/webapp1-4f443512eb/config/appsettings\",\"name\":\"appsettings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"FUNCTIONS_EXTENSION_VERSION\":\"~1\",\"AzureWebJobsDashboard\":\"DefaultEndpointsProtocol=https;AccountName=f7324f9e4fcf4d05852d;AccountKey=***REMOVED***\",\"AzureWebJobsStorage\":\"DefaultEndpointsProtocol=https;AccountName=f7324f9e4fcf4d05852d;AccountKey=***REMOVED***\",\"WEBSITE_CONTENTSHARE\":\"webapp1-4f443512eb08010712ebf\",\"WEBSITE_CONTENTAZUREFILECONNECTIONSTRING\":\"DefaultEndpointsProtocol=https;AccountName=f7324f9e4fcf4d05852d;AccountKey=***REMOVED***\"}}"
     }
   }, {
     "Method" : "PUT",
@@ -418,7 +418,7 @@
       "content-type" : "application/json",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "ff040b7f-960f-45fa-b0ad-92bf27ca9f13",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_296101569bf8/providers/Microsoft.Web/sites/webapp1-4f443512eb/config/appsettings\",\"name\":\"appsettings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"FUNCTIONS_EXTENSION_VERSION\":\"~1\",\"AzureWebJobsDashboard\":\"DefaultEndpointsProtocol=https;AccountName=f7324f9e4fcf4d05852d;AccountKey=XqHr/pBHeNGw1g4Q/1xUiMdnZM/YTv9HZb7iEATIHLUMsRsQTXKA0locCnIhO9PH7Lu5PxSIySN8ISmZ2hDm1w==\",\"AzureWebJobsStorage\":\"DefaultEndpointsProtocol=https;AccountName=f7324f9e4fcf4d05852d;AccountKey=XqHr/pBHeNGw1g4Q/1xUiMdnZM/YTv9HZb7iEATIHLUMsRsQTXKA0locCnIhO9PH7Lu5PxSIySN8ISmZ2hDm1w==\",\"WEBSITE_CONTENTSHARE\":\"webapp1-4f443512eb08010712ebf\",\"WEBSITE_CONTENTAZUREFILECONNECTIONSTRING\":\"DefaultEndpointsProtocol=https;AccountName=f7324f9e4fcf4d05852d;AccountKey=XqHr/pBHeNGw1g4Q/1xUiMdnZM/YTv9HZb7iEATIHLUMsRsQTXKA0locCnIhO9PH7Lu5PxSIySN8ISmZ2hDm1w==\"}}"
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_296101569bf8/providers/Microsoft.Web/sites/webapp1-4f443512eb/config/appsettings\",\"name\":\"appsettings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"FUNCTIONS_EXTENSION_VERSION\":\"~1\",\"AzureWebJobsDashboard\":\"DefaultEndpointsProtocol=https;AccountName=f7324f9e4fcf4d05852d;AccountKey=***REMOVED***\",\"AzureWebJobsStorage\":\"DefaultEndpointsProtocol=https;AccountName=f7324f9e4fcf4d05852d;AccountKey=***REMOVED***\",\"WEBSITE_CONTENTSHARE\":\"webapp1-4f443512eb08010712ebf\",\"WEBSITE_CONTENTAZUREFILECONNECTIONSTRING\":\"DefaultEndpointsProtocol=https;AccountName=f7324f9e4fcf4d05852d;AccountKey=***REMOVED***\"}}"
     }
   }, {
     "Method" : "GET",
@@ -675,7 +675,7 @@
       "content-type" : "application/json",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "719d755d-c598-470e-905f-12c495cd3607",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_296101569bf8/providers/Microsoft.Web/sites/webapp1-4f443512eb/config/appsettings\",\"name\":\"appsettings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"FUNCTIONS_EXTENSION_VERSION\":\"~1\",\"AzureWebJobsDashboard\":\"DefaultEndpointsProtocol=https;AccountName=f7324f9e4fcf4d05852d;AccountKey=XqHr/pBHeNGw1g4Q/1xUiMdnZM/YTv9HZb7iEATIHLUMsRsQTXKA0locCnIhO9PH7Lu5PxSIySN8ISmZ2hDm1w==\",\"AzureWebJobsStorage\":\"DefaultEndpointsProtocol=https;AccountName=f7324f9e4fcf4d05852d;AccountKey=XqHr/pBHeNGw1g4Q/1xUiMdnZM/YTv9HZb7iEATIHLUMsRsQTXKA0locCnIhO9PH7Lu5PxSIySN8ISmZ2hDm1w==\",\"WEBSITE_CONTENTSHARE\":\"webapp1-4f443512eb08010712ebf\",\"WEBSITE_CONTENTAZUREFILECONNECTIONSTRING\":\"DefaultEndpointsProtocol=https;AccountName=f7324f9e4fcf4d05852d;AccountKey=XqHr/pBHeNGw1g4Q/1xUiMdnZM/YTv9HZb7iEATIHLUMsRsQTXKA0locCnIhO9PH7Lu5PxSIySN8ISmZ2hDm1w==\"}}"
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_296101569bf8/providers/Microsoft.Web/sites/webapp1-4f443512eb/config/appsettings\",\"name\":\"appsettings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"FUNCTIONS_EXTENSION_VERSION\":\"~1\",\"AzureWebJobsDashboard\":\"DefaultEndpointsProtocol=https;AccountName=f7324f9e4fcf4d05852d;AccountKey=***REMOVED***\",\"AzureWebJobsStorage\":\"DefaultEndpointsProtocol=https;AccountName=f7324f9e4fcf4d05852d;AccountKey=***REMOVED***\",\"WEBSITE_CONTENTSHARE\":\"webapp1-4f443512eb08010712ebf\",\"WEBSITE_CONTENTAZUREFILECONNECTIONSTRING\":\"DefaultEndpointsProtocol=https;AccountName=f7324f9e4fcf4d05852d;AccountKey=***REMOVED***\"}}"
     }
   }, {
     "Method" : "GET",

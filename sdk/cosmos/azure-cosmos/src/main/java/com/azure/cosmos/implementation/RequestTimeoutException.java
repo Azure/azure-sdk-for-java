@@ -4,13 +4,9 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.RMResources;
-import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.http.HttpHeaders;
-import com.azure.cosmos.models.CosmosError;
 
 import java.net.URI;
 import java.util.Map;
@@ -18,7 +14,7 @@ import java.util.Map;
 /**
  * The type Request timeout exception.
  */
-public class RequestTimeoutException extends CosmosClientException {
+public class RequestTimeoutException extends CosmosException {
 
     /**
      * Instantiates a new Request timeout exception.
@@ -71,7 +67,7 @@ public class RequestTimeoutException extends CosmosClientException {
      * @param requestUrl the request url
      */
     public RequestTimeoutException(String message, HttpHeaders headers, URI requestUrl) {
-        super(message, 
+        super(message,
             null,
             HttpUtils.asMap(headers),
             HttpConstants.StatusCodes.REQUEST_TIMEOUT,

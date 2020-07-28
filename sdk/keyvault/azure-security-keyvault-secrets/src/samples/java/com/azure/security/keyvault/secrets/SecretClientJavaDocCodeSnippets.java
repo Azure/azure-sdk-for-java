@@ -27,6 +27,21 @@ public final class SecretClientJavaDocCodeSnippets {
     private String value2 = "val2";
 
     /**
+     * Implementation for sync SecretClient
+     * @return sync SecretClient
+     */
+    private SecretClient getSecretClient() {
+        // BEGIN: com.azure.security.keyvault.secretclient.sync.construct
+        SecretClient secretClient = new SecretClientBuilder()
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .vaultUrl("https://myvault.vault.azure.net/")
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .buildClient();
+        // END: com.azure.security.keyvault.secretclient.sync.construct
+        return secretClient;
+    }
+
+    /**
      * Method to insert code snippets for {@link SecretClient#getSecret(String, String)}
      */
     public void getSecretCodeSnippets() {
@@ -140,9 +155,10 @@ public final class SecretClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.secretclient.deleteSecret#string
         SyncPoller<DeletedSecret, Void> deletedSecretPoller = secretClient.beginDeleteSecret("secretName");
 
-        // Deleted Secret is accessible as soon as polling begins
+        // Deleted Secret is accessible as soon as polling begins.
         PollResponse<DeletedSecret> deletedSecretPollResponse = deletedSecretPoller.poll();
 
+        // Deletion date only works for a SoftDelete-enabled Key Vault.
         System.out.println("Deleted Date  %s" + deletedSecretPollResponse.getValue()
                 .getDeletedOn().toString());
         System.out.printf("Deleted Secret's Recovery Id %s", deletedSecretPollResponse.getValue()
@@ -367,29 +383,5 @@ public final class SecretClientJavaDocCodeSnippets {
                         });
                     });
         // END: com.azure.security.keyvault.secretclient.listSecretVersions#string-Context-iterableByPage
-    }
-
-    /**
-     * Implementation for sync SecretClient
-     *
-     * @return sync SecretClient
-     */
-    private SecretClient getSyncSecretClientCodeSnippets() {
-
-        // BEGIN: com.azure.security.keyvault.secretclient.sync.construct
-        SecretClient secretClient = new SecretClientBuilder()
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .vaultUrl("https://myvault.vault.azure.net/")
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .buildClient();
-        // END: com.azure.security.keyvault.secretclient.sync.construct
-        return secretClient;
-    }
-
-    /**
-     * Implementation not provided for this method
-     */
-    private SecretClient getSecretClient() {
-        return new SecretClient(null);
     }
 }

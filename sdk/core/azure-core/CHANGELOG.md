@@ -1,7 +1,28 @@
 # Release History
 
-## 1.6.0-beta.1 (Unreleased)
+## 1.7.0-beta.3 (Unreleased)
 
+- Updated reactor-core version to `3.3.8.RELEASE`
+- Updated reactor-netty version to `0.9.10.RELEASE`
+- Updated netty version to `4.1.51.Final`
+- Updated netty-tcnative version to `2.0.31.Final`
+
+## 1.7.0-beta.2 (2020-07-23)
+
+- Removed `tokenRefreshOptions()` from `TokenCredential`, defaulting token refresh offset to 5 minutes, and a default token refresh retry timeout of 30 seconds.
+
+## 1.7.0-beta.1 (2020-07-08)
+
+- Added `TokenRefreshOptions()` to `TokenCredential`, with a default token refresh offset of 2 minutes, and a default token refresh retry timeout of 30 seconds.
+
+## 1.6.0 (2020-07-02)
+
+- Added utility class `UserAgentUtil` which constructs `User-Agent` headers following SDK guidelines.
+- Modified Azure Context to Reactor Context to remove intermediate Map container.
+
+## 1.5.1 (2020-06-08)
+
+- Added handling for more complex `Content-Type` headers such as `text/custom+xml`.
 
 ## 1.5.0 (2020-05-04)
 

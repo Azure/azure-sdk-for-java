@@ -26,6 +26,15 @@ public class SapEccSource extends TabularSource {
     private Object query;
 
     /**
+     * The timeout (TimeSpan) to get an HTTP response. It is the timeout to get
+     * a response, not the timeout to read response data. Default value:
+     * 00:05:00. Type: string (or Expression with resultType string), pattern:
+     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     */
+    @JsonProperty(value = "httpRequestTimeout")
+    private Object httpRequestTimeout;
+
+    /**
      * Get sAP ECC OData query. For example, "$top=1". Type: string (or Expression with resultType string).
      *
      * @return the query value
@@ -42,6 +51,26 @@ public class SapEccSource extends TabularSource {
      */
     public SapEccSource withQuery(Object query) {
         this.query = query;
+        return this;
+    }
+
+    /**
+     * Get the timeout (TimeSpan) to get an HTTP response. It is the timeout to get a response, not the timeout to read response data. Default value: 00:05:00. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     *
+     * @return the httpRequestTimeout value
+     */
+    public Object httpRequestTimeout() {
+        return this.httpRequestTimeout;
+    }
+
+    /**
+     * Set the timeout (TimeSpan) to get an HTTP response. It is the timeout to get a response, not the timeout to read response data. Default value: 00:05:00. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     *
+     * @param httpRequestTimeout the httpRequestTimeout value to set
+     * @return the SapEccSource object itself.
+     */
+    public SapEccSource withHttpRequestTimeout(Object httpRequestTimeout) {
+        this.httpRequestTimeout = httpRequestTimeout;
         return this;
     }
 

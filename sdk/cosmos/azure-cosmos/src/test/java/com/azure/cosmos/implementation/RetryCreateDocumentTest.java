@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.models.CosmosError;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
@@ -59,7 +58,7 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
                         HttpConstants.HttpHeaders.SUB_STATUS,
                         Integer.toString(HttpConstants.SubStatusCodes.PARTITION_KEY_MISMATCH));
 
-                return Mono.error(BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.BADREQUEST, new CosmosError() , header));
+                return Mono.error(BridgeInternal.createCosmosException(HttpConstants.StatusCodes.BADREQUEST, new CosmosError() , header));
             } else {
                 return client.getOrigGatewayStoreModel().processMessage(req);
             }
@@ -90,7 +89,7 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
                         HttpConstants.HttpHeaders.SUB_STATUS,
                         Integer.toString(2));
 
-                return Mono.error(BridgeInternal.createCosmosClientException(1, new CosmosError() , header));
+                return Mono.error(BridgeInternal.createCosmosException(1, new CosmosError() , header));
             }
         }).when(client.getSpyGatewayStoreModel()).processMessage(anyObject());
 
@@ -126,7 +125,7 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
                         HttpConstants.HttpHeaders.SUB_STATUS,
                         Integer.toString(2));
 
-                return Mono.error(BridgeInternal.createCosmosClientException(1, new CosmosError() , header));
+                return Mono.error(BridgeInternal.createCosmosException(1, new CosmosError() , header));
             } else {
                 return client.getOrigGatewayStoreModel().processMessage(req);
             }

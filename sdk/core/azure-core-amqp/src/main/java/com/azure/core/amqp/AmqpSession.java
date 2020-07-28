@@ -68,4 +68,27 @@ public interface AmqpSession extends Disposable {
      * @return A stream of endpoint states for the AMQP session.
      */
     Flux<AmqpEndpointState> getEndpointStates();
+
+    /**
+     * Creates the transaction on the message broker.
+     *
+     * @return A newly created AMQPTransaction.
+     */
+    Mono<AmqpTransaction> createTransaction();
+
+    /**
+     * Commit the transaction on the message broker.
+     *
+     * @param transaction to commit.
+     * @return A completable mono.
+     */
+    Mono<Void> commitTransaction(AmqpTransaction transaction);
+
+    /**
+     * Rollback the transaction on the message broker.
+     *
+     * @param transaction to rollback
+     * @return A completable mono.
+     */
+    Mono<Void> rollbackTransaction(AmqpTransaction transaction);
 }

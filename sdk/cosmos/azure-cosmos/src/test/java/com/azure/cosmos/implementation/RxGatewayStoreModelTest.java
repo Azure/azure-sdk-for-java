@@ -4,7 +4,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import io.netty.handler.timeout.ReadTimeoutException;
@@ -50,7 +50,7 @@ public class RxGatewayStoreModelTest {
 
         Mono<RxDocumentServiceResponse> resp = storeModel.processMessage(dsr);
         validateFailure(resp, FailureValidator.builder()
-                .instanceOf(CosmosClientException.class)
+                .instanceOf(CosmosException.class)
                 .causeInstanceOf(ReadTimeoutException.class)
                 .documentClientExceptionHeaderRequestContainsEntry("key", "value")
                 .statusCode(0).build());

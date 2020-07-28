@@ -7,34 +7,37 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * The {@link DocumentSentiment} model that contains sentiment label of a document, confidence score of the sentiment
- * label, and a list of {@link SentenceSentiment}.
+ * The {@link DocumentSentiment} model that contains sentiment label of a document, confidence score of the
+ * sentiment label, and a list of {@link SentenceSentiment}.
  */
 @Immutable
 public final class DocumentSentiment {
     private final TextSentiment sentiment;
     private final SentimentConfidenceScores confidenceScores;
-    private final IterableStream<SentenceSentiment> sentences;
+    private final IterableStream<com.azure.ai.textanalytics.models.SentenceSentiment> sentences;
+    private final IterableStream<TextAnalyticsWarning> warnings;
 
     /**
      * Creates a {@link DocumentSentiment} model that describes the sentiment of the document.
      *
-     * @param sentiment the sentiment label of the document.
-     * @param confidenceScores the sentiment confidence score (Softmax score) between 0 and 1, for each sentiment label.
+     * @param sentiment The sentiment label of the document.
+     * @param confidenceScores The sentiment confidence score (Softmax score) between 0 and 1, for each sentiment label.
      *   Higher values signify higher confidence.
-     * @param sentences a list of sentence sentiments.
+     * @param sentences An {@link IterableStream} of sentence sentiments.
+     * @param warnings An {@link IterableStream} of {@link TextAnalyticsWarning}.
      */
     public DocumentSentiment(TextSentiment sentiment, SentimentConfidenceScores confidenceScores,
-        IterableStream<SentenceSentiment> sentences) {
+        IterableStream<SentenceSentiment> sentences, IterableStream<TextAnalyticsWarning> warnings) {
         this.sentiment = sentiment;
         this.confidenceScores = confidenceScores;
         this.sentences = sentences;
+        this.warnings = warnings;
     }
 
     /**
      * Get the text sentiment label: POSITIVE, NEGATIVE, NEUTRAL, or MIXED.
      *
-     * @return the {@link TextSentiment}.
+     * @return The {@link TextSentiment}.
      */
     public TextSentiment getSentiment() {
         return sentiment;
@@ -44,7 +47,7 @@ public final class DocumentSentiment {
      * Get the sentiment confidence score (Softmax score) between 0 and 1, for each sentiment label.
      * Higher values signify higher confidence.
      *
-     * @return the {@link SentimentConfidenceScores}.
+     * @return The {@link SentimentConfidenceScores}.
      */
     public SentimentConfidenceScores getConfidenceScores() {
         return confidenceScores;
@@ -53,9 +56,18 @@ public final class DocumentSentiment {
     /**
      * Get a list of sentence sentiments.
      *
-     * @return a list of sentence sentiments.
+     * @return A list of sentence sentiments.
      */
     public IterableStream<SentenceSentiment> getSentences() {
         return sentences;
+    }
+
+    /**
+     * Get the {@link IterableStream} of {@link TextAnalyticsWarning Text Analytics warnings}.
+     *
+     * @return An {@link IterableStream} of {@link TextAnalyticsWarning}.
+     */
+    public IterableStream<TextAnalyticsWarning> getWarnings() {
+        return this.warnings;
     }
 }

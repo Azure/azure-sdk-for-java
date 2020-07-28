@@ -51,6 +51,18 @@ public class SourceControlConfigurationClientImpl extends AzureServiceClient {
         return this;
     }
 
+    /** The API version to be used with the HTTP request. */
+    private String apiVersion;
+
+    /**
+     * Gets The API version to be used with the HTTP request.
+     *
+     * @return the apiVersion value.
+     */
+    public String apiVersion() {
+        return this.apiVersion;
+    }
+
     /** The preferred language for the response. */
     private String acceptLanguage;
 
@@ -177,6 +189,7 @@ public class SourceControlConfigurationClientImpl extends AzureServiceClient {
     }
 
     protected void initialize() {
+        this.apiVersion = "2019-11-01-preview";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;

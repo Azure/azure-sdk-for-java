@@ -5,16 +5,15 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.util.CosmosPagedFlux;
-import com.azure.cosmos.models.CosmosTriggerProperties;
-import com.azure.cosmos.models.FeedOptions;
-import com.azure.cosmos.models.Resource;
-import com.azure.cosmos.models.TriggerOperation;
-import com.azure.cosmos.models.TriggerType;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
+import com.azure.cosmos.models.CosmosTriggerProperties;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.TriggerOperation;
+import com.azure.cosmos.models.TriggerType;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -45,7 +44,7 @@ public class TriggerQueryTest extends TestSuiteBase {
         String filterId = createdTriggers.get(0).getId();
         String query = String.format("SELECT * from c where c.id = '%s'", filterId);
 
-        FeedOptions options = new FeedOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         int maxItemCount = 5;
         CosmosPagedFlux<CosmosTriggerProperties> queryObservable = createdCollection.getScripts().queryTriggers(query, options);
 
@@ -59,7 +58,7 @@ public class TriggerQueryTest extends TestSuiteBase {
 
         FeedResponseListValidator<CosmosTriggerProperties> validator = new FeedResponseListValidator.Builder<CosmosTriggerProperties>()
                 .totalSize(expectedDocs.size())
-                .exactlyContainsInAnyOrder(expectedDocs.stream().map(Resource::getResourceId).collect(Collectors.toList()))
+                .exactlyContainsIdsInAnyOrder(expectedDocs.stream().map(CosmosTriggerProperties::getId).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosTriggerProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
@@ -72,8 +71,8 @@ public class TriggerQueryTest extends TestSuiteBase {
     public void query_NoResults() throws Exception {
 
         String query = "SELECT * from root r where r.id = '2'";
-        FeedOptions options = new FeedOptions();
-        
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+
         CosmosPagedFlux<CosmosTriggerProperties> queryObservable = createdCollection.getScripts().queryTriggers(query, options);
 
         FeedResponseListValidator<CosmosTriggerProperties> validator = new FeedResponseListValidator.Builder<CosmosTriggerProperties>()
@@ -89,12 +88,13 @@ public class TriggerQueryTest extends TestSuiteBase {
     public void queryAll() throws Exception {
 
         String query = "SELECT * from root";
-        FeedOptions options = new FeedOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         int maxItemCount = 3;
-        
+
         CosmosPagedFlux<CosmosTriggerProperties> queryObservable = createdCollection.getScripts().queryTriggers(query, options);
 
-        createdTriggers.forEach(cosmosTriggerSettings -> logger.info("Created trigger in method: {}", cosmosTriggerSettings.getResourceId()));
+        createdTriggers.forEach(cosmosTriggerSettings -> logger.info("Created trigger in method: {}",
+            cosmosTriggerSettings.getId()));
 
         List<CosmosTriggerProperties> expectedDocs = createdTriggers;
 
@@ -102,9 +102,9 @@ public class TriggerQueryTest extends TestSuiteBase {
 
         FeedResponseListValidator<CosmosTriggerProperties> validator = new FeedResponseListValidator
                 .Builder<CosmosTriggerProperties>()
-                .exactlyContainsInAnyOrder(expectedDocs
+                .exactlyContainsIdsInAnyOrder(expectedDocs
                         .stream()
-                        .map(Resource::getResourceId)
+                        .map(CosmosTriggerProperties::getId)
                         .collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosTriggerProperties>()
@@ -116,12 +116,12 @@ public class TriggerQueryTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void invalidQuerySytax() throws Exception {
         String query = "I am an invalid query";
-        FeedOptions options = new FeedOptions();
-        
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+
         CosmosPagedFlux<CosmosTriggerProperties> queryObservable = createdCollection.getScripts().queryTriggers(query, options);
 
         FailureValidator validator = new FailureValidator.Builder()
-                .instanceOf(CosmosClientException.class)
+                .instanceOf(CosmosException.class)
                 .statusCode(400)
                 .notNullActivityId()
                 .build();
@@ -153,11 +153,13 @@ public class TriggerQueryTest extends TestSuiteBase {
     }
 
     private static CosmosTriggerProperties getTriggerDef() {
-        CosmosTriggerProperties trigger = new CosmosTriggerProperties();
-        trigger.setId(UUID.randomUUID().toString());
-        trigger.setBody("function() {var x = 10;}");
+        CosmosTriggerProperties trigger = new CosmosTriggerProperties(
+            UUID.randomUUID().toString(),
+            "function() {var x = 10;}"
+        );
         trigger.setTriggerOperation(TriggerOperation.CREATE);
         trigger.setTriggerType(TriggerType.PRE);
+
         return trigger;
     }
 }

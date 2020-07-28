@@ -9,13 +9,12 @@ import com.azure.cosmos.models.CompositePathSortOrder;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.util.CosmosPagedFlux;
-import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -49,11 +48,11 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
     private static final String MEDIUM_STRING_FIELD = "mediumStringField";
     private static final String LONG_STRING_FIELD = "longStringField";
     private static final String PARTITION_KEY = "pk";
-    private List<CosmosItemProperties> documents = new ArrayList<CosmosItemProperties>();
+    private List<InternalObjectNode> documents = new ArrayList<InternalObjectNode>();
     private CosmosAsyncContainer documentCollection;
     private CosmosAsyncClient client;
 
-    class CustomComparator implements Comparator<CosmosItemProperties> {
+    class CustomComparator implements Comparator<InternalObjectNode> {
         String path;
         CompositePathSortOrder order;
         boolean isNumericPath = false;
@@ -76,7 +75,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
         }
 
         @Override
-        public int compare(CosmosItemProperties doc1, CosmosItemProperties doc2) {
+        public int compare(InternalObjectNode doc1, InternalObjectNode doc2) {
             boolean isAsc = order == CompositePathSortOrder.ASCENDING;
             if (isNumericPath) {
                 if (ModelBridgeInternal.getIntFromJsonSerializable(doc1, path) < ModelBridgeInternal.getIntFromJsonSerializable(doc2, path))
@@ -87,7 +86,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
                     return 0;
             } else if (isStringPath) {
                 if (!isAsc) {
-                    CosmosItemProperties temp = doc1;
+                    InternalObjectNode temp = doc1;
                     doc1 = doc2;
                     doc2 = temp;
                 }
@@ -131,34 +130,34 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
 
         Random random = new Random();
         for (int i = 0; i < numberOfDocuments; ++i) {
-            CosmosItemProperties multiOrderByDocument = generateMultiOrderByDocument();
+            InternalObjectNode multiOrderByDocument = generateMultiOrderByDocument();
             String multiOrderByDocumentString = ModelBridgeInternal.toJsonFromJsonSerializable(multiOrderByDocument);
             int numberOfDuplicates = 5;
 
             for (int j = 0; j < numberOfDuplicates; j++) {
                 // Add the document itself for exact duplicates
-                CosmosItemProperties initialDocument = new CosmosItemProperties(multiOrderByDocumentString);
+                InternalObjectNode initialDocument = new InternalObjectNode(multiOrderByDocumentString);
                 initialDocument.setId(UUID.randomUUID().toString());
                 this.documents.add(initialDocument);
 
                 // Permute all the fields so that there are duplicates with tie breaks
-                CosmosItemProperties numberClone = new CosmosItemProperties(multiOrderByDocumentString);
+                InternalObjectNode numberClone = new InternalObjectNode(multiOrderByDocumentString);
                 BridgeInternal.setProperty(numberClone, NUMBER_FIELD, random.nextInt(5));
                 numberClone.setId(UUID.randomUUID().toString());
                 this.documents.add(numberClone);
 
-                CosmosItemProperties stringClone = new CosmosItemProperties(multiOrderByDocumentString);
+                InternalObjectNode stringClone = new InternalObjectNode(multiOrderByDocumentString);
                 BridgeInternal.setProperty(stringClone, STRING_FIELD, Integer.toString(random.nextInt(5)));
                 stringClone.setId(UUID.randomUUID().toString());
                 this.documents.add(stringClone);
 
-                CosmosItemProperties boolClone = new CosmosItemProperties(multiOrderByDocumentString);
+                InternalObjectNode boolClone = new InternalObjectNode(multiOrderByDocumentString);
                 BridgeInternal.setProperty(boolClone, BOOL_FIELD, random.nextInt(2) % 2 == 0);
                 boolClone.setId(UUID.randomUUID().toString());
                 this.documents.add(boolClone);
 
                 // Also fuzz what partition it goes to
-                CosmosItemProperties partitionClone = new CosmosItemProperties(multiOrderByDocumentString);
+                InternalObjectNode partitionClone = new InternalObjectNode(multiOrderByDocumentString);
                 BridgeInternal.setProperty(partitionClone, PARTITION_KEY, random.nextInt(5));
                 partitionClone.setId(UUID.randomUUID().toString());
                 this.documents.add(partitionClone);
@@ -170,9 +169,9 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 
-    private CosmosItemProperties generateMultiOrderByDocument() {
+    private InternalObjectNode generateMultiOrderByDocument() {
         Random random = new Random();
-        CosmosItemProperties document = new CosmosItemProperties();
+        InternalObjectNode document = new InternalObjectNode();
         document.setId(UUID.randomUUID().toString());
         BridgeInternal.setProperty(document, NUMBER_FIELD, random.nextInt(5));
         BridgeInternal.setProperty(document, NUMBER_FIELD_2, random.nextInt(5));
@@ -190,9 +189,9 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void queryDocumentsWithMultiOrder() throws CosmosClientException, InterruptedException {
-        FeedOptions feedOptions = new FeedOptions();
-        
+    public void queryDocumentsWithMultiOrder() throws InterruptedException {
+        CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
+
 
         boolean[] booleanValues = new boolean[] {true, false};
         CosmosContainerProperties containerSettings = documentCollection.read().block().getProperties();
@@ -246,12 +245,12 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
                                 "FROM root " + whereString + " " +
                                 "ORDER BY " + orderByItemStringBuilder.toString();
 
-                        List<CosmosItemProperties> expectedOrderedList = top(sort(filter(this.documents, hasFilter), compositeIndex, invert), hasTop, topCount) ;
-                        
-                        CosmosPagedFlux<CosmosItemProperties> queryObservable = documentCollection.queryItems(query, feedOptions, CosmosItemProperties.class);
+                        List<InternalObjectNode> expectedOrderedList = top(sort(filter(this.documents, hasFilter), compositeIndex, invert), hasTop, topCount) ;
 
-                        FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator
-                                .Builder<CosmosItemProperties>()
+                        CosmosPagedFlux<InternalObjectNode> queryObservable = documentCollection.queryItems(query, cosmosQueryRequestOptions, InternalObjectNode.class);
+
+                        FeedResponseListValidator<InternalObjectNode> validator = new FeedResponseListValidator
+                                .Builder<InternalObjectNode>()
                                 .withOrderedResults(expectedOrderedList, compositeIndex)
                                 .build();
 
@@ -263,11 +262,11 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
 
         // CREATE document with numberField not set.
         // This query would then be invalid.
-        CosmosItemProperties documentWithEmptyField = generateMultiOrderByDocument();
+        InternalObjectNode documentWithEmptyField = generateMultiOrderByDocument();
         BridgeInternal.remove(documentWithEmptyField, NUMBER_FIELD);
         documentCollection.createItem(documentWithEmptyField, new CosmosItemRequestOptions()).block();
         String query = "SELECT [root." + NUMBER_FIELD + ",root." + STRING_FIELD + "] FROM root ORDER BY root." + NUMBER_FIELD + " ASC ,root." + STRING_FIELD + " DESC";
-        CosmosPagedFlux<CosmosItemProperties> queryObservable = documentCollection.queryItems(query, feedOptions, CosmosItemProperties.class);
+        CosmosPagedFlux<InternalObjectNode> queryObservable = documentCollection.queryItems(query, cosmosQueryRequestOptions, InternalObjectNode.class);
 
         FailureValidator validator = new FailureValidator.Builder()
                 .instanceOf(UnsupportedOperationException.class)
@@ -276,8 +275,8 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
         validateQueryFailure(queryObservable.byPage(), validator);
     }
 
-    private List<CosmosItemProperties> top(List<CosmosItemProperties> arrayList, boolean hasTop, int topCount) {
-        List<CosmosItemProperties> result = new ArrayList<CosmosItemProperties>();
+    private List<InternalObjectNode> top(List<InternalObjectNode> arrayList, boolean hasTop, int topCount) {
+        List<InternalObjectNode> result = new ArrayList<InternalObjectNode>();
         int counter = 0;
         if (hasTop) {
             while (counter < topCount && counter < arrayList.size()) {
@@ -290,9 +289,9 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
         return result;
     }
 
-    private List<CosmosItemProperties> sort(List<CosmosItemProperties> arrayList, List<CompositePath> compositeIndex,
-                                                 boolean invert) {
-        Collection<Comparator<CosmosItemProperties>> comparators = new ArrayList<Comparator<CosmosItemProperties>>();
+    private List<InternalObjectNode> sort(List<InternalObjectNode> arrayList, List<CompositePath> compositeIndex,
+                                          boolean invert) {
+        Collection<Comparator<InternalObjectNode>> comparators = new ArrayList<Comparator<InternalObjectNode>>();
         Iterator<CompositePath> compositeIndexIterator = compositeIndex.iterator();
         while (compositeIndexIterator.hasNext()) {
             CompositePath compositePath = compositeIndexIterator.next();
@@ -311,10 +310,10 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
         return arrayList;
     }
 
-    private List<CosmosItemProperties> filter(List<CosmosItemProperties> cosmosItemSettings, boolean hasFilter) {
-        List<CosmosItemProperties> result = new ArrayList<CosmosItemProperties>();
+    private List<InternalObjectNode> filter(List<InternalObjectNode> cosmosItemSettings, boolean hasFilter) {
+        List<InternalObjectNode> result = new ArrayList<InternalObjectNode>();
         if (hasFilter) {
-            for (CosmosItemProperties document : cosmosItemSettings) {
+            for (InternalObjectNode document : cosmosItemSettings) {
                 if (ModelBridgeInternal.getIntFromJsonSerializable(document, NUMBER_FIELD) % 2 == 0) {
                     result.add(document);
                 }

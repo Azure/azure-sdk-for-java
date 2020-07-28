@@ -10,10 +10,7 @@ import com.azure.core.util.Context;
 import com.azure.search.documents.models.AutocompleteItem;
 import com.azure.search.documents.models.AutocompleteMode;
 import com.azure.search.documents.models.AutocompleteOptions;
-import com.azure.search.documents.models.RequestOptions;
 import com.azure.search.documents.util.AutocompletePagedResponse;
-
-import java.util.UUID;
 
 /**
  * This sample is based on the hotels-sample index available to install from the portal.
@@ -30,7 +27,7 @@ public class AutoCompleteExample {
 
     public static void main(String[] args) {
 
-        SearchIndexClient searchClient = new SearchIndexClientBuilder()
+        SearchClient searchClient = new SearchClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(API_KEY))
             .indexName("hotels-sample-index")
@@ -41,16 +38,13 @@ public class AutoCompleteExample {
         autoCompleteWithFilterAndFuzzy(searchClient);
     }
 
-    private static void autoCompleteWithOneTermContext(SearchIndexClient searchClient) {
+    private static void autoCompleteWithOneTermContext(SearchClient searchClient) {
 
         AutocompleteOptions params = new AutocompleteOptions().setAutocompleteMode(
             AutocompleteMode.ONE_TERM_WITH_CONTEXT);
 
-        RequestOptions requestOptions = new RequestOptions()
-            .setXMsClientRequestId(UUID.randomUUID());
-
         PagedIterableBase<AutocompleteItem, AutocompletePagedResponse> results = searchClient.autocomplete("coffee m",
-            "sg", params, requestOptions, Context.NONE);
+            "sg", params, Context.NONE);
 
         System.out.println("Received results with one term context:");
         results.forEach(result -> System.out.println(result.getText()));
@@ -61,18 +55,15 @@ public class AutoCompleteExample {
          */
     }
 
-    private static void autoCompleteWithHighlighting(SearchIndexClient searchClient) {
+    private static void autoCompleteWithHighlighting(SearchClient searchClient) {
         AutocompleteOptions params = new AutocompleteOptions()
             .setAutocompleteMode(AutocompleteMode.ONE_TERM)
             .setFilter("Address/City eq 'San Diego' or Address/City eq 'Hartford'")
             .setHighlightPreTag("<b>")
             .setHighlightPostTag("</b>");
 
-        RequestOptions requestOptions = new RequestOptions()
-            .setXMsClientRequestId(UUID.randomUUID());
-
         PagedIterableBase<AutocompleteItem, AutocompletePagedResponse> results = searchClient.autocomplete("co", "sg", params,
-            requestOptions, Context.NONE);
+            Context.NONE);
 
         System.out.println("Received results with highlighting:");
         results.forEach(result -> System.out.println(result.getText()));
@@ -83,17 +74,14 @@ public class AutoCompleteExample {
          */
     }
 
-    private static void autoCompleteWithFilterAndFuzzy(SearchIndexClient searchClient) {
+    private static void autoCompleteWithFilterAndFuzzy(SearchClient searchClient) {
         AutocompleteOptions params = new AutocompleteOptions()
             .setAutocompleteMode(AutocompleteMode.ONE_TERM)
             .setUseFuzzyMatching(true)
             .setFilter("HotelId ne '6' and Category eq 'Budget'");
 
-        RequestOptions requestOptions = new RequestOptions()
-            .setXMsClientRequestId(UUID.randomUUID());
-
         PagedIterableBase<AutocompleteItem, AutocompletePagedResponse> results = searchClient.autocomplete("su", "sg", params,
-            requestOptions, Context.NONE);
+            Context.NONE);
 
         System.out.println("Received results with filter and fuzzy:");
         results.forEach(result -> System.out.println(result.getText()));

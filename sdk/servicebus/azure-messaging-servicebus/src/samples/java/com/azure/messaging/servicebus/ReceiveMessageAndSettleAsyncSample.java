@@ -3,18 +3,16 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
-import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.Disposable;
 
-import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 /**
  * Sample demonstrates how to receive an {@link ServiceBusReceivedMessage} from an Azure Service Bus Queue and settle
- * it. Settling of message include {@link ServiceBusReceiverAsyncClient#complete(MessageLockToken) complete()}, {@link
- * ServiceBusReceiverAsyncClient#defer(MessageLockToken) defer()}, {@link ServiceBusReceiverAsyncClient#abandon(MessageLockToken)
- * abandon}, or {@link ServiceBusReceiverAsyncClient#deadLetter(MessageLockToken) dead-letter} a message.
+ * it. Settling of message include {@link ServiceBusReceiverAsyncClient#complete(String) complete()}, {@link
+ * ServiceBusReceiverAsyncClient#defer(String) defer()},
+ * {@link ServiceBusReceiverAsyncClient#abandon(String) abandon}, or
+ * {@link ServiceBusReceiverAsyncClient#deadLetter(String) dead-letter} a message.
  */
 public class ReceiveMessageAndSettleAsyncSample {
 
@@ -41,28 +39,19 @@ public class ReceiveMessageAndSettleAsyncSample {
         ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
             .connectionString(connectionString)
             .receiver()
-            .receiveMode(ReceiveMode.PEEK_LOCK)
             .queueName("<<queue-name>>")
             .buildAsyncClient();
 
-        // At most, the receiver will automatically renew the message lock until 120 seconds have elapsed.
-        // By default, after messages are processed, they are completed (ie. removed from the queue/topic). Setting
-        // enableAutoComplete to false, means the onus is on users to complete, abandon, defer, or dead-letter the
-        // message when they are finished with it.
-        final ReceiveAsyncOptions options = new ReceiveAsyncOptions()
-            .setIsAutoCompleteEnabled(false)
-            .setMaxAutoLockRenewalDuration(Duration.ofSeconds(120));
-
-        Disposable subscription = receiver.receive(options)
+        Disposable subscription = receiver.receiveMessages()
             .flatMap(context -> {
                 boolean messageProcessed = false;
                 // Process the context and its message here.
                 // Change the `messageProcessed` according to you business logic and if you are able to process the
                 // message successfully.
                 if (messageProcessed) {
-                    return receiver.complete(context.getMessage());
+                    return receiver.complete(context.getMessage().getLockToken());
                 } else {
-                    return receiver.abandon(context.getMessage());
+                    return receiver.abandon(context.getMessage().getLockToken());
                 }
             }).subscribe();
 

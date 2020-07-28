@@ -8,7 +8,7 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 
 /**
  * Represents a partition key value in the Azure Cosmos DB database service. A
- * partition key identifies the partition where the document is stored in.
+ * partition key identifies the partition where the item is stored in.
  */
 public class PartitionKey {
 

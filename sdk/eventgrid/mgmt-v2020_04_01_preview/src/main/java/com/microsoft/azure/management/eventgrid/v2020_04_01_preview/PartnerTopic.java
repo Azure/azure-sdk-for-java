@@ -18,6 +18,7 @@ import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.implementation.EventGridManager;
 import java.util.Map;
+import org.joda.time.DateTime;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.implementation.PartnerTopicInner;
 
 /**
@@ -28,6 +29,16 @@ public interface PartnerTopic extends HasInner<PartnerTopicInner>, Resource, Gro
      * @return the activationState value.
      */
     PartnerTopicActivationState activationState();
+
+    /**
+     * @return the expirationTimeIfNotActivatedUtc value.
+     */
+    DateTime expirationTimeIfNotActivatedUtc();
+
+    /**
+     * @return the partnerTopicFriendlyDescription value.
+     */
+    String partnerTopicFriendlyDescription();
 
     /**
      * @return the provisioningState value.

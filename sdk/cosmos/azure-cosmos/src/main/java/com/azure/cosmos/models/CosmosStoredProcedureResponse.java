@@ -1,86 +1,110 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
 package com.azure.cosmos.models;
 
-
-import com.azure.cosmos.CosmosStoredProcedure;
+import com.azure.cosmos.implementation.ResourceResponse;
+import com.azure.cosmos.implementation.StoredProcedure;
+import com.azure.cosmos.implementation.StoredProcedureResponse;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 /**
- * The type Cosmos sync stored procedure response.
+ * The type Cosmos stored procedure response.
  */
 public class CosmosStoredProcedureResponse extends CosmosResponse<CosmosStoredProcedureProperties> {
-    private final CosmosStoredProcedure cosmosStoredProcedure;
-    private final CosmosAsyncStoredProcedureResponse asyncResponse;
 
-    /**
-     * Instantiates a new Cosmos sync stored procedure response.
-     *
-     * @param resourceResponse the resource response
-     * @param storedProcedure the stored procedure
-     */
-    CosmosStoredProcedureResponse(CosmosAsyncStoredProcedureResponse resourceResponse,
-                                  CosmosStoredProcedure storedProcedure) {
-        super(resourceResponse.getProperties());
-        this.asyncResponse = resourceResponse;
-        this.cosmosStoredProcedure = storedProcedure;
+    private final StoredProcedureResponse storedProcedureResponse;
+
+    CosmosStoredProcedureResponse(ResourceResponse<StoredProcedure> response) {
+        super(response);
+        String bodyAsString = response.getBodyAsString();
+        if (!StringUtils.isEmpty(bodyAsString)) {
+            super.setProperties(new CosmosStoredProcedureProperties(bodyAsString));
+        }
+        storedProcedureResponse = null;
+    }
+
+    CosmosStoredProcedureResponse(StoredProcedureResponse response) {
+        super(response);
+        this.storedProcedureResponse = response;
+
     }
 
     /**
-     * Gets cosmos stored procedure properties.
+     * Gets the stored procedure properties
      *
-     * @return the cosmos stored procedure properties
+     * @return the stored procedure properties or null
      */
     public CosmosStoredProcedureProperties getProperties() {
-        return asyncResponse.getProperties();
+        return super.getProperties();
     }
 
     /**
-     * Gets cosmos sync stored procedure.
+     * Gets the Activity ID for the request.
      *
-     * @return the cosmos sync stored procedure
+     * @return the activity id.
      */
-    public CosmosStoredProcedure getStoredProcedure() {
-        return cosmosStoredProcedure;
-    }
-
     @Override
     public String getActivityId() {
-        return asyncResponse.getActivityId();
+        if (storedProcedureResponse != null) {
+            return this.storedProcedureResponse.getActivityId();
+        }
+        return super.getActivityId();
     }
 
+    /**
+     * Gets the token used for managing client's consistency requirements.
+     *
+     * @return the session token.
+     */
     @Override
     public String getSessionToken() {
-        return asyncResponse.getSessionToken();
+        if (storedProcedureResponse != null) {
+            return this.storedProcedureResponse.getSessionToken();
+        }
+        return super.getSessionToken();
     }
 
+    /**
+     * Gets the HTTP status code associated with the response.
+     *
+     * @return the status code.
+     */
     @Override
     public int getStatusCode() {
-        return asyncResponse.getStatusCode();
+        if (storedProcedureResponse != null) {
+            return this.storedProcedureResponse.getStatusCode();
+        }
+        return super.getStatusCode();
     }
 
+    /**
+     * Gets the number of normalized requests charged.
+     *
+     * @return the request charge.
+     */
     @Override
     public double getRequestCharge() {
-        return asyncResponse.getRequestCharge();
+        if (storedProcedureResponse != null) {
+            return storedProcedureResponse.getRequestCharge();
+        }
+        return super.getRequestCharge();
     }
 
     /**
-     * Response as string string.
+     * Gets the response of the stored procedure as a string.
      *
-     * @return the string
+     * @return the response as a string.
      */
     public String getResponseAsString() {
-        return asyncResponse.getResponseAsString();
+        return this.storedProcedureResponse.getResponseAsString();
     }
 
     /**
-     * Script log string.
+     * Gets the output from stored procedure console.log() statements.
      *
-     * @return the string
+     * @return the output string from the stored procedure console.log() statements.
      */
     public String getScriptLog() {
-        return asyncResponse.getScriptLog();
+        return this.storedProcedureResponse.getScriptLog();
     }
-
-
 }

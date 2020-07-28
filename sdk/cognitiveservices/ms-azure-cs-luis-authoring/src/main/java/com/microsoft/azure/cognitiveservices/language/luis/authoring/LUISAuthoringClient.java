@@ -132,15 +132,21 @@ public interface LUISAuthoringClient {
     Trains trains();
 
     /**
-     * Gets the Permissions object to access its operations.
-     * @return the Permissions object.
-     */
-    Permissions permissions();
-
-    /**
      * Gets the Patterns object to access its operations.
      * @return the Patterns object.
      */
     Patterns patterns();
+
+    /**
+     * Gets the Settings object to access its operations.
+     * @return the Settings object.
+     */
+    Settings settings();
+
+    /**
+     * Gets the AzureAccounts object to access its operations.
+     * @return the AzureAccounts object.
+     */
+    AzureAccounts azureAccounts();
 
 }

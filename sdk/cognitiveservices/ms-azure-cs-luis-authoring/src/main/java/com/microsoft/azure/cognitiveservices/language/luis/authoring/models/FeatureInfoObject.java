@@ -33,6 +33,12 @@ public class FeatureInfoObject {
     private Boolean isActive;
 
     /**
+     * Indicates if the feature is enabled for all models in the application.
+     */
+    @JsonProperty(value = "enabledForAllModels")
+    private Boolean enabledForAllModels;
+
+    /**
      * Get the id value.
      *
      * @return the id value
@@ -89,6 +95,26 @@ public class FeatureInfoObject {
      */
     public FeatureInfoObject withIsActive(Boolean isActive) {
         this.isActive = isActive;
+        return this;
+    }
+
+    /**
+     * Get the enabledForAllModels value.
+     *
+     * @return the enabledForAllModels value
+     */
+    public Boolean enabledForAllModels() {
+        return this.enabledForAllModels;
+    }
+
+    /**
+     * Set the enabledForAllModels value.
+     *
+     * @param enabledForAllModels the enabledForAllModels value to set
+     * @return the FeatureInfoObject object itself.
+     */
+    public FeatureInfoObject withEnabledForAllModels(Boolean enabledForAllModels) {
+        this.enabledForAllModels = enabledForAllModels;
         return this;
     }
 

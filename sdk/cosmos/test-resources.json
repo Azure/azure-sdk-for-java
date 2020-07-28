@@ -1,0 +1,138 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "baseName": {
+      "type": "string"
+    },
+    "enableMultipleWriteLocations" : {
+      "type": "bool",
+      "metadata": {
+        "description": "Flag to enable or disable multiple write locations on CosmosDB Account"
+      }
+    },
+    "defaultConsistencyLevel": {
+      "type": "string",
+      "metadata": {
+        "description": "Default Cosmosdb Account level consistency"
+      }
+    },
+    "enableMultipleRegions": {
+      "type": "bool",
+      "metadata": {
+        "description": "Enable multiple regions, default value is false"
+      },
+      "defaultValue": false
+    }
+  },
+  "variables": {
+    "apiVersion": "2020-04-01",
+    "accountName": "[toLower(parameters('baseName'))]",
+    "newAccountName": "[toLower(concat(parameters('baseName'), '2'))]",
+    "resourceId": "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('accountName'))]",
+    "newResourceId": "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('newAccountName'))]",
+    "singleRegionConfiguration": [
+      {
+        "locationName": "East US 2",
+        "provisioningState": "Succeeded",
+        "failoverPriority": 0,
+        "isZoneRedundant": false
+      }],
+      "multiRegionConfiguration": [
+      {
+        "locationName": "East US 2",
+        "provisioningState": "Succeeded",
+        "failoverPriority": 0,
+        "isZoneRedundant": false
+      },
+      {
+        "locationName": "East US",
+        "provisioningState": "Succeeded",
+        "failoverPriority": 1,
+        "isZoneRedundant": false
+      }
+    ],
+    "locationsConfiguration": "[if(parameters('enableMultipleRegions'), variables('multiRegionConfiguration'), variables('singleRegionConfiguration'))]"
+
+  },
+  "resources": [
+    {
+      "type": "Microsoft.DocumentDB/databaseAccounts",
+      "apiVersion": "[variables('apiVersion')]",
+      "name": "[variables('accountName')]",
+      "location": "[resourceGroup().location]",
+      "kind": "GlobalDocumentDB",
+      "properties": {
+        "publicNetworkAccess": "Enabled",
+        "enableAutomaticFailover": false,
+        "enableMultipleWriteLocations": "[parameters('enableMultipleWriteLocations')]",
+        "isVirtualNetworkFilterEnabled": false,
+        "virtualNetworkRules": [],
+        "disableKeyBasedMetadataWriteAccess": false,
+        "enableFreeTier": false,
+        "enableAnalyticalStorage": false,
+        "databaseAccountOfferType": "Standard",
+        "consistencyPolicy": {
+          "defaultConsistencyLevel": "[parameters('defaultConsistencyLevel')]",
+          "maxIntervalInSeconds": 5,
+          "maxStalenessPrefix": 100
+        },
+        "locations": "[variables('locationsConfiguration')]",
+        "capabilities": [],
+        "ipRules": []
+      }
+    },
+    {
+      "type": "Microsoft.DocumentDB/databaseAccounts",
+      "apiVersion": "[variables('apiVersion')]",
+      "name": "[variables('newAccountName')]",
+      "location": "[resourceGroup().location]",
+      "kind": "GlobalDocumentDB",
+      "properties": {
+        "publicNetworkAccess": "Enabled",
+        "enableAutomaticFailover": false,
+        "enableMultipleWriteLocations": "[parameters('enableMultipleWriteLocations')]",
+        "isVirtualNetworkFilterEnabled": false,
+        "virtualNetworkRules": [],
+        "disableKeyBasedMetadataWriteAccess": false,
+        "enableFreeTier": false,
+        "enableAnalyticalStorage": false,
+        "databaseAccountOfferType": "Standard",
+        "consistencyPolicy": {
+          "defaultConsistencyLevel": "[parameters('defaultConsistencyLevel')]",
+          "maxIntervalInSeconds": 5,
+          "maxStalenessPrefix": 100
+        },
+        "locations": "[variables('locationsConfiguration')]",
+        "capabilities": [],
+        "ipRules": []
+      }
+    }
+  ],
+  "outputs": {
+    "ACCOUNT_HOST": {
+      "type": "string",
+      "value": "[reference(variables('resourceId'), variables('apiVersion')).documentEndpoint]"
+    },
+    "ACCOUNT_KEY": {
+      "type": "string",
+      "value": "[listKeys(variables('resourceId'), variables('apiVersion')).primaryMasterKey]"
+    },
+    "SECONDARY_ACCOUNT_KEY": {
+      "type": "string",
+      "value": "[listKeys(variables('resourceId'), variables('apiVersion')).secondaryMasterKey]"
+    },
+    "NEW_ACCOUNT_HOST": {
+      "type": "string",
+      "value": "[reference(variables('newResourceId'), variables('apiVersion')).documentEndpoint]"
+    },
+    "NEW_ACCOUNT_KEY": {
+      "type": "string",
+      "value": "[listKeys(variables('newResourceId'), variables('apiVersion')).primaryMasterKey]"
+    },
+    "NEW_SECONDARY_ACCOUNT_KEY": {
+      "type": "string",
+      "value": "[listKeys(variables('newResourceId'), variables('apiVersion')).secondaryMasterKey]"
+    }
+  }
+}

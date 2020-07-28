@@ -6,6 +6,9 @@ package com.azure.ai.textanalytics.batch;
 import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
+import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
+import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
+import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.Arrays;
@@ -34,10 +37,23 @@ public class ExtractKeyPhrasesBatchStringDocuments {
             "The pitot tube is used to measure airspeed."
         );
 
+        // Request options: show statistics and model version
+        TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true).setModelVersion("latest");
+
         // Extracting key phrases for each document in a batch of documents
+        ExtractKeyPhrasesResultCollection keyPhrasesBatchResultCollection = client.extractKeyPhrasesBatch(documents, "en", requestOptions);
+
+        // Model version
+        System.out.printf("Results of Azure Text Analytics \"Key Phrases Extraction\" Model, version: %s%n", keyPhrasesBatchResultCollection.getModelVersion());
+
+        // Batch statistics
+        TextDocumentBatchStatistics batchStatistics = keyPhrasesBatchResultCollection.getStatistics();
+        System.out.printf("Documents statistics: document count = %s, erroneous document count = %s, transaction count = %s, valid document count = %s.%n",
+            batchStatistics.getDocumentCount(), batchStatistics.getInvalidDocumentCount(), batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
+
+        // Extracted key phrases for each document in a batch of documents
         AtomicInteger counter = new AtomicInteger();
-        for (ExtractKeyPhraseResult extractKeyPhraseResult : client.extractKeyPhrasesBatch(documents, "en")) {
-            // Extracted key phrase for each document in a batch of documents
+        for (ExtractKeyPhraseResult extractKeyPhraseResult : keyPhrasesBatchResultCollection) {
             System.out.printf("%nText = %s%n", documents.get(counter.getAndIncrement()));
             if (extractKeyPhraseResult.isError()) {
                 // Erroneous document

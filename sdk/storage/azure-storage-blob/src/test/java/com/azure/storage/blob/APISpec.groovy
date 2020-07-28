@@ -28,6 +28,7 @@ import com.azure.storage.blob.models.BlobServiceProperties
 import com.azure.storage.blob.models.CopyStatusType
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.ListBlobContainersOptions
+import com.azure.storage.blob.options.BlobBreakLeaseOptions
 import com.azure.storage.blob.specialized.BlobAsyncClientBase
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.BlobLeaseClient
@@ -46,8 +47,12 @@ import spock.lang.Timeout
 import java.nio.ByteBuffer
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
+import java.time.Duration
 import java.time.OffsetDateTime
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit
+import java.util.function.BiFunction
+import java.util.function.Function
 import java.util.function.Supplier
 
 @Timeout(value = 5, unit = TimeUnit.MINUTES)
@@ -121,12 +126,14 @@ class APISpec extends Specification {
     /* Unignore any managed disk tests if a managed disk account is available to be tested. They are difficult to
      acquire so we do not run them in the nightly live run tests. */
     static def MANAGED_DISK_STORAGE = "MANAGED_DISK_STORAGE_"
+    static def VERSIONED_STORAGE = "VERSIONED_STORAGE_"
 
     protected static StorageSharedKeyCredential primaryCredential
     static StorageSharedKeyCredential alternateCredential
     static StorageSharedKeyCredential blobCredential
     static StorageSharedKeyCredential premiumCredential
     static StorageSharedKeyCredential managedDiskCredential
+    static StorageSharedKeyCredential versionedCredential
     static TestMode testMode
 
     BlobServiceClient primaryBlobServiceClient
@@ -135,6 +142,7 @@ class APISpec extends Specification {
     BlobServiceClient blobServiceClient
     BlobServiceClient premiumBlobServiceClient
     BlobServiceClient managedDiskServiceClient
+    BlobServiceClient versionedBlobServiceClient
 
     InterceptorManager interceptorManager
     boolean recordLiveMode
@@ -149,6 +157,7 @@ class APISpec extends Specification {
         blobCredential = getCredential(BLOB_STORAGE)
         premiumCredential = getCredential(PREMIUM_STORAGE)
         managedDiskCredential = getCredential(MANAGED_DISK_STORAGE)
+        versionedCredential = getCredential(VERSIONED_STORAGE)
         // The property is to limit flapMap buffer size of concurrency
         // in case the upload or download open too many connections.
         System.setProperty("reactor.bufferSize.x", "16")
@@ -177,6 +186,7 @@ class APISpec extends Specification {
         blobServiceClient = setClient(blobCredential)
         premiumBlobServiceClient = setClient(premiumCredential)
         managedDiskServiceClient = setClient(managedDiskCredential)
+        versionedBlobServiceClient = setClient(versionedCredential)
 
         containerName = generateContainerName()
         cc = primaryBlobServiceClient.getBlobContainerClient(containerName)
@@ -195,7 +205,7 @@ class APISpec extends Specification {
             def containerClient = primaryBlobServiceClient.getBlobContainerClient(container.getName())
 
             if (container.getProperties().getLeaseState() == LeaseStateType.LEASED) {
-                createLeaseClient(containerClient).breakLeaseWithResponse(0, null, null, null)
+                createLeaseClient(containerClient).breakLeaseWithResponse(new BlobBreakLeaseOptions().setBreakPeriod(Duration.ofSeconds(0)), null, null)
             }
 
             containerClient.delete()
@@ -204,7 +214,6 @@ class APISpec extends Specification {
         interceptorManager.close()
     }
 
-    //TODO: Should this go in core.
     static Mono<ByteBuffer> collectBytesInBuffer(Flux<ByteBuffer> content) {
         return FluxUtil.collectBytesInByteBufferStream(content).map { bytes -> ByteBuffer.wrap(bytes) }
     }
@@ -225,6 +234,10 @@ class APISpec extends Specification {
 
     static boolean liveMode() {
         return setupTestMode() == TestMode.LIVE
+    }
+
+    static boolean playbackMode() {
+        return setupTestMode() == TestMode.PLAYBACK
     }
 
     private StorageSharedKeyCredential getCredential(String accountType) {
@@ -260,15 +273,19 @@ class APISpec extends Specification {
             .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
             .httpClient(getHttpClient())
 
+        return setOauthCredentials(builder).buildClient()
+    }
+
+    def setOauthCredentials(BlobServiceClientBuilder builder) {
         if (testMode != TestMode.PLAYBACK) {
             if (testMode == TestMode.RECORD) {
                 builder.addPolicy(interceptorManager.getRecordPolicy())
             }
             // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
-            return builder.credential(new EnvironmentCredentialBuilder().build()).buildClient()
+            return builder.credential(new EnvironmentCredentialBuilder().build())
         } else {
             // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
-            return builder.credential(primaryCredential).buildClient()
+            return builder.credential(primaryCredential)
         }
     }
 
@@ -380,6 +397,22 @@ class APISpec extends Specification {
         }
 
         return builder.credential(credential).buildClient()
+    }
+
+    BlobAsyncClient getBlobAsyncClient(StorageSharedKeyCredential credential, String endpoint, HttpPipelinePolicy... policies) {
+        BlobClientBuilder builder = new BlobClientBuilder()
+            .endpoint(endpoint)
+            .httpClient(getHttpClient())
+
+        for (HttpPipelinePolicy policy : policies) {
+            builder.addPolicy(policy)
+        }
+
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
+        return builder.credential(credential).buildAsyncClient()
     }
 
     BlobClient getBlobClient(StorageSharedKeyCredential credential, String endpoint, String blobName) {
@@ -816,6 +849,41 @@ class APISpec extends Specification {
         @Override
         Mono<String> getBodyAsString(Charset charset) {
             return Mono.error(new IOException())
+        }
+    }
+
+    /**
+     * Injects one retry-able IOException failure per url.
+     */
+    class TransientFailureInjectingHttpPipelinePolicy implements HttpPipelinePolicy {
+
+        private ConcurrentHashMap<String, Boolean> failureTracker = new ConcurrentHashMap<>();
+
+        @Override
+        Mono<HttpResponse> process(HttpPipelineCallContext httpPipelineCallContext, HttpPipelineNextPolicy httpPipelineNextPolicy) {
+            def request = httpPipelineCallContext.httpRequest
+            def key = request.url.toString()
+            // Make sure that failure happens once per url.
+            if (failureTracker.get(key, false)) {
+                return httpPipelineNextPolicy.process()
+            } else {
+                failureTracker.put(key, true)
+                return request.getBody().flatMap {
+                    byteBuffer ->
+                        // Read a byte from each buffer to simulate that failure occurred in the middle of transfer.
+                        byteBuffer.get()
+                        return Flux.just(byteBuffer)
+                }.reduce( 0L, {
+                    // Reduce in order to force processing of all buffers.
+                    a, byteBuffer ->
+                        return a + byteBuffer.remaining()
+                    } as BiFunction<Long, ByteBuffer, Long>
+                ).flatMap ({
+                    aLong ->
+                        // Throw retry-able error.
+                        return Mono.error(new IOException("KABOOM!"))
+                } as Function<Long, Mono<HttpResponse>>)
+            }
         }
     }
 }

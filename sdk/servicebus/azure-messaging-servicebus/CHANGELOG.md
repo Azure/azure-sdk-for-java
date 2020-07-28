@@ -1,7 +1,28 @@
 # Release History
 
-## 7.0.0-beta.2 (Unreleased)
+## 7.0.0-beta.4 (2020-07-10)
+- Add support for send messages via another entity.
+- Add support for management operations on a topic, subscription, or namespace.
+- Add support for receiving messages from the dead letter queue.
+- Change suffixes for receive methods by adding `Message` or `Messages`.
+- Remove `MessageLockToken` interface in favour of passing a lock token string.
 
+## 7.0.0-beta.3 (2020-06-08)
+- Add support for transaction feature in all the clients.
+- Add support for management operations on a Queue.
+ 
+## 7.0.0-beta.2 (2020-05-07)
+
+- Add support for receiving messages from specific sessions
+- Add support for receiving messages from multiple sessions
+- Add missing schedule and cancel APIs in ServiceBusSenderClient
+- Add support to send a collection of messages at once without needing to create a `ServiceBusMessageBatch` first. This
+  will throw an error/exception will the messages cannot fit as per batch size restrictions
+- Change return type from `ServiceBusReceivedMessage` to `ServiceBusReceivedMessageContext` when calling `receive()` so
+  users can distinguish between transient failure scenarios where receiving continues and an actual terminal signal that
+  is signaled through the downstream `onError`.
+- Fix message settlement to occur on receive link
+- Fix issue where backpressure is not properly supported
 
 ## 7.0.0-beta.1 (2020-04-06)
 

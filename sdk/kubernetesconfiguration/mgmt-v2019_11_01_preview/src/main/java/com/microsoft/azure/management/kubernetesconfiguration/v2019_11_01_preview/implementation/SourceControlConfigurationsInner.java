@@ -95,14 +95,13 @@ public class SourceControlConfigurationsInner {
      * @param clusterResourceName The Kubernetes cluster resource name - either managedClusters (for AKS clusters) or connectedClusters (for OnPrem K8S clusters). Possible values include: 'managedClusters', 'connectedClusters'
      * @param clusterName The name of the kubernetes cluster.
      * @param sourceControlConfigurationName Name of the Source Control Configuration.
-     * @param apiVersion The API version to be used with the HTTP request.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SourceControlConfigurationInner object if successful.
      */
-    public SourceControlConfigurationInner get(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, String sourceControlConfigurationName, String apiVersion) {
-        return getWithServiceResponseAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName, apiVersion).toBlocking().single().body();
+    public SourceControlConfigurationInner get(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, String sourceControlConfigurationName) {
+        return getWithServiceResponseAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName).toBlocking().single().body();
     }
 
     /**
@@ -113,13 +112,12 @@ public class SourceControlConfigurationsInner {
      * @param clusterResourceName The Kubernetes cluster resource name - either managedClusters (for AKS clusters) or connectedClusters (for OnPrem K8S clusters). Possible values include: 'managedClusters', 'connectedClusters'
      * @param clusterName The name of the kubernetes cluster.
      * @param sourceControlConfigurationName Name of the Source Control Configuration.
-     * @param apiVersion The API version to be used with the HTTP request.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<SourceControlConfigurationInner> getAsync(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, String sourceControlConfigurationName, String apiVersion, final ServiceCallback<SourceControlConfigurationInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName, apiVersion), serviceCallback);
+    public ServiceFuture<SourceControlConfigurationInner> getAsync(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, String sourceControlConfigurationName, final ServiceCallback<SourceControlConfigurationInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName), serviceCallback);
     }
 
     /**
@@ -130,12 +128,11 @@ public class SourceControlConfigurationsInner {
      * @param clusterResourceName The Kubernetes cluster resource name - either managedClusters (for AKS clusters) or connectedClusters (for OnPrem K8S clusters). Possible values include: 'managedClusters', 'connectedClusters'
      * @param clusterName The name of the kubernetes cluster.
      * @param sourceControlConfigurationName Name of the Source Control Configuration.
-     * @param apiVersion The API version to be used with the HTTP request.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SourceControlConfigurationInner object
      */
-    public Observable<SourceControlConfigurationInner> getAsync(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, String sourceControlConfigurationName, String apiVersion) {
-        return getWithServiceResponseAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName, apiVersion).map(new Func1<ServiceResponse<SourceControlConfigurationInner>, SourceControlConfigurationInner>() {
+    public Observable<SourceControlConfigurationInner> getAsync(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, String sourceControlConfigurationName) {
+        return getWithServiceResponseAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName).map(new Func1<ServiceResponse<SourceControlConfigurationInner>, SourceControlConfigurationInner>() {
             @Override
             public SourceControlConfigurationInner call(ServiceResponse<SourceControlConfigurationInner> response) {
                 return response.body();
@@ -151,11 +148,10 @@ public class SourceControlConfigurationsInner {
      * @param clusterResourceName The Kubernetes cluster resource name - either managedClusters (for AKS clusters) or connectedClusters (for OnPrem K8S clusters). Possible values include: 'managedClusters', 'connectedClusters'
      * @param clusterName The name of the kubernetes cluster.
      * @param sourceControlConfigurationName Name of the Source Control Configuration.
-     * @param apiVersion The API version to be used with the HTTP request.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SourceControlConfigurationInner object
      */
-    public Observable<ServiceResponse<SourceControlConfigurationInner>> getWithServiceResponseAsync(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, String sourceControlConfigurationName, String apiVersion) {
+    public Observable<ServiceResponse<SourceControlConfigurationInner>> getWithServiceResponseAsync(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, String sourceControlConfigurationName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -174,10 +170,10 @@ public class SourceControlConfigurationsInner {
         if (sourceControlConfigurationName == null) {
             throw new IllegalArgumentException("Parameter sourceControlConfigurationName is required and cannot be null.");
         }
-        if (apiVersion == null) {
-            throw new IllegalArgumentException("Parameter apiVersion is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.get(this.client.subscriptionId(), resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.get(this.client.subscriptionId(), resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SourceControlConfigurationInner>>>() {
                 @Override
                 public Observable<ServiceResponse<SourceControlConfigurationInner>> call(Response<ResponseBody> response) {
@@ -206,15 +202,14 @@ public class SourceControlConfigurationsInner {
      * @param clusterResourceName The Kubernetes cluster resource name - either managedClusters (for AKS clusters) or connectedClusters (for OnPrem K8S clusters). Possible values include: 'managedClusters', 'connectedClusters'
      * @param clusterName The name of the kubernetes cluster.
      * @param sourceControlConfigurationName Name of the Source Control Configuration.
-     * @param apiVersion The API version to be used with the HTTP request.
      * @param sourceControlConfiguration Properties necessary to Create KubernetesConfiguration.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SourceControlConfigurationInner object if successful.
      */
-    public SourceControlConfigurationInner createOrUpdate(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, String sourceControlConfigurationName, String apiVersion, SourceControlConfigurationInner sourceControlConfiguration) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName, apiVersion, sourceControlConfiguration).toBlocking().single().body();
+    public SourceControlConfigurationInner createOrUpdate(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, String sourceControlConfigurationName, SourceControlConfigurationInner sourceControlConfiguration) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName, sourceControlConfiguration).toBlocking().single().body();
     }
 
     /**
@@ -225,14 +220,13 @@ public class SourceControlConfigurationsInner {
      * @param clusterResourceName The Kubernetes cluster resource name - either managedClusters (for AKS clusters) or connectedClusters (for OnPrem K8S clusters). Possible values include: 'managedClusters', 'connectedClusters'
      * @param clusterName The name of the kubernetes cluster.
      * @param sourceControlConfigurationName Name of the Source Control Configuration.
-     * @param apiVersion The API version to be used with the HTTP request.
      * @param sourceControlConfiguration Properties necessary to Create KubernetesConfiguration.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<SourceControlConfigurationInner> createOrUpdateAsync(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, String sourceControlConfigurationName, String apiVersion, SourceControlConfigurationInner sourceControlConfiguration, final ServiceCallback<SourceControlConfigurationInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName, apiVersion, sourceControlConfiguration), serviceCallback);
+    public ServiceFuture<SourceControlConfigurationInner> createOrUpdateAsync(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, String sourceControlConfigurationName, SourceControlConfigurationInner sourceControlConfiguration, final ServiceCallback<SourceControlConfigurationInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName, sourceControlConfiguration), serviceCallback);
     }
 
     /**
@@ -243,13 +237,12 @@ public class SourceControlConfigurationsInner {
      * @param clusterResourceName The Kubernetes cluster resource name - either managedClusters (for AKS clusters) or connectedClusters (for OnPrem K8S clusters). Possible values include: 'managedClusters', 'connectedClusters'
      * @param clusterName The name of the kubernetes cluster.
      * @param sourceControlConfigurationName Name of the Source Control Configuration.
-     * @param apiVersion The API version to be used with the HTTP request.
      * @param sourceControlConfiguration Properties necessary to Create KubernetesConfiguration.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SourceControlConfigurationInner object
      */
-    public Observable<SourceControlConfigurationInner> createOrUpdateAsync(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, String sourceControlConfigurationName, String apiVersion, SourceControlConfigurationInner sourceControlConfiguration) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName, apiVersion, sourceControlConfiguration).map(new Func1<ServiceResponse<SourceControlConfigurationInner>, SourceControlConfigurationInner>() {
+    public Observable<SourceControlConfigurationInner> createOrUpdateAsync(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, String sourceControlConfigurationName, SourceControlConfigurationInner sourceControlConfiguration) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName, sourceControlConfiguration).map(new Func1<ServiceResponse<SourceControlConfigurationInner>, SourceControlConfigurationInner>() {
             @Override
             public SourceControlConfigurationInner call(ServiceResponse<SourceControlConfigurationInner> response) {
                 return response.body();
@@ -265,12 +258,11 @@ public class SourceControlConfigurationsInner {
      * @param clusterResourceName The Kubernetes cluster resource name - either managedClusters (for AKS clusters) or connectedClusters (for OnPrem K8S clusters). Possible values include: 'managedClusters', 'connectedClusters'
      * @param clusterName The name of the kubernetes cluster.
      * @param sourceControlConfigurationName Name of the Source Control Configuration.
-     * @param apiVersion The API version to be used with the HTTP request.
      * @param sourceControlConfiguration Properties necessary to Create KubernetesConfiguration.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SourceControlConfigurationInner object
      */
-    public Observable<ServiceResponse<SourceControlConfigurationInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, String sourceControlConfigurationName, String apiVersion, SourceControlConfigurationInner sourceControlConfiguration) {
+    public Observable<ServiceResponse<SourceControlConfigurationInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, String sourceControlConfigurationName, SourceControlConfigurationInner sourceControlConfiguration) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -289,14 +281,14 @@ public class SourceControlConfigurationsInner {
         if (sourceControlConfigurationName == null) {
             throw new IllegalArgumentException("Parameter sourceControlConfigurationName is required and cannot be null.");
         }
-        if (apiVersion == null) {
-            throw new IllegalArgumentException("Parameter apiVersion is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         if (sourceControlConfiguration == null) {
             throw new IllegalArgumentException("Parameter sourceControlConfiguration is required and cannot be null.");
         }
         Validator.validate(sourceControlConfiguration);
-        return service.createOrUpdate(this.client.subscriptionId(), resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName, apiVersion, sourceControlConfiguration, this.client.acceptLanguage(), this.client.userAgent())
+        return service.createOrUpdate(this.client.subscriptionId(), resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName, this.client.apiVersion(), sourceControlConfiguration, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SourceControlConfigurationInner>>>() {
                 @Override
                 public Observable<ServiceResponse<SourceControlConfigurationInner>> call(Response<ResponseBody> response) {
@@ -326,13 +318,12 @@ public class SourceControlConfigurationsInner {
      * @param clusterResourceName The Kubernetes cluster resource name - either managedClusters (for AKS clusters) or connectedClusters (for OnPrem K8S clusters). Possible values include: 'managedClusters', 'connectedClusters'
      * @param clusterName The name of the kubernetes cluster.
      * @param sourceControlConfigurationName Name of the Source Control Configuration.
-     * @param apiVersion The API version to be used with the HTTP request.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void delete(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, String sourceControlConfigurationName, String apiVersion) {
-        deleteWithServiceResponseAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName, apiVersion).toBlocking().last().body();
+    public void delete(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, String sourceControlConfigurationName) {
+        deleteWithServiceResponseAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName).toBlocking().last().body();
     }
 
     /**
@@ -343,13 +334,12 @@ public class SourceControlConfigurationsInner {
      * @param clusterResourceName The Kubernetes cluster resource name - either managedClusters (for AKS clusters) or connectedClusters (for OnPrem K8S clusters). Possible values include: 'managedClusters', 'connectedClusters'
      * @param clusterName The name of the kubernetes cluster.
      * @param sourceControlConfigurationName Name of the Source Control Configuration.
-     * @param apiVersion The API version to be used with the HTTP request.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, String sourceControlConfigurationName, String apiVersion, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName, apiVersion), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, String sourceControlConfigurationName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName), serviceCallback);
     }
 
     /**
@@ -360,12 +350,11 @@ public class SourceControlConfigurationsInner {
      * @param clusterResourceName The Kubernetes cluster resource name - either managedClusters (for AKS clusters) or connectedClusters (for OnPrem K8S clusters). Possible values include: 'managedClusters', 'connectedClusters'
      * @param clusterName The name of the kubernetes cluster.
      * @param sourceControlConfigurationName Name of the Source Control Configuration.
-     * @param apiVersion The API version to be used with the HTTP request.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<Void> deleteAsync(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, String sourceControlConfigurationName, String apiVersion) {
-        return deleteWithServiceResponseAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName, apiVersion).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Void> deleteAsync(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, String sourceControlConfigurationName) {
+        return deleteWithServiceResponseAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
                 return response.body();
@@ -381,11 +370,10 @@ public class SourceControlConfigurationsInner {
      * @param clusterResourceName The Kubernetes cluster resource name - either managedClusters (for AKS clusters) or connectedClusters (for OnPrem K8S clusters). Possible values include: 'managedClusters', 'connectedClusters'
      * @param clusterName The name of the kubernetes cluster.
      * @param sourceControlConfigurationName Name of the Source Control Configuration.
-     * @param apiVersion The API version to be used with the HTTP request.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, String sourceControlConfigurationName, String apiVersion) {
+    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, String sourceControlConfigurationName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -404,10 +392,10 @@ public class SourceControlConfigurationsInner {
         if (sourceControlConfigurationName == null) {
             throw new IllegalArgumentException("Parameter sourceControlConfigurationName is required and cannot be null.");
         }
-        if (apiVersion == null) {
-            throw new IllegalArgumentException("Parameter apiVersion is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Observable<Response<ResponseBody>> observable = service.delete(this.client.subscriptionId(), resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        Observable<Response<ResponseBody>> observable = service.delete(this.client.subscriptionId(), resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
 
@@ -419,13 +407,12 @@ public class SourceControlConfigurationsInner {
      * @param clusterResourceName The Kubernetes cluster resource name - either managedClusters (for AKS clusters) or connectedClusters (for OnPrem K8S clusters). Possible values include: 'managedClusters', 'connectedClusters'
      * @param clusterName The name of the kubernetes cluster.
      * @param sourceControlConfigurationName Name of the Source Control Configuration.
-     * @param apiVersion The API version to be used with the HTTP request.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void beginDelete(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, String sourceControlConfigurationName, String apiVersion) {
-        beginDeleteWithServiceResponseAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName, apiVersion).toBlocking().single().body();
+    public void beginDelete(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, String sourceControlConfigurationName) {
+        beginDeleteWithServiceResponseAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName).toBlocking().single().body();
     }
 
     /**
@@ -436,13 +423,12 @@ public class SourceControlConfigurationsInner {
      * @param clusterResourceName The Kubernetes cluster resource name - either managedClusters (for AKS clusters) or connectedClusters (for OnPrem K8S clusters). Possible values include: 'managedClusters', 'connectedClusters'
      * @param clusterName The name of the kubernetes cluster.
      * @param sourceControlConfigurationName Name of the Source Control Configuration.
-     * @param apiVersion The API version to be used with the HTTP request.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, String sourceControlConfigurationName, String apiVersion, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName, apiVersion), serviceCallback);
+    public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, String sourceControlConfigurationName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName), serviceCallback);
     }
 
     /**
@@ -453,12 +439,11 @@ public class SourceControlConfigurationsInner {
      * @param clusterResourceName The Kubernetes cluster resource name - either managedClusters (for AKS clusters) or connectedClusters (for OnPrem K8S clusters). Possible values include: 'managedClusters', 'connectedClusters'
      * @param clusterName The name of the kubernetes cluster.
      * @param sourceControlConfigurationName Name of the Source Control Configuration.
-     * @param apiVersion The API version to be used with the HTTP request.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> beginDeleteAsync(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, String sourceControlConfigurationName, String apiVersion) {
-        return beginDeleteWithServiceResponseAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName, apiVersion).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Void> beginDeleteAsync(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, String sourceControlConfigurationName) {
+        return beginDeleteWithServiceResponseAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
                 return response.body();
@@ -474,11 +459,10 @@ public class SourceControlConfigurationsInner {
      * @param clusterResourceName The Kubernetes cluster resource name - either managedClusters (for AKS clusters) or connectedClusters (for OnPrem K8S clusters). Possible values include: 'managedClusters', 'connectedClusters'
      * @param clusterName The name of the kubernetes cluster.
      * @param sourceControlConfigurationName Name of the Source Control Configuration.
-     * @param apiVersion The API version to be used with the HTTP request.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, String sourceControlConfigurationName, String apiVersion) {
+    public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, String sourceControlConfigurationName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -497,10 +481,10 @@ public class SourceControlConfigurationsInner {
         if (sourceControlConfigurationName == null) {
             throw new IllegalArgumentException("Parameter sourceControlConfigurationName is required and cannot be null.");
         }
-        if (apiVersion == null) {
-            throw new IllegalArgumentException("Parameter apiVersion is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.beginDelete(this.client.subscriptionId(), resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.beginDelete(this.client.subscriptionId(), resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -529,14 +513,13 @@ public class SourceControlConfigurationsInner {
      * @param clusterRp The Kubernetes cluster RP - either Microsoft.ContainerService (for AKS clusters) or Microsoft.Kubernetes (for OnPrem K8S clusters). Possible values include: 'Microsoft.ContainerService', 'Microsoft.Kubernetes'
      * @param clusterResourceName The Kubernetes cluster resource name - either managedClusters (for AKS clusters) or connectedClusters (for OnPrem K8S clusters). Possible values include: 'managedClusters', 'connectedClusters'
      * @param clusterName The name of the kubernetes cluster.
-     * @param apiVersion The API version to be used with the HTTP request.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SourceControlConfigurationInner&gt; object if successful.
      */
-    public PagedList<SourceControlConfigurationInner> list(final String resourceGroupName, final String clusterRp, final String clusterResourceName, final String clusterName, final String apiVersion) {
-        ServiceResponse<Page<SourceControlConfigurationInner>> response = listSinglePageAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, apiVersion).toBlocking().single();
+    public PagedList<SourceControlConfigurationInner> list(final String resourceGroupName, final String clusterRp, final String clusterResourceName, final String clusterName) {
+        ServiceResponse<Page<SourceControlConfigurationInner>> response = listSinglePageAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName).toBlocking().single();
         return new PagedList<SourceControlConfigurationInner>(response.body()) {
             @Override
             public Page<SourceControlConfigurationInner> nextPage(String nextPageLink) {
@@ -552,14 +535,13 @@ public class SourceControlConfigurationsInner {
      * @param clusterRp The Kubernetes cluster RP - either Microsoft.ContainerService (for AKS clusters) or Microsoft.Kubernetes (for OnPrem K8S clusters). Possible values include: 'Microsoft.ContainerService', 'Microsoft.Kubernetes'
      * @param clusterResourceName The Kubernetes cluster resource name - either managedClusters (for AKS clusters) or connectedClusters (for OnPrem K8S clusters). Possible values include: 'managedClusters', 'connectedClusters'
      * @param clusterName The name of the kubernetes cluster.
-     * @param apiVersion The API version to be used with the HTTP request.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<SourceControlConfigurationInner>> listAsync(final String resourceGroupName, final String clusterRp, final String clusterResourceName, final String clusterName, final String apiVersion, final ListOperationCallback<SourceControlConfigurationInner> serviceCallback) {
+    public ServiceFuture<List<SourceControlConfigurationInner>> listAsync(final String resourceGroupName, final String clusterRp, final String clusterResourceName, final String clusterName, final ListOperationCallback<SourceControlConfigurationInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listSinglePageAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, apiVersion),
+            listSinglePageAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName),
             new Func1<String, Observable<ServiceResponse<Page<SourceControlConfigurationInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SourceControlConfigurationInner>>> call(String nextPageLink) {
@@ -576,12 +558,11 @@ public class SourceControlConfigurationsInner {
      * @param clusterRp The Kubernetes cluster RP - either Microsoft.ContainerService (for AKS clusters) or Microsoft.Kubernetes (for OnPrem K8S clusters). Possible values include: 'Microsoft.ContainerService', 'Microsoft.Kubernetes'
      * @param clusterResourceName The Kubernetes cluster resource name - either managedClusters (for AKS clusters) or connectedClusters (for OnPrem K8S clusters). Possible values include: 'managedClusters', 'connectedClusters'
      * @param clusterName The name of the kubernetes cluster.
-     * @param apiVersion The API version to be used with the HTTP request.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SourceControlConfigurationInner&gt; object
      */
-    public Observable<Page<SourceControlConfigurationInner>> listAsync(final String resourceGroupName, final String clusterRp, final String clusterResourceName, final String clusterName, final String apiVersion) {
-        return listWithServiceResponseAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, apiVersion)
+    public Observable<Page<SourceControlConfigurationInner>> listAsync(final String resourceGroupName, final String clusterRp, final String clusterResourceName, final String clusterName) {
+        return listWithServiceResponseAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName)
             .map(new Func1<ServiceResponse<Page<SourceControlConfigurationInner>>, Page<SourceControlConfigurationInner>>() {
                 @Override
                 public Page<SourceControlConfigurationInner> call(ServiceResponse<Page<SourceControlConfigurationInner>> response) {
@@ -597,12 +578,11 @@ public class SourceControlConfigurationsInner {
      * @param clusterRp The Kubernetes cluster RP - either Microsoft.ContainerService (for AKS clusters) or Microsoft.Kubernetes (for OnPrem K8S clusters). Possible values include: 'Microsoft.ContainerService', 'Microsoft.Kubernetes'
      * @param clusterResourceName The Kubernetes cluster resource name - either managedClusters (for AKS clusters) or connectedClusters (for OnPrem K8S clusters). Possible values include: 'managedClusters', 'connectedClusters'
      * @param clusterName The name of the kubernetes cluster.
-     * @param apiVersion The API version to be used with the HTTP request.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SourceControlConfigurationInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SourceControlConfigurationInner>>> listWithServiceResponseAsync(final String resourceGroupName, final String clusterRp, final String clusterResourceName, final String clusterName, final String apiVersion) {
-        return listSinglePageAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, apiVersion)
+    public Observable<ServiceResponse<Page<SourceControlConfigurationInner>>> listWithServiceResponseAsync(final String resourceGroupName, final String clusterRp, final String clusterResourceName, final String clusterName) {
+        return listSinglePageAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName)
             .concatMap(new Func1<ServiceResponse<Page<SourceControlConfigurationInner>>, Observable<ServiceResponse<Page<SourceControlConfigurationInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SourceControlConfigurationInner>>> call(ServiceResponse<Page<SourceControlConfigurationInner>> page) {
@@ -622,11 +602,10 @@ public class SourceControlConfigurationsInner {
     ServiceResponse<PageImpl<SourceControlConfigurationInner>> * @param clusterRp The Kubernetes cluster RP - either Microsoft.ContainerService (for AKS clusters) or Microsoft.Kubernetes (for OnPrem K8S clusters). Possible values include: 'Microsoft.ContainerService', 'Microsoft.Kubernetes'
     ServiceResponse<PageImpl<SourceControlConfigurationInner>> * @param clusterResourceName The Kubernetes cluster resource name - either managedClusters (for AKS clusters) or connectedClusters (for OnPrem K8S clusters). Possible values include: 'managedClusters', 'connectedClusters'
     ServiceResponse<PageImpl<SourceControlConfigurationInner>> * @param clusterName The name of the kubernetes cluster.
-    ServiceResponse<PageImpl<SourceControlConfigurationInner>> * @param apiVersion The API version to be used with the HTTP request.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SourceControlConfigurationInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<SourceControlConfigurationInner>>> listSinglePageAsync(final String resourceGroupName, final String clusterRp, final String clusterResourceName, final String clusterName, final String apiVersion) {
+    public Observable<ServiceResponse<Page<SourceControlConfigurationInner>>> listSinglePageAsync(final String resourceGroupName, final String clusterRp, final String clusterResourceName, final String clusterName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -642,10 +621,10 @@ public class SourceControlConfigurationsInner {
         if (clusterName == null) {
             throw new IllegalArgumentException("Parameter clusterName is required and cannot be null.");
         }
-        if (apiVersion == null) {
-            throw new IllegalArgumentException("Parameter apiVersion is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.list(this.client.subscriptionId(), resourceGroupName, clusterRp, clusterResourceName, clusterName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.list(this.client.subscriptionId(), resourceGroupName, clusterRp, clusterResourceName, clusterName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SourceControlConfigurationInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SourceControlConfigurationInner>>> call(Response<ResponseBody> response) {

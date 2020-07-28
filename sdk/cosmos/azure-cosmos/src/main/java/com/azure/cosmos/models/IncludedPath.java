@@ -4,34 +4,44 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.HashIndex;
+import com.azure.cosmos.implementation.Index;
 import com.azure.cosmos.implementation.IndexKind;
+import com.azure.cosmos.implementation.JsonSerializable;
+import com.azure.cosmos.implementation.RangeIndex;
+import com.azure.cosmos.implementation.SpatialIndex;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * Represents an included path of the IndexingPolicy in the Azure Cosmos DB database service.
  */
-public final class IncludedPath extends JsonSerializable {
-    private Collection<Index> indexes;
+public final class IncludedPath {
+    private List<Index> indexes;
+    private JsonSerializable jsonSerializable;
 
     /**
      * Constructor.
+     *
+     * @param path the included path.
      */
-    public IncludedPath() {
-        super();
+    public IncludedPath(String path) {
+        this.jsonSerializable = new JsonSerializable();
+        this.setPath(path);
     }
 
     /**
      * Constructor.
      *
-     * @param jsonString the json string that represents the included path.
+     * @param objectNode the object node that represents the included path.
      */
-    public IncludedPath(String jsonString) {
-        super(jsonString);
+    IncludedPath(ObjectNode objectNode) {
+        this.jsonSerializable = new JsonSerializable(objectNode);
     }
 
     /**
@@ -40,7 +50,7 @@ public final class IncludedPath extends JsonSerializable {
      * @return the path.
      */
     public String getPath() {
-        return super.getString(Constants.Properties.PATH);
+        return this.jsonSerializable.getString(Constants.Properties.PATH);
     }
 
     /**
@@ -50,7 +60,7 @@ public final class IncludedPath extends JsonSerializable {
      * @return the Included Path.
      */
     public IncludedPath setPath(String path) {
-        super.set(Constants.Properties.PATH, path);
+        this.jsonSerializable.set(Constants.Properties.PATH, path);
         return this;
     }
 
@@ -59,7 +69,7 @@ public final class IncludedPath extends JsonSerializable {
      *
      * @return the included paths.
      */
-    public Collection<Index> getIndexes() {
+    List<Index> getIndexes() {
         if (this.indexes == null) {
             this.indexes = this.getIndexCollection();
 
@@ -77,15 +87,15 @@ public final class IncludedPath extends JsonSerializable {
      * @param indexes the indexes
      * @return the indexes
      */
-    public IncludedPath setIndexes(Collection<Index> indexes) {
+    IncludedPath setIndexes(List<Index> indexes) {
         this.indexes = indexes;
         return this;
     }
 
-    private Collection<Index> getIndexCollection() {
-        if (this.getPropertyBag() != null && this.getPropertyBag().has(Constants.Properties.INDEXES)) {
-            ArrayNode jsonArray = (ArrayNode) this.getPropertyBag().get(Constants.Properties.INDEXES);
-            Collection<Index> result = new ArrayList<Index>();
+    private List<Index> getIndexCollection() {
+        if (this.jsonSerializable.getPropertyBag() != null && this.jsonSerializable.getPropertyBag().has(Constants.Properties.INDEXES)) {
+            ArrayNode jsonArray = (ArrayNode) this.jsonSerializable.getPropertyBag().get(Constants.Properties.INDEXES);
+            List<Index> result = new ArrayList<Index>();
 
             for (int i = 0; i < jsonArray.size(); i++) {
                 JsonNode jsonObject = jsonArray.get(i);
@@ -113,15 +123,16 @@ public final class IncludedPath extends JsonSerializable {
         return null;
     }
 
-    @Override
-    protected void populatePropertyBag() {
-        super.populatePropertyBag();
+    void populatePropertyBag() {
+        this.jsonSerializable.populatePropertyBag();
         if (this.indexes != null) {
             for (Index index : this.indexes) {
                 index.populatePropertyBag();
             }
 
-            super.set(Constants.Properties.INDEXES, this.indexes);
+            this.jsonSerializable.set(Constants.Properties.INDEXES, this.indexes);
         }
     }
+
+    JsonSerializable getJsonSerializable() { return this.jsonSerializable; }
 }

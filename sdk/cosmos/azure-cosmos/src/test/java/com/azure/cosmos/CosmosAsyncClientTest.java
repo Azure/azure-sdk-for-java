@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.guava27.Strings;
 import org.testng.ITest;
 import org.testng.annotations.AfterMethod;

@@ -3,6 +3,8 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PartitionKeyDefinitionVersion;
 import com.azure.cosmos.models.PartitionKind;
@@ -415,6 +417,12 @@ public class PartitionKeyInternalTest {
         verifyEffectivePartitionKeyEncoding(nonLatin, 101, "0B6D25D07748AB9CA0F523D4BAD146C8", true);
     }
 
+    @Test(groups = "unit")
+    private void serializeNonePartitionKey() {
+        String nonePartitionKey = PartitionKey.NONE.toString();
+        assertThat(nonePartitionKey).isEqualTo("");
+    }
+
     private static void validateEffectivePartitionKeyV2(String partitionKeyRangeJson, String expectedHexEncoding) {
         PartitionKeyInternal partitionKey = PartitionKeyInternal.fromJsonString(partitionKeyRangeJson);
 
@@ -422,7 +430,7 @@ public class PartitionKeyInternalTest {
         partitionKeyDefinition.setKind(PartitionKind.HASH);
         partitionKeyDefinition.setVersion(PartitionKeyDefinitionVersion.V2);
         ArrayList<String> paths = new ArrayList<String>();
-        for (int i = 0; i < partitionKey.getComponents().size(); i++) {
+        for (int i = 0; i < Utils.getCollectionSize(partitionKey.getComponents()); i++) {
             paths.add("/path" + i);
         }
 

@@ -101,7 +101,9 @@ import com.microsoft.azure.management.datafactory.v2018_06_01.SapOpenHubLinkedSe
 import com.microsoft.azure.management.datafactory.v2018_06_01.SapTableLinkedService;
 import com.microsoft.azure.management.datafactory.v2018_06_01.ServiceNowLinkedService;
 import com.microsoft.azure.management.datafactory.v2018_06_01.SftpServerLinkedService;
+import com.microsoft.azure.management.datafactory.v2018_06_01.SharePointOnlineListLinkedService;
 import com.microsoft.azure.management.datafactory.v2018_06_01.ShopifyLinkedService;
+import com.microsoft.azure.management.datafactory.v2018_06_01.SnowflakeLinkedService;
 import com.microsoft.azure.management.datafactory.v2018_06_01.SparkLinkedService;
 import com.microsoft.azure.management.datafactory.v2018_06_01.SqlServerLinkedService;
 import com.microsoft.azure.management.datafactory.v2018_06_01.SquareLinkedService;
@@ -120,6 +122,8 @@ import com.microsoft.azure.management.datafactory.v2018_06_01.ZohoLinkedService;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", defaultImpl = LinkedServiceInner.class)
 @JsonTypeName("LinkedService")
 @JsonSubTypes({
+    @JsonSubTypes.Type(name = "SharePointOnlineList", value = SharePointOnlineListLinkedService.class),
+    @JsonSubTypes.Type(name = "Snowflake", value = SnowflakeLinkedService.class),
     @JsonSubTypes.Type(name = "AzureFunction", value = AzureFunctionLinkedService.class),
     @JsonSubTypes.Type(name = "AzureDataExplorer", value = AzureDataExplorerLinkedService.class),
     @JsonSubTypes.Type(name = "SapTable", value = SapTableLinkedService.class),

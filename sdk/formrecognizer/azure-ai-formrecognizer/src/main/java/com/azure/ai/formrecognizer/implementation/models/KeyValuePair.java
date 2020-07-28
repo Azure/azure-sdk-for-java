@@ -7,9 +7,7 @@ package com.azure.ai.formrecognizer.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The KeyValuePair model.
- */
+/** The KeyValuePair model. */
 @Fluent
 public final class KeyValuePair {
     /*
@@ -37,9 +35,8 @@ public final class KeyValuePair {
     private float confidence;
 
     /**
-     * Get the label property: A user defined label for the key/value pair
-     * entry.
-     * 
+     * Get the label property: A user defined label for the key/value pair entry.
+     *
      * @return the label value.
      */
     public String getLabel() {
@@ -47,9 +44,8 @@ public final class KeyValuePair {
     }
 
     /**
-     * Set the label property: A user defined label for the key/value pair
-     * entry.
-     * 
+     * Set the label property: A user defined label for the key/value pair entry.
+     *
      * @param label the label value to set.
      * @return the KeyValuePair object itself.
      */
@@ -59,9 +55,8 @@ public final class KeyValuePair {
     }
 
     /**
-     * Get the key property: Information about the extracted key in a key-value
-     * pair.
-     * 
+     * Get the key property: Information about the extracted key in a key-value pair.
+     *
      * @return the key value.
      */
     public KeyValueElement getKey() {
@@ -69,9 +64,8 @@ public final class KeyValuePair {
     }
 
     /**
-     * Set the key property: Information about the extracted key in a key-value
-     * pair.
-     * 
+     * Set the key property: Information about the extracted key in a key-value pair.
+     *
      * @param key the key value to set.
      * @return the KeyValuePair object itself.
      */
@@ -81,9 +75,8 @@ public final class KeyValuePair {
     }
 
     /**
-     * Get the value property: Information about the extracted value in a
-     * key-value pair.
-     * 
+     * Get the value property: Information about the extracted value in a key-value pair.
+     *
      * @return the value value.
      */
     public KeyValueElement getValue() {
@@ -91,9 +84,8 @@ public final class KeyValuePair {
     }
 
     /**
-     * Set the value property: Information about the extracted value in a
-     * key-value pair.
-     * 
+     * Set the value property: Information about the extracted value in a key-value pair.
+     *
      * @param value the value value to set.
      * @return the KeyValuePair object itself.
      */
@@ -104,7 +96,7 @@ public final class KeyValuePair {
 
     /**
      * Get the confidence property: Confidence value.
-     * 
+     *
      * @return the confidence value.
      */
     public float getConfidence() {
@@ -113,7 +105,7 @@ public final class KeyValuePair {
 
     /**
      * Set the confidence property: Confidence value.
-     * 
+     *
      * @param confidence the confidence value to set.
      * @return the KeyValuePair object itself.
      */

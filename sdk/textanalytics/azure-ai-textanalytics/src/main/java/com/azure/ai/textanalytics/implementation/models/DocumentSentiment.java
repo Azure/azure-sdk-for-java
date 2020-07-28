@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The DocumentSentiment model.
- */
+/** The DocumentSentiment model. */
 @Fluent
 public final class DocumentSentiment {
     /*
@@ -21,14 +19,14 @@ public final class DocumentSentiment {
 
     /*
      * Predicted sentiment for document (Negative, Neutral, Positive, or
-     * Mixed). Possible values include: 'positive', 'neutral', 'negative',
-     * 'mixed'
+     * Mixed).
      */
     @JsonProperty(value = "sentiment", required = true)
     private DocumentSentimentValue sentiment;
 
     /*
-     * The statistics property.
+     * if showStats=true was specified in the request this field will contain
+     * information about the document payload.
      */
     @JsonProperty(value = "statistics")
     private DocumentStatistics statistics;
@@ -37,14 +35,20 @@ public final class DocumentSentiment {
      * Document level sentiment confidence scores between 0 and 1 for each
      * sentiment class.
      */
-    @JsonProperty(value = "documentScores", required = true)
-    private SentimentConfidenceScorePerLabel documentScores;
+    @JsonProperty(value = "confidenceScores", required = true)
+    private SentimentConfidenceScorePerLabel confidenceScores;
 
     /*
      * Sentence level sentiment analysis.
      */
     @JsonProperty(value = "sentences", required = true)
     private List<SentenceSentiment> sentences;
+
+    /*
+     * Warnings encountered while processing document.
+     */
+    @JsonProperty(value = "warnings", required = true)
+    private List<TextAnalyticsWarning> warnings;
 
     /**
      * Get the id property: Unique, non-empty document identifier.
@@ -67,9 +71,7 @@ public final class DocumentSentiment {
     }
 
     /**
-     * Get the sentiment property: Predicted sentiment for document (Negative,
-     * Neutral, Positive, or Mixed). Possible values include: 'positive',
-     * 'neutral', 'negative', 'mixed'.
+     * Get the sentiment property: Predicted sentiment for document (Negative, Neutral, Positive, or Mixed).
      *
      * @return the sentiment value.
      */
@@ -78,9 +80,7 @@ public final class DocumentSentiment {
     }
 
     /**
-     * Set the sentiment property: Predicted sentiment for document (Negative,
-     * Neutral, Positive, or Mixed). Possible values include: 'positive',
-     * 'neutral', 'negative', 'mixed'.
+     * Set the sentiment property: Predicted sentiment for document (Negative, Neutral, Positive, or Mixed).
      *
      * @param sentiment the sentiment value to set.
      * @return the DocumentSentiment object itself.
@@ -91,7 +91,8 @@ public final class DocumentSentiment {
     }
 
     /**
-     * Get the statistics property: The statistics property.
+     * Get the statistics property: if showStats=true was specified in the request this field will contain information
+     * about the document payload.
      *
      * @return the statistics value.
      */
@@ -100,7 +101,8 @@ public final class DocumentSentiment {
     }
 
     /**
-     * Set the statistics property: The statistics property.
+     * Set the statistics property: if showStats=true was specified in the request this field will contain information
+     * about the document payload.
      *
      * @param statistics the statistics value to set.
      * @return the DocumentSentiment object itself.
@@ -111,24 +113,24 @@ public final class DocumentSentiment {
     }
 
     /**
-     * Get the documentScores property: Document level sentiment confidence
-     * scores between 0 and 1 for each sentiment class.
+     * Get the confidenceScores property: Document level sentiment confidence scores between 0 and 1 for each sentiment
+     * class.
      *
-     * @return the documentScores value.
+     * @return the confidenceScores value.
      */
-    public SentimentConfidenceScorePerLabel getDocumentScores() {
-        return this.documentScores;
+    public SentimentConfidenceScorePerLabel getConfidenceScores() {
+        return this.confidenceScores;
     }
 
     /**
-     * Set the documentScores property: Document level sentiment confidence
-     * scores between 0 and 1 for each sentiment class.
+     * Set the confidenceScores property: Document level sentiment confidence scores between 0 and 1 for each sentiment
+     * class.
      *
-     * @param documentScores the documentScores value to set.
+     * @param confidenceScores the confidenceScores value to set.
      * @return the DocumentSentiment object itself.
      */
-    public DocumentSentiment setDocumentScores(SentimentConfidenceScorePerLabel documentScores) {
-        this.documentScores = documentScores;
+    public DocumentSentiment setConfidenceScores(SentimentConfidenceScorePerLabel confidenceScores) {
+        this.confidenceScores = confidenceScores;
         return this;
     }
 
@@ -149,6 +151,26 @@ public final class DocumentSentiment {
      */
     public DocumentSentiment setSentences(List<SentenceSentiment> sentences) {
         this.sentences = sentences;
+        return this;
+    }
+
+    /**
+     * Get the warnings property: Warnings encountered while processing document.
+     *
+     * @return the warnings value.
+     */
+    public List<TextAnalyticsWarning> getWarnings() {
+        return this.warnings;
+    }
+
+    /**
+     * Set the warnings property: Warnings encountered while processing document.
+     *
+     * @param warnings the warnings value to set.
+     * @return the DocumentSentiment object itself.
+     */
+    public DocumentSentiment setWarnings(List<TextAnalyticsWarning> warnings) {
+        this.warnings = warnings;
         return this;
     }
 }

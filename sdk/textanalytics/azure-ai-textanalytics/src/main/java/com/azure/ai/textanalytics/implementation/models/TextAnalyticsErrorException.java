@@ -7,9 +7,7 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 
-/**
- * Exception thrown for an invalid response with TextAnalyticsError information.
- */
+/** Exception thrown for an invalid response with TextAnalyticsError information. */
 public final class TextAnalyticsErrorException extends HttpResponseException {
     /**
      * Initializes a new instance of the TextAnalyticsErrorException class.

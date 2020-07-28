@@ -3,8 +3,8 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.models.CosmosUserProperties;
 import com.azure.cosmos.models.CosmosUserResponse;
+import com.azure.cosmos.models.CosmosUserProperties;
 
 /**
  * The type Cosmos sync user.
@@ -39,32 +39,29 @@ public class CosmosUser {
     /**
      * Read cosmos user
      *
-     * @return the cosmos sync user response
-     * @throws CosmosClientException the cosmos client exception
+     * @return the cosmos user response
      */
-    public CosmosUserResponse read() throws CosmosClientException {
-        return database.mapUserResponseAndBlock(asyncUser.read());
+    public CosmosUserResponse read() {
+        return database.blockUserResponse(asyncUser.read());
     }
 
     /**
      * Replace cosmos user.
      *
      * @param userProperties the user properties
-     * @return the cosmos sync user response
-     * @throws CosmosClientException the cosmos client exception
+     * @return the cosmos user response
      */
-    public CosmosUserResponse replace(CosmosUserProperties userProperties) throws CosmosClientException {
-        return database.mapUserResponseAndBlock(asyncUser.replace(userProperties));
+    public CosmosUserResponse replace(CosmosUserProperties userProperties) {
+        return database.blockUserResponse(asyncUser.replace(userProperties));
     }
 
     /**
      * Delete cosmos user.
      *
-     * @return the cosmos sync user response
-     * @throws CosmosClientException the cosmos client exception
+     * @return the cosmos user response
      */
-    public CosmosUserResponse delete() throws CosmosClientException {
-        return database.mapUserResponseAndBlock(asyncUser.delete());
+    public CosmosUserResponse delete() {
+        return database.blockUserResponse(asyncUser.delete());
     }
 
 }

@@ -5,19 +5,16 @@ package com.azure.search.documents;
 import com.azure.core.http.rest.PagedIterableBase;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.Context;
+import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.models.SuggestOptions;
 import com.azure.search.documents.models.SuggestResult;
 import com.azure.search.documents.test.environment.models.Author;
 import com.azure.search.documents.test.environment.models.Book;
 import com.azure.search.documents.test.environment.models.Hotel;
 import com.azure.search.documents.util.SuggestPagedResponse;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.Test;
 
-import java.text.SimpleDateFormat;
+import java.net.HttpURLConnection;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,33 +23,51 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TimeZone;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import static com.azure.search.documents.SearchTestBase.HOTELS_DATA_JSON;
-import static com.azure.search.documents.SearchTestBase.HOTELS_INDEX_NAME;
+import static com.azure.search.documents.TestHelpers.assertHttpResponseException;
+import static com.azure.search.documents.TestHelpers.uploadDocuments;
+import static com.azure.search.documents.TestHelpers.uploadDocumentsJson;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class SuggestSyncTests extends SearchIndexClientTestBase {
+public class SuggestSyncTests extends SearchTestBase {
     private static final String BOOKS_INDEX_JSON = "BooksIndexData.json";
-    private static final String BOOKS_INDEX_NAME = "books";
 
-    private SearchIndexClient client;
+    private final List<String> indexesToDelete = new ArrayList<>();
+
+    private SearchClient client;
+
+    @Override
+    protected void afterTest() {
+        super.afterTest();
+
+        SearchIndexClient serviceClient = getSearchIndexClientBuilder().buildClient();
+        for (String index : indexesToDelete) {
+            serviceClient.deleteIndex(index);
+        }
+    }
+
+    private SearchClient setupClient(Supplier<String> indexSupplier) {
+        String indexName = indexSupplier.get();
+        indexesToDelete.add(indexName);
+
+        return getSearchClientBuilder(indexName).buildClient();
+    }
 
     @Test
     public void canSuggestDynamicDocuments() {
-        createHotelIndex();
-        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
+        client = setupClient(this::createHotelIndex);
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
         SuggestOptions suggestOptions = new SuggestOptions()
             .setOrderBy("HotelId");
 
         Iterator<SuggestPagedResponse> suggestResultIterator = client.suggest("more",
-            "sg", suggestOptions, generateRequestOptions(), Context.NONE)
+            "sg", suggestOptions, Context.NONE)
             .iterableByPage()
             .iterator();
 
@@ -62,15 +77,14 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
 
     @Test
     public void searchFieldsExcludesFieldsFromSuggest() {
-        createHotelIndex();
-        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
+        client = setupClient(this::createHotelIndex);
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
         SuggestOptions suggestOptions = new SuggestOptions()
             .setSearchFields("HotelName");
 
         Iterator<SuggestPagedResponse> suggestResultIterator = client.suggest("luxury",
-            "sg", suggestOptions, generateRequestOptions(), Context.NONE)
+            "sg", suggestOptions, Context.NONE)
             .iterableByPage()
             .iterator();
 
@@ -80,8 +94,7 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
 
     @Test
     public void canUseSuggestHitHighlighting() {
-        createHotelIndex();
-        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
+        client = setupClient(this::createHotelIndex);
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
         SuggestOptions suggestOptions = new SuggestOptions()
@@ -91,7 +104,7 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
             .setTop(1);
 
         Iterator<SuggestPagedResponse> suggestResultIterator = client.suggest("hotel",
-            "sg", suggestOptions, generateRequestOptions(), Context.NONE)
+            "sg", suggestOptions, Context.NONE)
             .iterableByPage()
             .iterator();
 
@@ -101,15 +114,14 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
 
     @Test
     public void canGetFuzzySuggestions() {
-        createHotelIndex();
-        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
+        client = setupClient(this::createHotelIndex);
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
         SuggestOptions suggestOptions = new SuggestOptions()
             .setUseFuzzyMatching(true);
 
         Iterator<SuggestPagedResponse> suggestResultIterator = client.suggest("hitel",
-            "sg", suggestOptions, generateRequestOptions(), Context.NONE)
+            "sg", suggestOptions, Context.NONE)
             .iterableByPage()
             .iterator();
 
@@ -119,8 +131,7 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
 
     @Test
     public void canSuggestStaticallyTypedDocuments() {
-        createHotelIndex();
-        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
+        client = setupClient(this::createHotelIndex);
 
         List<Map<String, Object>> hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
         //arrange
@@ -129,7 +140,7 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
 
         //act
         Iterator<SuggestPagedResponse> suggestResultIterator = client.suggest("more",
-            "sg", suggestOptions, generateRequestOptions(), Context.NONE)
+            "sg", suggestOptions, Context.NONE)
             .iterableByPage()
             .iterator();
         //assert
@@ -138,8 +149,7 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
 
     @Test
     public void canSuggestWithDateTimeInStaticModel() {
-        setupIndexFromJsonFile(BOOKS_INDEX_JSON);
-        client = getSearchIndexClientBuilder(BOOKS_INDEX_NAME).buildClient();
+        client = setupClient(() -> setupIndexFromJsonFile(BOOKS_INDEX_JSON));
 
         Author tolkien = new Author();
         tolkien.firstName("J.R.R.");
@@ -158,7 +168,7 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
         SuggestOptions suggestOptions = new SuggestOptions();
         suggestOptions.setSelect("ISBN", "Title", "PublishDate");
         Iterator<SuggestPagedResponse> suggestResultIterator = client.suggest("War",
-            "sg", suggestOptions, generateRequestOptions(), Context.NONE)
+            "sg", suggestOptions, Context.NONE)
             .iterableByPage()
             .iterator();
 
@@ -168,13 +178,12 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
 
     @Test
     public void fuzzyIsOffByDefault() {
-        createHotelIndex();
-        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
+        client = setupClient(this::createHotelIndex);
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         Iterator<SuggestPagedResponse> suggestResultIterator = client.suggest("hitel",
-            "sg", null, generateRequestOptions(), Context.NONE)
+            "sg", null, Context.NONE)
             .iterableByPage()
             .iterator();
 
@@ -189,38 +198,35 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
 
     @Test
     public void suggestThrowsWhenGivenBadSuggesterName() {
-        createHotelIndex();
-        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
+        client = setupClient(this::createHotelIndex);
 
         PagedIterableBase<SuggestResult, SuggestPagedResponse> suggestResultIterator = client.suggest("Hotel",
-            "Suggester does not exist", new SuggestOptions(), generateRequestOptions(), Context.NONE);
+            "Suggester does not exist", new SuggestOptions(), Context.NONE);
 
         assertHttpResponseException(
             () -> suggestResultIterator.iterableByPage().iterator().next(),
-            HttpResponseStatus.BAD_REQUEST,
+            HttpURLConnection.HTTP_BAD_REQUEST,
             "The specified suggester name 'Suggester does not exist' does not exist in this index definition.");
     }
 
     @Test
     public void suggestThrowsWhenRequestIsMalformed() {
-        createHotelIndex();
-        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
+        client = setupClient(this::createHotelIndex);
 
         SuggestOptions suggestOptions = new SuggestOptions().setOrderBy("This is not a valid orderby.");
 
         PagedIterableBase<SuggestResult, SuggestPagedResponse> suggestResultIterator = client.suggest("hotel",
-            "sg", suggestOptions, generateRequestOptions(), Context.NONE);
+            "sg", suggestOptions, Context.NONE);
 
         assertHttpResponseException(
             () -> suggestResultIterator.iterableByPage().iterator().next(),
-            HttpResponseStatus.BAD_REQUEST,
+            HttpURLConnection.HTTP_BAD_REQUEST,
             "Invalid expression: Syntax error at position 7 in 'This is not a valid orderby.'");
     }
 
     @Test
     public void testCanSuggestWithMinimumCoverage() {
-        createHotelIndex();
-        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
+        client = setupClient(this::createHotelIndex);
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
@@ -231,7 +237,7 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
 
         //act
         SuggestPagedResponse suggestPagedResponse = client.suggest("luxury",
-            "sg", suggestOptions, generateRequestOptions(), Context.NONE)
+            "sg", suggestOptions, Context.NONE)
             .iterableByPage()
             .iterator()
             .next();
@@ -242,8 +248,7 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
 
     @Test
     public void testTopTrimsResults() {
-        createHotelIndex();
-        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
+        client = setupClient(this::createHotelIndex);
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
         //arrange
@@ -253,7 +258,7 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
 
         //act
         Iterator<SuggestPagedResponse> suggestResultIterator = client.suggest("hotel",
-            "sg", suggestOptions, generateRequestOptions(), Context.NONE)
+            "sg", suggestOptions, Context.NONE)
             .iterableByPage()
             .iterator();
 
@@ -263,8 +268,7 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
 
     @Test
     public void testCanFilter() {
-        createHotelIndex();
-        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
+        client = setupClient(this::createHotelIndex);
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
@@ -273,22 +277,21 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
             .setOrderBy("HotelId");
 
         SuggestPagedResponse suggestPagedResponse = client.suggest("hotel",
-            "sg", suggestOptions, generateRequestOptions(), Context.NONE)
+            "sg", suggestOptions, Context.NONE)
             .iterableByPage()
             .iterator()
             .next();
 
         assertNotNull(suggestPagedResponse);
         List<String> actualIds = suggestPagedResponse.getValue().stream()
-            .map(s -> (String) s.getDocument().get("HotelId")).collect(Collectors.toList());
+            .map(s -> (String) s.getDocument(SearchDocument.class).get("HotelId")).collect(Collectors.toList());
         List<String> expectedIds = Arrays.asList("1", "5");
         assertEquals(expectedIds, actualIds);
     }
 
     @Test
     public void testOrderByProgressivelyBreaksTies() {
-        createHotelIndex();
-        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
+        client = setupClient(this::createHotelIndex);
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
@@ -299,27 +302,26 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
                 "geo.distance(Location, geography'POINT(-122.0 49.0)')");
 
         SuggestPagedResponse suggestPagedResponse = client.suggest("hotel",
-            "sg", suggestOptions, generateRequestOptions(), Context.NONE)
+            "sg", suggestOptions, Context.NONE)
             .iterableByPage().iterator().next();
 
         assertNotNull(suggestPagedResponse);
         List<String> actualIds = suggestPagedResponse.getValue().stream()
-            .map(s -> (String) s.getDocument().get("HotelId")).collect(Collectors.toList());
+            .map(s -> (String) s.getDocument(SearchDocument.class).get("HotelId")).collect(Collectors.toList());
         List<String> expectedIds = Arrays.asList("1", "9", "4", "3", "5");
         assertEquals(expectedIds, actualIds);
     }
 
     @Test
     public void testCanSuggestWithSelectedFields() {
-        createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+        client = setupClient(this::createHotelIndex);
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         SuggestOptions suggestOptions = new SuggestOptions()
             .setSelect("HotelName", "Rating", "Address/City", "Rooms/Type");
         PagedIterableBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("secret",
-            "sg", suggestOptions, generateRequestOptions(), Context.NONE);
+            "sg", suggestOptions, Context.NONE);
 
         PagedResponse<SuggestResult> result = suggestResult.iterableByPage().iterator().next();
 
@@ -350,36 +352,29 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
     void verifyDynamicDocumentSuggest(SuggestPagedResponse suggestResultPagedResponse) {
         assertNotNull(suggestResultPagedResponse);
         assertEquals(2, suggestResultPagedResponse.getValue().size());
-        Hotel hotel = convertToType(suggestResultPagedResponse.getValue().get(0).getDocument(), Hotel.class);
+        Hotel hotel = suggestResultPagedResponse.getValue().get(0).getDocument(Hotel.class);
         assertEquals("10", hotel.hotelId());
     }
 
-    void verifyCanSuggestStaticallyTypedDocuments(SuggestPagedResponse suggestResultPagedResponse, List<Map<String, Object>> expectedHotels) {
+    void verifyCanSuggestStaticallyTypedDocuments(SuggestPagedResponse suggestResultPagedResponse,
+        List<Map<String, Object>> expectedHotels) {
         //sanity
         assertNotNull(suggestResultPagedResponse);
         List<SearchDocument> docs = suggestResultPagedResponse.getValue()
             .stream()
-            .map(suggestResult -> new SearchDocument(suggestResult.getDocument()))
+            .map(suggestResult -> suggestResult.getDocument(SearchDocument.class))
             .collect(Collectors.toList());
         List<SuggestResult> hotelsList = suggestResultPagedResponse.getValue();
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        df.setTimeZone(TimeZone.getDefault());
-        objectMapper.setDateFormat(df);
-        objectMapper.registerModule(new JavaTimeModule());
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
-        List<Hotel> expectedHotelsList = expectedHotels.stream().map(hotel ->
-            objectMapper.convertValue(hotel, Hotel.class))
-            .filter(h -> h.hotelId().equals("10") || h.hotelId().equals("8"))
-            .sorted(Comparator.comparing(Hotel::hotelId)).collect(Collectors.toList());
+        List<SearchDocument> expectedHotelsList = expectedHotels.stream().map(SearchDocument::new)
+            .filter(h -> h.get("HotelId").equals("10") || h.get("HotelId").equals("8"))
+            .sorted(Comparator.comparing(h -> h.get("HotelId").toString())).collect(Collectors.toList());
 
         //assert
         //verify fields
         assertEquals(2, docs.size());
         assertEquals(hotelsList.stream().map(SuggestResult::getText).collect(Collectors.toList()),
-            expectedHotelsList.stream().map(Hotel::description).collect(Collectors.toList()));
+            expectedHotelsList.stream().map(hotel -> hotel.get("Description")).collect(Collectors.toList()));
     }
 
     void verifyFuzzyIsOffByDefault(SuggestPagedResponse suggestResultPagedResponse) {
@@ -399,7 +394,7 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
         List<String> resultIds = suggestResultPagedResponse
             .getValue()
             .stream()
-            .map(hotel -> convertToType(hotel.getDocument(), Hotel.class).hotelId())
+            .map(hotel -> hotel.getDocument(Hotel.class).hotelId())
             .collect(Collectors.toList());
 
         assertEquals(Arrays.asList("1", "10", "2"), resultIds);
@@ -409,7 +404,7 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
         List<SuggestResult> books = suggestResultPagedResponse.getValue();
         List<SearchDocument> docs = suggestResultPagedResponse.getValue()
             .stream()
-            .map(suggestResult -> new SearchDocument(suggestResult.getDocument()))
+            .map(suggestResult -> new SearchDocument(suggestResult.getDocument(SearchDocument.class)))
             .collect(Collectors.toList());
 
         assertEquals(1, docs.size());
@@ -419,7 +414,7 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
     @SuppressWarnings("unchecked")
     void verifySuggestWithSelectedFields(PagedResponse<SuggestResult> suggestResultPagedResponse) {
         assertEquals(1, suggestResultPagedResponse.getValue().size());
-        SearchDocument result = suggestResultPagedResponse.getValue().get(0).getDocument();
+        SearchDocument result = suggestResultPagedResponse.getValue().get(0).getDocument(SearchDocument.class);
 
         assertEquals("Secret Point Motel", result.get("HotelName"));
         assertEquals(4, result.get("Rating"));

@@ -1,9 +1,3 @@
-resources:
-  repositories:
-    - repository: azure-sdk-build-tools
-      type: git
-      name: internal/azure-sdk-build-tools
-
 trigger:
   branches:
     include:
@@ -14,6 +8,10 @@ trigger:
   paths:
     include:
       - sdk/synapse/
+    exclude:
+      - sdk/synapse/azure-analytics-synapse-accesscontrol
+      - sdk/synapse/azure-analytics-synapse-artifacts
+      - sdk/synapse/azure-analytics-synapse-spark
 
 pr:
   branches:
@@ -25,6 +23,10 @@ pr:
   paths:
     include:
       - sdk/synapse/
+    exclude:
+      - sdk/synapse/azure-analytics-synapse-accesscontrol
+      - sdk/synapse/azure-analytics-synapse-artifacts
+      - sdk/synapse/azure-analytics-synapse-spark
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

@@ -7,9 +7,7 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The Entity model.
- */
+/** The Entity model. */
 @Fluent
 public final class Entity {
     /*
@@ -21,23 +19,23 @@ public final class Entity {
     /*
      * Entity type, such as Person/Location/Org/SSN etc
      */
-    @JsonProperty(value = "type", required = true)
-    private String type;
+    @JsonProperty(value = "category", required = true)
+    private String category;
 
     /*
      * Entity sub type, such as Age/Year/TimeRange etc
      */
-    @JsonProperty(value = "subtype")
-    private String subtype;
+    @JsonProperty(value = "subcategory")
+    private String subcategory;
 
     /*
-     * Start position (in Unicode characters) for the entity text.
+     * Start position for the entity text.
      */
     @JsonProperty(value = "offset", required = true)
     private int offset;
 
     /*
-     * Length (in Unicode characters) for the entity text.
+     * Length for the entity text.
      */
     @JsonProperty(value = "length", required = true)
     private int length;
@@ -45,8 +43,8 @@ public final class Entity {
     /*
      * Confidence score between 0 and 1 of the extracted entity.
      */
-    @JsonProperty(value = "score", required = true)
-    private double score;
+    @JsonProperty(value = "confidenceScore", required = true)
+    private double confidenceScore;
 
     /**
      * Get the text property: Entity text as appears in the request.
@@ -69,50 +67,47 @@ public final class Entity {
     }
 
     /**
-     * Get the type property: Entity type, such as Person/Location/Org/SSN etc.
+     * Get the category property: Entity type, such as Person/Location/Org/SSN etc.
      *
-     * @return the type value.
+     * @return the category value.
      */
-    public String getType() {
-        return this.type;
+    public String getCategory() {
+        return this.category;
     }
 
     /**
-     * Set the type property: Entity type, such as Person/Location/Org/SSN etc.
+     * Set the category property: Entity type, such as Person/Location/Org/SSN etc.
      *
-     * @param type the type value to set.
+     * @param category the category value to set.
      * @return the Entity object itself.
      */
-    public Entity setType(String type) {
-        this.type = type;
+    public Entity setCategory(String category) {
+        this.category = category;
         return this;
     }
 
     /**
-     * Get the subtype property: Entity sub type, such as Age/Year/TimeRange
-     * etc.
+     * Get the subcategory property: Entity sub type, such as Age/Year/TimeRange etc.
      *
-     * @return the subtype value.
+     * @return the subcategory value.
      */
-    public String getSubtype() {
-        return this.subtype;
+    public String getSubcategory() {
+        return this.subcategory;
     }
 
     /**
-     * Set the subtype property: Entity sub type, such as Age/Year/TimeRange
-     * etc.
+     * Set the subcategory property: Entity sub type, such as Age/Year/TimeRange etc.
      *
-     * @param subtype the subtype value to set.
+     * @param subcategory the subcategory value to set.
      * @return the Entity object itself.
      */
-    public Entity setSubtype(String subtype) {
-        this.subtype = subtype;
+    public Entity setSubcategory(String subcategory) {
+        this.subcategory = subcategory;
         return this;
     }
 
     /**
-     * Get the offset property: Start position (in Unicode characters) for the
-     * entity text.
+     * Get the offset property: Start position for the entity text.
      *
      * @return the offset value.
      */
@@ -121,8 +116,7 @@ public final class Entity {
     }
 
     /**
-     * Set the offset property: Start position (in Unicode characters) for the
-     * entity text.
+     * Set the offset property: Start position for the entity text.
      *
      * @param offset the offset value to set.
      * @return the Entity object itself.
@@ -133,8 +127,7 @@ public final class Entity {
     }
 
     /**
-     * Get the length property: Length (in Unicode characters) for the entity
-     * text.
+     * Get the length property: Length for the entity text.
      *
      * @return the length value.
      */
@@ -143,8 +136,7 @@ public final class Entity {
     }
 
     /**
-     * Set the length property: Length (in Unicode characters) for the entity
-     * text.
+     * Set the length property: Length for the entity text.
      *
      * @param length the length value to set.
      * @return the Entity object itself.
@@ -155,24 +147,22 @@ public final class Entity {
     }
 
     /**
-     * Get the score property: Confidence score between 0 and 1 of the
-     * extracted entity.
+     * Get the confidenceScore property: Confidence score between 0 and 1 of the extracted entity.
      *
-     * @return the score value.
+     * @return the confidenceScore value.
      */
-    public double getScore() {
-        return this.score;
+    public double getConfidenceScore() {
+        return this.confidenceScore;
     }
 
     /**
-     * Set the score property: Confidence score between 0 and 1 of the
-     * extracted entity.
+     * Set the confidenceScore property: Confidence score between 0 and 1 of the extracted entity.
      *
-     * @param score the score value to set.
+     * @param confidenceScore the confidenceScore value to set.
      * @return the Entity object itself.
      */
-    public Entity setScore(double score) {
-        this.score = score;
+    public Entity setConfidenceScore(double confidenceScore) {
+        this.confidenceScore = confidenceScore;
         return this;
     }
 }

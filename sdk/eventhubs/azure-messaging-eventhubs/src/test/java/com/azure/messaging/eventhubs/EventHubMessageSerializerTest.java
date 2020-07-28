@@ -102,13 +102,6 @@ public class EventHubMessageSerializerTest {
             Assertions.assertEquals(value, eventData.getProperties().get(key));
         });
 
-        // Verify that the partitionKey, offset, enqueued time, sequenceNumber properties are no longer in the system
-        // properties map.
-        for (String property : systemPropertyNames) {
-            Assertions.assertFalse(eventData.getSystemProperties().containsKey(property), property + " should not be in system properties map.");
-        }
-
-        // Verifying the contents of our message is the same.
     }
 
     /**

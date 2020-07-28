@@ -6,7 +6,7 @@
                 "Maven": {
                     "ArtifactId": "netty-handler-proxy",
                     "GroupId": "io.netty",
-                    "Version": "4.1.42.Final"
+                    "Version": "4.1.49.Final"
                 }
             }
         }

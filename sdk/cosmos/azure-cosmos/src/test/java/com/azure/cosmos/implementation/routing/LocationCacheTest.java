@@ -3,12 +3,12 @@
 
 package com.azure.cosmos.implementation.routing;
 
-import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.ConnectionPolicy;
+import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.LifeCycleUtils;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.DatabaseAccount;
-import com.azure.cosmos.models.DatabaseAccountLocation;
+import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DatabaseAccountManagerInternal;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
@@ -39,7 +39,6 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import static com.azure.cosmos.models.ModelBridgeUtils.createDatabaseAccountLocation;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -151,9 +150,9 @@ public class LocationCacheTest {
 
         this.cache.onDatabaseAccountRead(this.databaseAccount);
 
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
         connectionPolicy.setEndpointDiscoveryEnabled(enableEndpointDiscovery);
-        BridgeInternal.setUseMultipleWriteLocations(connectionPolicy, useMultipleWriteLocations);
+        connectionPolicy.setMultipleWriteRegionsEnabled(useMultipleWriteLocations);
         connectionPolicy.setPreferredRegions(this.preferredLocations);
 
         this.endpointManager = new GlobalEndpointManager(mockedClient, connectionPolicy, configs);
@@ -436,5 +435,13 @@ public class LocationCacheTest {
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
         }
+    }
+
+    private static DatabaseAccountLocation createDatabaseAccountLocation(String name, String endpoint) {
+        DatabaseAccountLocation dal = new DatabaseAccountLocation();
+        dal.setName(name);
+        dal.setEndpoint(endpoint);
+
+        return dal;
     }
 }

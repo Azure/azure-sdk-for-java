@@ -16,13 +16,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class IntentsSuggestionExample {
     /**
-     * The utterance. E.g.: what's the weather like in seattle?.
+     * The utterance. For example, "What's the weather like in seattle?".
      */
     @JsonProperty(value = "text")
     private String text;
 
     /**
-     * The utterance tokenized.
+     * The tokenized utterance.
      */
     @JsonProperty(value = "tokenizedText")
     private List<String> tokenizedText;

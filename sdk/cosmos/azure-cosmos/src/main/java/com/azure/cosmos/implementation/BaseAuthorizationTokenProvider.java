@@ -3,11 +3,10 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosKeyCredential;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
+import com.azure.cosmos.models.ModelBridgeInternal;
 
 import javax.crypto.Mac;
 import javax.crypto.SecretKey;
@@ -28,14 +27,14 @@ import java.util.Map;
 public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvider {
 
     private static final String AUTH_PREFIX = "type=master&ver=1.0&sig=";
-    private final CosmosKeyCredential cosmosKeyCredential;
+    private final AzureKeyCredential credential;
     private final Mac macInstance;
 
     //  stores current master key's hashcode for performance reasons.
     private int masterKeyHashCode;
 
-    public BaseAuthorizationTokenProvider(CosmosKeyCredential cosmosKeyCredential) {
-        this.cosmosKeyCredential = cosmosKeyCredential;
+    public BaseAuthorizationTokenProvider(AzureKeyCredential credential) {
+        this.credential = credential;
         this.macInstance = getMacInstance();
     }
 
@@ -120,7 +119,7 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
             throw new IllegalArgumentException("headers");
         }
 
-        if (StringUtils.isEmpty(this.cosmosKeyCredential.getKey())) {
+        if (StringUtils.isEmpty(this.credential.getKey())) {
             throw new IllegalArgumentException("key credentials cannot be empty");
         }
 
@@ -246,11 +245,11 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
     }
 
     private Mac getMacInstance() {
-        int masterKeyLatestHashCode = BridgeInternal.getHashCode(this.cosmosKeyCredential);
+        int masterKeyLatestHashCode = this.credential.getKey().hashCode();
 
         //  Master key has changed, or this is the first time we are getting mac instance
         if (masterKeyLatestHashCode != this.masterKeyHashCode) {
-            byte[] masterKeyBytes = this.cosmosKeyCredential.getKey().getBytes(StandardCharsets.UTF_8);
+            byte[] masterKeyBytes = this.credential.getKey().getBytes(StandardCharsets.UTF_8);
             byte[] masterKeyDecodedBytes = Utils.Base64Decoder.decode(masterKeyBytes);
             SecretKey signingKey = new SecretKeySpec(masterKeyDecodedBytes, "HMACSHA256");
             try {

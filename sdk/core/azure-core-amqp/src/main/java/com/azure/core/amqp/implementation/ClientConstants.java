@@ -9,14 +9,6 @@ public final class ClientConstants {
     public static final String FRAMEWORK_INFO = getFrameworkInfo();
 
     /**
-     * Gets the USER AGENT string as defined in:
-     * $/core/azure-core/src/main/java/com/azure/core/http/policy/UserAgentPolicy.java
-     * TODO (conniey): Extract logic from UserAgentPolicy into something we can use here.
-     */
-    public static final String USER_AGENT_TEMPLATE =
-        "%s/%s " + System.getProperty("java.version") + ";" + PLATFORM_INFO;
-
-    /**
      * The default maximum allowable size, in bytes, for a batch to be sent.
      */
     static final int MAX_MESSAGE_LENGTH_BYTES = 256 * 1024;

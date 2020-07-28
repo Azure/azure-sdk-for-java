@@ -4,9 +4,9 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Utils;
 import reactor.core.publisher.Flux;
@@ -14,7 +14,7 @@ import reactor.core.publisher.Flux;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 public final class SkipDocumentQueryExecutionContext<T extends Resource> implements IDocumentQueryExecutionComponent<T> {
@@ -31,17 +31,18 @@ public final class SkipDocumentQueryExecutionContext<T extends Resource> impleme
     }
 
     public static <T extends Resource> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
-        Function<String, Flux<IDocumentQueryExecutionComponent<T>>> createSourceComponentFunction,
+        BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createSourceComponentFunction,
         int skipCount,
-        String continuationToken) {
+        String continuationToken,
+        PipelinedDocumentQueryParams<T> documentQueryParams) {
         OffsetContinuationToken offsetContinuationToken;
         Utils.ValueHolder<OffsetContinuationToken> outOffsetContinuationToken = new Utils.ValueHolder<>();
         if (continuationToken != null) {
             if (!OffsetContinuationToken.tryParse(continuationToken, outOffsetContinuationToken)) {
                 String message = String.format("Invalid JSON in continuation token %s for Skip~Context",
                     continuationToken);
-                CosmosClientException dce =
-                    BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.BADREQUEST,
+                CosmosException dce =
+                    BridgeInternal.createCosmosException(HttpConstants.StatusCodes.BADREQUEST,
                     message);
                 return Flux.error(dce);
             }
@@ -51,7 +52,7 @@ public final class SkipDocumentQueryExecutionContext<T extends Resource> impleme
             offsetContinuationToken = new OffsetContinuationToken(skipCount, null);
         }
 
-        return createSourceComponentFunction.apply(offsetContinuationToken.getSourceToken())
+        return createSourceComponentFunction.apply(offsetContinuationToken.getSourceToken(), documentQueryParams)
                    .map(component -> new SkipDocumentQueryExecutionContext<>(component,
                        offsetContinuationToken.getOffset()));
     }

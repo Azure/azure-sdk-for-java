@@ -22,10 +22,12 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.IntegrationTestBase;
+import com.azure.messaging.eventhubs.TestUtils;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -39,7 +41,11 @@ import java.util.Map;
 
 import static com.azure.core.amqp.implementation.CbsAuthorizationType.SHARED_ACCESS_SIGNATURE;
 
-public class CBSChannelTest extends IntegrationTestBase {
+/**
+ * Verifies we authorize with Event Hubs CBS node correctly.
+ */
+@Tag(TestUtils.INTEGRATION)
+class CBSChannelTest extends IntegrationTestBase {
     private static final String CONNECTION_ID = "CbsChannelTest-Connection";
     private static String product;
     private static String clientVersion;
@@ -56,12 +62,12 @@ public class CBSChannelTest extends IntegrationTestBase {
     private ReactorHandlerProvider handlerProvider;
     private String tokenAudience;
 
-    public CBSChannelTest() {
+    CBSChannelTest() {
         super(new ClientLogger(CBSChannelTest.class));
     }
 
     @BeforeAll
-    public static void init() {
+    static void init() {
         Map<String, String> properties = CoreUtils.getProperties("azure-messaging-eventhubs.properties");
         product = properties.get("name");
         clientVersion = properties.get("version");
@@ -93,7 +99,7 @@ public class CBSChannelTest extends IntegrationTestBase {
     }
 
     @Test
-    public void successfullyAuthorizes() {
+    void successfullyAuthorizes() {
         // Arrange
         TokenCredential tokenCredential = new EventHubSharedKeyCredential(
             connectionProperties.getSharedAccessKeyName(), connectionProperties.getSharedAccessKey());
@@ -114,7 +120,7 @@ public class CBSChannelTest extends IntegrationTestBase {
     }
 
     @Test
-    public void unsuccessfulAuthorize() {
+    void unsuccessfulAuthorize() {
         // Arrange
         final TokenCredential invalidToken = new EventHubSharedKeyCredential(
             connectionProperties.getSharedAccessKeyName(), "Invalid shared access key.");

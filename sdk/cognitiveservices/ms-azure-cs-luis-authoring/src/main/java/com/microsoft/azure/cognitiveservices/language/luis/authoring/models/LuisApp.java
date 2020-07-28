@@ -58,7 +58,7 @@ public class LuisApp {
     private List<HierarchicalModel> entities;
 
     /**
-     * List of closed lists.
+     * List of list entities.
      */
     @JsonProperty(value = "closedLists")
     private List<ClosedList> closedLists;
@@ -68,6 +68,12 @@ public class LuisApp {
      */
     @JsonProperty(value = "composites")
     private List<HierarchicalModel> composites;
+
+    /**
+     * List of hierarchical entities.
+     */
+    @JsonProperty(value = "hierarchicals")
+    private List<HierarchicalModel> hierarchicals;
 
     /**
      * List of Pattern.Any entities.
@@ -96,8 +102,8 @@ public class LuisApp {
     /**
      * List of model features.
      */
-    @JsonProperty(value = "model_features")
-    private List<JSONModelFeature> modelFeatures;
+    @JsonProperty(value = "phraselists")
+    private List<JSONModelFeature> phraselists;
 
     /**
      * List of patterns.
@@ -106,7 +112,7 @@ public class LuisApp {
     private List<PatternRule> patterns;
 
     /**
-     * List of sample utterances.
+     * List of example utterances.
      */
     @JsonProperty(value = "utterances")
     private List<JSONUtterance> utterances;
@@ -292,6 +298,26 @@ public class LuisApp {
     }
 
     /**
+     * Get the hierarchicals value.
+     *
+     * @return the hierarchicals value
+     */
+    public List<HierarchicalModel> hierarchicals() {
+        return this.hierarchicals;
+    }
+
+    /**
+     * Set the hierarchicals value.
+     *
+     * @param hierarchicals the hierarchicals value to set
+     * @return the LuisApp object itself.
+     */
+    public LuisApp withHierarchicals(List<HierarchicalModel> hierarchicals) {
+        this.hierarchicals = hierarchicals;
+        return this;
+    }
+
+    /**
      * Get the patternAnyEntities value.
      *
      * @return the patternAnyEntities value
@@ -372,22 +398,22 @@ public class LuisApp {
     }
 
     /**
-     * Get the modelFeatures value.
+     * Get the phraselists value.
      *
-     * @return the modelFeatures value
+     * @return the phraselists value
      */
-    public List<JSONModelFeature> modelFeatures() {
-        return this.modelFeatures;
+    public List<JSONModelFeature> phraselists() {
+        return this.phraselists;
     }
 
     /**
-     * Set the modelFeatures value.
+     * Set the phraselists value.
      *
-     * @param modelFeatures the modelFeatures value to set
+     * @param phraselists the phraselists value to set
      * @return the LuisApp object itself.
      */
-    public LuisApp withModelFeatures(List<JSONModelFeature> modelFeatures) {
-        this.modelFeatures = modelFeatures;
+    public LuisApp withPhraselists(List<JSONModelFeature> phraselists) {
+        this.phraselists = phraselists;
         return this;
     }
 

@@ -31,9 +31,29 @@ public interface PartnerRegistration extends HasInner<PartnerRegistrationInner>,
     List<String> authorizedAzureSubscriptionIds();
 
     /**
+     * @return the customerServiceUri value.
+     */
+    String customerServiceUri();
+
+    /**
      * @return the logoUri value.
      */
     String logoUri();
+
+    /**
+     * @return the longDescription value.
+     */
+    String longDescription();
+
+    /**
+     * @return the partnerCustomerServiceExtension value.
+     */
+    String partnerCustomerServiceExtension();
+
+    /**
+     * @return the partnerCustomerServiceNumber value.
+     */
+    String partnerCustomerServiceNumber();
 
     /**
      * @return the partnerName value.
@@ -108,6 +128,18 @@ public interface PartnerRegistration extends HasInner<PartnerRegistrationInner>,
         }
 
         /**
+         * The stage of the partnerregistration definition allowing to specify CustomerServiceUri.
+         */
+        interface WithCustomerServiceUri {
+            /**
+             * Specifies customerServiceUri.
+             * @param customerServiceUri The extension of the customer service URI of the publisher
+             * @return the next definition stage
+             */
+            WithCreate withCustomerServiceUri(String customerServiceUri);
+        }
+
+        /**
          * The stage of the partnerregistration definition allowing to specify LogoUri.
          */
         interface WithLogoUri {
@@ -117,6 +149,46 @@ public interface PartnerRegistration extends HasInner<PartnerRegistrationInner>,
              * @return the next definition stage
              */
             WithCreate withLogoUri(String logoUri);
+        }
+
+        /**
+         * The stage of the partnerregistration definition allowing to specify LongDescription.
+         */
+        interface WithLongDescription {
+            /**
+             * Specifies longDescription.
+             * @param longDescription Long description for the custom scenarios and integration to be displayed in the portal if needed.
+ Length of this description should not exceed 2048 characters
+             * @return the next definition stage
+             */
+            WithCreate withLongDescription(String longDescription);
+        }
+
+        /**
+         * The stage of the partnerregistration definition allowing to specify PartnerCustomerServiceExtension.
+         */
+        interface WithPartnerCustomerServiceExtension {
+            /**
+             * Specifies partnerCustomerServiceExtension.
+             * @param partnerCustomerServiceExtension The extension of the customer service number of the publisher. Only digits are allowed and number of digits should not exceed 10
+             * @return the next definition stage
+             */
+            WithCreate withPartnerCustomerServiceExtension(String partnerCustomerServiceExtension);
+        }
+
+        /**
+         * The stage of the partnerregistration definition allowing to specify PartnerCustomerServiceNumber.
+         */
+        interface WithPartnerCustomerServiceNumber {
+            /**
+             * Specifies partnerCustomerServiceNumber.
+             * @param partnerCustomerServiceNumber The customer service number of the publisher. The expected phone format should start with a '+' sign
+ followed by the country code. The remaining digits are then followed. Only digits and spaces are allowed and its
+ length cannot exceed 16 digits including country code. Examples of valid phone numbers are: +1 515 123 4567 and
+ +966 7 5115 2471. Examples of invalid phone numbers are: +1 (515) 123-4567, 1 515 123 4567 and +966 121 5115 24 7 551 1234 43
+             * @return the next definition stage
+             */
+            WithCreate withPartnerCustomerServiceNumber(String partnerCustomerServiceNumber);
         }
 
         /**
@@ -137,7 +209,7 @@ public interface PartnerRegistration extends HasInner<PartnerRegistrationInner>,
         interface WithPartnerResourceTypeDescription {
             /**
              * Specifies partnerResourceTypeDescription.
-             * @param partnerResourceTypeDescription Description of the partner resource type
+             * @param partnerResourceTypeDescription Short description of the partner resource type. The length of this description should not exceed 256 characters
              * @return the next definition stage
              */
             WithCreate withPartnerResourceTypeDescription(String partnerResourceTypeDescription);
@@ -197,7 +269,7 @@ public interface PartnerRegistration extends HasInner<PartnerRegistrationInner>,
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<PartnerRegistration>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAuthorizedAzureSubscriptionIds, DefinitionStages.WithLogoUri, DefinitionStages.WithPartnerName, DefinitionStages.WithPartnerResourceTypeDescription, DefinitionStages.WithPartnerResourceTypeDisplayName, DefinitionStages.WithPartnerResourceTypeName, DefinitionStages.WithSetupUri, DefinitionStages.WithVisibilityState {
+        interface WithCreate extends Creatable<PartnerRegistration>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAuthorizedAzureSubscriptionIds, DefinitionStages.WithCustomerServiceUri, DefinitionStages.WithLogoUri, DefinitionStages.WithLongDescription, DefinitionStages.WithPartnerCustomerServiceExtension, DefinitionStages.WithPartnerCustomerServiceNumber, DefinitionStages.WithPartnerName, DefinitionStages.WithPartnerResourceTypeDescription, DefinitionStages.WithPartnerResourceTypeDisplayName, DefinitionStages.WithPartnerResourceTypeName, DefinitionStages.WithSetupUri, DefinitionStages.WithVisibilityState {
         }
     }
     /**

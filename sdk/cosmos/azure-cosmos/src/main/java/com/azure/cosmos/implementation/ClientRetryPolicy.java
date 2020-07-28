@@ -5,8 +5,8 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.CosmosResponseDiagnostics;
+import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +39,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
     private boolean canUseMultipleWriteLocations;
     private URI locationEndpoint;
     private RetryContext retryContext;
-    private CosmosResponseDiagnostics cosmosResponseDiagnostics;
+    private CosmosDiagnostics cosmosDiagnostics;
     private AtomicInteger cnt = new AtomicInteger(0);
 
     public ClientRetryPolicy(GlobalEndpointManager globalEndpointManager,
@@ -54,7 +54,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         this.enableEndpointDiscovery = enableEndpointDiscovery;
         this.sessionTokenRetryCount = 0;
         this.canUseMultipleWriteLocations = false;
-        this.cosmosResponseDiagnostics = BridgeInternal.createCosmosResponseDiagnostics();
+        this.cosmosDiagnostics = BridgeInternal.createCosmosDiagnostics();
     }
 
     @Override
@@ -73,9 +73,9 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
         this.retryContext = null;
         // Received 403.3 on write region, initiate the endpoint re-discovery
-        CosmosClientException clientException = Utils.as(e, CosmosClientException.class);
-        if (clientException != null && clientException.getResponseDiagnostics() != null) {
-            this.cosmosResponseDiagnostics = clientException.getResponseDiagnostics();
+        CosmosException clientException = Utils.as(e, CosmosException.class);
+        if (clientException != null && clientException.getDiagnostics() != null) {
+            this.cosmosDiagnostics = clientException.getDiagnostics();
         }
         if (clientException != null &&
                 Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.FORBIDDEN) &&
@@ -200,7 +200,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         this.isReadRequest = request.isReadOnlyRequest();
         this.canUseMultipleWriteLocations = this.globalEndpointManager.canUseMultipleWriteLocations(request);
         if (request.requestContext != null) {
-            request.requestContext.cosmosResponseDiagnostics = this.cosmosResponseDiagnostics;
+            request.requestContext.cosmosDiagnostics = this.cosmosDiagnostics;
         }
 
         // clear previous location-based routing directive

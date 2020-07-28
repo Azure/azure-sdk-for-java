@@ -1,16 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.models.FormContentType;
+import com.azure.ai.formrecognizer.models.FieldValueType;
+import com.azure.ai.formrecognizer.models.FormField;
 import com.azure.ai.formrecognizer.models.OperationResult;
-import com.azure.ai.formrecognizer.models.RecognizedReceipt;
-import com.azure.ai.formrecognizer.models.USReceipt;
+import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.PollerFlux;
 import reactor.core.publisher.Mono;
 
@@ -19,12 +16,18 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffer;
 
 /**
- * Async sample for recognizing US receipt information from a local file.
+ * Async sample for recognizing commonly found US receipt fields from a local file input stream.
+ * For a suggested approach to extracting information from receipts, see StronglyTypedRecognizedForm.java.
+ * See fields found on a receipt here:
+ * https://aka.ms/formrecognizer/receiptfields
  */
 public class RecognizeReceiptsAsync {
 
@@ -32,6 +35,7 @@ public class RecognizeReceiptsAsync {
      * Main method to invoke this demo.
      *
      * @param args Unused. Arguments to the program.
+     *
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public static void main(final String[] args) throws IOException {
@@ -44,49 +48,106 @@ public class RecognizeReceiptsAsync {
         File sourceFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/java/sample-forms/"
             + "receipts/contoso-allinone.jpg");
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
-        InputStream targetStream = new ByteArrayInputStream(fileContent);
+        PollerFlux<OperationResult, List<RecognizedForm>> recognizeReceiptPoller;
+        try (InputStream targetStream = new ByteArrayInputStream(fileContent)) {
+            recognizeReceiptPoller = client.beginRecognizeReceipts(toFluxByteBuffer(targetStream), sourceFile.length());
+        }
 
-        PollerFlux<OperationResult, IterableStream<RecognizedReceipt>> analyzeReceiptPoller =
-            client.beginRecognizeReceipts(toFluxByteBuffer(targetStream),
-                sourceFile.length(), FormContentType.IMAGE_JPEG);
-
-        IterableStream<RecognizedReceipt> receiptPageResults = analyzeReceiptPoller
+        Mono<List<RecognizedForm>> receiptPageResultsMono = recognizeReceiptPoller
             .last()
-            .flatMap(recognizeReceiptPollOperation -> {
-                if (recognizeReceiptPollOperation.getStatus().isComplete()) {
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
                     System.out.println("Polling completed successfully");
                     // training completed successfully, retrieving final result.
-                    return recognizeReceiptPollOperation.getFinalResult();
+                    return pollResponse.getFinalResult();
                 } else {
                     return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"
-                        + recognizeReceiptPollOperation.getStatus()));
-                }
-            }).block();
-
-        receiptPageResults.forEach(recognizedReceipt -> {
-            System.out.println("----------- Recognized Receipt -----------");
-            USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
-            System.out.printf("Page Number: %s%n", usReceipt.getMerchantName().getPageNumber());
-            System.out.printf("Merchant Name: %s, confidence: %.2f%n", usReceipt.getMerchantName().getFieldValue(), usReceipt.getMerchantName().getConfidence());
-            System.out.printf("Merchant Address: %s, confidence: %.2f%n", usReceipt.getMerchantAddress().getName(), usReceipt.getMerchantAddress().getConfidence());
-            System.out.printf("Merchant Phone Number %s, confidence: %.2f%n", usReceipt.getMerchantPhoneNumber().getFieldValue(), usReceipt.getMerchantPhoneNumber().getConfidence());
-            System.out.printf("Total: %s confidence: %.2f%n", usReceipt.getTotal().getName(), usReceipt.getTotal().getConfidence());
-            System.out.printf("Receipt Items: %n");
-            usReceipt.getReceiptItems().forEach(receiptItem -> {
-                if (receiptItem.getName() != null) {
-                    System.out.printf("Name: %s, confidence: %.2f%n", receiptItem.getName().getFieldValue(), receiptItem.getName().getConfidence());
-                }
-                if (receiptItem.getQuantity() != null) {
-                    System.out.printf("Quantity: %s, confidence: %.2f%n", receiptItem.getQuantity().getFieldValue(), receiptItem.getQuantity().getConfidence());
-                }
-                if (receiptItem.getPrice() != null) {
-                    System.out.printf("Price: %s, confidence: %.2f%n", receiptItem.getPrice().getFieldValue(), receiptItem.getPrice().getConfidence());
-                }
-                if (receiptItem.getTotalPrice() != null) {
-                    System.out.printf("Total Price: %s, confidence: %.2f%n", receiptItem.getTotalPrice().getFieldValue(), receiptItem.getTotalPrice().getConfidence());
+                        + pollResponse.getStatus()));
                 }
             });
-            System.out.print("-----------------------------------");
+
+        receiptPageResultsMono.subscribe(receiptPageResults -> {
+            for (int i = 0; i < receiptPageResults.size(); i++) {
+                RecognizedForm recognizedForm = receiptPageResults.get(i);
+                Map<String, FormField> recognizedFields = recognizedForm.getFields();
+                System.out.printf("----------- Recognized receipt info for page %d -----------%n", i);
+                FormField merchantNameField = recognizedFields.get("MerchantName");
+                if (merchantNameField != null) {
+                    if (FieldValueType.STRING == merchantNameField.getValue().getType()) {
+                        String merchantName = merchantNameField.getValue().asString();
+                        System.out.printf("Merchant Name: %s, confidence: %.2f%n",
+                            merchantName, merchantNameField.getConfidence());
+                    }
+                }
+
+                FormField merchantPhoneNumberField = recognizedFields.get("MerchantPhoneNumber");
+                if (merchantPhoneNumberField != null) {
+                    if (FieldValueType.PHONE_NUMBER == merchantPhoneNumberField.getValue().getType()) {
+                        String merchantAddress = merchantPhoneNumberField.getValue().asPhoneNumber();
+                        System.out.printf("Merchant Phone number: %s, confidence: %.2f%n",
+                            merchantAddress, merchantPhoneNumberField.getConfidence());
+                    }
+                }
+
+                FormField merchantAddressField = recognizedFields.get("MerchantAddress");
+                if (merchantAddressField != null) {
+                    if (FieldValueType.STRING == merchantAddressField.getValue().getType()) {
+                        String merchantAddress = merchantAddressField.getValue().asString();
+                        System.out.printf("Merchant Address: %s, confidence: %.2f%n",
+                            merchantAddress, merchantAddressField.getConfidence());
+                    }
+                }
+
+                FormField transactionDateField = recognizedFields.get("TransactionDate");
+                if (transactionDateField != null) {
+                    if (FieldValueType.DATE == transactionDateField.getValue().getType()) {
+                        LocalDate transactionDate = transactionDateField.getValue().asDate();
+                        System.out.printf("Transaction Date: %s, confidence: %.2f%n",
+                            transactionDate, transactionDateField.getConfidence());
+                    }
+                }
+
+                FormField receiptItemsField = recognizedFields.get("Items");
+                if (receiptItemsField != null) {
+                    System.out.printf("Receipt Items: %n");
+                    if (FieldValueType.LIST == receiptItemsField.getValue().getType()) {
+                        List<FormField> receiptItems = receiptItemsField.getValue().asList();
+                        receiptItems.stream()
+                            .filter(receiptItem -> FieldValueType.MAP == receiptItem.getValue().getType())
+                            .map(formField -> formField.getValue().asMap())
+                            .forEach(formFieldMap -> formFieldMap.forEach((key, formField) -> {
+                                if ("Name".equals(key)) {
+                                    if (FieldValueType.STRING == formField.getValue().getType()) {
+                                        String name = formField.getValue().asString();
+                                        System.out.printf("Name: %s, confidence: %.2fs%n",
+                                            name, formField.getConfidence());
+                                    }
+                                }
+                                if ("Quantity".equals(key)) {
+                                    if (FieldValueType.DOUBLE == formField.getValue().getType()) {
+                                        Double quantity = formField.getValue().asDouble();
+                                        System.out.printf("Quantity: %f, confidence: %.2f%n",
+                                            quantity, formField.getConfidence());
+                                    }
+                                }
+                                if ("Price".equals(key)) {
+                                    if (FieldValueType.DOUBLE == formField.getValue().getType()) {
+                                        Double price = formField.getValue().asDouble();
+                                        System.out.printf("Price: %f, confidence: %.2f%n",
+                                            price, formField.getConfidence());
+                                    }
+                                }
+                                if ("TotalPrice".equals(key)) {
+                                    if (FieldValueType.DOUBLE == formField.getValue().getType()) {
+                                        Double totalPrice = formField.getValue().asDouble();
+                                        System.out.printf("Total Price: %f, confidence: %.2f%n",
+                                            totalPrice, formField.getConfidence());
+                                    }
+                                }
+                            }));
+                    }
+                }
+            }
         });
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep

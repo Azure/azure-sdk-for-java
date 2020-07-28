@@ -4,17 +4,19 @@
 package com.azure.storage.blob;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
-import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.options.BlobUploadFromFileOptions;
+import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.specialized.AppendBlobClient;
 import com.azure.storage.blob.specialized.BlobClientBase;
-import com.azure.storage.blob.specialized.BlobOutputStream;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
@@ -22,13 +24,12 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.UploadUtils;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.time.Duration;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * This class provides a client that contains generic blob operations for Azure Storage Blobs. Operations allowed by
@@ -88,6 +89,18 @@ public class BlobClient extends BlobClientBase {
     @Override
     public BlobClient getSnapshotClient(String snapshot) {
         return new BlobClient(client.getSnapshotClient(snapshot));
+    }
+
+    /**
+     * Creates a new {@link BlobClient} linked to the {@code version} of this blob resource.
+     *
+     * @param versionId the identifier for a specific version of this blob,
+     * pass {@code null} to interact with the latest blob version.
+     * @return A {@link BlobClient} used to interact with the specific version.
+     */
+    @Override
+    public BlobClient getVersionClient(String versionId) {
+        return new BlobClient(client.getVersionClient(versionId));
     }
 
     /**
@@ -169,29 +182,44 @@ public class BlobClient extends BlobClientBase {
     public void uploadWithResponse(InputStream data, long length, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions,
         Duration timeout, Context context) {
-        final ParallelTransferOptions validatedParallelTransferOptions =
-            ModelHelper.populateAndApplyDefaults(parallelTransferOptions);
-        Mono<Object> upload = Mono.fromCallable(() -> {
-            try {
-                // BlobOutputStream will internally handle the decision for single-shot or multi-part upload.
-                BlobOutputStream blobOutputStream = BlobOutputStream.blockBlobOutputStream(client,
-                    validatedParallelTransferOptions, headers, metadata, tier, requestConditions, context);
-                StorageImplUtils.copyToOutputStream(data, length, blobOutputStream);
-                blobOutputStream.close();
-                return null;
-            } catch (IOException e) {
-                Throwable cause = e.getCause();
-                if (cause instanceof BlobStorageException) {
-                    throw logger.logExceptionAsError((BlobStorageException) cause);
-                } else {
-                    throw logger.logExceptionAsError(new UncheckedIOException(e));
-                }
-            }
-            // Subscribing has to happen on a different thread for the timeout to happen properly.
-        }).subscribeOn(Schedulers.elastic());
+        this.uploadWithResponse(new BlobParallelUploadOptions(data, length)
+            .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata).setTier(tier)
+            .setRequestConditions(requestConditions), timeout, context);
+    }
+
+    /**
+     * Creates a new blob, or updates the content of an existing blob.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
+     * @param options {@link BlobParallelUploadOptions}
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return Information about the uploaded block blob.
+     *
+     * @deprecated Use {@link BlobClient#uploadWithResponse(BlobParallelUploadOptions, Duration, Context)}
+     */
+    @Deprecated
+    public Response<BlockBlobItem> uploadWithResponse(BlobParallelUploadOptions options, Context context) {
+        Objects.requireNonNull(options);
+        return this.uploadWithResponse(options, options.getTimeout(), context);
+    }
+
+    /**
+     * Creates a new blob, or updates the content of an existing blob.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
+     * @param options {@link BlobParallelUploadOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return Information about the uploaded block blob.
+     */
+    public Response<BlockBlobItem> uploadWithResponse(BlobParallelUploadOptions options, Duration timeout,
+        Context context) {
+        Objects.requireNonNull(options);
+        Mono<Response<BlockBlobItem>> upload = client.uploadWithResponse(options)
+            .subscriberContext(FluxUtil.toReactorContext(context));
 
         try {
-            StorageImplUtils.blockWithOptionalTimeout(upload, timeout);
+            return StorageImplUtils.blockWithOptionalTimeout(upload, timeout);
         } catch (UncheckedIOException e) {
             throw logger.logExceptionAsError(e);
         }
@@ -227,7 +255,8 @@ public class BlobClient extends BlobClientBase {
 
         if (!overwrite) {
             // Note we only want to make the exists call if we will be uploading in stages. Otherwise it is superfluous.
-            if (UploadUtils.shouldUploadInChunks(filePath, BlockBlobClient.MAX_UPLOAD_BLOB_BYTES, logger) && exists()) {
+            if (UploadUtils.shouldUploadInChunks(filePath,
+                BlockBlobClient.MAX_UPLOAD_BLOB_BYTES_LONG, logger) && exists()) {
                 throw logger.logExceptionAsError(new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS));
             }
             requestConditions = new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
@@ -257,11 +286,34 @@ public class BlobClient extends BlobClientBase {
     public void uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions,
         Duration timeout) {
-        Mono<Void> upload = this.client.uploadFromFile(
-            filePath, parallelTransferOptions, headers, metadata, tier, requestConditions);
+        this.uploadFromFileWithResponse(new BlobUploadFromFileOptions(filePath)
+            .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
+            .setTier(tier).setRequestConditions(requestConditions), null, null);
+    }
+
+    /**
+     * Creates a new block blob, or updates the content of an existing block blob.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobClient.uploadFromFileWithResponse#BlobUploadFromFileOptions-Duration-Context}
+     *
+     * @param options {@link BlobUploadFromFileOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return Information about the uploaded block blob.
+     * @throws UncheckedIOException If an I/O error occurs
+     */
+    public Response<BlockBlobItem> uploadFromFileWithResponse(BlobUploadFromFileOptions options, Duration timeout,
+        Context context) {
+        Mono<Response<BlockBlobItem>> upload =
+            this.client.uploadFromFileWithResponse(options)
+                .subscriberContext(FluxUtil.toReactorContext(context));
 
         try {
-            StorageImplUtils.blockWithOptionalTimeout(upload, timeout);
+            return StorageImplUtils.blockWithOptionalTimeout(upload, timeout);
         } catch (UncheckedIOException e) {
             throw logger.logExceptionAsError(e);
         }

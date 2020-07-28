@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Maven Allowlist Report</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <style>
+        .center {
+            text-align: center;
+        }
+        .table {
+            width: 100%;
+            margin: 0 auto;
+            padding-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <h1>Maven Allowlist Report</h1>
+
+        <p>
+            This report displays the allowlist of all maven dependencies. It is based on the <a href="dependency-allowlist.json">machine-readable JSON report</a>.
+        </p>
+
+        <table id="resultsTable" class="table table-hover">
+            <thead class="thead-light">
+            <tr>
+                <th>Maven and File Path</th>
+                <th>Allowlist</th>
+            </tr>
+            </thead>
+        </table>
+
+        <br/>
+        <br/>
+
+        <table id="fullAllowlistTable" class="table table-hover">
+            <thead class="thead-light">
+            <tr>
+                <th>Allowlist</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script language="JavaScript">
+        $(document).ready(function() {
+            $.getJSON('dependency-allowlist.json', function(json) {
+                for (var i = 0; i < json.fullWhitelist.length; i++) {
+                    drawFullAllowlist(json.fullWhitelist[i]);
+                }
+
+                // draw out individual modules
+                for (var i = 0; i < json.parsedDocuments.length; i++) {
+                    drawRow(json.parsedDocuments[i]);
+                }
+            });
+        });
+
+        function drawFullAllowlist(rowData) {
+            var row = $("<tr />");
+            $("#fullAllowlistTable").append(row);
+
+            row.append($("<td>" + rowData + "</td>"));
+        }
+
+        function drawRow(rowData) {
+            var row = $("<tr />");
+            $("#resultsTable").append(row);
+
+            var allowlist = "";
+            for (var i = 0; i < rowData.whitelist.length; i++) {
+                allowlist += rowData.whitelist[i] + "<br/>";
+            }
+
+            row.append($("<td>" + rowData.groupId + ":" + rowData.artifactId + ":" + rowData.version + "<br/>" + rowData.path + "</td>"));
+            row.append($("<td>" + allowlist + "</td>"));
+        }
+    </script>
+    <small><center>Report generated with <a href="https://github.com/JonathanGiles/whitelistgenerator">whitelist-generator</a></center></small>
+</body>
+</html>

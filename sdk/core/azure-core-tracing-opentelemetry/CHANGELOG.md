@@ -1,7 +1,13 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.0.0-beta.6 (Unreleased)
+- Update `opentelemetry-api` dependency version to `0.6.0` and included `io.grpc:grpc-context[1.30.0]` external
+ dependency .
 
+## 1.0.0-beta.5 (2020-06-08)
+
+- Changed `Tracer` loading logic to only use first in classpath instead of all in classpath.
+- Updated Azure Core dependency.
 
 ## 1.0.0-beta.4 (2020-04-02)
 

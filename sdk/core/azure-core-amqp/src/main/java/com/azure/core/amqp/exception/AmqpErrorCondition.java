@@ -102,7 +102,11 @@ public enum AmqpErrorCondition {
     /**
      * IO exceptions that occur in proton-j library.
      */
-    PROTON_IO("proton:io");
+    PROTON_IO("proton:io"),
+    /**
+     * A connection error occurred.
+     */
+    CONNECTION_FRAMING_ERROR("amqp:connection:framing-error");
 
     private static final Map<String, AmqpErrorCondition> ERROR_CONSTANT_MAP = new HashMap<>();
     private final String errorCondition;

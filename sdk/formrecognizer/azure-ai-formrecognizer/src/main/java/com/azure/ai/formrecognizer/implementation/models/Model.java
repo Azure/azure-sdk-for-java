@@ -7,9 +7,7 @@ package com.azure.ai.formrecognizer.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The Model model.
- */
+/** The Model model. */
 @Fluent
 public final class Model {
     /*
@@ -32,7 +30,7 @@ public final class Model {
 
     /**
      * Get the modelInfo property: Basic custom model information.
-     * 
+     *
      * @return the modelInfo value.
      */
     public ModelInfo getModelInfo() {
@@ -41,7 +39,7 @@ public final class Model {
 
     /**
      * Set the modelInfo property: Basic custom model information.
-     * 
+     *
      * @param modelInfo the modelInfo value to set.
      * @return the Model object itself.
      */
@@ -52,7 +50,7 @@ public final class Model {
 
     /**
      * Get the keys property: Keys extracted by the custom model.
-     * 
+     *
      * @return the keys value.
      */
     public KeysResult getKeys() {
@@ -61,7 +59,7 @@ public final class Model {
 
     /**
      * Set the keys property: Keys extracted by the custom model.
-     * 
+     *
      * @param keys the keys value to set.
      * @return the Model object itself.
      */
@@ -72,7 +70,7 @@ public final class Model {
 
     /**
      * Get the trainResult property: Custom model training result.
-     * 
+     *
      * @return the trainResult value.
      */
     public TrainResult getTrainResult() {
@@ -81,7 +79,7 @@ public final class Model {
 
     /**
      * Set the trainResult property: Custom model training result.
-     * 
+     *
      * @param trainResult the trainResult value to set.
      * @return the Model object itself.
      */

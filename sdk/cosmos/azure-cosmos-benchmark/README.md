@@ -6,10 +6,11 @@
 
 ```bash
 git clone https://github.com/Azure/azure-sdk-for-java.git
+cd azure-sdk-for-java
+mvn -e -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dspotbugs.skip=true  -Dcheckstyle.skip=true  -Drevapi.skip=true clean install
 cd sdk/cosmos/
-
-mvn install -f ../../eng/code-quality-tools/pom.xml
-mvn clean package -f pom.service.xml -DskipTests -Dgpg.skip -Ppackage-assembly
+mvn clean install -f ../../eng/code-quality-reports/pom.xml
+mvn clean package -f pom.xml -DskipTests -Dgpg.skip -Ppackage-assembly
 ```
 
 and then the package will be generated. 
@@ -17,7 +18,7 @@ and then the package will be generated.
 ## Run the WriteLatency workload
 
 ```bash
-java -jar azure-cosmos-benchmark/target/azure-cosmos-benchmark-4.0.1-beta.2-jar-with-dependencies.jar \
+java -jar azure-cosmos-benchmark/target/azure-cosmos-benchmark-4.0.1-beta.3-jar-with-dependencies.jar \
  -serviceEndpoint $endpoint -masterKey $masterkey \
  -databaseId $dbname -collectionId $colname \
  -consistencyLevel Eventual -concurrency 10 -numberOfOperations 1000000 \
@@ -68,17 +69,8 @@ Latency
 * WriteLatency, 
 * ReadThroughput, 
 * WriteThroughput, 
-* QueryCross, 
-* QuerySingle, 
-* QuerySingleMany, 
-* QueryParallel, 
-* QueryOrderby, 
-* QueryAggregate, 
-* QueryAggregateTopOrderby, 
-* QueryTopOrderby, 
-* Mixed
+* QueryInClauseParallel
 * ReadMyWrites
-* ReadThroughputWithMultipleClients
 
 
 You can provide ``--help`` to the tool to see the list of other work loads (read, etc) and other options. 

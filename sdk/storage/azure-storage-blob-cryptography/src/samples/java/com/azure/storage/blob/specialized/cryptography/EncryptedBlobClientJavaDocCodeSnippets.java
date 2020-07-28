@@ -3,9 +3,11 @@
 
 package com.azure.storage.blob.specialized.cryptography;
 
+import com.azure.core.util.Context;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.options.BlobUploadFromFileOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 
 import java.io.ByteArrayInputStream;
@@ -89,8 +91,8 @@ public class EncryptedBlobClientJavaDocCodeSnippets {
         BlobRequestConditions requestConditions = new BlobRequestConditions()
             .setLeaseId(leaseId)
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
-        int blockSize = 100 * 1024 * 1024; // 100 MB;
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(blockSize, null, null);
+        long blockSize = 100 * 1024 * 1024; // 100 MB;
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(blockSize);
 
         try {
             client.uploadFromFile(filePath, parallelTransferOptions, headers, metadata, AccessTier.HOT,
@@ -100,5 +102,37 @@ public class EncryptedBlobClientJavaDocCodeSnippets {
             System.err.printf("Failed to upload from file %s%n", ex.getMessage());
         }
         // END: com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions-Duration
+    }
+
+    /**
+     * Code snippet for {@link EncryptedBlobClient#uploadFromFileWithResponse(BlobUploadFromFileOptions, Duration, Context)}
+     *
+     * @throws IOException If an I/O error occurs
+     */
+    public void uploadFromFile3() throws IOException {
+        // BEGIN: com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFileWithResponse#BlobUploadFromFileOptions-Duration-Context
+        BlobHttpHeaders headers = new BlobHttpHeaders()
+            .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+
+        Map<String, String> metadata = new HashMap<>(Collections.singletonMap("metadata", "value"));
+        Map<String, String> tags = new HashMap<>(Collections.singletonMap("tag", "value"));
+        BlobRequestConditions requestConditions = new BlobRequestConditions()
+            .setLeaseId(leaseId)
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+        long blockSize = 100 * 1024 * 1024; // 100 MB;
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(blockSize);
+
+        try {
+            client.uploadFromFileWithResponse(new BlobUploadFromFileOptions(filePath)
+                .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
+                .setTags(tags).setTier(AccessTier.HOT).setRequestConditions(requestConditions), timeout,
+                Context.NONE);
+            System.out.println("Upload from file succeeded");
+        } catch (UncheckedIOException ex) {
+            System.err.printf("Failed to upload from file %s%n", ex.getMessage());
+        }
+        // END: com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFileWithResponse#BlobUploadFromFileOptions-Duration-Context
     }
 }

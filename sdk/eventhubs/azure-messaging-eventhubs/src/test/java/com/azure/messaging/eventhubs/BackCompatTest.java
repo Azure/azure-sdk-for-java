@@ -15,6 +15,7 @@ import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
@@ -29,7 +30,7 @@ import java.util.UUID;
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
-import static com.azure.messaging.eventhubs.TestUtils.MESSAGE_TRACKING_ID;
+import static com.azure.messaging.eventhubs.TestUtils.MESSAGE_ID;
 import static com.azure.messaging.eventhubs.TestUtils.getSymbol;
 import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -37,11 +38,12 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 /**
  * Integration test that verifies backwards compatibility with a previous version of the SDK.
  */
+@Tag(TestUtils.INTEGRATION)
 public class BackCompatTest extends IntegrationTestBase {
-    private static final String PARTITION_ID = "0";
+    private static final String PARTITION_ID = "2";
     private static final String PAYLOAD = "test-message";
 
-    private MessageSerializer serializer = new EventHubMessageSerializer();
+    private final MessageSerializer serializer = new EventHubMessageSerializer();
     private EventHubProducerAsyncClient producer;
     private EventHubConsumerAsyncClient consumer;
     private SendOptions sendOptions;
@@ -84,7 +86,7 @@ public class BackCompatTest extends IntegrationTestBase {
         applicationProperties.put("intProperty", "3");
 
         // We want to ensure that we fetch the event data corresponding to this test and not some other test case.
-        applicationProperties.put(MESSAGE_TRACKING_ID, messageTrackingValue);
+        applicationProperties.put(MESSAGE_ID, messageTrackingValue);
 
         final Map<Symbol, Object> systemProperties = new HashMap<>();
         systemProperties.put(getSymbol(OFFSET_ANNOTATION_NAME), "100");

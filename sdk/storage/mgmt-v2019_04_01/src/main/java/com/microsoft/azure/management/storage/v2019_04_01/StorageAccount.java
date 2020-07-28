@@ -32,6 +32,11 @@ public interface StorageAccount extends HasInner<StorageAccountInner>, Resource,
     AccessTier accessTier();
 
     /**
+     * @return the allowBlobPublicAccess value.
+     */
+    Boolean allowBlobPublicAccess();
+
+    /**
      * @return the azureFilesIdentityBasedAuthentication value.
      */
     AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication();
@@ -90,6 +95,11 @@ public interface StorageAccount extends HasInner<StorageAccountInner>, Resource,
      * @return the lastGeoFailoverTime value.
      */
     DateTime lastGeoFailoverTime();
+
+    /**
+     * @return the minimumTlsVersion value.
+     */
+    MinimumTlsVersion minimumTlsVersion();
 
     /**
      * @return the networkRuleSet value.
@@ -195,6 +205,18 @@ public interface StorageAccount extends HasInner<StorageAccountInner>, Resource,
         }
 
         /**
+         * The stage of the storageaccount definition allowing to specify AllowBlobPublicAccess.
+         */
+        interface WithAllowBlobPublicAccess {
+            /**
+             * Specifies allowBlobPublicAccess.
+             * @param allowBlobPublicAccess Allow or disallow public access to all blobs or containers in the storage account. The default interpretation is true for this property
+             * @return the next definition stage
+             */
+            WithCreate withAllowBlobPublicAccess(Boolean allowBlobPublicAccess);
+        }
+
+        /**
          * The stage of the storageaccount definition allowing to specify AzureFilesIdentityBasedAuthentication.
          */
         interface WithAzureFilesIdentityBasedAuthentication {
@@ -279,6 +301,18 @@ public interface StorageAccount extends HasInner<StorageAccountInner>, Resource,
         }
 
         /**
+         * The stage of the storageaccount definition allowing to specify MinimumTlsVersion.
+         */
+        interface WithMinimumTlsVersion {
+            /**
+             * Specifies minimumTlsVersion.
+             * @param minimumTlsVersion Set the minimum TLS version to be permitted on requests to storage. The default interpretation is TLS 1.0 for this property. Possible values include: 'TLS1_0', 'TLS1_1', 'TLS1_2'
+             * @return the next definition stage
+             */
+            WithCreate withMinimumTlsVersion(MinimumTlsVersion minimumTlsVersion);
+        }
+
+        /**
          * The stage of the storageaccount definition allowing to specify NetworkRuleSet.
          */
         interface WithNetworkRuleSet {
@@ -295,13 +329,13 @@ public interface StorageAccount extends HasInner<StorageAccountInner>, Resource,
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<StorageAccount>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAccessTier, DefinitionStages.WithAzureFilesIdentityBasedAuthentication, DefinitionStages.WithCustomDomain, DefinitionStages.WithEnableHttpsTrafficOnly, DefinitionStages.WithEncryption, DefinitionStages.WithIdentity, DefinitionStages.WithIsHnsEnabled, DefinitionStages.WithLargeFileSharesState, DefinitionStages.WithNetworkRuleSet {
+        interface WithCreate extends Creatable<StorageAccount>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAccessTier, DefinitionStages.WithAllowBlobPublicAccess, DefinitionStages.WithAzureFilesIdentityBasedAuthentication, DefinitionStages.WithCustomDomain, DefinitionStages.WithEnableHttpsTrafficOnly, DefinitionStages.WithEncryption, DefinitionStages.WithIdentity, DefinitionStages.WithIsHnsEnabled, DefinitionStages.WithLargeFileSharesState, DefinitionStages.WithMinimumTlsVersion, DefinitionStages.WithNetworkRuleSet {
         }
     }
     /**
      * The template for a StorageAccount update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<StorageAccount>, Resource.UpdateWithTags<Update>, UpdateStages.WithAccessTier, UpdateStages.WithAzureFilesIdentityBasedAuthentication, UpdateStages.WithCustomDomain, UpdateStages.WithEnableHttpsTrafficOnly, UpdateStages.WithEncryption, UpdateStages.WithIdentity, UpdateStages.WithKind, UpdateStages.WithLargeFileSharesState, UpdateStages.WithNetworkRuleSet, UpdateStages.WithSku {
+    interface Update extends Appliable<StorageAccount>, Resource.UpdateWithTags<Update>, UpdateStages.WithAccessTier, UpdateStages.WithAllowBlobPublicAccess, UpdateStages.WithAzureFilesIdentityBasedAuthentication, UpdateStages.WithCustomDomain, UpdateStages.WithEnableHttpsTrafficOnly, UpdateStages.WithEncryption, UpdateStages.WithIdentity, UpdateStages.WithKind, UpdateStages.WithLargeFileSharesState, UpdateStages.WithMinimumTlsVersion, UpdateStages.WithNetworkRuleSet, UpdateStages.WithSku {
     }
 
     /**
@@ -318,6 +352,18 @@ public interface StorageAccount extends HasInner<StorageAccountInner>, Resource,
              * @return the next update stage
              */
             Update withAccessTier(AccessTier accessTier);
+        }
+
+        /**
+         * The stage of the storageaccount update allowing to specify AllowBlobPublicAccess.
+         */
+        interface WithAllowBlobPublicAccess {
+            /**
+             * Specifies allowBlobPublicAccess.
+             * @param allowBlobPublicAccess Allow or disallow public access to all blobs or containers in the storage account. The default interpretation is true for this property
+             * @return the next update stage
+             */
+            Update withAllowBlobPublicAccess(Boolean allowBlobPublicAccess);
         }
 
         /**
@@ -402,6 +448,18 @@ public interface StorageAccount extends HasInner<StorageAccountInner>, Resource,
              * @return the next update stage
              */
             Update withLargeFileSharesState(LargeFileSharesState largeFileSharesState);
+        }
+
+        /**
+         * The stage of the storageaccount update allowing to specify MinimumTlsVersion.
+         */
+        interface WithMinimumTlsVersion {
+            /**
+             * Specifies minimumTlsVersion.
+             * @param minimumTlsVersion Set the minimum TLS version to be permitted on requests to storage. The default interpretation is TLS 1.0 for this property. Possible values include: 'TLS1_0', 'TLS1_1', 'TLS1_2'
+             * @return the next update stage
+             */
+            Update withMinimumTlsVersion(MinimumTlsVersion minimumTlsVersion);
         }
 
         /**

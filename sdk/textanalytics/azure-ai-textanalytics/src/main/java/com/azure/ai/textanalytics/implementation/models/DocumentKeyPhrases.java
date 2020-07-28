@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The DocumentKeyPhrases model.
- */
+/** The DocumentKeyPhrases model. */
 @Fluent
 public final class DocumentKeyPhrases {
     /*
@@ -25,6 +23,12 @@ public final class DocumentKeyPhrases {
      */
     @JsonProperty(value = "keyPhrases", required = true)
     private List<String> keyPhrases;
+
+    /*
+     * Warnings encountered while processing document.
+     */
+    @JsonProperty(value = "warnings", required = true)
+    private List<TextAnalyticsWarning> warnings;
 
     /*
      * if showStats=true was specified in the request this field will contain
@@ -54,9 +58,8 @@ public final class DocumentKeyPhrases {
     }
 
     /**
-     * Get the keyPhrases property: A list of representative words or phrases.
-     * The number of key phrases returned is proportional to the number of
-     * words in the input document.
+     * Get the keyPhrases property: A list of representative words or phrases. The number of key phrases returned is
+     * proportional to the number of words in the input document.
      *
      * @return the keyPhrases value.
      */
@@ -65,9 +68,8 @@ public final class DocumentKeyPhrases {
     }
 
     /**
-     * Set the keyPhrases property: A list of representative words or phrases.
-     * The number of key phrases returned is proportional to the number of
-     * words in the input document.
+     * Set the keyPhrases property: A list of representative words or phrases. The number of key phrases returned is
+     * proportional to the number of words in the input document.
      *
      * @param keyPhrases the keyPhrases value to set.
      * @return the DocumentKeyPhrases object itself.
@@ -78,8 +80,28 @@ public final class DocumentKeyPhrases {
     }
 
     /**
-     * Get the statistics property: if showStats=true was specified in the
-     * request this field will contain information about the document payload.
+     * Get the warnings property: Warnings encountered while processing document.
+     *
+     * @return the warnings value.
+     */
+    public List<TextAnalyticsWarning> getWarnings() {
+        return this.warnings;
+    }
+
+    /**
+     * Set the warnings property: Warnings encountered while processing document.
+     *
+     * @param warnings the warnings value to set.
+     * @return the DocumentKeyPhrases object itself.
+     */
+    public DocumentKeyPhrases setWarnings(List<TextAnalyticsWarning> warnings) {
+        this.warnings = warnings;
+        return this;
+    }
+
+    /**
+     * Get the statistics property: if showStats=true was specified in the request this field will contain information
+     * about the document payload.
      *
      * @return the statistics value.
      */
@@ -88,8 +110,8 @@ public final class DocumentKeyPhrases {
     }
 
     /**
-     * Set the statistics property: if showStats=true was specified in the
-     * request this field will contain information about the document payload.
+     * Set the statistics property: if showStats=true was specified in the request this field will contain information
+     * about the document payload.
      *
      * @param statistics the statistics value to set.
      * @return the DocumentKeyPhrases object itself.

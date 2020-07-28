@@ -8,23 +8,17 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for Language.
- */
+/** Defines values for Language. */
 public final class Language extends ExpandableStringEnum<Language> {
-    /**
-     * Static value en for Language.
-     */
+    /** Static value en for Language. */
     public static final Language EN = fromString("en");
 
-    /**
-     * Static value es for Language.
-     */
+    /** Static value es for Language. */
     public static final Language ES = fromString("es");
 
     /**
      * Creates or finds a Language from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding Language.
      */
@@ -33,9 +27,7 @@ public final class Language extends ExpandableStringEnum<Language> {
         return fromString(name, Language.class);
     }
 
-    /**
-     * @return known Language values.
-     */
+    /** @return known Language values. */
     public static Collection<Language> values() {
         return values(Language.class);
     }

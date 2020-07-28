@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The LanguageBatchInput model.
- */
+/** The LanguageBatchInput model. */
 @Fluent
 public final class LanguageBatchInput {
     /*

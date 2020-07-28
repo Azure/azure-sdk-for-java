@@ -59,6 +59,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
@@ -118,6 +119,7 @@ class ManagementChannelTests {
         when(tokenManager.getAuthorizationResults()).thenReturn(results);
 
         when(requestResponseChannel.sendWithAck(any(Message.class))).thenReturn(Mono.just(responseMessage));
+        when(requestResponseChannel.sendWithAck(any(Message.class), isNull())).thenReturn(Mono.just(responseMessage));
 
         managementChannel = new ManagementChannel(Mono.just(requestResponseChannel), NAMESPACE, ENTITY_PATH,
             tokenManager, messageSerializer, TIMEOUT);
@@ -144,7 +146,7 @@ class ManagementChannelTests {
             .verify();
 
         // Assert
-        verify(requestResponseChannel).sendWithAck(messageCaptor.capture());
+        verify(requestResponseChannel).sendWithAck(messageCaptor.capture(), isNull());
 
         // Assert message body
         final Message sentMessage = messageCaptor.getValue();
@@ -205,7 +207,7 @@ class ManagementChannelTests {
             .expectNext(sessionState)
             .verifyComplete();
 
-        verify(requestResponseChannel).sendWithAck(messageCaptor.capture());
+        verify(requestResponseChannel).sendWithAck(messageCaptor.capture(), isNull());
 
         final Message sentMessage = messageCaptor.getValue();
         assertTrue(sentMessage.getBody() instanceof AmqpValue);
@@ -251,7 +253,7 @@ class ManagementChannelTests {
         StepVerifier.create(managementChannel.getSessionState(sessionId, LINK_NAME))
             .verifyComplete();
 
-        verify(requestResponseChannel).sendWithAck(messageCaptor.capture());
+        verify(requestResponseChannel).sendWithAck(messageCaptor.capture(), isNull());
 
         final Message sentMessage = messageCaptor.getValue();
         assertTrue(sentMessage.getBody() instanceof AmqpValue);
@@ -285,7 +287,7 @@ class ManagementChannelTests {
             .assertNext(expiration -> assertEquals(instant, expiration))
             .verifyComplete();
 
-        verify(requestResponseChannel).sendWithAck(messageCaptor.capture());
+        verify(requestResponseChannel).sendWithAck(messageCaptor.capture(), isNull());
 
         final Message sentMessage = messageCaptor.getValue();
         assertTrue(sentMessage.getBody() instanceof AmqpValue);
@@ -336,11 +338,11 @@ class ManagementChannelTests {
         // Act & Assert
         StepVerifier.create(managementChannel.updateDisposition(lockToken.toString(), DispositionStatus.SUSPENDED,
             options.getDeadLetterReason(), options.getDeadLetterErrorDescription(), options.getPropertiesToModify(),
-            sessionId, associatedLinkName))
+            sessionId, associatedLinkName, null))
             .verifyComplete();
 
         // Verify the contents of our request to make sure the correct properties were given.
-        verify(requestResponseChannel).sendWithAck(messageCaptor.capture());
+        verify(requestResponseChannel).sendWithAck(messageCaptor.capture(), isNull());
 
         final Message sentMessage = messageCaptor.getValue();
 

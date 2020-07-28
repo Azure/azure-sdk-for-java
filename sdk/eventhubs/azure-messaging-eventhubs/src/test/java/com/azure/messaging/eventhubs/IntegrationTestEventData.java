@@ -3,33 +3,32 @@
 
 package com.azure.messaging.eventhubs;
 
-import java.time.Instant;
 import java.util.List;
 
 /**
- * Contains information about test events pushed to Azure Event Hubs.*
+ * Contains information about test events pushed to Azure Event Hubs.
  */
 public class IntegrationTestEventData {
     private final String partitionId;
+    private final PartitionProperties partitionProperties;
     private final List<EventData> events;
-    private final String messageTrackingId;
-    private final Instant enqueuedTime;
+    private final String messageId;
 
-    IntegrationTestEventData(String partitionId, String messageTrackingId, Instant enqueuedTime,
-            List<EventData> events) {
+    IntegrationTestEventData(String partitionId, PartitionProperties partitionProperties, String messageId,
+        List<EventData> events) {
         this.partitionId = partitionId;
+        this.partitionProperties = partitionProperties;
         this.events = events;
-        this.messageTrackingId = messageTrackingId;
-        this.enqueuedTime = enqueuedTime;
+        this.messageId = messageId;
     }
 
     /**
-     * The time at which the events were pushed to Event Hubs.
+     * Gets the last enqueued sequence number to the partition.
      *
-     * @return The time when the test events were sent to Event Hubs.
+     * @return The last enqueued sequence number to the partition.
      */
-    public Instant getEnqueuedTime() {
-        return enqueuedTime;
+    public PartitionProperties getPartitionProperties() {
+        return partitionProperties;
     }
 
     /**
@@ -42,13 +41,13 @@ public class IntegrationTestEventData {
     }
 
     /**
-     * Gets the message identifier set in application property, {@link TestUtils#MESSAGE_TRACKING_ID}. Useful for
+     * Gets the message identifier set in application property, {@link TestUtils#MESSAGE_ID}. Useful for
      * identifying that a set of events belong ot a test.
      *
      * @return The message identifier set in {@link EventData#getProperties()}.
      */
-    public String getMessageTrackingId() {
-        return messageTrackingId;
+    public String getMessageId() {
+        return messageId;
     }
 
     /**

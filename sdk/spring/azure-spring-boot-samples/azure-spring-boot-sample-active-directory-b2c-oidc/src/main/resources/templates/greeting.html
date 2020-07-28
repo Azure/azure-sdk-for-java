@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Greetings</title>
+</head>
+<body>
+<h1>Greeting Page</h1>
+<div class="container">
+    <form style="display:inline" method="get" action="/home">
+        <button class="btn btn-md btn-primary btn-block" type="submit">Home</button>
+    </form>
+
+    <form style="display:inline" method="get" action="/logout">
+        <button class="btn btn-md btn-primary btn-block" type="submit">Log out</button>
+    </form>
+
+    <form style="display:inline" method="get" action="/oauth2/authorization/${your-profile-edit-user-flow}">
+        <button class="btn btn-md btn-primary btn-block" type="submit">Profile edit</button>
+    </form>
+
+    <form style="display:inline" method="get" action="/oauth2/authorization/${your-password-reset-user-flow}">
+        <button class="btn btn-md btn-primary btn-block" type="submit">Password reset</button>
+    </form>
+</div>
+
+<div>
+    <br/>
+    <h2>Azure AD B2C OIDC Login Successfully.</h2>
+    <h3>Welcome back <span style="color:cyan" th:text="${name}"></span>!</h3>
+    <table border="1">
+        <tr><th>Principal</th><th>Value</th></tr>
+        <tr><th>name</th><th th:text="${name}"></th></tr>
+        <tr><th>grant_type</th><th th:text="${grant_type}"></th></tr>
+        <tr><th>at_hash</th><th th:text="${at_hash}"></th></tr>
+        <tr><th>sub</th><th th:text="${sub}"></th></tr>
+        <tr><th>country</th><th th:text="${country}"></th></tr>
+        <tr><th>ver</th><th th:text="${ver}"></th></tr>
+        <tr><th>city</th><th th:text="${city}"></th></tr>
+        <tr><th>postalCode</th><th th:text="${postalCode}"></th></tr>
+        <tr><th>jobTitle</th><th th:text="${jobTitle}"></th></tr>
+        <tr><th>iss</th><th th:text="${iss}"></th></tr>
+        <tr><th>oid</th><th th:text="${oid}"></th></tr>
+        <tr><th>given_name</th><th th:text="${given_name}"></th></tr>
+        <tr><th>emails</th><th th:text="${emails}"></th></tr>
+        <tr><th>aud</th><th th:text="${aud}"></th></tr>
+        <tr><th>nbf</th><th th:text="${nbf}"></th></tr>
+        <tr><th>streetAddress</th><th th:text="${streetAddress}"></th></tr>
+        <tr><th>auth_time</th><th th:text="${auth_time}"></th></tr>
+        <tr><th>state</th><th th:text="${state}"></th></tr>
+        <tr><th>exp</th><th th:text="${exp}"></th></tr>
+        <tr><th>iat</th><th th:text="${iat}"></th></tr>
+        <tr><th>family_name</th><th th:text="${family_name}"></th></tr>
+        <tr><th>tfp</th><th th:text="${tfp}"></th></tr>
+    </table>
+</div>
+
+</body>
+</html>

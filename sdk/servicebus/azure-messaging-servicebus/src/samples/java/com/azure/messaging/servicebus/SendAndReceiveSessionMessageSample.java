@@ -22,6 +22,7 @@ public class SendAndReceiveSessionMessageSample {
      * session-enabled Azure Service Bus queue.
      *
      * @param args Unused arguments to the program.
+     *
      * @throws InterruptedException If the program is unable to sleep while waiting for the operations to complete.
      */
     public static void main(String[] args) throws InterruptedException {
@@ -75,19 +76,21 @@ public class SendAndReceiveSessionMessageSample {
             }
 
             // Publish the batch since we are done.
-            return sender.send(batch);
+            return sender.sendMessages(batch);
         }).subscribe(unused -> System.out.println("Batch sent."),
             error -> System.err.println("Error occurred while publishing message batch: " + error),
             () -> System.out.println("Batch send complete."));
 
         // After sending that message, we receive the messages for that sessionId.
-        receiver.receive().subscribe(context -> {
+        receiver.receiveMessages().flatMap(context -> {
             ServiceBusReceivedMessage message = context.getMessage();
 
             System.out.println("Received Message Id: " + message.getMessageId());
             System.out.println("Received Message Session Id: " + message.getSessionId());
             System.out.println("Received Message: " + new String(message.getBody()));
-        });
+
+            return receiver.complete(message.getLockToken(), message.getSessionId());
+        }).subscribe();
 
         // subscribe() is not a blocking call. We sleep here so the program does not end before the send is complete.
         TimeUnit.SECONDS.sleep(10);

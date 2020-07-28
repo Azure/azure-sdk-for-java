@@ -24,8 +24,8 @@ import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 
 /**
- * A class for aggregating {@link ServiceBusMessage} into a single, size-limited, batch. It is treated as a single
- * message when sent to the Azure Service Bus service.
+ * A class for aggregating {@link ServiceBusMessage messages} into a single, size-limited, batch. It is treated as a
+ * single AMQP message when sent to the Azure Service Bus service.
  */
 public final class ServiceBusMessageBatch {
     private final ClientLogger logger = new ClientLogger(ServiceBusMessageBatch.class);

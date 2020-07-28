@@ -16,6 +16,7 @@ import java.util.Map;
 import com.microsoft.azure.management.datafactory.v2018_06_01.FactoryIdentity;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.datafactory.v2018_06_01.FactoryRepoConfiguration;
+import com.microsoft.azure.management.datafactory.v2018_06_01.GlobalParameterSpecification;
 import rx.functions.Func1;
 
 class FactoryImpl extends GroupableResourceCoreImpl<Factory, FactoryInner, FactoryImpl, DataFactoryManager> implements Factory, Factory.Definition, Factory.Update {
@@ -85,6 +86,11 @@ class FactoryImpl extends GroupableResourceCoreImpl<Factory, FactoryInner, Facto
     }
 
     @Override
+    public Map<String, GlobalParameterSpecification> globalParameters() {
+        return this.inner().globalParameters();
+    }
+
+    @Override
     public FactoryIdentity identity() {
         return this.inner().identity();
     }
@@ -113,6 +119,12 @@ class FactoryImpl extends GroupableResourceCoreImpl<Factory, FactoryInner, Facto
     @Override
     public FactoryImpl withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.inner().withAdditionalProperties(additionalProperties);
+        return this;
+    }
+
+    @Override
+    public FactoryImpl withGlobalParameters(Map<String, GlobalParameterSpecification> globalParameters) {
+        this.inner().withGlobalParameters(globalParameters);
         return this;
     }
 

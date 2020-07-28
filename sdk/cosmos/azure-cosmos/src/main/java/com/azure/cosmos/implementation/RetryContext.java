@@ -6,7 +6,7 @@ package com.azure.cosmos.implementation;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.time.Duration;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.List;
 
 public class RetryContext {
@@ -17,9 +17,9 @@ public class RetryContext {
     public List<int[]> genericRetrySpecificStatusAndSubStatusCodes;
 
     @JsonIgnore
-    public ZonedDateTime retryStartTime;
+    public Instant retryStartTime;
     @JsonIgnore
-    public ZonedDateTime retryEndTime;
+    public Instant retryEndTime;
 
     public int retryCount;
 

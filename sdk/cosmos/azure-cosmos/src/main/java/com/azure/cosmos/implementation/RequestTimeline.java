@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 
 import java.time.Duration;
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.Iterator;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -163,9 +163,9 @@ public final class RequestTimeline implements Iterable<RequestTimeline.Event> {
         private final String name;
 
         @JsonSerialize(using = ToStringSerializer.class)
-        private final OffsetDateTime startTime;
+        private final Instant startTime;
 
-        public Event(final String name, final OffsetDateTime from, final OffsetDateTime to) {
+        public Event(final String name, final Instant from, final Instant to) {
 
             checkNotNull(name, "expected non-null name");
 
@@ -188,7 +188,7 @@ public final class RequestTimeline implements Iterable<RequestTimeline.Event> {
             return name;
         }
 
-        public OffsetDateTime getStartTime() {
+        public Instant getStartTime() {
             return startTime;
         }
     }

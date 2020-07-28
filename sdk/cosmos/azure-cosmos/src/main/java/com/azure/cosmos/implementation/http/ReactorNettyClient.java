@@ -8,6 +8,7 @@ import io.netty.channel.ChannelOption;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.logging.LogLevel;
 import org.reactivestreams.Publisher;
+import org.reactivestreams.Subscription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -22,8 +23,9 @@ import reactor.netty.resources.ConnectionProvider;
 import reactor.netty.tcp.ProxyProvider;
 
 import java.nio.charset.Charset;
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
 
 import static com.azure.cosmos.implementation.http.HttpClientConfig.REACTOR_NETWORK_LOG_CATEGORY;
@@ -70,7 +72,7 @@ class ReactorNettyClient implements HttpClient {
 
             if (this.httpClientConfig.getProxy() != null) {
                 tcpClient =
-                    tcpClient.proxy(typeSpec -> typeSpec.type(ProxyProvider.Proxy.HTTP).address(this.httpClientConfig.getProxy()));
+                    tcpClient.proxy(typeSpec -> typeSpec.type(ProxyProvider.Proxy.HTTP).address(this.httpClientConfig.getProxy().getAddress()));
             }
             tcpClient =
                 tcpClient.secure(sslContextSpec -> sslContextSpec.sslContext(configs.getSslContext()));
@@ -98,13 +100,15 @@ class ReactorNettyClient implements HttpClient {
         Objects.requireNonNull(this.httpClientConfig);
         if(request.getReactorNettyRequestRecord() == null) {
             ReactorNettyRequestRecord reactorNettyRequestRecord = new ReactorNettyRequestRecord();
-            reactorNettyRequestRecord.setTimeCreated(OffsetDateTime.now());
+            reactorNettyRequestRecord.setTimeCreated(Instant.now());
             request.setReactorNettyRequestRecord(reactorNettyRequestRecord);
         }
 
+        final AtomicReference<ReactorNettyHttpResponse> responseReference = new AtomicReference<>();
+
         return this.httpClient
             .observe((connection, state) -> {
-                OffsetDateTime time = OffsetDateTime.now();
+                Instant time = Instant.now();
                 if(state.equals(HttpClientState.CONNECTED) || state.equals(HttpClientState.ACQUIRED)){
                     request.getReactorNettyRequestRecord().setTimeConnected(time);
                 } else if(state.equals(HttpClientState.CONFIGURED)){
@@ -116,12 +120,23 @@ class ReactorNettyClient implements HttpClient {
                 }
             })
             .keepAlive(this.httpClientConfig.isConnectionKeepAlive())
-                .port(request.port())
-                .request(HttpMethod.valueOf(request.httpMethod().toString()))
-                .uri(request.uri().toString())
-                .send(bodySendDelegate(request))
-                .responseConnection(responseDelegate(request))
-                .single();
+            .port(request.port())
+            .request(HttpMethod.valueOf(request.httpMethod().toString()))
+            .uri(request.uri().toString())
+            .send(bodySendDelegate(request))
+            .responseConnection((reactorNettyResponse, reactorNettyConnection) -> {
+                HttpResponse httpResponse = new ReactorNettyHttpResponse(reactorNettyResponse,
+                    reactorNettyConnection).withRequest(request);
+                responseReference.set((ReactorNettyHttpResponse) httpResponse);
+                return Mono.just(httpResponse);
+            })
+            .doOnCancel(() -> {
+                ReactorNettyHttpResponse reactorNettyHttpResponse = responseReference.get();
+                if (reactorNettyHttpResponse != null) {
+                    reactorNettyHttpResponse.releaseAfterCancel(request.httpMethod());
+                }
+            })
+            .single();
     }
 
     /**
@@ -143,17 +158,6 @@ class ReactorNettyClient implements HttpClient {
         };
     }
 
-    /**
-     * Delegate to receive response.
-     *
-     * @param restRequest the Rest request whose response this delegate handles
-     * @return a delegate upon invocation setup Rest response object
-     */
-    private static BiFunction<HttpClientResponse, Connection, Publisher<HttpResponse>> responseDelegate(final HttpRequest restRequest) {
-        return (reactorNettyResponse, reactorNettyConnection) ->
-                Mono.just(new ReactorNettyHttpResponse(reactorNettyResponse, reactorNettyConnection).withRequest(restRequest));
-    }
-
     @Override
     public void shutdown() {
         if (this.connectionProvider != null) {
@@ -162,6 +166,9 @@ class ReactorNettyClient implements HttpClient {
     }
 
     private static class ReactorNettyHttpResponse extends HttpResponse {
+
+        private final AtomicReference<ReactorNettyResponseState> state = new AtomicReference<>(ReactorNettyResponseState.NOT_SUBSCRIBED);
+
         private final HttpClientResponse reactorNettyResponse;
         private final Connection reactorNettyConnection;
 
@@ -189,22 +196,33 @@ class ReactorNettyClient implements HttpClient {
 
         @Override
         public Flux<ByteBuf> body() {
-            return bodyIntern();
+            return bodyIntern()
+                .doOnSubscribe(this::updateSubscriptionState)
+                .map(byteBuf -> {
+                    byteBuf.retain();
+                    return byteBuf;
+                });
         }
 
         @Override
         public Mono<byte[]> bodyAsByteArray() {
-            return bodyIntern().aggregate().asByteArray();
+            return bodyIntern().aggregate()
+                               .asByteArray()
+                               .doOnSubscribe(this::updateSubscriptionState);
         }
 
         @Override
         public Mono<String> bodyAsString() {
-            return bodyIntern().aggregate().asString();
+            return bodyIntern().aggregate()
+                               .asString()
+                               .doOnSubscribe(this::updateSubscriptionState);
         }
 
         @Override
         public Mono<String> bodyAsString(Charset charset) {
-            return bodyIntern().aggregate().asString(charset);
+            return bodyIntern().aggregate()
+                               .asString(charset)
+                               .doOnSubscribe(this::updateSubscriptionState);
         }
 
         private ByteBufFlux bodyIntern() {
@@ -215,5 +233,44 @@ class ReactorNettyClient implements HttpClient {
         Connection internConnection() {
             return reactorNettyConnection;
         }
+
+        private void updateSubscriptionState(Subscription subscription) {
+            if (this.state.compareAndSet(ReactorNettyResponseState.NOT_SUBSCRIBED, ReactorNettyResponseState.SUBSCRIBED)) {
+                return;
+            }
+            // https://github.com/reactor/reactor-netty/issues/503
+            // FluxReceive rejects multiple subscribers, but not after a cancel().
+            // Subsequent subscribers after cancel() will not be rejected, but will hang instead.
+            // So we need to reject ones in cancelled state.
+            if (this.state.get() == ReactorNettyResponseState.CANCELLED) {
+                throw new IllegalStateException(
+                    "The client response body has been released already due to cancellation.");
+            }
+        }
+
+        /**
+         * Called by {@link ReactorNettyClient} when a cancellation is detected
+         * but the content has not been subscribed to. If the subscription never
+         * materializes then the content will remain not drained. Or it could still
+         * materialize if the cancellation happened very early, or the response
+         * reading was delayed for some reason.
+         */
+        private void releaseAfterCancel(HttpMethod method) {
+            if (this.state.compareAndSet(ReactorNettyResponseState.NOT_SUBSCRIBED, ReactorNettyResponseState.CANCELLED)) {
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Releasing body, not yet subscribed");
+                }
+                this.bodyIntern()
+                    .doOnNext(byteBuf -> {})
+                    .subscribe(byteBuf -> {}, ex -> {});
+            }
+        }
+    }
+
+    private enum ReactorNettyResponseState {
+        // 0 - not subscribed, 1 - subscribed, 2 - cancelled via connector (before subscribe)
+        NOT_SUBSCRIBED,
+        SUBSCRIBED,
+        CANCELLED;
     }
 }

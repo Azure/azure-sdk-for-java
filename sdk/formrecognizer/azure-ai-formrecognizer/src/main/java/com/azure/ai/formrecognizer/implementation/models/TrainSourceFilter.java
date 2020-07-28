@@ -7,9 +7,7 @@ package com.azure.ai.formrecognizer.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The TrainSourceFilter model.
- */
+/** The TrainSourceFilter model. */
 @Fluent
 public final class TrainSourceFilter {
     /*
@@ -28,11 +26,9 @@ public final class TrainSourceFilter {
     private Boolean includeSubFolders;
 
     /**
-     * Get the prefix property: A case-sensitive prefix string to filter
-     * documents in the source path for training. For example, when using a
-     * Azure storage blob Uri, use the prefix to restrict sub folders for
-     * training.
-     * 
+     * Get the prefix property: A case-sensitive prefix string to filter documents in the source path for training. For
+     * example, when using a Azure storage blob Uri, use the prefix to restrict sub folders for training.
+     *
      * @return the prefix value.
      */
     public String getPrefix() {
@@ -40,11 +36,9 @@ public final class TrainSourceFilter {
     }
 
     /**
-     * Set the prefix property: A case-sensitive prefix string to filter
-     * documents in the source path for training. For example, when using a
-     * Azure storage blob Uri, use the prefix to restrict sub folders for
-     * training.
-     * 
+     * Set the prefix property: A case-sensitive prefix string to filter documents in the source path for training. For
+     * example, when using a Azure storage blob Uri, use the prefix to restrict sub folders for training.
+     *
      * @param prefix the prefix value to set.
      * @return the TrainSourceFilter object itself.
      */
@@ -54,10 +48,9 @@ public final class TrainSourceFilter {
     }
 
     /**
-     * Get the includeSubFolders property: A flag to indicate if sub folders
-     * within the set of prefix folders will also need to be included when
-     * searching for content to be preprocessed.
-     * 
+     * Get the includeSubFolders property: A flag to indicate if sub folders within the set of prefix folders will also
+     * need to be included when searching for content to be preprocessed.
+     *
      * @return the includeSubFolders value.
      */
     public Boolean isIncludeSubFolders() {
@@ -65,10 +58,9 @@ public final class TrainSourceFilter {
     }
 
     /**
-     * Set the includeSubFolders property: A flag to indicate if sub folders
-     * within the set of prefix folders will also need to be included when
-     * searching for content to be preprocessed.
-     * 
+     * Set the includeSubFolders property: A flag to indicate if sub folders within the set of prefix folders will also
+     * need to be included when searching for content to be preprocessed.
+     *
      * @param includeSubFolders the includeSubFolders value to set.
      * @return the TrainSourceFilter object itself.
      */

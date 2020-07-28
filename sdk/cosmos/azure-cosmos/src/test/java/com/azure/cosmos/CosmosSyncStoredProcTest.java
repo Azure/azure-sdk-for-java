@@ -4,10 +4,10 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.models.CosmosStoredProcedureResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
 import com.azure.cosmos.models.CosmosStoredProcedureRequestOptions;
-import com.azure.cosmos.models.CosmosStoredProcedureResponse;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.rx.TestSuiteBase;
@@ -17,6 +17,8 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -60,7 +62,7 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
         storedProcedureDef.setId(UUID.randomUUID().toString());
         storedProcedureDef.setBody("function() {var x = 11;}");
         CosmosStoredProcedureResponse response1 = container.getScripts()
-                                                              .createStoredProcedure(storedProcedureDef,
+                                                           .createStoredProcedure(storedProcedureDef,
                                                                       new CosmosStoredProcedureRequestOptions());
         validateResponse(storedProcedureDef, response1);
 
@@ -77,8 +79,8 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
         try {
             container.getScripts().createStoredProcedure(storedProcedureDef);
         } catch (Exception e) {
-            assertThat(e).isInstanceOf(CosmosClientException.class);
-            assertThat(((CosmosClientException) e).getStatusCode()).isEqualTo(HttpConstants.StatusCodes.CONFLICT);
+            assertThat(e).isInstanceOf(CosmosException.class);
+            assertThat(((CosmosException) e).getStatusCode()).isEqualTo(HttpConstants.StatusCodes.CONFLICT);
         }
     }
 
@@ -106,30 +108,32 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
         validateResponse(storedProcedureDef, response);
 
         CosmosStoredProcedureResponse readResponse = container.getScripts()
-                                                                 .getStoredProcedure(storedProcedureDef.getId())
-                                                                 .read();
+                                                              .getStoredProcedure(storedProcedureDef.getId())
+                                                              .read();
         validateResponse(storedProcedureDef, readResponse);
         //replace
         storedProcedureDef = readResponse.getProperties();
         storedProcedureDef.setBody("function(){ var y = 20;}");
         CosmosStoredProcedureResponse replaceResponse = container.getScripts()
-                                                                    .getStoredProcedure(storedProcedureDef.getId())
-                                                                    .replace(storedProcedureDef);
+                                                                 .getStoredProcedure(storedProcedureDef.getId())
+                                                                 .replace(storedProcedureDef);
         validateResponse(storedProcedureDef, replaceResponse);
 
         storedProcedureDef.setBody("function(){ var z = 2;}");
         CosmosStoredProcedureResponse replaceResponse2 = container.getScripts()
-                                                                     .getStoredProcedure(storedProcedureDef.getId())
-                                                                     .replace(storedProcedureDef,
+                                                                  .getStoredProcedure(storedProcedureDef.getId())
+                                                                  .replace(storedProcedureDef,
                                                                              new CosmosStoredProcedureRequestOptions());
         validateResponse(storedProcedureDef, replaceResponse2);
 
     }
 
     private CosmosStoredProcedureProperties getCosmosStoredProcedureProperties() {
-        CosmosStoredProcedureProperties storedProcedureDef = new CosmosStoredProcedureProperties();
-        storedProcedureDef.setId(UUID.randomUUID().toString());
-        storedProcedureDef.setBody("function() {var x = 10;}");
+        CosmosStoredProcedureProperties storedProcedureDef = new CosmosStoredProcedureProperties(
+            UUID.randomUUID().toString(),
+            "function() {var x = 10;}"
+        );
+
         return storedProcedureDef;
     }
 
@@ -146,18 +150,59 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
     }
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void executeStoredProcedure() throws Exception {
-        CosmosStoredProcedureProperties sproc = new CosmosStoredProcedureProperties()
-                                                        .setId(UUID.randomUUID().toString());
-        sproc.setBody("function() {var x = 10;}");
+        CosmosStoredProcedureProperties storedProcedure = new CosmosStoredProcedureProperties(
+            UUID.randomUUID().toString(),
+            "function() {" +
+                "        var mytext = \"x\";" +
+                "        var myval = 1;" +
+                "        try {" +
+                "            console.log(\"The value of %s is %s.\", mytext, myval);" +
+                "            getContext().getResponse().setBody(\"Success!\");" +
+                "        }" +
+                "        catch(err) {" +
+                "            getContext().getResponse().setBody(\"inline err: [\" + err.number + \"] \" + err);" +
+                "        }" +
+                "}");
 
-        CosmosStoredProcedureResponse response = container.getScripts().createStoredProcedure(sproc);
+        container.getScripts().createStoredProcedure(storedProcedure);
         CosmosStoredProcedureRequestOptions options = new CosmosStoredProcedureRequestOptions();
         options.setPartitionKey(PartitionKey.NONE);
         CosmosStoredProcedureResponse executeResponse = container.getScripts()
-                                                         .getStoredProcedure(sproc.getId())
-                                                         .execute(null, options);
+                                                                 .getStoredProcedure(storedProcedure.getId())
+                                                                 .execute(null, options);
 
         assertThat(executeResponse.getActivityId()).isNotEmpty();
+        assertThat(executeResponse.getScriptLog()).isNull();
+    }
+
+    @Test(groups = "simple", timeOut = TIMEOUT)
+    public void executeStoredProcedureWithScriptLoggingEnabled() throws Exception {
+        // Create a stored procedure
+        CosmosStoredProcedureProperties storedProcedure = new CosmosStoredProcedureProperties(
+            UUID.randomUUID().toString(),
+            "function() {" +
+                "        var mytext = \"x\";" +
+                "        var myval = 1;" +
+                "        try {" +
+                "            console.log(\"The value of %s is %s.\", mytext, myval);" +
+                "            getContext().getResponse().setBody(\"Success!\");" +
+                "        }" +
+                "        catch(err) {" +
+                "            getContext().getResponse().setBody(\"inline err: [\" + err.number + \"] \" + err);" +
+                "        }" +
+                "}");
+
+        container.getScripts().createStoredProcedure(storedProcedure);
+        CosmosStoredProcedureRequestOptions options = new CosmosStoredProcedureRequestOptions();
+        options.setScriptLoggingEnabled(true);
+        options.setPartitionKey(PartitionKey.NONE);
+
+        CosmosStoredProcedureResponse executeResponse = container.getScripts()
+                                                                 .getStoredProcedure(storedProcedure.getId())
+                                                                 .execute(null, options);
+
+        String logResult = "The value of x is 1.";
+        assertThat(executeResponse.getScriptLog()).isEqualTo(logResult);
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
@@ -165,10 +210,10 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
         CosmosStoredProcedureProperties storedProcedureDef = getCosmosStoredProcedureProperties();
         container.getScripts().createStoredProcedure(storedProcedureDef);
 
-        FeedOptions feedOptions = new FeedOptions();
-        
+        CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
+
         CosmosPagedIterable<CosmosStoredProcedureProperties> feedResponseIterator3 =
-                container.getScripts().readAllStoredProcedures(feedOptions);
+                container.getScripts().readAllStoredProcedures(cosmosQueryRequestOptions);
         assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
 
     }
@@ -179,15 +224,15 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
         container.getScripts().createStoredProcedure(properties);
 
         String query = String.format("SELECT * from c where c.id = '%s'", properties.getId());
-        FeedOptions feedOptions = new FeedOptions();
+        CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
 
         CosmosPagedIterable<CosmosStoredProcedureProperties> feedResponseIterator1 =
-                container.getScripts().queryStoredProcedures(query, feedOptions);
+                container.getScripts().queryStoredProcedures(query, cosmosQueryRequestOptions);
         assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
 
         SqlQuerySpec querySpec = new SqlQuerySpec(query);
         CosmosPagedIterable<CosmosStoredProcedureProperties> feedResponseIterator2 =
-                container.getScripts().queryStoredProcedures(query, feedOptions);
+                container.getScripts().queryStoredProcedures(query, cosmosQueryRequestOptions);
         assertThat(feedResponseIterator2.iterator().hasNext()).isTrue();
     }
 

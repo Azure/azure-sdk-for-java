@@ -33,20 +33,24 @@ public class JSONModelFeature {
     private String words;
 
     /**
-     * An exchangeable phrase list feature are serves as single feature to the
-     * LUIS underlying training algorithm. It is used as a lexicon lookup
+     * An interchangeable phrase list feature serves as a list of synonyms for
+     * training. A non-exchangeable phrase list serves as separate features for
+     * training. So, if your non-interchangeable phrase list contains 5
+     * phrases, they will be mapped to 5 separate features. You can think of
+     * the non-interchangeable phrase list as an additional bag of words to add
+     * to LUIS existing vocabulary features. It is used as a lexicon lookup
      * feature where its value is 1 if the lexicon contains a given word or 0
-     * if it doesn’t. Think of an exchangeable as a synonyms list. A
-     * non-exchangeable phrase list feature has all the phrases in the list
-     * serve as separate features to the underlying training algorithm. So, if
-     * you your phrase list feature contains 5 phrases, they will be mapped to
-     * 5 separate features. You can think of the non-exchangeable phrase list
-     * feature as an additional bag of words that you are willing to add to
-     * LUIS existing vocabulary features. Think of a non-exchangeable as set of
-     * different words. Default value is true.
+     * if it doesn’t.  Default value is true.
      */
     @JsonProperty(value = "mode")
     private Boolean mode;
+
+    /**
+     * Indicates if the Phraselist is enabled for all models in the
+     * application.
+     */
+    @JsonProperty(value = "enabledForAllModels")
+    private Boolean enabledForAllModels;
 
     /**
      * Get the activated value.
@@ -125,6 +129,26 @@ public class JSONModelFeature {
      */
     public JSONModelFeature withMode(Boolean mode) {
         this.mode = mode;
+        return this;
+    }
+
+    /**
+     * Get the enabledForAllModels value.
+     *
+     * @return the enabledForAllModels value
+     */
+    public Boolean enabledForAllModels() {
+        return this.enabledForAllModels;
+    }
+
+    /**
+     * Set the enabledForAllModels value.
+     *
+     * @param enabledForAllModels the enabledForAllModels value to set
+     * @return the JSONModelFeature object itself.
+     */
+    public JSONModelFeature withEnabledForAllModels(Boolean enabledForAllModels) {
+        this.enabledForAllModels = enabledForAllModels;
         return this;
     }
 

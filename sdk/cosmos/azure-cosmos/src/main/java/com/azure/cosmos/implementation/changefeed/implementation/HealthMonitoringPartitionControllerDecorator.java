@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed.implementation;
 
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.changefeed.HealthMonitor;
 import com.azure.cosmos.implementation.changefeed.HealthMonitoringRecord;
 import com.azure.cosmos.implementation.changefeed.Lease;
@@ -33,7 +33,7 @@ class HealthMonitoringPartitionControllerDecorator implements PartitionControlle
     public Mono<Lease> addOrUpdateLease(Lease lease) {
         return this.inner.addOrUpdateLease(lease)
             .onErrorResume(throwable ->  {
-                if (throwable instanceof CosmosClientException) {
+                if (throwable instanceof CosmosException) {
                     // do nothing.
                 } else {
                     monitor.inspect(new HealthMonitoringRecord(

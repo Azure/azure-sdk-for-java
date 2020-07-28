@@ -10,7 +10,7 @@ import reactor.core.publisher.Flux;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
-import java.time.OffsetDateTime;
+import java.time.Instant;
 
 /**
  * The outgoing Http request.
@@ -228,7 +228,7 @@ public class HttpRequest {
 
     private ReactorNettyRequestRecord createReactorNettyRequestRecord(){
         ReactorNettyRequestRecord reactorNettyRequestRecord = new ReactorNettyRequestRecord();
-        reactorNettyRequestRecord.setTimeCreated(OffsetDateTime.now());
+        reactorNettyRequestRecord.setTimeCreated(Instant.now());
         return reactorNettyRequestRecord;
     }
 }

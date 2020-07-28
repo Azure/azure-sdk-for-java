@@ -3,12 +3,11 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.JsonSerializable;
 import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -83,7 +82,7 @@ class DocumentProducer<T extends Resource> {
 
     protected final IDocumentQueryClient client;
     protected final String collectionRid;
-    protected final FeedOptions feedOptions;
+    protected final CosmosQueryRequestOptions cosmosQueryRequestOptions;
     protected final Class<T> resourceType;
     protected final PartitionKeyRange targetRange;
     protected final String collectionLink;
@@ -101,7 +100,7 @@ class DocumentProducer<T extends Resource> {
     public DocumentProducer(
             IDocumentQueryClient client,
             String collectionResourceId,
-            FeedOptions feedOptions,
+            CosmosQueryRequestOptions cosmosQueryRequestOptions,
             TriFunction<PartitionKeyRange, String, Integer, RxDocumentServiceRequest> createRequestFunc,
             Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeRequestFunc,
             PartitionKeyRange targetRange,
@@ -144,8 +143,8 @@ class DocumentProducer<T extends Resource> {
 
         this.correlatedActivityId = correlatedActivityId;
 
-        this.feedOptions = feedOptions != null ? feedOptions : new FeedOptions();
-        ModelBridgeInternal.setFeedOptionsContinuationToken(this.feedOptions, initialContinuationToken);
+        this.cosmosQueryRequestOptions = cosmosQueryRequestOptions != null ? cosmosQueryRequestOptions : new CosmosQueryRequestOptions();
+        ModelBridgeInternal.setQueryRequestOptionsContinuationToken(this.cosmosQueryRequestOptions, initialContinuationToken);
         this.lastResponseContinuationToken = initialContinuationToken;
         this.resourceType = resourceType;
         this.targetRange = targetRange;
@@ -160,7 +159,7 @@ class DocumentProducer<T extends Resource> {
                 (token, maxItemCount) -> createRequestFunc.apply(targetRange, token, maxItemCount);
         Flux<FeedResponse<T>> obs = Paginator
                 .getPaginatedQueryResultAsObservable(
-                        feedOptions.getRequestContinuation(),
+                        ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(cosmosQueryRequestOptions),
                         sourcePartitionCreateRequestFunc,
                         executeRequestFuncWithRetries,
                         resourceType,
@@ -179,7 +178,7 @@ class DocumentProducer<T extends Resource> {
 
     private Flux<DocumentProducerFeedResponse> splitProof(Flux<DocumentProducerFeedResponse> sourceFeedResponseObservable) {
         return sourceFeedResponseObservable.onErrorResume( t -> {
-            CosmosClientException dce = Utils.as(t, CosmosClientException.class);
+            CosmosException dce = Utils.as(t, CosmosException.class);
             if (dce == null || !isSplit(dce)) {
                 logger.error("Unexpected failure", t);
                 return Flux.error(t);
@@ -230,7 +229,7 @@ class DocumentProducer<T extends Resource> {
         return new DocumentProducer<T>(
                 client,
                 collectionRid,
-                feedOptions,
+                cosmosQueryRequestOptions,
                 createRequestFunc,
                 executeRequestFuncWithRetries,
                 targetRange,
@@ -244,10 +243,15 @@ class DocumentProducer<T extends Resource> {
     }
 
     private Mono<Utils.ValueHolder<List<PartitionKeyRange>>> getReplacementRanges(Range<String> range) {
-        return client.getPartitionKeyRangeCache().tryGetOverlappingRangesAsync(null, collectionRid, range, true, feedOptions.getProperties());
+        return client.getPartitionKeyRangeCache().tryGetOverlappingRangesAsync(
+            null,
+            collectionRid,
+            range,
+            true,
+            ModelBridgeInternal.getPropertiesFromQueryRequestOptions(cosmosQueryRequestOptions));
     }
 
-    private boolean isSplit(CosmosClientException e) {
+    private boolean isSplit(CosmosException e) {
         return Exceptions.isPartitionSplit(e);
     }
 }

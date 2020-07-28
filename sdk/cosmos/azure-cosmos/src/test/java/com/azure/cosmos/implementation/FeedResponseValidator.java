@@ -2,8 +2,16 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.models.CosmosConflictProperties;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosDatabaseProperties;
+import com.azure.cosmos.models.CosmosPermissionProperties;
+import com.azure.cosmos.models.CosmosStoredProcedureProperties;
+import com.azure.cosmos.models.CosmosTriggerProperties;
+import com.azure.cosmos.models.CosmosUserDefinedFunctionProperties;
+import com.azure.cosmos.models.CosmosUserProperties;
 import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.models.ModelBridgeInternal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,12 +19,12 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public interface FeedResponseValidator<T extends Resource> {
-    
+public interface FeedResponseValidator<T> {
+
     void validate(FeedResponse<T> feedList);
 
-    public class Builder<T extends Resource> {
-        private List<FeedResponseValidator<? extends Resource>> validators = new ArrayList<>();
+    public class Builder<T> {
+        private List<FeedResponseValidator<T>> validators = new ArrayList<>();
 
         public FeedResponseValidator<T> build() {
             return new FeedResponseValidator<T>() {
@@ -52,7 +60,7 @@ public interface FeedResponseValidator<T extends Resource> {
             });
             return this;
         }
-        
+
         public Builder<T> positiveRequestCharge() {
 
             validators.add(new FeedResponseValidator<T>() {
@@ -74,7 +82,7 @@ public interface FeedResponseValidator<T extends Resource> {
             });
             return this;
         }
-        
+
         public Builder<T> requestChargeLessThanOrEqualTo(double maxRequestCharge) {
 
             validators.add(new FeedResponseValidator<T>() {
@@ -85,7 +93,7 @@ public interface FeedResponseValidator<T extends Resource> {
             });
             return this;
         }
-        
+
         public Builder<T> hasHeader(String headerKey) {
 
             validators.add(new FeedResponseValidator<T>() {
@@ -96,7 +104,7 @@ public interface FeedResponseValidator<T extends Resource> {
             });
             return this;
         }
-        
+
         public Builder<T> hasRequestChargeHeader() {
 
             validators.add(new FeedResponseValidator<T>() {
@@ -107,19 +115,36 @@ public interface FeedResponseValidator<T extends Resource> {
             });
             return this;
         }
-        
+
         public Builder<T> idsExactlyAre(final List<String> expectedIds) {
             validators.add(new FeedResponseValidator<T>() {
                 @Override
                 public void validate(FeedResponse<T> feedPage) {
                     assertThat(feedPage
                             .getResults().stream()
-                            .map(r -> r.getResourceId())
+                            .map(r -> getResource(r).getResourceId())
                             .collect(Collectors.toList()))
                             .containsExactlyElementsOf(expectedIds);
                 }
             });
             return this;
+        }
+
+        private <T> Resource getResource(T response) {
+            if (response instanceof Resource
+                || response instanceof CosmosConflictProperties
+                || response instanceof CosmosContainerProperties
+                || response instanceof CosmosDatabaseProperties
+                || response instanceof CosmosPermissionProperties
+                || response instanceof CosmosStoredProcedureProperties
+                || response instanceof CosmosTriggerProperties
+                || response instanceof CosmosUserDefinedFunctionProperties
+                || response instanceof CosmosUserProperties) {
+
+                return ModelBridgeInternal.getResource(response);
+            }
+
+            return null;
         }
     }
 }

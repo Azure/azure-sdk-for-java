@@ -12,10 +12,10 @@
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-arm-parent</artifactId>
         <version>1.3.0</version>
-        <relativePath>../../../pom.management.xml</relativePath>
+        <relativePath>../../parents/azure-arm-parent</relativePath>
     </parent>
     <artifactId>azure-mgmt-eventgrid</artifactId>
-    <version>1.0.0-beta-3</version>
+    <version>1.0.0-beta-4</version>
     <packaging>jar</packaging>
     <name>Microsoft Azure SDK for EventGrid Management</name>
     <description>This package contains Microsoft EventGrid Management SDK.</description>

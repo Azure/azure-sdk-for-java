@@ -54,6 +54,21 @@ public class FileServerReadSettings extends StoreReadSettings {
     private Boolean enablePartitionDiscovery;
 
     /**
+     * Specify the root path where partition discovery starts from. Type:
+     * string (or Expression with resultType string).
+     */
+    @JsonProperty(value = "partitionRootPath")
+    private Object partitionRootPath;
+
+    /**
+     * Indicates whether the source files need to be deleted after copy
+     * completion. Default is false. Type: boolean (or Expression with
+     * resultType boolean).
+     */
+    @JsonProperty(value = "deleteFilesAfterCompletion")
+    private Object deleteFilesAfterCompletion;
+
+    /**
      * The start of file's modified datetime. Type: string (or Expression with
      * resultType string).
      */
@@ -66,6 +81,14 @@ public class FileServerReadSettings extends StoreReadSettings {
      */
     @JsonProperty(value = "modifiedDatetimeEnd")
     private Object modifiedDatetimeEnd;
+
+    /**
+     * Specify a filter to be used to select a subset of files in the
+     * folderPath rather than all files. Type: string (or Expression with
+     * resultType string).
+     */
+    @JsonProperty(value = "fileFilter")
+    private Object fileFilter;
 
     /**
      * Get if true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression with resultType boolean).
@@ -168,6 +191,46 @@ public class FileServerReadSettings extends StoreReadSettings {
     }
 
     /**
+     * Get specify the root path where partition discovery starts from. Type: string (or Expression with resultType string).
+     *
+     * @return the partitionRootPath value
+     */
+    public Object partitionRootPath() {
+        return this.partitionRootPath;
+    }
+
+    /**
+     * Set specify the root path where partition discovery starts from. Type: string (or Expression with resultType string).
+     *
+     * @param partitionRootPath the partitionRootPath value to set
+     * @return the FileServerReadSettings object itself.
+     */
+    public FileServerReadSettings withPartitionRootPath(Object partitionRootPath) {
+        this.partitionRootPath = partitionRootPath;
+        return this;
+    }
+
+    /**
+     * Get indicates whether the source files need to be deleted after copy completion. Default is false. Type: boolean (or Expression with resultType boolean).
+     *
+     * @return the deleteFilesAfterCompletion value
+     */
+    public Object deleteFilesAfterCompletion() {
+        return this.deleteFilesAfterCompletion;
+    }
+
+    /**
+     * Set indicates whether the source files need to be deleted after copy completion. Default is false. Type: boolean (or Expression with resultType boolean).
+     *
+     * @param deleteFilesAfterCompletion the deleteFilesAfterCompletion value to set
+     * @return the FileServerReadSettings object itself.
+     */
+    public FileServerReadSettings withDeleteFilesAfterCompletion(Object deleteFilesAfterCompletion) {
+        this.deleteFilesAfterCompletion = deleteFilesAfterCompletion;
+        return this;
+    }
+
+    /**
      * Get the start of file's modified datetime. Type: string (or Expression with resultType string).
      *
      * @return the modifiedDatetimeStart value
@@ -204,6 +267,26 @@ public class FileServerReadSettings extends StoreReadSettings {
      */
     public FileServerReadSettings withModifiedDatetimeEnd(Object modifiedDatetimeEnd) {
         this.modifiedDatetimeEnd = modifiedDatetimeEnd;
+        return this;
+    }
+
+    /**
+     * Get specify a filter to be used to select a subset of files in the folderPath rather than all files. Type: string (or Expression with resultType string).
+     *
+     * @return the fileFilter value
+     */
+    public Object fileFilter() {
+        return this.fileFilter;
+    }
+
+    /**
+     * Set specify a filter to be used to select a subset of files in the folderPath rather than all files. Type: string (or Expression with resultType string).
+     *
+     * @param fileFilter the fileFilter value to set
+     * @return the FileServerReadSettings object itself.
+     */
+    public FileServerReadSettings withFileFilter(Object fileFilter) {
+        this.fileFilter = fileFilter;
         return this;
     }
 

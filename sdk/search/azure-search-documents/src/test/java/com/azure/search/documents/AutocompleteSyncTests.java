@@ -8,30 +8,35 @@ import com.azure.search.documents.models.AutocompleteItem;
 import com.azure.search.documents.models.AutocompleteMode;
 import com.azure.search.documents.models.AutocompleteOptions;
 import com.azure.search.documents.util.AutocompletePagedResponse;
-import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.Test;
 
+import java.net.HttpURLConnection;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import static com.azure.search.documents.SearchTestBase.HOTELS_INDEX_NAME;
+import static com.azure.search.documents.TestHelpers.assertHttpResponseException;
+import static com.azure.search.documents.TestHelpers.uploadDocumentsJson;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-public class AutocompleteSyncTests extends SearchIndexClientTestBase {
+public class AutocompleteSyncTests extends SearchTestBase {
     private static final String HOTELS_DATA_JSON = "HotelsDataArray.json";
 
-    private SearchIndexClient client;
+    private SearchClient client;
 
     @Override
     protected void beforeTest() {
         super.beforeTest();
 
-        createHotelIndex();
-        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
+        client = getSearchClientBuilder(createHotelIndex()).buildClient();
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
+    }
+
+    @Override
+    protected void afterTest() {
+        getSearchIndexClientBuilder().buildClient().deleteIndex(client.getIndexName());
     }
 
     @Test
@@ -39,11 +44,11 @@ public class AutocompleteSyncTests extends SearchIndexClientTestBase {
         AutocompleteOptions params = new AutocompleteOptions().setAutocompleteMode(AutocompleteMode.ONE_TERM);
 
         PagedIterableBase<AutocompleteItem, AutocompletePagedResponse> results = client
-            .autocomplete("very po", "Invalid suggester", params, generateRequestOptions(), Context.NONE);
+            .autocomplete("very po", "Invalid suggester", params, Context.NONE);
 
         assertHttpResponseException(
             () -> results.iterableByPage().iterator().next(),
-            HttpResponseStatus.BAD_REQUEST,
+            HttpURLConnection.HTTP_BAD_REQUEST,
             "The specified suggester name 'Invalid suggester' does not exist in this index definition.\\r\\nParameter name: name");
     }
 
@@ -58,13 +63,14 @@ public class AutocompleteSyncTests extends SearchIndexClientTestBase {
     @Test
     public void canAutocompleteOneTermWithContext() {
         List<String> expectedText = Arrays.asList("very police", "very polite", "very popular");
-        List<String> expectedQueryPlusText = Arrays.asList("looking for very police", "looking for very polite", "looking for very popular");
+        List<String> expectedQueryPlusText = Arrays.asList("looking for very police", "looking for very polite",
+            "looking for very popular");
 
         AutocompleteOptions params = new AutocompleteOptions();
         params.setAutocompleteMode(AutocompleteMode.ONE_TERM_WITH_CONTEXT);
 
         PagedIterableBase<AutocompleteItem, AutocompletePagedResponse> results = client
-            .autocomplete("looking for very po", "sg", params, generateRequestOptions(), Context.NONE);
+            .autocomplete("looking for very po", "sg", params, Context.NONE);
 
         validateResults(results.iterator(), expectedText, expectedQueryPlusText);
     }
@@ -76,7 +82,7 @@ public class AutocompleteSyncTests extends SearchIndexClientTestBase {
         params.setSearchFields("HotelName");
 
         Iterator<AutocompletePagedResponse> results = client
-            .autocomplete("luxu", "sg", params, generateRequestOptions(), Context.NONE)
+            .autocomplete("luxu", "sg", params, Context.NONE)
             .iterableByPage()
             .iterator();
 
@@ -91,7 +97,7 @@ public class AutocompleteSyncTests extends SearchIndexClientTestBase {
         params.setAutocompleteMode(AutocompleteMode.ONE_TERM);
 
         Iterator<AutocompletePagedResponse> results = client
-            .autocomplete("pi", "sg", params, generateRequestOptions(), Context.NONE)
+            .autocomplete("pi", "sg", params, Context.NONE)
             .iterableByPage()
             .iterator();
 
@@ -108,7 +114,7 @@ public class AutocompleteSyncTests extends SearchIndexClientTestBase {
         AutocompleteOptions params = new AutocompleteOptions().setAutocompleteMode(AutocompleteMode.ONE_TERM);
 
         PagedIterableBase<AutocompleteItem, AutocompletePagedResponse> results = client
-            .autocomplete("po", "sg", params, generateRequestOptions(), Context.NONE);
+            .autocomplete("po", "sg", params, Context.NONE);
 
         validateResults(results.iterator(), expectedText, expectedQueryPlusText);
     }
@@ -123,7 +129,7 @@ public class AutocompleteSyncTests extends SearchIndexClientTestBase {
             .setUseFuzzyMatching(false);
 
         PagedIterableBase<AutocompleteItem, AutocompletePagedResponse> results = client
-            .autocomplete("very po", "sg", params, generateRequestOptions(), Context.NONE);
+            .autocomplete("very po", "sg", params, Context.NONE);
 
         validateResults(results.iterator(), expectedText, expectedQueryPlusText);
     }
@@ -133,7 +139,7 @@ public class AutocompleteSyncTests extends SearchIndexClientTestBase {
         PagedIterableBase<AutocompleteItem, AutocompletePagedResponse> results = client.autocomplete("very po", "");
         assertHttpResponseException(
             () -> results.iterableByPage().iterator().next(),
-            HttpResponseStatus.BAD_REQUEST,
+            HttpURLConnection.HTTP_BAD_REQUEST,
             "Cannot find fields enabled for suggestions. Please provide a value for 'suggesterName' in the query.\\r\\nParameter name: suggestions"
         );
     }
@@ -147,7 +153,7 @@ public class AutocompleteSyncTests extends SearchIndexClientTestBase {
             .setAutocompleteMode(AutocompleteMode.TWO_TERMS);
 
         PagedIterableBase<AutocompleteItem, AutocompletePagedResponse> results = client
-            .autocomplete("po", "sg", params, generateRequestOptions(), Context.NONE);
+            .autocomplete("po", "sg", params, Context.NONE);
 
         validateResults(results.iterator(), expectedText, expectedQueryPlusText);
     }
@@ -164,7 +170,7 @@ public class AutocompleteSyncTests extends SearchIndexClientTestBase {
             .setHighlightPostTag("</b>");
 
         PagedIterableBase<AutocompleteItem, AutocompletePagedResponse> results = client
-            .autocomplete("po", "sg", params, generateRequestOptions(), Context.NONE);
+            .autocomplete("po", "sg", params, Context.NONE);
 
         validateResults(results.iterator(), expectedText, expectedQueryPlusText);
     }
@@ -179,7 +185,7 @@ public class AutocompleteSyncTests extends SearchIndexClientTestBase {
             .setSearchFields("HotelName", "Description");
 
         PagedIterableBase<AutocompleteItem, AutocompletePagedResponse> results = client
-            .autocomplete("mod", "sg", params, generateRequestOptions(), Context.NONE);
+            .autocomplete("mod", "sg", params, Context.NONE);
 
         validateResults(results.iterator(), expectedText, expectedQueryPlusText);
     }
@@ -195,7 +201,7 @@ public class AutocompleteSyncTests extends SearchIndexClientTestBase {
             .setFilter("HotelId eq '7'");
 
         PagedIterableBase<AutocompleteItem, AutocompletePagedResponse> results = client
-            .autocomplete("mod", "sg", params, generateRequestOptions(), Context.NONE);
+            .autocomplete("mod", "sg", params, Context.NONE);
 
         validateResults(results.iterator(), expectedText, expectedQueryPlusText);
     }
@@ -210,7 +216,7 @@ public class AutocompleteSyncTests extends SearchIndexClientTestBase {
             .setTop(2);
 
         PagedIterableBase<AutocompleteItem, AutocompletePagedResponse> results = client
-            .autocomplete("po", "sg", params, generateRequestOptions(), Context.NONE);
+            .autocomplete("po", "sg", params, Context.NONE);
 
         validateResults(results.iterator(), expectedText, expectedQueryPlusText);
     }
@@ -225,7 +231,7 @@ public class AutocompleteSyncTests extends SearchIndexClientTestBase {
             .setFilter("search.in(HotelId, '6,7')");
 
         PagedIterableBase<AutocompleteItem, AutocompletePagedResponse> results = client
-            .autocomplete("po", "sg", params, generateRequestOptions(), Context.NONE);
+            .autocomplete("po", "sg", params, Context.NONE);
 
         validateResults(results.iterator(), expectedText, expectedQueryPlusText);
     }
@@ -240,7 +246,7 @@ public class AutocompleteSyncTests extends SearchIndexClientTestBase {
             .setUseFuzzyMatching(true);
 
         PagedIterableBase<AutocompleteItem, AutocompletePagedResponse> results = client
-            .autocomplete("very polit", "sg", params, generateRequestOptions(), Context.NONE);
+            .autocomplete("very polit", "sg", params, Context.NONE);
 
         validateResults(results.iterator(), expectedText, expectedQueryPlusText);
     }
@@ -255,7 +261,7 @@ public class AutocompleteSyncTests extends SearchIndexClientTestBase {
             .setUseFuzzyMatching(true);
 
         PagedIterableBase<AutocompleteItem, AutocompletePagedResponse> results = client
-            .autocomplete("mod", "sg", params, generateRequestOptions(), Context.NONE);
+            .autocomplete("mod", "sg", params, Context.NONE);
 
         validateResults(results.iterator(), expectedText, expectedQueryPlusText);
     }
@@ -270,7 +276,7 @@ public class AutocompleteSyncTests extends SearchIndexClientTestBase {
             .setUseFuzzyMatching(true);
 
         PagedIterableBase<AutocompleteItem, AutocompletePagedResponse> results = client
-            .autocomplete("mod", "sg", params, generateRequestOptions(), Context.NONE);
+            .autocomplete("mod", "sg", params, Context.NONE);
 
         validateResults(results.iterator(), expectedText, expectedQueryPlusText);
     }
@@ -286,7 +292,7 @@ public class AutocompleteSyncTests extends SearchIndexClientTestBase {
             .setFilter("HotelId ne '6' and (HotelName eq 'Modern Stay' or Tags/any(t : t eq 'budget'))");
 
         PagedIterableBase<AutocompleteItem, AutocompletePagedResponse> results = client
-            .autocomplete("mod", "sg", params, generateRequestOptions(), Context.NONE);
+            .autocomplete("mod", "sg", params, Context.NONE);
 
         validateResults(results.iterator(), expectedText, expectedQueryPlusText);
     }

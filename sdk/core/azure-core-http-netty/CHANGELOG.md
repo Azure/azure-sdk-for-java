@@ -1,7 +1,19 @@
 # Release History
 
 ## 1.6.0-beta.1 (Unreleased)
+- Updated reactor-core version to `3.3.8.RELEASE`
+- Updated reactor-netty version to `0.9.10.RELEASE`
+- Updated netty version to `4.1.51.Final`
+- Updated netty-tcnative version to `2.0.31.Final`
 
+## 1.5.3 (2020-07-02)
+
+- Updated Azure Core dependency.
+
+## 1.5.2 (2020-06-08)
+
+- Fix bug where environment proxy wasn't inferred properly when it didn't use authentication.
+- Updated Azure Core dependency.
 
 ## 1.5.1 (2020-05-04)
 

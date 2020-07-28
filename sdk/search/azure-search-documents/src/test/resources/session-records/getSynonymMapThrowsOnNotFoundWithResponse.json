@@ -1,29 +1,31 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://azsjavagetsynonymmapthrowsonnotfoundwithresponse64f803111d.search.windows.net/synonymmaps('thisSynonymMapDoesNotExist')?api-version=2019-05-06-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/synonymmaps('thisSynonymMapDoesNotExist')?api-version=2020-06-30",
     "Headers" : {
-      "x-ms-client-request-id" : "fb027e75-67af-4cd9-a34a-207ee17f8e0f"
+      "User-Agent" : "azsdk-java-azure-search-documents/1.0.0-beta.5 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4a56d09f-2943-44c3-9a7f-9ec129048578"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "fb027e75-67af-4cd9-a34a-207ee17f8e0f",
+      "request-id" : "4a56d09f-2943-44c3-9a7f-9ec129048578",
       "StatusCode" : "404",
-      "Date" : "Tue, 21 Apr 2020 19:14:48 GMT",
+      "Date" : "Thu, 25 Jun 2020 17:10:45 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "fb027e75-67af-4cd9-a34a-207ee17f8e0f",
-      "elapsed-time" : "54",
+      "client-request-id" : "4a56d09f-2943-44c3-9a7f-9ec129048578",
+      "elapsed-time" : "11",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "174",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No synonym map with the name 'thisSynonymMapDoesNotExist' was found in service 'azsjavagetsynonymmapthrowsonnotfoundwithresponse64f803111d'.\"}}",
+      "Content-Length" : "128",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No synonym map with the name 'thisSynonymMapDoesNotExist' was found in service 'sizhu-search'.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "x-ms-client-request-id" : "4a56d09f-2943-44c3-9a7f-9ec129048578",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   } ],
-  "variables" : [ "azsjavagetsynonymmapthrowsonnotfoundwithresponse64f803111d" ]
+  "variables" : [ ]
 }

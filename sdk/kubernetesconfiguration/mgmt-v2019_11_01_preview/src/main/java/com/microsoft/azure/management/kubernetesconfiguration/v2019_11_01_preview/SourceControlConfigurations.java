@@ -26,11 +26,10 @@ public interface SourceControlConfigurations extends SupportsCreating<SourceCont
      * @param clusterResourceName The Kubernetes cluster resource name - either managedClusters (for AKS clusters) or connectedClusters (for OnPrem K8S clusters). Possible values include: 'managedClusters', 'connectedClusters'
      * @param clusterName The name of the kubernetes cluster.
      * @param sourceControlConfigurationName Name of the Source Control Configuration.
-     * @param apiVersion The API version to be used with the HTTP request.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<SourceControlConfiguration> getAsync(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, String sourceControlConfigurationName, String apiVersion);
+    Observable<SourceControlConfiguration> getAsync(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, String sourceControlConfigurationName);
 
     /**
      * This will delete the YAML file used to set up the Source control configuration, thus stopping future sync from the source repo.
@@ -40,11 +39,10 @@ public interface SourceControlConfigurations extends SupportsCreating<SourceCont
      * @param clusterResourceName The Kubernetes cluster resource name - either managedClusters (for AKS clusters) or connectedClusters (for OnPrem K8S clusters). Possible values include: 'managedClusters', 'connectedClusters'
      * @param clusterName The name of the kubernetes cluster.
      * @param sourceControlConfigurationName Name of the Source Control Configuration.
-     * @param apiVersion The API version to be used with the HTTP request.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable deleteAsync(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, String sourceControlConfigurationName, String apiVersion);
+    Completable deleteAsync(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, String sourceControlConfigurationName);
 
     /**
      * List all Source Control Configurations.
@@ -53,10 +51,9 @@ public interface SourceControlConfigurations extends SupportsCreating<SourceCont
      * @param clusterRp The Kubernetes cluster RP - either Microsoft.ContainerService (for AKS clusters) or Microsoft.Kubernetes (for OnPrem K8S clusters). Possible values include: 'Microsoft.ContainerService', 'Microsoft.Kubernetes'
      * @param clusterResourceName The Kubernetes cluster resource name - either managedClusters (for AKS clusters) or connectedClusters (for OnPrem K8S clusters). Possible values include: 'managedClusters', 'connectedClusters'
      * @param clusterName The name of the kubernetes cluster.
-     * @param apiVersion The API version to be used with the HTTP request.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<SourceControlConfiguration> listAsync(final String resourceGroupName, final String clusterRp, final String clusterResourceName, final String clusterName, final String apiVersion);
+    Observable<SourceControlConfiguration> listAsync(final String resourceGroupName, final String clusterRp, final String clusterResourceName, final String clusterName);
 
 }

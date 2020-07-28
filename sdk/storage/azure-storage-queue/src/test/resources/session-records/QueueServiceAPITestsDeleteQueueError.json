@@ -1,26 +1,26 @@
 {
   "networkCallRecords" : [ {
     "Method" : "DELETE",
-    "Uri" : "https://gapradev.queue.core.windows.net/queueserviceapitestsdeletequeueerror99181f9b5563b0",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queueserviceapitestsdeletequeueerror310600a6de2c65",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.3.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "92d1075e-6b3d-465d-8b61-35bf02d4e71b"
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "2906c7cf-ff27-49a9-b9ae-2d7555f3154e"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "x-ms-version" : "2019-12-12",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "QueueNotFound",
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "bf1280b9-7003-000c-5e71-e00533000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:bf1280b9-7003-000c-5e71-e00533000000\nTime:2020-02-11T00:26:17.6170522Z</Message></Error>",
-      "Date" : "Tue, 11 Feb 2020 00:26:17 GMT",
-      "x-ms-client-request-id" : "92d1075e-6b3d-465d-8b61-35bf02d4e71b",
+      "x-ms-request-id" : "37a3aec5-3003-009b-1304-3a8ca5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:37a3aec5-3003-009b-1304-3a8ca5000000\nTime:2020-06-04T00:06:43.1638292Z</Message></Error>",
+      "Date" : "Thu, 04 Jun 2020 00:06:43 GMT",
+      "x-ms-client-request-id" : "2906c7cf-ff27-49a9-b9ae-2d7555f3154e",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueserviceapitestsdeletequeueerror99181f9b5563b0" ]
+  "variables" : [ "queueserviceapitestsdeletequeueerror310600a6de2c65" ]
 }

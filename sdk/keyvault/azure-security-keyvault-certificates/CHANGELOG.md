@@ -1,6 +1,13 @@
 # Release History
 
-## 4.1.0-beta.3 (Unreleased)
+## 4.1.0-beta.5 (Unreleased)
+
+
+## 4.1.0-beta.4 (2020-07-08)
+- Updated versions for azure-core, azure-identity.
+
+## 4.1.0-beta.3 (2020-06-10)
+- Updated version for azure-core, azure-identity and external dependencies.
 
 ## 4.1.0-beta.2 (2020-04-09)
 - Added `retryPolicy` setter in `CertificateClientBuilder`

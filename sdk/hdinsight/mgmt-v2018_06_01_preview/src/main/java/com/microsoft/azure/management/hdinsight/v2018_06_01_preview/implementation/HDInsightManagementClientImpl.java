@@ -237,6 +237,19 @@ public class HDInsightManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The VirtualMachinesInner object to access its operations.
+     */
+    private VirtualMachinesInner virtualMachines;
+
+    /**
+     * Gets the VirtualMachinesInner object to access its operations.
+     * @return the VirtualMachinesInner object.
+     */
+    public VirtualMachinesInner virtualMachines() {
+        return this.virtualMachines;
+    }
+
+    /**
      * Initializes an instance of HDInsightManagementClient client.
      *
      * @param credentials the management credentials for Azure
@@ -279,6 +292,7 @@ public class HDInsightManagementClientImpl extends AzureServiceClient {
         this.scriptActions = new ScriptActionsInner(restClient().retrofit(), this);
         this.scriptExecutionHistorys = new ScriptExecutionHistorysInner(restClient().retrofit(), this);
         this.operations = new OperationsInner(restClient().retrofit(), this);
+        this.virtualMachines = new VirtualMachinesInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 

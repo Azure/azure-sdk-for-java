@@ -3,7 +3,7 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
+import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -78,7 +78,8 @@ public class CosmosDatabaseForTest {
     public static CosmosDatabaseForTest create(DatabaseManager client) {
         CosmosDatabaseProperties dbDef = new CosmosDatabaseProperties(generateId());
 
-        CosmosAsyncDatabase db = client.createDatabase(dbDef).block().getDatabase();
+        client.createDatabase(dbDef).block();
+        CosmosAsyncDatabase db = client.getDatabase(dbDef.getId());
         CosmosDatabaseForTest dbForTest = CosmosDatabaseForTest.from(db);
         assertThat(dbForTest).isNotNull();
         return dbForTest;
@@ -109,7 +110,7 @@ public class CosmosDatabaseForTest {
 
     public interface DatabaseManager {
         CosmosPagedFlux<CosmosDatabaseProperties> queryDatabases(SqlQuerySpec query);
-        Mono<CosmosAsyncDatabaseResponse> createDatabase(CosmosDatabaseProperties databaseDefinition);
+        Mono<CosmosDatabaseResponse> createDatabase(CosmosDatabaseProperties databaseDefinition);
         CosmosAsyncDatabase getDatabase(String id);
     }
 }

@@ -8,16 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * The InnerError model.
- */
+/** The InnerError model. */
 @Fluent
 public final class InnerError {
     /*
-     * Error code. Possible values include: 'invalidParameterValue',
-     * 'invalidRequestBodyFormat', 'emptyRequest', 'missingInputRecords',
-     * 'invalidDocument', 'modelVersionIncorrect', 'invalidDocumentBatch',
-     * 'unsupportedLanguageCode', 'invalidCountryHint'
+     * Error code.
      */
     @JsonProperty(value = "code", required = true)
     private InnerErrorCodeValue code;
@@ -43,14 +38,11 @@ public final class InnerError {
     /*
      * Inner error contains more specific information.
      */
-    @JsonProperty(value = "innerError")
-    private InnerError innerError;
+    @JsonProperty(value = "innererror")
+    private InnerError innererror;
 
     /**
-     * Get the code property: Error code. Possible values include:
-     * 'invalidParameterValue', 'invalidRequestBodyFormat', 'emptyRequest',
-     * 'missingInputRecords', 'invalidDocument', 'modelVersionIncorrect',
-     * 'invalidDocumentBatch', 'unsupportedLanguageCode', 'invalidCountryHint'.
+     * Get the code property: Error code.
      *
      * @return the code value.
      */
@@ -59,10 +51,7 @@ public final class InnerError {
     }
 
     /**
-     * Set the code property: Error code. Possible values include:
-     * 'invalidParameterValue', 'invalidRequestBodyFormat', 'emptyRequest',
-     * 'missingInputRecords', 'invalidDocument', 'modelVersionIncorrect',
-     * 'invalidDocumentBatch', 'unsupportedLanguageCode', 'invalidCountryHint'.
+     * Set the code property: Error code.
      *
      * @param code the code value to set.
      * @return the InnerError object itself.
@@ -133,24 +122,22 @@ public final class InnerError {
     }
 
     /**
-     * Get the innerError property: Inner error contains more specific
-     * information.
+     * Get the innererror property: Inner error contains more specific information.
      *
-     * @return the innerError value.
+     * @return the innererror value.
      */
-    public InnerError getInnerError() {
-        return this.innerError;
+    public InnerError getInnererror() {
+        return this.innererror;
     }
 
     /**
-     * Set the innerError property: Inner error contains more specific
-     * information.
+     * Set the innererror property: Inner error contains more specific information.
      *
-     * @param innerError the innerError value to set.
+     * @param innererror the innererror value to set.
      * @return the InnerError object itself.
      */
-    public InnerError setInnerError(InnerError innerError) {
-        this.innerError = innerError;
+    public InnerError setInnererror(InnerError innererror) {
+        this.innererror = innererror;
         return this;
     }
 }

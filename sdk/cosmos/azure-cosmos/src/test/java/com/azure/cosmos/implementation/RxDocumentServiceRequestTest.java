@@ -404,24 +404,6 @@ public class RxDocumentServiceRequestTest {
         assertThat(request.isValidAddress(ResourceType.Unknown)).isTrue();
     }
 
-    @Test(groups = { "unit" }, dataProvider = "documentUrl")
-    public void addPreferHeader(String documentUrlWithId, String documentUrlWithName, OperationType operationType) {
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(operationType,
-                                                                           ResourceType.Document,
-                                                                           documentUrlWithId,
-                                                                           new HashedMap<String, String>());
-
-        request.addPreferHeader("preferHeaderName1", "preferHeaderValue1");
-        assertThat(request.getHeaders().size()).isEqualTo(1);
-        assertThat(request.getHeaders().get(HttpConstants.HttpHeaders.PREFER))
-                .isEqualTo("preferHeaderName1=preferHeaderValue1");
-
-        request.addPreferHeader("preferHeaderName2", "preferHeaderValue2");
-        assertThat(request.getHeaders().size()).isEqualTo(1);
-        assertThat(request.getHeaders().get(HttpConstants.HttpHeaders.PREFER))
-                .isEqualTo("preferHeaderName1=preferHeaderValue1;" + "preferHeaderName2=preferHeaderValue2");
-    }
-
     private Document getDocumentDefinition() {
         String uuid = UUID.randomUUID().toString();
         Document doc = new Document(String.format(DOCUMENT_DEFINITION, uuid, PARTITION_KEY_VALUE));
