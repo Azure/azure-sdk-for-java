@@ -1,3 +1,3 @@
 # Release History
 
-## 2.3.3-beta.1 (Unreleased)
+## 2.3.3 (2020-07-28)
