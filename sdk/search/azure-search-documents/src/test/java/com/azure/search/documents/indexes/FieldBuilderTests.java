@@ -15,6 +15,7 @@ import com.azure.search.documents.test.environment.models.HotelTwoDimensional;
 import com.azure.search.documents.test.environment.models.HotelWithArray;
 import com.azure.search.documents.test.environment.models.HotelWithEmptyInSynonymMaps;
 import com.azure.search.documents.test.environment.models.HotelWithIgnoredFields;
+import com.azure.search.documents.test.environment.models.HotelWithUnsupportedField;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -100,9 +101,16 @@ public class FieldBuilderTests {
 
     @Test
     public void ignoredPropertyName() {
-        List<SearchField> actualFields = sortByFieldName(FieldBuilder.build(HotelWithIgnoredFields.class, null));
+        List<SearchField> actualFields = FieldBuilder.build(HotelWithIgnoredFields.class, null);
         assertEquals(1, actualFields.size());
         assertEquals("notIgnoredName", actualFields.get(0).getName());
+    }
+
+    @Test
+    public void unsupportedFields() {
+        List<SearchField> actualFields = FieldBuilder.build(HotelWithUnsupportedField.class, null);
+        assertEquals(1, actualFields.size());
+        assertEquals("hotelId", actualFields.get(0).getName());
     }
 
     private void assertListFieldEquals(List<SearchField> expected, List<SearchField> actual) {

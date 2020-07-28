@@ -46,14 +46,10 @@ public final class FieldBuilder {
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(PointGeometry.class, SearchFieldDataType.GEOGRAPHY_POINT);
     }
 
-    private static final List<Class<?>> UNSUPPORTED_TYPES = Arrays.asList(Byte.class,
-        CharSequence.class,
-        Character.class,
-        char.class,
-        Float.class,
-        float.class,
-        Short.class,
-        short.class);
+    private static final List<Class<?>> UNSUPPORTED_TYPES = Arrays.asList(byte.class, Byte.class,
+        CharSequence.class, Character.class, char.class,
+        Float.class, float.class,
+        Short.class, short.class);
 
     /**
      * Creates a collection of {@link SearchField} objects corresponding to the properties of the type supplied.
@@ -107,6 +103,9 @@ public final class FieldBuilder {
             return null;
         }
         Type type = classField.getGenericType();
+        if (UNSUPPORTED_TYPES.contains(type)) {
+            return null;
+        }
 
         if (SUPPORTED_NONE_PARAMETERIZED_TYPE.containsKey(type)) {
             return buildNoneParameterizedType(fieldName, classField, logger);
@@ -143,12 +142,16 @@ public final class FieldBuilder {
         }
 
         Type rawType = ((ParameterizedType) type).getRawType();
+
         return List.class.isAssignableFrom((Class<?>) rawType);
     }
 
     private static SearchField buildCollectionField(String fieldName, Field classField,
         Stack<Class<?>> classChain, PropertyNameSerializer serializer, ClientLogger logger) {
         Type componentOrElementType = getComponentOrElementType(classField.getGenericType(), logger);
+        if (UNSUPPORTED_TYPES.contains(componentOrElementType)) {
+            return null;
+        }
         validateType(componentOrElementType, true, logger);
         if (SUPPORTED_NONE_PARAMETERIZED_TYPE.containsKey(componentOrElementType)) {
             SearchField searchField = convertToBasicSearchField(fieldName, classField, logger);
@@ -178,8 +181,7 @@ public final class FieldBuilder {
             "Collection type %s is not supported.", arrayOrListType.getTypeName())));
     }
 
-    private static SearchField convertToBasicSearchField(String fieldName, Field classField,
-        ClientLogger logger) {
+    private static SearchField convertToBasicSearchField(String fieldName, Field classField, ClientLogger logger) {
 
         SearchFieldDataType dataType = covertToSearchFieldDataType(classField.getGenericType(), false, logger);
         if (dataType == null) {
@@ -271,9 +273,7 @@ public final class FieldBuilder {
     private static SearchFieldDataType covertToSearchFieldDataType(Type type, boolean hasArrayOrCollectionWrapped,
         ClientLogger logger) {
         validateType(type, hasArrayOrCollectionWrapped, logger);
-        if (UNSUPPORTED_TYPES.contains(type)) {
-            return null;
-        }
+
         if (SUPPORTED_NONE_PARAMETERIZED_TYPE.containsKey(type)) {
             return SUPPORTED_NONE_PARAMETERIZED_TYPE.get(type);
         }

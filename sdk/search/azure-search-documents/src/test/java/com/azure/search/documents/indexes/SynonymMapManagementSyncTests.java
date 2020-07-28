@@ -44,9 +44,6 @@ public class SynonymMapManagementSyncTests extends SearchTestBase {
         super.afterTest();
 
         boolean synonymMapsDeleted = false;
-//        for (String synonymMap: client.listSynonymMapNames()) {
-//            client.deleteSynonymMap(synonymMap);
-//        }
         for (String synonymMap : synonymMapsToDelete) {
             client.deleteSynonymMap(synonymMap);
             synonymMapsDeleted = true;
