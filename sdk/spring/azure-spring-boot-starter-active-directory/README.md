@@ -49,7 +49,7 @@ Please refer to [azure-spring-boot-sample-active-directory-backend](../azure-spr
 spring.security.oauth2.client.registration.azure.client-id=xxxxxx-your-client-id-xxxxxx
 spring.security.oauth2.client.registration.azure.client-secret=xxxxxx-your-client-secret-xxxxxx
 azure.activedirectory.tenant-id=xxxxxx-your-tenant-id-xxxxxx
-azure.activedirectory.active-directory-groups=group1, group2
+azure.activedirectory.user-group.allowed-groups=group1, group2
 ```
 
 #### Autowire `OAuth2UserService` bean in `WebSecurityConfigurerAdapter`:
@@ -82,7 +82,7 @@ Please refer to [azure-active-directory-spring-boot-sample](../azure-spring-boot
 ```properties
 azure.activedirectory.client-id=Application-ID-in-AAD-App-registrations
 azure.activedirectory.client-secret=Key-in-AAD-API-ACCESS
-azure.activedirectory.active-directory-groups=Aad-groups e.g. group1,group2,group3
+azure.activedirectory.user-group.allowed-groups=Aad-groups e.g. group1,group2,group3
 ```
 
 If you're using [Azure China](https://docs.microsoft.com/azure/china/china-welcome), please append an extra line to the `application.properties` file:

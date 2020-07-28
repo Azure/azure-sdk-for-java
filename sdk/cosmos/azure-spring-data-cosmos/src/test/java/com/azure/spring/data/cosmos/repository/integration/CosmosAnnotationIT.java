@@ -2,11 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.integration;
 
+import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.common.TestUtils;
+import com.azure.spring.data.cosmos.config.CosmosClientConfig;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
@@ -40,6 +42,8 @@ public class CosmosAnnotationIT {
     private ApplicationContext applicationContext;
     @Autowired
     private CosmosConfig cosmosConfig;
+    @Autowired
+    private CosmosClientConfig cosmosClientConfig;
 
     private static CosmosTemplate cosmosTemplate;
     private static CosmosContainerProperties collectionRole;
@@ -52,17 +56,18 @@ public class CosmosAnnotationIT {
     @Before
     public void setUp() throws ClassNotFoundException {
         if (!initialized) {
-            final CosmosFactory cosmosFactory = new CosmosFactory(cosmosConfig);
+            CosmosAsyncClient client = CosmosFactory.createCosmosAsyncClient(cosmosClientConfig);
+            final CosmosFactory cosmosFactory = new CosmosFactory(client, cosmosClientConfig.getDatabase());
 
             roleInfo = new CosmosEntityInformation<>(Role.class);
             sampleInfo = new CosmosEntityInformation<>(TimeToLiveSample.class);
-            final CosmosMappingContext dbContext = new CosmosMappingContext();
+            final CosmosMappingContext mappingContext = new CosmosMappingContext();
 
-            dbContext.setInitialEntitySet(new EntityScanner(this.applicationContext).scan(Persistent.class));
+            mappingContext.setInitialEntitySet(new EntityScanner(this.applicationContext).scan(Persistent.class));
 
-            final MappingCosmosConverter mappingConverter = new MappingCosmosConverter(dbContext, null);
+            final MappingCosmosConverter mappingConverter = new MappingCosmosConverter(mappingContext, null);
 
-            cosmosTemplate = new CosmosTemplate(cosmosFactory, mappingConverter, cosmosConfig.getDatabase());
+            cosmosTemplate = new CosmosTemplate(cosmosFactory, cosmosConfig, mappingConverter);
             initialized = true;
         }
         collectionRole = cosmosTemplate.createContainerIfNotExists(roleInfo);

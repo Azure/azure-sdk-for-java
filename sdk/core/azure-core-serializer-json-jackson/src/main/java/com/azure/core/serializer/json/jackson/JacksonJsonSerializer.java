@@ -5,13 +5,13 @@ package com.azure.core.serializer.json.jackson;
 
 import com.azure.core.experimental.serializer.JsonNode;
 import com.azure.core.experimental.serializer.JsonSerializer;
+import com.azure.core.experimental.serializer.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.reflect.Type;
 
 /**
  * Jackson based implementation of the {@link JsonSerializer} interface.
@@ -27,25 +27,24 @@ public final class JacksonJsonSerializer implements JsonSerializer {
      */
     JacksonJsonSerializer(ObjectMapper mapper) {
         this.mapper = mapper;
-        typeFactory = mapper.getTypeFactory();
+        this.typeFactory = mapper.getTypeFactory();
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public <T> Mono<T> deserialize(InputStream stream, Type type) {
+    public <T> Mono<T> deserialize(InputStream stream, TypeReference<T> typeReference) {
         return Mono.fromCallable(() -> {
             if (stream == null) {
                 return null;
             }
 
-            return (T) mapper.readValue(stream, typeFactory.constructType(type));
+            return mapper.readValue(stream, typeFactory.constructType(typeReference.getJavaType()));
         });
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public <T> Mono<T> deserializeTree(JsonNode jsonNode, Type type) {
-        return Mono.fromCallable(() -> mapper.treeToValue(JsonNodeUtils.toJacksonNode(jsonNode), (Class<T>) type));
+    public <T> Mono<T> deserializeTree(JsonNode jsonNode, TypeReference<T> typeReference) {
+        return Mono.fromCallable(() -> mapper.readerFor(typeFactory.constructType(typeReference.getJavaType()))
+            .readValue(JsonNodeUtils.toJacksonNode(jsonNode)));
     }
 
     @Override
@@ -71,5 +70,4 @@ public final class JacksonJsonSerializer implements JsonSerializer {
     public Mono<JsonNode> toTree(Object value) {
         return Mono.fromCallable(() -> JsonNodeUtils.fromJacksonNode(mapper.valueToTree(value)));
     }
-
 }

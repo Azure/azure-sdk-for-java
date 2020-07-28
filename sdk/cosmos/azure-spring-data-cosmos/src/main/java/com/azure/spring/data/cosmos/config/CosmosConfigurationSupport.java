@@ -26,6 +26,13 @@ import java.util.Set;
 public abstract class CosmosConfigurationSupport {
 
     /**
+     * Return the name of the database to connect to
+     *
+     * @return must not be {@literal null}.
+     */
+    protected abstract String getDatabaseName();
+
+    /**
      * Declare ExpressionResolver bean.
      * @param beanFactory used to initialize the embeddedValueResolver
      * @return ExpressionResolver bean
