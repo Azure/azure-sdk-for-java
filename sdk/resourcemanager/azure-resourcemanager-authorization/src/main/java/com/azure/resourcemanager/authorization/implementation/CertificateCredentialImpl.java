@@ -19,11 +19,12 @@ import java.time.OffsetDateTime;
 import java.util.Base64;
 
 /** Implementation for ServicePrincipal and its parent interfaces. */
-class CertificateCredentialImpl<T> extends IndexableRefreshableWrapperImpl<CertificateCredential, KeyCredentialInner>
+class CertificateCredentialImpl<T extends HasCredential<T>>
+    extends IndexableRefreshableWrapperImpl<CertificateCredential, KeyCredentialInner>
     implements CertificateCredential, CertificateCredential.Definition<T>, CertificateCredential.UpdateDefinition<T> {
 
     private String name;
-    private HasCredential<?> parent;
+    private HasCredential<T> parent;
     private OutputStream authFile;
     private String privateKeyPath;
     private String privateKeyPassword;
@@ -39,7 +40,7 @@ class CertificateCredentialImpl<T> extends IndexableRefreshableWrapperImpl<Certi
         }
     }
 
-    CertificateCredentialImpl(String name, HasCredential<?> parent) {
+    CertificateCredentialImpl(String name, HasCredential<T> parent) {
         super(
             new KeyCredentialInner()
                 .withUsage("Verify")
@@ -76,10 +77,8 @@ class CertificateCredentialImpl<T> extends IndexableRefreshableWrapperImpl<Certi
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public T attach() {
-        parent.withCertificateCredential(this);
-        return (T) parent;
+        return parent.withCertificateCredential(this);
     }
 
     @Override

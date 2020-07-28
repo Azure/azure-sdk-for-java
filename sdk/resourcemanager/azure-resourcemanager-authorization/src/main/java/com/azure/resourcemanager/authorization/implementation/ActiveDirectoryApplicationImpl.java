@@ -77,7 +77,7 @@ class ActiveDirectoryApplicationImpl
                 .map(
                     (Function<KeyCredentialInner, CertificateCredential>)
                     keyCredentialInner ->
-                        new CertificateCredentialImpl<ActiveDirectoryApplication>(keyCredentialInner))
+                        new CertificateCredentialImpl<ActiveDirectoryApplicationImpl>(keyCredentialInner))
                 .collectMap(certificateCredential -> certificateCredential.name())
                 .map(
                     stringCertificateCredentialMap -> {
@@ -94,7 +94,7 @@ class ActiveDirectoryApplicationImpl
                 .map(
                     (Function<PasswordCredentialInner, PasswordCredential>)
                     passwordCredentialInner ->
-                        new PasswordCredentialImpl<ActiveDirectoryApplication>(passwordCredentialInner))
+                        new PasswordCredentialImpl<ActiveDirectoryApplicationImpl>(passwordCredentialInner))
                 .collectMap(passwordCredential -> passwordCredential.name())
                 .map(
                     stringPasswordCredentialMap -> {
@@ -133,7 +133,7 @@ class ActiveDirectoryApplicationImpl
         if (inner().identifierUris() == null) {
             return null;
         }
-        return Collections.unmodifiableSet(new HashSet(inner().identifierUris()));
+        return Collections.unmodifiableSet(new HashSet<>(inner().identifierUris()));
     }
 
     @Override
@@ -141,7 +141,7 @@ class ActiveDirectoryApplicationImpl
         if (inner().replyUrls() == null) {
             return null;
         }
-        return Collections.unmodifiableSet(new HashSet(inner().replyUrls()));
+        return Collections.unmodifiableSet(new HashSet<>(inner().replyUrls()));
     }
 
     @Override

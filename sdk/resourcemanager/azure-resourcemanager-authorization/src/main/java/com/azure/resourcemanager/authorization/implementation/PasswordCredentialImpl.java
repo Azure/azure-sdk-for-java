@@ -18,11 +18,12 @@ import java.time.OffsetDateTime;
 import java.util.Base64;
 
 /** Implementation for ServicePrincipal and its parent interfaces. */
-class PasswordCredentialImpl<T> extends IndexableRefreshableWrapperImpl<PasswordCredential, PasswordCredentialInner>
+class PasswordCredentialImpl<T extends HasCredential<T>>
+    extends IndexableRefreshableWrapperImpl<PasswordCredential, PasswordCredentialInner>
     implements PasswordCredential, PasswordCredential.Definition<T>, PasswordCredential.UpdateDefinition<T> {
 
     private String name;
-    private HasCredential<?> parent;
+    private HasCredential<T> parent;
     OutputStream authFile;
     private String subscriptionId;
     private final ClientLogger logger = new ClientLogger(PasswordCredentialImpl.class);
@@ -39,7 +40,7 @@ class PasswordCredentialImpl<T> extends IndexableRefreshableWrapperImpl<Password
         }
     }
 
-    PasswordCredentialImpl(String name, HasCredential<?> parent) {
+    PasswordCredentialImpl(String name, HasCredential<T> parent) {
         super(
             new PasswordCredentialInner()
                 .withCustomKeyIdentifier(Base64.getEncoder().encode(name.getBytes(StandardCharsets.UTF_8)))
@@ -75,10 +76,8 @@ class PasswordCredentialImpl<T> extends IndexableRefreshableWrapperImpl<Password
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public T attach() {
-        parent.withPasswordCredential(this);
-        return (T) parent;
+        return parent.withPasswordCredential(this);
     }
 
     @Override
