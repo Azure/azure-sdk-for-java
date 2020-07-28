@@ -203,7 +203,6 @@ Licensed under the MIT License.
                 <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.10.1]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
                 <include>com.fasterxml.jackson.module:jackson-module-afterburner:[2.10.1]</include> <!-- {x-include-update;cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;external_dependency} -->
                 <include>io.dropwizard.metrics:metrics-core:[4.1.0]</include> <!-- {x-include-update;cosmos_io.dropwizard.metrics:metrics-core;external_dependency} -->
-                <include>io.micrometer:micrometer-core:[1.3.0]</include> <!-- {x-include-update;io.micrometer:micrometer-core;external_dependency} -->
                 <include>io.netty:netty-codec-http:[4.1.51.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http;external_dependency} -->
                 <include>io.netty:netty-codec-http2:[4.1.51.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http2;external_dependency} -->
                 <include>io.netty:netty-handler:[4.1.51.Final]</include> <!-- {x-include-update;io.netty:netty-handler;external_dependency} -->
