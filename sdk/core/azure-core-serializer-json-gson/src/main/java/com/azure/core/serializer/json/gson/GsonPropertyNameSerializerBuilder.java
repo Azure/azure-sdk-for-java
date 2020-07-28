@@ -3,9 +3,11 @@
 
 package com.azure.core.serializer.json.gson;
 
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+/**
+ * Fluent builder class that configures and instantiates instances of {@link GsonPropertyNameSerializer}.
+ */
 public class GsonPropertyNameSerializerBuilder {
 
     private GsonBuilder gsonBuilder;
@@ -21,9 +23,9 @@ public class GsonPropertyNameSerializerBuilder {
     }
 
     /**
-     * Sets the {@link Gson} that will be used during serialization.
+     * Sets the {@link GsonBuilder} that will be used during serialization.
      * <p>
-     * If this is set to {@code null} the default {@link Gson} will be used.
+     * If this is set to {@code null} the default {@link GsonBuilder} will be used.
      *
      * @param gsonBuilder {@link GsonBuilder} that will be used during serialization.
      * @return The updated GsonPropertyNameSerializer class.

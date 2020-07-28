@@ -28,9 +28,9 @@ public final class GsonJsonSerializerBuilder {
     }
 
     /**
-     * Sets the {@link Gson} that will be used during serialization.
+     * Sets the {@link GsonBuilder} that will be used during serialization.
      * <p>
-     * If this is set to {@code null} the default {@link Gson} will be used.
+     * If this is set to {@code null} the default {@link GsonBuilder} will be used.
      *
      * @param gsonBuilder {@link GsonBuilder} that will be used during serialization.
      * @return The updated GsonJsonSerializerBuilder class.
