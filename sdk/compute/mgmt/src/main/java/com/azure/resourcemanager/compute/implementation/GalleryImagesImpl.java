@@ -53,7 +53,6 @@ public class GalleryImagesImpl extends WrapperImpl<GalleryImagesClient> implemen
     public Mono<GalleryImage> getByGalleryAsync(String resourceGroupName, String galleryName, String galleryImageName) {
         return inner()
             .getAsync(resourceGroupName, galleryName, galleryImageName)
-            .onErrorResume(e -> Mono.empty())
             .map(this::wrapModel);
     }
 

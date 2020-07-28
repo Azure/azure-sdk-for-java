@@ -96,7 +96,6 @@ public class RoleAssignmentHelper {
                     .createAsync()
                     .last()
                     .onErrorResume(
-                        (Function<Throwable, Mono<Indexable>>)
                         throwable -> {
                             if (isRoleAssignmentExists(throwable)) {
                                 return cxt.voidMono();
@@ -150,7 +149,6 @@ public class RoleAssignmentHelper {
                     .createAsync()
                     .last()
                     .onErrorResume(
-                        (Function<Throwable, Mono<Indexable>>)
                         throwable -> {
                             if (isRoleAssignmentExists(throwable)) {
                                 return cxt.voidMono();

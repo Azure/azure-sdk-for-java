@@ -30,7 +30,6 @@ class CNameRecordSetsImpl extends DnsRecordSetsBaseImpl<CNameRecordSet, CNameRec
             .inner()
             .getRecordSets()
             .getAsync(this.dnsZone.resourceGroupName(), this.dnsZone.name(), name, this.recordType)
-            .onErrorResume(e -> Mono.empty())
             .map(this::wrapModel);
     }
 

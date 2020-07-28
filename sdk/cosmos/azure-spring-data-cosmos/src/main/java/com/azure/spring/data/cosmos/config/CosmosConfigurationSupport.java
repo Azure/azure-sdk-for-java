@@ -3,8 +3,8 @@
 
 package com.azure.spring.data.cosmos.config;
 
-import com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext;
 import com.azure.spring.data.cosmos.common.ExpressionResolver;
+import com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Bean;
@@ -24,6 +24,13 @@ import java.util.Set;
  * A support class for cosmos configuration to scan beans and get initial entities
  */
 public abstract class CosmosConfigurationSupport {
+
+    /**
+     * Return the name of the database to connect to
+     *
+     * @return must not be {@literal null}.
+     */
+    protected abstract String getDatabaseName();
 
     /**
      * Declare ExpressionResolver bean.

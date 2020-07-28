@@ -91,6 +91,10 @@ public class Utils {
 
     }
 
+    public static byte[] getUtf16Bytes(String str) {
+        return str.getBytes(StandardCharsets.UTF_16LE);
+    }
+
     public static String encodeBase64String(byte[] binaryData) {
         String encodedString = Base64Encoder.encodeToString(binaryData);
 
@@ -597,12 +601,25 @@ public class Utils {
         }
     }
 
+    public static <T> T parse(byte[] item, Class<T> itemClassType, ItemDeserializer itemDeserializer) {
+        if (Utils.isEmpty(item)) {
+            return null;
+        }
+
+        if (itemDeserializer == null) {
+            return Utils.parse(item, itemClassType);
+        }
+
+        return itemDeserializer.parseFrom(itemClassType, item);
+    }
+
     public static ByteBuffer serializeJsonToByteBuffer(ObjectMapper objectMapper, Object object) {
         try {
             ByteBufferOutputStream byteBufferOutputStream = new ByteBufferOutputStream(ONE_KB);
             objectMapper.writeValue(byteBufferOutputStream, object);
             return byteBufferOutputStream.asByteBuffer();
         } catch (IOException e) {
+            // TODO moderakh: on serialization/deserialization failure we should throw CosmosException here and elsewhere
             throw new IllegalArgumentException("Failed to serialize the object into json", e);
         }
     }
@@ -657,10 +674,14 @@ public class Utils {
         }
     }
 
-    static byte[] toByteArray(ByteBuf buf) {
+    public static byte[] toByteArray(ByteBuf buf) {
         byte[] bytes = new byte[buf.readableBytes()];
         buf.readBytes(bytes);
         return bytes;
+    }
+
+    public static ByteBuffer toByteBuffer(byte[] bytes) {
+        return ByteBuffer.wrap(bytes);
     }
 
     public static String toJson(ObjectMapper mapper, ObjectNode object) {

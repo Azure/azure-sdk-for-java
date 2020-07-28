@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.core;
 
-import com.azure.data.cosmos.PartitionKey;
+import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
 import com.azure.spring.data.cosmos.core.query.DocumentQuery;
@@ -21,7 +21,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-@SuppressWarnings("unchecked")
 @RunWith(MockitoJUnitRunner.class)
 public class CosmosTemplateIllegalTest {
     private static final String NULL_STR = null;
@@ -98,7 +97,7 @@ public class CosmosTemplateIllegalTest {
 
     /**
      * Check IllegalArgumentException is thrown for illegal parameters
-     * @param method
+     * @param method method type
      * @param args Method invocation parameters
      */
     private void checkIllegalArgument(Method method, Object... args) {

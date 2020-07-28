@@ -5,8 +5,8 @@ param(
   [Parameter(Mandatory=$true)][string]$RepositoryPassword,
   [Parameter(Mandatory=$true)][string]$GPGExecutablePath,
   [Parameter(Mandatory=$false)][switch]$StageOnly,
-  [Parameter(Mandatory=$false)][string]$GroupIDFilter,
-  [Parameter(Mandatory=$false)][string]$ArtifactIDFilter
+  [Parameter(Mandatory=$false)][AllowEmptyString()][string]$GroupIDFilter,
+  [Parameter(Mandatory=$false)][AllowEmptyString()][string]$ArtifactIDFilter
 )
 
 $ErrorActionPreference = "Stop"
@@ -187,12 +187,17 @@ Write-Information "Repository Password is: [redacted]"
 Write-Information "GPG Executable Path is: $GPGExecutablePath"
 Write-Information "Group ID Filter is: $GroupIDFilter"
 Write-Information "Artifact ID Filter is: $ArtifactIDFilter"
+Write-Information "Stage Only is: $StageOnly"
 
 Write-Information "Getting filtered package details."
 $packageDetails = Get-FilteredMavenPackageDetails -ArtifactDirectory $ArtifactDirectory -GroupIDFilter $GroupIDFilter -ArtifactIDFilter $ArtifactIDFilter
 
 Write-Host "Found $($packageDetails.Length) packages to publish:"
 $packageDetails | % { Write-Host $_.FullyQualifiedName }
+
+if ($packageDetails.Length -eq 0) {
+  throw "Aborting, no packages to publish."
+}
 
 Write-Host "Starting GPG signing and publishing"
 
@@ -293,7 +298,7 @@ foreach ($packageDetail in $packageDetails) {
     mvn org.sonatype.plugins:nexus-staging-maven-plugin:deploy-staged-repository "--batch-mode" "-DnexusUrl=https://oss.sonatype.org" "$repositoryDirectoryOption" "$stagingProfileIdOption" "$stagingDescriptionOption" "-DrepositoryId=target-repo" "-DserverId=target-repo" "-Drepo.username=$RepositoryUsername" "-Drepo.password=""$RepositoryPassword""" "--settings=$PSScriptRoot\..\maven.publish.settings.xml"
 
     Write-Information "Reading staging properties."
-    $stagedRepositoryProperties = ConvertFrom-StringData (Get-Content "$localRepositoryDirectory\$($packageDetails.SonaTypeProfileID).properties" -Raw)
+    $stagedRepositoryProperties = ConvertFrom-StringData (Get-Content "$localRepositoryDirectory\$($packageDetail.SonaTypeProfileID).properties" -Raw)
 
     $stagedRepositoryId = $stagedRepositoryProperties["stagingRepository.id"]
     Write-Information "Staging Repository ID is: $stagedRepositoryId"
@@ -313,5 +318,4 @@ foreach ($packageDetail in $packageDetails) {
   else {
     throw "Repository URL must be either an Azure Artifacts feed, or a SonaType Nextus feed."
   }
-
 }

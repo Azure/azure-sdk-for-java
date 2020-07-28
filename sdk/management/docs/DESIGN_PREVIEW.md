@@ -23,12 +23,12 @@ Accepted<Deployment> acceptedDeployment = azure.deployments()
     .define(name)
     ...
     .beginCreate();
-Deployment provisioningDeployment = acceptedDeployment.getAcceptedResult().getValue();
+Deployment provisioningDeployment = acceptedDeployment.getActivationResponse().getValue();
 
-LongRunningOperationStatus pollStatus = acceptedDeployment.getAcceptedResult().getStatus();
-int delayInMills = acceptedDeployment.getAcceptedResult().getRetryAfter() == null
+LongRunningOperationStatus pollStatus = acceptedDeployment.getActivationResponse().getStatus();
+int delayInMills = acceptedDeployment.getActivationResponse().getRetryAfter() == null
     ? 0
-    : (int) acceptedDeployment.getAcceptedResult().getRetryAfter().toMillis();
+    : (int) acceptedDeployment.getActivationResponse().getRetryAfter().toMillis();
 while (!pollStatus.isComplete()) {
     Thread.sleep(delayInMills);
 

@@ -3,19 +3,19 @@
 
 package com.azure.spring.data.cosmos.config;
 
-import com.azure.data.cosmos.ConsistencyLevel;
-import com.azure.data.cosmos.CosmosClient;
-import com.azure.data.cosmos.internal.RequestOptions;
+import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.spring.data.cosmos.Constants;
-import com.azure.spring.data.cosmos.CosmosDbFactory;
+import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.common.ExpressionResolver;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.azure.spring.data.cosmos.common.TestConstants;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.mockito.Mock;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -25,10 +25,11 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.util.StringUtils;
 
+import java.lang.reflect.Field;
+
 import static org.junit.Assert.assertNotNull;
 
 public class AbstractCosmosConfigurationIT {
-    private static final String OBJECTMAPPER_BEAN_NAME = Constants.OBJECTMAPPER_BEAN_NAME;
 
     @Rule
     public ExpectedException exception = ExpectedException.none();
@@ -36,23 +37,23 @@ public class AbstractCosmosConfigurationIT {
     @Test
     public void containsExpressionResolver() {
         final AbstractApplicationContext context = new AnnotationConfigApplicationContext(
-                TestCosmosConfiguration.class);
+            TestCosmosConfiguration.class);
 
         assertNotNull(context.getBean(ExpressionResolver.class));
     }
 
     @Test
-    public void containsCosmosDbFactory() {
+    public void containsCosmosFactory() {
         final AbstractApplicationContext context = new AnnotationConfigApplicationContext(
-                TestCosmosConfiguration.class);
+            TestCosmosConfiguration.class);
 
-        Assertions.assertThat(context.getBean(CosmosDbFactory.class)).isNotNull();
+        Assertions.assertThat(context.getBean(CosmosFactory.class)).isNotNull();
     }
 
     @Test(expected = NoSuchBeanDefinitionException.class)
     public void defaultObjectMapperBeanNotExists() {
         final AbstractApplicationContext context = new AnnotationConfigApplicationContext(
-                TestCosmosConfiguration.class);
+            TestCosmosConfiguration.class);
 
         context.getBean(ObjectMapper.class);
     }
@@ -60,93 +61,96 @@ public class AbstractCosmosConfigurationIT {
     @Test
     public void objectMapperIsConfigurable() {
         final AbstractApplicationContext context = new AnnotationConfigApplicationContext(
-                ObjectMapperConfiguration.class);
+            ObjectMapperConfiguration.class);
 
         Assertions.assertThat(context.getBean(ObjectMapper.class)).isNotNull();
-        Assertions.assertThat(context.getBean(OBJECTMAPPER_BEAN_NAME)).isNotNull();
+        Assertions.assertThat(context.getBean(Constants.OBJECT_MAPPER_BEAN_NAME)).isNotNull();
     }
 
     @Test
-    public void testRequestOptionsConfigurable() {
+    public void testCosmosClientBuilderConfigurable() throws IllegalAccessException {
         final AbstractApplicationContext context = new AnnotationConfigApplicationContext(
-                RequestOptionsConfiguration.class);
-        final CosmosDbFactory factory = context.getBean(CosmosDbFactory.class);
+            RequestOptionsConfiguration.class);
+        final CosmosFactory factory = context.getBean(CosmosFactory.class);
 
         Assertions.assertThat(factory).isNotNull();
 
-        final RequestOptions options = factory.getConfig().getRequestOptions();
+        final CosmosAsyncClient cosmosAsyncClient =  factory.getCosmosAsyncClient();
 
-        Assertions.assertThat(options).isNotNull();
-        Assertions.assertThat(options.getConsistencyLevel()).isEqualTo(ConsistencyLevel.CONSISTENT_PREFIX);
-        Assertions.assertThat(options.isScriptLoggingEnabled()).isTrue();
+        Assertions.assertThat(cosmosAsyncClient).isNotNull();
+        final Field consistencyLevelField = FieldUtils.getDeclaredField(CosmosAsyncClient.class,
+            "desiredConsistencyLevel", true);
+        ConsistencyLevel consistencyLevel =
+            (ConsistencyLevel) consistencyLevelField.get(cosmosAsyncClient);
+        Assertions.assertThat(consistencyLevel).isEqualTo(ConsistencyLevel.CONSISTENT_PREFIX);
     }
 
     @Configuration
-    @PropertySource(value = {"classpath:application.properties"})
+    @PropertySource(value = { "classpath:application.properties" })
     static class TestCosmosConfiguration extends AbstractCosmosConfiguration {
 
-        @Value("${cosmosdb.uri:}")
+        @Value("${cosmos.uri:}")
         private String cosmosDbUri;
 
-        @Value("${cosmosdb.key:}")
+        @Value("${cosmos.key:}")
         private String cosmosDbKey;
 
         @Value("${cosmosdb.database:}")
         private String database;
 
-        @Mock
-        private CosmosClient mockClient;
-
         @Bean
-        public CosmosDBConfig getConfig() {
-            final String dbName = StringUtils.hasText(this.database) ? this.database : TestConstants.DB_NAME;
-            return CosmosDBConfig.builder(cosmosDbUri, cosmosDbKey, dbName).build();
+        public CosmosClientConfig getClientConfig() {
+            return CosmosClientConfig.builder()
+                .cosmosClientBuilder(new CosmosClientBuilder()
+                    .endpoint(cosmosDbUri)
+                    .key(cosmosDbKey))
+                .database(getDatabaseName())
+                .build();
         }
 
         @Override
-        public CosmosClient cosmosClient(CosmosDBConfig config) {
-            return mockClient;
+        protected String getDatabaseName() {
+            return StringUtils.hasText(this.database) ? this.database : TestConstants.DB_NAME;
         }
     }
 
     @Configuration
     static class ObjectMapperConfiguration extends TestCosmosConfiguration {
-        @Bean(name = OBJECTMAPPER_BEAN_NAME)
+        @Bean(name = Constants.OBJECT_MAPPER_BEAN_NAME)
         public ObjectMapper objectMapper() {
             return new ObjectMapper();
         }
     }
 
     @Configuration
-    @PropertySource(value = {"classpath:application.properties"})
+    @PropertySource(value = { "classpath:application.properties" })
     static class RequestOptionsConfiguration extends AbstractCosmosConfiguration {
 
-        @Value("${cosmosdb.uri:}")
+        @Value("${cosmos.uri:}")
         private String cosmosDbUri;
 
-        @Value("${cosmosdb.key:}")
+        @Value("${cosmos.key:}")
         private String cosmosDbKey;
 
         @Value("${cosmosdb.database:}")
         private String database;
 
-        private RequestOptions getRequestOptions() {
-            final RequestOptions options = new RequestOptions();
-
-            options.setConsistencyLevel(ConsistencyLevel.CONSISTENT_PREFIX);
-            options.setScriptLoggingEnabled(true);
-
-            return options;
-        }
-
         @Bean
-        public CosmosDBConfig getConfig() {
-            final String dbName = StringUtils.hasText(this.database) ? this.database : TestConstants.DB_NAME;
-            final RequestOptions options = getRequestOptions();
-            return CosmosDBConfig.builder(cosmosDbUri, cosmosDbKey, dbName)
-                    .requestOptions(options)
-                    .build();
+        public CosmosClientConfig getClientConfig() {
+            final CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
+                .key(cosmosDbKey)
+                .endpoint(cosmosDbUri)
+                .consistencyLevel(ConsistencyLevel.CONSISTENT_PREFIX);
+            return CosmosClientConfig.builder()
+                .cosmosClientBuilder(cosmosClientBuilder)
+                .database(getDatabaseName())
+                .build();
+
         }
 
+        @Override
+        protected String getDatabaseName() {
+            return StringUtils.hasText(this.database) ? this.database : TestConstants.DB_NAME;
+        }
     }
 }

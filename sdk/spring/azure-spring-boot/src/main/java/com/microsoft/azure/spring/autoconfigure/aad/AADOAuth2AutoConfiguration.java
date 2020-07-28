@@ -30,7 +30,7 @@ import static com.microsoft.azure.telemetry.TelemetryData.getClassPackageSimpleN
  * The configuration will not be activated if no {@literal azure.activedirectory.tenant-id} property provided.
  * <p>
  * A OAuth2 user service {@link AADOAuth2UserService} will be auto-configured by specifying
- * {@literal azure.activedirectory.active-directory-groups} property.
+ * {@literal azure.activedirectory.user-group.allowed-groups} property.
  */
 @Configuration
 @ConditionalOnResource(resources = "classpath:aad.enable.config")
@@ -52,7 +52,7 @@ public class AADOAuth2AutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnProperty(prefix = "azure.activedirectory", value = "active-directory-groups")
+    @ConditionalOnProperty(prefix = "azure.activedirectory.user-group", value = "allowed-groups")
     public OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService() {
         return new AADOAuth2UserService(aadAuthProps, serviceEndpointsProps);
     }

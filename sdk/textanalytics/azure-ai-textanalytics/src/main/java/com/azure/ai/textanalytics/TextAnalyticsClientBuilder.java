@@ -200,7 +200,7 @@ public final class TextAnalyticsClientBuilder {
         final TextAnalyticsClientImpl textAnalyticsAPI = new TextAnalyticsClientImplBuilder()
             .endpoint(endpoint)
             .pipeline(pipeline)
-            .build();
+            .buildClient();
 
         return new TextAnalyticsAsyncClient(textAnalyticsAPI, serviceVersion, defaultCountryHint, defaultLanguage);
     }

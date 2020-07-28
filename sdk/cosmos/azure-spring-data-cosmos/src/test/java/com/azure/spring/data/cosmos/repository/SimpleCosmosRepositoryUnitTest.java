@@ -3,12 +3,12 @@
 
 package com.azure.spring.data.cosmos.repository;
 
-import com.azure.spring.data.cosmos.core.CosmosOperations;
-import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
-import com.azure.spring.data.cosmos.repository.support.SimpleCosmosRepository;
 import com.azure.spring.data.cosmos.common.TestConstants;
+import com.azure.spring.data.cosmos.core.CosmosOperations;
 import com.azure.spring.data.cosmos.domain.Address;
 import com.azure.spring.data.cosmos.domain.Person;
+import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
+import com.azure.spring.data.cosmos.repository.support.SimpleCosmosRepository;
 import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.Rule;

@@ -49,7 +49,6 @@ public class ActiveDirectoryUsersImpl
             .inner()
             .getUsers()
             .getAsync(id)
-            .onErrorResume(GraphErrorException.class, e -> Mono.empty())
             .map(userInner -> new ActiveDirectoryUserImpl(userInner, manager()));
     }
 

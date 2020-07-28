@@ -2,50 +2,42 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository;
 
-import com.azure.data.cosmos.ConsistencyLevel;
-import com.azure.data.cosmos.internal.RequestOptions;
-import com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration;
-import com.azure.spring.data.cosmos.config.CosmosDBConfig;
-import com.azure.spring.data.cosmos.repository.config.EnableCosmosRepositories;
-import com.azure.spring.data.cosmos.repository.config.EnableReactiveCosmosRepositories;
+import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.spring.data.cosmos.common.DynamicContainer;
 import com.azure.spring.data.cosmos.common.ResponseDiagnosticsTestUtils;
 import com.azure.spring.data.cosmos.common.TestConstants;
+import com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration;
+import com.azure.spring.data.cosmos.config.CosmosClientConfig;
+import com.azure.spring.data.cosmos.config.CosmosConfig;
+import com.azure.spring.data.cosmos.core.mapping.EnableCosmosAuditing;
+import com.azure.spring.data.cosmos.repository.config.EnableCosmosRepositories;
+import com.azure.spring.data.cosmos.repository.config.EnableReactiveCosmosRepositories;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.util.StringUtils;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 @Configuration
-@PropertySource(value = {"classpath:application.properties"})
+@PropertySource(value = { "classpath:application.properties" })
 @EnableCosmosRepositories
+@EnableCosmosAuditing(dateTimeProviderRef = "auditingDateTimeProvider")
 @EnableReactiveCosmosRepositories
 public class TestRepositoryConfig extends AbstractCosmosConfiguration {
-    @Value("${cosmosdb.uri:}")
+    @Value("${cosmos.uri:}")
     private String cosmosDbUri;
 
-    @Value("${cosmosdb.key:}")
+    @Value("${cosmos.key:}")
     private String cosmosDbKey;
 
-    @Value("${cosmosdb.connection-string:}")
-    private String connectionString;
-
-    @Value("${cosmosdb.database:}")
+    @Value("${cosmos.database:}")
     private String database;
 
-    @Value("${cosmosdb.populateQueryMetrics}")
-    private boolean populateQueryMetrics;
-
-    private RequestOptions getRequestOptions() {
-        final RequestOptions options = new RequestOptions();
-
-        options.setConsistencyLevel(ConsistencyLevel.SESSION);
-//        options.setDisableRUPerMinuteUsage(true);
-        options.setScriptLoggingEnabled(true);
-
-        return options;
-    }
+    @Value("${cosmos.queryMetricsEnabled}")
+    private boolean queryMetricsEnabled;
 
     @Bean
     public ResponseDiagnosticsTestUtils responseDiagnosticsTestUtils() {
@@ -53,25 +45,49 @@ public class TestRepositoryConfig extends AbstractCosmosConfiguration {
     }
 
     @Bean
-    public CosmosDBConfig getConfig() {
-        final String dbName = StringUtils.hasText(this.database) ? this.database : TestConstants.DB_NAME;
-        final RequestOptions options = getRequestOptions();
-        final CosmosDBConfig.CosmosDBConfigBuilder builder;
+    public CosmosClientConfig cosmosClientConfig() {
+        return CosmosClientConfig.builder()
+            .cosmosClientBuilder(new CosmosClientBuilder()
+                .key(cosmosDbKey)
+                .endpoint(cosmosDbUri)
+                .contentResponseOnWriteEnabled(true))
+            .database(getDatabaseName())
+            .build();
+    }
 
-        if (StringUtils.hasText(this.cosmosDbUri)
-                && StringUtils.hasText(this.cosmosDbKey)) {
-            builder = CosmosDBConfig.builder(cosmosDbUri, cosmosDbKey, dbName);
-        } else {
-            builder = CosmosDBConfig.builder(connectionString, dbName);
-        }
-        return builder.requestOptions(options)
-                .populateQueryMetrics(populateQueryMetrics)
-                .responseDiagnosticsProcessor(responseDiagnosticsTestUtils().getResponseDiagnosticsProcessor())
-                .build();
+    @Bean
+    @Override
+    public CosmosConfig cosmosConfig() {
+        return CosmosConfig.builder()
+            .enableQueryMetrics(queryMetricsEnabled)
+            .responseDiagnosticsProcessor(responseDiagnosticsTestUtils().getResponseDiagnosticsProcessor())
+            .build();
     }
 
     @Bean
     public DynamicContainer dynamicContainer() {
         return new DynamicContainer(TestConstants.DYNAMIC_BEAN_COLLECTION_NAME);
+    }
+
+    @Override
+    protected String getDatabaseName() {
+        return StringUtils.hasText(this.database) ? this.database : TestConstants.DB_NAME;
+    }
+
+    @Bean(name = "auditingDateTimeProvider")
+    public StubDateTimeProvider stubDateTimeProvider() {
+        return new StubDateTimeProvider();
+    }
+
+    @Bean
+    public StubAuditorProvider auditorProvider() {
+        return new StubAuditorProvider();
+    }
+
+    @Override
+    protected Collection<String> getMappingBasePackages() {
+        final Package mappingBasePackage = getClass().getPackage();
+        final String entityPackage = "com.azure.spring.data.cosmos.domain";
+        return Arrays.asList(mappingBasePackage.getName(), entityPackage);
     }
 }

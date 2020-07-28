@@ -91,7 +91,7 @@ public class InteractiveBrowserCredential implements TokenCredential {
      *
      * @return The {@link AuthenticationRecord} which can be used to silently authenticate the account
      * on future execution if persistent caching was enabled via
-     * {@link InteractiveBrowserCredentialBuilder#enablePersistentCache(boolean)} when credential was instantiated.
+     * {@link InteractiveBrowserCredentialBuilder#enablePersistentCache()} when credential was instantiated.
      */
     public Mono<AuthenticationRecord> authenticate(TokenRequestContext request) {
         return Mono.defer(() -> identityClient.authenticateWithBrowserInteraction(request, port))
@@ -104,10 +104,10 @@ public class InteractiveBrowserCredential implements TokenCredential {
      *
      * @return The {@link AuthenticationRecord} which can be used to silently authenticate the account
      * on future execution if persistent caching was enabled via
-     * {@link InteractiveBrowserCredentialBuilder#enablePersistentCache(boolean)} when credential was instantiated.
+     * {@link InteractiveBrowserCredentialBuilder#enablePersistentCache()} when credential was instantiated.
      */
     public Mono<AuthenticationRecord> authenticate() {
-        String defaultScope = KnownAuthorityHosts.getDefaultScope(authorityHost);
+        String defaultScope = AzureAuthorityHosts.getDefaultScope(authorityHost);
         if (defaultScope == null) {
             return Mono.error(logger.logExceptionAsError(new CredentialUnavailableException("Authenticating in this "
                                                     + "environment requires specifying a TokenRequestContext.")));
@@ -119,8 +119,7 @@ public class InteractiveBrowserCredential implements TokenCredential {
         cachedToken.set(
                 new MsalAuthenticationAccount(
                         new AuthenticationRecord(msalToken.getAuthenticationResult(),
-                                identityClient.getTenantId())));
+                                identityClient.getTenantId(), identityClient.getClientId())));
         return msalToken;
     }
-
 }

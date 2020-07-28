@@ -5,7 +5,6 @@ package com.azure.resourcemanager.containerregistry;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.implementation.annotation.Beta;
 import com.azure.resourcemanager.containerregistry.implementation.RegistriesImpl;
 import com.azure.resourcemanager.containerregistry.implementation.RegistryTaskRunsImpl;
 import com.azure.resourcemanager.containerregistry.implementation.RegistryTasksImpl;
@@ -126,7 +125,6 @@ public final class ContainerRegistryManager
      *
      * @return the tasks of the current instance of ContainerRegistryManager.
      */
-    @Beta
     public RegistryTasks containerRegistryTasks() {
         if (this.tasks == null) {
             this.tasks = new RegistryTasksImpl(this);
@@ -139,7 +137,6 @@ public final class ContainerRegistryManager
      *
      * @return the registry task runs of the current instance of ContainerRegistryManager.
      */
-    @Beta
     public RegistryTaskRuns registryTaskRuns() {
         if (this.registryTaskRuns == null) {
             this.registryTaskRuns = new RegistryTaskRunsImpl(this);
