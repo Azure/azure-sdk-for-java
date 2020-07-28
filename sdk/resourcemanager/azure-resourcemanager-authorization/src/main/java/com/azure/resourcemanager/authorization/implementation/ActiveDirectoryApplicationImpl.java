@@ -233,14 +233,12 @@ class ActiveDirectoryApplicationImpl
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public CertificateCredentialImpl defineCertificateCredential(String name) {
+    public CertificateCredentialImpl<ActiveDirectoryApplicationImpl> defineCertificateCredential(String name) {
         return new CertificateCredentialImpl<>(name, this);
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public PasswordCredentialImpl definePasswordCredential(String name) {
+    public PasswordCredentialImpl<ActiveDirectoryApplicationImpl> definePasswordCredential(String name) {
         return new PasswordCredentialImpl<>(name, this);
     }
 

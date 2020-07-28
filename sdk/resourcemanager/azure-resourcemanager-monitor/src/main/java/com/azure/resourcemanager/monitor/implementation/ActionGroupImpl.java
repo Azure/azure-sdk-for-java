@@ -26,7 +26,7 @@ import reactor.core.publisher.Mono;
 class ActionGroupImpl
     extends GroupableResourceImpl<ActionGroup, ActionGroupResourceInner, ActionGroupImpl, MonitorManager>
     implements ActionGroup,
-        ActionGroup.Definition,
+        ActionGroup.Definition<ActionGroupImpl>,
         ActionGroup.Update,
         ActionGroup.UpdateStages.WithActionUpdateDefinition {
     private static final String EMAIL_SUFFIX = "_-EmailAction-";
@@ -139,7 +139,6 @@ class ActionGroupImpl
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public ActionGroupImpl defineReceiver(String actionNamePrefix) {
         return this.updateReceiver(actionNamePrefix);
     }

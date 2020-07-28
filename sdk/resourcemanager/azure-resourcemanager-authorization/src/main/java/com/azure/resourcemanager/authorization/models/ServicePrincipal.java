@@ -90,7 +90,7 @@ public interface ServicePrincipal
              * @param name the descriptive name of the certificate credential
              * @return the first stage in certificate credential definition
              */
-            CertificateCredential.DefinitionStages.Blank<WithCreate> defineCertificateCredential(String name);
+            CertificateCredential.DefinitionStages.Blank<? extends WithCreate> defineCertificateCredential(String name);
 
             /**
              * Starts the definition of a password credential.
@@ -98,7 +98,7 @@ public interface ServicePrincipal
              * @param name the descriptive name of the password credential
              * @return the first stage in password credential definition
              */
-            PasswordCredential.DefinitionStages.Blank<WithCreate> definePasswordCredential(String name);
+            PasswordCredential.DefinitionStages.Blank<? extends WithCreate> definePasswordCredential(String name);
         }
 
         /** A service principal definition allowing role assignments to be added. */
@@ -149,7 +149,8 @@ public interface ServicePrincipal
              * @param name the descriptive name of the certificate credential
              * @return the first stage in certificate credential update
              */
-            CertificateCredential.UpdateDefinitionStages.Blank<Update> defineCertificateCredential(String name);
+            CertificateCredential.UpdateDefinitionStages.Blank<? extends Update>
+                defineCertificateCredential(String name);
 
             /**
              * Starts the definition of a password credential.
@@ -157,7 +158,7 @@ public interface ServicePrincipal
              * @param name the descriptive name of the password credential
              * @return the first stage in password credential update
              */
-            PasswordCredential.UpdateDefinitionStages.Blank<Update> definePasswordCredential(String name);
+            PasswordCredential.UpdateDefinitionStages.Blank<? extends Update> definePasswordCredential(String name);
 
             /**
              * Removes a credential.
