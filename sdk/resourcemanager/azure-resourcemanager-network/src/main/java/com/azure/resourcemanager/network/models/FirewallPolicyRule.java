@@ -20,27 +20,28 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     defaultImpl = FirewallPolicyRule.class)
 @JsonTypeName("FirewallPolicyRule")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "FirewallPolicyNatRule", value = FirewallPolicyNatRule.class),
-    @JsonSubTypes.Type(name = "FirewallPolicyFilterRule", value = FirewallPolicyFilterRule.class)
+    @JsonSubTypes.Type(name = "ApplicationRule", value = ApplicationRule.class),
+    @JsonSubTypes.Type(name = "NatRule", value = NatRule.class),
+    @JsonSubTypes.Type(name = "NetworkRule", value = NetworkRule.class)
 })
 @Fluent
 public class FirewallPolicyRule {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(FirewallPolicyRule.class);
 
     /*
-     * The name of the rule.
+     * Name of the rule.
      */
     @JsonProperty(value = "name")
     private String name;
 
     /*
-     * Priority of the Firewall Policy Rule resource.
+     * Description of the rule.
      */
-    @JsonProperty(value = "priority")
-    private Integer priority;
+    @JsonProperty(value = "description")
+    private String description;
 
     /**
-     * Get the name property: The name of the rule.
+     * Get the name property: Name of the rule.
      *
      * @return the name value.
      */
@@ -49,7 +50,7 @@ public class FirewallPolicyRule {
     }
 
     /**
-     * Set the name property: The name of the rule.
+     * Set the name property: Name of the rule.
      *
      * @param name the name value to set.
      * @return the FirewallPolicyRule object itself.
@@ -60,22 +61,22 @@ public class FirewallPolicyRule {
     }
 
     /**
-     * Get the priority property: Priority of the Firewall Policy Rule resource.
+     * Get the description property: Description of the rule.
      *
-     * @return the priority value.
+     * @return the description value.
      */
-    public Integer priority() {
-        return this.priority;
+    public String description() {
+        return this.description;
     }
 
     /**
-     * Set the priority property: Priority of the Firewall Policy Rule resource.
+     * Set the description property: Description of the rule.
      *
-     * @param priority the priority value to set.
+     * @param description the description value to set.
      * @return the FirewallPolicyRule object itself.
      */
-    public FirewallPolicyRule withPriority(Integer priority) {
-        this.priority = priority;
+    public FirewallPolicyRule withDescription(String description) {
+        this.description = description;
         return this;
     }
 

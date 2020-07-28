@@ -65,6 +65,13 @@ public class VirtualNetworkGatewayInner extends Resource {
     private Boolean enableBgp;
 
     /*
+     * Whether private IP needs to be enabled on this gateway for connections
+     * or not.
+     */
+    @JsonProperty(value = "properties.enablePrivateIpAddress")
+    private Boolean enablePrivateIpAddress;
+
+    /*
      * ActiveActive flag.
      */
     @JsonProperty(value = "properties.activeActive")
@@ -246,6 +253,28 @@ public class VirtualNetworkGatewayInner extends Resource {
      */
     public VirtualNetworkGatewayInner withEnableBgp(Boolean enableBgp) {
         this.enableBgp = enableBgp;
+        return this;
+    }
+
+    /**
+     * Get the enablePrivateIpAddress property: Whether private IP needs to be enabled on this gateway for connections
+     * or not.
+     *
+     * @return the enablePrivateIpAddress value.
+     */
+    public Boolean enablePrivateIpAddress() {
+        return this.enablePrivateIpAddress;
+    }
+
+    /**
+     * Set the enablePrivateIpAddress property: Whether private IP needs to be enabled on this gateway for connections
+     * or not.
+     *
+     * @param enablePrivateIpAddress the enablePrivateIpAddress value to set.
+     * @return the VirtualNetworkGatewayInner object itself.
+     */
+    public VirtualNetworkGatewayInner withEnablePrivateIpAddress(Boolean enablePrivateIpAddress) {
+        this.enablePrivateIpAddress = enablePrivateIpAddress;
         return this;
     }
 

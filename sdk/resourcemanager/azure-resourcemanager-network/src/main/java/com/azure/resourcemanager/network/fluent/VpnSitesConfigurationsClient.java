@@ -114,7 +114,7 @@ public final class VpnSitesConfigurationsClient {
         } else {
             request.validate();
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -169,7 +169,8 @@ public final class VpnSitesConfigurationsClient {
         } else {
             request.validate();
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
+        context = this.client.mergeContext(context);
         return service
             .download(
                 this.client.getEndpoint(),

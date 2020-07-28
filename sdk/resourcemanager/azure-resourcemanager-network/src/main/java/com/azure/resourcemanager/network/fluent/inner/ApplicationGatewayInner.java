@@ -17,6 +17,7 @@ import com.azure.resourcemanager.network.models.ApplicationGatewayFrontendIpConf
 import com.azure.resourcemanager.network.models.ApplicationGatewayFrontendPort;
 import com.azure.resourcemanager.network.models.ApplicationGatewayHttpListener;
 import com.azure.resourcemanager.network.models.ApplicationGatewayOperationalState;
+import com.azure.resourcemanager.network.models.ApplicationGatewayPrivateLinkConfiguration;
 import com.azure.resourcemanager.network.models.ApplicationGatewayRewriteRuleSet;
 import com.azure.resourcemanager.network.models.ApplicationGatewaySku;
 import com.azure.resourcemanager.network.models.ApplicationGatewaySslPolicy;
@@ -208,6 +209,18 @@ public class ApplicationGatewayInner extends Resource {
     private ApplicationGatewayAutoscaleConfiguration autoscaleConfiguration;
 
     /*
+     * PrivateLink configurations on application gateway.
+     */
+    @JsonProperty(value = "properties.privateLinkConfigurations")
+    private List<ApplicationGatewayPrivateLinkConfiguration> privateLinkConfigurations;
+
+    /*
+     * Private Endpoint connections on application gateway.
+     */
+    @JsonProperty(value = "properties.privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
+    private List<ApplicationGatewayPrivateEndpointConnectionInner> privateEndpointConnections;
+
+    /*
      * The resource GUID property of the application gateway resource.
      */
     @JsonProperty(value = "properties.resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
@@ -224,6 +237,13 @@ public class ApplicationGatewayInner extends Resource {
      */
     @JsonProperty(value = "properties.customErrorConfigurations")
     private List<ApplicationGatewayCustomError> customErrorConfigurations;
+
+    /*
+     * If true, associates a firewall policy with an application gateway
+     * regardless whether the policy differs from the WAF Config.
+     */
+    @JsonProperty(value = "properties.forceFirewallPolicyAssociation")
+    private Boolean forceFirewallPolicyAssociation;
 
     /*
      * Resource ID.
@@ -764,6 +784,36 @@ public class ApplicationGatewayInner extends Resource {
     }
 
     /**
+     * Get the privateLinkConfigurations property: PrivateLink configurations on application gateway.
+     *
+     * @return the privateLinkConfigurations value.
+     */
+    public List<ApplicationGatewayPrivateLinkConfiguration> privateLinkConfigurations() {
+        return this.privateLinkConfigurations;
+    }
+
+    /**
+     * Set the privateLinkConfigurations property: PrivateLink configurations on application gateway.
+     *
+     * @param privateLinkConfigurations the privateLinkConfigurations value to set.
+     * @return the ApplicationGatewayInner object itself.
+     */
+    public ApplicationGatewayInner withPrivateLinkConfigurations(
+        List<ApplicationGatewayPrivateLinkConfiguration> privateLinkConfigurations) {
+        this.privateLinkConfigurations = privateLinkConfigurations;
+        return this;
+    }
+
+    /**
+     * Get the privateEndpointConnections property: Private Endpoint connections on application gateway.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<ApplicationGatewayPrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /**
      * Get the resourceGuid property: The resource GUID property of the application gateway resource.
      *
      * @return the resourceGuid value.
@@ -799,6 +849,28 @@ public class ApplicationGatewayInner extends Resource {
     public ApplicationGatewayInner withCustomErrorConfigurations(
         List<ApplicationGatewayCustomError> customErrorConfigurations) {
         this.customErrorConfigurations = customErrorConfigurations;
+        return this;
+    }
+
+    /**
+     * Get the forceFirewallPolicyAssociation property: If true, associates a firewall policy with an application
+     * gateway regardless whether the policy differs from the WAF Config.
+     *
+     * @return the forceFirewallPolicyAssociation value.
+     */
+    public Boolean forceFirewallPolicyAssociation() {
+        return this.forceFirewallPolicyAssociation;
+    }
+
+    /**
+     * Set the forceFirewallPolicyAssociation property: If true, associates a firewall policy with an application
+     * gateway regardless whether the policy differs from the WAF Config.
+     *
+     * @param forceFirewallPolicyAssociation the forceFirewallPolicyAssociation value to set.
+     * @return the ApplicationGatewayInner object itself.
+     */
+    public ApplicationGatewayInner withForceFirewallPolicyAssociation(Boolean forceFirewallPolicyAssociation) {
+        this.forceFirewallPolicyAssociation = forceFirewallPolicyAssociation;
         return this;
     }
 
@@ -884,6 +956,12 @@ public class ApplicationGatewayInner extends Resource {
         }
         if (autoscaleConfiguration() != null) {
             autoscaleConfiguration().validate();
+        }
+        if (privateLinkConfigurations() != null) {
+            privateLinkConfigurations().forEach(e -> e.validate());
+        }
+        if (privateEndpointConnections() != null) {
+            privateEndpointConnections().forEach(e -> e.validate());
         }
         if (customErrorConfigurations() != null) {
             customErrorConfigurations().forEach(e -> e.validate());

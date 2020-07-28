@@ -10,11 +10,14 @@ import java.util.Collection;
 
 /** Defines values for FirewallPolicyRuleType. */
 public final class FirewallPolicyRuleType extends ExpandableStringEnum<FirewallPolicyRuleType> {
-    /** Static value FirewallPolicyNatRule for FirewallPolicyRuleType. */
-    public static final FirewallPolicyRuleType FIREWALL_POLICY_NAT_RULE = fromString("FirewallPolicyNatRule");
+    /** Static value ApplicationRule for FirewallPolicyRuleType. */
+    public static final FirewallPolicyRuleType APPLICATION_RULE = fromString("ApplicationRule");
 
-    /** Static value FirewallPolicyFilterRule for FirewallPolicyRuleType. */
-    public static final FirewallPolicyRuleType FIREWALL_POLICY_FILTER_RULE = fromString("FirewallPolicyFilterRule");
+    /** Static value NetworkRule for FirewallPolicyRuleType. */
+    public static final FirewallPolicyRuleType NETWORK_RULE = fromString("NetworkRule");
+
+    /** Static value NatRule for FirewallPolicyRuleType. */
+    public static final FirewallPolicyRuleType NAT_RULE = fromString("NatRule");
 
     /**
      * Creates or finds a FirewallPolicyRuleType from its string representation.

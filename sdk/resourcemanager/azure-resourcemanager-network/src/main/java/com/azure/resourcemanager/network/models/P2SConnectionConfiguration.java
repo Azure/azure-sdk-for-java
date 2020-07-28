@@ -38,6 +38,13 @@ public class P2SConnectionConfiguration extends SubResource {
     private AddressSpace vpnClientAddressPool;
 
     /*
+     * The Routing Configuration indicating the associated and propagated route
+     * tables on this connection.
+     */
+    @JsonProperty(value = "properties.routingConfiguration")
+    private RoutingConfiguration routingConfiguration;
+
+    /*
      * The provisioning state of the P2SConnectionConfiguration resource.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
@@ -97,6 +104,28 @@ public class P2SConnectionConfiguration extends SubResource {
     }
 
     /**
+     * Get the routingConfiguration property: The Routing Configuration indicating the associated and propagated route
+     * tables on this connection.
+     *
+     * @return the routingConfiguration value.
+     */
+    public RoutingConfiguration routingConfiguration() {
+        return this.routingConfiguration;
+    }
+
+    /**
+     * Set the routingConfiguration property: The Routing Configuration indicating the associated and propagated route
+     * tables on this connection.
+     *
+     * @param routingConfiguration the routingConfiguration value to set.
+     * @return the P2SConnectionConfiguration object itself.
+     */
+    public P2SConnectionConfiguration withRoutingConfiguration(RoutingConfiguration routingConfiguration) {
+        this.routingConfiguration = routingConfiguration;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the P2SConnectionConfiguration resource.
      *
      * @return the provisioningState value.
@@ -113,6 +142,9 @@ public class P2SConnectionConfiguration extends SubResource {
     public void validate() {
         if (vpnClientAddressPool() != null) {
             vpnClientAddressPool().validate();
+        }
+        if (routingConfiguration() != null) {
+            routingConfiguration().validate();
         }
     }
 }

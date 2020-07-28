@@ -61,6 +61,12 @@ public final class VpnClientConfiguration {
     private String radiusServerSecret;
 
     /*
+     * The radiusServers property for multiple radius server configuration.
+     */
+    @JsonProperty(value = "radiusServers")
+    private List<RadiusServer> radiusServers;
+
+    /*
      * The AADTenant property of the VirtualNetworkGateway resource for vpn
      * client connection used for AAD authentication.
      */
@@ -230,6 +236,26 @@ public final class VpnClientConfiguration {
     }
 
     /**
+     * Get the radiusServers property: The radiusServers property for multiple radius server configuration.
+     *
+     * @return the radiusServers value.
+     */
+    public List<RadiusServer> radiusServers() {
+        return this.radiusServers;
+    }
+
+    /**
+     * Set the radiusServers property: The radiusServers property for multiple radius server configuration.
+     *
+     * @param radiusServers the radiusServers value to set.
+     * @return the VpnClientConfiguration object itself.
+     */
+    public VpnClientConfiguration withRadiusServers(List<RadiusServer> radiusServers) {
+        this.radiusServers = radiusServers;
+        return this;
+    }
+
+    /**
      * Get the aadTenant property: The AADTenant property of the VirtualNetworkGateway resource for vpn client
      * connection used for AAD authentication.
      *
@@ -312,6 +338,9 @@ public final class VpnClientConfiguration {
         }
         if (vpnClientIpsecPolicies() != null) {
             vpnClientIpsecPolicies().forEach(e -> e.validate());
+        }
+        if (radiusServers() != null) {
+            radiusServers().forEach(e -> e.validate());
         }
     }
 }

@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
 /** The HubIpAddresses model. */
 @Fluent
@@ -16,10 +15,10 @@ public final class HubIpAddresses {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(HubIpAddresses.class);
 
     /*
-     * List of Public IP addresses associated with azure firewall.
+     * Public IP addresses associated with azure firewall.
      */
-    @JsonProperty(value = "publicIPAddresses")
-    private List<AzureFirewallPublicIpAddress> publicIpAddresses;
+    @JsonProperty(value = "publicIPs")
+    private HubPublicIpAddresses publicIPs;
 
     /*
      * Private IP Address associated with azure firewall.
@@ -28,22 +27,22 @@ public final class HubIpAddresses {
     private String privateIpAddress;
 
     /**
-     * Get the publicIpAddresses property: List of Public IP addresses associated with azure firewall.
+     * Get the publicIPs property: Public IP addresses associated with azure firewall.
      *
-     * @return the publicIpAddresses value.
+     * @return the publicIPs value.
      */
-    public List<AzureFirewallPublicIpAddress> publicIpAddresses() {
-        return this.publicIpAddresses;
+    public HubPublicIpAddresses publicIPs() {
+        return this.publicIPs;
     }
 
     /**
-     * Set the publicIpAddresses property: List of Public IP addresses associated with azure firewall.
+     * Set the publicIPs property: Public IP addresses associated with azure firewall.
      *
-     * @param publicIpAddresses the publicIpAddresses value to set.
+     * @param publicIPs the publicIPs value to set.
      * @return the HubIpAddresses object itself.
      */
-    public HubIpAddresses withPublicIpAddresses(List<AzureFirewallPublicIpAddress> publicIpAddresses) {
-        this.publicIpAddresses = publicIpAddresses;
+    public HubIpAddresses withPublicIPs(HubPublicIpAddresses publicIPs) {
+        this.publicIPs = publicIPs;
         return this;
     }
 
@@ -73,8 +72,8 @@ public final class HubIpAddresses {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (publicIpAddresses() != null) {
-            publicIpAddresses().forEach(e -> e.validate());
+        if (publicIPs() != null) {
+            publicIPs().validate();
         }
     }
 }

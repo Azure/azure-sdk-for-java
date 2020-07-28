@@ -344,7 +344,7 @@ public final class NetworkInterfacesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -393,7 +393,8 @@ public final class NetworkInterfacesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -569,7 +570,7 @@ public final class NetworkInterfacesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -620,7 +621,8 @@ public final class NetworkInterfacesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
+        context = this.client.mergeContext(context);
         return service
             .getByResourceGroup(
                 this.client.getEndpoint(),
@@ -799,7 +801,7 @@ public final class NetworkInterfacesClient
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -855,7 +857,8 @@ public final class NetworkInterfacesClient
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -1055,7 +1058,7 @@ public final class NetworkInterfacesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
         TagsObject parameters = new TagsObject();
         parameters.withTags(tags);
         return FluxUtil
@@ -1108,9 +1111,10 @@ public final class NetworkInterfacesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
         TagsObject parameters = new TagsObject();
         parameters.withTags(tags);
+        context = this.client.mergeContext(context);
         return service
             .updateTags(
                 this.client.getEndpoint(),
@@ -1229,7 +1233,7 @@ public final class NetworkInterfacesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1269,7 +1273,8 @@ public final class NetworkInterfacesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
+        context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), context)
             .map(
@@ -1362,7 +1367,7 @@ public final class NetworkInterfacesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1414,7 +1419,8 @@ public final class NetworkInterfacesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
+        context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(
                 this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(), context)
@@ -1523,7 +1529,7 @@ public final class NetworkInterfacesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1572,7 +1578,8 @@ public final class NetworkInterfacesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
+        context = this.client.mergeContext(context);
         return service
             .getEffectiveRouteTable(
                 this.client.getEndpoint(),
@@ -1767,7 +1774,7 @@ public final class NetworkInterfacesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1816,7 +1823,8 @@ public final class NetworkInterfacesClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
+        context = this.client.mergeContext(context);
         return service
             .listEffectiveNetworkSecurityGroups(
                 this.client.getEndpoint(),
@@ -2095,6 +2103,7 @@ public final class NetworkInterfacesClient
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-10-01";
+        context = this.client.mergeContext(context);
         return service
             .listVirtualMachineScaleSetVMNetworkInterfaces(
                 this.client.getEndpoint(),
@@ -2293,6 +2302,7 @@ public final class NetworkInterfacesClient
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-10-01";
+        context = this.client.mergeContext(context);
         return service
             .listVirtualMachineScaleSetNetworkInterfaces(
                 this.client.getEndpoint(),
@@ -2509,6 +2519,7 @@ public final class NetworkInterfacesClient
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-10-01";
+        context = this.client.mergeContext(context);
         return service
             .getVirtualMachineScaleSetNetworkInterface(
                 this.client.getEndpoint(),
@@ -2839,6 +2850,7 @@ public final class NetworkInterfacesClient
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-10-01";
+        context = this.client.mergeContext(context);
         return service
             .listVirtualMachineScaleSetIpConfigurations(
                 this.client.getEndpoint(),
@@ -3167,6 +3179,7 @@ public final class NetworkInterfacesClient
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-10-01";
+        context = this.client.mergeContext(context);
         return service
             .getVirtualMachineScaleSetIpConfiguration(
                 this.client.getEndpoint(),
@@ -3443,6 +3456,7 @@ public final class NetworkInterfacesClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listAllNext(nextLink, context)
             .map(
@@ -3499,6 +3513,7 @@ public final class NetworkInterfacesClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listNext(nextLink, context)
             .map(
@@ -3557,6 +3572,7 @@ public final class NetworkInterfacesClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listVirtualMachineScaleSetVMNetworkInterfacesNext(nextLink, context)
             .map(
@@ -3615,6 +3631,7 @@ public final class NetworkInterfacesClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listVirtualMachineScaleSetNetworkInterfacesNext(nextLink, context)
             .map(
@@ -3673,6 +3690,7 @@ public final class NetworkInterfacesClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listVirtualMachineScaleSetIpConfigurationsNext(nextLink, context)
             .map(

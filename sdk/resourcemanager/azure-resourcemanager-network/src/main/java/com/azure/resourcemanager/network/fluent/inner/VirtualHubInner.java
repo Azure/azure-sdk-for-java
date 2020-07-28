@@ -10,6 +10,7 @@ import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.azure.resourcemanager.network.models.RoutingState;
 import com.azure.resourcemanager.network.models.VirtualHubRouteTable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -58,10 +59,10 @@ public class VirtualHubInner extends Resource {
     private SubResource azureFirewall;
 
     /*
-     * List of all vnet connections with this VirtualHub.
+     * The securityPartnerProvider associated with this VirtualHub.
      */
-    @JsonProperty(value = "properties.virtualNetworkConnections")
-    private List<HubVirtualNetworkConnectionInner> virtualNetworkConnections;
+    @JsonProperty(value = "properties.securityPartnerProvider")
+    private SubResource securityPartnerProvider;
 
     /*
      * Address-prefix for this VirtualHub.
@@ -98,6 +99,36 @@ public class VirtualHubInner extends Resource {
      */
     @JsonProperty(value = "properties.sku")
     private String sku;
+
+    /*
+     * The routing state.
+     */
+    @JsonProperty(value = "properties.routingState", access = JsonProperty.Access.WRITE_ONLY)
+    private RoutingState routingState;
+
+    /*
+     * List of references to Bgp Connections.
+     */
+    @JsonProperty(value = "properties.bgpConnections", access = JsonProperty.Access.WRITE_ONLY)
+    private List<SubResource> bgpConnections;
+
+    /*
+     * List of references to IpConfigurations.
+     */
+    @JsonProperty(value = "properties.ipConfigurations", access = JsonProperty.Access.WRITE_ONLY)
+    private List<SubResource> ipConfigurations;
+
+    /*
+     * VirtualRouter ASN.
+     */
+    @JsonProperty(value = "properties.virtualRouterAsn")
+    private Long virtualRouterAsn;
+
+    /*
+     * VirtualRouter IPs.
+     */
+    @JsonProperty(value = "properties.virtualRouterIps")
+    private List<String> virtualRouterIps;
 
     /*
      * Resource ID.
@@ -215,23 +246,22 @@ public class VirtualHubInner extends Resource {
     }
 
     /**
-     * Get the virtualNetworkConnections property: List of all vnet connections with this VirtualHub.
+     * Get the securityPartnerProvider property: The securityPartnerProvider associated with this VirtualHub.
      *
-     * @return the virtualNetworkConnections value.
+     * @return the securityPartnerProvider value.
      */
-    public List<HubVirtualNetworkConnectionInner> virtualNetworkConnections() {
-        return this.virtualNetworkConnections;
+    public SubResource securityPartnerProvider() {
+        return this.securityPartnerProvider;
     }
 
     /**
-     * Set the virtualNetworkConnections property: List of all vnet connections with this VirtualHub.
+     * Set the securityPartnerProvider property: The securityPartnerProvider associated with this VirtualHub.
      *
-     * @param virtualNetworkConnections the virtualNetworkConnections value to set.
+     * @param securityPartnerProvider the securityPartnerProvider value to set.
      * @return the VirtualHubInner object itself.
      */
-    public VirtualHubInner withVirtualNetworkConnections(
-        List<HubVirtualNetworkConnectionInner> virtualNetworkConnections) {
-        this.virtualNetworkConnections = virtualNetworkConnections;
+    public VirtualHubInner withSecurityPartnerProvider(SubResource securityPartnerProvider) {
+        this.securityPartnerProvider = securityPartnerProvider;
         return this;
     }
 
@@ -347,6 +377,73 @@ public class VirtualHubInner extends Resource {
     }
 
     /**
+     * Get the routingState property: The routing state.
+     *
+     * @return the routingState value.
+     */
+    public RoutingState routingState() {
+        return this.routingState;
+    }
+
+    /**
+     * Get the bgpConnections property: List of references to Bgp Connections.
+     *
+     * @return the bgpConnections value.
+     */
+    public List<SubResource> bgpConnections() {
+        return this.bgpConnections;
+    }
+
+    /**
+     * Get the ipConfigurations property: List of references to IpConfigurations.
+     *
+     * @return the ipConfigurations value.
+     */
+    public List<SubResource> ipConfigurations() {
+        return this.ipConfigurations;
+    }
+
+    /**
+     * Get the virtualRouterAsn property: VirtualRouter ASN.
+     *
+     * @return the virtualRouterAsn value.
+     */
+    public Long virtualRouterAsn() {
+        return this.virtualRouterAsn;
+    }
+
+    /**
+     * Set the virtualRouterAsn property: VirtualRouter ASN.
+     *
+     * @param virtualRouterAsn the virtualRouterAsn value to set.
+     * @return the VirtualHubInner object itself.
+     */
+    public VirtualHubInner withVirtualRouterAsn(Long virtualRouterAsn) {
+        this.virtualRouterAsn = virtualRouterAsn;
+        return this;
+    }
+
+    /**
+     * Get the virtualRouterIps property: VirtualRouter IPs.
+     *
+     * @return the virtualRouterIps value.
+     */
+    public List<String> virtualRouterIps() {
+        return this.virtualRouterIps;
+    }
+
+    /**
+     * Set the virtualRouterIps property: VirtualRouter IPs.
+     *
+     * @param virtualRouterIps the virtualRouterIps value to set.
+     * @return the VirtualHubInner object itself.
+     */
+    public VirtualHubInner withVirtualRouterIps(List<String> virtualRouterIps) {
+        this.virtualRouterIps = virtualRouterIps;
+        return this;
+    }
+
+    /**
      * Get the id property: Resource ID.
      *
      * @return the id value.
@@ -372,9 +469,6 @@ public class VirtualHubInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (virtualNetworkConnections() != null) {
-            virtualNetworkConnections().forEach(e -> e.validate());
-        }
         if (routeTable() != null) {
             routeTable().validate();
         }

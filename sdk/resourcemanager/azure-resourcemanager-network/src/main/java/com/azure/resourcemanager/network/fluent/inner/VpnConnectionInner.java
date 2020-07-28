@@ -10,6 +10,7 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.IpsecPolicy;
 import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.azure.resourcemanager.network.models.RoutingConfiguration;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionProtocol;
 import com.azure.resourcemanager.network.models.VpnConnectionStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -46,6 +47,12 @@ public class VpnConnectionInner extends SubResource {
      */
     @JsonProperty(value = "properties.routingWeight")
     private Integer routingWeight;
+
+    /*
+     * The dead peer detection timeout for a vpn connection in seconds.
+     */
+    @JsonProperty(value = "properties.dpdTimeoutSeconds")
+    private Integer dpdTimeoutSeconds;
 
     /*
      * The connection status.
@@ -131,6 +138,13 @@ public class VpnConnectionInner extends SubResource {
     @JsonProperty(value = "properties.vpnLinkConnections")
     private List<VpnSiteLinkConnectionInner> vpnLinkConnections;
 
+    /*
+     * The Routing Configuration indicating the associated and propagated route
+     * tables on this connection.
+     */
+    @JsonProperty(value = "properties.routingConfiguration")
+    private RoutingConfiguration routingConfiguration;
+
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
@@ -199,6 +213,26 @@ public class VpnConnectionInner extends SubResource {
      */
     public VpnConnectionInner withRoutingWeight(Integer routingWeight) {
         this.routingWeight = routingWeight;
+        return this;
+    }
+
+    /**
+     * Get the dpdTimeoutSeconds property: The dead peer detection timeout for a vpn connection in seconds.
+     *
+     * @return the dpdTimeoutSeconds value.
+     */
+    public Integer dpdTimeoutSeconds() {
+        return this.dpdTimeoutSeconds;
+    }
+
+    /**
+     * Set the dpdTimeoutSeconds property: The dead peer detection timeout for a vpn connection in seconds.
+     *
+     * @param dpdTimeoutSeconds the dpdTimeoutSeconds value to set.
+     * @return the VpnConnectionInner object itself.
+     */
+    public VpnConnectionInner withDpdTimeoutSeconds(Integer dpdTimeoutSeconds) {
+        this.dpdTimeoutSeconds = dpdTimeoutSeconds;
         return this;
     }
 
@@ -440,6 +474,28 @@ public class VpnConnectionInner extends SubResource {
     }
 
     /**
+     * Get the routingConfiguration property: The Routing Configuration indicating the associated and propagated route
+     * tables on this connection.
+     *
+     * @return the routingConfiguration value.
+     */
+    public RoutingConfiguration routingConfiguration() {
+        return this.routingConfiguration;
+    }
+
+    /**
+     * Set the routingConfiguration property: The Routing Configuration indicating the associated and propagated route
+     * tables on this connection.
+     *
+     * @param routingConfiguration the routingConfiguration value to set.
+     * @return the VpnConnectionInner object itself.
+     */
+    public VpnConnectionInner withRoutingConfiguration(RoutingConfiguration routingConfiguration) {
+        this.routingConfiguration = routingConfiguration;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -450,6 +506,9 @@ public class VpnConnectionInner extends SubResource {
         }
         if (vpnLinkConnections() != null) {
             vpnLinkConnections().forEach(e -> e.validate());
+        }
+        if (routingConfiguration() != null) {
+            routingConfiguration().validate();
         }
     }
 }
