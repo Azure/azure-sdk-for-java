@@ -3,9 +3,9 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.models.CopyAuthorization;
-import com.azure.ai.formrecognizer.models.CustomFormModel;
-import com.azure.ai.formrecognizer.models.CustomFormModelInfo;
+import com.azure.ai.formrecognizer.training.models.CopyAuthorization;
+import com.azure.ai.formrecognizer.training.models.CustomFormModel;
+import com.azure.ai.formrecognizer.training.models.CustomFormModelInfo;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.training.FormTrainingClient;
 import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;

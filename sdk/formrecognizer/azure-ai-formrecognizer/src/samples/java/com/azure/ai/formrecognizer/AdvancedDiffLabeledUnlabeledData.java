@@ -53,7 +53,7 @@ public class AdvancedDiffLabeledUnlabeledData {
                 "{labeled_model_Id}",
                 new RecognizeOptions()
                     .setContentType(FormContentType.APPLICATION_PDF)
-                    .setIncludeFieldElements(true)
+                    .setFieldElementsIncluded(true)
                     .setPollInterval(Duration.ofSeconds(5)), Context.NONE)
                 .getFinalResult();
 
@@ -62,7 +62,7 @@ public class AdvancedDiffLabeledUnlabeledData {
                 "{unlabeled_model_Id}",
                 new RecognizeOptions()
                     .setContentType(FormContentType.APPLICATION_PDF)
-                    .setIncludeFieldElements(true)
+                    .setFieldElementsIncluded(true)
                     .setPollInterval(Duration.ofSeconds(5)), Context.NONE)
                 .getFinalResult();
 
