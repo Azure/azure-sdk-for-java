@@ -8,12 +8,12 @@
 
 package com.microsoft.azure.management.containerregistry.v2019_06_01_preview.implementation;
 
-import com.microsoft.azure.management.containerregistry.v2019_06_01_preview.RunGetLogResult;
+import com.microsoft.azure.management.containerregistry.v2019_06_01_preview.AgentPoolQueueStatus;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 
-class RunGetLogResultImpl extends WrapperImpl<RunGetLogResultInner> implements RunGetLogResult {
+class AgentPoolQueueStatusImpl extends WrapperImpl<AgentPoolQueueStatusInner> implements AgentPoolQueueStatus {
     private final ContainerRegistryManager manager;
-    RunGetLogResultImpl(RunGetLogResultInner inner, ContainerRegistryManager manager) {
+    AgentPoolQueueStatusImpl(AgentPoolQueueStatusInner inner, ContainerRegistryManager manager) {
         super(inner);
         this.manager = manager;
     }
@@ -24,13 +24,8 @@ class RunGetLogResultImpl extends WrapperImpl<RunGetLogResultInner> implements R
     }
 
     @Override
-    public String logArtifactLink() {
-        return this.inner().logArtifactLink();
-    }
-
-    @Override
-    public String logLink() {
-        return this.inner().logLink();
+    public Integer count() {
+        return this.inner().count();
     }
 
 }

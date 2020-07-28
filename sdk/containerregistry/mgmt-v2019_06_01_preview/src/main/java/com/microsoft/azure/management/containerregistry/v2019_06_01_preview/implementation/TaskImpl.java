@@ -110,6 +110,11 @@ class TaskImpl extends CreatableUpdatableImpl<Task, TaskInner, TaskImpl> impleme
     }
 
     @Override
+    public String agentPoolName() {
+        return this.inner().agentPoolName();
+    }
+
+    @Override
     public DateTime creationDate() {
         return this.inner().creationDate();
     }
@@ -234,6 +239,16 @@ class TaskImpl extends CreatableUpdatableImpl<Task, TaskInner, TaskImpl> impleme
             this.inner().withAgentConfiguration(agentConfiguration);
         } else {
             this.updateParameter.withAgentConfiguration(agentConfiguration);
+        }
+        return this;
+    }
+
+    @Override
+    public TaskImpl withAgentPoolName(String agentPoolName) {
+        if (isInCreateMode()) {
+            this.inner().withAgentPoolName(agentPoolName);
+        } else {
+            this.updateParameter.withAgentPoolName(agentPoolName);
         }
         return this;
     }

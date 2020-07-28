@@ -66,6 +66,12 @@ public class TaskInner extends Resource {
     private AgentProperties agentConfiguration;
 
     /**
+     * The dedicated agent pool for the task.
+     */
+    @JsonProperty(value = "properties.agentPoolName")
+    private String agentPoolName;
+
+    /**
      * Run timeout in seconds.
      */
     @JsonProperty(value = "properties.timeout")
@@ -185,6 +191,26 @@ public class TaskInner extends Resource {
      */
     public TaskInner withAgentConfiguration(AgentProperties agentConfiguration) {
         this.agentConfiguration = agentConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the dedicated agent pool for the task.
+     *
+     * @return the agentPoolName value
+     */
+    public String agentPoolName() {
+        return this.agentPoolName;
+    }
+
+    /**
+     * Set the dedicated agent pool for the task.
+     *
+     * @param agentPoolName the agentPoolName value to set
+     * @return the TaskInner object itself.
+     */
+    public TaskInner withAgentPoolName(String agentPoolName) {
+        this.agentPoolName = agentPoolName;
         return this;
     }
 
