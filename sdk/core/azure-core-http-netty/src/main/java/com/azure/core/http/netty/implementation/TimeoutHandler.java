@@ -227,7 +227,7 @@ public final class TimeoutHandler extends ChannelDuplexHandler {
              * operations counter.
              */
             if (ctx != null) {
-                this.scheduledTimeout = ctx.executor().schedule(this, 0, NANOSECONDS);
+                this.scheduledTimeout = ctx.executor().schedule(this, writeTimeoutNanos, NANOSECONDS);
             } else {
                 this.scheduledTimeout = null;
             }
