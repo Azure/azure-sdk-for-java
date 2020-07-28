@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.policyinsights.v2019_10_01;
 
+import rx.Completable;
 import rx.Observable;
 
 /**
@@ -22,7 +23,7 @@ public interface PolicyStates {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<PolicyStatesQueryResults> listQueryResultsForManagementGroupAsync(PolicyStatesResource policyStatesResource, String managementGroupName);
+    Observable<PolicyState> listQueryResultsForManagementGroupAsync(final PolicyStatesResource policyStatesResource, final String managementGroupName);
 
     /**
      * Summarizes policy states for the resources under the management group.
@@ -41,7 +42,7 @@ public interface PolicyStates {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<PolicyStatesQueryResults> listQueryResultsForSubscriptionAsync(PolicyStatesResource policyStatesResource, String subscriptionId);
+    Observable<PolicyState> listQueryResultsForSubscriptionAsync(final PolicyStatesResource policyStatesResource, final String subscriptionId);
 
     /**
      * Summarizes policy states for the resources under the subscription.
@@ -61,7 +62,7 @@ public interface PolicyStates {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<PolicyStatesQueryResults> listQueryResultsForResourceGroupAsync(PolicyStatesResource policyStatesResource, String subscriptionId, String resourceGroupName);
+    Observable<PolicyState> listQueryResultsForResourceGroupAsync(final PolicyStatesResource policyStatesResource, final String subscriptionId, final String resourceGroupName);
 
     /**
      * Summarizes policy states for the resources under the resource group.
@@ -81,7 +82,7 @@ public interface PolicyStates {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<PolicyStatesQueryResults> listQueryResultsForResourceAsync(PolicyStatesResource policyStatesResource, String resourceId);
+    Observable<PolicyState> listQueryResultsForResourceAsync(final PolicyStatesResource policyStatesResource, final String resourceId);
 
     /**
      * Summarizes policy states for the resource.
@@ -93,6 +94,25 @@ public interface PolicyStates {
     Observable<SummarizeResults> summarizeForResourceAsync(String resourceId);
 
     /**
+     * Triggers a policy evaluation scan for all the resources under the subscription.
+     *
+     * @param subscriptionId Microsoft Azure subscription ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable triggerSubscriptionEvaluationAsync(String subscriptionId);
+
+    /**
+     * Triggers a policy evaluation scan for all the resources under the resource group.
+     *
+     * @param subscriptionId Microsoft Azure subscription ID.
+     * @param resourceGroupName Resource group name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable triggerResourceGroupEvaluationAsync(String subscriptionId, String resourceGroupName);
+
+    /**
      * Queries policy states for the subscription level policy set definition.
      *
      * @param policyStatesResource The virtual resource under PolicyStates resource type. In a given time range, 'latest' represents the latest policy state(s), whereas 'default' represents all policy state(s). Possible values include: 'default', 'latest'
@@ -101,7 +121,7 @@ public interface PolicyStates {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<PolicyStatesQueryResults> listQueryResultsForPolicySetDefinitionAsync(PolicyStatesResource policyStatesResource, String subscriptionId, String policySetDefinitionName);
+    Observable<PolicyState> listQueryResultsForPolicySetDefinitionAsync(final PolicyStatesResource policyStatesResource, final String subscriptionId, final String policySetDefinitionName);
 
     /**
      * Summarizes policy states for the subscription level policy set definition.
@@ -122,7 +142,7 @@ public interface PolicyStates {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<PolicyStatesQueryResults> listQueryResultsForPolicyDefinitionAsync(PolicyStatesResource policyStatesResource, String subscriptionId, String policyDefinitionName);
+    Observable<PolicyState> listQueryResultsForPolicyDefinitionAsync(final PolicyStatesResource policyStatesResource, final String subscriptionId, final String policyDefinitionName);
 
     /**
      * Summarizes policy states for the subscription level policy definition.
@@ -143,7 +163,7 @@ public interface PolicyStates {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<PolicyStatesQueryResults> listQueryResultsForSubscriptionLevelPolicyAssignmentAsync(PolicyStatesResource policyStatesResource, String subscriptionId, String policyAssignmentName);
+    Observable<PolicyState> listQueryResultsForSubscriptionLevelPolicyAssignmentAsync(final PolicyStatesResource policyStatesResource, final String subscriptionId, final String policyAssignmentName);
 
     /**
      * Summarizes policy states for the subscription level policy assignment.
@@ -165,7 +185,7 @@ public interface PolicyStates {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<PolicyStatesQueryResults> listQueryResultsForResourceGroupLevelPolicyAssignmentAsync(PolicyStatesResource policyStatesResource, String subscriptionId, String resourceGroupName, String policyAssignmentName);
+    Observable<PolicyState> listQueryResultsForResourceGroupLevelPolicyAssignmentAsync(final PolicyStatesResource policyStatesResource, final String subscriptionId, final String resourceGroupName, final String policyAssignmentName);
 
     /**
      * Summarizes policy states for the resource group level policy assignment.
