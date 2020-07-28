@@ -389,7 +389,7 @@ class CosmosDBAccountImpl
         this.ensureFailoverIsInitialized();
         for (int i = 1; i < this.failoverPolicies.size(); i++) {
             if (this.failoverPolicies.get(i).locationName() != null) {
-                String locName = this.formatLocationName(this.failoverPolicies.get(i).locationName());
+                String locName = formatLocationName(this.failoverPolicies.get(i).locationName());
                 if (locName.equals(region.name())) {
                     this.failoverPolicies.remove(i);
                 }
