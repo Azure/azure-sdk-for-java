@@ -27,6 +27,7 @@ import java.util.Set;
  * Utility class to set Managed Service Identity (MSI) property on a web app, install or update MSI extension and create
  * role assignments for the service principal associated with the web app.
  */
+@SuppressWarnings("rawtypes")
 public class WebAppMsiHandler extends RoleAssignmentHelper {
 
     private final ClientLogger logger = new ClientLogger(getClass());
@@ -43,6 +44,7 @@ public class WebAppMsiHandler extends RoleAssignmentHelper {
      * @param webAppBase the web app to which MSI extension needs to be installed and for which role assignments needs
      *     to be created
      */
+    @SuppressWarnings("rawtypes")
     WebAppMsiHandler(final AuthorizationManager authorizationManager, WebAppBaseImpl webAppBase) {
         super(authorizationManager, webAppBase.taskGroup(), webAppBase.idProvider());
         this.webAppBase = webAppBase;

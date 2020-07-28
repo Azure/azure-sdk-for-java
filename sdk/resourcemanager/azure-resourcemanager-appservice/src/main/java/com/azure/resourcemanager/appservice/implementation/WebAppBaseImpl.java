@@ -199,8 +199,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
         };
     }
 
-    @SuppressWarnings("unchecked")
-    private FluentT normalizeProperties() {
+    private void normalizeProperties() {
         this.hostNameBindingsToCreate = new TreeMap<>();
         this.hostNameBindingsToDelete = new ArrayList<>();
         this.appSettingsToAdd = new HashMap<>();
@@ -238,7 +237,6 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
             }
         }
         this.webAppMsiHandler.clear();
-        return (FluentT) this;
     }
 
     @Override
@@ -843,7 +841,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
     @Override
     @SuppressWarnings("unchecked")
     public Mono<FluentT> updateResourceAsync() {
-        SiteInner siteInner = (SiteInner) this.inner();
+        SiteInner siteInner = this.inner();
         SitePatchResourceInner siteUpdate = new SitePatchResourceInner();
         siteUpdate.withHostnameSslStates(siteInner.hostnameSslStates());
         siteUpdate.withKind(siteInner.kind());
