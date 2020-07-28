@@ -97,7 +97,7 @@ public interface ActiveDirectoryApplication
              * @param name the descriptive name of the certificate credential
              * @return the first stage in certificate credential definition
              */
-            CertificateCredential.DefinitionStages.Blank<WithCreate> defineCertificateCredential(String name);
+            CertificateCredential.DefinitionStages.Blank<? extends WithCreate> defineCertificateCredential(String name);
 
             /**
              * Starts the definition of a password credential.
@@ -105,7 +105,7 @@ public interface ActiveDirectoryApplication
              * @param name the descriptive name of the password credential
              * @return the first stage in password credential definition
              */
-            PasswordCredential.DefinitionStages.Blank<WithCreate> definePasswordCredential(String name);
+            PasswordCredential.DefinitionStages.Blank<? extends WithCreate> definePasswordCredential(String name);
         }
 
         /**
@@ -193,7 +193,8 @@ public interface ActiveDirectoryApplication
              * @param name the descriptive name of the certificate credential
              * @return the first stage in certificate credential definition
              */
-            CertificateCredential.UpdateDefinitionStages.Blank<Update> defineCertificateCredential(String name);
+            CertificateCredential.UpdateDefinitionStages.Blank<? extends Update>
+                defineCertificateCredential(String name);
 
             /**
              * Starts the definition of a password credential.
@@ -201,7 +202,7 @@ public interface ActiveDirectoryApplication
              * @param name the descriptive name of the password credential
              * @return the first stage in password credential definition
              */
-            PasswordCredential.UpdateDefinitionStages.Blank<Update> definePasswordCredential(String name);
+            PasswordCredential.UpdateDefinitionStages.Blank<? extends Update> definePasswordCredential(String name);
 
             /**
              * Removes a key.
