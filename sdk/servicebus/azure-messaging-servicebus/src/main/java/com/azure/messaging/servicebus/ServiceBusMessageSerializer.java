@@ -323,7 +323,8 @@ class ServiceBusMessageSerializer implements MessageSerializer {
                 brokeredMessage.setDeadLetterReason(String.valueOf(propertiesValue.get(DEAD_LETTER_REASON)));
             }
             if (propertiesValue.containsKey(DEAD_LETTER_DESCRIPTION)) {
-                brokeredMessage.setDeadLetterErrorDescription(String.valueOf(propertiesValue.get(DEAD_LETTER_DESCRIPTION)));
+                brokeredMessage.setDeadLetterErrorDescription(String.valueOf(
+                    propertiesValue.get(DEAD_LETTER_DESCRIPTION)));
             }
         }
 
