@@ -3,10 +3,10 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.models.AccountProperties;
-import com.azure.ai.formrecognizer.models.CopyAuthorization;
-import com.azure.ai.formrecognizer.models.CustomFormModel;
-import com.azure.ai.formrecognizer.models.TrainingFileFilter;
+import com.azure.ai.formrecognizer.training.models.AccountProperties;
+import com.azure.ai.formrecognizer.training.models.CopyAuthorization;
+import com.azure.ai.formrecognizer.training.models.CustomFormModel;
+import com.azure.ai.formrecognizer.training.models.TrainingFileFilter;
 import com.azure.ai.formrecognizer.training.FormTrainingAsyncClient;
 import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;

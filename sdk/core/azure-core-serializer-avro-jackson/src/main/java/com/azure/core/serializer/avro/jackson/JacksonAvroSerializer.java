@@ -4,7 +4,9 @@
 package com.azure.core.serializer.avro.jackson;
 
 import com.azure.core.experimental.serializer.ObjectSerializer;
+import com.azure.core.experimental.serializer.TypeReference;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.dataformat.avro.AvroMapper;
 import com.fasterxml.jackson.dataformat.avro.AvroSchema;
 import reactor.core.publisher.Mono;
@@ -18,18 +20,20 @@ import java.io.UncheckedIOException;
  * Jackson Avro based implementation of the {@link ObjectSerializer} interface.
  */
 public final class JacksonAvroSerializer implements ObjectSerializer {
-    private static final ClientLogger LOGGER = new ClientLogger(JacksonAvroSerializer.class);
+    private final ClientLogger logger = new ClientLogger(JacksonAvroSerializer.class);
 
     private final AvroSchema avroSchema;
     private final AvroMapper avroMapper;
+    private final TypeFactory typeFactory;
 
     JacksonAvroSerializer(AvroSchema avroSchema, AvroMapper avroMapper) {
         this.avroSchema = avroSchema;
         this.avroMapper = avroMapper;
+        this.typeFactory = avroMapper.getTypeFactory();
     }
 
     @Override
-    public <T> T deserializeSync(InputStream stream, Class<T> clazz) {
+    public <T> T deserializeSync(InputStream stream, TypeReference<T> typeReference) {
         if (stream == null) {
             return null;
         }
@@ -39,15 +43,17 @@ public final class JacksonAvroSerializer implements ObjectSerializer {
         }
 
         try {
-            return avroMapper.readerFor(clazz).with(avroSchema).readValue(stream);
+            return avroMapper.readerFor(typeFactory.constructType(typeReference.getJavaType()))
+                .with(avroSchema)
+                .readValue(stream);
         } catch (IOException ex) {
-            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
+            throw logger.logExceptionAsError(new UncheckedIOException(ex));
         }
     }
 
     @Override
-    public <T> Mono<T> deserialize(InputStream stream, Class<T> clazz) {
-        return Mono.fromCallable(() -> deserializeSync(stream, clazz));
+    public <T> Mono<T> deserialize(InputStream stream, TypeReference<T> typeReference) {
+        return Mono.fromCallable(() -> deserializeSync(stream, typeReference));
     }
 
     @Override
@@ -55,7 +61,7 @@ public final class JacksonAvroSerializer implements ObjectSerializer {
         try {
             avroMapper.writer().with(avroSchema).writeValue(stream, value);
         } catch (IOException ex) {
-            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
+            throw logger.logExceptionAsError(new UncheckedIOException(ex));
         }
 
         return stream;

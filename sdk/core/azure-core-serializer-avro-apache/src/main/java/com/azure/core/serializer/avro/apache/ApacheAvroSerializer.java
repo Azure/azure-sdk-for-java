@@ -4,6 +4,7 @@
 package com.azure.core.serializer.avro.apache;
 
 import com.azure.core.experimental.serializer.ObjectSerializer;
+import com.azure.core.experimental.serializer.TypeReference;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.avro.Schema;
 import org.apache.avro.io.DatumReader;
@@ -25,7 +26,7 @@ import java.io.UncheckedIOException;
  * Apache Avro based implementation of the {@link ObjectSerializer} interface.
  */
 public class ApacheAvroSerializer implements ObjectSerializer {
-    private static final ClientLogger LOGGER = new ClientLogger(ApacheAvroSerializer.class);
+    private final ClientLogger logger = new ClientLogger(ApacheAvroSerializer.class);
 
     private final Schema schema;
     private final DecoderFactory decoderFactory;
@@ -41,7 +42,7 @@ public class ApacheAvroSerializer implements ObjectSerializer {
     }
 
     @Override
-    public <T> T deserializeSync(InputStream stream, Class<T> clazz) {
+    public <T> T deserializeSync(InputStream stream, TypeReference<T> typeReference) {
         if (stream == null) {
             return null;
         }
@@ -49,15 +50,15 @@ public class ApacheAvroSerializer implements ObjectSerializer {
         DatumReader<T> reader = new SpecificDatumReader<>(schema, schema, specificData);
 
         try {
-            return clazz.cast(reader.read(null, decoderFactory.binaryDecoder(stream, null)));
+            return reader.read(null, decoderFactory.binaryDecoder(stream, null));
         } catch (IOException ex) {
-            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
+            throw logger.logExceptionAsError(new UncheckedIOException(ex));
         }
     }
 
     @Override
-    public <T> Mono<T> deserialize(InputStream stream, Class<T> clazz) {
-        return Mono.fromCallable(() -> deserializeSync(stream, clazz));
+    public <T> Mono<T> deserialize(InputStream stream, TypeReference<T> typeReference) {
+        return Mono.fromCallable(() -> deserializeSync(stream, typeReference));
     }
 
     @Override
@@ -70,7 +71,7 @@ public class ApacheAvroSerializer implements ObjectSerializer {
             encoder.flush();
             return stream;
         } catch (IOException ex) {
-            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
+            throw logger.logExceptionAsError(new UncheckedIOException(ex));
         }
     }
 

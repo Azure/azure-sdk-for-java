@@ -5,6 +5,7 @@ package com.azure.core.serializer.json.gson;
 
 import com.azure.core.experimental.serializer.JsonNode;
 import com.azure.core.experimental.serializer.JsonSerializer;
+import com.azure.core.experimental.serializer.TypeReference;
 import com.azure.core.util.logging.ClientLogger;
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
@@ -17,6 +18,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UncheckedIOException;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -24,7 +26,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * GSON based implementation of the {@link JsonSerializer} interface.
  */
 public final class GsonJsonSerializer implements JsonSerializer {
-    private static final ClientLogger LOGGER = new ClientLogger(GsonJsonSerializer.class);
+    private final ClientLogger logger = new ClientLogger(GsonJsonSerializer.class);
 
     private final Gson gson;
 
@@ -38,23 +40,23 @@ public final class GsonJsonSerializer implements JsonSerializer {
     }
 
     @Override
-    public <T> T deserializeSync(InputStream stream, Class<T> clazz) {
-        return gson.fromJson(new InputStreamReader(stream, UTF_8), clazz);
+    public <T> T deserializeSync(InputStream stream, TypeReference<T> typeReference) {
+        return gson.fromJson(new InputStreamReader(stream, StandardCharsets.UTF_8), typeReference.getJavaType());
     }
 
     @Override
-    public <T> Mono<T> deserialize(InputStream stream, Class<T> clazz) {
-        return Mono.fromCallable(() -> deserializeSync(stream, clazz));
+    public <T> Mono<T> deserialize(InputStream stream, TypeReference<T> typeReference) {
+        return Mono.fromCallable(() -> deserializeSync(stream, typeReference));
     }
 
     @Override
-    public <T> T deserializeTreeSync(JsonNode jsonNode, Class<T> clazz) {
-        return gson.fromJson(JsonNodeUtils.toGsonElement(jsonNode), clazz);
+    public <T> T deserializeTreeSync(JsonNode jsonNode, TypeReference<T> typeReference) {
+        return gson.fromJson(JsonNodeUtils.toGsonElement(jsonNode), typeReference.getJavaType());
     }
 
     @Override
-    public <T> Mono<T> deserializeTree(JsonNode jsonNode, Class<T> clazz) {
-        return Mono.fromCallable(() -> deserializeTreeSync(jsonNode, clazz));
+    public <T> Mono<T> deserializeTree(JsonNode jsonNode, TypeReference<T> typeReference) {
+        return Mono.fromCallable(() -> deserializeTreeSync(jsonNode, typeReference));
     }
 
     @Override
@@ -65,7 +67,7 @@ public final class GsonJsonSerializer implements JsonSerializer {
         try {
             writer.flush();
         } catch (IOException ex) {
-            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
+            throw logger.logExceptionAsError(new UncheckedIOException(ex));
         }
 
         return stream;
@@ -105,6 +107,4 @@ public final class GsonJsonSerializer implements JsonSerializer {
     public Mono<JsonNode> toTree(Object value) {
         return Mono.fromCallable(() -> toTreeSync(value));
     }
-
-
 }

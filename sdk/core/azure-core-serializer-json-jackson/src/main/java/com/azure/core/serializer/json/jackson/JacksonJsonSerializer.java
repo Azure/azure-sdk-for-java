@@ -5,9 +5,10 @@ package com.azure.core.serializer.json.jackson;
 
 import com.azure.core.experimental.serializer.JsonNode;
 import com.azure.core.experimental.serializer.JsonSerializer;
+import com.azure.core.experimental.serializer.TypeReference;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -19,9 +20,10 @@ import java.io.UncheckedIOException;
  * Jackson based implementation of the {@link JsonSerializer} interface.
  */
 public final class JacksonJsonSerializer implements JsonSerializer {
-    private static final ClientLogger LOGGER = new ClientLogger(JacksonJsonSerializer.class);
+    private final ClientLogger logger = new ClientLogger(JacksonJsonSerializer.class);
 
     private final ObjectMapper mapper;
+    private final TypeFactory typeFactory;
 
     /**
      * Constructs a {@link JsonSerializer} using the passed Jackson serializer.
@@ -30,38 +32,40 @@ public final class JacksonJsonSerializer implements JsonSerializer {
      */
     JacksonJsonSerializer(ObjectMapper mapper) {
         this.mapper = mapper;
+        this.typeFactory = mapper.getTypeFactory();
     }
 
     @Override
-    public <T> T deserializeSync(InputStream stream, Class<T> clazz) {
+    public <T> T deserializeSync(InputStream stream, TypeReference<T> typeReference) {
         if (stream == null) {
             return null;
         }
 
         try {
-            return mapper.readValue(stream, clazz);
+            return mapper.readValue(stream, typeFactory.constructType(typeReference.getJavaType()));
         } catch (IOException ex) {
-            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
+            throw logger.logExceptionAsError(new UncheckedIOException(ex));
         }
     }
 
     @Override
-    public <T> Mono<T> deserialize(InputStream stream, Class<T> clazz) {
-        return Mono.fromCallable(() -> deserializeSync(stream, clazz));
+    public <T> Mono<T> deserialize(InputStream stream, TypeReference<T> typeReference) {
+        return Mono.fromCallable(() -> deserializeSync(stream, typeReference));
     }
 
     @Override
-    public <T> T deserializeTreeSync(JsonNode jsonNode, Class<T> clazz) {
+    public <T> T deserializeTreeSync(JsonNode jsonNode, TypeReference<T> typeReference) {
         try {
-            return mapper.treeToValue(JsonNodeUtils.toJacksonNode(jsonNode), clazz);
-        } catch (JsonProcessingException ex) {
-            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
+            return mapper.readerFor(typeFactory.constructType(typeReference.getJavaType()))
+                .readValue(JsonNodeUtils.toJacksonNode(jsonNode));
+        } catch (IOException ex) {
+            throw logger.logExceptionAsError(new UncheckedIOException(ex));
         }
     }
 
     @Override
-    public <T> Mono<T> deserializeTree(JsonNode jsonNode, Class<T> clazz) {
-        return Mono.fromCallable(() -> deserializeTreeSync(jsonNode, clazz));
+    public <T> Mono<T> deserializeTree(JsonNode jsonNode, TypeReference<T> typeReference) {
+        return Mono.fromCallable(() -> deserializeTreeSync(jsonNode, typeReference));
     }
 
     @Override
@@ -69,7 +73,7 @@ public final class JacksonJsonSerializer implements JsonSerializer {
         try {
             mapper.writeValue(stream, value);
         } catch (IOException ex) {
-            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
+            throw logger.logExceptionAsError(new UncheckedIOException(ex));
         }
 
         return stream;
@@ -95,7 +99,7 @@ public final class JacksonJsonSerializer implements JsonSerializer {
         try {
             return JsonNodeUtils.fromJacksonNode(mapper.readTree(stream));
         } catch (IOException ex) {
-            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
+            throw logger.logExceptionAsError(new UncheckedIOException(ex));
         }
     }
 
