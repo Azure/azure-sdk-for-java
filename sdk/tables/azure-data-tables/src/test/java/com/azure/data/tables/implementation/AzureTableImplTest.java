@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.data.tables;
+package com.azure.data.tables.implementation;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
@@ -17,42 +17,67 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.data.tables.implementation.AzureTableImpl;
-import com.azure.data.tables.implementation.AzureTableImplBuilder;
+import com.azure.data.tables.TablesServiceVersion;
+import com.azure.data.tables.TablesSharedKeyCredential;
+import com.azure.data.tables.TablesSharedKeyCredentialPolicy;
+import com.azure.data.tables.TestUtils;
 import com.azure.data.tables.implementation.models.OdataMetadataFormat;
 import com.azure.data.tables.implementation.models.QueryOptions;
 import com.azure.data.tables.implementation.models.ResponseFormat;
 import com.azure.data.tables.implementation.models.TableProperties;
 import com.azure.data.tables.implementation.models.TableResponseProperties;
 import com.azure.data.tables.implementation.models.TableServiceErrorException;
+import com.azure.data.tables.implementation.models.TableServiceErrorOdataError;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static com.azure.data.tables.implementation.TableConstants.PARTITION_KEY;
+import static com.azure.data.tables.implementation.TableConstants.ROW_KEY;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 /**
  * This class tests the Autorest code for the Tables track 2 SDK
  */
 public class AzureTableImplTest extends TestBase {
-    private static final String PARTITION_KEY = "PartitionKey";
-    private static final String ROW_KEY = "RowKey";
-    private static final int TIMEOUT = 5000;
+    private static final int TIMEOUT_IN_MS = 5000;
+
+    private final QueryOptions defaultQueryOptions = new QueryOptions()
+        .setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_FULLMETADATA);
+
+    private final ClientLogger logger = new ClientLogger(AzureTableImplTest.class);
     private AzureTableImpl azureTable;
+
+    @BeforeAll
+    static void beforeAll() {
+        StepVerifier.setDefaultTimeout(Duration.ofMillis(TIMEOUT_IN_MS));
+    }
+
+    @AfterAll
+    static void afterAll() {
+        StepVerifier.resetDefaultTimeout();
+    }
 
     @Override
     protected void beforeTest() {
-        String connectionString = interceptorManager.isPlaybackMode()
-            ? "DefaultEndpointsProtocol=https;AccountName=dummyAccount;AccountKey=xyzDummy;EndpointSuffix=core.windows.net"
-            : System.getenv("AZURE_TABLES_CONNECTION_STRING");
-        StorageConnectionString storageConnectionString
-            = StorageConnectionString.create(connectionString, new ClientLogger(AzureTableImplTest.class));
+        final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
+        final StorageConnectionString storageConnectionString
+            = StorageConnectionString.create(connectionString, logger);
 
         Assertions.assertNotNull(connectionString, "Cannot continue test if connectionString is not set.");
 
@@ -62,26 +87,31 @@ public class AzureTableImplTest extends TestBase {
 
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         policies.add(new AddDatePolicy());
-        policies.add(new AddHeadersPolicy(new HttpHeaders().put("Accept",
-            OdataMetadataFormat.APPLICATION_JSON_ODATA_MINIMALMETADATA.toString())));
         policies.add(new TablesSharedKeyCredentialPolicy(sharedKeyCredential));
         policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
+
+        // Add Accept header so we don't get back XML.
+        // Can be removed when this is fixed. https://github.com/Azure/autorest.modelerfour/issues/324
+        policies.add(new AddHeadersPolicy(new HttpHeaders().put("Accept", "application/json")));
 
         HttpClient httpClientToUse;
         if (interceptorManager.isPlaybackMode()) {
             httpClientToUse = interceptorManager.getPlaybackClient();
         } else {
             httpClientToUse = HttpClient.createDefault();
-            policies.add(interceptorManager.getRecordPolicy());
+            HttpPipelinePolicy recordPolicy = interceptorManager.getRecordPolicy();
+            policies.add(recordPolicy);
             policies.add(new RetryPolicy());
         }
+
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(httpClientToUse)
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .build();
         azureTable = new AzureTableImplBuilder()
             .pipeline(pipeline)
-            .version("2019-02-02")
+            .serializerAdapter(new TablesJacksonSerializer())
+            .version(TablesServiceVersion.getLatest().getVersion())
             .url(storageConnectionString.getTableEndpoint().getPrimaryUri())
             .buildClient();
     }
@@ -111,12 +141,12 @@ public class AzureTableImplTest extends TestBase {
     void insertNoETag(String tableName, Map<String, Object> properties) {
         String requestId = testResourceNamer.randomUuid();
 
-        azureTable.getTables().insertEntityWithResponseAsync(tableName, TIMEOUT,
+        azureTable.getTables().insertEntityWithResponseAsync(tableName, TIMEOUT_IN_MS,
             requestId, ResponseFormat.RETURN_CONTENT, properties, null, Context.NONE).log().block();
     }
 
     @Test
-    void createTable() {
+    void createTableImpl() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         TableProperties tableProperties = new TableProperties().setTableName(tableName);
@@ -134,8 +164,9 @@ public class AzureTableImplTest extends TestBase {
     }
 
     @Test
-    void createTableDuplicateName() {
+    void createTableDuplicateNameImpl() {
         // Arrange
+        String expectedErrorCode = "TableAlreadyExists";
         String tableName = testResourceNamer.randomName("test", 20);
         TableProperties tableProperties = new TableProperties().setTableName(tableName);
         createTable(tableName);
@@ -143,13 +174,22 @@ public class AzureTableImplTest extends TestBase {
 
         // Act & Assert
         StepVerifier.create(azureTable.getTables().createWithResponseAsync(tableProperties,
-            requestId, ResponseFormat.RETURN_CONTENT, null, Context.NONE))
-            .expectError(TableServiceErrorException.class)
+            requestId, ResponseFormat.RETURN_CONTENT, defaultQueryOptions, Context.NONE))
+            .expectErrorSatisfies(error -> {
+                assertTrue(error instanceof TableServiceErrorException);
+
+                final TableServiceErrorException exception = (TableServiceErrorException) error;
+                assertNotNull(exception.getValue());
+
+                final TableServiceErrorOdataError odataError = exception.getValue().getOdataError();
+                assertNotNull(odataError);
+                assertEquals(expectedErrorCode, odataError.getCode());
+            })
             .verify();
     }
 
     @Test
-    void deleteTable() {
+    void deleteTableImpl() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         createTable(tableName);
@@ -167,7 +207,7 @@ public class AzureTableImplTest extends TestBase {
     }
 
     @Test
-    void deleteNonExistentTable() {
+    void deleteNonExistentTableImpl() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         String requestId = testResourceNamer.randomUuid();
@@ -180,7 +220,7 @@ public class AzureTableImplTest extends TestBase {
     }
 
     @Test
-    void queryTable() {
+    void queryTableImpl() {
         // Arrange
         QueryOptions queryOptions = new QueryOptions()
             .setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_MINIMALMETADATA);
@@ -201,7 +241,7 @@ public class AzureTableImplTest extends TestBase {
                 List<TableResponseProperties> results = response.getValue().getValue();
 
                 Assertions.assertNotNull(results, "Expected there to be a set of items.");
-                Assertions.assertEquals(2, results.size());
+                Assertions.assertTrue(results.size() >= 2);
                 Assertions.assertEquals(response.getValue().getValue().get(0).getTableName(), tableA);
                 Assertions.assertEquals(response.getValue().getValue().get(1).getTableName(), tableB);
             })
@@ -210,7 +250,7 @@ public class AzureTableImplTest extends TestBase {
     }
 
     @Test
-    void queryTablewithTop() {
+    void queryTableWithTopImpl() {
         // Arrange
         QueryOptions queryOptions = new QueryOptions()
             .setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_MINIMALMETADATA);
@@ -236,7 +276,7 @@ public class AzureTableImplTest extends TestBase {
     }
 
     @Test
-    void insertNoEtag() {
+    void insertNoETagImpl() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         createTable(tableName);
@@ -249,7 +289,7 @@ public class AzureTableImplTest extends TestBase {
         String requestId = testResourceNamer.randomUuid();
 
         // Act & Assert
-        StepVerifier.create(azureTable.getTables().insertEntityWithResponseAsync(tableName, TIMEOUT,
+        StepVerifier.create(azureTable.getTables().insertEntityWithResponseAsync(tableName, TIMEOUT_IN_MS,
             requestId, ResponseFormat.RETURN_CONTENT, properties, null, Context.NONE))
             .assertNext(response -> {
                 Assertions.assertEquals(expectedStatusCode, response.getStatusCode());
@@ -259,7 +299,7 @@ public class AzureTableImplTest extends TestBase {
     }
 
     @Test
-    void mergeEntity() {
+    void mergeEntityImpl() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         createTable(tableName);
@@ -275,7 +315,7 @@ public class AzureTableImplTest extends TestBase {
 
         // Act & Assert
         StepVerifier.create(azureTable.getTables().mergeEntityWithResponseAsync(tableName, partitionKeyValue,
-            rowKeyValue, TIMEOUT, requestId, "*", properties, null, Context.NONE))
+            rowKeyValue, TIMEOUT_IN_MS, requestId, "*", properties, null, Context.NONE))
             .assertNext(response -> {
                 Assertions.assertEquals(expectedStatusCode, response.getStatusCode());
             })
@@ -284,7 +324,7 @@ public class AzureTableImplTest extends TestBase {
     }
 
     @Test
-    void mergeNonExistentEntity() {
+    void mergeNonExistentEntityImpl() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         createTable(tableName);
@@ -295,13 +335,13 @@ public class AzureTableImplTest extends TestBase {
 
         // Act & Assert
         StepVerifier.create(azureTable.getTables().mergeEntityWithResponseAsync(tableName, partitionKeyValue,
-            rowKeyValue, TIMEOUT, requestId, "*", properties, null, Context.NONE))
+            rowKeyValue, TIMEOUT_IN_MS, requestId, "*", properties, null, Context.NONE))
             .expectError(com.azure.data.tables.implementation.models.TableServiceErrorException.class)
             .verify();
     }
 
     @Test
-    void updateEntity() {
+    void updateEntityImpl() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         createTable(tableName);
@@ -317,7 +357,7 @@ public class AzureTableImplTest extends TestBase {
 
         // Act & Assert
         StepVerifier.create(azureTable.getTables().updateEntityWithResponseAsync(tableName, partitionKeyValue,
-            rowKeyValue, TIMEOUT, requestId, "*", properties, null, Context.NONE))
+            rowKeyValue, TIMEOUT_IN_MS, requestId, "*", properties, null, Context.NONE))
             .assertNext(response -> {
                 Assertions.assertEquals(expectedStatusCode, response.getStatusCode());
             })
@@ -326,7 +366,7 @@ public class AzureTableImplTest extends TestBase {
     }
 
     @Test
-    void updateNonExistentEntity() {
+    void updateNonExistentEntityImpl() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         createTable(tableName);
@@ -337,13 +377,13 @@ public class AzureTableImplTest extends TestBase {
 
         // Act & Assert
         StepVerifier.create(azureTable.getTables().updateEntityWithResponseAsync(tableName, partitionKeyValue,
-            rowKeyValue, TIMEOUT, requestId, "*", properties, null, Context.NONE))
+            rowKeyValue, TIMEOUT_IN_MS, requestId, "*", properties, null, Context.NONE))
             .expectError(com.azure.data.tables.implementation.models.TableServiceErrorException.class)
             .verify();
     }
 
     @Test
-    void deleteEntity() {
+    void deleteEntityImpl() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         createTable(tableName);
@@ -358,7 +398,7 @@ public class AzureTableImplTest extends TestBase {
 
         // Act & Assert
         StepVerifier.create(azureTable.getTables().deleteEntityWithResponseAsync(tableName, partitionKeyValue,
-            rowKeyValue, "*", TIMEOUT, requestId, null, Context.NONE))
+            rowKeyValue, "*", TIMEOUT_IN_MS, requestId, null, Context.NONE))
             .assertNext(response -> {
                 Assertions.assertEquals(expectedStatusCode, response.getStatusCode());
             })
@@ -367,7 +407,7 @@ public class AzureTableImplTest extends TestBase {
     }
 
     @Test
-    void deleteNonExistentEntity() {
+    void deleteNonExistentEntityImpl() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         createTable(tableName);
@@ -377,13 +417,14 @@ public class AzureTableImplTest extends TestBase {
 
         // Act & Assert
         StepVerifier.create(azureTable.getTables().deleteEntityWithResponseAsync(tableName, partitionKeyValue,
-            rowKeyValue, "*", TIMEOUT, requestId, null, Context.NONE))
+            rowKeyValue, "*", TIMEOUT_IN_MS, requestId, null, Context.NONE))
             .expectError(com.azure.data.tables.implementation.models.TableServiceErrorException.class)
             .verify();
     }
 
+    @Disabled("Multiple entity deserialization not supported yet.")
     @Test
-    void queryEntity() {
+    void queryEntityImpl() {
         // Arrange
         String requestId = testResourceNamer.randomUuid();
         QueryOptions queryOptions = new QueryOptions().setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_FULLMETADATA);
@@ -404,20 +445,20 @@ public class AzureTableImplTest extends TestBase {
         int expectedStatusCode = 200;
 
         // Act & Assert
-        StepVerifier.create(azureTable.getTables().queryEntitiesWithResponseAsync(tableName, TIMEOUT,
+        StepVerifier.create(azureTable.getTables().queryEntitiesWithResponseAsync(tableName, TIMEOUT_IN_MS,
             requestId, null, null, queryOptions, Context.NONE))
             .assertNext(response -> {
                 Assertions.assertEquals(expectedStatusCode, response.getStatusCode());
-                Assertions.assertEquals(true, response.getValue().getValue().get(0).containsValue(partitionKeyEntityA));
-                Assertions.assertEquals(true, response.getValue().getValue().get(1).containsValue(partitionKeyEntityB));
-
+                assertTrue(response.getValue().getValue().get(0).containsValue(partitionKeyEntityA));
+                assertTrue(response.getValue().getValue().get(1).containsValue(partitionKeyEntityB));
             })
             .expectComplete()
             .verify();
     }
 
+    @Disabled("Multiple entity deserialization not supported yet.")
     @Test
-    void queryEntityWithSelect() {
+    void queryEntityImplWithSelect() {
         // Arrange
         String requestId = testResourceNamer.randomUuid();
         QueryOptions queryOptions = new QueryOptions().setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_FULLMETADATA);
@@ -441,7 +482,7 @@ public class AzureTableImplTest extends TestBase {
         queryOptions.setSelect(ROW_KEY);
 
         // Act & Assert
-        StepVerifier.create(azureTable.getTables().queryEntitiesWithResponseAsync(tableName, TIMEOUT,
+        StepVerifier.create(azureTable.getTables().queryEntitiesWithResponseAsync(tableName, TIMEOUT_IN_MS,
             requestId, null, null, queryOptions, Context.NONE))
             .assertNext(response -> {
                 Assertions.assertEquals(expectedStatusCode, response.getStatusCode());
@@ -453,8 +494,9 @@ public class AzureTableImplTest extends TestBase {
             .verify();
     }
 
+    @Disabled("Multiple entity deserialization not supported yet.")
     @Test
-    void queryEntityWithFilter() {
+    void queryEntityImplWithFilter() {
         // Arrange
         String requestId = testResourceNamer.randomUuid();
         QueryOptions queryOptions = new QueryOptions().setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_FULLMETADATA);
@@ -469,7 +511,7 @@ public class AzureTableImplTest extends TestBase {
         queryOptions.setSelect(PARTITION_KEY + "eq" + partitionKeyEntityA);
 
         // Act & Assert
-        StepVerifier.create(azureTable.getTables().queryEntitiesWithResponseAsync(tableName, TIMEOUT,
+        StepVerifier.create(azureTable.getTables().queryEntitiesWithResponseAsync(tableName, TIMEOUT_IN_MS,
             requestId, null, null, queryOptions, Context.NONE))
             .assertNext(response -> {
                 Assertions.assertEquals(expectedStatusCode, response.getStatusCode());
@@ -479,8 +521,9 @@ public class AzureTableImplTest extends TestBase {
             .verify();
     }
 
+    @Disabled("Multiple entity deserialization not supported yet.")
     @Test
-    void queryEntityWithTop() {
+    void queryEntityImplWithTop() {
         // Arrange
         String requestId = testResourceNamer.randomUuid();
         QueryOptions queryOptions = new QueryOptions().setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_FULLMETADATA);
@@ -490,7 +533,7 @@ public class AzureTableImplTest extends TestBase {
         queryOptions.setTop(0);
 
         // Act & Assert
-        StepVerifier.create(azureTable.getTables().queryEntitiesWithResponseAsync(tableName, TIMEOUT,
+        StepVerifier.create(azureTable.getTables().queryEntitiesWithResponseAsync(tableName, TIMEOUT_IN_MS,
             requestId, null, null, queryOptions, Context.NONE))
             .assertNext(response -> {
                 Assertions.assertEquals(expectedStatusCode, response.getStatusCode());
@@ -500,9 +543,8 @@ public class AzureTableImplTest extends TestBase {
             .verify();
     }
 
-
     @Test
-    void queryEntitiesWithPartitionAndRowKey() {
+    void queryEntitiesImplWithPartitionAndRowKey() {
         // Arrange
         QueryOptions queryOptions = new QueryOptions().setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_FULLMETADATA);
         String tableName = testResourceNamer.randomName("test", 20);
@@ -516,12 +558,11 @@ public class AzureTableImplTest extends TestBase {
 
         // Act & Assert
         StepVerifier.create(azureTable.getTables().queryEntitiesWithPartitionAndRowKeyWithResponseAsync(tableName, partitionKeyValue,
-            rowKeyValue, TIMEOUT, testResourceNamer.randomUuid(), queryOptions, Context.NONE))
+            rowKeyValue, TIMEOUT_IN_MS, testResourceNamer.randomUuid(), queryOptions, Context.NONE))
             .assertNext(response -> {
                 Assertions.assertEquals(200, response.getStatusCode());
             })
             .expectComplete()
             .verify();
     }
-
 }
