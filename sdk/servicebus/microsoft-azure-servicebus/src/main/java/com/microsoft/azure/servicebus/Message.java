@@ -177,6 +177,9 @@ public final class Message implements Serializable, IMessage {
 
     @Override
     public void setTimeToLive(Duration timeToLive) {
+    	if (timeToLive.isZero() || timeToLive.isNegative()) {
+    		throw new IllegalArgumentException("timeToLive must be positive duration.");
+    	}
         this.timeToLive = timeToLive;
     }
 
