@@ -10,6 +10,7 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeeringId;
 import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.azure.resourcemanager.network.models.RoutingConfiguration;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -54,6 +55,13 @@ public class ExpressRouteConnectionInner extends SubResource {
      */
     @JsonProperty(value = "properties.enableInternetSecurity")
     private Boolean enableInternetSecurity;
+
+    /*
+     * The Routing Configuration indicating the associated and propagated route
+     * tables on this connection.
+     */
+    @JsonProperty(value = "properties.routingConfiguration")
+    private RoutingConfiguration routingConfiguration;
 
     /**
      * Get the name property: The name of the resource.
@@ -166,6 +174,28 @@ public class ExpressRouteConnectionInner extends SubResource {
     }
 
     /**
+     * Get the routingConfiguration property: The Routing Configuration indicating the associated and propagated route
+     * tables on this connection.
+     *
+     * @return the routingConfiguration value.
+     */
+    public RoutingConfiguration routingConfiguration() {
+        return this.routingConfiguration;
+    }
+
+    /**
+     * Set the routingConfiguration property: The Routing Configuration indicating the associated and propagated route
+     * tables on this connection.
+     *
+     * @param routingConfiguration the routingConfiguration value to set.
+     * @return the ExpressRouteConnectionInner object itself.
+     */
+    public ExpressRouteConnectionInner withRoutingConfiguration(RoutingConfiguration routingConfiguration) {
+        this.routingConfiguration = routingConfiguration;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -179,6 +209,9 @@ public class ExpressRouteConnectionInner extends SubResource {
         }
         if (expressRouteCircuitPeering() != null) {
             expressRouteCircuitPeering().validate();
+        }
+        if (routingConfiguration() != null) {
+            routingConfiguration().validate();
         }
     }
 }

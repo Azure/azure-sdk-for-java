@@ -61,6 +61,12 @@ public class ApplicationGatewayFrontendIpConfiguration extends SubResource {
     private SubResource publicIpAddress;
 
     /*
+     * Reference to the application gateway private link configuration.
+     */
+    @JsonProperty(value = "properties.privateLinkConfiguration")
+    private SubResource privateLinkConfiguration;
+
+    /*
      * The provisioning state of the frontend IP configuration resource.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
@@ -182,6 +188,27 @@ public class ApplicationGatewayFrontendIpConfiguration extends SubResource {
      */
     public ApplicationGatewayFrontendIpConfiguration withPublicIpAddress(SubResource publicIpAddress) {
         this.publicIpAddress = publicIpAddress;
+        return this;
+    }
+
+    /**
+     * Get the privateLinkConfiguration property: Reference to the application gateway private link configuration.
+     *
+     * @return the privateLinkConfiguration value.
+     */
+    public SubResource privateLinkConfiguration() {
+        return this.privateLinkConfiguration;
+    }
+
+    /**
+     * Set the privateLinkConfiguration property: Reference to the application gateway private link configuration.
+     *
+     * @param privateLinkConfiguration the privateLinkConfiguration value to set.
+     * @return the ApplicationGatewayFrontendIpConfiguration object itself.
+     */
+    public ApplicationGatewayFrontendIpConfiguration withPrivateLinkConfiguration(
+        SubResource privateLinkConfiguration) {
+        this.privateLinkConfiguration = privateLinkConfiguration;
         return this;
     }
 

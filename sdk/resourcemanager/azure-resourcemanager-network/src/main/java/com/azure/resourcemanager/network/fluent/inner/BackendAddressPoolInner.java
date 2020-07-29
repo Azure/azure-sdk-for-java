@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.models.LoadBalancerBackendAddress;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -38,6 +39,12 @@ public class BackendAddressPoolInner extends SubResource {
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
+
+    /*
+     * An array of backend addresses.
+     */
+    @JsonProperty(value = "properties.loadBalancerBackendAddresses")
+    private List<LoadBalancerBackendAddress> loadBalancerBackendAddresses;
 
     /*
      * An array of references to IP addresses defined in network interfaces.
@@ -112,6 +119,27 @@ public class BackendAddressPoolInner extends SubResource {
     }
 
     /**
+     * Get the loadBalancerBackendAddresses property: An array of backend addresses.
+     *
+     * @return the loadBalancerBackendAddresses value.
+     */
+    public List<LoadBalancerBackendAddress> loadBalancerBackendAddresses() {
+        return this.loadBalancerBackendAddresses;
+    }
+
+    /**
+     * Set the loadBalancerBackendAddresses property: An array of backend addresses.
+     *
+     * @param loadBalancerBackendAddresses the loadBalancerBackendAddresses value to set.
+     * @return the BackendAddressPoolInner object itself.
+     */
+    public BackendAddressPoolInner withLoadBalancerBackendAddresses(
+        List<LoadBalancerBackendAddress> loadBalancerBackendAddresses) {
+        this.loadBalancerBackendAddresses = loadBalancerBackendAddresses;
+        return this;
+    }
+
+    /**
      * Get the backendIpConfigurations property: An array of references to IP addresses defined in network interfaces.
      *
      * @return the backendIpConfigurations value.
@@ -163,6 +191,9 @@ public class BackendAddressPoolInner extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (loadBalancerBackendAddresses() != null) {
+            loadBalancerBackendAddresses().forEach(e -> e.validate());
+        }
         if (backendIpConfigurations() != null) {
             backendIpConfigurations().forEach(e -> e.validate());
         }

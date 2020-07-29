@@ -10,6 +10,7 @@ import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.AadAuthenticationParameters;
 import com.azure.resourcemanager.network.models.IpsecPolicy;
+import com.azure.resourcemanager.network.models.RadiusServer;
 import com.azure.resourcemanager.network.models.VpnAuthenticationType;
 import com.azure.resourcemanager.network.models.VpnGatewayTunnelingProtocol;
 import com.azure.resourcemanager.network.models.VpnServerConfigRadiusClientRootCertificate;
@@ -94,6 +95,12 @@ public class VpnServerConfigurationInner extends Resource {
      */
     @JsonProperty(value = "properties.radiusServerSecret")
     private String radiusServerSecret;
+
+    /*
+     * Multiple Radius Server configuration for VpnServerConfiguration.
+     */
+    @JsonProperty(value = "properties.radiusServers")
+    private List<RadiusServer> radiusServers;
 
     /*
      * The set of aad vpn authentication parameters.
@@ -346,6 +353,26 @@ public class VpnServerConfigurationInner extends Resource {
     }
 
     /**
+     * Get the radiusServers property: Multiple Radius Server configuration for VpnServerConfiguration.
+     *
+     * @return the radiusServers value.
+     */
+    public List<RadiusServer> radiusServers() {
+        return this.radiusServers;
+    }
+
+    /**
+     * Set the radiusServers property: Multiple Radius Server configuration for VpnServerConfiguration.
+     *
+     * @param radiusServers the radiusServers value to set.
+     * @return the VpnServerConfigurationInner object itself.
+     */
+    public VpnServerConfigurationInner withRadiusServers(List<RadiusServer> radiusServers) {
+        this.radiusServers = radiusServers;
+        return this;
+    }
+
+    /**
      * Get the aadAuthenticationParameters property: The set of aad vpn authentication parameters.
      *
      * @return the aadAuthenticationParameters value.
@@ -434,6 +461,9 @@ public class VpnServerConfigurationInner extends Resource {
         }
         if (vpnClientIpsecPolicies() != null) {
             vpnClientIpsecPolicies().forEach(e -> e.validate());
+        }
+        if (radiusServers() != null) {
+            radiusServers().forEach(e -> e.validate());
         }
         if (aadAuthenticationParameters() != null) {
             aadAuthenticationParameters().validate();

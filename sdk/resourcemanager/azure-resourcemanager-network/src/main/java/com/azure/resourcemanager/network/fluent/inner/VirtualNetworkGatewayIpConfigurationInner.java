@@ -51,6 +51,12 @@ public class VirtualNetworkGatewayIpConfigurationInner extends SubResource {
     private SubResource publicIpAddress;
 
     /*
+     * Private IP Address for this gateway.
+     */
+    @JsonProperty(value = "properties.privateIPAddress", access = JsonProperty.Access.WRITE_ONLY)
+    private String privateIpAddress;
+
+    /*
      * The provisioning state of the virtual network gateway IP configuration
      * resource.
      */
@@ -147,6 +153,15 @@ public class VirtualNetworkGatewayIpConfigurationInner extends SubResource {
     public VirtualNetworkGatewayIpConfigurationInner withPublicIpAddress(SubResource publicIpAddress) {
         this.publicIpAddress = publicIpAddress;
         return this;
+    }
+
+    /**
+     * Get the privateIpAddress property: Private IP Address for this gateway.
+     *
+     * @return the privateIpAddress value.
+     */
+    public String privateIpAddress() {
+        return this.privateIpAddress;
     }
 
     /**

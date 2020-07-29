@@ -39,6 +39,12 @@ public class LocalNetworkGatewayInner extends Resource {
     private String gatewayIpAddress;
 
     /*
+     * FQDN of local network gateway.
+     */
+    @JsonProperty(value = "properties.fqdn")
+    private String fqdn;
+
+    /*
      * Local network gateway's BGP speaker settings.
      */
     @JsonProperty(value = "properties.bgpSettings")
@@ -108,6 +114,26 @@ public class LocalNetworkGatewayInner extends Resource {
      */
     public LocalNetworkGatewayInner withGatewayIpAddress(String gatewayIpAddress) {
         this.gatewayIpAddress = gatewayIpAddress;
+        return this;
+    }
+
+    /**
+     * Get the fqdn property: FQDN of local network gateway.
+     *
+     * @return the fqdn value.
+     */
+    public String fqdn() {
+        return this.fqdn;
+    }
+
+    /**
+     * Set the fqdn property: FQDN of local network gateway.
+     *
+     * @param fqdn the fqdn value to set.
+     * @return the LocalNetworkGatewayInner object itself.
+     */
+    public LocalNetworkGatewayInner withFqdn(String fqdn) {
+        this.fqdn = fqdn;
         return this;
     }
 

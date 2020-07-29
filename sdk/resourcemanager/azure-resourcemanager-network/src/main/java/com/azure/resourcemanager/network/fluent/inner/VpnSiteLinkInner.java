@@ -52,6 +52,12 @@ public class VpnSiteLinkInner extends SubResource {
     private String ipAddress;
 
     /*
+     * FQDN of vpn-site-link.
+     */
+    @JsonProperty(value = "properties.fqdn")
+    private String fqdn;
+
+    /*
      * The set of bgp properties.
      */
     @JsonProperty(value = "properties.bgpProperties")
@@ -140,6 +146,26 @@ public class VpnSiteLinkInner extends SubResource {
      */
     public VpnSiteLinkInner withIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
+        return this;
+    }
+
+    /**
+     * Get the fqdn property: FQDN of vpn-site-link.
+     *
+     * @return the fqdn value.
+     */
+    public String fqdn() {
+        return this.fqdn;
+    }
+
+    /**
+     * Set the fqdn property: FQDN of vpn-site-link.
+     *
+     * @param fqdn the fqdn value to set.
+     * @return the VpnSiteLinkInner object itself.
+     */
+    public VpnSiteLinkInner withFqdn(String fqdn) {
+        this.fqdn = fqdn;
         return this;
     }
 

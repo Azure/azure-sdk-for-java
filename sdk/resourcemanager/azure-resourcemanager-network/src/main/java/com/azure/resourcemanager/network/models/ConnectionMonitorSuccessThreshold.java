@@ -26,7 +26,7 @@ public final class ConnectionMonitorSuccessThreshold {
      * evaluate as successful.
      */
     @JsonProperty(value = "roundTripTimeMs")
-    private Integer roundTripTimeMs;
+    private Float roundTripTimeMs;
 
     /**
      * Get the checksFailedPercent property: The maximum percentage of failed checks permitted for a test to evaluate as
@@ -56,7 +56,7 @@ public final class ConnectionMonitorSuccessThreshold {
      *
      * @return the roundTripTimeMs value.
      */
-    public Integer roundTripTimeMs() {
+    public Float roundTripTimeMs() {
         return this.roundTripTimeMs;
     }
 
@@ -67,7 +67,7 @@ public final class ConnectionMonitorSuccessThreshold {
      * @param roundTripTimeMs the roundTripTimeMs value to set.
      * @return the ConnectionMonitorSuccessThreshold object itself.
      */
-    public ConnectionMonitorSuccessThreshold withRoundTripTimeMs(Integer roundTripTimeMs) {
+    public ConnectionMonitorSuccessThreshold withRoundTripTimeMs(Float roundTripTimeMs) {
         this.roundTripTimeMs = roundTripTimeMs;
         return this;
     }

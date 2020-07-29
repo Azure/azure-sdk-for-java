@@ -122,9 +122,9 @@ public final class AzureFirewallsClient
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/azureFirewalls/{azureFirewallName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AzureFirewallInner>> updateTags(
+        Mono<Response<Flux<ByteBuffer>>> updateTags(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("azureFirewallName") String azureFirewallName,
@@ -204,7 +204,7 @@ public final class AzureFirewallsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -253,7 +253,8 @@ public final class AzureFirewallsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -427,7 +428,7 @@ public final class AzureFirewallsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -476,7 +477,8 @@ public final class AzureFirewallsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
+        context = this.client.mergeContext(context);
         return service
             .getByResourceGroup(
                 this.client.getEndpoint(),
@@ -605,7 +607,7 @@ public final class AzureFirewallsClient
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -661,7 +663,8 @@ public final class AzureFirewallsClient
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -839,7 +842,7 @@ public final class AzureFirewallsClient
      * @return azure Firewall resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AzureFirewallInner>> updateTagsWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
         String resourceGroupName, String azureFirewallName, Map<String, String> tags) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -861,7 +864,7 @@ public final class AzureFirewallsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
         TagsObject parameters = new TagsObject();
         parameters.withTags(tags);
         return FluxUtil
@@ -892,7 +895,7 @@ public final class AzureFirewallsClient
      * @return azure Firewall resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AzureFirewallInner>> updateTagsWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
         String resourceGroupName, String azureFirewallName, Map<String, String> tags, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -914,9 +917,10 @@ public final class AzureFirewallsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
         TagsObject parameters = new TagsObject();
         parameters.withTags(tags);
+        context = this.client.mergeContext(context);
         return service
             .updateTags(
                 this.client.getEndpoint(),
@@ -940,17 +944,90 @@ public final class AzureFirewallsClient
      * @return azure Firewall resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<AzureFirewallInner>, AzureFirewallInner> beginUpdateTagsAsync(
+        String resourceGroupName, String azureFirewallName, Map<String, String> tags) {
+        Mono<Response<Flux<ByteBuffer>>> mono = updateTagsWithResponseAsync(resourceGroupName, azureFirewallName, tags);
+        return this
+            .client
+            .<AzureFirewallInner, AzureFirewallInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), AzureFirewallInner.class, AzureFirewallInner.class);
+    }
+
+    /**
+     * Updates tags of an Azure Firewall resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the Azure Firewall.
+     * @param tags Resource tags.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return azure Firewall resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<AzureFirewallInner>, AzureFirewallInner> beginUpdateTagsAsync(
+        String resourceGroupName, String azureFirewallName, Map<String, String> tags, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateTagsWithResponseAsync(resourceGroupName, azureFirewallName, tags, context);
+        return this
+            .client
+            .<AzureFirewallInner, AzureFirewallInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), AzureFirewallInner.class, AzureFirewallInner.class);
+    }
+
+    /**
+     * Updates tags of an Azure Firewall resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the Azure Firewall.
+     * @param tags Resource tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return azure Firewall resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<AzureFirewallInner>, AzureFirewallInner> beginUpdateTags(
+        String resourceGroupName, String azureFirewallName, Map<String, String> tags) {
+        return beginUpdateTagsAsync(resourceGroupName, azureFirewallName, tags).getSyncPoller();
+    }
+
+    /**
+     * Updates tags of an Azure Firewall resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the Azure Firewall.
+     * @param tags Resource tags.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return azure Firewall resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<AzureFirewallInner>, AzureFirewallInner> beginUpdateTags(
+        String resourceGroupName, String azureFirewallName, Map<String, String> tags, Context context) {
+        return beginUpdateTagsAsync(resourceGroupName, azureFirewallName, tags, context).getSyncPoller();
+    }
+
+    /**
+     * Updates tags of an Azure Firewall resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the Azure Firewall.
+     * @param tags Resource tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return azure Firewall resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AzureFirewallInner> updateTagsAsync(
         String resourceGroupName, String azureFirewallName, Map<String, String> tags) {
-        return updateTagsWithResponseAsync(resourceGroupName, azureFirewallName, tags)
-            .flatMap(
-                (Response<AzureFirewallInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return beginUpdateTagsAsync(resourceGroupName, azureFirewallName, tags)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -968,15 +1045,9 @@ public final class AzureFirewallsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AzureFirewallInner> updateTagsAsync(
         String resourceGroupName, String azureFirewallName, Map<String, String> tags, Context context) {
-        return updateTagsWithResponseAsync(resourceGroupName, azureFirewallName, tags, context)
-            .flatMap(
-                (Response<AzureFirewallInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return beginUpdateTagsAsync(resourceGroupName, azureFirewallName, tags, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1040,7 +1111,7 @@ public final class AzureFirewallsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1092,7 +1163,8 @@ public final class AzureFirewallsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
+        context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(
                 this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(), context)
@@ -1189,7 +1261,7 @@ public final class AzureFirewallsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1229,7 +1301,8 @@ public final class AzureFirewallsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
+        context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), context)
             .map(
@@ -1338,6 +1411,7 @@ public final class AzureFirewallsClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listNext(nextLink, context)
             .map(
@@ -1394,6 +1468,7 @@ public final class AzureFirewallsClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listAllNext(nextLink, context)
             .map(

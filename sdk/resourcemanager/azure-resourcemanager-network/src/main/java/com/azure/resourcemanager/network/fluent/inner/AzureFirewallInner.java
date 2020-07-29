@@ -99,7 +99,7 @@ public class AzureFirewallInner extends Resource {
     /*
      * IP addresses associated with AzureFirewall.
      */
-    @JsonProperty(value = "properties.hubIpAddresses", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.hubIPAddresses")
     private HubIpAddresses hubIpAddresses;
 
     /*
@@ -333,6 +333,17 @@ public class AzureFirewallInner extends Resource {
      */
     public HubIpAddresses hubIpAddresses() {
         return this.hubIpAddresses;
+    }
+
+    /**
+     * Set the hubIpAddresses property: IP addresses associated with AzureFirewall.
+     *
+     * @param hubIpAddresses the hubIpAddresses value to set.
+     * @return the AzureFirewallInner object itself.
+     */
+    public AzureFirewallInner withHubIpAddresses(HubIpAddresses hubIpAddresses) {
+        this.hubIpAddresses = hubIpAddresses;
+        return this;
     }
 
     /**

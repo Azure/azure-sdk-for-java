@@ -96,6 +96,12 @@ public class VirtualNetworkInner extends Resource {
     private VirtualNetworkBgpCommunities bgpCommunities;
 
     /*
+     * Array of IpAllocation which reference this VNET.
+     */
+    @JsonProperty(value = "properties.ipAllocations")
+    private List<SubResource> ipAllocations;
+
+    /*
      * Resource ID.
      */
     @JsonProperty(value = "id")
@@ -295,6 +301,26 @@ public class VirtualNetworkInner extends Resource {
      */
     public VirtualNetworkInner withBgpCommunities(VirtualNetworkBgpCommunities bgpCommunities) {
         this.bgpCommunities = bgpCommunities;
+        return this;
+    }
+
+    /**
+     * Get the ipAllocations property: Array of IpAllocation which reference this VNET.
+     *
+     * @return the ipAllocations value.
+     */
+    public List<SubResource> ipAllocations() {
+        return this.ipAllocations;
+    }
+
+    /**
+     * Set the ipAllocations property: Array of IpAllocation which reference this VNET.
+     *
+     * @param ipAllocations the ipAllocations value to set.
+     * @return the VirtualNetworkInner object itself.
+     */
+    public VirtualNetworkInner withIpAllocations(List<SubResource> ipAllocations) {
+        this.ipAllocations = ipAllocations;
         return this;
     }
 

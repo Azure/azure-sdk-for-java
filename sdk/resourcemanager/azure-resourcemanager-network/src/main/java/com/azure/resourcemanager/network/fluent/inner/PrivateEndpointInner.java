@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.models.CustomDnsConfigPropertiesFormat;
 import com.azure.resourcemanager.network.models.PrivateLinkServiceConnection;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -58,6 +59,12 @@ public class PrivateEndpointInner extends Resource {
      */
     @JsonProperty(value = "properties.manualPrivateLinkServiceConnections")
     private List<PrivateLinkServiceConnection> manualPrivateLinkServiceConnections;
+
+    /*
+     * An array of custom dns configurations.
+     */
+    @JsonProperty(value = "properties.customDnsConfigs")
+    private List<CustomDnsConfigPropertiesFormat> customDnsConfigs;
 
     /*
      * Resource ID.
@@ -160,6 +167,26 @@ public class PrivateEndpointInner extends Resource {
     }
 
     /**
+     * Get the customDnsConfigs property: An array of custom dns configurations.
+     *
+     * @return the customDnsConfigs value.
+     */
+    public List<CustomDnsConfigPropertiesFormat> customDnsConfigs() {
+        return this.customDnsConfigs;
+    }
+
+    /**
+     * Set the customDnsConfigs property: An array of custom dns configurations.
+     *
+     * @param customDnsConfigs the customDnsConfigs value to set.
+     * @return the PrivateEndpointInner object itself.
+     */
+    public PrivateEndpointInner withCustomDnsConfigs(List<CustomDnsConfigPropertiesFormat> customDnsConfigs) {
+        this.customDnsConfigs = customDnsConfigs;
+        return this;
+    }
+
+    /**
      * Get the id property: Resource ID.
      *
      * @return the id value.
@@ -196,6 +223,9 @@ public class PrivateEndpointInner extends Resource {
         }
         if (manualPrivateLinkServiceConnections() != null) {
             manualPrivateLinkServiceConnections().forEach(e -> e.validate());
+        }
+        if (customDnsConfigs() != null) {
+            customDnsConfigs().forEach(e -> e.validate());
         }
     }
 }
