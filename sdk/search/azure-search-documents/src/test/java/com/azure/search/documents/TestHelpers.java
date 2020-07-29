@@ -282,20 +282,13 @@ public final class TestHelpers {
         return searchAsyncClient.getHttpPipeline();
     }
 
-    @SuppressWarnings("unchecked")
     private static List<Map<String, Object>> readJsonFileToList(String filename) {
         InputStream inputStream = Objects.requireNonNull(TestHelpers.class.getClassLoader()
             .getResourceAsStream(filename));
-        return SERIALIZER.deserialize(inputStream, new TypeReference<List<Map<String, Object>>>() { }).block();
+        return SERIALIZER.deserialize(inputStream, new TypeReference<List<Map<String, Object>>>() { });
     }
 
-    @SuppressWarnings("unchecked")
     public static List<Map<String, Object>> convertStreamToList(InputStream sourceStream) {
-        return SERIALIZER.deserialize(sourceStream, new TypeReference<List<Map<String, Object>>>() { }).block();
-    }
-
-    @SuppressWarnings("unchecked")
-    public static SearchDocument convertObjectToSearchDocument(Object obj) {
-        return new SearchDocument((Map<String, Object>) obj);
+        return SERIALIZER.deserialize(sourceStream, new TypeReference<List<Map<String, Object>>>() { });
     }
 }

@@ -62,10 +62,10 @@ public final class SuggestResult {
         if (jsonSerializer == null) {
             jsonSerializer = creatDefaultJsonSerializerInstance();
         }
-        TypeReference<T> type = new TypeReference<T>(modelClass) { };
-        return jsonSerializer.serialize(new ByteArrayOutputStream(), additionalProperties).flatMap(
-            sourceStream -> jsonSerializer.deserialize(new ByteArrayInputStream(sourceStream.toByteArray()), type))
-            .block();
+        ByteArrayOutputStream sourceStream = jsonSerializer.serialize(new ByteArrayOutputStream(),
+            additionalProperties);
+        return jsonSerializer.deserialize(new ByteArrayInputStream(sourceStream.toByteArray()),
+            new TypeReference<T>(modelClass) { });
     }
 
     /**

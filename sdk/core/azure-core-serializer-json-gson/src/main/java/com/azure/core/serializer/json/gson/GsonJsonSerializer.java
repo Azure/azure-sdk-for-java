@@ -7,6 +7,7 @@ import com.azure.core.experimental.serializer.JsonNode;
 import com.azure.core.experimental.serializer.JsonSerializer;
 import com.azure.core.experimental.serializer.PropertyNameSerializer;
 import com.azure.core.experimental.serializer.TypeReference;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
@@ -107,6 +108,7 @@ public final class GsonJsonSerializer implements JsonSerializer, PropertyNameSer
     public JsonNode toTree(Object value) {
         return JsonNodeUtils.fromGsonElement(gson.toJsonTree(value));
     }
+
     @Override
     public String getSerializerMemberName(Member member) {
         if (Modifier.isTransient(member.getModifiers())) {

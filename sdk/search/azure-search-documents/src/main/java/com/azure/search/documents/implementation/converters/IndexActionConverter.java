@@ -57,14 +57,13 @@ public final class IndexActionConverter {
             indexAction.setActionType(actionType);
         }
 
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
         Map<String, Object> mapProperties = PrivateFieldAccessHelper.get(obj, "properties", Map.class);
         if (mapProperties == null) {
             T properties = obj.getDocument();
-            TypeReference<Map<String, Object>> ref = new TypeReference<Map<String, Object>>() { };
-            mapProperties = serializer.serialize(outputStream, properties)
-                .flatMap(sourceStream -> serializer.deserialize(new ByteArrayInputStream(sourceStream.toByteArray()),
-                    ref)).block();
+            ByteArrayOutputStream sourceStream = serializer.serialize(new ByteArrayOutputStream(), properties);
+            mapProperties = serializer.deserialize(new ByteArrayInputStream(sourceStream.toByteArray()),
+                new TypeReference<Map<String, Object>>() { });
         }
 
         indexAction.setAdditionalProperties(mapProperties);

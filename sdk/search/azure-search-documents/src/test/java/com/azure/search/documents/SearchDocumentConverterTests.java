@@ -37,8 +37,7 @@ public class SearchDocumentConverterTests {
         // in this case we simulate creation of the object created by azure-core
         ByteArrayInputStream inputStream = new ByteArrayInputStream(json.getBytes());
         SearchDocument doc = new SearchDocument(SERIALIZER.deserialize(inputStream,
-            new TypeReference<SearchDocument>() { }).map(TestHelpers::convertObjectToSearchDocument)
-            .block());
+            new TypeReference<SearchDocument>() { }));
         cleanupODataAnnotation(doc);
         return doc;
     }

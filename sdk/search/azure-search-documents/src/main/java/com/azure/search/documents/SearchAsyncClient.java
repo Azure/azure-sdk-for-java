@@ -534,14 +534,13 @@ public final class SearchAsyncClient {
             return restClient.getDocuments()
                 .getWithResponseAsync(key, selectedFields, null, context)
                 .onErrorMap(DocumentResponseConversions::exceptionMapper)
-                .flatMap(res -> {
-                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                    return serializer.serialize(outputStream, res.getValue()).flatMap(source ->
-                         serializer.deserialize(new ByteArrayInputStream(source.toByteArray()),
-                             new TypeReference<T>(modelClass) { })
-                            .map(instance -> new SimpleResponse<>(res, instance))
-                    ).map(Function.identity());
-                });
+                .map(res -> {
+                    ByteArrayOutputStream sourceStream = serializer.serialize(new ByteArrayOutputStream(),
+                        res.getValue());
+                    T doc = serializer.deserialize(new ByteArrayInputStream(sourceStream.toByteArray()),
+                        new TypeReference<T>(modelClass) { });
+                    return new SimpleResponse<>(res, doc);
+                }).map(Function.identity());
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
