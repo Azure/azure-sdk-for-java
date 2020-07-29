@@ -122,20 +122,6 @@
           </archive>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
-        <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
-          <debug>true</debug>
-          <optimize>true</optimize>
-          <!-- RMfailOnWarning set to false in azure-resourcemanager-parent's definition, set here to allow compilation
-                but should be using the azure-client-sdk-parent's setting which is true -->
-          <failOnWarning>false</failOnWarning>
-        </configuration>
-      </plugin>
     </plugins>
   </build>
 </project>
