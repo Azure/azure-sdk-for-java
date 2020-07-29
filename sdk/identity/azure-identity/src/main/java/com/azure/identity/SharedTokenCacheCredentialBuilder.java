@@ -3,6 +3,8 @@
 
 package com.azure.identity;
 
+import com.azure.identity.implementation.AuthenticationRecord;
+
 /**
  * Fluent credential builder for instantiating a {@link SharedTokenCacheCredential}.
  *
