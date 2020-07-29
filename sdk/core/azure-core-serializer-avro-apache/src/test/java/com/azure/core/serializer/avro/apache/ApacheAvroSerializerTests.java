@@ -56,7 +56,7 @@ public class ApacheAvroSerializerTests {
     @ParameterizedTest
     @MethodSource("deserializePrimitiveTypesSupplier")
     public <T> void deserializePrimitiveTypes(InputStream avro, String schema, TypeReference<T> type, T expected) {
-        StepVerifier.create(getSerializer(schema).deserialize(avro, type))
+        StepVerifier.create(getSerializer(schema).deserializeAsync(avro, type))
             .assertNext(actual -> assertEquals(expected, actual))
             .verifyComplete();
     }
@@ -95,14 +95,14 @@ public class ApacheAvroSerializerTests {
 
     @Test
     public void deserializeNull() {
-        StepVerifier.create(getSerializer(schemaCreator("null")).deserialize(new ByteArrayInputStream(new byte[0]),
+        StepVerifier.create(getSerializer(schemaCreator("null")).deserializeAsync(new ByteArrayInputStream(new byte[0]),
             new TypeReference<Void>() { })).verifyComplete();
     }
 
     @ParameterizedTest
     @MethodSource("deserializeEnumSupplier")
     public void deserializeEnum(InputStream avro, PlayingCardSuit expected) {
-        StepVerifier.create(getSerializer(PlayingCardSuit.getClassSchema().toString()).deserialize(avro,
+        StepVerifier.create(getSerializer(PlayingCardSuit.getClassSchema().toString()).deserializeAsync(avro,
             new TypeReference<PlayingCardSuit>() { }))
             .assertNext(actual -> assertEquals(expected, actual))
             .verifyComplete();
@@ -119,7 +119,7 @@ public class ApacheAvroSerializerTests {
 
     @Test
     public void deserializeInvalidEnum() {
-        StepVerifier.create(getSerializer(PlayingCardSuit.getClassSchema().toString()).deserialize(streamCreator(8),
+        StepVerifier.create(getSerializer(PlayingCardSuit.getClassSchema().toString()).deserializeAsync(streamCreator(8),
             new TypeReference<PlayingCardSuit>() { }))
             .verifyError();
     }
@@ -127,7 +127,7 @@ public class ApacheAvroSerializerTests {
     @ParameterizedTest
     @MethodSource("deserializeListAndMapSupplier")
     public <T> void deserializeListAndMap(InputStream avro, String schema, TypeReference<T> type, T expected) {
-        StepVerifier.create(getSerializer(schema).deserialize(avro, type))
+        StepVerifier.create(getSerializer(schema).deserializeAsync(avro, type))
             .assertNext(actual -> assertEquals(expected, actual))
             .verifyComplete();
     }
@@ -157,7 +157,7 @@ public class ApacheAvroSerializerTests {
     @ParameterizedTest
     @MethodSource("deserializeRecordSupplier")
     public <T> void deserializeRecord(InputStream avro, String schema, TypeReference<T> type, T expected) {
-        StepVerifier.create(getSerializer(schema).deserialize(avro, type))
+        StepVerifier.create(getSerializer(schema).deserializeAsync(avro, type))
             .assertNext(actual -> assertEquals(expected, actual))
             .verifyComplete();
     }
@@ -218,7 +218,7 @@ public class ApacheAvroSerializerTests {
 
     @Test
     public void deserializeNullReturnsNull() {
-        StepVerifier.create(getSerializer(schemaCreator("null")).deserialize(null, new TypeReference<Void>() { }))
+        StepVerifier.create(getSerializer(schemaCreator("null")).deserializeAsync(null, new TypeReference<Void>() { }))
             .verifyComplete();
     }
 
@@ -230,7 +230,7 @@ public class ApacheAvroSerializerTests {
     @ParameterizedTest
     @MethodSource("simpleSerializationSupplier")
     public void simpleSerialization(String schema, Object value, byte[] expected) {
-        StepVerifier.create(getSerializer(schema).serialize(new ByteArrayOutputStream(), value))
+        StepVerifier.create(getSerializer(schema).serializeAsync(new ByteArrayOutputStream(), value))
             .assertNext(actual -> {
                 assertNotNull(actual);
                 assertArrayEquals(expected, actual.toByteArray());
@@ -262,7 +262,7 @@ public class ApacheAvroSerializerTests {
     @MethodSource("serializeEnumSupplier")
     public void serializeEnum(PlayingCardSuit playingCardSuit, byte[] expected) {
         StepVerifier.create(getSerializer(PlayingCardSuit.getClassSchema().toString())
-            .serialize(new ByteArrayOutputStream(), playingCardSuit))
+            .serializeAsync(new ByteArrayOutputStream(), playingCardSuit))
             .assertNext(actual -> {
                 assertNotNull(actual);
                 assertArrayEquals(expected, actual.toByteArray());
@@ -282,7 +282,7 @@ public class ApacheAvroSerializerTests {
     @ParameterizedTest
     @MethodSource("serializeListAndMapSupplier")
     public void serializeListAndMap(Object obj, String schema, byte[] expected) {
-        StepVerifier.create(getSerializer(schema).serialize(new ByteArrayOutputStream(), obj))
+        StepVerifier.create(getSerializer(schema).serializeAsync(new ByteArrayOutputStream(), obj))
             .assertNext(actual -> {
                 assertNotNull(actual);
                 assertArrayEquals(expected, actual.toByteArray());
@@ -313,7 +313,7 @@ public class ApacheAvroSerializerTests {
     @ParameterizedTest
     @MethodSource("serializeRecordSupplier")
     public void serializeRecord(Object obj, String schema, byte[] expected) {
-        StepVerifier.create(getSerializer(schema).serialize(new ByteArrayOutputStream(), obj))
+        StepVerifier.create(getSerializer(schema).serializeAsync(new ByteArrayOutputStream(), obj))
             .assertNext(actual -> {
                 assertNotNull(actual);
                 assertArrayEquals(expected, actual.toByteArray());
