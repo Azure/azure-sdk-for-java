@@ -500,8 +500,7 @@ public final class CosmosAsyncClient implements Closeable {
                                                              Context context) {
         String spanName = "createDatabase." + database.getId();
         Mono<CosmosDatabaseResponse> responseMono = asyncDocumentClient.createDatabase(database, ModelBridgeInternal.toRequestOptions(options))
-            .map(databaseResourceResponse -> ModelBridgeInternal.createCosmosDatabaseResponse(databaseResourceResponse))
-            .single();
+            .map(databaseResourceResponse -> ModelBridgeInternal.createCosmosDatabaseResponse(databaseResourceResponse));
         return tracerProvider.traceEnabledCosmosResponsePublisher(responseMono,
             context,
             spanName,
