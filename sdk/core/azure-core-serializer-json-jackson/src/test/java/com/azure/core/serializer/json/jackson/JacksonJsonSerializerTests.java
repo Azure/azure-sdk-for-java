@@ -41,7 +41,7 @@ public class JacksonJsonSerializerTests {
 
     @Test
     public void deserializeNull() {
-        StepVerifier.create(DEFAULT_SERIALIZER.deserialize(null, new TypeReference<Person>() { }))
+        StepVerifier.create(DEFAULT_SERIALIZER.deserialize(null, TypeReference.createInstance(Person.class)))
             .verifyComplete();
     }
 
@@ -52,7 +52,7 @@ public class JacksonJsonSerializerTests {
 
         InputStream jsonStream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
 
-        StepVerifier.create(DEFAULT_SERIALIZER.deserialize(jsonStream, new TypeReference<Person>() { }))
+        StepVerifier.create(DEFAULT_SERIALIZER.deserialize(jsonStream, TypeReference.createInstance(Person.class)))
             .assertNext(actual -> assertEquals(expected, actual))
             .verifyComplete();
     }
@@ -64,7 +64,7 @@ public class JacksonJsonSerializerTests {
 
         InputStream jsonStream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
 
-        StepVerifier.create(CUSTOM_SERIALIZER.deserialize(jsonStream, new TypeReference<Person>() { }))
+        StepVerifier.create(CUSTOM_SERIALIZER.deserialize(jsonStream, TypeReference.createInstance(Person.class)))
             .assertNext(actual -> assertEquals(expected, actual))
             .verifyComplete();
     }
@@ -75,7 +75,7 @@ public class JacksonJsonSerializerTests {
 
         InputStream jsonStream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
 
-        StepVerifier.create(DEFAULT_SERIALIZER.deserialize(jsonStream, new TypeReference<ObjectNode>() { }))
+        StepVerifier.create(DEFAULT_SERIALIZER.deserialize(jsonStream, TypeReference.createInstance(ObjectNode.class)))
             .assertNext(actual -> {
                 assertEquals(50, actual.get("age").asInt());
                 assertTrue(actual.get("name").isNull());
