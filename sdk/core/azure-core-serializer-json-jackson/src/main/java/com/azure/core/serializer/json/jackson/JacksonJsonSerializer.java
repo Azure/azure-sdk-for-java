@@ -36,7 +36,7 @@ public final class JacksonJsonSerializer implements JsonSerializer {
     }
 
     @Override
-    public <T> T deserializeSync(InputStream stream, TypeReference<T> typeReference) {
+    public <T> T deserialize(InputStream stream, TypeReference<T> typeReference) {
         if (stream == null) {
             return null;
         }
@@ -49,12 +49,12 @@ public final class JacksonJsonSerializer implements JsonSerializer {
     }
 
     @Override
-    public <T> Mono<T> deserialize(InputStream stream, TypeReference<T> typeReference) {
-        return Mono.fromCallable(() -> deserializeSync(stream, typeReference));
+    public <T> Mono<T> deserializeAsync(InputStream stream, TypeReference<T> typeReference) {
+        return Mono.fromCallable(() -> deserialize(stream, typeReference));
     }
 
     @Override
-    public <T> T deserializeTreeSync(JsonNode jsonNode, TypeReference<T> typeReference) {
+    public <T> T deserializeTree(JsonNode jsonNode, TypeReference<T> typeReference) {
         try {
             return mapper.readerFor(typeFactory.constructType(typeReference.getJavaType()))
                 .readValue(JsonNodeUtils.toJacksonNode(jsonNode));
@@ -64,12 +64,12 @@ public final class JacksonJsonSerializer implements JsonSerializer {
     }
 
     @Override
-    public <T> Mono<T> deserializeTree(JsonNode jsonNode, TypeReference<T> typeReference) {
-        return Mono.fromCallable(() -> deserializeTreeSync(jsonNode, typeReference));
+    public <T> Mono<T> deserializeTreeAsync(JsonNode jsonNode, TypeReference<T> typeReference) {
+        return Mono.fromCallable(() -> deserializeTree(jsonNode, typeReference));
     }
 
     @Override
-    public <S extends OutputStream> S serializeSync(S stream, Object value) {
+    public <S extends OutputStream> S serialize(S stream, Object value) {
         try {
             mapper.writeValue(stream, value);
         } catch (IOException ex) {
@@ -80,22 +80,22 @@ public final class JacksonJsonSerializer implements JsonSerializer {
     }
 
     @Override
-    public <S extends OutputStream> Mono<S> serialize(S stream, Object value) {
-        return Mono.fromCallable(() -> serializeSync(stream, value));
+    public <S extends OutputStream> Mono<S> serializeAsync(S stream, Object value) {
+        return Mono.fromCallable(() -> serialize(stream, value));
     }
 
     @Override
-    public <S extends OutputStream> S serializeTreeSync(S stream, JsonNode jsonNode) {
-        return serializeSync(stream, JsonNodeUtils.toJacksonNode(jsonNode));
-    }
-
-    @Override
-    public <S extends OutputStream> Mono<S> serializeTree(S stream, JsonNode jsonNode) {
+    public <S extends OutputStream> S serializeTree(S stream, JsonNode jsonNode) {
         return serialize(stream, JsonNodeUtils.toJacksonNode(jsonNode));
     }
 
     @Override
-    public JsonNode toTreeSync(InputStream stream) {
+    public <S extends OutputStream> Mono<S> serializeTreeAsync(S stream, JsonNode jsonNode) {
+        return serializeAsync(stream, JsonNodeUtils.toJacksonNode(jsonNode));
+    }
+
+    @Override
+    public JsonNode toTree(InputStream stream) {
         try {
             return JsonNodeUtils.fromJacksonNode(mapper.readTree(stream));
         } catch (IOException ex) {
@@ -104,17 +104,17 @@ public final class JacksonJsonSerializer implements JsonSerializer {
     }
 
     @Override
-    public Mono<JsonNode> toTree(InputStream stream) {
-        return Mono.fromCallable(() -> toTreeSync(stream));
+    public Mono<JsonNode> toTreeAsync(InputStream stream) {
+        return Mono.fromCallable(() -> toTree(stream));
     }
 
     @Override
-    public JsonNode toTreeSync(Object value) {
+    public JsonNode toTree(Object value) {
         return JsonNodeUtils.fromJacksonNode(mapper.valueToTree(value));
     }
 
     @Override
-    public Mono<JsonNode> toTree(Object value) {
-        return Mono.fromCallable(() -> toTreeSync(value));
+    public Mono<JsonNode> toTreeAsync(Object value) {
+        return Mono.fromCallable(() -> toTree(value));
     }
 }

@@ -42,7 +42,7 @@ public class ApacheAvroSerializer implements ObjectSerializer {
     }
 
     @Override
-    public <T> T deserializeSync(InputStream stream, TypeReference<T> typeReference) {
+    public <T> T deserialize(InputStream stream, TypeReference<T> typeReference) {
         if (stream == null) {
             return null;
         }
@@ -57,12 +57,12 @@ public class ApacheAvroSerializer implements ObjectSerializer {
     }
 
     @Override
-    public <T> Mono<T> deserialize(InputStream stream, TypeReference<T> typeReference) {
-        return Mono.fromCallable(() -> deserializeSync(stream, typeReference));
+    public <T> Mono<T> deserializeAsync(InputStream stream, TypeReference<T> typeReference) {
+        return Mono.fromCallable(() -> deserialize(stream, typeReference));
     }
 
     @Override
-    public <S extends OutputStream> S serializeSync(S stream, Object value) {
+    public <S extends OutputStream> S serialize(S stream, Object value) {
         DatumWriter<Object> writer = new SpecificDatumWriter<>(schema, specificData);
 
         Encoder encoder = encoderFactory.binaryEncoder(stream, null);
@@ -76,7 +76,7 @@ public class ApacheAvroSerializer implements ObjectSerializer {
     }
 
     @Override
-    public <S extends OutputStream> Mono<S> serialize(S stream, Object value) {
-        return Mono.fromCallable(() -> serializeSync(stream, value));
+    public <S extends OutputStream> Mono<S> serializeAsync(S stream, Object value) {
+        return Mono.fromCallable(() -> serialize(stream, value));
     }
 }

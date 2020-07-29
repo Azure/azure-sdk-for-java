@@ -20,7 +20,7 @@ public interface ObjectSerializer {
      * @param <T> Type of the object.
      * @return The object represented by the deserialized stream.
      */
-    <T> T deserializeSync(InputStream stream, TypeReference<T> typeReference);
+    <T> T deserialize(InputStream stream, TypeReference<T> typeReference);
 
     /**
      * Reads a stream into its object representation.
@@ -30,7 +30,7 @@ public interface ObjectSerializer {
      * @param <T> Type of the object.
      * @return The object represented by the deserialized stream.
      */
-    <T> Mono<T> deserialize(InputStream stream, TypeReference<T> typeReference);
+    <T> Mono<T> deserializeAsync(InputStream stream, TypeReference<T> typeReference);
 
     /**
      * Writes the object into a stream.
@@ -40,7 +40,7 @@ public interface ObjectSerializer {
      * @param <S> Type of the output stream.
      * @return The stream where the object was written.
      */
-    <S extends OutputStream> S serializeSync(S stream, Object value);
+    <S extends OutputStream> S serialize(S stream, Object value);
 
     /**
      * Writes the object into a stream.
@@ -50,5 +50,5 @@ public interface ObjectSerializer {
      * @param <S> Type of the output stream.
      * @return The stream where the object was written.
      */
-    <S extends OutputStream> Mono<S> serialize(S stream, Object value);
+    <S extends OutputStream> Mono<S> serializeAsync(S stream, Object value);
 }

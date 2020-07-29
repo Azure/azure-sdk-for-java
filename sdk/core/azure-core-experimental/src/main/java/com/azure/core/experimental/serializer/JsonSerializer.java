@@ -21,7 +21,7 @@ public interface JsonSerializer extends ObjectSerializer {
      * @return The object represented by the deserialized JSON stream.
      */
     @Override
-    <T> T deserializeSync(InputStream stream, TypeReference<T> typeReference);
+    <T> T deserialize(InputStream stream, TypeReference<T> typeReference);
 
     /**
      * Reads a JSON stream into its object representation.
@@ -32,7 +32,7 @@ public interface JsonSerializer extends ObjectSerializer {
      * @return The object represented by the deserialized JSON stream.
      */
     @Override
-    <T> Mono<T> deserialize(InputStream stream, TypeReference<T> typeReference);
+    <T> Mono<T> deserializeAsync(InputStream stream, TypeReference<T> typeReference);
 
     /**
      * Reads a JSON tree into its object representation.
@@ -42,7 +42,7 @@ public interface JsonSerializer extends ObjectSerializer {
      * @param <T> Type of the object.
      * @return The object represented by the deserialized JSON tree.
      */
-    <T> T deserializeTreeSync(JsonNode jsonNode, TypeReference<T> typeReference);
+    <T> T deserializeTree(JsonNode jsonNode, TypeReference<T> typeReference);
 
     /**
      * Reads a JSON tree into its object representation.
@@ -52,7 +52,7 @@ public interface JsonSerializer extends ObjectSerializer {
      * @param <T> Type of the object.
      * @return The object represented by the deserialized JSON tree.
      */
-    <T> Mono<T> deserializeTree(JsonNode jsonNode, TypeReference<T> typeReference);
+    <T> Mono<T> deserializeTreeAsync(JsonNode jsonNode, TypeReference<T> typeReference);
 
     /**
      * Writes an object's JSON into a stream..
@@ -63,7 +63,7 @@ public interface JsonSerializer extends ObjectSerializer {
      * @return The stream where the object's JSON was written.
      */
     @Override
-    <S extends OutputStream> S serializeSync(S stream, Object value);
+    <S extends OutputStream> S serialize(S stream, Object value);
 
     /**
      * Writes an object's JSON into a stream..
@@ -74,7 +74,7 @@ public interface JsonSerializer extends ObjectSerializer {
      * @return The stream where the object's JSON was written.
      */
     @Override
-    <S extends OutputStream> Mono<S> serialize(S stream, Object value);
+    <S extends OutputStream> Mono<S> serializeAsync(S stream, Object value);
 
     /**
      * Writes a JSON tree into a stream.
@@ -84,7 +84,7 @@ public interface JsonSerializer extends ObjectSerializer {
      * @param <S> Type of the output stream.
      * @return The stream where the JSON tree was written.
      */
-    <S extends OutputStream> S serializeTreeSync(S stream, JsonNode jsonNode);
+    <S extends OutputStream> S serializeTree(S stream, JsonNode jsonNode);
 
     /**
      * Writes a JSON tree into a stream.
@@ -94,7 +94,7 @@ public interface JsonSerializer extends ObjectSerializer {
      * @param <S> Type of the output stream.
      * @return The stream where the JSON tree was written.
      */
-    <S extends OutputStream> Mono<S> serializeTree(S stream, JsonNode jsonNode);
+    <S extends OutputStream> Mono<S> serializeTreeAsync(S stream, JsonNode jsonNode);
 
     /**
      * Reads a JSON stream into its JSON tree representation.
@@ -102,7 +102,7 @@ public interface JsonSerializer extends ObjectSerializer {
      * @param stream JSON stream.
      * @return The JSON tree representing the deserialized JSON byte array.
      */
-    JsonNode toTreeSync(InputStream stream);
+    JsonNode toTree(InputStream stream);
 
     /**
      * Reads a JSON stream into its JSON tree representation.
@@ -110,7 +110,7 @@ public interface JsonSerializer extends ObjectSerializer {
      * @param stream JSON stream.
      * @return The JSON tree representing the deserialized JSON byte array.
      */
-    Mono<JsonNode> toTree(InputStream stream);
+    Mono<JsonNode> toTreeAsync(InputStream stream);
 
     /**
      * Writes an object into its JSON tree representation.
@@ -118,7 +118,7 @@ public interface JsonSerializer extends ObjectSerializer {
      * @param value The object.
      * @return The JSON tree representing the object.
      */
-    JsonNode toTreeSync(Object value);
+    JsonNode toTree(Object value);
 
     /**
      * Writes an object into its JSON tree representation.
@@ -126,5 +126,5 @@ public interface JsonSerializer extends ObjectSerializer {
      * @param value The object.
      * @return The JSON tree representing the object.
      */
-    Mono<JsonNode> toTree(Object value);
+    Mono<JsonNode> toTreeAsync(Object value);
 }
