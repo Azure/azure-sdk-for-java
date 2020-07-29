@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-messaging-servicebus-track1-perf</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;azure-messaging-servicebus-track2-perf;current} -->
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus-track1-perf;current} -->
   <packaging>jar</packaging>
 
   <properties>
