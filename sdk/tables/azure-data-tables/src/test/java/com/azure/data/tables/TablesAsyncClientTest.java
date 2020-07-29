@@ -108,8 +108,9 @@ public class TablesAsyncClientTest extends TestBase {
         final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
         final TableEntity entity = new TableEntity(partitionKeyValue, rowKeyValue);
-        entity.addProperty("prop", "false");
-        entity.addProperty("prop@odata.type", "Edm.Binary");
+        entity.addProperty("prop", false);
+        entity.addProperty("int", 32);
+        //entity.addProperty("prop@odata.type", "Edm.Boolean");
         final int expectedStatusCode = 201;
 
         // Act & Assert

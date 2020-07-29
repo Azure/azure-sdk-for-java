@@ -30,6 +30,9 @@ import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.TableQueryParams;
 import com.azure.data.tables.models.AzureTable;
 import com.azure.data.tables.models.TableUpdateMode;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.UUID;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
@@ -182,8 +185,9 @@ public class TableAsyncClient {
     }
 
     Mono<Response<TableEntity>> createEntityWithResponse(TableEntity entity, Context context) {
+        Map<String, Object> properties = addPropertyTyping(entity.getProperties());
         return tableImplementation.insertEntityWithResponseAsync(tableName, null, null,
-            ResponseFormat.RETURN_CONTENT, entity.getProperties(),
+            ResponseFormat.RETURN_CONTENT, properties,
             null, context).map(response -> {
 
                 final TableEntity createdEntity = deserializeEntity(logger, response.getValue());
@@ -635,5 +639,64 @@ public class TableAsyncClient {
         });
 
         return entity;
+    }
+
+    private Map<String, Object> addPropertyTyping(Map<String, Object> properties) {
+        Map<String, Object> result = new HashMap<>();
+        for (Map.Entry<String,Object> entry : properties.entrySet()) {
+            if (!entry.getKey().equals(PARTITION_KEY) && !entry.getKey().equals(ROW_KEY) && !entry.getKey().equals("Timestamp") && !entry.getKey().equals("Etag")) {
+                String key = entry.getKey().concat(ODataConstants.ODATA_TYPE_SUFFIX);
+                String value = getEntityProperty(entry.getValue().getClass()).toString();
+                result.put(key, value);
+            }
+            result.put(entry.getKey(), entry.getValue());
+        }
+        return result;
+    }
+
+    private EdmType getEntityProperty(final Class<?> type) {
+
+        if (type.equals(byte[].class)) {
+            return EdmType.BINARY;
+        }
+        else if (type.equals(Byte[].class)) {
+            return EdmType.BINARY;
+        }
+        else if (type.equals(String.class)) {
+            return EdmType.STRING;
+        }
+        else if (type.equals(boolean.class)) {
+            return EdmType.BOOLEAN;
+        }
+        else if (type.equals(Boolean.class)) {
+            return EdmType.BOOLEAN;
+        }
+        else if (type.equals(Date.class)) {
+            return EdmType.DATE_TIME;
+        }
+        else if (type.equals(double.class)) {
+            return EdmType.DOUBLE;
+        }
+        else if (type.equals(Double.class)) {
+            return EdmType.DOUBLE;
+        }
+        else if (type.equals(UUID.class)) {
+            return EdmType.GUID;
+        }
+        else if (type.equals(int.class)) {
+            return EdmType.INT32;
+        }
+        else if (type.equals(Integer.class)) {
+            return EdmType.INT32;
+        }
+        else if (type.equals(long.class)) {
+            return EdmType.INT64;
+        }
+        else if (type.equals(Long.class)) {
+            return EdmType.INT64;
+        }
+        else {
+            throw new IllegalArgumentException("unable to parse");
+        }
     }
 }
