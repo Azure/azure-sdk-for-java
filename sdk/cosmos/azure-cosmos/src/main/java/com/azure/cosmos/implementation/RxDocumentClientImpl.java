@@ -2,24 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.encryption.api.DataEncryptionKeyProvider;
-
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.DirectConnectionConfig;
-import com.azure.cosmos.implementation.encryption.api.EncryptionOptions;
-import com.azure.cosmos.implementation.query.PipelinedDocumentQueryExecutionContext;
-import com.azure.cosmos.implementation.query.QueryInfo;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.PartitionKeyDefinition;
-import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.cosmos.models.SqlParameter;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
@@ -36,10 +24,19 @@ import com.azure.cosmos.implementation.query.DocumentQueryExecutionContextFactor
 import com.azure.cosmos.implementation.query.IDocumentQueryClient;
 import com.azure.cosmos.implementation.query.IDocumentQueryExecutionContext;
 import com.azure.cosmos.implementation.query.Paginator;
+import com.azure.cosmos.implementation.query.PipelinedDocumentQueryExecutionContext;
+import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyAndResourceTokenPair;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.SqlParameter;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
@@ -81,6 +78,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private static final char PREFER_HEADER_SEPERATOR = ';';
     private final static ObjectMapper mapper = Utils.getSimpleObjectMapper();
+    private final ItemDeserializer itemDeserializer = new ItemDeserializer.JsonDeserializer();
     private final Logger logger = LoggerFactory.getLogger(RxDocumentClientImpl.class);
     private final String masterKeyOrResourceToken;
     private final URI serviceEndpoint;
@@ -125,7 +123,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private StoreClientFactory storeClientFactory;
 
     private GatewayServiceConfigurationReader gatewayConfigurationReader;
-    public DataEncryptionKeyProvider dataEncryptionKeyProvider;
 
     public RxDocumentClientImpl(URI serviceEndpoint,
                                 String masterKeyOrResourceToken,
@@ -256,10 +253,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         this.globalEndpointManager = new GlobalEndpointManager(asDatabaseAccountManagerInternal(), this.connectionPolicy, /**/configs);
         this.retryPolicy = new RetryPolicy(this.globalEndpointManager, this.connectionPolicy);
         this.resetSessionTokenRetryPolicy = retryPolicy;
-    }
-
-    void registerDataEncryptionKeyProvider(DataEncryptionKeyProvider dataEncryptionKeyProvider) {
-        this.dataEncryptionKeyProvider = dataEncryptionKeyProvider;
     }
 
     private void initializeGatewayConfigurationReader() {
@@ -561,6 +554,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             case UserDefinedFunction:
                 return Utils.joinPath(parentResouceLink, Paths.USER_DEFINED_FUNCTIONS_PATH_SEGMENT);
+
+            case Conflict:
+                return Utils.joinPath(parentResouceLink, Paths.CONFLICTS_PATH_SEGMENT);
 
             default:
                 throw new IllegalArgumentException("resource type not supported");
@@ -1118,7 +1114,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         Instant serializationStartTimeUTC = Instant.now();
-        ByteBuffer content = BridgeInternal.serializeJsonToByteBuffer(document, mapper, dataEncryptionKeyProvider, options == null ? null : options.getEncryptionOptions());
+        ByteBuffer content = BridgeInternal.serializeJsonToByteBuffer(document, mapper);
         Instant serializationEndTimeUTC = Instant.now();
 
         SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
@@ -1770,7 +1766,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             @Override
             public Mono<RxDocumentServiceResponse> executeQueryAsync(RxDocumentServiceRequest request) {
-                return RxDocumentClientImpl.this.query(request).single();
+                return RxDocumentClientImpl.this.query(request);
             }
 
             @Override
@@ -2084,6 +2080,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     ResourceType.StoredProcedure, path,
                     procedureParams != null && !procedureParams.isEmpty() ? RxDocumentClientImpl.serializeProcedureParams(procedureParams) : "",
                     requestHeaders, options);
+
+            if (retryPolicy != null) {
+                retryPolicy.onBeforeSendRequest(request);
+            }
 
             Mono<RxDocumentServiceRequest> reqObs = addPartitionKeyInformation(request, null, null, options);
             return reqObs.flatMap(req -> create(request, retryPolicy)
@@ -3197,15 +3197,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public ItemDeserializer getItemDeserializer() {
-        if (dataEncryptionKeyProvider == null) {
-            return new ItemDeserializer.JsonDeserializer();
-        } else {
-            return new ItemDeserializer.EncryptionDeserializer(dataEncryptionKeyProvider, new ItemDeserializer.JsonDeserializer());
-        }
-    }
-
-    @Override
-    public ItemDeserializer getItemDeserializerWithoutDecryption() {
-        return new ItemDeserializer.JsonDeserializer();
+        return this.itemDeserializer;
     }
 }

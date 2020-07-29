@@ -16,7 +16,6 @@ import com.azure.ai.formrecognizer.implementation.models.ReadResult;
 import com.azure.ai.formrecognizer.implementation.models.TextLine;
 import com.azure.ai.formrecognizer.implementation.models.TextWord;
 import com.azure.ai.formrecognizer.models.BoundingBox;
-import com.azure.ai.formrecognizer.models.FieldValueType;
 import com.azure.ai.formrecognizer.models.FormElement;
 import com.azure.ai.formrecognizer.models.FormField;
 import com.azure.ai.formrecognizer.models.FormLine;
@@ -266,7 +265,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     }
 
     @SuppressWarnings("unchecked")
-    private static void validateFieldValueTransforms(FieldValue expectedFieldValue, FormField<?> actualFormField,
+    private static void validateFieldValueTransforms(FieldValue expectedFieldValue, FormField actualFormField,
         List<ReadResult> readResults, boolean includeFieldElements) {
         if (expectedFieldValue != null) {
             if (expectedFieldValue.getBoundingBox() != null) {
@@ -279,35 +278,37 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             }
             switch (expectedFieldValue.getType()) {
                 case NUMBER:
-                    assertEquals(expectedFieldValue.getValueNumber(), FieldValueType.DOUBLE.cast(actualFormField));
+                    if (expectedFieldValue.getValueNumber() != null) {
+                        assertEquals((double) expectedFieldValue.getValueNumber(), actualFormField.getValue().asDouble());
+                    }
                     break;
                 case DATE:
-                    assertEquals(expectedFieldValue.getValueDate(), FieldValueType.DATE.cast(actualFormField));
+                    assertEquals(expectedFieldValue.getValueDate(), actualFormField.getValue().asDate());
                     break;
                 case TIME:
                     assertEquals(LocalTime.parse(expectedFieldValue.getValueTime(),
-                        DateTimeFormatter.ofPattern("HH:mm:ss")), FieldValueType.TIME.cast(actualFormField));
+                        DateTimeFormatter.ofPattern("HH:mm:ss")), actualFormField.getValue().asTime());
                     break;
                 case STRING:
-                    assertEquals(expectedFieldValue.getValueString(), FieldValueType.STRING.cast(actualFormField));
+                    assertEquals(expectedFieldValue.getValueString(), actualFormField.getValue().asString());
                     break;
                 case INTEGER:
-                    assertEquals(expectedFieldValue.getValueInteger(), FieldValueType.LONG.cast(actualFormField));
+                    assertEquals(expectedFieldValue.getValueInteger(), actualFormField.getValue().asLong());
                     break;
                 case PHONE_NUMBER:
-                    assertEquals(expectedFieldValue.getValuePhoneNumber(), FieldValueType.PHONE_NUMBER.cast(actualFormField));
+                    assertEquals(expectedFieldValue.getValuePhoneNumber(), actualFormField.getValue().asPhoneNumber());
                     break;
                 case OBJECT:
-                    expectedFieldValue.getValueObject().forEach((key, fieldValue) -> {
-                        FormField<?> actualFormFieldValue = ((Map<String, FormField<?>>) actualFormField.getValue()).get(key);
-                        validateFieldValueTransforms(fieldValue, actualFormFieldValue, readResults, includeFieldElements);
+                    expectedFieldValue.getValueObject().forEach((key, formField) -> {
+                        FormField actualFormFieldValue = actualFormField.getValue().asMap().get(key);
+                        validateFieldValueTransforms(formField, actualFormFieldValue, readResults, includeFieldElements);
                     });
                     break;
                 case ARRAY:
-                    assertEquals(expectedFieldValue.getValueArray().size(), ((List<FormField<?>>) actualFormField.getValue()).size());
+                    assertEquals(expectedFieldValue.getValueArray().size(), actualFormField.getValue().asList().size());
                     for (int i = 0; i < expectedFieldValue.getValueArray().size(); i++) {
                         FieldValue expectedReceiptItem = expectedFieldValue.getValueArray().get(i);
-                        FormField<?> actualReceiptItem = ((List<FormField<?>>) actualFormField.getValue()).get(i);
+                        FormField actualReceiptItem = actualFormField.getValue().asList().get(i);
                         validateFieldValueTransforms(expectedReceiptItem, actualReceiptItem, readResults, includeFieldElements);
                     }
                     break;
@@ -505,14 +506,14 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         FormRecognizerServiceVersion serviceVersion);
 
     // Receipt
-    void validateReceiptDataFields(Map<String, FormField<?>> actualRecognizedReceiptFields, boolean includeFieldElements) {
+    void validateReceiptDataFields(Map<String, FormField> actualRecognizedReceiptFields, boolean includeFieldElements) {
         final AnalyzeResult analyzeResult = getAnalyzeRawResponse().getAnalyzeResult();
         List<ReadResult> readResults = analyzeResult.getReadResults();
         DocumentResult documentResult = analyzeResult.getDocumentResults().get(0);
         Map<String, FieldValue> expectedReceiptFields = documentResult.getFields();
 
         assertEquals(expectedReceiptFields.get("ReceiptType").getValueString(),
-            FieldValueType.STRING.cast(actualRecognizedReceiptFields.get("ReceiptType")));
+            actualRecognizedReceiptFields.get("ReceiptType").getValue().asString());
         assertEquals(expectedReceiptFields.get("ReceiptType").getConfidence(),
             actualRecognizedReceiptFields.get("ReceiptType").getConfidence());
         validateFieldValueTransforms(expectedReceiptFields.get("MerchantName"),
@@ -717,8 +718,8 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         List<ReadResult> readResults, PageResult expectedPage) {
         validatePageRangeData(expectedPage.getPage(), actualForm.getFormPageRange());
         int i = 0;
-        for (Map.Entry<String, FormField<?>> entry : actualForm.getFields().entrySet()) {
-            FormField<?> actualFormField = entry.getValue();
+        for (Map.Entry<String, FormField> entry : actualForm.getFields().entrySet()) {
+            FormField actualFormField = entry.getValue();
             final KeyValuePair expectedFormField = expectedPage.getKeyValuePairs().get(i++);
             assertEquals(expectedFormField.getConfidence(), actualFormField.getConfidence());
             assertEquals(expectedFormField.getKey().getText(), actualFormField.getLabelData().getText());
@@ -743,7 +744,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         assertEquals(documentResult.getPageRange().get(1), actualForm.getFormPageRange().getLastPageNumber());
         assertEquals(documentResult.getFields().keySet(), actualForm.getFields().keySet());
         documentResult.getFields().forEach((label, expectedFieldValue) -> {
-            final FormField<?> actualFormField = actualForm.getFields().get(label);
+            final FormField actualFormField = actualForm.getFields().get(label);
             assertEquals(label, actualFormField.getName());
             if (expectedFieldValue != null) {
                 if (expectedFieldValue.getConfidence() != null) {
@@ -793,16 +794,16 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
         assertEquals(1, receiptPage1.getFormPageRange().getFirstPageNumber());
         assertEquals(1, receiptPage1.getFormPageRange().getLastPageNumber());
-        Map<String, FormField<?>> receiptPage1Fields = receiptPage1.getFields();
+        Map<String, FormField> receiptPage1Fields = receiptPage1.getFields();
         assertEquals(EXPECTED_MULTIPAGE_ADDRESS_VALUE, receiptPage1Fields.get("MerchantAddress")
-            .getValue());
+            .getValue().asString());
         assertEquals("Bilbo Baggins", receiptPage1Fields.get("MerchantName")
-            .getValue());
+            .getValue().asString());
         assertEquals(EXPECTED_MULTIPAGE_PHONE_NUMBER_VALUE, receiptPage1Fields.get("MerchantPhoneNumber")
-            .getValue());
-        assertNotNull(receiptPage1Fields.get("Total").getValue());
+            .getValue().asPhoneNumber());
+        assertNotNull(receiptPage1Fields.get("Total").getValue().asDouble());
         assertNotNull(receiptPage1.getPages());
-        assertEquals(ITEMIZED_RECEIPT_VALUE, receiptPage1Fields.get("ReceiptType").getValue());
+        assertEquals(ITEMIZED_RECEIPT_VALUE, receiptPage1Fields.get("ReceiptType").getValue().asString());
 
         // Assert no fields, tables and lines on second page
         assertEquals(0, receiptPage2.getFields().size());
@@ -815,15 +816,15 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
         assertEquals(3, receiptPage3.getFormPageRange().getFirstPageNumber());
         assertEquals(3, receiptPage3.getFormPageRange().getLastPageNumber());
-        Map<String, FormField<?>> receiptPage3Fields = receiptPage3.getFields();
-        assertEquals(EXPECTED_MULTIPAGE_ADDRESS_VALUE, FieldValueType.STRING.cast(receiptPage3Fields.get("MerchantAddress")));
-        assertEquals("Frodo Baggins", FieldValueType.STRING.cast(receiptPage3Fields.get("MerchantName")));
-        assertEquals(EXPECTED_MULTIPAGE_PHONE_NUMBER_VALUE, FieldValueType.PHONE_NUMBER.cast(receiptPage3Fields.get("MerchantPhoneNumber")));
-        assertNotNull(receiptPage3Fields.get("Total").getValue());
+        Map<String, FormField> receiptPage3Fields = receiptPage3.getFields();
+        assertEquals(EXPECTED_MULTIPAGE_ADDRESS_VALUE, receiptPage3Fields.get("MerchantAddress").getValue().asString());
+        assertEquals("Frodo Baggins", receiptPage3Fields.get("MerchantName").getValue().asString());
+        assertEquals(EXPECTED_MULTIPAGE_PHONE_NUMBER_VALUE, receiptPage3Fields.get("MerchantPhoneNumber").getValue().asPhoneNumber());
+        assertNotNull(receiptPage3Fields.get("Total").getValue().asDouble());
         // why isn't tip returned by service?
         // total value 1000 returned by service but should be 4300, service bug
-        assertEquals(3000.0f, (Float) receiptPage3Fields.get("Subtotal").getValue());
-        assertEquals(ITEMIZED_RECEIPT_VALUE, FieldValueType.STRING.cast(receiptPage3Fields.get("ReceiptType")));
+        assertEquals(3000.0f, receiptPage3Fields.get("Subtotal").getValue().asDouble());
+        assertEquals(ITEMIZED_RECEIPT_VALUE, receiptPage3Fields.get("ReceiptType").getValue().asString());
     }
 
     protected String getEndpoint() {

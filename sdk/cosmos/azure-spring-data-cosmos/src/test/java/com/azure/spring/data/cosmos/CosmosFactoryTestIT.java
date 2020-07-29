@@ -2,9 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos;
 
+import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.spring.data.cosmos.common.TestConstants;
-import com.azure.spring.data.cosmos.config.CosmosConfig;
+import com.azure.spring.data.cosmos.config.CosmosClientConfig;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.Test;
@@ -27,42 +28,58 @@ public class CosmosFactoryTestIT {
     @Value("${cosmos.key:}")
     private String cosmosDbKey;
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testEmptyKey() {
-        final CosmosConfig cosmosConfig = CosmosConfig.builder()
-                                                      .database(TestConstants.DB_NAME)
-                                                      .cosmosClientBuilder(new CosmosClientBuilder()
-                                                          .endpoint(TestConstants.COSMOSDB_FAKE_HOST)
-                                                          .key(""))
-                                                      .build();
-        new CosmosFactory(cosmosConfig).getCosmosSyncClient();
+    @Test
+    public void testNullKey() {
+        CosmosAsyncClient cosmosAsyncClient = null;
+        try {
+            final CosmosClientConfig cosmosClientConfig = CosmosClientConfig.builder()
+                                                                            .database(TestConstants.DB_NAME)
+                                                                            .cosmosClientBuilder(new CosmosClientBuilder()
+                                                                                .endpoint(cosmosDbUri)
+                                                                                .key(null))
+                                                                            .build();
+            cosmosAsyncClient =  CosmosFactory.createCosmosAsyncClient(cosmosClientConfig);
+        } catch (Exception e) {
+            assertThat(e instanceof IllegalArgumentException).isTrue();
+        } finally {
+            if (cosmosAsyncClient != null) {
+                cosmosAsyncClient.close();
+            }
+        }
     }
 
     @Test
-    public void testInvalidEndpoint() {
-        final CosmosConfig cosmosConfig = CosmosConfig.builder()
-                                                      .database(TestConstants.DB_NAME)
-                                                      .cosmosClientBuilder(new CosmosClientBuilder()
-                                                          .endpoint(TestConstants.COSMOSDB_FAKE_HOST)
-                                                          .key(TestConstants.COSMOSDB_FAKE_KEY))
-                                                      .build();
-        final CosmosFactory factory = new CosmosFactory(cosmosConfig);
-
-        assertThat(factory).isNotNull();
+    public void testNullEndpoint() {
+        CosmosAsyncClient cosmosAsyncClient = null;
+        try {
+            final CosmosClientConfig cosmosClientConfig = CosmosClientConfig.builder()
+                                                                            .database(TestConstants.DB_NAME)
+                                                                            .cosmosClientBuilder(new CosmosClientBuilder()
+                                                                                .endpoint(null)
+                                                                                .key(cosmosDbKey))
+                                                                            .build();
+            cosmosAsyncClient =  CosmosFactory.createCosmosAsyncClient(cosmosClientConfig);
+        } catch (Exception e) {
+            assertThat(e instanceof IllegalArgumentException).isTrue();
+        } finally {
+            if (cosmosAsyncClient != null) {
+                cosmosAsyncClient.close();
+            }
+        }
     }
 
     @Test
     public void testConnectionPolicyUserAgentKept() throws IllegalAccessException {
-        final CosmosConfig cosmosConfig = CosmosConfig.builder()
-                                                      .database(TestConstants.DB_NAME)
-                                                      .cosmosClientBuilder(new CosmosClientBuilder()
-                                                          .endpoint(cosmosDbUri)
-                                                          .key(cosmosDbKey))
-                                                      .build();
 
-        new CosmosFactory(cosmosConfig).getCosmosAsyncClient();
+        final CosmosClientConfig cosmosClientConfig = CosmosClientConfig.builder()
+            .database(TestConstants.DB_NAME)
+            .cosmosClientBuilder(new CosmosClientBuilder()
+                .endpoint(cosmosDbUri)
+                .key(cosmosDbKey))
+            .build();
+        CosmosFactory.createCosmosAsyncClient(cosmosClientConfig);
 
-        final String uaSuffix = getUserAgentSuffixValue(cosmosConfig.getCosmosClientBuilder());
+        final String uaSuffix = getUserAgentSuffixValue(cosmosClientConfig.getCosmosClientBuilder());
         assertThat(uaSuffix).contains("spring-data");
     }
 

@@ -90,7 +90,7 @@ public class AzureADGraphClient {
         } else {
             conn.setRequestMethod(HttpMethod.GET.toString());
             conn.setRequestProperty("api-version", "1.6");
-            conn.setRequestProperty(HttpHeaders.AUTHORIZATION, accessToken);
+            conn.setRequestProperty(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", accessToken));
             conn.setRequestProperty(HttpHeaders.ACCEPT, "application/json;odata=minimalmetadata");
         }
         final String responseInJson = getResponseStringFromConn(conn);
@@ -184,16 +184,15 @@ public class AzureADGraphClient {
     /**
      * Determines if this is a valid {@link UserGroup} to build to a GrantedAuthority.
      * <p>
-     * If the {@link AADAuthenticationProperties.UserGroupProperties#getAllowedGroups()} or the {@link
-     * AADAuthenticationProperties#getActiveDirectoryGroups()} contains the {@link UserGroup#getDisplayName()} return
+     * If the {@link AADAuthenticationProperties.UserGroupProperties#getAllowedGroups()}
+     *  contains the {@link UserGroup#getDisplayName()} return
      * true.
      *
      * @param group - User Group to check if valid to grant an authority to.
-     * @return true if either of the allowed-groups or active-directory-groups contains the UserGroup display name
+     * @return true if allowed-groups contains the UserGroup display name
      */
     private boolean isValidUserGroupToGrantAuthority(final UserGroup group) {
-        return aadAuthenticationProperties.getUserGroup().getAllowedGroups().contains(group.getDisplayName())
-            || aadAuthenticationProperties.getActiveDirectoryGroups().contains(group.getDisplayName());
+        return aadAuthenticationProperties.getUserGroup().getAllowedGroups().contains(group.getDisplayName());
     }
 
     public IAuthenticationResult acquireTokenForGraphApi(String idToken, String tenantId)

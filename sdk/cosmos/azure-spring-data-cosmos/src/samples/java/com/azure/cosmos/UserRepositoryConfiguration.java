@@ -6,9 +6,10 @@ package com.azure.cosmos;
  * ARE USED TO EXTRACT APPROPRIATE CODE SEGMENTS FROM THIS FILE. ADD NEW CODE AT THE BOTTOM TO AVOID CHANGING
  * LINE NUMBERS OF EXISTING CODE SAMPLES.
  */
+
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration;
-import com.azure.spring.data.cosmos.config.CosmosConfig;
+import com.azure.spring.data.cosmos.config.CosmosClientConfig;
 import com.azure.spring.data.cosmos.core.ResponseDiagnostics;
 import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
 import com.azure.spring.data.cosmos.repository.config.EnableReactiveCosmosRepositories;
@@ -26,7 +27,7 @@ import org.springframework.lang.Nullable;
 @EnableReactiveCosmosRepositories
 @PropertySource("classpath:application.properties")
 public class UserRepositoryConfiguration extends AbstractCosmosConfiguration {
-    private static final Logger logger = LoggerFactory.getLogger(AppConfiguration.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserRepositoryConfiguration.class);
 
     @Autowired
     private CosmosProperties properties;
@@ -34,14 +35,12 @@ public class UserRepositoryConfiguration extends AbstractCosmosConfiguration {
     private AzureKeyCredential azureKeyCredential;
 
     @Bean
-    public CosmosConfig cosmosConfig() {
+    public CosmosClientConfig cosmosClientConfig() {
         this.azureKeyCredential = new AzureKeyCredential(properties.getKey());
-        return CosmosConfig.builder()
-                           .database(properties.getDatabase())
-                           .cosmosClientBuilder(new CosmosClientBuilder().credential(azureKeyCredential))
-                           .enableQueryMetrics(properties.isQueryMetricsEnabled())
-                           .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
-                           .build();
+        return CosmosClientConfig.builder()
+            .cosmosClientBuilder(new CosmosClientBuilder().credential(azureKeyCredential))
+            .database(getDatabaseName())
+            .build();
     }
 
     public void switchToSecondaryKey() {
@@ -54,6 +53,11 @@ public class UserRepositoryConfiguration extends AbstractCosmosConfiguration {
 
     public void switchKey(String key) {
         this.azureKeyCredential.update(key);
+    }
+
+    @Override
+    protected String getDatabaseName() {
+        return "testdb";
     }
 
     private static class ResponseDiagnosticsProcessorImplementation implements ResponseDiagnosticsProcessor {

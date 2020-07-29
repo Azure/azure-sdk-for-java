@@ -2,9 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.integration;
 
+import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.common.TestConstants;
+import com.azure.spring.data.cosmos.config.CosmosClientConfig;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
@@ -49,6 +51,9 @@ public class SpELCosmosAnnotationIT {
     @Autowired
     private CosmosTemplate cosmosTemplate;
 
+    @Autowired
+    private CosmosConfig cosmosConfig;
+
     private static CosmosTemplate staticTemplate;
     private static CosmosEntityInformation<SpELPropertyStudent, String> cosmosEntityInformation;
 
@@ -84,13 +89,14 @@ public class SpELCosmosAnnotationIT {
 
     @Test
     public void testDatabaseOperationsOnDynamicallyNamedCollection() throws ClassNotFoundException {
-        final CosmosConfig cosmosConfig = CosmosConfig.builder()
-                                                  .cosmosClientBuilder(new CosmosClientBuilder()
-                                                          .endpoint(dbUri)
-                                                          .key(dbKey))
-                                                  .database(TestConstants.DB_NAME)
-                                                  .build();
-        final CosmosFactory dbFactory = new CosmosFactory(cosmosConfig);
+        final CosmosClientConfig cosmosClientConfig = CosmosClientConfig.builder()
+            .cosmosClientBuilder(new CosmosClientBuilder()
+                .endpoint(dbUri)
+                .key(dbKey))
+            .database(TestConstants.DB_NAME)
+            .build();
+        CosmosAsyncClient client = CosmosFactory.createCosmosAsyncClient(cosmosClientConfig);
+        final CosmosFactory dbFactory = new CosmosFactory(client, TestConstants.DB_NAME);
 
         cosmosEntityInformation = new CosmosEntityInformation<>(SpELPropertyStudent.class);
         final CosmosMappingContext dbContext = new CosmosMappingContext();
@@ -98,7 +104,7 @@ public class SpELCosmosAnnotationIT {
 
         final ObjectMapper objectMapper = ObjectMapperFactory.getObjectMapper();
         final MappingCosmosConverter mappingConverter = new MappingCosmosConverter(dbContext, objectMapper);
-        staticTemplate = new CosmosTemplate(dbFactory, mappingConverter, TestConstants.DB_NAME);
+        staticTemplate = new CosmosTemplate(dbFactory, cosmosConfig, mappingConverter);
 
         staticTemplate.createContainerIfNotExists(cosmosEntityInformation);
 

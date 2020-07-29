@@ -91,21 +91,24 @@ public class PageablePersonRepositoryIT {
     @Test
     public void testFindAllWithPageSizeGreaterThanReturnedLimit() {
         final Set<PageablePerson> outputSet = findAllWithPageSize(15, true);
-        assertThat(outputSet).isEqualTo(personSet);
+        boolean equals = outputSet.equals(personSet);
+        assertThat(equals).isTrue();
     }
 
     //  This test covers the case where page size is less than returned documents limit
     @Test
     public void testFindAllWithPageSizeLessThanReturnedLimit() {
         final Set<PageablePerson> outputSet = findAllWithPageSize(5, false);
-        assertThat(outputSet).isEqualTo(personSet);
+        boolean equals = outputSet.equals(personSet);
+        assertThat(equals).isTrue();
     }
 
     //  This test covers the case where page size is greater than total number of documents
     @Test
     public void testFindAllWithPageSizeGreaterThanTotal() {
         final Set<PageablePerson> outputSet = findAllWithPageSize(50, true);
-        assertThat(outputSet).isEqualTo(personSet);
+        boolean equals = outputSet.equals(personSet);
+        assertThat(equals).isTrue();
     }
 
     private Set<PageablePerson> findAllWithPageSize(int pageSize, boolean checkContentLimit) {

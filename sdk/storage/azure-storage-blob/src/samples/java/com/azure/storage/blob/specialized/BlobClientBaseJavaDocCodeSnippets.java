@@ -489,7 +489,7 @@ public class BlobClientBaseJavaDocCodeSnippets {
             client.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT)
                 .setPriority(RehydratePriority.STANDARD)
                 .setLeaseId(leaseId)
-                .setIfTagsMatch(tags),
+                .setTagsConditions(tags),
                 timeout, new Context(key2, value2)).getStatusCode());
         // END: com.azure.storage.blob.specialized.BlobClientBase.setAccessTierWithResponse#BlobSetAccessTierOptions-Duration-Context
     }

@@ -35,6 +35,18 @@ public class SharedTokenCacheCredentialBuilder extends AadCredentialBuilderBase<
     }
 
     /**
+     * Sets the {@link AuthenticationRecord} captured from a previous authentication.
+     *
+     * @param authenticationRecord the authentication record to be configured.
+     *
+     * @return An updated instance of this builder with the configured authentication record.
+     */
+    public SharedTokenCacheCredentialBuilder authenticationRecord(AuthenticationRecord authenticationRecord) {
+        this.identityClientOptions.setAuthenticationRecord(authenticationRecord);
+        return this;
+    }
+
+    /**
      * Creates a new {@link SharedTokenCacheCredentialBuilder} with the current configurations.
      *
      * @return a {@link SharedTokenCacheCredentialBuilder} with the current configurations.

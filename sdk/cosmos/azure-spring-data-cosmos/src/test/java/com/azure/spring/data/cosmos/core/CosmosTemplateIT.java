@@ -2,11 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.core;
 
+import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.common.PageTestUtils;
 import com.azure.spring.data.cosmos.common.ResponseDiagnosticsTestUtils;
+import com.azure.spring.data.cosmos.config.CosmosClientConfig;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
 import com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext;
@@ -85,6 +87,8 @@ public class CosmosTemplateIT {
     @Autowired
     private ApplicationContext applicationContext;
     @Autowired
+    private CosmosClientConfig cosmosClientConfig;
+    @Autowired
     private CosmosConfig cosmosConfig;
     @Autowired
     private ResponseDiagnosticsTestUtils responseDiagnosticsTestUtils;
@@ -92,7 +96,8 @@ public class CosmosTemplateIT {
     @Before
     public void setUp() throws ClassNotFoundException {
         if (!initialized) {
-            final CosmosFactory cosmosFactory = new CosmosFactory(cosmosConfig);
+            CosmosAsyncClient client = CosmosFactory.createCosmosAsyncClient(cosmosClientConfig);
+            final CosmosFactory cosmosFactory = new CosmosFactory(client, cosmosClientConfig.getDatabase());
 
             final CosmosMappingContext mappingContext = new CosmosMappingContext();
             personInfo = new CosmosEntityInformation<>(Person.class);
@@ -102,7 +107,8 @@ public class CosmosTemplateIT {
 
             final MappingCosmosConverter cosmosConverter = new MappingCosmosConverter(mappingContext,
                 null);
-            cosmosTemplate = new CosmosTemplate(cosmosFactory, cosmosConverter, cosmosConfig.getDatabase());
+
+            cosmosTemplate = new CosmosTemplate(cosmosFactory, cosmosConfig, cosmosConverter);
             cosmosTemplate.createContainerIfNotExists(personInfo);
             initialized = true;
         }

@@ -607,8 +607,7 @@ public final class QueueAsyncClient {
      */
     public Mono<QueueMessageItem> receiveMessage() {
         try {
-            return receiveMessagesWithOptionalTimeout(1, null, null, Context.NONE)
-                .single();
+            return receiveMessagesWithOptionalTimeout(1, null, null, Context.NONE).singleOrEmpty();
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -713,7 +712,7 @@ public final class QueueAsyncClient {
      */
     public Mono<PeekedMessageItem> peekMessage() {
         try {
-            return peekMessages(null).single();
+            return peekMessages(null).singleOrEmpty();
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
