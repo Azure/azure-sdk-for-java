@@ -389,27 +389,27 @@
         <artifactId>build-helper-maven-plugin</artifactId>
         <version>3.0.0</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
         <executions>
-            <execution>
+          <execution>
             <id>attach-artifacts</id>
             <phase>package</phase>
             <goals>
-                <goal>attach-artifact</goal>
+              <goal>attach-artifact</goal>
             </goals>
             <configuration>
-                <artifacts>
-                  <artifact>
-                      <file>${basedir}/README.md</file>
-                      <type>md</type>
-                      <classifier>readme</classifier>
-                  </artifact>
-                  <artifact>
-                    <file>${basedir}/CHANGELOG.md</file>
-                    <type>md</type>
-                    <classifier>changelog</classifier>
+              <artifacts>
+                <artifact>
+                  <file>${basedir}/README.md</file>
+                  <type>md</type>
+                  <classifier>readme</classifier>
+                </artifact>
+                <artifact>
+                  <file>${basedir}/CHANGELOG.md</file>
+                  <type>md</type>
+                  <classifier>changelog</classifier>
                 </artifact>
               </artifacts>
             </configuration>
-            </execution>
+          </execution>
         </executions>
       </plugin>
 
@@ -530,6 +530,24 @@
             <goals>
               <goal>enforce</goal>
             </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.2.4</version> <!-- {x-version-update;org.apache.maven.plugins:maven-shade-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <shadedArtifactAttached>true</shadedArtifactAttached>
+              <shadedClassifierName>shaded</shadedClassifierName>
+            </configuration>
           </execution>
         </executions>
       </plugin>
