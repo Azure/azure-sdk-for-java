@@ -118,9 +118,9 @@ require platform support. See the
 If a managed identity isn't available, the `DefaultAzureCredential` will then attempt reading the signed in user from a set of local developer tools, in the following order
 
 1. `DefaultAzureCredential` will read from a local user token cache. `AZURE_USERNAME` environment variable must be specified if there are more than one accounts in the cache. The local token cache is shared between this library, Visual Studio (2019+), and Azure CLI. See [Enable applications for shared token cache credential](#enable-applications-for-shared-token-cache-credential) for how to populate / clean up this token cache.
-2. `DefaultAzureCredential` will then read the currently signed in user in Azure Toolkit for IntelliJ. See [Sign in Azure Toolkit for IntelliJ for IntelliJCredential](#sign-in-azure-toolkit-for-intellij-for-intellijcredential) for how to sign in in IntelliJ IDEA to enable this. 
-3. `DefaultAzureCredential` will then read the currently signed in user in Azure plugin in Visual Studio Code. See [Sign in Visual Studio Code for VisualStudioCodeCredential](#sign-in-visual-studio-code-for-visualstudiocodecredential)  for how to sign in in Visual Studio code to enable this.
-4. `DefaultAzureCredential` will then read the currently signed in user in Azure CLI. See [Sign in Azure CLI for AzureCliCredential](#sign-in-azure-cli-for-azureclicredential)
+2. `DefaultAzureCredential` will then read the currently signed in user in Azure Toolkit for IntelliJ. See [Sign in Azure Toolkit for IntelliJ for IntelliJCredential](#sign-in-azure-toolkit-for-intellij-for-intellijcredential) for how to sign in to IntelliJ IDEA to enable this. 
+3. `DefaultAzureCredential` will then read the currently signed in user in Azure plugin in Visual Studio Code. See [Sign in Visual Studio Code for VisualStudioCodeCredential](#sign-in-visual-studio-code-for-visualstudiocodecredential) for how to sign in to Visual Studio code to enable this.
+4. `DefaultAzureCredential` will then read the currently signed in user in Azure CLI. See [Sign in Azure CLI for AzureCliCredential](#sign-in-azure-cli-for-azureclicredential) for how to sign in to Azure CLI to enable this.
 
 If a credential or a tool isn't available, `DefaultAzureCredential` will catch the `CredentialUnavailableException` and simply try the next credential. If no credential can be used, a `ClientAuthenticationException` containing all the individual credential unavailable exceptions will be thrown at the end.
 
