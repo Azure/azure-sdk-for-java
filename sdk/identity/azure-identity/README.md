@@ -154,7 +154,7 @@ See more about how to create a service principal and get these values in [Creati
 ### Authenticating with `DefaultAzureCredential`
 This example demonstrates authenticating the `SecretClient` from the [azure-security-keyvault-secrets][secrets_client_library] client library using the `DefaultAzureCredential`. There's also [a compilable sample](../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java) to create a Key Vault secret client you can copy-paste.
 
-<!-- embedme ../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java#L30-L42 -->
+<!-- embedme ../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java#L38-L50 -->
 ```java
 /**
  * The default credential first checks environment variables for configuration.
@@ -178,7 +178,7 @@ This example demonstrates authenticating the `KeyClient` from the [azure-securit
 
 See more about how to create a service principal and get these values in [Creating a Service Principal with the Azure CL](#creating-a-service-principal-with-the-azure-cli).
 
-<!-- embedme ../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java#L44-L59 -->
+<!-- embedme ../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java#L52-L67 -->
 ```java
 /**
  *  Authenticate with client secret.
@@ -203,7 +203,7 @@ This example demonstrates authenticating the `KeyClient` from the [azure-securit
 
 See more about how to configure an AAD application for device code flow in [Enable applications for device code flow](#enable-applications-for-device-code-flow)
 
-<!-- embedme ../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java#L61-L77 -->
+<!-- embedme ../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java#L69-L85 -->
 ```java
 /**
  * Authenticate with device code credential.
@@ -227,7 +227,7 @@ public void createDeviceCodeCredential() {
 ### Authenticating a user account with username and password
 This example demonstrates authenticating the `KeyClient` from the [azure-security-keyvault-keys][keys_client_library] client library using the `UsernamePasswordCredential`. The user must **not** have Multi-factor auth turned on. There's also [a compilable sample](../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java) to create a Key Vault secret client you can copy-paste. 
 
-<!-- embedme ../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java#L79-L94 -->
+<!-- embedme ../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java#L87-L102 -->
 ```java
 /**
  * Authenticate with username, password.
@@ -279,7 +279,7 @@ Then create an API at the redirect URL with the following code to access the Key
 
 See more about how to configure an AAD application for oauth 2 auth code flow in [Enable applications for oauth 2 auth code flow](#enable-applications-for-oauth-2-auth-code-flow).
 
-<!-- embedme ../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java#L96-L110 -->
+<!-- embedme ../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java#L104-L118 -->
 ```java
 /**
  * Authenticate with authorization code.
@@ -303,7 +303,7 @@ This example demonstrates authenticating the `KeyClient` from the [azure-securit
 
 See more about how to configure Azure CLI in [Sign in Azure CLI for AzureCliCredential](#sign-in-azure-cli-for-azureclicredential).
 
-<!-- embedme ../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java#L142-L153 -->
+<!-- embedme ../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java#L148-L159 -->
 ```java
 /**
  * Authenticate with Azure CLI.
@@ -324,7 +324,7 @@ This example demonstrates authenticating the `KeyClient` from the [azure-securit
 
 See more about how to configure your IntelliJ IDEA in [Sign in Azure Toolkit for IntelliJ for IntelliJCredential](#sign-in-azure-toolkit-for-intellij-for-intellijcredential).
 
-<!-- embedme ../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java#L172-L188 -->
+<!-- embedme ../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java#L174-L188 -->
 ```java
 /**
  * Authenticate with IntelliJ IDEA.
@@ -348,7 +348,7 @@ This example demonstrates authenticating the `KeyClient` from the [azure-securit
 
 See more about how to configure your Visual Studio Code in [Sign in Visual Studio Code for VisualStudioCodeCredential](#sign-in-visual-studio-code-for-visualstudiocodecredential)
 
-<!-- embedme ../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java#L157-L168 -->
+<!-- embedme ../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java#L161-L172 -->
 ```java
 /**
  * Authenticate with Visual Studio Code.
@@ -367,7 +367,7 @@ public void createVisualStudioCodeCredential() {
 ### Chaining credentials
 The `ChainedTokenCredential` class provides the ability to link together multiple credential instances to be tried sequentially when authenticating. The following example demonstrates creating a credential which will attempt to authenticate using managed identity, and fall back to certificate authentication if a managed identity is unavailable in the current environment. This example authenticates an `EventHubClient` from the [azure-eventhubs][eventhubs_client_library] client library using the `ChainedTokenCredential`. There's also [a compilable sample](../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java) to create a Key Vault secret client you can copy-paste. 
 
-<!-- embedme ../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java#L112-L138 -->
+<!-- embedme ../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java#L120-L146 -->
 ```java
 /**
  * Authenticate with chained credentials.
