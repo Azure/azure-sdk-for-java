@@ -93,7 +93,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
 
         formRecognizerClient.beginRecognizeCustomFormsFromUrl(analyzeFilePath, modelId,
             new RecognizeOptions()
-                .setIncludeFieldElements(includeFieldElements)
+                .setFieldElementsIncluded(includeFieldElements)
                 .setPollInterval(Duration.ofSeconds(10)), Context.NONE)
             .getFinalResult()
             .stream()
@@ -149,7 +149,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
             formRecognizerClient.beginRecognizeCustomForms(targetStream, form.length(), modelId,
                 new RecognizeOptions()
                     .setContentType(FormContentType.IMAGE_JPEG)
-                    .setIncludeFieldElements(includeFieldElements)
+                    .setFieldElementsIncluded(includeFieldElements)
                     .setPollInterval(Duration.ofSeconds(10)), Context.NONE)
                 .getFinalResult()
                 .stream()
@@ -196,7 +196,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
         formRecognizerClient.beginRecognizeContentFromUrl(formPath,
             new RecognizeOptions()
                 .setPollInterval(Duration.ofSeconds(5))
-                .setIncludeFieldElements(true), Context.NONE)
+                .setFieldElementsIncluded(true), Context.NONE)
             .getFinalResult()
             .forEach(formPage -> {
                 System.out.printf("Page Angle: %s%n", formPage.getTextAngle());
@@ -252,7 +252,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
             for (FormPage formPage : formRecognizerClient.beginRecognizeContent(targetStream, form.length(),
                 new RecognizeOptions()
                     .setPollInterval(Duration.ofSeconds(5))
-                    .setIncludeFieldElements(true), Context.NONE)
+                    .setFieldElementsIncluded(true), Context.NONE)
                 .getFinalResult()) {
                 System.out.printf("Page Angle: %s%n", formPage.getTextAngle());
                 System.out.printf("Page Dimension unit: %s%n", formPage.getUnit());
@@ -338,7 +338,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
         formRecognizerClient.beginRecognizeReceiptsFromUrl(receiptUrl,
             new RecognizeOptions()
                 .setPollInterval(Duration.ofSeconds(5))
-                .setIncludeFieldElements(true), Context.NONE).getFinalResult()
+                .setFieldElementsIncluded(true), Context.NONE).getFinalResult()
             .forEach(recognizedReceipt -> {
                 Map<String, FormField> recognizedFields = recognizedReceipt.getFields();
                 FormField merchantNameField = recognizedFields.get("MerchantName");
@@ -472,7 +472,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
             for (RecognizedForm recognizedForm : formRecognizerClient.beginRecognizeReceipts(targetStream, receipt.length(),
                 new RecognizeOptions()
                     .setContentType(FormContentType.IMAGE_JPEG)
-                    .setIncludeFieldElements(includeFieldElements)
+                    .setFieldElementsIncluded(includeFieldElements)
                     .setPollInterval(Duration.ofSeconds(5)), Context.NONE)
                 .getFinalResult()) {
                 Map<String, FormField> recognizedFields = recognizedForm.getFields();

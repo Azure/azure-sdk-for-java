@@ -126,11 +126,11 @@ public final class FormRecognizerAsyncClient {
             recognizeOptions = getRecognizeOptionsProperties(recognizeOptions);
             return new PollerFlux<OperationResult, List<RecognizedForm>>(
                 recognizeOptions.getPollInterval(),
-                analyzeFormActivationOperation(formUrl, modelId, recognizeOptions.isIncludeFieldElements(), context),
+                analyzeFormActivationOperation(formUrl, modelId, recognizeOptions.isFieldElementsIncluded(), context),
                 createAnalyzeFormPollOperation(modelId, context),
                 (activationResponse, pollingContext) ->
                     Mono.error(new RuntimeException("Cancellation is not supported")),
-                fetchAnalyzeFormResultOperation(modelId, recognizeOptions.isIncludeFieldElements(), context));
+                fetchAnalyzeFormResultOperation(modelId, recognizeOptions.isFieldElementsIncluded(), context));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
@@ -204,11 +204,11 @@ public final class FormRecognizerAsyncClient {
                 recognizeOptions.getPollInterval(),
                 analyzeFormStreamActivationOperation(form, modelId, length,
                     recognizeOptions.getContentType(),
-                    recognizeOptions.isIncludeFieldElements(), context),
+                    recognizeOptions.isFieldElementsIncluded(), context),
                 createAnalyzeFormPollOperation(modelId, context),
                 (activationResponse, pollingContext) ->
                     Mono.error(new RuntimeException("Cancellation is not supported")),
-                fetchAnalyzeFormResultOperation(modelId, recognizeOptions.isIncludeFieldElements(), context));
+                fetchAnalyzeFormResultOperation(modelId, recognizeOptions.isFieldElementsIncluded(), context));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
@@ -401,11 +401,11 @@ public final class FormRecognizerAsyncClient {
             recognizeOptions = getRecognizeOptionsProperties(recognizeOptions);
             return new PollerFlux<OperationResult, List<RecognizedForm>>(
                 recognizeOptions.getPollInterval(),
-                receiptAnalyzeActivationOperation(receiptUrl, recognizeOptions.isIncludeFieldElements(), context),
+                receiptAnalyzeActivationOperation(receiptUrl, recognizeOptions.isFieldElementsIncluded(), context),
                 extractReceiptPollOperation(context),
                 (activationResponse, pollingContext) -> monoError(logger,
                     new RuntimeException("Cancellation is not supported")),
-                fetchExtractReceiptResult(recognizeOptions.isIncludeFieldElements(), context));
+                fetchExtractReceiptResult(recognizeOptions.isFieldElementsIncluded(), context));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
@@ -477,11 +477,11 @@ public final class FormRecognizerAsyncClient {
             return new PollerFlux<>(
                 recognizeOptions.getPollInterval(),
                 receiptStreamActivationOperation(receipt, length,
-                    recognizeOptions.getContentType(), recognizeOptions.isIncludeFieldElements(), context),
+                    recognizeOptions.getContentType(), recognizeOptions.isFieldElementsIncluded(), context),
                 extractReceiptPollOperation(context),
                 (activationResponse, pollingContext) -> monoError(logger,
                     new RuntimeException("Cancellation is not supported")),
-                fetchExtractReceiptResult(recognizeOptions.isIncludeFieldElements(), context));
+                fetchExtractReceiptResult(recognizeOptions.isFieldElementsIncluded(), context));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
