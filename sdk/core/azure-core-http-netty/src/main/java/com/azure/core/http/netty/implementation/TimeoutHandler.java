@@ -204,17 +204,21 @@ public final class TimeoutHandler extends ChannelDuplexHandler {
      * Cleanup any remaining tasks when the handler is removed or when the channel becomes inactive.
      */
     private void cleanupHandler() {
+        System.out.println("Channel complete.");
         for (WriteTask writeTask : writeTasks) {
             if (writeTask.scheduledTimeout != null && !writeTask.scheduledTimeout.isDone()) {
+                System.out.println("Cancelling outstanding write operation.");
                 writeTask.scheduledTimeout.cancel(false);
             }
         }
 
         if (responseTimeout != null && !responseTimeout.isDone()) {
+            System.out.println("Cancelling outstanding response timeout.");
             responseTimeout.cancel(false);
         }
 
         if (readTimeout != null && !readTimeout.isDone()) {
+            System.out.println("Cancelling outstanding read timeout.");
             readTimeout.cancel(false);
         }
     }
