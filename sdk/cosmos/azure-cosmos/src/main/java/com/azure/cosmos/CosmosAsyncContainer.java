@@ -462,15 +462,18 @@ public class CosmosAsyncContainer {
                                              .collect(Collectors.toList());
 
             return BridgeInternal.createFeedResponseWithQueryMetrics(transformedResults,
-                                                                     response.getResponseHeaders(),
-                                                                     ModelBridgeInternal.queryMetrics(response));
+                response.getResponseHeaders(),
+                ModelBridgeInternal.queryMetrics(response),
+                ModelBridgeInternal.getQueryPlanDiagnosticsContext(response));
 
         }
         return BridgeInternal.createFeedResponseWithQueryMetrics(
             (response.getResults().stream().map(document -> ModelBridgeInternal.toObjectFromJsonSerializable(document
                 , classType))
-                 .collect(Collectors.toList())), response.getResponseHeaders(),
-            ModelBridgeInternal.queryMetrics(response));
+                .collect(Collectors.toList())),
+            response.getResponseHeaders(),
+            ModelBridgeInternal.queryMetrics(response),
+            ModelBridgeInternal.getQueryPlanDiagnosticsContext(response));
     }
 
     private <T> T transform(Object object, Class<T> classType) {
