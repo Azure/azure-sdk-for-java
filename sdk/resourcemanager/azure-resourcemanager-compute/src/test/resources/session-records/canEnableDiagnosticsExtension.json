@@ -457,7 +457,7 @@
       "content-type" : "application/json",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "65c977d7-4042-43e5-89e6-84feace029c2",
-      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"/QaoL1TfXmyw0Q2r40oDCOrXUm/eTcQEoevPP0V3PV8ZAV98LiiOl1/2K1DEWhMKuL8n+8mmjT/yAZMsLj0L2w==\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"T85NlWyYOCGsCU0hJoXSdETGv3lmep/o38cxSOwMnuxF64RdfvfiTwBFwBhotuID3UDHT1W4RNi7rbaSAEvm1g==\",\"permissions\":\"FULL\"}]}"
+      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"}]}"
     }
   }, {
     "Method" : "PATCH",
