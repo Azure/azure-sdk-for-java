@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.encryption;
 
+import com.azure.cosmos.encryption.DecryptionResult;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 
 import java.util.function.Consumer;

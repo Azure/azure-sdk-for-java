@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.implementation.encryption.api;
+package com.azure.cosmos.encryption;
 
 /**
  * Abstraction for a provider to get data encryption keys for use in client-side encryption.
@@ -14,9 +14,11 @@ public interface DataEncryptionKeyProvider {
      * @param id Identifier of the data encryption key.
      * @param encryptionAlgorithm Encryption algorithm that the retrieved key will be used with.
      * @return Data encryption key bytes.
-     * TODO: @moderakh look into if this method needs to be async.
      */
     DataEncryptionKey getDataEncryptionKey(
         String id,
         String encryptionAlgorithm);
 }
+
+// TODO: @moderakh look into if this method needs to be async.
+

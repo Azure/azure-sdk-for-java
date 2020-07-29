@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.implementation.encryption;
+package com.azure.cosmos.encryption;
 
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
 

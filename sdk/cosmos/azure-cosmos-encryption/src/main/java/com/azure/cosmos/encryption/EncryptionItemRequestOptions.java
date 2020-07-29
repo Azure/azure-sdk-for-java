@@ -5,9 +5,8 @@
  *
  * The {@link com.azure.cosmos.models.CosmosItemRequestOptions} that allows to specify options for encryption / decryption.
  */
-package com.azure.cosmos.implementation.encryption;
+package com.azure.cosmos.encryption;
 
-import com.azure.cosmos.implementation.encryption.api.EncryptionOptions;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 
 import java.util.function.Consumer;

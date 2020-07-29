@@ -7,16 +7,21 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.EncryptionCosmosAsyncContainer;
-import com.azure.cosmos.Encryptor;
-import com.azure.cosmos.WithEncryption;
+import com.azure.cosmos.encryption.EncryptionCosmosAsyncContainer;
+import com.azure.cosmos.encryption.EncryptionItemRequestOptions;
+import com.azure.cosmos.encryption.EncryptionKeyUnwrapResult;
+import com.azure.cosmos.encryption.EncryptionKeyWrapMetadata;
+import com.azure.cosmos.encryption.EncryptionKeyWrapProvider;
+import com.azure.cosmos.encryption.EncryptionKeyWrapResult;
+import com.azure.cosmos.encryption.Encryptor;
+import com.azure.cosmos.encryption.WithEncryption;
 import com.azure.cosmos.implementation.DatabaseForTest;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.encryption.api.CosmosEncryptionAlgorithm;
-import com.azure.cosmos.implementation.encryption.api.DataEncryptionKey;
-import com.azure.cosmos.implementation.encryption.api.DataEncryptionKeyProvider;
-import com.azure.cosmos.implementation.encryption.api.EncryptionOptions;
+import com.azure.cosmos.encryption.CosmosEncryptionAlgorithm;
+import com.azure.cosmos.encryption.DataEncryptionKey;
+import com.azure.cosmos.encryption.DataEncryptionKeyProvider;
+import com.azure.cosmos.encryption.EncryptionOptions;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -335,14 +340,14 @@ public class EncryptionTests extends TestSuiteBase {
     }
 
     private static void ValidateQueryResultsAsync(
-        CosmosAsyncContainer container,
+        EncryptionCosmosAsyncContainer container,
         String query,
         TestDoc expectedDoc) {
         ValidateQueryResultsAsync(container, new SqlQuerySpec(query), expectedDoc);
     }
 
     private static void ValidateQueryResultsAsync(
-        CosmosAsyncContainer container,
+        EncryptionCosmosAsyncContainer container,
         SqlQuerySpec query,
         TestDoc expectedDoc) {
         CosmosQueryRequestOptions requestOptions = expectedDoc != null
@@ -368,11 +373,11 @@ public class EncryptionTests extends TestSuiteBase {
         assertThat(item.nonSensitive).isNotNull();
     }
 
-    private static void VerifyItemByReadAsync(CosmosAsyncContainer container, TestDoc testDoc) {
+    private static void VerifyItemByReadAsync(EncryptionCosmosAsyncContainer container, TestDoc testDoc) {
         VerifyItemByReadAsync(container, testDoc, null);
     }
 
-    private static void VerifyItemByReadAsync(CosmosAsyncContainer container, TestDoc testDoc, CosmosItemRequestOptions requestOptions) {
+    private static void VerifyItemByReadAsync(EncryptionCosmosAsyncContainer container, TestDoc testDoc, CosmosItemRequestOptions requestOptions) {
         CosmosItemResponse<TestDoc> readResponse = container.readItem(testDoc.id, new PartitionKey(testDoc.pk), requestOptions, TestDoc.class).block();
 
         assertThat(readResponse.getStatusCode()).isEqualTo(200);
@@ -503,7 +508,7 @@ public class EncryptionTests extends TestSuiteBase {
         }
     }
 
-    private static CosmosItemResponse<TestDoc> CreateItemAsync(CosmosAsyncContainer container,
+    private static CosmosItemResponse<TestDoc> CreateItemAsync(EncryptionCosmosAsyncContainer container,
                                                                String dekId,
                                                                List<String> pathsToEncrypt) {
         return CreateItemAsync(container,
@@ -512,7 +517,7 @@ public class EncryptionTests extends TestSuiteBase {
     }
 
     private static CosmosItemResponse<TestDoc> CreateItemAsync(
-        CosmosAsyncContainer container,
+        EncryptionCosmosAsyncContainer container,
         String dekId,
         List<String> pathsToEncrypt,
         String partitionKey) {

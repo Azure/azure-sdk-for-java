@@ -32,7 +32,6 @@ import com.azure.cosmos.util.UtilBridgeInternal;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
-import reactor.core.scheduler.Schedulers;
 
 import java.util.List;
 import java.util.function.Function;
@@ -435,7 +434,7 @@ public class CosmosAsyncContainer {
                 this.getDatabase().getClient().getServiceEndpoint(), database.getId());
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, cosmosQueryRequestOptions);
 
-            return transformNew(
+            return applyTransformer(
              getDatabase().getDocClientWrapper()
                 .queryDocuments(CosmosAsyncContainer.this.getLink(), sqlQuerySpec, cosmosQueryRequestOptions), transformer, scheduler,
                 classType);
@@ -443,7 +442,7 @@ public class CosmosAsyncContainer {
         });
     }
 
-    private <T> Flux<FeedResponse<T>> transformNew(Flux<FeedResponse<Document>> queryDocuments, Function<Document, Document> transformer, Scheduler scheduler, Class<T> classType) {
+    private <T> Flux<FeedResponse<T>> applyTransformer(Flux<FeedResponse<Document>> queryDocuments, Function<Document, Document> transformer, Scheduler scheduler, Class<T> classType) {
         if (transformer == null) {
             return queryDocuments.map(response -> prepareFeedResponse(response, classType));
         } else {

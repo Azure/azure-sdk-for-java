@@ -15,7 +15,7 @@ import static com.azure.cosmos.implementation.Warning.INTERNAL_USE_ONLY_WARNING;
  * This is meant to be used only internally as a bridge access to classes in implementation.
  */
 @Warning(value = INTERNAL_USE_ONLY_WARNING)
-public class EncryptionBridgeInternal {
+public class EncryptionModelBridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> CosmosItemResponse<T> createCosmosItemResponse(ResourceResponse<Document> response, byte[] contentAsByteArray, Class<T> classType, ItemDeserializer itemDeserializer) {

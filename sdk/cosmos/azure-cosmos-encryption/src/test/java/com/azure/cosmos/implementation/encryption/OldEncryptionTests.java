@@ -7,13 +7,18 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.EncryptionCosmosAsyncContainer;
-import com.azure.cosmos.WithEncryption;
+import com.azure.cosmos.encryption.EncryptionCosmosAsyncContainer;
+import com.azure.cosmos.encryption.EncryptionItemRequestOptions;
+import com.azure.cosmos.encryption.EncryptionKeyUnwrapResult;
+import com.azure.cosmos.encryption.EncryptionKeyWrapMetadata;
+import com.azure.cosmos.encryption.EncryptionKeyWrapProvider;
+import com.azure.cosmos.encryption.EncryptionKeyWrapResult;
+import com.azure.cosmos.encryption.WithEncryption;
 import com.azure.cosmos.implementation.DatabaseForTest;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.encryption.api.CosmosEncryptionAlgorithm;
-import com.azure.cosmos.implementation.encryption.api.EncryptionOptions;
+import com.azure.cosmos.encryption.CosmosEncryptionAlgorithm;
+import com.azure.cosmos.encryption.EncryptionOptions;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
@@ -178,7 +183,7 @@ public class OldEncryptionTests extends TestSuiteBase {
         requestOptions.setEncryptionOptions(encryptionOptions);
 
         TestDoc properties = getItem(UUID.randomUUID().toString());
-        CosmosItemResponse<TestDoc> itemResponse = encyptionContainer.createItem(properties, requestOptions).block();
+        CosmosItemResponse<TestDoc> itemResponse = encyptionContainer.createItem(properties, new PartitionKey(properties.pk), requestOptions).block();
         assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
 
         TestDoc responseItem = itemResponse.getItem();

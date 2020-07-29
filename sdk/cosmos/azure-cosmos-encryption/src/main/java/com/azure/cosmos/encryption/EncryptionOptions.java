@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.implementation.encryption.api;
+package com.azure.cosmos.encryption;
 
 import java.util.List;
 
@@ -11,8 +11,8 @@ import java.util.List;
 public class EncryptionOptions {
 
     /**
-     *  Gets Algorithm to be used for encrypting the data in the request payload.
-     * @return
+     * Gets Algorithm to be used for encrypting the data in the request payload.
+     * @return encryption algorithm name.
      */
     public String getEncryptionAlgorithm() {
         return encryptionAlgorithm;
@@ -45,10 +45,19 @@ public class EncryptionOptions {
         return this;
     }
 
+    /**
+     * Gets the paths to be encrypted.
+     * @return list of the paths to be encrypted.
+     */
     public List<String> getPathsToEncrypt() {
         return pathsToEncrypt;
     }
 
+    /**
+     * Sets the path to be encrypted.
+     * @param pathsToEncrypt
+     * @return the options.
+     */
     public EncryptionOptions setPathsToEncrypt(List<String> pathsToEncrypt) {
         this.pathsToEncrypt = pathsToEncrypt;
         return this;
@@ -56,7 +65,7 @@ public class EncryptionOptions {
 
     /**
      * Identifier of the data encryption key to be used for encrypting the data in the request payload.
-     * The data encryption key must be suitable for use with the {@link com.azure.cosmos.implementation.encryption.api.DataEncryptionKey} provided.
+     * The data encryption key must be suitable for use with the {@link DataEncryptionKey} provided.
      * <p>
      * The {@link DataEncryptionKeyProvider} configured on the client is used to retrieve the actual data encryption key.
      */

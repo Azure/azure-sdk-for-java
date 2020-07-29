@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.implementation.encryption.api;
+package com.azure.cosmos.implementation.encryption;
 
 public class Constants {
     public static final String DOCUMENT_RESOURCE_PROPERTY_NAME = "Documents";
