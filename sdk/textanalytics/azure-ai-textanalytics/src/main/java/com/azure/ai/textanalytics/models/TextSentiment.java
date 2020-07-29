@@ -3,43 +3,27 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-
 /**
- * Defines values for {@link TextSentiment}.
+ * Defines enum values for {@link TextSentiment}.
  */
-@Immutable
-public final class TextSentiment extends ExpandableStringEnum<TextSentiment> {
+public enum TextSentiment {
     /**
-     * Static value Positive for {@link TextSentiment}.
+     * Enum value Positive for {@link TextSentiment}.
      */
-    public static final TextSentiment POSITIVE = fromString("positive");
+    POSITIVE,
 
     /**
-     * Static value Neutral for {@link TextSentiment}.
+     * Enum value Neutral for {@link TextSentiment}.
      */
-    public static final TextSentiment NEUTRAL = fromString("neutral");
+    NEUTRAL,
 
     /**
-     * Static value Negative for {@link TextSentiment}.
+     * Enum value Negative for {@link TextSentiment}.
      */
-    public static final TextSentiment NEGATIVE = fromString("negative");
+    NEGATIVE,
 
     /**
-     * Static value Mixed for {@link TextSentiment}.
+     * Enum value Mixed for {@link TextSentiment}.
      */
-    public static final TextSentiment MIXED = fromString("mixed");
-
-    /**
-     * Creates or finds a {@link TextSentiment} from its string representation.
-     *
-     * @param name A name to look for.
-     * @return The corresponding {@link TextSentiment}.
-     */
-    @JsonCreator
-    public static TextSentiment fromString(String name) {
-        return fromString(name, TextSentiment.class);
-    }
+    MIXED
 }

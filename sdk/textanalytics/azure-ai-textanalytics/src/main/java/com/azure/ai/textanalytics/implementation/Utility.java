@@ -3,6 +3,7 @@
 
 package com.azure.ai.textanalytics.implementation;
 
+import com.azure.ai.textanalytics.implementation.models.DocumentSentimentValue;
 import com.azure.ai.textanalytics.implementation.models.DocumentStatistics;
 import com.azure.ai.textanalytics.implementation.models.ErrorCodeValue;
 import com.azure.ai.textanalytics.implementation.models.InnerError;
@@ -10,6 +11,7 @@ import com.azure.ai.textanalytics.implementation.models.InnerErrorCodeValue;
 import com.azure.ai.textanalytics.implementation.models.LanguageInput;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageInput;
 import com.azure.ai.textanalytics.implementation.models.RequestStatistics;
+import com.azure.ai.textanalytics.implementation.models.SentenceSentimentValue;
 import com.azure.ai.textanalytics.implementation.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.implementation.models.TextAnalyticsErrorException;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
@@ -18,6 +20,7 @@ import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
+import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpResponse;
@@ -227,5 +230,41 @@ public final class Utility {
             .setText(textDocumentInput.getText())
             .setCountryHint(textDocumentInput.getCountryHint())));
         return multiLanguageInputs;
+    }
+
+    /**
+     * Convert a {@link DocumentSentimentValue} to TextSentiment.
+     *
+     * @param documentSentimentValue The {@link DocumentSentimentValue}.
+     * @return The TextSentiment.
+     */
+    public static TextSentiment toTextSentiment(DocumentSentimentValue documentSentimentValue) {
+        switch (documentSentimentValue) {
+            case POSITIVE:
+                return TextSentiment.POSITIVE;
+            case NEGATIVE:
+                return TextSentiment.NEGATIVE;
+            case NEUTRAL:
+                return TextSentiment.NEUTRAL;
+            default:
+                return TextSentiment.MIXED;
+        }
+    }
+
+    /**
+     * Convert a {@link SentenceSentimentValue} to TextSentiment.
+     *
+     * @param sentenceSentimentValue The {@link SentenceSentimentValue}.
+     * @return The TextSentiment.
+     */
+    public static TextSentiment toTextSentiment(SentenceSentimentValue sentenceSentimentValue) {
+        switch (sentenceSentimentValue) {
+            case POSITIVE:
+                return TextSentiment.POSITIVE;
+            case NEGATIVE:
+                return TextSentiment.NEGATIVE;
+            default:
+                return TextSentiment.NEUTRAL;
+        }
     }
 }

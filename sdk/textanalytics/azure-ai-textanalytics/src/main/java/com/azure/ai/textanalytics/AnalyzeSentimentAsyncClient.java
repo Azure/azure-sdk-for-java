@@ -6,9 +6,7 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.DocumentSentiment;
-import com.azure.ai.textanalytics.implementation.models.DocumentSentimentValue;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
-import com.azure.ai.textanalytics.implementation.models.SentenceSentimentValue;
 import com.azure.ai.textanalytics.implementation.models.SentimentConfidenceScorePerLabel;
 import com.azure.ai.textanalytics.implementation.models.SentimentResponse;
 import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
@@ -19,7 +17,6 @@ import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.models.WarningCode;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
@@ -41,6 +38,7 @@ import static com.azure.ai.textanalytics.implementation.Utility.toBatchStatistic
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsError;
 import static com.azure.ai.textanalytics.implementation.Utility.toTextDocumentStatistics;
+import static com.azure.ai.textanalytics.implementation.Utility.toTextSentiment;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
@@ -151,9 +149,8 @@ class AnalyzeSentimentAsyncClient {
             .map(sentenceSentiment -> {
                 final SentimentConfidenceScorePerLabel confidenceScorePerSentence =
                     sentenceSentiment.getConfidenceScores();
-                final SentenceSentimentValue sentenceSentimentValue = sentenceSentiment.getSentiment();
                 return new SentenceSentiment(sentenceSentiment.getText(),
-                    TextSentiment.fromString(sentenceSentimentValue == null ? null : sentenceSentimentValue.toString()),
+                    toTextSentiment(sentenceSentiment.getSentiment()),
                     new SentimentConfidenceScores(confidenceScorePerSentence.getNegative(),
                         confidenceScorePerSentence.getNeutral(), confidenceScorePerSentence.getPositive()));
             }).collect(Collectors.toList());
@@ -167,14 +164,13 @@ class AnalyzeSentimentAsyncClient {
                     warning.getMessage());
             }).collect(Collectors.toList());
 
-        final DocumentSentimentValue documentSentimentValue = documentSentiment.getSentiment();
         return new AnalyzeSentimentResult(
             documentSentiment.getId(),
             documentSentiment.getStatistics() == null
                 ? null : toTextDocumentStatistics(documentSentiment.getStatistics()),
             null,
             new com.azure.ai.textanalytics.models.DocumentSentiment(
-                TextSentiment.fromString(documentSentimentValue == null ? null : documentSentimentValue.toString()),
+                toTextSentiment(documentSentiment.getSentiment()),
                 new SentimentConfidenceScores(
                     confidenceScorePerLabel.getNegative(),
                     confidenceScorePerLabel.getNeutral(),

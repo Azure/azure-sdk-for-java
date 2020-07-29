@@ -1,6 +1,8 @@
 # Release History
 ## 5.1.0-beta.1 (Unreleased)
-
+**Breaking changes**
+- TextSentiment no longer an expandable enum but a regular enum.
+ 
 ## 5.0.0 (2020-07-27)
 - Re-release of version `1.0.1` with updated version `5.0.0`.
 
