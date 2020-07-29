@@ -3,7 +3,7 @@
 package com.azure.data.tables.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.data.tables.models.Entity;
+import com.azure.data.tables.models.TableEntity;
 
 import java.util.Objects;
 
@@ -40,12 +40,12 @@ public final class EntityHelper {
     }
 
     /**
-     * Sets the ETag on an {@link Entity}.
+     * Sets the ETag on an {@link TableEntity}.
      *
      * @param entity Entity to set the ETag on.
      * @param eTag ETag to set.
      */
-    public static void setETag(Entity entity, String eTag) {
+    public static void setETag(TableEntity entity, String eTag) {
         if (entityAccessor == null) {
             throw new ClientLogger(EntityHelper.class).logExceptionAsError(
                 new IllegalStateException("'entityAccessor' should not be null."));
@@ -56,11 +56,11 @@ public final class EntityHelper {
 
     public interface EntityAccessor {
         /**
-         * Sets the ETag on an {@link Entity}.
+         * Sets the ETag on an {@link TableEntity}.
          *
          * @param entity Entity to set the ETag on.
          * @param eTag ETag to set.
          */
-        void setETag(Entity entity, String eTag);
+        void setETag(TableEntity entity, String eTag);
     }
 }

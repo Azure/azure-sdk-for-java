@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.data.tables;
 
-import com.azure.data.tables.models.Entity;
-import com.azure.data.tables.models.QueryParams;
-import com.azure.data.tables.models.UpdateMode;
+import com.azure.data.tables.models.TableEntity;
+import com.azure.data.tables.models.TableQueryParams;
+import com.azure.data.tables.models.TableUpdateMode;
 
 /**
  * async code snippets for the table service
@@ -47,7 +47,7 @@ public class TableServiceAsyncClientCodeSnippets {
         TableServiceAsyncClient tableServiceAsyncClient = new TableServiceClientBuilder()
             .connectionString("connectionString")
             .buildAsyncClient();
-        QueryParams queryParams = new QueryParams().setFilter("TableName eq OfficeSupplies");
+        TableQueryParams queryParams = new TableQueryParams().setFilter("TableName eq OfficeSupplies");
 
         tableServiceAsyncClient.listTables(queryParams).subscribe(azureTable -> {
             System.out.println(azureTable.getName());
@@ -65,7 +65,7 @@ public class TableServiceAsyncClientCodeSnippets {
             .buildAsyncClient();
 
         TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getTableAsyncClient("OfficeSupplies");
-        Entity entity = new Entity("markers", "crayolaMarkers");
+        TableEntity entity = new TableEntity("markers", "crayolaMarkers");
 
         tableAsyncClient.createEntity(entity).subscribe(tableEntity -> {
             System.out.println("Insert Entity Successful. Entity: " + tableEntity);
@@ -141,7 +141,7 @@ public class TableServiceAsyncClientCodeSnippets {
 
             //UpdateMode.REPLACE: so the entity will be replaced if it exists or the request fails if not found
             //ifUnchanged being false means the eTags must not match
-            return tableAsyncClient.updateEntity(tableEntity, false, UpdateMode.REPLACE);
+            return tableAsyncClient.updateEntity(tableEntity, false, TableUpdateMode.REPLACE);
         }).subscribe(
             Void -> { },
             error -> System.err.println("There was an error updating the Entity. Error: " + error),
@@ -157,7 +157,7 @@ public class TableServiceAsyncClientCodeSnippets {
             .buildAsyncClient();
 
         TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getTableAsyncClient("OfficeSupplies");
-        QueryParams queryParams = new QueryParams()
+        TableQueryParams queryParams = new TableQueryParams()
             .setFilter("Product eq markers")
             .setSelect("Seller, Price");
 

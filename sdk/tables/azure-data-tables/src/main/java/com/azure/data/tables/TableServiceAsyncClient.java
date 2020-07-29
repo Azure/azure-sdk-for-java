@@ -24,8 +24,8 @@ import com.azure.data.tables.implementation.models.ResponseFormat;
 import com.azure.data.tables.implementation.models.TableProperties;
 import com.azure.data.tables.implementation.models.TableQueryResponse;
 import com.azure.data.tables.implementation.models.TableResponseProperties;
-import com.azure.data.tables.models.QueryParams;
-import com.azure.data.tables.models.Table;
+import com.azure.data.tables.models.TableQueryParams;
+import com.azure.data.tables.models.AzureTable;
 import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -76,7 +76,7 @@ public class TableServiceAsyncClient {
      * @param name the name of the table
      * @return associated azure table object
      */
-    public Table getTable(String name) {
+    public AzureTable getTable(String name) {
         return null; //TODO: idk how to do this one
     }
 
@@ -87,7 +87,7 @@ public class TableServiceAsyncClient {
      * @return the azure table object for the created table
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Table> createTable(String tableName) {
+    public Mono<AzureTable> createTable(String tableName) {
         return createTableWithResponse(tableName).flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
@@ -98,11 +98,11 @@ public class TableServiceAsyncClient {
      * @return a response wth the azure table object for the created table
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Table>> createTableWithResponse(String tableName) {
+    public Mono<Response<AzureTable>> createTableWithResponse(String tableName) {
         return withContext(context -> createTableWithResponse(tableName, context));
     }
 
-    Mono<Response<Table>> createTableWithResponse(String tableName, Context context) {
+    Mono<Response<AzureTable>> createTableWithResponse(String tableName, Context context) {
         context = context == null ? Context.NONE : context;
         final TableProperties properties = new TableProperties().setTableName(tableName);
 
@@ -111,7 +111,7 @@ public class TableServiceAsyncClient {
                 null,
                 ResponseFormat.RETURN_CONTENT, null, context)
                 .map(response -> {
-                    final Table table = new Table(response.getValue().getTableName());
+                    final AzureTable table = new AzureTable(response.getValue().getTableName());
                     return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                         response.getHeaders(), table);
                 });
@@ -155,8 +155,8 @@ public class TableServiceAsyncClient {
      * @return a flux of the tables that met this criteria
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Table> listTables() {
-        return listTables(new QueryParams());
+    public PagedFlux<AzureTable> listTables() {
+        return listTables(new TableQueryParams());
     }
 
     /**
@@ -166,21 +166,21 @@ public class TableServiceAsyncClient {
      * @return a flux of the tables that met this criteria
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Table> listTables(QueryParams queryParams) {
+    public PagedFlux<AzureTable> listTables(TableQueryParams queryParams) {
 
         return new PagedFlux<>(
             () -> withContext(context -> listTablesFirstPage(context, queryParams)),
             token -> withContext(context -> listTablesNextPage(token, context, queryParams)));
     } //802
 
-    PagedFlux<Table> listTables(QueryParams queryParams, Context context) {
+    PagedFlux<AzureTable> listTables(TableQueryParams queryParams, Context context) {
 
         return new PagedFlux<>(
             () -> listTablesFirstPage(context, queryParams),
             token -> listTablesNextPage(token, context, queryParams));
     } //802
 
-    private Mono<PagedResponse<Table>> listTablesFirstPage(Context context, QueryParams queryParams) {
+    private Mono<PagedResponse<AzureTable>> listTablesFirstPage(Context context, TableQueryParams queryParams) {
         try {
             return listTables(null, context, queryParams);
         } catch (RuntimeException e) {
@@ -188,7 +188,7 @@ public class TableServiceAsyncClient {
         }
     } //1459
 
-    private Mono<PagedResponse<Table>> listTablesNextPage(String token, Context context, QueryParams queryParams) {
+    private Mono<PagedResponse<AzureTable>> listTablesNextPage(String token, Context context, TableQueryParams queryParams) {
         try {
             return listTables(token, context, queryParams);
         } catch (RuntimeException e) {
@@ -196,7 +196,7 @@ public class TableServiceAsyncClient {
         }
     } //1459
 
-    private Mono<PagedResponse<Table>> listTables(String nextTableName, Context context, QueryParams queryParams) {
+    private Mono<PagedResponse<AzureTable>> listTables(String nextTableName, Context context, TableQueryParams queryParams) {
         QueryOptions queryOptions = new QueryOptions()
             .setFilter(queryParams.getFilter())
             .setTop(queryParams.getTop())
@@ -212,9 +212,9 @@ public class TableServiceAsyncClient {
                 if (tableResponsePropertiesList == null) {
                     return Mono.empty();
                 }
-                final List<Table> tables = tableResponsePropertiesList.stream()
+                final List<AzureTable> tables = tableResponsePropertiesList.stream()
                     .map(e -> {
-                        Table table = new Table(e.getTableName());
+                        AzureTable table = new AzureTable(e.getTableName());
                         return table;
                     }).collect(Collectors.toList());
 
@@ -225,12 +225,12 @@ public class TableServiceAsyncClient {
     } //1836
 
 
-    private static class TablePaged implements PagedResponse<Table> {
+    private static class TablePaged implements PagedResponse<AzureTable> {
         private final Response<TableQueryResponse> httpResponse;
-        private final IterableStream<Table> tableStream;
+        private final IterableStream<AzureTable> tableStream;
         private final String continuationToken;
 
-        TablePaged(Response<TableQueryResponse> httpResponse, List<Table> tableList, String continuationToken) {
+        TablePaged(Response<TableQueryResponse> httpResponse, List<AzureTable> tableList, String continuationToken) {
             this.httpResponse = httpResponse;
             this.tableStream = IterableStream.of(tableList);
             this.continuationToken = continuationToken;
@@ -252,7 +252,7 @@ public class TableServiceAsyncClient {
         }
 
         @Override
-        public IterableStream<Table> getElements() {
+        public IterableStream<AzureTable> getElements() {
             return tableStream;
         }
 

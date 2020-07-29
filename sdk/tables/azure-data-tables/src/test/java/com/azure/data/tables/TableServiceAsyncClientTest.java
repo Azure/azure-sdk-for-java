@@ -8,7 +8,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
-import com.azure.data.tables.models.QueryParams;
+import com.azure.data.tables.models.TableQueryParams;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -116,7 +116,7 @@ public class TableServiceAsyncClientTest extends TestBase {
     @Test
     void listTableWithResponseWithParams() {
         // Arrange
-        QueryParams queryParams = new QueryParams().setFilter("TableName eq SampleTable");
+        TableQueryParams queryParams = new TableQueryParams().setFilter("TableName eq SampleTable");
 
         // Act & Assert
         StepVerifier.create(asyncClient.listTables(queryParams))

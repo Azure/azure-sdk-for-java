@@ -8,7 +8,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
-import com.azure.data.tables.models.Table;
+import com.azure.data.tables.models.AzureTable;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -40,7 +40,7 @@ public class TableServiceClientTest extends TestBase {
         String tableName = testResourceNamer.randomName("test", 20);
 
         // Act
-        Table table = client.createTable(tableName);
+        AzureTable table = client.createTable(tableName);
 
         // Assert
         assertEquals(tableName, table.getName());

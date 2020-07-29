@@ -9,7 +9,7 @@ import com.azure.core.annotation.Fluent;
  * helps construct a query
  */
 @Fluent
-public final class QueryParams {
+public final class TableQueryParams {
     private Integer top;
     private String select;
     private String filter;
@@ -29,7 +29,7 @@ public final class QueryParams {
      * @param top the top value to set.
      * @return the QueryOptions object itself.
      */
-    public QueryParams setTop(Integer top) {
+    public TableQueryParams setTop(Integer top) {
         this.top = top;
         return this;
     }
@@ -51,7 +51,7 @@ public final class QueryParams {
      * @param select the select value to set.
      * @return the QueryOptions object itself.
      */
-    public QueryParams setSelect(String select) {
+    public TableQueryParams setSelect(String select) {
         this.select = select;
         return this;
     }
@@ -71,7 +71,7 @@ public final class QueryParams {
      * @param filter the filter value to set.
      * @return the QueryOptions object itself.
      */
-    public QueryParams setFilter(String filter) {
+    public TableQueryParams setFilter(String filter) {
         this.filter = filter;
         return this;
     }

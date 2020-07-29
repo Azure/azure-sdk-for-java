@@ -8,8 +8,8 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.data.tables.models.QueryParams;
-import com.azure.data.tables.models.Table;
+import com.azure.data.tables.models.TableQueryParams;
+import com.azure.data.tables.models.AzureTable;
 
 /**
  * client for table service
@@ -29,7 +29,7 @@ public class TableServiceClient {
      * @param name the name of the table
      * @return associated azure table object
      */
-    public Table getTable(String name) {
+    public AzureTable getTable(String name) {
         return null;
     }
 
@@ -50,7 +50,7 @@ public class TableServiceClient {
      * @return AzureTable of the created table
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Table createTable(String tableName) {
+    public AzureTable createTable(String tableName) {
         return client.createTable(tableName).block();
     }
 
@@ -62,7 +62,7 @@ public class TableServiceClient {
      * @return response with azureTable of the created table
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Table> createTableWithResponse(String tableName, Context context) {
+    public Response<AzureTable> createTableWithResponse(String tableName, Context context) {
         return client.createTableWithResponse(tableName, context).block();
     }
 
@@ -96,7 +96,7 @@ public class TableServiceClient {
      * @return a list of tables that meet the query
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Table> listTables(QueryParams queryParams) {
+    public PagedIterable<AzureTable> listTables(TableQueryParams queryParams) {
         return new PagedIterable<>(client.listTables(queryParams));
     }
 

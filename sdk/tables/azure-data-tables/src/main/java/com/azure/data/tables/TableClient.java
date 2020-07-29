@@ -9,10 +9,10 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.data.tables.implementation.models.QueryOptions;
-import com.azure.data.tables.models.Entity;
-import com.azure.data.tables.models.QueryParams;
-import com.azure.data.tables.models.Table;
-import com.azure.data.tables.models.UpdateMode;
+import com.azure.data.tables.models.TableEntity;
+import com.azure.data.tables.models.TableQueryParams;
+import com.azure.data.tables.models.AzureTable;
+import com.azure.data.tables.models.TableUpdateMode;
 import java.time.Duration;
 
 /**
@@ -70,7 +70,7 @@ public class TableClient {
      *
      * @return a table
      */
-    public Table create() {
+    public AzureTable create() {
         return client.create().block();
     }
 
@@ -80,7 +80,7 @@ public class TableClient {
      * @param timeout Duration to wait for operation to complete.
      * @return a table
      */
-    public Table create(Duration timeout) {
+    public AzureTable create(Duration timeout) {
         return client.create().block(timeout);
     }
 
@@ -91,7 +91,7 @@ public class TableClient {
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return HTTP response containing the created table.
      */
-    public Response<Table> createWithResponse(Duration timeout, Context context) {
+    public Response<AzureTable> createWithResponse(Duration timeout, Context context) {
         return client.createWithResponse(context).block(timeout);
     }
 
@@ -103,7 +103,7 @@ public class TableClient {
      * @return the created TableEntity
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Entity createEntity(Entity tableEntity) {
+    public TableEntity createEntity(TableEntity tableEntity) {
         return client.createEntity(tableEntity).block();
     }
 
@@ -116,7 +116,7 @@ public class TableClient {
      * @return the created TableEntity
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Entity createEntity(Entity tableEntity, Duration timeout) {
+    public TableEntity createEntity(TableEntity tableEntity, Duration timeout) {
         return createEntityWithResponse(tableEntity, timeout, null).getValue();
     }
 
@@ -130,7 +130,7 @@ public class TableClient {
      * @return the created TableEntity in a response
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Entity> createEntityWithResponse(Entity tableEntity, Duration timeout, Context context) {
+    public Response<TableEntity> createEntityWithResponse(TableEntity tableEntity, Duration timeout, Context context) {
         return client.createEntityWithResponse(tableEntity, context).block(timeout);
     }
 
@@ -140,7 +140,7 @@ public class TableClient {
      * @param entity entity to upsert
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void upsertEntity(Entity entity) {
+    public void upsertEntity(TableEntity entity) {
         client.upsertEntity(entity).block();
     }
 
@@ -151,7 +151,7 @@ public class TableClient {
      * @param entity entity to upsert
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void upsertEntity(Entity entity, UpdateMode updateMode) {
+    public void upsertEntity(TableEntity entity, TableUpdateMode updateMode) {
         client.upsertEntity(entity, updateMode).block();
     }
 
@@ -163,7 +163,7 @@ public class TableClient {
      * @param timeout max time for query to execute before erroring out
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void upsertEntity(Entity entity, UpdateMode updateMode, Duration timeout) {
+    public void upsertEntity(TableEntity entity, TableUpdateMode updateMode, Duration timeout) {
         upsertEntityWithResponse(entity, updateMode, timeout, null).getValue();
     }
 
@@ -177,7 +177,7 @@ public class TableClient {
      * @return a response
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> upsertEntityWithResponse(Entity entity, UpdateMode updateMode, Duration timeout,
+    public Response<Void> upsertEntityWithResponse(TableEntity entity, TableUpdateMode updateMode, Duration timeout,
         Context context) {
         return client.upsertEntityWithResponse(entity, updateMode, timeout, context).block();
     }
@@ -189,7 +189,7 @@ public class TableClient {
      * @param entity the entity to update
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateEntity(Entity entity) {
+    public void updateEntity(TableEntity entity) {
         client.upsertEntity(entity).block();
     }
 
@@ -201,7 +201,7 @@ public class TableClient {
      * @param entity the entity to update
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateEntity(Entity entity, UpdateMode updateMode) {
+    public void updateEntity(TableEntity entity, TableUpdateMode updateMode) {
         client.updateEntity(entity, updateMode).block();
     }
 
@@ -214,7 +214,7 @@ public class TableClient {
      * @param ifUnchanged if the eTag of the entity must match the entity in the service or not
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateEntity(Entity entity, boolean ifUnchanged, UpdateMode updateMode) {
+    public void updateEntity(TableEntity entity, boolean ifUnchanged, TableUpdateMode updateMode) {
         client.updateEntity(entity, ifUnchanged, updateMode).block();
     }
 
@@ -228,7 +228,7 @@ public class TableClient {
      * @param timeout max time for query to execute before erroring out
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateEntity(Entity entity, boolean ifUnchanged, UpdateMode updateMode, Duration timeout) {
+    public void updateEntity(TableEntity entity, boolean ifUnchanged, TableUpdateMode updateMode, Duration timeout) {
         updateEntityWithResponse(entity, ifUnchanged, updateMode, timeout, null).getValue();
     }
 
@@ -244,7 +244,7 @@ public class TableClient {
      * @return a response
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updateEntityWithResponse(Entity entity, boolean ifUnchanged, UpdateMode updateMode,
+    public Response<Void> updateEntityWithResponse(TableEntity entity, boolean ifUnchanged, TableUpdateMode updateMode,
         Duration timeout, Context context) {
         return client.updateEntityWithResponse(entity, ifUnchanged, updateMode, timeout, context).block();
     }
@@ -255,7 +255,7 @@ public class TableClient {
      * @param entity entity to delete
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteEntity(Entity entity) {
+    public void deleteEntity(TableEntity entity) {
         client.deleteEntity(entity).block();
     }
 
@@ -266,7 +266,7 @@ public class TableClient {
      * @param ifUnchanged if the eTag of the entity must match the entity in the service or not
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteEntity(Entity entity, boolean ifUnchanged) {
+    public void deleteEntity(TableEntity entity, boolean ifUnchanged) {
         client.deleteEntity(entity, ifUnchanged).block();
     }
 
@@ -278,7 +278,7 @@ public class TableClient {
      * @param timeout max time for query to execute before erroring out
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteEntity(Entity entity, boolean ifUnchanged, Duration timeout) {
+    public void deleteEntity(TableEntity entity, boolean ifUnchanged, Duration timeout) {
         deleteEntityWithResponse(entity, ifUnchanged, timeout, null);
     }
 
@@ -292,7 +292,7 @@ public class TableClient {
      * @return a response
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteEntityWithResponse(Entity entity, boolean ifUnchanged, Duration timeout,
+    public Response<Void> deleteEntityWithResponse(TableEntity entity, boolean ifUnchanged, Duration timeout,
         Context context) {
         return client.deleteEntityWithResponse(entity, ifUnchanged, timeout, context).block();
     }
@@ -303,7 +303,7 @@ public class TableClient {
      * @return a list of the tables that fit the query
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Entity> listEntities() {
+    public PagedIterable<TableEntity> listEntities() {
         return new PagedIterable<>(client.listEntities());
     }
 
@@ -314,7 +314,7 @@ public class TableClient {
      * @return a list of the tables that fit the query
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Entity> listEntities(QueryParams queryOptions) {
+    public PagedIterable<TableEntity> listEntities(TableQueryParams queryOptions) {
         return new PagedIterable<>(client.listEntities(queryOptions));
     }
 
@@ -326,7 +326,7 @@ public class TableClient {
      * @return a list of the tables that fit the query
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Entity> listEntities(QueryParams queryOptions, Duration timeout) {
+    public PagedIterable<TableEntity> listEntities(TableQueryParams queryOptions, Duration timeout) {
         return null;
     }
 
@@ -338,7 +338,7 @@ public class TableClient {
      * @return the table entity
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Entity getEntity(String partitionKey, String rowKey) {
+    public TableEntity getEntity(String partitionKey, String rowKey) {
         return client.getEntity(partitionKey, rowKey).block();
     }
 
@@ -351,7 +351,7 @@ public class TableClient {
      * @return a mono of the response with the table entity
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Entity> getEntityWithResponse(String partitionKey, String rowKey, Context context) {
+    public Response<TableEntity> getEntityWithResponse(String partitionKey, String rowKey, Context context) {
         return client.getEntityWithResponse(partitionKey, rowKey, new QueryOptions(), context).block();
     }
 

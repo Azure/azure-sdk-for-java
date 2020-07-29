@@ -109,7 +109,7 @@ public class TableClientBuilder {
     public TableAsyncClient buildAsyncClient() {
         TablesServiceVersion serviceVersion = version != null ? version : TablesServiceVersion.getLatest();
 
-        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
+        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : TableBuilderHelper.buildPipeline(
             (TablesSharedKeyCredential) tokenCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions,
             httpLogOptions, httpClient, policies, configuration, logger);
 
