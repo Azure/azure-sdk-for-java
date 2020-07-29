@@ -13,7 +13,7 @@ public final class FormRecognizerError {
     /*
      * The code property.
      */
-    private final String code;
+    private final String errorCode;
 
     /*
      * The message property.
@@ -23,11 +23,11 @@ public final class FormRecognizerError {
     /**
      * Constructs a FormRecognizerError object.
      *
-     * @param code The code property.
+     * @param errorCode The code property.
      * @param message The message property.
      */
-    public FormRecognizerError(final String code, final String message) {
-        this.code = code;
+    public FormRecognizerError(final String errorCode, final String message) {
+        this.errorCode = errorCode;
         this.message = message;
     }
 
@@ -36,8 +36,8 @@ public final class FormRecognizerError {
      *
      * @return the code value.
      */
-    public String getCode() {
-        return this.code;
+    public String getErrorCode() {
+        return this.errorCode;
     }
 
 

@@ -23,7 +23,7 @@ public final class TrainingDocumentInfo {
     /*
      * Status of the training operation.
      */
-    private final TrainingStatus trainingStatus;
+    private final TrainingStatus status;
 
     /*
      * Total number of pages trained.
@@ -33,23 +33,23 @@ public final class TrainingDocumentInfo {
     /*
      * List of errors.
      */
-    private final List<FormRecognizerError> documentErrors;
+    private final List<FormRecognizerError> errors;
 
     /**
      * Constructs a TrainingDocumentInfo object.
      *
      * @param name Training document name.
-     * @param trainingStatus Status of the training operation.
+     * @param status Status of the training operation.
      * @param pageCount Total number of pages trained.
-     * @param documentErrors List of errors.
+     * @param errors List of errors.
      */
-    public TrainingDocumentInfo(final String name, final TrainingStatus trainingStatus, final int pageCount,
-                                final List<FormRecognizerError> documentErrors) {
+    public TrainingDocumentInfo(final String name, final TrainingStatus status, final int pageCount,
+                                final List<FormRecognizerError> errors) {
         this.name = name;
-        this.trainingStatus = trainingStatus;
+        this.status = status;
         this.pageCount = pageCount;
-        this.documentErrors = documentErrors == null ? null
-            : Collections.unmodifiableList(documentErrors);
+        this.errors = errors == null ? null
+            : Collections.unmodifiableList(errors);
     }
 
     /**
@@ -66,8 +66,8 @@ public final class TrainingDocumentInfo {
      *
      * @return the status value.
      */
-    public TrainingStatus getTrainingStatus() {
-        return this.trainingStatus;
+    public TrainingStatus getStatus() {
+        return this.status;
     }
 
     /**
@@ -84,7 +84,7 @@ public final class TrainingDocumentInfo {
      *
      * @return the unmodifiable list of errors.
      */
-    public List<FormRecognizerError> getDocumentErrors() {
-        return this.documentErrors;
+    public List<FormRecognizerError> getErrors() {
+        return this.errors;
     }
 }

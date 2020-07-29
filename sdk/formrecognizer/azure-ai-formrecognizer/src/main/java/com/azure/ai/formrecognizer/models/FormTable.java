@@ -32,18 +32,18 @@ public final class FormTable {
     /*
      * The 1 based page number.
      */
-    private final Integer pageNumber;
+    private final int pageNumber;
 
     /**
      * Constructs a FormTable object.
      *
      * @param rowCount Number of rows.
      * @param columnCount Number of columns.
-     * @param cells ist of cells contained in the table.
+     * @param cells the list of cells contained in the table.
      * @param pageNumber the 1-based page number in the input document.
      */
     public FormTable(final int rowCount, final int columnCount, final List<FormTableCell> cells,
-        final Integer pageNumber) {
+        final int pageNumber) {
         this.rowCount = rowCount;
         this.columnCount = columnCount;
         this.cells = cells == null ? null : Collections.unmodifiableList(cells);
@@ -82,7 +82,7 @@ public final class FormTable {
      *
      * @return the page number value.
      */
-    public Integer getPageNumber() {
+    public int getPageNumber() {
         return this.pageNumber;
     }
 }

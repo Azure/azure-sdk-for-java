@@ -49,6 +49,7 @@ final class Transforms {
     // Pattern match to find all non-digits in the provided string.
     private static final Pattern NON_DIGIT_PATTERN = Pattern.compile("[^0-9]+");
     private static final float DEFAULT_CONFIDENCE_VALUE = 1.0f;
+    private static final int DEFAULT_PAGE_NUMBER = 1;
 
     private Transforms() {
     }
@@ -205,7 +206,7 @@ final class Transforms {
         if (!CoreUtils.isNullOrEmpty(documentResultItem.getFields())) {
             documentResultItem.getFields().forEach((key, fieldValue) -> {
                 if (fieldValue != null) {
-                    Integer pageNumber = fieldValue.getPage();
+                    int pageNumber = fieldValue.getPage();
                     FieldData labelText = new FieldData(key, null, pageNumber, null);
                     List<FormElement> formElementList = null;
                     if (includeFieldElements) {
@@ -217,7 +218,7 @@ final class Transforms {
                     extractedFieldMap.put(key, setFormField(labelText, key, fieldValue, valueText, pageNumber,
                         readResults));
                 } else {
-                    FieldData labelText = new FieldData(key, null, null, null);
+                    FieldData labelText = new FieldData(key, null, DEFAULT_PAGE_NUMBER, null);
                     extractedFieldMap.put(key, new FormField(key, labelText, null, null,
                         DEFAULT_CONFIDENCE_VALUE
                     ));

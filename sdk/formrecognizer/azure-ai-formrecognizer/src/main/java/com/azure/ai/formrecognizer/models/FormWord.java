@@ -58,7 +58,7 @@ public final class FormWord extends FormElement {
      * {@inheritDoc}
      */
     @Override
-    public Integer getPageNumber() {
+    public int getPageNumber() {
         return super.getPageNumber();
     }
 }

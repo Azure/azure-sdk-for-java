@@ -468,7 +468,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                 trainingPoller.waitForCompletion();
 
                 SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomForms(
-                    data, dataLength, trainingPoller.getFinalResult().getModelId(), new RecognizeOptions()
+                    trainingPoller.getFinalResult().getModelId(), data, dataLength, new RecognizeOptions()
                         .setContentType(FormContentType.APPLICATION_PDF).setFieldElementsIncluded(true)
                         .setPollInterval(durationTestMode), Context.NONE);
                 syncPoller.waitForCompletion();
@@ -492,7 +492,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                 trainingPoller.waitForCompletion();
 
                 SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomForms(
-                    data, dataLength, trainingPoller.getFinalResult().getModelId(), new RecognizeOptions()
+                    trainingPoller.getFinalResult().getModelId(), data, dataLength, new RecognizeOptions()
                         .setContentType(FormContentType.IMAGE_JPEG).setPollInterval(durationTestMode), Context.NONE);
                 syncPoller.waitForCompletion();
                 validateRecognizedResult(syncPoller.getFinalResult(), false, true);
@@ -514,7 +514,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             trainingPoller.waitForCompletion();
 
             SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomForms(
-                data, dataLength, trainingPoller.getFinalResult().getModelId(), new RecognizeOptions()
+                trainingPoller.getFinalResult().getModelId(), data, dataLength, new RecognizeOptions()
                     .setContentType(FormContentType.APPLICATION_PDF).setPollInterval(durationTestMode), Context.NONE);
             syncPoller.waitForCompletion();
             validateRecognizedResult(syncPoller.getFinalResult(), false, true);
@@ -537,7 +537,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             trainingPoller.waitForCompletion();
 
             SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomForms(
-                data, dataLength, trainingPoller.getFinalResult().getModelId(), new RecognizeOptions()
+                trainingPoller.getFinalResult().getModelId(), data, dataLength, new RecognizeOptions()
                     .setContentType(FormContentType.APPLICATION_PDF).setPollInterval(durationTestMode), Context.NONE);
             syncPoller.waitForCompletion();
             validateRecognizedResult(syncPoller.getFinalResult(), false, true);
@@ -560,7 +560,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                 syncPoller.waitForCompletion();
 
                 assertThrows(RuntimeException.class, () -> client.beginRecognizeCustomForms(
-                    (InputStream) null, dataLength, syncPoller.getFinalResult().getModelId(), new RecognizeOptions()
+                    syncPoller.getFinalResult().getModelId(), (InputStream) null, dataLength, new RecognizeOptions()
                         .setContentType(FormContentType.APPLICATION_PDF).setFieldElementsIncluded(true)
                         .setPollInterval(durationTestMode), Context.NONE));
             })
@@ -577,7 +577,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         customFormDataRunner((data, dataLength) -> {
             Exception ex = assertThrows(RuntimeException.class, () -> client.beginRecognizeCustomForms(
-                data, dataLength, null, new RecognizeOptions()
+                null, data, dataLength, new RecognizeOptions()
                     .setContentType(FormContentType.APPLICATION_PDF).setFieldElementsIncluded(true)
                     .setPollInterval(durationTestMode), Context.NONE));
             assertEquals(EXPECTED_MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE, ex.getMessage());
@@ -595,7 +595,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
 
         customFormDataRunner((data, dataLength) -> {
             Exception ex = assertThrows(RuntimeException.class, () -> client.beginRecognizeCustomForms(
-                data, dataLength, "", new RecognizeOptions()
+                "", data, dataLength, new RecognizeOptions()
                     .setContentType(FormContentType.APPLICATION_PDF).setFieldElementsIncluded(true)
                     .setPollInterval(durationTestMode), Context.NONE));
             assertEquals(EXPECTED_INVALID_UUID_EXCEPTION_MESSAGE, ex.getMessage());
@@ -614,8 +614,8 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                 syncPoller.waitForCompletion();
                 CustomFormModel createdModel = syncPoller.getFinalResult();
                 FormRecognizerException formRecognizerException = assertThrows(FormRecognizerException.class,
-                    () -> client.beginRecognizeCustomFormsFromUrl(invalidSourceUrl,
-                        createdModel.getModelId(), new RecognizeOptions().setPollInterval(durationTestMode),
+                    () -> client.beginRecognizeCustomFormsFromUrl(createdModel.getModelId(), invalidSourceUrl,
+                            new RecognizeOptions().setPollInterval(durationTestMode),
                         Context.NONE).getFinalResult());
                 ErrorInformation errorInformation = formRecognizerException.getErrorInformation().get(0);
                 // TODO: Service bug https://github.com/Azure/azure-sdk-for-java/issues/12046
@@ -641,8 +641,8 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             trainingPoller.waitForCompletion();
 
             SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomForms(
-                getContentDetectionFileData(FORM_LOCAL_URL),
-                    CUSTOM_FORM_FILE_LENGTH, trainingPoller.getFinalResult().getModelId(), new RecognizeOptions()
+                trainingPoller.getFinalResult().getModelId(), getContentDetectionFileData(FORM_LOCAL_URL),
+                    CUSTOM_FORM_FILE_LENGTH, new RecognizeOptions()
                     .setFieldElementsIncluded(true).setPollInterval(durationTestMode), Context.NONE);
             syncPoller.waitForCompletion();
             validateRecognizedResult(syncPoller.getFinalResult(), true, true);
@@ -661,7 +661,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             trainingPoller.waitForCompletion();
 
             SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomForms(
-                data, dataLength, trainingPoller.getFinalResult().getModelId(), new RecognizeOptions()
+                trainingPoller.getFinalResult().getModelId(), data, dataLength, new RecognizeOptions()
                     .setContentType(FormContentType.APPLICATION_PDF).setPollInterval(durationTestMode), Context.NONE);
             syncPoller.waitForCompletion();
             validateMultiPageDataLabeled(syncPoller.getFinalResult());
@@ -685,7 +685,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                 trainingPoller.waitForCompletion();
 
                 SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomForms(
-                    data, dataLength, trainingPoller.getFinalResult().getModelId(), new RecognizeOptions()
+                    trainingPoller.getFinalResult().getModelId(), data, dataLength, new RecognizeOptions()
                         .setContentType(FormContentType.APPLICATION_PDF).setPollInterval(durationTestMode), Context.NONE);
                 syncPoller.waitForCompletion();
                 validateRecognizedResult(syncPoller.getFinalResult(), false, false);
@@ -708,7 +708,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             trainingPoller.waitForCompletion();
 
             SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomForms(
-                    data, dataLength, trainingPoller.getFinalResult().getModelId(), new RecognizeOptions()
+                trainingPoller.getFinalResult().getModelId(), data, dataLength, new RecognizeOptions()
                         .setContentType(FormContentType.APPLICATION_PDF).setFieldElementsIncluded(true)
                         .setPollInterval(durationTestMode), Context.NONE);
             syncPoller.waitForCompletion();
@@ -728,7 +728,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             trainingPoller.waitForCompletion();
 
             SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomForms(
-                data, dataLength, trainingPoller.getFinalResult().getModelId(), new RecognizeOptions()
+                trainingPoller.getFinalResult().getModelId(), data, dataLength, new RecognizeOptions()
                     .setContentType(FormContentType.APPLICATION_PDF).setPollInterval(durationTestMode), Context.NONE);
             syncPoller.waitForCompletion();
             validateMultiPageDataUnlabeled(syncPoller.getFinalResult());
@@ -751,7 +751,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                 trainingPoller.waitForCompletion();
 
                 SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomForms(
-                    data, dataLength, trainingPoller.getFinalResult().getModelId(), new RecognizeOptions()
+                    trainingPoller.getFinalResult().getModelId(), data, dataLength, new RecognizeOptions()
                         .setContentType(FormContentType.IMAGE_JPEG).setPollInterval(durationTestMode), Context.NONE);
                 syncPoller.waitForCompletion();
                 validateRecognizedResult(syncPoller.getFinalResult(), false, false);
@@ -773,7 +773,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             trainingPoller.waitForCompletion();
 
             SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomForms(
-                data, dataLength, trainingPoller.getFinalResult().getModelId(), new RecognizeOptions()
+                trainingPoller.getFinalResult().getModelId(), data, dataLength, new RecognizeOptions()
                     .setContentType(FormContentType.APPLICATION_PDF).setPollInterval(durationTestMode), Context.NONE);
             syncPoller.waitForCompletion();
             validateRecognizedResult(syncPoller.getFinalResult(), false, false);
@@ -797,7 +797,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             trainingPoller.waitForCompletion();
 
             SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomFormsFromUrl(
-                fileUrl, trainingPoller.getFinalResult().getModelId(), new RecognizeOptions()
+                    trainingPoller.getFinalResult().getModelId(), fileUrl, new RecognizeOptions()
                     .setPollInterval(durationTestMode), Context.NONE);
             syncPoller.waitForCompletion();
             validateRecognizedResult(syncPoller.getFinalResult(), false, false);
@@ -819,7 +819,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             trainingPoller.waitForCompletion();
 
             SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomFormsFromUrl(
-                fileUrl, trainingPoller.getFinalResult().getModelId(), new RecognizeOptions()
+                    trainingPoller.getFinalResult().getModelId(), fileUrl, new RecognizeOptions()
                     .setFieldElementsIncluded(true).setPollInterval(durationTestMode), Context.NONE);
             syncPoller.waitForCompletion();
             validateRecognizedResult(syncPoller.getFinalResult(), true, false);
@@ -838,7 +838,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             trainingPoller.waitForCompletion();
 
             SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomFormsFromUrl(
-                fileUrl, trainingPoller.getFinalResult().getModelId(), new RecognizeOptions()
+                    trainingPoller.getFinalResult().getModelId(), fileUrl, new RecognizeOptions()
                     .setPollInterval(durationTestMode), Context.NONE);
             syncPoller.waitForCompletion();
             validateMultiPageDataUnlabeled(syncPoller.getFinalResult());
@@ -863,7 +863,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             CustomFormModel createdModel = syncPoller.getFinalResult();
             HttpResponseException httpResponseException = assertThrows(
                 HttpResponseException.class, () -> client.beginRecognizeCustomFormsFromUrl(
-                    INVALID_URL, createdModel.getModelId(), new RecognizeOptions()
+                            createdModel.getModelId(), INVALID_URL, new RecognizeOptions()
                         .setPollInterval(durationTestMode), Context.NONE).getFinalResult());
             assertEquals(httpResponseException.getMessage(), (INVALID_SOURCE_URL_ERROR));
         });
@@ -879,7 +879,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         multipageFromUrlRunner(fileUrl -> {
             Exception ex = assertThrows(RuntimeException.class, () -> client.beginRecognizeCustomFormsFromUrl(
-                fileUrl, null, new RecognizeOptions().setPollInterval(durationTestMode), Context.NONE));
+                    null, fileUrl, new RecognizeOptions().setPollInterval(durationTestMode), Context.NONE));
             assertEquals(EXPECTED_MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE, ex.getMessage());
         });
     }
@@ -894,7 +894,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         multipageFromUrlRunner(fileUrl -> beginTrainingMultipageRunner((trainingFilesUrl) -> {
             Exception ex = assertThrows(RuntimeException.class, () -> client.beginRecognizeCustomFormsFromUrl(
-                fileUrl, "", new RecognizeOptions().setPollInterval(durationTestMode), Context.NONE));
+                    "", fileUrl, new RecognizeOptions().setPollInterval(durationTestMode), Context.NONE));
             assertEquals(EXPECTED_INVALID_UUID_EXCEPTION_MESSAGE, ex.getMessage());
         }));
     }
@@ -915,7 +915,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             trainingPoller.waitForCompletion();
 
             SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomFormsFromUrl(
-                fileUrl, trainingPoller.getFinalResult().getModelId(), new RecognizeOptions()
+                    trainingPoller.getFinalResult().getModelId(), fileUrl, new RecognizeOptions()
                     .setFieldElementsIncluded(true).setPollInterval(durationTestMode), Context.NONE);
             syncPoller.waitForCompletion();
             validateRecognizedResult(syncPoller.getFinalResult(), true, true);
@@ -937,7 +937,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             trainingPoller.waitForCompletion();
 
             SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomFormsFromUrl(
-                fileUrl, trainingPoller.getFinalResult().getModelId(), new RecognizeOptions()
+                    trainingPoller.getFinalResult().getModelId(), fileUrl, new RecognizeOptions()
                     .setPollInterval(durationTestMode), Context.NONE);
             syncPoller.waitForCompletion();
             validateRecognizedResult(syncPoller.getFinalResult(), false, true);
@@ -959,7 +959,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             trainingPoller.waitForCompletion();
 
             SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomFormsFromUrl(
-                fileUrl, trainingPoller.getFinalResult().getModelId(), new RecognizeOptions()
+                    trainingPoller.getFinalResult().getModelId(), fileUrl, new RecognizeOptions()
                     .setPollInterval(durationTestMode), Context.NONE);
             syncPoller.waitForCompletion();
             validateMultiPageDataLabeled(syncPoller.getFinalResult());

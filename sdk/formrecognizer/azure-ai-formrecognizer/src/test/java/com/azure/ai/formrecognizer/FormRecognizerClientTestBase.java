@@ -179,7 +179,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
                     if (actualFormElementList.get(i) instanceof FormLine) {
                         FormLine actualFormLine = (FormLine) actualFormElementList.get(i);
-                        validateFormWordData(expectedTextLine.getWords(), actualFormLine.getFormWords());
+                        validateFormWordData(expectedTextLine.getWords(), actualFormLine.getWords());
                     }
                     FormWord actualFormWord = (FormWord) actualFormElementList.get(i);
                     assertEquals(expectedTextWord.getText(), actualFormWord.getText());
@@ -232,7 +232,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             FormLine actualLine = actualLineList.get(i);
             assertEquals(expectedLine.getText(), actualLine.getText());
             validateBoundingBoxData(expectedLine.getBoundingBox(), actualLine.getBoundingBox());
-            validateFormWordData(expectedLine.getWords(), actualLine.getFormWords());
+            validateFormWordData(expectedLine.getWords(), actualLine.getWords());
         }
     }
 

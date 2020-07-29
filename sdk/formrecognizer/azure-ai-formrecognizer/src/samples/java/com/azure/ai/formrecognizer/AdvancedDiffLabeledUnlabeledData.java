@@ -49,18 +49,16 @@ public class AdvancedDiffLabeledUnlabeledData {
 
         List<RecognizedForm> formsWithLabeledModel =
             client.beginRecognizeCustomForms(
-                new FileInputStream(analyzeFile), analyzeFile.length(),
-                "{labeled_model_Id}",
-                new RecognizeOptions()
+                    "{labeled_model_Id}", new FileInputStream(analyzeFile), analyzeFile.length(),
+                    new RecognizeOptions()
                     .setContentType(FormContentType.APPLICATION_PDF)
                     .setFieldElementsIncluded(true)
                     .setPollInterval(Duration.ofSeconds(5)), Context.NONE)
                 .getFinalResult();
 
         List<RecognizedForm> formsWithUnlabeledModel =
-            client.beginRecognizeCustomForms(new FileInputStream(analyzeFile), analyzeFile.length(),
-                "{unlabeled_model_Id}",
-                new RecognizeOptions()
+            client.beginRecognizeCustomForms("{unlabeled_model_Id}", new FileInputStream(analyzeFile), analyzeFile.length(),
+                    new RecognizeOptions()
                     .setContentType(FormContentType.APPLICATION_PDF)
                     .setFieldElementsIncluded(true)
                     .setPollInterval(Duration.ofSeconds(5)), Context.NONE)

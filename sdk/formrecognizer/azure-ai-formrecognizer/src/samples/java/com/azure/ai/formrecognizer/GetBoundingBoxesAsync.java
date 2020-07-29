@@ -37,8 +37,8 @@ public class GetBoundingBoxesAsync {
         String modelId = "{model_Id}";
         String formUrl = "{form_url}";
         PollerFlux<OperationResult, List<RecognizedForm>> recognizeFormPoller =
-            client.beginRecognizeCustomFormsFromUrl(formUrl, modelId,
-                new RecognizeOptions()
+            client.beginRecognizeCustomFormsFromUrl(modelId, formUrl,
+                    new RecognizeOptions()
                     .setFieldElementsIncluded(true));
 
         Mono<List<RecognizedForm>> recognizeFormResult = recognizeFormPoller

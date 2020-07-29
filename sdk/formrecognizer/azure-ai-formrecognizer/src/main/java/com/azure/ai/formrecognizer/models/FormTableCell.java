@@ -17,22 +17,22 @@ public final class FormTableCell extends FormElement {
     /*
      * Row index of the cell.
      */
-    private final Integer rowIndex;
+    private final int rowIndex;
 
     /*
      * Column index of the cell.
      */
-    private final Integer columnIndex;
+    private final int columnIndex;
 
     /*
      * Number of rows spanned by this cell.
      */
-    private final Integer rowSpan;
+    private final int rowSpan;
 
     /*
      * Number of columns spanned by this cell.
      */
-    private final Integer columnSpan;
+    private final int columnSpan;
 
     /*
      * Confidence value.
@@ -57,8 +57,7 @@ public final class FormTableCell extends FormElement {
 
     /**
      * Constructs a FormTableCell object.
-     *
-     * @param rowIndex Row index of the cell.
+     *  @param rowIndex Row index of the cell.
      * @param columnIndex Column index of the cell.
      * @param rowSpan Number of rows spanned by this cell.
      * @param columnSpan Number of columns spanned by this cell.
@@ -70,8 +69,8 @@ public final class FormTableCell extends FormElement {
      * @param pageNumber The 1 based page number of the cell
      * @param fieldElements a list of references to the elements constituting this table cell.
      */
-    public FormTableCell(final int rowIndex, final int columnIndex, final Integer rowSpan,
-        final Integer columnSpan, final String text, final BoundingBox boundingBox,
+    public FormTableCell(final int rowIndex, final int columnIndex, final int rowSpan,
+        final int columnSpan, final String text, final BoundingBox boundingBox,
         final float confidence, final boolean isHeader, final boolean isFooter, final int pageNumber,
         final List<FormElement> fieldElements) {
         super(text, boundingBox, pageNumber);
@@ -98,7 +97,7 @@ public final class FormTableCell extends FormElement {
      * {@inheritDoc}
      */
     @Override
-    public Integer getPageNumber() {
+    public int getPageNumber() {
         return super.getPageNumber();
     }
 
@@ -123,7 +122,7 @@ public final class FormTableCell extends FormElement {
      *
      * @return the rowIndex value.
      */
-    public Integer getRowIndex() {
+    public int getRowIndex() {
         return this.rowIndex;
     }
 
@@ -132,7 +131,7 @@ public final class FormTableCell extends FormElement {
      *
      * @return the columnIndex value.
      */
-    public Integer getColumnIndex() {
+    public int getColumnIndex() {
         return this.columnIndex;
     }
 
@@ -141,7 +140,7 @@ public final class FormTableCell extends FormElement {
      *
      * @return the rowSpan value.
      */
-    public Integer getRowSpan() {
+    public int getRowSpan() {
         return this.rowSpan;
     }
 
@@ -151,7 +150,7 @@ public final class FormTableCell extends FormElement {
      *
      * @return the columnSpan value.
      */
-    public Integer getColumnSpan() {
+    public int getColumnSpan() {
         return this.columnSpan;
     }
 
