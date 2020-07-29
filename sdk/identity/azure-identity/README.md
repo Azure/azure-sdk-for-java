@@ -115,7 +115,14 @@ If the environment configuration is not present or incomplete, the `DefaultAzure
 require platform support. See the
 [managed identity documentation](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/services-support-managed-identities) for more details on this.
 
-If a managed identity isn't available, and the application is running on Windows, the `DefaultAzureCredential` will then attempt reading from a local user token cache. `AZURE_USERNAME` environment variable must be specified if there are more than one accounts in the cache. The local token cache is shared between this library, Visual Studio (2019+), and Azure CLI. See [Enable applications for shared token cache credential](#enable-applications-for-shared-token-cache-credential) to see how to populate / clean up this token cache.
+If a managed identity isn't available, the `DefaultAzureCredential` will then attempt reading the signed in user from a set of local developer tools, in the following order
+
+1. `DefaultAzureCredential` will read from a local user token cache. `AZURE_USERNAME` environment variable must be specified if there are more than one accounts in the cache. The local token cache is shared between this library, Visual Studio (2019+), and Azure CLI. See [Enable applications for shared token cache credential](#enable-applications-for-shared-token-cache-credential) for how to populate / clean up this token cache.
+2. `DefaultAzureCredential` will then read the currently signed in user in Azure Toolkit for IntelliJ. See [Sign in Azure Toolkit for IntelliJ for IntelliJCredential](#sign-in-azure-toolkit-for-intellij-for-intellijcredential) for how to sign in in IntelliJ IDEA to enable this. 
+3. `DefaultAzureCredential` will then read the currently signed in user in Azure plugin in Visual Studio Code. See [Sign in Visual Studio Code for VisualStudioCodeCredential](#sign-in-visual-studio-code-for-visualstudiocodecredential)  for how to sign in in Visual Studio code to enable this.
+4. `DefaultAzureCredential` will then read the currently signed in user in Azure CLI. See [Sign in Azure CLI for AzureCliCredential](#sign-in-azure-cli-for-azureclicredential)
+
+If a credential or a tool isn't available, `DefaultAzureCredential` will catch the `CredentialUnavailableException` and simply try the next credential. If no credential can be used, a `ClientAuthenticationException` containing all the individual credential unavailable exceptions will be thrown at the end.
 
 ### Environment variables
 
@@ -137,7 +144,11 @@ See more about how to create a service principal and get these values in [Creati
   - [Authenticating a service principal with a client secret](#authenticating-a-service-principal-with-a-client-secret)
   - [Authenticating a user account with device code flow](#authenticating-a-user-account-with-device-code-flow)
   - [Authenticating a user account with username and password](#authenticating-a-user-account-with-username-and-password)
+  - [Authenticating a user account interactively in the browser](#authenticating-a-user-account-interactively-in-the-browser)
   - [Authenticating a user account with auth code flow](#authenticating-a-user-account-with-auth-code-flow)
+  - [Authenticating a user account with Azure CLI](#authenticating-a-user-account-with-azure-cli)
+  - [Authenticating a user account with IntelliJ IDEA](#authenticating-a-user-account-with-intellij-idea)
+  - [Authenticating a user account with Visual Studio Code](#authenticating-a-user-account-with-visual-studio-code)
   - [Chaining credentials](#chaining-credentials)
 
 ### Authenticating with `DefaultAzureCredential`
@@ -499,6 +510,16 @@ The Visual Studio Code authentication is handled by an integration with the Azur
 This will open a browser that allows you to sign in to Azure. Once you have completed the login process, you can close the browser as directed. Running your application (either in the debugger or anywhere on the development machine) will use the credential from your sign-in.
 
 ![vscode logged in](./images/vscode-logged-in.png)
+
+### Configure `DefaultAzureCredential`
+
+`DefaultAzureCredential` supports a set of configurations through setters on the `DefaultAzureCredentialBuilder` or environment variables.
+
+- Setting environment variables `AZURE_CLIENT_ID`, `AZURE_CLIENT_SECRET`, and `AZURE_TENANT_ID` as defined in [Environment Variables](#environment-variables) configures the `DefaultAzureCredential` to authenticate as the service principal specified by the values.
+- Setting `.managedIdentityClientId(String)` on the builder or environment variable `AZURE_CLIENT_ID` configures the `DefaultAzureCredential` to authenticate as a user defined managed identity, verse leaving them empty configures it to authenticate as a system assigned managed identity.
+- Setting `.tenantId(String)` on the builder or environment variable `AZURE_TENANT_ID` configures the `DefaultAzureCredential` to authenticate to a specific tenant for shared token cache, Visual Studio Code and IntelliJ IDEA.
+- Setting environment variable `AZURE_USERNAME` configures the `DefaultAzureCredential` to pick the corresponding cached token from the shared token cache.
+- Setting `.intelliJKeePassDatabasePath(String)` on the builder configures the `DefaultAzureCredential` to read a specific KeePass file when authenticating with IntelliJ credentials.
 
 ## Troubleshooting
 Credentials raise exceptions when they fail to authenticate. `ClientAuthenticationException` has a `message` attribute which
