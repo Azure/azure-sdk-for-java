@@ -11,6 +11,7 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
+import io.netty.handler.codec.http.LastHttpContent;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -99,7 +100,7 @@ public final class TimeoutHandler extends ChannelDuplexHandler {
 
     @Override
     public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) {
-        if (msg == FINAL_WRITE_BUF) {
+        if (msg == LastHttpContent.EMPTY_LAST_CONTENT) {
             finalWriteProcessed = true;
         }
 
@@ -121,6 +122,7 @@ public final class TimeoutHandler extends ChannelDuplexHandler {
         final WriteTask writeTask = new WriteTask(ctx, promise);
 
         if (!writeTask.scheduledTimeout.isDone()) {
+            outstandingWriteOperations += 1;
             writeTasks.add(writeTask);
             promise.addListener(writeTask);
         }
@@ -151,6 +153,11 @@ public final class TimeoutHandler extends ChannelDuplexHandler {
         // Start the timeout task.
         responseTimeout = ctx.executor().schedule(() -> operationTimedOut(ctx, RESPONSE_TIMED_OUT_MESSAGE),
             responseTimeoutNanos, NANOSECONDS);
+    }
+
+    @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg) {
+        ctx.fireChannelRead(msg);
     }
 
     @Override
