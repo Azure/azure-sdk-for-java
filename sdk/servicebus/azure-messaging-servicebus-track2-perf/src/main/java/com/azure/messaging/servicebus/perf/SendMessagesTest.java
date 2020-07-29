@@ -27,7 +27,6 @@ public class SendMessagesTest extends ServiceTest<ServiceBusStressOptions> {
         ServiceBusMessage message =  new ServiceBusMessage(CONTENTS.getBytes());
         return Flux.range(0, options.getMessagesToSend())
             .flatMap(count -> {
-                System.out.println(count + ". Adding message in List." );
                 messages.add(message);
                 return Mono.empty();
             })

@@ -49,7 +49,7 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
         try {
             messages = receiver.receiveBatch(options.getMessagesToReceive());
         } catch  (Exception ee) {
-            System.out.println(" Exception in sync receive " + ee);
+            ee.printStackTrace();
         }
 
         for(IMessage message : messages) {
@@ -60,7 +60,6 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
             } catch (ServiceBusException e) {
                 e.printStackTrace();
             }
-            System.out.println("Sync receive Message : " + message.getSequenceNumber());
         }
     }
 
@@ -77,7 +76,6 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
                 } catch (ServiceBusException e) {
                     e.printStackTrace();
                 }
-                System.out.println("Async receive Message : " + message.getSequenceNumber());
             }
         } catch (InterruptedException e) {
             e.printStackTrace();

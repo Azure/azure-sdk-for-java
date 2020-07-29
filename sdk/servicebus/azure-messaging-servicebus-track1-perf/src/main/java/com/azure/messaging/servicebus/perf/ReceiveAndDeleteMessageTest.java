@@ -71,11 +71,11 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
         try {
             messages = receiver.receiveBatch(options.getMessagesToReceive());
         } catch  (Exception ee) {
-            System.out.println(" Exception in sync receive " + ee);
+            ee.printStackTrace();
         }
 
         for(IMessage message : messages) {
-            //System.out.println("Sync receive Message : " + message.getSequenceNumber());
+
         }
     }
 
@@ -85,7 +85,6 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
         try {
             Collection<IMessage> messages = receiveFuture.get();
             for(IMessage message : messages){
-               // System.out.println("Async receive Message : " + message.getSequenceNumber());
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
