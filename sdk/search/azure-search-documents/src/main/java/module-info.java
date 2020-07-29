@@ -5,8 +5,6 @@ module com.azure.search.documents {
     requires com.fasterxml.jackson.datatype.jsr310;
     requires jakarta.activation;
     requires com.fasterxml.jackson.annotation;
-    requires com.azure.core;
-    requires com.azure.core.experimental;
     requires com.azure.core.serializer.json.jackson;
 
     opens com.azure.search.documents to com.fasterxml.jackson.databind;

@@ -7,22 +7,22 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import reactor.test.StepVerifier;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class JacksonPropertyNameTests {
     private static final String EXPECT_VALUE_IN_FIELD = "expectFieldName";
     private static final String EXPECT_VALUE_IN_METHOD = "expectMethodName";
-    private static JacksonPropertyNameSerializer serializer;
+    private static JacksonJsonSerializer serializer;
 
     @BeforeAll
     public static void setup() {
-        serializer = new JacksonPropertyNameSerializer();
+        serializer = new JacksonJsonSerializerProvider().createInstance();
     }
 
     @Test
@@ -150,13 +150,10 @@ public class JacksonPropertyNameTests {
     }
 
     public void assertMemberValue(Member m, String expectValue) {
-        StepVerifier.create(serializer.getSerializerMemberName(m))
-            .assertNext(actual -> assertEquals(expectValue, actual))
-            .verifyComplete();
+        assertEquals(expectValue, serializer.getSerializerMemberName(m));
     }
 
     public void assertMemberNull(Member m) {
-        StepVerifier.create(serializer.getSerializerMemberName(m))
-            .verifyComplete();
+        assertNull(serializer.getSerializerMemberName(m));
     }
 }

@@ -3,8 +3,6 @@
 
 package com.azure.core.experimental.serializer;
 
-import reactor.core.publisher.Mono;
-
 import java.lang.reflect.Member;
 
 /**
@@ -17,5 +15,5 @@ public interface PropertyNameSerializer {
      * @param member Gets property name from the class member.
      * @return The serializer member name.
      */
-    Mono<String> getSerializerMemberName(Member member);
+    String getSerializerMemberName(Member member);
 }

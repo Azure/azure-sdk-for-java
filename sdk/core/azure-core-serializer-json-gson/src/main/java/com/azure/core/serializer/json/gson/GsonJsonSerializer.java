@@ -5,9 +5,12 @@ package com.azure.core.serializer.json.gson;
 
 import com.azure.core.experimental.serializer.JsonNode;
 import com.azure.core.experimental.serializer.JsonSerializer;
+import com.azure.core.experimental.serializer.PropertyNameSerializer;
 import com.azure.core.experimental.serializer.TypeReference;
+import com.azure.core.util.CoreUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
+import com.google.gson.annotations.SerializedName;
 import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
@@ -15,12 +18,16 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.lang.reflect.Field;
+import java.lang.reflect.Member;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.nio.charset.StandardCharsets;
 
 /**
  * GSON based implementation of the {@link JsonSerializer} interface.
  */
-public final class GsonJsonSerializer implements JsonSerializer {
+public final class GsonJsonSerializer implements JsonSerializer, PropertyNameSerializer {
     private final Gson gson;
 
     /**
@@ -71,5 +78,25 @@ public final class GsonJsonSerializer implements JsonSerializer {
         return Mono.fromCallable(() -> JsonNodeUtils.fromGsonElement(gson.toJsonTree(value)));
     }
 
+    @Override
+    public String getSerializerMemberName(Member member) {
+        if (Modifier.isTransient(member.getModifiers())) {
+            return null;
+        }
+        if (member instanceof Field) {
+            Field f = (Field) member;
+            if (gson.excluder().excludeField(f, true)) {
+                return null;
+            }
+            if (!f.isAnnotationPresent(SerializedName.class)) {
+                return member.getName();
+            }
+            String propertyName = f.getDeclaredAnnotation(SerializedName.class).value();
+            return CoreUtils.isNullOrEmpty(propertyName) ? f.getName() : propertyName;
+        } else if (member instanceof Method) {
+            return member.getName();
+        }
+        return null;
+    }
 
 }

@@ -11,7 +11,7 @@ import java.util.ServiceLoader;
  */
 public final class PropertyNameSerializerProviders {
     private static final String CANNOT_FIND_JSON_SERIALIZER_PROVIDER =
-        "Cannot find any JSON serializer provider on the classpath.";
+        "Cannot find any seriailized name serializer provider on the classpath.";
 
     private static PropertyNameSerializerProvider defaultProvider;
     private static boolean attemptedLoad;

@@ -9,13 +9,12 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import reactor.test.StepVerifier;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class GsonPropertyNameTests {
     private static final String EXPECT_VALUE_IN_FIELD = "expectFieldName";
@@ -23,7 +22,7 @@ public class GsonPropertyNameTests {
 
     @BeforeAll
     public static void setup() {
-        serializer = new GsonPropertyNameSerializerProvider().createInstance();
+        serializer = new GsonJsonSerializerProvider().createInstance();
     }
 
     @Test
@@ -33,7 +32,7 @@ public class GsonPropertyNameTests {
         }
         Field f = Hotel.class.getDeclaredField("hotelName");
 
-        assertMemberValue(f, "hotelName");
+        assertEquals(serializer.getSerializerMemberName(f), "hotelName");
     }
 
     @Test
@@ -42,7 +41,7 @@ public class GsonPropertyNameTests {
             transient String hotelName;
         }
         Field f = Hotel.class.getDeclaredField("hotelName");
-        assertMemberNull(f);
+        assertNull(serializer.getSerializerMemberName(f));
     }
 
     @Test
@@ -56,11 +55,10 @@ public class GsonPropertyNameTests {
         Field f1 = Hotel.class.getDeclaredField("hotelName");
         Field f2 = Hotel.class.getDeclaredField("hotelId");
 
-        PropertyNameSerializer serializerWithSetting = new GsonPropertyNameSerializerBuilder()
-            .serializer(new GsonBuilder().excludeFieldsWithoutExposeAnnotation()).build();
-        StepVerifier.create(serializerWithSetting.getSerializerMemberName(f1))
-            .verifyComplete();
-        assertMemberValue(f2, "hotelId");
+        PropertyNameSerializer serializerWithSetting = new GsonJsonSerializerBuilder()
+            .serializer(new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()).build();
+        assertNull(serializerWithSetting.getSerializerMemberName(f1));
+        assertEquals(serializer.getSerializerMemberName(f2), "hotelId");
     }
 
     @Test
@@ -70,8 +68,7 @@ public class GsonPropertyNameTests {
             String hotelName;
         }
         Field f = Hotel.class.getDeclaredField("hotelName");
-        assertMemberValue(f, EXPECT_VALUE_IN_FIELD);
-
+        assertEquals(serializer.getSerializerMemberName(f), EXPECT_VALUE_IN_FIELD);
     }
 
     @Test
@@ -82,7 +79,7 @@ public class GsonPropertyNameTests {
         }
         Field f = Hotel.class.getDeclaredField("hotelName");
 
-        assertMemberValue(f, "hotelName");
+        assertEquals(serializer.getSerializerMemberName(f), "hotelName");
     }
 
     @Test
@@ -97,17 +94,6 @@ public class GsonPropertyNameTests {
 
         Method m = Hotel.class.getDeclaredMethod("getHotelName");
 
-        assertMemberValue(m, "getHotelName");
-    }
-
-    public void assertMemberValue(Member m, String expectValue) {
-        StepVerifier.create(serializer.getSerializerMemberName(m))
-            .assertNext(actual -> assertEquals(expectValue, actual))
-            .verifyComplete();
-    }
-
-    public void assertMemberNull(Member m) {
-        StepVerifier.create(serializer.getSerializerMemberName(m))
-            .verifyComplete();
+        assertEquals(serializer.getSerializerMemberName(m), "getHotelName");
     }
 }

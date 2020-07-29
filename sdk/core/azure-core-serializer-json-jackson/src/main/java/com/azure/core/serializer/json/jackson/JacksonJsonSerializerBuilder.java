@@ -3,8 +3,6 @@
 
 package com.azure.core.serializer.json.jackson;
 
-import com.azure.core.experimental.serializer.JsonOptions;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -12,7 +10,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public final class JacksonJsonSerializerBuilder {
     private ObjectMapper objectMapper;
-    private boolean serializeNulls;
 
     /**
      * Constructs a new instance of {@link JacksonJsonSerializer} with the configurations set in this builder.
@@ -20,11 +17,10 @@ public final class JacksonJsonSerializerBuilder {
      * @return A new instance of {@link JacksonJsonSerializer}.
      */
     public JacksonJsonSerializer build() {
-        ObjectMapper mapper = objectMapper == null ? new ObjectMapper() : objectMapper;
-        if (serializeNulls) {
-            mapper.setSerializationInclusion(JsonInclude.Include.ALWAYS);
+        if (objectMapper == null) {
+            return new JacksonJsonSerializer(new ObjectMapper());
         }
-        return new JacksonJsonSerializer(mapper);
+        return new JacksonJsonSerializer(objectMapper);
     }
 
     /**
@@ -37,19 +33,6 @@ public final class JacksonJsonSerializerBuilder {
      */
     public JacksonJsonSerializerBuilder serializer(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
-        return this;
-    }
-
-    /**
-     * Sets the {@link JsonOptions} that will be used during serialization.
-     *
-     * JsonOptions currently support to config whether to serialize null during serialization.
-     *
-     * @param options {@link JsonOptions} that will be used during serialization.
-     * @return The updated JacksonJsonSerializerBuilder class.
-     */
-    public JacksonJsonSerializerBuilder options(JsonOptions options) {
-        this.serializeNulls = options != null && options.isNullIncluded();
         return this;
     }
 }

@@ -4,8 +4,7 @@
 package com.azure.search.documents.indexes;
 
 import com.azure.core.experimental.serializer.PropertyNameSerializer;
-import com.azure.core.experimental.spatial.PointGeometry;
-import com.azure.core.serializer.json.jackson.JacksonPropertyNameSerializerProvider;
+import com.azure.core.serializer.json.jackson.JacksonJsonSerializerProvider;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.SearchField;
@@ -43,7 +42,7 @@ public final class FieldBuilder {
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(String.class, SearchFieldDataType.STRING);
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(Date.class, SearchFieldDataType.DATE_TIME_OFFSET);
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(OffsetDateTime.class, SearchFieldDataType.DATE_TIME_OFFSET);
-        SUPPORTED_NONE_PARAMETERIZED_TYPE.put(PointGeometry.class, SearchFieldDataType.GEOGRAPHY_POINT);
+        //SUPPORTED_NONE_PARAMETERIZED_TYPE.put(PointGeometry.class, SearchFieldDataType.GEOGRAPHY_POINT);
     }
 
     private static final List<Class<?>> UNSUPPORTED_TYPES = Arrays.asList(byte.class, Byte.class,
@@ -96,9 +95,9 @@ public final class FieldBuilder {
     private static SearchField buildField(Field classField, Stack<Class<?>> classChain,
         PropertyNameSerializer serializer, ClientLogger logger) {
         if (serializer == null) {
-            serializer = new JacksonPropertyNameSerializerProvider().createInstance();
+            serializer = new JacksonJsonSerializerProvider().createInstance();
         }
-        String fieldName = serializer.getSerializerMemberName(classField).block();
+        String fieldName = serializer.getSerializerMemberName(classField);
         if (fieldName == null) {
             return null;
         }

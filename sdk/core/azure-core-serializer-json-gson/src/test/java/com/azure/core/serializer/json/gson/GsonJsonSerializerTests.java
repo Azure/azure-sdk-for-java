@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class GsonJsonSerializerTests {
     private static final GsonJsonSerializer DEFAULT_SERIALIZER = new GsonJsonSerializerBuilder().build();
     private static final GsonJsonSerializer CUSTOM_SERIALIZER = new GsonJsonSerializerBuilder()
-        .serializer(new GsonBuilder().registerTypeAdapter(Person.class, new PersonAdapter()))
+        .serializer(new GsonBuilder().registerTypeAdapter(Person.class, new PersonAdapter()).create())
         .build();
 
     @Test
@@ -66,8 +66,8 @@ public class GsonJsonSerializerTests {
 
         StepVerifier.create(DEFAULT_SERIALIZER.deserialize(jsonStream, new TypeReference<JsonObject>() { }))
             .assertNext(actual -> {
-                assertEquals(50, ((JsonObject) actual).get("age").getAsInt());
-                assertTrue(((JsonObject) actual).get("name").isJsonNull());
+                assertEquals(50, actual.get("age").getAsInt());
+                assertTrue(actual.get("name").isJsonNull());
             }).verifyComplete();
     }
 
