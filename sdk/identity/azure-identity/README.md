@@ -7,6 +7,9 @@ The Azure Identity library provides Azure Active Directory token authentication 
   - [Device code authentication](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-device-code)
   - Interactive browser authentication, based on [OAuth2 authentication code](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow)
   - [Username + password authentication](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth-ropc)
+  - IntelliJ authentication, with the login information saved in Azure Toolkit for IntelliJ
+  - Visual Studio Code authentication, with the login information saved in Azure plugin for Visual Studio Code
+  - Azure CLI authentication, with the login information saved in Azure CLI
   - Shared Token Cache credential, which shares login information with Visual Studio, Azure CLI, and more
 
   [Source code][source] | [API reference documentation][javadoc] | [Azure Active Directory documentation][aad_doc]
