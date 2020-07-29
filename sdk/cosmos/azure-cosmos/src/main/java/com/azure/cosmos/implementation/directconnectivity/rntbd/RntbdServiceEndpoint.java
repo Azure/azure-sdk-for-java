@@ -367,6 +367,8 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
                         logger.error("\n  [{}]\n  failed to close endpoints due to ", this, future.cause());
                     });
 
+                this.requestTimer.close();
+
                 return;
             }
 
