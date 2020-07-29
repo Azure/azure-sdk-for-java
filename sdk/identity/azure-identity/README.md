@@ -171,7 +171,7 @@ public void createDefaultAzureCredential() {
 }
 ```
 
-When executing this in a development machine you need to first [configure the environment](#environment-variables) setting the variables `AZURE_CLIENT_ID`, `AZURE_TENANT_ID` and `AZURE_CLIENT_SECRET` to the appropriate values for your service principal.
+See more how to configure the `DefaultAzureCredential` on your workstation or Azure in [Configure DefaultAzureCredential](#configure-defaultazurecredential).
 
 ### Authenticating a service principal with a client secret
 This example demonstrates authenticating the `KeyClient` from the [azure-security-keyvault-keys][keys_client_library] client library using the `ClientSecretCredential`. There's also [a compilable sample](../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java) to create a Key Vault secret client you can copy-paste.
