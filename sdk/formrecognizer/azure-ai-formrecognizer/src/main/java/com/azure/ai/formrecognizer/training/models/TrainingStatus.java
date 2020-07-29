@@ -50,9 +50,9 @@ public enum TrainingStatus {
     }
 
     /**
-     * The string value of the enum.
+     * The string representation of the enum value.
      *
-     * @return the string value of the enum.
+     * @return the string representation of the enum value.
      */
     @Override
     public String toString() {

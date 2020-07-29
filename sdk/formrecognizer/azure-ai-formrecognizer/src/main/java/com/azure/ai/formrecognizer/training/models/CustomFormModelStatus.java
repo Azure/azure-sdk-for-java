@@ -50,9 +50,9 @@ public enum CustomFormModelStatus {
     }
 
     /**
-     * The string representation of value.
+     * The string representation of the enum value.
      *
-     * @return the string representation of value.
+     * @return the string representation of the enum value.
      */
     public String toString() {
         return this.value;
