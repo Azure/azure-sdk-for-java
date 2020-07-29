@@ -37,7 +37,7 @@ public class GetBoundingBoxes {
         String formUrl = "{form_url}";
         SyncPoller<OperationResult, List<RecognizedForm>> recognizeFormPoller =
             client.beginRecognizeCustomFormsFromUrl(formUrl, modelId, new RecognizeOptions()
-                .setIncludeFieldElements(true), Context.NONE);
+                .setFieldElementsIncluded(true), Context.NONE);
 
         List<RecognizedForm> recognizedForms = recognizeFormPoller.getFinalResult();
 

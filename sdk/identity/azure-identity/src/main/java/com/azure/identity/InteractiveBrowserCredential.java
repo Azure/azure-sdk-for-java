@@ -122,5 +122,4 @@ public class InteractiveBrowserCredential implements TokenCredential {
                                 identityClient.getTenantId(), identityClient.getClientId())));
         return msalToken;
     }
-
 }

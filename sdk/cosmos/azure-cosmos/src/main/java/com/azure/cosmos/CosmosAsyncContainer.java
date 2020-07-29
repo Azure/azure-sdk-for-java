@@ -267,8 +267,7 @@ public class CosmosAsyncContainer {
                                    item,
                                    requestOptions,
                                    true)
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType, getItemDeserializer()))
-                   .single();
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType, getItemDeserializer()));
     }
 
     /**
@@ -300,6 +299,25 @@ public class CosmosAsyncContainer {
      */
     public <T> Mono<CosmosItemResponse<T>> upsertItem(T item, CosmosItemRequestOptions options) {
         final CosmosItemRequestOptions requestOptions = options == null ? new CosmosItemRequestOptions() : options;
+        return withContext(context -> upsertItemInternal(item, requestOptions, context));
+    }
+
+    /**
+     * Upserts an item.
+     * <p>
+     * After subscription the operation will be performed. The {@link Mono} upon
+     * successful completion will contain a single resource response with the
+     * upserted item. In case of failure the {@link Mono} will error.
+     *
+     * @param <T> the type parameter.
+     * @param item the item represented as a POJO or Item object to upsert.
+     * @param partitionKey the partition key.
+     * @param options the request options.
+     * @return an {@link Mono} containing the single resource response with the upserted item or an error.
+     */
+    public <T> Mono<CosmosItemResponse<T>> upsertItem(T item, PartitionKey partitionKey, CosmosItemRequestOptions options) {
+        final CosmosItemRequestOptions requestOptions = options == null ? new CosmosItemRequestOptions() : options;
+        ModelBridgeInternal.setPartitionKey(requestOptions, partitionKey);
         return withContext(context -> upsertItemInternal(item, requestOptions, context));
     }
 
@@ -736,8 +754,7 @@ public class CosmosAsyncContainer {
         Mono<CosmosItemResponse<Object>> responseMono = this.getDatabase()
             .getDocClientWrapper()
             .deleteDocument(getItemLink(itemId), requestOptions)
-            .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponseWithObjectType(response))
-            .single();
+            .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponseWithObjectType(response));
         return database.getClient().getTracerProvider().traceEnabledCosmosItemResponsePublisher(responseMono,
             context,
             this.deleteItemSpanName,
@@ -754,8 +771,7 @@ public class CosmosAsyncContainer {
         Mono<CosmosItemResponse<T>> responseMono = this.getDatabase()
             .getDocClientWrapper()
             .replaceDocument(getItemLink(itemId), doc, ModelBridgeInternal.toRequestOptions(options))
-            .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType, getItemDeserializer()))
-            .single();
+            .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType, getItemDeserializer()));
         return database.getClient().getTracerProvider().traceEnabledCosmosItemResponsePublisher(responseMono,
             context, this.replaceItemSpanName, database.getId(), database.getClient().getServiceEndpoint());
     }
@@ -767,8 +783,7 @@ public class CosmosAsyncContainer {
             .upsertDocument(this.getLink(), item,
                 ModelBridgeInternal.toRequestOptions(options),
                 true)
-            .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType, getItemDeserializer()))
-            .single();
+            .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType, getItemDeserializer()));
         return database.getClient().getTracerProvider().traceEnabledCosmosItemResponsePublisher(responseMono,
             context,
             this.upsertItemSpanName,
@@ -782,8 +797,7 @@ public class CosmosAsyncContainer {
         Context context) {
         Mono<CosmosItemResponse<T>> responseMono = this.getDatabase().getDocClientWrapper()
             .readDocument(getItemLink(itemId), requestOptions)
-            .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType, getItemDeserializer()))
-            .single();
+            .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType, getItemDeserializer()));
         return database.getClient().getTracerProvider().traceEnabledCosmosItemResponsePublisher(responseMono,
             context,
             this.readItemSpanName,
@@ -794,7 +808,7 @@ public class CosmosAsyncContainer {
     Mono<CosmosContainerResponse> read(CosmosContainerRequestOptions options, Context context) {
         Mono<CosmosContainerResponse> responseMono = database.getDocClientWrapper().readCollection(getLink(),
             ModelBridgeInternal.toRequestOptions(options))
-            .map(response -> ModelBridgeInternal.createCosmosContainerResponse(response)).single();
+            .map(response -> ModelBridgeInternal.createCosmosContainerResponse(response));
         return database.getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono,
             context,
             this.readContainerSpanName,
@@ -805,7 +819,7 @@ public class CosmosAsyncContainer {
     private Mono<CosmosContainerResponse> deleteInternal(CosmosContainerRequestOptions options, Context context) {
         Mono<CosmosContainerResponse> responseMono = database.getDocClientWrapper().deleteCollection(getLink(),
             ModelBridgeInternal.toRequestOptions(options))
-            .map(response -> ModelBridgeInternal.createCosmosContainerResponse(response)).single();
+            .map(response -> ModelBridgeInternal.createCosmosContainerResponse(response));
         return database.getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono,
             context,
             this.deleteContainerSpanName,
@@ -819,7 +833,7 @@ public class CosmosAsyncContainer {
         Mono<CosmosContainerResponse> responseMono = database.getDocClientWrapper()
             .replaceCollection(ModelBridgeInternal.getV2Collection(containerProperties),
                 ModelBridgeInternal.toRequestOptions(options))
-            .map(response -> ModelBridgeInternal.createCosmosContainerResponse(response)).single();
+            .map(response -> ModelBridgeInternal.createCosmosContainerResponse(response));
         return database.getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono,
             context,
             this.replaceContainerSpanName,
@@ -856,8 +870,7 @@ public class CosmosAsyncContainer {
                     return this.database.getDocClientWrapper()
                         .readOffer(offerFeedResponse.getResults()
                             .get(0)
-                            .getSelfLink())
-                        .single();
+                            .getSelfLink());
                 })
                 .map(ModelBridgeInternal::createThroughputRespose));
     }
@@ -897,8 +910,7 @@ public class CosmosAsyncContainer {
                         ModelBridgeInternal.updateOfferFromProperties(existingOffer,
                             throughputProperties);
                     return this.database.getDocClientWrapper()
-                        .replaceOffer(updatedOffer)
-                        .single();
+                        .replaceOffer(updatedOffer);
                 }).map(ModelBridgeInternal::createThroughputRespose));
     }
 
