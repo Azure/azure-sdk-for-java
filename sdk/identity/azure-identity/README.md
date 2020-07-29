@@ -88,7 +88,7 @@ The credential types in Azure Identity differ in the types of AAD identities the
     </tr>
     <tr>
       <td><code>AzureCliCredential</code></td>
-      <td>user account</td>
+      <td>service principal or user account</td>
       <td><code>AzureCliCredentialBuilder</code></td>
     </tr>
     <tr>
