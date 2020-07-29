@@ -92,7 +92,6 @@ class VirtualMachineExtensionImpl
         return this
             .client
             .getAsync(this.parent().resourceGroupName(), this.parent().name(), this.name(), "instanceView")
-            .onErrorResume(e -> Mono.empty())
             .map(inner -> inner.instanceView());
     }
 

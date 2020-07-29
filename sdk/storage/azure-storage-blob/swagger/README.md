@@ -275,6 +275,20 @@ directive:
     }
 ```
 
+### /{containerName}/{blob}?comp=seal
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=seal"]
+  transform: >
+    let param = $.put.parameters[0];
+    if (!param["$ref"].endsWith("ContainerName")) {
+      const path = param["$ref"].replace(/[#].*$/, "#/parameters/");
+      $.put.parameters.splice(0, 0, { "$ref": path + "ContainerName" });
+      $.put.parameters.splice(1, 0, { "$ref": path + "Blob" });
+    }
+```
+
 ### /{containerName}/{blob}?comp=properties&SetHTTPHeaders
 ``` yaml
 directive:
@@ -1246,6 +1260,7 @@ directive:
     delete $.SourceIfModifiedSince["x-ms-parameter-grouping"];
     delete $.SourceIfNoneMatch["x-ms-parameter-grouping"];
     delete $.SourceIfUnmodifiedSince["x-ms-parameter-grouping"];
+    delete $.SourceIfTags["x-ms-parameter-grouping"];
 - from: swagger-document
   where: $.parameters
   transform: >
@@ -1253,6 +1268,7 @@ directive:
     delete $.IfModifiedSince["x-ms-parameter-grouping"];
     delete $.IfNoneMatch["x-ms-parameter-grouping"];
     delete $.IfUnmodifiedSince["x-ms-parameter-grouping"];
+    delete $.IfTags["x-ms-parameter-grouping"];
 - from: swagger-document
   where: $.parameters
   transform: >

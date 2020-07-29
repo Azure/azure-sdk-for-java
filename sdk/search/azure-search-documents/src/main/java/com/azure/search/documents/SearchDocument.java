@@ -7,26 +7,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Represents a document
- * <p>
- * A property bag is used for scenarios where the index schema is only known at run-time
- * <p>
- * If the schema is known, user can convert the properties to a specific object type
+ * Represents an untyped document returned from a search or document lookup.
  */
 public final class SearchDocument extends HashMap<String, Object> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Default empty constructor
+     * Initializes a new instance of the SearchDocument class.
      */
     public SearchDocument() {
         super();
     }
 
     /**
-     * Constructs a new {@code Document} with the same mappings as the specified {@code Map}.
+     * Initializes a new instance of the SearchDocument class with initial values.
      *
-     * @param propertyMap the map whose mappings are to be placed in this map
+     * @param propertyMap Initial values of the document.
      */
     public SearchDocument(Map<? extends String, ?> propertyMap) {
         super(propertyMap);

@@ -6,7 +6,6 @@ package com.azure.resourcemanager.authorization.implementation;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
-import com.azure.resourcemanager.authorization.models.GraphErrorException;
 import com.azure.resourcemanager.authorization.models.ServicePrincipal;
 import com.azure.resourcemanager.authorization.models.ServicePrincipals;
 import com.azure.resourcemanager.authorization.fluent.inner.ServicePrincipalInner;
@@ -69,7 +68,6 @@ public class ServicePrincipalsImpl
     public Mono<ServicePrincipal> getByIdAsync(String id) {
         return innerCollection
             .getAsync(id)
-            .onErrorResume(GraphErrorException.class, e -> Mono.empty())
             .flatMap(
                 servicePrincipalInner ->
                     new ServicePrincipalImpl(servicePrincipalInner, manager()).refreshCredentialsAsync());

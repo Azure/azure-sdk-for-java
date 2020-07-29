@@ -326,6 +326,7 @@ public final class ResourceProvidersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service.getPublishingUser(this.client.getEndpoint(), this.client.getApiVersion(), context);
     }
 
@@ -451,6 +452,7 @@ public final class ResourceProvidersClient {
         } else {
             userDetails.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .updatePublishingUser(this.client.getEndpoint(), this.client.getApiVersion(), userDetails, context);
     }
@@ -576,6 +578,7 @@ public final class ResourceProvidersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listSourceControls(this.client.getEndpoint(), this.client.getApiVersion(), context)
             .map(
@@ -697,6 +700,7 @@ public final class ResourceProvidersClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter sourceControlType is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getSourceControl(this.client.getEndpoint(), sourceControlType, this.client.getApiVersion(), context);
     }
@@ -845,6 +849,7 @@ public final class ResourceProvidersClient {
         } else {
             requestMessage.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .updateSourceControl(
                 this.client.getEndpoint(), sourceControlType, this.client.getApiVersion(), requestMessage, context);
@@ -1004,6 +1009,7 @@ public final class ResourceProvidersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
@@ -1207,6 +1213,7 @@ public final class ResourceProvidersClient {
         request.withName(name);
         request.withType(type);
         request.withIsFqdn(isFqdn);
+        context = this.client.mergeContext(context);
         return service
             .checkNameAvailability(
                 this.client.getEndpoint(),
@@ -1361,6 +1368,7 @@ public final class ResourceProvidersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getSubscriptionDeploymentLocations(
                 this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), context);
@@ -1528,6 +1536,7 @@ public final class ResourceProvidersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listGeoRegions(
                 this.client.getEndpoint(),
@@ -1766,6 +1775,7 @@ public final class ResourceProvidersClient {
         }
         NameIdentifierInner nameIdentifier = new NameIdentifierInner();
         nameIdentifier.withName(name);
+        context = this.client.mergeContext(context);
         return service
             .listSiteIdentifiersAssignedToHostname(
                 this.client.getEndpoint(),
@@ -1911,6 +1921,7 @@ public final class ResourceProvidersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listPremierAddOnOffers(
                 this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), context)
@@ -2037,6 +2048,7 @@ public final class ResourceProvidersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listSkus(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), context);
     }
@@ -2183,6 +2195,7 @@ public final class ResourceProvidersClient {
         } else {
             parameters.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .verifyHostingEnvironmentVnet(
                 this.client.getEndpoint(),
@@ -2358,6 +2371,7 @@ public final class ResourceProvidersClient {
         } else {
             moveResourceEnvelope.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .move(
                 this.client.getEndpoint(),
@@ -2520,6 +2534,7 @@ public final class ResourceProvidersClient {
         } else {
             validateRequest.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .validate(
                 this.client.getEndpoint(),
@@ -2696,6 +2711,7 @@ public final class ResourceProvidersClient {
         } else {
             moveResourceEnvelope.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .validateMove(
                 this.client.getEndpoint(),
@@ -2817,6 +2833,7 @@ public final class ResourceProvidersClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listSourceControlsNext(nextLink, context)
             .map(
@@ -2874,6 +2891,7 @@ public final class ResourceProvidersClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listBillingMetersNext(nextLink, context)
             .map(
@@ -2930,6 +2948,7 @@ public final class ResourceProvidersClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listGeoRegionsNext(nextLink, context)
             .map(
@@ -2988,6 +3007,7 @@ public final class ResourceProvidersClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listSiteIdentifiersAssignedToHostnameNext(nextLink, context)
             .map(
@@ -3045,6 +3065,7 @@ public final class ResourceProvidersClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listPremierAddOnOffersNext(nextLink, context)
             .map(

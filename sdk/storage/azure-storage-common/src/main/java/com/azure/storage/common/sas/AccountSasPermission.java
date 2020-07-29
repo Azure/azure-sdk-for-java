@@ -41,6 +41,10 @@ public final class AccountSasPermission {
 
     private boolean processMessagesPermission;
 
+    private boolean tagsPermission;
+
+    private boolean filterTagsPermission;
+
     /**
      * Initializes an {@link AccountSasPermission} object with all fields set to false.
      */
@@ -55,8 +59,8 @@ public final class AccountSasPermission {
      *
      * @return An {@link AccountSasPermission} object generated from the given {@link String}.
      *
-     * @throws IllegalArgumentException If {@code permString} contains a character other than r, w, d, x, l, a, c, u,
-     *     or p.
+     * @throws IllegalArgumentException If {@code permString} contains a character other than r, w, d, x, l, a, c, u, p,
+     * t or f.
      */
     public static AccountSasPermission parse(String permString) {
         AccountSasPermission permissions = new AccountSasPermission();
@@ -90,6 +94,12 @@ public final class AccountSasPermission {
                     break;
                 case 'p':
                     permissions.processMessagesPermission = true;
+                    break;
+                case 't':
+                    permissions.tagsPermission = true;
+                    break;
+                case 'f':
+                    permissions.filterTagsPermission = true;
                     break;
                 default:
                     throw new IllegalArgumentException(
@@ -277,6 +287,43 @@ public final class AccountSasPermission {
     }
 
     /**
+     * @return the tags permission status.
+     */
+    public boolean hasTagsPermission() {
+        return tagsPermission;
+    }
+
+    /**
+     * Sets the tags permission status.
+     *
+     * @param tagsPermission Permission status to set
+     * @return the updated AccountSasPermission object.
+     */
+    public AccountSasPermission setTagsPermission(boolean tagsPermission) {
+        this.tagsPermission = tagsPermission;
+        return this;
+    }
+
+
+    /**
+     * @return the filter tags permission status.
+     */
+    public boolean hasFilterTagsPermission() {
+        return filterTagsPermission;
+    }
+
+    /**
+     * Sets the filter tags permission status.
+     *
+     * @param filterTagsPermission Permission status to set
+     * @return the updated AccountSasPermission object.
+     */
+    public AccountSasPermission setFilterTagsPermission(boolean filterTagsPermission) {
+        this.filterTagsPermission = filterTagsPermission;
+        return this;
+    }
+
+    /**
      * Converts the given permissions to a {@link String}. Using this method will guarantee the permissions are in an
      * order accepted by the service.
      *
@@ -322,6 +369,14 @@ public final class AccountSasPermission {
 
         if (this.processMessagesPermission) {
             builder.append('p');
+        }
+
+        if (this.tagsPermission) {
+            builder.append('t');
+        }
+
+        if (this.filterTagsPermission) {
+            builder.append('f');
         }
 
         return builder.toString();

@@ -14,7 +14,7 @@ import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
  */
 class RntbdThreadFactory implements ThreadFactory {
 
-    private static final String NAME_TEMPLATE = "rntbd-%s[%s]";
+    private static final String NAME_TEMPLATE = "cosmos-rntbd-%s[%s]";
     private final boolean daemon;
     private final String name;
     private final int priority;

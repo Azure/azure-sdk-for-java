@@ -200,6 +200,7 @@ public interface AsyncDocumentClient {
                 sessionCapturingOverride,
                 transportClientSharing,
                 contentResponseOnWriteEnabled);
+
             client.init();
             return client;
         }
@@ -1372,4 +1373,5 @@ public interface AsyncDocumentClient {
      */
     void close();
 
+    ItemDeserializer getItemDeserializer();
 }

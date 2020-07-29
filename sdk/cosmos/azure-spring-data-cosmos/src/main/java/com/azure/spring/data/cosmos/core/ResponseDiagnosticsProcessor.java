@@ -3,10 +3,10 @@
 
 package com.azure.spring.data.cosmos.core;
 
-import javax.annotation.Nullable;
+import org.springframework.lang.Nullable;
 
 /**
- * Interface for processing cosmosdb response
+ * Interface for processing cosmosDB response
  */
 public interface ResponseDiagnosticsProcessor {
 

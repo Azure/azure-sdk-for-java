@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.core;
 
-import com.azure.data.cosmos.PartitionKey;
+import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
 import com.azure.spring.data.cosmos.core.query.DocumentQuery;
@@ -14,13 +14,13 @@ import org.junit.runner.RunWith;
 import org.mockito.Answers;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.data.repository.query.parser.Part;
 import org.springframework.util.Assert;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-@SuppressWarnings("unchecked")
 @RunWith(MockitoJUnitRunner.class)
 public class CosmosTemplateIllegalTest {
     private static final String NULL_STR = null;
@@ -42,8 +42,10 @@ public class CosmosTemplateIllegalTest {
 
     @Test
     public void deleteIllegalShouldFail() throws NoSuchMethodException {
-        final Method method = dbTemplateClass.getMethod("delete", DocumentQuery.class, Class.class, String.class);
-        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "faker", Arrays.asList("faker-value"));
+        final Method method = dbTemplateClass.getMethod("delete",
+            DocumentQuery.class, Class.class, String.class);
+        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL,
+            "faker", Arrays.asList("faker-value"), Part.IgnoreCaseType.NEVER);
         final DocumentQuery query = new DocumentQuery(criteria);
 
         checkIllegalArgument(method, null, Person.class, DUMMY_COLL);
@@ -95,7 +97,7 @@ public class CosmosTemplateIllegalTest {
 
     /**
      * Check IllegalArgumentException is thrown for illegal parameters
-     * @param method
+     * @param method method type
      * @param args Method invocation parameters
      */
     private void checkIllegalArgument(Method method, Object... args) {

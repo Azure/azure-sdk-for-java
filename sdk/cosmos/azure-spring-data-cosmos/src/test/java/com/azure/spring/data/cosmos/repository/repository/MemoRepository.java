@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.repository;
 
-import com.azure.spring.data.cosmos.repository.CosmosRepository;
 import com.azure.spring.data.cosmos.domain.Importance;
 import com.azure.spring.data.cosmos.domain.Memo;
+import com.azure.spring.data.cosmos.repository.CosmosRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;

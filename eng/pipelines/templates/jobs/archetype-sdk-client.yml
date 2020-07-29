@@ -107,8 +107,8 @@ jobs:
         displayName: 'Build and Package , JDK Version: $(JavaBuildVersion)'
         inputs:
           mavenPomFile: pom.xml
-          goals: 'package'
-          options: '$(DefaultOptions) "-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -DskipTests -Dinject-codesnippets -Dgenerate-overview -pl $(ProjectList) -am' # We include template-module so we ensure it always builds in CI
+          goals: 'deploy'
+          options: '$(DefaultOptions) -DskipTests -Dinject-codesnippets -Dgenerate-overview -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl $(ProjectList) -am -DaltDeploymentRepository=id::default::file://$(Build.ArtifactStagingDirectory)' # We include template-module so we ensure it always builds in CI
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaBuildVersion)

@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob
 
+import com.azure.core.http.rest.Response
 import com.azure.core.util.paging.ContinuablePage
 import com.azure.core.util.Context
 import com.azure.identity.DefaultAzureCredentialBuilder
@@ -273,8 +274,11 @@ class ServiceAPITest extends APISpec {
         blobClient = containerClient.getBlobClient(generateBlobName())
         blobClient.upload(defaultInputStream.get(), defaultDataSize)
 
+        sleepIfRecord(10 * 1000) // To allow tags to index
+
         when:
-        def results = primaryBlobServiceClient.findBlobsByTags("\"bar\"='foo'")
+        def results = primaryBlobServiceClient.findBlobsByTags(String.format("@container='%s' AND \"bar\"='foo'",
+            containerClient.getBlobContainerName()))
 
         then:
         results.size() == 1
@@ -291,6 +295,8 @@ class ServiceAPITest extends APISpec {
             cc.getBlobClient(generateBlobName()).uploadWithResponse(
                 new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize).setTags(tags), null, null)
         }
+
+        sleepIfRecord(10 * 1000) // To allow tags to index
 
         def firstPage = primaryBlobServiceClient.findBlobsByTags(new FindBlobsOptions("\"tag\"='value'")
             .setMaxResultsPerPage(5), null, Context.NONE)
@@ -498,6 +504,29 @@ class ServiceAPITest extends APISpec {
 
         expect:
         primaryBlobServiceClient.setPropertiesWithResponse(serviceProperties, null, null).getStatusCode() == 202
+    }
+
+    def "Set props static website"() {
+        setup:
+        def serviceProperties = primaryBlobServiceClient.getProperties()
+        def errorDocument404Path = "error/404.html"
+        def defaultIndexDocumentPath = "index.html"
+
+        serviceProperties.setStaticWebsite(new StaticWebsite()
+            .setEnabled(true)
+            .setErrorDocument404Path(errorDocument404Path)
+            .setDefaultIndexDocumentPath(defaultIndexDocumentPath)
+            )
+
+        when:
+        Response<Void> resp = primaryBlobServiceClient.setPropertiesWithResponse(serviceProperties, null, null)
+
+        then:
+        resp.getStatusCode() == 202
+        def staticWebsite = primaryBlobServiceClient.getProperties().getStaticWebsite()
+        staticWebsite.isEnabled()
+        staticWebsite.getErrorDocument404Path() == errorDocument404Path
+        staticWebsite.getDefaultIndexDocumentPath() == defaultIndexDocumentPath
     }
 
     def "Set props error"() {

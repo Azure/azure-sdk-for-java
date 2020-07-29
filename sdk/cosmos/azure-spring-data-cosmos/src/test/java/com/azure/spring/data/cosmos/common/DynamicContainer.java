@@ -4,7 +4,7 @@
 package com.azure.spring.data.cosmos.common;
 
 public class DynamicContainer {
-    private String containerName;
+    private final String containerName;
 
     public DynamicContainer(String containerName) {
         this.containerName = containerName;
