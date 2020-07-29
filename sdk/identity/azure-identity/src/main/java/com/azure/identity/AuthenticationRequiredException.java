@@ -18,6 +18,7 @@ class AuthenticationRequiredException extends CredentialUnavailableException {
      * @param message The exception message.
      * @param request The details of the authentication request.
      */
+    //TODO: Make this public when exposing this class in Public API
     AuthenticationRequiredException(String message, TokenRequestContext request) {
         super(message);
         this.request = request;
@@ -30,6 +31,7 @@ class AuthenticationRequiredException extends CredentialUnavailableException {
      * @param request The details of the authentication request.
      * @param cause The {@link Throwable} which caused the creation of this exception.
      */
+    //TODO: Make this public when exposing this class in Public API
     AuthenticationRequiredException(String message, TokenRequestContext request, Throwable cause) {
         super(message, cause);
         this.request = request;
@@ -40,7 +42,7 @@ class AuthenticationRequiredException extends CredentialUnavailableException {
      *
      * @return the token request context.
      */
-    TokenRequestContext getTokenRequestContext() {
+    public TokenRequestContext getTokenRequestContext() {
         return request;
     }
 }
