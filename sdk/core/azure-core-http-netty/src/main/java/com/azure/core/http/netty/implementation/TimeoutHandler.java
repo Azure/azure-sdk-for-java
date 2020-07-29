@@ -3,14 +3,12 @@
 
 package com.azure.core.http.netty.implementation;
 
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.EmptyByteBuf;
-import io.netty.buffer.UnpooledByteBufAllocator;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
+import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.LastHttpContent;
 
 import java.util.HashSet;
@@ -45,8 +43,6 @@ import static java.util.concurrent.TimeUnit.NANOSECONDS;
  * response is consumed.
  */
 public final class TimeoutHandler extends ChannelDuplexHandler {
-    public static final ByteBuf FINAL_WRITE_BUF = new EmptyByteBuf(UnpooledByteBufAllocator.DEFAULT);
-
     private static final long MINIMUM_TIMEOUT_NANOS = MILLISECONDS.toNanos(1);
     private static final String WRITE_TIMED_OUT_MESSAGE = "Channel write operation timed out.";
     private static final String RESPONSE_TIMED_OUT_MESSAGE = "Channel response timed out.";
@@ -100,7 +96,8 @@ public final class TimeoutHandler extends ChannelDuplexHandler {
 
     @Override
     public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) {
-        if (msg == LastHttpContent.EMPTY_LAST_CONTENT) {
+        if (msg == LastHttpContent.EMPTY_LAST_CONTENT || msg instanceof FullHttpRequest) {
+            System.out.println("Last final write handled for request.");
             finalWriteProcessed = true;
         }
 
@@ -135,10 +132,13 @@ public final class TimeoutHandler extends ChannelDuplexHandler {
         promise.addListener(writeTask);
     }
 
-    private void removeWriteTask(WriteTask writeTask, ChannelHandlerContext ctx) {
+    private void removeWriteTask(WriteTask writeTask, ChannelHandlerContext ctx, boolean operationTimedOut) {
         writeTasks.remove(writeTask);
         outstandingWriteOperations -= 1;
-        attemptToBeginResponseTimeoutTask(ctx);
+
+        if (!operationTimedOut) {
+            attemptToBeginResponseTimeoutTask(ctx);
+        }
     }
 
     private void attemptToBeginResponseTimeoutTask(ChannelHandlerContext ctx) {
@@ -151,6 +151,7 @@ public final class TimeoutHandler extends ChannelDuplexHandler {
         }
 
         // Start the timeout task.
+        System.out.println("Beginning response timeout.");
         responseTimeout = ctx.executor().schedule(() -> operationTimedOut(ctx, RESPONSE_TIMED_OUT_MESSAGE),
             responseTimeoutNanos, NANOSECONDS);
     }
@@ -251,7 +252,7 @@ public final class TimeoutHandler extends ChannelDuplexHandler {
                 operationTimedOut(ctx, WRITE_TIMED_OUT_MESSAGE);
             }
 
-            removeWriteTask(this, ctx);
+            removeWriteTask(this, ctx, true);
         }
 
         @Override
@@ -260,7 +261,7 @@ public final class TimeoutHandler extends ChannelDuplexHandler {
                 scheduledTimeout.cancel(false);
             }
 
-            removeWriteTask(this, ctx);
+            removeWriteTask(this, ctx, false);
         }
     }
 }

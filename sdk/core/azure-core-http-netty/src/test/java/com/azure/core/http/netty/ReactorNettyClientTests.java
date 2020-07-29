@@ -47,6 +47,7 @@ import java.util.stream.Stream;
 
 import static com.azure.core.http.netty.NettyAsyncHttpClient.ReactorNettyHttpResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.delete;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static java.time.Duration.ofMillis;
@@ -83,6 +84,7 @@ public class ReactorNettyClientTests {
             .withTransformers(ReactorNettyClientResponseTransformer.NAME)));
         server.stubFor(post("/slowRequestBody").willReturn(aResponse()));
         server.stubFor(post("/delayedResponse").willReturn(aResponse().withFixedDelay(250)));
+        server.stubFor(delete("/delayedResponse").willReturn(aResponse().withFixedDelay(250)));
         server.stubFor(get("/slowResponseBody").willReturn(aResponse().withBody("a response")
             .withChunkedDribbleDelay(4, 10000)));
         server.start();
@@ -467,9 +469,10 @@ public class ReactorNettyClientTests {
             .build();
 
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/delayedResponse"));
+        StepVerifier.create(httpClient.send(request)).verifyError(TimeoutException.class);
 
-        StepVerifier.create(httpClient.send(request))
-            .verifyError(TimeoutException.class);
+        request = new HttpRequest(HttpMethod.DELETE, url(server, "/delayedResponse"));
+        StepVerifier.create(httpClient.send(request)).verifyError(TimeoutException.class);
     }
 
     @Test
