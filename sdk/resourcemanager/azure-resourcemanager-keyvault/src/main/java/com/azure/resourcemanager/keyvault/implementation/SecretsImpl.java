@@ -85,7 +85,13 @@ class SecretsImpl extends CreatableWrappersImpl<Secret, SecretImpl, KeyVaultSecr
         return PagedConverter
             .flatMapPage(
                 inner.listPropertiesOfSecrets(),
-                s -> vault.secretClient().getSecret(s.getName(), s.getVersion()).map(this::wrapModel));
+                s -> {
+                    if (s.isEnabled()) {
+                        return vault.secretClient().getSecret(s.getName(), s.getVersion()).map(this::wrapModel);
+                    } else {
+                        return Mono.just(wrapModel(new KeyVaultSecret(s.getName(), null).setProperties(s)));
+                    }
+                });
     }
 
     @Override

@@ -19,7 +19,7 @@ import reactor.core.publisher.Flux;
 /** An immutable client-side representation of an Azure Key Vault secret. */
 @Fluent
 public interface Secret extends Indexable, HasInner<KeyVaultSecret>, HasId, HasName, Updatable<Secret.Update> {
-    /** @return the secret value */
+    /** @return the secret value when the secret is enabled */
     String value();
 
     /** @return the secret management attributes */
