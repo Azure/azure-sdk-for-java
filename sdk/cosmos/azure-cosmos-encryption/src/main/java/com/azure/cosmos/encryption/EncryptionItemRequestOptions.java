@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 
 /**
- *
- * The {@link com.azure.cosmos.models.CosmosItemRequestOptions} that allows to specify options for encryption / decryption.
+ * The {@link com.azure.cosmos.models.CosmosItemRequestOptions} that allows to specify options for encryption /
+ * decryption.
  */
 package com.azure.cosmos.encryption;
 
@@ -20,7 +20,7 @@ public class EncryptionItemRequestOptions extends CosmosItemRequestOptions {
 
     /**
      * Gets options to be provided for encryption of data.
-     * @return EncryptionOptions
+     * @return EncryptionOptions the configured encryption options.
      */
     public EncryptionOptions getEncryptionOptions() {
         return encryptionOptions;
@@ -28,7 +28,7 @@ public class EncryptionItemRequestOptions extends CosmosItemRequestOptions {
 
     /**
      * Gets delegate method that will be invoked (if configured) in case of decryption failure.
-     * @return Consumer<DecryptionResult>
+     * @return the configured handler of DecryptionResult
      */
     public Consumer<DecryptionResult> getDecryptionResultHandler() {
         return decryptionResultHandler;
@@ -36,7 +36,8 @@ public class EncryptionItemRequestOptions extends CosmosItemRequestOptions {
 
     /**
      * Sets options to be provided for encryption of data.
-     * @param encryptionOptions
+     * @param encryptionOptions encryption options.
+     * @return EncryptionItemRequestOptions the current request options.
      */
     public EncryptionItemRequestOptions setEncryptionOptions(EncryptionOptions encryptionOptions) {
         this.encryptionOptions = encryptionOptions;
@@ -47,10 +48,11 @@ public class EncryptionItemRequestOptions extends CosmosItemRequestOptions {
      * Sets delegate method that will be invoked (if configured) in case of decryption failure.
      *
      * If DecryptionResultHandler is not configured, we throw exception.
-     * If DecryptionResultHandler is configured, we invoke the delegate method and return the encrypted document as is (without decryption) in case of failure.
+     * If DecryptionResultHandler is configured, we invoke the delegate method and return the encrypted document as
+     * is (without decryption) in case of failure.
      *
-     * @param decryptionResultHandler
-     * @return the current request options
+     * @param decryptionResultHandler failure handler for decryption.
+     * @return EncryptionItemRequestOptions the current request options.
      */
     public EncryptionItemRequestOptions setDecryptionResultHandler(Consumer<DecryptionResult> decryptionResultHandler) {
         this.decryptionResultHandler = decryptionResultHandler;

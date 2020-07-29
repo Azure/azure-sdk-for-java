@@ -4,7 +4,7 @@
 
 package com.azure.cosmos.encryption;
 
-public class DecryptionResult {
+public final class DecryptionResult {
     private final byte[] encryptedContent;
     private final Exception exception;
 

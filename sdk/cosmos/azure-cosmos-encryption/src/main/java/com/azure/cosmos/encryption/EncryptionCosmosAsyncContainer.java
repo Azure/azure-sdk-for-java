@@ -49,9 +49,11 @@ public class EncryptionCosmosAsyncContainer {
 
         // TODO: add diagnostics
         assert encryptionItemRequestOptions != null && encryptionItemRequestOptions.getEncryptionOptions() != null;
-        payload = EncryptionProcessor.encryptAsync(payload, encryptor, encryptionItemRequestOptions.getEncryptionOptions());
+        payload = EncryptionProcessor.encryptAsync(payload, encryptor,
+            encryptionItemRequestOptions.getEncryptionOptions());
 
-        Mono<CosmosItemResponse<byte[]>> response = container.createItem(payload, partitionKey, encryptionItemRequestOptions);
+        Mono<CosmosItemResponse<byte[]>> response = container.createItem(payload, partitionKey,
+            encryptionItemRequestOptions);
 
         return response
             .subscribeOn(Schedulers.elastic())
@@ -72,10 +74,10 @@ public class EncryptionCosmosAsyncContainer {
     /**
      * create item and encrypts the requested fields
      *
-     * @param item           the Cosmos item represented as a POJO or Cosmos item object.
-     * @param partitionKey   the partition key.
+     * @param item the Cosmos item represented as a POJO or Cosmos item object.
+     * @param partitionKey the partition key.
      * @param requestOptions request option
-     * @param <T>            serialization class type
+     * @param <T> serialization class type
      * @return result
      */
     public <T> Mono<CosmosItemResponse<T>> createItem(T item,
@@ -86,15 +88,19 @@ public class EncryptionCosmosAsyncContainer {
             requestOptions = new CosmosItemRequestOptions();
         }
 
-        EncryptionItemRequestOptions encryptionItemRequestOptions = Utils.as(requestOptions, EncryptionItemRequestOptions.class);
+        EncryptionItemRequestOptions encryptionItemRequestOptions = Utils.as(requestOptions,
+            EncryptionItemRequestOptions.class);
 
         if (encryptionItemRequestOptions != null && encryptionItemRequestOptions.getEncryptionOptions() != null) {
-            Preconditions.checkArgument(partitionKey != null, "partitionKey cannot be null for operations using EncryptionContainer.");
+            Preconditions.checkArgument(partitionKey != null, "partitionKey cannot be null for operations using "
+                + "EncryptionContainer.");
 
             byte[] payload = cosmosSerializerToStream(item);
-            Mono<CosmosItemResponse<byte[]>> result = this.createItemStream(payload, partitionKey, encryptionItemRequestOptions);
+            Mono<CosmosItemResponse<byte[]>> result = this.createItemStream(payload, partitionKey,
+                encryptionItemRequestOptions);
 
-            return result.map(rsp -> (CosmosItemResponse<T>) this.responseFactory.createItemResponse(rsp, item.getClass()));
+            return result.map(rsp -> (CosmosItemResponse<T>) this.responseFactory.createItemResponse(rsp,
+                item.getClass()));
 
         } else {
             return container.createItem(item, partitionKey, requestOptions);
@@ -106,7 +112,8 @@ public class EncryptionCosmosAsyncContainer {
                                                             CosmosItemRequestOptions requestOptions) {
 
 
-        Mono<CosmosItemResponse<byte[]>> responseMessageAsync = container.readItem(id, partitionKey, requestOptions, byte[].class);
+        Mono<CosmosItemResponse<byte[]>> responseMessageAsync = container.readItem(id, partitionKey, requestOptions,
+            byte[].class);
 
         return responseMessageAsync
             .publishOn(Schedulers.elastic())
@@ -114,7 +121,8 @@ public class EncryptionCosmosAsyncContainer {
             .map(
                 responseMessage -> {
                     Consumer<DecryptionResult> decryptionErroHandler = null;
-                    EncryptionItemRequestOptions encryptionItemRequestOptions = Utils.as(requestOptions, EncryptionItemRequestOptions.class);
+                    EncryptionItemRequestOptions encryptionItemRequestOptions = Utils.as(requestOptions,
+                        EncryptionItemRequestOptions.class);
 
                     if (encryptionItemRequestOptions != null) {
                         decryptionErroHandler = encryptionItemRequestOptions.getDecryptionResultHandler();
@@ -132,11 +140,11 @@ public class EncryptionCosmosAsyncContainer {
     /**
      * Reads item and decrypt the encrypted fields
      *
-     * @param id           item id
+     * @param id item id
      * @param partitionKey the partition key.
-     * @param option       request options
-     * @param classType    deserialization class type
-     * @param <T>          type
+     * @param option request options
+     * @param classType deserialization class type
+     * @param <T> type
      * @return result
      */
     public <T> Mono<CosmosItemResponse<T>> readItem(String id,
@@ -153,30 +161,32 @@ public class EncryptionCosmosAsyncContainer {
     /**
      * Query for items in the current container using a string.
      * <p>
-     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
-     * contain one or several feed response of the obtained items. In case of
-     * failure the {@link CosmosPagedFlux} will error.
+     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will contain one or several feed
+     * response of the obtained items. In case of failure the {@link CosmosPagedFlux} will error.
      *
-     * @param <T>       the type parameter.
-     * @param query     the query.
-     * @param options   the query request options.
+     * @param <T> the type parameter.
+     * @param query the query.
+     * @param options the query request options.
      * @param classType the class type.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained items or an
      * error.
      */
-    public <T> CosmosPagedFlux<T> queryItems(SqlQuerySpec query, CosmosQueryRequestOptions options, Class<T> classType) {
+    public <T> CosmosPagedFlux<T> queryItems(SqlQuerySpec query, CosmosQueryRequestOptions options,
+                                             Class<T> classType) {
         if (options == null) {
             options = new CosmosQueryRequestOptions();
         }
 
-        EncryptionQueryRequestOption encryptionQueryRequestOptions = Utils.as(options, EncryptionQueryRequestOption.class);
+        EncryptionQueryRequestOption encryptionQueryRequestOptions = Utils.as(options,
+            EncryptionQueryRequestOption.class);
 
         Consumer<DecryptionResult> decryptionResultConsumer = null;
         if (encryptionQueryRequestOptions != null) {
             decryptionResultConsumer = encryptionQueryRequestOptions.getDecryptionResultHandler();
         }
 
-        return CosmosBridgeInternal.queryItemsInternal(container, query, options, classType, createTransformer(decryptionResultConsumer), Schedulers.elastic());
+        return CosmosBridgeInternal.queryItemsInternal(container, query, options, classType,
+            createTransformer(decryptionResultConsumer), Schedulers.elastic());
     }
 
     private Function<Document, Document> createTransformer(Consumer<DecryptionResult> decryptionResultConsumer) {

@@ -11,6 +11,7 @@ public class WithEncryption {
 
     /**
      * Gets a Container with Encryption capabilities
+     *
      * @param container original container
      * @param encryptor encryptor to be used
      * @return container with encryption capabilities
@@ -21,8 +22,9 @@ public class WithEncryption {
 
     /**
      * Creates Cosmos Encryptor given a data encryption Key provider.
-     * @param dataEncryptionKeyProvider
-     * @return
+     *
+     * @param dataEncryptionKeyProvider encryption key wrap provider.
+     * @return Encryptor used for encryption/decryption.
      */
     public static Encryptor createCosmosEncryptor(DataEncryptionKeyProvider dataEncryptionKeyProvider) {
         return new CosmosEncryptor(dataEncryptionKeyProvider);
@@ -30,8 +32,9 @@ public class WithEncryption {
 
     /**
      * Creates Cosmos Data Encryption Key Provider.
-     * @param encryptionKeyWrapProvider encryptionKeyWrapProvider.
-     * @return DataEncryptionKeyProvider
+     *
+     * @param encryptionKeyWrapProvider encryption key wrap provider.
+     * @return DataEncryptionKeyProvider.
      */
     public static DataEncryptionKeyProvider createCosmosDataEncryptionKeyProvider(EncryptionKeyWrapProvider encryptionKeyWrapProvider) {
         return new CosmosDataEncryptionKeyProvider(encryptionKeyWrapProvider);

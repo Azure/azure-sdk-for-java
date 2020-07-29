@@ -1258,7 +1258,7 @@
   </Match>
 
   <Match>
-    <Class name="com.azure.cosmos.EncryptionCosmosAsyncContainer"/>
+    <Class name="com.azure.cosmos.encryption.EncryptionCosmosAsyncContainer"/>
     <Method name="decryptResponseAsync"/>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
@@ -1680,14 +1680,14 @@
 
   <!-- Returning a new copy of the object is not necessary -->
   <Match>
-    <Class name="com.azure.cosmos.implementation.encryption.EncryptionKeyUnwrapResult"/>
+    <Class name="com.azure.cosmos.encryption.EncryptionKeyUnwrapResult"/>
     <Method name="getDataEncryptionKey"/>
     <Bug pattern="EI_EXPOSE_REP"/>
   </Match>
 
   <!-- Returning a new copy of the object is not necessary -->
   <Match>
-    <Class name="com.azure.cosmos.implementation.encryption.EncryptionKeyUnwrapResult"/>
+    <Class name="com.azure.cosmos.encryption.EncryptionKeyUnwrapResult"/>
     <Method name="getWrappedDataEncryptionKey"/>
     <Bug pattern="EI_EXPOSE_REP"/>
   </Match>
@@ -1709,7 +1709,7 @@
 
   <!-- Returning a new copy of the object is not necessary -->
   <Match>
-    <Class name="com.azure.cosmos.implementation.encryption.EncryptionKeyUnwrapResult"/>
+    <Class name="com.azure.cosmos.encryption.EncryptionKeyUnwrapResult"/>
     <Method name="&lt;init&gt;"/>
     <Bug pattern="EI_EXPOSE_REP2"/>
   </Match>
