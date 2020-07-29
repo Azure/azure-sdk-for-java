@@ -37,7 +37,7 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
      *
      * @return An updated instance of this builder with the unprotected token cache setting set as specified.
      */
-    public InteractiveBrowserCredentialBuilder allowUnencryptedCache(boolean allowUnencryptedCache) {
+    InteractiveBrowserCredentialBuilder allowUnencryptedCache(boolean allowUnencryptedCache) {
         this.identityClientOptions.allowUnencryptedCache(allowUnencryptedCache);
         return this;
     }
@@ -49,7 +49,7 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
      *
      * @return An updated instance of this builder with if the shared token cache enabled specified.
      */
-    public InteractiveBrowserCredentialBuilder enablePersistentCache(boolean enabled) {
+    InteractiveBrowserCredentialBuilder enablePersistentCache(boolean enabled) {
         this.identityClientOptions.enablePersistentCache(enabled);
         return this;
     }
@@ -62,7 +62,7 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
      *
      * @return An updated instance of this builder with the configured authentication record.
      */
-    public InteractiveBrowserCredentialBuilder authenticationRecord(AuthenticationRecord authenticationRecord) {
+    InteractiveBrowserCredentialBuilder authenticationRecord(AuthenticationRecord authenticationRecord) {
         this.identityClientOptions.setAuthenticationRecord(authenticationRecord);
         return this;
     }
@@ -77,7 +77,7 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
      *
      * @return An updated instance of this builder with automatic authentication disabled.
      */
-    public InteractiveBrowserCredentialBuilder disableAutomaticAuthentication() {
+    InteractiveBrowserCredentialBuilder disableAutomaticAuthentication() {
         this.automaticAuthentication = false;
         return this;
     }

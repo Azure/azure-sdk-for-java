@@ -15,7 +15,7 @@ import java.io.OutputStream;
 /**
  * Represents the account information relating to an authentication request
  */
-public class AuthenticationRecord {
+class AuthenticationRecord {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     @JsonProperty("authority")

@@ -31,7 +31,7 @@ public class SharedTokenCacheCredentialBuilder extends AadCredentialBuilderBase<
      *
      * @return An updated instance of this builder with the unprotected token cache setting set as specified.
      */
-    public SharedTokenCacheCredentialBuilder allowUnencryptedCache(boolean allowUnencryptedCache) {
+    SharedTokenCacheCredentialBuilder allowUnencryptedCache(boolean allowUnencryptedCache) {
         this.identityClientOptions.allowUnencryptedCache(allowUnencryptedCache);
         return this;
     }

@@ -93,7 +93,7 @@ public class InteractiveBrowserCredential implements TokenCredential {
      * on future execution if persistent caching was enabled via
      * {@link InteractiveBrowserCredentialBuilder#enablePersistentCache(boolean)} when credential was instantiated.
      */
-    public Mono<AuthenticationRecord> authenticate(TokenRequestContext request) {
+    Mono<AuthenticationRecord> authenticate(TokenRequestContext request) {
         return Mono.defer(() -> identityClient.authenticateWithBrowserInteraction(request, port))
                 .map(this::updateCache)
                 .map(msalToken -> cachedToken.get().getAuthenticationRecord());
@@ -106,7 +106,7 @@ public class InteractiveBrowserCredential implements TokenCredential {
      * on future execution if persistent caching was enabled via
      * {@link InteractiveBrowserCredentialBuilder#enablePersistentCache(boolean)} when credential was instantiated.
      */
-    public Mono<AuthenticationRecord> authenticate() {
+    Mono<AuthenticationRecord> authenticate() {
         String defaultScope = KnownAuthorityHosts.getDefaultScope(authorityHost);
         if (defaultScope == null) {
             return Mono.error(logger.logExceptionAsError(new CredentialUnavailableException("Authenticating in this "

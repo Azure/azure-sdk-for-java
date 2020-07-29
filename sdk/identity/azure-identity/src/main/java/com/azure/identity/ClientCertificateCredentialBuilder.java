@@ -47,7 +47,7 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
      *
      * @return An updated instance of this builder.
      */
-    public ClientCertificateCredentialBuilder enablePersistentCache(boolean enabled) {
+    ClientCertificateCredentialBuilder enablePersistentCache(boolean enabled) {
         this.identityClientOptions.enablePersistentCache(enabled);
         return this;
     }

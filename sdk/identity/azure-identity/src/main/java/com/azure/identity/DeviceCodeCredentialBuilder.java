@@ -38,7 +38,7 @@ public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<Device
      *
      * @return An updated instance of this builder with the unprotected token cache setting set as specified.
      */
-    public DeviceCodeCredentialBuilder allowUnencryptedCache(boolean allowUnencryptedCache) {
+    DeviceCodeCredentialBuilder allowUnencryptedCache(boolean allowUnencryptedCache) {
         this.identityClientOptions.allowUnencryptedCache(allowUnencryptedCache);
         return this;
     }
@@ -50,7 +50,7 @@ public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<Device
      *
      * @return An updated instance of this builder with if the shared token cache enabled specified.
      */
-    public DeviceCodeCredentialBuilder enablePersistentCache(boolean enabled) {
+    DeviceCodeCredentialBuilder enablePersistentCache(boolean enabled) {
         this.identityClientOptions.enablePersistentCache(enabled);
         return this;
     }
@@ -62,7 +62,7 @@ public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<Device
      *
      * @return An updated instance of this builder with if the shared token cache enabled specified.
      */
-    public DeviceCodeCredentialBuilder authenticationRecord(AuthenticationRecord authenticationRecord) {
+    DeviceCodeCredentialBuilder authenticationRecord(AuthenticationRecord authenticationRecord) {
         this.identityClientOptions.setAuthenticationRecord(authenticationRecord);
         return this;
     }
@@ -77,7 +77,7 @@ public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<Device
      *
      * @return An updated instance of this builder with automatic authentication disabled.
      */
-    public DeviceCodeCredentialBuilder disableAutomaticAuthentication() {
+    DeviceCodeCredentialBuilder disableAutomaticAuthentication() {
         this.automaticAuthentication = false;
         return this;
     }

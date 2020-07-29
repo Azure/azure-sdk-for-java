@@ -55,7 +55,7 @@ public class AuthorizationCodeCredentialBuilder extends AadCredentialBuilderBase
      *
      * @return An updated instance of this builder with the unprotected token cache setting set as specified.
      */
-    public AuthorizationCodeCredentialBuilder allowUnencryptedCache(boolean allowUnencryptedCache) {
+    AuthorizationCodeCredentialBuilder allowUnencryptedCache(boolean allowUnencryptedCache) {
         this.identityClientOptions.allowUnencryptedCache(allowUnencryptedCache);
         return this;
     }
@@ -67,7 +67,7 @@ public class AuthorizationCodeCredentialBuilder extends AadCredentialBuilderBase
      *
      * @return An updated instance of this builder with if the shared token cache enabled specified.
      */
-    public AuthorizationCodeCredentialBuilder enablePersistentCache(boolean enabled) {
+    AuthorizationCodeCredentialBuilder enablePersistentCache(boolean enabled) {
         this.identityClientOptions.enablePersistentCache(enabled);
         return this;
     }
