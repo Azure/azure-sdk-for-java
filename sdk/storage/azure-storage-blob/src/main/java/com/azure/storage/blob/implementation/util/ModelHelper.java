@@ -12,6 +12,7 @@ import com.azure.storage.blob.implementation.models.BlobTag;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobItemProperties;
 import com.azure.storage.blob.models.BlobLeaseRequestConditions;
+import com.azure.storage.blob.models.BlobSourceRequestConditions;
 import com.azure.storage.blob.models.ObjectReplicationPolicy;
 import com.azure.storage.blob.models.ObjectReplicationRule;
 import com.azure.storage.blob.models.ObjectReplicationStatus;
@@ -288,7 +289,7 @@ public class ModelHelper {
     }
 
     /**
-     * Transforms {@link RequestConditions} into a public {@link BlobLeaseRequestConditions}.
+     * Transforms {@link RequestConditions} into a {@link BlobLeaseRequestConditions}.
      *
      * @param requestConditions {@link RequestConditions}
      * @return {@link BlobLeaseRequestConditions}
@@ -299,6 +300,25 @@ public class ModelHelper {
         }
 
         return new BlobLeaseRequestConditions()
+            .setIfMatch(requestConditions.getIfMatch())
+            .setIfNoneMatch(requestConditions.getIfNoneMatch())
+            .setIfModifiedSince(requestConditions.getIfModifiedSince())
+            .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince())
+            .setTagsConditions(null);
+    }
+
+    /**
+     * Transforms {@link RequestConditions} into a {@link BlobSourceRequestConditions}.
+     *
+     * @param requestConditions {@link RequestConditions}
+     * @return {@link BlobSourceRequestConditions}
+     */
+    public static BlobSourceRequestConditions populateBlobSourceRequestConditions(RequestConditions requestConditions) {
+        if (requestConditions == null) {
+            return null;
+        }
+
+        return new BlobSourceRequestConditions()
             .setIfMatch(requestConditions.getIfMatch())
             .setIfNoneMatch(requestConditions.getIfNoneMatch())
             .setIfModifiedSince(requestConditions.getIfModifiedSince())

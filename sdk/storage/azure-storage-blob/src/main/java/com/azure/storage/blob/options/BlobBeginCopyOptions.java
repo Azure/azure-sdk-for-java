@@ -7,6 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.RequestConditions;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.models.BlobSourceRequestConditions;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
@@ -23,7 +24,7 @@ public class BlobBeginCopyOptions {
     private Map<String, String> tags;
     private AccessTier tier;
     private RehydratePriority rehydratePriority;
-    private RequestConditions sourceRequestConditions;
+    private BlobSourceRequestConditions sourceRequestConditions;
     private BlobRequestConditions destinationRequestConditions;
     private Duration pollInterval;
     private Boolean sealDestination;
@@ -108,17 +109,17 @@ public class BlobBeginCopyOptions {
     }
 
     /**
-     * @return {@link RequestConditions} for the source.
+     * @return {@link BlobSourceRequestConditions} for the source.
      */
-    public RequestConditions getSourceRequestConditions() {
+    public BlobSourceRequestConditions getSourceRequestConditions() {
         return sourceRequestConditions;
     }
 
     /**
-     * @param sourceRequestConditions {@link RequestConditions} for the source.
+     * @param sourceRequestConditions {@link BlobSourceRequestConditions} for the source.
      * @return The updated options.
      */
-    public BlobBeginCopyOptions setSourceRequestConditions(RequestConditions sourceRequestConditions) {
+    public BlobBeginCopyOptions setSourceRequestConditions(BlobSourceRequestConditions sourceRequestConditions) {
         this.sourceRequestConditions = sourceRequestConditions;
         return this;
     }

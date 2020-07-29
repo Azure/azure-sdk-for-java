@@ -8,7 +8,9 @@ import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.models.BlobSourceRequestConditions;
 import com.azure.storage.blob.models.CopyStatusType;
+import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions;
 import com.azure.storage.blob.options.PageBlobCreateOptions;
 import com.azure.storage.blob.models.PageBlobItem;
 import com.azure.storage.blob.models.PageBlobRequestConditions;
@@ -422,6 +424,33 @@ public class PageBlobClientJavaDocCodeSnippets {
             System.out.println("Page blob copied pending");
         }
         // END: com.azure.storage.blob.specialized.PageBlobClient.copyIncrementalWithResponse#String-String-RequestConditions-Duration-Context
+    }
+
+    /**
+     * Code snippets for {@link PageBlobClient#copyIncrementalWithResponse(PageBlobCopyIncrementalOptions,
+     * Duration, Context)}
+     */
+    public void copyIncrementalWithResponseCodeSnippet2() {
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.copyIncrementalWithResponse#PageBlobCopyIncrementalOptions-Duration-Context
+        final String snapshot = "copy snapshot";
+        BlobSourceRequestConditions sourceRequestConditions = new BlobSourceRequestConditions()
+            .setIfNoneMatch("snapshotMatch");
+        Context context = new Context(key, value);
+
+        CopyStatusType statusType = client
+            .copyIncrementalWithResponse(new PageBlobCopyIncrementalOptions(url, snapshot)
+                .setSourceRequestConditions(sourceRequestConditions), timeout, context).getValue();
+
+        if (CopyStatusType.SUCCESS == statusType) {
+            System.out.println("Page blob copied successfully");
+        } else if (CopyStatusType.FAILED == statusType) {
+            System.out.println("Page blob copied failed");
+        } else if (CopyStatusType.ABORTED == statusType) {
+            System.out.println("Page blob copied aborted");
+        } else if (CopyStatusType.PENDING == statusType) {
+            System.out.println("Page blob copied pending");
+        }
+        // END: com.azure.storage.blob.specialized.PageBlobClient.copyIncrementalWithResponse#PageBlobCopyIncrementalOptions-Duration-Context
     }
 
 }
