@@ -2,11 +2,11 @@
 
 ## 4.3.0-beta.1 (Unreleased)
 ### New Features
-* Updated reactor-core library version to `3.3.8.RELEASE`
-* Updated reactor-netty library version to `0.9.10.RELEASE`
-* Updated netty library version to `4.1.51.Final`
-* Added new APIs for `upsertItem` with `partitionKey`
-* Added open telemetry tracing support 
+* Updated reactor-core library version to `3.3.8.RELEASE`. 
+* Updated reactor-netty library version to `0.9.10.RELEASE`. 
+* Updated netty library version to `4.1.51.Final`. 
+* Added new overload APIs for `upsertItem` with `partitionKey`. 
+* Added open telemetry tracing support. 
 ### Key Bug Fixes
 * Fixed issue where SSLException gets thrown in case of cancellation of requests in GATEWAY mode.
 * Fixed resource throttle retry policy on stored procedures execution.
