@@ -41,7 +41,7 @@ public class GsonJsonSerializerTests {
 
         InputStream jsonStream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
 
-        StepVerifier.create(DEFAULT_SERIALIZER.deserialize(jsonStream, new TypeReference<Person>() { }))
+        StepVerifier.create(DEFAULT_SERIALIZER.deserializeAsync(jsonStream, new TypeReference<Person>() { }))
             .assertNext(actual -> assertEquals(expected, actual))
             .verifyComplete();
     }
@@ -53,7 +53,7 @@ public class GsonJsonSerializerTests {
 
         InputStream jsonStream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
 
-        StepVerifier.create(CUSTOM_SERIALIZER.deserialize(jsonStream, new TypeReference<Person>() { }))
+        StepVerifier.create(CUSTOM_SERIALIZER.deserializeAsync(jsonStream, new TypeReference<Person>() { }))
             .assertNext(actual -> assertEquals(expected, actual))
             .verifyComplete();
     }
@@ -64,7 +64,7 @@ public class GsonJsonSerializerTests {
 
         InputStream jsonStream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
 
-        StepVerifier.create(DEFAULT_SERIALIZER.deserialize(jsonStream, new TypeReference<JsonObject>() { }))
+        StepVerifier.create(DEFAULT_SERIALIZER.deserializeAsync(jsonStream, new TypeReference<JsonObject>() { }))
             .assertNext(actual -> {
                 assertEquals(50, actual.get("age").getAsInt());
                 assertTrue(actual.get("name").isJsonNull());
@@ -76,7 +76,7 @@ public class GsonJsonSerializerTests {
         Person person = new Person(null, 50);
         byte[] expected = "{\"age\":50}".getBytes(StandardCharsets.UTF_8);
 
-        StepVerifier.create(DEFAULT_SERIALIZER.serialize(new ByteArrayOutputStream(), person))
+        StepVerifier.create(DEFAULT_SERIALIZER.serializeAsync(new ByteArrayOutputStream(), person))
             .assertNext(actual -> {
                 assertNotNull(actual);
                 assertArrayEquals(expected, actual.toByteArray());
@@ -88,7 +88,7 @@ public class GsonJsonSerializerTests {
         Person person = new Person(null, 50);
         byte[] expected = "{\"name\":\"John Doe\",\"age\":50}".getBytes(StandardCharsets.UTF_8);
 
-        StepVerifier.create(CUSTOM_SERIALIZER.serialize(new ByteArrayOutputStream(), person))
+        StepVerifier.create(CUSTOM_SERIALIZER.serializeAsync(new ByteArrayOutputStream(), person))
             .assertNext(actual -> {
                 assertNotNull(actual);
                 assertArrayEquals(expected, actual.toByteArray());
