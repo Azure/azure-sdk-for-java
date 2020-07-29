@@ -231,28 +231,28 @@ public class CloudEvent {
     }
 
     /**
-     * Set a single additional property to the cloud event envelope. The property name will be transformed to lowercase
+     * Add/Overwrite a single additional property to the cloud event envelope. The property name will be transformed to lowercase
      * and must not share a name with any reserved cloud event properties.
      * @param name  the name of the property.
      * @param value the value to associate with the name.
      *
      * @return the cloud event itself.
      */
-    public CloudEvent setAdditionalProperty(String name, Object value) {
+    public CloudEvent addAdditionalProperty(String name, Object value) {
         this.cloudEvent.getAdditionalProperties().put(name.toLowerCase(Locale.ENGLISH), value);
         return this;
     }
 
     /**
-     * Set multiple additional properties to the cloud event envelope. The property names will be transformed
+     * Add/overwrite multiple additional properties to the cloud event envelope. The property names will be transformed
      * to lowercase and must not share a name with any reserved cloud event properties.
      * @param additionalProperties the map of properties to set.
      *
      * @return the cloud event itself.
      */
-    public CloudEvent setAdditionalProperties(Map<String, Object> additionalProperties) {
+    public CloudEvent addAdditionalProperties(Map<String, Object> additionalProperties) {
         for (Map.Entry<String, Object> entry : additionalProperties.entrySet()) {
-            setAdditionalProperty(entry.getKey(), entry.getValue());
+            addAdditionalProperty(entry.getKey(), entry.getValue());
         }
         return this;
     }

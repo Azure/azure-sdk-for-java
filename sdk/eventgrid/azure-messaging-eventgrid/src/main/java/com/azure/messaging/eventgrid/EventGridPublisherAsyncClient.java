@@ -27,7 +27,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * @see CloudEvent
  */
 @ServiceClient(builder = EventGridPublisherClientBuilder.class, isAsync = true)
-public class EventGridPublisherAsyncClient {
+public final class EventGridPublisherAsyncClient {
 
     private final String hostname;
 

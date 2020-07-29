@@ -4,6 +4,7 @@ package com.azure.messaging.eventgrid;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.experimental.serializer.JsonSerializerProviders;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -193,7 +194,7 @@ public class EventGridPublisherClientTests {
             }})
             .setEventTime(OffsetDateTime.now()));
 
-        Response<Void> response = egClient.sendEventsWithResponse(events);
+        Response<Void> response = egClient.sendEventsWithResponse(events, Context.NONE);
         assertNotNull(response);
         System.out.println("Got response " + response.getStatusCode());
         assertEquals(response.getStatusCode(), 200);
@@ -223,7 +224,7 @@ public class EventGridPublisherClientTests {
             }})
             .setTime(OffsetDateTime.now()));
 
-        Response<Void> response = egClient.sendCloudEventsWithResponse(events);
+        Response<Void> response = egClient.sendCloudEventsWithResponse(events, Context.NONE);
         assertNotNull(response);
         System.out.println("Got response " + response.getStatusCode());
         assertEquals(response.getStatusCode(), 200);
@@ -249,7 +250,7 @@ public class EventGridPublisherClientTests {
                 put("type", "Microsoft.MockPublisher.TestEvent");
             }});
         }
-        Response<Void> response = egClient.sendCustomEventsWithResponse(events);
+        Response<Void> response = egClient.sendCustomEventsWithResponse(events, Context.NONE);
         assertNotNull(response);
         System.out.println("Got response " + response.getStatusCode());
         assertEquals(response.getStatusCode(), 200);
