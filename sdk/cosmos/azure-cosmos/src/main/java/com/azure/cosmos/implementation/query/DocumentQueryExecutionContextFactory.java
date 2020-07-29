@@ -83,14 +83,13 @@ public class DocumentQueryExecutionContextFactory {
             return Flux.just(queryExecutionContext);
         }
 
-
-        Instant startTime = Instant.now();
         Mono<PartitionedQueryExecutionInfo> queryExecutionInfoMono =
             QueryPlanRetriever
                 .getQueryPlanThroughGatewayAsync(client, query, resourceLink);
 
-        return collectionObs.single().flatMap(collectionValueHolder ->
-                      queryExecutionInfoMono.flatMap(partitionedQueryExecutionInfo -> {
+        return collectionObs.single().flatMap(collectionValueHolder -> {
+                      Instant startTime = Instant.now();
+                      return queryExecutionInfoMono.flatMap(partitionedQueryExecutionInfo -> {
                           Instant endTime = Instant.now();
                           QueryInfo queryInfo =
                               partitionedQueryExecutionInfo.getQueryInfo();
@@ -142,7 +141,7 @@ public class DocumentQueryExecutionContextFactory {
                                                                                                               correlatedActivityId)
                                                               .single());
 
-                      })).flux();
+                      });}).flux();
     }
 
 	public static <T extends Resource> Flux<? extends IDocumentQueryExecutionContext<T>> createSpecializedDocumentQueryExecutionContextAsync(
