@@ -6,6 +6,7 @@ package com.azure.storage.blob.specialized;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -1097,7 +1098,7 @@ public class BlobClientBase {
      * @return An <code>InputStream</code> object that represents the stream to use for reading the query response.
      */
     public InputStream openQueryInputStream(String expression) {
-        return openQueryInputStream(new BlobQueryOptions(expression));
+        return openQueryInputStreamWithResponse(new BlobQueryOptions(expression)).getValue();
     }
 
     /**
@@ -1111,9 +1112,10 @@ public class BlobClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.openQueryInputStream#BlobQueryOptions}
      *
      * @param queryOptions {@link BlobQueryOptions The query options}.
-     * @return An <code>InputStream</code> object that represents the stream to use for reading the query response.
+     * @return A response containing status code and HTTP headers including an <code>InputStream</code> object
+     * that represents the stream to use for reading the query response.
      */
-    public InputStream openQueryInputStream(BlobQueryOptions queryOptions) {
+    public Response<InputStream> openQueryInputStreamWithResponse(BlobQueryOptions queryOptions) {
 
         // Data to subscribe to and read from.
         BlobQueryAsyncResponse response = client.queryWithResponse(queryOptions).block();
@@ -1122,7 +1124,8 @@ public class BlobClientBase {
         if (response == null) {
             throw logger.logExceptionAsError(new IllegalStateException("Query response cannot be null"));
         }
-        return new FluxInputStream(response.getValue());
+        return new ResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            new FluxInputStream(response.getValue()), response.getDeserializedHeaders());
     }
 
     /**
