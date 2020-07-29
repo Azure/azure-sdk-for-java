@@ -4,6 +4,7 @@
 package com.azure.core.serializer.avro.apache;
 
 import com.azure.core.experimental.serializer.ObjectSerializer;
+import com.azure.core.experimental.serializer.TypeReference;
 import org.apache.avro.Schema;
 import org.apache.avro.io.DatumReader;
 import org.apache.avro.io.DatumWriter;
@@ -36,7 +37,7 @@ public class ApacheAvroSerializer implements ObjectSerializer {
     }
 
     @Override
-    public <T> Mono<T> deserialize(InputStream stream, Class<T> clazz) {
+    public <T> Mono<T> deserialize(InputStream stream, TypeReference<T> typeReference) {
         return Mono.fromCallable(() -> {
             if (stream == null) {
                 return null;
@@ -44,7 +45,7 @@ public class ApacheAvroSerializer implements ObjectSerializer {
 
             DatumReader<T> reader = new SpecificDatumReader<>(schema, schema, specificData);
 
-            return clazz.cast(reader.read(null, decoderFactory.binaryDecoder(stream, null)));
+            return reader.read(null, decoderFactory.binaryDecoder(stream, null));
         });
     }
 
