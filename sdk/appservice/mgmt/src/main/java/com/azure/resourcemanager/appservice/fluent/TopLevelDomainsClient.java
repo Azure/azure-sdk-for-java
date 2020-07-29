@@ -178,6 +178,7 @@ public final class TopLevelDomainsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), context)
             .map(
@@ -309,6 +310,7 @@ public final class TopLevelDomainsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(), name, this.client.getSubscriptionId(), this.client.getApiVersion(), context);
@@ -480,6 +482,7 @@ public final class TopLevelDomainsClient {
         } else {
             agreementOption.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .listAgreements(
                 this.client.getEndpoint(),
@@ -612,6 +615,7 @@ public final class TopLevelDomainsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listNext(nextLink, context)
             .map(
@@ -669,6 +673,7 @@ public final class TopLevelDomainsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listAgreementsNext(nextLink, context)
             .map(

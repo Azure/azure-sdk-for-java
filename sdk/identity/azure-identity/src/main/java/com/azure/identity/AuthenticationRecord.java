@@ -30,14 +30,18 @@ class AuthenticationRecord {
     @JsonProperty("username")
     private String username;
 
+    @JsonProperty("clientId")
+    private String clientId;
+
 
     AuthenticationRecord() { }
 
-    AuthenticationRecord(IAuthenticationResult authenticationResult, String tenantId) {
+    AuthenticationRecord(IAuthenticationResult authenticationResult, String tenantId, String clientId) {
         authority = authenticationResult.account().environment();
         homeAccountId = authenticationResult.account().homeAccountId();
         username = authenticationResult.account().username();
         this.tenantId = tenantId;
+        this.clientId = clientId;
     }
 
     /**
@@ -68,6 +72,15 @@ class AuthenticationRecord {
     }
 
     /**
+     * Get the client id of the application used for authentication.
+     *
+     * @return the client id.
+     */
+    public String getClientId() {
+        return clientId;
+    }
+
+    /**
      * Get the user principal name of the account.
      *
      * @return the username.
@@ -82,14 +95,14 @@ class AuthenticationRecord {
      * @param outputStream The {@link OutputStream} to which the serialized record will be written to.
      * @return A {@link Mono} containing {@link Void}
      */
-    public Mono<Void> serialize(OutputStream outputStream) {
+    public Mono<OutputStream> serialize(OutputStream outputStream) {
         return Mono.defer(() -> {
             try {
                 OBJECT_MAPPER.writeValue(outputStream, this);
             } catch (IOException e) {
                 return Mono.error(e);
             }
-            return Mono.empty();
+            return Mono.just(outputStream);
         });
     }
 

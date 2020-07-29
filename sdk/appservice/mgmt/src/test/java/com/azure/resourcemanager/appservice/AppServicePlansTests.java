@@ -5,6 +5,7 @@ package com.azure.resourcemanager.appservice;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
 import com.azure.resourcemanager.appservice.models.OperatingSystem;
 import com.azure.resourcemanager.appservice.models.PricingTier;
@@ -76,5 +77,15 @@ public class AppServicePlansTests extends AppServiceTest {
         Assertions.assertEquals(PricingTier.STANDARD_S1, appServicePlan.pricingTier());
         Assertions.assertEquals(true, appServicePlan.perSiteScaling());
         Assertions.assertEquals(3, appServicePlan.capacity());
+    }
+
+    @Test
+    public void failOnAppServiceNotFound() {
+        resourceManager.resourceGroups().define(rgName)
+            .withRegion(Region.US_WEST)
+            .create();
+        Assertions.assertThrows(ManagementException.class, () -> {
+            appServiceManager.appServicePlans().getByResourceGroup("rgName", "no_such_appservice");
+        });
     }
 }

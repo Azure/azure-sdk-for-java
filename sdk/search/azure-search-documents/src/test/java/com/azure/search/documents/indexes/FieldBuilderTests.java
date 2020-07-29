@@ -4,11 +4,8 @@
 package com.azure.search.documents.indexes;
 
 import com.azure.search.documents.TestHelpers;
-import com.azure.search.documents.indexes.models.ComplexFieldBuilder;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
-import com.azure.search.documents.indexes.models.SearchableFieldBuilder;
-import com.azure.search.documents.indexes.models.SimpleFieldBuilder;
 import com.azure.search.documents.test.environment.models.HotelAnalyzerException;
 import com.azure.search.documents.test.environment.models.HotelCircularDependencies;
 import com.azure.search.documents.test.environment.models.HotelSearchException;
@@ -54,8 +51,16 @@ public class FieldBuilderTests {
     public void hotelWithEmptySynonymMaps() {
         // We cannot put null in the annotation. So no need to test null case.
         List<SearchField> actualFields = FieldBuilder.build(HotelWithEmptyInSynonymMaps.class);
-        List<SearchField> expectedFields = Collections.singletonList(new SearchableFieldBuilder("tags", true)
-            .setSynonymMapNames(Arrays.asList("asynonymMaps", "maps")).build());
+
+        List<SearchField> expectedFields = Collections.singletonList(new SearchField("tags",
+            SearchFieldDataType.collection(SearchFieldDataType.STRING))
+            .setSearchable(true)
+            .setKey(false)
+            .setFilterable(false)
+            .setSortable(false)
+            .setFacetable(false)
+            .setSynonymMapNames(Arrays.asList("asynonymMaps", "maps")));
+
         assertListFieldEquals(expectedFields, actualFields);
     }
 
@@ -95,43 +100,55 @@ public class FieldBuilderTests {
     }
 
     private List<SearchField> buildHotelCircularDependenciesModel() {
-        SearchField homeAddress = new ComplexFieldBuilder("homeAddress", false).setFields(buildHotelInAddress()).build();
-        SearchField billingAddress = new ComplexFieldBuilder("billingAddress", false).setFields(buildHotelInAddress()).build();
+        SearchField homeAddress = new SearchField("homeAddress", SearchFieldDataType.COMPLEX)
+            .setFields(buildHotelInAddress());
+        SearchField billingAddress = new SearchField("billingAddress", SearchFieldDataType.COMPLEX)
+            .setFields(buildHotelInAddress());
         return Arrays.asList(homeAddress, billingAddress);
     }
 
     private List<SearchField> buildHotelInAddress() {
-        SearchField hotel = new ComplexFieldBuilder("hotel", false).build();
+        SearchField hotel = new SearchField("hotel", SearchFieldDataType.COMPLEX);
         return Collections.singletonList(hotel);
     }
 
     private List<SearchField> buildHotelWithArrayModel() {
-        SearchField hotelId = new SimpleFieldBuilder("hotelId", SearchFieldDataType.STRING, false).setKey(true)
-            .setSortable(true).build();
-        SearchField tags = new SearchableFieldBuilder("tags", true).build();
+        SearchField hotelId = new SearchField("hotelId", SearchFieldDataType.STRING)
+            .setKey(true)
+            .setSortable(true)
+            .setSearchable(false)
+            .setFacetable(false)
+            .setFilterable(false);
+        SearchField tags = new SearchField("tags", SearchFieldDataType.collection(SearchFieldDataType.STRING))
+            .setKey(false)
+            .setSearchable(true)
+            .setSortable(false)
+            .setFilterable(false)
+            .setFacetable(false);
         return Arrays.asList(hotelId, tags);
     }
 
     private List<SearchField> buildHotelAddressField() {
-        SearchField streetAddress = new SimpleFieldBuilder("streetAddress", SearchFieldDataType.STRING, false).setFacetable(true)
-            .setKey(true).build();
-        SearchField city = new SearchableFieldBuilder("city", false).setFilterable(true).build();
-        SearchField stateProvince = new SearchableFieldBuilder("stateProvince", false).build();
-        SearchField country = new SearchableFieldBuilder("country", false)
-            .setSynonymMapNames(Arrays.asList("America -> USA", "USA -> US")).build();
-        SearchField postalCode = new SimpleFieldBuilder("postalCode", SearchFieldDataType.STRING, false).build();
+        SearchField streetAddress = new SearchField("streetAddress", SearchFieldDataType.STRING).setFacetable(true)
+            .setKey(true);
+        SearchField city = new SearchField("city", SearchFieldDataType.STRING).setFilterable(true);
+        SearchField stateProvince = new SearchField("stateProvince", SearchFieldDataType.STRING);
+        SearchField country =
+            new SearchField("country", SearchFieldDataType.STRING).setSynonymMapNames(Arrays.asList("America -> USA",
+                "USA -> US"));
+        SearchField postalCode = new SearchField("postalCode", SearchFieldDataType.STRING);
         return Arrays.asList(streetAddress, city, stateProvince, country, postalCode);
     }
 
     private List<SearchField> buildHotelRoomField() {
-        SearchField description = new SimpleFieldBuilder("description", SearchFieldDataType.STRING, false).build();
-        SearchField descriptionFr = new SimpleFieldBuilder("descriptionFr", SearchFieldDataType.STRING, false).build();
-        SearchField type = new SimpleFieldBuilder("type", SearchFieldDataType.STRING, false).build();
-        SearchField baseRate = new SimpleFieldBuilder("baseRate", SearchFieldDataType.DOUBLE, false).build();
-        SearchField bedOptions = new SimpleFieldBuilder("bedOptions", SearchFieldDataType.STRING, false).build();
-        SearchField sleepsCount = new SimpleFieldBuilder("sleepsCount", SearchFieldDataType.INT32, false).build();
-        SearchField smokingAllowed = new SimpleFieldBuilder("smokingAllowed", SearchFieldDataType.BOOLEAN, false).build();
-        SearchField tags = new SimpleFieldBuilder("tags", SearchFieldDataType.STRING, true).build();
+        SearchField description = new SearchField("description", SearchFieldDataType.STRING);
+        SearchField descriptionFr = new SearchField("descriptionFr", SearchFieldDataType.STRING);
+        SearchField type = new SearchField("type", SearchFieldDataType.STRING);
+        SearchField baseRate = new SearchField("baseRate", SearchFieldDataType.DOUBLE);
+        SearchField bedOptions = new SearchField("bedOptions", SearchFieldDataType.STRING);
+        SearchField sleepsCount = new SearchField("sleepsCount", SearchFieldDataType.INT32);
+        SearchField smokingAllowed = new SearchField("smokingAllowed", SearchFieldDataType.BOOLEAN);
+        SearchField tags = new SearchField("tags", SearchFieldDataType.collection(SearchFieldDataType.STRING));
         return Arrays.asList(description, descriptionFr, type, baseRate, bedOptions, sleepsCount, smokingAllowed, tags);
     }
 

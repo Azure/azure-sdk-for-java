@@ -9,6 +9,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.implementation.annotation.Beta;
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
 import com.azure.resourcemanager.appplatform.fluent.ServicesClient;
+import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
@@ -18,6 +19,7 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreatin
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import reactor.core.publisher.Mono;
 
 /** Entry point for Spring Service management API. */
 @Fluent
@@ -32,6 +34,24 @@ public interface SpringServices
         SupportsListingByResourceGroup<SpringService>,
         SupportsDeletingById,
         SupportsDeletingByResourceGroup {
+    /**
+     * Checks the name of the service is available in specific region or not.
+     *
+     * @param name the service name
+     * @param region the region of the service
+     * @return the service name is available or not.
+     */
+    NameAvailability checkNameAvailability(String name, Region region);
+
+    /**
+     * Checks the name of the service is available in specific region or not.
+     *
+     * @param name the service name
+     * @param region the region of the service
+     * @return the service name is available or not.
+     */
+    Mono<NameAvailability> checkNameAvailabilityAsync(String name, Region region);
+
     /** @return all available sku. */
     PagedIterable<ResourceSku> listSkus();
 

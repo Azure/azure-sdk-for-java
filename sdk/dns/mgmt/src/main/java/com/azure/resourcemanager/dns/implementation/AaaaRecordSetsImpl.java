@@ -30,7 +30,6 @@ class AaaaRecordSetsImpl extends DnsRecordSetsBaseImpl<AaaaRecordSet, AaaaRecord
             .inner()
             .getRecordSets()
             .getAsync(this.dnsZone.resourceGroupName(), this.dnsZone.name(), name, this.recordType)
-            .onErrorResume(e -> Mono.empty())
             .map(this::wrapModel);
     }
 

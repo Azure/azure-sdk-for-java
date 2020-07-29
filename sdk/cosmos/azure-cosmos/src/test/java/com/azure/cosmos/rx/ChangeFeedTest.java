@@ -173,7 +173,7 @@ public class ChangeFeedTest extends TestSuiteBase {
 
         // Waiting for at-least a second to ensure that new document is created after we took the time stamp
         waitAtleastASecond(dateTimeBeforeCreatingDoc);
-        client.createDocument(getCollectionLink(), getDocumentDefinition(partitionKey), null, true).single().block();
+        client.createDocument(getCollectionLink(), getDocumentDefinition(partitionKey), null, true).block();
 
         List<FeedResponse<Document>> changeFeedResultList = client.queryDocumentChangeFeed(getCollectionLink(),
                 changeFeedOption).collectList().block();
@@ -205,8 +205,8 @@ public class ChangeFeedTest extends TestSuiteBase {
         assertThat(changeFeedContinuation).as("continuation token is not empty").isNotEmpty();
 
         // create some documents
-        client.createDocument(getCollectionLink(), getDocumentDefinition(partitionKey), null, true).single().block();
-        client.createDocument(getCollectionLink(), getDocumentDefinition(partitionKey), null, true).single().block();
+        client.createDocument(getCollectionLink(), getDocumentDefinition(partitionKey), null, true).block();
+        client.createDocument(getCollectionLink(), getDocumentDefinition(partitionKey), null, true).block();
 
         // READ change feed from continuation
         changeFeedOption.setRequestContinuation(changeFeedContinuation);
@@ -223,7 +223,7 @@ public class ChangeFeedTest extends TestSuiteBase {
         Document docDefinition = getDocumentDefinition(partitionKey);
 
         Document createdDocument = client
-                .createDocument(getCollectionLink(), docDefinition, null, false).single().block().getResource();
+                .createDocument(getCollectionLink(), docDefinition, null, false).block().getResource();
         partitionKeyToDocuments.put(partitionKey, createdDocument);
     }
 

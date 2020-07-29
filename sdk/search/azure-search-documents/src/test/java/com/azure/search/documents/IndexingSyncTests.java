@@ -130,7 +130,7 @@ public class IndexingSyncTests extends SearchTestBase {
         assertEquals(2, client.getDocumentCount());
 
         IndexDocumentsBatch<Hotel> deleteBatch = new IndexDocumentsBatch<Hotel>()
-            .addDeleteActions("HotelId", "1", "2");
+            .addDeleteActions("HotelId", Arrays.asList("1", "2"));
 
         IndexDocumentsResult documentIndexResult = client.indexDocuments(deleteBatch);
         waitForIndexing();
@@ -201,11 +201,11 @@ public class IndexingSyncTests extends SearchTestBase {
         Hotel randomHotel = prepareStaticallyTypedHotel("randomId"); // deleting a non existing document
 
         IndexDocumentsBatch<Hotel> batch = new IndexDocumentsBatch<Hotel>()
-            .addUploadActions(hotel1)
-            .addDeleteActions(randomHotel)
-            .addMergeActions(nonExistingHotel)
-            .addMergeOrUploadActions(hotel3)
-            .addUploadActions(hotel2);
+            .addUploadActions(Collections.singletonList(hotel1))
+            .addDeleteActions(Collections.singletonList(randomHotel))
+            .addMergeActions(Collections.singletonList(nonExistingHotel))
+            .addMergeOrUploadActions(Collections.singletonList(hotel3))
+            .addUploadActions(Collections.singletonList(hotel2));
 
         try {
             client.indexDocumentsWithResponse(batch, new IndexDocumentsOptions().setThrowOnAnyError(true),
@@ -246,11 +246,11 @@ public class IndexingSyncTests extends SearchTestBase {
         SearchDocument randomHotel = prepareDynamicallyTypedHotel("randomId"); // deleting a non existing document
 
         IndexDocumentsBatch<SearchDocument> batch = new IndexDocumentsBatch<SearchDocument>()
-            .addUploadActions(hotel1)
-            .addDeleteActions(randomHotel)
-            .addMergeActions(nonExistingHotel)
-            .addMergeOrUploadActions(hotel3)
-            .addUploadActions(hotel2);
+            .addUploadActions(Collections.singletonList(hotel1))
+            .addDeleteActions(Collections.singletonList(randomHotel))
+            .addMergeActions(Collections.singletonList(nonExistingHotel))
+            .addMergeOrUploadActions(Collections.singletonList(hotel3))
+            .addUploadActions(Collections.singletonList(hotel2));
 
         Response<IndexDocumentsResult> resultResponse = client.indexDocumentsWithResponse(batch,
             new IndexDocumentsOptions().setThrowOnAnyError(false), Context.NONE);
@@ -283,11 +283,11 @@ public class IndexingSyncTests extends SearchTestBase {
         SearchDocument randomHotel = prepareDynamicallyTypedHotel("randomId"); // deleting a non existing document
 
         IndexDocumentsBatch<SearchDocument> batch = new IndexDocumentsBatch<SearchDocument>()
-            .addUploadActions(hotel1)
-            .addDeleteActions(randomHotel)
-            .addMergeActions(nonExistingHotel)
-            .addMergeOrUploadActions(hotel3)
-            .addUploadActions(hotel2);
+            .addUploadActions(Collections.singletonList(hotel1))
+            .addDeleteActions(Collections.singletonList(randomHotel))
+            .addMergeActions(Collections.singletonList(nonExistingHotel))
+            .addMergeOrUploadActions(Collections.singletonList(hotel3))
+            .addUploadActions(Collections.singletonList(hotel2));
 
         try {
             client.indexDocuments(batch);
@@ -333,9 +333,7 @@ public class IndexingSyncTests extends SearchTestBase {
     public void canUseIndexWithReservedName() {
         String indexName = "prototype";
         SearchIndex indexWithReservedName = new SearchIndex(indexName)
-            .setFields(Collections.singletonList(new SearchField("ID", SearchFieldDataType.STRING)
-                .setKey(Boolean.TRUE)
-            ));
+            .setFields(new SearchField("ID", SearchFieldDataType.STRING).setKey(Boolean.TRUE));
 
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder().buildClient();
         searchIndexClient.createOrUpdateIndex(indexWithReservedName);

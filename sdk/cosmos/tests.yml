@@ -251,19 +251,14 @@ jobs:
         TestName: Integration_Test_Spring_Data_Cosmosdb
         ServiceDirectory: cosmos
         Artifacts:
-            - name: spring-data-cosmosdb
-              groupId: com.microsoft.azure
-              safeName: springdatacosmosdb
+            - name: azure-spring-data-cosmos
+              groupId: com.azure
+              safeName: azurespringdatacosmos
         TimeoutInMinutes: 90
         Matrix:
           Session_Integration:
             ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }"
             DisplayName: Session Integration
-            OSVmImage: 'ubuntu-18.04'
-            ProfileFlag: '-P integration-test-azure'
-          Strong_Integration:
-            ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }"
-            DisplayName: Strong Integration
             OSVmImage: 'ubuntu-18.04'
             ProfileFlag: '-P integration-test-azure'
 

@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+
 module com.azure.cosmos {
 
     requires transitive com.azure.core;
@@ -49,4 +50,5 @@ module com.azure.cosmos {
     opens com.azure.cosmos.util to com.fasterxml.jackson.databind;
 
     uses com.azure.cosmos.implementation.guava25.base.PatternCompiler;
+    uses com.azure.core.util.tracing.Tracer;
 }

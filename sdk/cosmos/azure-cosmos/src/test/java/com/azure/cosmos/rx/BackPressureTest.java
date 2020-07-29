@@ -259,7 +259,7 @@ public class BackPressureTest extends TestSuiteBase {
                     createdCollection.read().block().getProperties().getResourceId())
                         , null).take(1).map(FeedResponse::getResults).single().block().get(0);
         offer.setThroughput(6000);
-        offer = rxClient.replaceOffer(offer).single().block().getResource();
+        offer = rxClient.replaceOffer(offer).block().getResource();
         assertThat(offer.getThroughput()).isEqualTo(6000);
 
         ArrayList<InternalObjectNode> docDefList = new ArrayList<>();

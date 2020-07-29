@@ -7,6 +7,7 @@ import com.azure.core.annotation.Immutable;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Quadrangle bounding box, with coordinates specified relative to the top-left of the original image
@@ -39,5 +40,16 @@ public final class BoundingBox {
      */
     public List<Point> getPoints() {
         return this.points;
+    }
+
+    /**
+     * Returns a string representation of the {@link BoundingBox}.
+     *
+     * @return the string representation of the {@link BoundingBox}.
+     */
+    @Override
+    public String toString() {
+        return points.stream().map(point -> String.format("[%.2f, %.2f]", point.getX(),
+            point.getY())).collect(Collectors.joining(", "));
     }
 }

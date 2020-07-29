@@ -30,7 +30,6 @@ class NSRecordSetsImpl extends DnsRecordSetsBaseImpl<NSRecordSet, NSRecordSetImp
             .inner()
             .getRecordSets()
             .getAsync(this.dnsZone.resourceGroupName(), this.dnsZone.name(), name, this.recordType)
-            .onErrorResume(e -> Mono.empty())
             .map(this::wrapModel);
     }
 

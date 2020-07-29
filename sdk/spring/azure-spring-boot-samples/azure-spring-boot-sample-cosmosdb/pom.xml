@@ -4,16 +4,17 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>com.microsoft.azure</groupId>
-    <artifactId>azure-spring-boot-samples</artifactId>
-    <version>1.0.0</version>
-    <relativePath>../pom.xml</relativePath>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>2.3.0.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-parent;external_dependency} -->
   </parent>
 
+  <groupId>com.azure</groupId>
   <artifactId>azure-spring-boot-sample-cosmosdb</artifactId>
+  <version>1.0.0</version>
   <packaging>jar</packaging>
 
-  <name>Azure Cosmos DB Spring Boot Starter Sample</name>
+  <name>Azure Spring Boot Starter Sample - Cosmos DB</name>
   <description>Sample project for Azure Document DB Starter</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 

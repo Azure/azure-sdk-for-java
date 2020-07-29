@@ -92,7 +92,7 @@ public class UsernamePasswordCredential implements TokenCredential {
      * @return The {@link AuthenticationRecord} of the authenticated account.
      */
     Mono<AuthenticationRecord> authenticate() {
-        String defaultScope = KnownAuthorityHosts.getDefaultScope(authorityHost);
+        String defaultScope = AzureAuthorityHosts.getDefaultScope(authorityHost);
         if (defaultScope == null) {
             return Mono.error(logger.logExceptionAsError(new CredentialUnavailableException("Authenticating in this "
                                                         + "environment requires specifying a TokenRequestContext.")));
@@ -104,7 +104,7 @@ public class UsernamePasswordCredential implements TokenCredential {
         cachedToken.set(
                 new MsalAuthenticationAccount(
                         new AuthenticationRecord(msalToken.getAuthenticationResult(),
-                                identityClient.getTenantId())));
+                                identityClient.getTenantId(), identityClient.getClientId())));
         return msalToken;
     }
 }
