@@ -55,6 +55,6 @@ public class SharedTokenCacheCredentialBuilder extends AadCredentialBuilderBase<
      */
     public SharedTokenCacheCredential build() {
         return new SharedTokenCacheCredential(username, clientId, tenantId,
-                identityClientOptions.enablePersistentCache());
+                identityClientOptions.enablePersistentCache().allowUnencryptedCache());
     }
 }
