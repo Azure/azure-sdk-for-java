@@ -236,6 +236,7 @@ public class TableAsyncClient {
 
     Mono<Response<Void>> upsertEntityWithResponse(TableEntity entity, TableUpdateMode updateMode, Duration timeout,
         Context context) {
+        Map<String, Object> properties = addPropertyTyping(entity.getProperties());
         Integer timeoutInt = timeout == null ? null : (int) timeout.getSeconds();
         if (entity == null) {
             return monoError(logger, new NullPointerException("TableEntity cannot be null"));
@@ -243,14 +244,14 @@ public class TableAsyncClient {
         if (updateMode == TableUpdateMode.REPLACE) {
             return tableImplementation.updateEntityWithResponseAsync(tableName, entity.getPartitionKey(),
                 entity.getRowKey(), timeoutInt, null, "*",
-                entity.getProperties(), null, context).map(response -> {
+                properties, null, context).map(response -> {
                     return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                     null);
                 });
         } else {
             return tableImplementation.mergeEntityWithResponseAsync(tableName, entity.getPartitionKey(),
                 entity.getRowKey(), timeoutInt, null, "*",
-                entity.getProperties(), null, context).map(response -> {
+                properties, null, context).map(response -> {
                     return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                     null);
                 });
@@ -316,11 +317,12 @@ public class TableAsyncClient {
 
     Mono<Response<Void>> updateEntityWithResponse(TableEntity entity, boolean ifUnchanged, TableUpdateMode updateMode,
         Duration timeout, Context context) {
+        Map<String, Object> properties = addPropertyTyping(entity.getProperties());
         Integer timeoutInt = timeout == null ? null : (int) timeout.getSeconds();
         if (updateMode == null || updateMode == TableUpdateMode.MERGE) {
             if (ifUnchanged) {
                 return tableImplementation.mergeEntityWithResponseAsync(tableName, entity.getPartitionKey(),
-                    entity.getRowKey(), timeoutInt, null, entity.getETag(), entity.getProperties(), null,
+                    entity.getRowKey(), timeoutInt, null, entity.getETag(), properties, null,
                     context).map(response -> {
                         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                         response.getHeaders(), null);
@@ -330,7 +332,7 @@ public class TableAsyncClient {
                     .flatMap(entityReturned -> {
                         return tableImplementation.mergeEntityWithResponseAsync(tableName,
                             entity.getPartitionKey(), entity.getRowKey(), timeoutInt, null,
-                            "*", entity.getProperties(), null, context);
+                            "*", properties, null, context);
                     }).map(response -> {
                         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                             response.getHeaders(), null);
@@ -339,7 +341,7 @@ public class TableAsyncClient {
         } else {
             if (ifUnchanged) {
                 return tableImplementation.updateEntityWithResponseAsync(tableName, entity.getPartitionKey(),
-                    entity.getRowKey(), timeoutInt, null, entity.getETag(), entity.getProperties(),
+                    entity.getRowKey(), timeoutInt, null, entity.getETag(), properties,
                     null, context).map(response -> {
                         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                         response.getHeaders(), null);
@@ -349,7 +351,7 @@ public class TableAsyncClient {
                     .flatMap(entityReturned -> {
                         return tableImplementation.updateEntityWithResponseAsync(tableName,
                             entity.getPartitionKey(), entity.getRowKey(),
-                            timeoutInt, null, "*", entity.getProperties(), null,
+                            timeoutInt, null, "*", properties, null,
                             context);
                     }).map(response -> {
                         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
@@ -644,7 +646,9 @@ public class TableAsyncClient {
     private Map<String, Object> addPropertyTyping(Map<String, Object> properties) {
         Map<String, Object> result = new HashMap<>();
         for (Map.Entry<String,Object> entry : properties.entrySet()) {
-            if (!entry.getKey().equals(PARTITION_KEY) && !entry.getKey().equals(ROW_KEY) && !entry.getKey().equals("Timestamp") && !entry.getKey().equals("Etag")) {
+            if (!entry.getKey().equals(PARTITION_KEY) && !entry.getKey().equals(ROW_KEY)
+                && !entry.getKey().equals("Timestamp") && !entry.getKey().equals("Etag")
+                && !entry.getKey().equals("odata.etag") && !entry.getKey().equals("odata.metadata")) {
                 String key = entry.getKey().concat(ODataConstants.ODATA_TYPE_SUFFIX);
                 String value = getEntityProperty(entry.getValue().getClass()).toString();
                 result.put(key, value);
