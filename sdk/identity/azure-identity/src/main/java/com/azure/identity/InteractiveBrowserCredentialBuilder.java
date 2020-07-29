@@ -14,7 +14,7 @@ import java.util.HashMap;
  * @see InteractiveBrowserCredential
  */
 public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBase<InteractiveBrowserCredentialBuilder> {
-    private int port;
+    private Integer port;
     private boolean automaticAuthentication = true;
 
     /**

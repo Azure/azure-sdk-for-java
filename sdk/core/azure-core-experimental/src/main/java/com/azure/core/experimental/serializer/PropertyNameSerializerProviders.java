@@ -17,10 +17,10 @@ public final class PropertyNameSerializerProviders {
     private static boolean attemptedLoad;
 
     /**
-     * Creates an instance of {@link JsonSerializer} using the first {@link JsonSerializerProvider} found in the
+     * Creates an instance of {@link PropertyNameSerializer} using the first {@link PropertyNameSerializer} found in the
      * classpath.
      *
-     * @return A new instance of {@link JsonSerializer}.
+     * @return A new instance of {@link PropertyNameSerializer}.
      */
     public static PropertyNameSerializer createInstance() {
         if (defaultProvider == null) {
