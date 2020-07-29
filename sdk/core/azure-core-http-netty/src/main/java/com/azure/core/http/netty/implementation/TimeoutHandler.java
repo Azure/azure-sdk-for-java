@@ -173,6 +173,7 @@ public final class TimeoutHandler extends ChannelDuplexHandler {
     }
 
     private void operationTimedOut(ChannelHandlerContext ctx, String errorMessage) {
+        System.out.println(errorMessage);
         if (!closed) {
             ctx.fireExceptionCaught(new TimeoutException(errorMessage));
             ctx.close();
