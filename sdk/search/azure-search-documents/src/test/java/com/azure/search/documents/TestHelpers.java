@@ -5,12 +5,12 @@ package com.azure.search.documents;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.experimental.serializer.JsonSerializer;
+import com.azure.core.experimental.serializer.TypeReference;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.search.documents.implementation.serializer.TypeRef;
 import com.azure.search.documents.implementation.util.Utility;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -286,14 +286,12 @@ public final class TestHelpers {
     private static List<Map<String, Object>> readJsonFileToList(String filename) {
         InputStream inputStream = Objects.requireNonNull(TestHelpers.class.getClassLoader()
             .getResourceAsStream(filename));
-        return SERIALIZER.deserialize(inputStream, new TypeRef<List<Map<String, Object>>>() { }.getJavaType())
-                .map(object -> (List<Map<String, Object>>) object).block();
+        return SERIALIZER.deserialize(inputStream, new TypeReference<List<Map<String, Object>>>() { }).block();
     }
 
     @SuppressWarnings("unchecked")
     public static List<Map<String, Object>> convertStreamToList(InputStream sourceStream) {
-        return SERIALIZER.deserialize(sourceStream, new TypeRef<List<Map<String, Object>>>() { }.getJavaType())
-            .map(object -> (List<Map<String, Object>>) object).block();
+        return SERIALIZER.deserialize(sourceStream, new TypeReference<List<Map<String, Object>>>() { }).block();
     }
 
     @SuppressWarnings("unchecked")

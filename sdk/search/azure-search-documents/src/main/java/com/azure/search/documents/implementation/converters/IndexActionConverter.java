@@ -4,7 +4,7 @@
 package com.azure.search.documents.implementation.converters;
 
 import com.azure.core.experimental.serializer.JsonSerializer;
-import com.azure.search.documents.implementation.serializer.TypeRef;
+import com.azure.core.experimental.serializer.TypeReference;
 import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
@@ -61,10 +61,10 @@ public final class IndexActionConverter {
         Map<String, Object> mapProperties = PrivateFieldAccessHelper.get(obj, "properties", Map.class);
         if (mapProperties == null) {
             T properties = obj.getDocument();
-            TypeRef<Map<String, Object>> ref = new TypeRef<Map<String, Object>>() { };
+            TypeReference<Map<String, Object>> ref = new TypeReference<Map<String, Object>>() { };
             mapProperties = serializer.serialize(outputStream, properties)
                 .flatMap(sourceStream -> serializer.deserialize(new ByteArrayInputStream(sourceStream.toByteArray()),
-                    ref.getJavaType()).map(mapObject -> (Map<String, Object>) mapObject)).block();
+                    ref)).block();
         }
 
         indexAction.setAdditionalProperties(mapProperties);

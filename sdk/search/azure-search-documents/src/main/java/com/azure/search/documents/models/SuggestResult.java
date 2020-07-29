@@ -5,6 +5,7 @@ package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.experimental.serializer.JsonSerializer;
+import com.azure.core.experimental.serializer.TypeReference;
 import com.azure.search.documents.SearchDocument;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -57,13 +58,13 @@ public final class SuggestResult {
      * @param <T> Convert document to the generic type.
      * @return the additionalProperties value.
      */
-    @SuppressWarnings("unchecked")
     public <T> T getDocument(Class<T> modelClass) {
         if (jsonSerializer == null) {
             jsonSerializer = creatDefaultJsonSerializerInstance();
         }
-        return (T) jsonSerializer.serialize(new ByteArrayOutputStream(), additionalProperties).flatMap(
-            sourceStream -> jsonSerializer.deserialize(new ByteArrayInputStream(sourceStream.toByteArray()), modelClass))
+        TypeReference<T> type = new TypeReference<T>(modelClass) { };
+        return jsonSerializer.serialize(new ByteArrayOutputStream(), additionalProperties).flatMap(
+            sourceStream -> jsonSerializer.deserialize(new ByteArrayInputStream(sourceStream.toByteArray()), type))
             .block();
     }
 

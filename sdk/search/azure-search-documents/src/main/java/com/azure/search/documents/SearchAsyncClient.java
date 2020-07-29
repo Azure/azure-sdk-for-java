@@ -7,6 +7,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.experimental.serializer.JsonSerializer;
+import com.azure.core.experimental.serializer.TypeReference;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -536,8 +537,9 @@ public final class SearchAsyncClient {
                 .flatMap(res -> {
                     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                     return serializer.serialize(outputStream, res.getValue()).flatMap(source ->
-                         serializer.deserialize(new ByteArrayInputStream(source.toByteArray()), modelClass)
-                            .map(instance -> new SimpleResponse<>(res, (T) instance))
+                         serializer.deserialize(new ByteArrayInputStream(source.toByteArray()),
+                             new TypeReference<T>(modelClass) { })
+                            .map(instance -> new SimpleResponse<>(res, instance))
                     ).map(Function.identity());
                 });
         } catch (RuntimeException ex) {

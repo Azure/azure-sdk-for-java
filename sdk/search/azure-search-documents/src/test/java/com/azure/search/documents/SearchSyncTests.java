@@ -3,6 +3,7 @@
 
 package com.azure.search.documents;
 
+import com.azure.core.experimental.serializer.TypeReference;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.search.documents.indexes.SearchIndexClient;
@@ -237,8 +238,8 @@ public class SearchSyncTests extends SearchTestBase {
 
         List<Hotel> hotelsList = hotels.stream().map(hotel ->
             SERIALIZER.serialize(new ByteArrayOutputStream(), hotel).flatMap(sourceStream ->
-                SERIALIZER.deserialize(new ByteArrayInputStream(sourceStream.toByteArray()), Hotel.class))
-                .map(object -> (Hotel) object).block())
+                SERIALIZER.deserialize(new ByteArrayInputStream(sourceStream.toByteArray()),
+                    new TypeReference<Hotel>() { })).block())
             .collect(Collectors.toList());
         assertEquals(hotelsList.size(), actualResults.size());
         actualResults.sort(Comparator.comparing(doc -> Integer.parseInt(doc.hotelId())));

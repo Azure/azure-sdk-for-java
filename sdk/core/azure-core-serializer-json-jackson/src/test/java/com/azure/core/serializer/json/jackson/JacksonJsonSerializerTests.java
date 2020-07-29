@@ -77,8 +77,8 @@ public class JacksonJsonSerializerTests {
 
         StepVerifier.create(DEFAULT_SERIALIZER.deserialize(jsonStream, new TypeReference<ObjectNode>() { }))
             .assertNext(actual -> {
-                assertEquals(50, ((ObjectNode) actual).get("age").asInt());
-                assertTrue(((ObjectNode) actual).get("name").isNull());
+                assertEquals(50, actual.get("age").asInt());
+                assertTrue(actual.get("name").isNull());
             }).verifyComplete();
     }
 

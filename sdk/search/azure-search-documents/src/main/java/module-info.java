@@ -2,10 +2,12 @@
 // Licensed under the MIT License.
 
 module com.azure.search.documents {
-    requires transitive com.azure.core;
     requires com.fasterxml.jackson.datatype.jsr310;
     requires jakarta.activation;
-    requires transitive com.azure.core.serializer.json.jackson;
+    requires com.fasterxml.jackson.annotation;
+    requires com.azure.core;
+    requires com.azure.core.experimental;
+    requires com.azure.core.serializer.json.jackson;
 
     opens com.azure.search.documents to com.fasterxml.jackson.databind;
     opens com.azure.search.documents.models to com.fasterxml.jackson.databind;

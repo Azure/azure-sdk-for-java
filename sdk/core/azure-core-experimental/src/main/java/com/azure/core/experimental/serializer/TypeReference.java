@@ -33,6 +33,16 @@ public abstract class TypeReference<T> {
     }
 
     /**
+     * Constructs a new {@link TypeReference} which maintains generic information.
+     *
+     * @param clazz The class type which get generic information.
+     * @throws IllegalArgumentException If the reference is constructed without type information.
+     */
+    public TypeReference(Class<?> clazz) {
+        this.javaType = clazz;
+    }
+
+    /**
      * Return class T type
      * @return type
      */

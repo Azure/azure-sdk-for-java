@@ -2143,6 +2143,12 @@
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" />
   </Match>
 
+  <!-- Use abstract TypeReference class for serialize and deserialize API. -->
+  <Match>
+    <Class name="~com\.azure\.search\.documents\.models\.(SearchResult|SuggestResult)" />
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON" />
+  </Match>
+
   <Match>
     <Or>
       <Class name="com.azure.core.serializer.json.jackson.JacksonJsonSerializer"/>

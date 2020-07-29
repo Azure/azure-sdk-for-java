@@ -3,7 +3,7 @@
 
 package com.azure.search.documents;
 
-import com.azure.search.documents.implementation.serializer.TypeRef;
+import com.azure.core.experimental.serializer.TypeReference;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -37,7 +37,7 @@ public class SearchDocumentConverterTests {
         // in this case we simulate creation of the object created by azure-core
         ByteArrayInputStream inputStream = new ByteArrayInputStream(json.getBytes());
         SearchDocument doc = new SearchDocument(SERIALIZER.deserialize(inputStream,
-            new TypeRef<Map<String, Object>>() { }.getJavaType()).map(TestHelpers::convertObjectToSearchDocument)
+            new TypeReference<SearchDocument>() { }).map(TestHelpers::convertObjectToSearchDocument)
             .block());
         cleanupODataAnnotation(doc);
         return doc;
