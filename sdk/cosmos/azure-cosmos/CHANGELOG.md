@@ -18,6 +18,7 @@
 * Added timeUnit to `requestLatency` in diagnostics string.
 * Removed duplicate uri string from diagnostics string. 
 * Fixed diagnostics string in proper JSON format for point operations.
+* Fixed issue with `.single()` operator causing the reactor chain to blow up in case of Not Found exception. 
 
 ## 4.2.0 (2020-07-14)
 ### New Features
