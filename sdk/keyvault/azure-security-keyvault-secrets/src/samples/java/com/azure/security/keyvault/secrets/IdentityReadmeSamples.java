@@ -5,6 +5,8 @@ package com.azure.security.keyvault.secrets;
 
 import com.azure.identity.AuthorizationCodeCredential;
 import com.azure.identity.AuthorizationCodeCredentialBuilder;
+import com.azure.identity.AzureCliCredential;
+import com.azure.identity.AzureCliCredentialBuilder;
 import com.azure.identity.ChainedTokenCredential;
 import com.azure.identity.ChainedTokenCredentialBuilder;
 import com.azure.identity.ClientSecretCredential;
@@ -13,10 +15,16 @@ import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.identity.DeviceCodeCredential;
 import com.azure.identity.DeviceCodeCredentialBuilder;
+import com.azure.identity.IntelliJCredential;
+import com.azure.identity.IntelliJCredentialBuilder;
+import com.azure.identity.InteractiveBrowserCredential;
+import com.azure.identity.InteractiveBrowserCredentialBuilder;
 import com.azure.identity.ManagedIdentityCredential;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
 import com.azure.identity.UsernamePasswordCredential;
 import com.azure.identity.UsernamePasswordCredentialBuilder;
+import com.azure.identity.VisualStudioCodeCredential;
+import com.azure.identity.VisualStudioCodeCredentialBuilder;
 
 /**
  * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS
@@ -137,4 +145,60 @@ public class IdentityReadmeSamples {
             .buildClient();
     }
 
+    /**
+     * Authenticate with Azure CLI.
+     */
+    public void createAzureCliCredential() {
+        AzureCliCredential cliCredential = new AzureCliCredentialBuilder().build();
+
+        // Azure SDK client builders accept the credential as a parameter
+        SecretClient client = new SecretClientBuilder()
+            .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
+            .credential(cliCredential)
+            .buildClient();
+    }
+
+    /**
+     * Authenticate with Visual Studio Code.
+     */
+    public void createVisualStudioCodeCredential() {
+        VisualStudioCodeCredential visualStudioCodeCredential = new VisualStudioCodeCredentialBuilder().build();
+
+        // Azure SDK client builders accept the credential as a parameter
+        SecretClient client = new SecretClientBuilder()
+            .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
+            .credential(visualStudioCodeCredential)
+            .buildClient();
+    }
+
+    /**
+     * Authenticate with IntelliJ IDEA.
+     */
+    public void createIntelliJCredential() {
+        IntelliJCredential intelliJCredential = new IntelliJCredentialBuilder()
+            // KeePass configuration required for Windows
+            .keePassDatabasePath("C:\\Users\\user\\AppData\\Roaming\\JetBrains\\IdeaIC2020.1\\c.kdbx")
+            .build();
+
+        // Azure SDK client builders accept the credential as a parameter
+        SecretClient client = new SecretClientBuilder()
+            .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
+            .credential(intelliJCredential)
+            .buildClient();
+    }
+
+    /**
+     * Authenticate interactively in the browser.
+     */
+    public void createInteractiveBrowserCredential() {
+        InteractiveBrowserCredential interactiveBrowserCredential = new InteractiveBrowserCredentialBuilder()
+            .port(8765)
+            .build();
+
+        // Azure SDK client builders accept the credential as a parameter
+        SecretClient client = new SecretClientBuilder()
+            .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
+            .credential(interactiveBrowserCredential)
+            .buildClient();
+    }
 }

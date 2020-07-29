@@ -29,70 +29,11 @@ Maven dependency for Azure Secret Client library. Add it to your project's pom f
 ### Prerequisites
 * [Java Development Kit (JDK)][jdk] with version 8 or above
 * An [Azure subscription][azure_sub].
-* An existing Azure Active Directory service principal. If you need to create a service principal, you can use the Azure Portal or [Azure CLI][azure_cli].
-
-#### Creating a Service Principal with the Azure CLI
-Use the [Azure CLI][azure_cli] snippet below to create/get client secret credentials.
-
- * Create a service principal and configure its access to Azure resources:
-
-    ```bash
-    az ad sp create-for-rbac -n <your-application-name> --skip-assignment
-    ```
-
-    Output:
-
-    ```json
-    {
-        "appId": "generated-app-ID",
-        "displayName": "dummy-app-name",
-        "name": "http://dummy-app-name",
-        "password": "random-password",
-        "tenant": "tenant-ID"
-    }
-    ```
-
-* Use the returned credentials above to set  **AZURE\_CLIENT\_ID**(appId), **AZURE\_CLIENT\_SECRET**(password) and **AZURE\_TENANT\_ID**(tenant) [environment variables](#environment-variables).
-
-#### Enable applications for device code flow
-In order to authenticate a user through device code flow, you need to go to Azure Active Directory on Azure Portal and find you app registration and enable the following 2 configurations:
-
-![device code enable](./images/devicecode-enable.png)
-
-This will let the application authenticate, but the application still doesn't have permission to log you into Active Directory, or access resources on your behalf. Open API Permissions, and enable Microsoft Graph, and the resources you want to access, e.g., Azure Service Management, Key Vault, etc:
-
-![device code permissions](./images/devicecode-permissions.png)
-
-Note that you also need to be the admin of your tenant to grant consent to your application when you login for the first time. Also note after 2018 your Active Directory may require your application to be multi-tenant. Select "Accounts in any organizational directory" under Authentication panel (where you enabled Device Code) to make your application a multi-tenant app.
-
-#### Enable applications for interactive browser oauth 2 flow
-You need to register an application in Azure Active Directory with permissions to login on behalf of a user to use InteractiveBrowserCredential. Follow all the steps above for device code flow to register your application to support logging you into Active Directory and access certain resources. Note the same limitations apply that an admin of your tenant must grant consent to your application before any user account can login.
-
-You may notice in `InteractiveBrowserCredentialBuilder`, a port number is required, and you need to add the redirect URL on this page too:
-
-![interactive redirect uri](./images/interactive-redirecturi.png)
-
-In this case, the port number is 8765.
-
-#### Enable applications for oauth 2 auth code flow
-You need the same application registered as in [Enable applications for interactive browser oauth 2 flow](#enable-applications-for-interactive-browser-oauth-2-flow), except that the redirect URL must be an API endpoint on your web application where the auth code must be handled as a query parameter.
-
-#### Enable applications for shared token cache credential
-You will need to have Visual Studio 2019 installed. Login to Visual Studio with your org ID or live ID and you are ready to use shared token cache credential.
-
-Open your Visual Studio account settings and you can see the list of accounts with cached tokens in the red rectangle below. Note the Personalization Account is not related to this token cache. You can delete all info and tokens of this account in the token cache by removing the account here and closing the Visual Studio window.
-
-![vs2019 account settings](./images/vs2019-account-settings.png)
-
-If you have multiple accounts listed here, you must specify the `AZURE_USERNAME` environment variable to the email of the account you'd like to use for all the authentications.
-
-If you see an error "MSAL V3 Deserialization failed", try clearing the cache in `C:\Users\{username}\AppData\Local\.IdentityService`.
 
 ## Key concepts
 ### Credentials
 
 A credential is a class which contains or can obtain the data needed for a service client to authenticate requests. Service clients across Azure SDK accept credentials when they are constructed and use those credentials to authenticate requests to the service.Azure Identity offers a variety of credential classes in the `azure-identity` package capable of acquiring an AAD token. All of these credential classes are implementations of the `TokenCredential` abstract class in [Azure Core][azure_core_library], and can be used by any service client which can be constructed with a `TokenCredential`.
-
 
 The credential types in Azure Identity differ in the types of AAD identities they can authenticate and how they are configured:
         
@@ -107,8 +48,8 @@ The credential types in Azure Identity differ in the types of AAD identities the
   <tbody>
     <tr>
       <td><code>DefaultAzureCredential</code></td>
-      <td>service principal or managed identity</td>
-      <td>none for managed identity; <a href="#environment-variables">environment variables</a> for service principal</td>
+      <td>service principal, user account, or managed identity</td>
+      <td><a href="#environment-variables">environment variables</a> for service principal, optional for managed identities or shared token cache</td>
     </tr>
     <tr>
       <td><code>ManagedIdentityCredential</code></td>
@@ -117,7 +58,7 @@ The credential types in Azure Identity differ in the types of AAD identities the
     </tr>
     <tr>
       <td><code>EnvironmentCredential</code></td>
-      <td>service principal</td>
+      <td>service principal or user account</td>
       <td><a href="#environment-variables">environment variables</a></td>
     </tr>
     <tr>
@@ -144,6 +85,21 @@ The credential types in Azure Identity differ in the types of AAD identities the
       <td><code>UsernamePasswordCredential</code></td>
       <td>user account</td>
       <td><code>UsernamePasswordCredentialBuilder</code></td>
+    </tr>
+    <tr>
+      <td><code>AzureCliCredential</code></td>
+      <td>user account</td>
+      <td><code>AzureCliCredentialBuilder</code></td>
+    </tr>
+    <tr>
+      <td><code>VisualStudioCodeCredential</code></td>
+      <td>user account</td>
+      <td><code>VisualStudioCodeCredentialBuilder</code></td>
+    </tr>
+    <tr>
+      <td><code>IntelliJCredential</code></td>
+      <td>user account</td>
+      <td><code>IntelliJCredentialBuilder</code></td>
     </tr>
   </tbody>
 </table>
@@ -172,6 +128,8 @@ principal authentication with these environment variables:
 |`AZURE_TENANT_ID`|id of the principal's Azure Active Directory tenant
 |`AZURE_CLIENT_SECRET`|one of the service principal's client secrets
 
+See more about how to create a service principal and get these values in [Creating a Service Principal with the Azure CLI](#creating-a-service-principal-with-the-azure-cli).
+
 ## Examples
 
 ### Table of contents
@@ -183,7 +141,7 @@ principal authentication with these environment variables:
   - [Chaining credentials](#chaining-credentials)
 
 ### Authenticating with `DefaultAzureCredential`
-This example demonstrates authenticating the `SecretClient` from the [azure-security-keyvault-secrets][secrets_client_library] client library using the `DefaultAzureCredential`. There's also [a compilable sample](../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentitySamples.java) to create a Key Vault secret client you can copy-paste.
+This example demonstrates authenticating the `SecretClient` from the [azure-security-keyvault-secrets][secrets_client_library] client library using the `DefaultAzureCredential`. There's also [a compilable sample](../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java) to create a Key Vault secret client you can copy-paste.
 
 <!-- embedme ../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java#L30-L42 -->
 ```java
@@ -205,7 +163,9 @@ public void createDefaultAzureCredential() {
 When executing this in a development machine you need to first [configure the environment](#environment-variables) setting the variables `AZURE_CLIENT_ID`, `AZURE_TENANT_ID` and `AZURE_CLIENT_SECRET` to the appropriate values for your service principal.
 
 ### Authenticating a service principal with a client secret
-This example demonstrates authenticating the `KeyClient` from the [azure-security-keyvault-keys][keys_client_library] client library using the `ClientSecretCredential`. There's also [a compilable sample](../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentitySamples.java) to create a Key Vault secret client you can copy-paste.
+This example demonstrates authenticating the `KeyClient` from the [azure-security-keyvault-keys][keys_client_library] client library using the `ClientSecretCredential`. There's also [a compilable sample](../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java) to create a Key Vault secret client you can copy-paste.
+
+See more about how to create a service principal and get these values in [Creating a Service Principal with the Azure CL](#creating-a-service-principal-with-the-azure-cli).
 
 <!-- embedme ../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java#L44-L59 -->
 ```java
@@ -228,7 +188,9 @@ public void createClientSecretCredential() {
 ```
 
 ### Authenticating a user account with device code flow
-This example demonstrates authenticating the `KeyClient` from the [azure-security-keyvault-keys][keys_client_library] client library using the `DeviceCodeCredential` on an IoT device. There's also [a compilable sample](../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentitySamples.java) to create a Key Vault secret client you can copy-paste. 
+This example demonstrates authenticating the `KeyClient` from the [azure-security-keyvault-keys][keys_client_library] client library using the `DeviceCodeCredential` on an IoT device. There's also [a compilable sample](../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java) to create a Key Vault secret client you can copy-paste. 
+
+See more about how to configure an AAD application for device code flow in [Enable applications for device code flow](#enable-applications-for-device-code-flow)
 
 <!-- embedme ../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java#L61-L77 -->
 ```java
@@ -252,7 +214,7 @@ public void createDeviceCodeCredential() {
 ```
 
 ### Authenticating a user account with username and password
-This example demonstrates authenticating the `KeyClient` from the [azure-security-keyvault-keys][keys_client_library] client library using the `UsernamePasswordCredential`. The user must **not** have Multi-factor auth turned on. There's also [a compilable sample](../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentitySamples.java) to create a Key Vault secret client you can copy-paste. 
+This example demonstrates authenticating the `KeyClient` from the [azure-security-keyvault-keys][keys_client_library] client library using the `UsernamePasswordCredential`. The user must **not** have Multi-factor auth turned on. There's also [a compilable sample](../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java) to create a Key Vault secret client you can copy-paste. 
 
 <!-- embedme ../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java#L79-L94 -->
 ```java
@@ -274,12 +236,37 @@ public void createUserNamePasswordCredential() {
 }
 ```
 
+### Authenticating a user account interactively in the browser
+This example demonstrates authenticating the `KeyClient` from the [azure-security-keyvault-keys][keys_client_library] client library using the `InteractiveBrowserCredential`. There's also [a compilable sample](../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java) to create a Key Vault secret client you can copy-paste. 
+
+See more about how to configure an AAD application for interactive browser authentication and listen on a port locally in [Enable applications for interactive browser oauth 2 flow](#enable-applications-for-interactive-browser-oauth-2-flow)
+
+<!-- embedme ../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java#L190-L203 -->
+```java
+/**
+ * Authenticate interactively in the browser.
+ */
+public void createInteractiveBrowserCredential() {
+    InteractiveBrowserCredential interactiveBrowserCredential = new InteractiveBrowserCredentialBuilder()
+        .port(8765)
+        .build();
+
+    // Azure SDK client builders accept the credential as a parameter
+    SecretClient client = new SecretClientBuilder()
+        .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
+        .credential(interactiveBrowserCredential)
+        .buildClient();
+}
+```
+
 ### Authenticating a user account with auth code flow
 This example demonstrates authenticating the `KeyClient` from the [azure-security-keyvault-keys][keys_client_library] client library using the `AuthorizationCodeCredential` on a web application.
 
 First, prompt the user to login at the URL documented at [Microsoft identity platform and OAuth 2.0 authorization code flow](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow#request-an-authorization-code). You will need the client id, tenant id, redirect URL, and the scopes your application plans to access.
 
 Then create an API at the redirect URL with the following code to access the Key Vault service.
+
+See more about how to configure an AAD application for oauth 2 auth code flow in [Enable applications for oauth 2 auth code flow](#enable-applications-for-oauth-2-auth-code-flow).
 
 <!-- embedme ../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java#L96-L110 -->
 ```java
@@ -300,8 +287,74 @@ public void createAuthCodeCredential() {
 }
 ```
 
+### Authenticating a user account with Azure CLI
+This example demonstrates authenticating the `KeyClient` from the [azure-security-keyvault-keys][keys_client_library] client library using the `AzureCliCredential` on a workstation with Azure CLI installed and signed in.
+
+See more about how to configure Azure CLI in [Sign in Azure CLI for AzureCliCredential](#sign-in-azure-cli-for-azureclicredential).
+
+<!-- embedme ../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java#L142-L153 -->
+```java
+/**
+ * Authenticate with Azure CLI.
+ */
+public void createAzureCliCredential() {
+    AzureCliCredential cliCredential = new AzureCliCredentialBuilder().build();
+
+    // Azure SDK client builders accept the credential as a parameter
+    SecretClient client = new SecretClientBuilder()
+        .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
+        .credential(cliCredential)
+        .buildClient();
+}
+```
+
+### Authenticating a user account with IntelliJ IDEA
+This example demonstrates authenticating the `KeyClient` from the [azure-security-keyvault-keys][keys_client_library] client library using the `IntelliJCredential` on a workstation with IntelliJ IDEA installed, and the user has signed in with an Azure account.
+
+See more about how to configure your IntelliJ IDEA in [Sign in Azure Toolkit for IntelliJ for IntelliJCredential](#sign-in-azure-toolkit-for-intellij-for-intellijcredential).
+
+<!-- embedme ../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java#L172-L188 -->
+```java
+/**
+ * Authenticate with IntelliJ IDEA.
+ */
+public void createIntelliJCredential() {
+    IntelliJCredential intelliJCredential = new IntelliJCredentialBuilder()
+        // KeePass configuration required for Windows
+        .keePassDatabasePath("C:\\Users\\user\\AppData\\Roaming\\JetBrains\\IdeaIC2020.1\\c.kdbx")
+        .build();
+
+    // Azure SDK client builders accept the credential as a parameter
+    SecretClient client = new SecretClientBuilder()
+        .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
+        .credential(intelliJCredential)
+        .buildClient();
+}
+```
+
+### Authenticating a user account with Visual Studio Code
+This example demonstrates authenticating the `KeyClient` from the [azure-security-keyvault-keys][keys_client_library] client library using the `VisualStudioCodeCredential` on a workstation with Visual Studio Code installed, and the user has signed in with an Azure account.
+
+See more about how to configure your Visual Studio Code in [Sign in Visual Studio Code for VisualStudioCodeCredential](#sign-in-visual-studio-code-for-visualstudiocodecredential)
+
+<!-- embedme ../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java#L157-L168 -->
+```java
+/**
+ * Authenticate with Visual Studio Code.
+ */
+public void createVisualStudioCodeCredential() {
+    VisualStudioCodeCredential visualStudioCodeCredential = new VisualStudioCodeCredentialBuilder().build();
+
+    // Azure SDK client builders accept the credential as a parameter
+    SecretClient client = new SecretClientBuilder()
+        .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
+        .credential(visualStudioCodeCredential)
+        .buildClient();
+}
+```
+
 ### Chaining credentials
-The `ChainedTokenCredential` class provides the ability to link together multiple credential instances to be tried sequentially when authenticating. The following example demonstrates creating a credential which will attempt to authenticate using managed identity, and fall back to certificate authentication if a managed identity is unavailable in the current environment. This example authenticates an `EventHubClient` from the [azure-eventhubs][eventhubs_client_library] client library using the `ChainedTokenCredential`. There's also [a compilable sample](../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentitySamples.java) to create a Key Vault secret client you can copy-paste. 
+The `ChainedTokenCredential` class provides the ability to link together multiple credential instances to be tried sequentially when authenticating. The following example demonstrates creating a credential which will attempt to authenticate using managed identity, and fall back to certificate authentication if a managed identity is unavailable in the current environment. This example authenticates an `EventHubClient` from the [azure-eventhubs][eventhubs_client_library] client library using the `ChainedTokenCredential`. There's also [a compilable sample](../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java) to create a Key Vault secret client you can copy-paste. 
 
 <!-- embedme ../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java#L112-L138 -->
 ```java
@@ -333,6 +386,119 @@ public void createChainedCredential() {
         .buildClient();
 }
 ```
+
+## Configurations
+### Creating a Service Principal with the Azure CLI
+Use the [Azure CLI][azure_cli] snippet below to create/get client secret credentials.
+
+ * Create a service principal and configure its access to Azure resources:
+
+    ```bash
+    az ad sp create-for-rbac -n <your-application-name> --skip-assignment
+    ```
+
+    Output:
+
+    ```json
+    {
+        "appId": "generated-app-ID",
+        "displayName": "dummy-app-name",
+        "name": "http://dummy-app-name",
+        "password": "random-password",
+        "tenant": "tenant-ID"
+    }
+    ```
+
+* Use the returned credentials above to set  **AZURE\_CLIENT\_ID**(appId), **AZURE\_CLIENT\_SECRET**(password) and **AZURE\_TENANT\_ID**(tenant) [environment variables](#environment-variables).
+
+### Enable applications for device code flow
+In order to authenticate a user through device code flow, you need to go to Azure Active Directory on Azure Portal and find you app registration and enable the following 2 configurations:
+
+![device code enable](./images/devicecode-enable.png)
+
+This will let the application authenticate, but the application still doesn't have permission to log you into Active Directory, or access resources on your behalf. Open API Permissions, and enable Microsoft Graph, and the resources you want to access, e.g., Azure Service Management, Key Vault, etc:
+
+![device code permissions](./images/devicecode-permissions.png)
+
+Note that you also need to be the admin of your tenant to grant consent to your application when you login for the first time. Also note after 2018 your Active Directory may require your application to be multi-tenant. Select "Accounts in any organizational directory" under Authentication panel (where you enabled Device Code) to make your application a multi-tenant app.
+
+### Enable applications for interactive browser oauth 2 flow
+You need to register an application in Azure Active Directory with permissions to login on behalf of a user to use InteractiveBrowserCredential. Follow all the steps above for device code flow to register your application to support logging you into Active Directory and access certain resources. Note the same limitations apply that an admin of your tenant must grant consent to your application before any user account can login.
+
+You may notice in `InteractiveBrowserCredentialBuilder`, a port number is required, and you need to add the redirect URL on this page too:
+
+![interactive redirect uri](./images/interactive-redirecturi.png)
+
+In this case, the port number is 8765.
+
+### Enable applications for oauth 2 auth code flow
+You need the same application registered as in [Enable applications for interactive browser oauth 2 flow](#enable-applications-for-interactive-browser-oauth-2-flow), except that the redirect URL must be an API endpoint on your web application where the auth code must be handled as a query parameter.
+
+### Enable applications for shared token cache credential
+You will need to have Visual Studio 2019 installed. Login to Visual Studio with your org ID or live ID and you are ready to use shared token cache credential.
+
+Open your Visual Studio account settings and you can see the list of accounts with cached tokens in the red rectangle below. Note the Personalization Account is not related to this token cache. You can delete all info and tokens of this account in the token cache by removing the account here and closing the Visual Studio window.
+
+![vs2019 account settings](./images/vs2019-account-settings.png)
+
+If you have multiple accounts listed here, you must specify the `AZURE_USERNAME` environment variable to the email of the account you'd like to use for all the authentications.
+
+If you see an error "MSAL V3 Deserialization failed", try clearing the cache in `C:\Users\{username}\AppData\Local\.IdentityService`.
+
+### Sign in Azure CLI for AzureCliCredential
+Sign in [Azure CLI][azure_cli] with command
+
+```bash
+az login
+```
+
+as a user, or 
+
+```bash
+az login --service-principal --username <client-id> --password <client-secret> --tenant <tenant-id>
+```
+
+as a service principal.
+
+If the account / service principal has access to multiple tenants, make sure the desired tenant or subscription is in the state "Enabled" in the output from command:
+
+```bash
+az account list
+```
+
+Before you use AzureCliCredential in the code, run
+
+```bash
+az account get-access-token
+```
+
+to verify the account has been successfully configured.
+
+You may have to repeat this process after a certain period (usually a few weeks to a few months based on the refresh token validity configured in your organization). AzureCliCredential will prompt you to sign in again.
+
+### Sign in Azure Toolkit for IntelliJ for IntelliJCredential
+
+In your IntelliJ window, open File -> Settings -> Plugins. Search “Azure Toolkit for IntelliJ” in the marketplace. Install and restart IDE.
+
+Now you should be able to find a new menu item Tools -> Azure -> Azure Sign In…
+
+![intellij sign in](./images/intellij-sign-in.png)
+
+Device Login will help you login as a user account. Follow the instructions to login on the login.microsoftonline.com website with the device code. IntelliJ will prompt you to select your subscriptions. Please select the 
+
+On Windows, you will also need the KeePass database path to read IntelliJ credentials. You can find the path in IntelliJ settings under File -> Settings -> Appearance & Behavior -> System Settings -> Passwords:
+
+![intellij keepass](./images/intellij-keepass.png)
+
+### Sign in Visual Studio Code for VisualStudioCodeCredential
+
+The Visual Studio Code authentication is handled by an integration with the Azure Account extension. To use, install the Azure Account extension, then use View->Command Palette to execute the “Azure: Sign In” command:
+
+![vscode sign in](./images/vscode-sign-in.png)
+
+This will open a browser that allows you to sign in to Azure. Once you have completed the login process, you can close the browser as directed. Running your application (either in the debugger or anywhere on the development machine) will use the credential from your sign-in.
+
+![vscode logged in](./images/vscode-logged-in.png)
 
 ## Troubleshooting
 Credentials raise exceptions when they fail to authenticate. `ClientAuthenticationException` has a `message` attribute which
