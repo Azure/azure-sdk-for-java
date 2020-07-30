@@ -137,6 +137,7 @@
             <configuration>
               <argLine>
                 --add-opens com.azure.core.serializer.json.gson/com.azure.core.serializer.json.gson=ALL-UNNAMED
+                --add-opens com.azure.core.serializer.json.jackson/com.azure.core.serializer.json.jackson=com.fasterxml.jackson.databind
               </argLine>
             </configuration>
           </plugin>

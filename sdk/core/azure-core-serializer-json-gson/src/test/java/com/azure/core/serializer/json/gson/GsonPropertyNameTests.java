@@ -12,10 +12,14 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.Member;
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class GsonPropertyNameTests {
     private static final String EXPECT_VALUE_IN_FIELD = "expectFieldName";
@@ -105,5 +109,35 @@ public class GsonPropertyNameTests {
 
         assertEquals(serializer.getSerializerMemberName(constructors[0]),
             "com.azure.core.serializer.json.gson.Hotel");
+    }
+    @Test
+    public void compareSerializedNameWithJsonSerializer() {
+        GsonJsonSerializer newSerializer = new GsonJsonSerializerBuilder().serializer(
+            new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()).build();
+        Map<String, String> valueMapping = new HashMap<>() { {
+            put("hotelId", "id");
+            put("", "hotelName");
+            put("price", "price");
+        } };
+        GsonJsonObject node = (GsonJsonObject) newSerializer.toTree(
+            new NameTestingHotel()
+                .setHotelName("name")
+                .setId("1")
+                .setDescription("good")
+                .setReviews("nice"));
+
+        assertEquals(3, node.fieldNames().count());
+        node.fieldNames().forEach(name -> {
+            Member m = null;
+            try {
+                m = NameTestingHotel.class.getDeclaredField(valueMapping.get(name));
+            } catch (NoSuchFieldException e) {
+                fail();
+            }
+
+            String actualValue = newSerializer.getSerializerMemberName(m);
+            assertEquals(name, actualValue, String.format(
+                "The expect field name %s does not the same as actual field name %s.", name, actualValue));
+        });
     }
 }

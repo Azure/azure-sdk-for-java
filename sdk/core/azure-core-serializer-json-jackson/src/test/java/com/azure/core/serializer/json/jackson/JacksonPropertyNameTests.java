@@ -12,9 +12,12 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class JacksonPropertyNameTests {
     private static final String EXPECT_VALUE_IN_FIELD = "expectFieldName";
@@ -161,7 +164,7 @@ public class JacksonPropertyNameTests {
 
     @Test
     public void testPropertyNameOnConstructor() {
-        Constructor[] constructors = Hotel.class.getConstructors();
+        Constructor<?>[] constructors = Hotel.class.getConstructors();
         assertEquals(1, constructors.length);
 
         assertEquals(serializer.getSerializerMemberName(constructors[0]),
@@ -169,15 +172,41 @@ public class JacksonPropertyNameTests {
     }
 
     @Test
-    public void compareSerializedNameWithJsonSerializer() {
-        class LocalHotel {
-            @JsonProperty("a")
-            String hotelName;
+    public void compareSerializedNameWithJsonSerializer() throws NoSuchFieldException {
+        Map<String, String> valueMapping = new HashMap<>() { {
+            put("hotelId", "id");
+            put("hotelName", "hotelName");
+            put("description", "description");
+            put("tags", "tags");
+        } };
 
-            public String getHotelName() {
-                return hotelName;
+        JacksonJsonObject node = (JacksonJsonObject) serializer.toTree(
+            new NameTestingHotel()
+                .setHotelName("name")
+                .setId("1")
+                .setAddress("address")
+                .setDescription("good")
+                .setReviews("nice")
+                .setTags("free parking"));
+        assertEquals(6, node.fieldNames().count());
+        Field f = NameTestingHotel.class.getDeclaredField("price");
+        assertNull(serializer.getSerializerMemberName(f));
+        node.fieldNames().forEach(name -> {
+            Member m = null;
+            try {
+                if ("hotelReviews".equals(name)) {
+                    m = NameTestingHotel.class.getDeclaredMethod("getReviews");
+                } else if ("hotelAddress".equals(name)) {
+                    m = NameTestingHotel.class.getDeclaredMethod("setAddress", String.class);
+                } else {
+                    m = NameTestingHotel.class.getDeclaredField(valueMapping.get(name));
+                }
+            } catch (NoSuchFieldException | NoSuchMethodException e) {
+                fail();
             }
-        }
-        JacksonJsonObject node = (JacksonJsonObject) serializer.toTree(new LocalHotel());
+            String actualValue = serializer.getSerializerMemberName(m);
+            assertEquals(name, actualValue, String.format(
+                "The expect field name %s does not the same as actual field name %s.", name, actualValue));
+        });
     }
 }

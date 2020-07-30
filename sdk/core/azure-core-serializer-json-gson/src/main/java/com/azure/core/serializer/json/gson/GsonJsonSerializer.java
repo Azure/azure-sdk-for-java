@@ -7,7 +7,6 @@ import com.azure.core.experimental.serializer.JsonNode;
 import com.azure.core.experimental.serializer.JsonSerializer;
 import com.azure.core.experimental.serializer.PropertyNameSerializer;
 import com.azure.core.experimental.serializer.TypeReference;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
@@ -31,7 +30,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 /**
  * GSON based implementation of the {@link JsonSerializer} interface.
  */
-public final class GsonJsonSerializer implements JsonSerializer, PropertyNameSerializer {
+public final class GsonJsonSerializer implements PropertyNameSerializer {
     private final ClientLogger logger = new ClientLogger(GsonJsonSerializer.class);
     private final Gson gson;
 
@@ -119,8 +118,7 @@ public final class GsonJsonSerializer implements JsonSerializer, PropertyNameSer
                 return null;
             }
             if (f.isAnnotationPresent(SerializedName.class)) {
-                String propertyName = f.getDeclaredAnnotation(SerializedName.class).value();
-                return CoreUtils.isNullOrEmpty(propertyName) ? f.getName() : propertyName;
+                return f.getDeclaredAnnotation(SerializedName.class).value();
             }
         }
 

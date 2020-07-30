@@ -6,7 +6,8 @@ package com.azure.core.serializer.json.gson;
 public class Hotel {
     String hotelName;
 
-    public Hotel() {}
+    public Hotel() {
+    }
 
     public String getHotelName() {
         return hotelName;

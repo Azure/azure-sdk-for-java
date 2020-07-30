@@ -26,7 +26,7 @@ import java.lang.reflect.Method;
 /**
  * Jackson based implementation of the {@link JsonSerializer} interface.
  */
-public final class JacksonJsonSerializer implements JsonSerializer, PropertyNameSerializer {
+public final class JacksonJsonSerializer implements PropertyNameSerializer {
     private final ClientLogger logger = new ClientLogger(JacksonJsonSerializer.class);
 
     private final ObjectMapper mapper;
