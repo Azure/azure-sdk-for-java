@@ -195,11 +195,11 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     public void recognizeReceiptFromDamagedPdf(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         damagedPdfDataRunner((data, dataLength) -> {
-            HttpResponseException errorResponseException = assertThrows(HttpResponseException.class,
+            HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
                 () -> client.beginRecognizeReceipts(toFluxByteBuffer(data), dataLength, new RecognizeOptions()
                     .setContentType(FormContentType.APPLICATION_PDF).setPollInterval(durationTestMode))
                     .getSyncPoller().getFinalResult());
-            ErrorInformation errorInformation = ((ErrorResponse) errorResponseException.getValue()).getError();
+            ErrorInformation errorInformation = (ErrorInformation) httpResponseException.getValue();
             assertEquals(EXPECTED_BAD_ARGUMENT_CODE, errorInformation.getCode());
             assertEquals(EXPECTED_BAD_ARGUMENT_ERROR_MESSAGE, errorInformation.getMessage());
         });
