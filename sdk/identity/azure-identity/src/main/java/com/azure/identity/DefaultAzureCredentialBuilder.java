@@ -7,6 +7,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.implementation.util.ValidationUtil;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
@@ -88,6 +89,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
      * @return the DefaultAzureCredentialBuilder itself
      */
     public DefaultAzureCredentialBuilder managedIdentityClientId(String clientId) {
+        ValidationUtil.validateCredentialId(getClass().getSimpleName(), clientId, "Client Id");
         this.managedIdentityClientId = clientId;
         return this;
     }
