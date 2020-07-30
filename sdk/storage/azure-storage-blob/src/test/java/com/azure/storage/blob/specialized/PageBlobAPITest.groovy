@@ -595,6 +595,9 @@ class PageBlobAPITest extends APISpec {
         setup:
         bc.uploadPages(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
             new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
+        def t = new HashMap<String, String>()
+        t.put("foo", "bar")
+        bc.setTags(t)
         match = setupBlobMatchCondition(bc, match)
         leaseID = setupBlobLeaseCondition(bc, leaseID)
         def pac = new PageBlobRequestConditions()
@@ -606,22 +609,24 @@ class PageBlobAPITest extends APISpec {
             .setIfSequenceNumberLessThan(sequenceNumberLT)
             .setIfSequenceNumberLessThanOrEqualTo(sequenceNumberLTE)
             .setIfSequenceNumberEqualTo(sequenceNumberEqual)
+            .setTagsConditions(tags)
 
         expect:
         bc.clearPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1), pac, null, null)
             .getStatusCode() == 201
 
         where:
-        modified | unmodified | match        | noneMatch   | leaseID         | sequenceNumberLT | sequenceNumberLTE | sequenceNumberEqual
-        null     | null       | null         | null        | null            | null             | null              | null
-        oldDate  | null       | null         | null        | null            | null             | null              | null
-        null     | newDate    | null         | null        | null            | null             | null              | null
-        null     | null       | receivedEtag | null        | null            | null             | null              | null
-        null     | null       | null         | garbageEtag | null            | null             | null              | null
-        null     | null       | null         | null        | receivedLeaseID | null             | null              | null
-        null     | null       | null         | null        | null            | 5                | null              | null
-        null     | null       | null         | null        | null            | null             | 3                 | null
-        null     | null       | null         | null        | null            | null             | null              | 0
+        modified | unmodified | match        | noneMatch   | leaseID         | tags              | sequenceNumberLT | sequenceNumberLTE | sequenceNumberEqual
+        null     | null       | null         | null        | null            | null              | null             | null              | null
+        oldDate  | null       | null         | null        | null            | null              | null             | null              | null
+        null     | newDate    | null         | null        | null            | null              | null             | null              | null
+        null     | null       | receivedEtag | null        | null            | null              | null             | null              | null
+        null     | null       | null         | garbageEtag | null            | null              | null             | null              | null
+        null     | null       | null         | null        | receivedLeaseID | null              | null             | null              | null
+        null     | null       | null         | null        | null            | "\"foo\" = 'bar'" | null             | null              | null
+        null     | null       | null         | null        | null            | null              | 5                | null              | null
+        null     | null       | null         | null        | null            | null              | null             | 3                 | null
+        null     | null       | null         | null        | null            | null              | null             | null              | 0
     }
 
     @Unroll
@@ -640,7 +645,7 @@ class PageBlobAPITest extends APISpec {
             .setIfSequenceNumberLessThan(sequenceNumberLT)
             .setIfSequenceNumberLessThanOrEqualTo(sequenceNumberLTE)
             .setIfSequenceNumberEqualTo(sequenceNumberEqual)
-
+            .setTagsConditions(tags)
 
         when:
         bc.clearPagesWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1), pac, null, null)
@@ -649,15 +654,16 @@ class PageBlobAPITest extends APISpec {
         thrown(BlobStorageException)
 
         where:
-        modified | unmodified | match       | noneMatch    | leaseID        | sequenceNumberLT | sequenceNumberLTE | sequenceNumberEqual
-        newDate  | null       | null        | null         | null           | null             | null              | null
-        null     | oldDate    | null        | null         | null           | null             | null              | null
-        null     | null       | garbageEtag | null         | null           | null             | null              | null
-        null     | null       | null        | receivedEtag | null           | null             | null              | null
-        null     | null       | null        | null         | garbageLeaseID | null             | null              | null
-        null     | null       | null        | null         | null           | -1               | null              | null
-        null     | null       | null        | null         | null           | null             | -1                | null
-        null     | null       | null        | null         | null           | null             | null              | 100
+        modified | unmodified | match       | noneMatch    | leaseID        | tags                    | sequenceNumberLT | sequenceNumberLTE | sequenceNumberEqual
+        newDate  | null       | null        | null         | null           | null                    | null             | null              | null
+        null     | oldDate    | null        | null         | null           | null                    | null             | null              | null
+        null     | null       | garbageEtag | null         | null           | null                    | null             | null              | null
+        null     | null       | null        | receivedEtag | null           | null                    | null             | null              | null
+        null     | null       | null        | null         | garbageLeaseID | null                    | null             | null              | null
+        newDate  | null       | null        | null         | null           | "\"notfoo\" = 'notbar'" | null             | null              | null
+        null     | null       | null        | null         | null           | null                    | -1               | null              | null
+        null     | null       | null        | null         | null           | null                    | null             | -1                | null
+        null     | null       | null        | null         | null           | null                    | null             | null              | 100
     }
 
     def "Clear page error"() {
@@ -950,24 +956,29 @@ class PageBlobAPITest extends APISpec {
     @Unroll
     def "Resize AC"() {
         setup:
+        def t = new HashMap<String, String>()
+        t.put("foo", "bar")
+        bc.setTags(t)
         def bac = new BlobRequestConditions()
             .setLeaseId(setupBlobLeaseCondition(bc, leaseID))
             .setIfMatch(setupBlobMatchCondition(bc, match))
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags)
 
         expect:
         bc.resizeWithResponse(PageBlobClient.PAGE_BYTES * 2, bac, null, null).getStatusCode() == 200
 
         where:
-        modified | unmodified | match        | noneMatch   | leaseID
-        null     | null       | null         | null        | null
-        oldDate  | null       | null         | null        | null
-        null     | newDate    | null         | null        | null
-        null     | null       | receivedEtag | null        | null
-        null     | null       | null         | garbageEtag | null
-        null     | null       | null         | null        | receivedLeaseID
+        modified | unmodified | match        | noneMatch   | leaseID         | tags
+        null     | null       | null         | null        | null            | null
+        oldDate  | null       | null         | null        | null            | null
+        null     | newDate    | null         | null        | null            | null
+        null     | null       | receivedEtag | null        | null            | null
+        null     | null       | null         | garbageEtag | null            | null
+        null     | null       | null         | null        | receivedLeaseID | null
+        null     | null       | null         | null        | null            | "\"foo\" = 'bar'"
     }
 
     @Unroll
@@ -979,6 +990,7 @@ class PageBlobAPITest extends APISpec {
             .setIfNoneMatch(setupBlobMatchCondition(bc, noneMatch))
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags)
 
         when:
         bc.resizeWithResponse(PageBlobClient.PAGE_BYTES * 2, bac, null, null)
@@ -987,12 +999,12 @@ class PageBlobAPITest extends APISpec {
         thrown(BlobStorageException)
 
         where:
-        modified | unmodified | match       | noneMatch    | leaseID
-        newDate  | null       | null        | null         | null
-        null     | oldDate    | null        | null         | null
-        null     | null       | garbageEtag | null         | null
-        null     | null       | null        | receivedEtag | null
-        null     | null       | null        | null         | garbageLeaseID
+        modified | unmodified | match       | noneMatch    | leaseID        | tags
+        newDate  | null       | null        | null         | null           | null
+        null     | oldDate    | null        | null         | null           | null
+        null     | null       | garbageEtag | null         | null           | null
+        null     | null       | null        | receivedEtag | null           | null
+        null     | null       | null        | null         | garbageLeaseID | "\"notfoo\" = 'notbar'"
     }
 
     def "Resize error"() {
@@ -1031,25 +1043,30 @@ class PageBlobAPITest extends APISpec {
     @Unroll
     def "Sequence number AC"() {
         setup:
+        def t = new HashMap<String, String>()
+        t.put("foo", "bar")
+        bc.setTags(t)
         def bac = new BlobRequestConditions()
             .setLeaseId(setupBlobLeaseCondition(bc, leaseID))
             .setIfMatch(setupBlobMatchCondition(bc, match))
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags)
 
         expect:
         bc.updateSequenceNumberWithResponse(SequenceNumberActionType.UPDATE, 1, bac, null, null)
             .getStatusCode() == 200
 
         where:
-        modified | unmodified | match        | noneMatch   | leaseID
-        null     | null       | null         | null        | null
-        oldDate  | null       | null         | null        | null
-        null     | newDate    | null         | null        | null
-        null     | null       | receivedEtag | null        | null
-        null     | null       | null         | garbageEtag | null
-        null     | null       | null         | null        | receivedLeaseID
+        modified | unmodified | match        | noneMatch   | leaseID         | tags
+        null     | null       | null         | null        | null            | null
+        oldDate  | null       | null         | null        | null            | null
+        null     | newDate    | null         | null        | null            | null
+        null     | null       | receivedEtag | null        | null            | null
+        null     | null       | null         | garbageEtag | null            | null
+        null     | null       | null         | null        | receivedLeaseID | null
+        null     | null       | null         | null        | null            | "\"foo\" = 'bar'"
     }
 
     @Unroll
@@ -1061,6 +1078,7 @@ class PageBlobAPITest extends APISpec {
             .setIfNoneMatch(setupBlobMatchCondition(bc, noneMatch))
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags)
 
         when:
         bc.updateSequenceNumberWithResponse(SequenceNumberActionType.UPDATE, 1, bac, null, null)
@@ -1069,12 +1087,12 @@ class PageBlobAPITest extends APISpec {
         thrown(BlobStorageException)
 
         where:
-        modified | unmodified | match       | noneMatch    | leaseID
-        newDate  | null       | null        | null         | null
-        null     | oldDate    | null        | null         | null
-        null     | null       | garbageEtag | null         | null
-        null     | null       | null        | receivedEtag | null
-        null     | null       | null        | null         | garbageLeaseID
+        modified | unmodified | match       | noneMatch    | leaseID        | tags
+        newDate  | null       | null        | null         | null           | null
+        null     | oldDate    | null        | null         | null           | null
+        null     | null       | garbageEtag | null         | null           | null
+        null     | null       | null        | receivedEtag | null           | null
+        null     | null       | null        | null         | garbageLeaseID | "\"notfoo\" = 'notbar'"
     }
 
     def "Sequence number error"() {
