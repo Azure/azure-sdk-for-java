@@ -204,7 +204,7 @@ public class EncryptionTests extends TestSuiteBase {
     public void EncryptionDekReadFeed() {
     }
 
-    @Test
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT * 100)
     public void EncryptionCreateItemWithoutEncryptionOptions() {
         TestDoc testDoc = TestDoc.Create();
 
@@ -214,7 +214,7 @@ public class EncryptionTests extends TestSuiteBase {
         assertThat(createResponse.getItem()).isEqualTo(testDoc);
     }
 
-    @Test
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT * 100)
     public void EncryptionCreateItemWithNullEncryptionOptions() {
         TestDoc testDoc = TestDoc.Create();
         CosmosItemResponse<TestDoc> createResponse = EncryptionTests.encryptionContainer.createItem(
@@ -226,7 +226,7 @@ public class EncryptionTests extends TestSuiteBase {
         assertThat(createResponse.getItem()).isEqualTo(testDoc);
     }
 
-    @Test
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT * 100)
     public void EncryptionCreateItemWithoutPartitionKey() {
         TestDoc testDoc = TestDoc.Create();
         try {
@@ -241,11 +241,11 @@ public class EncryptionTests extends TestSuiteBase {
         }
     }
 
-    @Test
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT * 100)
     public void EncryptionFailsWithUnknownDek() {
     }
 
-    @Test
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT * 100)
     public void EncryptionCreateItem() {
         TestDoc testDoc = EncryptionTests.CreateItemAsync(EncryptionTests.encryptionContainer, EncryptionTests.dekId, TestDoc.PathsToEncrypt).getItem();
         EncryptionTests.VerifyItemByReadAsync(EncryptionTests.encryptionContainer, testDoc);
@@ -291,6 +291,99 @@ public class EncryptionTests extends TestSuiteBase {
             EncryptionTests.encryptionContainer,
             "SELECT c.id, c.PK, c.NonSensitive FROM c",
             expectedDoc);
+    }
+
+    // EncryptionChangeFeedDecryptionSuccessful
+
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT * 100)
+    public void EncryptionChangeFeedDecryptionSuccessful() {
+    }
+
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT * 100)
+    public void EncryptionHandleDecryptionFailure() {
+    }
+
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT * 100)
+    public void EncryptionDecryptQueryResultMultipleDocs() {
+    }
+
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT * 100)
+    public void EncryptionDecryptQueryResultMultipleEncryptedProperties() {
+    }
+
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT * 100)
+    public void EncryptionDecryptQueryValueResponse() {
+    }
+
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT * 100)
+    public void EncryptionDecryptGroupByQueryResultTest() {
+    }
+
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT * 100)
+    public void EncryptionStreamIteratorValidation() {
+    }
+
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT * 100)
+    public void EncryptionRudItem() {
+        TestDoc testDoc = EncryptionTests.UpsertItemAsync(
+            EncryptionTests.encryptionContainer,
+            TestDoc.Create(),
+            EncryptionTests.dekId,
+            TestDoc.PathsToEncrypt,
+            ResponseStatusCode.CREATED).getItem();
+
+        EncryptionTests.VerifyItemByReadAsync(EncryptionTests.encryptionContainer, testDoc);
+
+        testDoc.nonSensitive = UUID.randomUUID().toString();
+        testDoc.sensitive = UUID.randomUUID().toString();
+
+        CosmosItemResponse<TestDoc> upsertResponse = EncryptionTests.UpsertItemAsync(
+            EncryptionTests.encryptionContainer,
+            testDoc,
+            EncryptionTests.dekId,
+            TestDoc.PathsToEncrypt,
+            ResponseStatusCode.OK);
+
+        TestDoc updatedDoc = upsertResponse.getItem();
+
+        EncryptionTests.VerifyItemByReadAsync(EncryptionTests.encryptionContainer, updatedDoc);
+
+        updatedDoc.nonSensitive = UUID.randomUUID().toString();
+        updatedDoc.sensitive = UUID.randomUUID().toString();
+
+        // TODO: replace
+        TestDoc replacedDoc = EncryptionTests.ReplaceItemAsync(
+            EncryptionTests.encryptionContainer,
+            updatedDoc,
+            EncryptionTests.dekId,
+            TestDoc.PathsToEncrypt,
+            upsertResponse.getETag()
+        ).getItem();
+
+
+        EncryptionTests.VerifyItemByReadAsync(EncryptionTests.encryptionContainer, replacedDoc);
+
+        EncryptionTests.DeleteItemAsync(EncryptionTests.encryptionContainer, replacedDoc);
+    }
+
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT * 100)
+    public void EncryptionResourceTokenAuthRestricted() {
+    }
+
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT * 100)
+    public void EncryptionResourceTokenAuthAllowed() {
+    }
+
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT * 100)
+    public void EncryptionRestrictedProperties() {
+    }
+
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT * 100)
+    public void EncryptionBulkCrud() {
+    }
+
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT * 100)
+    public void EncryptionTransactionBatchCrud() {
     }
 
     @Test(groups = {"encryption"}, timeOut = TIMEOUT * 100)
@@ -516,6 +609,9 @@ public class EncryptionTests extends TestSuiteBase {
             pathsToEncrypt, null);
     }
 
+
+
+
     private static CosmosItemResponse<TestDoc> CreateItemAsync(
         EncryptionCosmosAsyncContainer container,
         String dekId,
@@ -531,4 +627,58 @@ public class EncryptionTests extends TestSuiteBase {
         assertThat(createResponse.getItem()).isEqualTo(testDoc);
         return createResponse;
     }
+
+    private static CosmosItemResponse<TestDoc> UpsertItemAsync(
+        EncryptionCosmosAsyncContainer container,
+        TestDoc testDoc,
+        String dekId,
+        List<String> pathsToEncrypt,
+        int expectedStatusCode) {
+        CosmosItemResponse<TestDoc> upsertResponse = container.upsertItem(
+            testDoc,
+            new PartitionKey(testDoc.pk),
+            EncryptionTests.GetRequestOptions(dekId, pathsToEncrypt)).block();
+
+        assertThat(upsertResponse.getStatusCode()).isEqualTo(expectedStatusCode);
+        assertThat(upsertResponse.getItem()).isEqualTo(testDoc);
+        return upsertResponse;
+    }
+
+    private static CosmosItemResponse<TestDoc> ReplaceItemAsync(
+        EncryptionCosmosAsyncContainer container,
+        TestDoc testDoc,
+        String dekId,
+        List<String> pathsToEncrypt,
+        String etag) {
+        CosmosItemResponse<TestDoc> replaceItem = container.replaceItem(
+            testDoc,
+            testDoc.id,
+            new PartitionKey(testDoc.pk),
+            EncryptionTests.GetRequestOptions(dekId, pathsToEncrypt, etag)).block();
+
+        assertThat(replaceItem.getStatusCode()).isEqualTo(ResponseStatusCode.OK);
+        assertThat(replaceItem.getItem()).isEqualTo(testDoc);
+        return replaceItem;
+    }
+
+    private static CosmosItemResponse<Object> DeleteItemAsync(
+        EncryptionCosmosAsyncContainer container,
+        TestDoc testDoc) {
+        CosmosItemResponse<Object> deleteResponse = container.deleteItem(
+            testDoc.id,
+            new PartitionKey(testDoc.pk),
+            new CosmosItemRequestOptions()).block();
+
+        assertThat(deleteResponse.getStatusCode()).isEqualTo(ResponseStatusCode.NO_CONTENT);
+        assertThat(deleteResponse.getItem()).isNull();
+        return deleteResponse;
+    }
+
+    public static class ResponseStatusCode {
+        public static final int OK = 200;
+        public static final int CREATED = 201;
+        public static final int ACCEPTED = 202;
+        public static final int NO_CONTENT = 204;
+    }
+    
 }
