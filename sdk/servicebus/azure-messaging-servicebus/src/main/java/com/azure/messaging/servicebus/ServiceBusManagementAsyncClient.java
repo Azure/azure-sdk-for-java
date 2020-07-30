@@ -136,9 +136,9 @@ public final class ServiceBusManagementAsyncClient {
     }
 
     /**
-     * Creates a queue with the {@link QueueDescription}.
+     * Creates a queue with the {@link CreateQueueOptions}.
      *
-     * @param queue Information about the queue to create.
+     * @param queueOptions Information about the queue to create.
      *
      * @return A Mono that completes with information about the created queue.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
@@ -151,8 +151,8 @@ public final class ServiceBusManagementAsyncClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<QueueDescription> createQueue(CreateQueueOptions queue) {
-        return createQueueWithResponse(queue).map(Response::getValue);
+    public Mono<QueueDescription> createQueue(CreateQueueOptions queueOptions) {
+        return createQueueWithResponse(queueOptions).map(Response::getValue);
     }
 
     /**

@@ -14,6 +14,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.messaging.servicebus.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.models.NamespaceProperties;
 import com.azure.messaging.servicebus.models.QueueDescription;
 import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
@@ -66,9 +67,9 @@ public final class ServiceBusManagementClient {
     }
 
     /**
-     * Creates a queue the {@link QueueDescription}.
+     * Creates a queue with the {@link CreateQueueOptions}.
      *
-     * @param queue Information about the queue to create.
+     * @param queueOptions Information about the queue to create.
      *
      * @return The created queue.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
@@ -81,14 +82,14 @@ public final class ServiceBusManagementClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public QueueDescription createQueue(QueueDescription queue) {
-        return asyncClient.createQueue(queue).block();
+    public QueueDescription createQueue(CreateQueueOptions queueOptions) {
+        return asyncClient.createQueue(queueOptions).block();
     }
 
     /**
      * Creates a queue and returns the created queue in addition to the HTTP response.
      *
-     * @param queue The queue to create.
+     * @param queueOptions The queue to create.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return The created queue in addition to the HTTP response.
@@ -102,8 +103,8 @@ public final class ServiceBusManagementClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<QueueDescription> createQueueWithResponse(QueueDescription queue, Context context) {
-        return asyncClient.createQueueWithResponse(queue, context != null ? context : Context.NONE).block();
+    public Response<QueueDescription> createQueueWithResponse(CreateQueueOptions queueOptions, Context context) {
+        return asyncClient.createQueueWithResponse(queueOptions, context != null ? context : Context.NONE).block();
     }
 
     /**
