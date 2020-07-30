@@ -7,7 +7,7 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosOperations;
 import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
-import com.azure.spring.data.cosmos.core.query.DocumentQuery;
+import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.repository.ReactiveCosmosRepository;
 import org.reactivestreams.Publisher;
 import org.springframework.data.domain.Sort;
@@ -51,8 +51,8 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
     public Flux<T> findAll(Sort sort) {
         Assert.notNull(sort, "Sort must not be null!");
 
-        final DocumentQuery query =
-            new DocumentQuery(Criteria.getInstance(CriteriaType.ALL)).with(sort);
+        final CosmosQuery query =
+            new CosmosQuery(Criteria.getInstance(CriteriaType.ALL)).with(sort);
 
         return cosmosOperations.find(query, entityInformation.getJavaType(),
             entityInformation.getContainerName());

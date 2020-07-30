@@ -8,10 +8,10 @@ package com.azure.cosmos;
  * LINE NUMBERS OF EXISTING CODE SAMPLES.
  */
 
-import com.azure.spring.data.cosmos.core.mapping.Document;
+import com.azure.spring.data.cosmos.core.mapping.Container;
 import org.springframework.data.annotation.Id;
 
-@Document(container = "myContainer")
+@Container(containerName = "myContainer")
 public class UserSample {
     @Id
     private String emailAddress;

@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.domain;
 
-import com.azure.spring.data.cosmos.core.mapping.Document;
+import com.azure.spring.data.cosmos.core.mapping.Container;
 
 import java.util.Date;
 import java.util.Objects;
@@ -10,7 +10,7 @@ import java.util.Objects;
 /**
  * For testing date and enum purpose
  */
-@Document()
+@Container()
 public class Memo {
     private String id;
     private String message;
