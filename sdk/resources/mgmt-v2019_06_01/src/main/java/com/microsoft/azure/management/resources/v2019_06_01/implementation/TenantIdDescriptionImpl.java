@@ -10,6 +10,8 @@ package com.microsoft.azure.management.resources.v2019_06_01.implementation;
 
 import com.microsoft.azure.management.resources.v2019_06_01.TenantIdDescription;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
+import java.util.List;
+import com.microsoft.azure.management.resources.v2019_06_01.TenantCategory;
 
 class TenantIdDescriptionImpl extends WrapperImpl<TenantIdDescriptionInner> implements TenantIdDescription {
     private final ResourcesManager manager;
@@ -24,8 +26,33 @@ class TenantIdDescriptionImpl extends WrapperImpl<TenantIdDescriptionInner> impl
     }
 
     @Override
+    public String country() {
+        return this.inner().country();
+    }
+
+    @Override
+    public String countryCode() {
+        return this.inner().countryCode();
+    }
+
+    @Override
+    public String displayName() {
+        return this.inner().displayName();
+    }
+
+    @Override
+    public List<String> domains() {
+        return this.inner().domains();
+    }
+
+    @Override
     public String id() {
         return this.inner().id();
+    }
+
+    @Override
+    public TenantCategory tenantCategory() {
+        return this.inner().tenantCategory();
     }
 
     @Override
