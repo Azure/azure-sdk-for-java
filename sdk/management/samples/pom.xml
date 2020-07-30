@@ -9,12 +9,12 @@
     <parent>
         <groupId>com.azure.resourcemanager</groupId>
         <artifactId>azure-resourcemanager-parent</artifactId>
-        <version>2.0.0-SNAPSHOT</version>
+        <version>2.0.0-beta.3</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>azure-resourcemanager-samples</artifactId>
-    <version>2.0.0-SNAPSHOT</version>
+    <version>2.0.0-beta.3</version>
 
     <name>Microsoft Azure SDK samples</name>
     <description>This package contains Microsoft Azure SDK samples.</description>
@@ -31,7 +31,7 @@
     <scm>
         <url>https://github.com/Azure/azure-sdk-for-java</url>
         <connection>scm:git:git@github.com:Azure/azure-sdk-for-java.git</connection>
-        <tag>HEAD</tag>
+        <tag>v2.0.0-beta.3</tag>
     </scm>
 
     <properties>
@@ -51,7 +51,7 @@
         <dependency>
             <groupId>com.azure.resourcemanager</groupId>
             <artifactId>azure-resourcemanager</artifactId>
-            <version>2.0.0-SNAPSHOT</version>
+            <version>2.0.0-beta.3</version>
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
@@ -79,6 +79,11 @@
             <groupId>com.github.docker-java</groupId>
             <artifactId>docker-java</artifactId>
             <version>3.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.12</version>
         </dependency>
         <dependency>
             <groupId>com.github.cverges.expect4j</groupId>
@@ -146,7 +151,7 @@
                 <dependency>
                     <groupId>com.azure.resourcemanager</groupId>
                     <artifactId>azure-resourcemanager-resources</artifactId>
-                    <version>2.0.0-SNAPSHOT</version>
+                    <version>2.0.0-beta.3</version>
                     <type>test-jar</type>
                     <scope>test</scope>
                 </dependency>

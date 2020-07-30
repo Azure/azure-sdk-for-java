@@ -3,12 +3,14 @@
 package com.azure.spring.data.cosmos.repository.support;
 
 import com.azure.spring.data.cosmos.common.TestConstants;
-import com.azure.spring.data.cosmos.core.mapping.Document;
+import com.azure.spring.data.cosmos.core.mapping.Container;
 import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
 import com.azure.spring.data.cosmos.domain.Address;
+import com.azure.spring.data.cosmos.domain.LongIdDomain;
 import com.azure.spring.data.cosmos.domain.Person;
 import com.azure.spring.data.cosmos.domain.Student;
 import org.junit.Test;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
 
 import java.util.List;
@@ -124,13 +126,13 @@ public class CosmosEntityInformationUnitTest {
         assertThat(isVersioned).isFalse();
     }
 
-    @Document(container = "testContainer")
+    @Container(containerName = "testContainer")
     private static class Volunteer {
         String id;
         String name;
     }
 
-    @Document
+    @Container
     private static class VolunteerWithCustomPartitionKey {
         private String id;
         @PartitionKey("vol_name")
@@ -153,7 +155,7 @@ public class CosmosEntityInformationUnitTest {
         }
     }
 
-    @Document
+    @Container
     private static class VolunteerWithPartitionKey {
         private String id;
         @PartitionKey
@@ -176,7 +178,7 @@ public class CosmosEntityInformationUnitTest {
         }
     }
 
-    @Document(container = "testContainer")
+    @Container(containerName = "testContainer")
     private static class VersionedVolunteer {
         private String id;
         private String name;
@@ -245,7 +247,7 @@ public class CosmosEntityInformationUnitTest {
         }
     }
 
-    @Document
+    @Container
     private static class WrongVersionType {
         private String id;
         private String name;
@@ -312,7 +314,7 @@ public class CosmosEntityInformationUnitTest {
         }
     }
 
-    @Document
+    @Container
     private static class VersionOnWrongField {
         private String id;
         @Version
@@ -376,6 +378,82 @@ public class CosmosEntityInformationUnitTest {
                 + '\''
                 + ", _etag='"
                 + _etag
+                + '\''
+                + '}';
+        }
+    }
+
+    @Test
+    public void testGetIdFieldWithLongType() {
+        final CosmosEntityInformation<LongIdDomain, Long> entityInformation =
+            new CosmosEntityInformation<>(LongIdDomain.class);
+        assertThat(entityInformation.getIdField().getType().equals(Long.class)).isTrue();
+    }
+
+    @Test
+    public void testGetIdFieldWithBasicType() {
+        final CosmosEntityInformation<BasicLongIdDomain, Long> entityInformation =
+            new CosmosEntityInformation<>(BasicLongIdDomain.class);
+        assertThat(entityInformation.getIdField().getType().equals(long.class)).isTrue();
+    }
+
+    @Container
+    class BasicLongIdDomain {
+
+        @Id
+        private long number;
+
+        private String name;
+
+        BasicLongIdDomain(long number, String name) {
+            this.number = number;
+            this.name = name;
+        }
+
+        BasicLongIdDomain() {
+        }
+
+        public long getNumber() {
+            return number;
+        }
+
+        public void setNumber(Long number) {
+            this.number = number;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            BasicLongIdDomain that = (BasicLongIdDomain) o;
+            return Objects.equals(number, that.number)
+                && Objects.equals(name, that.name);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(number, name);
+        }
+
+        @Override
+        public String toString() {
+            return "BasicLongIdDomain{"
+                + "number="
+                + number
+                + ", name='"
+                + name
                 + '\''
                 + '}';
         }

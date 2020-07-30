@@ -3,9 +3,12 @@
 
 package com.azure.cosmos.implementation.encryption;
 
+import com.azure.cosmos.encryption.EncryptionKeyUnwrapResult;
+import com.azure.cosmos.encryption.EncryptionKeyWrapMetadata;
+import com.azure.cosmos.encryption.EncryptionKeyWrapResult;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.encryption.api.CosmosEncryptionAlgorithm;
-import com.azure.cosmos.implementation.encryption.api.DataEncryptionKey;
+import com.azure.cosmos.encryption.CosmosEncryptionAlgorithm;
+import com.azure.cosmos.encryption.DataEncryptionKey;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -30,7 +33,7 @@ class DataEncryptionKeyContainerCore implements DataEncryptionKeyContainer {
 
         Preconditions.checkArgument(StringUtils.isNotEmpty(id), "id is missing");
         Preconditions.checkArgument(StringUtils.equals(encryptionAlgorithm,
-            CosmosEncryptionAlgorithm.AEAes256CbcHmacSha256Randomized), "Unsupported Encryption Algorithm " + encryptionAlgorithm);
+            CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256_RANDOMIZED), "Unsupported Encryption Algorithm " + encryptionAlgorithm);
         Preconditions.checkNotNull(encryptionKeyWrapMetadata, "encryptionKeyWrapMetadata is missing");
 
         byte[] rawDek = DataEncryptionKey.generate(encryptionAlgorithm);

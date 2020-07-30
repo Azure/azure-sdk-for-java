@@ -4,6 +4,7 @@ omitted_paths:
   - loganalytics/data-plane/samples/*
   - sdk/*/azure-*/samples/*
   - sdk/applicationinsights/microsoft-azure-applicationinsights-query/samples/*
+  - sdk/spring/azure-spring-boot-samples/*
   - sdk/loganalytics/microsoft-azure-loganalytics/samples/*
   - "*/resource-manager/*"
   - "sdk/*/mgmt-*/*"
@@ -132,6 +133,7 @@ known_content_issues:
   - ['sdk/formrecognizer/azure-ai-formrecognizer/swagger/README.md', '#3113']
   - ['sdk/keyvault/README.md', '#3113']
   - ['sdk/loganalytics/microsoft-azure-loganalytics/README.md', '#3113']
+  - ['sdk/parents/azure-client-sdk-parent/README.md', '#3113']
   - ['sdk/search/azure-search-documents/swagger/readme.md', '#3113']
   - ['sdk/search/azure-search-documents/src/test/README.md', '#3113']
   - ['sdk/search/open-api/readme.md', '#3113']

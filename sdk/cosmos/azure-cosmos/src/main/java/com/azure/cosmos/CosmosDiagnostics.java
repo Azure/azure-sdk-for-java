@@ -18,10 +18,10 @@ public final class CosmosDiagnostics {
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosDiagnostics.class);
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-    private static final String USER_AGENT = Utils.getUserAgent();
-
     private ClientSideRequestStatistics clientSideRequestStatistics;
     private FeedResponseDiagnostics feedResponseDiagnostics;
+
+    static final String USER_AGENT = Utils.getUserAgent();
 
     CosmosDiagnostics() {
         this.clientSideRequestStatistics = new ClientSideRequestStatistics();
@@ -48,8 +48,8 @@ public final class CosmosDiagnostics {
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("userAgent=").append(USER_AGENT).append(System.lineSeparator());
         if (this.feedResponseDiagnostics != null) {
+            stringBuilder.append("userAgent=").append(USER_AGENT).append(System.lineSeparator());
             stringBuilder.append(feedResponseDiagnostics);
         } else {
             try {

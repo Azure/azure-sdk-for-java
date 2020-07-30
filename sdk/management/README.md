@@ -28,7 +28,7 @@ If you are an existing user of the older version of Azure management library for
 <dependency>
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager</artifactId>
-  <version>2.0.0-beta.2</version>
+  <version>2.0.0-beta.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -46,7 +46,7 @@ Azure Management Libraries require a `TokenCredential` implementation for authen
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-identity</artifactId>
-  <version>1.0.8</version>
+  <version>1.0.9</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -266,7 +266,7 @@ For example, here is sample maven dependency for Compute package.
 <dependency>
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-compute</artifactId>
-  <version>2.0.0-beta.2</version>
+  <version>2.0.0-beta.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

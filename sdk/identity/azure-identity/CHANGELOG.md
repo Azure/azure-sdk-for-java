@@ -1,7 +1,35 @@
 # Release History
 
-## 1.1.0-beta.7 (Unreleased)
-- Added support for web apps (confidential apps) for `InteractiveBrowserCredential` and `AuthorizationCodeCredential`. A client secret is required on the builder for web apps.
+## 1.1.0-beta.8 (Unreleased)
+
+### Breaking Changes
+- Removing Application Authentication APIs for GA release. These will be reintroduced in 1.2.0-beta.1.
+  - Removed class `AuthenticationRecord`
+  - Removed class `AuthenticationRequiredException`
+  - Removed methods `allowUnencryptedCache()` and `enablePersistentCache()` from `ClientCertificateCredentialBuilder`, 
+   `ClientSecretCredentialBuilder`, `InteractiveBrowserCredentialBuilder`, `DeviceCodeCredentialBuilder`,
+    `UsernamePasswordCredentialBuilder` and `ClientCertificateCredentialBuilder`.
+  - Removed methods `allowUnencryptedCache()` and `authenticationRecord(AuthenticationRecord)` from `SharedTokenCacheCredentialBuilder`.
+  - Removed methods `authenticationRecord(AuthenticationRecord)` and `disableAutomaticAuthentication()` from `DeviceCodeCredentialBuilder` and `InteractiveBrowserCredentialBuilder`.
+  - Removed methods `authenticate(TokenRequestContext)` and `authenticate()` from `DeviceCodeCredential`, `InteractiveBrowserCredential`
+    and `UsernamePasswordCredential`.
+    
+
+## 1.1.0-beta.7 (2020-07-23)
+
+### Features
+- Added support for web apps (confidential apps) for `AuthorizationCodeCredential`. A client secret is required on the builder for web apps.
+- Added support for user assigned managed identities for `DefaultAzureCredential` with `.managedIdentityClientId()`.
+- Added`AzureAuthorityHosts` to access well knwon authority hosts.
+- Added `getClientId()` method in `AuthenticationRecord`
+
+### Breaking Changes
+- Removed persistent caching support from `AuthorizationCodeCredential`.
+- Removed `KnownAuthorityHosts`
+- Removed `getCredentials()` method in `ChainedTokenCredential` & `DefaultAzureCredential`
+- Changed return type of `serialize` method in `AuthenticationRecord` to `Mono<OutputStream>`.
+- Changed method signatures`enablePersistentCache(boolean)` and `allowUnencryptedCache(boolean)` on credential builders to `enablePersistentCache()` and `allowUnencryptedCache()`
+
 
 ## 1.1.0-beta.6 (2020-07-10)
 - Added `.getCredentials()` method to `DefaultAzureCredential` and `ChainedTokenCredential` and added option `.addAll(Collection<? extends TokenCredential>)` on `ChainedtokenCredentialBuilder`.

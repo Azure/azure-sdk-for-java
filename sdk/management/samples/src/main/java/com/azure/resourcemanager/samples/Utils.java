@@ -53,6 +53,12 @@ import com.azure.resourcemanager.compute.models.ImageDataDisk;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineCustomImage;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtension;
+import com.azure.resourcemanager.containerinstance.models.Container;
+import com.azure.resourcemanager.containerinstance.models.ContainerGroup;
+import com.azure.resourcemanager.containerinstance.models.ContainerPort;
+import com.azure.resourcemanager.containerinstance.models.EnvironmentVariable;
+import com.azure.resourcemanager.containerinstance.models.Volume;
+import com.azure.resourcemanager.containerinstance.models.VolumeMount;
 import com.azure.resourcemanager.containerregistry.models.AccessKeyType;
 import com.azure.resourcemanager.containerregistry.models.Registry;
 import com.azure.resourcemanager.containerregistry.models.RegistryCredentials;
@@ -98,6 +104,7 @@ import com.azure.resourcemanager.monitor.models.SmsReceiver;
 import com.azure.resourcemanager.monitor.models.VoiceReceiver;
 import com.azure.resourcemanager.monitor.models.WebhookReceiver;
 import com.azure.resourcemanager.msi.models.Identity;
+import com.azure.resourcemanager.network.fluent.inner.SecurityRuleInner;
 import com.azure.resourcemanager.network.models.ApplicationGateway;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackend;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendAddress;
@@ -141,7 +148,6 @@ import com.azure.resourcemanager.network.models.Topology;
 import com.azure.resourcemanager.network.models.TopologyAssociation;
 import com.azure.resourcemanager.network.models.TopologyResource;
 import com.azure.resourcemanager.network.models.VerificationIPFlow;
-import com.azure.resourcemanager.network.fluent.inner.SecurityRuleInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
@@ -2555,83 +2561,83 @@ public final class Utils {
                 .toString());
     }
 
-//    /**
-//     * Print container group info.
-//     *
-//     * @param resource a container group
-//     */
-//    public static void print(ContainerGroup resource) {
-//        StringBuilder info = new StringBuilder().append("Container Group: ").append(resource.id())
-//                .append("Name: ").append(resource.name())
-//                .append("\n\tResource group: ").append(resource.resourceGroupName())
-//                .append("\n\tRegion: ").append(resource.region())
-//                .append("\n\tTags: ").append(resource.tags())
-//                .append("\n\tOS type: ").append(resource.osType());
-//
-//        if (resource.ipAddress() != null) {
-//            info.append("\n\tPublic IP address: ").append(resource.ipAddress());
-//        }
-//        if (resource.externalTcpPorts() != null) {
-//            info.append("\n\tExternal TCP ports:");
-//            for (int port : resource.externalTcpPorts()) {
-//                info.append(" ").append(port);
-//            }
-//        }
-//        if (resource.externalUdpPorts() != null) {
-//            info.append("\n\tExternal UDP ports:");
-//            for (int port : resource.externalUdpPorts()) {
-//                info.append(" ").append(port);
-//            }
-//        }
-//        if (resource.imageRegistryServers() != null) {
-//            info.append("\n\tPrivate Docker image registries:");
-//            for (String server : resource.imageRegistryServers()) {
-//                info.append(" ").append(server);
-//            }
-//        }
-//        if (resource.volumes() != null) {
-//            info.append("\n\tVolume mapping: ");
-//            for (Map.Entry<String, Volume> entry : resource.volumes().entrySet()) {
-//                info.append("\n\t\tName: ").append(entry.getKey()).append(" -> ")
-//                        .append(entry.getValue().azureFile() != null ? entry.getValue().azureFile().shareName() : "empty direcory volume");
-//            }
-//        }
-//        if (resource.containers() != null) {
-//            info.append("\n\tContainer instances: ");
-//            for (Map.Entry<String, Container> entry : resource.containers().entrySet()) {
-//                Container container = entry.getValue();
-//                info.append("\n\t\tName: ").append(entry.getKey()).append(" -> ").append(container.image());
-//                info.append("\n\t\t\tResources: ");
-//                info.append(container.resources().requests().cpu()).append("CPUs ");
-//                info.append(container.resources().requests().memoryInGB()).append("GB");
-//                info.append("\n\t\t\tPorts:");
-//                for (ContainerPort port : container.ports()) {
-//                    info.append(" ").append(port.port());
-//                }
-//                if (container.volumeMounts() != null) {
-//                    info.append("\n\t\t\tVolume mounts:");
-//                    for (VolumeMount volumeMount : container.volumeMounts()) {
-//                        info.append(" ").append(volumeMount.name()).append("->").append(volumeMount.mountPath());
-//                    }
-//                }
-//                if (container.command() != null) {
-//                    info.append("\n\t\t\tStart commands:");
-//                    for (String command : container.command()) {
-//                        info.append("\n\t\t\t\t").append(command);
-//                    }
-//                }
-//                if (container.environmentVariables() != null) {
-//                    info.append("\n\t\t\tENV vars:");
-//                    for (EnvironmentVariable envVar : container.environmentVariables()) {
-//                        info.append("\n\t\t\t\t").append(envVar.name()).append("=").append(envVar.value());
-//                    }
-//                }
-//            }
-//        }
-//
-//        System.out.println(info.toString());
-//    }
-//
+    /**
+     * Print container group info.
+     *
+     * @param resource a container group
+     */
+    public static void print(ContainerGroup resource) {
+        StringBuilder info = new StringBuilder().append("Container Group: ").append(resource.id())
+                .append("Name: ").append(resource.name())
+                .append("\n\tResource group: ").append(resource.resourceGroupName())
+                .append("\n\tRegion: ").append(resource.region())
+                .append("\n\tTags: ").append(resource.tags())
+                .append("\n\tOS type: ").append(resource.osType());
+
+        if (resource.ipAddress() != null) {
+            info.append("\n\tPublic IP address: ").append(resource.ipAddress());
+        }
+        if (resource.externalTcpPorts() != null) {
+            info.append("\n\tExternal TCP ports:");
+            for (int port : resource.externalTcpPorts()) {
+                info.append(" ").append(port);
+            }
+        }
+        if (resource.externalUdpPorts() != null) {
+            info.append("\n\tExternal UDP ports:");
+            for (int port : resource.externalUdpPorts()) {
+                info.append(" ").append(port);
+            }
+        }
+        if (resource.imageRegistryServers() != null) {
+            info.append("\n\tPrivate Docker image registries:");
+            for (String server : resource.imageRegistryServers()) {
+                info.append(" ").append(server);
+            }
+        }
+        if (resource.volumes() != null) {
+            info.append("\n\tVolume mapping: ");
+            for (Map.Entry<String, Volume> entry : resource.volumes().entrySet()) {
+                info.append("\n\t\tName: ").append(entry.getKey()).append(" -> ")
+                        .append(entry.getValue().azureFile() != null ? entry.getValue().azureFile().shareName() : "empty direcory volume");
+            }
+        }
+        if (resource.containers() != null) {
+            info.append("\n\tContainer instances: ");
+            for (Map.Entry<String, Container> entry : resource.containers().entrySet()) {
+                Container container = entry.getValue();
+                info.append("\n\t\tName: ").append(entry.getKey()).append(" -> ").append(container.image());
+                info.append("\n\t\t\tResources: ");
+                info.append(container.resources().requests().cpu()).append("CPUs ");
+                info.append(container.resources().requests().memoryInGB()).append("GB");
+                info.append("\n\t\t\tPorts:");
+                for (ContainerPort port : container.ports()) {
+                    info.append(" ").append(port.port());
+                }
+                if (container.volumeMounts() != null) {
+                    info.append("\n\t\t\tVolume mounts:");
+                    for (VolumeMount volumeMount : container.volumeMounts()) {
+                        info.append(" ").append(volumeMount.name()).append("->").append(volumeMount.mountPath());
+                    }
+                }
+                if (container.command() != null) {
+                    info.append("\n\t\t\tStart commands:");
+                    for (String command : container.command()) {
+                        info.append("\n\t\t\t\t").append(command);
+                    }
+                }
+                if (container.environmentVariables() != null) {
+                    info.append("\n\t\t\tENV vars:");
+                    for (EnvironmentVariable envVar : container.environmentVariables()) {
+                        info.append("\n\t\t\t\t").append(envVar.name()).append("=").append(envVar.value());
+                    }
+                }
+            }
+        }
+
+        System.out.println(info.toString());
+    }
+
 //    /**
 //     * Print event hub namespace.
 //     *

@@ -3,6 +3,7 @@
 
 package com.azure.core.serializer.avro.apache;
 
+import com.azure.core.experimental.serializer.TypeReference;
 import com.azure.core.serializer.avro.apache.generatedtestsources.HandOfCards;
 import com.azure.core.serializer.avro.apache.generatedtestsources.LongLinkedList;
 import com.azure.core.serializer.avro.apache.generatedtestsources.PlayingCard;
@@ -27,8 +28,8 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ApacheAvroSerializerTests {
     /*
@@ -54,61 +55,57 @@ public class ApacheAvroSerializerTests {
 
     @ParameterizedTest
     @MethodSource("deserializePrimitiveTypesSupplier")
-    public <T> void deserializePrimitiveTypes(InputStream avro, String schema, Class<T> clazz, T expected) {
-        StepVerifier.create(getSerializer(schema).deserialize(avro, clazz))
-            .assertNext(actual -> {
-                assertTrue(clazz.isAssignableFrom(actual.getClass()));
-                assertEquals(expected, actual);
-            })
+    public <T> void deserializePrimitiveTypes(InputStream avro, String schema, TypeReference<T> type, T expected) {
+        StepVerifier.create(getSerializer(schema).deserializeAsync(avro, type))
+            .assertNext(actual -> assertEquals(expected, actual))
             .verifyComplete();
     }
 
     private static Stream<Arguments> deserializePrimitiveTypesSupplier() {
         return Stream.of(
-            Arguments.of(streamCreator(0), schemaCreator("boolean"), Boolean.class, false),
-            Arguments.of(streamCreator(1), schemaCreator("boolean"), Boolean.class, true),
+            Arguments.of(streamCreator(0), schemaCreator("boolean"), createInstance(Boolean.class), false),
+            Arguments.of(streamCreator(1), schemaCreator("boolean"), createInstance(Boolean.class), true),
 
             // INT and LONG use zigzag encoding.
-            Arguments.of(streamCreator(42), schemaCreator("int"), Integer.class, 21),
-            Arguments.of(streamCreator(42), schemaCreator("long"), Long.class, 21L),
+            Arguments.of(streamCreator(42), schemaCreator("int"), createInstance(int.class), 21),
+            Arguments.of(streamCreator(42), schemaCreator("long"), createInstance(int.class), 21L),
 
             // FLOAT and DOUBLE use little endian.
-            Arguments.of(streamCreator(0x00, 0x00, 0x28, 0x42), schemaCreator("float"), Float.class, 42F),
+            Arguments.of(streamCreator(0x00, 0x00, 0x28, 0x42), schemaCreator("float"), createInstance(float.class), 42F),
             Arguments.of(streamCreator(0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x45, 0x40), schemaCreator("double"),
-                Double.class, 42D),
+                createInstance(double.class), 42D),
 
             // STRING has an additional property 'avro.java.string' which indicates the deserialization type.
             // Using Java's String class.
-            Arguments.of(streamCreator(0), SPECIFIED_STRING_SCHEMA, String.class, ""),
-            Arguments.of(streamCreator(0x06, 0x66, 0x6F, 0x6F), SPECIFIED_STRING_SCHEMA, String.class, "foo"),
+            Arguments.of(streamCreator(0), SPECIFIED_STRING_SCHEMA, createInstance(String.class), ""),
+            Arguments.of(streamCreator(0x06, 0x66, 0x6F, 0x6F), SPECIFIED_STRING_SCHEMA, createInstance(String.class), "foo"),
 
             // Using Java's CharSequence class that gets wrapped in Apache's Utf8.
-            Arguments.of(streamCreator(0), SPECIFIED_CHAR_SEQUENCE_SCHEMA, Utf8.class, new Utf8("")),
-            Arguments.of(streamCreator(0x06, 0x66, 0x6F, 0x6F), SPECIFIED_CHAR_SEQUENCE_SCHEMA, Utf8.class,
+            Arguments.of(streamCreator(0), SPECIFIED_CHAR_SEQUENCE_SCHEMA, createInstance(Utf8.class), new Utf8("")),
+            Arguments.of(streamCreator(0x06, 0x66, 0x6F, 0x6F), SPECIFIED_CHAR_SEQUENCE_SCHEMA, createInstance(Utf8.class),
                 new Utf8("foo")),
 
             // BYTES deserializes into ByteBuffers.
-            Arguments.of(streamCreator(0), schemaCreator("bytes"), ByteBuffer.class, ByteBuffer.wrap(new byte[0])),
-            Arguments.of(streamCreator(4, 42, 42), schemaCreator("bytes"), ByteBuffer.class,
+            Arguments.of(streamCreator(0), schemaCreator("bytes"), createInstance(ByteBuffer.class),
+                ByteBuffer.wrap(new byte[0])),
+            Arguments.of(streamCreator(4, 42, 42), schemaCreator("bytes"), createInstance(ByteBuffer.class),
                 ByteBuffer.wrap(new byte[] {42, 42 }))
         );
     }
 
     @Test
     public void deserializeNull() {
-        StepVerifier.create(getSerializer(schemaCreator("null")).deserialize(new ByteArrayInputStream(new byte[0]),
-            void.class)).verifyComplete();
+        StepVerifier.create(getSerializer(schemaCreator("null"))
+            .deserializeAsync(new ByteArrayInputStream(new byte[0]), createInstance(void.class)))
+            .verifyComplete();
     }
 
     @ParameterizedTest
     @MethodSource("deserializeEnumSupplier")
     public void deserializeEnum(InputStream avro, PlayingCardSuit expected) {
-        StepVerifier.create(getSerializer(PlayingCardSuit.getClassSchema().toString()).deserialize(avro,
-            PlayingCardSuit.class))
-            .assertNext(actual -> {
-                assertTrue(PlayingCardSuit.class.isAssignableFrom(actual.getClass()));
-                assertEquals(expected, actual);
-            })
+        StepVerifier.create(getSerializer(PlayingCardSuit.getClassSchema().toString())
+            .deserializeAsync(avro, createInstance(PlayingCardSuit.class)))
+            .assertNext(actual -> assertEquals(expected, actual))
             .verifyComplete();
     }
 
@@ -123,19 +120,16 @@ public class ApacheAvroSerializerTests {
 
     @Test
     public void deserializeInvalidEnum() {
-        StepVerifier.create(getSerializer(PlayingCardSuit.getClassSchema().toString()).deserialize(streamCreator(8),
-            PlayingCardSuit.class))
+        StepVerifier.create(getSerializer(PlayingCardSuit.getClassSchema().toString())
+            .deserializeAsync(streamCreator(8), createInstance(PlayingCardSuit.class)))
             .verifyError();
     }
 
     @ParameterizedTest
     @MethodSource("deserializeListAndMapSupplier")
-    public <T> void deserializeListAndMap(InputStream avro, String schema, Class<T> clazz, T expected) {
-        StepVerifier.create(getSerializer(schema).deserialize(avro, clazz))
-            .assertNext(actual -> {
-                assertTrue(clazz.isAssignableFrom(actual.getClass()));
-                assertEquals(expected, actual);
-            })
+    public <T> void deserializeListAndMap(InputStream avro, String schema, TypeReference<T> type, T expected) {
+        StepVerifier.create(getSerializer(schema).deserializeAsync(avro, type))
+            .assertNext(actual -> assertEquals(expected, actual))
             .verifyComplete();
     }
 
@@ -150,23 +144,22 @@ public class ApacheAvroSerializerTests {
         expectedMultiBlockMap.put("bar", 2);
 
         return Stream.of(
-            Arguments.of(streamCreator(0), INT_ARRAY_SCHEMA, List.class, Collections.emptyList()),
-            Arguments.of(streamCreator(6, 20, 40, 60, 0), INT_ARRAY_SCHEMA, List.class, Arrays.asList(10, 20, 30)),
-            Arguments.of(streamCreator(0), INT_MAP_SCHEMA, Map.class, Collections.emptyMap()),
-            Arguments.of(streamCreator(2, 0x06, 0x66, 0x6F, 0x6F, 2, 0), INT_MAP_SCHEMA, Map.class,
-                Collections.singletonMap("foo", 1)),
-            Arguments.of(multiBlockMapAvro, INT_MAP_SCHEMA, Map.class, expectedMultiBlockMap)
+            Arguments.of(streamCreator(0), INT_ARRAY_SCHEMA, new TypeReference<List<Integer>>() { }, Collections.emptyList()),
+            Arguments.of(streamCreator(6, 20, 40, 60, 0), INT_ARRAY_SCHEMA, new TypeReference<List<Integer>>() { },
+                Arrays.asList(10, 20, 30)),
+            Arguments.of(streamCreator(0), INT_MAP_SCHEMA, new TypeReference<Map<String, Integer>>() { },
+                Collections.emptyMap()),
+            Arguments.of(streamCreator(2, 0x06, 0x66, 0x6F, 0x6F, 2, 0), INT_MAP_SCHEMA,
+                new TypeReference<Map<String, Integer>>() { }, Collections.singletonMap("foo", 1)),
+            Arguments.of(multiBlockMapAvro, INT_MAP_SCHEMA, new TypeReference<Map<String, Integer>>() { }, expectedMultiBlockMap)
         );
     }
 
     @ParameterizedTest
     @MethodSource("deserializeRecordSupplier")
-    public <T> void deserializeRecord(InputStream avro, String schema, Class<T> clazz, T expected) {
-        StepVerifier.create(getSerializer(schema).deserialize(avro, clazz))
-            .assertNext(actual -> {
-                assertTrue(clazz.isAssignableFrom(actual.getClass()));
-                assertEquals(expected, actual);
-            })
+    public <T> void deserializeRecord(InputStream avro, String schema, TypeReference<T> type, T expected) {
+        StepVerifier.create(getSerializer(schema).deserializeAsync(avro, type))
+            .assertNext(actual -> assertEquals(expected, actual))
             .verifyComplete();
     }
 
@@ -213,18 +206,21 @@ public class ApacheAvroSerializerTests {
         LongLinkedList expectedTwoNodeLinkedList = new LongLinkedList(0L, new LongLinkedList(1L, null));
 
         return Stream.of(
-            Arguments.of(streamCreator(0), handOfCardsSchema, HandOfCards.class,
+            Arguments.of(streamCreator(0), handOfCardsSchema, createInstance(HandOfCards.class),
                 new HandOfCards(Collections.emptyList())),
-            Arguments.of(pairOfAcesHand, handOfCardsSchema, HandOfCards.class, expectedPairOfAces),
-            Arguments.of(royalFlushHand, handOfCardsSchema, HandOfCards.class, expectedRoyalFlushHand),
-            Arguments.of(streamCreator(0, 0), longLinkedListSchema, LongLinkedList.class, new LongLinkedList(0L, null)),
-            Arguments.of(twoNodeLinkedList, longLinkedListSchema, LongLinkedList.class, expectedTwoNodeLinkedList)
+            Arguments.of(pairOfAcesHand, handOfCardsSchema, createInstance(HandOfCards.class), expectedPairOfAces),
+            Arguments.of(royalFlushHand, handOfCardsSchema, createInstance(HandOfCards.class), expectedRoyalFlushHand),
+            Arguments.of(streamCreator(0, 0), longLinkedListSchema, createInstance(LongLinkedList.class),
+                new LongLinkedList(0L, null)),
+            Arguments.of(twoNodeLinkedList, longLinkedListSchema, createInstance(LongLinkedList.class),
+                expectedTwoNodeLinkedList)
         );
     }
 
     @Test
     public void deserializeNullReturnsNull() {
-        StepVerifier.create(getSerializer(schemaCreator("null")).deserialize(null, void.class))
+        StepVerifier.create(getSerializer(schemaCreator("null"))
+            .deserializeAsync(null, createInstance(void.class)))
             .verifyComplete();
     }
 
@@ -236,9 +232,9 @@ public class ApacheAvroSerializerTests {
     @ParameterizedTest
     @MethodSource("simpleSerializationSupplier")
     public void simpleSerialization(String schema, Object value, byte[] expected) {
-        StepVerifier.create(getSerializer(schema).serialize(new ByteArrayOutputStream(), value))
+        StepVerifier.create(getSerializer(schema).serializeAsync(new ByteArrayOutputStream(), value))
             .assertNext(actual -> {
-                assertTrue(actual != null);
+                assertNotNull(actual);
                 assertArrayEquals(expected, actual.toByteArray());
             })
             .verifyComplete();
@@ -268,9 +264,9 @@ public class ApacheAvroSerializerTests {
     @MethodSource("serializeEnumSupplier")
     public void serializeEnum(PlayingCardSuit playingCardSuit, byte[] expected) {
         StepVerifier.create(getSerializer(PlayingCardSuit.getClassSchema().toString())
-            .serialize(new ByteArrayOutputStream(), playingCardSuit))
+            .serializeAsync(new ByteArrayOutputStream(), playingCardSuit))
             .assertNext(actual -> {
-                assertTrue(actual != null);
+                assertNotNull(actual);
                 assertArrayEquals(expected, actual.toByteArray());
             })
             .verifyComplete();
@@ -288,9 +284,9 @@ public class ApacheAvroSerializerTests {
     @ParameterizedTest
     @MethodSource("serializeListAndMapSupplier")
     public void serializeListAndMap(Object obj, String schema, byte[] expected) {
-        StepVerifier.create(getSerializer(schema).serialize(new ByteArrayOutputStream(), obj))
+        StepVerifier.create(getSerializer(schema).serializeAsync(new ByteArrayOutputStream(), obj))
             .assertNext(actual -> {
-                assertTrue(actual != null);
+                assertNotNull(actual);
                 assertArrayEquals(expected, actual.toByteArray());
             })
             .verifyComplete();
@@ -319,9 +315,9 @@ public class ApacheAvroSerializerTests {
     @ParameterizedTest
     @MethodSource("serializeRecordSupplier")
     public void serializeRecord(Object obj, String schema, byte[] expected) {
-        StepVerifier.create(getSerializer(schema).serialize(new ByteArrayOutputStream(), obj))
+        StepVerifier.create(getSerializer(schema).serializeAsync(new ByteArrayOutputStream(), obj))
             .assertNext(actual -> {
-                assertTrue(actual != null);
+                assertNotNull(actual);
                 assertArrayEquals(expected, actual.toByteArray());
             })
             .verifyComplete();
@@ -394,5 +390,9 @@ public class ApacheAvroSerializerTests {
         }
 
         return new ByteArrayInputStream(converted);
+    }
+
+    private static <T> TypeReference<T> createInstance(Class<T> clazz) {
+        return TypeReference.createInstance(clazz);
     }
 }

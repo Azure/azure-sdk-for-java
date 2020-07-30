@@ -6,7 +6,6 @@ package com.azure.spring.data.cosmos.repository.support;
 import com.azure.spring.data.cosmos.core.CosmosOperations;
 import com.azure.spring.data.cosmos.repository.query.CosmosQueryMethod;
 import com.azure.spring.data.cosmos.repository.query.PartTreeCosmosQuery;
-import org.springframework.context.ApplicationContext;
 import org.springframework.data.projection.ProjectionFactory;
 import org.springframework.data.repository.core.EntityInformation;
 import org.springframework.data.repository.core.NamedQueries;
@@ -27,18 +26,15 @@ import java.util.Optional;
  */
 public class CosmosRepositoryFactory extends RepositoryFactorySupport {
 
-    private final ApplicationContext applicationContext;
     private final CosmosOperations cosmosOperations;
 
     /**
      * Initialization
      *
      * @param cosmosOperations for cosmosDb operations
-     * @param applicationContext for the context
      */
-    public CosmosRepositoryFactory(CosmosOperations cosmosOperations, ApplicationContext applicationContext) {
+    public CosmosRepositoryFactory(CosmosOperations cosmosOperations) {
         this.cosmosOperations = cosmosOperations;
-        this.applicationContext = applicationContext;
     }
 
     @Override
@@ -49,7 +45,7 @@ public class CosmosRepositoryFactory extends RepositoryFactorySupport {
     @Override
     protected Object getTargetRepository(RepositoryInformation information) {
         final EntityInformation<?, Serializable> entityInformation = getEntityInformation(information.getDomainType());
-        return getTargetRepositoryViaReflection(information, entityInformation, this.applicationContext);
+        return getTargetRepositoryViaReflection(information, entityInformation, this.cosmosOperations);
     }
 
     @Override

@@ -20,12 +20,11 @@ public final class Constants {
 
     public static final String COSMOS_MODULE_NAME = "cosmos";
     public static final String COSMOS_MODULE_PREFIX = "cosmos";
-    public static final String COSMOS_MAPPING_CONTEXT = "cosmosMappingContext";
 
     public static final String USER_AGENT_SUFFIX = "spring-data/";
 
     public static final String OBJECT_MAPPER_BEAN_NAME = "cosmosObjectMapper";
-
+    public static final String AUDITING_HANDLER_BEAN_NAME = "cosmosAuditingHandler";
     public static final String ISO_8601_COMPATIBLE_DATE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss:SSSXXX";
 
     private Constants() {

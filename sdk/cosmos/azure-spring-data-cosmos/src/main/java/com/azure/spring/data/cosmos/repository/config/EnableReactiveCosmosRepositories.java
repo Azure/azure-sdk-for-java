@@ -4,6 +4,7 @@
 package com.azure.spring.data.cosmos.repository.config;
 
 import com.azure.spring.data.cosmos.Constants;
+import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
 import com.azure.spring.data.cosmos.repository.support.ReactiveCosmosRepositoryFactoryBean;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Import;
@@ -92,5 +93,12 @@ public @interface EnableReactiveCosmosRepositories {
      * @return default value is false
      */
     boolean considerNestedRepositories() default false;
+
+    /**
+     * Configures the name of the {@link ReactiveCosmosTemplate} bean to be used with the repositories detected.
+     *
+     * @return {@literal reactiveCosmosTemplate} by default.
+     */
+    String reactiveCosmosTemplateRef() default "reactiveCosmosTemplate";
 }
 

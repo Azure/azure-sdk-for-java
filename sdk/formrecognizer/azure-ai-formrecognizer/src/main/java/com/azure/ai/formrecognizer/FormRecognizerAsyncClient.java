@@ -9,7 +9,6 @@ import com.azure.ai.formrecognizer.implementation.models.AnalyzeOperationResult;
 import com.azure.ai.formrecognizer.implementation.models.ContentType;
 import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
 import com.azure.ai.formrecognizer.implementation.models.SourcePath;
-import com.azure.ai.formrecognizer.models.ErrorInformation;
 import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.FormRecognizerException;
@@ -19,10 +18,9 @@ import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
@@ -118,14 +116,21 @@ public final class FormRecognizerAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedForm>>
         beginRecognizeCustomFormsFromUrl(String formUrl, String modelId, RecognizeOptions recognizeOptions) {
+        return beginRecognizeCustomFormsFromUrl(formUrl, modelId, recognizeOptions, Context.NONE);
+    }
+
+    PollerFlux<OperationResult, List<RecognizedForm>>
+        beginRecognizeCustomFormsFromUrl(String formUrl, String modelId, RecognizeOptions recognizeOptions,
+        Context context) {
         try {
             recognizeOptions = getRecognizeOptionsProperties(recognizeOptions);
             return new PollerFlux<OperationResult, List<RecognizedForm>>(
                 recognizeOptions.getPollInterval(),
-                analyzeFormActivationOperation(formUrl, modelId, recognizeOptions.isIncludeFieldElements()),
-                createAnalyzeFormPollOperation(modelId),
-                (activationResponse, context) -> Mono.error(new RuntimeException("Cancellation is not supported")),
-                fetchAnalyzeFormResultOperation(modelId, recognizeOptions.isIncludeFieldElements()));
+                analyzeFormActivationOperation(formUrl, modelId, recognizeOptions.isFieldElementsIncluded(), context),
+                createAnalyzeFormPollOperation(modelId, context),
+                (activationResponse, pollingContext) ->
+                    Mono.error(new RuntimeException("Cancellation is not supported")),
+                fetchAnalyzeFormResultOperation(modelId, recognizeOptions.isFieldElementsIncluded(), context));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
@@ -181,22 +186,29 @@ public final class FormRecognizerAsyncClient {
      * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code recognizeOptions} is {@code null}.
+     * @throws NullPointerException If {@code form}, {@code modelId} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedForm>>
         beginRecognizeCustomForms(Flux<ByteBuffer> form, long length, String modelId,
         RecognizeOptions recognizeOptions) {
+        return beginRecognizeCustomForms(form, length, modelId, recognizeOptions, Context.NONE);
+    }
+
+    PollerFlux<OperationResult, List<RecognizedForm>>
+        beginRecognizeCustomForms(Flux<ByteBuffer> form, long length, String modelId,
+        RecognizeOptions recognizeOptions, Context context) {
         try {
             recognizeOptions = getRecognizeOptionsProperties(recognizeOptions);
             return new PollerFlux<OperationResult, List<RecognizedForm>>(
                 recognizeOptions.getPollInterval(),
                 analyzeFormStreamActivationOperation(form, modelId, length,
                     recognizeOptions.getContentType(),
-                    recognizeOptions.isIncludeFieldElements()),
-                createAnalyzeFormPollOperation(modelId),
-                (activationResponse, context) -> Mono.error(new RuntimeException("Cancellation is not supported")),
-                fetchAnalyzeFormResultOperation(modelId, recognizeOptions.isIncludeFieldElements()));
+                    recognizeOptions.isFieldElementsIncluded(), context),
+                createAnalyzeFormPollOperation(modelId, context),
+                (activationResponse, pollingContext) ->
+                    Mono.error(new RuntimeException("Cancellation is not supported")),
+                fetchAnalyzeFormResultOperation(modelId, recognizeOptions.isFieldElementsIncluded(), context));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
@@ -245,15 +257,20 @@ public final class FormRecognizerAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<FormPage>>
         beginRecognizeContentFromUrl(String formUrl, RecognizeOptions recognizeOptions) {
+        return beginRecognizeContentFromUrl(formUrl, recognizeOptions, Context.NONE);
+    }
+
+    PollerFlux<OperationResult, List<FormPage>>
+        beginRecognizeContentFromUrl(String formUrl, RecognizeOptions recognizeOptions, Context context) {
         try {
             recognizeOptions = getRecognizeOptionsProperties(recognizeOptions);
             return new PollerFlux<OperationResult, List<FormPage>>(
                 recognizeOptions.getPollInterval(),
-                contentAnalyzeActivationOperation(formUrl),
-                extractContentPollOperation(),
-                (activationResponse, context) ->
+                contentAnalyzeActivationOperation(formUrl, context),
+                extractContentPollOperation(context),
+                (activationResponse, pollingContext) ->
                     monoError(logger, new RuntimeException("Cancellation is not supported")),
-                fetchExtractContentResult());
+                fetchExtractContentResult(context));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
@@ -305,20 +322,25 @@ public final class FormRecognizerAsyncClient {
      * been cancelled. The completed operation returns a List of {@link FormPage}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code recognizeOptions} is {@code null}.
+     * @throws NullPointerException If {@code form} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<FormPage>> beginRecognizeContent(Flux<ByteBuffer> form, long length,
         RecognizeOptions recognizeOptions) {
+        return beginRecognizeContent(form, length, recognizeOptions, Context.NONE);
+    }
+
+    PollerFlux<OperationResult, List<FormPage>> beginRecognizeContent(Flux<ByteBuffer> form, long length,
+        RecognizeOptions recognizeOptions, Context context) {
         try {
             recognizeOptions = getRecognizeOptionsProperties(recognizeOptions);
             return new PollerFlux<>(
                 recognizeOptions.getPollInterval(),
-                contentStreamActivationOperation(form, length, recognizeOptions.getContentType()),
-                extractContentPollOperation(),
-                (activationResponse, context) ->
+                contentStreamActivationOperation(form, length, recognizeOptions.getContentType(), context),
+                extractContentPollOperation(context),
+                (activationResponse, pollingContext) ->
                     monoError(logger, new RuntimeException("Cancellation is not supported")),
-                fetchExtractContentResult());
+                fetchExtractContentResult(context));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
@@ -329,7 +351,7 @@ public final class FormRecognizerAsyncClient {
      * model.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
-     * See <a href="https://aka.ms/azsdk/python/formrecognizer/receiptfields">here</a> for fields found on a receipt.
+     * See <a href="https://aka.ms/formrecognizer/receiptfields">here</a> for fields found on a receipt.
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceiptsFromUrl#string}
@@ -370,15 +392,20 @@ public final class FormRecognizerAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedForm>>
         beginRecognizeReceiptsFromUrl(String receiptUrl, RecognizeOptions recognizeOptions) {
+        return beginRecognizeReceiptsFromUrl(receiptUrl, recognizeOptions, Context.NONE);
+    }
+
+    PollerFlux<OperationResult, List<RecognizedForm>>
+        beginRecognizeReceiptsFromUrl(String receiptUrl, RecognizeOptions recognizeOptions, Context context) {
         try {
             recognizeOptions = getRecognizeOptionsProperties(recognizeOptions);
             return new PollerFlux<OperationResult, List<RecognizedForm>>(
                 recognizeOptions.getPollInterval(),
-                receiptAnalyzeActivationOperation(receiptUrl, recognizeOptions.isIncludeFieldElements()),
-                extractReceiptPollOperation(),
-                (activationResponse, context) -> monoError(logger,
+                receiptAnalyzeActivationOperation(receiptUrl, recognizeOptions.isFieldElementsIncluded(), context),
+                extractReceiptPollOperation(context),
+                (activationResponse, pollingContext) -> monoError(logger,
                     new RuntimeException("Cancellation is not supported")),
-                fetchExtractReceiptResult(recognizeOptions.isIncludeFieldElements()));
+                fetchExtractReceiptResult(recognizeOptions.isFieldElementsIncluded(), context));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
@@ -389,7 +416,7 @@ public final class FormRecognizerAsyncClient {
      * trained model.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
-     * See <a href="https://aka.ms/azsdk/python/formrecognizer/receiptfields">here</a> for fields found on a receipt.
+     * See <a href="https://aka.ms/formrecognizer/receiptfields">here</a> for fields found on a receipt.
      *
      * Note that the {@code receipt} passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flux} must produce the same data each time it is subscribed to.
@@ -417,7 +444,7 @@ public final class FormRecognizerAsyncClient {
      * and a prebuilt receipt trained model.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
-     * See <a href="https://aka.ms/azsdk/python/formrecognizer/receiptfields">here</a> for fields found on a receipt.
+     * See <a href="https://aka.ms/formrecognizer/receiptfields">here</a> for fields found on a receipt.
      *
      * Note that the {@code data} passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flux} must produce the same data each time it is subscribed to.
@@ -434,33 +461,39 @@ public final class FormRecognizerAsyncClient {
      * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code recognizeOptions} is {@code null}.
+     * @throws NullPointerException If {@code receipt} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedForm>>
         beginRecognizeReceipts(Flux<ByteBuffer> receipt, long length, RecognizeOptions recognizeOptions) {
+        return beginRecognizeReceipts(receipt, length, recognizeOptions, Context.NONE);
+    }
+
+    PollerFlux<OperationResult, List<RecognizedForm>>
+        beginRecognizeReceipts(Flux<ByteBuffer> receipt, long length, RecognizeOptions recognizeOptions,
+        Context context) {
         try {
             recognizeOptions = getRecognizeOptionsProperties(recognizeOptions);
             return new PollerFlux<>(
                 recognizeOptions.getPollInterval(),
                 receiptStreamActivationOperation(receipt, length,
-                    recognizeOptions.getContentType(), recognizeOptions.isIncludeFieldElements()),
-                extractReceiptPollOperation(),
-                (activationResponse, context) -> monoError(logger,
+                    recognizeOptions.getContentType(), recognizeOptions.isFieldElementsIncluded(), context),
+                extractReceiptPollOperation(context),
+                (activationResponse, pollingContext) -> monoError(logger,
                     new RuntimeException("Cancellation is not supported")),
-                fetchExtractReceiptResult(recognizeOptions.isIncludeFieldElements()));
+                fetchExtractReceiptResult(recognizeOptions.isFieldElementsIncluded(), context));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
     }
 
     private Function<PollingContext<OperationResult>, Mono<OperationResult>> receiptAnalyzeActivationOperation(
-        String receiptUrl, boolean includeFieldElements) {
+        String receiptUrl, boolean includeFieldElements, Context context) {
         return (pollingContext) -> {
             try {
                 Objects.requireNonNull(receiptUrl, "'receiptUrl' is required and cannot be null.");
                 return service.analyzeReceiptAsyncWithResponseAsync(includeFieldElements,
-                    new SourcePath().setSource(receiptUrl))
+                    new SourcePath().setSource(receiptUrl), context)
                     .map(response ->
                         new OperationResult(parseModelId(response.getDeserializedHeaders().getOperationLocation())))
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
@@ -471,13 +504,14 @@ public final class FormRecognizerAsyncClient {
     }
 
     private Function<PollingContext<OperationResult>, Mono<OperationResult>> receiptStreamActivationOperation(
-        Flux<ByteBuffer> form, long length, FormContentType contentType, boolean includeFieldElements) {
+        Flux<ByteBuffer> form, long length, FormContentType contentType, boolean includeFieldElements,
+        Context context) {
         return pollingContext -> {
             try {
                 Objects.requireNonNull(form, "'form' is required and cannot be null.");
                 if (contentType != null) {
                     return service.analyzeReceiptAsyncWithResponseAsync(
-                        ContentType.fromString(contentType.toString()), form, length, includeFieldElements)
+                        ContentType.fromString(contentType.toString()), form, length, includeFieldElements, context)
                         .map(response -> new OperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation())))
                         .onErrorMap(throwable -> throwable);
@@ -485,7 +519,7 @@ public final class FormRecognizerAsyncClient {
                     return detectContentType(form)
                         .flatMap(detectedContentType ->
                             service.analyzeReceiptAsyncWithResponseAsync(detectedContentType, form, length,
-                                includeFieldElements)
+                                includeFieldElements, context)
                                 .map(response -> new OperationResult(
                                     parseModelId(response.getDeserializedHeaders().getOperationLocation()))))
                         .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
@@ -497,32 +531,28 @@ public final class FormRecognizerAsyncClient {
     }
 
     private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>>
-        extractReceiptPollOperation() {
+        extractReceiptPollOperation(Context context) {
         return (pollingContext) -> {
             try {
                 PollResponse<OperationResult> operationResultPollResponse = pollingContext.getLatestResponse();
                 UUID resultUid = UUID.fromString(operationResultPollResponse.getValue().getResultId());
-                return service.getAnalyzeReceiptResultWithResponseAsync(resultUid)
+                return service.getAnalyzeReceiptResultWithResponseAsync(resultUid, context)
                     .flatMap(modelSimpleResponse -> processAnalyzeModelResponse(modelSimpleResponse,
                         operationResultPollResponse));
-            } catch (HttpResponseException e) {
-                logger.logExceptionAsError(e);
-                return Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null));
+            } catch (RuntimeException ex) {
+                return monoError(logger, ex);
             }
         };
     }
 
     private Function<PollingContext<OperationResult>, Mono<List<RecognizedForm>>>
-        fetchExtractReceiptResult(boolean includeFieldElements) {
+        fetchExtractReceiptResult(boolean includeFieldElements, Context context) {
         return (pollingContext) -> {
             try {
                 final UUID resultUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
-                return service.getAnalyzeReceiptResultWithResponseAsync(resultUid)
-                    .map(modelSimpleResponse -> {
-                        throwIfAnalyzeStatusInvalid(modelSimpleResponse.getValue());
-                        return toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(),
-                            includeFieldElements);
-                    })
+                return service.getAnalyzeReceiptResultWithResponseAsync(resultUid, context)
+                    .map(modelSimpleResponse -> toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(),
+                        includeFieldElements))
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
@@ -531,11 +561,11 @@ public final class FormRecognizerAsyncClient {
     }
 
     private Function<PollingContext<OperationResult>, Mono<OperationResult>> contentAnalyzeActivationOperation(
-        String formUrl) {
+        String formUrl, Context context) {
         return (pollingContext) -> {
             try {
                 Objects.requireNonNull(formUrl, "'formUrl' is required and cannot be null.");
-                return service.analyzeLayoutAsyncWithResponseAsync(new SourcePath().setSource(formUrl))
+                return service.analyzeLayoutAsyncWithResponseAsync(new SourcePath().setSource(formUrl), context)
                     .map(response ->
                         new OperationResult(parseModelId(response.getDeserializedHeaders().getOperationLocation())))
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
@@ -546,20 +576,20 @@ public final class FormRecognizerAsyncClient {
     }
 
     private Function<PollingContext<OperationResult>, Mono<OperationResult>> contentStreamActivationOperation(
-        Flux<ByteBuffer> form, long length, FormContentType contentType) {
+        Flux<ByteBuffer> form, long length, FormContentType contentType, Context context) {
         return pollingContext -> {
             try {
                 Objects.requireNonNull(form, "'form' is required and cannot be null.");
                 if (contentType != null) {
                     return service.analyzeLayoutAsyncWithResponseAsync(
-                        ContentType.fromString(contentType.toString()), form, length)
+                        ContentType.fromString(contentType.toString()), form, length, context)
                         .map(response -> new OperationResult(parseModelId(
                             response.getDeserializedHeaders().getOperationLocation())))
                         .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
                 } else {
                     return detectContentType(form)
                         .flatMap(detectedContentType ->
-                            service.analyzeLayoutAsyncWithResponseAsync(detectedContentType, form, length)
+                            service.analyzeLayoutAsyncWithResponseAsync(detectedContentType, form, length, context)
                                 .map(response -> new OperationResult(
                                     parseModelId(response.getDeserializedHeaders().getOperationLocation()))))
                         .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
@@ -571,31 +601,28 @@ public final class FormRecognizerAsyncClient {
     }
 
     private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>>
-        extractContentPollOperation() {
+        extractContentPollOperation(Context context) {
         return (pollingContext) -> {
             try {
                 PollResponse<OperationResult> operationResultPollResponse = pollingContext.getLatestResponse();
                 UUID resultUid = UUID.fromString(operationResultPollResponse.getValue().getResultId());
-                return service.getAnalyzeLayoutResultWithResponseAsync(resultUid)
+                return service.getAnalyzeLayoutResultWithResponseAsync(resultUid, context)
                     .flatMap(modelSimpleResponse -> processAnalyzeModelResponse(modelSimpleResponse,
                         operationResultPollResponse));
-            } catch (HttpResponseException e) {
-                logger.logExceptionAsError(e);
-                return Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null));
+            } catch (RuntimeException ex) {
+                return monoError(logger, ex);
             }
         };
     }
 
     private Function<PollingContext<OperationResult>, Mono<List<FormPage>>>
-        fetchExtractContentResult() {
+        fetchExtractContentResult(Context context) {
         return (pollingContext) -> {
             try {
                 final UUID resultUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
-                return service.getAnalyzeLayoutResultWithResponseAsync(resultUid)
-                    .map(modelSimpleResponse -> {
-                        throwIfAnalyzeStatusInvalid(modelSimpleResponse.getValue());
-                        return toRecognizedLayout(modelSimpleResponse.getValue().getAnalyzeResult(), true);
-                    })
+                return service.getAnalyzeLayoutResultWithResponseAsync(resultUid, context)
+                    .map(modelSimpleResponse -> toRecognizedLayout(modelSimpleResponse.getValue().getAnalyzeResult(),
+                        true))
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
@@ -604,15 +631,14 @@ public final class FormRecognizerAsyncClient {
     }
 
     private Function<PollingContext<OperationResult>, Mono<List<RecognizedForm>>>
-        fetchAnalyzeFormResultOperation(String modelId, boolean includeFieldElements) {
+        fetchAnalyzeFormResultOperation(String modelId, boolean includeFieldElements, Context context) {
         return (pollingContext) -> {
             try {
                 Objects.requireNonNull(modelId, "'modelId' is required and cannot be null.");
                 UUID resultUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
                 UUID modelUid = UUID.fromString(modelId);
-                return service.getAnalyzeFormResultWithResponseAsync(modelUid, resultUid)
+                return service.getAnalyzeFormResultWithResponseAsync(modelUid, resultUid, context)
                     .map(modelSimpleResponse -> {
-                        throwIfAnalyzeStatusInvalid(modelSimpleResponse.getValue());
                         return toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(),
                             includeFieldElements);
                     })
@@ -623,49 +649,32 @@ public final class FormRecognizerAsyncClient {
         };
     }
 
-    /**
-     * Helper method that throws a {@link FormRecognizerException} if {@link AnalyzeOperationResult#getStatus()} is
-     * {@link OperationStatus#FAILED}.
-     *
-     * @param analyzeResponse The response returned from the service.
-     */
-    private void throwIfAnalyzeStatusInvalid(AnalyzeOperationResult analyzeResponse) {
-        if (OperationStatus.FAILED.equals(analyzeResponse.getStatus())) {
-            List<ErrorInformation> errorInformationList = analyzeResponse.getAnalyzeResult().getErrors();
-            if (!CoreUtils.isNullOrEmpty(errorInformationList)) {
-                throw logger.logExceptionAsError(new FormRecognizerException("Analyze operation failed",
-                    errorInformationList));
-            }
-        }
-    }
-
     private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>>
-        createAnalyzeFormPollOperation(String modelId) {
+        createAnalyzeFormPollOperation(String modelId, Context context) {
         return (pollingContext) -> {
             try {
                 PollResponse<OperationResult> operationResultPollResponse = pollingContext.getLatestResponse();
                 Objects.requireNonNull(modelId, "'modelId' is required and cannot be null.");
                 UUID resultUid = UUID.fromString(operationResultPollResponse.getValue().getResultId());
                 UUID modelUid = UUID.fromString(modelId);
-                return service.getAnalyzeFormResultWithResponseAsync(modelUid, resultUid)
+                return service.getAnalyzeFormResultWithResponseAsync(modelUid, resultUid, context)
                     .flatMap(modelSimpleResponse -> processAnalyzeModelResponse(modelSimpleResponse,
                         operationResultPollResponse))
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
-            } catch (HttpResponseException e) {
-                logger.logExceptionAsError(e);
-                return Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null));
+            } catch (RuntimeException ex) {
+                return monoError(logger, ex);
             }
         };
     }
 
     private Function<PollingContext<OperationResult>, Mono<OperationResult>> analyzeFormActivationOperation(
-        String formUrl, String modelId, boolean includeFieldElements) {
+        String formUrl, String modelId, boolean includeFieldElements, Context context) {
         return (pollingContext) -> {
             try {
                 Objects.requireNonNull(formUrl, "'formUrl' is required and cannot be null.");
                 Objects.requireNonNull(modelId, "'modelId' is required and cannot be null.");
                 return service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId), includeFieldElements,
-                    new SourcePath().setSource(formUrl))
+                    new SourcePath().setSource(formUrl), context)
                     .map(response ->
                         new OperationResult(parseModelId(response.getDeserializedHeaders().getOperationLocation())))
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
@@ -677,7 +686,7 @@ public final class FormRecognizerAsyncClient {
 
     private Function<PollingContext<OperationResult>, Mono<OperationResult>> analyzeFormStreamActivationOperation(
         Flux<ByteBuffer> form, String modelId, long length, FormContentType contentType,
-        boolean includeFieldElements) {
+        boolean includeFieldElements, Context context) {
 
         return pollingContext -> {
             try {
@@ -685,7 +694,7 @@ public final class FormRecognizerAsyncClient {
                 Objects.requireNonNull(modelId, "'modelId' is required and cannot be null.");
                 if (contentType != null) {
                     return service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId),
-                        ContentType.fromString(contentType.toString()), form, length, includeFieldElements)
+                        ContentType.fromString(contentType.toString()), form, length, includeFieldElements, context)
                         .map(response -> new OperationResult(parseModelId(
                             response.getDeserializedHeaders().getOperationLocation())))
                         .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
@@ -693,7 +702,7 @@ public final class FormRecognizerAsyncClient {
                     return detectContentType(form)
                         .flatMap(detectedContentType ->
                             service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId),
-                                detectedContentType, form, length, includeFieldElements)
+                                detectedContentType, form, length, includeFieldElements, context)
                                 .map(response -> new OperationResult(
                                     parseModelId(response.getDeserializedHeaders().getOperationLocation()))))
                         .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
@@ -704,7 +713,7 @@ public final class FormRecognizerAsyncClient {
         };
     }
 
-    private static Mono<PollResponse<OperationResult>> processAnalyzeModelResponse(
+    private Mono<PollResponse<OperationResult>> processAnalyzeModelResponse(
         SimpleResponse<AnalyzeOperationResult> analyzeOperationResultSimpleResponse,
         PollResponse<OperationResult> operationResultPollResponse) {
         LongRunningOperationStatus status;
@@ -717,8 +726,8 @@ public final class FormRecognizerAsyncClient {
                 status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
                 break;
             case FAILED:
-                status = LongRunningOperationStatus.FAILED;
-                break;
+                throw logger.logExceptionAsError(new FormRecognizerException("Analyze operation failed",
+                    analyzeOperationResultSimpleResponse.getValue().getAnalyzeResult().getErrors()));
             default:
                 status = LongRunningOperationStatus.fromString(
                     analyzeOperationResultSimpleResponse.getValue().getStatus().toString(), true);

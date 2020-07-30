@@ -4,8 +4,13 @@ package com.azure.spring.data.cosmos.repository.query;
 
 import com.azure.spring.data.cosmos.core.CosmosOperations;
 import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
-import com.azure.spring.data.cosmos.core.query.DocumentQuery;
+import com.azure.spring.data.cosmos.core.query.CosmosQuery;
+import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.ReturnedType;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Interface to execute cosmos query operations
@@ -20,7 +25,7 @@ public interface CosmosQueryExecution {
      * @param container container to conduct query
      * @return Object according to execution result
      */
-    Object execute(DocumentQuery query, Class<?> type, String container);
+    Object execute(CosmosQuery query, Class<?> type, String container);
 
     /**
      * Container operation implementation to execute a container name query
@@ -34,13 +39,13 @@ public interface CosmosQueryExecution {
         }
 
         @Override
-        public Object execute(DocumentQuery query, Class<?> type, String container) {
+        public Object execute(CosmosQuery query, Class<?> type, String container) {
             return operations.getContainerName(type);
         }
     }
 
     /**
-     * Find operation implementation to execute a find query
+     * Find operation implementation to execute a find query for multiple items
      */
     final class MultiEntityExecution implements CosmosQueryExecution {
 
@@ -51,8 +56,45 @@ public interface CosmosQueryExecution {
         }
 
         @Override
-        public Object execute(DocumentQuery query, Class<?> type, String container) {
+        public Object execute(CosmosQuery query, Class<?> type, String container) {
             return operations.find(query, type, container);
+        }
+    }
+
+    /**
+     * Find operation implementation to execute a find query for a single item
+     */
+    final class SingleEntityExecution implements CosmosQueryExecution {
+
+        private final CosmosOperations operations;
+        private final ReturnedType returnedType;
+
+        public SingleEntityExecution(CosmosOperations operations, ReturnedType returnedType) {
+            this.operations = operations;
+            this.returnedType = returnedType;
+        }
+
+        @Override
+        public Object execute(CosmosQuery query, Class<?> type, String collection) {
+            final List<?> results = operations.find(query, type, collection);
+            final Object result;
+            if (results == null || results.isEmpty()) {
+                result = null;
+            } else if (results.size() == 1) {
+                result = results.get(0);
+            } else {
+                throw new CosmosAccessException("Too many results - return type "
+                    + returnedType.getReturnedType()
+                    + " is not of type Iterable but find returned "
+                    + results.size()
+                    + " results");
+            }
+
+            if (returnedType.getReturnedType() == Optional.class) {
+                return result == null ? Optional.empty() : Optional.of(result);
+            } else {
+                return result;
+            }
         }
     }
 
@@ -68,7 +110,7 @@ public interface CosmosQueryExecution {
         }
 
         @Override
-        public Object execute(DocumentQuery query, Class<?> type, String container) {
+        public Object execute(CosmosQuery query, Class<?> type, String container) {
             return operations.exists(query, type, container);
         }
     }
@@ -85,7 +127,7 @@ public interface CosmosQueryExecution {
         }
 
         @Override
-        public Object execute(DocumentQuery query, Class<?> type, String container) {
+        public Object execute(CosmosQuery query, Class<?> type, String container) {
             return operations.delete(query, type, container);
         }
     }
@@ -103,7 +145,7 @@ public interface CosmosQueryExecution {
         }
 
         @Override
-        public Object execute(DocumentQuery query, Class<?> type, String container) {
+        public Object execute(CosmosQuery query, Class<?> type, String container) {
             if (pageable.getPageNumber() != 0
                     && !(pageable instanceof CosmosPageRequest)) {
                 throw new IllegalStateException("Not the first page but Pageable is not a valid "

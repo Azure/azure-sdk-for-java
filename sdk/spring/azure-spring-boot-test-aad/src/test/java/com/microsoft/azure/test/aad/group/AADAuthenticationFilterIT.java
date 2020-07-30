@@ -78,7 +78,7 @@ public class AADAuthenticationFilterIT {
 
             app.property("azure.activedirectory.client-id", clientId);
             app.property("azure.activedirectory.client-secret", clientSecret);
-            app.property("azure.activedirectory.ActiveDirectoryGroups", "group1,group2");
+            app.property("azure.activedirectory.user-group.allowed-groups", "group1,group2");
 
             app.start();
 

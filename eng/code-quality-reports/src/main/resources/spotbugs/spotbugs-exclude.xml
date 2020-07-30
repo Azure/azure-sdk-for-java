@@ -381,6 +381,13 @@
     <Class name="com.azure.core.auth.credentials.AzureCliCredentials"/>
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
   </Match>
+  
+  <!-- The fields are checked for null in the build method and throw exceptions if values for fields are not specified. -->
+  <Match>
+      <Class name="com.azure.identity.InteractiveBrowserCredentialBuilder"/>
+      <Field name="port"/>
+      <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
+  </Match>
 
   <!-- The major fields of poll strategy data subclass are non-serializable, and there is another design for serializing
   the class proposed. Suppress the warning for current design. -->
@@ -939,14 +946,14 @@
   <!-- Suppress URF_UNREAD_FIELD, the fields are read but during serialization -->
   <Match>
     <Class name="com.azure.cosmos.ClientSideRequestStatistics$AddressResolutionStatistics"/>
-    <Field name="endTime"/>
+    <Field name="endTimeUTC"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
   <!-- Suppress URF_UNREAD_FIELD, the fields are read but during serialization -->
   <Match>
     <Class name="com.azure.cosmos.ClientSideRequestStatistics$AddressResolutionStatistics"/>
-    <Field name="startTime"/>
+    <Field name="startTimeUTC"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
@@ -967,7 +974,7 @@
   <!-- Suppress URF_UNREAD_FIELD, the field is read but during serialization -->
   <Match>
     <Class name="com.azure.cosmos.ClientSideRequestStatistics$StoreResponseStatistics"/>
-    <Field name="requestResponseTime"/>
+    <Field name="requestResponseTimeUTC"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
@@ -1255,6 +1262,12 @@
     <Class name="com.azure.cosmos.implementation.ResourceId"/>
     <Method name="tryParse"/>
     <Bug pattern="REC_CATCH_EXCEPTION"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.cosmos.encryption.EncryptionCosmosAsyncContainer"/>
+    <Method name="decryptResponseAsync"/>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
 
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9089 -->
@@ -1674,22 +1687,42 @@
 
   <!-- Returning a new copy of the object is not necessary -->
   <Match>
-    <Class name="com.azure.cosmos.implementation.encryption.EncryptionKeyUnwrapResult"/>
+    <Class name="com.azure.cosmos.encryption.EncryptionKeyUnwrapResult"/>
     <Method name="getDataEncryptionKey"/>
     <Bug pattern="EI_EXPOSE_REP"/>
   </Match>
 
   <!-- Returning a new copy of the object is not necessary -->
   <Match>
-    <Class name="com.azure.cosmos.implementation.encryption.EncryptionKeyUnwrapResult"/>
+    <Class name="com.azure.cosmos.encryption.EncryptionKeyUnwrapResult"/>
     <Method name="getWrappedDataEncryptionKey"/>
     <Bug pattern="EI_EXPOSE_REP"/>
   </Match>
 
+  <!-- Returning a new copy of the object is not necessary -->
+  <Match>
+    <Class name="com.azure.cosmos.encryption.DecryptionResult"/>
+    <Method name="getEncryptedContent"/>
+    <Bug pattern="EI_EXPOSE_REP"/>
+  </Match>
 
   <!-- Returning a new copy of the object is not necessary -->
   <Match>
-    <Class name="com.azure.cosmos.implementation.encryption.EncryptionKeyUnwrapResult"/>
+    <Class name="com.azure.cosmos.implementation.encryption.EncryptionProperties"/>
+    <Method name="getEncryptedData"/>
+    <Bug pattern="EI_EXPOSE_REP"/>
+  </Match>
+
+  <!-- Returning a new copy of the object is not necessary -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.encryption.EncryptionProperties"/>
+    <Method name="&lt;init&gt;"/>
+    <Bug pattern="EI_EXPOSE_REP2"/>
+  </Match>
+
+  <!-- Returning a new copy of the object is not necessary -->
+  <Match>
+    <Class name="com.azure.cosmos.encryption.EncryptionKeyUnwrapResult"/>
     <Method name="&lt;init&gt;"/>
     <Bug pattern="EI_EXPOSE_REP2"/>
   </Match>
@@ -1703,21 +1736,21 @@
 
   <!-- Returning a new copy of the object is not necessary -->
   <Match>
-    <Class name="com.azure.cosmos.implementation.encryption.EncryptionKeyWrapResult"/>
+    <Class name="com.azure.cosmos.encryption.EncryptionKeyWrapResult"/>
     <Method name="getWrappedDataEncryptionKey"/>
     <Bug pattern="EI_EXPOSE_REP2,EI_EXPOSE_REP"/>
   </Match>
 
   <!-- Returning a new copy of the object is not necessary -->
   <Match>
-    <Class name="com.azure.cosmos.implementation.encryption.EncryptionKeyWrapResult"/>
+    <Class name="com.azure.cosmos.encryption.EncryptionKeyWrapResult"/>
     <Method name="getEncryptionKeyWrapMetadata"/>
     <Bug pattern="EI_EXPOSE_REP2,EI_EXPOSE_REP"/>
   </Match>
 
   <!-- Returning a new copy of the object is not necessary -->
   <Match>
-    <Class name="com.azure.cosmos.implementation.encryption.EncryptionKeyWrapResult"/>
+    <Class name="com.azure.cosmos.encryption.EncryptionKeyWrapResult"/>
     <Method name="&lt;init&gt;"/>
     <Bug pattern="EI_EXPOSE_REP2"/>
   </Match>
@@ -2075,6 +2108,13 @@
                   NP_LOAD_OF_KNOWN_NULL_VALUE,
                   RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE,
                   RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"/>
+  </Match>
+
+  <Match>
+    <Or>
+      <Class name="com.microsoft.azure.telemetry.TelemetryEventData$EventData$CustomData"/> <!-- false positive -->
+    </Or>
+    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
   </Match>
 
 

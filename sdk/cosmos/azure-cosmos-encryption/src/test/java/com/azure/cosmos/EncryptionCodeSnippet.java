@@ -2,13 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.encryption.api.DataEncryptionKey;
-import com.azure.cosmos.implementation.encryption.api.DataEncryptionKeyProvider;
-import com.azure.cosmos.implementation.encryption.api.EncryptionOptions;
+import com.azure.cosmos.implementation.encryption.CosmosEncryptor;
+import com.azure.cosmos.encryption.DataEncryptionKey;
+import com.azure.cosmos.encryption.DataEncryptionKeyProvider;
+import com.azure.cosmos.encryption.EncryptionItemRequestOptions;
+import com.azure.cosmos.encryption.EncryptionOptions;
+import com.azure.cosmos.encryption.WithEncryption;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
-import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -22,12 +23,13 @@ public class EncryptionCodeSnippet {
     public void encryptionSample() {
         CosmosClientBuilder builder = new CosmosClientBuilder();
 
-        CosmosClient client = builder.key("key")
+        CosmosAsyncClient client = builder.key("key")
             .endpoint("endpoint")
-            .dataEncryptionKeyProvider(naiveDataEncryptionKeyProvider())
-            .buildClient();
+            .buildAsyncClient();
 
-        CosmosContainer container = client.getDatabase("myDb").getContainer("myCol");
+        CosmosAsyncContainer container = client.getDatabase("myDb").getContainer("myCol");
+
+        WithEncryption.withEncryptor(container, new CosmosEncryptor(naiveDataEncryptionKeyProvider()));
 
         Pojo pojo = new Pojo();
         pojo.id = UUID.randomUUID().toString();
@@ -36,19 +38,19 @@ public class EncryptionCodeSnippet {
         pojo.sensitive1 = "this is a secret to be encrypted";
         pojo.sensitive2 = "this is a another secret to be encrypted";
 
-        CosmosItemRequestOptions options = new CosmosItemRequestOptions();
+        EncryptionItemRequestOptions options = new EncryptionItemRequestOptions();
         EncryptionOptions encryptionOptions = new EncryptionOptions();
         encryptionOptions.setPathsToEncrypt(ImmutableList.of("/sensitive1", "/sensitive2"));
-        ModelBridgeInternal.setEncryptionOptions(options, encryptionOptions);
+        options.setEncryptionOptions(encryptionOptions);
 
-        CosmosItemResponse<Pojo> response = container.createItem(pojo, options);
+        CosmosItemResponse<Pojo> response = container.createItem(pojo, options).block();
 
         assert response.getItem().nonSensitive != null;
         assert response.getItem().sensitive1 == null;
         assert response.getItem().sensitive2 == null;
 
 
-        CosmosItemResponse<Pojo> readResponse = container.readItem(pojo.id, new PartitionKey(pojo.mypk), Pojo.class);
+        CosmosItemResponse<Pojo> readResponse = container.readItem(pojo.id, new PartitionKey(pojo.mypk), Pojo.class).block();
 
         assert response.getItem().nonSensitive != null;
         assert response.getItem().sensitive1 != null;

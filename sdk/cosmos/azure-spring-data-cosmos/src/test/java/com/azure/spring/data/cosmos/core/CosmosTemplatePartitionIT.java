@@ -3,16 +3,18 @@
 
 package com.azure.spring.data.cosmos.core;
 
+import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.common.PageTestUtils;
+import com.azure.spring.data.cosmos.config.CosmosClientConfig;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
 import com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext;
 import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
 import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
-import com.azure.spring.data.cosmos.core.query.DocumentQuery;
+import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.domain.PartitionPerson;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
@@ -70,11 +72,14 @@ public class CosmosTemplatePartitionIT {
     private ApplicationContext applicationContext;
     @Autowired
     private CosmosConfig cosmosConfig;
+    @Autowired
+    private CosmosClientConfig cosmosClientConfig;
 
     @Before
     public void setUp() throws ClassNotFoundException {
         if (!initialized) {
-            final CosmosFactory cosmosFactory = new CosmosFactory(cosmosConfig);
+            CosmosAsyncClient client = CosmosFactory.createCosmosAsyncClient(cosmosClientConfig);
+            final CosmosFactory cosmosFactory = new CosmosFactory(client, cosmosClientConfig.getDatabase());
             final CosmosMappingContext mappingContext = new CosmosMappingContext();
 
             personInfo = new CosmosEntityInformation<>(PartitionPerson.class);
@@ -82,7 +87,7 @@ public class CosmosTemplatePartitionIT {
 
             final MappingCosmosConverter dbConverter = new MappingCosmosConverter(mappingContext, null);
 
-            cosmosTemplate = new CosmosTemplate(cosmosFactory, dbConverter, cosmosConfig.getDatabase());
+            cosmosTemplate = new CosmosTemplate(cosmosFactory, cosmosConfig, dbConverter);
             containerName = personInfo.getContainerName();
 
             cosmosTemplate.createContainerIfNotExists(personInfo);
@@ -107,7 +112,7 @@ public class CosmosTemplatePartitionIT {
     public void testFindWithPartition() {
         Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, PROPERTY_LAST_NAME,
             Arrays.asList(LAST_NAME), Part.IgnoreCaseType.NEVER);
-        DocumentQuery query = new DocumentQuery(criteria);
+        CosmosQuery query = new CosmosQuery(criteria);
         List<PartitionPerson> result = cosmosTemplate.find(query, PartitionPerson.class,
                 PartitionPerson.class.getSimpleName());
 
@@ -116,7 +121,7 @@ public class CosmosTemplatePartitionIT {
 
         criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, PROPERTY_ID,
             Arrays.asList(ID_1), Part.IgnoreCaseType.NEVER);
-        query = new DocumentQuery(criteria);
+        query = new CosmosQuery(criteria);
         result = cosmosTemplate.find(query, PartitionPerson.class,
             PartitionPerson.class.getSimpleName());
 
@@ -128,7 +133,7 @@ public class CosmosTemplatePartitionIT {
     public void testFindIgnoreCaseWithPartition() {
         Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, PROPERTY_LAST_NAME,
             Arrays.asList(LAST_NAME.toUpperCase()), Part.IgnoreCaseType.ALWAYS);
-        DocumentQuery query = new DocumentQuery(criteria);
+        CosmosQuery query = new CosmosQuery(criteria);
         List<PartitionPerson> result = cosmosTemplate.find(query, PartitionPerson.class,
             PartitionPerson.class.getSimpleName());
 
@@ -150,7 +155,7 @@ public class CosmosTemplatePartitionIT {
     public void testFindByNonExistIdWithPartition() {
         final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, PROPERTY_ID,
             Arrays.asList(NOT_EXIST_ID), Part.IgnoreCaseType.NEVER);
-        final DocumentQuery query = new DocumentQuery(criteria);
+        final CosmosQuery query = new CosmosQuery(criteria);
 
         final List<PartitionPerson> result = cosmosTemplate.find(query, PartitionPerson.class,
                 PartitionPerson.class.getSimpleName());
@@ -220,7 +225,7 @@ public class CosmosTemplatePartitionIT {
 
         final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
                 Arrays.asList(TEST_PERSON_2.getFirstName()), Part.IgnoreCaseType.NEVER);
-        final DocumentQuery query = new DocumentQuery(criteria);
+        final CosmosQuery query = new CosmosQuery(criteria);
 
         final long count = cosmosTemplate.count(query, containerName);
         assertThat(count).isEqualTo(1);
@@ -231,7 +236,7 @@ public class CosmosTemplatePartitionIT {
         cosmosTemplate.insert(TEST_PERSON_2, new PartitionKey(TEST_PERSON_2.getLastName()));
         final Criteria criteriaIgnoreCase = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
             Arrays.asList(TEST_PERSON_2.getFirstName().toUpperCase()), Part.IgnoreCaseType.ALWAYS);
-        final DocumentQuery queryIgnoreCase = new DocumentQuery(criteriaIgnoreCase);
+        final CosmosQuery queryIgnoreCase = new CosmosQuery(criteriaIgnoreCase);
 
         final long countIgnoreCase = cosmosTemplate.count(queryIgnoreCase, containerName);
         assertThat(countIgnoreCase).isEqualTo(1);
@@ -241,7 +246,7 @@ public class CosmosTemplatePartitionIT {
     public void testNonExistFieldValue() {
         final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
                 Arrays.asList("non-exist-first-name"), Part.IgnoreCaseType.NEVER);
-        final DocumentQuery query = new DocumentQuery(criteria);
+        final CosmosQuery query = new CosmosQuery(criteria);
 
         final long count = cosmosTemplate.count(query, containerName);
         assertThat(count).isEqualTo(0);
@@ -270,7 +275,7 @@ public class CosmosTemplatePartitionIT {
         final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
                 Arrays.asList(FIRST_NAME), Part.IgnoreCaseType.NEVER);
         final PageRequest pageRequest = new CosmosPageRequest(0, PAGE_SIZE_2, null);
-        final DocumentQuery query = new DocumentQuery(criteria).with(pageRequest);
+        final CosmosQuery query = new CosmosQuery(criteria).with(pageRequest);
 
         final Page<PartitionPerson> page = cosmosTemplate.paginationQuery(query, PartitionPerson.class, containerName);
         assertThat(page.getContent().size()).isEqualTo(1);
@@ -283,7 +288,7 @@ public class CosmosTemplatePartitionIT {
         final Criteria criteriaIgnoreCase = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
             Arrays.asList(FIRST_NAME.toUpperCase()), Part.IgnoreCaseType.ALWAYS);
         final PageRequest pageRequest = new CosmosPageRequest(0, PAGE_SIZE_2, null);
-        final DocumentQuery queryIgnoreCase = new DocumentQuery(criteriaIgnoreCase).with(pageRequest);
+        final CosmosQuery queryIgnoreCase = new CosmosQuery(criteriaIgnoreCase).with(pageRequest);
 
         final Page<PartitionPerson> pageIgnoreCase = cosmosTemplate
             .paginationQuery(queryIgnoreCase, PartitionPerson.class, containerName);

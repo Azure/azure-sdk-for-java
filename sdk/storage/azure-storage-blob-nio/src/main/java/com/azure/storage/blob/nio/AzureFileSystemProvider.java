@@ -1022,7 +1022,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         }
 
         // We don't actually support any setters on the basic view.
-        if (viewType.equals("azureBasic")) {
+        if (viewType.equals(AzureBasicFileAttributeView.NAME)) {
             throw LoggingUtility.logError(logger,
                 new IllegalArgumentException("Invalid attribute. View: " + viewType
                     + ". Attribute: " + attributeName));

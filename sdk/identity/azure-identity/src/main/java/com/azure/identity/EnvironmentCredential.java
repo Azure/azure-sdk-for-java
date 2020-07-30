@@ -37,7 +37,6 @@ import reactor.core.publisher.Mono;
 @Immutable
 public class EnvironmentCredential implements TokenCredential {
     private final Configuration configuration;
-    private final IdentityClientOptions identityClientOptions;
     private final ClientLogger logger = new ClientLogger(EnvironmentCredential.class);
     private final TokenCredential tokenCredential;
 
@@ -48,7 +47,6 @@ public class EnvironmentCredential implements TokenCredential {
      */
     EnvironmentCredential(IdentityClientOptions identityClientOptions) {
         this.configuration = Configuration.getGlobalConfiguration().clone();
-        this.identityClientOptions = identityClientOptions;
         TokenCredential targetCredential = null;
 
         String clientId = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID);

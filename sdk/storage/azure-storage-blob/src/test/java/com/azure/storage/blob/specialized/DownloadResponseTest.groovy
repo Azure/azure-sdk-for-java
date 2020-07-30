@@ -166,8 +166,8 @@ class DownloadResponseTest extends APISpec {
         response.getValue().subscribeOn(Schedulers.elastic()).then().block(Duration.ofSeconds((retryCount + 1) * 62))
 
         then:
-        def e = thrown(Exceptions.ReactiveException)
-        e.getCause() instanceof TimeoutException
+        def e = thrown(Throwable)
+        Exceptions.unwrap(e) instanceof TimeoutException
 
         where:
         // We test retry count elsewhere. Just using small numbers to speed up the test.

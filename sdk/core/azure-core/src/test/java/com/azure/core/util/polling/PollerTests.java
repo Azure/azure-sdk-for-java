@@ -3,8 +3,6 @@
 
 package com.azure.core.util.polling;
 
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,9 +17,17 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import static com.azure.core.util.polling.LongRunningOperationStatus.FAILED;
+import static com.azure.core.util.polling.LongRunningOperationStatus.IN_PROGRESS;
+import static com.azure.core.util.polling.LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
+import static com.azure.core.util.polling.PollerFlux.create;
+import static com.azure.core.util.polling.PollerFlux.error;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -128,10 +134,10 @@ public class PollerTests {
         // Arrange
         final Duration retryAfter = Duration.ofMillis(100);
         //
-        PollResponse<Response> response0 = new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+        PollResponse<Response> response0 = new PollResponse<>(IN_PROGRESS,
             new Response("0"), retryAfter);
 
-        PollResponse<Response> response1 = new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+        PollResponse<Response> response1 = new PollResponse<>(IN_PROGRESS,
             new Response("1"), retryAfter);
 
         PollResponse<Response> response2 = new PollResponse<>(
@@ -183,7 +189,7 @@ public class PollerTests {
                 new Response("ActivationDone")));
         }));
 
-        PollerFlux<Response, CertificateOutput> pollerFlux = PollerFlux.create(
+        PollerFlux<Response, CertificateOutput> pollerFlux = create(
             Duration.ofSeconds(1),
             activationOperationWithResponse,
             pollOperation,
@@ -209,21 +215,21 @@ public class PollerTests {
         activationCallCount[0] = 0;
         when(activationOperationWithResponse.apply(any())).thenReturn(Mono.defer(() -> {
             activationCallCount[0]++;
-            return Mono.just(new PollResponse<Response>(LongRunningOperationStatus.IN_PROGRESS,
+            return Mono.just(new PollResponse<Response>(IN_PROGRESS,
                 new Response("ActivationDone")));
         }));
 
-        PollerFlux<Response, CertificateOutput> pollerFlux = PollerFlux.create(
+        PollerFlux<Response, CertificateOutput> pollerFlux = create(
             Duration.ofSeconds(1),
             activationOperationWithResponse,
             pollOperation,
             cancelOperation,
             fetchResultOperation);
 
-        PollResponse<Response> response0 = new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+        PollResponse<Response> response0 = new PollResponse<>(IN_PROGRESS,
             new Response("0"), retryAfter);
 
-        PollResponse<Response> response1 = new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+        PollResponse<Response> response1 = new PollResponse<>(IN_PROGRESS,
             new Response("1"), retryAfter);
 
         PollResponse<Response> response2 = new PollResponse<>(
@@ -254,10 +260,10 @@ public class PollerTests {
         // Arrange
         final Duration retryAfter = Duration.ofMillis(100);
 
-        PollResponse<Response> response0 = new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+        PollResponse<Response> response0 = new PollResponse<>(IN_PROGRESS,
             new Response("0"), retryAfter);
 
-        PollResponse<Response> response1 = new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+        PollResponse<Response> response1 = new PollResponse<>(IN_PROGRESS,
             new Response("1"), retryAfter);
 
         PollResponse<Response> response2 = new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
@@ -308,10 +314,10 @@ public class PollerTests {
     public void cancellationCanBeCalledFromOperatorChainTest() {
         final Duration retryAfter = Duration.ofMillis(100);
 
-        PollResponse<Response> response0 = new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+        PollResponse<Response> response0 = new PollResponse<>(IN_PROGRESS,
             new Response("0"), retryAfter);
 
-        PollResponse<Response> response1 = new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+        PollResponse<Response> response1 = new PollResponse<>(IN_PROGRESS,
             new Response("1"), retryAfter);
 
         PollResponse<Response> response2 = new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
@@ -366,10 +372,10 @@ public class PollerTests {
     public void getResultCanBeCalledFromOperatorChainTest() {
         final Duration retryAfter = Duration.ofMillis(100);
 
-        PollResponse<Response> response0 = new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+        PollResponse<Response> response0 = new PollResponse<>(IN_PROGRESS,
             new Response("0"), retryAfter);
 
-        PollResponse<Response> response1 = new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+        PollResponse<Response> response1 = new PollResponse<>(IN_PROGRESS,
             new Response("1"), retryAfter);
 
         PollResponse<Response> response2 = new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
@@ -423,6 +429,75 @@ public class PollerTests {
         pollingContext.getLatestResponse().equals(response2);
     }
 
+    @Test
+    public void verifyExceptionPropagationFromPollingOperation() {
+        final Response activationResponse = new Response("Foo");
+        when(activationOperation.apply(any()))
+            .thenReturn(Mono.defer(() -> Mono.just(activationResponse)));
+
+        final AtomicReference<Integer> cnt = new AtomicReference<>(0);
+        pollOperation = (pollingContext) -> {
+            cnt.getAndSet(cnt.get() + 1);
+            if (cnt.get() <= 2) {
+                return Mono.just(new PollResponse<Response>(IN_PROGRESS, new Response("1")));
+            } else if (cnt.get() == 3) {
+                throw new RuntimeException("Polling operation failed!");
+            } else if (cnt.get() == 4) {
+                return Mono.just(new PollResponse<Response>(IN_PROGRESS, new Response("2")));
+            } else {
+                return Mono.just(new PollResponse<Response>(SUCCESSFULLY_COMPLETED, new Response("3")));
+            }
+        };
+
+        PollerFlux<Response, CertificateOutput> pollerFlux = new PollerFlux<>(
+            Duration.ofSeconds(1),
+            activationOperation,
+            pollOperation,
+            cancelOperation,
+            fetchResultOperation);
+
+        StepVerifier.create(pollerFlux)
+            .expectSubscription()
+            .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == IN_PROGRESS)
+            .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == IN_PROGRESS)
+            .expectErrorMessage("Polling operation failed!")
+            .verify();
+    }
+
+    @Test
+    public void verifyErrorFromPollingOperation() {
+        final Response activationResponse = new Response("Foo");
+        when(activationOperation.apply(any()))
+            .thenReturn(Mono.defer(() -> Mono.just(activationResponse)));
+
+        final AtomicReference<Integer> cnt = new AtomicReference<>(0);
+        pollOperation = (pollingContext) -> {
+            cnt.getAndSet(cnt.get() + 1);
+            if (cnt.get() <= 2) {
+                return Mono.just(new PollResponse<Response>(IN_PROGRESS, new Response("1")));
+            } else if (cnt.get() == 3) {
+                return Mono.just(new PollResponse<Response>(FAILED, new Response("2")));
+            } else if (cnt.get() == 4) {
+                return Mono.just(new PollResponse<Response>(IN_PROGRESS, new Response("3")));
+            } else {
+                return Mono.just(new PollResponse<Response>(SUCCESSFULLY_COMPLETED, new Response("4")));
+            }
+        };
+
+        PollerFlux<Response, CertificateOutput> pollerFlux = new PollerFlux<>(
+            Duration.ofSeconds(1),
+            activationOperation,
+            pollOperation,
+            cancelOperation,
+            fetchResultOperation);
+
+        StepVerifier.create(pollerFlux)
+            .expectSubscription()
+            .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == IN_PROGRESS)
+            .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == IN_PROGRESS)
+            .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == FAILED)
+            .verifyComplete();
+    }
 
     @Test
     public void syncPollerConstructorPollIntervalZero() {
@@ -531,7 +606,7 @@ public class PollerTests {
             Assertions.assertTrue(pollingContext.getLatestResponse() instanceof PollResponse);
             PollResponse<Response> latestResponse = pollingContext.getLatestResponse();
             Assertions.assertNotNull(latestResponse);
-            PollResponse<Response> nextResponse = new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+            PollResponse<Response> nextResponse = new PollResponse<>(IN_PROGRESS,
                     new Response(latestResponse.getValue().toString() + "A"), Duration.ofMillis(100));
             return Mono.just(nextResponse);
         });
@@ -568,10 +643,10 @@ public class PollerTests {
 
     @Test
     public void waitForCompletionShouldReturnTerminalPollResponse() {
-        PollResponse<Response> response0 = new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+        PollResponse<Response> response0 = new PollResponse<>(IN_PROGRESS,
                 new Response("0"), Duration.ofMillis(100));
 
-        PollResponse<Response> response1 = new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+        PollResponse<Response> response1 = new PollResponse<>(IN_PROGRESS,
                 new Response("1"), Duration.ofMillis(100));
 
         PollResponse<Response> response2 = new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
@@ -611,10 +686,10 @@ public class PollerTests {
             invocationCount[0]++;
             switch (invocationCount[0]) {
                 case 0:
-                    return Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+                    return Mono.just(new PollResponse<>(IN_PROGRESS,
                             new Response("0"), Duration.ofMillis(100)));
                 case 1:
-                    return Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+                    return Mono.just(new PollResponse<>(IN_PROGRESS,
                             new Response("1"), Duration.ofMillis(100)));
                 case 2:
                     return Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
@@ -644,10 +719,10 @@ public class PollerTests {
 
     @Test
     public void getResultShouldNotPollOnCompletedPoller() {
-        PollResponse<Response> response0 = new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+        PollResponse<Response> response0 = new PollResponse<>(IN_PROGRESS,
                 new Response("0"), Duration.ofMillis(100));
 
-        PollResponse<Response> response1 = new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+        PollResponse<Response> response1 = new PollResponse<>(IN_PROGRESS,
                 new Response("1"), Duration.ofMillis(100));
 
         PollResponse<Response> response2 = new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
@@ -702,10 +777,10 @@ public class PollerTests {
             invocationCount[0]++;
             switch (invocationCount[0]) {
                 case 0:
-                    return Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+                    return Mono.just(new PollResponse<>(IN_PROGRESS,
                             new Response("0"), Duration.ofMillis(100)));
                 case 1:
-                    return Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+                    return Mono.just(new PollResponse<>(IN_PROGRESS,
                             new Response("1"), Duration.ofMillis(100)));
                 case 2:
                     return Mono.just(new PollResponse<>(matchStatus,
@@ -729,9 +804,42 @@ public class PollerTests {
     }
 
     @Test
+    public void verifyExceptionPropagationFromPollingOperationSyncPoller() {
+        final Response activationResponse = new Response("Foo");
+        when(activationOperation.apply(any()))
+            .thenReturn(Mono.defer(() -> Mono.just(activationResponse)));
+
+        final AtomicReference<Integer> cnt = new AtomicReference<>(0);
+        pollOperation = (pollingContext) -> {
+            cnt.getAndSet(cnt.get() + 1);
+            if (cnt.get() <= 2) {
+                return Mono.just(new PollResponse<Response>(IN_PROGRESS, new Response("1")));
+            } else if (cnt.get() == 3) {
+                throw new RuntimeException("Polling operation failed!");
+            } else if (cnt.get() == 4) {
+                return Mono.just(new PollResponse<Response>(IN_PROGRESS, new Response("2")));
+            } else {
+                return Mono.just(new PollResponse<Response>(SUCCESSFULLY_COMPLETED, new Response("3")));
+            }
+        };
+
+        SyncPoller<Response, CertificateOutput> poller = new DefaultSyncPoller<>(
+            Duration.ofSeconds(1),
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                activationOperation.apply(cxt).block()),
+            pollOperation,
+            cancelOperation,
+            fetchResultOperation);
+
+        RuntimeException exception = assertThrows(RuntimeException.class,
+            () -> poller.getFinalResult());
+        Assertions.assertEquals(exception.getMessage(), "Polling operation failed!");
+    }
+
+    @Test
     public void testPollerFluxError() throws InterruptedException {
         IllegalArgumentException expectedException = new IllegalArgumentException();
-        PollerFlux<String, String> pollerFlux = PollerFlux.error(expectedException);
+        PollerFlux<String, String> pollerFlux = error(expectedException);
         CountDownLatch countDownLatch = new CountDownLatch(1);
         pollerFlux.subscribe(
             response -> Assertions.fail("Did not expect a response"),
@@ -747,7 +855,7 @@ public class PollerTests {
 
     @Test
     public void testSyncPollerError() {
-        PollerFlux<String, String> pollerFlux = PollerFlux.error(new IllegalArgumentException());
+        PollerFlux<String, String> pollerFlux = error(new IllegalArgumentException());
         // should getSyncPoller() be lazy?
         Assertions.assertThrows(IllegalArgumentException.class, () -> pollerFlux.getSyncPoller());
     }

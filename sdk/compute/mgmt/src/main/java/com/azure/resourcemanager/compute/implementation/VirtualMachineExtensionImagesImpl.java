@@ -4,13 +4,14 @@ package com.azure.resourcemanager.compute.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionImage;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionImageVersion;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionImages;
 import com.azure.resourcemanager.compute.models.VirtualMachinePublishers;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
-import reactor.core.publisher.Mono;
+import reactor.core.publisher.Flux;
 
 /** The implementation for {@link VirtualMachineExtensionImages}. */
 public class VirtualMachineExtensionImagesImpl implements VirtualMachineExtensionImages {
@@ -44,9 +45,10 @@ public class VirtualMachineExtensionImagesImpl implements VirtualMachineExtensio
                     virtualMachinePublisher
                         .extensionTypes()
                         .listAsync()
-                        .onErrorResume(e -> Mono.empty())
-                        .flatMap(
-                            virtualMachineExtensionImageType -> virtualMachineExtensionImageType.versions().listAsync())
+                        .onErrorResume(ManagementException.class,
+                            e -> e.getResponse().getStatusCode() == 404 ? Flux.empty() : Flux.error(e))
+                        .flatMap(virtualMachineExtensionImageType ->
+                            virtualMachineExtensionImageType.versions().listAsync())
                         .flatMap(VirtualMachineExtensionImageVersion::getImageAsync));
     }
 

@@ -942,6 +942,8 @@ class BlobAPITest extends APISpec {
         properties.getArchiveStatus() == null
         properties.getCreationTime() != null
         properties.getTagCount() == 1
+        properties.getRehydratePriority() == null // tested in setTier rehydrate priority
+        !properties.isSealed() // tested in AppendBlob. "seal blob"
     }
 
     def "Get properties min"() {
@@ -1685,6 +1687,35 @@ class BlobAPITest extends APISpec {
     }
 
     @Unroll
+    def "Copy seal"() {
+        setup:
+        def appendBlobClient = cc.getBlobClient(generateBlobName()).getAppendBlobClient()
+        appendBlobClient.create()
+        if (source) {
+            appendBlobClient.seal()
+        }
+
+        def bu2 = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient()
+
+        when:
+        def poller = bu2.beginCopy(new BlobBeginCopyOptions(appendBlobClient.getBlobUrl()).setSealDestination(destination)
+            .setPollInterval(Duration.ofSeconds(1)))
+        poller.blockLast()
+
+        then:
+        StepVerifier.create(bu2.getProperties())
+            .assertNext({ assert Boolean.TRUE.equals(it.isSealed()) == destination })
+            .verifyComplete()
+
+        where:
+        source | destination
+        true   | true
+        true   | false
+        false  | true
+        false  | false
+    }
+
+    @Unroll
     def "Copy source AC"() {
         setup:
         def copyDestBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient()
@@ -2346,10 +2377,58 @@ class BlobAPITest extends APISpec {
         cc.listBlobs().iterator().next().getProperties().getArchiveStatus() == status
 
         where:
-        sourceTier         | destTier        | priority                   | status
-        AccessTier.ARCHIVE | AccessTier.COOL | RehydratePriority.STANDARD | ArchiveStatus.REHYDRATE_PENDING_TO_COOL
-        AccessTier.ARCHIVE | AccessTier.HOT  | RehydratePriority.STANDARD | ArchiveStatus.REHYDRATE_PENDING_TO_HOT
-        AccessTier.ARCHIVE | AccessTier.HOT  | RehydratePriority.HIGH     | ArchiveStatus.REHYDRATE_PENDING_TO_HOT
+        sourceTier         | destTier        || status
+        AccessTier.ARCHIVE | AccessTier.COOL || ArchiveStatus.REHYDRATE_PENDING_TO_COOL
+        AccessTier.ARCHIVE | AccessTier.HOT  || ArchiveStatus.REHYDRATE_PENDING_TO_HOT
+        AccessTier.ARCHIVE | AccessTier.HOT  || ArchiveStatus.REHYDRATE_PENDING_TO_HOT
+    }
+
+    @Unroll
+    def "Set tier rehydrate priority"() {
+        setup:
+        if (rehydratePriority != null) {
+            bc.setAccessTier(AccessTier.ARCHIVE)
+
+            bc.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT).setPriority(rehydratePriority), null, null)
+        }
+
+        when:
+        def resp = bc.getPropertiesWithResponse(null, null, null)
+
+        then:
+        resp.getStatusCode() == 200
+        resp.getValue().getRehydratePriority() == rehydratePriority
+
+        where:
+        rehydratePriority          || _
+        null                       || _
+        RehydratePriority.STANDARD || _
+        RehydratePriority.HIGH     || _
+    }
+
+    def "Set tier snapshot"() {
+        setup:
+        def bc2 = bc.createSnapshot()
+
+        when:
+        bc2.setAccessTier(AccessTier.COOL)
+
+        then:
+        bc2.getProperties().getAccessTier() == AccessTier.COOL
+        bc.getProperties().getAccessTier() != AccessTier.COOL
+    }
+
+    def "Set tier snapshot error"() {
+        setup:
+        bc.createSnapshotWithResponse(null, null, null, null)
+        String fakeVersion = "2020-04-17T20:37:16.5129130Z"
+        def bc2 = bc.getSnapshotClient(fakeVersion)
+
+        when:
+        bc2.setAccessTier(AccessTier.COOL)
+
+        then:
+        thrown(BlobStorageException)
     }
 
     def "Set tier error"() {
@@ -2379,7 +2458,6 @@ class BlobAPITest extends APISpec {
 
     def "Set tier lease"() {
         setup:
-
         def cc = blobServiceClient.createBlobContainer(generateContainerName())
         def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
         bc.upload(defaultInputStream.get(), defaultDataSize)
@@ -2418,7 +2496,7 @@ class BlobAPITest extends APISpec {
         bc.setTags(t)
 
         when:
-        bc.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT).setIfTagsMatch("\"foo\" = 'bar'"), null, null)
+        bc.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT).setTagsConditions("\"foo\" = 'bar'"), null, null)
 
         then:
         notThrown(BlobStorageException)
@@ -2434,7 +2512,7 @@ class BlobAPITest extends APISpec {
         bc.upload(defaultInputStream.get(), defaultDataSize)
 
         when:
-        bc.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT).setIfTagsMatch("\"foo\" = 'bar'"), null, null)
+        bc.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT).setTagsConditions("\"foo\" = 'bar'"), null, null)
 
         then:
         thrown(BlobStorageException)
@@ -2474,7 +2552,6 @@ class BlobAPITest extends APISpec {
 
         when:
         def undeleteHeaders = bc.undeleteWithResponse(null, null).getHeaders()
-
         bc.getProperties()
 
         then:

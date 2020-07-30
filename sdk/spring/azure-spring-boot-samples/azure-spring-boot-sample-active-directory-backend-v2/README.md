@@ -31,7 +31,7 @@ spring.security.oauth2.client.registration.azure.client-secret=xxxxxx-your-clien
 azure.activedirectory.tenant-id=xxxxxx-your-tenant-id-xxxxxx
 # It's suggested the logged in user should at least belong to one of the below groups
 # If not, the logged in user will not be able to access any authorization controller rest APIs
-azure.activedirectory.active-directory-groups=group1, group2
+azure.activedirectory.user-group.allowed-groups=group1, group2
 ```
 
 ### Run with Maven
@@ -72,7 +72,7 @@ spring.security.oauth2.client.provider.azure-oauth-provider.jwk-set-uri=https://
 spring.security.oauth2.client.provider.azure-oauth-provider.user-name-attribute=name
 
 azure.activedirectory.tenant-id=xxxxxx-your-tenant-id-xxxxxx
-azure.activedirectory.active-directory-groups=group1, group2
+azure.activedirectory.user-group.allowed-groups=group1, group2
 ```
 
 ## Troubleshooting
