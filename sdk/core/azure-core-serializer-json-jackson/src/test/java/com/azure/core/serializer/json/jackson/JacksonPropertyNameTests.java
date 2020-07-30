@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
@@ -155,5 +156,20 @@ public class JacksonPropertyNameTests {
 
     public void assertMemberNull(Member m) {
         assertNull(serializer.getSerializerMemberName(m));
+    }
+
+
+    @Test
+    public void testPropertyNameOnConstructor() {
+        Constructor[] constructors = Hotel.class.getConstructors();
+        assertEquals(1, constructors.length);
+
+        assertEquals(serializer.getSerializerMemberName(constructors[0]),
+            "com.azure.core.serializer.json.jackson.Hotel");
+    }
+
+    @Test
+    public void compareSerializedNameWithJsonSerializer() {
+
     }
 }

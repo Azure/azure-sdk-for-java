@@ -10,6 +10,7 @@ import com.google.gson.annotations.SerializedName;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
@@ -95,5 +96,14 @@ public class GsonPropertyNameTests {
         Method m = Hotel.class.getDeclaredMethod("getHotelName");
 
         assertEquals(serializer.getSerializerMemberName(m), "getHotelName");
+    }
+
+    @Test
+    public void testPropertyNameOnConstructor() {
+        Constructor[] constructors = Hotel.class.getConstructors();
+        assertEquals(1, constructors.length);
+
+        assertEquals(serializer.getSerializerMemberName(constructors[0]),
+            "com.azure.core.serializer.json.gson.Hotel");
     }
 }
