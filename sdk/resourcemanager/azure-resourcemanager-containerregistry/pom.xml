@@ -34,7 +34,7 @@
   <properties>
     <!-- RMJacoco -->
     <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.10</jacoco.min.branchcoverage>
+    <jacoco.min.branchcoverage>0.05</jacoco.min.branchcoverage>
   </properties>
 
   <developers>
