@@ -30,7 +30,7 @@ public interface Deployments extends SupportsCreating<DeploymentExtended.Definit
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable checkExistenceAsync(String resourceGroupName, String deploymentName);
+    Observable<Boolean> checkExistenceAsync(String resourceGroupName, String deploymentName);
 
     /**
      * Cancels a currently running template deployment.
@@ -63,5 +63,14 @@ public interface Deployments extends SupportsCreating<DeploymentExtended.Definit
      * @return the observable for the request
      */
     Observable<DeploymentExportResult> exportTemplateAsync(String resourceGroupName, String deploymentName);
+
+    /**
+     * Calculate the hash of the given template.
+     *
+     * @param template The template provided to calculate hash.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<TemplateHashResult> calculateTemplateHashAsync(Object template);
 
 }

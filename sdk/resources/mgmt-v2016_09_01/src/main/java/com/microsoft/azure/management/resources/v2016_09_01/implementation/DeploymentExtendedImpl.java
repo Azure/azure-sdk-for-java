@@ -38,10 +38,10 @@ class DeploymentExtendedImpl extends CreatableUpdatableImpl<DeploymentExtended, 
         this.manager = manager;
         // Set resource name
         this.deploymentName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourcegroups");
         this.deploymentName = IdParsingUtils.getValueFromIdByName(inner.id(), "deployments");
-        //
+        // set other parameters for create and update
         this.cproperties = new DeploymentProperties();
         this.uproperties = new DeploymentProperties();
     }
