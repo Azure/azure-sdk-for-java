@@ -135,7 +135,7 @@ SecretClient secretClient = new SecretClientBuilder()
     .buildClient();
 
 KeyVaultSecret secret = secretClient.setSecret("<secret-name>", "<secret-value>");
-System.out.printf("Secret created with name \"%s\" and value \"%s\"\n", secret.getName(), secret.getValue());
+System.out.printf("Secret created with name \"%s\" and value \"%s\"%n", secret.getName(), secret.getValue());
 ```
 
 ### Retrieve a secret
@@ -143,7 +143,7 @@ Retrieve a previously stored secret by calling `getSecret`.
 
 ```Java
 KeyVaultSecret secret = secretClient.getSecret("<secret-name>");
-System.out.printf("Retrieved secret with name \"%s\" and value \"%s\"\n", secret.getName(), secret.getValue());
+System.out.printf("Retrieved secret with name \"%s\" and value \"%s\"%n", secret.getName(), secret.getValue());
 ```
 
 ### Update an existing secret
@@ -155,7 +155,7 @@ KeyVaultSecret secret = secretClient.getSecret("<secret-name>");
 // Update the expiry time of the secret.
 secret.getProperties().setExpiresOn(OffsetDateTime.now().plusDays(30));
 SecretProperties updatedSecretProperties = secretClient.updateSecretProperties(secret.getProperties());
-System.out.println("Secret's updated expiry time: " + updatedSecretProperties.getExpiresOn().toString());
+System.out.printf("Secret's updated expiry time: %s%n", updatedSecretProperties.getExpiresOn());
 ```
 
 ### Delete a secret
@@ -168,7 +168,7 @@ SyncPoller<DeletedSecret, Void> deletedSecretPoller = secretClient.beginDeleteSe
 PollResponse<DeletedSecret> deletedSecretPollResponse = deletedSecretPoller.poll();
 
 // Deletion date only works for a SoftDelete-enabled Key Vault.
-System.out.println("Deletion date: " + deletedSecretPollResponse.getValue().getDeletedOn().toString());
+System.out.printf("Deletion date: %s%n", deletedSecretPollResponse.getValue().getDeletedOn());
 
 // Secret is being deleted on server.
 deletedSecretPoller.waitForCompletion();
@@ -182,7 +182,7 @@ List the secrets in the Azure Key Vault by calling `listPropertiesOfSecrets`.
 // get the secret with its value information.
 for (SecretProperties secretProperties : secretClient.listPropertiesOfSecrets()) {
     KeyVaultSecret secretWithValue = secretClient.getSecret(secretProperties.getName(), secretProperties.getVersion());
-    System.out.printf("Retrieved secret with name \"%s\" and value \"%s\"\n", secretWithValue.getName(),
+    System.out.printf("Retrieved secret with name \"%s\" and value \"%s\"%n", secretWithValue.getName(),
         secretWithValue.getValue());
 }
 ```
@@ -213,7 +213,7 @@ SecretAsyncClient secretAsyncClient = new SecretClientBuilder()
 
 secretAsyncClient.setSecret("<secret-name>", "<secret-value>")
     .subscribe(secret ->
-        System.out.printf("Created secret with name \"%s\" and value \"%s\"\n", secret.getName(), secret.getValue()));
+        System.out.printf("Created secret with name \"%s\" and value \"%s\"%n", secret.getName(), secret.getValue()));
 ```
 
 ### Retrieve a secret asynchronously
@@ -222,7 +222,7 @@ Retrieve a previously stored secret by calling `getSecret`.
 ```Java
 secretAsyncClient.getSecret("<secret-name>")
     .subscribe(secret ->
-        System.out.printf("Retrieved secret with name \"%s\" and value \"%s\"\n", secret.getName(), secret.getValue()));
+        System.out.printf("Retrieved secret with name \"%s\" and value \"%s\"%n", secret.getName(), secret.getValue()));
 ```
 
 ### Update an existing secret asynchronously
@@ -235,8 +235,7 @@ secretAsyncClient.getSecret("<secret-name>")
         secret.getProperties().setExpiresOn(OffsetDateTime.now().plusDays(50));
         secretAsyncClient.updateSecretProperties(secret.getProperties())
             .subscribe(updatedSecretProperties ->
-                System.out.println("Secret's updated expiry time: " +
-                    updatedSecretProperties.getExpiresOn().toString()));
+                System.out.printf("Secret's updated expiry time: %s%n", updatedSecretProperties.getExpiresOn()));
     });
 ```
 
@@ -246,9 +245,9 @@ Delete an existing secret by calling `beginDeleteSecret`.
 ```Java
 secretAsyncClient.beginDeleteSecret("<secret-name>")
     .subscribe(pollResponse -> {
-        System.out.println("Deletion status: " + pollResponse.getStatus().toString());
-        System.out.println("Deleted secret name: " + pollResponse.getValue().getName());
-        System.out.println("Deleted secret value: " + pollResponse.getValue().getValue());
+        System.out.printf("Deletion status: %s%n", pollResponse.getStatus());
+        System.out.printf("Deleted secret name: %s%n", pollResponse.getValue().getName());
+        System.out.printf("Deleted secret value: %s%n", pollResponse.getValue().getValue());
     });
 ```
 
@@ -262,7 +261,7 @@ secretAsyncClient.listPropertiesOfSecrets()
     .subscribe(secretProperties ->
         secretAsyncClient.getSecret(secretProperties.getName(), secretProperties.getVersion())
             .subscribe(secretResponse ->
-                System.out.printf("Retrieved secret with name \"%s\" and value \"%s\"\n", secretResponse.getName(),
+                System.out.printf("Retrieved secret with name \"%s\" and value \"%s\"%n", secretResponse.getName(),
                     secretResponse.getValue())));
 ```
 
