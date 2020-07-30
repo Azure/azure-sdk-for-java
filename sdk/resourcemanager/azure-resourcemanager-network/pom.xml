@@ -36,8 +36,6 @@
   </scm>
 
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <!-- RMJacoco -->
     <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.10</jacoco.min.branchcoverage>
@@ -139,6 +137,18 @@
           </archive>
         </configuration>
       </plugin>
+
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+                <configuration>
+                    <excludes>
+                        <exclude>com/azure/resourcemanager/**/fluent/**/*</exclude>
+                        <exclude>com/azure/resourcemanager/**/models/**/*</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
     </plugins>
   </build>
 </project>
