@@ -4,17 +4,17 @@ package com.azure.spring.data.cosmos.domain;
 
 import com.azure.cosmos.models.IndexingMode;
 import com.azure.spring.data.cosmos.common.TestConstants;
-import com.azure.spring.data.cosmos.core.mapping.Document;
-import com.azure.spring.data.cosmos.core.mapping.DocumentIndexingPolicy;
+import com.azure.spring.data.cosmos.core.mapping.Container;
+import com.azure.spring.data.cosmos.core.mapping.CosmosIndexingPolicy;
 import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
 import org.springframework.data.annotation.Id;
 
 import java.util.Objects;
 
-@DocumentIndexingPolicy(
+@CosmosIndexingPolicy(
         mode = IndexingMode.CONSISTENT,
         automatic = TestConstants.INDEXING_POLICY_AUTOMATIC)
-@Document(container = TestConstants.ROLE_COLLECTION_NAME,
+@Container(containerName = TestConstants.ROLE_COLLECTION_NAME,
     autoCreateContainer = false)
 public class Role {
     @Id

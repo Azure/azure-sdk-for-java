@@ -8,10 +8,10 @@ package com.azure.cosmos;
  * LINE NUMBERS OF EXISTING CODE SAMPLES.
  */
 
-import com.azure.spring.data.cosmos.core.mapping.Document;
+import com.azure.spring.data.cosmos.core.mapping.Container;
 import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
 
-@Document(container = "myContainer", ru = "400")
+@Container(containerName = "myContainer", ru = "400")
 public class User {
     private String id;
     private String firstName;

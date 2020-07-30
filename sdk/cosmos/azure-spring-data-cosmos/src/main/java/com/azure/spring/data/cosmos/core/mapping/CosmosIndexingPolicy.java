@@ -13,13 +13,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation for document indexing policy
+ * Annotation for cosmos indexing policy
  */
 @Persistent
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface DocumentIndexingPolicy {
+public @interface CosmosIndexingPolicy {
     /**
      * To set automatic indexing
      * @return default as true

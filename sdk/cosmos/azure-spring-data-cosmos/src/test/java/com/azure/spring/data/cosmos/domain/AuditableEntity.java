@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.domain;
 
-import com.azure.spring.data.cosmos.core.mapping.Document;
+import com.azure.spring.data.cosmos.core.mapping.Container;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
@@ -12,7 +12,7 @@ import org.springframework.data.annotation.Version;
 
 import java.time.OffsetDateTime;
 
-@Document
+@Container
 public class AuditableEntity {
 
     @Id
