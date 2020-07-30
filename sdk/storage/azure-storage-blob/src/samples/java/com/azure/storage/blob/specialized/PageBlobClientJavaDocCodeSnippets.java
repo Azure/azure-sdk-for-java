@@ -5,6 +5,7 @@ package com.azure.storage.blob.specialized;
 
 import com.azure.core.http.RequestConditions;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.models.BlobDestinationRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
@@ -433,7 +434,7 @@ public class PageBlobClientJavaDocCodeSnippets {
     public void copyIncrementalWithResponseCodeSnippet2() {
         // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.copyIncrementalWithResponse#PageBlobCopyIncrementalOptions-Duration-Context
         final String snapshot = "copy snapshot";
-        BlobSourceRequestConditions sourceRequestConditions = new BlobSourceRequestConditions()
+        BlobDestinationRequestConditions sourceRequestConditions = new BlobDestinationRequestConditions()
             .setIfNoneMatch("snapshotMatch");
         Context context = new Context(key, value);
 
