@@ -37,6 +37,30 @@ public final class PollerFactory {
      * @param finalResultType the type of the final result, if no result is expecting then this should be Void.class
      * @param defaultPollInterval the default poll interval to use if service does not return retry-after
      * @param lroInitMono the Mono on subscribe send the service request to initiate the long-running-operation
+     * @param <T> the type of poll result
+     * @param <U> the type of final result
+     * @return PollerFlux
+     */
+    public static <T, U> PollerFlux<PollResult<T>, U> create(
+        SerializerAdapter serializerAdapter,
+        HttpPipeline pipeline,
+        Type pollResultType,
+        Type finalResultType,
+        Duration defaultPollInterval,
+        Mono<Response<Flux<ByteBuffer>>> lroInitMono) {
+        return create(serializerAdapter, pipeline, pollResultType, finalResultType, defaultPollInterval, lroInitMono,
+            Context.NONE);
+    }
+
+    /**
+     * Creates a PollerFlux with default ARM LRO init operation.
+     *
+     * @param serializerAdapter the serializer for any encoding and decoding
+     * @param pipeline the HttpPipeline for making any Http request (e.g. poll)
+     * @param pollResultType the type of the poll result, if no result is expecting then this should be Void.class
+     * @param finalResultType the type of the final result, if no result is expecting then this should be Void.class
+     * @param defaultPollInterval the default poll interval to use if service does not return retry-after
+     * @param lroInitMono the Mono on subscribe send the service request to initiate the long-running-operation
      * @param context the context shared by all requests
      * @param <T> the type of poll result
      * @param <U> the type of final result
@@ -89,6 +113,30 @@ public final class PollerFactory {
      * @param finalResultType the type of the final result, if no result is expecting then this should be Void.class
      * @param defaultPollInterval the default poll interval to use if service does not return retry-after
      * @param lroInitOperation the function upon invoking should initiate the long-running-operation
+     * @param <T> the type of poll result
+     * @param <U> the type of final result
+     * @return PollerFlux
+     */
+    public static <T, U> PollerFlux<PollResult<T>, U> create(
+        SerializerAdapter serializerAdapter,
+        HttpPipeline pipeline,
+        Type pollResultType,
+        Type finalResultType,
+        Duration defaultPollInterval,
+        Function<PollingContext<PollResult<T>>, Mono<PollResult<T>>> lroInitOperation) {
+        return create(serializerAdapter, pipeline, pollResultType, finalResultType, defaultPollInterval,
+            lroInitOperation, Context.NONE);
+    }
+
+    /**
+     * Creates a PollerFlux.
+     *
+     * @param serializerAdapter the serializer for any encoding and decoding
+     * @param pipeline the HttpPipeline for making any Http request (e.g. poll)
+     * @param pollResultType the type of the poll result, if no result is expecting then this should be Void.class
+     * @param finalResultType the type of the final result, if no result is expecting then this should be Void.class
+     * @param defaultPollInterval the default poll interval to use if service does not return retry-after
+     * @param lroInitOperation the function upon invoking should initiate the long-running-operation
      * @param context the context shared by all requests
      * @param <T> the type of poll result
      * @param <U> the type of final result
@@ -128,16 +176,39 @@ public final class PollerFactory {
      * @param pollingStateStr the string to dehydrate PollerFlux from
      * @param <T> the type of poll result
      * @param <U> the type of final result
-     * @param context the context shared by all requests
      * @return PollerFlux
      */
     public static <T, U> PollerFlux<PollResult<T>, U> create(SerializerAdapter serializerAdapter,
-                                                             HttpPipeline pipeline,
-                                                             Type pollResultType,
-                                                             Type finalResultType,
-                                                             Duration defaultPollInterval,
-                                                             String pollingStateStr,
-                                                             Context context) {
+        HttpPipeline pipeline,
+        Type pollResultType,
+        Type finalResultType,
+        Duration defaultPollInterval,
+        String pollingStateStr) {
+        return create(serializerAdapter, pipeline, pollResultType, finalResultType, defaultPollInterval,
+            pollingStateStr, Context.NONE);
+    }
+
+    /**
+     * Dehydrate a PollerFlux from a string.
+     *
+     * @param serializerAdapter the serializer for any encoding and decoding
+     * @param pipeline the HttpPipeline for making any Http request (e.g. poll)
+     * @param pollResultType the type of the poll result, if no result is expecting then this should be Void.class
+     * @param finalResultType the type of the final result, if no result is expecting then this should be Void.class
+     * @param defaultPollInterval the default poll interval to use if service does not return retry-after
+     * @param pollingStateStr the string to dehydrate PollerFlux from
+     * @param context the context shared by all requests
+     * @param <T> the type of poll result
+     * @param <U> the type of final result
+     * @return PollerFlux
+     */
+    public static <T, U> PollerFlux<PollResult<T>, U> create(SerializerAdapter serializerAdapter,
+        HttpPipeline pipeline,
+        Type pollResultType,
+        Type finalResultType,
+        Duration defaultPollInterval,
+        String pollingStateStr,
+        Context context) {
         Objects.requireNonNull(serializerAdapter, "'serializerAdapter' cannot be null.");
         Objects.requireNonNull(pipeline, "'pipeline' cannot be null.");
         Objects.requireNonNull(pollResultType, "'pollResultType' cannot be null.");

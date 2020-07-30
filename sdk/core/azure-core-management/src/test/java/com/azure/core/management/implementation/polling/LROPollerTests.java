@@ -99,8 +99,7 @@ public class LROPollerTests {
                 FooWithProvisioningState.class,
                 FooWithProvisioningState.class,
                 POLLING_DURATION,
-                newLroInitFunction(client),
-                Context.NONE);
+                newLroInitFunction(client));
 
             int[] onNextCallCount = new int[1];
             lroFlux.doOnNext(response -> {
@@ -204,8 +203,7 @@ public class LROPollerTests {
                 FooWithProvisioningState.class,
                 FooWithProvisioningState.class,
                 POLLING_DURATION,
-                newLroInitFunction(client),
-                Context.NONE);
+                newLroInitFunction(client));
 
             int[] onNextCallCount = new int[1];
             AsyncPollResponse<PollResult<FooWithProvisioningState>, FooWithProvisioningState> pollResponse = lroFlux.doOnNext(response -> {
@@ -306,8 +304,7 @@ public class LROPollerTests {
                 FooWithProvisioningState.class,
                 FooWithProvisioningState.class,
                 POLLING_DURATION,
-                newLroInitFunction(client),
-                Context.NONE);
+                newLroInitFunction(client));
 
             int[] onNextCallCount = new int[1];
             AsyncPollResponse<PollResult<FooWithProvisioningState>, FooWithProvisioningState> pollResponse = lroFlux.doOnNext(response -> {
@@ -381,8 +378,7 @@ public class LROPollerTests {
                 Resource.class,
                 Resource.class,
                 POLLING_DURATION,
-                newLroInitFunction(client),
-                Context.NONE);
+                newLroInitFunction(client));
 
             StepVerifier.create(lroFlux)
                 .expectSubscription()
@@ -459,8 +455,7 @@ public class LROPollerTests {
                 FooWithProvisioningState.class,
                 FooWithProvisioningState.class,
                 POLLING_DURATION,
-                newLroInitFunction(client),
-                Context.NONE);
+                newLroInitFunction(client));
 
             Mono<FooWithProvisioningState> resultMonoWithTimeout = lroFlux.last()
                 .flatMap(AsyncPollResponse::getFinalResult)
@@ -506,8 +501,7 @@ public class LROPollerTests {
                 FooWithProvisioningState.class,
                 FooWithProvisioningState.class,
                 POLLING_DURATION,
-                newLroInitFunction(client),
-                Context.NONE);
+                newLroInitFunction(client));
 
             long nanoTime = System.nanoTime();
 
@@ -553,8 +547,7 @@ public class LROPollerTests {
                 FooWithProvisioningState.class,
                 FooWithProvisioningState.class,
                 POLLING_DURATION,
-                newLroInitFunction(client),
-                Context.NONE);
+                newLroInitFunction(client));
             lroFlux = lroFlux.subscriberContext(context -> context.put("key1", "value1"));
 
             FooWithProvisioningState result = lroFlux
