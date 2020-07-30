@@ -72,8 +72,8 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
         }
     }
 
-    private PartitionKey createKey(String partitionKeyValue) {
-        if (StringUtils.isEmpty(partitionKeyValue)) {
+    private PartitionKey createKey(Object partitionKeyValue) {
+        if (partitionKeyValue == null) {
             return PartitionKey.NONE;
         }
 
@@ -193,11 +193,9 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
     public void delete(T entity) {
         Assert.notNull(entity, "entity to be deleted should not be null");
 
-        final String partitionKeyValue = information.getPartitionKeyFieldValue(entity);
+        final Object partitionKeyValue = information.getPartitionKeyFieldValue(entity);
 
-        operation.deleteById(information.getContainerName(),
-            information.getId(entity),
-            partitionKeyValue == null ? null : new PartitionKey(partitionKeyValue));
+        operation.deleteById(information.getContainerName(), information.getId(entity), createKey(partitionKeyValue));
     }
 
     /**

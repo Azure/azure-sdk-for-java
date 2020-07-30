@@ -161,8 +161,8 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
      * @param entity the target object from which to get the field
      * @return partition key field
      */
-    public String getPartitionKeyFieldValue(T entity) {
-        return partitionKeyField == null ? null : (String) ReflectionUtils.getField(partitionKeyField, entity);
+    public Object getPartitionKeyFieldValue(T entity) {
+        return partitionKeyField == null ? null : ReflectionUtils.getField(partitionKeyField, entity);
     }
 
     /**
@@ -234,11 +234,6 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
         } else if (fields.size() > 1) {
             throw new IllegalArgumentException("Azure Cosmos DB supports only one partition key, "
                 + "only one field with @PartitionKey annotation!");
-        }
-
-        if (partitionKey != null
-                && partitionKey.getType() != String.class) {
-            throw new IllegalArgumentException("type of PartitionKey field must be String");
         }
         return partitionKey;
     }

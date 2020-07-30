@@ -213,9 +213,9 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
         return cosmosOperations.deleteAll(entityInformation.getContainerName(), entityInformation.getJavaType());
     }
 
-    private PartitionKey createKey(String partitionKeyValue) {
-        if (StringUtils.isEmpty(partitionKeyValue)) {
-            return null;
+    private PartitionKey createKey(Object partitionKeyValue) {
+        if (partitionKeyValue == null) {
+            return PartitionKey.NONE;
         }
         return new PartitionKey(partitionKeyValue);
     }
