@@ -104,7 +104,7 @@ public class GsonPropertyNameTests {
 
     @Test
     public void testPropertyNameOnConstructor() {
-        Constructor[] constructors = Hotel.class.getConstructors();
+        Constructor<?>[] constructors = Hotel.class.getConstructors();
         assertEquals(1, constructors.length);
 
         assertEquals(serializer.getSerializerMemberName(constructors[0]),
@@ -114,7 +114,7 @@ public class GsonPropertyNameTests {
     public void compareSerializedNameWithJsonSerializer() {
         GsonJsonSerializer newSerializer = new GsonJsonSerializerBuilder().serializer(
             new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()).build();
-        Map<String, String> valueMapping = new HashMap<>() {
+        Map<String, String> valueMapping = new HashMap<String, String>() {
             {
                 put("hotelId", "id");
                 put("", "hotelName");

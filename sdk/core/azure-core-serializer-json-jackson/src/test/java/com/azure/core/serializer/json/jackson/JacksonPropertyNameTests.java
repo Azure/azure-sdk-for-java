@@ -173,7 +173,7 @@ public class JacksonPropertyNameTests {
 
     @Test
     public void compareSerializedNameWithJsonSerializer() throws NoSuchFieldException {
-        Map<String, String> valueMapping = new HashMap<>() {
+        Map<String, String> valueMapping = new HashMap<String, String>() {
             {
                 put("hotelId", "id");
                 put("hotelName", "hotelName");
