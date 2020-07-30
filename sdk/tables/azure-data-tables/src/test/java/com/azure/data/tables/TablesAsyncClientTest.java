@@ -127,6 +127,37 @@ public class TablesAsyncClientTest extends TestBase {
     }
 
     @Test
+    void createEntityWithTypeMatching() {
+        // Arrange
+        final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
+        final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
+        final TableEntity tableEntity = new TableEntity(partitionKeyValue, rowKeyValue);
+        String propertyBoolean = "propertyB";
+        Boolean propertyBooleanValue = false;
+        tableEntity.addProperty(propertyBoolean, propertyBooleanValue);
+        String propertyInt = "propertyI";
+        Integer propertyIntValue = 1;
+        tableEntity.addProperty(propertyInt, propertyIntValue);
+        final int expectedStatusCode = 201;
+
+    // Act & Assert
+        StepVerifier.create(asyncClient.createEntityWithResponse(tableEntity))
+            .assertNext(response -> {
+                String s = response.toString();
+                assertEquals(response.getValue().getPartitionKey(), partitionKeyValue);
+                assertEquals(response.getValue().getRowKey(), rowKeyValue);
+                assertNotNull(response.getValue().getETag());
+                assertEquals(expectedStatusCode, response.getStatusCode());
+
+                TableEntity entity = response.getValue();
+                assertTrue(entity.getProperties().get(propertyBoolean) instanceof Boolean);
+                assertTrue(entity.getProperties().get(propertyInt) instanceof Integer);
+            })
+            .expectComplete()
+            .verify();
+    }
+
+    @Test
     void deleteEntityAsync() {
         // Arrange
         final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
@@ -210,6 +241,49 @@ public class TablesAsyncClientTest extends TestBase {
                 assertEquals(createdEntity.getETag(), entity.getETag());
 
                 assertNotNull(entity.getProperties());
+            })
+            .expectComplete()
+            .verify();
+    }
+
+    @Disabled("deserialization for get not working yet")
+    @Test
+    void getEntityWithTypeMatching() {
+        // Arrange
+        final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
+        final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
+        final TableEntity tableEntity = new TableEntity(partitionKeyValue, rowKeyValue);
+        String propertyBoolean = "propertyB";
+        Boolean propertyBooleanValue = false;
+        tableEntity.addProperty(propertyBoolean, propertyBooleanValue);
+        String propertyInt = "propertyI";
+        Integer propertyIntValue = 1;
+        tableEntity.addProperty(propertyInt, propertyIntValue);
+        String propertyDouble = "propertyD";
+        Integer propertyDoubleValue = 1000;
+        tableEntity.addProperty(propertyDouble, propertyDoubleValue);
+        final int expectedStatusCode = 200;
+
+        final TableEntity createdEntity = asyncClient.createEntity(tableEntity).block(TIMEOUT);
+        assertNotNull(createdEntity, "'createdEntity' should not be null.");
+        assertNotNull(createdEntity.getETag(), "'eTag' should not be null.");
+
+        // Act & Assert
+        StepVerifier.create(asyncClient.getEntityWithResponse(createdEntity.getPartitionKey(), createdEntity.getRowKey()))
+            .assertNext(response -> {
+                final TableEntity entity = response.getValue();
+                assertEquals(expectedStatusCode, response.getStatusCode());
+
+                assertNotNull(entity);
+                assertEquals(tableEntity.getPartitionKey(), entity.getPartitionKey());
+                assertEquals(tableEntity.getRowKey(), entity.getRowKey());
+
+                assertEquals(createdEntity.getETag(), entity.getETag());
+
+                assertNotNull(entity.getProperties());
+                assertTrue(entity.getProperties().get(propertyBoolean) instanceof Boolean);
+                assertTrue(entity.getProperties().get(propertyInt) instanceof Integer);
+                assertTrue(entity.getProperties().get(propertyDouble) instanceof Double);
             })
             .expectComplete()
             .verify();

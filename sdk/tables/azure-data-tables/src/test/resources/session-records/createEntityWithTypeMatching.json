@@ -1,0 +1,57 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d5b6211b-b8e7-47c0-8355-5ed9d0dcb79d",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "Date" : "Thu, 30 Jul 2020 19:45:19 GMT",
+      "Cache-Control" : "no-cache",
+      "x-ms-request-id" : "95687745-8002-0084-2ca9-6627fc000000",
+      "Body" : "{\"odata.metadata\":\"https://telboytrial.table.core.windows.net/$metadata#Tables/@Element\",\"TableName\":\"tablename50387002\"}",
+      "Preference-Applied" : "return-content",
+      "x-ms-client-request-id" : "d5b6211b-b8e7-47c0-8355-5ed9d0dcb79d",
+      "Content-Type" : "application/json;odata=minimalmetadata;streaming=true;charset=utf-8",
+      "Location" : "https://telboytrial.table.core.windows.net/Tables('tablename50387002')"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.table.core.windows.net/tablename50387002",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "684f9957-fb06-45ac-8e80-50a9005db20c",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "Date" : "Thu, 30 Jul 2020 19:45:19 GMT",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/datetime'2020-07-30T19%3A45%3A19.0778807Z'",
+      "x-ms-request-id" : "1b7f2eea-b002-007b-68a9-661761000000",
+      "Body" : "{\"odata.metadata\":\"https://telboytrial.table.core.windows.net/$metadata#tablename50387002/@Element\",\"odata.etag\":\"W/\\\"datetime'2020-07-30T19%3A45%3A19.0778807Z'\\\"\",\"PartitionKey\":\"partitionkey647760\",\"RowKey\":\"rowkey59065db4b\",\"Timestamp\":\"2020-07-30T19:45:19.0778807Z\",\"propertyB\":false,\"propertyI\":1}",
+      "Preference-Applied" : "return-content",
+      "x-ms-client-request-id" : "684f9957-fb06-45ac-8e80-50a9005db20c",
+      "Content-Type" : "application/json;odata=minimalmetadata;streaming=true;charset=utf-8",
+      "Location" : "https://telboytrial.table.core.windows.net/tablename50387002(PartitionKey='partitionkey647760',RowKey='rowkey59065db4b')"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "tablename50387002", "partitionkey647760", "rowkey59065db4b" ]
+}
