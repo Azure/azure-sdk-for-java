@@ -413,6 +413,41 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     }
 
     /**
+     * Verifies that we can send and receive one messages.
+     */
+    @Test
+    void receiveMessageInMaxWaitTimeout() {
+        // Arrange
+        final MessagingEntityType entityType = MessagingEntityType.QUEUE;
+        final boolean isSessionEnabled = false;
+        final int maxMessages = 5;
+        final Duration shortTimeout = Duration.ofSeconds(5);
+        setSenderAndReceiver(entityType, 0, isSessionEnabled);
+
+        final String messageId = UUID.randomUUID().toString();
+        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
+
+        sendMessage(message);
+
+        // Act
+        final Stream<ServiceBusReceivedMessage> messages = receiver.receiveMessages(maxMessages, TIMEOUT)
+            .stream()
+            .map(ServiceBusReceivedMessageContext::getMessage);
+
+        // Assert
+        final AtomicInteger receivedMessageCount = new AtomicInteger();
+        messages.forEach(receivedMessage -> {
+            assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+            receiver.complete(receivedMessage.getLockToken());
+            messagesPending.decrementAndGet();
+            receivedMessageCount.incrementAndGet();
+        });
+
+        assertEquals(maxMessages, receivedMessageCount.get());
+
+    }
+
+    /**
      * Verifies that we can send and peek a message.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
