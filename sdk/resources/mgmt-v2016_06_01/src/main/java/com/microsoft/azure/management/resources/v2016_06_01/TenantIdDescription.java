@@ -10,13 +10,13 @@ package com.microsoft.azure.management.resources.v2016_06_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.resources.v2016_06_01.implementation.Manager;
+import com.microsoft.azure.management.resources.v2016_06_01.implementation.ResourcesManager;
 import com.microsoft.azure.management.resources.v2016_06_01.implementation.TenantIdDescriptionInner;
 
 /**
  * Type representing TenantIdDescription.
  */
-public interface TenantIdDescription extends HasInner<TenantIdDescriptionInner>, HasManager<Manager> {
+public interface TenantIdDescription extends HasInner<TenantIdDescriptionInner>, HasManager<ResourcesManager> {
     /**
      * @return the id value.
      */
