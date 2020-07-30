@@ -84,7 +84,7 @@ public class GsonPropertyNameTests {
         }
         Field f = Hotel.class.getDeclaredField("hotelName");
 
-        assertEquals(serializer.getSerializerMemberName(f), "hotelName");
+        assertEquals("", serializer.getSerializerMemberName(f));
     }
 
     @Test
