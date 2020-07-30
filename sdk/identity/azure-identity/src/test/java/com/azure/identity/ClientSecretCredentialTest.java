@@ -32,7 +32,7 @@ import static org.mockito.Mockito.when;
 @PowerMockIgnore({"com.sun.org.apache.xerces.*", "javax.xml.*", "org.xml.*"})
 public class ClientSecretCredentialTest {
 
-    private final String tenantId = "contoso.com";
+    private final String tenantId = "contoso";
     private final String clientId = UUID.randomUUID().toString();
 
     @Test

@@ -56,8 +56,8 @@ public class EnvironmentCredential implements TokenCredential {
         String certPath = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH);
         String username = configuration.get(Configuration.PROPERTY_AZURE_USERNAME);
         String password = configuration.get(Configuration.PROPERTY_AZURE_PASSWORD);
-        ValidationUtil.validateCredentialId(getClass().getSimpleName(), tenantId, "Tenant Id");
-        ValidationUtil.validateCredentialId(getClass().getSimpleName(), clientId, "Client Id");
+        ValidationUtil.validateTenantIdCharacterRange(getClass().getSimpleName(), tenantId);
+        ValidationUtil.validateClientIdCharacterRange(getClass().getSimpleName(), clientId);
         LoggingUtil.logAvailableEnvironmentVariables(logger, configuration);
         if (verifyNotNull(clientId)) {
             // 1 - Attempt ClientSecretCredential or ClientCertificateCredential

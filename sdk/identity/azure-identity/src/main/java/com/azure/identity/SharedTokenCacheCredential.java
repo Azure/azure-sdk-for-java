@@ -53,14 +53,14 @@ public class SharedTokenCacheCredential implements TokenCredential {
         }
         if (clientId == null) {
             this.clientId = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID);
-            ValidationUtil.validateCredentialId(getClass().getSimpleName(), this.clientId, "Client Id");
+            ValidationUtil.validateClientIdCharacterRange(getClass().getSimpleName(), this.clientId);
         } else {
             this.clientId = clientId;
         }
         if (tenantId == null) {
             this.tenantId = configuration.contains(Configuration.PROPERTY_AZURE_TENANT_ID)
                     ? configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID) : "common";
-            ValidationUtil.validateCredentialId(getClass().getSimpleName(), this.tenantId, "Tenant Id");
+            ValidationUtil.validateTenantIdCharacterRange(getClass().getSimpleName(), this.tenantId);
         } else {
             this.tenantId = tenantId;
         }

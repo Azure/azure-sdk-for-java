@@ -36,7 +36,7 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
      */
     @SuppressWarnings("unchecked")
     public T clientId(String clientId) {
-        ValidationUtil.validateCredentialId(getClass().getSimpleName(), clientId, "Client Id");
+        ValidationUtil.validateClientIdCharacterRange(getClass().getSimpleName(), clientId);
         this.clientId = clientId;
         return (T) this;
     }
@@ -49,7 +49,7 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
      */
     @SuppressWarnings("unchecked")
     public T tenantId(String tenantId) {
-        ValidationUtil.validateCredentialId(getClass().getSimpleName(), tenantId, "Tenant Id");
+        ValidationUtil.validateTenantIdCharacterRange(getClass().getSimpleName(), tenantId);
         this.tenantId = tenantId;
         return (T) this;
     }

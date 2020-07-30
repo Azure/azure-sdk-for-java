@@ -25,7 +25,7 @@ public class IntelliJCredentialBuilder extends CredentialBuilderBase<VisualStudi
      * @return An updated instance of this builder with the tenant id set as specified.
      */
     public IntelliJCredentialBuilder tenantId(String tenantId) {
-        ValidationUtil.validateCredentialId(getClass().getSimpleName(), tenantId, "Tenant Id");
+        ValidationUtil.validateTenantIdCharacterRange(getClass().getSimpleName(), tenantId);
         this.tenantId = tenantId;
         return this;
     }

@@ -91,7 +91,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
      * @return the DefaultAzureCredentialBuilder itself
      */
     public DefaultAzureCredentialBuilder managedIdentityClientId(String clientId) {
-        ValidationUtil.validateCredentialId(getClass().getSimpleName(), clientId, "Client Id");
+        ValidationUtil.validateClientIdCharacterRange(getClass().getSimpleName(), clientId);
         this.managedIdentityClientId = clientId;
         return this;
     }
