@@ -98,7 +98,7 @@ public class EncryptionTests extends TestSuiteBase {
 
         EncryptionTests.encryptor = new TestEncryptor(EncryptionTests.dekProvider);
         client = getClientBuilder().buildAsyncClient();
-        
+
         client.createDatabaseIfNotExists(databaseForTestId).block();
         databaseCore = client.getDatabase(databaseForTestId);
         databaseCore.createContainerIfNotExists(keyContainerId, "/id",
