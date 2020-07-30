@@ -11,6 +11,9 @@ import com.azure.data.schemaregistry.client.CachedSchemaRegistryAsyncClient;
 import reactor.core.publisher.Mono;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
 
 /**
  * Asynchronous registry-based serializer implementation.
@@ -27,10 +30,7 @@ public class SchemaRegistryAvroAsyncSerializer extends AbstractSchemaRegistrySer
      */
     SchemaRegistryAvroAsyncSerializer(CachedSchemaRegistryAsyncClient registryClient, AvroCodec codec,
                                       String schemaGroup, boolean autoRegisterSchemas) {
-        super(registryClient);
-
-        setSerializerCodec(codec);
-        addDeserializerCodec(codec);
+        super(registryClient, codec, Collections.singletonList(codec));
 
         // send configurations only
         this.autoRegisterSchemas = autoRegisterSchemas;
