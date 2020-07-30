@@ -4,6 +4,7 @@
 package com.azure.identity;
 
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.identity.implementation.AuthenticationRecord;
 import com.azure.identity.implementation.util.ValidationUtil;
 
 import java.util.HashMap;
@@ -14,7 +15,7 @@ import java.util.HashMap;
  * @see InteractiveBrowserCredential
  */
 public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBase<InteractiveBrowserCredentialBuilder> {
-    private int port;
+    private Integer port;
     private boolean automaticAuthentication = true;
 
     /**
@@ -30,27 +31,25 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
     }
 
     /**
-     * Sets whether to use an unprotected file specified by <code>cacheFileLocation()</code> instead of
-     * Gnome keyring on Linux. This is false by default.
+     * Allows to use an unprotected file specified by <code>cacheFileLocation()</code> instead of
+     * Gnome keyring on Linux. This is restricted by default.
      *
-     * @param allowUnencryptedCache whether to use an unprotected file for cache storage.
-     *
-     * @return An updated instance of this builder with the unprotected token cache setting set as specified.
+     * @return An updated instance of this builder.
      */
-    public InteractiveBrowserCredentialBuilder allowUnencryptedCache(boolean allowUnencryptedCache) {
-        this.identityClientOptions.allowUnencryptedCache(allowUnencryptedCache);
+    InteractiveBrowserCredentialBuilder allowUnencryptedCache() {
+        this.identityClientOptions.allowUnencryptedCache();
         return this;
     }
 
     /**
-     * Sets whether to enable using the shared token cache. This is disabled by default.
-     *
-     * @param enabled whether to enabled using the shared token cache.
+     * Enables the shared token cache which is disabled by default. If enabled, the credential will store tokens
+     * in a cache persisted to the machine, protected to the current user, which can be shared by other credentials
+     * and processes.
      *
      * @return An updated instance of this builder with if the shared token cache enabled specified.
      */
-    public InteractiveBrowserCredentialBuilder enablePersistentCache(boolean enabled) {
-        this.identityClientOptions.enablePersistentCache(enabled);
+    InteractiveBrowserCredentialBuilder enablePersistentCache() {
+        this.identityClientOptions.enablePersistentCache();
         return this;
     }
 
@@ -62,7 +61,7 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
      *
      * @return An updated instance of this builder with the configured authentication record.
      */
-    public InteractiveBrowserCredentialBuilder authenticationRecord(AuthenticationRecord authenticationRecord) {
+    InteractiveBrowserCredentialBuilder authenticationRecord(AuthenticationRecord authenticationRecord) {
         this.identityClientOptions.setAuthenticationRecord(authenticationRecord);
         return this;
     }
@@ -77,11 +76,10 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
      *
      * @return An updated instance of this builder with automatic authentication disabled.
      */
-    public InteractiveBrowserCredentialBuilder disableAutomaticAuthentication() {
+    InteractiveBrowserCredentialBuilder disableAutomaticAuthentication() {
         this.automaticAuthentication = false;
         return this;
     }
-
 
     /**
      * Creates a new {@link InteractiveBrowserCredential} with the current configurations.
@@ -94,6 +92,6 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
                 put("port", port);
             }});
         return new InteractiveBrowserCredential(clientId, tenantId, port, automaticAuthentication,
-                identityClientOptions);
+            identityClientOptions);
     }
 }

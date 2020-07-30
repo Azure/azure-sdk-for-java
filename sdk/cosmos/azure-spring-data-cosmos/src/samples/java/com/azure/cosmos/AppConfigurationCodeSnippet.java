@@ -8,40 +8,73 @@ package com.azure.cosmos;
  * LINE NUMBERS OF EXISTING CODE SAMPLES.
  */
 
-import com.azure.data.cosmos.ConnectionMode;
-import com.azure.data.cosmos.CosmosKeyCredential;
 import com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration;
-import com.azure.spring.data.cosmos.config.CosmosDBConfig;
+import com.azure.spring.data.cosmos.config.CosmosClientConfig;
+import com.azure.spring.data.cosmos.config.CosmosConfig;
+import com.azure.spring.data.cosmos.core.ResponseDiagnostics;
+import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
 import com.azure.spring.data.cosmos.repository.config.EnableCosmosRepositories;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.lang.Nullable;
 
 @Configuration
 @EnableCosmosRepositories
 public class AppConfigurationCodeSnippet extends AbstractCosmosConfiguration {
+
+    private static final Logger logger = LoggerFactory.getLogger(AppConfigurationCodeSnippet.class);
+
     // configuration code
-    @Value("${azure.cosmosdb.uri}")
+    @Value("${azure.cosmos.uri}")
     private String uri;
 
-    @Value("${azure.cosmosdb.key}")
+    @Value("${azure.cosmos.key}")
     private String key;
 
-    @Value("${azure.cosmosdb.secondaryKey}")
+    @Value("${azure.cosmos.secondaryKey}")
     private String secondaryKey;
 
-    @Value("${azure.cosmosdb.database}")
+    @Value("${azure.cosmos.database}")
     private String dbName;
 
-    @Value("${azure.cosmosdb.populateQueryMetrics}")
-    private boolean populateQueryMetrics;
+    @Value("${azure.cosmos.queryMetricsEnabled}")
+    private boolean queryMetricsEnabled;
 
-    private CosmosKeyCredential cosmosKeyCredential;
+    @Bean
+    public CosmosClientConfig getClientConfig() {
 
-    public CosmosDBConfig getConfig() {
-        this.cosmosKeyCredential = new CosmosKeyCredential(key);
-        CosmosDBConfig cosmosDbConfig = CosmosDBConfig.builder(uri, this.cosmosKeyCredential, dbName).build();
-        cosmosDbConfig.getConnectionPolicy().connectionMode(ConnectionMode.DIRECT);
-        cosmosDbConfig.getConnectionPolicy().maxPoolSize(1000);
-        return cosmosDbConfig;
+        DirectConnectionConfig directConnectionConfig = new DirectConnectionConfig();
+        GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
+        CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
+            .endpoint(uri)
+            .directMode(directConnectionConfig, gatewayConnectionConfig);
+        return CosmosClientConfig.builder()
+            .cosmosClientBuilder(cosmosClientBuilder)
+            .database(getDatabaseName())
+            .build();
+    }
+
+    @Override
+    public CosmosConfig cosmosConfig() {
+        return CosmosConfig.builder()
+            .enableQueryMetrics(queryMetricsEnabled)
+            .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
+            .build();
+    }
+
+    @Override
+    protected String getDatabaseName() {
+        return dbName;
+    }
+
+    private static class ResponseDiagnosticsProcessorImplementation implements ResponseDiagnosticsProcessor {
+
+        @Override
+        public void processResponseDiagnostics(@Nullable ResponseDiagnostics responseDiagnostics) {
+            logger.info("Response Diagnostics {}", responseDiagnostics);
+        }
     }
 }

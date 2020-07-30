@@ -5,6 +5,7 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.TestObject;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.CosmosClientBuilder;
@@ -363,6 +364,19 @@ public class DocumentCrudTest extends TestSuiteBase {
         this.validateItemSuccess(readObservable, validator);
     }
 
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void upsertDocument_ReplaceDocumentWithPartitionKey() throws Throwable {
+        TestObject item = TestObject.create();
+        CosmosItemResponse<TestObject> response = container.createItem(item,  new PartitionKey(item.getMypk()), new CosmosItemRequestOptions()).block();
+
+        item.setStringProp( UUID.randomUUID().toString());
+
+        CosmosItemResponse<TestObject> replaceResponse = container.upsertItem(item,  new CosmosItemRequestOptions()).block();
+
+        // Validate result
+        assertThat(replaceResponse.getItem()).isEqualTo(item);
+    }
+
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void typedItems() throws Throwable {
         String docId = "1234";
@@ -384,7 +398,7 @@ public class DocumentCrudTest extends TestSuiteBase {
         TestObject resultObject = itemResponseMono.block().getItem();
         compareTestObjs(newTestObject, resultObject);
 
-        Mono<CosmosItemResponse<TestObject>> readResponseMono = container.readItem(newTestObject.id,
+        Mono<CosmosItemResponse<TestObject>> readResponseMono = container.readItem(newTestObject.getId(),
                                                                                         new PartitionKey(newTestObject
                                                                                                              .getMypk()),
                                                                                         TestObject.class);
@@ -405,65 +419,6 @@ public class DocumentCrudTest extends TestSuiteBase {
         assertThat(newTestObject.getMypk()).isEqualTo(resultObject.getMypk());
         assertThat(newTestObject.getSgmts().equals(resultObject.getSgmts())).isTrue();
         assertThat(newTestObject.getStringProp()).isEqualTo(resultObject.getStringProp());
-    }
-
-    static class TestObject {
-        private String id;
-        private String mypk;
-        private List<List<Integer>> sgmts;
-        private String stringProp;
-
-        public TestObject() {
-        }
-
-        public TestObject(String id, String mypk, List<List<Integer>> sgmts, String stringProp) {
-            this.id = id;
-            this.mypk = mypk;
-            this.sgmts = sgmts;
-            this.stringProp = stringProp;
-        }
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getMypk() {
-            return mypk;
-        }
-
-        public void setMypk(String mypk) {
-            this.mypk = mypk;
-        }
-
-        public List<List<Integer>> getSgmts() {
-            return sgmts;
-        }
-
-        public void setSgmts(List<List<Integer>> sgmts) {
-            this.sgmts = sgmts;
-        }
-
-        /**
-         * Getter for property 'stringProp'.
-         *
-         * @return Value for property 'stringProp'.
-         */
-        public String getStringProp() {
-            return stringProp;
-        }
-
-        /**
-         * Setter for property 'stringProp'.
-         *
-         * @param stringProp Value to set for property 'stringProp'.
-         */
-        public void setStringProp(String stringProp) {
-            this.stringProp = stringProp;
-        }
     }
 
 

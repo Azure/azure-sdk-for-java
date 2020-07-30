@@ -3,10 +3,10 @@
 
 package com.azure.spring.data.cosmos.core;
 
-import com.azure.data.cosmos.CosmosContainerProperties;
-import com.azure.data.cosmos.PartitionKey;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
-import com.azure.spring.data.cosmos.core.query.DocumentQuery;
+import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,34 +14,16 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 /**
- * Interface for cosmosdb operations
+ * Interface for cosmosDB operations
  */
 public interface CosmosOperations {
 
     /**
-     * Use getContainerName() instead
-     * @param domainType class type
-     * @return container name
-     * @deprecated Use {@link #getContainerName(Class)} instead
-     */
-    @Deprecated
-    String getCollectionName(Class<?> domainType);
-
-    /**
-     * To get container name by domaintype
+     * To get container name by domainType
      * @param domainType class type
      * @return String
      */
     String getContainerName(Class<?> domainType);
-
-    /**
-     * Use createContainerIfNotExists() instead
-     * @param information cosmos entity information
-     * @return created container properties
-     * @deprecated Use {@link #createContainerIfNotExists(CosmosEntityInformation)} instead
-     */
-    @Deprecated
-    CosmosContainerProperties createCollectionIfNotExists(CosmosEntityInformation<?, ?> information);
 
     /**
      * Creates container if not exists
@@ -132,29 +114,26 @@ public interface CosmosOperations {
     /**
      * Upserts an item with partition key
      * @param object upsert object
-     * @param partitionKey the partition key
      * @param <T> type of upsert object
      */
-    <T> void upsert(T object, PartitionKey partitionKey);
+    <T> void upsert(T object);
 
     /**
      * Upserts an item into container with partition key
      * @param containerName the container name
      * @param object upsert object
-     * @param partitionKey the partition key
      * @param <T> type of upsert object
      */
-    <T> void upsert(String containerName, T object, PartitionKey partitionKey);
+    <T> void upsert(String containerName, T object);
 
     /**
      * Upserts an item and return item properties
      * @param containerName the container name
      * @param object upsert object
-     * @param partitionKey the partition key
      * @param <T> type of upsert object
      * @return upsert object entity
      */
-    <T> T upsertAndReturnEntity(String containerName, T object, PartitionKey partitionKey);
+    <T> T upsertAndReturnEntity(String containerName, T object);
 
     /**
      * Delete an item by id
@@ -169,17 +148,9 @@ public interface CosmosOperations {
      * Delete all items in a container
      *
      * @param containerName the container name
-     * @param domainType the partition key path
+     * @param domainType the domainType
      */
     void deleteAll(String containerName, Class<?> domainType);
-
-    /**
-     * Use deleteContainer() instead
-     * @param containerName container name
-     * @deprecated Use {@link #deleteContainer(String)} instead.
-     */
-    @Deprecated
-    void deleteCollection(String containerName);
 
     /**
      * Delete container
@@ -194,10 +165,10 @@ public interface CosmosOperations {
      * @param query the document query
      * @param domainType type class
      * @param containerName the container name
-     * @param <T> type class of domaintype
+     * @param <T> type class of domainType
      * @return deleted items in a List
      */
-    <T> List<T> delete(DocumentQuery query, Class<T> domainType, String containerName);
+    <T> List<T> delete(CosmosQuery query, Class<T> domainType, String containerName);
 
     /**
      * Find query
@@ -205,10 +176,10 @@ public interface CosmosOperations {
      * @param query the document query
      * @param domainType type class
      * @param containerName the container name
-     * @param <T> type class of domaintype
+     * @param <T> type class of domainType
      * @return found results in a List
      */
-    <T> List<T> find(DocumentQuery query, Class<T> domainType, String containerName);
+    <T> List<T> find(CosmosQuery query, Class<T> domainType, String containerName);
 
     /**
      * Find by ids
@@ -231,7 +202,7 @@ public interface CosmosOperations {
      * @param <T> type of domainType
      * @return Boolean
      */
-    <T> Boolean exists(DocumentQuery query, Class<T> domainType, String containerName);
+    <T> Boolean exists(CosmosQuery query, Class<T> domainType, String containerName);
 
     /**
      * Find all items in a given container with partition key
@@ -249,10 +220,10 @@ public interface CosmosOperations {
      * @param query the document query
      * @param domainType type class
      * @param containerName the container name
-     * @param <T> type class of domaintype
+     * @param <T> type class of domainType
      * @return Page
      */
-    <T> Page<T> paginationQuery(DocumentQuery query, Class<T> domainType, String containerName);
+    <T> Page<T> paginationQuery(CosmosQuery query, Class<T> domainType, String containerName);
 
     /**
      * Count
@@ -266,12 +237,11 @@ public interface CosmosOperations {
      * Count
      *
      * @param query the document query
-     * @param domainType the domain type
      * @param containerName the container name
-     * @param <T> type class of domaintype
+     * @param <T> type class of domainType
      * @return count result
      */
-    <T> long count(DocumentQuery query, Class<T> domainType, String containerName);
+    <T> long count(CosmosQuery query, String containerName);
 
     /**
      * To get converter

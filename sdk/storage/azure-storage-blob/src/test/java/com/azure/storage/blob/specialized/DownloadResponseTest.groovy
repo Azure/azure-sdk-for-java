@@ -10,10 +10,10 @@ import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.DownloadRetryOptions
 import reactor.core.Exceptions
 import reactor.core.scheduler.Schedulers
+import reactor.test.StepVerifier
 import spock.lang.Requires
 import spock.lang.Unroll
 
-import java.time.Duration
 import java.util.concurrent.TimeoutException
 
 class DownloadResponseTest extends APISpec {
@@ -163,11 +163,10 @@ class DownloadResponseTest extends APISpec {
 
         when:
         ReliableDownload response = flux.setOptions(options).getter(info).block()
-        response.getValue().subscribeOn(Schedulers.elastic()).then().block(Duration.ofSeconds((retryCount + 1) * 62))
 
         then:
-        def e = thrown(Exceptions.ReactiveException)
-        e.getCause() instanceof TimeoutException
+        StepVerifier.create(response.getValue().subscribeOn(Schedulers.elastic()).then())
+            .verifyErrorMatches({ Exceptions.unwrap(it) instanceof TimeoutException })
 
         where:
         // We test retry count elsewhere. Just using small numbers to speed up the test.

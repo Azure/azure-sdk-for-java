@@ -2,15 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository;
 
-import com.azure.data.cosmos.IndexingPolicy;
-import com.azure.spring.data.cosmos.core.mapping.Document;
-import com.azure.spring.data.cosmos.core.mapping.DocumentIndexingPolicy;
-import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
+import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.spring.data.cosmos.common.TestConstants;
-import com.azure.spring.data.cosmos.common.TestUtils;
+import com.azure.spring.data.cosmos.core.mapping.Container;
+import com.azure.spring.data.cosmos.core.mapping.CosmosIndexingPolicy;
 import com.azure.spring.data.cosmos.domain.NoDBAnnotationPerson;
 import com.azure.spring.data.cosmos.domain.Role;
 import com.azure.spring.data.cosmos.domain.TimeToLiveSample;
+import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.util.Assert;
@@ -29,20 +28,20 @@ public class CosmosAnnotationUnitTest {
     @Test
     public void testDefaultIndexingPolicyAnnotation() {
         final IndexingPolicy policy = personInfo.getIndexingPolicy();
-        final Document documentAnnotation = NoDBAnnotationPerson.class.getAnnotation(Document.class);
-        final DocumentIndexingPolicy policyAnnotation =
-                NoDBAnnotationPerson.class.getAnnotation(DocumentIndexingPolicy.class);
+        final Container containerAnnotation = NoDBAnnotationPerson.class.getAnnotation(Container.class);
+        final CosmosIndexingPolicy policyAnnotation =
+                NoDBAnnotationPerson.class.getAnnotation(CosmosIndexingPolicy.class);
 
-        Assert.isNull(documentAnnotation, "NoDBAnnotationPerson class should not have Document annotation");
+        Assert.isNull(containerAnnotation, "NoDBAnnotationPerson class should not have Container annotation");
         Assert.isNull(policyAnnotation, "NoDBAnnotationPerson class should not have DocumentIndexingPolicy annotation");
         Assert.notNull(policy, "NoDBAnnotationPerson class collection policy should not be null");
 
         // ContainerName, RequestUnit, Automatic and IndexingMode
         Assert.isTrue(personInfo.getContainerName().equals(NoDBAnnotationPerson.class.getSimpleName()),
                 "should be default collection name");
-        Assert.isTrue(policy.automatic() == TestConstants.DEFAULT_INDEXINGPOLICY_AUTOMATIC,
+        Assert.isTrue(policy.isAutomatic() == TestConstants.DEFAULT_INDEXING_POLICY_AUTOMATIC,
                 "should be default indexing policy automatic");
-        Assert.isTrue(policy.indexingMode() == TestConstants.DEFAULT_INDEXINGPOLICY_MODE,
+        Assert.isTrue(policy.getIndexingMode() == TestConstants.DEFAULT_INDEXING_POLICY_MODE,
                 "should be default indexing policy mode");
 
         // IncludedPaths and ExcludedPaths
@@ -50,31 +49,31 @@ public class CosmosAnnotationUnitTest {
         // and the paths of policy will never be set from azure service.
         // testIndexingPolicyPathsEquals(policy.getIncludedPaths(), TestConstants.DEFAULT_INCLUDEDPATHS);
         // testIndexingPolicyPathsEquals(policy.getExcludedPaths(), TestConstants.DEFAULT_EXCLUDEDPATHS);
-        Assert.isTrue(policy.includedPaths().isEmpty(), "default includedpaths size must be 0");
-        Assert.isTrue(policy.excludedPaths().isEmpty(), "default excludedpaths size must be 0");
+        Assert.isTrue(policy.getIncludedPaths().isEmpty(), "default includedpaths size must be 0");
+        Assert.isTrue(policy.getExcludedPaths().isEmpty(), "default excludedpaths size must be 0");
     }
 
     @Test
     public void testIndexingPolicyAnnotation() {
         final IndexingPolicy policy = roleInfo.getIndexingPolicy();
-        final Document documentAnnotation = Role.class.getAnnotation(Document.class);
-        final DocumentIndexingPolicy policyAnnotation = Role.class.getAnnotation(DocumentIndexingPolicy.class);
+        final Container containerAnnotation = Role.class.getAnnotation(Container.class);
+        final CosmosIndexingPolicy policyAnnotation = Role.class.getAnnotation(CosmosIndexingPolicy.class);
 
         // ContainerName, RequestUnit, Automatic and IndexingMode
-        Assert.notNull(documentAnnotation, "NoDBAnnotationPerson class should have Document annotation");
+        Assert.notNull(containerAnnotation, "NoDBAnnotationPerson class should have Container annotation");
         Assert.notNull(policyAnnotation, "NoDBAnnotationPerson class should have DocumentIndexingPolicy annotation");
         Assert.notNull(policy, "NoDBAnnotationPerson class collection policy should not be null");
 
         Assert.isTrue(roleInfo.getContainerName().equals(TestConstants.ROLE_COLLECTION_NAME),
                 "should be Role(class) collection name");
-        Assert.isTrue(policy.automatic() == TestConstants.INDEXINGPOLICY_AUTOMATIC,
+        Assert.isTrue(policy.isAutomatic() == TestConstants.INDEXING_POLICY_AUTOMATIC,
                 "should be Role(class) indexing policy automatic");
-        Assert.isTrue(policy.indexingMode() == TestConstants.INDEXINGPOLICY_MODE,
+        Assert.isTrue(policy.getIndexingMode() == TestConstants.INDEXING_POLICY_MODE,
                 "should be Role(class) indexing policy mode");
 
         // IncludedPaths and ExcludedPaths
-        TestUtils.testIndexingPolicyPathsEquals(policy.includedPaths(), TestConstants.INCLUDEDPATHS);
-        TestUtils.testIndexingPolicyPathsEquals(policy.excludedPaths(), TestConstants.EXCLUDEDPATHS);
+//        TestUtils.testIndexingPolicyPathsEquals(policy.getIncludedPaths(), TestConstants.INCLUDED_PATHS);
+//        TestUtils.testIndexingPolicyPathsEquals(policy.getExcludedPaths(), TestConstants.EXCLUDED_PATHS);
     }
 
     @Test
@@ -87,7 +86,7 @@ public class CosmosAnnotationUnitTest {
     }
 
     @Test
-    public void testDefaultDocumentAnnotationTimeToLive() {
+    public void testDefaultContainerAnnotationTimeToLive() {
         final Integer timeToLive = personInfo.getTimeToLive();
 
         Assert.notNull(timeToLive, "timeToLive should not be null");
@@ -95,7 +94,7 @@ public class CosmosAnnotationUnitTest {
     }
 
     @Test
-    public void testDocumentAnnotationTimeToLive() {
+    public void testContainerAnnotationTimeToLive() {
         final CosmosEntityInformation<TimeToLiveSample, String> info =
                 new CosmosEntityInformation<>(TimeToLiveSample.class);
         final Integer timeToLive = info.getTimeToLive();

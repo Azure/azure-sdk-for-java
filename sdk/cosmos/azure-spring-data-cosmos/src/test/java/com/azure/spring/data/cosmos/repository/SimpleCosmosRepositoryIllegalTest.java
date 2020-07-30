@@ -3,9 +3,9 @@
 package com.azure.spring.data.cosmos.repository;
 
 import com.azure.spring.data.cosmos.core.CosmosOperations;
+import com.azure.spring.data.cosmos.domain.Person;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import com.azure.spring.data.cosmos.repository.support.SimpleCosmosRepository;
-import com.azure.spring.data.cosmos.domain.Person;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

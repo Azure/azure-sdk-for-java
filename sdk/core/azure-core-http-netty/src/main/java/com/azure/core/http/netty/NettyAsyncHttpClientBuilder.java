@@ -5,17 +5,17 @@ package com.azure.core.http.netty;
 
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.implementation.ChallengeHolder;
-import com.azure.core.http.netty.implementation.HttpProxyHandler;
+import com.azure.core.http.netty.implementation.DeferredHttpProxyProvider;
 import com.azure.core.util.AuthorizationChallengeHandler;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.handler.proxy.ProxyHandler;
-import io.netty.handler.proxy.Socks4ProxyHandler;
-import io.netty.handler.proxy.Socks5ProxyHandler;
+import reactor.netty.NettyPipeline;
+import reactor.netty.channel.BootstrapHandlers;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.resources.ConnectionProvider;
+import reactor.netty.tcp.ProxyProvider;
 
 import java.nio.ByteBuffer;
 import java.util.Objects;
@@ -32,8 +32,6 @@ import java.util.concurrent.atomic.AtomicReference;
  * @see HttpClient
  */
 public class NettyAsyncHttpClientBuilder {
-    private static final String INVALID_PROXY_MESSAGE = "Unknown Proxy type '%s' in use. Not configuring Netty proxy.";
-
     private final ClientLogger logger = new ClientLogger(NettyAsyncHttpClientBuilder.class);
 
     private final HttpClient baseHttpClient;
@@ -94,14 +92,47 @@ public class NettyAsyncHttpClientBuilder {
             ? ProxyOptions.fromConfiguration(buildConfiguration)
             : proxyOptions;
 
-        String nonProxyHosts = (buildProxyOptions == null) ? null : buildProxyOptions.getNonProxyHosts();
-        AuthorizationChallengeHandler handler = (buildProxyOptions == null || buildProxyOptions.getUsername() == null)
-            ? null
-            : new AuthorizationChallengeHandler(buildProxyOptions.getUsername(), buildProxyOptions.getPassword());
-        AtomicReference<ChallengeHolder> proxyChallengeHolder = new AtomicReference<>();
+        /*
+         * Only configure the custom authorization challenge handler and challenge holder when using an authenticated
+         * HTTP proxy. All other proxying such as SOCKS4, SOCKS5, and anonymous HTTP will use Netty's built-in handlers.
+         */
+        boolean useCustomProxyHandler = shouldUseCustomProxyHandler(buildProxyOptions);
+        AuthorizationChallengeHandler handler = useCustomProxyHandler
+            ? new AuthorizationChallengeHandler(buildProxyOptions.getUsername(), buildProxyOptions.getPassword())
+            : null;
+        AtomicReference<ChallengeHolder> proxyChallengeHolder = useCustomProxyHandler ? new AtomicReference<>() : null;
 
-        return new NettyAsyncHttpClient(nettyHttpClient, eventLoopGroup,
-            () -> getProxyHandler(buildProxyOptions, handler, proxyChallengeHolder), nonProxyHosts, disableBufferCopy);
+        nettyHttpClient = nettyHttpClient.tcpConfiguration(tcpClient -> {
+            if (eventLoopGroup != null) {
+                tcpClient = tcpClient.runOn(eventLoopGroup);
+            }
+
+            // Proxy configurations are present, setup a proxy in Netty.
+            if (buildProxyOptions != null) {
+                // Determine if custom handling will be used, otherwise use Netty's built-in handlers.
+                if (handler != null) {
+                    /*
+                     * Configure the request Channel to be initialized with a ProxyHandler. The ProxyHandler is the
+                     * first operation in the pipeline as it needs to handle sending a CONNECT request to the proxy
+                     * before any request data is sent.
+                     */
+                    tcpClient = tcpClient.bootstrap(bootstrap -> BootstrapHandlers.updateConfiguration(bootstrap,
+                        NettyPipeline.ProxyHandler, new DeferredHttpProxyProvider(handler, proxyChallengeHolder,
+                            buildProxyOptions)));
+                } else {
+                    tcpClient = tcpClient.proxy(proxy ->
+                        proxy.type(toReactorNettyProxyType(buildProxyOptions.getType(), logger))
+                            .address(buildProxyOptions.getAddress())
+                            .username(buildProxyOptions.getUsername())
+                            .password(ignored -> buildProxyOptions.getPassword())
+                            .nonProxyHosts(buildProxyOptions.getNonProxyHosts()));
+                }
+            }
+
+            return tcpClient;
+        });
+
+        return new NettyAsyncHttpClient(nettyHttpClient, disableBufferCopy);
     }
 
     /**
@@ -153,9 +184,9 @@ public class NettyAsyncHttpClientBuilder {
     /**
      * Sets the NIO event loop group that will be used to run IO loops.
      *
-     * @deprecated deprecated in favor of {@link #eventLoopGroup(EventLoopGroup)}.
      * @param nioEventLoopGroup The {@link NioEventLoopGroup} that will run IO loops.
      * @return the updated NettyAsyncHttpClientBuilder object.
+     * @deprecated deprecated in favor of {@link #eventLoopGroup(EventLoopGroup)}.
      */
     @Deprecated
     public NettyAsyncHttpClientBuilder nioEventLoopGroup(NioEventLoopGroup nioEventLoopGroup) {
@@ -193,21 +224,21 @@ public class NettyAsyncHttpClientBuilder {
     }
 
     /**
-     * Disables deep copy of response {@link ByteBuffer} into a heap location that is managed by this client as
-     * opposed to the underlying netty library which may use direct buffer pool.
+     * Disables deep copy of response {@link ByteBuffer} into a heap location that is managed by this client as opposed
+     * to the underlying netty library which may use direct buffer pool.
      * <br>
      * <b>
-     * Caution: Disabling this is not recommended as it can lead to data corruption if the downstream consumers
-     * of the response do not handle the byte buffers before netty releases them.
+     * Caution: Disabling this is not recommended as it can lead to data corruption if the downstream consumers of the
+     * response do not handle the byte buffers before netty releases them.
      * </b>
      * If copy is disabled, underlying Netty layer can potentially reclaim byte array backed by the {@code ByteBuffer}
-     * upon the return of {@code onNext()}. So, users should ensure they process the {@link ByteBuffer} immediately
-     * and then return.
+     * upon the return of {@code onNext()}. So, users should ensure they process the {@link ByteBuffer} immediately and
+     * then return.
      *
-     *  {@codesnippet com.azure.core.http.netty.disabled-buffer-copy}
+     * {@codesnippet com.azure.core.http.netty.disabled-buffer-copy}
      *
-     * @param disableBufferCopy If set to {@code true}, the client built from this builder will not deep-copy
-     * response {@link ByteBuffer ByteBuffers}.
+     * @param disableBufferCopy If set to {@code true}, the client built from this builder will not deep-copy response
+     * {@link ByteBuffer ByteBuffers}.
      * @return The updated {@link NettyAsyncHttpClientBuilder} object.
      */
     public NettyAsyncHttpClientBuilder disableBufferCopy(boolean disableBufferCopy) {
@@ -215,27 +246,21 @@ public class NettyAsyncHttpClientBuilder {
         return this;
     }
 
-    /*
-     * Creates a proxy handler based on the passed ProxyOptions.
-     */
-    private ProxyHandler getProxyHandler(ProxyOptions proxyOptions, AuthorizationChallengeHandler challengeHandler,
-        AtomicReference<ChallengeHolder> proxyChallengeHolder) {
-        if (proxyOptions == null) {
-            return null;
-        }
+    private static boolean shouldUseCustomProxyHandler(ProxyOptions options) {
+        return options != null && options.getUsername() != null && options.getType() == ProxyOptions.Type.HTTP;
+    }
 
-        switch (proxyOptions.getType()) {
+    private static ProxyProvider.Proxy toReactorNettyProxyType(ProxyOptions.Type azureProxyType, ClientLogger logger) {
+        switch (azureProxyType) {
             case HTTP:
-                return new HttpProxyHandler(proxyOptions.getAddress(), challengeHandler,
-                    proxyChallengeHolder);
+                return ProxyProvider.Proxy.HTTP;
             case SOCKS4:
-                return new Socks4ProxyHandler(proxyOptions.getAddress(), proxyOptions.getUsername());
+                return ProxyProvider.Proxy.SOCKS4;
             case SOCKS5:
-                return new Socks5ProxyHandler(proxyOptions.getAddress(), proxyOptions.getUsername(),
-                    proxyOptions.getPassword());
+                return ProxyProvider.Proxy.SOCKS5;
             default:
-                throw logger.logExceptionAsError(new IllegalStateException(
-                    String.format(INVALID_PROXY_MESSAGE, proxyOptions.getType())));
+                throw logger.logExceptionAsError(
+                    new IllegalArgumentException("Unknown 'ProxyOptions.Type' enum value"));
         }
     }
 }

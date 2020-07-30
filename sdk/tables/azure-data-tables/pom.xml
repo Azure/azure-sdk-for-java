@@ -45,7 +45,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-common</artifactId>
-      <version>12.8.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;dependency} -->
+      <version>12.7.0</version> <!-- {x-version-update;com.azure:azure-storage-common;dependency} -->
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -68,7 +68,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.3.5.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.3.8.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -85,24 +85,4 @@ Licensed under the MIT License.
     </dependency>
   </dependencies>
 
-  <build>
-    <plugins>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
-        <configuration>
-          <rules>
-            <bannedDependencies>
-              <includes>
-                <include>com.azure:*</include>
-              </includes>
-            </bannedDependencies>
-          </rules>
-        </configuration>
-      </plugin>
-
-    </plugins>
-  </build>
 </project>

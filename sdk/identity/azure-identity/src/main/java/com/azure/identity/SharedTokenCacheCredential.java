@@ -8,9 +8,11 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.implementation.AuthenticationRecord;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
+import com.azure.identity.implementation.MsalAuthenticationAccount;
 import com.azure.identity.implementation.MsalToken;
 import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
@@ -26,7 +28,8 @@ public class SharedTokenCacheCredential implements TokenCredential {
     private final String username;
     private final String clientId;
     private final String tenantId;
-    private final AtomicReference<MsalToken> cachedToken;
+    private final AtomicReference<MsalAuthenticationAccount> cachedToken;
+
 
     private final IdentityClient identityClient;
     private final ClientLogger logger = new ClientLogger(SharedTokenCacheCredential.class);
@@ -65,6 +68,9 @@ public class SharedTokenCacheCredential implements TokenCredential {
                 .identityClientOptions(identityClientOptions)
                 .build();
         this.cachedToken = new AtomicReference<>();
+        if (identityClientOptions.getAuthenticationRecord() != null) {
+            cachedToken.set(new MsalAuthenticationAccount(identityClientOptions.getAuthenticationRecord()));
+        }
         LoggingUtil.logAvailableEnvironmentVariables(logger, configuration);
     }
 
@@ -75,18 +81,23 @@ public class SharedTokenCacheCredential implements TokenCredential {
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         return Mono.defer(() -> {
             if (cachedToken.get() != null) {
-                return identityClient.authenticateWithPublicClientCache(request, cachedToken.get().getAccount())
+                return identityClient.authenticateWithPublicClientCache(request, cachedToken.get())
                     .onErrorResume(t -> Mono.empty());
             } else {
                 return Mono.empty();
             }
         }).switchIfEmpty(
             Mono.defer(() -> identityClient.authenticateWithSharedTokenCache(request, username)))
-            .map(msalToken -> {
-                cachedToken.set(msalToken);
-                return (AccessToken) msalToken;
-            })
+            .map(this::updateCache)
             .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
             .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
+    }
+
+    private AccessToken updateCache(MsalToken msalToken) {
+        cachedToken.set(
+            new MsalAuthenticationAccount(
+                new AuthenticationRecord(msalToken.getAuthenticationResult(),
+                    identityClient.getTenantId(), identityClient.getClientId())));
+        return msalToken;
     }
 }

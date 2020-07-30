@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.core.query;
 
-import org.springframework.lang.NonNull;
 import org.springframework.data.repository.query.parser.Part;
+import org.springframework.lang.NonNull;
 
 import java.beans.ConstructorProperties;
 import java.util.Collections;
