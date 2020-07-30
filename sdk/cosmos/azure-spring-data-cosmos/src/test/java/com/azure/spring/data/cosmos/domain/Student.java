@@ -3,11 +3,11 @@
 
 package com.azure.spring.data.cosmos.domain;
 
-import com.azure.spring.data.cosmos.core.mapping.DocumentIndexingPolicy;
+import com.azure.spring.data.cosmos.core.mapping.CosmosIndexingPolicy;
 
 import java.util.Objects;
 
-@DocumentIndexingPolicy()
+@CosmosIndexingPolicy()
 public class Student {
     private String id;
     private String firstName;

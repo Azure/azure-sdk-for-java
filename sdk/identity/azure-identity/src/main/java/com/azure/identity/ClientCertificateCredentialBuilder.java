@@ -46,7 +46,7 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
      *
      * @return An updated instance of this builder.
      */
-    public ClientCertificateCredentialBuilder allowUnencryptedCache() {
+    ClientCertificateCredentialBuilder allowUnencryptedCache() {
         this.identityClientOptions.allowUnencryptedCache();
         return this;
     }
@@ -58,7 +58,7 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
      *
      * @return An updated instance of this builder.
      */
-    public ClientCertificateCredentialBuilder enablePersistentCache() {
+    ClientCertificateCredentialBuilder enablePersistentCache() {
         this.identityClientOptions.enablePersistentCache();
         return this;
     }

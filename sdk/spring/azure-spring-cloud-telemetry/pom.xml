@@ -69,7 +69,7 @@
             <bannedDependencies>
               <includes>
                 <include>com.microsoft.azure:azure:[1.34.0]</include> <!-- {x-include-update;spring_com.microsoft.azure:azure;external_dependency} -->
-                <include>commons-io:commons-io:[2.5]</include> <!-- {x-include-update;commons-io:commons-io;current} -->
+                <include>commons-io:commons-io:[2.5]</include> <!-- {x-include-update;commons-io:commons-io;external_dependency} -->
                 <include>org.springframework:spring-web:[5.2.6.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
                 <include>org.springframework:spring-context:[5.2.6.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-context;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter-aop:[2.3.0.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-aop;external_dependency} -->

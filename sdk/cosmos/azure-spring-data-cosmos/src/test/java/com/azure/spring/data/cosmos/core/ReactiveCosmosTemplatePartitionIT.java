@@ -12,7 +12,7 @@ import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
 import com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext;
 import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
-import com.azure.spring.data.cosmos.core.query.DocumentQuery;
+import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.domain.PartitionPerson;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
@@ -99,7 +99,7 @@ public class ReactiveCosmosTemplatePartitionIT {
     public void testFindWithPartition() {
         final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, TestConstants.PROPERTY_LAST_NAME,
             Arrays.asList(TestConstants.LAST_NAME), Part.IgnoreCaseType.NEVER);
-        final DocumentQuery query = new DocumentQuery(criteria);
+        final CosmosQuery query = new CosmosQuery(criteria);
         final Flux<PartitionPerson> partitionPersonFlux = cosmosTemplate.find(query,
             PartitionPerson.class,
             PartitionPerson.class.getSimpleName());
@@ -113,7 +113,7 @@ public class ReactiveCosmosTemplatePartitionIT {
     public void testFindIgnoreCaseWithPartition() {
         final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, TestConstants.PROPERTY_LAST_NAME,
             Arrays.asList(TestConstants.LAST_NAME.toUpperCase()), Part.IgnoreCaseType.ALWAYS);
-        final DocumentQuery query = new DocumentQuery(criteria);
+        final CosmosQuery query = new CosmosQuery(criteria);
         final Flux<PartitionPerson> partitionPersonFlux = cosmosTemplate.find(query,
             PartitionPerson.class,
             PartitionPerson.class.getSimpleName());
@@ -204,7 +204,7 @@ public class ReactiveCosmosTemplatePartitionIT {
         cosmosTemplate.insert(TEST_PERSON_2, new PartitionKey(TEST_PERSON_2.getLastName())).block();
         final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
             Arrays.asList(TEST_PERSON_2.getFirstName()), Part.IgnoreCaseType.NEVER);
-        final DocumentQuery query = new DocumentQuery(criteria);
+        final CosmosQuery query = new CosmosQuery(criteria);
         StepVerifier.create(cosmosTemplate.count(query, containerName))
                     .expectNext((long) 1).verifyComplete();
     }
@@ -214,7 +214,7 @@ public class ReactiveCosmosTemplatePartitionIT {
         cosmosTemplate.insert(TEST_PERSON_2, new PartitionKey(TEST_PERSON_2.getLastName())).block();
         final Criteria criteriaIgnoreCase = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
             Arrays.asList(TEST_PERSON_2.getFirstName().toUpperCase()), Part.IgnoreCaseType.ALWAYS);
-        final DocumentQuery queryIgnoreCase = new DocumentQuery(criteriaIgnoreCase);
+        final CosmosQuery queryIgnoreCase = new CosmosQuery(criteriaIgnoreCase);
         StepVerifier.create(cosmosTemplate.count(queryIgnoreCase, containerName))
             .expectNext((long) 1).verifyComplete();
     }

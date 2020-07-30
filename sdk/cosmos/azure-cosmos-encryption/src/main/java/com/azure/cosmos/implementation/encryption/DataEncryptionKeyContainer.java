@@ -3,9 +3,9 @@
 
 package com.azure.cosmos.implementation.encryption;
 
+import com.azure.cosmos.encryption.EncryptionKeyWrapMetadata;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
-import com.azure.cosmos.models.CosmosItemResponse;
 import reactor.core.publisher.Mono;
 
 

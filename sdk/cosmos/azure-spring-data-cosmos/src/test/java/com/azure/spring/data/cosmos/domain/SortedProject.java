@@ -2,15 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.domain;
 
-import com.azure.spring.data.cosmos.core.mapping.Document;
-import com.azure.spring.data.cosmos.core.mapping.DocumentIndexingPolicy;
+import com.azure.spring.data.cosmos.core.mapping.Container;
+import com.azure.spring.data.cosmos.core.mapping.CosmosIndexingPolicy;
 import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
 import org.springframework.data.annotation.Id;
 
 import java.util.Objects;
 
-@Document()
-@DocumentIndexingPolicy()
+@Container()
+@CosmosIndexingPolicy()
 public class SortedProject {
 
     @Id
