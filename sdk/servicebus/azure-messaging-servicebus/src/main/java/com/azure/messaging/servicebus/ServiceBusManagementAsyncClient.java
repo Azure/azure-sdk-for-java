@@ -1093,9 +1093,7 @@ public final class ServiceBusManagementAsyncClient {
             return monoError(logger, new NullPointerException("'context' cannot be null."));
         }
 
-        final QueueDescription description = new QueueDescription(createQueueOptions.getName());
-        EntityHelper.setQueueProperties(description, createQueueOptions);
-
+        final QueueDescription description = EntityHelper.createQueue(createQueueOptions);
         final CreateQueueBodyContent content = new CreateQueueBodyContent()
             .setType(CONTENT_TYPE)
             .setQueueDescription(description);

@@ -15,6 +15,7 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.DEFAULT_LOCK_DURATION;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.MAX_DURATION;
@@ -274,21 +275,8 @@ public final class QueueDescription {
             }
 
             @Override
-            public void setQueueProperties(QueueDescription queue, CreateQueueOptions options) {
-                queue.setAutoDeleteOnIdle(options.getAutoDeleteOnIdle());
-                queue.setDefaultMessageTimeToLive(options.getDefaultMessageTimeToLive());
-                queue.setDeadLetteringOnMessageExpiration(options.deadLetteringOnMessageExpiration());
-                queue.setDuplicateDetectionHistoryTimeWindow(options.getDuplicateDetectionHistoryTimeWindow());
-                queue.setEnableBatchedOperations(options.enableBatchedOperations());
-                queue.setEnablePartitioning(options.enablePartitioning());
-                queue.setForwardTo(options.getForwardTo());
-                queue.setForwardDeadLetteredMessagesTo(options.getForwardDeadLetteredMessagesTo());
-                queue.setLockDuration(options.getLockDuration());
-                queue.setMaxDeliveryCount(options.getMaxDeliveryCount());
-                queue.setMaxSizeInMegabytes(options.getMaxSizeInMegabytes());
-                queue.setRequiresDuplicateDetection(options.requiresDuplicateDetection());
-                queue.setRequiresSession(options.requiresSession());
-                queue.setUserMetadata(options.getUserMetadata());
+            public QueueDescription createQueue(CreateQueueOptions options) {
+                return new QueueDescription(options);
             }
         });
     }
@@ -298,6 +286,31 @@ public final class QueueDescription {
      */
     @JsonCreator
     QueueDescription() {
+    }
+
+    /**
+     * Creates a queue with the given options.
+     *
+     * @param options options to create queue with.
+     */
+    QueueDescription(CreateQueueOptions options) {
+        Objects.requireNonNull(options, "'options' cannot be null.");
+
+        this.queueName = options.getName();
+        this.autoDeleteOnIdle = options.getAutoDeleteOnIdle();
+        this.defaultMessageTimeToLive = options.getDefaultMessageTimeToLive();
+        this.deadLetteringOnMessageExpiration = options.deadLetteringOnMessageExpiration();
+        this.duplicateDetectionHistoryTimeWindow = options.getDuplicateDetectionHistoryTimeWindow();
+        this.enableBatchedOperations = options.enableBatchedOperations();
+        this.enablePartitioning = options.enablePartitioning();
+        this.forwardTo = options.getForwardTo();
+        this.forwardDeadLetteredMessagesTo = options.getForwardDeadLetteredMessagesTo();
+        this.lockDuration = options.getLockDuration();
+        this.maxDeliveryCount = options.getMaxDeliveryCount();
+        this.maxSizeInMegabytes = options.getMaxSizeInMegabytes();
+        this.requiresDuplicateDetection = options.requiresDuplicateDetection();
+        this.requiresSession = options.requiresSession();
+        this.userMetadata = options.getUserMetadata();
     }
 
     /**

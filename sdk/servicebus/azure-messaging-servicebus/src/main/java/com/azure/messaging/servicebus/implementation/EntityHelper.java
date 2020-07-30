@@ -58,8 +58,13 @@ public final class EntityHelper {
         queueAccessor.setName(queueDescription, name);
     }
 
-    public static void setQueueProperties(QueueDescription queueDescription, CreateQueueOptions options) {
+    public static QueueDescription createQueue(CreateQueueOptions options) {
+        if (queueAccessor == null) {
+            throw new ClientLogger(EntityHelper.class).logExceptionAsError(
+                new IllegalStateException("'queueAccessor' should not be null."));
+        }
 
+        return queueAccessor.createQueue(options);
     }
 
     /**
@@ -154,10 +159,10 @@ public final class EntityHelper {
         /**
          * Sets properties on the QueueDescription based on the CreateQueueOptions.
          *
-         * @param queueDescription QueueDescription to copy properties to.
          * @param options The create queue options to set.
+         * @return A new QueueDescription with the properties set.
          */
-        void setQueueProperties(QueueDescription queueDescription, CreateQueueOptions options);
+        QueueDescription createQueue(CreateQueueOptions options);
     }
 
     /**
