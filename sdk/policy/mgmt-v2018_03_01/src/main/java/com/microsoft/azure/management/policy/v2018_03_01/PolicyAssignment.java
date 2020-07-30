@@ -100,6 +100,8 @@ public interface PolicyAssignment extends HasInner<PolicyAssignmentInner>, Index
         interface WithScope {
            /**
             * Specifies scope.
+            * @param scope The scope of the policy assignment. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format: '/subscriptions/{subscriptionId}'), resource group (format: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'
+            * @return the next definition stage
             */
             WithCreate withScope(String scope);
         }
@@ -110,6 +112,8 @@ public interface PolicyAssignment extends HasInner<PolicyAssignmentInner>, Index
         interface WithDescription {
             /**
              * Specifies description.
+             * @param description This message will be part of response in case of policy violation
+             * @return the next definition stage
              */
             WithCreate withDescription(String description);
         }
@@ -120,6 +124,8 @@ public interface PolicyAssignment extends HasInner<PolicyAssignmentInner>, Index
         interface WithDisplayName {
             /**
              * Specifies displayName.
+             * @param displayName The display name of the policy assignment
+             * @return the next definition stage
              */
             WithCreate withDisplayName(String displayName);
         }
@@ -130,6 +136,8 @@ public interface PolicyAssignment extends HasInner<PolicyAssignmentInner>, Index
         interface WithMetadata {
             /**
              * Specifies metadata.
+             * @param metadata The policy assignment metadata
+             * @return the next definition stage
              */
             WithCreate withMetadata(Object metadata);
         }
@@ -140,6 +148,8 @@ public interface PolicyAssignment extends HasInner<PolicyAssignmentInner>, Index
         interface WithNotScopes {
             /**
              * Specifies notScopes.
+             * @param notScopes The policy's excluded scopes
+             * @return the next definition stage
              */
             WithCreate withNotScopes(List<String> notScopes);
         }
@@ -150,6 +160,8 @@ public interface PolicyAssignment extends HasInner<PolicyAssignmentInner>, Index
         interface WithParameters {
             /**
              * Specifies parameters.
+             * @param parameters Required if a parameter is used in policy rule
+             * @return the next definition stage
              */
             WithCreate withParameters(Object parameters);
         }
@@ -160,6 +172,8 @@ public interface PolicyAssignment extends HasInner<PolicyAssignmentInner>, Index
         interface WithPolicyDefinitionId {
             /**
              * Specifies policyDefinitionId.
+             * @param policyDefinitionId The ID of the policy definition or policy set definition being assigned
+             * @return the next definition stage
              */
             WithCreate withPolicyDefinitionId(String policyDefinitionId);
         }
@@ -170,6 +184,8 @@ public interface PolicyAssignment extends HasInner<PolicyAssignmentInner>, Index
         interface WithScopeProperty {
             /**
              * Specifies scopeProperty.
+             * @param scopeProperty The scope for the policy assignment
+             * @return the next definition stage
              */
             WithCreate withScopeProperty(String scopeProperty);
         }
@@ -180,6 +196,8 @@ public interface PolicyAssignment extends HasInner<PolicyAssignmentInner>, Index
         interface WithSku {
             /**
              * Specifies sku.
+             * @param sku The policy sku. This property is optional, obsolete, and will be ignored
+             * @return the next definition stage
              */
             WithCreate withSku(PolicySku sku);
         }
@@ -208,6 +226,8 @@ public interface PolicyAssignment extends HasInner<PolicyAssignmentInner>, Index
         interface WithDescription {
             /**
              * Specifies description.
+             * @param description This message will be part of response in case of policy violation
+             * @return the next update stage
              */
             Update withDescription(String description);
         }
@@ -218,6 +238,8 @@ public interface PolicyAssignment extends HasInner<PolicyAssignmentInner>, Index
         interface WithDisplayName {
             /**
              * Specifies displayName.
+             * @param displayName The display name of the policy assignment
+             * @return the next update stage
              */
             Update withDisplayName(String displayName);
         }
@@ -228,6 +250,8 @@ public interface PolicyAssignment extends HasInner<PolicyAssignmentInner>, Index
         interface WithMetadata {
             /**
              * Specifies metadata.
+             * @param metadata The policy assignment metadata
+             * @return the next update stage
              */
             Update withMetadata(Object metadata);
         }
@@ -238,6 +262,8 @@ public interface PolicyAssignment extends HasInner<PolicyAssignmentInner>, Index
         interface WithNotScopes {
             /**
              * Specifies notScopes.
+             * @param notScopes The policy's excluded scopes
+             * @return the next update stage
              */
             Update withNotScopes(List<String> notScopes);
         }
@@ -248,6 +274,8 @@ public interface PolicyAssignment extends HasInner<PolicyAssignmentInner>, Index
         interface WithParameters {
             /**
              * Specifies parameters.
+             * @param parameters Required if a parameter is used in policy rule
+             * @return the next update stage
              */
             Update withParameters(Object parameters);
         }
@@ -258,6 +286,8 @@ public interface PolicyAssignment extends HasInner<PolicyAssignmentInner>, Index
         interface WithPolicyDefinitionId {
             /**
              * Specifies policyDefinitionId.
+             * @param policyDefinitionId The ID of the policy definition or policy set definition being assigned
+             * @return the next update stage
              */
             Update withPolicyDefinitionId(String policyDefinitionId);
         }
@@ -268,6 +298,8 @@ public interface PolicyAssignment extends HasInner<PolicyAssignmentInner>, Index
         interface WithScopeProperty {
             /**
              * Specifies scopeProperty.
+             * @param scopeProperty The scope for the policy assignment
+             * @return the next update stage
              */
             Update withScopeProperty(String scopeProperty);
         }
@@ -278,6 +310,8 @@ public interface PolicyAssignment extends HasInner<PolicyAssignmentInner>, Index
         interface WithSku {
             /**
              * Specifies sku.
+             * @param sku The policy sku. This property is optional, obsolete, and will be ignored
+             * @return the next update stage
              */
             Update withSku(PolicySku sku);
         }
