@@ -48,6 +48,8 @@ public class IntelliJCredentialBuilder extends CredentialBuilderBase<VisualStudi
                 new IllegalArgumentException("The KeePass database path is either empty or not configured."
                                                  + " Please configure it on the builder."));
         }
+        ValidationUtil.validateFilePath(getClass().getSimpleName(), databasePath,
+            "IntelliJ Kee Pass Database Path");
         this.identityClientOptions.setIntelliJKeePassDatabasePath(databasePath);
         return this;
     }

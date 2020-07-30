@@ -6,12 +6,12 @@ package com.azure.identity.implementation.util;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -39,11 +39,14 @@ public final class ValidationUtil {
 
     public static void validateAuthHost(String className, String authHost) {
         ClientLogger logger = new ClientLogger(className);
+        HashMap<String, Object> parameter = new HashMap<>(1);
+        parameter.put("Authority Host", authHost);
+        validate(className, parameter);
         try {
             URI authUri = new URI(authHost);
         } catch (URISyntaxException e) {
             throw logger.logExceptionAsError(
-                new IllegalArgumentException("Must provide a valid URI for authority host."));
+                new IllegalArgumentException("Must provide a valid URI for authority host.", e));
         }
         if (!authHost.startsWith("https")) {
             throw logger.logExceptionAsError(
@@ -53,7 +56,10 @@ public final class ValidationUtil {
 
     public static void validateCredentialId(String className, String id, String idName) {
         ClientLogger logger = new ClientLogger(className);
-        if(!identifierPattern.matcher(id).matches()) {
+        HashMap<String, Object> parameter = new HashMap<>(1);
+        parameter.put(idName, id);
+        validate(className, parameter);
+        if (!identifierPattern.matcher(id).matches()) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException(
                     String.format("%s must have characters in the range of [0-9], [a-z], '-'", idName)));
@@ -63,6 +69,9 @@ public final class ValidationUtil {
     public static void validateFilePath(String className, String filePath, String pathName) {
         ClientLogger logger = new ClientLogger(className);
         File file = new File(filePath);
+        HashMap<String, Object> parameter = new HashMap<>(1);
+        parameter.put(pathName, filePath);
+        validate(className, parameter);
         if (!file.isAbsolute()) {
             Path absolutePath = Paths.get(file.getAbsolutePath());
             Path normalizedPath = absolutePath.normalize();
