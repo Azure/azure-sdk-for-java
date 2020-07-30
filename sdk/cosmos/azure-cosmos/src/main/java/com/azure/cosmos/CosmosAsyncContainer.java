@@ -587,7 +587,7 @@ public class CosmosAsyncContainer {
      * Deletes an item.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single Cosmos item response with the deleted item.
+     * The {@link Mono} upon successful completion will contain a single Cosmos item response for the deleted item.
      *
      * @param itemId the item id.
      * @param partitionKey the partition key.
@@ -601,7 +601,7 @@ public class CosmosAsyncContainer {
      * Deletes the item.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single Cosmos item response with the deleted item.
+     * The {@link Mono} upon successful completion will contain a single Cosmos item response for the deleted item.
      *
      * @param itemId id of the item.
      * @param partitionKey partitionKey of the item.

@@ -56,7 +56,6 @@ public class EncryptionCosmosAsyncContainer {
             encryptionItemRequestOptions);
 
         return response
-            .subscribeOn(Schedulers.elastic())
             .publishOn(Schedulers.elastic())
             .map(rsp -> {
                     EncryptionModelBridgeInternal.setByteArrayContent(
@@ -86,7 +85,6 @@ public class EncryptionCosmosAsyncContainer {
             encryptionItemRequestOptions);
 
         return response
-            .subscribeOn(Schedulers.elastic())
             .publishOn(Schedulers.elastic())
             .map(rsp -> {
                     EncryptionModelBridgeInternal.setByteArrayContent(
@@ -113,7 +111,6 @@ public class EncryptionCosmosAsyncContainer {
             encryptionItemRequestOptions);
 
         return response
-            .subscribeOn(Schedulers.elastic())
             .publishOn(Schedulers.elastic())
             .map(rsp -> {
                     EncryptionModelBridgeInternal.setByteArrayContent(
@@ -271,7 +268,6 @@ public class EncryptionCosmosAsyncContainer {
 
         return responseMessageAsync
             .publishOn(Schedulers.elastic())
-            .subscribeOn(Schedulers.elastic())
             .map(
                 responseMessage -> {
                     Consumer<DecryptionResult> decryptionErroHandler = null;
@@ -401,3 +397,4 @@ public class EncryptionCosmosAsyncContainer {
         }
     }
 }
+

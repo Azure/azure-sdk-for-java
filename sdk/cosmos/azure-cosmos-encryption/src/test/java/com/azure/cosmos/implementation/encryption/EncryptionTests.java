@@ -313,7 +313,7 @@ public class EncryptionTests extends TestSuiteBase {
 
     @Test(groups = { "encryption" }, timeOut = TIMEOUT)
     public void EncryptionChangeFeedDecryptionSuccessful() {
-        
+
     }
 
     @Test(groups = { "encryption" }, timeOut = TIMEOUT)
@@ -324,9 +324,7 @@ public class EncryptionTests extends TestSuiteBase {
     public void EncryptionDecryptQueryResultMultipleDocs() {
         TestDoc testDoc1 =  EncryptionTests.CreateItemAsync(EncryptionTests.encryptionContainer, EncryptionTests.dekId, TestDoc.PathsToEncrypt).getItem();
         TestDoc testDoc2 =  EncryptionTests.CreateItemAsync(EncryptionTests.encryptionContainer, EncryptionTests.dekId, TestDoc.PathsToEncrypt).getItem();
-
-        EncryptionTests.ValidateQueryResultsMultipleDocumentsAsync(EncryptionTests.encryptionContainer, testDoc1, testDoc2, "SELECT * FROM r");
-
+        
         String query = String.format("SELECT * FROM c WHERE c.PK in ('%s', '%s')", testDoc1.pk, testDoc2.pk);
         EncryptionTests.ValidateQueryResultsMultipleDocumentsAsync(EncryptionTests.encryptionContainer, testDoc1, testDoc2, query);
 
@@ -431,6 +429,14 @@ public class EncryptionTests extends TestSuiteBase {
 
     @Test(groups = { "encryption" }, timeOut = TIMEOUT)
     public void EncryptionResourceTokenAuthRestricted() {
+    }
+
+    @Test(groups = { "encryption" }, timeOut = TIMEOUT)
+    public void EncryptionResourceTokenAuthAllowed() {
+    }
+
+    @Test(groups = { "encryption" }, timeOut = TIMEOUT)
+    public void EncryptionRestrictedProperties() {
         try {
             EncryptionTests.CreateItemAsync(EncryptionTests.encryptionContainer, EncryptionTests.dekId,
                 ImmutableList.of("/id"));
@@ -447,14 +453,6 @@ public class EncryptionTests extends TestSuiteBase {
         } catch (CosmosException ex) {
             assertThat(ex.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.BADREQUEST);
         }
-    }
-
-    @Test(groups = { "encryption" }, timeOut = TIMEOUT)
-    public void EncryptionResourceTokenAuthAllowed() {
-    }
-
-    @Test(groups = { "encryption" }, timeOut = TIMEOUT)
-    public void EncryptionRestrictedProperties() {
     }
 
     @Test(groups = { "encryption" }, timeOut = TIMEOUT)
