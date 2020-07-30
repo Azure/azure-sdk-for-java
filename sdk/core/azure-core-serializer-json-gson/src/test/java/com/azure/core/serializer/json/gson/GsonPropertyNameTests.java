@@ -114,11 +114,13 @@ public class GsonPropertyNameTests {
     public void compareSerializedNameWithJsonSerializer() {
         GsonJsonSerializer newSerializer = new GsonJsonSerializerBuilder().serializer(
             new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()).build();
-        Map<String, String> valueMapping = new HashMap<>() { {
-            put("hotelId", "id");
-            put("", "hotelName");
-            put("price", "price");
-        } };
+        Map<String, String> valueMapping = new HashMap<>() {
+            {
+                put("hotelId", "id");
+                put("", "hotelName");
+                put("price", "price");
+            }
+        };
         GsonJsonObject node = (GsonJsonObject) newSerializer.toTree(
             new NameTestingHotel()
                 .setHotelName("name")
