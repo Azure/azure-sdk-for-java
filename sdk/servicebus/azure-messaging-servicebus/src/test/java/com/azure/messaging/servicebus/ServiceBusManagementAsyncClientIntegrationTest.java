@@ -11,8 +11,8 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
+import com.azure.messaging.servicebus.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.models.NamespaceType;
-import com.azure.messaging.servicebus.models.QueueProperties;
 import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
 import com.azure.messaging.servicebus.models.SubscriptionDescription;
 import com.azure.messaging.servicebus.models.SubscriptionRuntimeInfo;
@@ -66,7 +66,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
         // Arrange
         final ServiceBusManagementAsyncClient client = createClient(httpClient);
         final String queueName = testResourceNamer.randomName("test", 10);
-        final QueueProperties expected = new QueueProperties(queueName)
+        final CreateQueueOptions expected = new CreateQueueOptions(queueName)
             .setMaxSizeInMegabytes(500)
             .setMaxDeliveryCount(7)
             .setLockDuration(Duration.ofSeconds(45))
@@ -106,7 +106,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
         final String queueName = interceptorManager.isPlaybackMode()
             ? "queue-5"
             : getEntityName(TestUtils.getQueueBaseName(), 5);
-        final QueueProperties queueProperties = new QueueProperties(queueName);
+        final CreateQueueOptions queueProperties = new CreateQueueOptions(queueName);
         final ServiceBusManagementAsyncClient client = createClient(httpClient);
 
         // Act & Assert

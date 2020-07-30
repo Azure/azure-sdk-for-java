@@ -15,7 +15,6 @@ import java.util.Objects;
  */
 @Fluent
 public class CreateQueueOptions {
-    private final ClientLogger logger = new ClientLogger(CreateQueueOptions.class);
     private final String name;
 
     private Duration autoDeleteOnIdle;
@@ -70,6 +69,7 @@ public class CreateQueueOptions {
         Objects.requireNonNull(queue.getName(), "Queue name cannot be null");
 
         if (queue.getName().isEmpty() || queue.getName().isBlank()) {
+            ClientLogger logger = new ClientLogger(CreateQueueOptions.class);
             throw logger.logThrowableAsError(new IllegalArgumentException("Queue name cannot be empty or blank."));
         }
         this.name = queue.getName();

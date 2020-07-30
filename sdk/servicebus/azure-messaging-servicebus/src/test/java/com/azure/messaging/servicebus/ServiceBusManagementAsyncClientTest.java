@@ -17,6 +17,7 @@ import com.azure.messaging.servicebus.implementation.models.QueueDescriptionEntr
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionEntryContent;
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionFeed;
 import com.azure.messaging.servicebus.implementation.models.ResponseLink;
+import com.azure.messaging.servicebus.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.models.MessageCountDetails;
 import com.azure.messaging.servicebus.models.QueueProperties;
 import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
@@ -44,7 +45,6 @@ import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -129,7 +129,7 @@ class ServiceBusManagementAsyncClientTest {
     void createQueue() throws IOException {
         // Arrange
         final String updatedName = "some-new-name";
-        final QueueProperties description = new QueueProperties(queueName);
+        final CreateQueueOptions description = new CreateQueueOptions(queueName);
         final QueueProperties expectedDescription = new QueueProperties(updatedName);
         final QueueDescriptionEntry expected = new QueueDescriptionEntry()
             .setTitle(getResponseTitle(updatedName))
@@ -471,15 +471,35 @@ class ServiceBusManagementAsyncClientTest {
         assertEquals(expected.getRequest(), actual.getRequest());
     }
 
-    private static boolean createBodyContentEquals(Object requestBody, QueueProperties expected) {
+    private static boolean createBodyContentEquals(Object requestBody, CreateQueueOptions expected) {
         if (!(requestBody instanceof CreateQueueBody)) {
             return false;
         }
 
         final CreateQueueBody body = (CreateQueueBody) requestBody;
         final CreateQueueBodyContent content = body.getContent();
-        return content != null
-            && Objects.equals(expected, content.getQueueProperties())
+        final QueueProperties properties = content.getQueueProperties();
+
+        if (properties == null) {
+            return false;
+        }
+
+        return equals(expected.getName(), properties.getName())
+            && equals(expected.getAutoDeleteOnIdle(), properties.getAutoDeleteOnIdle())
+            && equals(expected.getDefaultMessageTimeToLive(), properties.getDefaultMessageTimeToLive())
+            && equals(expected.deadLetteringOnMessageExpiration(), properties.deadLetteringOnMessageExpiration())
+            && equals(expected.getDuplicateDetectionHistoryTimeWindow(),
+                properties.getDuplicateDetectionHistoryTimeWindow())
+            && equals(expected.enableBatchedOperations(), properties.enableBatchedOperations())
+            && equals(expected.enablePartitioning(), properties.enablePartitioning())
+            && equals(expected.getForwardTo(), properties.getForwardTo())
+            && equals(expected.getForwardDeadLetteredMessagesTo(), properties.getForwardDeadLetteredMessagesTo())
+            && equals(expected.getLockDuration(), properties.getLockDuration())
+            && equals(expected.getMaxDeliveryCount(), properties.getMaxDeliveryCount())
+            && equals(expected.getMaxSizeInMegabytes(), properties.getMaxSizeInMegabytes())
+            && equals(expected.requiresDuplicateDetection(), properties.requiresDuplicateDetection())
+            && equals(expected.requiresSession(), properties.requiresSession())
+            && equals(expected.getUserMetadata(), properties.getUserMetadata())
             && "application/xml".equals(content.getType());
     }
 
@@ -488,5 +508,13 @@ class ServiceBusManagementAsyncClientTest {
         map.put("", entityName);
         map.put("type", "text");
         return map;
+    }
+
+    private static boolean equals(Object expected, Object actual) {
+        if (expected == null) {
+            return actual == null;
+        }
+
+        return expected.equals(actual);
     }
 }
