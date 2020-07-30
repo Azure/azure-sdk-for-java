@@ -325,7 +325,7 @@ public final class QueueDescription {
     /**
      * Gets the name of the queue.
      *
-     * @return The name of the queue;
+     * @return The name of the queue.
      */
     public String getName() {
         return queueName;
