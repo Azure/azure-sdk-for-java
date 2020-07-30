@@ -41,7 +41,7 @@ public final class ValidationUtil {
     public static void validateAuthHost(String className, String authHost) {
         ClientLogger logger = new ClientLogger(className);
         try {
-            URI authUri = new URI(authHost);
+            new URI(authHost);
         } catch (URISyntaxException e) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Must provide a valid URI for authority host.", e));
