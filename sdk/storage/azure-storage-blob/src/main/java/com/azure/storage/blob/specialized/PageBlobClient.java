@@ -609,7 +609,8 @@ public final class PageBlobClient extends BlobClientBase {
     public Response<CopyStatusType> copyIncrementalWithResponse(String source, String snapshot,
         RequestConditions modifiedRequestConditions, Duration timeout, Context context) {
         return copyIncrementalWithResponse(new PageBlobCopyIncrementalOptions(source, snapshot)
-            .setSourceRequestConditions(ModelHelper.populateBlobSourceRequestConditions(modifiedRequestConditions)),
+            .setDestinationRequestConditions(
+                ModelHelper.populateBlobDestinationRequestConditions(modifiedRequestConditions)),
             timeout, context);
     }
 

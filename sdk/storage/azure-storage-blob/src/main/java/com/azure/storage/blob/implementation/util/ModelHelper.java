@@ -9,6 +9,7 @@ import com.azure.storage.blob.implementation.models.BlobDownloadHeaders;
 import com.azure.storage.blob.implementation.models.BlobItemInternal;
 import com.azure.storage.blob.implementation.models.BlobItemPropertiesInternal;
 import com.azure.storage.blob.implementation.models.BlobTag;
+import com.azure.storage.blob.models.BlobDestinationRequestConditions;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobItemProperties;
 import com.azure.storage.blob.models.BlobLeaseRequestConditions;
@@ -319,6 +320,26 @@ public class ModelHelper {
         }
 
         return new BlobSourceRequestConditions()
+            .setIfMatch(requestConditions.getIfMatch())
+            .setIfNoneMatch(requestConditions.getIfNoneMatch())
+            .setIfModifiedSince(requestConditions.getIfModifiedSince())
+            .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince())
+            .setTagsConditions(null);
+    }
+
+    /**
+     * Transforms {@link RequestConditions} into a {@link BlobDestinationRequestConditions}.
+     *
+     * @param requestConditions {@link RequestConditions}
+     * @return {@link BlobDestinationRequestConditions}
+     */
+    public static BlobDestinationRequestConditions populateBlobDestinationRequestConditions(
+        RequestConditions requestConditions) {
+        if (requestConditions == null) {
+            return null;
+        }
+
+        return new BlobDestinationRequestConditions()
             .setIfMatch(requestConditions.getIfMatch())
             .setIfNoneMatch(requestConditions.getIfNoneMatch())
             .setIfModifiedSince(requestConditions.getIfModifiedSince())

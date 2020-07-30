@@ -416,7 +416,7 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
             .setIfNoneMatch("snapshotMatch");
 
         client.copyIncrementalWithResponse(new PageBlobCopyIncrementalOptions(url, snapshot)
-            .setSourceRequestConditions(sourceRequestConditions))
+            .setDestinationRequestConditions(sourceRequestConditions))
             .subscribe(response -> {
                 CopyStatusType statusType = response.getValue();
 

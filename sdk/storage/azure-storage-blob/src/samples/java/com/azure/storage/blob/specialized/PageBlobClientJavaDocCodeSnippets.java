@@ -439,7 +439,7 @@ public class PageBlobClientJavaDocCodeSnippets {
 
         CopyStatusType statusType = client
             .copyIncrementalWithResponse(new PageBlobCopyIncrementalOptions(url, snapshot)
-                .setSourceRequestConditions(sourceRequestConditions), timeout, context).getValue();
+                .setDestinationRequestConditions(sourceRequestConditions), timeout, context).getValue();
 
         if (CopyStatusType.SUCCESS == statusType) {
             System.out.println("Page blob copied successfully");

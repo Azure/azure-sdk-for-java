@@ -4,7 +4,7 @@
 package com.azure.storage.blob.options;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.storage.blob.models.BlobSourceRequestConditions;
+import com.azure.storage.blob.models.BlobDestinationRequestConditions;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
 /**
@@ -15,7 +15,7 @@ public class PageBlobCopyIncrementalOptions {
 
     private final String source;
     private final String snapshot;
-    private BlobSourceRequestConditions sourceRequestConditions;
+    private BlobDestinationRequestConditions destinationRequestConditions;
 
     /**
      * @param source The source page blob.
@@ -43,19 +43,19 @@ public class PageBlobCopyIncrementalOptions {
     }
 
     /**
-     * @return {@link BlobSourceRequestConditions} for the source.
+     * @return {@link BlobDestinationRequestConditions} for the destination.
      */
-    public BlobSourceRequestConditions getSourceRequestConditions() {
-        return sourceRequestConditions;
+    public BlobDestinationRequestConditions getDestinationRequestConditions() {
+        return destinationRequestConditions;
     }
 
     /**
-     * @param sourceRequestConditions {@link BlobSourceRequestConditions} for the source.
+     * @param destinationRequestConditions {@link BlobDestinationRequestConditions} for the destination.
      * @return The updated options.
      */
-    public PageBlobCopyIncrementalOptions setSourceRequestConditions(
-        BlobSourceRequestConditions sourceRequestConditions) {
-        this.sourceRequestConditions = sourceRequestConditions;
+    public PageBlobCopyIncrementalOptions setDestinationRequestConditions(
+        BlobDestinationRequestConditions destinationRequestConditions) {
+        this.destinationRequestConditions = destinationRequestConditions;
         return this;
     }
 }
