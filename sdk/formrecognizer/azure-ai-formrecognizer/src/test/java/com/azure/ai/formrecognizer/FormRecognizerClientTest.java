@@ -977,7 +977,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         encodedBlankSpaceSourceUrlRunner(sourceUrl -> {
             HttpResponseException errorResponseException = assertThrows(HttpResponseException.class,
-                () -> client.beginRecognizeCustomFormsFromUrl(sourceUrl, NON_EXIST_MODEL_ID, new RecognizeOptions()
+                () -> client.beginRecognizeCustomFormsFromUrl(NON_EXIST_MODEL_ID, sourceUrl, new RecognizeOptions()
                     .setPollInterval(durationTestMode), Context.NONE));
             assertEquals(ENCODED_EMPTY_SPACE,
                 new String(errorResponseException.getResponse().getRequest().getBody().blockFirst().array(),
@@ -995,7 +995,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         urlRunner(fileUrl -> {
             HttpResponseException errorResponseException = assertThrows(HttpResponseException.class,
-                () -> client.beginRecognizeCustomFormsFromUrl(fileUrl, NON_EXIST_MODEL_ID,
+                () -> client.beginRecognizeCustomFormsFromUrl(NON_EXIST_MODEL_ID, fileUrl,
                     new RecognizeOptions().setPollInterval(durationTestMode), Context.NONE));
             ErrorInformation errorInformation = (ErrorInformation) errorResponseException.getValue();
             assertEquals(EXPECTED_INVALID_MODEL_ID_ERROR_CODE, errorInformation.getCode());
@@ -1019,8 +1019,8 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                 trainingPoller.waitForCompletion();
 
                 FormRecognizerException errorResponseException = assertThrows(FormRecognizerException.class,
-                    () -> client.beginRecognizeCustomForms(data, dataLength,
-                        trainingPoller.getFinalResult().getModelId(), new RecognizeOptions()
+                    () -> client.beginRecognizeCustomForms(trainingPoller.getFinalResult().getModelId(), data,
+                        dataLength, new RecognizeOptions()
                             .setContentType(FormContentType.APPLICATION_PDF).setPollInterval(durationTestMode),
                         Context.NONE).getFinalResult());
                 assertEquals(EXPECTED_UNABLE_TO_READ_FILE, errorResponseException.getMessage());

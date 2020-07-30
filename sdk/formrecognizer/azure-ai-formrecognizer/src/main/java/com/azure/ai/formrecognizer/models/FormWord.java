@@ -18,13 +18,12 @@ public final class FormWord extends FormElement {
 
     /**
      * Creates raw OCR item.
-     *
-     * @param text The text content of ExtractedField.
+     *  @param text The text content of ExtractedField.
      * @param boundingBox The BoundingBox of ExtractedField.
      * @param pageNumber The 1 based page number.
      * @param confidence the confidence.
      */
-    public FormWord(String text, BoundingBox boundingBox, Integer pageNumber, final float confidence) {
+    public FormWord(String text, BoundingBox boundingBox, int pageNumber, final float confidence) {
         super(text, boundingBox, pageNumber);
         this.confidence = confidence;
     }

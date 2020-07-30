@@ -214,9 +214,16 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             DataTableCell expectedTableCell = expectedTableCells.get(i);
             FormTableCell actualTableCell = actualTableCellList.get(i);
             assertEquals(expectedTableCell.getColumnIndex(), actualTableCell.getColumnIndex());
-            assertEquals(expectedTableCell.getColumnSpan(), actualTableCell.getColumnSpan());
+            if (expectedTableCell.getColumnSpan() != null) {
+                assertEquals(expectedTableCell.getColumnSpan(), actualTableCell.getColumnSpan());
+            }
+            assertNotNull(actualTableCell.getColumnSpan());
+
             assertEquals(expectedTableCell.getRowIndex(), actualTableCell.getRowIndex());
-            assertEquals(expectedTableCell.getRowSpan(), actualTableCell.getRowSpan());
+            if (expectedTableCell.getRowSpan() != null) {
+                assertEquals(expectedTableCell.getRowSpan(), actualTableCell.getRowSpan());
+            }
+            assertNotNull(actualTableCell.getRowSpan());
             validateBoundingBoxData(expectedTableCell.getBoundingBox(), actualTableCell.getBoundingBox());
             if (includeFieldElements) {
                 validateReferenceElementsData(expectedTableCell.getElements(), actualTableCell.getFieldElements(),

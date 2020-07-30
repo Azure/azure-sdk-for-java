@@ -592,14 +592,14 @@ public final class FormRecognizerAsyncClient {
                 final UUID resultUuid = UUID.fromString(operationResultPollResponse.getValue().getResultId());
                 return pollingFunction.apply(resultUuid)
                     .flatMap(modelSimpleResponse -> processAnalyzeModelResponse(modelSimpleResponse,
-                        operationResultPollResponse));
+                        operationResultPollResponse))
+                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
             }
         };
     }
 
-<<<<<<< HEAD
     /*
      * Poller's FETCHING operation.
      */

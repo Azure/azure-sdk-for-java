@@ -1097,8 +1097,8 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                 trainingPoller.waitForCompletion();
 
                 FormRecognizerException errorResponseException = assertThrows(FormRecognizerException.class,
-                    () -> client.beginRecognizeCustomForms(toFluxByteBuffer(data), dataLength,
-                        trainingPoller.getFinalResult().getModelId(), new RecognizeOptions()
+                    () -> client.beginRecognizeCustomForms(trainingPoller.getFinalResult().getModelId(),
+                        toFluxByteBuffer(data), dataLength, new RecognizeOptions()
                             .setContentType(FormContentType.APPLICATION_PDF).setPollInterval(durationTestMode))
                         .getSyncPoller().getFinalResult());
                 assertEquals(EXPECTED_UNABLE_TO_READ_FILE, errorResponseException.getMessage());
