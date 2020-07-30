@@ -227,7 +227,7 @@ public final class FieldBuilder {
                 .setHidden(searchableFieldPropertyAnnotation.isHidden());
             String analyzer = searchableFieldPropertyAnnotation.analyzerName();
             String searchAnalyzer = searchableFieldPropertyAnnotation.searchAnalyzerName();
-            String indexAnalyzer = searchableFieldPropertyAnnotation.indexAnalyzer();
+            String indexAnalyzer = searchableFieldPropertyAnnotation.indexAnalyzerName();
             if (!analyzer.isEmpty() && (!searchAnalyzer.isEmpty() || !indexAnalyzer.isEmpty())) {
                 throw logger.logExceptionAsError(new RuntimeException(
                     "Please specify either analyzer or both searchAnalyzer and indexAnalyzer."));
@@ -240,9 +240,9 @@ public final class FieldBuilder {
                 searchField.setAnalyzerName(LexicalAnalyzerName.fromString(
                     searchableFieldPropertyAnnotation.searchAnalyzerName()));
             }
-            if (!searchableFieldPropertyAnnotation.indexAnalyzer().isEmpty()) {
+            if (!searchableFieldPropertyAnnotation.indexAnalyzerName().isEmpty()) {
                 searchField.setAnalyzerName(LexicalAnalyzerName.fromString(
-                    searchableFieldPropertyAnnotation.indexAnalyzer()));
+                    searchableFieldPropertyAnnotation.indexAnalyzerName()));
             }
             if (searchableFieldPropertyAnnotation.synonymMapNames().length != 0) {
                 List<String> synonymMaps = Arrays.stream(searchableFieldPropertyAnnotation.synonymMapNames())
