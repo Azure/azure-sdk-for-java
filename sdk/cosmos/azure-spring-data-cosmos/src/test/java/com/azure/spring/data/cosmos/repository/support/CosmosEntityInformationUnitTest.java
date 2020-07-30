@@ -3,7 +3,7 @@
 package com.azure.spring.data.cosmos.repository.support;
 
 import com.azure.spring.data.cosmos.common.TestConstants;
-import com.azure.spring.data.cosmos.core.mapping.Document;
+import com.azure.spring.data.cosmos.core.mapping.Container;
 import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
 import com.azure.spring.data.cosmos.domain.Address;
 import com.azure.spring.data.cosmos.domain.LongIdDomain;
@@ -126,13 +126,13 @@ public class CosmosEntityInformationUnitTest {
         assertThat(isVersioned).isFalse();
     }
 
-    @Document(container = "testContainer")
+    @Container(containerName = "testContainer")
     private static class Volunteer {
         String id;
         String name;
     }
 
-    @Document
+    @Container
     private static class VolunteerWithCustomPartitionKey {
         private String id;
         @PartitionKey("vol_name")
@@ -155,7 +155,7 @@ public class CosmosEntityInformationUnitTest {
         }
     }
 
-    @Document
+    @Container
     private static class VolunteerWithPartitionKey {
         private String id;
         @PartitionKey
@@ -178,7 +178,7 @@ public class CosmosEntityInformationUnitTest {
         }
     }
 
-    @Document(container = "testContainer")
+    @Container(containerName = "testContainer")
     private static class VersionedVolunteer {
         private String id;
         private String name;
@@ -247,7 +247,7 @@ public class CosmosEntityInformationUnitTest {
         }
     }
 
-    @Document
+    @Container
     private static class WrongVersionType {
         private String id;
         private String name;
@@ -314,7 +314,7 @@ public class CosmosEntityInformationUnitTest {
         }
     }
 
-    @Document
+    @Container
     private static class VersionOnWrongField {
         private String id;
         @Version
@@ -397,7 +397,7 @@ public class CosmosEntityInformationUnitTest {
         assertThat(entityInformation.getIdField().getType().equals(long.class)).isTrue();
     }
 
-    @Document
+    @Container
     class BasicLongIdDomain {
 
         @Id

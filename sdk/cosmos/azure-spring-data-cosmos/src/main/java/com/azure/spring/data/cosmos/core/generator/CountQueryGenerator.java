@@ -3,7 +3,7 @@
 package com.azure.spring.data.cosmos.core.generator;
 
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.spring.data.cosmos.core.query.DocumentQuery;
+import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 
 /**
  * Generate count query
@@ -11,7 +11,7 @@ import com.azure.spring.data.cosmos.core.query.DocumentQuery;
 public class CountQueryGenerator extends AbstractQueryGenerator implements QuerySpecGenerator {
 
     @Override
-    public SqlQuerySpec generateCosmos(DocumentQuery query) {
+    public SqlQuerySpec generateCosmos(CosmosQuery query) {
         return super.generateCosmosQuery(query, "SELECT VALUE COUNT(1) FROM r");
     }
 }

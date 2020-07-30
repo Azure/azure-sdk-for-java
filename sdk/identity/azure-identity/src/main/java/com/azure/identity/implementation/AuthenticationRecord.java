@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.identity;
+package com.azure.identity.implementation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,6 +15,7 @@ import java.io.OutputStream;
 /**
  * Represents the account information relating to an authentication request
  */
+//TODO: Move this to Public API when exposing User Authentication API
 public class AuthenticationRecord {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
@@ -36,7 +37,8 @@ public class AuthenticationRecord {
 
     AuthenticationRecord() { }
 
-    AuthenticationRecord(IAuthenticationResult authenticationResult, String tenantId, String clientId) {
+    //TODO: Make this package private once moved to Public API
+    public AuthenticationRecord(IAuthenticationResult authenticationResult, String tenantId, String clientId) {
         authority = authenticationResult.account().environment();
         homeAccountId = authenticationResult.account().homeAccountId();
         username = authenticationResult.account().username();

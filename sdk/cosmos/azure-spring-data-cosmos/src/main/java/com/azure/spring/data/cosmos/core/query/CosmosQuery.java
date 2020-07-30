@@ -11,9 +11,9 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Class for document query
+ * Class for cosmos query
  */
-public class DocumentQuery {
+public class CosmosQuery {
 
     private final Criteria criteria;
 
@@ -26,7 +26,7 @@ public class DocumentQuery {
      *
      * @param criteria object
      */
-    public DocumentQuery(@NonNull Criteria criteria) {
+    public CosmosQuery(@NonNull Criteria criteria) {
         this.criteria = criteria;
     }
 
@@ -63,7 +63,7 @@ public class DocumentQuery {
      * @param sort Sort
      * @return DocumentQuery object
      */
-    public DocumentQuery with(@NonNull Sort sort) {
+    public CosmosQuery with(@NonNull Sort sort) {
         if (sort.isSorted()) {
             this.sort = sort.and(this.sort);
         }
@@ -77,7 +77,7 @@ public class DocumentQuery {
      * @param pageable Sort
      * @return DocumentQuery object
      */
-    public DocumentQuery with(@NonNull Pageable pageable) {
+    public CosmosQuery with(@NonNull Pageable pageable) {
         Assert.notNull(pageable, "pageable should not be null");
 
         this.pageable = pageable;

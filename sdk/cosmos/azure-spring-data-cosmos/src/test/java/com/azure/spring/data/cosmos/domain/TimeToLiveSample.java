@@ -3,9 +3,9 @@
 package com.azure.spring.data.cosmos.domain;
 
 import com.azure.spring.data.cosmos.common.TestConstants;
-import com.azure.spring.data.cosmos.core.mapping.Document;
+import com.azure.spring.data.cosmos.core.mapping.Container;
 
-@Document(timeToLive = TestConstants.TIME_TO_LIVE)
+@Container(timeToLive = TestConstants.TIME_TO_LIVE)
 public class TimeToLiveSample {
     private String id;
 
