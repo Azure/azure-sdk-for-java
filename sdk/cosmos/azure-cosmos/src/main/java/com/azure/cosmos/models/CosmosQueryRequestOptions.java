@@ -9,7 +9,7 @@ import java.util.Map;
  * Specifies the options associated with query methods (enumeration operations)
  * in the Azure Cosmos DB database service.
  */
-public final class CosmosQueryRequestOptions {
+public class CosmosQueryRequestOptions {
     private String sessionToken;
     private String partitionKeyRangeId;
     private Boolean scanInQueryEnabled;

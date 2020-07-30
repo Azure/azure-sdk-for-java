@@ -7,7 +7,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.experimental.serializer.JsonSerializer;
-import com.azure.core.experimental.serializer.TypeReference;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -65,6 +64,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static com.azure.core.experimental.serializer.TypeReference.createInstance;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.search.documents.implementation.util.Utility.initializeSerializerAdapter;
@@ -538,7 +538,7 @@ public final class SearchAsyncClient {
                     ByteArrayOutputStream sourceStream = serializer.serialize(new ByteArrayOutputStream(),
                         res.getValue());
                     T doc = serializer.deserialize(new ByteArrayInputStream(sourceStream.toByteArray()),
-                        new TypeReference<T>(modelClass) { });
+                        createInstance(modelClass));
                     return new SimpleResponse<>(res, doc);
                 }).map(Function.identity());
         } catch (RuntimeException ex) {

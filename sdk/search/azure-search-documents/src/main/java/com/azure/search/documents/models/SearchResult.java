@@ -5,7 +5,6 @@ package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.experimental.serializer.JsonSerializer;
-import com.azure.core.experimental.serializer.TypeReference;
 import com.azure.search.documents.SearchDocument;
 import com.azure.search.documents.implementation.util.Utility;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -16,6 +15,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.List;
 import java.util.Map;
+
+import static com.azure.core.experimental.serializer.TypeReference.createInstance;
 
 /**
  * Contains a document found by a search query, plus associated metadata.
@@ -74,7 +75,7 @@ public final class SearchResult {
         ByteArrayOutputStream sourceStream = jsonSerializer.serialize(new ByteArrayOutputStream(),
             additionalProperties);
         return jsonSerializer.deserialize(new ByteArrayInputStream(sourceStream.toByteArray()),
-            new TypeReference<T>(modelClass) { });
+            createInstance(modelClass));
     }
 
     /**

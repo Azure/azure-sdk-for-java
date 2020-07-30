@@ -5,7 +5,6 @@ package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.experimental.serializer.JsonSerializer;
-import com.azure.core.experimental.serializer.TypeReference;
 import com.azure.search.documents.SearchDocument;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -14,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
+import static com.azure.core.experimental.serializer.TypeReference.createInstance;
 import static com.azure.search.documents.implementation.util.Utility.creatDefaultJsonSerializerInstance;
 
 /**
@@ -65,7 +65,7 @@ public final class SuggestResult {
         ByteArrayOutputStream sourceStream = jsonSerializer.serialize(new ByteArrayOutputStream(),
             additionalProperties);
         return jsonSerializer.deserialize(new ByteArrayInputStream(sourceStream.toByteArray()),
-            new TypeReference<T>(modelClass) { });
+            createInstance(modelClass));
     }
 
     /**
