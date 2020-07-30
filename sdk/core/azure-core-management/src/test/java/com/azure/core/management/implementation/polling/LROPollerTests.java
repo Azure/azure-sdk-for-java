@@ -99,7 +99,8 @@ public class LROPollerTests {
                 FooWithProvisioningState.class,
                 FooWithProvisioningState.class,
                 POLLING_DURATION,
-                newLroInitFunction(client));
+                newLroInitFunction(client),
+                Context.NONE);
 
             int[] onNextCallCount = new int[1];
             lroFlux.doOnNext(response -> {
@@ -203,7 +204,8 @@ public class LROPollerTests {
                 FooWithProvisioningState.class,
                 FooWithProvisioningState.class,
                 POLLING_DURATION,
-                newLroInitFunction(client));
+                newLroInitFunction(client),
+                Context.NONE);
 
             int[] onNextCallCount = new int[1];
             AsyncPollResponse<PollResult<FooWithProvisioningState>, FooWithProvisioningState> pollResponse = lroFlux.doOnNext(response -> {
@@ -304,7 +306,8 @@ public class LROPollerTests {
                 FooWithProvisioningState.class,
                 FooWithProvisioningState.class,
                 POLLING_DURATION,
-                newLroInitFunction(client));
+                newLroInitFunction(client),
+                Context.NONE);
 
             int[] onNextCallCount = new int[1];
             AsyncPollResponse<PollResult<FooWithProvisioningState>, FooWithProvisioningState> pollResponse = lroFlux.doOnNext(response -> {
@@ -378,7 +381,8 @@ public class LROPollerTests {
                 Resource.class,
                 Resource.class,
                 POLLING_DURATION,
-                newLroInitFunction(client));
+                newLroInitFunction(client),
+                Context.NONE);
 
             StepVerifier.create(lroFlux)
                 .expectSubscription()
@@ -455,7 +459,8 @@ public class LROPollerTests {
                 FooWithProvisioningState.class,
                 FooWithProvisioningState.class,
                 POLLING_DURATION,
-                newLroInitFunction(client));
+                newLroInitFunction(client),
+                Context.NONE);
 
             Mono<FooWithProvisioningState> resultMonoWithTimeout = lroFlux.last()
                 .flatMap(AsyncPollResponse::getFinalResult)
@@ -501,7 +506,8 @@ public class LROPollerTests {
                 FooWithProvisioningState.class,
                 FooWithProvisioningState.class,
                 POLLING_DURATION,
-                newLroInitFunction(client));
+                newLroInitFunction(client),
+                Context.NONE);
 
             long nanoTime = System.nanoTime();
 
@@ -523,6 +529,47 @@ public class LROPollerTests {
     }
 
     @Test
+    public void lroContextSubscriberContext() {
+        WireMockServer lroServer = startServer();
+
+        HttpPipelinePolicy contextVerifyPolicy = (context, next) -> {
+            Optional<Object> valueOpt = context.getData("key1");
+            if (valueOpt.isPresent() && "value1".equals(valueOpt.get())) {
+                return next.process();
+            } else {
+                return Mono.error(new AssertionError());
+            }
+        };
+        final HttpPipeline httpPipeline =
+            createHttpPipeline(lroServer.port(), Collections.singletonList(contextVerifyPolicy));
+
+        try {
+            final ProvisioningStateLroServiceClient client = RestProxy.create(ProvisioningStateLroServiceClient.class,
+                httpPipeline, SERIALIZER);
+
+            Flux<AsyncPollResponse<PollResult<FooWithProvisioningState>, FooWithProvisioningState>> lroFlux
+                = PollerFactory.create(SERIALIZER,
+                httpPipeline,
+                FooWithProvisioningState.class,
+                FooWithProvisioningState.class,
+                POLLING_DURATION,
+                newLroInitFunction(client),
+                Context.NONE);
+            lroFlux = lroFlux.subscriberContext(context -> context.put("key1", "value1"));
+
+            FooWithProvisioningState result = lroFlux
+                .blockLast()
+                .getFinalResult()
+                .block();
+            Assertions.assertNotNull(result);
+        } finally {
+            if (lroServer.isRunning()) {
+                lroServer.shutdown();
+            }
+        }
+    }
+
+    @Test
     public void lroContext() {
         WireMockServer lroServer = startServer();
 
@@ -534,20 +581,21 @@ public class LROPollerTests {
                 return Mono.error(new AssertionError());
             }
         };
+        final HttpPipeline httpPipeline =
+            createHttpPipeline(lroServer.port(), Collections.singletonList(contextVerifyPolicy));
 
         try {
             final ProvisioningStateLroServiceClient client = RestProxy.create(ProvisioningStateLroServiceClient.class,
-                createHttpPipeline(lroServer.port(), Collections.singletonList(contextVerifyPolicy)),
-                SERIALIZER);
+                httpPipeline, SERIALIZER);
 
             Flux<AsyncPollResponse<PollResult<FooWithProvisioningState>, FooWithProvisioningState>> lroFlux
                 = PollerFactory.create(SERIALIZER,
-                new HttpPipelineBuilder().build(),
+                httpPipeline,
                 FooWithProvisioningState.class,
                 FooWithProvisioningState.class,
                 POLLING_DURATION,
-                newLroInitFunction(client));
-            lroFlux = lroFlux.subscriberContext(context -> context.put("key1", "value1"));
+                newLroInitFunction(client).subscriberContext(context -> context.put("key1", "value1")),
+                new Context("key1", "value1"));
 
             FooWithProvisioningState result = lroFlux
                 .blockLast()
