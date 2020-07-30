@@ -42,6 +42,7 @@ import com.azure.messaging.servicebus.implementation.models.SubscriptionDescript
 import com.azure.messaging.servicebus.implementation.models.SubscriptionDescriptionFeed;
 import com.azure.messaging.servicebus.implementation.models.TopicDescriptionEntry;
 import com.azure.messaging.servicebus.implementation.models.TopicDescriptionFeed;
+import com.azure.messaging.servicebus.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.models.NamespaceProperties;
 import com.azure.messaging.servicebus.models.QueueDescription;
 import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
@@ -128,7 +129,7 @@ public final class ServiceBusManagementAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueueDescription> createQueue(String queueName) {
         try {
-            return createQueue(new QueueDescription(queueName));
+            return createQueue(new CreateQueueOptions(queueName));
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
@@ -150,7 +151,7 @@ public final class ServiceBusManagementAsyncClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<QueueDescription> createQueue(QueueDescription queue) {
+    public Mono<QueueDescription> createQueue(CreateQueueOptions queue) {
         return createQueueWithResponse(queue).map(Response::getValue);
     }
 
@@ -170,7 +171,7 @@ public final class ServiceBusManagementAsyncClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<QueueDescription>> createQueueWithResponse(QueueDescription queue) {
+    public Mono<Response<QueueDescription>> createQueueWithResponse(CreateQueueOptions queue) {
         return withContext(context -> createQueueWithResponse(queue, context));
     }
 
@@ -1080,28 +1081,31 @@ public final class ServiceBusManagementAsyncClient {
     /**
      * Creates a queue with its context.
      *
-     * @param queue Queue to create.
+     * @param createQueueOptions Queue to create.
      * @param context Context to pass into request.
      *
      * @return A Mono that completes with the created {@link QueueDescription}.
      */
-    Mono<Response<QueueDescription>> createQueueWithResponse(QueueDescription queue, Context context) {
-        if (queue == null) {
-            return monoError(logger, new NullPointerException("'queue' cannot be null"));
+    Mono<Response<QueueDescription>> createQueueWithResponse(CreateQueueOptions createQueueOptions, Context context) {
+        if (createQueueOptions == null) {
+            return monoError(logger, new NullPointerException("'createQueueOptions' cannot be null"));
         } else if (context == null) {
             return monoError(logger, new NullPointerException("'context' cannot be null."));
         }
 
+        final QueueDescription description = new QueueDescription(createQueueOptions.getName());
+        EntityHelper.setQueueProperties(description, createQueueOptions);
+
         final CreateQueueBodyContent content = new CreateQueueBodyContent()
             .setType(CONTENT_TYPE)
-            .setQueueDescription(queue);
+            .setQueueDescription(description);
         final CreateQueueBody createEntity = new CreateQueueBody()
             .setContent(content);
 
         final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
 
         try {
-            return entityClient.putWithResponseAsync(queue.getName(), createEntity, null, withTracing)
+            return entityClient.putWithResponseAsync(createQueueOptions.getName(), createEntity, null, withTracing)
                 .onErrorMap(ServiceBusManagementAsyncClient::mapException)
                 .map(this::deserializeQueue);
         } catch (RuntimeException ex) {

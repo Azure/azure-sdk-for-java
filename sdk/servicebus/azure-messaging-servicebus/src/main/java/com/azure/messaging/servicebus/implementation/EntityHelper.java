@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.models.QueueDescription;
 import com.azure.messaging.servicebus.models.SubscriptionDescription;
 import com.azure.messaging.servicebus.models.TopicDescription;
@@ -55,6 +56,10 @@ public final class EntityHelper {
         }
 
         queueAccessor.setName(queueDescription, name);
+    }
+
+    public static void setQueueProperties(QueueDescription queueDescription, CreateQueueOptions options) {
+
     }
 
     /**
@@ -145,6 +150,14 @@ public final class EntityHelper {
          * @param name Name of the queue.
          */
         void setName(QueueDescription queueDescription, String name);
+
+        /**
+         * Sets properties on the QueueDescription based on the CreateQueueOptions.
+         *
+         * @param queueDescription QueueDescription to copy properties to.
+         * @param options The create queue options to set.
+         */
+        void setQueueProperties(QueueDescription queueDescription, CreateQueueOptions options);
     }
 
     /**

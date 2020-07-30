@@ -267,7 +267,30 @@ public final class QueueDescription {
 
     static {
         // This is used by classes in different packages to get access to private and package-private methods.
-        EntityHelper.setQueueAccessor((entity, name) -> entity.setName(name));
+        EntityHelper.setQueueAccessor(new EntityHelper.QueueAccessor() {
+            @Override
+            public void setName(QueueDescription queueDescription, String name) {
+                queueDescription.setName(name);
+            }
+
+            @Override
+            public void setQueueProperties(QueueDescription queue, CreateQueueOptions options) {
+                queue.setAutoDeleteOnIdle(options.getAutoDeleteOnIdle());
+                queue.setDefaultMessageTimeToLive(options.getDefaultMessageTimeToLive());
+                queue.setDeadLetteringOnMessageExpiration(options.deadLetteringOnMessageExpiration());
+                queue.setDuplicateDetectionHistoryTimeWindow(options.getDuplicateDetectionHistoryTimeWindow());
+                queue.setEnableBatchedOperations(options.enableBatchedOperations());
+                queue.setEnablePartitioning(options.enablePartitioning());
+                queue.setForwardTo(options.getForwardTo());
+                queue.setForwardDeadLetteredMessagesTo(options.getForwardDeadLetteredMessagesTo());
+                queue.setLockDuration(options.getLockDuration());
+                queue.setMaxDeliveryCount(options.getMaxDeliveryCount());
+                queue.setMaxSizeInMegabytes(options.getMaxSizeInMegabytes());
+                queue.setRequiresDuplicateDetection(options.requiresDuplicateDetection());
+                queue.setRequiresSession(options.requiresSession());
+                queue.setUserMetadata(options.getUserMetadata());
+            }
+        });
     }
 
     /**
