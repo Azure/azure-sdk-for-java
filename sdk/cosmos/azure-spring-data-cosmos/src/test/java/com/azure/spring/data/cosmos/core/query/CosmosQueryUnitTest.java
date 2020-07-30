@@ -13,14 +13,14 @@ import java.util.Arrays;
 import static com.azure.spring.data.cosmos.common.TestConstants.CRITERIA_KEY;
 import static com.azure.spring.data.cosmos.common.TestConstants.CRITERIA_OBJECT;
 
-public class DocumentQueryUnitTest {
+public class CosmosQueryUnitTest {
 
     @Test
     public void testDocumentQueryCreate() {
         final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, CRITERIA_KEY,
                 Arrays.asList(CRITERIA_OBJECT), Part.IgnoreCaseType.NEVER);
 
-        final DocumentQuery query = new DocumentQuery(criteria);
+        final CosmosQuery query = new CosmosQuery(criteria);
 
         Assert.assertEquals(criteria, query.getCriteria());
         Assert.assertEquals(Sort.unsorted(), query.getSort());

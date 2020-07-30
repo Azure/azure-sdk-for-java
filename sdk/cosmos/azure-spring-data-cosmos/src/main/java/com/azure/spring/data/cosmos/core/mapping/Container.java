@@ -12,18 +12,18 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation of cosmos document
+ * Annotation for Cosmos Container
  */
 @Persistent
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
-public @interface Document {
+public @interface Container {
     /**
      * To set container name
      * @return String
      */
-    String container() default Constants.DEFAULT_CONTAINER_NAME;
+    String containerName() default Constants.DEFAULT_CONTAINER_NAME;
 
     /**
      * To set request unit
