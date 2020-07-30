@@ -3,9 +3,11 @@
 
 package com.azure.data.schemaregistry.avro;
 
-import com.azure.data.schemaregistry.AbstractDataSerializer;
+import com.azure.data.schemaregistry.AbstractSchemaRegistrySerializer;
 import com.azure.data.schemaregistry.SerializationException;
-import com.azure.data.schemaregistry.client.CachedSchemaRegistryClient;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 
 /**
  * A serializer implementation capable of serializing objects and automatedly storing serialization schemas
@@ -15,31 +17,44 @@ import com.azure.data.schemaregistry.client.CachedSchemaRegistryClient;
  *
  * Pluggable with the core Azure SDK Serializer interface.
  *
- * @see AbstractDataSerializer See AbstractDataSerializer for internal serialization implementation
+ * @see AbstractSchemaRegistrySerializer See AbstractSchemaRegistrySerializer for internal serialization implementation
  */
-public class SchemaRegistryAvroSerializer extends AbstractDataSerializer {
-    SchemaRegistryAvroSerializer(CachedSchemaRegistryClient registryClient,
-                                 String schemaGroup,
-                                 boolean autoRegisterSchemas) {
-        super(registryClient);
-
-        setByteEncoder(new AvroByteEncoder());
-
-        this.autoRegisterSchemas = autoRegisterSchemas;
-        this.schemaGroup = schemaGroup;
+public class SchemaRegistryAvroSerializer {
+    private final SchemaRegistryAvroAsyncSerializer serializer;
+    SchemaRegistryAvroSerializer(SchemaRegistryAvroAsyncSerializer serializer) {
+        this.serializer = serializer;
     }
 
     /**
      * Serializes object into byte array payload using the configured byte encoder.
      * @param object target of serialization
-     * @return byte array containing GUID reference to schema, then the object serialized into bytes
+     * @return byte array containing unique ID reference to schema, then the object serialized into bytes
      * @throws SerializationException Throws on serialization failure.
      */
     public byte[] serialize(Object object) throws SerializationException {
         if (object == null) {
             return null;
         }
-        return serializeImpl(object);
+
+        ByteArrayOutputStream s = serializer.serialize(new ByteArrayOutputStream(), object).block();
+        if (s != null){
+            s.toByteArray();
+        }
+
+        throw new SerializationException("Serialization failed, null output stream returned.");
+    }
+
+    /**
+     * Deserializes byte array into Java object using payload-specified schema.
+     *
+     * @param data Byte array containing serialized bytes
+     * @return decoded Java object
+     *
+     * @throws SerializationException Throws on deserialization failure.
+     * Exception may contain inner exceptions detailing failure condition.
+     */
+    public Object deserialize(byte[] data) throws SerializationException {
+        return serializer.deserialize(new ByteArrayInputStream(data), Object.class);
     }
 }
 

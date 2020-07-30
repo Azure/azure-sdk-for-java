@@ -3,39 +3,59 @@
 
 package com.azure.data.schemaregistry;
 
+import com.azure.data.schemaregistry.client.CachedSchemaRegistryAsyncClient;
+import com.azure.data.schemaregistry.client.SchemaRegistryClientException;
 import com.azure.data.schemaregistry.client.SchemaRegistryObject;
+import org.apache.avro.Schema;
+import org.apache.avro.generic.GenericData;
+import org.apache.avro.generic.GenericDatumWriter;
+import org.apache.avro.generic.GenericRecord;
+import org.apache.avro.io.BinaryEncoder;
+import org.apache.avro.io.EncoderFactory;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
 
 public class AbstractDataSerializerTest {
-    private static final String MOCK_GUID = new String(new char[AbstractDataSerDe.SCHEMA_ID_SIZE]).replace("\0", "a");
+    private static final String MOCK_GUID = new String(new char[AbstractSchemaRegistrySerializer.SCHEMA_ID_SIZE]).replace("\0", "a");
+    private static final String MOCK_AVRO_SCHEMA_STRING = "{\"namespace\":\"example2.avro\",\"type\":\"record\",\"name\":\"User\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"favorite_number\",\"type\": [\"int\", \"null\"]}]}";
+    private final EncoderFactory encoderFactory = EncoderFactory.get();
+    private static final Schema MOCK_AVRO_SCHEMA = (new Schema.Parser()).parse(MOCK_AVRO_SCHEMA_STRING);
 
     @Test
     public void testRegistryGuidPrefixedToPayload() {
         // manually add SchemaRegistryObject into mock registry client cache
-        SampleByteEncoder encoder = new SampleByteEncoder();
+        SampleCodec encoder = new SampleCodec();
         SchemaRegistryObject registered = new SchemaRegistryObject(MOCK_GUID,
-            encoder.schemaType(),
+            encoder.getSchemaType(),
             encoder.getSchemaString(null).getBytes(), // always returns same schema string
             encoder::parseSchemaString);
 
         assertEquals(encoder.getSchemaString(null), registered.deserialize());
 
-        MockSchemaRegistryClient mockRegistryClient = new MockSchemaRegistryClient();
-        mockRegistryClient.getSchemaStringCache().put(encoder.getSchemaString(null), registered);
+        CachedSchemaRegistryAsyncClient mockRegistryClient = getMockClient();
+        Mockito.when(mockRegistryClient.getSchemaId(anyString(), anyString(), anyString(), anyString()))
+            .thenReturn(Mono.just(encoder.getSchemaString(null)));
 
         TestDummySerializer serializer = new TestDummySerializer(
             mockRegistryClient, true, false);
 
         try {
-            byte[] payload = serializer.serializeImpl(1);
-            ByteBuffer buffer = ByteBuffer.wrap(payload);
-            byte[] schemaGuidByteArray = new byte[AbstractDataSerDe.SCHEMA_ID_SIZE];
+            ByteArrayOutputStream payload = serializer.serializeImpl(new ByteArrayOutputStream(), 1).block();
+            ByteBuffer buffer = ByteBuffer.wrap(payload.toByteArray());
+            byte[] schemaGuidByteArray = new byte[AbstractSchemaRegistrySerializer.SCHEMA_ID_SIZE];
             try {
                 buffer.get(schemaGuidByteArray);
             } catch (BufferUnderflowException e) {
@@ -46,7 +66,7 @@ public class AbstractDataSerializerTest {
             assertEquals(MOCK_GUID, new String(schemaGuidByteArray));
 
             int start = buffer.position() + buffer.arrayOffset();
-            int length = buffer.limit() - AbstractDataSerDe.SCHEMA_ID_SIZE;
+            int length = buffer.limit() - AbstractSchemaRegistrySerializer.SCHEMA_ID_SIZE;
             byte[] encodedBytes = Arrays.copyOfRange(buffer.array(), start, start + length);
             assertTrue(Arrays.equals(encoder.encode(null).toByteArray(), encodedBytes));
         } catch (SerializationException e) {
@@ -58,12 +78,12 @@ public class AbstractDataSerializerTest {
     @Test
     public void testNullPayloadThrowsSerializationException() {
         TestDummySerializer serializer = new TestDummySerializer(
-            new MockSchemaRegistryClient(),
+            getMockClient(),
             true,
             false);
 
         try {
-            serializer.serializeImpl(null);
+            serializer.serializeImpl(new ByteArrayOutputStream(), null).block();
             fail("Serializing null payload failed to throw SerializationException");
         } catch (SerializationException e) {
             assertTrue(true);
@@ -74,10 +94,10 @@ public class AbstractDataSerializerTest {
     public void testSerializeWithNullByteEncoderThrows() {
         // don't set byte encoder on constructor
         TestDummySerializer serializer = new TestDummySerializer(
-            new MockSchemaRegistryClient(), false, false);
+            getMockClient(), false, false);
 
         try {
-            serializer.serializeImpl(1);
+            serializer.serializeImpl(new ByteArrayOutputStream(), null);
         } catch (SerializationException e) {
             assert (true);
         }
@@ -97,8 +117,92 @@ public class AbstractDataSerializerTest {
     }
 
     @Test
-    public void testDefaultAutoRegister() {
-        TestDummySerializer serializer = new TestDummySerializer(new MockSchemaRegistryClient(), true);
-        assertEquals(false, (boolean) serializer.autoRegisterSchemas);
+    public void testAddDeserializerCodec() throws IOException, SchemaRegistryClientException, SerializationException {
+        // add sample codec impl and test that it is used for decoding payload
+        SampleCodec decoder = new SampleCodec();
+
+        // manually add SchemaRegistryObject to cache
+        SchemaRegistryObject registered = new SchemaRegistryObject(MOCK_GUID,
+            decoder.getSchemaType(),
+            MOCK_AVRO_SCHEMA_STRING.getBytes(),
+            decoder::parseSchemaString);
+
+        assertTrue(registered.deserialize() != null);
+
+        CachedSchemaRegistryAsyncClient mockClient = getMockClient();
+        Mockito.when(mockClient.getSchemaById(anyString()))
+            .thenReturn(Mono.just(registered));
+        Mockito.when(mockClient.getEncoding()).thenReturn(StandardCharsets.UTF_8);
+
+        // constructor loads deserializer codec
+        TestDummySerializer serializer = new TestDummySerializer(mockClient, true, true);
+
+        assertEquals(MOCK_GUID,
+            serializer.schemaRegistryClient.getSchemaById(MOCK_GUID).block().getSchemaId());
+
+            serializer.deserializeImpl(new ByteArrayInputStream(getPayload()))
+                .subscribe(unused -> {
+                        System.out.println(unused);
+                    },
+                    ex -> System.out.println(ex));
+
+        assertEquals(SampleCodec.CONSTANT_PAYLOAD,
+            serializer.deserializeImpl(new ByteArrayInputStream(getPayload())).block());
+    }
+
+    @Test
+    public void testNullPayload() throws SchemaRegistryClientException, SerializationException {
+        TestDummySerializer deserializer = new TestDummySerializer(
+            getMockClient(), true, true);
+        assertNull(deserializer.deserializeImpl(null).block());
+    }
+
+    @Test
+    public void testIfTooShortPayloadThrow() {
+        TestDummySerializer serializer = new TestDummySerializer(
+            getMockClient(), true, true);
+
+        try {
+            serializer.deserializeImpl(new ByteArrayInputStream("bad payload".getBytes())).block();
+            fail("Too short payload did not throw SerializationException");
+        } catch (SerializationException e) {
+            assertTrue(true);
+        }
+    }
+
+    // TODO: add for non-existing guid
+
+    @Test
+    public void testIfRegistryClientNullOnBuildThrow() {
+        try {
+            TestDummySerializer deserializer = new TestDummySerializer(null, true, true);
+            fail("should not get here.");
+        } catch (IllegalArgumentException e) {
+            // good
+        }
+    }
+
+    private CachedSchemaRegistryAsyncClient getMockClient() {
+        return mock(CachedSchemaRegistryAsyncClient.class);
+    }
+
+    private byte[] getPayload() throws IOException {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        out.write(ByteBuffer.allocate(AbstractSchemaRegistrySerializer.SCHEMA_ID_SIZE)
+            .put(MOCK_GUID.getBytes(StandardCharsets.UTF_8))
+            .array());
+        GenericRecord record = getAvroRecord();
+        BinaryEncoder encoder = encoderFactory.directBinaryEncoder(out, null);
+        GenericDatumWriter<GenericRecord> writer = new GenericDatumWriter<>(MOCK_AVRO_SCHEMA);
+        writer.write(record, encoder);
+        encoder.flush();
+        return out.toByteArray();
+    }
+
+    private GenericRecord getAvroRecord() {
+        GenericRecord avroRecord = new GenericData.Record(MOCK_AVRO_SCHEMA);
+        avroRecord.put("name", "arthur");
+        avroRecord.put("favorite_number", 23);
+        return avroRecord;
     }
 }

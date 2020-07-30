@@ -18,7 +18,7 @@ import java.util.function.Function;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class CachedSchemaRegistryClientTest {
+public class CachedSchemaRegistryAsyncClientTest {
     private static final String MOCK_SERIALIZATION = "mock_serialization_type";
     private static final String MOCK_ID = "mock_guid";
     private static final SchemaId MOCK_SCHEMA_ID = new SchemaId();
@@ -26,7 +26,7 @@ public class CachedSchemaRegistryClientTest {
     private static final String MOCK_SCHEMA_NAME = "mockname";
     private static final String MOCK_AVRO_SCHEMA = "{\"namespace\":\"example2.avro\",\"type\":\"record\",\"name\":\"User\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"favorite_number\",\"type\": [\"int\", \"null\"]}]}";
 
-    private CachedSchemaRegistryClient client;
+    private CachedSchemaRegistryAsyncClient client;
     private AzureSchemaRegistryRestService restService;
     private HashMap<String, SchemaRegistryObject> guidCache;
     private HashMap<String, SchemaRegistryObject> schemaStringCache;
@@ -41,7 +41,7 @@ public class CachedSchemaRegistryClientTest {
         this.typeParserDictionary.put(MOCK_SERIALIZATION, (s) -> s);
 
         this.restService = mock(AzureSchemaRegistryRestService.class);
-        this.client = new CachedSchemaRegistryClient(
+        this.client = new CachedSchemaRegistryAsyncClient(
             this.restService,
             this.guidCache,
             this.schemaStringCache,
@@ -68,10 +68,10 @@ public class CachedSchemaRegistryClientTest {
 
         assertEquals(
             MOCK_ID,
-            client.register(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_AVRO_SCHEMA, MOCK_SERIALIZATION).getSchemaId());
+            client.register(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_AVRO_SCHEMA, MOCK_SERIALIZATION).block().getSchemaId());
         assertEquals(
             MOCK_ID,
-            client.register(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_AVRO_SCHEMA, MOCK_SERIALIZATION).getSchemaId());
+            client.register(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_AVRO_SCHEMA, MOCK_SERIALIZATION).block().getSchemaId());
 
         verify(restService, times(1))
             .createSchemaWithResponseAsync(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_SERIALIZATION, MOCK_AVRO_SCHEMA);
@@ -90,8 +90,10 @@ public class CachedSchemaRegistryClientTest {
                         MOCK_SCHEMA_ID,
                         null)));
 
-        assertEquals(MOCK_ID, client.getSchemaId(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_AVRO_SCHEMA, MOCK_SERIALIZATION));
-        assertEquals(MOCK_ID, client.getSchemaId(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_AVRO_SCHEMA, MOCK_SERIALIZATION));
+        assertEquals(MOCK_ID,
+            client.getSchemaId(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_AVRO_SCHEMA, MOCK_SERIALIZATION).block());
+        assertEquals(MOCK_ID,
+            client.getSchemaId(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_AVRO_SCHEMA, MOCK_SERIALIZATION).block());
 
         verify(restService, times(1))
             .getIdBySchemaContentWithResponseAsync(anyString(), anyString(), anyString(), anyString());
@@ -111,8 +113,8 @@ public class CachedSchemaRegistryClientTest {
                     MOCK_AVRO_SCHEMA,
                     mockHeaders)));
 
-        SchemaRegistryObject first = client.getSchemaByGuid(mockId.toString());
-        SchemaRegistryObject second = client.getSchemaByGuid(mockId.toString());
+        SchemaRegistryObject first = client.getSchemaById(mockId.toString()).block();
+        SchemaRegistryObject second = client.getSchemaById(mockId.toString()).block();
 
         assertTrue(first.equals(second));
         assertEquals(mockId.toString(), first.getSchemaId());
@@ -135,7 +137,7 @@ public class CachedSchemaRegistryClientTest {
 
         assertEquals(
             MOCK_ID,
-            client.register(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_AVRO_SCHEMA, MOCK_SERIALIZATION).getSchemaId());
+            client.register(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_AVRO_SCHEMA, MOCK_SERIALIZATION).block().getSchemaId());
 
         client.reset();
 
@@ -147,7 +149,7 @@ public class CachedSchemaRegistryClientTest {
 
         assertEquals(
             MOCK_ID,
-            client.register(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_AVRO_SCHEMA, MOCK_SERIALIZATION).getSchemaId());
+            client.register(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_AVRO_SCHEMA, MOCK_SERIALIZATION).block().getSchemaId());
 
         verify(restService, times(2))
             .createSchemaWithResponseAsync(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_SERIALIZATION, MOCK_AVRO_SCHEMA);
@@ -170,7 +172,7 @@ public class CachedSchemaRegistryClientTest {
                 "doesn't matter",
                 "doesn't matter",
                 "doesn't matter",
-                "doesn't matter");
+                "doesn't matter").block();
             fail("Should throw on 400 status code");
         } catch (SchemaRegistryClientException e) {
             assert true;
@@ -198,7 +200,7 @@ public class CachedSchemaRegistryClientTest {
                 "doesn't matter",
                 "doesn't matter",
                 "doesn't matter",
-                "doesn't matter");
+                "doesn't matter").block();
             fail("Should throw on 404 status code");
         } catch (SchemaRegistryClientException e) {
             assert true;
@@ -221,10 +223,12 @@ public class CachedSchemaRegistryClientTest {
                     null)));
 
         try {
-            client.getSchemaByGuid(mockId);
+            client.getSchemaById(mockId).block();
             fail("Should have thrown on 404 status code");
         } catch (SchemaRegistryClientException e) {
             assert true;
+        } catch (Exception e){
+            assert false;
         }
 
         verify(restService, times(1))

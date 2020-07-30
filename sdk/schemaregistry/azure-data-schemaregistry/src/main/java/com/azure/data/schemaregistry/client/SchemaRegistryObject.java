@@ -7,7 +7,7 @@ import com.azure.core.util.logging.ClientLogger;
 import java.util.function.Function;
 
 /**
- * Stores all relevant information returned from SchemaRegistryClient layer.
+ * Stores all relevant information returned from CachedSchemaRegistryClient layer.
  */
 public class SchemaRegistryObject {
     private final ClientLogger logger = new ClientLogger(SchemaRegistryObject.class);
@@ -62,7 +62,7 @@ public class SchemaRegistryObject {
     public Object deserialize() {
         if (this.deserialized == null) {
             String schemaString = new String(
-                this.schemaBytes, CachedSchemaRegistryClient.SCHEMA_REGISTRY_SERVICE_ENCODING);
+                this.schemaBytes, CachedSchemaRegistryAsyncClient.SCHEMA_REGISTRY_SERVICE_ENCODING);
 
             logger.verbose("Deserializing schema, id: '{}', schema string '{}'", this.schemaId, schemaString);
 
