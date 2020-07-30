@@ -9,7 +9,6 @@ import com.azure.storage.blob.models.BlobDestinationRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
-import com.azure.storage.blob.models.BlobSourceRequestConditions;
 import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions;
 import com.azure.storage.blob.options.PageBlobCreateOptions;
