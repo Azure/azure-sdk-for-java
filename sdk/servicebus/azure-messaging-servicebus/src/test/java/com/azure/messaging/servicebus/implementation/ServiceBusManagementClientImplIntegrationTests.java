@@ -23,7 +23,7 @@ import com.azure.messaging.servicebus.implementation.models.CreateQueueBodyConte
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionEntry;
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionFeed;
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionResponse;
-import com.azure.messaging.servicebus.models.QueueDescription;
+import com.azure.messaging.servicebus.models.QueueProperties;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -79,7 +79,7 @@ class ServiceBusManagementClientImplIntegrationTests extends TestBase {
                 assertNotNull(deserialize);
                 assertNotNull(deserialize.getContent());
 
-                final QueueDescription properties = deserialize.getContent().getQueueDescription();
+                final QueueProperties properties = deserialize.getContent().getQueueProperties();
                 assertNotNull(properties);
                 assertFalse(properties.getLockDuration().isZero());
             })
@@ -97,11 +97,11 @@ class ServiceBusManagementClientImplIntegrationTests extends TestBase {
         final EntitysImpl entityClient = managementClient.getEntitys();
 
         final String queueName = testResourceNamer.randomName("test", 7);
-        final QueueDescription description = new QueueDescription(queueName).setMaxDeliveryCount(15);
+        final QueueProperties description = new QueueProperties(queueName).setMaxDeliveryCount(15);
         final CreateQueueBody createEntity = new CreateQueueBody();
         final CreateQueueBodyContent content = new CreateQueueBodyContent()
             .setType("application/xml")
-            .setQueueDescription(description);
+            .setQueueProperties(description);
         createEntity.setContent(content);
 
         logger.info("Creating queue: {}", queueName);
@@ -110,10 +110,10 @@ class ServiceBusManagementClientImplIntegrationTests extends TestBase {
         StepVerifier.create(entityClient.putWithResponseAsync(queueName, createEntity, null, Context.NONE))
             .assertNext(response -> {
                 Object body = response.getValue();
-                QueueDescription deserialize = null;
+                QueueProperties deserialize = null;
                 try {
                     deserialize = new ServiceBusManagementSerializer()
-                        .deserialize(String.valueOf(body), QueueDescription.class);
+                        .deserialize(String.valueOf(body), QueueProperties.class);
                 } catch (IOException e) {
                     fail("An exception was thrown. " + e);
                 }
@@ -134,11 +134,11 @@ class ServiceBusManagementClientImplIntegrationTests extends TestBase {
         final EntitysImpl entityClient = managementClient.getEntitys();
 
         final String queueName = testResourceNamer.randomName("test", 7);
-        final QueueDescription description = new QueueDescription(queueName).setMaxDeliveryCount(15);
+        final QueueProperties description = new QueueProperties(queueName).setMaxDeliveryCount(15);
         final CreateQueueBody createEntity = new CreateQueueBody();
         final CreateQueueBodyContent content = new CreateQueueBodyContent()
             .setType("application/xml")
-            .setQueueDescription(description);
+            .setQueueProperties(description);
         createEntity.setContent(content);
 
         logger.info("Creating queue: {}", queueName);
@@ -173,7 +173,7 @@ class ServiceBusManagementClientImplIntegrationTests extends TestBase {
             .block(Duration.ofSeconds(30));
         assertNotNull(response);
         final QueueDescriptionResponse deserialize = deserialize(response, QueueDescriptionResponse.class);
-        final QueueDescription properties = deserialize.getContent().getQueueDescription();
+        final QueueProperties properties = deserialize.getContent().getQueueProperties();
 
         final int maxDeliveryCount = properties.getMaxDeliveryCount();
         final int newDeliveryCount = maxDeliveryCount + 5;
@@ -187,7 +187,7 @@ class ServiceBusManagementClientImplIntegrationTests extends TestBase {
         properties.setAutoDeleteOnIdle(autoDeleteOnIdle);
 
         CreateQueueBody updated = new CreateQueueBody().setContent(
-            new CreateQueueBodyContent().setQueueDescription(properties).setType("application/xml"));
+            new CreateQueueBodyContent().setQueueProperties(properties).setType("application/xml"));
 
         // Act & Assert
         StepVerifier.create(entityClient.putWithResponseAsync(queueName, updated, "*", Context.NONE))

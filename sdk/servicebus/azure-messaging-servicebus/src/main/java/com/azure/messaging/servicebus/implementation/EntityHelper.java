@@ -5,14 +5,14 @@ package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.CreateQueueOptions;
-import com.azure.messaging.servicebus.models.QueueDescription;
+import com.azure.messaging.servicebus.models.QueueProperties;
 import com.azure.messaging.servicebus.models.SubscriptionDescription;
 import com.azure.messaging.servicebus.models.TopicDescription;
 
 import java.util.Objects;
 
 /**
- * Used to access internal methods on {@link QueueDescription}.
+ * Used to access internal methods on {@link QueueProperties}.
  */
 public final class EntityHelper {
     private static QueueAccessor queueAccessor;
@@ -44,21 +44,21 @@ public final class EntityHelper {
     }
 
     /**
-     * Sets the queue name on a {@link QueueDescription}.
+     * Sets the queue name on a {@link QueueProperties}.
      *
-     * @param queueDescription Queue to set name on.
+     * @param queueProperties Queue to set name on.
      * @param name Name of the queue.
      */
-    public static void setQueueName(QueueDescription queueDescription, String name) {
+    public static void setQueueName(QueueProperties queueProperties, String name) {
         if (queueAccessor == null) {
             throw new ClientLogger(EntityHelper.class).logExceptionAsError(
                 new IllegalStateException("'queueAccessor' should not be null."));
         }
 
-        queueAccessor.setName(queueDescription, name);
+        queueAccessor.setName(queueProperties, name);
     }
 
-    public static QueueDescription createQueue(CreateQueueOptions options) {
+    public static QueueProperties createQueue(CreateQueueOptions options) {
         if (queueAccessor == null) {
             throw new ClientLogger(EntityHelper.class).logExceptionAsError(
                 new IllegalStateException("'queueAccessor' should not be null."));
@@ -151,10 +151,10 @@ public final class EntityHelper {
         /**
          * Sets the name on a queueDescription.
          *
-         * @param queueDescription Queue to set name on.
+         * @param queueProperties Queue to set name on.
          * @param name Name of the queue.
          */
-        void setName(QueueDescription queueDescription, String name);
+        void setName(QueueProperties queueProperties, String name);
 
         /**
          * Sets properties on the QueueDescription based on the CreateQueueOptions.
@@ -162,7 +162,7 @@ public final class EntityHelper {
          * @param options The create queue options to set.
          * @return A new QueueDescription with the properties set.
          */
-        QueueDescription createQueue(CreateQueueOptions options);
+        QueueProperties createQueue(CreateQueueOptions options);
     }
 
     /**

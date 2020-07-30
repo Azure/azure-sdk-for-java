@@ -17,7 +17,7 @@ import com.azure.messaging.servicebus.models.MessageCountDetails;
 import com.azure.messaging.servicebus.models.MessagingSku;
 import com.azure.messaging.servicebus.models.NamespaceProperties;
 import com.azure.messaging.servicebus.models.NamespaceType;
-import com.azure.messaging.servicebus.models.QueueDescription;
+import com.azure.messaging.servicebus.models.QueueProperties;
 import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
 import com.azure.messaging.servicebus.models.SubscriptionDescription;
 import com.azure.messaging.servicebus.models.SubscriptionRuntimeInfo;
@@ -56,7 +56,7 @@ class ServiceBusManagementSerializerTest {
     void deserializeQueueDescription() throws IOException {
         // Arrange
         final String contents = getContents("QueueDescriptionEntry.xml");
-        final QueueDescription expected = new QueueDescription("my-test-queue")
+        final QueueProperties expected = new QueueProperties("my-test-queue")
             .setLockDuration(Duration.ofMinutes(5))
             .setMaxSizeInMegabytes(1024)
             .setRequiresDuplicateDetection(true)
@@ -79,7 +79,7 @@ class ServiceBusManagementSerializerTest {
         // The entry title is the name of the queue.
         assertTitle(expected.getName(), entry.getTitle());
 
-        final QueueDescription actual = entry.getContent().getQueueDescription();
+        final QueueProperties actual = entry.getContent().getQueueProperties();
         assertQueueEquals(expected, EntityStatus.DELETING, actual);
     }
 
@@ -104,7 +104,7 @@ class ServiceBusManagementSerializerTest {
 
         // Act
         final QueueDescriptionEntry entry = serializer.deserialize(contents, QueueDescriptionEntry.class);
-        final QueueRuntimeInfo actual = new QueueRuntimeInfo(entry.getContent().getQueueDescription());
+        final QueueRuntimeInfo actual = new QueueRuntimeInfo(entry.getContent().getQueueProperties());
 
         // Assert
         assertEquals(sizeInBytes, actual.getSizeInBytes());
@@ -137,7 +137,7 @@ class ServiceBusManagementSerializerTest {
                 .setHref("https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2017-04&enrich=false&%24skip=5&%24top=5")
         );
 
-        final QueueDescription queueDescription = new QueueDescription("q-0")
+        final QueueProperties queueProperties = new QueueProperties("q-0")
             .setLockDuration(Duration.ofMinutes(10))
             .setMaxSizeInMegabytes(102)
             .setRequiresDuplicateDetection(true)
@@ -159,7 +159,7 @@ class ServiceBusManagementSerializerTest {
             .setAuthor(new ResponseAuthor().setName("sb-java"))
             .setLink(new ResponseLink().setRel("self").setHref("../q-0?api-version=2017-04"))
             .setContent(new QueueDescriptionEntryContent().setType("application/xml")
-                .setQueueDescription(queueDescription));
+                .setQueueProperties(queueProperties));
         final QueueDescriptionEntry entry2 = new QueueDescriptionEntry()
             .setBase("https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2017-04&enrich=false&$skip=0&$top=5")
             .setId("https://sb-java.servicebus.windows.net/q-1?api-version=2017-04")
@@ -169,7 +169,7 @@ class ServiceBusManagementSerializerTest {
             .setAuthor(new ResponseAuthor().setName("sb-java2"))
             .setLink(new ResponseLink().setRel("self").setHref("../q-1?api-version=2017-04"))
             .setContent(new QueueDescriptionEntryContent().setType("application/xml")
-                .setQueueDescription(queueDescription));
+                .setQueueProperties(queueProperties));
         final QueueDescriptionEntry entry3 = new QueueDescriptionEntry()
             .setBase("https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2017-04&enrich=false&$skip=0&$top=5")
             .setId("https://sb-java.servicebus.windows.net/q-2?api-version=2017-04")
@@ -179,7 +179,7 @@ class ServiceBusManagementSerializerTest {
             .setAuthor(new ResponseAuthor().setName("sb-java3"))
             .setLink(new ResponseLink().setRel("self").setHref("../q-2?api-version=2017-04"))
             .setContent(new QueueDescriptionEntryContent().setType("application/xml")
-                .setQueueDescription(queueDescription));
+                .setQueueProperties(queueProperties));
 
         final Map<String, String> titleMap = new HashMap<>();
         titleMap.put("", "Queues");
@@ -224,8 +224,8 @@ class ServiceBusManagementSerializerTest {
             assertEquals(expectedEntry.getPublished(), actualEntry.getPublished());
             assertEquals(expectedEntry.getAuthor().getName(), actualEntry.getAuthor().getName());
 
-            assertQueueEquals(expectedEntry.getContent().getQueueDescription(), EntityStatus.ACTIVE,
-                actualEntry.getContent().getQueueDescription());
+            assertQueueEquals(expectedEntry.getContent().getQueueProperties(), EntityStatus.ACTIVE,
+                actualEntry.getContent().getQueueProperties());
         }
     }
 
@@ -486,7 +486,7 @@ class ServiceBusManagementSerializerTest {
         }
     }
 
-    private static void assertQueueEquals(QueueDescription expected, EntityStatus expectedStatus, QueueDescription actual) {
+    private static void assertQueueEquals(QueueProperties expected, EntityStatus expectedStatus, QueueProperties actual) {
         assertEquals(expected.getLockDuration(), actual.getLockDuration());
         assertEquals(expected.getMaxSizeInMegabytes(), actual.getMaxSizeInMegabytes());
         assertEquals(expected.requiresDuplicateDetection(), actual.requiresDuplicateDetection());

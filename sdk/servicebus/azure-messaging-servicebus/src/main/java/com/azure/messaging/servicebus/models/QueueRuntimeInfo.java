@@ -24,19 +24,19 @@ public class QueueRuntimeInfo {
     /**
      * Creates a new instance with runtime properties extracted from the given QueueDescription.
      *
-     * @param queueDescription Queue description to extract runtime information from.
+     * @param queueProperties Queue description to extract runtime information from.
      *
      * @throws NullPointerException if {@code queueDescription} is null.
      */
-    public QueueRuntimeInfo(QueueDescription queueDescription) {
-        Objects.requireNonNull(queueDescription, "'queueDescription' cannot be null.");
-        this.name = queueDescription.getName();
-        this.details = queueDescription.getMessageCountDetails();
-        this.messageCount = queueDescription.getMessageCount();
-        this.sizeInBytes = queueDescription.getSizeInBytes();
-        this.accessedAt = queueDescription.getAccessedAt();
-        this.createdAt = queueDescription.getCreatedAt();
-        this.updatedAt = queueDescription.getUpdatedAt();
+    public QueueRuntimeInfo(QueueProperties queueProperties) {
+        Objects.requireNonNull(queueProperties, "'queueProperties' cannot be null.");
+        this.name = queueProperties.getName();
+        this.details = queueProperties.getMessageCountDetails();
+        this.messageCount = queueProperties.getMessageCount();
+        this.sizeInBytes = queueProperties.getSizeInBytes();
+        this.accessedAt = queueProperties.getAccessedAt();
+        this.createdAt = queueProperties.getCreatedAt();
+        this.updatedAt = queueProperties.getUpdatedAt();
     }
 
     /**
