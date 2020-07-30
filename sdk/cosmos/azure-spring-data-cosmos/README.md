@@ -30,14 +30,14 @@ Please refer to [sample project here](./samplecode).
     - delete by Id
     - delete entity
 - Spring Data [@Id](https://github.com/spring-projects/spring-data-commons/blob/db62390de90c93a78743c97cc2cc9ccd964994a5/src/main/java/org/springframework/data/annotation/Id.java) annotation.
-  There're 2 ways to map a field in domain class to `id` field of Azure Cosmos DB document.
-  - annotate a field in domain class with `@Id`, this field will be mapped to document `id` in Cosmos DB. 
-  - set name of this field to `id`, this field will be mapped to document `id` in Azure Cosmos DB.
+  There're 2 ways to map a field in domain class to `id` field of Azure Cosmos DB Item.
+  - annotate a field in domain class with `@Id`, this field will be mapped to Item `id` in Cosmos DB. 
+  - set name of this field to `id`, this field will be mapped to Item `id` in Azure Cosmos DB.
 - Custom container Name.
-  By default, container name will be class name of user domain class. To customize it, add the `@Document(container="myCustomContainerName")` annotation to the domain class. The container field also supports SpEL expressions (eg. `container = "${dynamic.container.name}"` or `container = "#{@someBean.getContainerName()}"`) in order to provide container names programmatically/via configuration properties.
+  By default, container name will be class name of user domain class. To customize it, add the `@Container(containerName="myCustomContainerName")` annotation to the domain class. The container field also supports SpEL expressions (eg. `container = "${dynamic.container.name}"` or `container = "#{@someBean.getContainerName()}"`) in order to provide container names programmatically/via configuration properties.
 - Custom IndexingPolicy
-  By default, IndexingPolicy will be set by azure service. To customize it add annotation `@DocumentIndexingPolicy` to domain class. This annotation has 4 attributes to customize, see following:
-<!-- embedme src/samples/java/com/azure/cosmos/DocumentIndexingPolicyCodeSnippet.java#L16-L26 -->
+  By default, IndexingPolicy will be set by azure service. To customize it add annotation `@CosmosIndexingPolicy` to domain class. This annotation has 4 attributes to customize, see following:
+<!-- embedme src/samples/java/com/azure/cosmos/CosmosIndexingPolicyCodeSnippet.java#L16-L26 -->
 ```java
 // Indicate if indexing policy use automatic or not
 boolean automatic() default Constants.DEFAULT_INDEXING_POLICY_AUTOMATIC;
@@ -52,12 +52,12 @@ String[] includePaths() default {};
 String[] excludePaths() default {};
 ```
 
-- Supports Optimistic Locking for specific containers, which means upserts/deletes by document will fail with an exception in case the document was modified by another process in the meanwhile. To enable Optimistic Locking for a container, just create a string `_etag` field and mark it with the `@Version` annotation. See the following:
+- Supports Optimistic Locking for specific containers, which means upserts/deletes by Item will fail with an exception in case the Item was modified by another process in the meanwhile. To enable Optimistic Locking for a container, just create a string `_etag` field and mark it with the `@Version` annotation. See the following:
 
-<!-- embedme src/samples/java/com/azure/cosmos/MyDocument.java#L14-L20 -->
+<!-- embedme src/samples/java/com/azure/cosmos/MyItem.java#L14-L20 -->
 ```java
-@Document(container = "myContainer")
-public class MyDocument {
+@Container(containerName = "myContainer")
+public class MyItem {
     String id;
     String data;
     @Version
@@ -67,8 +67,8 @@ public class MyDocument {
 - Supports [Azure Cosmos DB partition](https://docs.microsoft.com/azure/cosmos-db/partition-data). To specify a field of domain class to be partition key field, just annotate it with `@PartitionKey`. When you do CRUD operation, pls specify your partition value. For more sample on partition CRUD, pls refer to [test here](./src/test/java/com/azure/spring/data/cosmos/repository/integration/AddressRepositoryIT.java)
 - Supports [Spring Data custom query](https://docs.spring.io/spring-data/commons/docs/current/reference/html/#repositories.query-methods.details) find operation, e.g., `findByAFieldAndBField`
 - Supports [Spring Data pagable and sort](https://docs.spring.io/spring-data/commons/docs/current/reference/html/#repositories.special-parameters).
-  - Based on available RUs on the database account, cosmosDB can return documents less than or equal to the requested size.
-  - Due to this variable number of returned documents in every iteration, user should not rely on the totalPageSize, and instead iterating over pageable should be done in this way.  
+  - Based on available RUs on the database account, cosmosDB can return items less than or equal to the requested size.
+  - Due to this variable number of returned items in every iteration, user should not rely on the totalPageSize, and instead iterating over pageable should be done in this way.  
 <!-- embedme src/samples/java/com/azure/cosmos/PageableRepositoryCodeSnippet.java#L27-L38 -->
 ```java
 private List<T> findAllWithPageSize(int pageSize) {
@@ -99,7 +99,7 @@ the `@EnableCosmosAuditing` annotation to your application configuration. Entiti
 `@CreatedDate` `@LastModifiedBy` and `@LastModifiedDate`. These fields will be updated automatically.
 <!-- embedme src/samples/java/com/azure/cosmos/AuditableUser.java#L13-L25 -->
 ```java
-@Document(container = "myContainer")
+@Container(containerName = "myContainer")
 public class AuditableUser {
     private String id;
     private String firstName;
@@ -244,16 +244,16 @@ By default, `@EnableCosmosRepositories` will scan the current package for any in
 
 
 ### Define an entity
-Define a simple entity as Document in Azure Cosmos DB.
+Define a simple entity as Item in Azure Cosmos DB.
 
-You can define entities by adding the `@Document` annotation and specifying properties related to the container, such as the container name, request units (RUs), time to live, and auto-create container. 
+You can define entities by adding the `@Container` annotation and specifying properties related to the container, such as the container name, request units (RUs), time to live, and auto-create container. 
 
-Containers will be created automatically unless you don't want them to: Set `autoCreateContainer` to false in `@Document` annotation to disable auto creation of containers. 
+Containers will be created automatically unless you don't want them to: Set `autoCreateContainer` to false in `@Container` annotation to disable auto creation of containers. 
 
 Note: By default request units assigned to newly created containers is 4000. Specify different ru value to customize request units for the container created by the SDK (minimum RU value is 400). 
 <!-- embedme src/samples/java/com/azure/cosmos/User.java#L14-L62 -->
 ```java
-@Document(container = "myContainer", ru = "400")
+@Container(containerName = "myContainer", ru = "400")
 public class User {
     private String id;
     private String firstName;
@@ -303,13 +303,13 @@ public class User {
     }
 }
 ```
-`id` field will be used as document id in Azure Cosmos DB. If you want use another field like `emailAddress` as document `id`, just annotate that field with `@Id` annotation.
+`id` field will be used as Item id in Azure Cosmos DB. If you want use another field like `emailAddress` as Item `id`, just annotate that field with `@Id` annotation.
 
-Annotation `@Document(container="myContainer")` is used to specify container name in Azure Cosmos DB.
+Annotation `@Container(containerName="myContainer")` is used to specify container name in Azure Cosmos DB.
 Annotation `@PartitionKey` on `lastName` field is used to specify this field be partition key in Azure Cosmos DB.
 <!-- embedme src/samples/java/com/azure/cosmos/UserSample.java#L14-L19 -->
 ```java
-@Document(container = "myContainer")
+@Container(containerName = "myContainer")
 public class UserSample {
     @Id
     private String emailAddress;
@@ -329,7 +329,7 @@ public interface UserRepository extends CosmosRepository<User, String> {
 }
 ```
 
-`findByFirstName` method is custom query method, it will find documents per FirstName.
+`findByFirstName` method is custom query method, it will find Items per FirstName.
 
 ### Create an Application class
 Here create an application class with all the components

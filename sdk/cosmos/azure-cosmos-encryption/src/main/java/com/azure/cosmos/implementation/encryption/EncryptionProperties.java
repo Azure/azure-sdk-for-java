@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation.encryption;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.encryption.api.Constants;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;

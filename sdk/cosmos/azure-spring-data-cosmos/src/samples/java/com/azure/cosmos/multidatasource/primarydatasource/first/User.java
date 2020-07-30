@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.multidatasource.primarydatasource.first;
 
-import com.azure.spring.data.cosmos.core.mapping.Document;
+import com.azure.spring.data.cosmos.core.mapping.Container;
 import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
 import org.springframework.data.annotation.Id;
 
@@ -12,7 +12,7 @@ import org.springframework.data.annotation.Id;
  * LINE NUMBERS OF EXISTING CODE SAMPLES.
  */
 
-@Document(container = "users-container", ru = "400")
+@Container(containerName = "users-container", ru = "400")
 public class User {
 
     @Id

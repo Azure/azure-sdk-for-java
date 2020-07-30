@@ -4,9 +4,9 @@
 package com.azure.cosmos.implementation.encryption;
 
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.encryption.api.CosmosEncryptionAlgorithm;
-import com.azure.cosmos.implementation.encryption.api.DataEncryptionKey;
-import com.azure.cosmos.implementation.encryption.api.EncryptionType;
+import com.azure.cosmos.encryption.CosmosEncryptionAlgorithm;
+import com.azure.cosmos.encryption.DataEncryptionKey;
+import com.azure.cosmos.encryption.EncryptionType;
 import com.google.common.io.BaseEncoding;
 import com.google.common.io.ByteStreams;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;

@@ -29,6 +29,15 @@ public class Document extends Resource {
     }
 
     /**
+     * Constructor.
+     *
+     * @param content byte[] encoding of the json string that represents the resource.
+     */
+    public Document(byte[] content) {
+        super(content);
+    }
+
+    /**
      * Initialize a document object.
      */
     public Document() {
