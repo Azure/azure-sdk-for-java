@@ -69,6 +69,63 @@ public class EncryptionCosmosAsyncContainer {
             );
     }
 
+    private Mono<CosmosItemResponse<byte[]>> replaceItemStream(byte[] payload,
+                                                              String itemId,
+                                                              PartitionKey partitionKey,
+                                                              EncryptionItemRequestOptions encryptionItemRequestOptions) {
+        Preconditions.checkNotNull(payload, "payload can't be null");
+
+        // TODO: add diagnostics
+        assert encryptionItemRequestOptions != null && encryptionItemRequestOptions.getEncryptionOptions() != null;
+        payload = EncryptionProcessor.encryptAsync(payload, encryptor,
+            encryptionItemRequestOptions.getEncryptionOptions());
+
+        Mono<CosmosItemResponse<byte[]>> response = container.replaceItem(payload,
+            itemId,
+            partitionKey,
+            encryptionItemRequestOptions);
+
+        return response
+            .subscribeOn(Schedulers.elastic())
+            .publishOn(Schedulers.elastic())
+            .map(rsp -> {
+                    EncryptionModelBridgeInternal.setByteArrayContent(
+                        rsp,
+                        decryptResponseAsync(
+                            EncryptionModelBridgeInternal.getByteArrayContent(rsp),
+                            encryptionItemRequestOptions.getDecryptionResultHandler()));
+                    return rsp;
+                }
+            );
+    }
+
+    private Mono<CosmosItemResponse<byte[]>> upsertItemStream(byte[] payload,
+                                                              PartitionKey partitionKey,
+                                                              EncryptionItemRequestOptions encryptionItemRequestOptions) {
+        Preconditions.checkNotNull(payload, "payload can't be null");
+
+        // TODO: add diagnostics
+        assert encryptionItemRequestOptions != null && encryptionItemRequestOptions.getEncryptionOptions() != null;
+        payload = EncryptionProcessor.encryptAsync(payload, encryptor,
+            encryptionItemRequestOptions.getEncryptionOptions());
+
+        Mono<CosmosItemResponse<byte[]>> response = container.upsertItem(payload, partitionKey,
+            encryptionItemRequestOptions);
+
+        return response
+            .subscribeOn(Schedulers.elastic())
+            .publishOn(Schedulers.elastic())
+            .map(rsp -> {
+                    EncryptionModelBridgeInternal.setByteArrayContent(
+                        rsp,
+                        decryptResponseAsync(
+                            EncryptionModelBridgeInternal.getByteArrayContent(rsp),
+                            encryptionItemRequestOptions.getDecryptionResultHandler()));
+                    return rsp;
+                }
+            );
+    }
+
     // TODO ensure all other apis call this guy
 
     /**
@@ -106,6 +163,101 @@ public class EncryptionCosmosAsyncContainer {
             return container.createItem(item, partitionKey, requestOptions);
         }
     }
+
+    /**
+     * Deletes the item.
+     * <p>
+     * After subscription the operation will be performed.
+     * The {@link Mono} upon successful completion will contain a single Cosmos item response with the deleted item.
+     *
+     * @param itemId id of the item.
+     * @param partitionKey partitionKey of the item.
+     * @param options the request options.
+     * @return an {@link Mono} containing the Cosmos item resource response.
+     */
+    public Mono<CosmosItemResponse<Object>> deleteItem(String itemId,
+                                                       PartitionKey partitionKey,
+                                                       CosmosItemRequestOptions options) {
+
+        return container.deleteItem(itemId, partitionKey, options);
+    }
+
+
+    /**
+     * upserts item and encrypts the requested fields
+     *
+     * @param item the Cosmos item represented as a POJO or Cosmos item object.
+     * @param partitionKey the partition key.
+     * @param requestOptions request option
+     * @param <T> serialization class type
+     * @return result
+     */
+    public <T> Mono<CosmosItemResponse<T>> upsertItem(T item,
+                                                      PartitionKey partitionKey,
+                                                      CosmosItemRequestOptions requestOptions) {
+        Preconditions.checkNotNull(item, "item");
+        if (requestOptions == null) {
+            requestOptions = new CosmosItemRequestOptions();
+        }
+
+        EncryptionItemRequestOptions encryptionItemRequestOptions = Utils.as(requestOptions,
+            EncryptionItemRequestOptions.class);
+
+        if (encryptionItemRequestOptions != null && encryptionItemRequestOptions.getEncryptionOptions() != null) {
+            Preconditions.checkArgument(partitionKey != null, "partitionKey cannot be null for operations using "
+                + "EncryptionContainer.");
+
+            byte[] payload = cosmosSerializerToStream(item);
+            Mono<CosmosItemResponse<byte[]>> result = this.createItemStream(payload, partitionKey,
+                encryptionItemRequestOptions);
+
+            return result.map(rsp -> (CosmosItemResponse<T>) this.responseFactory.createItemResponse(rsp,
+                item.getClass()));
+
+        } else {
+            return container.upsertItem(item, partitionKey, requestOptions);
+        }
+    }
+
+    /**
+     * replaces item and encrypts the requested fields
+     *
+     * @param item the Cosmos item represented as a POJO or Cosmos item object.
+     * @param itemId the item id.
+     * @param partitionKey the partition key.
+     * @param requestOptions request option
+     * @param <T> serialization class type
+     * @return result
+     */
+    public <T> Mono<CosmosItemResponse<T>> replaceItem(T item,
+                                                      String itemId,
+                                                      PartitionKey partitionKey,
+                                                      CosmosItemRequestOptions requestOptions) {
+        Preconditions.checkNotNull(item, "item");
+        if (requestOptions == null) {
+            requestOptions = new CosmosItemRequestOptions();
+        }
+
+        EncryptionItemRequestOptions encryptionItemRequestOptions = Utils.as(requestOptions,
+            EncryptionItemRequestOptions.class);
+
+        if (encryptionItemRequestOptions != null && encryptionItemRequestOptions.getEncryptionOptions() != null) {
+            Preconditions.checkArgument(partitionKey != null, "partitionKey cannot be null for operations using "
+                + "EncryptionContainer.");
+
+            byte[] payload = cosmosSerializerToStream(item);
+            Mono<CosmosItemResponse<byte[]>> result = this.createItemStream(payload, partitionKey,
+                encryptionItemRequestOptions);
+
+            return result.map(rsp -> (CosmosItemResponse<T>) this.responseFactory.createItemResponse(rsp,
+                item.getClass()));
+
+        } else {
+            return container.replaceItem(item, itemId, partitionKey, requestOptions);
+        }
+    }
+
+
 
     private Mono<CosmosItemResponse<byte[]>> readItemStream(String id,
                                                             PartitionKey partitionKey,
