@@ -1296,12 +1296,17 @@ class BlockBlobAPITest extends APISpec {
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(bufferSize * Constants.MB).setMaxConcurrency(numBuffers).setMaxSingleUploadSizeLong(4 * Constants.MB)
         def dataList = [] as List<ByteBuffer>
         dataSizeList.each { size -> dataList.add(getRandomData(size * Constants.MB)) }
-        def uploadOperation = blobAsyncClient.upload(Flux.fromIterable(dataList), parallelTransferOptions, true)
+
+        System.out.println("Beginning upload of data.")
+        blobAsyncClient.upload(Flux.fromIterable(dataList), parallelTransferOptions, true).block()
+        System.out.println("Completed uploading of data.")
 
         expect:
-        StepVerifier.create(uploadOperation.then(collectBytesInBuffer(blockBlobAsyncClient.download())))
+        System.out.println("Downloading data to validate.")
+        StepVerifier.create(collectBytesInBuffer(blockBlobAsyncClient.download()))
             .assertNext({ assert compareListToBuffer(dataList, it) })
             .verifyComplete()
+        System.out.println("Completed download and verification")
 
         StepVerifier.create(blockBlobAsyncClient.listBlocks(BlockListType.ALL))
             .assertNext({ assert it.getCommittedBlocks().size() == blockCount })
