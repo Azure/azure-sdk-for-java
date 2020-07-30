@@ -6,7 +6,7 @@ package com.azure.core.http.netty;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.implementation.ChallengeHolder;
 import com.azure.core.http.netty.implementation.DeferredHttpProxyProvider;
-import com.azure.core.http.netty.implementation.TimeoutHandler;
+import com.azure.core.http.netty.implementation.DeferredTimeoutProvider;
 import com.azure.core.util.AuthorizationChallengeHandler;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -147,8 +147,9 @@ public class NettyAsyncHttpClientBuilder {
                 : responseTimeout.get(ChronoUnit.NANOS);
             long readTimeoutNanos = (readTimeout == null) ? sixtySeconds : readTimeout.get(ChronoUnit.NANOS);
 
-            return tcpClient.doOnConnected(connection -> connection.addHandlerLast(
-                new TimeoutHandler(writeTimeoutNanos, responseTimeoutNanos, readTimeoutNanos, TimeUnit.NANOSECONDS)));
+            return tcpClient.bootstrap(bootstrap -> BootstrapHandlers.updateConfiguration(bootstrap,
+                DeferredTimeoutProvider.NAME, new DeferredTimeoutProvider(writeTimeoutNanos, responseTimeoutNanos,
+                    readTimeoutNanos)));
         });
 
         return new NettyAsyncHttpClient(nettyHttpClient, disableBufferCopy);
