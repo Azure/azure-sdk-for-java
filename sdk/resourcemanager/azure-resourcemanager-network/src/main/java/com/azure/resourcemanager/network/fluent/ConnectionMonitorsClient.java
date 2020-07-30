@@ -241,7 +241,7 @@ public final class ConnectionMonitorsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -307,7 +307,8 @@ public final class ConnectionMonitorsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -560,7 +561,7 @@ public final class ConnectionMonitorsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -615,7 +616,8 @@ public final class ConnectionMonitorsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -751,7 +753,7 @@ public final class ConnectionMonitorsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -806,7 +808,8 @@ public final class ConnectionMonitorsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -1001,7 +1004,7 @@ public final class ConnectionMonitorsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
         TagsObject parameters = new TagsObject();
         parameters.withTags(tags);
         return FluxUtil
@@ -1064,9 +1067,10 @@ public final class ConnectionMonitorsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
         TagsObject parameters = new TagsObject();
         parameters.withTags(tags);
+        context = this.client.mergeContext(context);
         return service
             .updateTags(
                 this.client.getEndpoint(),
@@ -1215,7 +1219,7 @@ public final class ConnectionMonitorsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1270,7 +1274,8 @@ public final class ConnectionMonitorsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
+        context = this.client.mergeContext(context);
         return service
             .stop(
                 this.client.getEndpoint(),
@@ -1464,7 +1469,7 @@ public final class ConnectionMonitorsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1519,7 +1524,8 @@ public final class ConnectionMonitorsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
+        context = this.client.mergeContext(context);
         return service
             .start(
                 this.client.getEndpoint(),
@@ -1713,7 +1719,7 @@ public final class ConnectionMonitorsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1768,7 +1774,8 @@ public final class ConnectionMonitorsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
+        context = this.client.mergeContext(context);
         return service
             .query(
                 this.client.getEndpoint(),
@@ -1973,7 +1980,7 @@ public final class ConnectionMonitorsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -2026,7 +2033,8 @@ public final class ConnectionMonitorsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
+        context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),

@@ -204,7 +204,7 @@ public final class PacketCapturesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -270,7 +270,8 @@ public final class PacketCapturesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
+        context = this.client.mergeContext(context);
         return service
             .create(
                 this.client.getEndpoint(),
@@ -500,7 +501,7 @@ public final class PacketCapturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -555,7 +556,8 @@ public final class PacketCapturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -690,7 +692,7 @@ public final class PacketCapturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -745,7 +747,8 @@ public final class PacketCapturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -938,7 +941,7 @@ public final class PacketCapturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -993,7 +996,8 @@ public final class PacketCapturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
+        context = this.client.mergeContext(context);
         return service
             .stop(
                 this.client.getEndpoint(),
@@ -1186,7 +1190,7 @@ public final class PacketCapturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1241,7 +1245,8 @@ public final class PacketCapturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
+        context = this.client.mergeContext(context);
         return service
             .getStatus(
                 this.client.getEndpoint(),
@@ -1447,7 +1452,7 @@ public final class PacketCapturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1500,7 +1505,8 @@ public final class PacketCapturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
+        context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),

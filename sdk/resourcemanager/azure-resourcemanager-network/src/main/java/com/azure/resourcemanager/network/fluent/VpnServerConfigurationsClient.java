@@ -207,7 +207,7 @@ public final class VpnServerConfigurationsClient
                     new IllegalArgumentException(
                         "Parameter vpnServerConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -258,7 +258,8 @@ public final class VpnServerConfigurationsClient
                     new IllegalArgumentException(
                         "Parameter vpnServerConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
+        context = this.client.mergeContext(context);
         return service
             .getByResourceGroup(
                 this.client.getEndpoint(),
@@ -396,7 +397,7 @@ public final class VpnServerConfigurationsClient
         } else {
             vpnServerConfigurationParameters.validate();
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -460,7 +461,8 @@ public final class VpnServerConfigurationsClient
         } else {
             vpnServerConfigurationParameters.validate();
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -697,7 +699,7 @@ public final class VpnServerConfigurationsClient
                     new IllegalArgumentException(
                         "Parameter vpnServerConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
         TagsObject vpnServerConfigurationParameters = new TagsObject();
         vpnServerConfigurationParameters.withTags(tags);
         return FluxUtil
@@ -752,9 +754,10 @@ public final class VpnServerConfigurationsClient
                     new IllegalArgumentException(
                         "Parameter vpnServerConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
         TagsObject vpnServerConfigurationParameters = new TagsObject();
         vpnServerConfigurationParameters.withTags(tags);
+        context = this.client.mergeContext(context);
         return service
             .updateTags(
                 this.client.getEndpoint(),
@@ -887,7 +890,7 @@ public final class VpnServerConfigurationsClient
                     new IllegalArgumentException(
                         "Parameter vpnServerConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -938,7 +941,8 @@ public final class VpnServerConfigurationsClient
                     new IllegalArgumentException(
                         "Parameter vpnServerConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -1109,7 +1113,7 @@ public final class VpnServerConfigurationsClient
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1161,7 +1165,8 @@ public final class VpnServerConfigurationsClient
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
+        context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(
                 this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, apiVersion, context)
@@ -1259,7 +1264,7 @@ public final class VpnServerConfigurationsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1299,7 +1304,8 @@ public final class VpnServerConfigurationsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-11-01";
+        final String apiVersion = "2020-05-01";
+        context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, context)
             .map(
@@ -1409,6 +1415,7 @@ public final class VpnServerConfigurationsClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByResourceGroupNext(nextLink, context)
             .map(
@@ -1465,6 +1472,7 @@ public final class VpnServerConfigurationsClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listNext(nextLink, context)
             .map(

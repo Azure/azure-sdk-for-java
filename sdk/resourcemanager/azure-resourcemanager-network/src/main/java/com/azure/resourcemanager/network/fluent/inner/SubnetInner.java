@@ -98,6 +98,12 @@ public class SubnetInner extends SubResource {
     private List<IpConfigurationProfileInner> ipConfigurationProfiles;
 
     /*
+     * Array of IpAllocation which reference this subnet.
+     */
+    @JsonProperty(value = "properties.ipAllocations")
+    private List<SubResource> ipAllocations;
+
+    /*
      * An array of references to the external resources using subnet.
      */
     @JsonProperty(value = "properties.resourceNavigationLinks", access = JsonProperty.Access.WRITE_ONLY)
@@ -339,6 +345,26 @@ public class SubnetInner extends SubResource {
      */
     public List<IpConfigurationProfileInner> ipConfigurationProfiles() {
         return this.ipConfigurationProfiles;
+    }
+
+    /**
+     * Get the ipAllocations property: Array of IpAllocation which reference this subnet.
+     *
+     * @return the ipAllocations value.
+     */
+    public List<SubResource> ipAllocations() {
+        return this.ipAllocations;
+    }
+
+    /**
+     * Set the ipAllocations property: Array of IpAllocation which reference this subnet.
+     *
+     * @param ipAllocations the ipAllocations value to set.
+     * @return the SubnetInner object itself.
+     */
+    public SubnetInner withIpAllocations(List<SubResource> ipAllocations) {
+        this.ipAllocations = ipAllocations;
+        return this;
     }
 
     /**

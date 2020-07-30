@@ -50,6 +50,12 @@ public class NetworkSecurityGroupInner extends Resource {
     private List<SubnetInner> subnets;
 
     /*
+     * A collection of references to flow log resources.
+     */
+    @JsonProperty(value = "properties.flowLogs", access = JsonProperty.Access.WRITE_ONLY)
+    private List<FlowLogInner> flowLogs;
+
+    /*
      * The resource GUID property of the network security group resource.
      */
     @JsonProperty(value = "properties.resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
@@ -124,6 +130,15 @@ public class NetworkSecurityGroupInner extends Resource {
     }
 
     /**
+     * Get the flowLogs property: A collection of references to flow log resources.
+     *
+     * @return the flowLogs value.
+     */
+    public List<FlowLogInner> flowLogs() {
+        return this.flowLogs;
+    }
+
+    /**
      * Get the resourceGuid property: The resource GUID property of the network security group resource.
      *
      * @return the resourceGuid value.
@@ -178,6 +193,9 @@ public class NetworkSecurityGroupInner extends Resource {
         }
         if (subnets() != null) {
             subnets().forEach(e -> e.validate());
+        }
+        if (flowLogs() != null) {
+            flowLogs().forEach(e -> e.validate());
         }
     }
 }

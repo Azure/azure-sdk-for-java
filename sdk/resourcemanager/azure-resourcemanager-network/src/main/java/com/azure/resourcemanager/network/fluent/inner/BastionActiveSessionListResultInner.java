@@ -6,7 +6,6 @@ package com.azure.resourcemanager.network.fluent.inner;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.models.BastionActiveSession;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -20,7 +19,7 @@ public final class BastionActiveSessionListResultInner {
      * List of active sessions on the bastion.
      */
     @JsonProperty(value = "value")
-    private List<BastionActiveSession> value;
+    private List<BastionActiveSessionInner> value;
 
     /*
      * The URL to get the next set of results.
@@ -33,7 +32,7 @@ public final class BastionActiveSessionListResultInner {
      *
      * @return the value value.
      */
-    public List<BastionActiveSession> value() {
+    public List<BastionActiveSessionInner> value() {
         return this.value;
     }
 
@@ -43,7 +42,7 @@ public final class BastionActiveSessionListResultInner {
      * @param value the value value to set.
      * @return the BastionActiveSessionListResultInner object itself.
      */
-    public BastionActiveSessionListResultInner withValue(List<BastionActiveSession> value) {
+    public BastionActiveSessionListResultInner withValue(List<BastionActiveSessionInner> value) {
         this.value = value;
         return this;
     }

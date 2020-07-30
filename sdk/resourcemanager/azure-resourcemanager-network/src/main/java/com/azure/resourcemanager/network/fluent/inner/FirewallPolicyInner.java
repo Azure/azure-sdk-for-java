@@ -10,6 +10,8 @@ import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.AzureFirewallThreatIntelMode;
+import com.azure.resourcemanager.network.models.DnsSettings;
+import com.azure.resourcemanager.network.models.FirewallPolicyThreatIntelWhitelist;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -28,10 +30,10 @@ public class FirewallPolicyInner extends Resource {
     private String etag;
 
     /*
-     * List of references to FirewallPolicyRuleGroups.
+     * List of references to FirewallPolicyRuleCollectionGroups.
      */
-    @JsonProperty(value = "properties.ruleGroups", access = JsonProperty.Access.WRITE_ONLY)
-    private List<SubResource> ruleGroups;
+    @JsonProperty(value = "properties.ruleCollectionGroups", access = JsonProperty.Access.WRITE_ONLY)
+    private List<SubResource> ruleCollectionGroups;
 
     /*
      * The provisioning state of the firewall policy resource.
@@ -65,6 +67,18 @@ public class FirewallPolicyInner extends Resource {
     private AzureFirewallThreatIntelMode threatIntelMode;
 
     /*
+     * ThreatIntel Whitelist for Firewall Policy.
+     */
+    @JsonProperty(value = "properties.threatIntelWhitelist")
+    private FirewallPolicyThreatIntelWhitelist threatIntelWhitelist;
+
+    /*
+     * DNS Proxy Settings definition.
+     */
+    @JsonProperty(value = "properties.dnsSettings")
+    private DnsSettings dnsSettings;
+
+    /*
      * Resource ID.
      */
     @JsonProperty(value = "id")
@@ -80,12 +94,12 @@ public class FirewallPolicyInner extends Resource {
     }
 
     /**
-     * Get the ruleGroups property: List of references to FirewallPolicyRuleGroups.
+     * Get the ruleCollectionGroups property: List of references to FirewallPolicyRuleCollectionGroups.
      *
-     * @return the ruleGroups value.
+     * @return the ruleCollectionGroups value.
      */
-    public List<SubResource> ruleGroups() {
-        return this.ruleGroups;
+    public List<SubResource> ruleCollectionGroups() {
+        return this.ruleCollectionGroups;
     }
 
     /**
@@ -156,6 +170,46 @@ public class FirewallPolicyInner extends Resource {
     }
 
     /**
+     * Get the threatIntelWhitelist property: ThreatIntel Whitelist for Firewall Policy.
+     *
+     * @return the threatIntelWhitelist value.
+     */
+    public FirewallPolicyThreatIntelWhitelist threatIntelWhitelist() {
+        return this.threatIntelWhitelist;
+    }
+
+    /**
+     * Set the threatIntelWhitelist property: ThreatIntel Whitelist for Firewall Policy.
+     *
+     * @param threatIntelWhitelist the threatIntelWhitelist value to set.
+     * @return the FirewallPolicyInner object itself.
+     */
+    public FirewallPolicyInner withThreatIntelWhitelist(FirewallPolicyThreatIntelWhitelist threatIntelWhitelist) {
+        this.threatIntelWhitelist = threatIntelWhitelist;
+        return this;
+    }
+
+    /**
+     * Get the dnsSettings property: DNS Proxy Settings definition.
+     *
+     * @return the dnsSettings value.
+     */
+    public DnsSettings dnsSettings() {
+        return this.dnsSettings;
+    }
+
+    /**
+     * Set the dnsSettings property: DNS Proxy Settings definition.
+     *
+     * @param dnsSettings the dnsSettings value to set.
+     * @return the FirewallPolicyInner object itself.
+     */
+    public FirewallPolicyInner withDnsSettings(DnsSettings dnsSettings) {
+        this.dnsSettings = dnsSettings;
+        return this;
+    }
+
+    /**
      * Get the id property: Resource ID.
      *
      * @return the id value.
@@ -181,5 +235,11 @@ public class FirewallPolicyInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (threatIntelWhitelist() != null) {
+            threatIntelWhitelist().validate();
+        }
+        if (dnsSettings() != null) {
+            dnsSettings().validate();
+        }
     }
 }

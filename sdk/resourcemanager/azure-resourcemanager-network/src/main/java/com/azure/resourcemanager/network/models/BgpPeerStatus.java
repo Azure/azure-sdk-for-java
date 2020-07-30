@@ -30,7 +30,7 @@ public final class BgpPeerStatus {
      * The autonomous system number of the remote BGP peer.
      */
     @JsonProperty(value = "asn", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer asn;
+    private Long asn;
 
     /*
      * The BGP peer state.
@@ -85,7 +85,7 @@ public final class BgpPeerStatus {
      *
      * @return the asn value.
      */
-    public Integer asn() {
+    public Long asn() {
         return this.asn;
     }
 

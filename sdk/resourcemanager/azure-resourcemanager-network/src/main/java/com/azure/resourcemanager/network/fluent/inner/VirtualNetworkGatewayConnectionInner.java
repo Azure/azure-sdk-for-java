@@ -75,6 +75,12 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     private Integer routingWeight;
 
     /*
+     * The dead peer detection timeout of this connection in seconds.
+     */
+    @JsonProperty(value = "properties.dpdTimeoutSeconds")
+    private Integer dpdTimeoutSeconds;
+
+    /*
      * The IPSec shared key.
      */
     @JsonProperty(value = "properties.sharedKey")
@@ -115,6 +121,12 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
      */
     @JsonProperty(value = "properties.enableBgp")
     private Boolean enableBgp;
+
+    /*
+     * Use private local Azure IP for the connection.
+     */
+    @JsonProperty(value = "properties.useLocalAzureIpAddress")
+    private Boolean useLocalAzureIpAddress;
 
     /*
      * Enable policy-based traffic selectors.
@@ -314,6 +326,26 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     }
 
     /**
+     * Get the dpdTimeoutSeconds property: The dead peer detection timeout of this connection in seconds.
+     *
+     * @return the dpdTimeoutSeconds value.
+     */
+    public Integer dpdTimeoutSeconds() {
+        return this.dpdTimeoutSeconds;
+    }
+
+    /**
+     * Set the dpdTimeoutSeconds property: The dead peer detection timeout of this connection in seconds.
+     *
+     * @param dpdTimeoutSeconds the dpdTimeoutSeconds value to set.
+     * @return the VirtualNetworkGatewayConnectionInner object itself.
+     */
+    public VirtualNetworkGatewayConnectionInner withDpdTimeoutSeconds(Integer dpdTimeoutSeconds) {
+        this.dpdTimeoutSeconds = dpdTimeoutSeconds;
+        return this;
+    }
+
+    /**
      * Get the sharedKey property: The IPSec shared key.
      *
      * @return the sharedKey value.
@@ -406,6 +438,26 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
      */
     public VirtualNetworkGatewayConnectionInner withEnableBgp(Boolean enableBgp) {
         this.enableBgp = enableBgp;
+        return this;
+    }
+
+    /**
+     * Get the useLocalAzureIpAddress property: Use private local Azure IP for the connection.
+     *
+     * @return the useLocalAzureIpAddress value.
+     */
+    public Boolean useLocalAzureIpAddress() {
+        return this.useLocalAzureIpAddress;
+    }
+
+    /**
+     * Set the useLocalAzureIpAddress property: Use private local Azure IP for the connection.
+     *
+     * @param useLocalAzureIpAddress the useLocalAzureIpAddress value to set.
+     * @return the VirtualNetworkGatewayConnectionInner object itself.
+     */
+    public VirtualNetworkGatewayConnectionInner withUseLocalAzureIpAddress(Boolean useLocalAzureIpAddress) {
+        this.useLocalAzureIpAddress = useLocalAzureIpAddress;
         return this;
     }
 

@@ -65,6 +65,12 @@ public class P2SVpnGatewayInner extends Resource {
     private VpnClientConnectionHealth vpnClientConnectionHealth;
 
     /*
+     * List of all customer specified DNS servers IP addresses.
+     */
+    @JsonProperty(value = "properties.customDnsServers")
+    private List<String> customDnsServers;
+
+    /*
      * Resource ID.
      */
     @JsonProperty(value = "id")
@@ -176,6 +182,26 @@ public class P2SVpnGatewayInner extends Resource {
      */
     public VpnClientConnectionHealth vpnClientConnectionHealth() {
         return this.vpnClientConnectionHealth;
+    }
+
+    /**
+     * Get the customDnsServers property: List of all customer specified DNS servers IP addresses.
+     *
+     * @return the customDnsServers value.
+     */
+    public List<String> customDnsServers() {
+        return this.customDnsServers;
+    }
+
+    /**
+     * Set the customDnsServers property: List of all customer specified DNS servers IP addresses.
+     *
+     * @param customDnsServers the customDnsServers value to set.
+     * @return the P2SVpnGatewayInner object itself.
+     */
+    public P2SVpnGatewayInner withCustomDnsServers(List<String> customDnsServers) {
+        this.customDnsServers = customDnsServers;
+        return this;
     }
 
     /**

@@ -9,6 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.CircuitConnectionStatus;
+import com.azure.resourcemanager.network.models.Ipv6CircuitConnectionConfig;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -63,6 +64,12 @@ public class ExpressRouteCircuitConnectionInner extends SubResource {
      */
     @JsonProperty(value = "properties.authorizationKey")
     private String authorizationKey;
+
+    /*
+     * IPv6 Address PrefixProperties of the express route circuit connection.
+     */
+    @JsonProperty(value = "properties.ipv6CircuitConnectionConfig")
+    private Ipv6CircuitConnectionConfig ipv6CircuitConnectionConfig;
 
     /*
      * Express Route Circuit connection state.
@@ -202,6 +209,29 @@ public class ExpressRouteCircuitConnectionInner extends SubResource {
     }
 
     /**
+     * Get the ipv6CircuitConnectionConfig property: IPv6 Address PrefixProperties of the express route circuit
+     * connection.
+     *
+     * @return the ipv6CircuitConnectionConfig value.
+     */
+    public Ipv6CircuitConnectionConfig ipv6CircuitConnectionConfig() {
+        return this.ipv6CircuitConnectionConfig;
+    }
+
+    /**
+     * Set the ipv6CircuitConnectionConfig property: IPv6 Address PrefixProperties of the express route circuit
+     * connection.
+     *
+     * @param ipv6CircuitConnectionConfig the ipv6CircuitConnectionConfig value to set.
+     * @return the ExpressRouteCircuitConnectionInner object itself.
+     */
+    public ExpressRouteCircuitConnectionInner withIpv6CircuitConnectionConfig(
+        Ipv6CircuitConnectionConfig ipv6CircuitConnectionConfig) {
+        this.ipv6CircuitConnectionConfig = ipv6CircuitConnectionConfig;
+        return this;
+    }
+
+    /**
      * Get the circuitConnectionStatus property: Express Route Circuit connection state.
      *
      * @return the circuitConnectionStatus value.
@@ -225,5 +255,8 @@ public class ExpressRouteCircuitConnectionInner extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (ipv6CircuitConnectionConfig() != null) {
+            ipv6CircuitConnectionConfig().validate();
+        }
     }
 }

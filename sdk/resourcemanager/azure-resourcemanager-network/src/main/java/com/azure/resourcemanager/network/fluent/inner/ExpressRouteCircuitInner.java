@@ -116,7 +116,7 @@ public class ExpressRouteCircuitInner extends Resource {
     private String gatewayManagerEtag;
 
     /*
-     * Flag denoting Global reach status.
+     * Flag denoting global reach status.
      */
     @JsonProperty(value = "properties.globalReachEnabled")
     private Boolean globalReachEnabled;
@@ -401,7 +401,7 @@ public class ExpressRouteCircuitInner extends Resource {
     }
 
     /**
-     * Get the globalReachEnabled property: Flag denoting Global reach status.
+     * Get the globalReachEnabled property: Flag denoting global reach status.
      *
      * @return the globalReachEnabled value.
      */
@@ -410,7 +410,7 @@ public class ExpressRouteCircuitInner extends Resource {
     }
 
     /**
-     * Set the globalReachEnabled property: Flag denoting Global reach status.
+     * Set the globalReachEnabled property: Flag denoting global reach status.
      *
      * @param globalReachEnabled the globalReachEnabled value to set.
      * @return the ExpressRouteCircuitInner object itself.
