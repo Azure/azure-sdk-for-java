@@ -11,9 +11,11 @@ import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.BlobRequestConditions
+import com.azure.storage.blob.models.BlobSourceRequestConditions
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.CopyStatusType
 import com.azure.storage.blob.options.BlobGetTagsOptions
+import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions
 import com.azure.storage.blob.options.PageBlobCreateOptions
 import com.azure.storage.blob.models.PageBlobRequestConditions
 import com.azure.storage.blob.models.PageRange
@@ -1130,7 +1132,6 @@ class PageBlobAPITest extends APISpec {
         cc.setAccessPolicy(PublicAccessType.BLOB, null)
         def bu2 = cc.getBlobClient(generateBlobName()).getPageBlobClient()
         def snapshot = bc.createSnapshot().getSnapshotId()
-
         def copyResponse = bu2.copyIncrementalWithResponse(bc.getBlobUrl(), snapshot, null, null, null)
 
         def status = copyResponse.getValue()
@@ -1143,25 +1144,30 @@ class PageBlobAPITest extends APISpec {
             }
             sleepIfRecord(1000)
         }
+        def t = new HashMap<String, String>()
+        t.put("foo", "bar")
+        bu2.setTags(t)
 
         snapshot = bc.createSnapshot().getSnapshotId()
         match = setupBlobMatchCondition(bu2, match)
-        def mac = new RequestConditions()
+        def mac = new BlobSourceRequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
+            .setTagsConditions(tags)
 
         expect:
-        bu2.copyIncrementalWithResponse(bc.getBlobUrl(), snapshot, mac, null, null).getStatusCode() == 202
+        bu2.copyIncrementalWithResponse(new PageBlobCopyIncrementalOptions(bc.getBlobUrl(), snapshot).setSourceRequestConditions(mac), null, null).getStatusCode() == 202
 
         where:
-        modified | unmodified | match        | noneMatch
-        null     | null       | null         | null
-        oldDate  | null       | null         | null
-        null     | newDate    | null         | null
-        null     | null       | receivedEtag | null
-        null     | null       | null         | garbageEtag
+        modified | unmodified | match        | noneMatch    | tags
+        null     | null       | null         | null         | null
+        oldDate  | null       | null         | null         | null
+        null     | newDate    | null         | null         | null
+        null     | null       | receivedEtag | null         | null
+        null     | null       | null         | garbageEtag  | null
+        null     | null       | null         | null         | "\"foo\" = 'bar'"
     }
 
     @Unroll
@@ -1173,24 +1179,26 @@ class PageBlobAPITest extends APISpec {
         bu2.copyIncremental(bc.getBlobUrl(), snapshot)
         snapshot = bc.createSnapshot().getSnapshotId()
         noneMatch = setupBlobMatchCondition(bu2, noneMatch)
-        def mac = new RequestConditions()
+        def mac = new BlobSourceRequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
+            .setTagsConditions(tags)
 
         when:
-        bu2.copyIncrementalWithResponse(bc.getBlobUrl(), snapshot, mac, null, null)
+        bu2.copyIncrementalWithResponse(new PageBlobCopyIncrementalOptions(bc.getBlobUrl(), snapshot).setSourceRequestConditions(mac),null, null)
 
         then:
         thrown(BlobStorageException)
 
         where:
-        modified | unmodified | match       | noneMatch
-        newDate  | null       | null        | null
-        null     | oldDate    | null        | null
-        null     | null       | garbageEtag | null
-        null     | null       | null        | receivedEtag
+        modified | unmodified | match       | noneMatch     | tags
+        newDate  | null       | null        | null          | null
+        null     | oldDate    | null        | null          | null
+        null     | null       | garbageEtag | null          | null
+        null     | null       | null        | receivedEtag  | null
+        null     | null       | null         | null         | "\"notfoo\" = 'notbar'"
     }
 
     def "Start incremental copy error"() {
