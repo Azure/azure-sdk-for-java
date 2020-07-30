@@ -188,7 +188,8 @@ public class TableServiceAsyncClient {
         }
     } //1459
 
-    private Mono<PagedResponse<AzureTable>> listTablesNextPage(String token, Context context, TableQueryParams queryParams) {
+    private Mono<PagedResponse<AzureTable>> listTablesNextPage(String token, Context context,
+        TableQueryParams queryParams) {
         try {
             return listTables(token, context, queryParams);
         } catch (RuntimeException e) {
@@ -196,7 +197,8 @@ public class TableServiceAsyncClient {
         }
     } //1459
 
-    private Mono<PagedResponse<AzureTable>> listTables(String nextTableName, Context context, TableQueryParams queryParams) {
+    private Mono<PagedResponse<AzureTable>> listTables(String nextTableName, Context context,
+        TableQueryParams queryParams) {
         QueryOptions queryOptions = new QueryOptions()
             .setFilter(queryParams.getFilter())
             .setTop(queryParams.getTop())

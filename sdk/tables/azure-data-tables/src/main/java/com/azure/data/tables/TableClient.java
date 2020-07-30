@@ -70,6 +70,7 @@ public class TableClient {
      *
      * @return a table
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public AzureTable create() {
         return client.create().block();
     }
@@ -80,6 +81,7 @@ public class TableClient {
      * @param timeout Duration to wait for operation to complete.
      * @return a table
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public AzureTable create(Duration timeout) {
         return client.create().block(timeout);
     }
@@ -91,6 +93,7 @@ public class TableClient {
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return HTTP response containing the created table.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AzureTable> createWithResponse(Duration timeout, Context context) {
         return client.createWithResponse(context).block(timeout);
     }

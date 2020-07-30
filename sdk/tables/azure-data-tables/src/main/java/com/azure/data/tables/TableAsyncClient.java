@@ -43,8 +43,12 @@ import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.data.tables.implementation.TableConstants.ETAG;
+import static com.azure.data.tables.implementation.TableConstants.ETAG_KEY;
+import static com.azure.data.tables.implementation.TableConstants.ODATA_METADATA_KEY;
 import static com.azure.data.tables.implementation.TableConstants.PARTITION_KEY;
 import static com.azure.data.tables.implementation.TableConstants.ROW_KEY;
+import static com.azure.data.tables.implementation.TableConstants.TIMESTAMP;
 
 /**
  * class for the table async client
@@ -152,7 +156,8 @@ public class TableAsyncClient {
     Mono<Response<AzureTable>> createWithResponse(Context context) {
         return tableImplementation.createWithResponseAsync(new TableProperties().setTableName(tableName), null,
             ResponseFormat.RETURN_CONTENT, null, context).map(response -> {
-                AzureTable table = response.getValue() == null ? null : new AzureTable(response.getValue().getTableName());
+                AzureTable table = response.getValue() == null ? null : new AzureTable(response.getValue()
+                    .getTableName());
                 return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                 table);
             });
@@ -236,11 +241,11 @@ public class TableAsyncClient {
 
     Mono<Response<Void>> upsertEntityWithResponse(TableEntity entity, TableUpdateMode updateMode, Duration timeout,
         Context context) {
-        Map<String, Object> properties = addPropertyTyping(entity.getProperties());
-        Integer timeoutInt = timeout == null ? null : (int) timeout.getSeconds();
         if (entity == null) {
             return monoError(logger, new NullPointerException("TableEntity cannot be null"));
         }
+        Map<String, Object> properties = addPropertyTyping(entity.getProperties());
+        Integer timeoutInt = timeout == null ? null : (int) timeout.getSeconds();
         if (updateMode == TableUpdateMode.REPLACE) {
             return tableImplementation.updateEntityWithResponseAsync(tableName, entity.getPartitionKey(),
                 entity.getRowKey(), timeoutInt, null, "*",
@@ -311,7 +316,8 @@ public class TableAsyncClient {
      * @return a response
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateEntityWithResponse(TableEntity entity, boolean ifUnchanged, TableUpdateMode updateMode) {
+    public Mono<Response<Void>> updateEntityWithResponse(TableEntity entity, boolean ifUnchanged,
+        TableUpdateMode updateMode) {
         return withContext(context -> updateEntityWithResponse(entity, ifUnchanged, updateMode, null, context));
     }
 
@@ -451,7 +457,8 @@ public class TableAsyncClient {
         }
     } //1459
 
-    private Mono<PagedResponse<TableEntity>> listNextPageEntities(String token, Context context, TableQueryParams queryParams) {
+    private Mono<PagedResponse<TableEntity>> listNextPageEntities(String token, Context context,
+        TableQueryParams queryParams) {
         if (token == null) {
             return Mono.empty();
         }
@@ -505,8 +512,8 @@ public class TableAsyncClient {
         private final IterableStream<TableEntity> entityStream;
         private final String continuationToken;
 
-        EntityPaged(Response<TableEntityQueryResponse> httpResponse, List<TableEntity> entityList, String nextPartitionKey,
-            String nextRowKey) {
+        EntityPaged(Response<TableEntityQueryResponse> httpResponse, List<TableEntity> entityList,
+            String nextPartitionKey, String nextRowKey) {
             if (nextPartitionKey == null || nextRowKey == null) {
                 this.continuationToken = null;
             } else {
@@ -645,10 +652,10 @@ public class TableAsyncClient {
 
     private Map<String, Object> addPropertyTyping(Map<String, Object> properties) {
         Map<String, Object> result = new HashMap<>();
-        for (Map.Entry<String,Object> entry : properties.entrySet()) {
+        for (Map.Entry<String, Object> entry : properties.entrySet()) {
             if (!entry.getKey().equals(PARTITION_KEY) && !entry.getKey().equals(ROW_KEY)
-                && !entry.getKey().equals("Timestamp") && !entry.getKey().equals("Etag")
-                && !entry.getKey().equals("odata.etag") && !entry.getKey().equals("odata.metadata")) {
+                && !entry.getKey().equals(TIMESTAMP) && !entry.getKey().equals(ETAG)
+                && !entry.getKey().equals(ETAG_KEY) && !entry.getKey().equals(ODATA_METADATA_KEY)) {
                 String key = entry.getKey().concat(ODataConstants.ODATA_TYPE_SUFFIX);
                 String value = getEntityProperty(entry.getValue().getClass()).toString();
                 result.put(key, value);
@@ -662,45 +669,32 @@ public class TableAsyncClient {
 
         if (type.equals(byte[].class)) {
             return EdmType.BINARY;
-        }
-        else if (type.equals(Byte[].class)) {
+        } else if (type.equals(Byte[].class)) {
             return EdmType.BINARY;
-        }
-        else if (type.equals(String.class)) {
+        } else if (type.equals(String.class)) {
             return EdmType.STRING;
-        }
-        else if (type.equals(boolean.class)) {
+        } else if (type.equals(boolean.class)) {
             return EdmType.BOOLEAN;
-        }
-        else if (type.equals(Boolean.class)) {
+        } else if (type.equals(Boolean.class)) {
             return EdmType.BOOLEAN;
-        }
-        else if (type.equals(Date.class)) {
+        } else if (type.equals(Date.class)) {
             return EdmType.DATE_TIME;
-        }
-        else if (type.equals(double.class)) {
+        } else if (type.equals(double.class)) {
             return EdmType.DOUBLE;
-        }
-        else if (type.equals(Double.class)) {
+        } else if (type.equals(Double.class)) {
             return EdmType.DOUBLE;
-        }
-        else if (type.equals(UUID.class)) {
+        } else if (type.equals(UUID.class)) {
             return EdmType.GUID;
-        }
-        else if (type.equals(int.class)) {
+        } else if (type.equals(int.class)) {
             return EdmType.INT32;
-        }
-        else if (type.equals(Integer.class)) {
+        } else if (type.equals(Integer.class)) {
             return EdmType.INT32;
-        }
-        else if (type.equals(long.class)) {
+        } else if (type.equals(long.class)) {
             return EdmType.INT64;
-        }
-        else if (type.equals(Long.class)) {
+        } else if (type.equals(Long.class)) {
             return EdmType.INT64;
-        }
-        else {
-            throw new IllegalArgumentException("unable to parse");
+        } else {
+            throw logger.logExceptionAsError(new RuntimeException("unable to parse"));
         }
     }
 }

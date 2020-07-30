@@ -17,6 +17,16 @@ public final class TableConstants {
     public static final String ROW_KEY = "RowKey";
 
     /**
+     * Name in the Map to get the timestamp
+     */
+    public static final String TIMESTAMP = "Timestamp";
+
+    /**
+     * Name in the Map to get the etag
+     */
+    public static final String ETAG = "Etag";
+
+    /**
      * Name in the map to get row key.
      */
     public static final String ETAG_KEY = "odata.etag";
