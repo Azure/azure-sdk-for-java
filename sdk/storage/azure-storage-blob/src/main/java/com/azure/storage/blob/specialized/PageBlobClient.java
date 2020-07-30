@@ -623,7 +623,7 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.copyIncrementalWithResponse#PageBlobCopyIncrementalOptionss-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.copyIncrementalWithResponse#PageBlobCopyIncrementalOptions-Duration-Context}
      *
      * @param options {@link PageBlobCopyIncrementalOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
