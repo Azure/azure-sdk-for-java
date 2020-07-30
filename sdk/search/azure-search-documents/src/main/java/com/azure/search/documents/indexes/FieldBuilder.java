@@ -62,6 +62,9 @@ public final class FieldBuilder {
      * @return A collection of fields.
      */
     public static <T> List<SearchField> build(Class<T> modelClass, PropertyNameSerializer serializer) {
+        if (serializer == null) {
+            serializer = new JacksonJsonSerializerProvider().createInstance();
+        }
         ClientLogger logger = new ClientLogger(FieldBuilder.class);
         return build(modelClass, new Stack<>(), serializer, logger);
     }
@@ -96,9 +99,6 @@ public final class FieldBuilder {
 
     private static SearchField buildField(Field classField, Stack<Class<?>> classChain,
         PropertyNameSerializer serializer, ClientLogger logger) {
-        if (serializer == null) {
-            serializer = new JacksonJsonSerializerProvider().createInstance();
-        }
         String fieldName = serializer.getSerializerMemberName(classField);
         if (fieldName == null) {
             return null;

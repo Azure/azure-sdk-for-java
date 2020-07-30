@@ -11,4 +11,9 @@ public class Hotel {
     public String getHotelName() {
         return hotelName;
     }
+
+    public Hotel setHotelName() {
+        this.hotelName = hotelName;
+        return this;
+    }
 }

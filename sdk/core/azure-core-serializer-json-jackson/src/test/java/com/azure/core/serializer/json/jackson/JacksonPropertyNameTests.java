@@ -28,57 +28,57 @@ public class JacksonPropertyNameTests {
 
     @Test
     public void testPropertyNameOnFieldName() throws NoSuchFieldException {
-        class Hotel {
+        class LocalHotel {
             String hotelName;
         }
-        Field f = Hotel.class.getDeclaredField("hotelName");
+        Field f = LocalHotel.class.getDeclaredField("hotelName");
         assertMemberValue(f, "hotelName");
     }
 
     @Test
     public void testPropertyNameOnIgnoredFieldName() throws NoSuchFieldException {
-        class Hotel {
+        class LocalHotel {
             @JsonIgnore
             String hotelName;
         }
-        Field f = Hotel.class.getDeclaredField("hotelName");
+        Field f = LocalHotel.class.getDeclaredField("hotelName");
         assertMemberNull(f);
     }
 
     @Test
     public void testPropertyNameOnFieldAnnotation() throws NoSuchFieldException {
-        class Hotel {
+        class LocalHotel {
             @JsonProperty(value = EXPECT_VALUE_IN_FIELD)
             String hotelName;
         }
-        Field f = Hotel.class.getDeclaredField("hotelName");
+        Field f = LocalHotel.class.getDeclaredField("hotelName");
         assertMemberValue(f, EXPECT_VALUE_IN_FIELD);
     }
 
     @Test
     public void testPropertyNameOnFieldAnnotationWithEmptyValue() throws NoSuchFieldException {
-        class Hotel {
+        class LocalHotel {
             @JsonProperty(value = "")
             String hotelName;
         }
-        Field f = Hotel.class.getDeclaredField("hotelName");
+        Field f = LocalHotel.class.getDeclaredField("hotelName");
 
         assertMemberValue(f, "hotelName");
     }
 
     @Test
     public void testPropertyNameOnFieldAnnotationWithNullValue() throws NoSuchFieldException {
-        class Hotel {
+        class LocalHotel {
             @JsonProperty()
             String hotelName;
         }
-        Field f = Hotel.class.getDeclaredField("hotelName");
+        Field f = LocalHotel.class.getDeclaredField("hotelName");
         assertMemberValue(f, "hotelName");
     }
 
     @Test
     public void testPropertyNameOnMethodName() throws NoSuchMethodException {
-        class Hotel {
+        class LocalHotel {
             String hotelName;
 
             public String getHotelName() {
@@ -86,13 +86,13 @@ public class JacksonPropertyNameTests {
             }
         }
 
-        Method m = Hotel.class.getDeclaredMethod("getHotelName");
+        Method m = LocalHotel.class.getDeclaredMethod("getHotelName");
         assertMemberValue(m, "getHotelName");
     }
 
     @Test
     public void testPropertyNameOnIgnoredMethodName() throws NoSuchMethodException {
-        class Hotel {
+        class LocalHotel {
             String hotelName;
 
             @JsonIgnore
@@ -100,13 +100,13 @@ public class JacksonPropertyNameTests {
                 return hotelName;
             }
         }
-        Method m = Hotel.class.getDeclaredMethod("getHotelName");
+        Method m = LocalHotel.class.getDeclaredMethod("getHotelName");
         assertMemberNull(m);
     }
 
     @Test
     public void testPropertyNameOnMethodAnnotation() throws NoSuchMethodException {
-        class Hotel {
+        class LocalHotel {
             String hotelName;
 
             @JsonProperty(value = EXPECT_VALUE_IN_METHOD)
@@ -115,14 +115,14 @@ public class JacksonPropertyNameTests {
             }
         }
 
-        Method m = Hotel.class.getDeclaredMethod("getHotelName");
+        Method m = LocalHotel.class.getDeclaredMethod("getHotelName");
         assertMemberValue(m, EXPECT_VALUE_IN_METHOD);
     }
 
 
     @Test
     public void testPropertyNameOnMethodAnnotationWithEmptyValue() throws NoSuchMethodException {
-        class Hotel {
+        class LocalHotel {
             String hotelName;
 
             @JsonProperty(value = "")
@@ -131,13 +131,13 @@ public class JacksonPropertyNameTests {
             }
         }
 
-        Method m = Hotel.class.getDeclaredMethod("getHotelName");
+        Method m = LocalHotel.class.getDeclaredMethod("getHotelName");
         assertMemberValue(m, "getHotelName");
     }
 
     @Test
     public void testPropertyNameOnMethodAnnotationWithNullValue() throws NoSuchMethodException {
-        class Hotel {
+        class LocalHotel {
             String hotelName;
 
             @JsonProperty()
@@ -146,7 +146,7 @@ public class JacksonPropertyNameTests {
             }
         }
 
-        Method m = Hotel.class.getDeclaredMethod("getHotelName");
+        Method m = LocalHotel.class.getDeclaredMethod("getHotelName");
         assertMemberValue(m, "getHotelName");
     }
 
@@ -170,6 +170,14 @@ public class JacksonPropertyNameTests {
 
     @Test
     public void compareSerializedNameWithJsonSerializer() {
+        class LocalHotel {
+            @JsonProperty("a")
+            String hotelName;
 
+            public String getHotelName() {
+                return hotelName;
+            }
+        }
+        JacksonJsonObject node = (JacksonJsonObject) serializer.toTree(new LocalHotel());
     }
 }
