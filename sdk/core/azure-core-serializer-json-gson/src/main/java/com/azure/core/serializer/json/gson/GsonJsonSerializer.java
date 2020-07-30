@@ -23,7 +23,6 @@ import java.io.UncheckedIOException;
 import java.io.Writer;
 import java.lang.reflect.Field;
 import java.lang.reflect.Member;
-import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.nio.charset.StandardCharsets;
 
@@ -119,15 +118,13 @@ public final class GsonJsonSerializer implements JsonSerializer, PropertyNameSer
             if (gson.excluder().excludeField(f, true)) {
                 return null;
             }
-            if (!f.isAnnotationPresent(SerializedName.class)) {
-                return member.getName();
+            if (f.isAnnotationPresent(SerializedName.class)) {
+                String propertyName = f.getDeclaredAnnotation(SerializedName.class).value();
+                return CoreUtils.isNullOrEmpty(propertyName) ? f.getName() : propertyName;
             }
-            String propertyName = f.getDeclaredAnnotation(SerializedName.class).value();
-            return CoreUtils.isNullOrEmpty(propertyName) ? f.getName() : propertyName;
-        } else if (member instanceof Method) {
-            return member.getName();
         }
-        return null;
+
+        return member.getName();
     }
 
     @Override

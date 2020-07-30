@@ -7,8 +7,8 @@ import com.azure.core.experimental.serializer.JsonNode;
 import com.azure.core.experimental.serializer.JsonSerializer;
 import com.azure.core.experimental.serializer.PropertyNameSerializer;
 import com.azure.core.experimental.serializer.TypeReference;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -132,23 +132,23 @@ public final class JacksonJsonSerializer implements JsonSerializer, PropertyName
             if (f.isAnnotationPresent(JsonIgnore.class)) {
                 return null;
             }
-            if (!f.isAnnotationPresent(JsonProperty.class)) {
-                return member.getName();
+            if (f.isAnnotationPresent(JsonProperty.class)) {
+                String propertyName = f.getDeclaredAnnotation(JsonProperty.class).value();
+                return CoreUtils.isNullOrEmpty(propertyName) ? f.getName() : propertyName;
             }
-            String propertyName = f.getDeclaredAnnotation(JsonProperty.class).value();
-            return CoreUtils.isNullOrEmpty(propertyName) ? f.getName() : propertyName;
-        } else if (member instanceof Method) {
+        }
+
+        if (member instanceof Method) {
             Method m = (Method) member;
             if (m.isAnnotationPresent(JsonIgnore.class)) {
                 return null;
             }
-            if (!m.isAnnotationPresent(JsonProperty.class)) {
-                return member.getName();
+            if (m.isAnnotationPresent(JsonProperty.class)) {
+                String propertyName = m.getDeclaredAnnotation(JsonProperty.class).value();
+                return CoreUtils.isNullOrEmpty(propertyName) ? m.getName() : propertyName;
             }
-            String propertyName = m.getDeclaredAnnotation(JsonProperty.class).value();
-            return CoreUtils.isNullOrEmpty(propertyName) ? m.getName() : propertyName;
         }
 
-        return null;
+        return member.getName();
     }
 }
