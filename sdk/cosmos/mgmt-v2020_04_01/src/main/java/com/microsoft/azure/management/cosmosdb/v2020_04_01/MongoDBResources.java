@@ -87,6 +87,28 @@ public interface MongoDBResources {
     Observable<ThroughputSettingsGetResults> updateMongoDBDatabaseThroughputAsync(String resourceGroupName, String accountName, String databaseName, ThroughputSettingsUpdateParameters updateThroughputParameters);
 
     /**
+     * Migrate an Azure Cosmos DB MongoDB database from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<ThroughputSettingsGetResults> migrateMongoDBDatabaseToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName);
+
+    /**
+     * Migrate an Azure Cosmos DB MongoDB database from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<ThroughputSettingsGetResults> migrateMongoDBDatabaseToManualThroughputAsync(String resourceGroupName, String accountName, String databaseName);
+
+    /**
      * Gets the RUs per second of the MongoDB collection under an existing Azure Cosmos DB database account with the provided name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -110,6 +132,30 @@ public interface MongoDBResources {
      * @return the observable for the request
      */
     Observable<ThroughputSettingsGetResults> updateMongoDBCollectionThroughputAsync(String resourceGroupName, String accountName, String databaseName, String collectionName, ThroughputSettingsUpdateParameters updateThroughputParameters);
+
+    /**
+     * Migrate an Azure Cosmos DB MongoDB collection from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<ThroughputSettingsGetResults> migrateMongoDBCollectionToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName, String collectionName);
+
+    /**
+     * Migrate an Azure Cosmos DB MongoDB collection from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<ThroughputSettingsGetResults> migrateMongoDBCollectionToManualThroughputAsync(String resourceGroupName, String accountName, String databaseName, String collectionName);
 
     /**
      * Gets the MongoDB collection under an existing Azure Cosmos DB database account.
