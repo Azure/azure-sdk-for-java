@@ -5,7 +5,7 @@ package com.azure.data.schemaregistry.avro;
 
 import com.azure.core.experimental.serializer.ObjectSerializer;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.data.schemaregistry.AbstractDataSerializer;
+import com.azure.data.schemaregistry.AbstractSchemaRegistrySerializer;
 import com.azure.data.schemaregistry.SerializationException;
 import com.azure.data.schemaregistry.client.CachedSchemaRegistryAsyncClient;
 import reactor.core.publisher.Mono;
@@ -15,7 +15,7 @@ import java.io.OutputStream;
 /**
  * Asynchronous registry-based serializer implementation.
  */
-public class SchemaRegistryAvroAsyncSerializer extends AbstractDataSerializer implements ObjectSerializer {
+public class SchemaRegistryAvroAsyncSerializer extends AbstractSchemaRegistrySerializer implements ObjectSerializer {
     private final ClientLogger logger = new ClientLogger(SchemaRegistryAvroAsyncSerializer.class);
 
     /**
@@ -48,7 +48,7 @@ public class SchemaRegistryAvroAsyncSerializer extends AbstractDataSerializer im
 
     @Override
     public <T> Mono<T> deserialize(InputStream stream, Class<T> clazz) {
-        return this.deserialize(stream)
+        return this.deserializeImpl(stream)
             .map(o -> {
                 if (clazz.isInstance(o)) {
                     return clazz.cast(o);

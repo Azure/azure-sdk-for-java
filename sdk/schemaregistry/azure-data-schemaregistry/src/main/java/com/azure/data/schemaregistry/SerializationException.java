@@ -10,15 +10,15 @@ import com.azure.core.exception.AzureException;
  */
 public class SerializationException extends AzureException {
     /**
-     * @param s error message explaining serde operation failure
+     * @param s error message explaining serialization/deserialization operation failure
      */
     public SerializationException(String s) {
         super(s);
     }
 
     /**
-     * @param s error message explaining serde operation failure
-     * @param cause Throwable cause of serialization failure
+     * @param s error message explaining serialization/deserialization operation failure
+     * @param cause Throwable failure cause
      */
     public SerializationException(String s, Throwable cause) {
         super(s, cause);

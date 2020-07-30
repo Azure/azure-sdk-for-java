@@ -214,7 +214,7 @@ public class CachedSchemaRegistryClientBuilder {
      * Loads a parser method Function object used to convert schema strings returned from the Schema Registry
      * service into useable schema objects.
      *
-     * Any com.azure.data.schemaregistry.ByteEncoder or com.azure.data.schemaregistry.ByteDecoder class will implement
+     * Any com.azure.data.schemaregistry.Codec class will implement
      * - schemaType(), which specifies schema type, and
      * - parseSchemaString(), which parses schemas of the specified schema type from String to Object.
      *
@@ -225,15 +225,15 @@ public class CachedSchemaRegistryClientBuilder {
      */
     public CachedSchemaRegistryClientBuilder addSchemaParser(Codec codec) {
         Objects.requireNonNull(codec, "'codec' cannot be null.");
-        if (CoreUtils.isNullOrEmpty(codec.schemaType())) {
+        if (CoreUtils.isNullOrEmpty(codec.getSchemaType())) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Serialization type cannot be null or empty."));
         }
-        if (this.typeParserMap.containsKey(codec.schemaType())) {
+        if (this.typeParserMap.containsKey(codec.getSchemaType())) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Multiple parse methods for single serialization type may not be added."));
         }
-        this.typeParserMap.put(codec.schemaType(), codec::parseSchemaString);
+        this.typeParserMap.put(codec.getSchemaType(), codec::parseSchemaString);
         return this;
     }
 

@@ -36,7 +36,7 @@ public class AvroCodec implements Codec {
     }
 
     @Override
-    public String schemaType() {
+    public String getSchemaType() {
         return "avro";
     }
 

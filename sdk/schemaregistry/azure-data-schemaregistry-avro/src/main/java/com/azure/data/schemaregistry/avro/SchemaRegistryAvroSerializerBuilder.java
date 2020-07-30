@@ -4,7 +4,7 @@
 package com.azure.data.schemaregistry.avro;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.data.schemaregistry.AbstractDataSerializer;
+import com.azure.data.schemaregistry.AbstractSchemaRegistrySerializer;
 import com.azure.data.schemaregistry.client.CachedSchemaRegistryAsyncClient;
 import com.azure.data.schemaregistry.client.CachedSchemaRegistryClientBuilder;
 
@@ -28,8 +28,8 @@ public final class SchemaRegistryAvroSerializerBuilder {
     public SchemaRegistryAvroSerializerBuilder() {
         this.registryUrl = null;
         this.credential = null;
-        this.autoRegisterSchemas = AbstractDataSerializer.AUTO_REGISTER_SCHEMAS_DEFAULT;
-        this.schemaGroup = AbstractDataSerializer.SCHEMA_GROUP_DEFAULT;
+        this.autoRegisterSchemas = AbstractSchemaRegistrySerializer.AUTO_REGISTER_SCHEMAS_DEFAULT;
+        this.schemaGroup = AbstractSchemaRegistrySerializer.SCHEMA_GROUP_DEFAULT;
         this.maxSchemaMapSize = null;
         this.avroSpecificReader = false;
     }

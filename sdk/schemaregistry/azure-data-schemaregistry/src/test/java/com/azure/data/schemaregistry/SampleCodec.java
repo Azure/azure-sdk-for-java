@@ -12,7 +12,7 @@ public class SampleCodec implements Codec {
 
     @Override
     public String getSchemaName(Object object) throws SerializationException {
-        return null;
+        return "schema name";
     }
 
     @Override
@@ -35,7 +35,7 @@ public class SampleCodec implements Codec {
     }
 
     @Override
-    public String schemaType() {
+    public String getSchemaType() {
         return "test";
     }
 

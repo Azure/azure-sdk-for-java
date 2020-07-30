@@ -10,7 +10,7 @@ import java.nio.charset.Charset;
 @ServiceClient(
     builder = CachedSchemaRegistryClientBuilder.class,
     serviceInterfaces = AzureSchemaRegistryRestService.class)
-public class CachedSchemaRegistryClient {
+public final class CachedSchemaRegistryClient {
     private final CachedSchemaRegistryAsyncClient asyncClient;
 
     CachedSchemaRegistryClient(CachedSchemaRegistryAsyncClient asyncClient) {

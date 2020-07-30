@@ -6,7 +6,7 @@ package com.azure.data.schemaregistry.client;
 import com.azure.core.exception.AzureException;
 
 /**
- * Runtime exception to be returned from SchemaRegistryClient implementations.
+ * Runtime exception to be returned from CachedSchemaRegistryClient implementations.
  */
 public class SchemaRegistryClientException extends AzureException {
     /**

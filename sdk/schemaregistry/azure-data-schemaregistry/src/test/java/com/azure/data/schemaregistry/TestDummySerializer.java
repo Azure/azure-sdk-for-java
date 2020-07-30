@@ -4,9 +4,8 @@
 package com.azure.data.schemaregistry;
 
 import com.azure.data.schemaregistry.client.CachedSchemaRegistryAsyncClient;
-import com.azure.data.schemaregistry.client.SchemaRegistryClient;
 
-public class TestDummySerializer extends AbstractDataSerializer {
+public class TestDummySerializer extends AbstractSchemaRegistrySerializer {
     TestDummySerializer(
         CachedSchemaRegistryAsyncClient mockClient,
         boolean byteEncoder,

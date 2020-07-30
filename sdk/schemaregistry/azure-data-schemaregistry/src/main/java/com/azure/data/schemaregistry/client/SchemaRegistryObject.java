@@ -7,7 +7,7 @@ import com.azure.core.util.logging.ClientLogger;
 import java.util.function.Function;
 
 /**
- * Stores all relevant information returned from SchemaRegistryClient layer.
+ * Stores all relevant information returned from CachedSchemaRegistryClient layer.
  */
 public class SchemaRegistryObject {
     private final ClientLogger logger = new ClientLogger(SchemaRegistryObject.class);

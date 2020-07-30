@@ -6,7 +6,7 @@ package com.azure.data.schemaregistry;
 import java.io.ByteArrayOutputStream;
 
 /**
- * Base interface for all ByteEncoder and ByteDecoder interfaces
+ * An interface defining operations required for registry-based serialization and deserialization.
  */
 public interface Codec {
     /**
@@ -15,7 +15,7 @@ public interface Codec {
      * Utilized by schema registry store and client as non-case-sensitive tags for
      * schemas of a specific type.
      */
-    String schemaType();
+    String getSchemaType();
 
     /**
      * Parses string representation of schema into schema Object
@@ -32,7 +32,7 @@ public interface Codec {
      * @return schema name
      * @throws SerializationException runtime exception in error cases
      */
-    String getSchemaName(Object object) throws SerializationException;
+    String getSchemaName(Object object);
 
     /**
      * Returns string representation of schema object to be stored in the service.
@@ -43,8 +43,6 @@ public interface Codec {
      */
     String getSchemaString(Object object);
 
-    // TODO: Method does not currently require schema object to be passed since schemas can be derived from
-    //  Avro objects. JSON implementation would be the same.
     /**
      * Converts object into stream containing the encoded representation of the object.
      * @param object Object to be encoded into byte stream
@@ -60,5 +58,5 @@ public interface Codec {
      * @return deserialized object
      * @throws SerializationException if decode operation fails
      */
-    Object decodeBytes(byte[] encodedBytes, Object schemaObject) throws SerializationException;
+    Object decodeBytes(byte[] encodedBytes, Object schemaObject);
 }
