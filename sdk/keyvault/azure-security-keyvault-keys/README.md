@@ -367,7 +367,7 @@ new Random(0x1234567L).nextBytes(plainText);
 // Let's encrypt a simple plain text of size 100 bytes.
 cryptoAsyncClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plainText)
     .subscribe(encryptionResult -> {
-        System.out.printf("Returned cipherText size is %d bytes with algorithm %s%n",
+        System.out.printf("Returned cipherText size is %d bytes with algorithm \"%s\"%n",
             encryptionResult.getCipherText().length, encryptionResult.getAlgorithm());
         //Let's decrypt the encrypted response.
         cryptoAsyncClient.decrypt(EncryptionAlgorithm.RSA_OAEP, encryptionResult.getCipherText())
