@@ -3,8 +3,8 @@
 
 package com.azure.cosmos.implementation.encryption;
 
-import com.azure.cosmos.implementation.encryption.api.DataEncryptionKey;
-import com.azure.cosmos.implementation.encryption.api.DataEncryptionKeyProvider;
+import com.azure.cosmos.encryption.DataEncryptionKey;
+import com.azure.cosmos.encryption.DataEncryptionKeyProvider;
 
 import java.util.HashMap;
 import java.util.Map;

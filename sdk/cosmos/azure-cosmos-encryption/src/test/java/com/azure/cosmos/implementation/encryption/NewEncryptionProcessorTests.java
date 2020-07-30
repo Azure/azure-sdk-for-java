@@ -3,12 +3,11 @@
 
 package com.azure.cosmos.implementation.encryption;
 
-import com.azure.cosmos.Encryptor;
+import com.azure.cosmos.encryption.Encryptor;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.encryption.TestCommon.TestDoc;
-import com.azure.cosmos.implementation.encryption.api.Constants;
-import com.azure.cosmos.implementation.encryption.api.CosmosEncryptionAlgorithm;
-import com.azure.cosmos.implementation.encryption.api.EncryptionOptions;
+import com.azure.cosmos.encryption.CosmosEncryptionAlgorithm;
+import com.azure.cosmos.encryption.EncryptionOptions;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
