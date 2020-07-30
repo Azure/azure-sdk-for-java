@@ -101,19 +101,6 @@ public class EventGridConsumerBuilder {
     }
 
     /**
-     * Add/Overwrite the current data mappings with the provided ones. All mapping keys will be converted to lowercase.
-     * @param dataMappings the mappings to add/overwrite on top of ones already provided.
-     *
-     * @return the builder itself.
-     */
-    public EventGridConsumerBuilder putDataMappings(Map<String, Class<?>> dataMappings) {
-        for (Map.Entry<String, Class<?>> entry : dataMappings.entrySet()) {
-            typeMappings.put(SystemEventMappings.canonicalizeEventType(entry.getKey()), entry.getValue());
-        }
-        return this;
-    }
-
-    /**
      * Set the custom serializer to use when deserializing events. This deserializer should be able to decode all events
      * expected to be in the payload, including the {@link OffsetDateTime} that is included in most events
      * @param deserializer the deserializer to use.
