@@ -97,7 +97,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
 
         formRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl(formUrl, modelId,
             new RecognizeOptions()
-                .setIncludeFieldElements(includeFieldElements)
+                .setFieldElementsIncluded(includeFieldElements)
                 .setPollInterval(Duration.ofSeconds(10)))
             // if training polling operation completed, retrieve the final result.
             .flatMap(AsyncPollResponse::getFinalResult)
@@ -156,7 +156,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         formRecognizerAsyncClient.beginRecognizeCustomForms(buffer, form.length(), modelId,
             new RecognizeOptions()
                 .setContentType(FormContentType.IMAGE_JPEG)
-                .setIncludeFieldElements(includeFieldElements)
+                .setFieldElementsIncluded(includeFieldElements)
                 .setPollInterval(Duration.ofSeconds(5)))
             // if training polling operation completed, retrieve the final result.
             .flatMap(AsyncPollResponse::getFinalResult)
@@ -352,7 +352,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeReceiptsFromUrl(receiptUrl,
             new RecognizeOptions()
-                .setIncludeFieldElements(includeFieldElements)
+                .setFieldElementsIncluded(includeFieldElements)
                 .setPollInterval(Duration.ofSeconds(5)))
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(recognizedReceipts -> {
@@ -495,7 +495,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         formRecognizerAsyncClient.beginRecognizeReceipts(buffer, receipt.length(),
             new RecognizeOptions()
                 .setContentType(FormContentType.IMAGE_JPEG)
-                .setIncludeFieldElements(includeFieldElements)
+                .setFieldElementsIncluded(includeFieldElements)
                 .setPollInterval(Duration.ofSeconds(5)))
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(recognizedReceipts -> {

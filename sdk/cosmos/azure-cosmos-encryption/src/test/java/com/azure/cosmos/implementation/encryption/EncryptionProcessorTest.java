@@ -4,10 +4,10 @@
 package com.azure.cosmos.implementation.encryption;
 
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.encryption.api.CosmosEncryptionAlgorithm;
-import com.azure.cosmos.implementation.encryption.api.DataEncryptionKey;
-import com.azure.cosmos.implementation.encryption.api.EncryptionOptions;
-import com.azure.cosmos.implementation.encryption.api.EncryptionType;
+import com.azure.cosmos.encryption.CosmosEncryptionAlgorithm;
+import com.azure.cosmos.encryption.DataEncryptionKey;
+import com.azure.cosmos.encryption.EncryptionOptions;
+import com.azure.cosmos.encryption.EncryptionType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -85,7 +85,7 @@ public class EncryptionProcessorTest {
         keyProvider.addKey(keyId, javaDataEncryptionKey);
         CosmosEncryptor encryptor = new CosmosEncryptor(keyProvider);
 
-        com.azure.cosmos.implementation.encryption.api.EncryptionOptions encryptionOptions = new EncryptionOptions();
+        EncryptionOptions encryptionOptions = new EncryptionOptions();
         encryptionOptions.setPathsToEncrypt(ImmutableList.of("/sensitive"));
         encryptionOptions.setDataEncryptionKeyId(keyId);
         encryptionOptions.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256_RANDOMIZED);

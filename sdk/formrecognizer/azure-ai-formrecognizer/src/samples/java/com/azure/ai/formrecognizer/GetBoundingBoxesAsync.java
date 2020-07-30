@@ -39,7 +39,7 @@ public class GetBoundingBoxesAsync {
         PollerFlux<OperationResult, List<RecognizedForm>> recognizeFormPoller =
             client.beginRecognizeCustomFormsFromUrl(formUrl, modelId,
                 new RecognizeOptions()
-                    .setIncludeFieldElements(true));
+                    .setFieldElementsIncluded(true));
 
         Mono<List<RecognizedForm>> recognizeFormResult = recognizeFormPoller
             .last()

@@ -1,7 +1,8 @@
 # Release History
+## 5.1.0-beta.1 (Unreleased)
 
-## 1.1.0-beta.1 (Unreleased)
-
+## 5.0.0 (2020-07-27)
+- Re-release of version `1.0.1` with updated version `5.0.0`.
 
 ## 1.0.1 (2020-07-07)
 - Update dependency version, `azure-core` to 1.6.0 and `azure-core-http-netty` to 1.5.3.

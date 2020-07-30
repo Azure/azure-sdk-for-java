@@ -5,9 +5,10 @@ package com.azure.cosmos.implementation.encryption;
 
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
+import com.azure.cosmos.encryption.EncryptionKeyWrapProvider;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.encryption.api.DataEncryptionKey;
-import com.azure.cosmos.implementation.encryption.api.DataEncryptionKeyProvider;
+import com.azure.cosmos.encryption.DataEncryptionKey;
+import com.azure.cosmos.encryption.DataEncryptionKeyProvider;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import reactor.core.publisher.Mono;
@@ -28,7 +29,7 @@ public class CosmosDataEncryptionKeyProvider implements DataEncryptionKeyProvide
     //Then the code-docs and samples needs to explicit cover it.
     private final DataEncryptionKeyContainerCore dataEncryptionKeyContainerCore;
     private final DekCache DekCache;
-    private final EncryptionKeyWrapProvider EncryptionKeyWrapProvider;
+    private final com.azure.cosmos.encryption.EncryptionKeyWrapProvider EncryptionKeyWrapProvider;
     private CosmosAsyncContainer container;
 
     public CosmosDataEncryptionKeyProvider(EncryptionKeyWrapProvider encryptionKeyWrapProvider) {

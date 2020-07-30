@@ -7,21 +7,31 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.EncryptionCosmosAsyncContainer;
-import com.azure.cosmos.Encryptor;
-import com.azure.cosmos.WithEncryption;
+import com.azure.cosmos.encryption.EncryptionCosmosAsyncContainer;
+import com.azure.cosmos.encryption.EncryptionItemRequestOptions;
+import com.azure.cosmos.encryption.EncryptionKeyUnwrapResult;
+import com.azure.cosmos.encryption.EncryptionKeyWrapMetadata;
+import com.azure.cosmos.encryption.EncryptionKeyWrapProvider;
+import com.azure.cosmos.encryption.EncryptionKeyWrapResult;
+import com.azure.cosmos.encryption.Encryptor;
+import com.azure.cosmos.encryption.WithEncryption;
 import com.azure.cosmos.implementation.DatabaseForTest;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.encryption.api.CosmosEncryptionAlgorithm;
-import com.azure.cosmos.implementation.encryption.api.DataEncryptionKey;
-import com.azure.cosmos.implementation.encryption.api.DataEncryptionKeyProvider;
-import com.azure.cosmos.implementation.encryption.api.EncryptionOptions;
+import com.azure.cosmos.encryption.CosmosEncryptionAlgorithm;
+import com.azure.cosmos.encryption.DataEncryptionKey;
+import com.azure.cosmos.encryption.DataEncryptionKeyProvider;
+import com.azure.cosmos.encryption.EncryptionOptions;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SqlParameter;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.rx.TestSuiteBase;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
@@ -45,7 +55,7 @@ public class EncryptionTests extends TestSuiteBase {
     private final static String metadataUpdateSuffix = "updated";
     private static Duration cacheTTL = Duration.ofDays(1);
     private static TestEncryptor encryptor;
-    private static EncryptionCosmosAsyncContainer encyptionContainer;
+    private static EncryptionCosmosAsyncContainer encryptionContainer;
 
     private final String databaseForTestId = DatabaseForTest.generateId();
     private final String itemContainerId = UUID.randomUUID().toString();
@@ -85,7 +95,7 @@ public class EncryptionTests extends TestSuiteBase {
 
         dekProvider.initialize(databaseCore, EncryptionTests.keyContainer.getId());
 
-        EncryptionTests.encyptionContainer = WithEncryption.withEncryptor(EncryptionTests.itemContainer, encryptor);
+        EncryptionTests.encryptionContainer = WithEncryption.withEncryptor(EncryptionTests.itemContainer, encryptor);
         EncryptionTests.dekProperties = EncryptionTests.createDek(EncryptionTests.dekProvider, dekId);
     }
 
@@ -145,7 +155,7 @@ public class EncryptionTests extends TestSuiteBase {
         public static TestDoc Create(String partitionKey) {
             TestDoc testDoc = new TestDoc();
             testDoc.id = UUID.randomUUID().toString();
-            testDoc.pk = partitionKey == null ? UUID.randomUUID().toString(): partitionKey;
+            testDoc.pk = partitionKey == null ? UUID.randomUUID().toString() : partitionKey;
             testDoc.nonSensitive = UUID.randomUUID().toString();
             testDoc.sensitive = UUID.randomUUID().toString();
 
@@ -198,7 +208,7 @@ public class EncryptionTests extends TestSuiteBase {
     public void EncryptionCreateItemWithoutEncryptionOptions() {
         TestDoc testDoc = TestDoc.Create();
 
-        CosmosItemResponse<TestDoc> createResponse = EncryptionTests.encyptionContainer.createItem(testDoc, new PartitionKey(testDoc.pk), null).block();
+        CosmosItemResponse<TestDoc> createResponse = EncryptionTests.encryptionContainer.createItem(testDoc, new PartitionKey(testDoc.pk), null).block();
 
         assertThat(createResponse.getStatusCode()).isEqualTo(201);
         assertThat(createResponse.getItem()).isEqualTo(testDoc);
@@ -207,7 +217,7 @@ public class EncryptionTests extends TestSuiteBase {
     @Test
     public void EncryptionCreateItemWithNullEncryptionOptions() {
         TestDoc testDoc = TestDoc.Create();
-        CosmosItemResponse<TestDoc> createResponse =  EncryptionTests.encyptionContainer.createItem(
+        CosmosItemResponse<TestDoc> createResponse = EncryptionTests.encryptionContainer.createItem(
             testDoc,
             new PartitionKey(testDoc.pk),
             new EncryptionItemRequestOptions()).block();
@@ -221,7 +231,7 @@ public class EncryptionTests extends TestSuiteBase {
         TestDoc testDoc = TestDoc.Create();
         try {
             // TODO: moderakh invoke this without passing null PK
-            EncryptionTests.encyptionContainer.createItem(
+            EncryptionTests.encryptionContainer.createItem(
                 testDoc,
                 null,
                 EncryptionTests.GetRequestOptions(EncryptionTests.dekId, TestDoc.PathsToEncrypt));
@@ -229,6 +239,58 @@ public class EncryptionTests extends TestSuiteBase {
         } catch (Exception ex) {
             assertThat(ex.getMessage()).isEqualTo("partitionKey cannot be null for operations using EncryptionContainer.");
         }
+    }
+
+    @Test
+    public void EncryptionFailsWithUnknownDek() {
+    }
+
+    @Test
+    public void EncryptionCreateItem() {
+        TestDoc testDoc = EncryptionTests.CreateItemAsync(EncryptionTests.encryptionContainer, EncryptionTests.dekId, TestDoc.PathsToEncrypt).getItem();
+        EncryptionTests.VerifyItemByReadAsync(EncryptionTests.encryptionContainer, testDoc);
+        VerifyDataIsEncrypted(testDoc.id, new PartitionKey(testDoc.pk));
+
+        TestDoc expectedDoc = new TestDoc(testDoc);
+
+        EncryptionTests.ValidateQueryResultsAsync(
+            EncryptionTests.encryptionContainer,
+            "SELECT * FROM c",
+            expectedDoc);
+
+        EncryptionTests.ValidateQueryResultsAsync(
+            EncryptionTests.encryptionContainer,
+            String.format(
+                "SELECT * FROM c where c.PK = '%s' and c.id = '%s' and c.NonSensitive = '%s'",
+                expectedDoc.pk,
+                expectedDoc.id,
+                expectedDoc.nonSensitive),
+            expectedDoc);
+
+        EncryptionTests.ValidateQueryResultsAsync(
+            EncryptionTests.encryptionContainer,
+            String.format("SELECT * FROM c where c.Sensitive = '%s'", testDoc.sensitive),
+            null);
+
+        EncryptionTests.ValidateQueryResultsAsync(
+            EncryptionTests.encryptionContainer,
+            new SqlQuerySpec(
+                "select * from c where c.id = @theId and c.PK = @thePK",
+                new SqlParameter("@theId", expectedDoc.id),
+                new SqlParameter("@thePK", expectedDoc.pk)),
+            expectedDoc);
+
+        expectedDoc.sensitive = null;
+
+        EncryptionTests.ValidateQueryResultsAsync(
+            EncryptionTests.encryptionContainer,
+            "SELECT c.id, c.PK, c.Sensitive, c.NonSensitive FROM c",
+            expectedDoc);
+
+        EncryptionTests.ValidateQueryResultsAsync(
+            EncryptionTests.encryptionContainer,
+            "SELECT c.id, c.PK, c.NonSensitive FROM c",
+            expectedDoc);
     }
 
     @Test(groups = {"encryption"}, timeOut = TIMEOUT * 100)
@@ -242,13 +304,13 @@ public class EncryptionTests extends TestSuiteBase {
         requestOptions.setEncryptionOptions(encryptionOptions);
 
         TestDoc properties = getItem(UUID.randomUUID().toString());
-        CosmosItemResponse<TestDoc> itemResponse = encyptionContainer.createItem(properties, new PartitionKey(properties.pk), requestOptions).block();
+        CosmosItemResponse<TestDoc> itemResponse = encryptionContainer.createItem(properties, new PartitionKey(properties.pk), requestOptions).block();
         assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
 
         TestDoc responseItem = itemResponse.getItem();
         validateWriteResponseIsValid(properties, responseItem);
 
-        TestDoc readItem = encyptionContainer.readItem(properties.id, new PartitionKey(properties.pk), requestOptions, TestDoc.class).block().getItem();
+        TestDoc readItem = encryptionContainer.readItem(properties.id, new PartitionKey(properties.pk), requestOptions, TestDoc.class).block().getItem();
         validateReadResponseIsValid(properties, readItem);
 
         TestDoc readWithoutDecryption = itemContainer.readItem(properties.id, new PartitionKey(properties.pk), requestOptions, TestDoc.class).block().getItem();
@@ -275,6 +337,51 @@ public class EncryptionTests extends TestSuiteBase {
         assertThat(result.pk).isEqualTo(originalItem.pk);
         assertThat(result.nonSensitive).isEqualTo(originalItem.nonSensitive);
         assertThat(result.sensitive).isNull();
+    }
+
+    private static void ValidateQueryResultsAsync(
+        EncryptionCosmosAsyncContainer container,
+        String query,
+        TestDoc expectedDoc) {
+        ValidateQueryResultsAsync(container, new SqlQuerySpec(query), expectedDoc);
+    }
+
+    private static void ValidateQueryResultsAsync(
+        EncryptionCosmosAsyncContainer container,
+        SqlQuerySpec query,
+        TestDoc expectedDoc) {
+        CosmosQueryRequestOptions requestOptions = expectedDoc != null
+            ? new CosmosQueryRequestOptions().setPartitionKey(new PartitionKey(expectedDoc.pk)) : null;
+
+
+        CosmosPagedFlux<TestDoc> queryResponseIterator = container.queryItems(query, requestOptions, TestDoc.class);
+        List<TestDoc> results = queryResponseIterator.collectList().block();
+
+        if (expectedDoc != null) {
+            assertThat(results.size()).isEqualTo(1);
+            assertThat(results.get(0)).isEqualTo(expectedDoc);
+
+        } else {
+            assertThat(results.size()).isEqualTo(0);
+        }
+    }
+
+    private static void VerifyDataIsEncrypted(String id, PartitionKey partitionKey) {
+
+        TestDoc item = itemContainer.readItem(id, partitionKey, TestDoc.class).block().getItem();
+        assertThat(item.sensitive).isEqualTo(null);
+        assertThat(item.nonSensitive).isNotNull();
+    }
+
+    private static void VerifyItemByReadAsync(EncryptionCosmosAsyncContainer container, TestDoc testDoc) {
+        VerifyItemByReadAsync(container, testDoc, null);
+    }
+
+    private static void VerifyItemByReadAsync(EncryptionCosmosAsyncContainer container, TestDoc testDoc, CosmosItemRequestOptions requestOptions) {
+        CosmosItemResponse<TestDoc> readResponse = container.readItem(testDoc.id, new PartitionKey(testDoc.pk), requestOptions, TestDoc.class).block();
+
+        assertThat(readResponse.getStatusCode()).isEqualTo(200);
+        assertThat(readResponse.getItem()).isEqualTo(testDoc);
     }
 
     private TestDoc getItem(String documentId) {
@@ -314,8 +421,7 @@ public class EncryptionTests extends TestSuiteBase {
     private static EncryptionItemRequestOptions GetRequestOptions(
         String dekId,
         List<String> pathsToEncrypt,
-        String ifMatchEtag)
-    {
+        String ifMatchEtag) {
         EncryptionItemRequestOptions options = new EncryptionItemRequestOptions();
         options.setIfMatchETag(ifMatchEtag);
 
@@ -327,8 +433,7 @@ public class EncryptionTests extends TestSuiteBase {
 
     private static EncryptionOptions GetEncryptionOptions(
         String dekId,
-        List<String> pathsToEncrypt)
-    {
+        List<String> pathsToEncrypt) {
         EncryptionOptions encryptionOptions = new EncryptionOptions();
         encryptionOptions.setPathsToEncrypt(pathsToEncrypt)
             .setDataEncryptionKeyId(dekId)
@@ -403,16 +508,24 @@ public class EncryptionTests extends TestSuiteBase {
         }
     }
 
-    private static  CosmosItemResponse<TestDoc> CreateItemAsync(
-        CosmosAsyncContainer container,
+    private static CosmosItemResponse<TestDoc> CreateItemAsync(EncryptionCosmosAsyncContainer container,
+                                                               String dekId,
+                                                               List<String> pathsToEncrypt) {
+        return CreateItemAsync(container,
+            dekId,
+            pathsToEncrypt, null);
+    }
+
+    private static CosmosItemResponse<TestDoc> CreateItemAsync(
+        EncryptionCosmosAsyncContainer container,
         String dekId,
         List<String> pathsToEncrypt,
         String partitionKey) {
         TestDoc testDoc = TestDoc.Create(partitionKey);
-        CosmosItemResponse<TestDoc> createResponse =  container.createItem(
-        testDoc,
-        new PartitionKey(testDoc.pk),
-        EncryptionTests.GetRequestOptions(dekId, pathsToEncrypt)).block();
+        CosmosItemResponse<TestDoc> createResponse = container.createItem(
+            testDoc,
+            new PartitionKey(testDoc.pk),
+            EncryptionTests.GetRequestOptions(dekId, pathsToEncrypt)).block();
 
         assertThat(createResponse.getStatusCode()).isEqualTo(201);
         assertThat(createResponse.getItem()).isEqualTo(testDoc);

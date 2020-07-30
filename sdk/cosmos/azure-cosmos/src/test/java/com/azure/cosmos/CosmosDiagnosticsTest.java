@@ -26,8 +26,12 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.lang.reflect.Field;
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -35,6 +39,8 @@ import static org.assertj.core.api.Assertions.fail;
 
 public class CosmosDiagnosticsTest extends TestSuiteBase {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final DateTimeFormatter RESPONSE_TIME_FORMATTER =
+        DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm:ss" + ".SSS").withLocale(Locale.US).withZone(ZoneOffset.UTC);
     private CosmosClient gatewayClient;
     private CosmosClient directClient;
     private CosmosContainer container;
@@ -224,6 +230,25 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         supplementalResponseStatisticsListNode = (ArrayNode) jsonNode.get("supplementalResponseStatisticsList");
         assertThat(storeResponseStatistics.size()).isEqualTo(7);
         assertThat(supplementalResponseStatisticsListNode.size()).isEqualTo(7);
+
+        //verifying all components from StoreResponseStatistics
+        for(JsonNode node : supplementalResponseStatisticsListNode) {
+            assertThat(node.get("storeResult").asText()).isNotNull();
+
+            String requestResponseTimeUTC  = node.get("requestResponseTimeUTC").asText();
+            String formattedInstant = RESPONSE_TIME_FORMATTER.format(Instant.now());
+            String[] requestResponseTimeUTCList = requestResponseTimeUTC.split(" ");
+            String[] formattedInstantList = formattedInstant.split(" ");
+            assertThat(requestResponseTimeUTC.length()).isEqualTo(formattedInstant.length());
+            assertThat(requestResponseTimeUTCList.length).isEqualTo(formattedInstantList.length);
+            assertThat(requestResponseTimeUTCList[0]).isEqualTo(formattedInstantList[0]);
+            assertThat(requestResponseTimeUTCList[1]).isEqualTo(formattedInstantList[1]);
+            assertThat(requestResponseTimeUTCList[2]).isEqualTo(formattedInstantList[2]);
+
+            assertThat(node.get("requestResponseTimeUTC")).isNotNull();
+            assertThat(node.get("requestOperationType")).isNotNull();
+            assertThat(node.get("requestOperationType")).isNotNull();
+        }
     }
 
     @Test(groups = {"simple"})
