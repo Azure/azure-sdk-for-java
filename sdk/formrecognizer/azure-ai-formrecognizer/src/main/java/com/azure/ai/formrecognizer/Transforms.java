@@ -459,7 +459,7 @@ final class Transforms {
                 TextWord textWord =
                     readResults.get(readResultIndex).getLines().get(lineIndex).getWords().get(wordIndex);
                 FormWord wordElement = new FormWord(textWord.getText(), toBoundingBox(textWord.getBoundingBox()),
-                    pageNumber,
+                    getOrDefault(pageNumber, DEFAULT_PAGE_NUMBER),
                     setDefaultConfidenceValue(textWord.getConfidence()));
                 formElementList.add(wordElement);
             } else {
