@@ -10,11 +10,11 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
 public class DeserializationTests {
-
 
     @Test
     public void consumeStorageBlobDeletedEventWithExtraProperty() throws IOException {
@@ -45,6 +45,27 @@ public class DeserializationTests {
         Assert.assertEquals(events.get(0).getSpecVersion(), "1.0");
 
         Assert.assertNull(events.get(0).getData());
+    }
+
+    @Test
+    public void consumeCloudEventWithBinaryData() throws IOException {
+        String jsonData = getTestPayloadFromFile("CloudEventBinaryData.json");
+        EventGridConsumer consumer = new EventGridConsumerBuilder()
+            .putDataMapping("Contoso.Items.ItemRecieved", Void.TYPE)
+            .build();
+
+        List<CloudEvent> events = consumer.deserializeCloudEvents(jsonData);
+
+        Assert.assertNotNull(events);
+        Assert.assertEquals(1, events.size());
+
+        Assert.assertEquals(events.get(0).getSpecVersion(), "1.0");
+
+        Assert.assertNotNull(events.get(0).getBinaryData());
+
+        String decoded = Base64.getEncoder().encodeToString(events.get(0).getBinaryData());
+
+        Assert.assertEquals("samplebinarydataasstring", decoded);
     }
 
     @Test

@@ -98,7 +98,7 @@ public final class EventGridAsyncConsumer {
 
     private Mono<CloudEvent> richDataAndConvert(com.azure.messaging.eventgrid.implementation.models.CloudEvent event) {
         String eventType = SystemEventMappings.canonicalizeEventType(event.getType());
-        if (typeMappings.containsKey(eventType)) {
+        if (typeMappings.containsKey(eventType) && event.getData() != null) {
             return deserializer.toTree(event.getData())
                 .flatMap(jsonNode -> deserializer.deserializeTree(jsonNode, typeMappings.get(eventType)))
                 .map(data -> new CloudEvent(event).setData(data));

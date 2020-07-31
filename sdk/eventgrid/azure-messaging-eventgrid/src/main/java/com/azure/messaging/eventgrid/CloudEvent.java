@@ -86,15 +86,22 @@ public class CloudEvent {
     }
 
     /**
-     * Get the data encapsulated within this event.
-     * @return the data associated with this event, or null if this event type does not contain data.
+     * Get the object data encapsulated within this event.
+     * @return the data associated with this event, or null if this event type does not contain object data.
      */
     public Object getData() {
+        return cloudEvent.getData();
+    }
+
+    /**
+     * Gets the data if it was set as binary data, using the {@link CloudEvent#setData(byte[], String)} overload.
+     * @return return the binary data that was set, or null if there was no binary data set.
+     */
+    public byte[] getBinaryData() {
         if (this.cloudEvent.getDataBase64() != null) {
             return Base64.getDecoder().decode(this.cloudEvent.getDataBase64());
-        } else {
-            return this.cloudEvent.getData();
         }
+        return null;
     }
 
     /**
