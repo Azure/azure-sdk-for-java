@@ -74,6 +74,7 @@ import com.azure.search.documents.models.SearchResult;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -95,7 +96,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class CustomAnalyzerSyncTests extends SearchTestBase {
     private static final String NAME_PREFIX = "azsmnet";
-    private static final Collection<CharFilterName> CHAR_FILTER_NAMES = new ArrayList<>(CharFilterName.values());
 
     private SearchIndexClient searchIndexClient;
     private final List<String> indexesToCleanup = new ArrayList<>();
@@ -286,7 +286,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
     }
 
     @Test
-    public void canUseAllAnalysisComponentNames() {
+    public void canUseAllAnalysisComponentNames() throws IllegalAccessException {
         SearchIndex index = prepareIndexWithAllAnalysisComponentNames();
 
         SearchIndex createdIndex = searchIndexClient.createIndex(index);
@@ -694,31 +694,48 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
             .setFields(fields);
     }
 
-    SearchIndex prepareIndexWithAllAnalysisComponentNames() {
+    SearchIndex prepareIndexWithAllAnalysisComponentNames() throws IllegalAccessException {
+        List<TokenFilterName> tokenFilters = getFieldValues(TokenFilterName.class);
+        tokenFilters.sort(Comparator.comparing(TokenFilterName::toString));
+
+        List<CharFilterName> charFilters = getFieldValues(CharFilterName.class);
+        charFilters.sort(Comparator.comparing(CharFilterName::toString));
+
         LexicalAnalyzer analyzerWithAllTokenFilterAndCharFilters =
             new CustomAnalyzer("abc", LexicalTokenizerName.LOWERCASE)
-                .setTokenFilters(TokenFilterName.values()
-                    .stream()
-                    .sorted(Comparator.comparing(TokenFilterName::toString))
-                    .collect(Collectors.toList()))
-                .setCharFilters(CHAR_FILTER_NAMES
-                    .stream()
-                    .sorted(Comparator.comparing(CharFilterName::toString))
-                    .collect(Collectors.toList()));
+                .setTokenFilters(tokenFilters)
+                .setCharFilters(charFilters);
 
         SearchIndex index = createTestIndex(null);
         List<LexicalAnalyzer> analyzers = new ArrayList<>();
         analyzers.add(analyzerWithAllTokenFilterAndCharFilters);
-        analyzers.addAll(LexicalTokenizerName.values()
-            .stream()
-            .sorted(Comparator.comparing(LexicalTokenizerName::toString))
-            .map(tn -> new CustomAnalyzer(generateName(), tn))
+        String nameBase = generateName();
+
+        List<LexicalTokenizerName> analyzerNames = getFieldValues(LexicalTokenizerName.class);
+        analyzerNames.sort(Comparator.comparing(LexicalTokenizerName::toString));
+
+        analyzers.addAll(analyzerNames.stream()
+            .map(tn -> new CustomAnalyzer(nameBase + tn, tn))
             .collect(Collectors.toList()));
 
         analyzers.sort(Comparator.comparing(LexicalAnalyzer::getName));
         index.setAnalyzers(analyzers);
 
         return index;
+    }
+
+    private static <T> List<T> getFieldValues(Class<T> clazz) throws IllegalAccessException {
+        List<T> fieldValues = new ArrayList<>();
+
+        for (Field field : clazz.getDeclaredFields()) {
+            if (field.getType() != clazz) {
+                continue;
+            }
+
+            fieldValues.add(clazz.cast(field.get(null)));
+        }
+
+        return fieldValues;
     }
 
     /**
