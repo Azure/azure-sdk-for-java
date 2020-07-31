@@ -53,7 +53,6 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
       <version>1.0.9</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
-      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>com.jcraft</groupId>
@@ -155,6 +154,29 @@
   </profiles>
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <configuration>
+          <rules>
+            <bannedDependencies>
+              <includes>
+                <include>org.apache.httpcomponents:httpclient:[4.5.12]</include> <!-- {x-include-update;resourcemanager_org.apache.httpcomponents:httpclient;external_dependency} -->
+                <include>io.fabric8:kubernetes-client:[4.9.1]</include> <!-- {x-include-update;io.fabric8:kubernetes-client;external_dependency} -->
+                <include>com.jcraft:jsch:[0.1.55]</include> <!-- {x-include-update;resourcemanager_com.jcraft:jsch;external_dependency} -->
+                <include>org.slf4j:slf4j-simple:[1.7.25]</include> <!-- {x-include-update;org.slf4j:slf4j-simple;external_dependency} -->
+                <include>com.google.guava:guava:[28.1-jre]</include> <!-- {x-include-update;resourcemanager_com.google.guava:guava;external_dependency} -->
+                <include>com.github.docker-java:docker-java:[3.2.1]</include> <!-- {x-include-update;com.github.docker-java:docker-java;external_dependency} -->
+                <include>com.microsoft.sqlserver:mssql-jdbc:[6.4.0.jre7]</include> <!-- {x-include-update;com.microsoft.sqlserver:mssql-jdbc;external_dependency} -->
+                <include>org.eclipse.jgit:org.eclipse.jgit:[4.5.7.201904151645-r]</include> <!-- {x-include-update;org.eclipse.jgit:org.eclipse.jgit;external_dependency} -->
+                <include>com.github.cverges.expect4j:expect4j:[1.6]</include> <!-- {x-include-update;com.github.cverges.expect4j:expect4j;external_dependency} -->
+                <include>commons-net:commons-net:[3.6]</include> <!-- {x-include-update;commons-net:commons-net;external_dependency} -->
+              </includes>
+            </bannedDependencies>
+          </rules>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
