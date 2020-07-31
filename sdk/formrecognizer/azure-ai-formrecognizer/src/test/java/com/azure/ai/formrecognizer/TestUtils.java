@@ -37,6 +37,9 @@ import static com.azure.core.test.TestBase.getHttpClients;
  * Contains helper methods for generating inputs for test methods
  */
 final class TestUtils {
+    static final String FAKE_ENCODED_EMPTY_SPACE_URL = "https://fakeuri.com/blank%20space";
+    static final String FAILED_TO_DOWNLOAD_IMAGE_CODE = "FailedToDownloadImage";
+    static final String FAILED_TO_DOWNLOAD_IMAGE_ERROR_MESSAGE = "Failed to download image from input URL.";
     static final String INVALID_IMAGE_URL_ERROR_CODE = "InvalidImageURL";
     static final String IMAGE_URL_IS_BADLY_FORMATTED_ERROR_MESSAGE = "Image URL is badly formatted.";
     static final String INVALID_MODEL_ID = "a0a3998a-4c4affe66b7";
@@ -45,6 +48,7 @@ final class TestUtils {
     static final String INVALID_SOURCE_URL_ERROR = "Status code 400, \"{\"error\":{\"code\":\"1003\","
         + "\"message\":\"Parameter 'Source' is not a valid Uri.\"}}\"";
     static final String INVALID_MODEL_ID_ERROR = "Invalid UUID string: " + INVALID_MODEL_ID;
+    static final String NON_EXIST_MODEL_ID = "00000000-0000-0000-0000-000000000000";
     static final String NULL_SOURCE_URL_ERROR = "'trainingFilesUrl' cannot be null.";
     static final String INVALID_URL = "htttttttps://localhost:8080";
     static final String VALID_HTTPS_LOCALHOST = "https://localhost:8080";
