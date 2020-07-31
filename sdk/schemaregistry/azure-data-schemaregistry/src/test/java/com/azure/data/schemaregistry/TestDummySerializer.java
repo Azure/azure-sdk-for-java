@@ -3,8 +3,6 @@
 
 package com.azure.data.schemaregistry;
 
-import com.azure.data.schemaregistry.client.CachedSchemaRegistryAsyncClient;
-
 import java.util.Collections;
 
 public class TestDummySerializer extends SchemaRegistrySerializer {

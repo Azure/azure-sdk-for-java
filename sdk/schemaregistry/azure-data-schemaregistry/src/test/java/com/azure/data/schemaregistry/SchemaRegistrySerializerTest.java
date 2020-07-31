@@ -3,9 +3,9 @@
 
 package com.azure.data.schemaregistry;
 
-import com.azure.data.schemaregistry.client.CachedSchemaRegistryAsyncClient;
-import com.azure.data.schemaregistry.client.SchemaRegistryClientException;
-import com.azure.data.schemaregistry.client.SchemaRegistryObject;
+import com.azure.data.schemaregistry.models.SchemaRegistryClientException;
+import com.azure.data.schemaregistry.models.SchemaRegistryObject;
+import com.azure.data.schemaregistry.models.SerializationException;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericDatumWriter;
@@ -40,10 +40,12 @@ public class SchemaRegistrySerializerTest {
         SampleCodec encoder = new SampleCodec();
         SchemaRegistryObject registered = new SchemaRegistryObject(MOCK_GUID,
             encoder.getSchemaType(),
+            encoder.getSchemaName(null),
+            encoder.getSchemaGroup(),
             encoder.getSchemaString(null).getBytes(), // always returns same schema string
             encoder::parseSchemaString);
 
-        assertEquals(encoder.getSchemaString(null), registered.deserialize());
+        assertEquals(encoder.getSchemaString(null), registered.getSchema());
 
         CachedSchemaRegistryAsyncClient mockRegistryClient = getMockClient();
         Mockito.when(mockRegistryClient.getSchemaId(anyString(), anyString(), anyString(), anyString()))
@@ -68,7 +70,7 @@ public class SchemaRegistrySerializerTest {
             int start = buffer.position() + buffer.arrayOffset();
             int length = buffer.limit() - SchemaRegistrySerializer.SCHEMA_ID_SIZE;
             byte[] encodedBytes = Arrays.copyOfRange(buffer.array(), start, start + length);
-            assertTrue(Arrays.equals(encoder.encode(null).toByteArray(), encodedBytes));
+            assertTrue(Arrays.equals(encoder.encode(null), encodedBytes));
         } catch (SerializationException e) {
             e.printStackTrace();
             fail();
@@ -111,10 +113,12 @@ public class SchemaRegistrySerializerTest {
         // manually add SchemaRegistryObject to cache
         SchemaRegistryObject registered = new SchemaRegistryObject(MOCK_GUID,
             decoder.getSchemaType(),
+            decoder.getSchemaName(null),
+            decoder.getSchemaGroup(),
             MOCK_AVRO_SCHEMA_STRING.getBytes(),
             decoder::parseSchemaString);
 
-        assertTrue(registered.deserialize() != null);
+        assertTrue(registered.getSchema() != null);
 
         CachedSchemaRegistryAsyncClient mockClient = getMockClient();
         Mockito.when(mockClient.getSchema(anyString()))

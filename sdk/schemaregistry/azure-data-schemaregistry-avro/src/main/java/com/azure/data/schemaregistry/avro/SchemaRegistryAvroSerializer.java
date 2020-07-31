@@ -4,7 +4,7 @@
 package com.azure.data.schemaregistry.avro;
 
 import com.azure.data.schemaregistry.SchemaRegistrySerializer;
-import com.azure.data.schemaregistry.SerializationException;
+import com.azure.data.schemaregistry.models.SerializationException;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

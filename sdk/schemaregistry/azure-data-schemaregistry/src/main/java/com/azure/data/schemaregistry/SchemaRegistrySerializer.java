@@ -5,9 +5,9 @@ package com.azure.data.schemaregistry;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.data.schemaregistry.client.CachedSchemaRegistryAsyncClient;
-import com.azure.data.schemaregistry.client.SchemaRegistryClientException;
-import com.azure.data.schemaregistry.client.SchemaRegistryObject;
+import com.azure.data.schemaregistry.models.SchemaRegistryClientException;
+import com.azure.data.schemaregistry.models.SchemaRegistryObject;
+import com.azure.data.schemaregistry.models.SerializationException;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -55,7 +55,7 @@ public abstract class SchemaRegistrySerializer {
         this(schemaRegistryClient, serializerCodec, deserializerCodecList, null, null);
     }
 
-    public <T> SchemaRegistrySerializer(CachedSchemaRegistryAsyncClient schemaRegistryClient,
+    public SchemaRegistrySerializer(CachedSchemaRegistryAsyncClient schemaRegistryClient,
         Codec serializerCodec, List<Codec> deserializerCodecList, Boolean autoRegisterSchemas,
         String schemaGroup) {
 
@@ -153,7 +153,7 @@ public abstract class SchemaRegistrySerializer {
                     .put(id.getBytes(StandardCharsets.UTF_8));
                 try {
                     s.write(idBuffer.array());
-                    serializerCodec.encode(object).writeTo(s);
+                    s.write(serializerCodec.encode(object));
                 } catch (IOException e) {
                     sink.error(new SerializationException(e.getMessage(), e));
                 }
@@ -170,7 +170,7 @@ public abstract class SchemaRegistrySerializer {
      * @return object, deserialized with the prefixed schema
      * @throws SerializationException if deserialization of registry schema or message payload fails.
      */
-    protected Mono<Object> deserialize(InputStream s) throws SerializationException {
+    protected Mono<Object> deserialize(InputStream s) {
         if (s == null) {
             return Mono.empty();
         }
@@ -195,7 +195,7 @@ public abstract class SchemaRegistrySerializer {
                     .onErrorMap(IOException.class,
                         e -> logger.logExceptionAsError(new SerializationException(e.getMessage(), e)))
                     .handle((registryObject, sink) -> {
-                        Object payloadSchema = registryObject.deserialize();
+                        Object payloadSchema = registryObject.getSchema();
 
                         if (payloadSchema == null) {
                             sink.error(logger.logExceptionAsError(
@@ -210,7 +210,7 @@ public abstract class SchemaRegistrySerializer {
                         byte[] b = Arrays.copyOfRange(buffer.array(), start, start + length);
 
                         Codec codec = getDeserializerCodec(registryObject);
-                        sink.next(codec.decodeBytes(b, payloadSchema));
+                        sink.next(codec.decode(b, payloadSchema));
                     })
                     .onErrorMap(e -> {
                         if (e instanceof SchemaRegistryClientException) {

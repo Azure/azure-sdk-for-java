@@ -5,7 +5,7 @@ package com.azure.data.schemaregistry.avro;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.schemaregistry.Codec;
-import com.azure.data.schemaregistry.SerializationException;
+import com.azure.data.schemaregistry.models.SerializationException;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericDatumReader;
 import org.apache.avro.generic.GenericDatumWriter;
@@ -79,6 +79,11 @@ public class AvroCodec implements Codec {
         return AvroSchemaUtils.getSchema(object).getFullName();
     }
 
+    @Override
+    public String getSchemaGroup() {
+        return "$Default";
+    }
+
     /**
      * Returns ByteArrayOutputStream containing Avro encoding of object parameter
      * @param object Object to be encoded into byte stream
@@ -86,7 +91,7 @@ public class AvroCodec implements Codec {
      * @throws SerializationException wraps runtime exceptions
      */
     @Override
-    public ByteArrayOutputStream encode(Object object) {
+    public byte[] encode(Object object) {
         Schema schema = AvroSchemaUtils.getSchema(object);
 
         try {
@@ -104,7 +109,7 @@ public class AvroCodec implements Codec {
                 writer.write(object, encoder);
                 encoder.flush();
             }
-            return out;
+            return out.toByteArray();
         } catch (IOException | RuntimeException e) {
             // Avro serialization can throw AvroRuntimeException, NullPointerException, ClassCastException, etc
             throw logger.logExceptionAsError(
@@ -119,7 +124,7 @@ public class AvroCodec implements Codec {
      * @return deserialized object
      * @throws SerializationException upon deserialization failure
      */
-    public Object decodeBytes(byte[] b, Object object) {
+    public Object decode(byte[] b, Object object) {
         Objects.requireNonNull(object, "Schema must not be null.");
 
         if (!(object instanceof Schema)) {

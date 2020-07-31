@@ -4,8 +4,8 @@
 package com.azure.data.schemaregistry.avro;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.data.schemaregistry.client.CachedSchemaRegistryAsyncClient;
-import com.azure.data.schemaregistry.client.CachedSchemaRegistryClientBuilder;
+import com.azure.data.schemaregistry.CachedSchemaRegistryAsyncClient;
+import com.azure.data.schemaregistry.CachedSchemaRegistryClientBuilder;
 
 import java.util.Objects;
 
