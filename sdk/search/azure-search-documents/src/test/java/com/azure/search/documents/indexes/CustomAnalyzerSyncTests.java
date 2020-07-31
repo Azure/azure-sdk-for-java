@@ -4,6 +4,7 @@ package com.azure.search.documents.indexes;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
+import com.azure.core.util.ExpandableStringEnum;
 import com.azure.search.documents.SearchClient;
 import com.azure.search.documents.SearchDocument;
 import com.azure.search.documents.SearchTestBase;
@@ -156,7 +157,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
     }
 
     @Test
-    public void canUseAllAnalyzerNamesInIndexDefinition() {
+    public void canUseAllAnalyzerNamesInIndexDefinition() throws IllegalAccessException {
         SearchIndex index = prepareIndexWithAllLexicalAnalyzerNames();
         indexesToCleanup.add(index.getName());
         SearchIndex res = searchIndexClient.createIndex(index);
@@ -210,12 +211,12 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
     }
 
     @Test
-    public void canAnalyzeWithAllPossibleNames() {
+    public void canAnalyzeWithAllPossibleNames() throws IllegalAccessException {
         SearchIndex index = createTestIndex(null);
         searchIndexClient.createIndex(index);
         indexesToCleanup.add(index.getName());
 
-        LexicalAnalyzerName.values()
+        getExpandableEnumValues(LexicalAnalyzerName.class)
             .stream()
             .map(an -> new AnalyzeTextOptions("One two", an))
             .forEach(r -> searchIndexClient.analyzeText(index.getName(), r));
@@ -226,8 +227,8 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
             .forEach(r -> searchIndexClient.analyzeText(index.getName(), r));
 
         AnalyzeTextOptions request = new AnalyzeTextOptions("One two", LexicalTokenizerName.WHITESPACE)
-            .setTokenFilters(TokenFilterName.values().toArray(new TokenFilterName[0]))
-            .setCharFilters(CharFilterName.values().toArray(new CharFilterName[0]));
+            .setTokenFilters(getExpandableEnumValues(TokenFilterName.class).toArray(new TokenFilterName[0]))
+            .setCharFilters(getExpandableEnumValues(CharFilterName.class).toArray(new CharFilterName[0]));
         searchIndexClient.analyzeText(index.getName(), request);
     }
 
@@ -661,8 +662,8 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
         return splitIndex(index);
     }
 
-    SearchIndex prepareIndexWithAllLexicalAnalyzerNames() {
-        List<LexicalAnalyzerName> allLexicalAnalyzerNames = new ArrayList<>(LexicalAnalyzerName.values());
+    SearchIndex prepareIndexWithAllLexicalAnalyzerNames() throws IllegalAccessException {
+        List<LexicalAnalyzerName> allLexicalAnalyzerNames = getExpandableEnumValues(LexicalAnalyzerName.class);
         allLexicalAnalyzerNames.sort(Comparator.comparing(LexicalAnalyzerName::toString));
 
         List<SearchField> fields = new ArrayList<>();
@@ -695,10 +696,10 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
     }
 
     SearchIndex prepareIndexWithAllAnalysisComponentNames() throws IllegalAccessException {
-        List<TokenFilterName> tokenFilters = getFieldValues(TokenFilterName.class);
+        List<TokenFilterName> tokenFilters = getExpandableEnumValues(TokenFilterName.class);
         tokenFilters.sort(Comparator.comparing(TokenFilterName::toString));
 
-        List<CharFilterName> charFilters = getFieldValues(CharFilterName.class);
+        List<CharFilterName> charFilters = getExpandableEnumValues(CharFilterName.class);
         charFilters.sort(Comparator.comparing(CharFilterName::toString));
 
         LexicalAnalyzer analyzerWithAllTokenFilterAndCharFilters =
@@ -711,7 +712,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
         analyzers.add(analyzerWithAllTokenFilterAndCharFilters);
         String nameBase = generateName();
 
-        List<LexicalTokenizerName> analyzerNames = getFieldValues(LexicalTokenizerName.class);
+        List<LexicalTokenizerName> analyzerNames = getExpandableEnumValues(LexicalTokenizerName.class);
         analyzerNames.sort(Comparator.comparing(LexicalTokenizerName::toString));
 
         analyzers.addAll(analyzerNames.stream()
@@ -724,7 +725,13 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
         return index;
     }
 
-    private static <T> List<T> getFieldValues(Class<T> clazz) throws IllegalAccessException {
+    /*
+     * This helper method is used when we want to retrieve all declared ExpandableStringEnum values. Using the
+     * '.values()' method isn't consistently safe as that would include any custom names that have been added into
+     * the enum during runtime.
+     */
+    private static <T extends ExpandableStringEnum<T>> List<T> getExpandableEnumValues(Class<T> clazz)
+        throws IllegalAccessException {
         List<T> fieldValues = new ArrayList<>();
 
         for (Field field : clazz.getDeclaredFields()) {
@@ -1071,10 +1078,11 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
         return String.format("a%d", n);
     }
 
-    private List<LexicalAnalyzerName> getAnalyzersAllowedForSearchAnalyzerAndIndexAnalyzer() {
+    private List<LexicalAnalyzerName> getAnalyzersAllowedForSearchAnalyzerAndIndexAnalyzer()
+        throws IllegalAccessException {
         // Only non-language analyzer names can be set on the searchAnalyzer and indexAnalyzer properties.
         // ASSUMPTION: Only language analyzers end in .lucene or .microsoft.
-        return LexicalAnalyzerName.values()
+        return getExpandableEnumValues(LexicalAnalyzerName.class)
             .stream()
             .filter(an -> !an.toString().endsWith(".lucene") && !an.toString().endsWith(".microsoft"))
             .collect(Collectors.toList());
