@@ -37,6 +37,7 @@ public class ReactorHandlerProvider {
     /**
      * Creates a new connection handler with the given {@code connectionId} and {@code hostname}.
      *
+     * @param applicationId applicationId to be used in user agent while making connection.
      * @param connectionId Identifier associated with this connection.
      * @param hostname Host for the connection handler.
      * @param transportType Transport type used for the connection.
@@ -45,11 +46,11 @@ public class ReactorHandlerProvider {
      * @param clientVersion The version of the client library creating the connection handler.
      * @return A new {@link ConnectionHandler}.
      */
-    public ConnectionHandler createConnectionHandler(String connectionId, String hostname,
+    public ConnectionHandler createConnectionHandler(String applicationId, String connectionId, String hostname,
             AmqpTransportType transportType, ProxyOptions proxyOptions, String product, String clientVersion) {
         switch (transportType) {
             case AMQP:
-                return new ConnectionHandler(connectionId, hostname, product, clientVersion);
+                return new ConnectionHandler(applicationId, connectionId, hostname, product, clientVersion);
             case AMQP_WEB_SOCKETS:
                 if (proxyOptions != null && proxyOptions.isProxyAddressConfigured()) {
                     return new WebSocketsProxyConnectionHandler(connectionId, hostname, proxyOptions, product,

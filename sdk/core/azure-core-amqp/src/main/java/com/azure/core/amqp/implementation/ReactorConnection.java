@@ -73,6 +73,7 @@ public class ReactorConnection implements AmqpConnection {
     /**
      * Creates a new AMQP connection that uses proton-j.
      *
+     * @param applicationId applicationId to be used in user agent while making connection.
      * @param connectionId Identifier for the connection.
      * @param connectionOptions A set of options used to create the AMQP connection.
      * @param reactorProvider Provides proton-j Reactor instances.
@@ -84,7 +85,7 @@ public class ReactorConnection implements AmqpConnection {
      * @param senderSettleMode to set as {@link SenderSettleMode} on sender.
      * @param receiverSettleMode to set as {@link ReceiverSettleMode} on receiver.
      */
-    public ReactorConnection(String connectionId, ConnectionOptions connectionOptions, ReactorProvider reactorProvider,
+    public ReactorConnection(String applicationId, String connectionId, ConnectionOptions connectionOptions, ReactorProvider reactorProvider,
         ReactorHandlerProvider handlerProvider, TokenManagerProvider tokenManagerProvider,
         MessageSerializer messageSerializer, String product, String clientVersion,
         SenderSettleMode senderSettleMode, ReceiverSettleMode receiverSettleMode) {
@@ -96,7 +97,7 @@ public class ReactorConnection implements AmqpConnection {
         this.tokenManagerProvider = Objects.requireNonNull(tokenManagerProvider,
             "'tokenManagerProvider' cannot be null.");
         this.messageSerializer = messageSerializer;
-        this.handler = handlerProvider.createConnectionHandler(connectionId,
+        this.handler = handlerProvider.createConnectionHandler(applicationId, connectionId,
             connectionOptions.getFullyQualifiedNamespace(), connectionOptions.getTransportType(),
             connectionOptions.getProxyOptions(), product, clientVersion);
         this.retryPolicy = RetryUtil.getRetryPolicy(connectionOptions.getRetry());

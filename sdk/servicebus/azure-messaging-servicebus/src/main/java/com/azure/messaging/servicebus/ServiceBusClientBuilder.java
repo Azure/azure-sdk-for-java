@@ -72,6 +72,7 @@ public final class ServiceBusClientBuilder {
     private final MessageSerializer messageSerializer = new ServiceBusMessageSerializer();
     private final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
 
+    private String applicationId;
     private Configuration configuration;
     private ServiceBusConnectionProcessor sharedConnection;
     private String connectionStringEntityName;
@@ -91,6 +92,18 @@ public final class ServiceBusClientBuilder {
      * Creates a new instance with the default transport {@link AmqpTransportType#AMQP}.
      */
     public ServiceBusClientBuilder() {
+    }
+
+    /**
+     * Sets the application-id which will be used in user-agent while creating connection with Azure Service Bus.
+     *
+     * @param applicationId application-id to used in .
+     *
+     * @return The updated {@link ServiceBusClientBuilder} object.
+     */
+    public ServiceBusClientBuilder applicationId(String applicationId) {
+        this.applicationId = applicationId;
+        return this;
     }
 
     /**
@@ -296,7 +309,7 @@ public final class ServiceBusClientBuilder {
                 final Flux<ServiceBusAmqpConnection> connectionFlux = Mono.fromCallable(() -> {
                     final String connectionId = StringUtil.getRandomString("MF");
 
-                    return (ServiceBusAmqpConnection) new ServiceBusReactorAmqpConnection(connectionId,
+                    return (ServiceBusAmqpConnection) new ServiceBusReactorAmqpConnection(applicationId, connectionId,
                         connectionOptions, provider, handlerProvider, tokenManagerProvider, serializer, product,
                         clientVersion);
                 }).repeat();
