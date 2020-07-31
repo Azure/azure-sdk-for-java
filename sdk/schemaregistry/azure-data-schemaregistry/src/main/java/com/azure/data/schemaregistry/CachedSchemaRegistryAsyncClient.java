@@ -60,27 +60,7 @@ public final class CachedSchemaRegistryAsyncClient {
         this.schemaStringCache = new ConcurrentHashMap<>();
     }
 
-    // testing - todo remove constructor and replace with mock
-    CachedSchemaRegistryAsyncClient(
-        AzureSchemaRegistryRestService restService,
-        Map<String, SchemaRegistryObject> idCache,
-        Map<String, SchemaRegistryObject> schemaStringCache,
-        ConcurrentSkipListMap<String, Function<String, Object>> typeParserMap) {
-        this.restService = restService; // mockable
-        this.idCache = idCache;
-        this.schemaStringCache = schemaStringCache;
-        this.typeParserMap = typeParserMap;
-        this.maxCacheSize = MAX_SCHEMA_MAP_SIZE_DEFAULT;
-    }
-
-    /**
-     * @return Azure Schema Registry service string encoding
-     */
-    public Charset getEncoding() {
-        return CachedSchemaRegistryAsyncClient.SCHEMA_REGISTRY_SERVICE_ENCODING;
-    }
-
-    public Mono<SchemaRegistryObject> register(
+    public Mono<SchemaRegistryObject> registerSchema(
         String schemaGroup, String schemaName, String schemaString, String schemaType) {
         if (schemaStringCache.containsKey(getSchemaStringCacheKey(schemaGroup, schemaName, schemaString))) {
             logger.verbose(
@@ -124,7 +104,7 @@ public final class CachedSchemaRegistryAsyncClient {
             });
     }
 
-    public Mono<SchemaRegistryObject> getSchemaById(String schemaId) {
+    public Mono<SchemaRegistryObject> getSchema(String schemaId) {
         Objects.requireNonNull(schemaId, "'schemaId' should not be null");
 
         if (idCache.containsKey(schemaId)) {
@@ -205,7 +185,7 @@ public final class CachedSchemaRegistryAsyncClient {
     /**
      * Explicit call to clear all caches.
      */
-    public void reset() {
+    public void clearCache() {
         idCache.clear();
         schemaStringCache.clear();
         typeParserMap.clear();

@@ -181,9 +181,9 @@ public abstract class AbstractSchemaRegistrySerializer {
                 String schemaId = getSchemaIdFromPayload(buffer);
                 System.out.println(schemaId);
 
-                SchemaRegistryObject block = this.schemaRegistryClient.getSchemaById(schemaId).block();
+                SchemaRegistryObject block = this.schemaRegistryClient.getSchema(schemaId).block();
                 System.out.println(block);
-                return this.schemaRegistryClient.getSchemaById(schemaId)
+                return this.schemaRegistryClient.getSchema(schemaId)
                     .onErrorMap(IOException.class,
                         e -> logger.logExceptionAsError(new SerializationException(e.getMessage(), e)))
                     .handle((registryObject, sink) -> {
@@ -278,7 +278,7 @@ public abstract class AbstractSchemaRegistrySerializer {
     private Mono<String> maybeRegisterSchema(
         String schemaGroup, String schemaName, String schemaString, String schemaType) {
         if (this.autoRegisterSchemas) {
-            return this.schemaRegistryClient.register(schemaGroup, schemaName, schemaString, schemaType)
+            return this.schemaRegistryClient.registerSchema(schemaGroup, schemaName, schemaString, schemaType)
                 .map(SchemaRegistryObject::getSchemaId);
         } else {
             return this.schemaRegistryClient.getSchemaId(

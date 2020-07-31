@@ -1,11 +1,7 @@
 package com.azure.data.schemaregistry;
 
 import com.azure.core.annotation.ServiceClient;
-import com.azure.data.schemaregistry.Codec;
 import com.azure.data.schemaregistry.implementation.AzureSchemaRegistryRestService;
-import reactor.core.publisher.Mono;
-
-import java.nio.charset.Charset;
 
 @ServiceClient(
     builder = CachedSchemaRegistryClientBuilder.class,
@@ -17,15 +13,19 @@ public final class CachedSchemaRegistryClient {
         this.asyncClient = asyncClient;
     }
 
-    public SchemaRegistryObject register(String schemaGroup, String schemaName, String schemaString, String schemaType) {
-        return this.asyncClient.register(schemaGroup, schemaName, schemaString, schemaType).block();
+    public SchemaRegistryObject registerSchema(String schemaGroup, String schemaName, String schemaString, String schemaType) {
+        return this.asyncClient.registerSchema(schemaGroup, schemaName, schemaString, schemaType).block();
     }
 
-    public SchemaRegistryObject getSchemaById(String schemaId) {
-        return this.asyncClient.getSchemaById(schemaId).block();
+    public SchemaRegistryObject getSchema(String schemaId) {
+        return this.asyncClient.getSchema(schemaId).block();
     }
 
     public String getSchemaId(String schemaGroup, String schemaName, String schemaString, String schemaType) {
         return this.asyncClient.getSchemaId(schemaGroup, schemaName, schemaString, schemaType).block();
+    }
+
+    public void clearCache() {
+        this.asyncClient.clearCache();
     }
 }

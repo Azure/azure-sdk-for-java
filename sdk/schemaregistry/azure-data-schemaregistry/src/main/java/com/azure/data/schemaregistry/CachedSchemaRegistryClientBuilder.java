@@ -223,7 +223,7 @@ public class CachedSchemaRegistryClientBuilder {
      * @param codec Codec class implementation
      * @return The updated {@link CachedSchemaRegistryClientBuilder} object.
      */
-    public CachedSchemaRegistryClientBuilder addSchemaParser(Codec codec) {
+    public CachedSchemaRegistryClientBuilder addCodec(Codec codec) {
         Objects.requireNonNull(codec, "'codec' cannot be null.");
         if (CoreUtils.isNullOrEmpty(codec.getSchemaType())) {
             throw logger.logExceptionAsError(

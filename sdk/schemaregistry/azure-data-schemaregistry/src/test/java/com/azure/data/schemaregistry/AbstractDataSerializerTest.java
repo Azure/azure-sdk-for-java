@@ -3,9 +3,6 @@
 
 package com.azure.data.schemaregistry;
 
-import com.azure.data.schemaregistry.CachedSchemaRegistryAsyncClient;
-import com.azure.data.schemaregistry.SchemaRegistryClientException;
-import com.azure.data.schemaregistry.SchemaRegistryObject;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericDatumWriter;
@@ -117,14 +114,14 @@ public class AbstractDataSerializerTest {
         assertTrue(registered.getSchema() != null);
 
         CachedSchemaRegistryAsyncClient mockClient = getMockClient();
-        Mockito.when(mockClient.getSchemaById(anyString()))
+        Mockito.when(mockClient.getSchema(anyString()))
             .thenReturn(Mono.just(registered));
 
         // constructor loads deserializer codec
         TestDummySerializer serializer = new TestDummySerializer(mockClient, true);
 
         assertEquals(MOCK_GUID,
-            serializer.schemaRegistryClient.getSchemaById(MOCK_GUID).block().getSchemaId());
+            serializer.schemaRegistryClient.getSchema(MOCK_GUID).block().getSchemaId());
 
             serializer.deserializeImpl(new ByteArrayInputStream(getPayload()))
                 .subscribe(unused -> {
