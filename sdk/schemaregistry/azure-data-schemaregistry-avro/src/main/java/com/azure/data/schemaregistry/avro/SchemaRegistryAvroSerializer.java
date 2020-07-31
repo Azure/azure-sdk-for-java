@@ -19,7 +19,7 @@ import java.io.ByteArrayOutputStream;
  *
  * @see SchemaRegistrySerializer See AbstractSchemaRegistrySerializer for internal serialization implementation
  */
-public class SchemaRegistryAvroSerializer {
+public final class SchemaRegistryAvroSerializer {
     private final SchemaRegistryAvroAsyncSerializer serializer;
     SchemaRegistryAvroSerializer(SchemaRegistryAvroAsyncSerializer serializer) {
         this.serializer = serializer;
