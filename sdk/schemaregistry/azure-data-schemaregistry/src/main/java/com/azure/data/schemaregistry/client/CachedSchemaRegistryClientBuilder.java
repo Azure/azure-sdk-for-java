@@ -26,7 +26,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.schemaregistry.Codec;
 import com.azure.data.schemaregistry.client.implementation.AzureSchemaRegistryRestService;
 import com.azure.data.schemaregistry.client.implementation.AzureSchemaRegistryRestServiceClientBuilder;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.temporal.ChronoUnit;
@@ -115,18 +114,18 @@ public class CachedSchemaRegistryClientBuilder {
     /**
      * Sets schema cache size limit.  If limit is exceeded on any cache, all caches are recycled.
      *
-     * @param maxSchemaMapSize max size for internal schema caches in {@link CachedSchemaRegistryAsyncClient}
+     * @param maxCacheSize max size for internal schema caches in {@link CachedSchemaRegistryAsyncClient}
      * @return The updated {@link CachedSchemaRegistryClientBuilder} object.
-     * @throws IllegalArgumentException on invalid maxSchemaMapSize value
+     * @throws IllegalArgumentException on invalid maxCacheSize value
      */
-    public CachedSchemaRegistryClientBuilder maxSchemaMapSize(int maxSchemaMapSize) {
-        if (maxSchemaMapSize < CachedSchemaRegistryAsyncClient.MAX_SCHEMA_MAP_SIZE_MINIMUM) {
+    public CachedSchemaRegistryClientBuilder maxCacheSize(int maxCacheSize) {
+        if (maxCacheSize < CachedSchemaRegistryAsyncClient.MAX_SCHEMA_MAP_SIZE_MINIMUM) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 String.format("Schema map size must be greater than %s entries",
                     CachedSchemaRegistryAsyncClient.MAX_SCHEMA_MAP_SIZE_MINIMUM)));
         }
 
-        this.maxSchemaMapSize = maxSchemaMapSize;
+        this.maxSchemaMapSize = maxCacheSize;
         return this;
     }
 
@@ -223,7 +222,7 @@ public class CachedSchemaRegistryClientBuilder {
      * @param codec Codec class implementation
      * @return The updated {@link CachedSchemaRegistryClientBuilder} object.
      */
-    public CachedSchemaRegistryClientBuilder addSchemaParser(Codec codec) {
+    public CachedSchemaRegistryClientBuilder addCodec(Codec codec) {
         Objects.requireNonNull(codec, "'codec' cannot be null.");
         if (CoreUtils.isNullOrEmpty(codec.getSchemaType())) {
             throw logger.logExceptionAsError(

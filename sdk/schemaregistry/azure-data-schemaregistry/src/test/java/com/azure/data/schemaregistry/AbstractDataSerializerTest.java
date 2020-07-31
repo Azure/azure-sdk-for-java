@@ -130,15 +130,14 @@ public class AbstractDataSerializerTest {
         assertTrue(registered.deserialize() != null);
 
         CachedSchemaRegistryAsyncClient mockClient = getMockClient();
-        Mockito.when(mockClient.getSchemaById(anyString()))
+        Mockito.when(mockClient.getSchema(anyString()))
             .thenReturn(Mono.just(registered));
-        Mockito.when(mockClient.getEncoding()).thenReturn(StandardCharsets.UTF_8);
 
         // constructor loads deserializer codec
         TestDummySerializer serializer = new TestDummySerializer(mockClient, true, true);
 
         assertEquals(MOCK_GUID,
-            serializer.schemaRegistryClient.getSchemaById(MOCK_GUID).block().getSchemaId());
+            serializer.schemaRegistryClient.getSchema(MOCK_GUID).block().getSchemaId());
 
             serializer.deserializeImpl(new ByteArrayInputStream(getPayload()))
                 .subscribe(unused -> {

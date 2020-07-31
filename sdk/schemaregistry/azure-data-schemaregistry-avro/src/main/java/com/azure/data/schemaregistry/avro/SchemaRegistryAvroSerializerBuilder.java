@@ -134,13 +134,13 @@ public final class SchemaRegistryAvroSerializerBuilder {
             .credential(credential);
 
         if (maxSchemaMapSize != null) {
-            builder.maxSchemaMapSize(maxSchemaMapSize);
+            builder.maxCacheSize(maxSchemaMapSize);
         }
 
         AvroCodec codec = new AvroCodec(this.avroSpecificReader);
 
         CachedSchemaRegistryAsyncClient client = builder
-            .addSchemaParser(codec)
+            .addCodec(codec)
             .buildAsyncClient();
 
         return new SchemaRegistryAvroAsyncSerializer(client, codec, this.schemaGroup,
