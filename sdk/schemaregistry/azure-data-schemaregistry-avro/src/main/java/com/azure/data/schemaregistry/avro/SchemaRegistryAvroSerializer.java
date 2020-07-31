@@ -31,7 +31,7 @@ public class SchemaRegistryAvroSerializer {
      * @return byte array containing unique ID reference to schema, then the object serialized into bytes
      * @throws SerializationException Throws on serialization failure.
      */
-    public byte[] serialize(Object object) throws SerializationException {
+    public byte[] serialize(Object object) {
         if (object == null) {
             return null;
         }
@@ -53,7 +53,7 @@ public class SchemaRegistryAvroSerializer {
      * @throws SerializationException Throws on deserialization failure.
      * Exception may contain inner exceptions detailing failure condition.
      */
-    public Object deserialize(byte[] data) throws SerializationException {
+    public Object deserialize(byte[] data) {
         return serializer.deserialize(new ByteArrayInputStream(data), Object.class);
     }
 }

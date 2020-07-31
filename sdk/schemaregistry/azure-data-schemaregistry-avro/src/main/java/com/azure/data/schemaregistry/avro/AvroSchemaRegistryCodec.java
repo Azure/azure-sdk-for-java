@@ -22,7 +22,7 @@ import java.util.Objects;
  * Base Codec class for Avro encoder and decoder implementations
  */
 public class AvroSchemaRegistryCodec implements SchemaRegistryCodec {
-    private final ClientLogger logger = new ClientLogger(AvroCodec.class);
+    private final ClientLogger logger = new ClientLogger(AvroSchemaRegistryCodec.class);
     private static final EncoderFactory ENCODER_FACTORY = EncoderFactory.get();
     private static final DecoderFactory DECODER_FACTORY = DecoderFactory.get();
     private static final Boolean AVRO_SPECIFIC_READER_DEFAULT = false;
@@ -124,6 +124,7 @@ public class AvroSchemaRegistryCodec implements SchemaRegistryCodec {
      * @return deserialized object
      * @throws SerializationException upon deserialization failure
      */
+    @Override
     public Object decode(byte[] b, Object object) {
         Objects.requireNonNull(object, "Schema must not be null.");
 
