@@ -2,13 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.domain;
 
-import com.azure.spring.data.cosmos.core.mapping.Document;
+import com.azure.spring.data.cosmos.core.mapping.Container;
 import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
 
 import java.util.List;
 import java.util.Objects;
 
-@Document()
+@Container()
 public class PartitionPerson {
 
     private String id;

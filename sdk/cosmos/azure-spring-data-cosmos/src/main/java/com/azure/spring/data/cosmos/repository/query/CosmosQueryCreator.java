@@ -6,7 +6,7 @@ import com.azure.spring.data.cosmos.Constants;
 import com.azure.spring.data.cosmos.core.mapping.CosmosPersistentProperty;
 import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
-import com.azure.spring.data.cosmos.core.query.DocumentQuery;
+import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mapping.context.MappingContext;
@@ -25,7 +25,7 @@ import java.util.List;
  *  How to bind values to the query. if CosmosDb already has binding capability, if not we would have to do it here in
  *  some creative way.query creator are associated with part tree queries,
  */
-public class CosmosQueryCreator extends AbstractQueryCreator<DocumentQuery, Criteria> {
+public class CosmosQueryCreator extends AbstractQueryCreator<CosmosQuery, Criteria> {
 
     private final MappingContext<?, CosmosPersistentProperty> mappingContext;
 
@@ -90,7 +90,7 @@ public class CosmosQueryCreator extends AbstractQueryCreator<DocumentQuery, Crit
     }
 
     @Override
-    protected DocumentQuery complete(@NonNull Criteria criteria, @NonNull Sort sort) {
-        return new DocumentQuery(criteria).with(sort);
+    protected CosmosQuery complete(@NonNull Criteria criteria, @NonNull Sort sort) {
+        return new CosmosQuery(criteria).with(sort);
     }
 }

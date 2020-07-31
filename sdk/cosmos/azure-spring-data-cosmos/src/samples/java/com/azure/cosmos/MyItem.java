@@ -8,11 +8,11 @@ package com.azure.cosmos;
  * LINE NUMBERS OF EXISTING CODE SAMPLES.
  */
 
-import com.azure.spring.data.cosmos.core.mapping.Document;
+import com.azure.spring.data.cosmos.core.mapping.Container;
 import org.springframework.data.annotation.Version;
 
-@Document(container = "myContainer")
-public class MyDocument {
+@Container(containerName = "myContainer")
+public class MyItem {
     String id;
     String data;
     @Version

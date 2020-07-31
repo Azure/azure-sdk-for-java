@@ -11,7 +11,7 @@ package com.azure.cosmos;
 import com.azure.cosmos.models.IndexingMode;
 import com.azure.spring.data.cosmos.Constants;
 
-public @interface DocumentIndexingPolicyCodeSnippet {
+public @interface CosmosIndexingPolicyCodeSnippet {
 
     // Indicate if indexing policy use automatic or not
     boolean automatic() default Constants.DEFAULT_INDEXING_POLICY_AUTOMATIC;
