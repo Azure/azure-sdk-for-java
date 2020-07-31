@@ -22,7 +22,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.IterableStream;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import reactor.test.StepVerifier;
 
 import java.net.HttpURLConnection;
 import java.util.Arrays;
