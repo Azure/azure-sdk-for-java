@@ -50,7 +50,7 @@ public class AbstractDataSerializerTest {
             .thenReturn(Mono.just(encoder.getSchemaString(null)));
 
         TestDummySerializer serializer = new TestDummySerializer(
-            mockRegistryClient, true, false);
+            mockRegistryClient, false);
 
         try {
             ByteArrayOutputStream payload = serializer.serializeImpl(new ByteArrayOutputStream(), 1).block();
@@ -79,7 +79,6 @@ public class AbstractDataSerializerTest {
     public void testNullPayloadThrowsSerializationException() {
         TestDummySerializer serializer = new TestDummySerializer(
             getMockClient(),
-            true,
             false);
 
         try {
@@ -90,24 +89,12 @@ public class AbstractDataSerializerTest {
         }
     }
 
-    @Test
-    public void testSerializeWithNullByteEncoderThrows() {
-        // don't set byte encoder on constructor
-        TestDummySerializer serializer = new TestDummySerializer(
-            getMockClient(), false, false);
-
-        try {
-            serializer.serializeImpl(new ByteArrayOutputStream(), null);
-        } catch (SerializationException e) {
-            assert (true);
-        }
-    }
 
     @Test
     public void testIfRegistryNullThenThrow() {
         try {
             TestDummySerializer serializer = new TestDummySerializer(
-                null, true, false);
+                null, false);
             fail("Building serializer instance with null registry client failed to throw");
         } catch (IllegalArgumentException e) {
             assertTrue(true);
@@ -135,7 +122,7 @@ public class AbstractDataSerializerTest {
         Mockito.when(mockClient.getEncoding()).thenReturn(StandardCharsets.UTF_8);
 
         // constructor loads deserializer codec
-        TestDummySerializer serializer = new TestDummySerializer(mockClient, true, true);
+        TestDummySerializer serializer = new TestDummySerializer(mockClient, true);
 
         assertEquals(MOCK_GUID,
             serializer.schemaRegistryClient.getSchemaById(MOCK_GUID).block().getSchemaId());
@@ -153,14 +140,14 @@ public class AbstractDataSerializerTest {
     @Test
     public void testNullPayload() throws SchemaRegistryClientException, SerializationException {
         TestDummySerializer deserializer = new TestDummySerializer(
-            getMockClient(), true, true);
+            getMockClient(), true);
         assertNull(deserializer.deserializeImpl(null).block());
     }
 
     @Test
     public void testIfTooShortPayloadThrow() {
         TestDummySerializer serializer = new TestDummySerializer(
-            getMockClient(), true, true);
+            getMockClient(), true);
 
         try {
             serializer.deserializeImpl(new ByteArrayInputStream("bad payload".getBytes())).block();
@@ -175,7 +162,7 @@ public class AbstractDataSerializerTest {
     @Test
     public void testIfRegistryClientNullOnBuildThrow() {
         try {
-            TestDummySerializer deserializer = new TestDummySerializer(null, true, true);
+            TestDummySerializer deserializer = new TestDummySerializer(null, true);
             fail("should not get here.");
         } catch (IllegalArgumentException e) {
             // good

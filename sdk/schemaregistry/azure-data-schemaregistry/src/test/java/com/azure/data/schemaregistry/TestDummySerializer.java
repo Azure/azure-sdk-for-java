@@ -5,19 +5,13 @@ package com.azure.data.schemaregistry;
 
 import com.azure.data.schemaregistry.client.CachedSchemaRegistryAsyncClient;
 
+import java.util.Collections;
+
 public class TestDummySerializer extends AbstractSchemaRegistrySerializer {
     TestDummySerializer(
         CachedSchemaRegistryAsyncClient mockClient,
-        boolean byteEncoder,
         boolean autoRegisterSchemas) {
-        super(mockClient);
-
-        // allows simulating improperly written serializer constructor that does not initialize byte encoder
-        if (byteEncoder) {
-            setSerializerCodec(new SampleCodec());
-        }
-
-        this.addDeserializerCodec(new SampleCodec());
+        super(mockClient, new SampleCodec(), Collections.singletonList(new SampleCodec()));
 
         this.autoRegisterSchemas = autoRegisterSchemas;
     }

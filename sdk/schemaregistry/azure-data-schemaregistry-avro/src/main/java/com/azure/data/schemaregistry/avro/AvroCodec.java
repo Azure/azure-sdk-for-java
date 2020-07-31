@@ -25,14 +25,21 @@ public class AvroCodec implements Codec {
     private final ClientLogger logger = new ClientLogger(AvroCodec.class);
     private static final EncoderFactory ENCODER_FACTORY = EncoderFactory.get();
     private static final DecoderFactory DECODER_FACTORY = DecoderFactory.get();
-    private final boolean avroSpecificReader;
+    private static final Boolean AVRO_SPECIFIC_READER_DEFAULT = false;
+
+    private final Boolean avroSpecificReader;
 
     /**
      * Instantiates AvroCodec instance
      * @param avroSpecificReader flag indicating if decoder should decode records as SpecificRecords
      */
-    public AvroCodec(boolean avroSpecificReader) {
-        this.avroSpecificReader = avroSpecificReader;
+    public AvroCodec(Boolean avroSpecificReader) {
+        if (avroSpecificReader == null) {
+            this.avroSpecificReader = AvroCodec.AVRO_SPECIFIC_READER_DEFAULT;
+        }
+        else {
+            this.avroSpecificReader = avroSpecificReader;
+        }
     }
 
     @Override
