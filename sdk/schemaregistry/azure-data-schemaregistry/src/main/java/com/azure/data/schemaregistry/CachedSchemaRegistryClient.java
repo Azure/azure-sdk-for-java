@@ -53,4 +53,8 @@ public final class CachedSchemaRegistryClient {
             .block();
     }
 
+    public void clearCache() {
+        this.asyncClient.clearCache();
+    }
+
 }
