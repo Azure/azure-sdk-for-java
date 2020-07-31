@@ -86,10 +86,10 @@ public final class GroupByDocumentQueryExecutionContext<T extends Resource> impl
 
                 // Stage 2:
                 // Emit the results from the grouping table page by page
-                return createFeedResponseFromGroupingTable(maxPageSize, requestCharge);
+                return (FeedResponse<T>)createFeedResponseFromGroupingTable(maxPageSize, requestCharge);
             }).expand(tFeedResponse -> {
                 // Emit the results from the grouping table page by page
-                FeedResponse<T> response = createFeedResponseFromGroupingTable(maxPageSize, 0);
+                FeedResponse<T> response = (FeedResponse<T>)createFeedResponseFromGroupingTable(maxPageSize, 0);
                 if (response == null) {
                     return Mono.empty();
                 }
@@ -97,7 +97,7 @@ public final class GroupByDocumentQueryExecutionContext<T extends Resource> impl
             });
     }
 
-    private FeedResponse<T> createFeedResponseFromGroupingTable(int pageSize, double requestCharge) {
+    private FeedResponse<Document> createFeedResponseFromGroupingTable(int pageSize, double requestCharge) {
         if (this.groupingTable != null) {
             List<Document> groupByResults = groupingTable.drain(pageSize);
             if (groupByResults.size() == 0) {
@@ -107,7 +107,7 @@ public final class GroupByDocumentQueryExecutionContext<T extends Resource> impl
             HashMap<String, String> headers = new HashMap<>();
             headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double.toString(requestCharge));
             FeedResponse<Document> frp = BridgeInternal.createFeedResponse(groupByResults, headers);
-            return(FeedResponse<T>) frp;
+            return frp;
         }
 
         return null;

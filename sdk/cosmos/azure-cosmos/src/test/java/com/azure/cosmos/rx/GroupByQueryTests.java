@@ -129,6 +129,7 @@ public class GroupByQueryTests extends TestSuiteBase {
         List<FeedResponse<JsonNode>> queryResultPages = queryObservable.byPage().collectList().block();
 
         List<JsonNode> queryResults = new ArrayList<>();
+
         queryResultPages
             .forEach(feedResponse -> queryResults.addAll(feedResponse.getResults()));
 
@@ -137,6 +138,9 @@ public class GroupByQueryTests extends TestSuiteBase {
         for (int i = 0; i < expectedDocumentsList.size(); i++) {
             assertThat(expectedDocumentsList.get(i).toString().equals(queryResults.get(i).toString()));
         }
+
+        double totalRequestCharge =  queryResultPages.stream().collect(Collectors.summingDouble(FeedResponse::getRequestCharge));
+        assertThat(totalRequestCharge).isGreaterThan(0);
     }
 
     public void bulkInsert() {
