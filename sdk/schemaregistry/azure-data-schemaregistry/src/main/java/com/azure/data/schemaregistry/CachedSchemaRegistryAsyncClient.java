@@ -60,6 +60,19 @@ public final class CachedSchemaRegistryAsyncClient {
         this.schemaStringCache = new ConcurrentHashMap<>();
     }
 
+    // testing - todo remove constructor and replace with mock	    public Mono<SchemaRegistryObject> registerSchema(
+    CachedSchemaRegistryAsyncClient(
+        AzureSchemaRegistryRestService restService,
+        Map<String, SchemaRegistryObject> idCache,
+        Map<String, SchemaRegistryObject> schemaStringCache,
+        ConcurrentSkipListMap<String, Function<String, Object>> typeParserMap) {
+        this.restService = restService; // mockable
+        this.idCache = idCache;
+        this.schemaStringCache = schemaStringCache;
+        this.typeParserMap = typeParserMap;
+        this.maxCacheSize = MAX_SCHEMA_MAP_SIZE_DEFAULT;
+    }
+
     public Mono<SchemaRegistryObject> registerSchema(
         String schemaGroup, String schemaName, String schemaString, String schemaType) {
         if (schemaStringCache.containsKey(getSchemaStringCacheKey(schemaGroup, schemaName, schemaString))) {
