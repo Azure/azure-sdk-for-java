@@ -16,7 +16,7 @@ import java.util.Collections;
 /**
  * Asynchronous registry-based serializer implementation.
  */
-public class SchemaRegistryAvroAsyncSerializer extends SchemaRegistrySerializer implements ObjectSerializer {
+public final class SchemaRegistryAvroAsyncSerializer extends SchemaRegistrySerializer implements ObjectSerializer {
     private final ClientLogger logger = new ClientLogger(SchemaRegistryAvroAsyncSerializer.class);
 
     /**
