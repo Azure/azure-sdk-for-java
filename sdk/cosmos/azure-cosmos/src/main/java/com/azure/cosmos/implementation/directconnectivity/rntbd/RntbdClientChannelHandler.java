@@ -93,13 +93,12 @@ public class RntbdClientChannelHandler extends ChannelInitializer<Channel> imple
     @Override
     protected void initChannel(final Channel channel) {
 
-        checkNotNull(channel);
+        checkNotNull(channel, "expected non-null channel");
 
         final RntbdRequestManager requestManager = new RntbdRequestManager(
             this.healthChecker,
             this.config.maxRequestsPerChannel());
 
-        final long idleConnectionTimerResolutionInNanos = config.idleConnectionTimerResolutionInNanos();
         final ChannelPipeline pipeline = channel.pipeline();
 
         pipeline.addFirst(
@@ -113,14 +112,17 @@ public class RntbdClientChannelHandler extends ChannelInitializer<Channel> imple
             pipeline.addFirst(new LoggingHandler(this.config.wireLogLevel()));
         }
 
-        pipeline.addFirst(
-            this.config.sslContext().newHandler(channel.alloc()),
-            new IdleStateHandler(
+        pipeline.addFirst(this.config.sslContext().newHandler(channel.alloc()));
+
+        final long idleConnectionTimerResolutionInNanos = config.idleConnectionTimerResolutionInNanos();
+
+        if (idleConnectionTimerResolutionInNanos > 0) {
+            pipeline.addFirst(new IdleStateHandler(
                 idleConnectionTimerResolutionInNanos,
                 idleConnectionTimerResolutionInNanos,
                 0,
-                TimeUnit.NANOSECONDS)
-        );
+                TimeUnit.NANOSECONDS));
+        }
 
         channel.attr(REQUEST_MANAGER).set(requestManager);
     }
