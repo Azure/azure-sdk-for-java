@@ -14,6 +14,7 @@ import java.util.UUID;
  */
 public class DirectorySample {
     private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_FILE_ENDPOINT");
+    private static final String SASTOKEN = Configuration.getGlobalConfiguration().get("SAS_TOKEN");
 
     // This is the helper method to generate random name.
     private static String generateRandomName() {
@@ -26,10 +27,11 @@ public class DirectorySample {
      */
     public static void main(String[] args) {
         String shareName = generateRandomName();
-        ShareClient shareClient = new ShareClientBuilder().endpoint(ENDPOINT).shareName(shareName).buildClient();
+        ShareClient shareClient = new ShareClientBuilder().endpoint(ENDPOINT).sasToken(SASTOKEN).shareName(shareName).buildClient();
         shareClient.create();
         // Build up a directory client
         ShareDirectoryClient directoryClient = new ShareFileClientBuilder().endpoint(ENDPOINT).shareName(generateRandomName())
+                                            .sasToken(SASTOKEN)
                                             .shareName(shareName)
                                             .resourcePath(generateRandomName()).buildDirectoryClient();
         // Create a parent directory
