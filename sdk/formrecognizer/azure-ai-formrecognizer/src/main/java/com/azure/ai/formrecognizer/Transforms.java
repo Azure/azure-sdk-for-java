@@ -294,11 +294,11 @@ final class Transforms {
                 // TODO (savaity): service bug
                 if (fieldValue.getValueNumber() == null) {
                     doubleFieldValue =
-                        new com.azure.ai.formrecognizer.models.FieldValue(null, FieldValueType.DOUBLE);
+                        new com.azure.ai.formrecognizer.models.FieldValue(null, FieldValueType.FLOAT);
                 } else {
                     doubleFieldValue =
-                        new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueNumber().doubleValue(),
-                            FieldValueType.DOUBLE);
+                        new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueNumber().floatValue(),
+                            FieldValueType.FLOAT);
                 }
                 value = new FormField(key, labelText, valueText, doubleFieldValue,
                     setDefaultConfidenceValue(fieldValue.getConfidence()));

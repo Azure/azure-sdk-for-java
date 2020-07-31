@@ -286,7 +286,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             switch (expectedFieldValue.getType()) {
                 case NUMBER:
                     if (expectedFieldValue.getValueNumber() != null) {
-                        assertEquals((double) expectedFieldValue.getValueNumber(), actualFormField.getValue().asDouble());
+                        assertEquals(expectedFieldValue.getValueNumber(), actualFormField.getValue().asFloat());
                     }
                     break;
                 case DATE:
@@ -808,7 +808,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             .getValue().asString());
         assertEquals(EXPECTED_MULTIPAGE_PHONE_NUMBER_VALUE, receiptPage1Fields.get("MerchantPhoneNumber")
             .getValue().asPhoneNumber());
-        assertNotNull(receiptPage1Fields.get("Total").getValue().asDouble());
+        assertNotNull(receiptPage1Fields.get("Total").getValue().asFloat());
         assertNotNull(receiptPage1.getPages());
         assertEquals(ITEMIZED_RECEIPT_VALUE, receiptPage1Fields.get("ReceiptType").getValue().asString());
 
@@ -827,10 +827,10 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         assertEquals(EXPECTED_MULTIPAGE_ADDRESS_VALUE, receiptPage3Fields.get("MerchantAddress").getValue().asString());
         assertEquals("Frodo Baggins", receiptPage3Fields.get("MerchantName").getValue().asString());
         assertEquals(EXPECTED_MULTIPAGE_PHONE_NUMBER_VALUE, receiptPage3Fields.get("MerchantPhoneNumber").getValue().asPhoneNumber());
-        assertNotNull(receiptPage3Fields.get("Total").getValue().asDouble());
+        assertNotNull(receiptPage3Fields.get("Total").getValue().asFloat());
         // why isn't tip returned by service?
         // total value 1000 returned by service but should be 4300, service bug
-        assertEquals(3000.0f, receiptPage3Fields.get("Subtotal").getValue().asDouble());
+        assertEquals(3000.0f, receiptPage3Fields.get("Subtotal").getValue().asFloat());
         assertEquals(ITEMIZED_RECEIPT_VALUE, receiptPage3Fields.get("ReceiptType").getValue().asString());
     }
 

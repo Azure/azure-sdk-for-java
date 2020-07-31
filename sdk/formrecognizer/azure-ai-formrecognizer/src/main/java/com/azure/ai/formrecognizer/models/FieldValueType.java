@@ -18,7 +18,7 @@ public enum FieldValueType {
     PHONE_NUMBER,
 
     /** Enum value number. */
-    DOUBLE,
+    FLOAT,
 
     /** Enum value integer. */
     LONG,
