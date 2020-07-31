@@ -421,6 +421,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         final MessagingEntityType entityType = MessagingEntityType.QUEUE;
         final boolean isSessionEnabled = false;
         final int maxMessages = 5;
+        final int messagesToReceive = 1;
         final Duration shortTimeout = Duration.ofSeconds(5);
         setSenderAndReceiver(entityType, 0, isSessionEnabled);
 
@@ -443,7 +444,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
             receivedMessageCount.incrementAndGet();
         });
 
-        assertEquals(maxMessages, receivedMessageCount.get());
+        assertEquals(messagesToReceive, receivedMessageCount.get());
 
     }
 
