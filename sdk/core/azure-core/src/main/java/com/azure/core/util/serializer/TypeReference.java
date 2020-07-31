@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.experimental.serializer;
+package com.azure.core.util.serializer;
 
 import com.azure.core.util.logging.ClientLogger;
 
@@ -21,7 +21,7 @@ public abstract class TypeReference<T> {
 
     private static final Map<Class<?>, TypeReference<?>> CACHE = new ConcurrentHashMap<>();
 
-    private final java.lang.reflect.Type javaType;
+    private final Type javaType;
 
     /**
      * Constructs a new {@link TypeReference} which maintains generic information.
