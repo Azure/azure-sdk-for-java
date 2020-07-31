@@ -2104,6 +2104,14 @@
     <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
   </Match>
 
+  <Match>
+    <Or>
+      <Class name="com.microsoft.azure.spring.integration.servicebus.queue.ServiceBusQueueTemplate$QueueMessageHandler"/> <!-- false positive -->
+      <Class name="com.microsoft.azure.spring.integration.servicebus.topic.ServiceBusTopicTemplate$TopicMessageHandler"/> <!-- false positive -->
+    </Or>
+    <Method name="OnCloseSessionAsync"/>
+    <Bug pattern="NM_METHOD_NAMING_CONVENTION"/>
+  </Match>
 
   <!-- These fields are designed to be not written. They are for deserializing. -->
   <Match>

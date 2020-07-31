@@ -64,6 +64,21 @@ extends:
       - name: spring-cloud-azure-telemetry
         groupId: com.microsoft.azure
         safeName: azurespringcloudtelemetry
+      - name: spring-integration-azure-core
+        groupId: com.microsoft.azure
+        safeName: springintegrationazurecore
+      - name: azure-spring-integration-eventhubs
+        groupId: com.microsoft.azure
+        safeName: azurespringintegrationeventhubs
+      - name: azure-spring-integration-servicebus
+        groupId: com.microsoft.azure
+        safeName: azurespringintegrationservicebus
+      - name: azure-spring-integration-storage-queue
+        groupId: com.microsoft.azure
+        safeName: azurespringintegrationstoragequeue
+      - name: azure-spring-integration-test
+        groupId: com.microsoft.azure
+        safeName: azurespringintegrationtest
     AdditionalModules:
       - name: azure-spring-boot-sample-active-directory
         groupId: com.azure
