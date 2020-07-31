@@ -164,7 +164,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
     }
 
     @Test
-    public void canUseAllAnalyzerNamesInIndexDefinition() throws IllegalAccessException {
+    public void canUseAllAnalyzerNamesInIndexDefinition() {
         SearchIndex index = prepareIndexWithAllLexicalAnalyzerNames();
         indexesToCleanup.add(index.getName());
         SearchIndex res = searchIndexClient.createIndex(index);
@@ -292,7 +292,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
     }
 
     @Test
-    public void canUseAllAnalysisComponentNames() throws IllegalAccessException {
+    public void canUseAllAnalysisComponentNames() {
         SearchIndex index = prepareIndexWithAllAnalysisComponentNames();
 
         SearchIndex createdIndex = searchIndexClient.createIndex(index);
