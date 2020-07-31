@@ -138,7 +138,7 @@ SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certificatePolle
     certificateClient.beginCreateCertificate("certificateName", CertificatePolicy.getDefault());
 certificatePoller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
 KeyVaultCertificate certificate = certificatePoller.getFinalResult();
-System.out.printf("Certificate created with name: \"%s\"%n", certificate.getName());
+System.out.printf("Certificate created with name \"%s\"%n", certificate.getName());
 ```
 
 ### Retrieve a certificate
