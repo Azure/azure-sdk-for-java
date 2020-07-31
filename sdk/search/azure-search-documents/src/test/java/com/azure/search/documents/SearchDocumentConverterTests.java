@@ -3,7 +3,7 @@
 
 package com.azure.search.documents;
 
-import com.azure.core.experimental.serializer.TypeReference;
+import com.azure.core.util.serializer.TypeReference;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;

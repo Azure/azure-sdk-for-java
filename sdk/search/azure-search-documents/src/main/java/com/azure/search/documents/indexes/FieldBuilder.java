@@ -3,9 +3,9 @@
 
 package com.azure.search.documents.indexes;
 
-import com.azure.core.experimental.serializer.PropertyNameSerializer;
 import com.azure.core.serializer.json.jackson.JacksonJsonSerializerProvider;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.PropertyNameSerializer;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;

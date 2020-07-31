@@ -3,7 +3,7 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.experimental.serializer.JsonSerializer;
+import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.search.documents.SearchDocument;
 import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
 import com.azure.search.documents.models.SearchResult;

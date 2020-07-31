@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.experimental.serializer;
+package com.azure.core.util.serializer;
 
 import java.util.Iterator;
 import java.util.ServiceLoader;

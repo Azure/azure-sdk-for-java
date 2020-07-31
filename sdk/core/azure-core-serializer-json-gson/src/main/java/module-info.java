@@ -7,6 +7,6 @@ module com.azure.core.serializer.json.gson {
 
     exports com.azure.core.serializer.json.gson;
 
-    provides com.azure.core.experimental.serializer.PropertyNameSerializerProvider
+    provides com.azure.core.util.serializer.PropertyNameSerializerProvider
         with com.azure.core.serializer.json.gson.GsonJsonSerializerProvider;
 }

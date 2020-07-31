@@ -3,13 +3,13 @@
 
 package com.azure.core.serializer.json.jackson;
 
-import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProvider;
+import com.azure.core.util.serializer.PropertyNameSerializerProvider;
 
 /**
  * Implementation of {@link JsonSerializerProvider}.
  */
-public class JacksonJsonSerializerProvider implements JsonSerializerProvider, PropertyNameSerializerProvider {
+public class JacksonJsonSerializerProvider implements PropertyNameSerializerProvider {
     @Override
     public JacksonJsonSerializer createInstance() {
         return new JacksonJsonSerializerBuilder().build();

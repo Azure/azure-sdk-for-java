@@ -5,6 +5,7 @@ package com.azure.search.documents.implementation.util;
 
 import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
 import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.search.documents.implementation.serializer.SerializationUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;

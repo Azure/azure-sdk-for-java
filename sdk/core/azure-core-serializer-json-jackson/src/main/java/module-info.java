@@ -6,6 +6,6 @@ module com.azure.core.serializer.json.jackson {
 
     exports com.azure.core.serializer.json.jackson;
 
-    provides com.azure.core.experimental.serializer.PropertyNameSerializerProvider
+    provides com.azure.core.util.serializer.PropertyNameSerializerProvider
         with com.azure.core.serializer.json.jackson.JacksonJsonSerializerProvider;
 }

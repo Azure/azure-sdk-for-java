@@ -3,15 +3,11 @@
 
 package com.azure.core.serializer.json.gson;
 
-import com.azure.core.experimental.serializer.JsonNode;
-import com.azure.core.experimental.serializer.JsonSerializer;
-import com.azure.core.experimental.serializer.PropertyNameSerializer;
-import com.azure.core.experimental.serializer.TypeReference;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
+import com.azure.core.util.serializer.PropertyNameSerializer;
 import com.azure.core.util.serializer.TypeReference;
 import com.google.gson.Gson;
-import com.google.gson.JsonParser;
 import com.google.gson.annotations.SerializedName;
 import reactor.core.publisher.Mono;
 

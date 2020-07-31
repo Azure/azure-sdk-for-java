@@ -3,16 +3,13 @@
 
 package com.azure.core.serializer.json.jackson;
 
-import com.azure.core.experimental.serializer.JsonNode;
-import com.azure.core.experimental.serializer.JsonSerializer;
-import com.azure.core.experimental.serializer.PropertyNameSerializer;
-import com.azure.core.experimental.serializer.TypeReference;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JsonSerializer;
+import com.azure.core.util.serializer.PropertyNameSerializer;
+import com.azure.core.util.serializer.TypeReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.azure.core.util.serializer.JsonSerializer;
-import com.azure.core.util.serializer.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import reactor.core.publisher.Mono;

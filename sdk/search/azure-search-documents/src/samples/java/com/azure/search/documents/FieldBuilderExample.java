@@ -4,9 +4,9 @@
 package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.experimental.serializer.PropertyNameSerializer;
 import com.azure.core.serializer.json.jackson.JacksonJsonSerializerProvider;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.serializer.PropertyNameSerializer;
 import com.azure.search.documents.indexes.FieldBuilder;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;

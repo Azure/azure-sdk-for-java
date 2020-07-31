@@ -3,9 +3,9 @@
 
 package com.azure.search.documents;
 
-import com.azure.core.experimental.serializer.TypeReference;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.TypeReference;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;

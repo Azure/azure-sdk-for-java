@@ -4,7 +4,7 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.experimental.serializer.JsonSerializer;
+import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.search.documents.SearchDocument;
 import com.azure.search.documents.implementation.util.Utility;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -16,7 +16,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.List;
 import java.util.Map;
 
-import static com.azure.core.experimental.serializer.TypeReference.createInstance;
+import static com.azure.core.util.serializer.TypeReference.createInstance;
 
 /**
  * Contains a document found by a search query, plus associated metadata.
