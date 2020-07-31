@@ -8,6 +8,5 @@ module com.azure.core.experimental {
     exports com.azure.core.experimental.spatial;
 
     uses com.azure.core.experimental.serializer.AvroSerializerProvider;
-    uses com.azure.core.experimental.serializer.JsonSerializerProvider;
     uses com.azure.core.experimental.serializer.PropertyNameSerializerProvider;
 }

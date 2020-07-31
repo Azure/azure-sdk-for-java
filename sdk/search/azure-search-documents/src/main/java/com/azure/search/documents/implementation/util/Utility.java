@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.util;
 
-import com.azure.core.experimental.serializer.JsonSerializer;
 import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;

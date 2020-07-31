@@ -3,15 +3,15 @@
 
 package com.azure.core.serializer.json.gson;
 
-import com.azure.core.experimental.serializer.JsonSerializerProvider;
-import com.azure.core.experimental.serializer.PropertyNameSerializerProvider;
+import com.azure.core.util.serializer.JsonSerializer;
+import com.azure.core.util.serializer.JsonSerializerProvider;
 
 /**
  * Implementation of {@link JsonSerializerProvider}.
  */
-public class GsonJsonSerializerProvider implements JsonSerializerProvider, PropertyNameSerializerProvider {
+public class GsonJsonSerializerProvider implements JsonSerializerProvider {
     @Override
-    public GsonJsonSerializer createInstance() {
+    public JsonSerializer createInstance() {
         return new GsonJsonSerializerBuilder().build();
     }
 }

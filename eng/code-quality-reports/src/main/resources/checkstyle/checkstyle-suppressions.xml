@@ -511,5 +511,5 @@
             lines="495,513,529,547"/>
 
   <!-- Static logger instances for short lived objects. -->
-  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.experimental.serializer.TypeReference.java" />
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.util.serializer.TypeReference.java" />
 </suppressions>

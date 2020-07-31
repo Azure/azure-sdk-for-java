@@ -3,7 +3,6 @@
 
 module com.azure.core.serializer.json.jackson {
     requires transitive com.azure.core;
-    requires transitive com.azure.core.experimental;
 
     exports com.azure.core.serializer.json.jackson;
 

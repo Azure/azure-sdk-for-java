@@ -11,6 +11,8 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.serializer.JsonSerializer;
+import com.azure.core.util.serializer.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import reactor.core.publisher.Mono;
@@ -61,21 +63,6 @@ public final class JacksonJsonSerializer implements PropertyNameSerializer {
     }
 
     @Override
-    public <T> T deserializeTree(JsonNode jsonNode, TypeReference<T> typeReference) {
-        try {
-            return mapper.readerFor(typeFactory.constructType(typeReference.getJavaType()))
-                .readValue(JsonNodeUtils.toJacksonNode(jsonNode));
-        } catch (IOException ex) {
-            throw logger.logExceptionAsError(new UncheckedIOException(ex));
-        }
-    }
-
-    @Override
-    public <T> Mono<T> deserializeTreeAsync(JsonNode jsonNode, TypeReference<T> typeReference) {
-        return Mono.fromCallable(() -> deserializeTree(jsonNode, typeReference));
-    }
-
-    @Override
     public <S extends OutputStream> S serialize(S stream, Object value) {
         try {
             mapper.writeValue(stream, value);
@@ -89,40 +76,6 @@ public final class JacksonJsonSerializer implements PropertyNameSerializer {
     @Override
     public <S extends OutputStream> Mono<S> serializeAsync(S stream, Object value) {
         return Mono.fromCallable(() -> serialize(stream, value));
-    }
-
-    @Override
-    public <S extends OutputStream> S serializeTree(S stream, JsonNode jsonNode) {
-        return serialize(stream, JsonNodeUtils.toJacksonNode(jsonNode));
-    }
-
-    @Override
-    public <S extends OutputStream> Mono<S> serializeTreeAsync(S stream, JsonNode jsonNode) {
-        return serializeAsync(stream, JsonNodeUtils.toJacksonNode(jsonNode));
-    }
-
-    @Override
-    public JsonNode toTree(InputStream stream) {
-        try {
-            return JsonNodeUtils.fromJacksonNode(mapper.readTree(stream));
-        } catch (IOException ex) {
-            throw logger.logExceptionAsError(new UncheckedIOException(ex));
-        }
-    }
-
-    @Override
-    public Mono<JsonNode> toTreeAsync(InputStream stream) {
-        return Mono.fromCallable(() -> toTree(stream));
-    }
-
-    @Override
-    public JsonNode toTree(Object value) {
-        return JsonNodeUtils.fromJacksonNode(mapper.valueToTree(value));
-    }
-
-    @Override
-    public Mono<JsonNode> toTreeAsync(Object value) {
-        return Mono.fromCallable(() -> toTree(value));
     }
 
     @Override

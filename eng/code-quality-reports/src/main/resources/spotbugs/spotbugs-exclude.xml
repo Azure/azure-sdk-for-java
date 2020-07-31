@@ -381,7 +381,7 @@
     <Class name="com.azure.core.auth.credentials.AzureCliCredentials"/>
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
   </Match>
-  
+
   <!-- The fields are checked for null in the build method and throw exceptions if values for fields are not specified. -->
   <Match>
       <Class name="com.azure.identity.InteractiveBrowserCredentialBuilder"/>
@@ -2148,6 +2148,11 @@
   <Match>
     <Class name="~com\.azure\.search\.documents\.indexes\.implementation\.models\.(Suggester|SynonymMap)" />
     <Bug pattern="IP_PARAMETER_IS_DEAD_BUT_OVERWRITTEN"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.core.experimental.serializer.JsonSerializer"/>
+    <Bug pattern="NM_SAME_SIMPLE_NAME_AS_INTERFACE"/>
   </Match>
 
   <!-- Use the property to take the custom serializer from SearchClient. -->

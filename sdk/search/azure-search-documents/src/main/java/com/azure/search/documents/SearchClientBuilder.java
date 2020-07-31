@@ -5,7 +5,6 @@ package com.azure.search.documents;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.experimental.serializer.JsonSerializer;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
@@ -25,6 +24,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.implementation.util.Utility;
+import com.azure.core.util.serializer.JsonSerializer;
 
 import java.net.MalformedURLException;
 import java.net.URL;
