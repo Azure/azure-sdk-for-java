@@ -6,7 +6,7 @@ import com.azure.spring.data.cosmos.Constants;
 import com.azure.spring.data.cosmos.core.mapping.CosmosPersistentProperty;
 import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
-import com.azure.spring.data.cosmos.core.query.DocumentQuery;
+import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mapping.context.MappingContext;
@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * Class for reactive cosmos query creators that create criteria based queries from a {@link PartTree}.
  */
-public class ReactiveCosmosQueryCreator extends AbstractQueryCreator<DocumentQuery, Criteria> {
+public class ReactiveCosmosQueryCreator extends AbstractQueryCreator<CosmosQuery, Criteria> {
 
     private final MappingContext<?, CosmosPersistentProperty> mappingContext;
 
@@ -88,7 +88,7 @@ public class ReactiveCosmosQueryCreator extends AbstractQueryCreator<DocumentQue
     }
 
     @Override
-    protected DocumentQuery complete(@NonNull Criteria criteria, @NonNull Sort sort) {
-        return new DocumentQuery(criteria).with(sort);
+    protected CosmosQuery complete(@NonNull Criteria criteria, @NonNull Sort sort) {
+        return new CosmosQuery(criteria).with(sort);
     }
 }

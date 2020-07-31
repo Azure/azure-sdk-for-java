@@ -9,6 +9,7 @@ import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration;
 import com.azure.spring.data.cosmos.config.CosmosClientConfig;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
+import com.azure.spring.data.cosmos.core.mapping.EnableCosmosAuditing;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
 import com.azure.spring.data.cosmos.core.ResponseDiagnostics;
@@ -23,6 +24,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.auditing.IsNewAwareAuditingHandler;
 import org.springframework.lang.Nullable;
 
 /**
@@ -31,6 +33,7 @@ import org.springframework.lang.Nullable;
  * LINE NUMBERS OF EXISTING CODE SAMPLES.
  */
 @Configuration
+@EnableCosmosAuditing
 @PropertySource("classpath:application.properties")
 public class DatabaseConfiguration extends AbstractCosmosConfiguration {
 
@@ -55,6 +58,9 @@ public class DatabaseConfiguration extends AbstractCosmosConfiguration {
     @Autowired
     @Qualifier("secondaryDataSourceConfiguration")
     CosmosProperties secondaryProperties;
+
+    @Autowired(required = false)
+    private IsNewAwareAuditingHandler cosmosAuditingHandler;
 
     @Bean
     public CosmosClientConfig cosmosClientConfig() {
@@ -84,7 +90,7 @@ public class DatabaseConfiguration extends AbstractCosmosConfiguration {
     public class PrimaryDataSourceConfiguration2 {
         @Bean
         public ReactiveCosmosTemplate primaryReactiveCosmosTemplate(CosmosAsyncClient cosmosAsyncClient, CosmosConfig cosmosConfig, MappingCosmosConverter mappingCosmosConverter) {
-            return new ReactiveCosmosTemplate(cosmosAsyncClient, "test1_2", cosmosConfig, mappingCosmosConverter);
+            return new ReactiveCosmosTemplate(cosmosAsyncClient, "test1_2", cosmosConfig, mappingCosmosConverter, cosmosAuditingHandler);
         }
     }
 
@@ -106,14 +112,14 @@ public class DatabaseConfiguration extends AbstractCosmosConfiguration {
     public class SecondaryDataSourceConfiguration {
         @Bean
         public CosmosTemplate secondaryReactiveCosmosTemplate(@Qualifier("secondaryCosmosAsyncClient") CosmosAsyncClient client, @Qualifier("secondaryCosmosConfig") CosmosConfig cosmosConfig, MappingCosmosConverter mappingCosmosConverter) {
-            return new CosmosTemplate(client, "test2_1", cosmosConfig, mappingCosmosConverter);
+            return new CosmosTemplate(client, "test2_1", cosmosConfig, mappingCosmosConverter, cosmosAuditingHandler);
         }
     }
     @EnableReactiveCosmosRepositories(basePackages = "com.azure.cosmos.multidatasource.secondarydatasource.second", reactiveCosmosTemplateRef = "secondaryReactiveCosmosTemplate1")
     public class SecondaryDataSourceConfiguration1 {
         @Bean
         public CosmosTemplate secondaryReactiveCosmosTemplate1(@Qualifier("secondaryCosmosAsyncClient") CosmosAsyncClient client, @Qualifier("secondaryCosmosConfig") CosmosConfig cosmosConfig, MappingCosmosConverter mappingCosmosConverter) {
-            return new CosmosTemplate(client, "test2_2", cosmosConfig, mappingCosmosConverter);
+            return new CosmosTemplate(client, "test2_2", cosmosConfig, mappingCosmosConverter, cosmosAuditingHandler);
         }
     }
 

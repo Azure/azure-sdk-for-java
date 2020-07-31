@@ -51,6 +51,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
+import java.util.function.Function;
 
 import static com.azure.cosmos.implementation.Warning.INTERNAL_USE_ONLY_WARNING;
 
@@ -484,6 +485,15 @@ public final class ModelBridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> T toObjectFromJsonSerializable(JsonSerializable jsonSerializable, Class<T> c) {
         return jsonSerializable.toObject(c);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <T> T toObjectFromJsonSerializable(Document jsonSerializable, Class<T> c, Function<Document, Document> transformer) {
+        if (transformer != null) {
+            return transformer.apply(jsonSerializable).toObject(c);
+        } else {
+            return jsonSerializable.toObject(c);
+        }
     }
 
     public static ByteBuffer serializeJsonToByteBuffer(JsonSerializable jsonSerializable, ObjectMapper objectMapper) {

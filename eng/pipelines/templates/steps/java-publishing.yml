@@ -74,5 +74,5 @@ steps:
           -RepositoryUsername azuresdk
           -RepositoryPassword $(azuresdk-sonatype-password)
           -GPGExecutablePath ${{ parameters.BuildToolsPath }}/tools/gpg/bin/gpg.exe
-          -StageOnly:$$(StageOnly)
+          -StageOnly:$${{parameters.StageOnly}}
           -InformationAction Continue

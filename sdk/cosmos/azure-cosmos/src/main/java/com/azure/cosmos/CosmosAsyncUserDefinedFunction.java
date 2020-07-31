@@ -112,7 +112,7 @@ public class CosmosAsyncUserDefinedFunction {
     private Mono<CosmosUserDefinedFunctionResponse> readInternal(Context context) {
         String spanName = "readUserDefinedFunction." + container.getId();
         Mono<CosmosUserDefinedFunctionResponse> responseMono = container.getDatabase().getDocClientWrapper().readUserDefinedFunction(getLink(), null)
-            .map(response -> ModelBridgeInternal.createCosmosUserDefinedFunctionResponse(response)).single();
+            .map(response -> ModelBridgeInternal.createCosmosUserDefinedFunctionResponse(response));
         return this.container.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono,
             context,
             spanName,
