@@ -11,9 +11,9 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.CosmosDatabase;
 import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.Azure;
 import com.azure.resourcemanager.cosmos.models.CosmosDBAccount;
@@ -116,7 +116,7 @@ public final class ManageHACosmosDB {
         return false;
     }
 
-    private static void createDBAndAddCollection(String masterKey, String endPoint) throws CosmosClientException {
+    private static void createDBAndAddCollection(String masterKey, String endPoint) {
         try {
             CosmosClient cosmosClient = new CosmosClientBuilder()
                 .endpoint(endPoint)
@@ -126,13 +126,14 @@ public final class ManageHACosmosDB {
                 .buildClient();
 
             // Define a new database using the id above.
-            CosmosDatabase myDatabase = cosmosClient.createDatabase(DATABASE_ID, 400).getDatabase();
+            cosmosClient.createDatabase(DATABASE_ID, ThroughputProperties.createManualThroughput(400));
+            CosmosDatabase myDatabase = cosmosClient.getDatabase(DATABASE_ID);
 
             System.out.println("Created a new database:");
             System.out.println(myDatabase.toString());
 
             // Create a new collection.
-            myDatabase.createContainer(COLLECTION_ID, "/keyPath", 1000);
+            myDatabase.createContainer(COLLECTION_ID, "/keyPath", ThroughputProperties.createManualThroughput(1000));
         } catch (Exception ex) {
             throw ex;
         }
