@@ -12,7 +12,7 @@ public class SchemaRegistryClientException extends AzureException {
     /**
      * @param s error message returned from schema registry client
      */
-    SchemaRegistryClientException(String s) {
+    public SchemaRegistryClientException(String s) {
         super(s);
     }
 
@@ -20,7 +20,7 @@ public class SchemaRegistryClientException extends AzureException {
      * @param s error message returned from schema registry client
      * @param cause Throwable cause of the exception
      */
-    SchemaRegistryClientException(String s, Throwable cause) {
+    public SchemaRegistryClientException(String s, Throwable cause) {
         super(s, cause);
     }
 }

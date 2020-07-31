@@ -5,6 +5,7 @@ package com.azure.data.schemaregistry.models;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.schemaregistry.CachedSchemaRegistryAsyncClient;
+import java.nio.charset.StandardCharsets;
 import java.util.function.Function;
 
 /**
@@ -77,7 +78,7 @@ public class SchemaRegistryObject {
     public Object getSchema() {
         if (this.deserialized == null) {
             String schemaString = new String(
-                this.schemaBytes, CachedSchemaRegistryAsyncClient.SCHEMA_REGISTRY_SERVICE_ENCODING);
+                this.schemaBytes, StandardCharsets.UTF_8);
 
             logger.verbose("Deserializing schema, id: '{}', schema string '{}'", this.schemaId, schemaString);
 
