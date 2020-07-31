@@ -44,7 +44,11 @@ public abstract class AbstractSchemaRegistrySerializer {
     protected String schemaGroup = AbstractSchemaRegistrySerializer.SCHEMA_GROUP_DEFAULT;
 
     /**
-     * @param schemaRegistryClient registry client to be used for storing schemas.  Not null.
+     * Constructor for AbstractSchemaRegistrySerializer implementations.
+     *
+     * @param schemaRegistryClient client to be used for interfacing with Schema Registry service
+     * @param serializerCodec Codec to be used for serialization operations
+     * @param deserializerCodecList list of Codecs to be used to deserialize incoming payloads
      */
     public AbstractSchemaRegistrySerializer(CachedSchemaRegistryAsyncClient schemaRegistryClient,
                                             Codec serializerCodec, List<Codec> deserializerCodecList) {
