@@ -1,11 +1,9 @@
 package com.azure.data.schemaregistry.client;
 
 import com.azure.core.annotation.ServiceClient;
-import com.azure.data.schemaregistry.Codec;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
 import com.azure.data.schemaregistry.client.implementation.AzureSchemaRegistryRestService;
-import reactor.core.publisher.Mono;
-
-import java.nio.charset.Charset;
 
 @ServiceClient(
     builder = CachedSchemaRegistryClientBuilder.class,
@@ -17,19 +15,33 @@ public final class CachedSchemaRegistryClient {
         this.asyncClient = asyncClient;
     }
 
-    public Charset getEncoding() {
-        return this.asyncClient.getEncoding();
+    public SchemaRegistryObject registerSchema(String schemaGroup, String schemaName, String schemaString,
+        String schemaType) {
+        return registerSchemaWithResponse(schemaGroup, schemaName, schemaString, schemaType, Context.NONE).getValue();
     }
 
-    public SchemaRegistryObject register(String schemaGroup, String schemaName, String schemaString, String schemaType) {
-        return this.asyncClient.register(schemaGroup, schemaName, schemaString, schemaType).block();
+    public Response<SchemaRegistryObject> registerSchemaWithResponse(String schemaGroup, String schemaName,
+        String schemaString, String schemaType, Context context) {
+        return this.asyncClient.registerSchemaWithResponse(schemaGroup, schemaName, schemaString, schemaType,
+            context).block();
     }
 
-    public SchemaRegistryObject getSchemaById(String schemaId) {
-        return this.asyncClient.getSchemaById(schemaId).block();
+    public SchemaRegistryObject getSchema(String schemaId) {
+        return getSchemaWithResponse(schemaId, Context.NONE).getValue();
+    }
+
+    public Response<SchemaRegistryObject> getSchemaWithResponse(String schemaId, Context context) {
+        return this.asyncClient.getSchemaWithResponse(schemaId).block();
     }
 
     public String getSchemaId(String schemaGroup, String schemaName, String schemaString, String schemaType) {
-        return this.asyncClient.getSchemaId(schemaGroup, schemaName, schemaString, schemaType).block();
+        return getSchemaIdWithResponse(schemaGroup, schemaName, schemaString, schemaType, Context.NONE).getValue();
     }
+
+    public Response<String> getSchemaIdWithResponse(String schemaGroup, String schemaName, String schemaString,
+        String schemaType, Context context) {
+        return this.asyncClient.getSchemaIdWithResponse(schemaGroup, schemaName, schemaString, schemaType, context)
+            .block();
+    }
+
 }

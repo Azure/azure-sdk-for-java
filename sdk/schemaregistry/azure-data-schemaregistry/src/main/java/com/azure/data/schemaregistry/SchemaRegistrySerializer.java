@@ -27,11 +27,11 @@ import static com.azure.core.util.FluxUtil.monoError;
 /**
  * Common implementation for all registry-based serializers.
  */
-public abstract class AbstractSchemaRegistrySerializer {
-    private final ClientLogger logger = new ClientLogger(AbstractSchemaRegistrySerializer.class);
+public abstract class SchemaRegistrySerializer {
+    private final ClientLogger logger = new ClientLogger(SchemaRegistrySerializer.class);
 
-    public static final Boolean AUTO_REGISTER_SCHEMAS_DEFAULT = false;
-    public static final String SCHEMA_GROUP_DEFAULT = "$default";
+    static final Boolean AUTO_REGISTER_SCHEMAS_DEFAULT = false;
+    static final String SCHEMA_GROUP_DEFAULT = "$default";
     static final int SCHEMA_ID_SIZE = 32;
 
     CachedSchemaRegistryAsyncClient schemaRegistryClient;
@@ -40,8 +40,8 @@ public abstract class AbstractSchemaRegistrySerializer {
     private final Map<String, Codec> deserializerCodecMap = new ConcurrentSkipListMap<>(String.CASE_INSENSITIVE_ORDER);
     private String schemaType;
 
-    protected Boolean autoRegisterSchemas = AbstractSchemaRegistrySerializer.AUTO_REGISTER_SCHEMAS_DEFAULT;
-    protected String schemaGroup = AbstractSchemaRegistrySerializer.SCHEMA_GROUP_DEFAULT;
+    Boolean autoRegisterSchemas = SchemaRegistrySerializer.AUTO_REGISTER_SCHEMAS_DEFAULT;
+    String schemaGroup = SchemaRegistrySerializer.SCHEMA_GROUP_DEFAULT;
 
     /**
      * Constructor for AbstractSchemaRegistrySerializer implementations.
@@ -50,8 +50,15 @@ public abstract class AbstractSchemaRegistrySerializer {
      * @param serializerCodec Codec to be used for serialization operations
      * @param deserializerCodecList list of Codecs to be used to deserialize incoming payloads
      */
-    public AbstractSchemaRegistrySerializer(CachedSchemaRegistryAsyncClient schemaRegistryClient,
+    public SchemaRegistrySerializer(CachedSchemaRegistryAsyncClient schemaRegistryClient,
                                             Codec serializerCodec, List<Codec> deserializerCodecList) {
+        this(schemaRegistryClient, serializerCodec, deserializerCodecList, null, null);
+    }
+
+    public <T> SchemaRegistrySerializer(CachedSchemaRegistryAsyncClient schemaRegistryClient,
+        Codec serializerCodec, List<Codec> deserializerCodecList, Boolean autoRegisterSchemas,
+        String schemaGroup) {
+
         Objects.requireNonNull(serializerCodec);
         Objects.requireNonNull(deserializerCodecList);
 
@@ -74,6 +81,15 @@ public abstract class AbstractSchemaRegistrySerializer {
             }
             this.deserializerCodecMap.put(c.getSchemaType(), c);
         }
+
+        // send configurations only
+        if (autoRegisterSchemas != null) {
+            this.autoRegisterSchemas = autoRegisterSchemas;
+        }
+
+        if (schemaGroup != null) {
+            this.schemaGroup = schemaGroup;
+        }
     }
 
     /**
@@ -87,7 +103,7 @@ public abstract class AbstractSchemaRegistrySerializer {
      * @return byte array containing encoded bytes with prefixed schema ID
      * @throws SerializationException if serialization operation fails during runtime.
      */
-    protected <T extends OutputStream> Mono<T> serializeImpl(T s, Object object) {
+    protected <T extends OutputStream> Mono<T> serialize(T s, Object object) {
         if (object == null) {
             return monoError(logger, new SerializationException(
                 "Null object, behavior should be defined in concrete serializer implementation."));
@@ -133,7 +149,7 @@ public abstract class AbstractSchemaRegistrySerializer {
                 }
             })
             .handle((id, sink) -> {
-                ByteBuffer idBuffer = ByteBuffer.allocate(AbstractSchemaRegistrySerializer.SCHEMA_ID_SIZE)
+                ByteBuffer idBuffer = ByteBuffer.allocate(SchemaRegistrySerializer.SCHEMA_ID_SIZE)
                     .put(id.getBytes(StandardCharsets.UTF_8));
                 try {
                     s.write(idBuffer.array());
@@ -154,7 +170,7 @@ public abstract class AbstractSchemaRegistrySerializer {
      * @return object, deserialized with the prefixed schema
      * @throws SerializationException if deserialization of registry schema or message payload fails.
      */
-    protected Mono<Object> deserializeImpl(InputStream s) throws SerializationException {
+    protected Mono<Object> deserialize(InputStream s) throws SerializationException {
         if (s == null) {
             return Mono.empty();
         }
@@ -173,9 +189,9 @@ public abstract class AbstractSchemaRegistrySerializer {
                 String schemaId = getSchemaIdFromPayload(buffer);
                 System.out.println(schemaId);
 
-                SchemaRegistryObject block = this.schemaRegistryClient.getSchemaById(schemaId).block();
+                SchemaRegistryObject block = this.schemaRegistryClient.getSchema(schemaId).block();
                 System.out.println(block);
-                return this.schemaRegistryClient.getSchemaById(schemaId)
+                return this.schemaRegistryClient.getSchema(schemaId)
                     .onErrorMap(IOException.class,
                         e -> logger.logExceptionAsError(new SerializationException(e.getMessage(), e)))
                     .handle((registryObject, sink) -> {
@@ -190,7 +206,7 @@ public abstract class AbstractSchemaRegistrySerializer {
                         }
 
                         int start = buffer.position() + buffer.arrayOffset();
-                        int length = buffer.limit() - AbstractSchemaRegistrySerializer.SCHEMA_ID_SIZE;
+                        int length = buffer.limit() - SchemaRegistrySerializer.SCHEMA_ID_SIZE;
                         byte[] b = Arrays.copyOfRange(buffer.array(), start, start + length);
 
                         Codec codec = getDeserializerCodec(registryObject);
@@ -245,14 +261,14 @@ public abstract class AbstractSchemaRegistrySerializer {
      * @throws SerializationException if schema ID could not be extracted from payload
      */
     private String getSchemaIdFromPayload(ByteBuffer buffer) throws SerializationException {
-        byte[] schemaGuidByteArray = new byte[AbstractSchemaRegistrySerializer.SCHEMA_ID_SIZE];
+        byte[] schemaGuidByteArray = new byte[SchemaRegistrySerializer.SCHEMA_ID_SIZE];
         try {
             buffer.get(schemaGuidByteArray);
         } catch (BufferUnderflowException e) {
             throw logger.logExceptionAsError(new SerializationException("Payload too short, no readable guid.", e));
         }
 
-        return new String(schemaGuidByteArray, schemaRegistryClient.getEncoding());
+        return new String(schemaGuidByteArray, StandardCharsets.UTF_8);
     }
 
     /**
@@ -270,7 +286,7 @@ public abstract class AbstractSchemaRegistrySerializer {
     private Mono<String> maybeRegisterSchema(
         String schemaGroup, String schemaName, String schemaString, String schemaType) {
         if (this.autoRegisterSchemas) {
-            return this.schemaRegistryClient.register(schemaGroup, schemaName, schemaString, schemaType)
+            return this.schemaRegistryClient.registerSchema(schemaGroup, schemaName, schemaString, schemaType)
                 .map(SchemaRegistryObject::getSchemaId);
         } else {
             return this.schemaRegistryClient.getSchemaId(

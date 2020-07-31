@@ -5,6 +5,9 @@ package com.azure.data.schemaregistry.client;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.schemaregistry.client.implementation.AzureSchemaRegistryRestService;
 import com.azure.data.schemaregistry.client.implementation.models.SchemaId;
@@ -22,7 +25,8 @@ import java.util.function.Function;
  * HTTP-based client that interacts with Azure Schema Registry service to store and retrieve schemas on demand.
  * <p>
  * Utilizes in-memory {@link Map} caching to minimize network I/O. Max size can be configured when instantiating by
- * using {@link CachedSchemaRegistryClientBuilder#maxSchemaMapSize}, otherwise {@code 1000} will be used as the default.
+ * using {@link CachedSchemaRegistryClientBuilder#maxCacheSize(int)}, otherwise {@code 1000} will be used as the
+ * default.
  * <p>
  * Two maps are maintained.
  * <ul>
@@ -37,9 +41,10 @@ import java.util.function.Function;
     builder = CachedSchemaRegistryClientBuilder.class,
     serviceInterfaces = AzureSchemaRegistryRestService.class)
 public final class CachedSchemaRegistryAsyncClient {
+
     private final ClientLogger logger = new ClientLogger(CachedSchemaRegistryAsyncClient.class);
 
-    public static final Charset SCHEMA_REGISTRY_SERVICE_ENCODING = StandardCharsets.UTF_8;
+    static final Charset SCHEMA_REGISTRY_SERVICE_ENCODING = StandardCharsets.UTF_8;
     static final int MAX_SCHEMA_MAP_SIZE_DEFAULT = 1000;
     static final int MAX_SCHEMA_MAP_SIZE_MINIMUM = 10;
 
@@ -73,26 +78,30 @@ public final class CachedSchemaRegistryAsyncClient {
         this.maxSchemaMapSize = MAX_SCHEMA_MAP_SIZE_DEFAULT;
     }
 
-    /**
-     * @return Azure Schema Registry service string encoding
-     */
-    public Charset getEncoding() {
-        return CachedSchemaRegistryAsyncClient.SCHEMA_REGISTRY_SERVICE_ENCODING;
-    }
-
-    public Mono<SchemaRegistryObject> register(
+    public Mono<SchemaRegistryObject> registerSchema(
         String schemaGroup, String schemaName, String schemaString, String schemaType) {
         if (schemaStringCache.containsKey(getSchemaStringCacheKey(schemaGroup, schemaName, schemaString))) {
             logger.verbose(
-                    "Cache hit schema string. Group: '{}', name: '{}', schema type: '{}', payload: '{}'",
-                    schemaGroup, schemaName, schemaType, schemaString);
+                "Cache hit schema string. Group: '{}', name: '{}', schema type: '{}', payload: '{}'",
+                schemaGroup, schemaName, schemaType, schemaString);
             return Mono.fromCallable(
                 () -> schemaStringCache.get(getSchemaStringCacheKey(schemaGroup, schemaName, schemaString)));
         }
 
+        return registerSchemaWithResponse(schemaGroup, schemaName, schemaString, schemaType)
+            .map(response -> response.getValue());
+    }
+
+    public Mono<Response<SchemaRegistryObject>> registerSchemaWithResponse(String schemaGroup, String schemaName,
+        String schemaString, String schemaType) {
+        return registerSchemaWithResponse(schemaGroup, schemaName, schemaString, schemaType, Context.NONE);
+    }
+
+     Mono<Response<SchemaRegistryObject>> registerSchemaWithResponse(String schemaGroup, String schemaName,
+        String schemaString, String schemaType, Context context) {
         logger.verbose(
             "Registering schema. Group: '{}', name: '{}', serialization type: '{}', payload: '{}'",
-                schemaGroup, schemaName, schemaType, schemaString);
+            schemaGroup, schemaName, schemaType, schemaString);
 
         return this.restService.createSchemaWithResponseAsync(schemaGroup, schemaName, schemaType, schemaString)
             .onErrorMap(HttpResponseException.class, e -> logger.logExceptionAsError(
@@ -118,20 +127,30 @@ public final class CachedSchemaRegistryAsyncClient {
                     getParseFunc(schemaType));
 
                 resetIfNeeded();
-                schemaStringCache.putIfAbsent(getSchemaStringCacheKey(schemaGroup, schemaName, schemaString), registered);
+                schemaStringCache
+                    .putIfAbsent(getSchemaStringCacheKey(schemaGroup, schemaName, schemaString), registered);
                 logger.verbose("Cached schema string. Group: '{}', name: '{}'", schemaGroup, schemaName);
-                sink.next(registered);
+                SimpleResponse<SchemaRegistryObject> schemaRegistryObjectSimpleResponse = new SimpleResponse<>(
+                    response.getRequest(), response.getStatusCode(),
+                    response.getHeaders(), registered);
+                sink.next(schemaRegistryObjectSimpleResponse);
             });
     }
 
-    public Mono<SchemaRegistryObject> getSchemaById(String schemaId) {
-        Objects.requireNonNull(schemaId, "'schemaId' should not be null");
-
+    public Mono<SchemaRegistryObject> getSchema(String schemaId) {
         if (idCache.containsKey(schemaId)) {
             logger.verbose("Cache hit for schema id '{}'", schemaId);
             return Mono.fromCallable(() -> idCache.get(schemaId));
         }
+        return getSchemaWithResponse(schemaId).map(Response::getValue);
+    }
 
+    public Mono<Response<SchemaRegistryObject>> getSchemaWithResponse(String schemaId) {
+        return getSchemaWithResponse(schemaId, Context.NONE);
+    }
+
+    Mono<Response<SchemaRegistryObject>> getSchemaWithResponse(String schemaId, Context context) {
+        Objects.requireNonNull(schemaId, "'schemaId' should not be null");
         return this.restService.getSchemaByIdWithResponseAsync(schemaId)
             .onErrorMap(HttpResponseException.class,
                 e -> logger.logExceptionAsError(
@@ -159,15 +178,32 @@ public final class CachedSchemaRegistryAsyncClient {
                 resetIfNeeded();
                 idCache.putIfAbsent(schemaId, schemaObject);
                 logger.verbose("Cached schema object. Path: '{}'", schemaId);
-                sink.next(schemaObject);
+                SimpleResponse<SchemaRegistryObject> schemaRegistryObjectSimpleResponse = new SimpleResponse<>(
+                    response.getRequest(), response.getStatusCode(),
+                    response.getHeaders(), schemaObject);
+                sink.next(schemaRegistryObjectSimpleResponse);
             });
     }
 
+
     public Mono<String> getSchemaId(String schemaGroup, String schemaName, String schemaString, String schemaType) {
+
         if (schemaStringCache.containsKey(getSchemaStringCacheKey(schemaGroup, schemaName, schemaString))) {
             logger.verbose("Cache hit schema string. Group: '{}', name: '{}'", schemaGroup, schemaName);
             return Mono.fromCallable(() -> schemaStringCache.get(schemaString).getSchemaId());
         }
+
+        return getSchemaIdWithResponse(schemaGroup, schemaName, schemaString, schemaType)
+            .map(response -> response.getValue());
+    }
+
+    public Mono<Response<String>> getSchemaIdWithResponse(String schemaGroup, String schemaName, String schemaString,
+        String schemaType) {
+        return getSchemaIdWithResponse(schemaGroup, schemaName, schemaString, schemaType, Context.NONE);
+    }
+
+    Mono<Response<String>> getSchemaIdWithResponse(String schemaGroup, String schemaName, String schemaString,
+        String schemaType, Context context) {
 
         return this.restService.getIdBySchemaContentWithResponseAsync(schemaGroup, schemaName, schemaType, schemaString)
             .onErrorMap(HttpResponseException.class, e ->
@@ -198,20 +234,25 @@ public final class CachedSchemaRegistryAsyncClient {
                         schemaString.getBytes(SCHEMA_REGISTRY_SERVICE_ENCODING),
                         getParseFunc(schemaType)));
                 logger.verbose("Cached schema string. Group: '{}', name: '{}'", schemaGroup, schemaName);
-                sink.next(schemaId.getId());
+
+                SimpleResponse<String> schemaIdResponse = new SimpleResponse<>(
+                    response.getRequest(), response.getStatusCode(),
+                    response.getHeaders(), schemaId.getId());
+                sink.next(schemaIdResponse);
             });
     }
 
     /**
      * Explicit call to clear all caches.
      */
-    public void reset() {
+    public void clearCache() {
         idCache.clear();
         schemaStringCache.clear();
         typeParserMap.clear();
     }
 
     // TODO: max age for schema maps? or will schemas always be immutable?
+
     /**
      * Checks if caches should be reinitialized to satisfy initial configuration
      */
