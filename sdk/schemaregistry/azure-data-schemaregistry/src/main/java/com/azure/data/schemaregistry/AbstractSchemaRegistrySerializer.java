@@ -17,7 +17,9 @@ import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -30,42 +32,48 @@ public abstract class AbstractSchemaRegistrySerializer {
 
     public static final Boolean AUTO_REGISTER_SCHEMAS_DEFAULT = false;
     public static final String SCHEMA_GROUP_DEFAULT = "$default";
-    public static final int SCHEMA_ID_SIZE = 32;
+    static final int SCHEMA_ID_SIZE = 32;
 
-    protected CachedSchemaRegistryAsyncClient schemaRegistryClient;
+    CachedSchemaRegistryAsyncClient schemaRegistryClient;
 
-    protected Codec serializerCodec = null;
+    private Codec serializerCodec;
     private final Map<String, Codec> deserializerCodecMap = new ConcurrentSkipListMap<>(String.CASE_INSENSITIVE_ORDER);
-    protected String schemaType;
+    private String schemaType;
+
     protected Boolean autoRegisterSchemas = AbstractSchemaRegistrySerializer.AUTO_REGISTER_SCHEMAS_DEFAULT;
     protected String schemaGroup = AbstractSchemaRegistrySerializer.SCHEMA_GROUP_DEFAULT;
 
     /**
-     * @param schemaRegistryClient registry client to be used for storing schemas.  Not null.
+     * Constructor for AbstractSchemaRegistrySerializer implementations.
+     *
+     * @param schemaRegistryClient client to be used for interfacing with Schema Registry service
+     * @param serializerCodec Codec to be used for serialization operations
+     * @param deserializerCodecList list of Codecs to be used to deserialize incoming payloads
      */
     public AbstractSchemaRegistrySerializer(CachedSchemaRegistryAsyncClient schemaRegistryClient,
-                                            Codec serializerCodec, Map<String, Codec> deserializerCodecMap) {
+                                            Codec serializerCodec, List<Codec> deserializerCodecList) {
+        Objects.requireNonNull(serializerCodec);
+        Objects.requireNonNull(deserializerCodecList);
+
         if (schemaRegistryClient == null) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Schema registry client must be initialized and passed into builder."));
         }
+
+        if (deserializerCodecList.size() == 0) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("At least one Codec must be provided for deserialization."));
+        }
+
         this.schemaRegistryClient = schemaRegistryClient;
         this.serializerCodec = serializerCodec;
-        this.deserializerCodecMap.putAll(deserializerCodecMap);
-    }
-
-    /**
-     * Set Codec class to be used for serialized objects into bytes
-     *
-     * @param codec Codec instance
-     */
-    protected void setSerializerCodec(Codec codec) {
-        if (this.serializerCodec != null) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("Setting multiple encoders on serializer not permitted"));
+        for (Codec c : deserializerCodecList) {
+            if (this.deserializerCodecMap.containsKey(c.getSchemaType())) {
+                throw logger.logExceptionAsError(
+                    new IllegalArgumentException("Only on Codec can be provided per schema serialization type."));
+            }
+            this.deserializerCodecMap.put(c.getSchemaType(), c);
         }
-        this.serializerCodec = codec;
-        this.schemaType = codec.getSchemaType();
     }
 
     /**
@@ -245,19 +253,6 @@ public abstract class AbstractSchemaRegistrySerializer {
         }
 
         return new String(schemaGuidByteArray, schemaRegistryClient.getEncoding());
-    }
-
-    /**
-     * Loads Codec to be used for decoding message payloads of specified schema type.
-     *
-     * @param codec Codec class instance to be loaded
-     */
-    protected void addDeserializerCodec(Codec codec) {
-        if (codec == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'codec' cannot be null"));
-        }
-
-        this.deserializerCodecMap.put(codec.getSchemaType(), codec);
     }
 
     /**

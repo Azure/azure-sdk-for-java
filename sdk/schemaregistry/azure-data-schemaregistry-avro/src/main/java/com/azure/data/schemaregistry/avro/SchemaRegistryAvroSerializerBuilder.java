@@ -16,10 +16,10 @@ import java.util.Objects;
 public final class SchemaRegistryAvroSerializerBuilder {
     private String registryUrl;
     private TokenCredential credential;
-    private boolean autoRegisterSchemas;
+    private Boolean autoRegisterSchemas;
     private String schemaGroup;
     private Integer maxSchemaMapSize;
-    private boolean avroSpecificReader;
+    private Boolean avroSpecificReader;
 
     /**
      * Instantiates instance of Builder class.
@@ -28,8 +28,8 @@ public final class SchemaRegistryAvroSerializerBuilder {
     public SchemaRegistryAvroSerializerBuilder() {
         this.registryUrl = null;
         this.credential = null;
-        this.autoRegisterSchemas = AbstractSchemaRegistrySerializer.AUTO_REGISTER_SCHEMAS_DEFAULT;
-        this.schemaGroup = AbstractSchemaRegistrySerializer.SCHEMA_GROUP_DEFAULT;
+        this.autoRegisterSchemas = null;
+        this.schemaGroup = null;
         this.maxSchemaMapSize = null;
         this.avroSpecificReader = false;
     }
