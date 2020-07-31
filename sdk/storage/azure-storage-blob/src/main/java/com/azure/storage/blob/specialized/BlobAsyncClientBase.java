@@ -251,21 +251,12 @@ public class BlobAsyncClientBase {
     public String getBlobUrl() {
         String blobUrl = azureBlobStorage.getUrl();
         if (this.isSnapshot()) {
-            blobUrl = appendQueryParameter(blobUrl, "snapshot", getSnapshotId());
+            blobUrl = Utility.appendQueryParameter(blobUrl, "snapshot", getSnapshotId());
         }
         if (this.getVersionId() != null) {
-            blobUrl = appendQueryParameter(blobUrl, "versionid", getVersionId());
+            blobUrl = Utility.appendQueryParameter(blobUrl, "versionid", getVersionId());
         }
         return blobUrl;
-    }
-
-    private String appendQueryParameter(String url, String key, String value) {
-        if (url.contains("?")) {
-            url = String.format("%s&%s=%s", url, key, value);
-        } else {
-            url = String.format("%s?%s=%s", url, key, value);
-        }
-        return url;
     }
 
     /**
@@ -490,7 +481,7 @@ public class BlobAsyncClientBase {
             (pollingContext) -> {
                 try {
                     return onStart(options.getSourceUrl(), options.getMetadata(), options.getTags(),
-                        options.getTier(), options.getRehydratePriority(), options.isSealingDestination(),
+                        options.getTier(), options.getRehydratePriority(), options.isSealDestination(),
                         sourceModifiedCondition, destinationRequestConditions);
                 } catch (RuntimeException ex) {
                     return monoError(logger, ex);
@@ -1584,8 +1575,8 @@ public class BlobAsyncClientBase {
         StorageImplUtils.assertNotNull("options", options);
 
         return this.azureBlobStorage.blobs().setTierWithRestResponseAsync(
-            null, null, options.getTier(), null, null, null,
-            options.getPriority(), null, options.getLeaseId(), options.getIfTagsMatch(), context)
+            null, null, options.getTier(), snapshot, versionId, null,
+            options.getPriority(), null, options.getLeaseId(), options.getTagsConditions(), context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 

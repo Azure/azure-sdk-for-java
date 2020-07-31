@@ -3,7 +3,7 @@
 package com.azure.spring.data.cosmos.core.generator;
 
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.spring.data.cosmos.core.query.DocumentQuery;
+import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 
 /**
  * Generate sql find query
@@ -16,7 +16,7 @@ public class FindQuerySpecGenerator extends AbstractQueryGenerator implements Qu
     }
 
     @Override
-    public SqlQuerySpec generateCosmos(DocumentQuery query) {
+    public SqlQuerySpec generateCosmos(CosmosQuery query) {
         return super.generateCosmosQuery(query, "SELECT * FROM ROOT r");
     }
 }

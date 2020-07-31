@@ -106,11 +106,11 @@
       <optional>true</optional>
     </dependency>
 
-    <!--Cosmosdb-->
+    <!--Cosmos-->
     <dependency>
       <groupId>com.microsoft.spring.data.gremlin</groupId>
       <artifactId>spring-data-gremlin</artifactId>
-      <version>2.2.3</version> <!-- {x-version-update;com.microsoft.spring.data.gremlin:spring-data-gremlin;external_dependency} -->
+      <version>2.3.0</version> <!-- {x-version-update;com.microsoft.spring.data.gremlin:spring-data-gremlin;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -124,13 +124,13 @@
     <dependency>
       <groupId>io.micrometer</groupId>
       <artifactId>micrometer-registry-azure-monitor</artifactId>
-      <version>1.3.0</version>  <!-- {x-version-update;spring_io.micrometer:micrometer-registry-azure-monitor;external_dependency} -->
+      <version>1.3.0</version>  <!-- {x-version-update;io.micrometer:micrometer-registry-azure-monitor;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>io.micrometer</groupId>
       <artifactId>micrometer-core</artifactId>
-      <version>1.3.0</version>  <!-- {x-version-update;spring_io.micrometer:micrometer-core;external_dependency} -->
+      <version>1.3.0</version>  <!-- {x-version-update;io.micrometer:micrometer-core;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -268,10 +268,10 @@
                 <include>com.microsoft.azure:azure-servicebus-jms:[0.0.2]</include> <!-- {x-include-update;com.microsoft.azure:azure-servicebus-jms;external_dependency} -->
                 <include>com.microsoft.azure:msal4j:[1.6.1]</include> <!-- {x-include-update;com.microsoft.azure:msal4j;external_dependency} -->
                 <include>com.microsoft.azure:spring-data-cosmosdb:[2.3.0]</include> <!-- {x-include-update;com.microsoft.azure:spring-data-cosmosdb;external_dependency} -->
-                <include>com.microsoft.spring.data.gremlin:spring-data-gremlin:[2.2.3]</include> <!-- {x-include-update;com.microsoft.spring.data.gremlin:spring-data-gremlin;external_dependency} -->
+                <include>com.microsoft.spring.data.gremlin:spring-data-gremlin:[2.3.0]</include> <!-- {x-include-update;com.microsoft.spring.data.gremlin:spring-data-gremlin;external_dependency} -->
                 <include>com.nimbusds:nimbus-jose-jwt:[7.9]</include> <!-- {x-include-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
-                <include>io.micrometer:micrometer-core:[1.3.0]</include> <!-- {x-include-update;spring_io.micrometer:micrometer-core;external_dependency} -->
-                <include>io.micrometer:micrometer-registry-azure-monitor:[1.3.0]</include> <!-- {x-include-update;spring_io.micrometer:micrometer-registry-azure-monitor;external_dependency} -->
+                <include>io.micrometer:micrometer-core:[1.3.0]</include> <!-- {x-include-update;io.micrometer:micrometer-core;external_dependency} -->
+                <include>io.micrometer:micrometer-registry-azure-monitor:[1.3.0]</include> <!-- {x-include-update;io.micrometer:micrometer-registry-azure-monitor;external_dependency} -->
                 <include>javax.servlet:javax.servlet-api:[4.0.1]</include> <!-- {x-include-update;javax.servlet:javax.servlet-api;external_dependency} -->
                 <include>javax.annotation:javax.annotation-api:[1.3.2]</include> <!-- {x-include-update;javax.annotation:javax.annotation-api;external_dependency} -->
                 <include>javax.validation:validation-api:[2.0.1.Final]</include> <!-- {x-include-update;javax.validation:validation-api;external_dependency} -->
@@ -297,4 +297,66 @@
       </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <!-- Generate "spring-configuration-metadata.json" by annotation process -->
+    <profile>
+      <id>annotation-process-for-java-8</id>
+      <activation>
+        <jdk>[1.8,9)</jdk>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>annotation-process-for-java-8</id>
+                <goals>
+                  <goal>compile</goal>
+                </goals>
+                <configuration>
+                  <compilerArgs>
+                    <arg>-proc:only</arg> <!-- Turn on annotation processing -->
+                  </compilerArgs>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>annotation-process-for-java-11</id>
+      <activation>
+        <jdk>[11,)</jdk>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>annotation-process-for-java-11</id>
+                <goals>
+                  <goal>compile</goal>
+                </goals>
+                <configuration>
+                  <compilerArgs>
+                    <arg>-proc:only</arg> <!-- Turn on annotation processing -->
+                  </compilerArgs>
+                  <release>11</release>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
 </project>

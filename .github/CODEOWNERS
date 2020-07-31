@@ -9,27 +9,61 @@
 /sdk/                                               @joshfree @jonathangiles @srnagar @hemanttanwar @anuchandy
 
 # BOM
+# PRLabel: %Azure.Core
 /sdk/boms/azure-sdk-bom/                            @alzimmermsft @jonathangiles @srnagar @hemanttanwar @anuchandy
 
+####
 # Service teams
+####
+# PRLabel: %AzConfig
 /sdk/appconfiguration/                              @mssfang @alzimmermsft @conniey @sima-zhu
+/sdk/appconfiguration/spring-cloud-azure-*          @mrm9084 @saragluna @yiliuTo @chenrujun @zhoufenqin @jialindai
+
+# PRLabel: %Batch
 /sdk/batch/                                         @xingwu1 @bgklein @matthchr
+
+# PRLabel: %Azure.Core
 /sdk/core/                                          @alzimmermsft @jianghaolu @srnagar @hemanttanwar @anuchandy
+
+# PRLabel: %Azure.Core
 /sdk/core/azure-core-tracing-opentelemetry/         @samvaity @alzimmermsft
+
+# PRLabel: %Cosmos
 /sdk/cosmos/                                        @moderakh @kushagraThapar @David-Noble-at-work @kirankumarkolli @mbhaskar
 /sdk/cosmos/azure-spring-data-cosmos/               @kushagraThapar @saragluna @yiliuTo @chenrujun @zhoufenqin @jialindai
+
+# PRLabel: %Event Hubs
 /sdk/eventhubs/                                     @conniey @srnagar @mssfang
+
+# PRLabel: %Cognitive - Form Recognizer
 /sdk/formrecognizer/                                @samvaity @mssfang @sima-zhu
+
+# PRLabel: %Azure.Identity
 /sdk/identity/                                      @schaabs @g2vinay @jianghaolu
+
+# PRLabel: %KeyVault
 /sdk/keyvault/                                      @g2vinay @vcolin7 @samvaity
+
+# PRLabel: %Schema Registry
 /sdk/schemaregistry/                                @arerlend @sjkwak
+
+# PRLabel: %Search
 /sdk/search/                                        @alzimmermsft @sima-zhu @mssfang @samvaity @conniey
+
+# PRLabel: %Service Bus
 /sdk/servicebus/                                    @yvgopal @nemakam @hemanttanwar @conniey
-/sdk/storage/                                       @amishra-dev @rickle-msft @jaschrep-msft @gapra-msft @alzimmermsft @sima-zhu
+
+# PRLabel: %Storage
+/sdk/storage/                                       @amishra-dev @rickle-msft @jaschrep-msft @gapra-msft @alzimmermsft @sima-zhu @kasobol-msft
+
+# PRLabel: %Cognitive - Text Analytics
 /sdk/textanalytics/                                 @samvaity @mssfang @sima-zhu
-/sdk/spring/                                        @saragluna @yiliuTo @chenrujun @zhoufenqin @jialindai
+
+# PRLabel: %azure-spring
+/sdk/spring/                                        @saragluna @yiliuTo @chenrujun @zhoufenqin @jialindai  
 
 # end to end tests
+# PRLabel: %Azure.Identity
 /sdk/e2e/                                           @jianghaolu @g2vinay
 /common/smoke-tests/                                @joshfree @jonathangiles @alzimmermsft @g2vinay @conniey @srnagar
 

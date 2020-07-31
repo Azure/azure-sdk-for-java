@@ -8,6 +8,7 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.implementation.AuthenticationRecord;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
@@ -67,7 +68,7 @@ public class AuthorizationCodeCredential implements TokenCredential {
                .map(msalToken -> {
                    cachedToken.set(new MsalAuthenticationAccount(
                                 new AuthenticationRecord(msalToken.getAuthenticationResult(),
-                                        identityClient.getTenantId())));
+                                        identityClient.getTenantId(), identityClient.getClientId())));
                    return (AccessToken) msalToken;
                })
             .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))

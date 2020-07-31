@@ -4,7 +4,6 @@
 package com.azure.spring.data.cosmos.config;
 
 import com.azure.cosmos.CosmosAsyncClient;
-import com.azure.cosmos.CosmosClient;
 import com.azure.spring.data.cosmos.Constants;
 import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
@@ -16,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.auditing.IsNewAwareAuditingHandler;
 
 /**
  * To configure cosmos with client, cosmos factory and template
@@ -24,14 +24,14 @@ import org.springframework.context.annotation.Configuration;
 public abstract class AbstractCosmosConfiguration extends CosmosConfigurationSupport {
 
     /**
-     * Declare CosmosDbFactory bean.
+     * Declare CosmosFactory bean.
      *
-     * @param config of cosmosDbFactory
-     * @return CosmosDbFactory bean
+     * @param cosmosAsyncClient of cosmosFactory
+     * @return CosmosFactory bean
      */
     @Bean
-    public CosmosFactory cosmosDBFactory(CosmosConfig config) {
-        return new CosmosFactory(config);
+    public CosmosFactory cosmosFactory(CosmosAsyncClient cosmosAsyncClient) {
+        return new CosmosFactory(cosmosAsyncClient, getDatabaseName());
     }
 
     /**
@@ -48,56 +48,61 @@ public abstract class AbstractCosmosConfiguration extends CosmosConfigurationSup
     }
 
     /**
-     * Declare CosmosClient bean.
+     * Declare CosmosAsyncClient bean.
      *
-     * @param cosmosFactory cosmosDbFactory
-     * @return CosmosClient bean
+     * @param cosmosClientConfig CosmosClientConfig
+     * @return CosmosAsyncClient bean
      */
     @Bean
-    public CosmosAsyncClient cosmosAsyncClient(CosmosFactory cosmosFactory) {
-        return cosmosFactory.getCosmosAsyncClient();
-    }
-
-    /**
-     * Declare CosmosSyncClient bean.
-     *
-     * @param cosmosFactory cosmosDBFactory
-     * @return CosmosSyncClient bean
-     */
-    @Bean
-    public CosmosClient cosmosClient(CosmosFactory cosmosFactory) {
-        return cosmosFactory.getCosmosSyncClient();
+    public CosmosAsyncClient cosmosAsyncClient(CosmosClientConfig cosmosClientConfig) {
+        return CosmosFactory.createCosmosAsyncClient(cosmosClientConfig);
     }
 
     @Qualifier(Constants.OBJECT_MAPPER_BEAN_NAME)
     @Autowired(required = false)
     private ObjectMapper objectMapper;
 
+    @Qualifier(Constants.AUDITING_HANDLER_BEAN_NAME)
+    @Autowired(required = false)
+    private IsNewAwareAuditingHandler cosmosAuditingHandler;
+
     /**
      * Declare CosmosTemplate bean.
      *
-     * @param cosmosFactory cosmosDbFactory
+     * @param cosmosFactory cosmosFactory
+     * @param cosmosConfig cosmosConfig
      * @param mappingCosmosConverter mappingCosmosConverter
      * @return CosmosTemplate bean
      */
     @Bean
     public CosmosTemplate cosmosTemplate(CosmosFactory cosmosFactory,
+                                         CosmosConfig cosmosConfig,
                                          MappingCosmosConverter mappingCosmosConverter) {
-        return new CosmosTemplate(cosmosFactory, mappingCosmosConverter,
-            cosmosFactory.getConfig().getDatabase());
+        return new CosmosTemplate(cosmosFactory, cosmosConfig, mappingCosmosConverter, cosmosAuditingHandler);
     }
 
     /**
      * Declare ReactiveCosmosTemplate bean.
      *
-     * @param cosmosFactory cosmosDbFactory
+     * @param cosmosFactory cosmosFactory
+     * @param cosmosConfig cosmosConfig
      * @param mappingCosmosConverter mappingCosmosConverter
      * @return ReactiveCosmosTemplate bean
      */
     @Bean
     public ReactiveCosmosTemplate reactiveCosmosTemplate(CosmosFactory cosmosFactory,
+                                                         CosmosConfig cosmosConfig,
                                                          MappingCosmosConverter mappingCosmosConverter) {
-        return new ReactiveCosmosTemplate(cosmosFactory, mappingCosmosConverter,
-            cosmosFactory.getConfig().getDatabase());
+        return new ReactiveCosmosTemplate(cosmosFactory, cosmosConfig, mappingCosmosConverter, cosmosAuditingHandler);
+    }
+
+    /**
+     * Declare CosmosConfig bean
+     *
+     * @return CosmosConfig bean
+     */
+    @Bean
+    public CosmosConfig cosmosConfig() {
+        return new CosmosConfig.CosmosConfigBuilder().build();
     }
 }

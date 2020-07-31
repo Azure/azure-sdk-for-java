@@ -39,7 +39,7 @@ public class GetBoundingBoxesAsync {
         PollerFlux<OperationResult, List<RecognizedForm>> recognizeFormPoller =
             client.beginRecognizeCustomFormsFromUrl(formUrl, modelId,
                 new RecognizeOptions()
-                    .setIncludeFieldElements(true));
+                    .setFieldElementsIncluded(true));
 
         Mono<List<RecognizedForm>> recognizeFormResult = recognizeFormPoller
             .last()
@@ -60,16 +60,16 @@ public class GetBoundingBoxesAsync {
                 // each field is of type FormField
                 // The value of the field can also be a FormField, or a list of FormFields
                 // In our sample, it is not.
-                recognizedForm.getFields().forEach((fieldText, fieldValue) ->
-                    System.out.printf("Field %s has value %s based on %s with a confidence score "
-                            + "of %.2f.%n", fieldText, fieldValue.getValue(), fieldValue.getValueData().getText(),
-                        fieldValue.getConfidence()));
+                recognizedForm.getFields().forEach((fieldText, formField) ->
+                    System.out.printf("Field %s has value data text %s with a confidence score "
+                            + "of %.2f.%n", fieldText, formField.getValueData().getText(),
+                        formField.getConfidence()));
 
                 // Page Information
                 final List<FormPage> pages = recognizedForm.getPages();
                 for (int i1 = 0; i1 < pages.size(); i1++) {
                     final FormPage formPage = pages.get(i1);
-                    System.out.printf("-------Recognizing info on page %s of Form -------%n", i1);
+                    System.out.printf("------- Recognizing info on page %s of Form -------%n", i1);
                     System.out.printf("Has width: %f , angle: %f, height: %f %n", formPage.getWidth(),
                         formPage.getTextAngle(), formPage.getHeight());
                     // Table information

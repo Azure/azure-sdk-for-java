@@ -1698,7 +1698,7 @@ class BlobAPITest extends APISpec {
         def bu2 = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient()
 
         when:
-        def poller = bu2.beginCopy(new BlobBeginCopyOptions(appendBlobClient.getBlobUrl()).sealDestination(destination)
+        def poller = bu2.beginCopy(new BlobBeginCopyOptions(appendBlobClient.getBlobUrl()).setSealDestination(destination)
             .setPollInterval(Duration.ofSeconds(1)))
         poller.blockLast()
 
@@ -2406,6 +2406,31 @@ class BlobAPITest extends APISpec {
         RehydratePriority.HIGH     || _
     }
 
+    def "Set tier snapshot"() {
+        setup:
+        def bc2 = bc.createSnapshot()
+
+        when:
+        bc2.setAccessTier(AccessTier.COOL)
+
+        then:
+        bc2.getProperties().getAccessTier() == AccessTier.COOL
+        bc.getProperties().getAccessTier() != AccessTier.COOL
+    }
+
+    def "Set tier snapshot error"() {
+        setup:
+        bc.createSnapshotWithResponse(null, null, null, null)
+        String fakeVersion = "2020-04-17T20:37:16.5129130Z"
+        def bc2 = bc.getSnapshotClient(fakeVersion)
+
+        when:
+        bc2.setAccessTier(AccessTier.COOL)
+
+        then:
+        thrown(BlobStorageException)
+    }
+
     def "Set tier error"() {
         setup:
         def cc = blobServiceClient.createBlobContainer(generateContainerName())
@@ -2433,7 +2458,6 @@ class BlobAPITest extends APISpec {
 
     def "Set tier lease"() {
         setup:
-
         def cc = blobServiceClient.createBlobContainer(generateContainerName())
         def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
         bc.upload(defaultInputStream.get(), defaultDataSize)
@@ -2472,7 +2496,7 @@ class BlobAPITest extends APISpec {
         bc.setTags(t)
 
         when:
-        bc.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT).setIfTagsMatch("\"foo\" = 'bar'"), null, null)
+        bc.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT).setTagsConditions("\"foo\" = 'bar'"), null, null)
 
         then:
         notThrown(BlobStorageException)
@@ -2488,7 +2512,7 @@ class BlobAPITest extends APISpec {
         bc.upload(defaultInputStream.get(), defaultDataSize)
 
         when:
-        bc.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT).setIfTagsMatch("\"foo\" = 'bar'"), null, null)
+        bc.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT).setTagsConditions("\"foo\" = 'bar'"), null, null)
 
         then:
         thrown(BlobStorageException)

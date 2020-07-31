@@ -18,6 +18,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.data.tables.implementation.models.ServicesGetPropertiesResponse;
 import com.azure.data.tables.implementation.models.ServicesGetStatisticsResponse;
 import com.azure.data.tables.implementation.models.ServicesSetPropertiesResponse;
@@ -38,8 +39,8 @@ public final class ServicesImpl {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    ServicesImpl(AzureTableImpl client) {
-        this.service = RestProxy.create(ServicesService.class, client.getHttpPipeline());
+    ServicesImpl(AzureTableImpl client, SerializerAdapter serializerAdapter) {
+        this.service = RestProxy.create(ServicesService.class, client.getHttpPipeline(), serializerAdapter);
         this.client = client;
     }
 

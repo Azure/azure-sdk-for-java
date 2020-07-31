@@ -104,7 +104,7 @@ azure.activedirectory.client-secret=ABCDEFGHIJKLMNOOPQRSTUVWXYZABCDEFGHIJKLMNOPQ
 3. List all the AAD groups `ActiveDirectoryGroups` that you want to have a Spring Security role object mapping to it. The role objects can then be used to manage access to resources that is behind Spring Security. e.g.
 ```properties
 # groups that you created in your Azure AD tenant
-azure.activedirectory.active-directory-groups=group1,group2
+azure.activedirectory.user-group.allowed-groups=group1,group2
 ```
  ---
  ### Step 4: Change Role_group1 to your group

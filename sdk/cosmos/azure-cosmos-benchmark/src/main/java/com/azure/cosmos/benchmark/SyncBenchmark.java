@@ -7,9 +7,9 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosContainer;
 import com.azure.cosmos.CosmosDatabase;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -35,7 +35,6 @@ import java.net.InetSocketAddress;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
@@ -161,7 +160,10 @@ abstract class SyncBenchmark<T> {
             String dataFieldValue = RandomStringUtils.randomAlphabetic(cfg.getDocumentDataFieldSize());
             for (int i = 0; i < cfg.getNumberOfPreCreatedDocuments(); i++) {
                 String uuid = UUID.randomUUID().toString();
-                PojoizedJson newDoc = generateDocument(uuid, dataFieldValue);
+                PojoizedJson newDoc = BenchmarkHelper.generateDocument(uuid,
+                    dataFieldValue,
+                    partitionKey,
+                    configuration.getDocumentDataFieldCount());
                 CompletableFuture<PojoizedJson> futureResult = CompletableFuture.supplyAsync(() -> {
 
                     try {
@@ -237,26 +239,6 @@ abstract class SyncBenchmark<T> {
 
     protected abstract T performWorkload(long i) throws Exception;
 
-    private boolean shouldContinue(long startTimeMillis, long iterationCount) {
-
-        Duration maxDurationTime = configuration.getMaxRunningTimeDuration();
-        int maxNumberOfOperations = configuration.getNumberOfOperations();
-
-        if (maxDurationTime == null) {
-            return iterationCount < maxNumberOfOperations;
-        }
-
-        if (startTimeMillis + maxDurationTime.toMillis() < System.currentTimeMillis()) {
-            return false;
-        }
-
-        if (maxNumberOfOperations < 0) {
-            return true;
-        }
-
-        return iterationCount < maxNumberOfOperations;
-    }
-
     void run() throws Exception {
 
         successMeter = metricsRegistry.meter("#Successful Operations");
@@ -288,7 +270,7 @@ abstract class SyncBenchmark<T> {
         AtomicLong count = new AtomicLong(0);
         long i;
 
-        for ( i = 0; shouldContinue(startTime, i); i++) {
+        for ( i = 0; BenchmarkHelper.shouldContinue(startTime, i, configuration); i++) {
 
             ResultHandler<T, Throwable> resultHandler = new ResultHandler<T, Throwable>() {
                 @Override
@@ -373,19 +355,6 @@ abstract class SyncBenchmark<T> {
 
         reporter.report();
         reporter.close();
-    }
-
-    public PojoizedJson generateDocument(String idString, String dataFieldValue) {
-        PojoizedJson instance = new PojoizedJson();
-        Map<String, String> properties = instance.getInstance();
-        properties.put("id", idString);
-        properties.put(partitionKey, idString);
-
-        for (int i = 0; i < configuration.getDocumentDataFieldCount(); i++) {
-            properties.put("dataField" + i, dataFieldValue);
-        }
-
-        return instance;
     }
 
     RuntimeException propagate(Exception e) {

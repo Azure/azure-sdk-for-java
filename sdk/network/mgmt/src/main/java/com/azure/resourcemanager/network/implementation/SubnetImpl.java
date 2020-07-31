@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
+import com.azure.resourcemanager.network.models.Delegation;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkInterface;
 import com.azure.resourcemanager.network.models.NetworkSecurityGroup;
@@ -269,5 +270,28 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
 
         ipAddresses.addAll(result.availableIpAddresses());
         return ipAddresses;
+    }
+
+    @Override
+    public SubnetImpl withDelegation(String serviceName) {
+        if (inner().delegations() == null) {
+            inner().withDelegations(new ArrayList<>());
+        }
+        inner().delegations().add(new Delegation().withName(serviceName).withServiceName(serviceName));
+        return this;
+    }
+
+    @Override
+    public SubnetImpl withoutDelegation(String serviceName) {
+        if (inner().delegations() != null) {
+            for (int i = 0; i < inner().delegations().size();) {
+                if (serviceName.equalsIgnoreCase(inner().delegations().get(i).serviceName())) {
+                    inner().delegations().remove(i);
+                } else {
+                    ++i;
+                }
+            }
+        }
+        return this;
     }
 }

@@ -3,17 +3,17 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.encryption.CosmosEncryptionAlgorithm;
+import com.azure.cosmos.encryption.DataEncryptionKey;
+import com.azure.cosmos.encryption.EncryptionItemRequestOptions;
+import com.azure.cosmos.encryption.EncryptionOptions;
 import com.azure.cosmos.implementation.encryption.SimpleInMemoryProvider;
 import com.azure.cosmos.implementation.encryption.TestUtils;
-import com.azure.cosmos.implementation.encryption.api.CosmosEncryptionAlgorithm;
-import com.azure.cosmos.implementation.encryption.api.DataEncryptionKey;
-import com.azure.cosmos.implementation.encryption.api.EncryptionOptions;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.rx.TestSuiteBase;
@@ -39,7 +39,7 @@ public class EncryptionTest2 extends TestSuiteBase {
 
     @Factory(dataProvider = "clientBuilders")
     public EncryptionTest2(CosmosClientBuilder clientBuilder) {
-        super(CosmosBridgeInternal.setDateKeyProvider(clientBuilder, simpleInMemoryProvider));
+        super(clientBuilder);
     }
 
     @BeforeClass(groups = {"encryption"}, timeOut = SETUP_TIMEOUT)
@@ -48,6 +48,8 @@ public class EncryptionTest2 extends TestSuiteBase {
         this.client = getClientBuilder().buildClient();
         CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
         container = client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
+
+        // TODO: add thing here
     }
 
     @BeforeClass(groups = "encryption")
@@ -63,7 +65,7 @@ public class EncryptionTest2 extends TestSuiteBase {
 
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)
     public void createItemEncrypt_readItemDecrypt() throws Exception {
-        CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
+        EncryptionItemRequestOptions requestOptions = new EncryptionItemRequestOptions();
         EncryptionOptions encryptionOptions = new EncryptionOptions();
         encryptionOptions.setPathsToEncrypt(ImmutableList.of("/sensitive"));
 
@@ -74,7 +76,7 @@ public class EncryptionTest2 extends TestSuiteBase {
 
         encryptionOptions.setDataEncryptionKeyId(keyId);
         encryptionOptions.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256_RANDOMIZED);
-        ModelBridgeInternal.setEncryptionOptions(requestOptions, encryptionOptions);
+        requestOptions.setEncryptionOptions(encryptionOptions);
 
         Pojo properties = getItem(UUID.randomUUID().toString());
         CosmosItemResponse<Pojo> itemResponse = container.createItem(properties, requestOptions);
@@ -89,7 +91,7 @@ public class EncryptionTest2 extends TestSuiteBase {
 
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)
     public void upsertItem_readItem() throws Exception {
-        CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
+        EncryptionItemRequestOptions requestOptions = new EncryptionItemRequestOptions();
         EncryptionOptions encryptionOptions = new EncryptionOptions();
         encryptionOptions.setPathsToEncrypt(ImmutableList.of("/sensitive"));
 
@@ -98,8 +100,8 @@ public class EncryptionTest2 extends TestSuiteBase {
         simpleInMemoryProvider.addKey(keyId, dataEncryptionKey);
 
         encryptionOptions.setDataEncryptionKeyId(keyId);
-        ModelBridgeInternal.setEncryptionOptions(requestOptions, encryptionOptions);
         encryptionOptions.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256_RANDOMIZED);
+        requestOptions.setEncryptionOptions(encryptionOptions);
 
         Pojo properties = getItem(UUID.randomUUID().toString());
         CosmosItemResponse<Pojo> itemResponse = container.upsertItem(properties, requestOptions);

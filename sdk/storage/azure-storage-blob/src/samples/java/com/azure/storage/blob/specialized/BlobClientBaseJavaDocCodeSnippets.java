@@ -489,7 +489,7 @@ public class BlobClientBaseJavaDocCodeSnippets {
             client.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT)
                 .setPriority(RehydratePriority.STANDARD)
                 .setLeaseId(leaseId)
-                .setIfTagsMatch(tags),
+                .setTagsConditions(tags),
                 timeout, new Context(key2, value2)).getStatusCode());
         // END: com.azure.storage.blob.specialized.BlobClientBase.setAccessTierWithResponse#BlobSetAccessTierOptions-Duration-Context
     }
@@ -552,7 +552,7 @@ public class BlobClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobClientBase#openQueryInputStream(BlobQueryOptions)}
+     * Code snippet for {@link BlobClientBase#openQueryInputStreamWithResponse(BlobQueryOptions)}
      */
     public void openQueryInputStream2() {
         // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.openQueryInputStream#BlobQueryOptions
@@ -577,7 +577,7 @@ public class BlobClientBaseJavaDocCodeSnippets {
             .setErrorConsumer(errorConsumer)
             .setProgressConsumer(progressConsumer);
 
-        InputStream inputStream = client.openQueryInputStream(queryOptions);
+        InputStream inputStream = client.openQueryInputStreamWithResponse(queryOptions).getValue();
         // Now you can read from the input stream like you would normally.
         // END: com.azure.storage.blob.specialized.BlobClientBase.openQueryInputStream#BlobQueryOptions
     }

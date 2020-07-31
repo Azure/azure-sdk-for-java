@@ -108,12 +108,23 @@ jobs:
         inputs:
           mavenPomFile: pom.xml
           goals: 'deploy'
-          options: '$(DefaultOptions) -DskipTests -Dinject-codesnippets -Dgenerate-overview -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl $(ProjectList) -am -DaltDeploymentRepository=id::default::file://$(Build.ArtifactStagingDirectory)' # We include template-module so we ensure it always builds in CI
+          options: '$(DefaultOptions) -DskipTests -Dinject-codesnippets -Dgenerate-overview -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl $(ProjectList) -am -DaltDeploymentRepository=id::default::file://$(System.DefaultWorkingDirectory)/build' # We include template-module so we ensure it always builds in CI
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaBuildVersion)
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
+
+      - task: PowerShell@2
+        displayName: 'Copy artifacts to staging'
+        inputs:
+          pwsh: true
+          workingDirectory: $(Agent.BuildDirectory)
+          filePath: eng/scripts/Stage-MavenPackageArtifacts.ps1
+          arguments: >
+            -SourceDirectory $(System.DefaultWorkingDirectory)/build
+            -TargetDirectory $(Build.ArtifactStagingDirectory)
+            -InformationAction Continue
 
       - publish: $(Build.ArtifactStagingDirectory)
         displayName: 'Publish Artifacts $(ArtifactName)'

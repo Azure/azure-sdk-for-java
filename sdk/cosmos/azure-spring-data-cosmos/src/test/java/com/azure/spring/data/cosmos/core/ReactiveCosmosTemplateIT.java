@@ -3,17 +3,19 @@
 package com.azure.spring.data.cosmos.core;
 
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.common.ResponseDiagnosticsTestUtils;
 import com.azure.spring.data.cosmos.common.TestConstants;
+import com.azure.spring.data.cosmos.config.CosmosClientConfig;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
 import com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext;
 import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
-import com.azure.spring.data.cosmos.core.query.DocumentQuery;
+import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.domain.Person;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
@@ -87,14 +89,17 @@ public class ReactiveCosmosTemplateIT {
     @Autowired
     private CosmosConfig cosmosConfig;
     @Autowired
+    private CosmosClientConfig cosmosClientConfig;
+    @Autowired
     private ResponseDiagnosticsTestUtils responseDiagnosticsTestUtils;
 
     @Before
     public void setUp() throws ClassNotFoundException {
         if (!initialized) {
             azureKeyCredential = new AzureKeyCredential(cosmosDbKey);
-            cosmosConfig.getCosmosClientBuilder().credential(azureKeyCredential);
-            final CosmosFactory dbFactory = new CosmosFactory(cosmosConfig);
+            cosmosClientConfig.getCosmosClientBuilder().credential(azureKeyCredential);
+            CosmosAsyncClient client = CosmosFactory.createCosmosAsyncClient(cosmosClientConfig);
+            final CosmosFactory dbFactory = new CosmosFactory(client, cosmosClientConfig.getDatabase());
 
             final CosmosMappingContext mappingContext = new CosmosMappingContext();
             personInfo = new CosmosEntityInformation<>(Person.class);
@@ -104,8 +109,7 @@ public class ReactiveCosmosTemplateIT {
 
             final MappingCosmosConverter dbConverter =
                 new MappingCosmosConverter(mappingContext, null);
-            cosmosTemplate = new ReactiveCosmosTemplate(dbFactory, dbConverter,
-                cosmosConfig.getDatabase());
+            cosmosTemplate = new ReactiveCosmosTemplate(dbFactory, cosmosConfig, dbConverter);
             cosmosTemplate.createContainerIfNotExists(personInfo).block();
             initialized = true;
         }
@@ -344,7 +348,7 @@ public class ReactiveCosmosTemplateIT {
     public void testFind() {
         final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
             Collections.singletonList(TEST_PERSON.getFirstName()), Part.IgnoreCaseType.NEVER);
-        final DocumentQuery query = new DocumentQuery(criteria);
+        final CosmosQuery query = new CosmosQuery(criteria);
         final Flux<Person> personFlux = cosmosTemplate.find(query, Person.class,
             Person.class.getSimpleName());
         StepVerifier.create(personFlux).expectNextCount(1).verifyComplete();
@@ -352,7 +356,7 @@ public class ReactiveCosmosTemplateIT {
         // add ignore testing
         final Criteria criteriaIgnoreCase = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
             Collections.singletonList(TEST_PERSON.getFirstName().toUpperCase()), Part.IgnoreCaseType.ALWAYS);
-        final DocumentQuery queryIgnoreCase = new DocumentQuery(criteriaIgnoreCase);
+        final CosmosQuery queryIgnoreCase = new CosmosQuery(criteriaIgnoreCase);
         final Flux<Person> personFluxIgnoreCase = cosmosTemplate.find(queryIgnoreCase, Person.class,
             Person.class.getSimpleName());
         StepVerifier.create(personFluxIgnoreCase).expectNextCount(1).verifyComplete();
@@ -366,14 +370,14 @@ public class ReactiveCosmosTemplateIT {
     public void testExists() {
         final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
             Collections.singletonList(TEST_PERSON.getFirstName()), Part.IgnoreCaseType.NEVER);
-        final DocumentQuery query = new DocumentQuery(criteria);
+        final CosmosQuery query = new CosmosQuery(criteria);
         final Mono<Boolean> exists = cosmosTemplate.exists(query, Person.class, containerName);
         StepVerifier.create(exists).expectNext(true).verifyComplete();
 
         // add ignore testing
         final Criteria criteriaIgnoreCase = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
             Collections.singletonList(TEST_PERSON.getFirstName().toUpperCase()), Part.IgnoreCaseType.ALWAYS);
-        final DocumentQuery queryIgnoreCase = new DocumentQuery(criteriaIgnoreCase);
+        final CosmosQuery queryIgnoreCase = new CosmosQuery(criteriaIgnoreCase);
         final Mono<Boolean> existsIgnoreCase = cosmosTemplate.exists(queryIgnoreCase, Person.class, containerName);
         StepVerifier.create(existsIgnoreCase).expectNext(true).verifyComplete();
 

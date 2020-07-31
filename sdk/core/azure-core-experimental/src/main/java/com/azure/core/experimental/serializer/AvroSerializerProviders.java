@@ -3,6 +3,8 @@
 
 package com.azure.core.experimental.serializer;
 
+import com.azure.core.util.serializer.ObjectSerializer;
+
 import java.util.Iterator;
 import java.util.ServiceLoader;
 

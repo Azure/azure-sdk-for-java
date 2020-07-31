@@ -4,14 +4,13 @@
 package com.azure.cosmos.implementation.encryption;
 
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.encryption.api.CosmosEncryptionAlgorithm;
-import com.azure.cosmos.implementation.encryption.api.DataEncryptionKey;
-import com.azure.cosmos.implementation.encryption.api.EncryptionOptions;
-import com.azure.cosmos.implementation.encryption.api.EncryptionType;
+import com.azure.cosmos.encryption.CosmosEncryptionAlgorithm;
+import com.azure.cosmos.encryption.DataEncryptionKey;
+import com.azure.cosmos.encryption.EncryptionOptions;
+import com.azure.cosmos.encryption.EncryptionType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.collect.ImmutableList;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.testng.annotations.BeforeClass;
@@ -84,9 +83,9 @@ public class EncryptionProcessorTest {
 
         SimpleInMemoryProvider keyProvider = new SimpleInMemoryProvider();
         keyProvider.addKey(keyId, javaDataEncryptionKey);
+        CosmosEncryptor encryptor = new CosmosEncryptor(keyProvider);
 
-        EncryptionProcessor encryptionProcessor = new EncryptionProcessor();
-        com.azure.cosmos.implementation.encryption.api.EncryptionOptions encryptionOptions = new EncryptionOptions();
+        EncryptionOptions encryptionOptions = new EncryptionOptions();
         encryptionOptions.setPathsToEncrypt(ImmutableList.of("/sensitive"));
         encryptionOptions.setDataEncryptionKeyId(keyId);
         encryptionOptions.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256_RANDOMIZED);
@@ -94,11 +93,11 @@ public class EncryptionProcessorTest {
         TestPojo testDate = getTestDate();
         byte[] inputAsByteArray = toByteArray(testDate);
 
-        ObjectNode objectNode = Utils.getSimpleObjectMapper().convertValue(testDate, ObjectNode.class);
-        ObjectNode itemObjectWithEncryptedSensitiveData = encryptionProcessor.encryptAsync(objectNode, encryptionOptions, keyProvider);
-        ObjectNode itemObjectWithDecryptedSensitiveData = encryptionProcessor.decryptAsync(itemObjectWithEncryptedSensitiveData, keyProvider);
 
-        assertThat(serializeToByteArray(Utils.getSimpleObjectMapper(), itemObjectWithDecryptedSensitiveData)).isEqualTo(inputAsByteArray);
+        byte[] itemObjectWithEncryptedSensitiveDataAsByteArray = EncryptionProcessor.encryptAsync(inputAsByteArray, encryptor, encryptionOptions);
+        byte[] itemObjectWithDecryptedSensitiveDataAsByteArray = EncryptionProcessor.decryptAsync(itemObjectWithEncryptedSensitiveDataAsByteArray, encryptor);
+
+        assertThat(itemObjectWithDecryptedSensitiveDataAsByteArray).isEqualTo(inputAsByteArray);
     }
 
     @DataProvider(name = "encryptionInput")

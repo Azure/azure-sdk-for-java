@@ -354,7 +354,8 @@ public final class TextAnalyticsClient {
      * provided language code and request options.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Recognizes the personally identifiable information entities in a list of documents with a provided language code and request options.</p>
+     * <p>Recognizes the personally identifiable information entities in a list of documents with a provided language
+     * code and request options.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesBatch#Iterable-String-TextAnalyticsRequestOptions}
      *
      * @param documents A list of documents to recognize personally identifiable information entities for.

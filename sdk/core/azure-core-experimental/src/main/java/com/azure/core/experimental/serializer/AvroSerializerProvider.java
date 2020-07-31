@@ -3,6 +3,8 @@
 
 package com.azure.core.experimental.serializer;
 
+import com.azure.core.util.serializer.ObjectSerializer;
+
 /**
  * An interface to be implemented by any azure-core plugin that wishes to provide an Avro {@link ObjectSerializer}
  * implementation.
