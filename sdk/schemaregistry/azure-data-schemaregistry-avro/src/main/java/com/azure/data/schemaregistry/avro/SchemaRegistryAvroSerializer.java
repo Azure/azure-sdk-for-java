@@ -3,8 +3,8 @@
 
 package com.azure.data.schemaregistry.avro;
 
-import com.azure.data.schemaregistry.AbstractSchemaRegistrySerializer;
-import com.azure.data.schemaregistry.SerializationException;
+import com.azure.data.schemaregistry.SchemaRegistrySerializer;
+import com.azure.data.schemaregistry.models.SerializationException;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -17,7 +17,7 @@ import java.io.ByteArrayOutputStream;
  *
  * Pluggable with the core Azure SDK Serializer interface.
  *
- * @see AbstractSchemaRegistrySerializer See AbstractSchemaRegistrySerializer for internal serialization implementation
+ * @see SchemaRegistrySerializer See AbstractSchemaRegistrySerializer for internal serialization implementation
  */
 public class SchemaRegistryAvroSerializer {
     private final SchemaRegistryAvroAsyncSerializer serializer;

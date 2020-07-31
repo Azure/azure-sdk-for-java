@@ -3,8 +3,14 @@
 
 package com.azure.data.schemaregistry;
 
+import com.azure.data.schemaregistry.implementation.models.CreateSchemaResponse;
+import com.azure.data.schemaregistry.implementation.models.GetIdBySchemaContentResponse;
+import com.azure.data.schemaregistry.implementation.models.GetSchemaByIdHeaders;
+import com.azure.data.schemaregistry.implementation.models.GetSchemaByIdResponse;
+import com.azure.data.schemaregistry.implementation.models.SchemaId;
+import com.azure.data.schemaregistry.models.SchemaRegistryClientException;
+import com.azure.data.schemaregistry.models.SchemaRegistryObject;
 import com.azure.data.schemaregistry.implementation.AzureSchemaRegistryRestService;
-import com.azure.data.schemaregistry.implementation.models.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

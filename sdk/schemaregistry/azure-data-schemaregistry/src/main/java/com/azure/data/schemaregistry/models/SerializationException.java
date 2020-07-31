@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.data.schemaregistry;
+package com.azure.data.schemaregistry.models;
 
 import com.azure.core.exception.AzureException;
 

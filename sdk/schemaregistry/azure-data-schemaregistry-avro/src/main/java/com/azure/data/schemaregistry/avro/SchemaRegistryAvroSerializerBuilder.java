@@ -116,8 +116,8 @@ public final class SchemaRegistryAvroSerializerBuilder {
      * @throws NullPointerException if parameters are incorrectly set.
      * @throws IllegalArgumentException if credential is not set.
      */
-    public SchemaRegistryAvroSerializer buildClient() {
-        return new SchemaRegistryAvroSerializer(this.buildAsyncClient());
+    public SchemaRegistryAvroSerializer buildSerializer() {
+        return new SchemaRegistryAvroSerializer(this.buildAsyncSerializer());
     }
 
     /**
@@ -127,7 +127,7 @@ public final class SchemaRegistryAvroSerializerBuilder {
      * @throws NullPointerException if parameters are incorrectly set.
      * @throws IllegalArgumentException if credential is not set.
      */
-    public SchemaRegistryAvroAsyncSerializer buildAsyncClient() {
+    public SchemaRegistryAvroAsyncSerializer buildAsyncSerializer() {
         CachedSchemaRegistryClientBuilder builder = new CachedSchemaRegistryClientBuilder()
             .endpoint(registryUrl)
             .credential(credential);

@@ -7,7 +7,7 @@ import com.azure.data.schemaregistry.CachedSchemaRegistryAsyncClient;
 
 import java.util.Collections;
 
-public class TestDummySerializer extends AbstractSchemaRegistrySerializer {
+public class TestDummySerializer extends SchemaRegistrySerializer {
     TestDummySerializer(
         CachedSchemaRegistryAsyncClient mockClient,
         boolean autoRegisterSchemas) {

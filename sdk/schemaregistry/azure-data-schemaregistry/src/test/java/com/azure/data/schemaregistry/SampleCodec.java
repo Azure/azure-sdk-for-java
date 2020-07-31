@@ -3,6 +3,7 @@
 
 package com.azure.data.schemaregistry;
 
+import com.azure.data.schemaregistry.models.SerializationException;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
@@ -21,7 +22,7 @@ public class SampleCodec implements Codec {
     }
 
     @Override
-    public ByteArrayOutputStream encode(Object object) throws SerializationException {
+    public byte[] encode(Object object) throws SerializationException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try {
             outputStream.write("sample payload".getBytes());
@@ -31,7 +32,7 @@ public class SampleCodec implements Codec {
             e.printStackTrace();
             throw new SerializationException("this should never happen", e);
         }
-        return outputStream;
+        return outputStream.toByteArray();
     }
 
     @Override
