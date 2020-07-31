@@ -59,7 +59,7 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
                 analyzeFile.length(), "{labeled_model_Id}",
                 new RecognizeOptions()
                     .setContentType(FormContentType.APPLICATION_PDF)
-                    .setIncludeFieldElements(true)
+                    .setFieldElementsIncluded(true)
                     .setPollInterval(Duration.ofSeconds(5)));
 
         PollerFlux<OperationResult, List<RecognizedForm>> unlabeledCustomFormPoller =
@@ -67,7 +67,7 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
                 analyzeFile.length(), "{unlabeled_model_Id}",
                 new RecognizeOptions()
                     .setContentType(FormContentType.APPLICATION_PDF)
-                    .setIncludeFieldElements(true)
+                    .setFieldElementsIncluded(true)
                     .setPollInterval(Duration.ofSeconds(5)));
 
         Mono<List<RecognizedForm>> labeledDataResult = labeledCustomFormPoller

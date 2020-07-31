@@ -54,7 +54,7 @@
 /sdk/servicebus/                                    @yvgopal @nemakam @hemanttanwar @conniey
 
 # PRLabel: %Storage
-/sdk/storage/                                       @amishra-dev @rickle-msft @jaschrep-msft @gapra-msft @alzimmermsft @sima-zhu
+/sdk/storage/                                       @amishra-dev @rickle-msft @jaschrep-msft @gapra-msft @alzimmermsft @sima-zhu @kasobol-msft
 
 # PRLabel: %Cognitive - Text Analytics
 /sdk/textanalytics/                                 @samvaity @mssfang @sima-zhu

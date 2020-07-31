@@ -85,6 +85,22 @@
     </dependency>
   </dependencies>
 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+        <configuration>
+          <systemPropertyVariables>
+            <!-- Parallel runs disabled due to concurrency issues causing failures in mocked tests. -->
+            <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
+          </systemPropertyVariables>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
   <profiles>
     <profile>
       <id>is.jdk.11</id>
@@ -112,30 +128,6 @@
                 --add-reads com.azure.core.test=ALL-UNNAMED
                 --add-reads com.azure.core.http.netty=ALL-UNNAMED
               </argLine>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <id>parallel-test-playback</id>
-      <activation>
-        <property>
-          <name>parallel-test-playback</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-            <configuration>
-              <systemPropertyVariables>
-                <!-- Parallel runs disabled due to global test state that causes random test failures. -->
-                <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
-              </systemPropertyVariables>
             </configuration>
           </plugin>
         </plugins>

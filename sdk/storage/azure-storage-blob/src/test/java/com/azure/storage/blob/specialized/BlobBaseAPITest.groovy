@@ -148,7 +148,7 @@ class BlobBaseAPITest extends APISpec {
 
         /* Input Stream. */
         when:
-        InputStream qqStream = bc.openQueryInputStream(new BlobQueryOptions(expression).setInputSerialization(ser).setOutputSerialization(ser))
+        InputStream qqStream = bc.openQueryInputStreamWithResponse(new BlobQueryOptions(expression).setInputSerialization(ser).setOutputSerialization(ser)).getValue()
         byte[] queryData = readFromInputStream(qqStream, downloadedData.length)
 
         then:
@@ -224,7 +224,7 @@ class BlobBaseAPITest extends APISpec {
 
         /* Input Stream. */
         when:
-        InputStream qqStream = bc.openQueryInputStream(new BlobQueryOptions(expression).setInputSerialization(ser).setOutputSerialization(ser))
+        InputStream qqStream = bc.openQueryInputStreamWithResponse(new BlobQueryOptions(expression).setInputSerialization(ser).setOutputSerialization(ser)).getValue()
         byte[] queryData = readFromInputStream(qqStream, downloadedData.length)
 
         then:
@@ -263,7 +263,7 @@ class BlobBaseAPITest extends APISpec {
 
         /* Input Stream. */
         when:
-        InputStream qqStream = bc.openQueryInputStream(options)
+        InputStream qqStream = bc.openQueryInputStreamWithResponse(options).getValue()
         byte[] queryData = readFromInputStream(qqStream, downloadedData.length)
 
         then:
@@ -305,7 +305,7 @@ class BlobBaseAPITest extends APISpec {
 
         /* Input Stream. */
         when:
-        InputStream qqStream = bc.openQueryInputStream(options)
+        InputStream qqStream = bc.openQueryInputStreamWithResponse(options).getValue()
         byte[] queryData = readFromInputStream(qqStream, expectedData.length)
 
         then:
@@ -344,7 +344,7 @@ class BlobBaseAPITest extends APISpec {
 
         /* Input Stream. */
         when:
-        InputStream qqStream = bc.openQueryInputStream(options)
+        InputStream qqStream = bc.openQueryInputStreamWithResponse(options).getValue()
         byte[] queryData = readFromInputStream(qqStream, expectedData.length)
 
         then:
@@ -382,7 +382,7 @@ class BlobBaseAPITest extends APISpec {
 
         /* Input Stream. */
         when:
-        InputStream qqStream = bc.openQueryInputStream(options)
+        InputStream qqStream = bc.openQueryInputStreamWithResponse(options).getValue()
         readFromInputStream(qqStream, Constants.KB)
 
         then:
@@ -417,7 +417,7 @@ class BlobBaseAPITest extends APISpec {
 
         /* Input Stream. */
         when:
-        InputStream qqStream = bc.openQueryInputStream(options)
+        InputStream qqStream = bc.openQueryInputStreamWithResponse(options).getValue()
         readFromInputStream(qqStream, Constants.KB)
 
         then:
@@ -449,7 +449,7 @@ class BlobBaseAPITest extends APISpec {
 
         /* Input Stream. */
         when:
-        InputStream qqStream = bc.openQueryInputStream(options)
+        InputStream qqStream = bc.openQueryInputStreamWithResponse(options).getValue()
 
         /* The QQ Avro stream has the following pattern
            n * (data record -> progress record) -> end record */
@@ -491,7 +491,7 @@ class BlobBaseAPITest extends APISpec {
 
         /* Input Stream. */
         when:
-        InputStream qqStream = bc.openQueryInputStream(options)
+        InputStream qqStream = bc.openQueryInputStreamWithResponse(options).getValue()
 
         /* The Avro stream has the following pattern
            n * (data record -> progress record) -> end record */
@@ -576,7 +576,7 @@ class BlobBaseAPITest extends APISpec {
             .setOutputSerialization(outSer)
 
         when:
-        bc.openQueryInputStream(options) /* Don't need to call read. */
+        bc.openQueryInputStreamWithResponse(options).getValue() /* Don't need to call read. */
 
         then:
         thrown(IllegalArgumentException)
@@ -611,7 +611,7 @@ class BlobBaseAPITest extends APISpec {
             .setRequestConditions(bac)
 
         when:
-        InputStream stream = bc.openQueryInputStream(optionsIs)
+        InputStream stream = bc.openQueryInputStreamWithResponse(optionsIs).getValue()
         stream.read()
         stream.close()
 
@@ -651,7 +651,7 @@ class BlobBaseAPITest extends APISpec {
             .setRequestConditions(bac)
 
         when:
-        bc.openQueryInputStream(optionsIs) /* Don't need to call read. */
+        bc.openQueryInputStreamWithResponse(optionsIs).getValue() /* Don't need to call read. */
 
         then:
         thrown(BlobStorageException)

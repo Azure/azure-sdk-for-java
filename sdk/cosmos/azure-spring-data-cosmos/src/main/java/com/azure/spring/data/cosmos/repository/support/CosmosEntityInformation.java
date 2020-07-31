@@ -8,8 +8,8 @@ import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.IndexingMode;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.spring.data.cosmos.Constants;
-import com.azure.spring.data.cosmos.core.mapping.Document;
-import com.azure.spring.data.cosmos.core.mapping.DocumentIndexingPolicy;
+import com.azure.spring.data.cosmos.core.mapping.Container;
+import com.azure.spring.data.cosmos.core.mapping.CosmosIndexingPolicy;
 import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.springframework.data.annotation.Id;
@@ -161,8 +161,8 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
      * @param entity the target object from which to get the field
      * @return partition key field
      */
-    public String getPartitionKeyFieldValue(T entity) {
-        return partitionKeyField == null ? null : (String) ReflectionUtils.getField(partitionKeyField, entity);
+    public Object getPartitionKeyFieldValue(T entity) {
+        return partitionKeyField == null ? null : ReflectionUtils.getField(partitionKeyField, entity);
     }
 
     /**
@@ -213,12 +213,12 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
     private String getContainerName(Class<?> domainType) {
         String customContainerName = domainType.getSimpleName();
 
-        final Document annotation = domainType.getAnnotation(Document.class);
+        final Container annotation = domainType.getAnnotation(Container.class);
 
         if (annotation != null
-                && annotation.container() != null
-                && !annotation.container().isEmpty()) {
-            customContainerName = resolveExpression(annotation.container());
+                && annotation.containerName() != null
+                && !annotation.containerName().isEmpty()) {
+            customContainerName = resolveExpression(annotation.containerName());
         }
 
         return customContainerName;
@@ -235,17 +235,12 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
             throw new IllegalArgumentException("Azure Cosmos DB supports only one partition key, "
                 + "only one field with @PartitionKey annotation!");
         }
-
-        if (partitionKey != null
-                && partitionKey.getType() != String.class) {
-            throw new IllegalArgumentException("type of PartitionKey field must be String");
-        }
         return partitionKey;
     }
 
     private Integer getRequestUnit(Class<?> domainType) {
         Integer ru = null;
-        final Document annotation = domainType.getAnnotation(Document.class);
+        final Container annotation = domainType.getAnnotation(Container.class);
 
         if (annotation != null
                 && annotation.ru() != null
@@ -257,7 +252,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
 
     private Integer getTimeToLive(Class<T> domainType) {
         Integer ttl = Constants.DEFAULT_TIME_TO_LIVE;
-        final Document annotation = domainType.getAnnotation(Document.class);
+        final Container annotation = domainType.getAnnotation(Container.class);
 
         if (annotation != null) {
             ttl = annotation.timeToLive();
@@ -269,7 +264,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
 
     private Boolean getIndexingPolicyAutomatic(Class<?> domainType) {
         Boolean isAutomatic = Boolean.valueOf(Constants.DEFAULT_INDEXING_POLICY_AUTOMATIC);
-        final DocumentIndexingPolicy annotation = domainType.getAnnotation(DocumentIndexingPolicy.class);
+        final CosmosIndexingPolicy annotation = domainType.getAnnotation(CosmosIndexingPolicy.class);
 
         if (annotation != null) {
             isAutomatic = Boolean.valueOf(annotation.automatic());
@@ -280,7 +275,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
 
     private IndexingMode getIndexingPolicyMode(Class<?> domainType) {
         IndexingMode mode = Constants.DEFAULT_INDEXING_POLICY_MODE;
-        final DocumentIndexingPolicy annotation = domainType.getAnnotation(DocumentIndexingPolicy.class);
+        final CosmosIndexingPolicy annotation = domainType.getAnnotation(CosmosIndexingPolicy.class);
 
         if (annotation != null) {
             mode = annotation.mode();
@@ -291,7 +286,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
 
     private List<IncludedPath> getIndexingPolicyIncludePaths(Class<?> domainType) {
         final List<IncludedPath> pathArrayList = new ArrayList<>();
-        final DocumentIndexingPolicy annotation = domainType.getAnnotation(DocumentIndexingPolicy.class);
+        final CosmosIndexingPolicy annotation = domainType.getAnnotation(CosmosIndexingPolicy.class);
 
         if (annotation == null || annotation.includePaths().length == 0) {
             return null; // Align the default value of IndexingPolicy
@@ -308,7 +303,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
 
     private List<ExcludedPath> getIndexingPolicyExcludePaths(Class<?> domainType) {
         final List<ExcludedPath> pathArrayList = new ArrayList<>();
-        final DocumentIndexingPolicy annotation = domainType.getAnnotation(DocumentIndexingPolicy.class);
+        final CosmosIndexingPolicy annotation = domainType.getAnnotation(CosmosIndexingPolicy.class);
 
         if (annotation == null || annotation.excludePaths().length == 0) {
             return null; // Align the default value of IndexingPolicy
@@ -330,7 +325,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
     }
 
     private boolean getIsAutoCreateContainer(Class<T> domainType) {
-        final Document annotation = domainType.getAnnotation(Document.class);
+        final Container annotation = domainType.getAnnotation(Container.class);
 
         boolean autoCreateContainer = Constants.DEFAULT_AUTO_CREATE_CONTAINER;
         if (annotation != null) {

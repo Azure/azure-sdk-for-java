@@ -3,7 +3,7 @@
 package com.azure.spring.data.cosmos.repository.query;
 
 import com.azure.spring.data.cosmos.core.ReactiveCosmosOperations;
-import com.azure.spring.data.cosmos.core.query.DocumentQuery;
+import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -42,7 +42,7 @@ public class AbstractReactiveCosmosQueryUnitTest {
         }
 
         @Override
-        protected DocumentQuery createQuery(ReactiveCosmosParameterAccessor accessor) {
+        protected CosmosQuery createQuery(ReactiveCosmosParameterAccessor accessor) {
             return null;
         }
 

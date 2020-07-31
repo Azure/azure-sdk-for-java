@@ -7,7 +7,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Configuration;
-import com.azure.identity.AuthenticationRecord;
 import com.azure.identity.AzureAuthorityHosts;
 import com.microsoft.aad.msal4jextensions.PersistenceSettings;
 import com.sun.jna.Platform;

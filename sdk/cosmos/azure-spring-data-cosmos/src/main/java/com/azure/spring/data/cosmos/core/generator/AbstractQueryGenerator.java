@@ -6,7 +6,7 @@ import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
-import com.azure.spring.data.cosmos.core.query.DocumentQuery;
+import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.exception.IllegalQueryException;
 import org.javatuples.Pair;
 import org.springframework.data.domain.Sort;
@@ -201,7 +201,7 @@ public abstract class AbstractQueryGenerator {
      * @return A pair tuple compose of Sql query.
      */
     @NonNull
-    private Pair<String, List<Pair<String, Object>>> generateQueryBody(@NonNull DocumentQuery query) {
+    private Pair<String, List<Pair<String, Object>>> generateQueryBody(@NonNull CosmosQuery query) {
         final List<Pair<String, Object>> parameters = new ArrayList<>();
         String queryString = this.generateQueryBody(query.getCriteria(), parameters);
 
@@ -234,7 +234,7 @@ public abstract class AbstractQueryGenerator {
     }
 
     @NonNull
-    private String generateQueryTail(@NonNull DocumentQuery query) {
+    private String generateQueryTail(@NonNull CosmosQuery query) {
         final List<String> queryTails = new ArrayList<>();
 
         queryTails.add(generateQuerySort(query.getSort()));
@@ -243,7 +243,7 @@ public abstract class AbstractQueryGenerator {
     }
 
 
-    protected SqlQuerySpec generateCosmosQuery(@NonNull DocumentQuery query,
+    protected SqlQuerySpec generateCosmosQuery(@NonNull CosmosQuery query,
                                                @NonNull String queryHead) {
         final Pair<String, List<Pair<String, Object>>> queryBody = generateQueryBody(query);
         final String queryString = String.join(" ", queryHead, queryBody.getValue0(), generateQueryTail(query));

@@ -2,13 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.domain;
 
-import com.azure.spring.data.cosmos.core.mapping.Document;
+import com.azure.spring.data.cosmos.core.mapping.Container;
 import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
 
 import java.util.List;
 import java.util.Objects;
 
-@Document()
+@Container()
 public class PartitionPerson {
 
     private String id;
@@ -16,7 +16,7 @@ public class PartitionPerson {
     private String firstName;
 
     @PartitionKey
-    private String lastName;
+    private Integer zipCode;
 
     private List<String> hobbies;
 
@@ -25,10 +25,10 @@ public class PartitionPerson {
     public PartitionPerson() {
     }
 
-    public PartitionPerson(String id, String firstName, String lastName, List<String> hobbies, List<Address> shippingAddresses) {
+    public PartitionPerson(String id, String firstName, Integer zipCode, List<String> hobbies, List<Address> shippingAddresses) {
         this.id = id;
         this.firstName = firstName;
-        this.lastName = lastName;
+        this.zipCode = zipCode;
         this.hobbies = hobbies;
         this.shippingAddresses = shippingAddresses;
     }
@@ -49,12 +49,12 @@ public class PartitionPerson {
         this.firstName = firstName;
     }
 
-    public String getLastName() {
-        return lastName;
+    public Integer getZipCode() {
+        return zipCode;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setZipCode(Integer zipCode) {
+        this.zipCode = zipCode;
     }
 
     public List<String> getHobbies() {
@@ -84,14 +84,14 @@ public class PartitionPerson {
         PartitionPerson that = (PartitionPerson) o;
         return Objects.equals(id, that.id)
             && Objects.equals(firstName, that.firstName)
-            && Objects.equals(lastName, that.lastName)
+            && Objects.equals(zipCode, that.zipCode)
             && Objects.equals(hobbies, that.hobbies)
             && Objects.equals(shippingAddresses, that.shippingAddresses);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, hobbies, shippingAddresses);
+        return Objects.hash(id, firstName, zipCode, hobbies, shippingAddresses);
     }
 
     @Override
@@ -104,7 +104,7 @@ public class PartitionPerson {
             + firstName
             + '\''
             + ", lastName='"
-            + lastName
+            + zipCode
             + '\''
             + ", hobbies="
             + hobbies

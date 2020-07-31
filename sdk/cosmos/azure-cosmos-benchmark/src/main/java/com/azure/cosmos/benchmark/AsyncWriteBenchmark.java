@@ -60,21 +60,21 @@ class AsyncWriteBenchmark extends AsyncBenchmark<CosmosItemResponse> {
 
     @Override
     protected void performWorkload(BaseSubscriber<CosmosItemResponse> baseSubscriber, long i) throws InterruptedException {
-        String partitionKey = uuid + i;
+        String id = uuid + i;
         Mono<CosmosItemResponse<PojoizedJson>> obs;
         if (configuration.isDisablePassingPartitionKeyAsOptionOnWrite()) {
             // require parsing partition key from the doc
-            obs = cosmosAsyncContainer.createItem(BenchmarkHelper.generateDocument(partitionKey,
+            obs = cosmosAsyncContainer.createItem(BenchmarkHelper.generateDocument(id,
                 dataFieldValue,
                 partitionKey,
                 configuration.getDocumentDataFieldCount()));
         } else {
             // more optimized for write as partition ke is already passed as config
-            obs = cosmosAsyncContainer.createItem(BenchmarkHelper.generateDocument(partitionKey,
+            obs = cosmosAsyncContainer.createItem(BenchmarkHelper.generateDocument(id,
                 dataFieldValue,
                 partitionKey,
                 configuration.getDocumentDataFieldCount()),
-                new PartitionKey(partitionKey),
+                new PartitionKey(id),
                 new CosmosItemRequestOptions());
         }
 
