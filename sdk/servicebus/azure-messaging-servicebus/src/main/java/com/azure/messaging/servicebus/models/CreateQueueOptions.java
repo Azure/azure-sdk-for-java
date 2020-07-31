@@ -60,9 +60,9 @@ public class CreateQueueOptions {
     public CreateQueueOptions(String queueName) {
         Objects.requireNonNull(queueName, "'queueName' cannot be null.");
 
-        if (queueName.isEmpty() || queueName.isBlank()) {
+        if (queueName.isEmpty()) {
             ClientLogger logger = new ClientLogger(CreateQueueOptions.class);
-            throw logger.logThrowableAsError(new IllegalArgumentException("Queue name cannot be empty or blank."));
+            throw logger.logThrowableAsError(new IllegalArgumentException("Queue name cannot be empty."));
         }
 
         this.name = queueName;
@@ -83,15 +83,15 @@ public class CreateQueueOptions {
      * Initializes a new instance based on the specified {@link CreateQueueOptions} instance. This is useful for creating
      * a new queue based on the properties of an existing queue.
      *
-     * @param queue Existing queue to create options for
+     * @param queue Existing queue to create options with.
      */
     public CreateQueueOptions(CreateQueueOptions queue) {
         Objects.requireNonNull(queue, "'queue' cannot be null.");
         Objects.requireNonNull(queue.getName(), "Queue name cannot be null");
 
-        if (queue.getName().isEmpty() || queue.getName().isBlank()) {
+        if (queue.getName().isEmpty()) {
             ClientLogger logger = new ClientLogger(CreateQueueOptions.class);
-            throw logger.logThrowableAsError(new IllegalArgumentException("Queue name cannot be empty or blank."));
+            throw logger.logThrowableAsError(new IllegalArgumentException("Queue name cannot be empty."));
         }
         this.name = queue.getName();
         this.autoDeleteOnIdle = queue.getAutoDeleteOnIdle();

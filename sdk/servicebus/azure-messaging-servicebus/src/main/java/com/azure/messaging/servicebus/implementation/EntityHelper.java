@@ -25,6 +25,18 @@ public final class EntityHelper {
         } catch (ClassNotFoundException e) {
             throw new ClientLogger(EntityHelper.class).logThrowableAsError(new AssertionError(e));
         }
+
+        try {
+            Class.forName(TopicAccessor.class.getName(), true, TopicAccessor.class.getClassLoader());
+        } catch (ClassNotFoundException e) {
+            throw new ClientLogger(EntityHelper.class).logThrowableAsError(new AssertionError(e));
+        }
+
+        try {
+            Class.forName(SubscriptionAccessor.class.getName(), true, SubscriptionAccessor.class.getClassLoader());
+        } catch (ClassNotFoundException e) {
+            throw new ClientLogger(EntityHelper.class).logThrowableAsError(new AssertionError(e));
+        }
     }
 
     /**
