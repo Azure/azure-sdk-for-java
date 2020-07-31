@@ -5,7 +5,6 @@
 package com.azure.messaging.servicebus.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.EntityHelper;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
@@ -16,9 +15,6 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.DEFAULT_LOCK_DURATION;
-import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.MAX_DURATION;
 
 /** The QueueDescription model. */
 @JacksonXmlRootElement(
@@ -311,51 +307,6 @@ public final class QueueProperties {
         this.requiresDuplicateDetection = options.requiresDuplicateDetection();
         this.requiresSession = options.requiresSession();
         this.userMetadata = options.getUserMetadata();
-    }
-
-    /**
-     * Creates an instance with the name of the queue. Default values for the queue are populated. The properties
-     * populated with defaults are:
-     *
-     * <ul>
-     *     <li>{@link #setAutoDeleteOnIdle(Duration)} is max duration value.</li>
-     *     <li>{@link #setDefaultMessageTimeToLive(Duration)} is max duration value.</li>
-     *     <li>{@link #setDuplicateDetectionHistoryTimeWindow(Duration)} is max duration value, but duplication
-     *     detection is disabled.</li>
-     *     <li>{@link #setRequiresDuplicateDetection(Boolean)} is false.</li>
-     *     <li>{@link #setEnableBatchedOperations(Boolean)} is true.</li>
-     *     <li>{@link #setLockDuration(Duration)} is 1 minute.</li>
-     *     <li>{@link #setMaxDeliveryCount(Integer)} is 10.</li>
-     *     <li>{@link #setMaxSizeInMegabytes(Integer)} is 1024MB.</li>
-     *     <li>{@link #setRequiresSession(Boolean)} is false.</li>
-     * </ul>
-     *
-     * @param queueName Name of the queue.
-     * @throws NullPointerException if {@code queueName} is a null.
-     * @throws IllegalArgumentException if {@code queueName} is an empty string.
-     */
-    public QueueProperties(String queueName) {
-        final ClientLogger logger = new ClientLogger(QueueProperties.class);
-        if (queueName == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'queueName' cannot be null."));
-        } else if (queueName.isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'queueName' cannot be an empty string."));
-        }
-
-        this.queueName = queueName;
-
-        this.autoDeleteOnIdle = MAX_DURATION;
-        this.defaultMessageTimeToLive = MAX_DURATION;
-        this.duplicateDetectionHistoryTimeWindow = Duration.ofSeconds(60);
-        this.enableBatchedOperations = true;
-        this.enablePartitioning = false;
-        this.lockDuration = DEFAULT_LOCK_DURATION;
-        this.maxDeliveryCount = 10;
-        this.maxSizeInMegabytes = 1024;
-        this.requiresDuplicateDetection = false;
-        this.requiresSession = false;
-        this.deadLetteringOnMessageExpiration = false;
-        this.authorizationRules = new AuthorizationRulesWrapper(new ArrayList<>());
     }
 
     /**

@@ -10,6 +10,9 @@ import com.azure.core.util.logging.ClientLogger;
 import java.time.Duration;
 import java.util.Objects;
 
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.DEFAULT_LOCK_DURATION;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.MAX_DURATION;
+
 /**
  * Represents the set of options that can be specified for the creation of a queue.
  */
@@ -55,7 +58,25 @@ public class CreateQueueOptions {
      * @throws IllegalArgumentException if {@code queueName} is an empty string.
      */
     public CreateQueueOptions(String queueName) {
-        this(new CreateQueueOptions(queueName));
+        Objects.requireNonNull(queueName, "'queueName' cannot be null.");
+
+        if (queueName.isEmpty() || queueName.isBlank()) {
+            ClientLogger logger = new ClientLogger(CreateQueueOptions.class);
+            throw logger.logThrowableAsError(new IllegalArgumentException("Queue name cannot be empty or blank."));
+        }
+
+        this.name = queueName;
+        this.autoDeleteOnIdle = MAX_DURATION;
+        this.defaultMessageTimeToLive = MAX_DURATION;
+        this.duplicateDetectionHistoryTimeWindow = Duration.ofSeconds(60);
+        this.enableBatchedOperations = true;
+        this.enablePartitioning = false;
+        this.lockDuration = DEFAULT_LOCK_DURATION;
+        this.maxDeliveryCount = 10;
+        this.maxSizeInMegabytes = 1024;
+        this.requiresDuplicateDetection = false;
+        this.requiresSession = false;
+        this.deadLetteringOnMessageExpiration = false;
     }
 
     /**

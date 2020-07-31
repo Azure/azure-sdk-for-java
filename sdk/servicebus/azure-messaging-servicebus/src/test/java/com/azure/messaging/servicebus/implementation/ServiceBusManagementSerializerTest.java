@@ -12,6 +12,7 @@ import com.azure.messaging.servicebus.implementation.models.ResponseLink;
 import com.azure.messaging.servicebus.implementation.models.SubscriptionDescriptionEntry;
 import com.azure.messaging.servicebus.implementation.models.SubscriptionDescriptionEntryContent;
 import com.azure.messaging.servicebus.implementation.models.SubscriptionDescriptionFeed;
+import com.azure.messaging.servicebus.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.models.EntityStatus;
 import com.azure.messaging.servicebus.models.MessageCountDetails;
 import com.azure.messaging.servicebus.models.MessagingSku;
@@ -56,7 +57,7 @@ class ServiceBusManagementSerializerTest {
     void deserializeQueueDescription() throws IOException {
         // Arrange
         final String contents = getContents("QueueDescriptionEntry.xml");
-        final QueueProperties expected = new QueueProperties("my-test-queue")
+        final CreateQueueOptions expected = new CreateQueueOptions("my-test-queue")
             .setLockDuration(Duration.ofMinutes(5))
             .setMaxSizeInMegabytes(1024)
             .setRequiresDuplicateDetection(true)
@@ -137,7 +138,7 @@ class ServiceBusManagementSerializerTest {
                 .setHref("https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2017-04&enrich=false&%24skip=5&%24top=5")
         );
 
-        final QueueProperties queueProperties = new QueueProperties("q-0")
+        final CreateQueueOptions options = new CreateQueueOptions("q-0")
             .setLockDuration(Duration.ofMinutes(10))
             .setMaxSizeInMegabytes(102)
             .setRequiresDuplicateDetection(true)
@@ -149,6 +150,7 @@ class ServiceBusManagementSerializerTest {
             .setEnableBatchedOperations(true)
             .setAutoDeleteOnIdle(Duration.ofSeconds(5))
             .setEnablePartitioning(true);
+        final QueueProperties queueProperties = EntityHelper.createQueue(options);
 
         final QueueDescriptionEntry entry1 = new QueueDescriptionEntry()
             .setBase("https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2017-04&enrich=false&$skip=0&$top=5")
@@ -224,8 +226,7 @@ class ServiceBusManagementSerializerTest {
             assertEquals(expectedEntry.getPublished(), actualEntry.getPublished());
             assertEquals(expectedEntry.getAuthor().getName(), actualEntry.getAuthor().getName());
 
-            assertQueueEquals(expectedEntry.getContent().getQueueProperties(), EntityStatus.ACTIVE,
-                actualEntry.getContent().getQueueProperties());
+            assertQueueEquals(options, EntityStatus.ACTIVE, actualEntry.getContent().getQueueProperties());
         }
     }
 
@@ -486,7 +487,7 @@ class ServiceBusManagementSerializerTest {
         }
     }
 
-    private static void assertQueueEquals(QueueProperties expected, EntityStatus expectedStatus, QueueProperties actual) {
+    private static void assertQueueEquals(CreateQueueOptions expected, EntityStatus expectedStatus, QueueProperties actual) {
         assertEquals(expected.getLockDuration(), actual.getLockDuration());
         assertEquals(expected.getMaxSizeInMegabytes(), actual.getMaxSizeInMegabytes());
         assertEquals(expected.requiresDuplicateDetection(), actual.requiresDuplicateDetection());

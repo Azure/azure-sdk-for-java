@@ -10,6 +10,8 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.IterableStream;
+import com.azure.messaging.servicebus.implementation.EntityHelper;
+import com.azure.messaging.servicebus.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.models.QueueProperties;
 import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
 import org.junit.jupiter.api.AfterEach;
@@ -68,12 +70,15 @@ class ServiceBusManagementClientTest {
     @Test
     void createQueue() {
         // Arrange
-        final QueueProperties description = new QueueProperties(queueName)
+        final CreateQueueOptions description = new CreateQueueOptions(queueName)
             .setMaxDeliveryCount(10)
             .setAutoDeleteOnIdle(Duration.ofSeconds(10));
-        final QueueProperties result = new QueueProperties("queue-name-2")
+
+        final CreateQueueOptions options = new CreateQueueOptions("queue-name-2")
             .setMaxDeliveryCount(4)
             .setAutoDeleteOnIdle(Duration.ofSeconds(30));
+        final QueueProperties result = EntityHelper.createQueue(options);
+
 
         when(asyncClient.createQueue(description)).thenReturn(Mono.just(result));
 
@@ -87,7 +92,7 @@ class ServiceBusManagementClientTest {
     @Test
     void createQueueWithResponse() {
         // Arrange
-        final QueueProperties description = mock(QueueProperties.class);
+        final CreateQueueOptions description = mock(CreateQueueOptions.class);
         final QueueProperties result = mock(QueueProperties.class);
 
         when(queueDescriptionResponse.getValue()).thenReturn(result);
@@ -247,12 +252,16 @@ class ServiceBusManagementClientTest {
     @Test
     void updateQueue() {
         // Arrange
-        final QueueProperties description = new QueueProperties(queueName)
-            .setMaxDeliveryCount(10)
-            .setAutoDeleteOnIdle(Duration.ofSeconds(10));
-        final QueueProperties result = new QueueProperties("queue-name-2")
+
+        final CreateQueueOptions options = new CreateQueueOptions(queueName)
             .setMaxDeliveryCount(4)
             .setAutoDeleteOnIdle(Duration.ofSeconds(30));
+        final QueueProperties description = EntityHelper.createQueue(options);
+
+        final CreateQueueOptions updated = new CreateQueueOptions("queue-name-2")
+            .setMaxDeliveryCount(10)
+            .setAutoDeleteOnIdle(Duration.ofSeconds(30));
+        final QueueProperties result = EntityHelper.createQueue(options);
 
         when(asyncClient.updateQueue(description)).thenReturn(Mono.just(result));
 
