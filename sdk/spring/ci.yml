@@ -67,6 +67,9 @@ extends:
       - name: spring-integration-azure-core
         groupId: com.microsoft.azure
         safeName: springintegrationazurecore
+      - name: spring-integration-azure-test
+        groupId: com.microsoft.azure
+        safeName: springintegrationazuretest
       - name: spring-integration-eventhubs
         groupId: com.microsoft.azure
         safeName: springintegrationeventhubs
@@ -76,9 +79,6 @@ extends:
       - name: spring-integration-storage-queue
         groupId: com.microsoft.azure
         safeName: springintegrationstoragequeue
-      - name: spring-integration-azure-test
-        groupId: com.microsoft.azure
-        safeName: springintegrationazuretest
     AdditionalModules:
       - name: azure-spring-boot-sample-active-directory
         groupId: com.azure
