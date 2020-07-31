@@ -55,7 +55,8 @@ public final class ValidationUtil {
         if (id != null) {
             if (!clientIdentifierCharPattern.matcher(id).matches()) {
                 throw logger.logExceptionAsError(
-                    new IllegalArgumentException("Client id must have characters in the range of [0-9], [a-z], '-'"));
+                    new IllegalArgumentException(
+                        "Client id must have characters in the range of [A-Z], [0-9], [a-z], '-'"));
             }
         }
     }
@@ -66,7 +67,7 @@ public final class ValidationUtil {
             if (!tenantIdentifierCharPattern.matcher(id).matches()) {
                 throw logger.logExceptionAsError(
                     new IllegalArgumentException(
-                        "Tenant id must have characters in the range of [0-9], [a-z], '-', '.'"));
+                        "Tenant id must have characters in the range of [A-Z], [0-9], [a-z], '-', '.'"));
             }
         }
     }
