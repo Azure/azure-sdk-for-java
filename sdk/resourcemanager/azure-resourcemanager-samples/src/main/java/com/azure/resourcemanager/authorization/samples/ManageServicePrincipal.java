@@ -45,7 +45,6 @@
 //        try {
 //            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, false);
 //            final TokenCredential credential = new DefaultAzureCredentialBuilder()
-//                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
 //                .build();
 //
 //            Azure.Authenticated authenticated = Azure

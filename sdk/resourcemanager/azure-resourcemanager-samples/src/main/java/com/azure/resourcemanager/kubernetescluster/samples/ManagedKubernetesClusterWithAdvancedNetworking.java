@@ -179,7 +179,6 @@ public class ManagedKubernetesClusterWithAdvancedNetworking {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
-                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
                 .build();
 
             Azure azure = Azure
