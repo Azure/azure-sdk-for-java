@@ -3,7 +3,7 @@
 
 package com.azure.data.schemaregistry;
 
-import java.io.ByteArrayOutputStream;
+import com.azure.data.schemaregistry.models.SerializationException;
 
 /**
  * An interface defining operations required for registry-based serialization and deserialization.
@@ -34,6 +34,8 @@ public interface Codec {
      */
     String getSchemaName(Object object);
 
+    String getSchemaGroup();
+
     /**
      * Returns string representation of schema object to be stored in the service.
      *
@@ -49,7 +51,7 @@ public interface Codec {
      * @return output stream containing byte representation of object
      * @throws SerializationException if generating byte representation of object fails
      */
-    ByteArrayOutputStream encode(Object object);
+    byte[] encode(Object object);
 
     /**
      * Decodes byte array into Object given provided schema object.
@@ -58,5 +60,5 @@ public interface Codec {
      * @return deserialized object
      * @throws SerializationException if decode operation fails
      */
-    Object decodeBytes(byte[] encodedBytes, Object schemaObject);
+    Object decode(byte[] encodedBytes, Object schemaObject);
 }

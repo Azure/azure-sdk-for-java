@@ -3,6 +3,7 @@
 
 package com.azure.data.schemaregistry;
 
+import com.azure.data.schemaregistry.models.SerializationException;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
@@ -16,12 +17,17 @@ public class SampleCodec implements Codec {
     }
 
     @Override
+    public String getSchemaGroup() {
+        return "schema group";
+    }
+
+    @Override
     public String getSchemaString(Object object) {
         return "string representation of schema";
     }
 
     @Override
-    public ByteArrayOutputStream encode(Object object) throws SerializationException {
+    public byte[] encode(Object object) throws SerializationException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try {
             outputStream.write("sample payload".getBytes());
@@ -31,7 +37,7 @@ public class SampleCodec implements Codec {
             e.printStackTrace();
             throw new SerializationException("this should never happen", e);
         }
-        return outputStream;
+        return outputStream.toByteArray();
     }
 
     @Override
@@ -47,7 +53,7 @@ public class SampleCodec implements Codec {
     public static final String CONSTANT_PAYLOAD = "sample payload!";
 
     @Override
-    public Object decodeBytes(byte[] bytes, Object o) throws SerializationException {
+    public Object decode(byte[] bytes, Object o) throws SerializationException {
         return CONSTANT_PAYLOAD;
     }
 }
