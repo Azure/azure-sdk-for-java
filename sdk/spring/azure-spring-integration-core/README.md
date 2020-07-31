@@ -1,4 +1,4 @@
-# Azure Spring Integration Core library for Java
+# Azure Spring Integration Core client library for Java
 
 ## Key concepts
 ## Getting started

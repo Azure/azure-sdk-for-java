@@ -1,4 +1,4 @@
-# Azure Spring Integration test library for Java
+# Azure Spring Integration shared library for Java
 
 ## Key concepts
 ## Getting started
