@@ -4,7 +4,6 @@
 package com.azure.data.schemaregistry.avro;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.data.schemaregistry.AbstractSchemaRegistrySerializer;
 import com.azure.data.schemaregistry.client.CachedSchemaRegistryAsyncClient;
 import com.azure.data.schemaregistry.client.CachedSchemaRegistryClientBuilder;
 
@@ -16,10 +15,10 @@ import java.util.Objects;
 public final class SchemaRegistryAvroSerializerBuilder {
     private String registryUrl;
     private TokenCredential credential;
-    private boolean autoRegisterSchemas;
+    private Boolean autoRegisterSchemas;
     private String schemaGroup;
-    private Integer maxSchemaMapSize;
-    private boolean avroSpecificReader;
+    private Integer maxCacheSize;
+    private Boolean avroSpecificReader;
 
     /**
      * Instantiates instance of Builder class.
@@ -28,9 +27,9 @@ public final class SchemaRegistryAvroSerializerBuilder {
     public SchemaRegistryAvroSerializerBuilder() {
         this.registryUrl = null;
         this.credential = null;
-        this.autoRegisterSchemas = AbstractSchemaRegistrySerializer.AUTO_REGISTER_SCHEMAS_DEFAULT;
-        this.schemaGroup = AbstractSchemaRegistrySerializer.SCHEMA_GROUP_DEFAULT;
-        this.maxSchemaMapSize = null;
+        this.autoRegisterSchemas = null;
+        this.schemaGroup = null;
+        this.maxCacheSize = null;
         this.avroSpecificReader = false;
     }
 
@@ -102,11 +101,11 @@ public final class SchemaRegistryAvroSerializerBuilder {
      * Specifies maximum schema object cache size for underlying CachedSchemaRegistryAsyncClient.  If specified cache
      * size is exceeded, all caches are recycled.
      *
-     * @param maxSchemaMapSize maximum number of schemas per cache
+     * @param maxCacheSize maximum number of schemas per cache
      * @return updated {@link SchemaRegistryAvroSerializerBuilder} instance
      */
-    public SchemaRegistryAvroSerializerBuilder maxSchemaMapSize(int maxSchemaMapSize) {
-        this.maxSchemaMapSize = maxSchemaMapSize;
+    public SchemaRegistryAvroSerializerBuilder maxCacheSize(int maxCacheSize) {
+        this.maxCacheSize = maxCacheSize;
         return this;
     }
 
@@ -117,8 +116,8 @@ public final class SchemaRegistryAvroSerializerBuilder {
      * @throws NullPointerException if parameters are incorrectly set.
      * @throws IllegalArgumentException if credential is not set.
      */
-    public SchemaRegistryAvroSerializer buildClient() {
-        return new SchemaRegistryAvroSerializer(this.buildAsyncClient());
+    public SchemaRegistryAvroSerializer buildSerializer() {
+        return new SchemaRegistryAvroSerializer(this.buildAsyncSerializer());
     }
 
     /**
@@ -128,13 +127,13 @@ public final class SchemaRegistryAvroSerializerBuilder {
      * @throws NullPointerException if parameters are incorrectly set.
      * @throws IllegalArgumentException if credential is not set.
      */
-    public SchemaRegistryAvroAsyncSerializer buildAsyncClient() {
+    public SchemaRegistryAvroAsyncSerializer buildAsyncSerializer() {
         CachedSchemaRegistryClientBuilder builder = new CachedSchemaRegistryClientBuilder()
             .endpoint(registryUrl)
             .credential(credential);
 
-        if (maxSchemaMapSize != null) {
-            builder.maxCacheSize(maxSchemaMapSize);
+        if (maxCacheSize != null) {
+            builder.maxCacheSize(maxCacheSize);
         }
 
         AvroCodec codec = new AvroCodec(this.avroSpecificReader);

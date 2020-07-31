@@ -5,17 +5,18 @@ package com.azure.data.schemaregistry.avro;
 
 import com.azure.core.experimental.serializer.ObjectSerializer;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.data.schemaregistry.AbstractSchemaRegistrySerializer;
+import com.azure.data.schemaregistry.SchemaRegistrySerializer;
 import com.azure.data.schemaregistry.SerializationException;
 import com.azure.data.schemaregistry.client.CachedSchemaRegistryAsyncClient;
 import reactor.core.publisher.Mono;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Collections;
 
 /**
  * Asynchronous registry-based serializer implementation.
  */
-public class SchemaRegistryAvroAsyncSerializer extends AbstractSchemaRegistrySerializer implements ObjectSerializer {
+public class SchemaRegistryAvroAsyncSerializer extends SchemaRegistrySerializer implements ObjectSerializer {
     private final ClientLogger logger = new ClientLogger(SchemaRegistryAvroAsyncSerializer.class);
 
     /**
@@ -26,15 +27,8 @@ public class SchemaRegistryAvroAsyncSerializer extends AbstractSchemaRegistrySer
      * @param autoRegisterSchemas
      */
     SchemaRegistryAvroAsyncSerializer(CachedSchemaRegistryAsyncClient registryClient, AvroCodec codec,
-                                      String schemaGroup, boolean autoRegisterSchemas) {
-        super(registryClient);
-
-        setSerializerCodec(codec);
-        addDeserializerCodec(codec);
-
-        // send configurations only
-        this.autoRegisterSchemas = autoRegisterSchemas;
-        this.schemaGroup = schemaGroup;
+                                      String schemaGroup, Boolean autoRegisterSchemas) {
+        super(registryClient, codec, Collections.singletonList(codec), autoRegisterSchemas, schemaGroup);
     }
 
     @Override
@@ -43,12 +37,12 @@ public class SchemaRegistryAvroAsyncSerializer extends AbstractSchemaRegistrySer
             return Mono.empty();
         }
 
-        return this.serializeImpl(s, o);
+        return super.serialize(s, o);
     }
 
     @Override
     public <T> Mono<T> deserialize(InputStream stream, Class<T> clazz) {
-        return this.deserializeImpl(stream)
+        return this.deserialize(stream)
             .map(o -> {
                 if (clazz.isInstance(o)) {
                     return clazz.cast(o);
