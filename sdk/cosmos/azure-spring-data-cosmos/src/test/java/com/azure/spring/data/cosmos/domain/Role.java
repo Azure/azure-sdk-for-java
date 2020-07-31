@@ -78,10 +78,8 @@ public class Role {
             return false;
         }
         Role role = (Role) o;
-        return developer == role.developer &&
-            Objects.equals(id, role.id) &&
-            Objects.equals(name, role.name) &&
-            Objects.equals(level, role.level);
+        return developer == role.developer && Objects.equals(id, role.id)
+            && Objects.equals(name, role.name) && Objects.equals(level, role.level);
     }
 
     @Override
