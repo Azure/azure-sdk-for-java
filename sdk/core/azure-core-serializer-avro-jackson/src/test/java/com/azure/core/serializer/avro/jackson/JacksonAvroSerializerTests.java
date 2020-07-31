@@ -3,11 +3,11 @@
 
 package com.azure.core.serializer.avro.jackson;
 
-import com.azure.core.experimental.serializer.TypeReference;
 import com.azure.core.serializer.avro.jackson.generatedtestsources.HandOfCards;
 import com.azure.core.serializer.avro.jackson.generatedtestsources.LongLinkedList;
 import com.azure.core.serializer.avro.jackson.generatedtestsources.PlayingCard;
 import com.azure.core.serializer.avro.jackson.generatedtestsources.PlayingCardSuit;
+import com.azure.core.util.serializer.TypeReference;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
