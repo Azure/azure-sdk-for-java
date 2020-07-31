@@ -53,8 +53,8 @@ public class SchemaRegistryAvroSerializer {
      * @throws SerializationException Throws on deserialization failure.
      * Exception may contain inner exceptions detailing failure condition.
      */
-    public Object deserialize(byte[] data) {
-        return serializer.deserialize(new ByteArrayInputStream(data), Object.class);
+    public <T> T deserialize(byte[] data, Class<T> clazz) {
+        return serializer.deserialize(new ByteArrayInputStream(data), clazz).block();
     }
 }
 
