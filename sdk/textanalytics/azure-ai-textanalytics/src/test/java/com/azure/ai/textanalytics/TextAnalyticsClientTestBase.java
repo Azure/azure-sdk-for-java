@@ -141,6 +141,9 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     @Test
     abstract void recognizePiiEntitiesTooManyDocuments(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
+    @Test
+    abstract void recognizePiiEntitiesWithDomain(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
     // Linked Entities
     @Test
     abstract void recognizeLinkedEntitiesForTextInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
@@ -333,6 +336,11 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         // max num of document size is 5
         testRunner.accept(
             Arrays.asList(documentInput, documentInput, documentInput, documentInput, documentInput, documentInput));
+    }
+
+    void recognizePiiEntitiesWithDomainRunner(BiConsumer<List<String>, TextAnalyticsRequestOptions> testRunner) {
+        testRunner.accept(Arrays.asList(PII_ENTITY_INPUTS.get(0)),
+            new TextAnalyticsRequestOptions().setIncludeStatistics(true).setDomain("phi"));
     }
 
     // Linked Entity runner

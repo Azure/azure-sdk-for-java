@@ -185,7 +185,6 @@ class RecognizePiiEntityAsyncClient {
                 entitiesResult.getStatistics() == null ? null : toBatchStatistics(entitiesResult.getStatistics())));
     }
 
-
     /**
      * Call the service with REST response, convert to a {@link Mono} of {@link Response} that contains
      * {@link RecognizePiiEntitiesResultCollection} from a {@link SimpleResponse} of {@link EntitiesResult}.

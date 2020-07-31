@@ -16,12 +16,12 @@ public final class PiiEntity {
     private final String text;
 
     /*
-     * CategorizedEntity category, such as Person/Location/Org/SSN etc
+     * PiiEntity category, such as Person/Location/Org/SSN etc
      */
     private final EntityCategory category;
 
     /*
-     * CategorizedEntity sub category, such as Age/Year/TimeRange etc
+     * PiiEntity sub category, such as Age/Year/TimeRange etc
      */
     private final String subcategory;
 

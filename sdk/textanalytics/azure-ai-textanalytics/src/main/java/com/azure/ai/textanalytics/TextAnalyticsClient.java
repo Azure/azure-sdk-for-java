@@ -195,7 +195,7 @@ public final class TextAnalyticsClient {
      * <p>Recognize the entities of documents</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeCategorizedEntities#String}
      *
-     * @param document the document to recognize entities for.
+     * @param document The document to recognize entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      *
@@ -306,7 +306,7 @@ public final class TextAnalyticsClient {
      * <p>Recognize the personally identifiable information entities of documents</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntities#String}
      *
-     * @param document the document to recognize personally identifiable information entities for.
+     * @param document The document to recognize personally identifiable information entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      *
@@ -417,7 +417,7 @@ public final class TextAnalyticsClient {
      * <p>Recognize the linked entities of documents</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntities#String}
      *
-     * @param document the document to recognize linked entities for.
+     * @param document The document to recognize linked entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      *

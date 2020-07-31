@@ -238,6 +238,22 @@ final class TestUtils {
     }
 
     /**
+     * Helper method to get the expected batch of Personally Identifiable Information entities with domain specified.
+     */
+    static RecognizePiiEntitiesResultCollection getExpectedBatchPiiEntitiesWithDomainSpecified() {
+        PiiEntityCollection piiEntityCollection = new PiiEntityCollection(new IterableStream<>(Arrays.asList(getPiiEntitiesList1().get(1))), null);
+        TextDocumentStatistics textDocumentStatistics = new TextDocumentStatistics(67, 1);
+        TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics(105, 1);
+
+        RecognizePiiEntitiesResult recognizeEntitiesResult = new RecognizePiiEntitiesResult("0", textDocumentStatistics, null, piiEntityCollection);
+
+        return new RecognizePiiEntitiesResultCollection(
+            Arrays.asList(recognizeEntitiesResult),
+            DEFAULT_MODEL_VERSION,
+            new TextDocumentBatchStatistics(1, 1, 0, 1));
+    }
+
+    /**
      * Helper method to get the expected Categorized Entities List 1
      */
     static List<PiiEntity> getPiiEntitiesList1() {
