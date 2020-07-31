@@ -123,6 +123,7 @@ public class AvroCodec implements Codec {
      * @return deserialized object
      * @throws SerializationException upon deserialization failure
      */
+    @Override
     public Object decode(byte[] b, Object object) {
         Objects.requireNonNull(object, "Schema must not be null.");
 
