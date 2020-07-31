@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.data.schemaregistry.client.implementation.models;
+package com.azure.data.schemaregistry.implementation.models;
 
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;

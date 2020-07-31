@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.data.schemaregistry.client;
+package com.azure.data.schemaregistry;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.data.schemaregistry.client.implementation.AzureSchemaRegistryRestService;
-import com.azure.data.schemaregistry.client.implementation.models.SchemaId;
+import com.azure.data.schemaregistry.implementation.AzureSchemaRegistryRestService;
+import com.azure.data.schemaregistry.implementation.models.SchemaId;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.Charset;
@@ -22,7 +22,7 @@ import java.util.function.Function;
  * HTTP-based client that interacts with Azure Schema Registry service to store and retrieve schemas on demand.
  * <p>
  * Utilizes in-memory {@link Map} caching to minimize network I/O. Max size can be configured when instantiating by
- * using {@link CachedSchemaRegistryClientBuilder#maxSchemaMapSize}, otherwise {@code 1000} will be used as the default.
+ * using {@link CachedSchemaRegistryClientBuilder#maxCacheSize}, otherwise {@code 1000} will be used as the default.
  * <p>
  * Two maps are maintained.
  * <ul>
@@ -39,22 +39,22 @@ import java.util.function.Function;
 public final class CachedSchemaRegistryAsyncClient {
     private final ClientLogger logger = new ClientLogger(CachedSchemaRegistryAsyncClient.class);
 
-    public static final Charset SCHEMA_REGISTRY_SERVICE_ENCODING = StandardCharsets.UTF_8;
+    static final Charset SCHEMA_REGISTRY_SERVICE_ENCODING = StandardCharsets.UTF_8;
     static final int MAX_SCHEMA_MAP_SIZE_DEFAULT = 1000;
     static final int MAX_SCHEMA_MAP_SIZE_MINIMUM = 10;
 
     private final AzureSchemaRegistryRestService restService;
-    private final Integer maxSchemaMapSize;
+    private final Integer maxCacheSize;
     private final ConcurrentSkipListMap<String, Function<String, Object>> typeParserMap;
     private final Map<String, SchemaRegistryObject> idCache;
     private final Map<String, SchemaRegistryObject> schemaStringCache;
 
     CachedSchemaRegistryAsyncClient(
         AzureSchemaRegistryRestService restService,
-        int maxSchemaMapSize,
+        int maxCacheSize,
         ConcurrentSkipListMap<String, Function<String, Object>> typeParserMap) {
         this.restService = restService;
-        this.maxSchemaMapSize = maxSchemaMapSize;
+        this.maxCacheSize = maxCacheSize;
         this.typeParserMap = typeParserMap;
         this.idCache = new ConcurrentHashMap<>();
         this.schemaStringCache = new ConcurrentHashMap<>();
@@ -70,7 +70,7 @@ public final class CachedSchemaRegistryAsyncClient {
         this.idCache = idCache;
         this.schemaStringCache = schemaStringCache;
         this.typeParserMap = typeParserMap;
-        this.maxSchemaMapSize = MAX_SCHEMA_MAP_SIZE_DEFAULT;
+        this.maxCacheSize = MAX_SCHEMA_MAP_SIZE_DEFAULT;
     }
 
     /**
@@ -217,11 +217,11 @@ public final class CachedSchemaRegistryAsyncClient {
      */
     private void resetIfNeeded() {
         // todo add verbose log
-        if (idCache.size() > this.maxSchemaMapSize) {
+        if (idCache.size() > this.maxCacheSize) {
             idCache.clear();
             logger.verbose("Cleared schema ID cache.");
         }
-        if (schemaStringCache.size() > this.maxSchemaMapSize) {
+        if (schemaStringCache.size() > this.maxCacheSize) {
             schemaStringCache.clear();
             logger.verbose("Cleared schema string cache.");
         }

@@ -9,7 +9,11 @@ import com.azure.data.schemaregistry.SerializationException;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericDatumReader;
 import org.apache.avro.generic.GenericDatumWriter;
-import org.apache.avro.io.*;
+import org.apache.avro.io.BinaryEncoder;
+import org.apache.avro.io.DatumReader;
+import org.apache.avro.io.DatumWriter;
+import org.apache.avro.io.DecoderFactory;
+import org.apache.avro.io.EncoderFactory;
 import org.apache.avro.specific.SpecificDatumReader;
 import org.apache.avro.specific.SpecificDatumWriter;
 import org.apache.avro.specific.SpecificRecord;
@@ -119,7 +123,7 @@ public class AvroCodec implements Codec {
      * @return deserialized object
      * @throws SerializationException upon deserialization failure
      */
-    public Object decodeBytes(byte[] b, Object object) {
+    public Object decode(byte[] b, Object object) {
         Objects.requireNonNull(object, "Schema must not be null.");
 
         if (!(object instanceof Schema)) {

@@ -1,15 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.data.schemaregistry.client.implementation.models;
+package com.azure.data.schemaregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.net.URL;
 
-/** The GetSchemaByIdHeaders model. */
+/** The CreateSchemaHeaders model. */
 @Fluent
-public final class GetSchemaByIdHeaders {
+public final class CreateSchemaHeaders {
     /*
      * The X-Schema-Version property.
      */
@@ -53,9 +53,9 @@ public final class GetSchemaByIdHeaders {
      * Set the xSchemaVersion property: The X-Schema-Version property.
      *
      * @param xSchemaVersion the xSchemaVersion value to set.
-     * @return the GetSchemaByIdHeaders object itself.
+     * @return the CreateSchemaHeaders object itself.
      */
-    public GetSchemaByIdHeaders setXSchemaVersion(Integer xSchemaVersion) {
+    public CreateSchemaHeaders setXSchemaVersion(Integer xSchemaVersion) {
         this.xSchemaVersion = xSchemaVersion;
         return this;
     }
@@ -73,9 +73,9 @@ public final class GetSchemaByIdHeaders {
      * Set the xSchemaType property: The X-Schema-Type property.
      *
      * @param xSchemaType the xSchemaType value to set.
-     * @return the GetSchemaByIdHeaders object itself.
+     * @return the CreateSchemaHeaders object itself.
      */
-    public GetSchemaByIdHeaders setXSchemaType(String xSchemaType) {
+    public CreateSchemaHeaders setXSchemaType(String xSchemaType) {
         this.xSchemaType = xSchemaType;
         return this;
     }
@@ -93,9 +93,9 @@ public final class GetSchemaByIdHeaders {
      * Set the xSchemaId property: The X-Schema-Id property.
      *
      * @param xSchemaId the xSchemaId value to set.
-     * @return the GetSchemaByIdHeaders object itself.
+     * @return the CreateSchemaHeaders object itself.
      */
-    public GetSchemaByIdHeaders setXSchemaId(String xSchemaId) {
+    public CreateSchemaHeaders setXSchemaId(String xSchemaId) {
         this.xSchemaId = xSchemaId;
         return this;
     }
@@ -113,9 +113,9 @@ public final class GetSchemaByIdHeaders {
      * Set the xSchemaIdLocation property: The X-Schema-Id-Location property.
      *
      * @param xSchemaIdLocation the xSchemaIdLocation value to set.
-     * @return the GetSchemaByIdHeaders object itself.
+     * @return the CreateSchemaHeaders object itself.
      */
-    public GetSchemaByIdHeaders setXSchemaIdLocation(URL xSchemaIdLocation) {
+    public CreateSchemaHeaders setXSchemaIdLocation(URL xSchemaIdLocation) {
         this.xSchemaIdLocation = xSchemaIdLocation;
         return this;
     }
@@ -133,9 +133,9 @@ public final class GetSchemaByIdHeaders {
      * Set the location property: The Location property.
      *
      * @param location the location value to set.
-     * @return the GetSchemaByIdHeaders object itself.
+     * @return the CreateSchemaHeaders object itself.
      */
-    public GetSchemaByIdHeaders setLocation(String location) {
+    public CreateSchemaHeaders setLocation(String location) {
         this.location = location;
         return this;
     }

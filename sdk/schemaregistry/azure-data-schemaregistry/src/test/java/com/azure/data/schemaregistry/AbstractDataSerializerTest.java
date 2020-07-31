@@ -3,9 +3,9 @@
 
 package com.azure.data.schemaregistry;
 
-import com.azure.data.schemaregistry.client.CachedSchemaRegistryAsyncClient;
-import com.azure.data.schemaregistry.client.SchemaRegistryClientException;
-import com.azure.data.schemaregistry.client.SchemaRegistryObject;
+import com.azure.data.schemaregistry.CachedSchemaRegistryAsyncClient;
+import com.azure.data.schemaregistry.SchemaRegistryClientException;
+import com.azure.data.schemaregistry.SchemaRegistryObject;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericDatumWriter;
@@ -43,7 +43,7 @@ public class AbstractDataSerializerTest {
             encoder.getSchemaString(null).getBytes(), // always returns same schema string
             encoder::parseSchemaString);
 
-        assertEquals(encoder.getSchemaString(null), registered.deserialize());
+        assertEquals(encoder.getSchemaString(null), registered.getSchema());
 
         CachedSchemaRegistryAsyncClient mockRegistryClient = getMockClient();
         Mockito.when(mockRegistryClient.getSchemaId(anyString(), anyString(), anyString(), anyString()))
@@ -114,12 +114,11 @@ public class AbstractDataSerializerTest {
             MOCK_AVRO_SCHEMA_STRING.getBytes(),
             decoder::parseSchemaString);
 
-        assertTrue(registered.deserialize() != null);
+        assertTrue(registered.getSchema() != null);
 
         CachedSchemaRegistryAsyncClient mockClient = getMockClient();
         Mockito.when(mockClient.getSchemaById(anyString()))
             .thenReturn(Mono.just(registered));
-        Mockito.when(mockClient.getEncoding()).thenReturn(StandardCharsets.UTF_8);
 
         // constructor loads deserializer codec
         TestDummySerializer serializer = new TestDummySerializer(mockClient, true);

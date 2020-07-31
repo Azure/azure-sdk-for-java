@@ -4,9 +4,8 @@
 package com.azure.data.schemaregistry.avro;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.data.schemaregistry.AbstractSchemaRegistrySerializer;
-import com.azure.data.schemaregistry.client.CachedSchemaRegistryAsyncClient;
-import com.azure.data.schemaregistry.client.CachedSchemaRegistryClientBuilder;
+import com.azure.data.schemaregistry.CachedSchemaRegistryAsyncClient;
+import com.azure.data.schemaregistry.CachedSchemaRegistryClientBuilder;
 
 import java.util.Objects;
 
@@ -18,7 +17,7 @@ public final class SchemaRegistryAvroSerializerBuilder {
     private TokenCredential credential;
     private Boolean autoRegisterSchemas;
     private String schemaGroup;
-    private Integer maxSchemaMapSize;
+    private Integer maxCacheSize;
     private Boolean avroSpecificReader;
 
     /**
@@ -30,7 +29,7 @@ public final class SchemaRegistryAvroSerializerBuilder {
         this.credential = null;
         this.autoRegisterSchemas = null;
         this.schemaGroup = null;
-        this.maxSchemaMapSize = null;
+        this.maxCacheSize = null;
         this.avroSpecificReader = false;
     }
 
@@ -102,11 +101,11 @@ public final class SchemaRegistryAvroSerializerBuilder {
      * Specifies maximum schema object cache size for underlying CachedSchemaRegistryAsyncClient.  If specified cache
      * size is exceeded, all caches are recycled.
      *
-     * @param maxSchemaMapSize maximum number of schemas per cache
+     * @param maxCacheSize maximum number of schemas per cache
      * @return updated {@link SchemaRegistryAvroSerializerBuilder} instance
      */
-    public SchemaRegistryAvroSerializerBuilder maxSchemaMapSize(int maxSchemaMapSize) {
-        this.maxSchemaMapSize = maxSchemaMapSize;
+    public SchemaRegistryAvroSerializerBuilder maxCacheSize(int maxCacheSize) {
+        this.maxCacheSize = maxCacheSize;
         return this;
     }
 
@@ -133,8 +132,8 @@ public final class SchemaRegistryAvroSerializerBuilder {
             .endpoint(registryUrl)
             .credential(credential);
 
-        if (maxSchemaMapSize != null) {
-            builder.maxSchemaMapSize(maxSchemaMapSize);
+        if (maxCacheSize != null) {
+            builder.maxCacheSize(maxCacheSize);
         }
 
         AvroCodec codec = new AvroCodec(this.avroSpecificReader);

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.data.schemaregistry.client.implementation;
+package com.azure.data.schemaregistry.implementation;
 
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
@@ -27,16 +27,16 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.data.schemaregistry.client.implementation.models.CreateGroupResponse;
-import com.azure.data.schemaregistry.client.implementation.models.CreateSchemaResponse;
-import com.azure.data.schemaregistry.client.implementation.models.GetIdBySchemaContentResponse;
-import com.azure.data.schemaregistry.client.implementation.models.GetLatestSchemaResponse;
-import com.azure.data.schemaregistry.client.implementation.models.GetSchemaByIdResponse;
-import com.azure.data.schemaregistry.client.implementation.models.GetSchemaVersionResponse;
-import com.azure.data.schemaregistry.client.implementation.models.GetSchemaVersionsResponse;
-import com.azure.data.schemaregistry.client.implementation.models.GetSchemasByGroupResponse;
-import com.azure.data.schemaregistry.client.implementation.models.SchemaGroup;
-import com.azure.data.schemaregistry.client.implementation.models.SchemaId;
+import com.azure.data.schemaregistry.implementation.models.CreateGroupResponse;
+import com.azure.data.schemaregistry.implementation.models.CreateSchemaResponse;
+import com.azure.data.schemaregistry.implementation.models.GetIdBySchemaContentResponse;
+import com.azure.data.schemaregistry.implementation.models.GetLatestSchemaResponse;
+import com.azure.data.schemaregistry.implementation.models.GetSchemaByIdResponse;
+import com.azure.data.schemaregistry.implementation.models.GetSchemaVersionResponse;
+import com.azure.data.schemaregistry.implementation.models.GetSchemaVersionsResponse;
+import com.azure.data.schemaregistry.implementation.models.GetSchemasByGroupResponse;
+import com.azure.data.schemaregistry.implementation.models.SchemaGroup;
+import com.azure.data.schemaregistry.implementation.models.SchemaId;
 import java.util.List;
 import reactor.core.publisher.Mono;
 

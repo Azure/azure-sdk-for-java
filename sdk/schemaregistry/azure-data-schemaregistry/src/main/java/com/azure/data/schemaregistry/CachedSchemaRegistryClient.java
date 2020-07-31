@@ -1,8 +1,8 @@
-package com.azure.data.schemaregistry.client;
+package com.azure.data.schemaregistry;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.data.schemaregistry.Codec;
-import com.azure.data.schemaregistry.client.implementation.AzureSchemaRegistryRestService;
+import com.azure.data.schemaregistry.implementation.AzureSchemaRegistryRestService;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.Charset;
@@ -15,10 +15,6 @@ public final class CachedSchemaRegistryClient {
 
     CachedSchemaRegistryClient(CachedSchemaRegistryAsyncClient asyncClient) {
         this.asyncClient = asyncClient;
-    }
-
-    public Charset getEncoding() {
-        return this.asyncClient.getEncoding();
     }
 
     public SchemaRegistryObject register(String schemaGroup, String schemaName, String schemaString, String schemaType) {

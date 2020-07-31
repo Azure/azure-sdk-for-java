@@ -47,7 +47,7 @@ public class SampleCodec implements Codec {
     public static final String CONSTANT_PAYLOAD = "sample payload!";
 
     @Override
-    public Object decodeBytes(byte[] bytes, Object o) throws SerializationException {
+    public Object decode(byte[] bytes, Object o) throws SerializationException {
         return CONSTANT_PAYLOAD;
     }
 }

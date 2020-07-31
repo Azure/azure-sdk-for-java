@@ -58,5 +58,5 @@ public interface Codec {
      * @return deserialized object
      * @throws SerializationException if decode operation fails
      */
-    Object decodeBytes(byte[] encodedBytes, Object schemaObject);
+    Object decode(byte[] encodedBytes, Object schemaObject);
 }

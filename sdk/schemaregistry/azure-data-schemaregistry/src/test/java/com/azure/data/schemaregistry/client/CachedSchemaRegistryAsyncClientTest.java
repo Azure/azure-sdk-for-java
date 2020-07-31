@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.data.schemaregistry.client;
+package com.azure.data.schemaregistry;
 
-import com.azure.data.schemaregistry.client.implementation.AzureSchemaRegistryRestService;
-import com.azure.data.schemaregistry.client.implementation.models.*;
+import com.azure.data.schemaregistry.implementation.AzureSchemaRegistryRestService;
+import com.azure.data.schemaregistry.implementation.models.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

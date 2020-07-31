@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.data.schemaregistry.client;
+package com.azure.data.schemaregistry;
 
 import com.azure.core.util.logging.ClientLogger;
 import java.util.function.Function;
@@ -59,7 +59,7 @@ public class SchemaRegistryObject {
      *
      *  @return schema object, deserialized using stored schema parser method.
      */
-    public Object deserialize() {
+    public Object getSchema() {
         if (this.deserialized == null) {
             String schemaString = new String(
                 this.schemaBytes, CachedSchemaRegistryAsyncClient.SCHEMA_REGISTRY_SERVICE_ENCODING);

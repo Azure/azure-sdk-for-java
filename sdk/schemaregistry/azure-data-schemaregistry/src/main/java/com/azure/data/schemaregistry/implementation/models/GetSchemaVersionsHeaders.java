@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.data.schemaregistry.client.implementation.models;
+package com.azure.data.schemaregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The GetSchemasByGroupHeaders model. */
+/** The GetSchemaVersionsHeaders model. */
 @Fluent
-public final class GetSchemasByGroupHeaders {
+public final class GetSchemaVersionsHeaders {
     /*
      * The X-Schema-Type property.
      */
@@ -28,9 +28,9 @@ public final class GetSchemasByGroupHeaders {
      * Set the xSchemaType property: The X-Schema-Type property.
      *
      * @param xSchemaType the xSchemaType value to set.
-     * @return the GetSchemasByGroupHeaders object itself.
+     * @return the GetSchemaVersionsHeaders object itself.
      */
-    public GetSchemasByGroupHeaders setXSchemaType(String xSchemaType) {
+    public GetSchemaVersionsHeaders setXSchemaType(String xSchemaType) {
         this.xSchemaType = xSchemaType;
         return this;
     }

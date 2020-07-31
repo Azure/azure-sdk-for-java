@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.data.schemaregistry.client;
+package com.azure.data.schemaregistry;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
@@ -24,8 +24,8 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.schemaregistry.Codec;
-import com.azure.data.schemaregistry.client.implementation.AzureSchemaRegistryRestService;
-import com.azure.data.schemaregistry.client.implementation.AzureSchemaRegistryRestServiceClientBuilder;
+import com.azure.data.schemaregistry.implementation.AzureSchemaRegistryRestService;
+import com.azure.data.schemaregistry.implementation.AzureSchemaRegistryRestServiceClientBuilder;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -58,7 +58,7 @@ public class CachedSchemaRegistryClientBuilder {
 
     private String schemaRegistryUrl;
     private HttpClient httpClient;
-    private Integer maxSchemaMapSize;
+    private Integer maxCacheSize;
     private TokenCredential credential;
     private HttpLogOptions httpLogOptions;
     private HttpPipeline httpPipeline;
@@ -70,7 +70,7 @@ public class CachedSchemaRegistryClientBuilder {
     public CachedSchemaRegistryClientBuilder() {
         this.policies = new ArrayList<>();
         this.httpLogOptions = new HttpLogOptions();
-        this.maxSchemaMapSize = null;
+        this.maxCacheSize = null;
         this.typeParserMap = new ConcurrentSkipListMap<>(String.CASE_INSENSITIVE_ORDER);
         this.httpClient = null;
         this.credential = null;
@@ -115,18 +115,18 @@ public class CachedSchemaRegistryClientBuilder {
     /**
      * Sets schema cache size limit.  If limit is exceeded on any cache, all caches are recycled.
      *
-     * @param maxSchemaMapSize max size for internal schema caches in {@link CachedSchemaRegistryAsyncClient}
+     * @param maxCacheSize max size for internal schema caches in {@link CachedSchemaRegistryAsyncClient}
      * @return The updated {@link CachedSchemaRegistryClientBuilder} object.
-     * @throws IllegalArgumentException on invalid maxSchemaMapSize value
+     * @throws IllegalArgumentException on invalid maxCacheSize value
      */
-    public CachedSchemaRegistryClientBuilder maxSchemaMapSize(int maxSchemaMapSize) {
-        if (maxSchemaMapSize < CachedSchemaRegistryAsyncClient.MAX_SCHEMA_MAP_SIZE_MINIMUM) {
+    public CachedSchemaRegistryClientBuilder maxCacheSize(int maxCacheSize) {
+        if (maxCacheSize < CachedSchemaRegistryAsyncClient.MAX_SCHEMA_MAP_SIZE_MINIMUM) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 String.format("Schema map size must be greater than %s entries",
                     CachedSchemaRegistryAsyncClient.MAX_SCHEMA_MAP_SIZE_MINIMUM)));
         }
 
-        this.maxSchemaMapSize = maxSchemaMapSize;
+        this.maxCacheSize = maxCacheSize;
         return this;
     }
 
@@ -290,11 +290,11 @@ public class CachedSchemaRegistryClientBuilder {
             .pipeline(pipeline)
             .buildClient();
 
-        this.maxSchemaMapSize = this.maxSchemaMapSize != null
-            ? this.maxSchemaMapSize
+        this.maxCacheSize = this.maxCacheSize != null
+            ? this.maxCacheSize
             : CachedSchemaRegistryAsyncClient.MAX_SCHEMA_MAP_SIZE_DEFAULT;
 
-        return new CachedSchemaRegistryAsyncClient(restService, maxSchemaMapSize, typeParserMap);
+        return new CachedSchemaRegistryAsyncClient(restService, maxCacheSize, typeParserMap);
     }
 
     /**

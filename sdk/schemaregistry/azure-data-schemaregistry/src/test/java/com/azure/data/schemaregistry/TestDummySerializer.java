@@ -3,7 +3,7 @@
 
 package com.azure.data.schemaregistry;
 
-import com.azure.data.schemaregistry.client.CachedSchemaRegistryAsyncClient;
+import com.azure.data.schemaregistry.CachedSchemaRegistryAsyncClient;
 
 import java.util.Collections;
 
@@ -11,8 +11,7 @@ public class TestDummySerializer extends AbstractSchemaRegistrySerializer {
     TestDummySerializer(
         CachedSchemaRegistryAsyncClient mockClient,
         boolean autoRegisterSchemas) {
-        super(mockClient, new SampleCodec(), Collections.singletonList(new SampleCodec()));
-
-        this.autoRegisterSchemas = autoRegisterSchemas;
+        super(mockClient, new SampleCodec(), Collections.singletonList(new SampleCodec()),
+            "sgroup", autoRegisterSchemas);
     }
 }
