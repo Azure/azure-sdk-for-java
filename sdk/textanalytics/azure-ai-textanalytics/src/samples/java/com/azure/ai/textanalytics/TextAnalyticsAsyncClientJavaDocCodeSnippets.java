@@ -17,6 +17,7 @@ import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.Arrays;
@@ -233,6 +234,101 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeCategorizedEntitiesBatch#Iterable-TextAnalyticsRequestOptions
     }
+
+    // Personally Identifiable Information Entity
+
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#recognizePiiEntities(String)}
+     */
+    public void recognizePiiEntities() {
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#string
+        String document = "My SSN is 555-55-5555";
+        textAnalyticsAsyncClient.recognizePiiEntities(document).subscribe(piiEntityCollection ->
+            piiEntityCollection.forEach(piiEntity ->
+                System.out.printf(
+                    "Recognized Personally Identifiable Information entity: %s, category: %s, score: %f.%n",
+                    piiEntity.getText(),
+                    piiEntity.getCategory(),
+                    piiEntity.getConfidenceScore())
+            ));
+        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#string
+    }
+
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#recognizePiiEntities(String, String)}
+     */
+    public void recognizePiiEntitiesWithLanguage() {
+
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#string-string
+        String document = "My SSN is 555-55-5555";
+        textAnalyticsAsyncClient.recognizePiiEntities(document, "en")
+            .subscribe(piiEntityCollection -> piiEntityCollection.forEach(piiEntity ->
+                System.out.printf(
+                    "Recognized Personally Identifiable Information entity: %s, category: %s, score: %f.%n",
+                    piiEntity.getText(), piiEntity.getCategory(), piiEntity.getConfidenceScore())
+            ));
+        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#string-string
+    }
+
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#recognizePiiEntitiesBatch(Iterable, String, TextAnalyticsRequestOptions)}
+     */
+    public void recognizePiiEntitiesStringListWithOptions() {
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesBatch#Iterable-String-TextAnalyticsRequestOptions
+        List<String> documents = Arrays.asList(
+            "My SSN is 555-55-5555.",
+            "Visa card 0111 1111 1111 1111."
+        );
+
+        // Request options: show statistics and model version
+        TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true)
+            .setModelVersion("latest");
+
+        textAnalyticsAsyncClient.recognizePiiEntitiesBatch(documents, "en", requestOptions)
+            .subscribe(piiEntitiesResults -> {
+                // Batch statistics
+                TextDocumentBatchStatistics batchStatistics = piiEntitiesResults.getStatistics();
+                System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
+                    batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
+
+                piiEntitiesResults.forEach(recognizePiiEntitiesResult ->
+                    recognizePiiEntitiesResult.getEntities().forEach(piiEntity -> System.out.printf(
+                        "Recognized Personally Identifiable Information entity: %s, category: %s, score: %f.%n",
+                        piiEntity.getText(), piiEntity.getCategory(), piiEntity.getConfidenceScore()))
+                );
+            });
+        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesBatch#Iterable-String-TextAnalyticsRequestOptions
+    }
+
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#recognizePiiEntitiesBatchWithResponse(Iterable,
+     * TextAnalyticsRequestOptions)}
+     */
+    public void recognizeBatchPiiEntitiesMaxOverload() {
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesBatch#Iterable-TextAnalyticsRequestOptions
+        List<TextDocumentInput> textDocumentInputs1 = Arrays.asList(
+            new TextDocumentInput("0", "My SSN is 555-55-5555."),
+            new TextDocumentInput("1", "Visa card 0111 1111 1111 1111."));
+
+        // Request options: show statistics and model version
+        TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
+
+        textAnalyticsAsyncClient.recognizePiiEntitiesBatchWithResponse(textDocumentInputs1, requestOptions)
+            .subscribe(response -> {
+                RecognizePiiEntitiesResultCollection piiEntitiesResults = response.getValue();
+                // Batch statistics
+                TextDocumentBatchStatistics batchStatistics = piiEntitiesResults.getStatistics();
+                System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
+                    batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
+
+                piiEntitiesResults.forEach(recognizePiiEntitiesResult ->
+                    recognizePiiEntitiesResult.getEntities().forEach(piiEntity -> System.out.printf(
+                        "Recognized Personally Identifiable Information entity: %s, category: %s, score: %f.%n",
+                        piiEntity.getText(), piiEntity.getCategory(), piiEntity.getConfidenceScore())));
+            });
+        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesBatch#Iterable-TextAnalyticsRequestOptions
+    }
+
 
     // Linked Entity
 

@@ -33,7 +33,9 @@ import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchCategorizedEn
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchDetectedLanguages;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchKeyPhrases;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchLinkedEntities;
+import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchPiiEntities;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchTextSentiment;
+import static com.azure.ai.textanalytics.TestUtils.getPiiEntitiesList1;
 import static com.azure.ai.textanalytics.models.WarningCode.LONG_WORDS_IN_DOCUMENT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -339,6 +341,117 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                     assertEquals(INVALID_DOCUMENT_BATCH, exception.getValue().toString());
                 });
         });
+    }
+
+    // Recognize Personally Identifiable Information entity
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizePiiEntitiesForTextInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        recognizePiiSingleDocumentRunner(document ->
+            StepVerifier.create(client.recognizePiiEntities(document))
+                .assertNext(response -> validatePiiEntities(getPiiEntitiesList1(), response.stream().collect(Collectors.toList())))
+                .verifyComplete());
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizePiiEntitiesForEmptyText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        StepVerifier.create(client.recognizePiiEntities(""))
+            .expectErrorMatches(throwable -> throwable instanceof TextAnalyticsException
+                && throwable.getMessage().equals(INVALID_DOCUMENT_EXPECTED_EXCEPTION_MESSAGE));
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizePiiEntitiesForFaultyText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        recognizePiiFaultyTextRunner(document ->
+            StepVerifier.create(client.recognizePiiEntities(document))
+                .assertNext(result -> assertFalse(result.getWarnings().iterator().hasNext()))
+                .verifyComplete());
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizePiiEntitiesDuplicateIdInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        recognizeBatchPiiEntityDuplicateIdRunner(inputs ->
+            StepVerifier.create(client.recognizePiiEntitiesBatchWithResponse(inputs, null))
+                .verifyErrorSatisfies(ex -> assertEquals(HttpResponseException.class, ex.getClass())));
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizePiiEntitiesBatchInputSingleError(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        recognizeBatchPiiEntitySingleErrorRunner((inputs) ->
+            StepVerifier.create(client.recognizePiiEntitiesBatchWithResponse(inputs, null))
+                .assertNext(resultCollection -> {
+                    resultCollection.getValue().forEach(result -> {
+                        assertTrue(result.isError());
+                        final TextAnalyticsError error = result.getError();
+                        TextAnalyticsErrorCode errorCode = error.getErrorCode();
+                        assertTrue(TextAnalyticsErrorCode.fromString("invalidDocument").equals(errorCode));
+                        assertTrue("Document text is empty.".equals(error.getMessage()));
+                    });
+                }).verifyComplete());
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizePiiEntitiesForBatchInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        recognizeBatchPiiEntitiesRunner((inputs) ->
+            StepVerifier.create(client.recognizePiiEntitiesBatchWithResponse(inputs, null))
+                .assertNext(response -> validatePiiEntitiesResultCollectionWithResponse(false, getExpectedBatchPiiEntities(), 200, response))
+                .verifyComplete());
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizePiiEntitiesForBatchInputShowStatistics(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        recognizeBatchPiiEntitiesShowStatsRunner((inputs, options) ->
+            StepVerifier.create(client.recognizePiiEntitiesBatchWithResponse(inputs, options))
+                .assertNext(response -> validatePiiEntitiesResultCollectionWithResponse(true, getExpectedBatchPiiEntities(), 200, response))
+                .verifyComplete());
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizePiiEntitiesForListLanguageHint(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        recognizePiiLanguageHintRunner((inputs, language) ->
+            StepVerifier.create(client.recognizePiiEntitiesBatch(inputs, language, null))
+                .assertNext(response -> validatePiiEntitiesResultCollection(false, getExpectedBatchPiiEntities(), response))
+                .verifyComplete());
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizePiiEntitiesForListStringWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        recognizeStringBatchPiiEntitiesShowStatsRunner((inputs, options) ->
+            StepVerifier.create(client.recognizePiiEntitiesBatch(inputs, null, options))
+                .assertNext(response -> validatePiiEntitiesResultCollection(true, getExpectedBatchPiiEntities(), response))
+                .verifyComplete());
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizePiiEntitiesTooManyDocuments(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        recognizePiiEntitiesTooManyDocumentsRunner(inputs ->
+            StepVerifier.create(client.recognizePiiEntitiesBatch(inputs, null, null))
+                .verifyErrorSatisfies(ex -> {
+                    HttpResponseException exception = (HttpResponseException) ex;
+                    assertEquals(HttpResponseException.class, exception.getClass());
+                    assertEquals(EXCEEDED_ALLOWED_DOCUMENTS_LIMITS_MESSAGE, exception.getMessage());
+                    assertEquals(INVALID_DOCUMENT_BATCH, exception.getValue().toString());
+                }));
     }
 
     // Linked Entities

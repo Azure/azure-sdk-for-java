@@ -4,6 +4,9 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
+import com.azure.ai.textanalytics.models.PiiEntity;
+import com.azure.ai.textanalytics.models.PiiEntityCollection;
+import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
@@ -29,6 +32,7 @@ import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
 import com.azure.ai.textanalytics.models.TextSentiment;
+import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.Configuration;
@@ -63,6 +67,10 @@ final class TestUtils {
 
     static final List<String> CATEGORIZED_ENTITY_INPUTS = Arrays.asList(
         "I had a wonderful trip to Seattle last week.", "I work at Microsoft.");
+
+    static final List<String> PII_ENTITY_INPUTS = Arrays.asList(
+        "Microsoft employee with ssn 859-98-0987 is using our awesome API's.",
+        "Your ABA number - 111000025 - is the first 9 digits in the lower left hand corner of your personal check.");
 
     static final List<String> LINKED_ENTITY_INPUTS = Arrays.asList(
         "I had a wonderful trip to Seattle last week.",
@@ -211,6 +219,42 @@ final class TestUtils {
         RecognizeEntitiesResult recognizeEntitiesResult2 = new RecognizeEntitiesResult("1", textDocumentStatistics2, null, new CategorizedEntityCollection(categorizedEntityList2, null));
         return recognizeEntitiesResult2;
     }
+
+    /**
+     * Helper method to get the expected batch of Personally Identifiable Information entities
+     */
+    static RecognizePiiEntitiesResultCollection getExpectedBatchPiiEntities() {
+        PiiEntityCollection piiEntityCollection = new PiiEntityCollection(new IterableStream<>(getPiiEntitiesList1()), null);
+        PiiEntityCollection piiEntityCollection2 = new PiiEntityCollection(new IterableStream<>(getPiiEntitiesList2()), null);
+        TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics(67, 1);
+        TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics(105, 1);
+        RecognizePiiEntitiesResult recognizeEntitiesResult1 = new RecognizePiiEntitiesResult("0", textDocumentStatistics1, null, piiEntityCollection);
+        RecognizePiiEntitiesResult recognizeEntitiesResult2 = new RecognizePiiEntitiesResult("1", textDocumentStatistics2, null, piiEntityCollection2);
+
+        return new RecognizePiiEntitiesResultCollection(
+            Arrays.asList(recognizeEntitiesResult1, recognizeEntitiesResult2),
+            DEFAULT_MODEL_VERSION,
+            new TextDocumentBatchStatistics(2, 2, 0, 2));
+    }
+
+    /**
+     * Helper method to get the expected Categorized Entities List 1
+     */
+    static List<PiiEntity> getPiiEntitiesList1() {
+        PiiEntity piiEntity0 = new PiiEntity("Microsoft", EntityCategory.ORGANIZATION, null, 0, 9, 1.0);
+        PiiEntity piiEntity1 = new PiiEntity("859-98-0987", EntityCategory.fromString("U.S. Social Security Number (SSN)"), null, 28, 11, 0.65);
+        return Arrays.asList(piiEntity0, piiEntity1);
+    }
+
+    /**
+     * Helper method to get the expected Categorized Entities List 2
+     */
+    static List<PiiEntity> getPiiEntitiesList2() {
+        PiiEntity piiEntity2 = new PiiEntity("111000025", EntityCategory.fromString("Phone Number"), null, 18, 9, 0.8);
+        PiiEntity piiEntity3 = new PiiEntity("111000025", EntityCategory.fromString("ABA Routing Number"), null, 18, 9, 0.75);
+        return Arrays.asList(piiEntity2, piiEntity3);
+    }
+
 
     /**
      * Helper method to get the expected Batch Linked Entities

@@ -1,11 +1,12 @@
 # Azure Text Analytics client library for Java
-Text Analytics is a cloud-based service that provides advanced natural language processing over raw text, 
+Text Analytics is a cloud-based service provides advanced natural language processing over raw text, 
 and includes six main functions:
 
 - Sentiment Analysis
 - Language Detection
 - Key Phrase Extraction
 - Named Entity Recognition
+- Personally Identifiable Information Entity Recognition 
 - Linked Entity Recognition
 
 [Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][samples_readme]
@@ -186,6 +187,7 @@ The following sections provide several code snippets covering some of the most c
 * [Detect Language](#detect-language "Detect language")
 * [Extract Key Phrases](#extract-key-phrases "Extract key phrases")
 * [Recognize Entities](#recognize-entities "Recognize entities")
+* [Recognize Personally Identifiable Information Entities](#recognize-pii-entities "Recognize personally identifiable information entities")
 * [Recognize Linked Entities](#recognize-linked-entities "Recognize linked entities")
 
 ### Text Analytics Client
@@ -261,6 +263,21 @@ textAnalyticsClient.recognizeEntities(document).forEach(entity ->
 ```
 For samples on using the production recommended option `RecognizeEntitiesBatch` see [here][recognize_entities_sample].
 Please refer to the service documentation for a conceptual discussion of [named entity recognition][named_entity_recognition].
+
+### Recognize personally identifiable information entities
+Run a predictive model to identify a collection of personally identifiable information entities in the passed-in 
+document or batch of documents and categorize those entities into categories such as person, location, or 
+organization.  For more information on available categories, see [Text Analytics Named Entity Categories][named_entities_categories].
+
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L158-L161 -->
+```java
+String document = "My SSN is 555-55-5555";
+textAnalyticsClient.recognizePiiEntities(document).forEach(piiEntity ->
+    System.out.printf("Recognized Personally Identifiable Information entity: %s, category: %s, subCategory: %s, score: %f.%n",
+        piiEntity.getText(), piiEntity.getCategory(), piiEntity.getSubcategory(), piiEntity.getConfidenceScore()));
+```
+For samples on using the production recommended option `RecognizePiiEntitiesBatch` see [here][recognize_pii_entities_sample].
+Please refer to the service documentation for a conceptual discussion of [PII entity recognition][named_entity_recognition].
 
 ### Recognize linked entities
 Run a predictive model to identify a collection of entities found in the passed-in document or batch of documents, 
@@ -377,6 +394,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [analyze_sentiment_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/AnalyzeSentimentBatchDocuments.java
 [extract_key_phrases_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/ExtractKeyPhrasesBatchDocuments.java
 [recognize_entities_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizeEntitiesBatchDocuments.java
+[recognize_pii_entities_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizePiiEntitiesBatchDocuments.java
 [recognize_linked_entities_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizeLinkedEntitiesBatchDocuments.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Ftextanalytics%2Fazure-ai-textanalytics%2FREADME.png)

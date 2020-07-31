@@ -150,4 +150,14 @@ public class ReadmeSamples {
         System.out.println("Extracted phrases:");
         textAnalyticsClient.extractKeyPhrases(document).forEach(keyPhrase -> System.out.printf("%s.%n", keyPhrase));
     }
+
+    /**
+     * Code snippet for recognizing Personally Identifiable Information entity in a document.
+     */
+    public void recognizePiiEntity() {
+        String document = "My SSN is 555-55-5555";
+        textAnalyticsClient.recognizePiiEntities(document).forEach(piiEntity ->
+            System.out.printf("Recognized Personally Identifiable Information entity: %s, category: %s, subCategory: %s, score: %f.%n",
+                piiEntity.getText(), piiEntity.getCategory(), piiEntity.getSubcategory(), piiEntity.getConfidenceScore()));
+    }
 }
