@@ -38,7 +38,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-queue</artifactId>
-      <version>12.5.2</version> <!-- {x-version-update;com.azure:azure-storage-queue;external_dependency} -->
+      <version>12.5.2</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
     </dependency>
 
     <!-- Added this dependency to include necessary annotations used by reactor core.
@@ -61,9 +61,8 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.microsoft.azure:spring-integration-azure-core:[1.2.8-beta.1]
-                </include> <!-- {x-include-update;com.microsoft.azure:spring-integration-azure-core;current} -->
-                <include>com.azure:azure-storage-queue:[12.5.2]</include> <!-- {x-include-update;com.azure:azure-storage-queue;external_dependency} -->
+                <include>com.microsoft.azure:spring-integration-azure-core:[1.2.8-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-integration-azure-core;current} -->
+                <include>com.azure:azure-storage-queue:[12.5.2]</include> <!-- {x-include-update;com.azure:azure-storage-queue;dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
