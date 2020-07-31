@@ -37,7 +37,6 @@ import spock.lang.Specification
 import spock.lang.Timeout
 
 import java.nio.ByteBuffer
-import java.nio.channels.AsynchronousFileChannel
 import java.nio.charset.StandardCharsets
 import java.nio.file.FileSystem
 import java.nio.file.Path
@@ -474,19 +473,21 @@ class APISpec extends Specification {
 
     def compareInputStreams(InputStream stream1, InputStream stream2, long count) {
         def pos = 0L
-        def readBuffer = 8 * Constants.KB
+        def defaultReadBuffer = 128 * Constants.KB
         try {
+            def bufferSize = (int) Math.min(defaultReadBuffer, count)
+            def buffer1 = new byte[bufferSize]
+            def buffer2 = new byte[bufferSize]
+
             while (pos < count) {
-                def bufferSize = (int) Math.min(readBuffer, count - pos)
-                def buffer1 = new byte[bufferSize]
-                def buffer2 = new byte[bufferSize]
+                def expectedReadCount = (int) Math.min(bufferSize, count - pos)
 
-                def readCount1 = stream1.read(buffer1)
-                def readCount2 = stream2.read(buffer2)
+                def readCount1 = stream1.read(buffer1, 0, expectedReadCount)
+                def readCount2 = stream2.read(buffer2, 0, expectedReadCount)
 
-                assert readCount1 == readCount2 && buffer1 == buffer2
+                assert readCount1 == readCount2 && Arrays.equals(buffer1, 0, expectedReadCount, buffer2, 0, expectedReadCount)
 
-                pos += bufferSize
+                pos += expectedReadCount
             }
 
             def verificationRead = stream2.read()

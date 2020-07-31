@@ -886,4 +886,8 @@ class APISpec extends Specification {
             }
         }
     }
+
+    def getPollingDuration(long liveTestDurationInMillis) {
+        return (testMode == TestMode.PLAYBACK) ? Duration.ofMillis(10) : Duration.ofMillis(liveTestDurationInMillis)
+    }
 }
