@@ -21,19 +21,19 @@ public final class EntityHelper {
 
     static {
         try {
-            Class.forName(QueueAccessor.class.getName(), true, QueueAccessor.class.getClassLoader());
+            Class.forName(QueueProperties.class.getName(), true, QueueProperties.class.getClassLoader());
         } catch (ClassNotFoundException e) {
             throw new ClientLogger(EntityHelper.class).logThrowableAsError(new AssertionError(e));
         }
 
         try {
-            Class.forName(TopicAccessor.class.getName(), true, TopicAccessor.class.getClassLoader());
+            Class.forName(TopicDescription.class.getName(), true, TopicDescription.class.getClassLoader());
         } catch (ClassNotFoundException e) {
             throw new ClientLogger(EntityHelper.class).logThrowableAsError(new AssertionError(e));
         }
 
         try {
-            Class.forName(SubscriptionAccessor.class.getName(), true, SubscriptionAccessor.class.getClassLoader());
+            Class.forName(SubscriptionDescription.class.getName(), true, SubscriptionDescription.class.getClassLoader());
         } catch (ClassNotFoundException e) {
             throw new ClientLogger(EntityHelper.class).logThrowableAsError(new AssertionError(e));
         }

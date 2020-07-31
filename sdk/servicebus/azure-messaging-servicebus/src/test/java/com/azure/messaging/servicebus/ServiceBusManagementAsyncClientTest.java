@@ -409,7 +409,19 @@ class ServiceBusManagementAsyncClientTest {
             .setContent(new QueueDescriptionEntryContent().setQueueProperties(expectedDescription));
 
         when(entitys.putWithResponseAsync(eq(queueName),
-            argThat(arg -> createBodyContentEquals(arg, updated)), eq("*"),
+            argThat(arg -> {
+                if (!(arg instanceof CreateQueueBody)) {
+                    return false;
+                }
+
+                final CreateQueueBody argument = (CreateQueueBody)arg;
+                if (argument.getContent() == null || argument.getContent().getQueueProperties() == null) {
+                    return false;
+                }
+
+                return queueName.equals(argument.getContent().getQueueProperties().getName());
+            }),
+            eq("*"),
             any(Context.class)))
             .thenReturn(Mono.just(objectResponse));
 
@@ -434,7 +446,20 @@ class ServiceBusManagementAsyncClientTest {
             .setContent(new QueueDescriptionEntryContent().setQueueProperties(expectedDescription));
 
         when(entitys.putWithResponseAsync(eq(queueName),
-            argThat(arg -> createBodyContentEquals(arg, updated)), eq("*"), any(Context.class)))
+            argThat(arg -> {
+                if (!(arg instanceof CreateQueueBody)) {
+                    return false;
+                }
+
+                final CreateQueueBody argument = (CreateQueueBody)arg;
+                if (argument.getContent() == null || argument.getContent().getQueueProperties() == null) {
+                    return false;
+                }
+
+                return queueName.equals(argument.getContent().getQueueProperties().getName());
+            }),
+            eq("*"),
+            any(Context.class)))
             .thenReturn(Mono.just(objectResponse));
 
         when(serializer.deserialize(responseString, QueueDescriptionEntry.class)).thenReturn(expected);
