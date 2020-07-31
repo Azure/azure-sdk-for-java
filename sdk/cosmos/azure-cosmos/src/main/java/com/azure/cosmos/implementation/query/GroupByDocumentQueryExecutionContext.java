@@ -86,10 +86,11 @@ public final class GroupByDocumentQueryExecutionContext<T extends Resource> impl
 
                 // Stage 2:
                 // Emit the results from the grouping table page by page
-                return (FeedResponse<T>)createFeedResponseFromGroupingTable(maxPageSize, requestCharge);
+                return createFeedResponseFromGroupingTable(maxPageSize, requestCharge);
             }).expand(tFeedResponse -> {
-                // Emit the results from the grouping table page by page
-                FeedResponse<T> response = (FeedResponse<T>)createFeedResponseFromGroupingTable(maxPageSize, 0);
+                // For groupBy query, we have already drained everything for the first page request
+                // so for following requests, we will just need to drain page by page from the grouping table
+                FeedResponse<T> response = createFeedResponseFromGroupingTable(maxPageSize, 0);
                 if (response == null) {
                     return Mono.empty();
                 }
@@ -97,7 +98,8 @@ public final class GroupByDocumentQueryExecutionContext<T extends Resource> impl
             });
     }
 
-    private FeedResponse<Document> createFeedResponseFromGroupingTable(int pageSize, double requestCharge) {
+    @SuppressWarnings("unchecked") // safe to upcast
+    private FeedResponse<T> createFeedResponseFromGroupingTable(int pageSize, double requestCharge) {
         if (this.groupingTable != null) {
             List<Document> groupByResults = groupingTable.drain(pageSize);
             if (groupByResults.size() == 0) {
@@ -107,7 +109,7 @@ public final class GroupByDocumentQueryExecutionContext<T extends Resource> impl
             HashMap<String, String> headers = new HashMap<>();
             headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double.toString(requestCharge));
             FeedResponse<Document> frp = BridgeInternal.createFeedResponse(groupByResults, headers);
-            return frp;
+            return (FeedResponse<T>) frp;
         }
 
         return null;
