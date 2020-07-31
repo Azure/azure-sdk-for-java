@@ -11,6 +11,7 @@ import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -19,9 +20,8 @@ import java.util.regex.Pattern;
  * Utility class for validating parameters.
  */
 public final class ValidationUtil {
-    private static Pattern clientIdentifierCharPattern = Pattern.compile("^(?:[0-9]|[a-z]|[A-Z])+$");
-    private static Pattern tenantIdentifierCharPattern = Pattern.compile("^(?:[0-9]|[a-z]|[A-Z]|-|.)+$");
-
+    private static Pattern clientIdentifierCharPattern = Pattern.compile("^(?:[A-Z]|[0-9]|[a-z]|-)+$");
+    private static Pattern tenantIdentifierCharPattern = Pattern.compile("^(?:[A-Z]|[0-9]|[a-z]|-|.)+$");
 
     public static void validate(String className, Map<String, Object> parameters) {
         ClientLogger logger = new ClientLogger(className);
@@ -66,8 +66,7 @@ public final class ValidationUtil {
         if (id != null) {
             if (!tenantIdentifierCharPattern.matcher(id).matches()) {
                 throw logger.logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Tenant id must have characters in the range of [0-9], [a-z], '-', '.'"));
+                    new IllegalArgumentException("Tenant id must have characters in the range of [0-9], [a-z], '-', '.'"));
             }
         }
     }
@@ -82,8 +81,7 @@ public final class ValidationUtil {
                 if (!absolutePath.equals(normalizedPath)) {
                     throw logger.logExceptionAsError(
                         new IllegalArgumentException(
-                            String.format(
-                                "%s is not valid. The path contains invalid characters `.` or `..`", pathName)));
+                            String.format("%s is not valid. The path contains invalid characters `.` or `..`", pathName)));
                 }
             }
         }
