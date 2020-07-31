@@ -117,13 +117,13 @@ public class ClientSecretCredentialTest {
             new ClientSecretCredentialBuilder().clientId(CLIENT_ID).clientSecret(secret).build();
             fail();
         } catch (IllegalArgumentException e) {
-            Assert.assertTrue(e.getMessage().contains("TENANT_ID"));
+            Assert.assertTrue(e.getMessage().contains("tenantId"));
         }
         try {
             new ClientSecretCredentialBuilder().tenantId(TENANT_ID).clientSecret(secret).build();
             fail();
         } catch (IllegalArgumentException e) {
-            Assert.assertTrue(e.getMessage().contains("CLIENT_ID"));
+            Assert.assertTrue(e.getMessage().contains("clientId"));
         }
         try {
             new ClientSecretCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).build();

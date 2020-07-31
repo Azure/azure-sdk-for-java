@@ -124,13 +124,13 @@ public class ClientCertificateCredentialTest {
             new ClientCertificateCredentialBuilder().clientId(CLIENT_ID).pemCertificate(pemPath).build();
             fail();
         } catch (IllegalArgumentException e) {
-            Assert.assertTrue(e.getMessage().contains("TENANT_ID"));
+            Assert.assertTrue(e.getMessage().contains("tenantId"));
         }
         try {
             new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).pemCertificate(pemPath).build();
             fail();
         } catch (IllegalArgumentException e) {
-            Assert.assertTrue(e.getMessage().contains("CLIENT_ID"));
+            Assert.assertTrue(e.getMessage().contains("clientId"));
         }
         try {
             new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).build();
