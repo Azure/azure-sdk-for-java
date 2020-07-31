@@ -191,8 +191,8 @@ public interface ActionGroup
     }
 
     /** The entirety of a Action Group definition. */
-    interface Definition<ParentT> extends DefinitionStages.Blank,
-        ActionDefinition<ParentT>,
+    interface Definition<T> extends DefinitionStages.Blank,
+        ActionDefinition<T>,
         DefinitionStages.WithCreate {
     }
 
