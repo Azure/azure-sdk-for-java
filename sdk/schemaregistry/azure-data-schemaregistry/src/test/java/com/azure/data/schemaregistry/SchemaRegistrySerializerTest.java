@@ -37,7 +37,7 @@ public class SchemaRegistrySerializerTest {
     @Test
     public void testRegistryGuidPrefixedToPayload() {
         // manually add SchemaRegistryObject into mock registry client cache
-        SampleCodec encoder = new SampleCodec();
+        SampleSchemaRegistryCodec encoder = new SampleSchemaRegistryCodec();
         SchemaRegistryObject registered = new SchemaRegistryObject(MOCK_GUID,
             encoder.getSchemaType(),
             encoder.getSchemaName(null),
@@ -108,7 +108,7 @@ public class SchemaRegistrySerializerTest {
     @Test
     public void testAddDeserializerCodec() throws IOException, SchemaRegistryClientException, SerializationException {
         // add sample codec impl and test that it is used for decoding payload
-        SampleCodec decoder = new SampleCodec();
+        SampleSchemaRegistryCodec decoder = new SampleSchemaRegistryCodec();
 
         // manually add SchemaRegistryObject to cache
         SchemaRegistryObject registered = new SchemaRegistryObject(MOCK_GUID,
@@ -136,7 +136,7 @@ public class SchemaRegistrySerializerTest {
                     },
                     ex -> System.out.println(ex));
 
-        assertEquals(SampleCodec.CONSTANT_PAYLOAD,
+        assertEquals(SampleSchemaRegistryCodec.CONSTANT_PAYLOAD,
             serializer.deserialize(new ByteArrayInputStream(getPayload())).block());
     }
 

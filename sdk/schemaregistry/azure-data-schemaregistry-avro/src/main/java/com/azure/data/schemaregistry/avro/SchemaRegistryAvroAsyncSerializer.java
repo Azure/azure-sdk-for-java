@@ -26,7 +26,7 @@ public class SchemaRegistryAvroAsyncSerializer extends SchemaRegistrySerializer 
      * @param schemaGroup
      * @param autoRegisterSchemas
      */
-    SchemaRegistryAvroAsyncSerializer(CachedSchemaRegistryAsyncClient registryClient, AvroCodec codec,
+    SchemaRegistryAvroAsyncSerializer(CachedSchemaRegistryAsyncClient registryClient, AvroSchemaRegistryCodec codec,
                                       String schemaGroup, Boolean autoRegisterSchemas) {
         super(registryClient, codec, Collections.singletonList(codec), autoRegisterSchemas, schemaGroup);
     }
