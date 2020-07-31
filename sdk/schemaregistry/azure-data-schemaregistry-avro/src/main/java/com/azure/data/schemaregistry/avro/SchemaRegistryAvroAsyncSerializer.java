@@ -12,8 +12,6 @@ import reactor.core.publisher.Mono;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedList;
 
 /**
  * Asynchronous registry-based serializer implementation.
@@ -29,12 +27,17 @@ public class SchemaRegistryAvroAsyncSerializer extends AbstractSchemaRegistrySer
      * @param autoRegisterSchemas
      */
     SchemaRegistryAvroAsyncSerializer(CachedSchemaRegistryAsyncClient registryClient, AvroCodec codec,
-                                      String schemaGroup, boolean autoRegisterSchemas) {
+                                      String schemaGroup, Boolean autoRegisterSchemas) {
         super(registryClient, codec, Collections.singletonList(codec));
 
         // send configurations only
-        this.autoRegisterSchemas = autoRegisterSchemas;
-        this.schemaGroup = schemaGroup;
+        if (autoRegisterSchemas != null) {
+            this.autoRegisterSchemas = autoRegisterSchemas;
+        }
+
+        if (schemaGroup != null) {
+            this.schemaGroup = schemaGroup;
+        }
     }
 
     @Override
