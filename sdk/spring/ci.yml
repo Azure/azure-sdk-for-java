@@ -67,18 +67,18 @@ extends:
       - name: spring-integration-azure-core
         groupId: com.microsoft.azure
         safeName: springintegrationazurecore
-      - name: azure-spring-integration-eventhubs
+      - name: spring-integration-eventhubs
         groupId: com.microsoft.azure
-        safeName: azurespringintegrationeventhubs
-      - name: azure-spring-integration-servicebus
+        safeName: springintegrationeventhubs
+      - name: spring-integration-servicebus
         groupId: com.microsoft.azure
-        safeName: azurespringintegrationservicebus
-      - name: azure-spring-integration-storage-queue
+        safeName: springintegrationservicebus
+      - name: spring-integration-storage-queue
         groupId: com.microsoft.azure
-        safeName: azurespringintegrationstoragequeue
-      - name: azure-spring-integration-test
+        safeName: springintegrationstoragequeue
+      - name: spring-integration-azure-test
         groupId: com.microsoft.azure
-        safeName: azurespringintegrationtest
+        safeName: springintegrationazuretest
     AdditionalModules:
       - name: azure-spring-boot-sample-active-directory
         groupId: com.azure
