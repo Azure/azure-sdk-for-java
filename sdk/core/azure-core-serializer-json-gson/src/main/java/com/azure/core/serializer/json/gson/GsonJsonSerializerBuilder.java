@@ -17,10 +17,9 @@ public final class GsonJsonSerializerBuilder {
      * @return A new instance of {@link GsonJsonSerializer}.
      */
     public GsonJsonSerializer build() {
-        if (gson == null) {
-            return new GsonJsonSerializer(new Gson());
-        }
-        return new GsonJsonSerializer(gson);
+        return gson == null
+            ? new GsonJsonSerializer(new Gson())
+            : new GsonJsonSerializer(gson);
     }
 
     /**

@@ -32,7 +32,7 @@ public class GsonPropertyNameTests {
         }
         Field f = LocalHotel.class.getDeclaredField("hotelName");
 
-        assertEquals(serializer.getSerializerMemberName(f), "hotelName");
+        assertEquals(serializer.convertMemberName(f), "hotelName");
     }
 
     @Test
@@ -41,7 +41,7 @@ public class GsonPropertyNameTests {
             transient String hotelName;
         }
         Field f = LocalHotel.class.getDeclaredField("hotelName");
-        assertNull(serializer.getSerializerMemberName(f));
+        assertNull(serializer.convertMemberName(f));
     }
 
     @Test
@@ -57,8 +57,8 @@ public class GsonPropertyNameTests {
 
         GsonJsonSerializer serializerWithSetting = new GsonJsonSerializerBuilder()
             .serializer(new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()).build();
-        assertNull(serializerWithSetting.getSerializerMemberName(f1));
-        assertEquals(serializer.getSerializerMemberName(f2), "hotelId");
+        assertNull(serializerWithSetting.convertMemberName(f1));
+        assertEquals(serializer.convertMemberName(f2), "hotelId");
     }
 
     @Test
@@ -68,7 +68,7 @@ public class GsonPropertyNameTests {
             String hotelName;
         }
         Field f = LocalHotel.class.getDeclaredField("hotelName");
-        assertEquals(serializer.getSerializerMemberName(f), EXPECT_VALUE_IN_FIELD);
+        assertEquals(serializer.convertMemberName(f), EXPECT_VALUE_IN_FIELD);
     }
 
     @Test
@@ -79,7 +79,7 @@ public class GsonPropertyNameTests {
         }
         Field f = LocalHotel.class.getDeclaredField("hotelName");
 
-        assertEquals("", serializer.getSerializerMemberName(f));
+        assertEquals("", serializer.convertMemberName(f));
     }
 
     @Test
@@ -94,7 +94,7 @@ public class GsonPropertyNameTests {
 
         Method m = LocalHotel.class.getDeclaredMethod("getHotelName");
 
-        assertEquals(serializer.getSerializerMemberName(m), "getHotelName");
+        assertEquals(serializer.convertMemberName(m), "getHotelName");
     }
 
     @Test
@@ -102,7 +102,7 @@ public class GsonPropertyNameTests {
         Constructor<?>[] constructors = Hotel.class.getConstructors();
         assertEquals(1, constructors.length);
 
-        assertEquals(serializer.getSerializerMemberName(constructors[0]),
+        assertEquals(serializer.convertMemberName(constructors[0]),
             "com.azure.core.serializer.json.gson.Hotel");
     }
 }

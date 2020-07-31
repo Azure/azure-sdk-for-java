@@ -5,7 +5,7 @@ package com.azure.core.serializer.json.gson;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
-import com.azure.core.util.serializer.PropertyNameSerializer;
+import com.azure.core.util.serializer.MemberNameConverter;
 import com.azure.core.util.serializer.TypeReference;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
@@ -28,7 +28,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 /**
  * GSON based implementation of the {@link JsonSerializer} interface.
  */
-public final class GsonJsonSerializer implements PropertyNameSerializer {
+public final class GsonJsonSerializer implements JsonSerializer, MemberNameConverter {
     private final ClientLogger logger = new ClientLogger(GsonJsonSerializer.class);
 
     private final Gson gson;
@@ -72,7 +72,7 @@ public final class GsonJsonSerializer implements PropertyNameSerializer {
     }
 
     @Override
-    public String getSerializerMemberName(Member member) {
+    public String convertMemberName(Member member) {
         if (Modifier.isTransient(member.getModifiers())) {
             return null;
         }

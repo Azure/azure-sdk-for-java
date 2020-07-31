@@ -151,11 +151,11 @@ public class JacksonPropertyNameTests {
     }
 
     public void assertMemberValue(Member m, String expectValue) {
-        assertEquals(expectValue, serializer.getSerializerMemberName(m));
+        assertEquals(expectValue, serializer.convertMemberName(m));
     }
 
     public void assertMemberNull(Member m) {
-        assertNull(serializer.getSerializerMemberName(m));
+        assertNull(serializer.convertMemberName(m));
     }
 
 
@@ -164,7 +164,7 @@ public class JacksonPropertyNameTests {
         Constructor<?>[] constructors = Hotel.class.getConstructors();
         assertEquals(1, constructors.length);
 
-        assertEquals(serializer.getSerializerMemberName(constructors[0]),
+        assertEquals(serializer.convertMemberName(constructors[0]),
             "com.azure.core.serializer.json.jackson.Hotel");
     }
 }

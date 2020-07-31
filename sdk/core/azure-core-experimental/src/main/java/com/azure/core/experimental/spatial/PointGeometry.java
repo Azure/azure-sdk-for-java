@@ -32,6 +32,7 @@ public final class PointGeometry extends Geometry {
      */
     public PointGeometry(GeometryPosition position, GeometryBoundingBox boundingBox, Map<String, Object> properties) {
         super(boundingBox, properties);
+
         Objects.requireNonNull(position, "'position' cannot be null.");
         this.position = position;
     }

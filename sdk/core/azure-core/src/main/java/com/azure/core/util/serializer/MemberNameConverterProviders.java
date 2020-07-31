@@ -7,22 +7,22 @@ import java.util.Iterator;
 import java.util.ServiceLoader;
 
 /**
- * This class is a proxy for using a {@link PropertyNameSerializerProvider} loaded from the classpath.
+ * This class is a proxy for using a {@link MemberNameConverterProvider} loaded from the classpath.
  */
-public final class PropertyNameSerializerProviders {
+public final class MemberNameConverterProviders {
     private static final String CANNOT_FIND_JSON_SERIALIZER_PROVIDER =
-        "Cannot find any seriailized name serializer provider on the classpath.";
+        "Cannot find any member name converter provider on the classpath.";
 
-    private static PropertyNameSerializerProvider defaultProvider;
+    private static MemberNameConverterProvider defaultProvider;
     private static boolean attemptedLoad;
 
     /**
-     * Creates an instance of {@link PropertyNameSerializer} using the first {@link PropertyNameSerializer} found in the
-     * classpath.
+     * Creates an instance of {@link MemberNameConverter} using the first {@link MemberNameConverterProvider} found in
+     * the classpath.
      *
-     * @return A new instance of {@link PropertyNameSerializer}.
+     * @return A new instance of {@link MemberNameConverter}.
      */
-    public static PropertyNameSerializer createInstance() {
+    public static MemberNameConverter createInstance() {
         if (defaultProvider == null) {
             loadFromClasspath();
         }
@@ -38,8 +38,8 @@ public final class PropertyNameSerializerProviders {
         }
 
         attemptedLoad = true;
-        Iterator<PropertyNameSerializerProvider> iterator =
-            ServiceLoader.load(PropertyNameSerializerProvider.class).iterator();
+        Iterator<MemberNameConverterProvider> iterator =
+            ServiceLoader.load(MemberNameConverterProvider.class).iterator();
         if (iterator.hasNext()) {
             defaultProvider = iterator.next();
         } else {
@@ -47,7 +47,7 @@ public final class PropertyNameSerializerProviders {
         }
     }
 
-    private PropertyNameSerializerProviders() {
+    private MemberNameConverterProviders() {
         // no-op
     }
 }

@@ -6,7 +6,7 @@ package com.azure.core.serializer.json.jackson;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
-import com.azure.core.util.serializer.PropertyNameSerializer;
+import com.azure.core.util.serializer.MemberNameConverter;
 import com.azure.core.util.serializer.TypeReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -25,7 +25,7 @@ import java.lang.reflect.Method;
 /**
  * Jackson based implementation of the {@link JsonSerializer} interface.
  */
-public final class JacksonJsonSerializer implements PropertyNameSerializer {
+public final class JacksonJsonSerializer implements MemberNameConverter, JsonSerializer {
     private final ClientLogger logger = new ClientLogger(JacksonJsonSerializer.class);
 
     private final ObjectMapper mapper;
@@ -76,7 +76,7 @@ public final class JacksonJsonSerializer implements PropertyNameSerializer {
     }
 
     @Override
-    public String getSerializerMemberName(Member member) {
+    public String convertMemberName(Member member) {
         if (member instanceof Field) {
             Field f = (Field) member;
             if (f.isAnnotationPresent(JsonIgnore.class)) {

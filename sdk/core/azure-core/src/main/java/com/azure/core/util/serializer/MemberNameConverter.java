@@ -8,12 +8,12 @@ import java.lang.reflect.Member;
 /**
  * Generic interface to get the property name through serialization.
  */
-public interface PropertyNameSerializer extends JsonSerializer {
+public interface MemberNameConverter {
     /**
      * Get property member name from the class field.
      *
      * @param member Gets property name from the class member.
      * @return The serializer member name.
      */
-    String getSerializerMemberName(Member member);
+    String convertMemberName(Member member);
 }

@@ -5,7 +5,7 @@ package com.azure.search.documents.indexes;
 
 import com.azure.core.serializer.json.jackson.JacksonJsonSerializerProvider;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.PropertyNameSerializer;
+import com.azure.core.util.serializer.MemberNameConverter;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
@@ -61,7 +61,7 @@ public final class FieldBuilder {
      * @param <T> The generic type of the model class.
      * @return A collection of fields.
      */
-    public static <T> List<SearchField> build(Class<T> modelClass, PropertyNameSerializer serializer) {
+    public static <T> List<SearchField> build(Class<T> modelClass, MemberNameConverter serializer) {
         if (serializer == null) {
             serializer = new JacksonJsonSerializerProvider().createInstance();
         }
@@ -78,7 +78,7 @@ public final class FieldBuilder {
      * @return A list of {@link SearchField} that currentClass is built to.
      */
     private static List<SearchField> build(Class<?> currentClass, Stack<Class<?>> classChain,
-        PropertyNameSerializer serializer, ClientLogger logger) {
+        MemberNameConverter serializer, ClientLogger logger) {
         if (classChain.contains(currentClass)) {
             logger.warning(String.format("There is circular dependencies %s, %s", classChain, currentClass));
             return null;
@@ -98,8 +98,8 @@ public final class FieldBuilder {
     }
 
     private static SearchField buildField(Field classField, Stack<Class<?>> classChain,
-        PropertyNameSerializer serializer, ClientLogger logger) {
-        String fieldName = serializer.getSerializerMemberName(classField);
+        MemberNameConverter serializer, ClientLogger logger) {
+        String fieldName = serializer.convertMemberName(classField);
         if (fieldName == null) {
             return null;
         }
@@ -148,7 +148,7 @@ public final class FieldBuilder {
     }
 
     private static SearchField buildCollectionField(String fieldName, Field classField,
-        Stack<Class<?>> classChain, PropertyNameSerializer serializer, ClientLogger logger) {
+        Stack<Class<?>> classChain, MemberNameConverter serializer, ClientLogger logger) {
         Type componentOrElementType = getComponentOrElementType(classField.getGenericType(), logger);
         if (UNSUPPORTED_TYPES.contains(componentOrElementType)) {
             return null;
