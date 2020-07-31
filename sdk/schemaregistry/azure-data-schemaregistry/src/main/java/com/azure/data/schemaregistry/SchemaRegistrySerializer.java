@@ -36,8 +36,8 @@ public abstract class SchemaRegistrySerializer {
 
     CachedSchemaRegistryAsyncClient schemaRegistryClient;
 
-    private Codec serializerCodec;
-    private final Map<String, Codec> deserializerCodecMap = new ConcurrentSkipListMap<>(String.CASE_INSENSITIVE_ORDER);
+    private SchemaRegistryCodec serializerSchemaRegistryCodec;
+    private final Map<String, SchemaRegistryCodec> deserializerCodecMap = new ConcurrentSkipListMap<>(String.CASE_INSENSITIVE_ORDER);
     private String schemaType;
 
     Boolean autoRegisterSchemas = SchemaRegistrySerializer.AUTO_REGISTER_SCHEMAS_DEFAULT;
@@ -47,34 +47,34 @@ public abstract class SchemaRegistrySerializer {
      * Constructor for AbstractSchemaRegistrySerializer implementations.
      *
      * @param schemaRegistryClient client to be used for interfacing with Schema Registry service
-     * @param serializerCodec Codec to be used for serialization operations
-     * @param deserializerCodecList list of Codecs to be used to deserialize incoming payloads
+     * @param serializerSchemaRegistryCodec Codec to be used for serialization operations
+     * @param deserializerSchemaRegistryCodecList list of Codecs to be used to deserialize incoming payloads
      */
     public SchemaRegistrySerializer(CachedSchemaRegistryAsyncClient schemaRegistryClient,
-                                            Codec serializerCodec, List<Codec> deserializerCodecList) {
-        this(schemaRegistryClient, serializerCodec, deserializerCodecList, null, null);
+                                            SchemaRegistryCodec serializerSchemaRegistryCodec, List<SchemaRegistryCodec> deserializerSchemaRegistryCodecList) {
+        this(schemaRegistryClient, serializerSchemaRegistryCodec, deserializerSchemaRegistryCodecList, null, null);
     }
 
     public SchemaRegistrySerializer(CachedSchemaRegistryAsyncClient schemaRegistryClient,
-        Codec serializerCodec, List<Codec> deserializerCodecList, Boolean autoRegisterSchemas,
+        SchemaRegistryCodec serializerSchemaRegistryCodec, List<SchemaRegistryCodec> deserializerSchemaRegistryCodecList, Boolean autoRegisterSchemas,
         String schemaGroup) {
 
-        Objects.requireNonNull(serializerCodec);
-        Objects.requireNonNull(deserializerCodecList);
+        Objects.requireNonNull(serializerSchemaRegistryCodec);
+        Objects.requireNonNull(deserializerSchemaRegistryCodecList);
 
         if (schemaRegistryClient == null) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Schema registry client must be initialized and passed into builder."));
         }
 
-        if (deserializerCodecList.size() == 0) {
+        if (deserializerSchemaRegistryCodecList.size() == 0) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("At least one Codec must be provided for deserialization."));
         }
 
         this.schemaRegistryClient = schemaRegistryClient;
-        this.serializerCodec = serializerCodec;
-        for (Codec c : deserializerCodecList) {
+        this.serializerSchemaRegistryCodec = serializerSchemaRegistryCodec;
+        for (SchemaRegistryCodec c : deserializerSchemaRegistryCodecList) {
             if (this.deserializerCodecMap.containsKey(c.getSchemaType())) {
                 throw logger.logExceptionAsError(
                     new IllegalArgumentException("Only on Codec can be provided per schema serialization type."));
@@ -109,17 +109,17 @@ public abstract class SchemaRegistrySerializer {
                 "Null object, behavior should be defined in concrete serializer implementation."));
         }
 
-        if (serializerCodec == null) {
+        if (serializerSchemaRegistryCodec == null) {
             return monoError(logger, new SerializationException(
                 "Byte encoder null, serializer must be initialized with a byte encoder."));
         }
 
         if (schemaType == null) {
-            schemaType = serializerCodec.getSchemaType();
+            schemaType = serializerSchemaRegistryCodec.getSchemaType();
         }
 
-        String schemaString = serializerCodec.getSchemaString(object);
-        String schemaName = serializerCodec.getSchemaName(object);
+        String schemaString = serializerSchemaRegistryCodec.getSchemaString(object);
+        String schemaName = serializerSchemaRegistryCodec.getSchemaName(object);
 
         return this.maybeRegisterSchema(this.schemaGroup, schemaName, schemaString, this.schemaType)
             .onErrorMap(e -> {
@@ -153,7 +153,7 @@ public abstract class SchemaRegistrySerializer {
                     .put(id.getBytes(StandardCharsets.UTF_8));
                 try {
                     s.write(idBuffer.array());
-                    s.write(serializerCodec.encode(object));
+                    s.write(serializerSchemaRegistryCodec.encode(object));
                 } catch (IOException e) {
                     sink.error(new SerializationException(e.getMessage(), e));
                 }
@@ -209,8 +209,8 @@ public abstract class SchemaRegistrySerializer {
                         int length = buffer.limit() - SchemaRegistrySerializer.SCHEMA_ID_SIZE;
                         byte[] b = Arrays.copyOfRange(buffer.array(), start, start + length);
 
-                        Codec codec = getDeserializerCodec(registryObject);
-                        sink.next(codec.decode(b, payloadSchema));
+                        SchemaRegistryCodec schemaRegistryCodec = getDeserializerCodec(registryObject);
+                        sink.next(schemaRegistryCodec.decode(b, payloadSchema));
                     })
                     .onErrorMap(e -> {
                         if (e instanceof SchemaRegistryClientException) {
@@ -243,16 +243,16 @@ public abstract class SchemaRegistrySerializer {
      * @return Codec to be used to deserialize encoded payload bytes
      * @throws SerializationException if decoder for the required schema type has not been loaded
      */
-    private Codec getDeserializerCodec(SchemaRegistryObject registryObject) throws SerializationException {
-        Codec codec = deserializerCodecMap.get(registryObject.getSchemaType());
-        if (codec == null) {
+    private SchemaRegistryCodec getDeserializerCodec(SchemaRegistryObject registryObject) throws SerializationException {
+        SchemaRegistryCodec schemaRegistryCodec = deserializerCodecMap.get(registryObject.getSchemaType());
+        if (schemaRegistryCodec == null) {
             throw logger.logExceptionAsError(
                 new SerializationException(
                     String.format("No deserializer codec class found for schema type '%s'.",
                         registryObject.getSchemaType())
                 ));
         }
-        return codec;
+        return schemaRegistryCodec;
     }
 
     /**

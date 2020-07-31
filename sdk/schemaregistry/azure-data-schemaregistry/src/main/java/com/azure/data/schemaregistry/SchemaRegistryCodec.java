@@ -8,7 +8,7 @@ import com.azure.data.schemaregistry.models.SerializationException;
 /**
  * An interface defining operations required for registry-based serialization and deserialization.
  */
-public interface Codec {
+public interface SchemaRegistryCodec {
     /**
      * @return String representation of schema type, e.g. "avro" or "json".
      *

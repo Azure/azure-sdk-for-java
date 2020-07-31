@@ -136,7 +136,7 @@ public final class SchemaRegistryAvroSerializerBuilder {
             builder.maxCacheSize(maxCacheSize);
         }
 
-        AvroCodec codec = new AvroCodec(this.avroSpecificReader);
+        AvroSchemaRegistryCodec codec = new AvroSchemaRegistryCodec(this.avroSpecificReader);
 
         CachedSchemaRegistryAsyncClient client = builder
             .addCodec(codec)

@@ -7,9 +7,9 @@ import com.azure.data.schemaregistry.models.SerializationException;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-public class SampleCodec implements Codec {
+public class SampleSchemaRegistryCodec implements SchemaRegistryCodec {
 
-    public SampleCodec() { }
+    public SampleSchemaRegistryCodec() { }
 
     @Override
     public String getSchemaName(Object object) throws SerializationException {
