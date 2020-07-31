@@ -49,14 +49,14 @@ public abstract class AbstractSchemaRegistrySerializer {
     public AbstractSchemaRegistrySerializer(CachedSchemaRegistryAsyncClient schemaRegistryClient,
                                             Codec serializerCodec, List<Codec> deserializerCodecList) {
         Objects.requireNonNull(serializerCodec);
-        Objects.requireNonNull(deserializerCodecMap);
+        Objects.requireNonNull(deserializerCodecList);
 
         if (schemaRegistryClient == null) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Schema registry client must be initialized and passed into builder."));
         }
 
-        if (deserializerCodecMap.size() == 0) {
+        if (deserializerCodecList.size() == 0) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("At least one Codec must be provided for deserialization."));
         }
