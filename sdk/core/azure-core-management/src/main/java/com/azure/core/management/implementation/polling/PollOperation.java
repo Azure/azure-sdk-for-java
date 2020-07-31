@@ -133,6 +133,7 @@ public final class PollOperation {
                                                                                Error error) {
         PollResult<T> pollResult = new PollResult<>(new PollResult.Error(error.getMessage(),
             error.getResponseStatusCode(),
+            error.getResponseHeaders(),
             error.getResponseBody()));
         return Mono.just(new PollResponse<>(opStatus, pollResult));
     }
