@@ -197,20 +197,17 @@ class FileTestHelper {
             // If the amount we are going to read is smaller than the default buffer size use that instead.
             def bufferSize = (int) Math.min(defaultBufferSize, count)
 
-            // We are able to reuse read buffers as we will write to and compare the ranges of [0, expectedReadCount)
-            def buffer1 = new byte[bufferSize]
-            def buffer2 = new byte[bufferSize]
-
             while (pos < count) {
                 // Number of bytes we expect to read.
                 def expectedReadCount = (int) Math.min(bufferSize, count - pos)
+                def buffer1 = new byte[expectedReadCount]
+                def buffer2 = new byte[expectedReadCount]
 
-                def readCount1 = stream1.read(buffer1, 0, expectedReadCount)
-                def readCount2 = stream2.read(buffer2, 0, expectedReadCount)
+                def readCount1 = stream1.read(buffer1)
+                def readCount2 = stream2.read(buffer2)
 
                 // Use Arrays.equals as it is more optimized than Groovy/Spock's '==' for arrays.
-                assert readCount1 == readCount2 &&
-                    Arrays.equals(buffer1, 0, expectedReadCount, buffer2, 0, expectedReadCount)
+                assert readCount1 == readCount2 && Arrays.equals(buffer1, buffer2)
 
                 pos += bufferSize
             }
