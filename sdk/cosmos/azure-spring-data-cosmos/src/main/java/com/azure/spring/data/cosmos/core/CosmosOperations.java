@@ -145,6 +145,16 @@ public interface CosmosOperations {
     void deleteById(String containerName, Object id, PartitionKey partitionKey);
 
     /**
+     * Delete using entity
+     *
+     * @param containerName the container name
+     * @param entity the entity object
+     * @param id the id
+     * @param partitionKey the partition key
+     */
+    void deleteEntityById(String containerName, Object entity, Object id, PartitionKey partitionKey);
+
+    /**
      * Delete all items in a container
      *
      * @param containerName the container name

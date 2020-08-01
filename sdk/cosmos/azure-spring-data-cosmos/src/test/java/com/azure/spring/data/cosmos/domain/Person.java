@@ -22,7 +22,7 @@ public class Person {
     private List<String> hobbies;
     private List<Address> shippingAddresses;
     @Version
-    private String _etag;
+    private String etag;
 
     public Person(String id, String firstName, String lastName, List<String> hobbies, List<Address> shippingAddresses) {
         this.id = id;
@@ -75,12 +75,12 @@ public class Person {
         this.shippingAddresses = shippingAddresses;
     }
 
-    public String get_etag() {
-        return _etag;
+    public String getEtag() {
+        return etag;
     }
 
-    public void set_etag(String _etag) {
-        this._etag = _etag;
+    public void setEtag(String etag) {
+        this.etag = etag;
     }
 
     @Override
@@ -120,8 +120,8 @@ public class Person {
             + hobbies
             + ", shippingAddresses="
             + shippingAddresses
-            + ", _etag='"
-            + _etag
+            + ", etag='"
+            + etag
             + '\''
             + '}';
     }
