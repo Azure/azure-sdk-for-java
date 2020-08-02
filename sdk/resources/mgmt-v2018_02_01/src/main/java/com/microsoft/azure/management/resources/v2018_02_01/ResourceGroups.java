@@ -25,7 +25,7 @@ public interface ResourceGroups extends SupportsCreating<ResourceGroup.Definitio
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable checkExistenceAsync(String resourceGroupName);
+    Observable<Boolean> checkExistenceAsync(String resourceGroupName);
 
     /**
      * Captures the specified resource group as a template.
