@@ -43,11 +43,11 @@ public class QueueRuntimeInfo {
         this.updatedAt = queueProperties.getUpdatedAt();
 
         final MessageCountDetails details = queueProperties.getMessageCountDetails();
-        this.activeMessageCount = details.getActiveMessageCount();
-        this.deadLetterMessageCount = details.getDeadLetterMessageCount();
-        this.scheduledMessageCount = details.getScheduledMessageCount();
-        this.transferDeadLetterMessageCount = details.getTransferDeadLetterMessageCount();
-        this.transferMessageCount = details.getTransferMessageCount();
+        this.activeMessageCount = details != null ? details.getActiveMessageCount() : 0;
+        this.deadLetterMessageCount = details != null ? details.getDeadLetterMessageCount() : 0;
+        this.scheduledMessageCount = details != null ? details.getScheduledMessageCount() : 0;
+        this.transferDeadLetterMessageCount = details != null ? details.getTransferDeadLetterMessageCount() : 0;
+        this.transferMessageCount = details != null ? details.getTransferMessageCount() : 0;
     }
 
     /**
