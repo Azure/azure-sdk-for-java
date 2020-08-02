@@ -33,7 +33,8 @@ public final class EntityHelper {
         }
 
         try {
-            Class.forName(SubscriptionDescription.class.getName(), true, SubscriptionDescription.class.getClassLoader());
+            Class.forName(SubscriptionDescription.class.getName(), true,
+                SubscriptionDescription.class.getClassLoader());
         } catch (ClassNotFoundException e) {
             throw new ClientLogger(EntityHelper.class).logThrowableAsError(new AssertionError(e));
         }
