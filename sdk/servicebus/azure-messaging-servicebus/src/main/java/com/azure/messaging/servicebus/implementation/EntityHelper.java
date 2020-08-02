@@ -45,7 +45,7 @@ public final class EntityHelper {
      * @param accessor The queue accessor to set on the queue helper.
      */
     public static void setQueueAccessor(QueueAccessor accessor) {
-        Objects.requireNonNull(accessor, "'subscriptionAccessor' cannot be null.");
+        Objects.requireNonNull(accessor, "'accessor' cannot be null.");
 
         if (EntityHelper.queueAccessor != null) {
             throw new ClientLogger(EntityHelper.class).logExceptionAsError(new IllegalStateException(
