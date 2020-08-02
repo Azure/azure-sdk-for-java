@@ -10,7 +10,10 @@ import com.azure.core.util.logging.ClientLogger;
 import java.time.Duration;
 import java.util.Objects;
 
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.DEFAULT_DUPLICATE_DETECTION_DURATION;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.DEFAULT_LOCK_DURATION;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.DEFAULT_MAX_DELIVERY_COUNT;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.DEFAULT_QUEUE_SIZE;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.MAX_DURATION;
 
 /**
@@ -68,12 +71,12 @@ public class CreateQueueOptions {
         this.name = queueName;
         this.autoDeleteOnIdle = MAX_DURATION;
         this.defaultMessageTimeToLive = MAX_DURATION;
-        this.duplicateDetectionHistoryTimeWindow = Duration.ofSeconds(60);
+        this.duplicateDetectionHistoryTimeWindow = DEFAULT_DUPLICATE_DETECTION_DURATION;
         this.enableBatchedOperations = true;
         this.enablePartitioning = false;
         this.lockDuration = DEFAULT_LOCK_DURATION;
-        this.maxDeliveryCount = 10;
-        this.maxSizeInMegabytes = 1024;
+        this.maxDeliveryCount = DEFAULT_MAX_DELIVERY_COUNT;
+        this.maxSizeInMegabytes = DEFAULT_QUEUE_SIZE;
         this.requiresDuplicateDetection = false;
         this.requiresSession = false;
         this.deadLetteringOnMessageExpiration = false;
