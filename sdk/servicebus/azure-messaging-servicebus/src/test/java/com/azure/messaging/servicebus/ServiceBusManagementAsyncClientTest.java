@@ -14,12 +14,12 @@ import com.azure.messaging.servicebus.implementation.ServiceBusManagementClientI
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementSerializer;
 import com.azure.messaging.servicebus.implementation.models.CreateQueueBody;
 import com.azure.messaging.servicebus.implementation.models.CreateQueueBodyContent;
+import com.azure.messaging.servicebus.implementation.models.MessageCountDetails;
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionEntry;
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionEntryContent;
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionFeed;
 import com.azure.messaging.servicebus.implementation.models.ResponseLink;
 import com.azure.messaging.servicebus.models.CreateQueueOptions;
-import com.azure.messaging.servicebus.models.MessageCountDetails;
 import com.azure.messaging.servicebus.models.QueueProperties;
 import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
 import org.junit.jupiter.api.AfterAll;

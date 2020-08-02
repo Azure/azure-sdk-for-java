@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.messaging.servicebus.implementation.models.MessageCountDetails;
 
 import java.time.OffsetDateTime;
 import java.util.Objects;
@@ -14,12 +15,16 @@ import java.util.Objects;
 @Immutable
 public class QueueRuntimeInfo {
     private final String name;
-    private final MessageCountDetails details;
     private final long messageCount;
     private final long sizeInBytes;
     private final OffsetDateTime accessedAt;
     private final OffsetDateTime createdAt;
     private final OffsetDateTime updatedAt;
+    private final int activeMessageCount;
+    private final int deadLetterMessageCount;
+    private final int scheduledMessageCount;
+    private final int transferDeadLetterMessageCount;
+    private final int transferMessageCount;
 
     /**
      * Creates a new instance with runtime properties extracted from the given QueueDescription.
@@ -31,12 +36,18 @@ public class QueueRuntimeInfo {
     public QueueRuntimeInfo(QueueProperties queueProperties) {
         Objects.requireNonNull(queueProperties, "'queueProperties' cannot be null.");
         this.name = queueProperties.getName();
-        this.details = queueProperties.getMessageCountDetails();
         this.messageCount = queueProperties.getMessageCount();
         this.sizeInBytes = queueProperties.getSizeInBytes();
         this.accessedAt = queueProperties.getAccessedAt();
         this.createdAt = queueProperties.getCreatedAt();
         this.updatedAt = queueProperties.getUpdatedAt();
+
+        final MessageCountDetails details = queueProperties.getMessageCountDetails();
+        this.activeMessageCount = details.getActiveMessageCount();
+        this.deadLetterMessageCount = details.getDeadLetterMessageCount();
+        this.scheduledMessageCount = details.getScheduledMessageCount();
+        this.transferDeadLetterMessageCount = details.getTransferDeadLetterMessageCount();
+        this.transferMessageCount = details.getTransferMessageCount();
     }
 
     /**
@@ -49,6 +60,15 @@ public class QueueRuntimeInfo {
     }
 
     /**
+     * Get the activeMessageCount property: Number of active messages in the queue, topic, or subscription.
+     *
+     * @return the activeMessageCount value.
+     */
+    public int getActiveMessageCount() {
+        return this.activeMessageCount;
+    }
+
+    /**
      * Gets the exact time the queue was created.
      *
      * @return The exact time the queue was created.
@@ -58,12 +78,12 @@ public class QueueRuntimeInfo {
     }
 
     /**
-     * Gets details about the message counts in queue.
+     * Get the deadLetterMessageCount property: Number of messages that are dead lettered.
      *
-     * @return Details about the message counts in queue.
+     * @return the deadLetterMessageCount value.
      */
-    public MessageCountDetails getDetails() {
-        return details;
+    public int getDeadLetterMessageCount() {
+        return this.deadLetterMessageCount;
     }
 
     /**
@@ -85,12 +105,39 @@ public class QueueRuntimeInfo {
     }
 
     /**
+     * Get the scheduledMessageCount property: Number of scheduled messages.
+     *
+     * @return the scheduledMessageCount value.
+     */
+    public int getScheduledMessageCount() {
+        return this.scheduledMessageCount;
+    }
+
+    /**
      * Gets the size of the queue, in bytes.
      *
      * @return The size of the queue, in bytes.
      */
     public long getSizeInBytes() {
         return sizeInBytes;
+    }
+
+    /**
+     * Get the transferDeadLetterMessageCount property: Number of messages transferred into dead letters.
+     *
+     * @return the transferDeadLetterMessageCount value.
+     */
+    public int getTransferDeadLetterMessageCount() {
+        return this.transferDeadLetterMessageCount;
+    }
+
+    /**
+     * Get the transferMessageCount property: Number of messages transferred to another queue, topic, or subscription.
+     *
+     * @return the transferMessageCount value.
+     */
+    public int getTransferMessageCount() {
+        return this.transferMessageCount;
     }
 
     /**

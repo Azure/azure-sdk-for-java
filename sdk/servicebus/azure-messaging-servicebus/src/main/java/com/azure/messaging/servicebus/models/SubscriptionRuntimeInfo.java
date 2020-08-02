@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.messaging.servicebus.implementation.models.MessageCountDetails;
 
 import java.time.OffsetDateTime;
 import java.util.Objects;

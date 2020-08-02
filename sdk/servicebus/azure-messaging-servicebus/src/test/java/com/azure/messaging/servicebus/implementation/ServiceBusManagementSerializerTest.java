@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus.implementation;
 
+import com.azure.messaging.servicebus.implementation.models.MessageCountDetails;
 import com.azure.messaging.servicebus.implementation.models.NamespacePropertiesEntry;
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionEntry;
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionEntryContent;
@@ -14,7 +15,6 @@ import com.azure.messaging.servicebus.implementation.models.SubscriptionDescript
 import com.azure.messaging.servicebus.implementation.models.SubscriptionDescriptionFeed;
 import com.azure.messaging.servicebus.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.models.EntityStatus;
-import com.azure.messaging.servicebus.models.MessageCountDetails;
 import com.azure.messaging.servicebus.models.MessagingSku;
 import com.azure.messaging.servicebus.models.NamespaceProperties;
 import com.azure.messaging.servicebus.models.NamespaceType;
