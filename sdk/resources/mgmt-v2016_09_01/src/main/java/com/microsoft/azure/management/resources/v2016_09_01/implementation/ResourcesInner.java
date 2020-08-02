@@ -151,7 +151,7 @@ public class ResourcesInner {
      * Moves resources from one resource group to another resource group.
      * The resources to move must be in the same source resource group. The target resource group may be in a different subscription. When moving resources, both the source group and the target group are locked for the duration of the operation. Write and delete operations are blocked on the groups until the move completes.
      *
-     * @param sourceResourceGroupName The name of the resource group containing the rsources to move.
+     * @param sourceResourceGroupName The name of the resource group containing the resources to move.
      * @param parameters Parameters for moving resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -165,7 +165,7 @@ public class ResourcesInner {
      * Moves resources from one resource group to another resource group.
      * The resources to move must be in the same source resource group. The target resource group may be in a different subscription. When moving resources, both the source group and the target group are locked for the duration of the operation. Write and delete operations are blocked on the groups until the move completes.
      *
-     * @param sourceResourceGroupName The name of the resource group containing the rsources to move.
+     * @param sourceResourceGroupName The name of the resource group containing the resources to move.
      * @param parameters Parameters for moving resources.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -179,7 +179,7 @@ public class ResourcesInner {
      * Moves resources from one resource group to another resource group.
      * The resources to move must be in the same source resource group. The target resource group may be in a different subscription. When moving resources, both the source group and the target group are locked for the duration of the operation. Write and delete operations are blocked on the groups until the move completes.
      *
-     * @param sourceResourceGroupName The name of the resource group containing the rsources to move.
+     * @param sourceResourceGroupName The name of the resource group containing the resources to move.
      * @param parameters Parameters for moving resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -197,7 +197,7 @@ public class ResourcesInner {
      * Moves resources from one resource group to another resource group.
      * The resources to move must be in the same source resource group. The target resource group may be in a different subscription. When moving resources, both the source group and the target group are locked for the duration of the operation. Write and delete operations are blocked on the groups until the move completes.
      *
-     * @param sourceResourceGroupName The name of the resource group containing the rsources to move.
+     * @param sourceResourceGroupName The name of the resource group containing the resources to move.
      * @param parameters Parameters for moving resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -224,7 +224,7 @@ public class ResourcesInner {
      * Moves resources from one resource group to another resource group.
      * The resources to move must be in the same source resource group. The target resource group may be in a different subscription. When moving resources, both the source group and the target group are locked for the duration of the operation. Write and delete operations are blocked on the groups until the move completes.
      *
-     * @param sourceResourceGroupName The name of the resource group containing the rsources to move.
+     * @param sourceResourceGroupName The name of the resource group containing the resources to move.
      * @param parameters Parameters for moving resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -238,7 +238,7 @@ public class ResourcesInner {
      * Moves resources from one resource group to another resource group.
      * The resources to move must be in the same source resource group. The target resource group may be in a different subscription. When moving resources, both the source group and the target group are locked for the duration of the operation. Write and delete operations are blocked on the groups until the move completes.
      *
-     * @param sourceResourceGroupName The name of the resource group containing the rsources to move.
+     * @param sourceResourceGroupName The name of the resource group containing the resources to move.
      * @param parameters Parameters for moving resources.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -252,7 +252,7 @@ public class ResourcesInner {
      * Moves resources from one resource group to another resource group.
      * The resources to move must be in the same source resource group. The target resource group may be in a different subscription. When moving resources, both the source group and the target group are locked for the duration of the operation. Write and delete operations are blocked on the groups until the move completes.
      *
-     * @param sourceResourceGroupName The name of the resource group containing the rsources to move.
+     * @param sourceResourceGroupName The name of the resource group containing the resources to move.
      * @param parameters Parameters for moving resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
@@ -270,7 +270,7 @@ public class ResourcesInner {
      * Moves resources from one resource group to another resource group.
      * The resources to move must be in the same source resource group. The target resource group may be in a different subscription. When moving resources, both the source group and the target group are locked for the duration of the operation. Write and delete operations are blocked on the groups until the move completes.
      *
-     * @param sourceResourceGroupName The name of the resource group containing the rsources to move.
+     * @param sourceResourceGroupName The name of the resource group containing the resources to move.
      * @param parameters Parameters for moving resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
@@ -317,13 +317,13 @@ public class ResourcesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PagedList&lt;GenericResourceInner&gt; object if successful.
+     * @return the PagedList&lt;GenericResourceExpandedInner&gt; object if successful.
      */
-    public PagedList<GenericResourceInner> list() {
-        ServiceResponse<Page<GenericResourceInner>> response = listSinglePageAsync().toBlocking().single();
-        return new PagedList<GenericResourceInner>(response.body()) {
+    public PagedList<GenericResourceExpandedInner> list() {
+        ServiceResponse<Page<GenericResourceExpandedInner>> response = listSinglePageAsync().toBlocking().single();
+        return new PagedList<GenericResourceExpandedInner>(response.body()) {
             @Override
-            public Page<GenericResourceInner> nextPage(String nextPageLink) {
+            public Page<GenericResourceExpandedInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
@@ -336,12 +336,12 @@ public class ResourcesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<GenericResourceInner>> listAsync(final ListOperationCallback<GenericResourceInner> serviceCallback) {
+    public ServiceFuture<List<GenericResourceExpandedInner>> listAsync(final ListOperationCallback<GenericResourceExpandedInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(),
-            new Func1<String, Observable<ServiceResponse<Page<GenericResourceInner>>>>() {
+            new Func1<String, Observable<ServiceResponse<Page<GenericResourceExpandedInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<GenericResourceInner>>> call(String nextPageLink) {
+                public Observable<ServiceResponse<Page<GenericResourceExpandedInner>>> call(String nextPageLink) {
                     return listNextSinglePageAsync(nextPageLink);
                 }
             },
@@ -352,13 +352,13 @@ public class ResourcesInner {
      * Get all the resources in a subscription.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;GenericResourceInner&gt; object
+     * @return the observable to the PagedList&lt;GenericResourceExpandedInner&gt; object
      */
-    public Observable<Page<GenericResourceInner>> listAsync() {
+    public Observable<Page<GenericResourceExpandedInner>> listAsync() {
         return listWithServiceResponseAsync()
-            .map(new Func1<ServiceResponse<Page<GenericResourceInner>>, Page<GenericResourceInner>>() {
+            .map(new Func1<ServiceResponse<Page<GenericResourceExpandedInner>>, Page<GenericResourceExpandedInner>>() {
                 @Override
-                public Page<GenericResourceInner> call(ServiceResponse<Page<GenericResourceInner>> response) {
+                public Page<GenericResourceExpandedInner> call(ServiceResponse<Page<GenericResourceExpandedInner>> response) {
                     return response.body();
                 }
             });
@@ -368,13 +368,13 @@ public class ResourcesInner {
      * Get all the resources in a subscription.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;GenericResourceInner&gt; object
+     * @return the observable to the PagedList&lt;GenericResourceExpandedInner&gt; object
      */
-    public Observable<ServiceResponse<Page<GenericResourceInner>>> listWithServiceResponseAsync() {
+    public Observable<ServiceResponse<Page<GenericResourceExpandedInner>>> listWithServiceResponseAsync() {
         return listSinglePageAsync()
-            .concatMap(new Func1<ServiceResponse<Page<GenericResourceInner>>, Observable<ServiceResponse<Page<GenericResourceInner>>>>() {
+            .concatMap(new Func1<ServiceResponse<Page<GenericResourceExpandedInner>>, Observable<ServiceResponse<Page<GenericResourceExpandedInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<GenericResourceInner>>> call(ServiceResponse<Page<GenericResourceInner>> page) {
+                public Observable<ServiceResponse<Page<GenericResourceExpandedInner>>> call(ServiceResponse<Page<GenericResourceExpandedInner>> page) {
                     String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
@@ -388,9 +388,9 @@ public class ResourcesInner {
      * Get all the resources in a subscription.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;GenericResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;GenericResourceExpandedInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<GenericResourceInner>>> listSinglePageAsync() {
+    public Observable<ServiceResponse<Page<GenericResourceExpandedInner>>> listSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -401,12 +401,12 @@ public class ResourcesInner {
         final String expand = null;
         final Integer top = null;
         return service.list(this.client.subscriptionId(), filter, expand, top, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<GenericResourceInner>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<GenericResourceExpandedInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<GenericResourceInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<GenericResourceExpandedInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<GenericResourceInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<GenericResourceInner>>(result.body(), result.response()));
+                        ServiceResponse<PageImpl<GenericResourceExpandedInner>> result = listDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<GenericResourceExpandedInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -418,18 +418,18 @@ public class ResourcesInner {
      * Get all the resources in a subscription.
      *
      * @param filter The filter to apply on the operation.
-     * @param expand The $expand query parameter.
+     * @param expand Comma-separated list of additional properties to be included in the response. Valid values include `createdTime`, `changedTime` and `provisioningState`. For example, `$expand=createdTime,changedTime`.
      * @param top The number of results to return. If null is passed, returns all resource groups.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PagedList&lt;GenericResourceInner&gt; object if successful.
+     * @return the PagedList&lt;GenericResourceExpandedInner&gt; object if successful.
      */
-    public PagedList<GenericResourceInner> list(final String filter, final String expand, final Integer top) {
-        ServiceResponse<Page<GenericResourceInner>> response = listSinglePageAsync(filter, expand, top).toBlocking().single();
-        return new PagedList<GenericResourceInner>(response.body()) {
+    public PagedList<GenericResourceExpandedInner> list(final String filter, final String expand, final Integer top) {
+        ServiceResponse<Page<GenericResourceExpandedInner>> response = listSinglePageAsync(filter, expand, top).toBlocking().single();
+        return new PagedList<GenericResourceExpandedInner>(response.body()) {
             @Override
-            public Page<GenericResourceInner> nextPage(String nextPageLink) {
+            public Page<GenericResourceExpandedInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
@@ -439,18 +439,18 @@ public class ResourcesInner {
      * Get all the resources in a subscription.
      *
      * @param filter The filter to apply on the operation.
-     * @param expand The $expand query parameter.
+     * @param expand Comma-separated list of additional properties to be included in the response. Valid values include `createdTime`, `changedTime` and `provisioningState`. For example, `$expand=createdTime,changedTime`.
      * @param top The number of results to return. If null is passed, returns all resource groups.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<GenericResourceInner>> listAsync(final String filter, final String expand, final Integer top, final ListOperationCallback<GenericResourceInner> serviceCallback) {
+    public ServiceFuture<List<GenericResourceExpandedInner>> listAsync(final String filter, final String expand, final Integer top, final ListOperationCallback<GenericResourceExpandedInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(filter, expand, top),
-            new Func1<String, Observable<ServiceResponse<Page<GenericResourceInner>>>>() {
+            new Func1<String, Observable<ServiceResponse<Page<GenericResourceExpandedInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<GenericResourceInner>>> call(String nextPageLink) {
+                public Observable<ServiceResponse<Page<GenericResourceExpandedInner>>> call(String nextPageLink) {
                     return listNextSinglePageAsync(nextPageLink);
                 }
             },
@@ -461,16 +461,16 @@ public class ResourcesInner {
      * Get all the resources in a subscription.
      *
      * @param filter The filter to apply on the operation.
-     * @param expand The $expand query parameter.
+     * @param expand Comma-separated list of additional properties to be included in the response. Valid values include `createdTime`, `changedTime` and `provisioningState`. For example, `$expand=createdTime,changedTime`.
      * @param top The number of results to return. If null is passed, returns all resource groups.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;GenericResourceInner&gt; object
+     * @return the observable to the PagedList&lt;GenericResourceExpandedInner&gt; object
      */
-    public Observable<Page<GenericResourceInner>> listAsync(final String filter, final String expand, final Integer top) {
+    public Observable<Page<GenericResourceExpandedInner>> listAsync(final String filter, final String expand, final Integer top) {
         return listWithServiceResponseAsync(filter, expand, top)
-            .map(new Func1<ServiceResponse<Page<GenericResourceInner>>, Page<GenericResourceInner>>() {
+            .map(new Func1<ServiceResponse<Page<GenericResourceExpandedInner>>, Page<GenericResourceExpandedInner>>() {
                 @Override
-                public Page<GenericResourceInner> call(ServiceResponse<Page<GenericResourceInner>> response) {
+                public Page<GenericResourceExpandedInner> call(ServiceResponse<Page<GenericResourceExpandedInner>> response) {
                     return response.body();
                 }
             });
@@ -480,16 +480,16 @@ public class ResourcesInner {
      * Get all the resources in a subscription.
      *
      * @param filter The filter to apply on the operation.
-     * @param expand The $expand query parameter.
+     * @param expand Comma-separated list of additional properties to be included in the response. Valid values include `createdTime`, `changedTime` and `provisioningState`. For example, `$expand=createdTime,changedTime`.
      * @param top The number of results to return. If null is passed, returns all resource groups.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;GenericResourceInner&gt; object
+     * @return the observable to the PagedList&lt;GenericResourceExpandedInner&gt; object
      */
-    public Observable<ServiceResponse<Page<GenericResourceInner>>> listWithServiceResponseAsync(final String filter, final String expand, final Integer top) {
+    public Observable<ServiceResponse<Page<GenericResourceExpandedInner>>> listWithServiceResponseAsync(final String filter, final String expand, final Integer top) {
         return listSinglePageAsync(filter, expand, top)
-            .concatMap(new Func1<ServiceResponse<Page<GenericResourceInner>>, Observable<ServiceResponse<Page<GenericResourceInner>>>>() {
+            .concatMap(new Func1<ServiceResponse<Page<GenericResourceExpandedInner>>, Observable<ServiceResponse<Page<GenericResourceExpandedInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<GenericResourceInner>>> call(ServiceResponse<Page<GenericResourceInner>> page) {
+                public Observable<ServiceResponse<Page<GenericResourceExpandedInner>>> call(ServiceResponse<Page<GenericResourceExpandedInner>> page) {
                     String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
@@ -502,13 +502,13 @@ public class ResourcesInner {
     /**
      * Get all the resources in a subscription.
      *
-    ServiceResponse<PageImpl<GenericResourceInner>> * @param filter The filter to apply on the operation.
-    ServiceResponse<PageImpl<GenericResourceInner>> * @param expand The $expand query parameter.
-    ServiceResponse<PageImpl<GenericResourceInner>> * @param top The number of results to return. If null is passed, returns all resource groups.
+    ServiceResponse<PageImpl<GenericResourceExpandedInner>> * @param filter The filter to apply on the operation.
+    ServiceResponse<PageImpl<GenericResourceExpandedInner>> * @param expand Comma-separated list of additional properties to be included in the response. Valid values include `createdTime`, `changedTime` and `provisioningState`. For example, `$expand=createdTime,changedTime`.
+    ServiceResponse<PageImpl<GenericResourceExpandedInner>> * @param top The number of results to return. If null is passed, returns all resource groups.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;GenericResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;GenericResourceExpandedInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<GenericResourceInner>>> listSinglePageAsync(final String filter, final String expand, final Integer top) {
+    public Observable<ServiceResponse<Page<GenericResourceExpandedInner>>> listSinglePageAsync(final String filter, final String expand, final Integer top) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -516,12 +516,12 @@ public class ResourcesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.list(this.client.subscriptionId(), filter, expand, top, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<GenericResourceInner>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<GenericResourceExpandedInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<GenericResourceInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<GenericResourceExpandedInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<GenericResourceInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<GenericResourceInner>>(result.body(), result.response()));
+                        ServiceResponse<PageImpl<GenericResourceExpandedInner>> result = listDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<GenericResourceExpandedInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -529,9 +529,9 @@ public class ResourcesInner {
             });
     }
 
-    private ServiceResponse<PageImpl<GenericResourceInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<GenericResourceInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<GenericResourceInner>>() { }.getType())
+    private ServiceResponse<PageImpl<GenericResourceExpandedInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<GenericResourceExpandedInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<GenericResourceExpandedInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -2041,13 +2041,13 @@ public class ResourcesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PagedList&lt;GenericResourceInner&gt; object if successful.
+     * @return the PagedList&lt;GenericResourceExpandedInner&gt; object if successful.
      */
-    public PagedList<GenericResourceInner> listNext(final String nextPageLink) {
-        ServiceResponse<Page<GenericResourceInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<GenericResourceInner>(response.body()) {
+    public PagedList<GenericResourceExpandedInner> listNext(final String nextPageLink) {
+        ServiceResponse<Page<GenericResourceExpandedInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<GenericResourceExpandedInner>(response.body()) {
             @Override
-            public Page<GenericResourceInner> nextPage(String nextPageLink) {
+            public Page<GenericResourceExpandedInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
@@ -2062,12 +2062,12 @@ public class ResourcesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<GenericResourceInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<GenericResourceInner>> serviceFuture, final ListOperationCallback<GenericResourceInner> serviceCallback) {
+    public ServiceFuture<List<GenericResourceExpandedInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<GenericResourceExpandedInner>> serviceFuture, final ListOperationCallback<GenericResourceExpandedInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponse<Page<GenericResourceInner>>>>() {
+            new Func1<String, Observable<ServiceResponse<Page<GenericResourceExpandedInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<GenericResourceInner>>> call(String nextPageLink) {
+                public Observable<ServiceResponse<Page<GenericResourceExpandedInner>>> call(String nextPageLink) {
                     return listNextSinglePageAsync(nextPageLink);
                 }
             },
@@ -2079,13 +2079,13 @@ public class ResourcesInner {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;GenericResourceInner&gt; object
+     * @return the observable to the PagedList&lt;GenericResourceExpandedInner&gt; object
      */
-    public Observable<Page<GenericResourceInner>> listNextAsync(final String nextPageLink) {
+    public Observable<Page<GenericResourceExpandedInner>> listNextAsync(final String nextPageLink) {
         return listNextWithServiceResponseAsync(nextPageLink)
-            .map(new Func1<ServiceResponse<Page<GenericResourceInner>>, Page<GenericResourceInner>>() {
+            .map(new Func1<ServiceResponse<Page<GenericResourceExpandedInner>>, Page<GenericResourceExpandedInner>>() {
                 @Override
-                public Page<GenericResourceInner> call(ServiceResponse<Page<GenericResourceInner>> response) {
+                public Page<GenericResourceExpandedInner> call(ServiceResponse<Page<GenericResourceExpandedInner>> response) {
                     return response.body();
                 }
             });
@@ -2096,13 +2096,13 @@ public class ResourcesInner {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;GenericResourceInner&gt; object
+     * @return the observable to the PagedList&lt;GenericResourceExpandedInner&gt; object
      */
-    public Observable<ServiceResponse<Page<GenericResourceInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<GenericResourceExpandedInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
         return listNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponse<Page<GenericResourceInner>>, Observable<ServiceResponse<Page<GenericResourceInner>>>>() {
+            .concatMap(new Func1<ServiceResponse<Page<GenericResourceExpandedInner>>, Observable<ServiceResponse<Page<GenericResourceExpandedInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<GenericResourceInner>>> call(ServiceResponse<Page<GenericResourceInner>> page) {
+                public Observable<ServiceResponse<Page<GenericResourceExpandedInner>>> call(ServiceResponse<Page<GenericResourceExpandedInner>> page) {
                     String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
@@ -2115,22 +2115,22 @@ public class ResourcesInner {
     /**
      * Get all the resources in a subscription.
      *
-    ServiceResponse<PageImpl<GenericResourceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<GenericResourceExpandedInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;GenericResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;GenericResourceExpandedInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<GenericResourceInner>>> listNextSinglePageAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<GenericResourceExpandedInner>>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         String nextUrl = String.format("%s", nextPageLink);
         return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<GenericResourceInner>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<GenericResourceExpandedInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<GenericResourceInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<GenericResourceExpandedInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<GenericResourceInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<GenericResourceInner>>(result.body(), result.response()));
+                        ServiceResponse<PageImpl<GenericResourceExpandedInner>> result = listNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<GenericResourceExpandedInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -2138,9 +2138,9 @@ public class ResourcesInner {
             });
     }
 
-    private ServiceResponse<PageImpl<GenericResourceInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<GenericResourceInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<GenericResourceInner>>() { }.getType())
+    private ServiceResponse<PageImpl<GenericResourceExpandedInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<GenericResourceExpandedInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<GenericResourceExpandedInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

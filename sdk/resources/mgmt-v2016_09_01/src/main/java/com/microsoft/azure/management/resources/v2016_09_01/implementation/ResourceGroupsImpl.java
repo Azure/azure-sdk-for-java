@@ -18,7 +18,7 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.management.resources.v2016_09_01.ResourceGroupExportResult;
 import com.microsoft.azure.management.resources.v2016_09_01.ExportTemplateRequest;
 import com.microsoft.azure.management.resources.v2016_09_01.ResourceGroup;
-import com.microsoft.azure.management.resources.v2016_09_01.ResourcegroupSubscriptionGenericResource;
+import com.microsoft.azure.management.resources.v2016_09_01.ResourcegroupSubscriptionGenericResourceExpanded;
 
 class ResourceGroupsImpl extends WrapperImpl<ResourceGroupsInner> implements ResourceGroups {
     private final ResourcesManager manager;
@@ -46,10 +46,10 @@ class ResourceGroupsImpl extends WrapperImpl<ResourceGroupsInner> implements Res
     }
 
     @Override
-    public Completable checkExistenceAsync(String resourceGroupName) {
+    public Observable<Boolean> checkExistenceAsync(String resourceGroupName) {
         ResourceGroupsInner client = this.inner();
-        return client.checkExistenceAsync(resourceGroupName).toCompletable();
-    }
+        return client.checkExistenceAsync(resourceGroupName)
+    ;}
 
     @Override
     public Observable<ResourceGroupExportResult> exportTemplateAsync(String resourceGroupName, ExportTemplateRequest parameters) {
@@ -85,10 +85,14 @@ class ResourceGroupsImpl extends WrapperImpl<ResourceGroupsInner> implements Res
     public Observable<ResourceGroup> getAsync(String resourceGroupName) {
         ResourceGroupsInner client = this.inner();
         return client.getAsync(resourceGroupName)
-        .map(new Func1<ResourceGroupInner, ResourceGroup>() {
+        .flatMap(new Func1<ResourceGroupInner, Observable<ResourceGroup>>() {
             @Override
-            public ResourceGroup call(ResourceGroupInner inner) {
-                return wrapModel(inner);
+            public Observable<ResourceGroup> call(ResourceGroupInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ResourceGroup)wrapModel(inner));
+                }
             }
        });
     }
@@ -99,24 +103,24 @@ class ResourceGroupsImpl extends WrapperImpl<ResourceGroupsInner> implements Res
         return client.deleteAsync(resourceGroupName).toCompletable();
     }
 
-    private ResourcegroupSubscriptionGenericResourceImpl wrapResourcegroupSubscriptionGenericResourceModel(GenericResourceInner inner) {
-        return  new ResourcegroupSubscriptionGenericResourceImpl(inner, manager());
+    private ResourcegroupSubscriptionGenericResourceExpandedImpl wrapResourcegroupSubscriptionGenericResourceExpandedModel(GenericResourceExpandedInner inner) {
+        return  new ResourcegroupSubscriptionGenericResourceExpandedImpl(inner, manager());
     }
 
     @Override
-    public Observable<ResourcegroupSubscriptionGenericResource> listByResourceGroupAsync(final String resourceGroupName) {
+    public Observable<ResourcegroupSubscriptionGenericResourceExpanded> listByResourceGroupAsync(final String resourceGroupName) {
         ResourceGroupsInner client = this.inner();
         return client.listByResourceGroupAsync(resourceGroupName)
-        .flatMapIterable(new Func1<Page<GenericResourceInner>, Iterable<GenericResourceInner>>() {
+        .flatMapIterable(new Func1<Page<GenericResourceExpandedInner>, Iterable<GenericResourceExpandedInner>>() {
             @Override
-            public Iterable<GenericResourceInner> call(Page<GenericResourceInner> page) {
+            public Iterable<GenericResourceExpandedInner> call(Page<GenericResourceExpandedInner> page) {
                 return page.items();
             }
         })
-        .map(new Func1<GenericResourceInner, ResourcegroupSubscriptionGenericResource>() {
+        .map(new Func1<GenericResourceExpandedInner, ResourcegroupSubscriptionGenericResourceExpanded>() {
             @Override
-            public ResourcegroupSubscriptionGenericResource call(GenericResourceInner inner) {
-                return wrapResourcegroupSubscriptionGenericResourceModel(inner);
+            public ResourcegroupSubscriptionGenericResourceExpanded call(GenericResourceExpandedInner inner) {
+                return wrapResourcegroupSubscriptionGenericResourceExpandedModel(inner);
             }
         });
     }
