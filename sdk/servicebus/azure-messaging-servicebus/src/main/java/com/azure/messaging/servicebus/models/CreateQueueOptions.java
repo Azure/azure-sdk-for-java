@@ -24,17 +24,17 @@ public class CreateQueueOptions {
 
     private Duration autoDeleteOnIdle;
     private Duration defaultMessageTimeToLive;
-    private Boolean deadLetteringOnMessageExpiration;
+    private boolean deadLetteringOnMessageExpiration;
     private Duration duplicateDetectionHistoryTimeWindow;
-    private Boolean enableBatchedOperations;
-    private Boolean enablePartitioning;
+    private boolean enableBatchedOperations;
+    private boolean enablePartitioning;
     private String forwardTo;
     private String forwardDeadLetteredMessagesTo;
     private Duration lockDuration;
-    private Integer maxDeliveryCount;
-    private Integer maxSizeInMegabytes;
-    private Boolean requiresDuplicateDetection;
-    private Boolean requiresSession;
+    private int maxDeliveryCount;
+    private int maxSizeInMegabytes;
+    private boolean requiresDuplicateDetection;
+    private boolean requiresSession;
     private String userMetadata;
 
     /**
@@ -46,12 +46,12 @@ public class CreateQueueOptions {
      *     <li>{@link #setDefaultMessageTimeToLive(Duration)} is max duration value.</li>
      *     <li>{@link #setDuplicateDetectionHistoryTimeWindow(Duration)} is max duration value, but duplication
      *     detection is disabled.</li>
-     *     <li>{@link #setRequiresDuplicateDetection(Boolean)} is false.</li>
-     *     <li>{@link #setEnableBatchedOperations(Boolean)} is true.</li>
+     *     <li>{@link #setRequiresDuplicateDetection(boolean)} is false.</li>
+     *     <li>{@link #setEnableBatchedOperations(boolean)} is true.</li>
      *     <li>{@link #setLockDuration(Duration)} is 1 minute.</li>
-     *     <li>{@link #setMaxDeliveryCount(Integer)} is 10.</li>
-     *     <li>{@link #setMaxSizeInMegabytes(Integer)} is 1024MB.</li>
-     *     <li>{@link #setRequiresSession(Boolean)} is false.</li>
+     *     <li>{@link #setMaxDeliveryCount(int)} is 10.</li>
+     *     <li>{@link #setMaxSizeInMegabytes(int)} is 1024MB.</li>
+     *     <li>{@link #setRequiresSession(boolean)} is false.</li>
      * </ul>
      *
      * @param queueName Name of the queue.
@@ -175,7 +175,7 @@ public class CreateQueueOptions {
      *
      * @return the deadLetteringOnMessageExpiration value.
      */
-    public Boolean deadLetteringOnMessageExpiration() {
+    public boolean deadLetteringOnMessageExpiration() {
         return this.deadLetteringOnMessageExpiration;
     }
 
@@ -187,7 +187,7 @@ public class CreateQueueOptions {
      *
      * @return the CreateQueueOptions object itself.
      */
-    public CreateQueueOptions setDeadLetteringOnMessageExpiration(Boolean deadLetteringOnMessageExpiration) {
+    public CreateQueueOptions setDeadLetteringOnMessageExpiration(boolean deadLetteringOnMessageExpiration) {
         this.deadLetteringOnMessageExpiration = deadLetteringOnMessageExpiration;
         return this;
     }
@@ -221,7 +221,7 @@ public class CreateQueueOptions {
      *
      * @return the enableBatchedOperations value.
      */
-    public Boolean enableBatchedOperations() {
+    public boolean enableBatchedOperations() {
         return this.enableBatchedOperations;
     }
 
@@ -233,7 +233,7 @@ public class CreateQueueOptions {
      *
      * @return the CreateQueueOptions object itself.
      */
-    public CreateQueueOptions setEnableBatchedOperations(Boolean enableBatchedOperations) {
+    public CreateQueueOptions setEnableBatchedOperations(boolean enableBatchedOperations) {
         this.enableBatchedOperations = enableBatchedOperations;
         return this;
     }
@@ -244,7 +244,7 @@ public class CreateQueueOptions {
      *
      * @return the enablePartitioning value.
      */
-    public Boolean enablePartitioning() {
+    public boolean enablePartitioning() {
         return this.enablePartitioning;
     }
 
@@ -256,7 +256,7 @@ public class CreateQueueOptions {
      *
      * @return the CreateQueueOptions object itself.
      */
-    public CreateQueueOptions setEnablePartitioning(Boolean enablePartitioning) {
+    public CreateQueueOptions setEnablePartitioning(boolean enablePartitioning) {
         this.enablePartitioning = enablePartitioning;
         return this;
     }
@@ -338,7 +338,7 @@ public class CreateQueueOptions {
      *
      * @return the maxDeliveryCount value.
      */
-    public Integer getMaxDeliveryCount() {
+    public int getMaxDeliveryCount() {
         return this.maxDeliveryCount;
     }
 
@@ -350,7 +350,7 @@ public class CreateQueueOptions {
      *
      * @return the CreateQueueOptions object itself.
      */
-    public CreateQueueOptions setMaxDeliveryCount(Integer maxDeliveryCount) {
+    public CreateQueueOptions setMaxDeliveryCount(int maxDeliveryCount) {
         this.maxDeliveryCount = maxDeliveryCount;
         return this;
     }
@@ -361,7 +361,7 @@ public class CreateQueueOptions {
      *
      * @return the maxSizeInMegabytes value.
      */
-    public Integer getMaxSizeInMegabytes() {
+    public int getMaxSizeInMegabytes() {
         return this.maxSizeInMegabytes;
     }
 
@@ -373,7 +373,7 @@ public class CreateQueueOptions {
      *
      * @return the CreateQueueOptions object itself.
      */
-    public CreateQueueOptions setMaxSizeInMegabytes(Integer maxSizeInMegabytes) {
+    public CreateQueueOptions setMaxSizeInMegabytes(int maxSizeInMegabytes) {
         this.maxSizeInMegabytes = maxSizeInMegabytes;
         return this;
     }
@@ -383,7 +383,7 @@ public class CreateQueueOptions {
      *
      * @return the requiresDuplicateDetection value.
      */
-    public Boolean requiresDuplicateDetection() {
+    public boolean requiresDuplicateDetection() {
         return this.requiresDuplicateDetection;
     }
 
@@ -394,7 +394,7 @@ public class CreateQueueOptions {
      *
      * @return the CreateQueueOptions object itself.
      */
-    public CreateQueueOptions setRequiresDuplicateDetection(Boolean requiresDuplicateDetection) {
+    public CreateQueueOptions setRequiresDuplicateDetection(boolean requiresDuplicateDetection) {
         this.requiresDuplicateDetection = requiresDuplicateDetection;
         return this;
     }
@@ -404,7 +404,7 @@ public class CreateQueueOptions {
      *
      * @return the requiresSession value.
      */
-    public Boolean requiresSession() {
+    public boolean requiresSession() {
         return this.requiresSession;
     }
 
@@ -415,7 +415,7 @@ public class CreateQueueOptions {
      *
      * @return the CreateQueueOptions object itself.
      */
-    public CreateQueueOptions setRequiresSession(Boolean requiresSession) {
+    public CreateQueueOptions setRequiresSession(boolean requiresSession) {
         this.requiresSession = requiresSession;
         return this;
     }
