@@ -275,14 +275,11 @@ class ServiceBusManagementAsyncClientTest {
                 assertEquals(updatedAt, info.getUpdatedAt());
                 assertEquals(accessedAt, info.getAccessedAt());
 
-                final MessageCountDetails details = info.getDetails();
-                assertNotNull(details);
-
-                assertEquals(expectedCount.getActiveMessageCount(), details.getActiveMessageCount());
-                assertEquals(expectedCount.getDeadLetterMessageCount(), details.getDeadLetterMessageCount());
-                assertEquals(expectedCount.getScheduledMessageCount(), details.getScheduledMessageCount());
-                assertEquals(expectedCount.getTransferMessageCount(), details.getTransferMessageCount());
-                assertEquals(expectedCount.getTransferDeadLetterMessageCount(), details.getTransferDeadLetterMessageCount());
+                assertEquals(expectedCount.getActiveMessageCount(), info.getActiveMessageCount());
+                assertEquals(expectedCount.getDeadLetterMessageCount(), info.getDeadLetterMessageCount());
+                assertEquals(expectedCount.getScheduledMessageCount(), info.getScheduledMessageCount());
+                assertEquals(expectedCount.getTransferMessageCount(), info.getTransferMessageCount());
+                assertEquals(expectedCount.getTransferDeadLetterMessageCount(), info.getTransferDeadLetterMessageCount());
             })
             .verifyComplete();
     }
@@ -325,14 +322,12 @@ class ServiceBusManagementAsyncClientTest {
                 assertEquals(updatedAt, info.getUpdatedAt());
                 assertEquals(accessedAt, info.getAccessedAt());
 
-                final MessageCountDetails details = info.getDetails();
-                assertNotNull(details);
-
-                assertEquals(expectedCount.getActiveMessageCount(), details.getActiveMessageCount());
-                assertEquals(expectedCount.getDeadLetterMessageCount(), details.getDeadLetterMessageCount());
-                assertEquals(expectedCount.getScheduledMessageCount(), details.getScheduledMessageCount());
-                assertEquals(expectedCount.getTransferMessageCount(), details.getTransferMessageCount());
-                assertEquals(expectedCount.getTransferDeadLetterMessageCount(), details.getTransferDeadLetterMessageCount());
+                assertEquals(expectedCount.getActiveMessageCount(), info.getActiveMessageCount());
+                assertEquals(expectedCount.getDeadLetterMessageCount(), info.getDeadLetterMessageCount());
+                assertEquals(expectedCount.getScheduledMessageCount(), info.getScheduledMessageCount());
+                assertEquals(expectedCount.getTransferMessageCount(), info.getTransferMessageCount());
+                assertEquals(expectedCount.getTransferDeadLetterMessageCount(),
+                    info.getTransferDeadLetterMessageCount());
             })
             .verifyComplete();
     }
