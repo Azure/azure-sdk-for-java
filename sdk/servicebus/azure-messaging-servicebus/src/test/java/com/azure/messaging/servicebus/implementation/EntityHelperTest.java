@@ -19,7 +19,7 @@ class EntityHelperTest {
         final CreateQueueOptions expected = new CreateQueueOptions(queueName)
             .setAutoDeleteOnIdle(Duration.ofSeconds(15))
             .setDefaultMessageTimeToLive(Duration.ofSeconds(50))
-            .setDeadLetteringOnMessageExpiration(null)
+            .setDeadLetteringOnMessageExpiration(true)
             .setDuplicateDetectionHistoryTimeWindow(Duration.ofSeconds(13))
             .setEnableBatchedOperations(false)
             .setEnablePartitioning(true)
