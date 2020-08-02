@@ -82,12 +82,12 @@ public class CreateQueueOptions {
     }
 
     /**
-     * Initializes a new instance based on the specified {@link CreateQueueOptions} instance. This is useful for creating
-     * a new queue based on the properties of an existing queue.
+     * Initializes a new instance based on the specified {@link QueueProperties} instance. This is useful for creating a
+     * new queue based on the properties of an existing queue.
      *
      * @param queue Existing queue to create options with.
      */
-    public CreateQueueOptions(CreateQueueOptions queue) {
+    public CreateQueueOptions(QueueProperties queue) {
         Objects.requireNonNull(queue, "'queue' cannot be null.");
         Objects.requireNonNull(queue.getName(), "Queue name cannot be null");
 
@@ -136,6 +136,7 @@ public class CreateQueueOptions {
      * deleted. The minimum duration is 5 minutes.
      *
      * @param autoDeleteOnIdle the autoDeleteOnIdle value to set.
+     *
      * @return the CreateQueueOptions object itself.
      */
     public CreateQueueOptions setAutoDeleteOnIdle(Duration autoDeleteOnIdle) {
@@ -160,6 +161,7 @@ public class CreateQueueOptions {
      * used when TimeToLive is not set on a message itself.
      *
      * @param defaultMessageTimeToLive the defaultMessageTimeToLive value to set.
+     *
      * @return the CreateQueueOptions object itself.
      */
     public CreateQueueOptions setDefaultMessageTimeToLive(Duration defaultMessageTimeToLive) {
@@ -182,6 +184,7 @@ public class CreateQueueOptions {
      * support when a message expires.
      *
      * @param deadLetteringOnMessageExpiration the deadLetteringOnMessageExpiration value to set.
+     *
      * @return the CreateQueueOptions object itself.
      */
     public CreateQueueOptions setDeadLetteringOnMessageExpiration(Boolean deadLetteringOnMessageExpiration) {
@@ -204,6 +207,7 @@ public class CreateQueueOptions {
      * the duplicate detection history. The default value is 10 minutes.
      *
      * @param duplicateDetectionHistoryTimeWindow the duplicateDetectionHistoryTimeWindow value to set.
+     *
      * @return the CreateQueueOptions object itself.
      */
     public CreateQueueOptions setDuplicateDetectionHistoryTimeWindow(Duration duplicateDetectionHistoryTimeWindow) {
@@ -226,6 +230,7 @@ public class CreateQueueOptions {
      * enabled.
      *
      * @param enableBatchedOperations the enableBatchedOperations value to set.
+     *
      * @return the CreateQueueOptions object itself.
      */
     public CreateQueueOptions setEnableBatchedOperations(Boolean enableBatchedOperations) {
@@ -248,6 +253,7 @@ public class CreateQueueOptions {
      * multiple message brokers.
      *
      * @param enablePartitioning the enablePartitioning value to set.
+     *
      * @return the CreateQueueOptions object itself.
      */
     public CreateQueueOptions setEnablePartitioning(Boolean enablePartitioning) {
@@ -270,6 +276,7 @@ public class CreateQueueOptions {
      * forwarded to.
      *
      * @param forwardTo the forwardTo value to set.
+     *
      * @return the CreateQueueOptions object itself.
      */
     public CreateQueueOptions setForwardTo(String forwardTo) {
@@ -292,6 +299,7 @@ public class CreateQueueOptions {
      * messages of this queue are forwarded to.
      *
      * @param forwardDeadLetteredMessagesTo the forwardDeadLetteredMessagesTo value to set.
+     *
      * @return the CreateQueueOptions object itself.
      */
     public CreateQueueOptions setForwardDeadLetteredMessagesTo(String forwardDeadLetteredMessagesTo) {
@@ -316,6 +324,7 @@ public class CreateQueueOptions {
      * minute.
      *
      * @param lockDuration the lockDuration value to set.
+     *
      * @return the CreateQueueOptions object itself.
      */
     public CreateQueueOptions setLockDuration(Duration lockDuration) {
@@ -338,6 +347,7 @@ public class CreateQueueOptions {
      * number of deliveries. Default value is 10.
      *
      * @param maxDeliveryCount the maxDeliveryCount value to set.
+     *
      * @return the CreateQueueOptions object itself.
      */
     public CreateQueueOptions setMaxDeliveryCount(Integer maxDeliveryCount) {
@@ -360,6 +370,7 @@ public class CreateQueueOptions {
      * allocated for the queue.
      *
      * @param maxSizeInMegabytes the maxSizeInMegabytes value to set.
+     *
      * @return the CreateQueueOptions object itself.
      */
     public CreateQueueOptions setMaxSizeInMegabytes(Integer maxSizeInMegabytes) {
@@ -380,6 +391,7 @@ public class CreateQueueOptions {
      * Set the requiresDuplicateDetection property: A value indicating if this queue requires duplicate detection.
      *
      * @param requiresDuplicateDetection the requiresDuplicateDetection value to set.
+     *
      * @return the CreateQueueOptions object itself.
      */
     public CreateQueueOptions setRequiresDuplicateDetection(Boolean requiresDuplicateDetection) {
@@ -400,6 +412,7 @@ public class CreateQueueOptions {
      * Set the requiresSession property: A value that indicates whether the queue supports the concept of sessions.
      *
      * @param requiresSession the requiresSession value to set.
+     *
      * @return the CreateQueueOptions object itself.
      */
     public CreateQueueOptions setRequiresSession(Boolean requiresSession) {
@@ -422,6 +435,7 @@ public class CreateQueueOptions {
      * chars.
      *
      * @param userMetadata the userMetadata value to set.
+     *
      * @return the CreateQueueOptions object itself.
      */
     public CreateQueueOptions setUserMetadata(String userMetadata) {

@@ -53,7 +53,8 @@ class CreateQueueOptionsTest {
     void constructorWithOptions() {
         // Arrange
         final String queueName = "some-queue";
-        final CreateQueueOptions expected = new CreateQueueOptions(queueName)
+        final QueueProperties expected = new QueueProperties()
+            .setName(queueName)
             .setAutoDeleteOnIdle(Duration.ofSeconds(15))
             .setDefaultMessageTimeToLive(Duration.ofSeconds(50))
             .setDeadLetteringOnMessageExpiration(null)
