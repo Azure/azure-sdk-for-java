@@ -545,7 +545,7 @@ public final class QueueProperties {
      * @param enablePartitioning the enablePartitioning value to set.
      * @return the QueueDescription object itself.
      */
-    public QueueProperties setEnablePartitioning(Boolean enablePartitioning) {
+    QueueProperties setEnablePartitioning(Boolean enablePartitioning) {
         this.enablePartitioning = enablePartitioning;
         return this;
     }
@@ -757,7 +757,7 @@ public final class QueueProperties {
      * @param requiresDuplicateDetection the requiresDuplicateDetection value to set.
      * @return the QueueDescription object itself.
      */
-    public QueueProperties setRequiresDuplicateDetection(Boolean requiresDuplicateDetection) {
+    QueueProperties setRequiresDuplicateDetection(Boolean requiresDuplicateDetection) {
         this.requiresDuplicateDetection = requiresDuplicateDetection;
         return this;
     }
@@ -777,7 +777,7 @@ public final class QueueProperties {
      * @param requiresSession the requiresSession value to set.
      * @return the QueueDescription object itself.
      */
-    public QueueProperties setRequiresSession(Boolean requiresSession) {
+    QueueProperties setRequiresSession(Boolean requiresSession) {
         this.requiresSession = requiresSession;
         return this;
     }
