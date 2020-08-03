@@ -5,7 +5,6 @@
 package com.azure.messaging.servicebus.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.EntityHelper;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
@@ -13,9 +12,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
-
-import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.DEFAULT_LOCK_DURATION;
-import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.MAX_DURATION;
+import java.util.Objects;
 
 /** The SubscriptionDescription model. */
 @JacksonXmlRootElement(
@@ -185,6 +182,11 @@ public final class SubscriptionDescription {
         // This is used by classes in different packages to get access to private and package-private methods.
         EntityHelper.setSubscriptionAccessor(new EntityHelper.SubscriptionAccessor() {
             @Override
+            public SubscriptionDescription createSubscription(CreateSubscriptionOptions options) {
+                return new SubscriptionDescription(options);
+            }
+
+            @Override
             public void setTopicName(SubscriptionDescription subscriptionDescription, String topicName) {
                 subscriptionDescription.setTopicName(topicName);
             }
@@ -207,50 +209,26 @@ public final class SubscriptionDescription {
     }
 
     /**
-     * Creates an instance with the name of the subscription and its associated topic. Default values for the
-     * subscription are populated. The properties populated with defaults are:
+     * Creates a new instance with the given options.
      *
-     * <ul>
-     *     <li>{@link #setAutoDeleteOnIdle(Duration)}</li>
-     *     <li>{@link #setDeadLetteringOnMessageExpiration(Boolean)}</li>
-     *     <li>{@link #setDefaultMessageTimeToLive(Duration)}</li>
-     *     <li>{@link #setEnableBatchedOperations(Boolean)}</li>
-     *     <li>{@link #setEnableDeadLetteringOnFilterEvaluationExceptions(Boolean)}</li>
-     *     <li>{@link #setLockDuration(Duration)}</li>
-     *     <li>{@link #setMaxDeliveryCount(Integer)}</li>
-     *     <li>{@link #setRequiresSession(Boolean)}</li>
-     * </ul>
-     *
-     * @param topicName Name of the topic associated with this subscription.
-     * @param subscriptionName Name of the subscription.
-     * @throws NullPointerException if {@code topicName} or {@code subscriptionName} are null.
-     * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are empty strings.
+     * @param options Options used to create a subscription.
      */
-    public SubscriptionDescription(String topicName, String subscriptionName) {
-        final ClientLogger logger = new ClientLogger(SubscriptionDescription.class);
-        if (topicName == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'topicName' cannot be null."));
-        } else if (topicName.isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'topicName' cannot be an empty string."));
-        } else if (subscriptionName == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'subscriptionName' cannot be null."));
-        } else if (subscriptionName.isEmpty()) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("'subscriptionName' cannot be an empty string."));
-        }
+    SubscriptionDescription(CreateSubscriptionOptions options) {
+        Objects.requireNonNull(options, "'options' cannot be null.");
 
-        this.topicName = topicName;
-        this.subscriptionName = subscriptionName;
-
-        // Defaults copied from .NET's implementation.
-        this.autoDeleteOnIdle = MAX_DURATION;
-        this.deadLetteringOnMessageExpiration = false;
-        this.deadLetteringOnFilterEvaluationExceptions = true;
-        this.defaultMessageTimeToLive = MAX_DURATION;
-        this.enableBatchedOperations = true;
-        this.lockDuration = DEFAULT_LOCK_DURATION;
-        this.maxDeliveryCount = 10;
-        this.requiresSession = false;
+        this.topicName = options.getTopicName();
+        this.subscriptionName = options.getSubscriptionName();
+        this.autoDeleteOnIdle = options.getAutoDeleteOnIdle();
+        this.defaultMessageTimeToLive = options.getDefaultMessageTimeToLive();
+        this.deadLetteringOnMessageExpiration = options.deadLetteringOnMessageExpiration();
+        this.enableBatchedOperations = options.enableBatchedOperations();
+        this.forwardTo = options.getForwardTo();
+        this.forwardDeadLetteredMessagesTo = options.getForwardDeadLetteredMessagesTo();
+        this.lockDuration = options.getLockDuration();
+        this.maxDeliveryCount = options.getMaxDeliveryCount();
+        this.requiresSession = options.requiresSession();
+        this.status = options.getStatus();
+        this.userMetadata = options.getUserMetadata();
     }
 
     /**
@@ -331,7 +309,7 @@ public final class SubscriptionDescription {
      * @param requiresSession the requiresSession value to set.
      * @return the SubscriptionDescription object itself.
      */
-    public SubscriptionDescription setRequiresSession(Boolean requiresSession) {
+    public SubscriptionDescription setRequiresSession(boolean requiresSession) {
         this.requiresSession = requiresSession;
         return this;
     }
@@ -377,7 +355,7 @@ public final class SubscriptionDescription {
      * @param deadLetteringOnMessageExpiration the deadLetteringOnMessageExpiration value to set.
      * @return the SubscriptionDescription object itself.
      */
-    public SubscriptionDescription setDeadLetteringOnMessageExpiration(Boolean deadLetteringOnMessageExpiration) {
+    public SubscriptionDescription setDeadLetteringOnMessageExpiration(boolean deadLetteringOnMessageExpiration) {
         this.deadLetteringOnMessageExpiration = deadLetteringOnMessageExpiration;
         return this;
     }
@@ -442,7 +420,7 @@ public final class SubscriptionDescription {
      * @param maxDeliveryCount the maxDeliveryCount value to set.
      * @return the SubscriptionDescription object itself.
      */
-    public SubscriptionDescription setMaxDeliveryCount(Integer maxDeliveryCount) {
+    public SubscriptionDescription setMaxDeliveryCount(int maxDeliveryCount) {
         this.maxDeliveryCount = maxDeliveryCount;
         return this;
     }
@@ -464,7 +442,7 @@ public final class SubscriptionDescription {
      * @param enableBatchedOperations the enableBatchedOperations value to set.
      * @return the SubscriptionDescription object itself.
      */
-    public SubscriptionDescription setEnableBatchedOperations(Boolean enableBatchedOperations) {
+    public SubscriptionDescription setEnableBatchedOperations(boolean enableBatchedOperations) {
         this.enableBatchedOperations = enableBatchedOperations;
         return this;
     }
@@ -484,7 +462,7 @@ public final class SubscriptionDescription {
      * @param status the status value to set.
      * @return the SubscriptionDescription object itself.
      */
-    SubscriptionDescription setStatus(EntityStatus status) {
+    public SubscriptionDescription setStatus(EntityStatus status) {
         this.status = status;
         return this;
     }

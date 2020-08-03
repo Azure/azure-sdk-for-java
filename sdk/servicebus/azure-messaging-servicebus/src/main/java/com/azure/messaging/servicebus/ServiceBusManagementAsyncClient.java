@@ -42,6 +42,7 @@ import com.azure.messaging.servicebus.implementation.models.SubscriptionDescript
 import com.azure.messaging.servicebus.implementation.models.SubscriptionDescriptionFeed;
 import com.azure.messaging.servicebus.implementation.models.TopicDescriptionEntry;
 import com.azure.messaging.servicebus.implementation.models.TopicDescriptionFeed;
+import com.azure.messaging.servicebus.models.CreateSubscriptionOptions;
 import com.azure.messaging.servicebus.models.CreateTopicOptions;
 import com.azure.messaging.servicebus.models.NamespaceProperties;
 import com.azure.messaging.servicebus.models.QueueDescription;
@@ -194,7 +195,7 @@ public final class ServiceBusManagementAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SubscriptionDescription> createSubscription(String topicName, String subscriptionName) {
         try {
-            return createSubscription(new SubscriptionDescription(topicName, subscriptionName));
+            return createSubscription(new CreateSubscriptionOptions(topicName, subscriptionName));
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
@@ -215,7 +216,7 @@ public final class ServiceBusManagementAsyncClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SubscriptionDescription> createSubscription(SubscriptionDescription subscription) {
+    public Mono<SubscriptionDescription> createSubscription(CreateSubscriptionOptions subscription) {
         return createSubscriptionWithResponse(subscription).map(Response::getValue);
     }
 
@@ -235,7 +236,7 @@ public final class ServiceBusManagementAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SubscriptionDescription>> createSubscriptionWithResponse(
-        SubscriptionDescription subscription) {
+        CreateSubscriptionOptions subscription) {
         return withContext(context -> createSubscriptionWithResponse(subscription, context));
     }
 
@@ -941,7 +942,7 @@ public final class ServiceBusManagementAsyncClient {
      * <ul>
      * <li>{@link SubscriptionDescription#setDefaultMessageTimeToLive(Duration) DefaultMessageTimeToLive}</li>
      * <li>{@link SubscriptionDescription#setLockDuration(Duration) LockDuration}</li>
-     * <li>{@link SubscriptionDescription#setMaxDeliveryCount(Integer) MaxDeliveryCount}</li>
+     * <li>{@link SubscriptionDescription#setMaxDeliveryCount(int) MaxDeliveryCount}</li>
      * </ul>
      *
      * @param subscription Information about the subscription to update. You must provide all the property values
@@ -979,7 +980,7 @@ public final class ServiceBusManagementAsyncClient {
      * <ul>
      * <li>{@link SubscriptionDescription#setDefaultMessageTimeToLive(Duration) DefaultMessageTimeToLive}</li>
      * <li>{@link SubscriptionDescription#setLockDuration(Duration) LockDuration}</li>
-     * <li>{@link SubscriptionDescription#setMaxDeliveryCount(Integer) MaxDeliveryCount}</li>
+     * <li>{@link SubscriptionDescription#setMaxDeliveryCount(int) MaxDeliveryCount}</li>
      * </ul>
      *
      * @param subscription Information about the subscription to update. You must provide all the property values
@@ -1113,17 +1114,18 @@ public final class ServiceBusManagementAsyncClient {
     /**
      * Creates a subscription with its context.
      *
-     * @param subscription Subscription to create.
+     * @param options Subscription to create.
      * @param context Context to pass into request.
      *
      * @return A Mono that completes with the created {@link SubscriptionDescription}.
      */
-    Mono<Response<SubscriptionDescription>> createSubscriptionWithResponse(SubscriptionDescription subscription,
+    Mono<Response<SubscriptionDescription>> createSubscriptionWithResponse(CreateSubscriptionOptions options,
         Context context) {
-        if (subscription == null) {
+        if (options == null) {
             return monoError(logger, new NullPointerException("'subscription' cannot be null."));
         }
 
+        final SubscriptionDescription subscription = EntityHelper.createSubscription(options);
         final CreateSubscriptionBodyContent content = new CreateSubscriptionBodyContent()
             .setType(CONTENT_TYPE)
             .setSubscriptionDescription(subscription);
@@ -1132,10 +1134,10 @@ public final class ServiceBusManagementAsyncClient {
         final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
 
         try {
-            return managementClient.getSubscriptions().putWithResponseAsync(subscription.getTopicName(),
-                subscription.getSubscriptionName(), createEntity, null, withTracing)
+            return managementClient.getSubscriptions().putWithResponseAsync(options.getTopicName(),
+                options.getSubscriptionName(), createEntity, null, withTracing)
                 .onErrorMap(ServiceBusManagementAsyncClient::mapException)
-                .map(response -> deserializeSubscription(subscription.getTopicName(), response));
+                .map(response -> deserializeSubscription(options.getTopicName(), response));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

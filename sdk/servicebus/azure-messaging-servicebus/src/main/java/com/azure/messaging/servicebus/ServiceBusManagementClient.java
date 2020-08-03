@@ -14,6 +14,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.messaging.servicebus.models.CreateSubscriptionOptions;
 import com.azure.messaging.servicebus.models.CreateTopicOptions;
 import com.azure.messaging.servicebus.models.NamespaceProperties;
 import com.azure.messaging.servicebus.models.QueueDescription;
@@ -143,7 +144,7 @@ public final class ServiceBusManagementClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SubscriptionDescription createSubscription(SubscriptionDescription subscription) {
+    public SubscriptionDescription createSubscription(CreateSubscriptionOptions subscription) {
         return asyncClient.createSubscription(subscription).block();
     }
 
@@ -163,7 +164,7 @@ public final class ServiceBusManagementClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SubscriptionDescription> createSubscriptionWithResponse(SubscriptionDescription subscription,
+    public Response<SubscriptionDescription> createSubscriptionWithResponse(CreateSubscriptionOptions subscription,
         Context context) {
         return asyncClient.createSubscriptionWithResponse(subscription, context != null ? context : Context.NONE)
             .block();
@@ -946,7 +947,7 @@ public final class ServiceBusManagementClient {
      * <ul>
      * <li>{@link SubscriptionDescription#setDefaultMessageTimeToLive(Duration) DefaultMessageTimeToLive}</li>
      * <li>{@link SubscriptionDescription#setLockDuration(Duration) LockDuration}</li>
-     * <li>{@link SubscriptionDescription#setMaxDeliveryCount(Integer) MaxDeliveryCount}</li>
+     * <li>{@link SubscriptionDescription#setMaxDeliveryCount(int) MaxDeliveryCount}</li>
      * </ul>
      *
      * @param subscription Information about the subscription to update. You must provide all the property values
@@ -984,7 +985,7 @@ public final class ServiceBusManagementClient {
      * <ul>
      * <li>{@link SubscriptionDescription#setDefaultMessageTimeToLive(Duration) DefaultMessageTimeToLive}</li>
      * <li>{@link SubscriptionDescription#setLockDuration(Duration) LockDuration}</li>
-     * <li>{@link SubscriptionDescription#setMaxDeliveryCount(Integer) MaxDeliveryCount}</li>
+     * <li>{@link SubscriptionDescription#setMaxDeliveryCount(int) MaxDeliveryCount}</li>
      * </ul>
      *
      * @param subscription Information about the subscription to update. You must provide all the property values
