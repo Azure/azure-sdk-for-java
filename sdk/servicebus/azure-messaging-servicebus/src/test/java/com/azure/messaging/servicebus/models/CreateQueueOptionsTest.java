@@ -31,10 +31,9 @@ class CreateQueueOptionsTest {
         // Act
         final CreateQueueOptions actual = new CreateQueueOptions(queueName);
 
-        // Arrange
+        // Assert
         assertEquals(queueName, actual.getName());
 
-        // Assert
         assertEquals(MAX_DURATION, actual.getAutoDeleteOnIdle());
         assertEquals(MAX_DURATION, actual.getDefaultMessageTimeToLive());
         assertEquals(DEFAULT_DUPLICATE_DETECTION_DURATION, actual.getDuplicateDetectionHistoryTimeWindow());
