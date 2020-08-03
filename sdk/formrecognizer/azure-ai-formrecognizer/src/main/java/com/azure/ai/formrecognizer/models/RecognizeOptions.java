@@ -30,7 +30,7 @@ public class RecognizeOptions {
      *
      * @return the {@code includeFieldElements} value.
      */
-    public boolean isIncludeFieldElements() {
+    public boolean isFieldElementsIncluded() {
         return includeFieldElements;
     }
 
@@ -63,7 +63,7 @@ public class RecognizeOptions {
      *
      * @return the updated {@code RecognizeOptions} value.
      */
-    public RecognizeOptions setIncludeFieldElements(final boolean includeFieldElements) {
+    public RecognizeOptions setFieldElementsIncluded(final boolean includeFieldElements) {
         this.includeFieldElements = includeFieldElements;
         return this;
     }

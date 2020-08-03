@@ -7,14 +7,19 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.EncryptionCosmosAsyncContainer;
-import com.azure.cosmos.WithEncryption;
+import com.azure.cosmos.encryption.EncryptionCosmosAsyncContainer;
+import com.azure.cosmos.encryption.EncryptionKeyUnwrapResult;
+import com.azure.cosmos.encryption.EncryptionKeyWrapMetadata;
+import com.azure.cosmos.encryption.EncryptionKeyWrapProvider;
+import com.azure.cosmos.encryption.EncryptionKeyWrapResult;
+import com.azure.cosmos.encryption.WithEncryption;
 import com.azure.cosmos.implementation.DatabaseForTest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.encryption.api.CosmosEncryptionAlgorithm;
-import com.azure.cosmos.implementation.encryption.api.DataEncryptionKey;
+import com.azure.cosmos.encryption.CosmosEncryptionAlgorithm;
+import com.azure.cosmos.encryption.DataEncryptionKey;
 import com.azure.cosmos.implementation.guava25.collect.Streams;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.rx.TestSuiteBase;
@@ -124,7 +129,7 @@ public class DecryptDataEncryptedByDotNetTest extends TestSuiteBase {
         TestDoc expectedTestDoc = TestUtils.loadPojo("./encryption/dotnet/POCO.json", TestDoc.class);
         assertThat(expectedTestDoc.sensitive).isNotNull();
 
-        TestDoc testDoc = encyptionContainer.readItem(objectNode.get("id").asText(), new PartitionKey(objectNode.get("PK").asText()), TestDoc.class).block().getItem();
+        TestDoc testDoc = encyptionContainer.readItem(objectNode.get("id").asText(), new PartitionKey(objectNode.get("PK").asText()), new CosmosItemRequestOptions(), TestDoc.class).block().getItem();
         assertThat(testDoc.sensitive).isNotNull();
         assertThat(testDoc).isEqualTo(expectedTestDoc);
     }

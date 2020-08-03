@@ -7,15 +7,14 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Configuration;
-import com.azure.identity.AuthenticationRecord;
 import com.azure.identity.AzureAuthorityHosts;
+import com.azure.identity.implementation.util.ValidationUtil;
 import com.microsoft.aad.msal4jextensions.PersistenceSettings;
 import com.sun.jna.Platform;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
-import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 import java.util.function.Function;
@@ -46,7 +45,6 @@ public final class IdentityClientOptions {
     private ProxyOptions proxyOptions;
     private HttpPipeline httpPipeline;
     private ExecutorService executorService;
-    private Duration tokenRefreshOffset = Duration.ofMinutes(2);
     private HttpClient httpClient;
     private boolean allowUnencryptedCache;
     private boolean sharedTokenCacheEnabled;
@@ -60,6 +58,7 @@ public final class IdentityClientOptions {
         Configuration configuration = Configuration.getGlobalConfiguration();
         authorityHost = configuration.get(Configuration.PROPERTY_AZURE_AUTHORITY_HOST,
             AzureAuthorityHosts.AZURE_PUBLIC_CLOUD);
+        ValidationUtil.validateAuthHost(getClass().getSimpleName(), authorityHost);
         maxRetry = MAX_RETRY_DEFAULT_LIMIT;
         retryTimeout = i -> Duration.ofSeconds((long) Math.pow(2, i.getSeconds() - 1));
     }
@@ -182,31 +181,6 @@ public final class IdentityClientOptions {
      */
     public ExecutorService getExecutorService() {
         return executorService;
-    }
-
-    /**
-     * @return how long before the actual token expiry to refresh the token.
-     */
-    public Duration getTokenRefreshOffset() {
-        return tokenRefreshOffset;
-    }
-
-    /**
-     * Sets how long before the actual token expiry to refresh the token. The
-     * token will be considered expired at and after the time of (actual
-     * expiry - token refresh offset). The default offset is 2 minutes.
-     *
-     * This is useful when network is congested and a request containing the
-     * token takes longer than normal to get to the server.
-     *
-     * @param tokenRefreshOffset the duration before the actual expiry of a token to refresh it
-     * @return IdentityClientOptions
-     * @throws NullPointerException If {@code tokenRefreshOffset} is null.
-     */
-    public IdentityClientOptions setTokenRefreshOffset(Duration tokenRefreshOffset) {
-        Objects.requireNonNull(tokenRefreshOffset, "The token refresh offset cannot be null.");
-        this.tokenRefreshOffset = tokenRefreshOffset;
-        return this;
     }
 
     /**

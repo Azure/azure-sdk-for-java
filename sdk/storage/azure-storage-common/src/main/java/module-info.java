@@ -7,9 +7,9 @@ module com.azure.storage.common {
     exports com.azure.storage.common;
     exports com.azure.storage.common.sas;
     exports com.azure.storage.common.policy;
-    exports com.azure.storage.common.implementation;
 
-    /*exports com.azure.storage.common.implementation to // FIXME this should not be a long-term solution
+    exports com.azure.storage.common.implementation to // FIXME this should not be a long-term solution
+        com.azure.storage.internal.avro,
         com.azure.storage.blob,
         com.azure.storage.blob.cryptography,
         com.azure.storage.blob.batch,
@@ -17,7 +17,7 @@ module com.azure.storage.common {
         com.azure.storage.file.datalake,
         com.azure.storage.queue,
         com.azure.storage.blob.nio,
-        com.azure.storage.blob.changefeed;*/
+        com.azure.storage.blob.changefeed;
 
     exports com.azure.storage.common.implementation.credentials to // FIXME this should not be a long-term solution
         com.azure.storage.blob,

@@ -161,7 +161,7 @@ public class BlobBeginCopyOptions {
      *  Only applicable for Append Blobs.
      * @return Whether or not the destination blob should be sealed.
      */
-    public Boolean isSealingDestination() {
+    public Boolean isSealDestination() {
         return sealDestination;
     }
 
@@ -171,7 +171,7 @@ public class BlobBeginCopyOptions {
      * @param sealDestination Whether or not the destination blob should be sealed.
      * @return The updated options.
      */
-    public BlobBeginCopyOptions sealDestination(Boolean sealDestination) {
+    public BlobBeginCopyOptions setSealDestination(Boolean sealDestination) {
         this.sealDestination = sealDestination;
         return this;
     }

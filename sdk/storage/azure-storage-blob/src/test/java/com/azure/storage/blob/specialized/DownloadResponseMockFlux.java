@@ -17,6 +17,7 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.time.Duration;
 import java.util.concurrent.TimeoutException;
 
 class DownloadResponseMockFlux {
@@ -169,13 +170,7 @@ class DownloadResponseMockFlux {
                 }
 
             case DR_TEST_SCENARIO_TIMEOUT:
-                try {
-                    Thread.sleep(61 * 1000L); // We hard code a timeout of 60s
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-                return Flux.empty();
+                return Flux.just(scenarioData.duplicate()).delayElements(Duration.ofSeconds(61));
 
             default:
                 return Flux.error(new IllegalArgumentException("Invalid test case"));

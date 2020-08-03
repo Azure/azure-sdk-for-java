@@ -37,7 +37,6 @@ import spock.lang.Specification
 import spock.lang.Timeout
 
 import java.nio.ByteBuffer
-import java.nio.channels.AsynchronousFileChannel
 import java.nio.charset.StandardCharsets
 import java.nio.file.FileSystem
 import java.nio.file.Path
@@ -112,6 +111,8 @@ class APISpec extends Specification {
      be used.
      */
     static final String receivedEtag = "received"
+
+    static final int MB = 1024 * 1024
 
     def setupSpec() {
         testMode = setupTestMode()
@@ -442,9 +443,9 @@ class APISpec extends Specification {
         file.deleteOnExit()
         FileOutputStream fos = new FileOutputStream(file)
 
-        if (size > Constants.MB) {
-            for (def i = 0; i < size / Constants.MB; i++) {
-                def dataSize = Math.min(Constants.MB, size - i * Constants.MB)
+        if (size > MB) {
+            for (def i = 0; i < size / MB; i++) {
+                def dataSize = Math.min(MB, size - i * MB)
                 fos.write(getRandomByteArray(dataSize))
             }
         } else {
@@ -474,19 +475,24 @@ class APISpec extends Specification {
 
     def compareInputStreams(InputStream stream1, InputStream stream2, long count) {
         def pos = 0L
-        def readBuffer = 8 * Constants.KB
+        def defaultReadBuffer = 128 * Constants.KB
         try {
+            // If the amount we are going to read is smaller than the default buffer size use that instead.
+            def bufferSize = (int) Math.min(defaultReadBuffer, count)
+
             while (pos < count) {
-                def bufferSize = (int) Math.min(readBuffer, count - pos)
-                def buffer1 = new byte[bufferSize]
-                def buffer2 = new byte[bufferSize]
+                // Number of bytes we expect to read.
+                def expectedReadCount = (int) Math.min(bufferSize, count - pos)
+                def buffer1 = new byte[expectedReadCount]
+                def buffer2 = new byte[expectedReadCount]
 
                 def readCount1 = stream1.read(buffer1)
                 def readCount2 = stream2.read(buffer2)
 
-                assert readCount1 == readCount2 && buffer1 == buffer2
+                // Use Arrays.equals as it is more optimized than Groovy/Spock's '==' for arrays.
+                assert readCount1 == readCount2 && Arrays.equals(buffer1, buffer2)
 
-                pos += bufferSize
+                pos += expectedReadCount
             }
 
             def verificationRead = stream2.read()

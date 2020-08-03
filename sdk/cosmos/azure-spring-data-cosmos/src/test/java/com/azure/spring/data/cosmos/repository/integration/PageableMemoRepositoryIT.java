@@ -94,19 +94,22 @@ public class PageableMemoRepositoryIT {
     @Test
     public void testFindAllWithPageSizeLessThanReturned() {
         final Set<PageableMemo> memos = findAllWithPageSize(20);
-        assertThat(memos).isEqualTo(memoSet);
+        boolean equal = memos.equals(memoSet);
+        assertThat(equal).isTrue();
     }
 
     @Test
     public void testFindAllWithPageSizeLessThanTotal() {
         final Set<PageableMemo> memos = findAllWithPageSize(200);
-        assertThat(memos).isEqualTo(memoSet);
+        boolean equal = memos.equals(memoSet);
+        assertThat(equal).isTrue();
     }
 
     @Test
     public void testFindAllWithPageSizeGreaterThanTotal() {
         final Set<PageableMemo> memos = findAllWithPageSize(10000);
-        assertThat(memos).isEqualTo(memoSet);
+        boolean equal = memos.equals(memoSet);
+        assertThat(equal).isTrue();
     }
 
     @Test

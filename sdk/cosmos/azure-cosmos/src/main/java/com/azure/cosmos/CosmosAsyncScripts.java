@@ -138,6 +138,10 @@ public class CosmosAsyncScripts {
     public CosmosPagedFlux<CosmosStoredProcedureProperties> queryStoredProcedures(
         String query,
             CosmosQueryRequestOptions options) {
+        if (options == null) {
+            options = new CosmosQueryRequestOptions();
+        }
+
         return queryStoredProceduresInternal(new SqlQuerySpec(query), options);
     }
 
@@ -157,6 +161,10 @@ public class CosmosAsyncScripts {
     public CosmosPagedFlux<CosmosStoredProcedureProperties> queryStoredProcedures(
         SqlQuerySpec querySpec,
         CosmosQueryRequestOptions options) {
+        if (options == null) {
+            options = new CosmosQueryRequestOptions();
+        }
+
         return queryStoredProceduresInternal(querySpec, options);
     }
 
@@ -251,6 +259,10 @@ public class CosmosAsyncScripts {
     public CosmosPagedFlux<CosmosUserDefinedFunctionProperties> queryUserDefinedFunctions(
         String query,
         CosmosQueryRequestOptions options) {
+        if (options == null) {
+            options = new CosmosQueryRequestOptions();
+        }
+
         return queryUserDefinedFunctions(new SqlQuerySpec(query), options);
     }
 
@@ -271,6 +283,10 @@ public class CosmosAsyncScripts {
     public CosmosPagedFlux<CosmosUserDefinedFunctionProperties> queryUserDefinedFunctions(
         SqlQuerySpec querySpec,
         CosmosQueryRequestOptions options) {
+        if (options == null) {
+            options = new CosmosQueryRequestOptions();
+        }
+
         return queryUserDefinedFunctionsInternal(querySpec, options);
     }
 
@@ -358,6 +374,10 @@ public class CosmosAsyncScripts {
      * error.
      */
     public CosmosPagedFlux<CosmosTriggerProperties> queryTriggers(String query, CosmosQueryRequestOptions options) {
+        if (options == null) {
+            options = new CosmosQueryRequestOptions();
+        }
+
         return queryTriggersInternal(false, new SqlQuerySpec(query), options);
     }
 
@@ -376,6 +396,10 @@ public class CosmosAsyncScripts {
     public CosmosPagedFlux<CosmosTriggerProperties> queryTriggers(
         SqlQuerySpec querySpec,
         CosmosQueryRequestOptions options) {
+        if (options == null) {
+            options = new CosmosQueryRequestOptions();
+        }
+
         return queryTriggersInternal(true, querySpec, options);
     }
 
@@ -465,8 +489,8 @@ public class CosmosAsyncScripts {
     private Mono<CosmosStoredProcedureResponse> createStoredProcedureInternal(StoredProcedure sProc,
                                                                            CosmosStoredProcedureRequestOptions options) {
         return database.getDocClientWrapper()
-            .createStoredProcedure(container.getLink(), sProc, ModelBridgeInternal.toRequestOptions(options)).map(response -> ModelBridgeInternal.createCosmosStoredProcedureResponse(response))
-            .single();
+                       .createStoredProcedure(container.getLink(), sProc, ModelBridgeInternal.toRequestOptions(options))
+                       .map(response -> ModelBridgeInternal.createCosmosStoredProcedureResponse(response));
     }
 
     private Mono<CosmosUserDefinedFunctionResponse> createUserDefinedFunctionInternal(
@@ -484,7 +508,8 @@ public class CosmosAsyncScripts {
     private Mono<CosmosUserDefinedFunctionResponse> createUserDefinedFunctionInternal(
         UserDefinedFunction udf) {
         return database.getDocClientWrapper()
-            .createUserDefinedFunction(container.getLink(), udf, null).map(response -> ModelBridgeInternal.createCosmosUserDefinedFunctionResponse(response)).single();
+                       .createUserDefinedFunction(container.getLink(), udf, null)
+                       .map(response -> ModelBridgeInternal.createCosmosUserDefinedFunctionResponse(response));
     }
 
     private Mono<CosmosTriggerResponse> createTriggerInternal(CosmosTriggerProperties properties, Context context) {
@@ -500,9 +525,8 @@ public class CosmosAsyncScripts {
     private Mono<CosmosTriggerResponse> createTriggerInternal(CosmosTriggerProperties properties) {
         Trigger trigger = new Trigger(ModelBridgeInternal.toJsonFromJsonSerializable(ModelBridgeInternal.getResource(properties)));
         return database.getDocClientWrapper()
-            .createTrigger(container.getLink(), trigger, null)
-            .map(response -> ModelBridgeInternal.createCosmosTriggerResponse(response))
-            .single();
+                       .createTrigger(container.getLink(), trigger, null)
+                       .map(response -> ModelBridgeInternal.createCosmosTriggerResponse(response));
     }
 
 }

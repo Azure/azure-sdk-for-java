@@ -3,7 +3,7 @@
 package com.azure.spring.data.cosmos.repository.query;
 
 import com.azure.spring.data.cosmos.core.ReactiveCosmosOperations;
-import com.azure.spring.data.cosmos.core.query.DocumentQuery;
+import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import org.springframework.data.repository.query.RepositoryQuery;
 import org.springframework.data.repository.query.ResultProcessor;
 import org.springframework.data.repository.query.ReturnedType;
@@ -38,7 +38,7 @@ public abstract class AbstractReactiveCosmosQuery implements RepositoryQuery {
     public Object execute(Object[] parameters) {
         final ReactiveCosmosParameterAccessor accessor =
             new ReactiveCosmosParameterParameterAccessor(method, parameters);
-        final DocumentQuery query = createQuery(accessor);
+        final CosmosQuery query = createQuery(accessor);
 
         final ResultProcessor processor =
             method.getResultProcessor().withDynamicProjection(accessor);
@@ -80,7 +80,7 @@ public abstract class AbstractReactiveCosmosQuery implements RepositoryQuery {
         return method;
     }
 
-    protected abstract DocumentQuery createQuery(ReactiveCosmosParameterAccessor accessor);
+    protected abstract CosmosQuery createQuery(ReactiveCosmosParameterAccessor accessor);
 
     protected abstract boolean isDeleteQuery();
 
