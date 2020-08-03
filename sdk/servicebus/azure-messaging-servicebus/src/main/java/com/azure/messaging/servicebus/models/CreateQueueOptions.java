@@ -89,7 +89,7 @@ public class CreateQueueOptions {
      */
     public CreateQueueOptions(QueueProperties queue) {
         Objects.requireNonNull(queue, "'queue' cannot be null.");
-        Objects.requireNonNull(queue.getName(), "Queue name cannot be null");
+        Objects.requireNonNull(queue.getName(), "Queue name cannot be null.");
 
         if (queue.getName().isEmpty()) {
             ClientLogger logger = new ClientLogger(CreateQueueOptions.class);
@@ -98,17 +98,39 @@ public class CreateQueueOptions {
         this.name = queue.getName();
         this.autoDeleteOnIdle = queue.getAutoDeleteOnIdle();
         this.defaultMessageTimeToLive = queue.getDefaultMessageTimeToLive();
-        this.deadLetteringOnMessageExpiration = queue.deadLetteringOnMessageExpiration();
-        this.duplicateDetectionHistoryTimeWindow = queue.getDuplicateDetectionHistoryTimeWindow();
-        this.enableBatchedOperations = queue.enableBatchedOperations();
-        this.enablePartitioning = queue.enablePartitioning();
+
+        this.deadLetteringOnMessageExpiration = queue.deadLetteringOnMessageExpiration() != null
+            ? queue.deadLetteringOnMessageExpiration()
+            : false;
+        this.duplicateDetectionHistoryTimeWindow = queue.getDuplicateDetectionHistoryTimeWindow() != null
+            ? queue.getDuplicateDetectionHistoryTimeWindow()
+            : DEFAULT_DUPLICATE_DETECTION_DURATION;
+        this.enableBatchedOperations = queue.enableBatchedOperations() != null
+            ? queue.enableBatchedOperations()
+            : false;
+        this.enablePartitioning = queue.enablePartitioning() != null
+            ? queue.enablePartitioning()
+            : false;
+
         this.forwardTo = queue.getForwardTo();
         this.forwardDeadLetteredMessagesTo = queue.getForwardDeadLetteredMessagesTo();
         this.lockDuration = queue.getLockDuration();
-        this.maxDeliveryCount = queue.getMaxDeliveryCount();
-        this.maxSizeInMegabytes = queue.getMaxSizeInMegabytes();
-        this.requiresDuplicateDetection = queue.requiresDuplicateDetection();
-        this.requiresSession = queue.requiresSession();
+
+        this.maxDeliveryCount = queue.getMaxDeliveryCount() != null
+            ? queue.getMaxDeliveryCount()
+            : DEFAULT_MAX_DELIVERY_COUNT;
+        this.maxSizeInMegabytes = queue.getMaxSizeInMegabytes() != null
+            ? queue.getMaxSizeInMegabytes()
+            : DEFAULT_QUEUE_SIZE;
+
+        this.requiresDuplicateDetection = queue.requiresDuplicateDetection() != null
+            ? queue.requiresDuplicateDetection()
+            : false;
+
+        this.requiresSession = queue.requiresSession() != null
+            ? queue.requiresSession()
+            : false;
+
         this.userMetadata = queue.getUserMetadata();
     }
 

@@ -346,14 +346,11 @@ class ServiceBusManagementSerializerTest {
         assertEquals(updatedAt, actual.getUpdatedAt());
         assertEquals(accessedAt, actual.getAccessedAt());
 
-        final MessageCountDetails details = actual.getDetails();
-        assertNotNull(details);
-
-        assertEquals(expectedCount.getActiveMessageCount(), details.getActiveMessageCount());
-        assertEquals(expectedCount.getDeadLetterMessageCount(), details.getDeadLetterMessageCount());
-        assertEquals(expectedCount.getScheduledMessageCount(), details.getScheduledMessageCount());
-        assertEquals(expectedCount.getTransferMessageCount(), details.getTransferMessageCount());
-        assertEquals(expectedCount.getTransferDeadLetterMessageCount(), details.getTransferDeadLetterMessageCount());
+        assertEquals(expectedCount.getActiveMessageCount(), actual.getActiveMessageCount());
+        assertEquals(expectedCount.getDeadLetterMessageCount(), actual.getDeadLetterMessageCount());
+        assertEquals(expectedCount.getScheduledMessageCount(), actual.getScheduledMessageCount());
+        assertEquals(expectedCount.getTransferMessageCount(), actual.getTransferMessageCount());
+        assertEquals(expectedCount.getTransferDeadLetterMessageCount(), actual.getTransferDeadLetterMessageCount());
     }
 
     /**

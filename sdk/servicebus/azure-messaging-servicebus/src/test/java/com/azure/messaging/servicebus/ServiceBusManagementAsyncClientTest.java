@@ -409,7 +409,7 @@ class ServiceBusManagementAsyncClientTest {
                     return false;
                 }
 
-                final CreateQueueBody argument = (CreateQueueBody)arg;
+                final CreateQueueBody argument = (CreateQueueBody) arg;
                 if (argument.getContent() == null || argument.getContent().getQueueProperties() == null) {
                     return false;
                 }
@@ -446,7 +446,7 @@ class ServiceBusManagementAsyncClientTest {
                     return false;
                 }
 
-                final CreateQueueBody argument = (CreateQueueBody)arg;
+                final CreateQueueBody argument = (CreateQueueBody) arg;
                 if (argument.getContent() == null || argument.getContent().getQueueProperties() == null) {
                     return false;
                 }

@@ -448,12 +448,11 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
                 assertEquals(subscriptionName, description.getSubscriptionName());
 
                 assertTrue(description.getMessageCount() >= 0);
-                assertNotNull(description.getDetails());
-                assertNotNull(description.getDetails().getActiveMessageCount());
-                assertNotNull(description.getDetails().getScheduledMessageCount());
-                assertNotNull(description.getDetails().getTransferDeadLetterMessageCount());
-                assertNotNull(description.getDetails().getTransferMessageCount());
-                assertNotNull(description.getDetails().getDeadLetterMessageCount());
+                assertEquals(0, description.getActiveMessageCount());
+                assertEquals(0, description.getScheduledMessageCount());
+                assertEquals(0, description.getTransferDeadLetterMessageCount());
+                assertEquals(0, description.getTransferMessageCount());
+                assertEquals(0, description.getDeadLetterMessageCount());
 
                 assertNotNull(description.getCreatedAt());
                 assertTrue(nowUtc.isAfter(description.getCreatedAt()));

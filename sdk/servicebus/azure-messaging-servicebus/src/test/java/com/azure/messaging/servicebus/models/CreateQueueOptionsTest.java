@@ -77,8 +77,9 @@ class CreateQueueOptionsTest {
         assertEquals(expected.getName(), actual.getName());
         assertEquals(expected.getAutoDeleteOnIdle(), actual.getAutoDeleteOnIdle());
         assertEquals(expected.getDefaultMessageTimeToLive(), actual.getDefaultMessageTimeToLive());
-        assertEquals(expected.deadLetteringOnMessageExpiration(), actual.deadLetteringOnMessageExpiration());
-        assertEquals(expected.getDuplicateDetectionHistoryTimeWindow(), actual.getDuplicateDetectionHistoryTimeWindow());
+        assertFalse(actual.deadLetteringOnMessageExpiration());
+        assertEquals(expected.getDuplicateDetectionHistoryTimeWindow(),
+            actual.getDuplicateDetectionHistoryTimeWindow());
         assertEquals(expected.enableBatchedOperations(), actual.enableBatchedOperations());
         assertEquals(expected.enablePartitioning(), actual.enablePartitioning());
         assertEquals(expected.getForwardTo(), actual.getForwardTo());
