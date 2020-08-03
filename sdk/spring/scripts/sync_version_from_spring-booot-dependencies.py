@@ -62,8 +62,6 @@ def get_spring_boot_dependencies():
 
 
 def update_version_for_external_dependencies(dependencyDict):
-    print("test")
-    print('Current working directory = {}.'.format(os.getcwd()))
     for line in fileinput.input('eng/versioning/external_dependencies.txt', inplace=True):
         line = line.strip()
         if line.startswith('#') or not line:
