@@ -96,7 +96,7 @@ public final class ManageNetworkPeeringInSameSubscription {
 
             // Print virtual network details
             for (Network network : created.values()) {
-                Utils.print((Network) network);
+                Utils.print(network);
                 System.out.println();
             }
 

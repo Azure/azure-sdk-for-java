@@ -122,7 +122,7 @@ public final class CreateSimpleInternetFacingLoadBalancer {
 
             // Print virtual machine details
             for (VirtualMachine vm : virtualMachines) {
-                Utils.print((VirtualMachine) vm);
+                Utils.print(vm);
                 System.out.println();
             }
 
