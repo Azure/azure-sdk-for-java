@@ -13,6 +13,7 @@ import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.rx.TestSuiteBase;
+import io.netty.handler.timeout.ReadTimeoutException;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.mockito.Mockito;
 import org.testng.annotations.BeforeClass;
@@ -75,12 +76,11 @@ public class ReactorNettyClientTest extends TestSuiteBase {
         Mono<CosmosDatabaseResponse> response = cosmosAsyncDatabase.read();
         testConnectionObserver.sleepOnConnectedOrAcquired = 1100; // adding sleep > timeout on connected/acquired,
         // verifying failure
-        // verifying error
         StepVerifier.create(response)
             .expectSubscription()
             .consumeErrorWith(throwable -> {
                 assertThat(throwable).isInstanceOf(CosmosException.class);
-                assertThat(throwable.getCause()).isInstanceOf(IOException.class);
+                assertThat(throwable.getCause()).isInstanceOf(ReadTimeoutException.class);
             })
             .verify();
 
@@ -99,7 +99,7 @@ public class ReactorNettyClientTest extends TestSuiteBase {
             .expectSubscription()
             .consumeErrorWith(throwable -> {
                 assertThat(throwable).isInstanceOf(CosmosException.class);
-                assertThat(throwable.getCause()).isInstanceOf(IOException.class);
+                assertThat(throwable.getCause()).isInstanceOf(ReadTimeoutException.class);
             })
             .verify();
 
@@ -117,7 +117,7 @@ public class ReactorNettyClientTest extends TestSuiteBase {
             .expectSubscription()
             .consumeErrorWith(throwable -> {
                 assertThat(throwable).isInstanceOf(CosmosException.class);
-                assertThat(throwable.getCause()).isInstanceOf(IOException.class);
+                assertThat(throwable.getCause()).isInstanceOf(ReadTimeoutException.class);
             })
             .verify();
 
@@ -137,7 +137,7 @@ public class ReactorNettyClientTest extends TestSuiteBase {
             .expectSubscription()
             .consumeErrorWith(throwable -> {
                 assertThat(throwable).isInstanceOf(CosmosException.class);
-                assertThat(throwable.getCause()).isInstanceOf(IOException.class);
+                assertThat(throwable.getCause()).isInstanceOf(ReadTimeoutException.class);
             })
             .verify();
 
