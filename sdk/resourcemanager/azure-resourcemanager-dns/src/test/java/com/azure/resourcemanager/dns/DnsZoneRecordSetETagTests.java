@@ -187,18 +187,16 @@ public class DnsZoneRecordSetETagTests extends TestBase {
         }
         Assertions.assertNotNull(compositeException);
 
-        int managementExceptionCount = 0;
+        Assertions.assertTrue(compositeException.getSuppressed().length > 0);
         for (int i = 0; i < compositeException.getSuppressed().length; ++i) {
             Throwable exception = compositeException.getSuppressed()[i];
             if (exception instanceof ManagementException) {
-                ++managementExceptionCount;
                 ManagementError cloudError = ((ManagementException) exception).getValue();
                 Assertions.assertNotNull(cloudError);
                 Assertions.assertNotNull(cloudError.getCode());
                 Assertions.assertTrue(cloudError.getCode().contains("PreconditionFailed"));
             }
         }
-        Assertions.assertTrue(managementExceptionCount > 0);
     }
 
     @Test
@@ -255,18 +253,16 @@ public class DnsZoneRecordSetETagTests extends TestBase {
             compositeException = exception;
         }
         Assertions.assertNotNull(compositeException);
-        int managementExceptionCount = 0;
+        Assertions.assertTrue(compositeException.getSuppressed().length > 0);
         for (int i = 0; i < compositeException.getSuppressed().length; ++i) {
             Throwable exception = compositeException.getSuppressed()[i];
             if (exception instanceof ManagementException) {
-                ++managementExceptionCount;
                 ManagementError cloudError = ((ManagementException) exception).getValue();
                 Assertions.assertNotNull(cloudError);
                 Assertions.assertNotNull(cloudError.getCode());
                 Assertions.assertTrue(cloudError.getCode().contains("PreconditionFailed"));
             }
         }
-        Assertions.assertTrue(managementExceptionCount > 0);
         // Try update with correct etags
         dnsZone
             .update()
@@ -341,18 +337,16 @@ public class DnsZoneRecordSetETagTests extends TestBase {
             compositeException = exception;
         }
         Assertions.assertNotNull(compositeException);
-        int managementExceptionCount = 0;
+        Assertions.assertTrue(compositeException.getSuppressed().length > 0);
         for (int i = 0; i < compositeException.getSuppressed().length; ++i) {
             Throwable exception = compositeException.getSuppressed()[i];
             if (exception instanceof ManagementException) {
-                ++managementExceptionCount;
                 ManagementError cloudError = ((ManagementException) exception).getValue();
                 Assertions.assertNotNull(cloudError);
                 Assertions.assertNotNull(cloudError.getCode());
                 Assertions.assertTrue(cloudError.getCode().contains("PreconditionFailed"));
             }
         }
-        Assertions.assertTrue(managementExceptionCount > 0);
         // Try delete with correct etags
         dnsZone
             .update()
