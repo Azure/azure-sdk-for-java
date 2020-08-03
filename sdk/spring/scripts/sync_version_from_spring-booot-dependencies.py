@@ -40,10 +40,18 @@ def get_spring_boot_dependencies():
     root = ET.fromstring(r.text)
     ns = {'maven', 'http://maven.apache.org/POM/4.0.0'}
     properties = root.find('{http://maven.apache.org/POM/4.0.0}properties')
+    propertyDict = {}
     for property in properties:
         key = property.tag.split('}', 1)[1]
         value = property.text
-        print('{}: {}'.format(key, value))
+        propertyDict[key] = value
+    print_dict(propertyDict)
+
+
+def print_dict(dict):
+    for key, value in dict.items():
+        print('key = {}, value = {}.'.format(key, value))
+
 
 if __name__ == '__main__':
     main()
