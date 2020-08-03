@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus.implementation;
 
 import com.azure.messaging.servicebus.models.CreateQueueOptions;
+import com.azure.messaging.servicebus.models.EntityStatus;
 import com.azure.messaging.servicebus.models.QueueProperties;
 import org.junit.jupiter.api.Test;
 
@@ -33,7 +34,8 @@ class EntityHelperTest {
             .setMaxSizeInMegabytes(2048)
             .setRequiresDuplicateDetection(true)
             .setRequiresSession(true)
-            .setUserMetadata("Test-queue-Metadata");
+            .setUserMetadata("Test-queue-Metadata")
+            .setStatus(EntityStatus.DISABLED);
 
         // Act
         final QueueProperties actual = EntityHelper.createQueue(expected);
@@ -53,6 +55,7 @@ class EntityHelperTest {
         assertEquals(expected.requiresDuplicateDetection(), actual.requiresDuplicateDetection());
         assertEquals(expected.requiresSession(), actual.requiresSession());
         assertEquals(expected.getUserMetadata(), actual.getUserMetadata());
+        assertEquals(expected.getStatus(), actual.getStatus());
     }
 
     @Test

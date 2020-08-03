@@ -307,6 +307,7 @@ public final class QueueProperties {
         this.maxSizeInMegabytes = options.getMaxSizeInMegabytes();
         this.requiresDuplicateDetection = options.requiresDuplicateDetection();
         this.requiresSession = options.requiresSession();
+        this.status = options.getStatus();
         this.userMetadata = options.getUserMetadata();
     }
 

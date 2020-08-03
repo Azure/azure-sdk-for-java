@@ -46,6 +46,7 @@ class CreateQueueOptionsTest {
         assertFalse(actual.requiresSession());
         assertFalse(actual.deadLetteringOnMessageExpiration());
         assertNull(actual.getUserMetadata());
+        assertEquals(EntityStatus.ACTIVE, actual.getStatus());
     }
 
     @Test
@@ -67,7 +68,8 @@ class CreateQueueOptionsTest {
             .setMaxSizeInMegabytes(2048)
             .setRequiresDuplicateDetection(true)
             .setRequiresSession(true)
-            .setUserMetadata("Test-queue-Metadata");
+            .setUserMetadata("Test-queue-Metadata")
+            .setStatus(EntityStatus.DISABLED);
 
         // Act
         final CreateQueueOptions actual = new CreateQueueOptions(expected);
@@ -88,5 +90,6 @@ class CreateQueueOptionsTest {
         assertEquals(expected.requiresDuplicateDetection(), actual.requiresDuplicateDetection());
         assertEquals(expected.requiresSession(), actual.requiresSession());
         assertEquals(expected.getUserMetadata(), actual.getUserMetadata());
+        assertEquals(expected.getStatus(), actual.getStatus());
     }
 }

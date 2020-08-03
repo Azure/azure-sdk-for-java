@@ -41,6 +41,7 @@ public class CreateQueueOptions {
     private boolean requiresDuplicateDetection;
     private boolean requiresSession;
     private String userMetadata;
+    private EntityStatus status;
 
     /**
      * Creates an instance with the name of the queue. Default values for the queue are populated. The properties
@@ -57,6 +58,7 @@ public class CreateQueueOptions {
      *     <li>{@link #setMaxDeliveryCount(int)} is 10.</li>
      *     <li>{@link #setMaxSizeInMegabytes(int)} is 1024MB.</li>
      *     <li>{@link #setRequiresSession(boolean)} is false.</li>
+     *     <li>{@link #setStatus(EntityStatus)} is {@link EntityStatus#ACTIVE}.</li>
      * </ul>
      *
      * @param queueName Name of the queue.
@@ -84,6 +86,7 @@ public class CreateQueueOptions {
         this.requiresDuplicateDetection = false;
         this.requiresSession = false;
         this.deadLetteringOnMessageExpiration = false;
+        this.status = EntityStatus.ACTIVE;
     }
 
     /**
@@ -137,6 +140,7 @@ public class CreateQueueOptions {
             ? queue.requiresSession()
             : false;
 
+        this.status = queue.getStatus();
         this.userMetadata = queue.getUserMetadata();
     }
 
@@ -445,6 +449,26 @@ public class CreateQueueOptions {
      */
     public CreateQueueOptions setRequiresSession(boolean requiresSession) {
         this.requiresSession = requiresSession;
+        return this;
+    }
+
+    /**
+     * Get the status property: Status of a Service Bus resource.
+     *
+     * @return the status value.
+     */
+    public EntityStatus getStatus() {
+        return this.status;
+    }
+
+    /**
+     * Set the status property: Status of a Service Bus resource.
+     *
+     * @param status the status value to set.
+     * @return the CreateQueueOptions object itself.
+     */
+    public CreateQueueOptions setStatus(EntityStatus status) {
+        this.status = status;
         return this;
     }
 
