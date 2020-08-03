@@ -3,7 +3,7 @@
 
 package com.azure.core.serializer.json.gson;
 
-import com.azure.core.experimental.serializer.TypeReference;
+import com.azure.core.util.serializer.TypeReference;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.TypeAdapter;

@@ -55,17 +55,19 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
         byte[] fileContent = Files.readAllBytes(analyzeFile.toPath());
 
         PollerFlux<OperationResult, List<RecognizedForm>> labeledCustomFormPoller =
-            client.beginRecognizeCustomForms(toFluxByteBuffer(new ByteArrayInputStream(fileContent)),
-                analyzeFile.length(), "{labeled_model_Id}",
-                new RecognizeOptions()
+            client.beginRecognizeCustomForms("{labeled_model_Id}",
+                toFluxByteBuffer(new ByteArrayInputStream(fileContent)),
+                analyzeFile.length(),
+                    new RecognizeOptions()
                     .setContentType(FormContentType.APPLICATION_PDF)
                     .setFieldElementsIncluded(true)
                     .setPollInterval(Duration.ofSeconds(5)));
 
         PollerFlux<OperationResult, List<RecognizedForm>> unlabeledCustomFormPoller =
-            client.beginRecognizeCustomForms(toFluxByteBuffer(new ByteArrayInputStream(fileContent)),
-                analyzeFile.length(), "{unlabeled_model_Id}",
-                new RecognizeOptions()
+            client.beginRecognizeCustomForms("{unlabeled_model_Id}",
+                toFluxByteBuffer(new ByteArrayInputStream(fileContent)),
+                analyzeFile.length(),
+                    new RecognizeOptions()
                     .setContentType(FormContentType.APPLICATION_PDF)
                     .setFieldElementsIncluded(true)
                     .setPollInterval(Duration.ofSeconds(5)));
@@ -106,8 +108,8 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
                     formField.getValueData().getBoundingBox().getPoints().stream().map(point -> String.format("[%.2f,"
                         + " %.2f]", point.getX(), point.getY())).forEach(boundingBoxStr::append);
                 }
-                System.out.printf("Field %s has value data text %s based on %s within bounding box %s with a confidence score "
-                        + "of %.2f.%n",
+                System.out.printf("Field %s has value data text %s based on %s within bounding box %s with "
+                        + "a confidence score of %.2f.%n",
                     label, formField.getValueData().getText(), formField.getValueData().getText(), boundingBoxStr,
                     formField.getConfidence());
 
@@ -156,8 +158,8 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
                         label, formField.getLabelData().getText(), "", formField.getConfidence());
                 }
 
-                System.out.printf("Field %s has value data text %s based on %s within bounding box %s with a confidence "
-                        + "score of %.2f.%n",
+                System.out.printf("Field %s has value data text %s based on %s within bounding box %s with "
+                        + "a confidence score of %.2f.%n",
                     label, formField.getValueData().getText(), formField.getValueData().getText(), boundingBoxStr,
                     formField.getConfidence());
 

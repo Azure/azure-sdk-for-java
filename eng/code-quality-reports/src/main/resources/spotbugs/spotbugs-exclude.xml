@@ -381,7 +381,7 @@
     <Class name="com.azure.core.auth.credentials.AzureCliCredentials"/>
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
   </Match>
-  
+
   <!-- The fields are checked for null in the build method and throw exceptions if values for fields are not specified. -->
   <Match>
       <Class name="com.azure.identity.InteractiveBrowserCredentialBuilder"/>
@@ -2150,4 +2150,25 @@
     <Bug pattern="IP_PARAMETER_IS_DEAD_BUT_OVERWRITTEN"/>
   </Match>
 
+  <Match>
+    <Class name="com.azure.core.experimental.serializer.JsonSerializer"/>
+    <Bug pattern="NM_SAME_SIMPLE_NAME_AS_INTERFACE"/>
+  </Match>
+
+  <!-- Setup in Identity Test classes, required for the tests to work properly.-->
+  <Match>
+      <Class name="com.azure.identity.ClientCertificateCredentialTest" />
+      <Bug pattern="DMI_HARDCODED_ABSOLUTE_FILENAME"/>
+  </Match>
+  
+  <Match>
+      <Or>
+          <Class name="com.azure.identity.implementation.IdentityClientTests"/>
+          <Class name="com.azure.identity.implementation.SynchronizedAccessorTests"/>
+      </Or>
+      <Or>
+          <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/> <!-- false positive -->
+          <Bug pattern="UI_INHERITANCE_UNSAFE_GETRESOURCE"/>
+      </Or>
+  </Match>
 </FindBugsFilter>

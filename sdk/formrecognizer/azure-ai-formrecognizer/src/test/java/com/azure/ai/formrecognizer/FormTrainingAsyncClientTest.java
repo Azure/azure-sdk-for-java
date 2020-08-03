@@ -448,7 +448,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
         client = getFormTrainingAsyncClient(httpClient, serviceVersion);
         beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<OperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingFilesUrl,
-                useTrainingLabels, new TrainingFileFilter().setIncludeSubFolders(true).setPrefix(PREFIX_SUBFOLDER),
+                useTrainingLabels, new TrainingFileFilter().setSubfoldersIncluded(true).setPrefix(PREFIX_SUBFOLDER),
                 durationTestMode).getSyncPoller();
             trainingPoller.waitForCompletion();
             validateCustomModelData(trainingPoller.getFinalResult(), false);
@@ -485,7 +485,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
         beginTrainingMultipageRunner(trainingFilesUrl -> {
             FormRecognizerException thrown = assertThrows(FormRecognizerException.class, () ->
                 client.beginTraining(trainingFilesUrl, false,
-                    new TrainingFileFilter().setIncludeSubFolders(true).setPrefix(INVALID_PREFIX_FILE_NAME),
+                    new TrainingFileFilter().setSubfoldersIncluded(true).setPrefix(INVALID_PREFIX_FILE_NAME),
                     durationTestMode).getSyncPoller().getFinalResult());
             assertEquals(NO_VALID_BLOB_FOUND, thrown.getErrorInformation().get(0).getMessage());
         });
