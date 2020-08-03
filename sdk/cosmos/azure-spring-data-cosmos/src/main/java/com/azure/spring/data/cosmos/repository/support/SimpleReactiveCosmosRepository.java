@@ -5,15 +5,14 @@ package com.azure.spring.data.cosmos.repository.support;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosOperations;
+import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
-import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.repository.ReactiveCosmosRepository;
 import org.reactivestreams.Publisher;
 import org.springframework.data.domain.Sort;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -213,9 +212,9 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
         return cosmosOperations.deleteAll(entityInformation.getContainerName(), entityInformation.getJavaType());
     }
 
-    private PartitionKey createKey(String partitionKeyValue) {
-        if (StringUtils.isEmpty(partitionKeyValue)) {
-            return null;
+    private PartitionKey createKey(Object partitionKeyValue) {
+        if (partitionKeyValue == null) {
+            return PartitionKey.NONE;
         }
         return new PartitionKey(partitionKeyValue);
     }

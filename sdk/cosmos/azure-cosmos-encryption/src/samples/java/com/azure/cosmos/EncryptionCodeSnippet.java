@@ -2,11 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.encryption.CosmosEncryptor;
+import com.azure.cosmos.encryption.EncryptionCosmosAsyncContainer;
 import com.azure.cosmos.encryption.DataEncryptionKey;
 import com.azure.cosmos.encryption.DataEncryptionKeyProvider;
 import com.azure.cosmos.encryption.EncryptionItemRequestOptions;
 import com.azure.cosmos.encryption.EncryptionOptions;
+import com.azure.cosmos.encryption.Encryptor;
 import com.azure.cosmos.encryption.WithEncryption;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -29,35 +30,36 @@ public class EncryptionCodeSnippet {
 
         CosmosAsyncContainer container = client.getDatabase("myDb").getContainer("myCol");
 
-        WithEncryption.withEncryptor(container, new CosmosEncryptor(naiveDataEncryptionKeyProvider()));
+        // Encryptor given a key provider can encrypt/decrypt data
+        Encryptor encryptor =
+            WithEncryption.createCosmosEncryptor(simpleDataEncryptionKeyProvider());
 
-        Pojo pojo = new Pojo();
-        pojo.id = UUID.randomUUID().toString();
-        pojo.mypk = UUID.randomUUID().toString();
-        pojo.nonSensitive = UUID.randomUUID().toString();
-        pojo.sensitive1 = "this is a secret to be encrypted";
-        pojo.sensitive2 = "this is a another secret to be encrypted";
+        EncryptionCosmosAsyncContainer encryptionContainer =
+            WithEncryption.withEncryptor(container, encryptor);
 
+        Pojo originalItem = new Pojo();
+        originalItem.id = UUID.randomUUID().toString();
+        originalItem.mypk = UUID.randomUUID().toString();
+        originalItem.nonSensitive = UUID.randomUUID().toString();
+        originalItem.sensitive1 = "this is a secret to be encrypted";
+        originalItem.sensitive2 = "this is a another secret to be encrypted";
+
+        // create an item and encrypt /sensitive1 and sensitive2
         EncryptionItemRequestOptions options = new EncryptionItemRequestOptions();
         EncryptionOptions encryptionOptions = new EncryptionOptions();
         encryptionOptions.setPathsToEncrypt(ImmutableList.of("/sensitive1", "/sensitive2"));
         options.setEncryptionOptions(encryptionOptions);
+        CosmosItemResponse<Pojo> response = encryptionContainer.createItem(originalItem, new PartitionKey(originalItem.mypk), options).block();
 
-        CosmosItemResponse<Pojo> response = container.createItem(pojo, options).block();
+        // read and decrypt the item
+        CosmosItemResponse<Pojo> readResponse = encryptionContainer.readItem(originalItem.id, new PartitionKey(originalItem.mypk), null, Pojo.class).block();
+        Pojo readItem = readResponse.getItem();
 
-        assert response.getItem().nonSensitive != null;
-        assert response.getItem().sensitive1 == null;
-        assert response.getItem().sensitive2 == null;
-
-
-        CosmosItemResponse<Pojo> readResponse = container.readItem(pojo.id, new PartitionKey(pojo.mypk), Pojo.class).block();
-
-        assert response.getItem().nonSensitive != null;
-        assert response.getItem().sensitive1 != null;
-        assert response.getItem().sensitive2 != null;
+        assert(originalItem.sensitive1.equals(readItem.sensitive1));
+        assert(originalItem.sensitive2.equals(readItem.sensitive2));
     }
 
-    private DataEncryptionKeyProvider naiveDataEncryptionKeyProvider() {
+    private DataEncryptionKeyProvider simpleDataEncryptionKeyProvider() {
         // this is a naive data encryption key provider which always uses the same data encryption key in memory.
         // the user should implement DataEncryptionKeyProvider as per use case;
         // storing data encryption keys should happen on the app side.
