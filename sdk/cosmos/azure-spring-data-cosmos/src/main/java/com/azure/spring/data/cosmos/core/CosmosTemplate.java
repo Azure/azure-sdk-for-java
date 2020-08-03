@@ -729,14 +729,6 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                                         throwable));
     }
 
-    private List<String> getPartitionKeyNames(Class<?> domainType) {
-        CosmosEntityInformation<?, ?> entityInformation = CosmosEntityInformation.getInstance(domainType);
-        if (entityInformation.getPartitionKeyFieldName() == null) {
-            return new ArrayList<>();
-        }
-        return Collections.singletonList(entityInformation.getPartitionKeyFieldName());
-    }
-
     private <T> List<JsonNode> findItems(@NonNull CosmosQuery query,
                                          @NonNull String containerName) {
         final SqlQuerySpec sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(query);
