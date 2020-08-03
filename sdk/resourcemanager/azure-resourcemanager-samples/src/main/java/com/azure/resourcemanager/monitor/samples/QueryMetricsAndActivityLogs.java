@@ -161,7 +161,7 @@ public final class QueryMetricsAndActivityLogs {
         } finally {
             if (azure.resourceGroups().getByName(rgName) != null) {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().deleteByName(rgName);
+                azure.resourceGroups().beginDeleteByName(rgName);
                 System.out.println("Deleted Resource Group: " + rgName);
             } else {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
