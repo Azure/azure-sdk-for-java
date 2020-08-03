@@ -79,7 +79,7 @@ public final class TimeoutHandler extends ChannelDuplexHandler {
     @Override
     public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) {
         if (msg == LastHttpContent.EMPTY_LAST_CONTENT || msg instanceof FullHttpRequest) {
-            System.out.println("Last final write handled for request.");
+            System.out.println("Final write handled for request.");
             finalWriteProcessed = true;
         }
 
@@ -88,27 +88,14 @@ public final class TimeoutHandler extends ChannelDuplexHandler {
          * write operation completing to determine if the response timeout should begin.
          */
         promise = promise.unvoid();
-        if (writeTimeoutNanos > 0) {
-            addWriteTimeoutTask(ctx, promise);
-        } else {
-            addWriteWatcherTask(promise);
-        }
+        addWriteTimeoutTask(ctx, promise, writeTimeoutNanos > 0);
 
         ctx.write(msg, promise);
     }
 
-    private void addWriteTimeoutTask(ChannelHandlerContext ctx, ChannelPromise promise) {
-        final WriteTask writeTask = new WriteTask(ctx, promise);
-
-        if (!writeTask.scheduledTimeout.isDone()) {
-            outstandingWriteOperations += 1;
-            writeTasks.add(writeTask);
-            promise.addListener(writeTask);
-        }
-    }
-
-    private void addWriteWatcherTask(ChannelPromise promise) {
-        final WriteTask writeTask = new WriteTask(null, promise);
+    private void addWriteTimeoutTask(ChannelHandlerContext ctx, ChannelPromise promise, boolean hasTimeout) {
+        final WriteTask writeTask = new WriteTask(ctx, promise, hasTimeout);
+        outstandingWriteOperations += 1;
 
         writeTasks.add(writeTask);
         promise.addListener(writeTask);
@@ -128,7 +115,7 @@ public final class TimeoutHandler extends ChannelDuplexHandler {
          * If we haven't processed the final write operation or have outstanding write operations that are still running
          * don't begin the response timeout task.
          */
-        if (!finalWriteProcessed || outstandingWriteOperations != 0) {
+        if (!finalWriteProcessed || outstandingWriteOperations != 0 || responseTimeoutNanos == 0) {
             return;
         }
 
@@ -211,7 +198,7 @@ public final class TimeoutHandler extends ChannelDuplexHandler {
 
         final ScheduledFuture<?> scheduledTimeout;
 
-        private WriteTask(ChannelHandlerContext ctx, ChannelPromise promise) {
+        private WriteTask(ChannelHandlerContext ctx, ChannelPromise promise, boolean hasTimeout) {
             this.ctx = ctx;
             this.promise = promise;
 
@@ -221,11 +208,9 @@ public final class TimeoutHandler extends ChannelDuplexHandler {
              * task which will keep track of write operations as they complete and decrement the outstanding write
              * operations counter.
              */
-            if (ctx != null) {
-                this.scheduledTimeout = ctx.executor().schedule(this, writeTimeoutNanos, NANOSECONDS);
-            } else {
-                this.scheduledTimeout = null;
-            }
+            this.scheduledTimeout = (hasTimeout)
+                ? ctx.executor().schedule(this, writeTimeoutNanos, NANOSECONDS)
+                : null;
         }
 
         @Override
@@ -236,9 +221,12 @@ public final class TimeoutHandler extends ChannelDuplexHandler {
              */
             if (!promise.isDone()) {
                 operationTimedOut(ctx, WRITE_TIMED_OUT_MESSAGE);
+                removeWriteTask(this, ctx, true);
+
+                return;
             }
 
-            removeWriteTask(this, ctx, true);
+            removeWriteTask(this, ctx, false);
         }
 
         @Override
