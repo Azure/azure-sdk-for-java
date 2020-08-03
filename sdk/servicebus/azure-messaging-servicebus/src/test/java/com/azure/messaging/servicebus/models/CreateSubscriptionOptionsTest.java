@@ -50,7 +50,7 @@ class CreateSubscriptionOptionsTest {
         // Arrange
         final String topicName = "some-topic";
         final String subscriptionName = "some-subscription";
-        final SubscriptionDescription expected = new SubscriptionDescription()
+        final SubscriptionProperties expected = new SubscriptionProperties()
             .setTopicName(topicName)
             .setSubscriptionName(subscriptionName)
             .setAutoDeleteOnIdle(Duration.ofSeconds(15))

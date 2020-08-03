@@ -12,6 +12,7 @@ import com.azure.messaging.servicebus.implementation.models.ResponseLink;
 import com.azure.messaging.servicebus.implementation.models.SubscriptionDescriptionEntry;
 import com.azure.messaging.servicebus.implementation.models.SubscriptionDescriptionEntryContent;
 import com.azure.messaging.servicebus.implementation.models.SubscriptionDescriptionFeed;
+import com.azure.messaging.servicebus.models.CreateSubscriptionOptions;
 import com.azure.messaging.servicebus.models.EntityStatus;
 import com.azure.messaging.servicebus.models.MessageCountDetails;
 import com.azure.messaging.servicebus.models.MessagingSku;
@@ -19,7 +20,7 @@ import com.azure.messaging.servicebus.models.NamespaceProperties;
 import com.azure.messaging.servicebus.models.NamespaceType;
 import com.azure.messaging.servicebus.models.QueueDescription;
 import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
-import com.azure.messaging.servicebus.models.SubscriptionDescription;
+import com.azure.messaging.servicebus.models.SubscriptionProperties;
 import com.azure.messaging.servicebus.models.SubscriptionRuntimeInfo;
 import org.junit.jupiter.api.Test;
 
@@ -269,7 +270,7 @@ class ServiceBusManagementSerializerTest {
     void deserializeSubscription() throws IOException {
         // Arrange
         final String contents = getContents("SubscriptionDescriptionEntry.xml");
-        final SubscriptionDescription expected = new SubscriptionDescription("my-topic", "subscription-session-9")
+        final CreateSubscriptionOptions expected = new CreateSubscriptionOptions("my-topic", "subscription-session-9")
             .setLockDuration(Duration.ofSeconds(15))
             .setRequiresSession(true)
             .setDefaultMessageTimeToLive(ServiceBusConstants.MAX_DURATION)
@@ -286,7 +287,7 @@ class ServiceBusManagementSerializerTest {
         assertNotNull(entry);
         assertNotNull(entry.getContent());
 
-        final SubscriptionDescription actual = entry.getContent().getSubscriptionDescription();
+        final SubscriptionProperties actual = entry.getContent().getSubscriptionProperties();
 
         assertSubscriptionEquals(expected, EntityStatus.ACTIVE, actual);
     }
@@ -298,7 +299,7 @@ class ServiceBusManagementSerializerTest {
     void deserializeCreateSubscription() throws IOException {
         // Arrange
         final String contents = getContents("CreateSubscriptionEntry.xml");
-        final SubscriptionDescription expected = new SubscriptionDescription("topic", "sub46850f")
+        final CreateSubscriptionOptions expected = new CreateSubscriptionOptions("topic", "sub46850f")
             .setAutoDeleteOnIdle(Duration.parse("P10675199DT2H48M5.477S"))
             .setDefaultMessageTimeToLive(Duration.parse("P10675199DT2H48M5.477S"))
             .setLockDuration(Duration.ofSeconds(45))
@@ -312,7 +313,7 @@ class ServiceBusManagementSerializerTest {
         assertNotNull(entry);
         assertNotNull(entry.getContent());
 
-        final SubscriptionDescription actual = entry.getContent().getSubscriptionDescription();
+        final SubscriptionProperties actual = entry.getContent().getSubscriptionProperties();
 
         assertSubscriptionEquals(expected, EntityStatus.ACTIVE, actual);
     }
@@ -339,7 +340,7 @@ class ServiceBusManagementSerializerTest {
         // Act
         final SubscriptionDescriptionEntry entry = serializer.deserialize(contents, SubscriptionDescriptionEntry.class);
         final SubscriptionRuntimeInfo actual = new SubscriptionRuntimeInfo(
-            entry.getContent().getSubscriptionDescription());
+            entry.getContent().getSubscriptionProperties());
 
         // Assert
         assertEquals(messageCount, actual.getMessageCount());
@@ -370,47 +371,52 @@ class ServiceBusManagementSerializerTest {
                 .setHref("https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions?api-version=2017-04&enrich=false&$skip=0&$top=100")
         );
 
-        final SubscriptionDescription subscription1 = new SubscriptionDescription("topic", "subscription-0")
+        final CreateSubscriptionOptions options1 = new CreateSubscriptionOptions("topic", "subscription-0")
             .setLockDuration(Duration.ofSeconds(15))
             .setDefaultMessageTimeToLive(Duration.ofMinutes(5))
             .setMaxDeliveryCount(5)
             .setAutoDeleteOnIdle(Duration.ofDays(1));
-        final SubscriptionDescription subscription2 = new SubscriptionDescription("topic", "subscription-session-0")
+        final CreateSubscriptionOptions options2 = new CreateSubscriptionOptions("topic", "subscription-session-0")
             .setRequiresSession(true)
             .setLockDuration(Duration.ofSeconds(15))
             .setMaxDeliveryCount(5);
-        final SubscriptionDescription subscription3 = new SubscriptionDescription("topic", "subscription-session-1")
+        final CreateSubscriptionOptions options3 = new CreateSubscriptionOptions("topic", "subscription-session-1")
             .setRequiresSession(true)
             .setLockDuration(Duration.ofSeconds(15))
             .setMaxDeliveryCount(5);
 
+        final SubscriptionProperties subscription1 = EntityHelper.createSubscription(options1);
+        final SubscriptionProperties subscription2 = EntityHelper.createSubscription(options2);
+        final SubscriptionProperties subscription3 = EntityHelper.createSubscription(options3);
+        final List<CreateSubscriptionOptions> createSubscriptionOptions = Arrays.asList(options1, options2, options3);
+
         final SubscriptionDescriptionEntry entry1 = new SubscriptionDescriptionEntry()
             .setId("https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-0?api-version=2017-04")
-            .setTitle(getResponseTitle(subscription1.getSubscriptionName()))
+            .setTitle(getResponseTitle(options1.getSubscriptionName()))
             .setPublished(OffsetDateTime.parse("2020-06-22T23:47:53Z"))
             .setUpdated(OffsetDateTime.parse("2020-06-23T23:47:53Z"))
             .setLink(new ResponseLink().setRel("self").setHref("Subscriptions/subscription-0?api-version=2017-04"))
             .setContent(new SubscriptionDescriptionEntryContent()
                 .setType("application/xml")
-                .setSubscriptionDescription(subscription1));
+                .setSubscriptionProperties(subscription1));
         final SubscriptionDescriptionEntry entry2 = new SubscriptionDescriptionEntry()
             .setId("https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-session-0?api-version=2017-04")
-            .setTitle(getResponseTitle(subscription2.getSubscriptionName()))
+            .setTitle(getResponseTitle(options2.getSubscriptionName()))
             .setPublished(OffsetDateTime.parse("2020-06-22T23:47:53Z"))
             .setUpdated(OffsetDateTime.parse("2020-05-22T23:47:53Z"))
             .setLink(new ResponseLink().setRel("self").setHref("Subscriptions/subscription-session-0?api-version=2017-04"))
             .setContent(new SubscriptionDescriptionEntryContent()
                 .setType("application/xml")
-                .setSubscriptionDescription(subscription2));
+                .setSubscriptionProperties(subscription2));
         final SubscriptionDescriptionEntry entry3 = new SubscriptionDescriptionEntry()
             .setId("https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-session-1?api-version=2017-04")
-            .setTitle(getResponseTitle(subscription3.getSubscriptionName()))
+            .setTitle(getResponseTitle(options3.getSubscriptionName()))
             .setPublished(OffsetDateTime.parse("2020-06-22T23:47:54Z"))
             .setUpdated(OffsetDateTime.parse("2020-04-22T23:47:54Z"))
             .setLink(new ResponseLink().setRel("self").setHref("Subscriptions/subscription-session-1?api-version=2017-04"))
             .setContent(new SubscriptionDescriptionEntryContent()
                 .setType("application/xml")
-                .setSubscriptionDescription(subscription3));
+                .setSubscriptionProperties(subscription3));
 
         final Map<String, String> titleMap = new HashMap<>();
         titleMap.put("", "Subscriptions");
@@ -459,8 +465,9 @@ class ServiceBusManagementSerializerTest {
             assertEquals(expectedEntry.getUpdated(), actualEntry.getUpdated());
             assertEquals(expectedEntry.getPublished(), actualEntry.getPublished());
 
-            assertSubscriptionEquals(expectedEntry.getContent().getSubscriptionDescription(), EntityStatus.ACTIVE,
-                actualEntry.getContent().getSubscriptionDescription());
+            final CreateSubscriptionOptions expectedOptions = createSubscriptionOptions.get(i);
+            assertSubscriptionEquals(expectedOptions, EntityStatus.ACTIVE,
+                actualEntry.getContent().getSubscriptionProperties());
         }
     }
 
@@ -503,8 +510,8 @@ class ServiceBusManagementSerializerTest {
         assertEquals(expectedStatus, actual.getStatus());
     }
 
-    private static void assertSubscriptionEquals(SubscriptionDescription expected, EntityStatus expectedStatus,
-        SubscriptionDescription actual) {
+    private static void assertSubscriptionEquals(CreateSubscriptionOptions expected, EntityStatus expectedStatus,
+        SubscriptionProperties actual) {
 
         assertEquals(expected.getLockDuration(), actual.getLockDuration());
         assertEquals(expected.enableDeadLetteringOnFilterEvaluationExceptions(),

@@ -7,7 +7,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.CreateSubscriptionOptions;
 import com.azure.messaging.servicebus.models.CreateTopicOptions;
 import com.azure.messaging.servicebus.models.QueueDescription;
-import com.azure.messaging.servicebus.models.SubscriptionDescription;
+import com.azure.messaging.servicebus.models.SubscriptionProperties;
 import com.azure.messaging.servicebus.models.TopicProperties;
 
 import java.util.Objects;
@@ -28,8 +28,8 @@ public final class EntityHelper {
         }
 
         try {
-            Class.forName(SubscriptionDescription.class.getName(), true,
-                SubscriptionDescription.class.getClassLoader());
+            Class.forName(SubscriptionProperties.class.getName(), true,
+                SubscriptionProperties.class.getClassLoader());
         } catch (ClassNotFoundException e) {
             throw new ClientLogger(EntityHelper.class).logExceptionAsError(new IllegalStateException(e));
         }
@@ -40,9 +40,9 @@ public final class EntityHelper {
      *
      * @param options Options to create topic with.
      *
-     * @return A new {@link SubscriptionDescription} with the set options.
+     * @return A new {@link SubscriptionProperties} with the set options.
      */
-    public static SubscriptionDescription createSubscription(CreateSubscriptionOptions options) {
+    public static SubscriptionProperties createSubscription(CreateSubscriptionOptions options) {
         Objects.requireNonNull(options, "'options' cannot be null.");
 
         if (subscriptionAccessor == null) {
@@ -119,12 +119,12 @@ public final class EntityHelper {
     }
 
     /**
-     * Sets the subscription name on a {@link SubscriptionDescription}.
+     * Sets the subscription name on a {@link SubscriptionProperties}.
      *
      * @param subscription Subscription to set name on.
      * @param subscriptionName Name of the subscription.
      */
-    public static void setSubscriptionName(SubscriptionDescription subscription, String subscriptionName) {
+    public static void setSubscriptionName(SubscriptionProperties subscription, String subscriptionName) {
         if (subscriptionAccessor == null) {
             throw new ClientLogger(EntityHelper.class).logExceptionAsError(
                 new IllegalStateException("'subscriptionAccessor' should not be null."));
@@ -150,12 +150,12 @@ public final class EntityHelper {
     }
 
     /**
-     * Sets the topic name on a {@link SubscriptionDescription}.
+     * Sets the topic name on a {@link SubscriptionProperties}.
      *
      * @param subscription Subscription to set name on.
      * @param topicName Name of the topic.
      */
-    public static void setTopicName(SubscriptionDescription subscription, String topicName) {
+    public static void setTopicName(SubscriptionProperties subscription, String topicName) {
         if (subscriptionAccessor == null) {
             throw new ClientLogger(EntityHelper.class).logExceptionAsError(new IllegalStateException(
                 "'subscriptionAccessor' should not be null."));
@@ -202,23 +202,23 @@ public final class EntityHelper {
          * @param options Options used to create subscription.
          * @return A new subscription.
          */
-        SubscriptionDescription createSubscription(CreateSubscriptionOptions options);
+        SubscriptionProperties createSubscription(CreateSubscriptionOptions options);
 
         /**
          * Sets the topic name on a subscription.
          *
-         * @param subscriptionDescription Subscription to set name on.
+         * @param subscriptionProperties Subscription to set name on.
          * @param topicName Name of the topic.
          */
-        void setTopicName(SubscriptionDescription subscriptionDescription, String topicName);
+        void setTopicName(SubscriptionProperties subscriptionProperties, String topicName);
 
         /**
          * Sets the subscription name on a subscription description.
          *
-         * @param subscriptionDescription Subscription to set name on.
+         * @param subscriptionProperties Subscription to set name on.
          * @param subscriptionName Name of the subscription.
          */
-        void setSubscriptionName(SubscriptionDescription subscriptionDescription, String subscriptionName);
+        void setSubscriptionName(SubscriptionProperties subscriptionProperties, String subscriptionName);
     }
 
     /**

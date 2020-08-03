@@ -5,7 +5,7 @@
 package com.azure.messaging.servicebus.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.messaging.servicebus.models.SubscriptionDescription;
+import com.azure.messaging.servicebus.models.SubscriptionProperties;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -25,7 +25,7 @@ public final class CreateSubscriptionBodyContent {
     @JacksonXmlProperty(
             localName = "SubscriptionDescription",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private SubscriptionDescription subscriptionDescription;
+    private SubscriptionProperties subscriptionProperties;
 
     /**
      * Get the type property: MIME type of content.
@@ -52,18 +52,18 @@ public final class CreateSubscriptionBodyContent {
      *
      * @return the subscriptionDescription value.
      */
-    public SubscriptionDescription getSubscriptionDescription() {
-        return this.subscriptionDescription;
+    public SubscriptionProperties getSubscriptionProperties() {
+        return this.subscriptionProperties;
     }
 
     /**
      * Set the subscriptionDescription property: Topic information to create.
      *
-     * @param subscriptionDescription the subscriptionDescription value to set.
+     * @param subscriptionProperties the subscriptionDescription value to set.
      * @return the CreateSubscriptionBodyContent object itself.
      */
-    public CreateSubscriptionBodyContent setSubscriptionDescription(SubscriptionDescription subscriptionDescription) {
-        this.subscriptionDescription = subscriptionDescription;
+    public CreateSubscriptionBodyContent setSubscriptionProperties(SubscriptionProperties subscriptionProperties) {
+        this.subscriptionProperties = subscriptionProperties;
         return this;
     }
 }

@@ -47,7 +47,7 @@ import com.azure.messaging.servicebus.models.CreateTopicOptions;
 import com.azure.messaging.servicebus.models.NamespaceProperties;
 import com.azure.messaging.servicebus.models.QueueDescription;
 import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
-import com.azure.messaging.servicebus.models.SubscriptionDescription;
+import com.azure.messaging.servicebus.models.SubscriptionProperties;
 import com.azure.messaging.servicebus.models.SubscriptionRuntimeInfo;
 import com.azure.messaging.servicebus.models.TopicProperties;
 import com.azure.messaging.servicebus.models.TopicRuntimeInfo;
@@ -193,7 +193,7 @@ public final class ServiceBusManagementAsyncClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SubscriptionDescription> createSubscription(String topicName, String subscriptionName) {
+    public Mono<SubscriptionProperties> createSubscription(String topicName, String subscriptionName) {
         try {
             return createSubscription(new CreateSubscriptionOptions(topicName, subscriptionName));
         } catch (RuntimeException e) {
@@ -202,7 +202,7 @@ public final class ServiceBusManagementAsyncClient {
     }
 
     /**
-     * Creates a subscription with the {@link SubscriptionDescription}.
+     * Creates a subscription with the {@link SubscriptionProperties}.
      *
      * @param subscription Information about the subscription to create.
      *
@@ -216,7 +216,7 @@ public final class ServiceBusManagementAsyncClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SubscriptionDescription> createSubscription(CreateSubscriptionOptions subscription) {
+    public Mono<SubscriptionProperties> createSubscription(CreateSubscriptionOptions subscription) {
         return createSubscriptionWithResponse(subscription).map(Response::getValue);
     }
 
@@ -235,7 +235,7 @@ public final class ServiceBusManagementAsyncClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SubscriptionDescription>> createSubscriptionWithResponse(
+    public Mono<Response<SubscriptionProperties>> createSubscriptionWithResponse(
         CreateSubscriptionOptions subscription) {
         return withContext(context -> createSubscriptionWithResponse(subscription, context));
     }
@@ -575,7 +575,7 @@ public final class ServiceBusManagementAsyncClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SubscriptionDescription> getSubscription(String topicName, String subscriptionName) {
+    public Mono<SubscriptionProperties> getSubscription(String topicName, String subscriptionName) {
         return getSubscriptionWithResponse(topicName, subscriptionName).map(Response::getValue);
     }
 
@@ -595,7 +595,7 @@ public final class ServiceBusManagementAsyncClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SubscriptionDescription>> getSubscriptionWithResponse(String topicName,
+    public Mono<Response<SubscriptionProperties>> getSubscriptionWithResponse(String topicName,
         String subscriptionName) {
         return withContext(context -> getSubscriptionWithResponse(topicName, subscriptionName, context,
             Function.identity()));
@@ -812,7 +812,7 @@ public final class ServiceBusManagementAsyncClient {
      *
      * @param topicName The topic name under which all the subscriptions need to be retrieved.
      *
-     * @return A Flux of {@link SubscriptionDescription subscriptions} for the {@code topicName}.
+     * @return A Flux of {@link SubscriptionProperties subscriptions} for the {@code topicName}.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws NullPointerException if {@code topicName} is null.
@@ -821,7 +821,7 @@ public final class ServiceBusManagementAsyncClient {
      *     authorization rules</a>
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SubscriptionDescription> listSubscriptions(String topicName) {
+    public PagedFlux<SubscriptionProperties> listSubscriptions(String topicName) {
         if (topicName == null) {
             return pagedFluxError(logger, new NullPointerException("'topicName' cannot be null."));
         } else if (topicName.isEmpty()) {
@@ -926,7 +926,7 @@ public final class ServiceBusManagementAsyncClient {
     }
 
     /**
-     * Updates a subscription with the given {@link SubscriptionDescription}. The {@link SubscriptionDescription} must
+     * Updates a subscription with the given {@link SubscriptionProperties}. The {@link SubscriptionProperties} must
      * be fully populated as all of the properties are replaced. If a property is not set the service default value is
      * used.
      *
@@ -940,9 +940,9 @@ public final class ServiceBusManagementAsyncClient {
      * <p>
      * There are a subset of properties that can be updated. More information can be found in the links below. They are:
      * <ul>
-     * <li>{@link SubscriptionDescription#setDefaultMessageTimeToLive(Duration) DefaultMessageTimeToLive}</li>
-     * <li>{@link SubscriptionDescription#setLockDuration(Duration) LockDuration}</li>
-     * <li>{@link SubscriptionDescription#setMaxDeliveryCount(int) MaxDeliveryCount}</li>
+     * <li>{@link SubscriptionProperties#setDefaultMessageTimeToLive(Duration) DefaultMessageTimeToLive}</li>
+     * <li>{@link SubscriptionProperties#setLockDuration(Duration) LockDuration}</li>
+     * <li>{@link SubscriptionProperties#setMaxDeliveryCount(int) MaxDeliveryCount}</li>
      * </ul>
      *
      * @param subscription Information about the subscription to update. You must provide all the property values
@@ -953,18 +953,18 @@ public final class ServiceBusManagementAsyncClient {
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the subscription quota is exceeded, or an
      *     error occurred processing the request.
-     * @throws IllegalArgumentException if {@link SubscriptionDescription#getTopicName()} or {@link
-     *     SubscriptionDescription#getSubscriptionName()} is null or an empty string.
+     * @throws IllegalArgumentException if {@link SubscriptionProperties#getTopicName()} or {@link
+     *     SubscriptionProperties#getSubscriptionName()} is null or an empty string.
      * @throws NullPointerException if {@code subscription} is null.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SubscriptionDescription> updateSubscription(SubscriptionDescription subscription) {
+    public Mono<SubscriptionProperties> updateSubscription(SubscriptionProperties subscription) {
         return updateSubscriptionWithResponse(subscription).map(Response::getValue);
     }
 
     /**
-     * Updates a subscription with the given {@link SubscriptionDescription}. The {@link SubscriptionDescription} must
+     * Updates a subscription with the given {@link SubscriptionProperties}. The {@link SubscriptionProperties} must
      * be fully populated as all of the properties are replaced. If a property is not set the service default value is
      * used.
      *
@@ -978,9 +978,9 @@ public final class ServiceBusManagementAsyncClient {
      * <p>
      * There are a subset of properties that can be updated. More information can be found in the links below. They are:
      * <ul>
-     * <li>{@link SubscriptionDescription#setDefaultMessageTimeToLive(Duration) DefaultMessageTimeToLive}</li>
-     * <li>{@link SubscriptionDescription#setLockDuration(Duration) LockDuration}</li>
-     * <li>{@link SubscriptionDescription#setMaxDeliveryCount(int) MaxDeliveryCount}</li>
+     * <li>{@link SubscriptionProperties#setDefaultMessageTimeToLive(Duration) DefaultMessageTimeToLive}</li>
+     * <li>{@link SubscriptionProperties#setLockDuration(Duration) LockDuration}</li>
+     * <li>{@link SubscriptionProperties#setMaxDeliveryCount(int) MaxDeliveryCount}</li>
      * </ul>
      *
      * @param subscription Information about the subscription to update. You must provide all the property values
@@ -991,14 +991,14 @@ public final class ServiceBusManagementAsyncClient {
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the subscription quota is exceeded, or an
      *     error occurred processing the request.
-     * @throws IllegalArgumentException if {@link SubscriptionDescription#getTopicName()} or {@link
-     *     SubscriptionDescription#getSubscriptionName()} is null or an empty string.
+     * @throws IllegalArgumentException if {@link SubscriptionProperties#getTopicName()} or {@link
+     *     SubscriptionProperties#getSubscriptionName()} is null or an empty string.
      * @throws NullPointerException if {@code subscription} is null.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SubscriptionDescription>> updateSubscriptionWithResponse(
-        SubscriptionDescription subscription) {
+    public Mono<Response<SubscriptionProperties>> updateSubscriptionWithResponse(
+        SubscriptionProperties subscription) {
 
         return withContext(context -> updateSubscriptionWithResponse(subscription, context));
     }
@@ -1117,18 +1117,18 @@ public final class ServiceBusManagementAsyncClient {
      * @param options Subscription to create.
      * @param context Context to pass into request.
      *
-     * @return A Mono that completes with the created {@link SubscriptionDescription}.
+     * @return A Mono that completes with the created {@link SubscriptionProperties}.
      */
-    Mono<Response<SubscriptionDescription>> createSubscriptionWithResponse(CreateSubscriptionOptions options,
+    Mono<Response<SubscriptionProperties>> createSubscriptionWithResponse(CreateSubscriptionOptions options,
         Context context) {
         if (options == null) {
             return monoError(logger, new NullPointerException("'subscription' cannot be null."));
         }
 
-        final SubscriptionDescription subscription = EntityHelper.createSubscription(options);
+        final SubscriptionProperties subscription = EntityHelper.createSubscription(options);
         final CreateSubscriptionBodyContent content = new CreateSubscriptionBodyContent()
             .setType(CONTENT_TYPE)
-            .setSubscriptionDescription(subscription);
+            .setSubscriptionProperties(subscription);
         final CreateSubscriptionBody createEntity = new CreateSubscriptionBody().setContent(content);
 
         final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
@@ -1214,7 +1214,7 @@ public final class ServiceBusManagementAsyncClient {
      * @param subscriptionName Name of subscription to delete.
      * @param context Context to pass into request.
      *
-     * @return A Mono that completes with the created {@link SubscriptionDescription}.
+     * @return A Mono that completes with the created {@link SubscriptionProperties}.
      */
     Mono<Response<Void>> deleteSubscriptionWithResponse(String topicName, String subscriptionName, Context context) {
         if (subscriptionName == null) {
@@ -1345,10 +1345,10 @@ public final class ServiceBusManagementAsyncClient {
      * @param subscriptionName Name of subscription to fetch information for.
      * @param context Context to pass into request.
      *
-     * @return A Mono that completes with the {@link SubscriptionDescription}.
+     * @return A Mono that completes with the {@link SubscriptionProperties}.
      */
     <T> Mono<Response<T>> getSubscriptionWithResponse(String topicName, String subscriptionName, Context context,
-        Function<SubscriptionDescription, T> mapper) {
+        Function<SubscriptionProperties, T> mapper) {
         if (topicName == null) {
             return monoError(logger, new NullPointerException("'topicName' cannot be null."));
         } else if (topicName.isEmpty()) {
@@ -1368,7 +1368,7 @@ public final class ServiceBusManagementAsyncClient {
                 withTracing)
                 .onErrorMap(ServiceBusManagementAsyncClient::mapException)
                 .handle((response, sink) -> {
-                    final Response<SubscriptionDescription> deserialize = deserializeSubscription(topicName, response);
+                    final Response<SubscriptionProperties> deserialize = deserializeSubscription(topicName, response);
 
                     // if this is null, then the queue could not be found.
                     if (deserialize.getValue() == null) {
@@ -1500,7 +1500,7 @@ public final class ServiceBusManagementAsyncClient {
      *
      * @return A Mono that completes with a page of subscriptions.
      */
-    Mono<PagedResponse<SubscriptionDescription>> listSubscriptionsFirstPage(String topicName, Context context) {
+    Mono<PagedResponse<SubscriptionProperties>> listSubscriptionsFirstPage(String topicName, Context context) {
         final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
 
         try {
@@ -1518,7 +1518,7 @@ public final class ServiceBusManagementAsyncClient {
      *
      * @return A Mono that completes with a page of subscriptions or empty if there are no items left.
      */
-    Mono<PagedResponse<SubscriptionDescription>> listSubscriptionsNextPage(String topicName, String continuationToken,
+    Mono<PagedResponse<SubscriptionProperties>> listSubscriptionsNextPage(String topicName, String continuationToken,
         Context context) {
         if (continuationToken == null || continuationToken.isEmpty()) {
             return Mono.empty();
@@ -1614,9 +1614,9 @@ public final class ServiceBusManagementAsyncClient {
      *     that are desired on the updated entity. Any values not provided are set to the service default values.
      * @param context Context to pass into request.
      *
-     * @return A Mono that completes with the updated {@link SubscriptionDescription}.
+     * @return A Mono that completes with the updated {@link SubscriptionProperties}.
      */
-    Mono<Response<SubscriptionDescription>> updateSubscriptionWithResponse(SubscriptionDescription subscription,
+    Mono<Response<SubscriptionProperties>> updateSubscriptionWithResponse(SubscriptionProperties subscription,
         Context context) {
         if (subscription == null) {
             return monoError(logger, new NullPointerException("'subscription' cannot be null"));
@@ -1628,7 +1628,7 @@ public final class ServiceBusManagementAsyncClient {
         final String subscriptionName = subscription.getSubscriptionName();
         final CreateSubscriptionBodyContent content = new CreateSubscriptionBodyContent()
             .setType(CONTENT_TYPE)
-            .setSubscriptionDescription(subscription);
+            .setSubscriptionProperties(subscription);
         final CreateSubscriptionBody createEntity = new CreateSubscriptionBody()
             .setContent(content);
         final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
@@ -1739,13 +1739,13 @@ public final class ServiceBusManagementAsyncClient {
 
     /**
      * Converts a Response into its corresponding {@link SubscriptionDescriptionEntry} then mapped into {@link
-     * SubscriptionDescription}.
+     * SubscriptionProperties}.
      *
      * @param response HTTP Response to deserialize.
      *
      * @return The corresponding HTTP response with convenience properties set.
      */
-    private Response<SubscriptionDescription> deserializeSubscription(String topicName, Response<Object> response) {
+    private Response<SubscriptionProperties> deserializeSubscription(String topicName, Response<Object> response) {
         final SubscriptionDescriptionEntry entry = deserialize(response.getValue(), SubscriptionDescriptionEntry.class);
 
         // This was an empty response (ie. 204).
@@ -1756,7 +1756,7 @@ public final class ServiceBusManagementAsyncClient {
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
         }
 
-        final SubscriptionDescription subscription = entry.getContent().getSubscriptionDescription();
+        final SubscriptionProperties subscription = entry.getContent().getSubscriptionProperties();
         final String subscriptionName = getTitleValue(entry.getTitle());
         EntityHelper.setSubscriptionName(subscription, subscriptionName);
         EntityHelper.setTopicName(subscription, topicName);
@@ -1876,7 +1876,7 @@ public final class ServiceBusManagementAsyncClient {
      *
      * @return A Mono that completes with a paged response of subscriptions.
      */
-    private Mono<PagedResponse<SubscriptionDescription>> listSubscriptions(String topicName, int skip,
+    private Mono<PagedResponse<SubscriptionProperties>> listSubscriptions(String topicName, int skip,
         Context context) {
         return managementClient.listSubscriptionsWithResponseAsync(topicName, skip, NUMBER_OF_ELEMENTS, context)
             .onErrorMap(ServiceBusManagementAsyncClient::mapException)
@@ -1891,11 +1891,11 @@ public final class ServiceBusManagementAsyncClient {
                     return Mono.empty();
                 }
 
-                final List<SubscriptionDescription> entities = feed.getEntry().stream()
-                    .filter(e -> e.getContent() != null && e.getContent().getSubscriptionDescription() != null)
+                final List<SubscriptionProperties> entities = feed.getEntry().stream()
+                    .filter(e -> e.getContent() != null && e.getContent().getSubscriptionProperties() != null)
                     .map(e -> {
                         final String subscriptionName = getTitleValue(e.getTitle());
-                        final SubscriptionDescription description = e.getContent().getSubscriptionDescription();
+                        final SubscriptionProperties description = e.getContent().getSubscriptionProperties();
 
                         EntityHelper.setTopicName(description, topicName);
                         EntityHelper.setSubscriptionName(description, subscriptionName);

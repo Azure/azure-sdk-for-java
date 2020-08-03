@@ -6,7 +6,7 @@ package com.azure.messaging.servicebus.implementation;
 import com.azure.messaging.servicebus.models.CreateSubscriptionOptions;
 import com.azure.messaging.servicebus.models.CreateTopicOptions;
 import com.azure.messaging.servicebus.models.EntityStatus;
-import com.azure.messaging.servicebus.models.SubscriptionDescription;
+import com.azure.messaging.servicebus.models.SubscriptionProperties;
 import com.azure.messaging.servicebus.models.TopicProperties;
 import org.junit.jupiter.api.Test;
 
@@ -85,7 +85,7 @@ public class EntityHelperTest {
             .setUserMetadata("Test-queue-Metadata");
 
         // Act
-        final SubscriptionDescription actual = EntityHelper.createSubscription(expected);
+        final SubscriptionProperties actual = EntityHelper.createSubscription(expected);
 
         // Assert
         assertEquals(expected.getTopicName(), actual.getTopicName());
@@ -105,7 +105,7 @@ public class EntityHelperTest {
         final String topicName = "I'm a new topic name";
         final String subscriptionName = "I'm a new subscription name";
         final CreateSubscriptionOptions options = new CreateSubscriptionOptions("some name", "sub-name");
-        final SubscriptionDescription properties = EntityHelper.createSubscription(options);
+        final SubscriptionProperties properties = EntityHelper.createSubscription(options);
 
         // Act
         EntityHelper.setTopicName(properties, subscriptionName);

@@ -11,11 +11,11 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
+import com.azure.messaging.servicebus.models.CreateSubscriptionOptions;
 import com.azure.messaging.servicebus.models.CreateTopicOptions;
 import com.azure.messaging.servicebus.models.NamespaceType;
 import com.azure.messaging.servicebus.models.QueueDescription;
 import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
-import com.azure.messaging.servicebus.models.SubscriptionDescription;
 import com.azure.messaging.servicebus.models.SubscriptionRuntimeInfo;
 import com.azure.messaging.servicebus.models.TopicProperties;
 import com.azure.messaging.servicebus.models.TopicRuntimeInfo;
@@ -125,7 +125,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
             ? "topic-0"
             : getEntityName(getTopicBaseName(), 0);
         final String subscriptionName = testResourceNamer.randomName("sub", 10);
-        final SubscriptionDescription expected = new SubscriptionDescription(topicName, subscriptionName)
+        final CreateSubscriptionOptions expected = new CreateSubscriptionOptions(topicName, subscriptionName)
             .setMaxDeliveryCount(7)
             .setLockDuration(Duration.ofSeconds(45))
             .setUserMetadata("some-metadata-for-testing-subscriptions");

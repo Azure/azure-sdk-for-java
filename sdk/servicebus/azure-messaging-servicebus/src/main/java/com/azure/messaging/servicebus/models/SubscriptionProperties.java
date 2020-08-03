@@ -19,7 +19,7 @@ import java.util.Objects;
         localName = "SubscriptionDescription",
         namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
 @Fluent
-public final class SubscriptionDescription {
+public final class SubscriptionProperties {
     /*
      * ISO 8601 timespan duration of a peek-lock; that is, the amount of time
      * that the message is locked for other receivers. The maximum value for
@@ -182,18 +182,18 @@ public final class SubscriptionDescription {
         // This is used by classes in different packages to get access to private and package-private methods.
         EntityHelper.setSubscriptionAccessor(new EntityHelper.SubscriptionAccessor() {
             @Override
-            public SubscriptionDescription createSubscription(CreateSubscriptionOptions options) {
-                return new SubscriptionDescription(options);
+            public SubscriptionProperties createSubscription(CreateSubscriptionOptions options) {
+                return new SubscriptionProperties(options);
             }
 
             @Override
-            public void setTopicName(SubscriptionDescription subscriptionDescription, String topicName) {
-                subscriptionDescription.setTopicName(topicName);
+            public void setTopicName(SubscriptionProperties subscriptionProperties, String topicName) {
+                subscriptionProperties.setTopicName(topicName);
             }
 
             @Override
-            public void setSubscriptionName(SubscriptionDescription subscriptionDescription, String subscriptionName) {
-                subscriptionDescription.setSubscriptionName(subscriptionName);
+            public void setSubscriptionName(SubscriptionProperties subscriptionProperties, String subscriptionName) {
+                subscriptionProperties.setSubscriptionName(subscriptionName);
             }
         });
     }
@@ -205,7 +205,7 @@ public final class SubscriptionDescription {
      * Json deserialization constructor.
      */
     @JsonCreator
-    SubscriptionDescription() {
+    SubscriptionProperties() {
     }
 
     /**
@@ -213,7 +213,7 @@ public final class SubscriptionDescription {
      *
      * @param options Options used to create a subscription.
      */
-    SubscriptionDescription(CreateSubscriptionOptions options) {
+    SubscriptionProperties(CreateSubscriptionOptions options) {
         Objects.requireNonNull(options, "'options' cannot be null.");
 
         this.topicName = options.getTopicName();
@@ -245,7 +245,7 @@ public final class SubscriptionDescription {
      * @param topicName Name of the topic.
      * @return the SubscriptionDescription object itself.
      */
-    SubscriptionDescription setTopicName(String topicName) {
+    SubscriptionProperties setTopicName(String topicName) {
         this.topicName = topicName;
         return this;
     }
@@ -265,7 +265,7 @@ public final class SubscriptionDescription {
      * @param subscriptionName Name of the subscription.
      * @return the SubscriptionDescription object itself.
      */
-    SubscriptionDescription setSubscriptionName(String subscriptionName) {
+    SubscriptionProperties setSubscriptionName(String subscriptionName) {
         this.subscriptionName = subscriptionName;
         return this;
     }
@@ -289,7 +289,7 @@ public final class SubscriptionDescription {
      * @param lockDuration the lockDuration value to set.
      * @return the SubscriptionDescription object itself.
      */
-    public SubscriptionDescription setLockDuration(Duration lockDuration) {
+    public SubscriptionProperties setLockDuration(Duration lockDuration) {
         this.lockDuration = lockDuration;
         return this;
     }
@@ -309,7 +309,7 @@ public final class SubscriptionDescription {
      * @param requiresSession the requiresSession value to set.
      * @return the SubscriptionDescription object itself.
      */
-    public SubscriptionDescription setRequiresSession(boolean requiresSession) {
+    public SubscriptionProperties setRequiresSession(boolean requiresSession) {
         this.requiresSession = requiresSession;
         return this;
     }
@@ -333,7 +333,7 @@ public final class SubscriptionDescription {
      * @param defaultMessageTimeToLive the defaultMessageTimeToLive value to set.
      * @return the SubscriptionDescription object itself.
      */
-    public SubscriptionDescription setDefaultMessageTimeToLive(Duration defaultMessageTimeToLive) {
+    public SubscriptionProperties setDefaultMessageTimeToLive(Duration defaultMessageTimeToLive) {
         this.defaultMessageTimeToLive = defaultMessageTimeToLive;
         return this;
     }
@@ -355,7 +355,7 @@ public final class SubscriptionDescription {
      * @param deadLetteringOnMessageExpiration the deadLetteringOnMessageExpiration value to set.
      * @return the SubscriptionDescription object itself.
      */
-    public SubscriptionDescription setDeadLetteringOnMessageExpiration(boolean deadLetteringOnMessageExpiration) {
+    public SubscriptionProperties setDeadLetteringOnMessageExpiration(boolean deadLetteringOnMessageExpiration) {
         this.deadLetteringOnMessageExpiration = deadLetteringOnMessageExpiration;
         return this;
     }
@@ -377,7 +377,7 @@ public final class SubscriptionDescription {
      * @param deadLetteringOnFilterEvaluationExceptions the deadLetteringOnFilterEvaluationExceptions value to set.
      * @return the SubscriptionDescription object itself.
      */
-    public SubscriptionDescription setEnableDeadLetteringOnFilterEvaluationExceptions(
+    public SubscriptionProperties setEnableDeadLetteringOnFilterEvaluationExceptions(
             Boolean deadLetteringOnFilterEvaluationExceptions) {
         this.deadLetteringOnFilterEvaluationExceptions = deadLetteringOnFilterEvaluationExceptions;
         return this;
@@ -398,7 +398,7 @@ public final class SubscriptionDescription {
      * @param messageCount the messageCount value to set.
      * @return the SubscriptionDescription object itself.
      */
-    SubscriptionDescription setMessageCount(Integer messageCount) {
+    SubscriptionProperties setMessageCount(Integer messageCount) {
         this.messageCount = messageCount;
         return this;
     }
@@ -420,7 +420,7 @@ public final class SubscriptionDescription {
      * @param maxDeliveryCount the maxDeliveryCount value to set.
      * @return the SubscriptionDescription object itself.
      */
-    public SubscriptionDescription setMaxDeliveryCount(int maxDeliveryCount) {
+    public SubscriptionProperties setMaxDeliveryCount(int maxDeliveryCount) {
         this.maxDeliveryCount = maxDeliveryCount;
         return this;
     }
@@ -442,7 +442,7 @@ public final class SubscriptionDescription {
      * @param enableBatchedOperations the enableBatchedOperations value to set.
      * @return the SubscriptionDescription object itself.
      */
-    public SubscriptionDescription setEnableBatchedOperations(boolean enableBatchedOperations) {
+    public SubscriptionProperties setEnableBatchedOperations(boolean enableBatchedOperations) {
         this.enableBatchedOperations = enableBatchedOperations;
         return this;
     }
@@ -462,7 +462,7 @@ public final class SubscriptionDescription {
      * @param status the status value to set.
      * @return the SubscriptionDescription object itself.
      */
-    public SubscriptionDescription setStatus(EntityStatus status) {
+    public SubscriptionProperties setStatus(EntityStatus status) {
         this.status = status;
         return this;
     }
@@ -484,7 +484,7 @@ public final class SubscriptionDescription {
      * @param forwardTo the forwardTo value to set.
      * @return the SubscriptionDescription object itself.
      */
-    public SubscriptionDescription setForwardTo(String forwardTo) {
+    public SubscriptionProperties setForwardTo(String forwardTo) {
         this.forwardTo = forwardTo;
         return this;
     }
@@ -504,7 +504,7 @@ public final class SubscriptionDescription {
      * @param createdAt the createdAt value to set.
      * @return the SubscriptionDescription object itself.
      */
-    SubscriptionDescription setCreatedAt(OffsetDateTime createdAt) {
+    SubscriptionProperties setCreatedAt(OffsetDateTime createdAt) {
         this.createdAt = createdAt;
         return this;
     }
@@ -524,7 +524,7 @@ public final class SubscriptionDescription {
      * @param updatedAt the updatedAt value to set.
      * @return the SubscriptionDescription object itself.
      */
-    SubscriptionDescription setUpdatedAt(OffsetDateTime updatedAt) {
+    SubscriptionProperties setUpdatedAt(OffsetDateTime updatedAt) {
         this.updatedAt = updatedAt;
         return this;
     }
@@ -546,7 +546,7 @@ public final class SubscriptionDescription {
      * @param accessedAt the accessedAt value to set.
      * @return the SubscriptionDescription object itself.
      */
-    SubscriptionDescription setAccessedAt(OffsetDateTime accessedAt) {
+    SubscriptionProperties setAccessedAt(OffsetDateTime accessedAt) {
         this.accessedAt = accessedAt;
         return this;
     }
@@ -566,7 +566,7 @@ public final class SubscriptionDescription {
      * @param messageCountDetails the messageCountDetails value to set.
      * @return the SubscriptionDescription object itself.
      */
-    SubscriptionDescription setMessageCountDetails(MessageCountDetails messageCountDetails) {
+    SubscriptionProperties setMessageCountDetails(MessageCountDetails messageCountDetails) {
         this.messageCountDetails = messageCountDetails;
         return this;
     }
@@ -586,7 +586,7 @@ public final class SubscriptionDescription {
      * @param userMetadata the userMetadata value to set.
      * @return the SubscriptionDescription object itself.
      */
-    public SubscriptionDescription setUserMetadata(String userMetadata) {
+    public SubscriptionProperties setUserMetadata(String userMetadata) {
         this.userMetadata = userMetadata;
         return this;
     }
@@ -608,7 +608,7 @@ public final class SubscriptionDescription {
      * @param forwardDeadLetteredMessagesTo the forwardDeadLetteredMessagesTo value to set.
      * @return the SubscriptionDescription object itself.
      */
-    public SubscriptionDescription setForwardDeadLetteredMessagesTo(String forwardDeadLetteredMessagesTo) {
+    public SubscriptionProperties setForwardDeadLetteredMessagesTo(String forwardDeadLetteredMessagesTo) {
         this.forwardDeadLetteredMessagesTo = forwardDeadLetteredMessagesTo;
         return this;
     }
@@ -630,7 +630,7 @@ public final class SubscriptionDescription {
      * @param autoDeleteOnIdle the autoDeleteOnIdle value to set.
      * @return the SubscriptionDescription object itself.
      */
-    public SubscriptionDescription setAutoDeleteOnIdle(Duration autoDeleteOnIdle) {
+    public SubscriptionProperties setAutoDeleteOnIdle(Duration autoDeleteOnIdle) {
         this.autoDeleteOnIdle = autoDeleteOnIdle;
         return this;
     }
@@ -650,7 +650,7 @@ public final class SubscriptionDescription {
      * @param entityAvailabilityStatus the entityAvailabilityStatus value to set.
      * @return the SubscriptionDescription object itself.
      */
-    SubscriptionDescription setEntityAvailabilityStatus(EntityAvailabilityStatus entityAvailabilityStatus) {
+    SubscriptionProperties setEntityAvailabilityStatus(EntityAvailabilityStatus entityAvailabilityStatus) {
         this.entityAvailabilityStatus = entityAvailabilityStatus;
         return this;
     }

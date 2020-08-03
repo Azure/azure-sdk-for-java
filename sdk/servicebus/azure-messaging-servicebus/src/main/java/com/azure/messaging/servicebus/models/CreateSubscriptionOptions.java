@@ -88,12 +88,12 @@ public class CreateSubscriptionOptions {
     }
 
     /**
-     * Initializes a new instance based on the specified {@link SubscriptionDescription} instance. This is useful for
+     * Initializes a new instance based on the specified {@link SubscriptionProperties} instance. This is useful for
      * creating a new queue based on the properties of an existing subscription.
      *
      * @param subscription Existing subscription to create options with.
      */
-    public CreateSubscriptionOptions(SubscriptionDescription subscription) {
+    public CreateSubscriptionOptions(SubscriptionProperties subscription) {
         Objects.requireNonNull(subscription, "'subscription' cannot be null.");
         Objects.requireNonNull(subscription.getTopicName(), "Topic name cannot be null.");
         Objects.requireNonNull(subscription.getSubscriptionName(), "Subscription name cannot be null.");

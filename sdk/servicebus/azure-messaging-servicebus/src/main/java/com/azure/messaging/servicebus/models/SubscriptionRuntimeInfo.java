@@ -24,19 +24,19 @@ public class SubscriptionRuntimeInfo {
     /**
      * Creates a new instance with runtime properties extracted from the given SubscriptionDescription.
      *
-     * @param subscriptionDescription Subscription description to extract runtime information from.
+     * @param subscriptionProperties Subscription description to extract runtime information from.
      *
      * @throws NullPointerException if {@code subscriptionDescription} is null.
      */
-    public SubscriptionRuntimeInfo(SubscriptionDescription subscriptionDescription) {
-        Objects.requireNonNull(subscriptionDescription, "'subscriptionDescription' cannot be null.");
-        this.subscriptionName = subscriptionDescription.getSubscriptionName();
-        this.topicName = subscriptionDescription.getTopicName();
-        this.details = subscriptionDescription.getMessageCountDetails();
-        this.messageCount = subscriptionDescription.getMessageCount();
-        this.accessedAt = subscriptionDescription.getAccessedAt();
-        this.createdAt = subscriptionDescription.getCreatedAt();
-        this.updatedAt = subscriptionDescription.getUpdatedAt();
+    public SubscriptionRuntimeInfo(SubscriptionProperties subscriptionProperties) {
+        Objects.requireNonNull(subscriptionProperties, "'subscriptionDescription' cannot be null.");
+        this.subscriptionName = subscriptionProperties.getSubscriptionName();
+        this.topicName = subscriptionProperties.getTopicName();
+        this.details = subscriptionProperties.getMessageCountDetails();
+        this.messageCount = subscriptionProperties.getMessageCount();
+        this.accessedAt = subscriptionProperties.getAccessedAt();
+        this.createdAt = subscriptionProperties.getCreatedAt();
+        this.updatedAt = subscriptionProperties.getUpdatedAt();
     }
 
     /**
