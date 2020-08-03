@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.models.CreateTopicOptions;
 import com.azure.messaging.servicebus.models.QueueDescription;
 import com.azure.messaging.servicebus.models.SubscriptionDescription;
 import com.azure.messaging.servicebus.models.TopicDescription;
@@ -24,6 +25,24 @@ public final class EntityHelper {
         } catch (ClassNotFoundException e) {
             throw new ClientLogger(EntityHelper.class).logThrowableAsError(new AssertionError(e));
         }
+    }
+
+    /**
+     * Creates a new topic given the options.
+     *
+     * @param options Options to create topic with.
+     *
+     * @return A new {@link TopicDescription} with the set options.
+     */
+    public static TopicDescription createQueue(CreateTopicOptions options) {
+        Objects.requireNonNull(options, "'options' cannot be null.");
+
+        if (topicAccessor == null) {
+            throw new ClientLogger(EntityHelper.class).logExceptionAsError(
+                new IllegalStateException("'topicAccessor' should not be null."));
+        }
+
+        return topicAccessor.createTopic(options);
     }
 
     /**
@@ -172,6 +191,15 @@ public final class EntityHelper {
      * Interface for accessing methods on a topic.
      */
     public interface TopicAccessor {
+        /**
+         * Sets properties on the QueueDescription based on the CreateQueueOptions.
+         *
+         * @param options The create queue options to set.
+         *
+         * @return A new QueueDescription with the properties set.
+         */
+        TopicDescription createTopic(CreateTopicOptions options);
+
         /**
          * Sets the name on a topicDescription.
          *
