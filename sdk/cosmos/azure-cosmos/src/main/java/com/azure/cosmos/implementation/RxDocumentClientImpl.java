@@ -1151,6 +1151,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         if (StringUtils.isEmpty(documentCollectionLink)) {
             throw new IllegalArgumentException("documentCollectionLink");
         }
+
         if (serverBatchRequest == null) {
             throw new IllegalArgumentException("serverBatchRequest");
         }

@@ -56,7 +56,7 @@ public class CosmosAsyncContainer {
         this.link = getParentLink() + "/" + getURIPathSegment() + "/" + getId();
 
         this.bulkExecutionEnabled = database.getClient().isBulkExecutionEnabled();
-        if(this.bulkExecutionEnabled) {
+        if (this.bulkExecutionEnabled) {
             this.executor = new BatchAsyncContainerExecutor(
                 this,
                 MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST,
@@ -507,13 +507,14 @@ public class CosmosAsyncContainer {
     }
 
     /**
-     * Create an instance of transactional batch
+     * Initializes a new instance of {@link com.azure.cosmos.batch.TransactionalBatch}
+     * that can be used to perform operations across multiple items in the container with the provided partition
+     * key in a transactional manner
      * <p>
      * After subscription the operation will be performed.
      *
      * @param partitionKey the partition key.
-     *
-     * @return an {@link TransactionalBatchCore} containing the Cosmos item response with the read item or an error.
+     * @return A new instance of {@link com.azure.cosmos.batch.TransactionalBatch}.
      */
     public TransactionalBatchCore createTransactionalBatch(PartitionKey partitionKey) {
         return new TransactionalBatchCore(this, partitionKey);
@@ -974,7 +975,7 @@ public class CosmosAsyncContainer {
                                                                   OperationType operationType,
                                                                   Class<T> itemType) {
 
-        ItemBatchOperation<T> operation = new ItemBatchOperation.Builder<T>(operationType,0)
+        ItemBatchOperation<T> operation = new ItemBatchOperation.Builder<T>(operationType, 0)
             .requestOptions(bulkRequestOptions)
             .partitionKey(bulkRequestOptions.getPartitionKey())
             .resource(item)

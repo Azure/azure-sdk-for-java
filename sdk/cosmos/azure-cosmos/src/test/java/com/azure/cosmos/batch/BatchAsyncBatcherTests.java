@@ -22,6 +22,7 @@ import static org.mockito.Mockito.*;
 import static org.testng.Assert.*;
 
 public class BatchAsyncBatcherTests {
+
     private static Exception expectedException = new Exception("expectedException");
     private static BatchPartitionMetric metric = new BatchPartitionMetric();
 

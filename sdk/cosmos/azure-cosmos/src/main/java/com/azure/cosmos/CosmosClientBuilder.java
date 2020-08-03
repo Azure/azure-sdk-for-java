@@ -386,7 +386,7 @@ public class CosmosClientBuilder {
      *
      * By-default, this is false.
      *
-     * @return a boolean indicating whether whether bulk is enabled for the requests or not.
+     * @return a boolean indicating whether bulk is enabled for the requests or not.
      */
     boolean isBulkExecutionEnabled() {
         return bulkExecutionEnabled;

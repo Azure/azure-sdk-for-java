@@ -30,6 +30,7 @@ import static com.azure.cosmos.batch.BatchRequestResponseConstant.MAX_DIRECT_MOD
 import static org.testng.Assert.*;
 
 public class BatchAsyncContainerExecutorTests extends BatchTestBase {
+
     @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosItemTest() {
         super.classInit();

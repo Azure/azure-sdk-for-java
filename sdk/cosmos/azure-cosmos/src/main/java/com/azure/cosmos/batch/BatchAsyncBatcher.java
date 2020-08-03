@@ -33,7 +33,6 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.*;
  * The result of the request is used to wire up all responses with the original tasks for each operation.
  * @see ItemBatchOperation
  *
- * TODO: Exception handling and diagnostics. Functionality wise this is complete and subscribe works as intened and executes asap.
  */
 public class BatchAsyncBatcher {
 

@@ -235,7 +235,6 @@ Licensed under the MIT License.
       <scope>test</scope>
     </dependency>
 
-    <!--    Temp. May be replcae with inhouse json/gson serializer-->
     <dependency>
       <groupId>org.json</groupId>
       <artifactId>json</artifactId>

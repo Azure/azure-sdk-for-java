@@ -83,6 +83,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * <a href="https://docs.microsoft.com/azure/cosmos-db/concepts-limits">Limits on TransactionalBatch requests</a>.
  */
 public interface TransactionalBatch {
+
     /**
      * Adds an operation to create an item into the batch.
      *
