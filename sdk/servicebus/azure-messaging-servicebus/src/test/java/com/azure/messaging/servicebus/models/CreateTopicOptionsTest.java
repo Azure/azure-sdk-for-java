@@ -52,7 +52,7 @@ public class CreateTopicOptionsTest {
     void constructorWithOptions() {
         // Arrange
         final String queueName = "some-queue";
-        final TopicDescription expected = new TopicDescription()
+        final TopicProperties expected = new TopicProperties()
             .setName(queueName)
             .setAutoDeleteOnIdle(Duration.ofSeconds(15))
             .setDefaultMessageTimeToLive(Duration.ofSeconds(50))

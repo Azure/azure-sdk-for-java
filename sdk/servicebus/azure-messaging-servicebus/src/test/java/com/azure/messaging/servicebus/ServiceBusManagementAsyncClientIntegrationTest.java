@@ -17,7 +17,7 @@ import com.azure.messaging.servicebus.models.QueueDescription;
 import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
 import com.azure.messaging.servicebus.models.SubscriptionDescription;
 import com.azure.messaging.servicebus.models.SubscriptionRuntimeInfo;
-import com.azure.messaging.servicebus.models.TopicDescription;
+import com.azure.messaging.servicebus.models.TopicProperties;
 import com.azure.messaging.servicebus.models.TopicRuntimeInfo;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -182,7 +182,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
                 assertEquals(201, response.getStatusCode());
 
                 // Assert values on a topic.
-                final TopicDescription actual = response.getValue();
+                final TopicProperties actual = response.getValue();
 
                 assertEquals(topicName, expected.getName());
                 assertEquals(expected.getName(), actual.getName());

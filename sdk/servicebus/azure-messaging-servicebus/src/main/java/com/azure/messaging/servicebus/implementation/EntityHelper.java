@@ -7,7 +7,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.CreateTopicOptions;
 import com.azure.messaging.servicebus.models.QueueDescription;
 import com.azure.messaging.servicebus.models.SubscriptionDescription;
-import com.azure.messaging.servicebus.models.TopicDescription;
+import com.azure.messaging.servicebus.models.TopicProperties;
 
 import java.util.Objects;
 
@@ -21,7 +21,7 @@ public final class EntityHelper {
 
     static {
         try {
-            Class.forName(TopicDescription.class.getName(), true, TopicDescription.class.getClassLoader());
+            Class.forName(TopicProperties.class.getName(), true, TopicProperties.class.getClassLoader());
         } catch (ClassNotFoundException e) {
             throw new ClientLogger(EntityHelper.class).logExceptionAsError(new IllegalStateException(e));
         }
@@ -32,9 +32,9 @@ public final class EntityHelper {
      *
      * @param options Options to create topic with.
      *
-     * @return A new {@link TopicDescription} with the set options.
+     * @return A new {@link TopicProperties} with the set options.
      */
-    public static TopicDescription createTopic(CreateTopicOptions options) {
+    public static TopicProperties createTopic(CreateTopicOptions options) {
         Objects.requireNonNull(options, "'options' cannot be null.");
 
         if (topicAccessor == null) {
@@ -139,18 +139,18 @@ public final class EntityHelper {
     }
 
     /**
-     * Sets the topic name on a {@link TopicDescription}.
+     * Sets the topic name on a {@link TopicProperties}.
      *
-     * @param topicDescription Topic to set name on.
+     * @param topicProperties Topic to set name on.
      * @param topicName Name of the topic.
      */
-    public static void setTopicName(TopicDescription topicDescription, String topicName) {
+    public static void setTopicName(TopicProperties topicProperties, String topicName) {
         if (topicAccessor == null) {
             throw new ClientLogger(EntityHelper.class).logExceptionAsError(new IllegalStateException(
                 "'topicAccessor' should not be null."));
         }
 
-        topicAccessor.setName(topicDescription, topicName);
+        topicAccessor.setName(topicProperties, topicName);
     }
 
     /**
@@ -198,14 +198,14 @@ public final class EntityHelper {
          *
          * @return A new QueueDescription with the properties set.
          */
-        TopicDescription createTopic(CreateTopicOptions options);
+        TopicProperties createTopic(CreateTopicOptions options);
 
         /**
          * Sets the name on a topicDescription.
          *
-         * @param topicDescription Topic to set name.
+         * @param topicProperties Topic to set name.
          * @param name Name of the topic.
          */
-        void setName(TopicDescription topicDescription, String name);
+        void setName(TopicProperties topicProperties, String name);
     }
 }

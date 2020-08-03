@@ -20,7 +20,7 @@ import com.azure.messaging.servicebus.models.QueueDescription;
 import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
 import com.azure.messaging.servicebus.models.SubscriptionDescription;
 import com.azure.messaging.servicebus.models.SubscriptionRuntimeInfo;
-import com.azure.messaging.servicebus.models.TopicDescription;
+import com.azure.messaging.servicebus.models.TopicProperties;
 import com.azure.messaging.servicebus.models.TopicRuntimeInfo;
 import reactor.core.publisher.Mono;
 
@@ -185,12 +185,12 @@ public final class ServiceBusManagementClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TopicDescription createTopic(String topicName) {
+    public TopicProperties createTopic(String topicName) {
         return asyncClient.createTopic(topicName).block();
     }
 
     /**
-     * Creates a topic with the {@link TopicDescription}.
+     * Creates a topic with the {@link TopicProperties}.
      *
      * @param topicOptions Information about the topic to create.
      *
@@ -205,7 +205,7 @@ public final class ServiceBusManagementClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TopicDescription createTopic(CreateTopicOptions topicOptions) {
+    public TopicProperties createTopic(CreateTopicOptions topicOptions) {
         return asyncClient.createTopic(topicOptions).block();
     }
 
@@ -228,7 +228,7 @@ public final class ServiceBusManagementClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TopicDescription> createTopicWithResponse(CreateTopicOptions topicOptions, Context context) {
+    public Response<TopicProperties> createTopicWithResponse(CreateTopicOptions topicOptions, Context context) {
         return asyncClient.createTopicWithResponse(topicOptions, context != null ? context : Context.NONE).block();
     }
 
@@ -637,7 +637,7 @@ public final class ServiceBusManagementClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TopicDescription getTopic(String topicName) {
+    public TopicProperties getTopic(String topicName) {
         return asyncClient.getTopic(topicName).block();
     }
 
@@ -657,7 +657,7 @@ public final class ServiceBusManagementClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TopicDescription> getTopicWithResponse(String topicName, Context context) {
+    public Response<TopicProperties> getTopicWithResponse(String topicName, Context context) {
         return asyncClient.getTopicWithResponse(topicName, context != null ? context : Context.NONE,
             Function.identity()).block();
     }
@@ -695,7 +695,7 @@ public final class ServiceBusManagementClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> getTopicExistsWithResponse(String topicName, Context context) {
-        final Mono<Response<TopicDescription>> topicWithResponse =
+        final Mono<Response<TopicProperties>> topicWithResponse =
             asyncClient.getTopicWithResponse(topicName, context != null ? context : Context.NONE, Function.identity());
         return asyncClient.getEntityExistsWithResponse(topicWithResponse).block();
     }
@@ -820,14 +820,14 @@ public final class ServiceBusManagementClient {
     /**
      * Fetches all the topics in the Service Bus namespace.
      *
-     * @return A paged iterable of {@link TopicDescription topics} in the Service Bus namespace.
+     * @return A paged iterable of {@link TopicProperties topics} in the Service Bus namespace.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/enumeration">List entities, subscriptions, or
      *     authorization rules</a>
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TopicDescription> listTopics() {
+    public PagedIterable<TopicProperties> listTopics() {
         return new PagedIterable<>(asyncClient.listTopics());
     }
 
@@ -836,15 +836,15 @@ public final class ServiceBusManagementClient {
      *
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
-     * @return A paged iterable of {@link TopicDescription topics} in the Service Bus namespace.
+     * @return A paged iterable of {@link TopicProperties topics} in the Service Bus namespace.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/enumeration">List entities, subscriptions, or
      *     authorization rules</a>
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TopicDescription> listTopics(Context context) {
-        final PagedFlux<TopicDescription> pagedFlux = new PagedFlux<>(
+    public PagedIterable<TopicProperties> listTopics(Context context) {
+        final PagedFlux<TopicProperties> pagedFlux = new PagedFlux<>(
             () -> asyncClient.listTopicsFirstPage(context),
             continuationToken -> asyncClient.listTopicsNextPage(continuationToken,
                 context != null ? context : Context.NONE));
@@ -1009,7 +1009,7 @@ public final class ServiceBusManagementClient {
     }
 
     /**
-     * Updates a topic with the given {@link TopicDescription}. The {@link TopicDescription} must be fully populated as
+     * Updates a topic with the given {@link TopicProperties}. The {@link TopicProperties} must be fully populated as
      * all of the properties are replaced. If a property is not set the service default value is used.
      *
      * The suggested flow is:
@@ -1022,8 +1022,8 @@ public final class ServiceBusManagementClient {
      * <p>
      * There are a subset of properties that can be updated. More information can be found in the links below. They are:
      * <ul>
-     * <li>{@link TopicDescription#setDefaultMessageTimeToLive(Duration) DefaultMessageTimeToLive}</li>
-     * <li>{@link TopicDescription#setDuplicateDetectionHistoryTimeWindow(Duration) DuplicateDetectionHistoryTimeWindow}
+     * <li>{@link TopicProperties#setDefaultMessageTimeToLive(Duration) DefaultMessageTimeToLive}</li>
+     * <li>{@link TopicProperties#setDuplicateDetectionHistoryTimeWindow(Duration) DuplicateDetectionHistoryTimeWindow}
      * </li>
      * </ul>
      *
@@ -1035,19 +1035,19 @@ public final class ServiceBusManagementClient {
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the topic quota is exceeded, or an error
      *     occurred processing the request.
-     * @throws IllegalArgumentException if {@link TopicDescription#getName() topic.getName()} is null or an empty
+     * @throws IllegalArgumentException if {@link TopicProperties#getName() topic.getName()} is null or an empty
      *     string.
      * @throws NullPointerException if {@code topic} is null.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-topic">Update Topic</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TopicDescription updateTopic(TopicDescription topic) {
+    public TopicProperties updateTopic(TopicProperties topic) {
         return asyncClient.updateTopic(topic).block();
     }
 
     /**
-     * Updates a topic with the given {@link TopicDescription}. The {@link TopicDescription} must be fully populated as
+     * Updates a topic with the given {@link TopicProperties}. The {@link TopicProperties} must be fully populated as
      * all of the properties are replaced. If a property is not set the service default value is used.
      *
      * The suggested flow is:
@@ -1060,8 +1060,8 @@ public final class ServiceBusManagementClient {
      * <p>
      * There are a subset of properties that can be updated. More information can be found in the links below. They are:
      * <ul>
-     * <li>{@link TopicDescription#setDefaultMessageTimeToLive(Duration) DefaultMessageTimeToLive}</li>
-     * <li>{@link TopicDescription#setDuplicateDetectionHistoryTimeWindow(Duration) DuplicateDetectionHistoryTimeWindow}
+     * <li>{@link TopicProperties#setDefaultMessageTimeToLive(Duration) DefaultMessageTimeToLive}</li>
+     * <li>{@link TopicProperties#setDuplicateDetectionHistoryTimeWindow(Duration) DuplicateDetectionHistoryTimeWindow}
      * </li>
      * </ul>
      *
@@ -1074,14 +1074,14 @@ public final class ServiceBusManagementClient {
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the topic quota is exceeded, or an error
      *     occurred processing the request.
-     * @throws IllegalArgumentException if {@link TopicDescription#getName() topic.getName()} is null or an empty
+     * @throws IllegalArgumentException if {@link TopicProperties#getName() topic.getName()} is null or an empty
      *     string.
      * @throws NullPointerException if {@code topic} is null.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-topic">Update Topic</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TopicDescription> updateTopicWithResponse(TopicDescription topic, Context context) {
+    public Response<TopicProperties> updateTopicWithResponse(TopicProperties topic, Context context) {
         return asyncClient.updateTopicWithResponse(topic, context != null ? context : Context.NONE).block();
     }
 }

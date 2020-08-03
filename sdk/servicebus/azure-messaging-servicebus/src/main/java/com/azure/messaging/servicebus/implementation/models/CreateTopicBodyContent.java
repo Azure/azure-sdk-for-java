@@ -5,7 +5,7 @@
 package com.azure.messaging.servicebus.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.messaging.servicebus.models.TopicDescription;
+import com.azure.messaging.servicebus.models.TopicProperties;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -25,7 +25,7 @@ public final class CreateTopicBodyContent {
     @JacksonXmlProperty(
             localName = "TopicDescription",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private TopicDescription topicDescription;
+    private TopicProperties topicProperties;
 
     /**
      * Get the type property: MIME type of content.
@@ -52,18 +52,18 @@ public final class CreateTopicBodyContent {
      *
      * @return the topicDescription value.
      */
-    public TopicDescription getTopicDescription() {
-        return this.topicDescription;
+    public TopicProperties getTopicProperties() {
+        return this.topicProperties;
     }
 
     /**
      * Set the topicDescription property: Topic information to create.
      *
-     * @param topicDescription the topicDescription value to set.
+     * @param topicProperties the topicDescription value to set.
      * @return the CreateTopicBodyContent object itself.
      */
-    public CreateTopicBodyContent setTopicDescription(TopicDescription topicDescription) {
-        this.topicDescription = topicDescription;
+    public CreateTopicBodyContent setTopicProperties(TopicProperties topicProperties) {
+        this.topicProperties = topicProperties;
         return this;
     }
 }

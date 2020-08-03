@@ -4,7 +4,7 @@
 package com.azure.messaging.servicebus.implementation;
 
 import com.azure.messaging.servicebus.models.CreateTopicOptions;
-import com.azure.messaging.servicebus.models.TopicDescription;
+import com.azure.messaging.servicebus.models.TopicProperties;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -33,7 +33,7 @@ public class EntityHelperTest {
             .setUserMetadata("Test-queue-Metadata");
 
         // Act
-        final TopicDescription actual = EntityHelper.createTopic(expected);
+        final TopicProperties actual = EntityHelper.createTopic(expected);
 
         // Assert
         assertEquals(expected.getName(), actual.getName());
@@ -51,7 +51,7 @@ public class EntityHelperTest {
         // Arrange
         final String newName = "I'm a new name";
         final CreateTopicOptions options = new CreateTopicOptions("some name");
-        final TopicDescription properties = EntityHelper.createTopic(options);
+        final TopicProperties properties = EntityHelper.createTopic(options);
 
         // Act
         EntityHelper.setTopicName(properties, newName);

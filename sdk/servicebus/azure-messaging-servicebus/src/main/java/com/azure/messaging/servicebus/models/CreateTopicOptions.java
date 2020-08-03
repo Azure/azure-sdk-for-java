@@ -86,7 +86,7 @@ public class CreateTopicOptions {
      *
      * @param topicOptions Existing topicOptions to create options with.
      */
-    public CreateTopicOptions(TopicDescription topicOptions) {
+    public CreateTopicOptions(TopicProperties topicOptions) {
         Objects.requireNonNull(topicOptions, "'topicOptions' cannot be null.");
         Objects.requireNonNull(topicOptions.getName(), "Topic name cannot be null");
 
