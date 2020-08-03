@@ -36,8 +36,6 @@
   </scm>
 
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <!-- RMJacoco -->
     <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.10</jacoco.min.branchcoverage>
@@ -121,18 +119,16 @@
           </archive>
         </configuration>
       </plugin>
+
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
         <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
-          <debug>true</debug>
-          <optimize>true</optimize>
-          <!-- RMfailOnWarning set to false in azure-resourcemanager-parent's definition, set here to allow compilation
-                but should be using the azure-client-sdk-parent's setting which is true -->
-          <failOnWarning>false</failOnWarning>
+          <excludes>
+            <exclude>com/azure/resourcemanager/**/fluent/**/*</exclude>
+            <exclude>com/azure/resourcemanager/**/models/**/*</exclude>
+          </excludes>
         </configuration>
       </plugin>
     </plugins>

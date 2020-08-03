@@ -90,7 +90,8 @@ public class WebAppMsiHandler<FluentT extends WebAppBase, FluentImplT extends We
      * @param creatableIdentity yet-to-be-created identity to be associated with the virtual machine
      * @return WebAppMsiHandler
      */
-    WebAppMsiHandler<FluentT, FluentImplT> withNewExternalManagedServiceIdentity(Creatable<Identity> creatableIdentity) {
+    WebAppMsiHandler<FluentT, FluentImplT> withNewExternalManagedServiceIdentity(
+        Creatable<Identity> creatableIdentity) {
         this.initSiteIdentity(ManagedServiceIdentityType.USER_ASSIGNED);
 
         TaskGroup.HasTaskGroup dependency = (TaskGroup.HasTaskGroup) creatableIdentity;

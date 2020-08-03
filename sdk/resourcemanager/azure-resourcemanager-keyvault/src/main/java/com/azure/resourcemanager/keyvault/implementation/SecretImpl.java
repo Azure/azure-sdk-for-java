@@ -76,7 +76,13 @@ class SecretImpl extends CreatableUpdatableImpl<Secret, KeyVaultSecret, SecretIm
         return vault
             .secretClient()
             .listPropertiesOfSecretVersions(name())
-            .flatMap(p -> vault.secretClient().getSecret(p.getName(), p.getVersion()))
+            .flatMap(p -> {
+                if (p.isEnabled()) {
+                    return vault.secretClient().getSecret(p.getName(), p.getVersion());
+                } else {
+                    return Mono.just(new KeyVaultSecret(p.getName(), null).setProperties(p));
+                }
+            })
             .map(this::wrapModel);
     }
 
