@@ -19,6 +19,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -421,7 +422,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         final MessagingEntityType entityType = MessagingEntityType.QUEUE;
         final boolean isSessionEnabled = false;
         final int maxMessages = 5;
-        final int messagesToReceive = 1;
+        final int messagesToReceive = 2;
         final Duration shortTimeout = Duration.ofSeconds(5);
         setSenderAndReceiver(entityType, 0, isSessionEnabled);
 
@@ -429,7 +430,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
 
         sendMessage(message);
-
+        sendMessage(message);
         // Act
         final Stream<ServiceBusReceivedMessage> messages = receiver.receiveMessages(maxMessages, TIMEOUT)
             .stream()
@@ -445,7 +446,6 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         });
 
         assertEquals(messagesToReceive, receivedMessageCount.get());
-
     }
 
     /**

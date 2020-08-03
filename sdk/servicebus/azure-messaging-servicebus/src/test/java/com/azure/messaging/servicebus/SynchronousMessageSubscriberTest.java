@@ -24,7 +24,7 @@ import static org.mockito.Mockito.when;
  * Unit test for sync subscriber.
  */
 public class SynchronousMessageSubscriberTest {
-
+    public static final Duration SHORT_TIMEOUT_BETWEEN_MESSAGES = Duration.ofMillis(1000 * 15);
     private static final int PREFETCH = 1;
 
     @Mock
@@ -68,7 +68,7 @@ public class SynchronousMessageSubscriberTest {
         when(work1.getId()).thenReturn(1L);
 
         // Act
-        syncSybscriber = new SynchronousMessageSubscriber(100, work1);
+        syncSybscriber = new SynchronousMessageSubscriber(100, work1, SHORT_TIMEOUT_BETWEEN_MESSAGES);
 
         // Assert
         Assertions.assertEquals(1, syncSybscriber.getWorkQueueSize());
@@ -83,7 +83,7 @@ public class SynchronousMessageSubscriberTest {
     void workAddedInQueueOnCreation() {
         // Arrange & Act
         when(work1.getNumberOfEvents()).thenReturn(3);
-        syncSybscriber = new SynchronousMessageSubscriber(0, work1);
+        syncSybscriber = new SynchronousMessageSubscriber(0, work1, SHORT_TIMEOUT_BETWEEN_MESSAGES);
 
         // Assert
         Assertions.assertEquals(1, syncSybscriber.getWorkQueueSize());
@@ -97,7 +97,7 @@ public class SynchronousMessageSubscriberTest {
     @Test
     void queueWorkTest() {
         // Arrange
-        syncSybscriber = new SynchronousMessageSubscriber(PREFETCH, work1);
+        syncSybscriber = new SynchronousMessageSubscriber(PREFETCH, work1, SHORT_TIMEOUT_BETWEEN_MESSAGES);
 
         // Act
         syncSybscriber.queueWork(work2);
@@ -114,7 +114,7 @@ public class SynchronousMessageSubscriberTest {
     @Test
     void hookOnSubscribeTest() {
         // Arrange
-        syncSybscriber = new SynchronousMessageSubscriber(PREFETCH, work1);
+        syncSybscriber = new SynchronousMessageSubscriber(PREFETCH, work1, SHORT_TIMEOUT_BETWEEN_MESSAGES);
         when(work1.getTimeout()).thenReturn(Duration.ofSeconds(10));
         when(work1.isTerminal()).thenReturn(true);
         doNothing().when(subscription).request(1);

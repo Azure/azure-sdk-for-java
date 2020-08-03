@@ -23,6 +23,9 @@ class SynchronousReceiveWork {
     // Indicate state that timeout has occurred for this work.
     private boolean workTimedOut = false;
 
+    // Indicate state that timeout has occurred for this work because next message has not arrived in pre defined time.
+    private boolean nextMessageTimedOut = false;
+
     // Indicate that if processing started or not.
     private boolean processingStarted;
 
@@ -86,7 +89,7 @@ class SynchronousReceiveWork {
      *     false} otherwise.
      */
     boolean isTerminal() {
-        return emitter.isCancelled() || remaining.get() == 0 || error != null || workTimedOut;
+        return emitter.isCancelled() || remaining.get() == 0 || error != null || workTimedOut || nextMessageTimedOut;
     }
 
     /**
@@ -119,6 +122,15 @@ class SynchronousReceiveWork {
         logger.info("[{}]: Work timeout occurred. Completing the work.", id);
         emitter.complete();
         workTimedOut = true;
+    }
+
+    /**
+     * Completes the publisher and sets the state to timeout.
+     */
+    void timeoutNextMessage() {
+        logger.info("[{}]: Work timeout occurred due to next message not arriving in time. Completing the work.", id);
+        emitter.complete();
+        nextMessageTimedOut = true;
     }
 
     /**

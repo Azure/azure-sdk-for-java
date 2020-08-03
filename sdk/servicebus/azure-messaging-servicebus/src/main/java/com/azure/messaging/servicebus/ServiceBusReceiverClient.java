@@ -35,6 +35,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     private final AtomicInteger idGenerator = new AtomicInteger();
     private final ServiceBusReceiverAsyncClient asyncClient;
     private final Duration operationTimeout;
+    private final Duration shortTimeoutBetweenMessages;
 
     /* To hold each receive work item to be processed.*/
     private final AtomicReference<SynchronousMessageSubscriber> synchronousMessageSubscriber = new AtomicReference<>();
@@ -44,9 +45,12 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *
      * @param asyncClient Asynchronous receiver.
      */
-    ServiceBusReceiverClient(ServiceBusReceiverAsyncClient asyncClient, Duration operationTimeout) {
+    ServiceBusReceiverClient(ServiceBusReceiverAsyncClient asyncClient, Duration operationTimeout,
+        Duration shortTimeoutBetweenMessages) {
         this.asyncClient = Objects.requireNonNull(asyncClient, "'asyncClient' cannot be null.");
         this.operationTimeout = Objects.requireNonNull(operationTimeout, "'operationTimeout' cannot be null.");
+        this.shortTimeoutBetweenMessages = Objects.requireNonNull(shortTimeoutBetweenMessages,
+            "'shortTimeoutBetweenMessages' cannot be null.");
     }
 
     /**
@@ -830,7 +834,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         SynchronousMessageSubscriber messageSubscriber = synchronousMessageSubscriber.get();
         if (messageSubscriber == null) {
             long prefetch = asyncClient.getReceiverOptions().getPrefetchCount();
-            SynchronousMessageSubscriber newSubscriber = new SynchronousMessageSubscriber(prefetch, work);
+            SynchronousMessageSubscriber newSubscriber = new SynchronousMessageSubscriber(prefetch, work,
+                shortTimeoutBetweenMessages);
 
             if (!synchronousMessageSubscriber.compareAndSet(null, newSubscriber)) {
                 newSubscriber.dispose();

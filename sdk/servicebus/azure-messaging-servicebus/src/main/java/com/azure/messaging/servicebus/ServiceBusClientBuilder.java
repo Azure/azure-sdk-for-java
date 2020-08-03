@@ -753,7 +753,8 @@ public final class ServiceBusClientBuilder {
          *     queueName()} or {@link #topicName(String) topicName()}, respectively.
          */
         public ServiceBusReceiverClient buildClient() {
-            return new ServiceBusReceiverClient(buildAsyncClient(), retryOptions.getTryTimeout());
+            return new ServiceBusReceiverClient(buildAsyncClient(), retryOptions.getTryTimeout(),
+                ServiceBusConstants.SHORT_TIMEOUT_BETWEEN_MESSAGES);
         }
 
         /**
@@ -917,7 +918,8 @@ public final class ServiceBusClientBuilder {
          *     queueName()} or {@link #topicName(String) topicName()}, respectively.
          */
         public ServiceBusReceiverClient buildClient() {
-            return new ServiceBusReceiverClient(buildAsyncClient(), retryOptions.getTryTimeout());
+            return new ServiceBusReceiverClient(buildAsyncClient(), retryOptions.getTryTimeout(),
+                ServiceBusConstants.SHORT_TIMEOUT_BETWEEN_MESSAGES);
         }
     }
 
@@ -1065,7 +1067,8 @@ public final class ServiceBusClientBuilder {
          *     queueName()} or {@link #topicName(String) topicName()}, respectively.
          */
         public ServiceBusReceiverClient buildClient() {
-            return new ServiceBusReceiverClient(buildAsyncClient(), retryOptions.getTryTimeout());
+            return new ServiceBusReceiverClient(buildAsyncClient(), retryOptions.getTryTimeout(),
+                ServiceBusConstants.SHORT_TIMEOUT_BETWEEN_MESSAGES);
         }
     }
 
