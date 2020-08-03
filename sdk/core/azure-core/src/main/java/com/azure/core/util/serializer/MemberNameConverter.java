@@ -6,7 +6,7 @@ package com.azure.core.util.serializer;
 import java.lang.reflect.Member;
 
 /**
- * Generic interface to get the property name through serialization.
+ * Generic interface that attempts to retrieve the JSON serialized property name from {@link Member}.
  */
 public interface MemberNameConverter {
     /**
