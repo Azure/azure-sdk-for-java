@@ -40,7 +40,7 @@ public class NetworkFailureTest extends TestSuiteBase {
             final RxGatewayStoreModel origGatewayStoreModel = client.getOrigGatewayStoreModel();
 
             Mockito.doAnswer(invocation -> {
-                RxDocumentServiceRequest request = invocation.getArgumentAt(0, RxDocumentServiceRequest.class);
+                RxDocumentServiceRequest request = invocation.getArgument(0, RxDocumentServiceRequest.class);
 
                 if (request.getResourceType() == ResourceType.DocumentCollection) {
                     return Mono.error(new UnknownHostException());

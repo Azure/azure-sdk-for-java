@@ -166,7 +166,7 @@ public class RoutingMapProviderHelperTest {
 
         Mockito.doAnswer(invocationOnMock -> {
             @SuppressWarnings("rawtypes")
-            Range range = invocationOnMock.getArgumentAt(2, Range.class);
+            Range range = invocationOnMock.getArgument(2, Range.class);
             return Mono.just(new Utils.ValueHolder<>(resultMap.get(range)));
         }).when(routingMapProviderMock).tryGetOverlappingRangesAsync(Matchers.any(MetadataDiagnosticsContext.class),
                                                                      Matchers.anyString(),

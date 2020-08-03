@@ -371,10 +371,10 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
             @Override
             public Mono<List<Address>> answer(InvocationOnMock invocationOnMock) throws Throwable {
 
-                RxDocumentServiceRequest req = invocationOnMock.getArgumentAt(0, RxDocumentServiceRequest.class);
-                String collectionRid = invocationOnMock.getArgumentAt(1, String.class);
-                List<String> partitionKeyRangeIds = invocationOnMock.getArgumentAt(2, List.class);
-                boolean forceRefresh = invocationOnMock.getArgumentAt(3, Boolean.class);
+                RxDocumentServiceRequest req = invocationOnMock.getArgument(0, RxDocumentServiceRequest.class);
+                String collectionRid = invocationOnMock.getArgument(1, String.class);
+                List<String> partitionKeyRangeIds = invocationOnMock.getArgument(2, List.class);
+                boolean forceRefresh = invocationOnMock.getArgument(3, Boolean.class);
 
                 int cnt = fetchCounter.getAndIncrement();
 
@@ -592,12 +592,12 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
             @Override
             public Mono<List<Address>> answer(InvocationOnMock invocationOnMock) throws Throwable {
 
-                RxDocumentServiceRequest request = invocationOnMock.getArgumentAt(0, RxDocumentServiceRequest.class);
-                ResourceType resourceType = invocationOnMock.getArgumentAt(1, ResourceType.class);
-                String resourceAddress = invocationOnMock.getArgumentAt(2, String.class);
-                String entryUrl = invocationOnMock.getArgumentAt(3, String.class);
-                boolean forceRefresh = invocationOnMock.getArgumentAt(4, Boolean.class);
-                boolean useMasterCollectionResolver = invocationOnMock.getArgumentAt(5, Boolean.class);
+                RxDocumentServiceRequest request = invocationOnMock.getArgument(0, RxDocumentServiceRequest.class);
+                ResourceType resourceType = invocationOnMock.getArgument(1, ResourceType.class);
+                String resourceAddress = invocationOnMock.getArgument(2, String.class);
+                String entryUrl = invocationOnMock.getArgument(3, String.class);
+                boolean forceRefresh = invocationOnMock.getArgument(4, Boolean.class);
+                boolean useMasterCollectionResolver = invocationOnMock.getArgument(5, Boolean.class);
 
                 int cnt = getMasterAddressesViaGatewayAsyncInvocation.getAndIncrement();
 
@@ -684,12 +684,12 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
 
                 System.out.print("fetch");
 
-                RxDocumentServiceRequest request = invocationOnMock.getArgumentAt(0, RxDocumentServiceRequest.class);
-                ResourceType resourceType = invocationOnMock.getArgumentAt(1, ResourceType.class);
-                String resourceAddress = invocationOnMock.getArgumentAt(2, String.class);
-                String entryUrl = invocationOnMock.getArgumentAt(3, String.class);
-                boolean forceRefresh = invocationOnMock.getArgumentAt(4, Boolean.class);
-                boolean useMasterCollectionResolver = invocationOnMock.getArgumentAt(5, Boolean.class);
+                RxDocumentServiceRequest request = invocationOnMock.getArgument(0, RxDocumentServiceRequest.class);
+                ResourceType resourceType = invocationOnMock.getArgument(1, ResourceType.class);
+                String resourceAddress = invocationOnMock.getArgument(2, String.class);
+                String entryUrl = invocationOnMock.getArgument(3, String.class);
+                boolean forceRefresh = invocationOnMock.getArgument(4, Boolean.class);
+                boolean useMasterCollectionResolver = invocationOnMock.getArgument(5, Boolean.class);
 
                 int cnt = getMasterAddressesViaGatewayAsyncInvocation.getAndIncrement();
 

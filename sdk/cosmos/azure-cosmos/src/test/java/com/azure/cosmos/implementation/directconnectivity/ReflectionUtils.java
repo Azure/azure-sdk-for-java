@@ -136,4 +136,8 @@ public class ReflectionUtils {
     public static void buildConnectionPolicy(CosmosClientBuilder cosmosClientBuilder) {
         invokeMethod(CosmosClientBuilder.class, cosmosClientBuilder, "buildConnectionPolicy");
     }
+
+    public static HttpClient getHttpClient(RxDocumentClientImpl rxDocumentClient){
+        return get(HttpClient.class, rxDocumentClient, "reactorHttpClient");
+    }
 }

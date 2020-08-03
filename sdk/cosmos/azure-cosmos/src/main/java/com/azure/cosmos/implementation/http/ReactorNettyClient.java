@@ -7,6 +7,8 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelOption;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.logging.LogLevel;
+import io.netty.handler.timeout.ReadTimeoutHandler;
+import io.netty.handler.timeout.WriteTimeoutHandler;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscription;
 import org.slf4j.Logger;
@@ -25,6 +27,7 @@ import reactor.netty.tcp.ProxyProvider;
 import java.nio.charset.Charset;
 import java.time.Instant;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
 
@@ -82,7 +85,10 @@ class ReactorNettyClient implements HttpClient {
             //  By default, keep alive is enabled on http client
             tcpClient = tcpClient.option(ChannelOption.CONNECT_TIMEOUT_MILLIS,
                 (int) configs.getConnectionAcquireTimeout().toMillis());
-
+            tcpClient = tcpClient.doOnConnected(connection -> {
+                connection.addHandlerLast(new WriteTimeoutHandler(this.httpClientConfig.getRequestTimeout().toMinutes(), TimeUnit.MILLISECONDS));
+                connection.addHandlerLast(new ReadTimeoutHandler(this.httpClientConfig.getRequestTimeout().toMinutes(), TimeUnit.MILLISECONDS));
+            });
             return tcpClient;
         }).httpResponseDecoder(httpResponseDecoderSpec -> {
             httpResponseDecoderSpec.maxInitialLineLength(configs.getMaxHttpInitialLineLength());
