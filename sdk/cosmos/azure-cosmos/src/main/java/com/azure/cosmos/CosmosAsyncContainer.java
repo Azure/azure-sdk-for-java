@@ -31,8 +31,10 @@ import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
 
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.withContext;
@@ -437,28 +439,47 @@ public class CosmosAsyncContainer {
         return queryItemsInternal(querySpec, options, classType);
     }
 
-    private <T> CosmosPagedFlux<T> queryItemsInternal(
-       SqlQuerySpec sqlQuerySpec, CosmosQueryRequestOptions cosmosQueryRequestOptions, Class<T> classType) {
+    <T> CosmosPagedFlux<T> queryItemsInternal(
+        SqlQuerySpec sqlQuerySpec, CosmosQueryRequestOptions cosmosQueryRequestOptions, Class<T> classType) {
+        return queryItemsInternal(sqlQuerySpec, cosmosQueryRequestOptions, classType, null, null);
+    }
+
+    <T> CosmosPagedFlux<T> queryItemsInternal(
+        SqlQuerySpec sqlQuerySpec, CosmosQueryRequestOptions cosmosQueryRequestOptions, Class<T> classType, Function<Document, Document> transformer, Scheduler scheduler) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             String spanName = this.queryItemsSpanName;
             pagedFluxOptions.setTracerInformation(this.getDatabase().getClient().getTracerProvider(), spanName,
                 this.getDatabase().getClient().getServiceEndpoint(), database.getId());
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, cosmosQueryRequestOptions);
-            return getDatabase().getDocClientWrapper()
-                .queryDocuments(CosmosAsyncContainer.this.getLink(), sqlQuerySpec, cosmosQueryRequestOptions)
-                .map(response ->
-                    prepareFeedResponse(response, classType));
+
+            return applyTransformer(
+             getDatabase().getDocClientWrapper()
+                .queryDocuments(CosmosAsyncContainer.this.getLink(), sqlQuerySpec, cosmosQueryRequestOptions), transformer, scheduler,
+                classType);
+
         });
     }
 
+    private <T> Flux<FeedResponse<T>> applyTransformer(Flux<FeedResponse<Document>> queryDocuments, Function<Document, Document> transformer, Scheduler scheduler, Class<T> classType) {
+        if (transformer == null) {
+            return queryDocuments.map(response -> prepareFeedResponse(response, classType));
+        } else {
+            return queryDocuments.publishOn(scheduler).subscribeOn(scheduler).map(response -> prepareFeedResponse(response, classType, transformer));
+        }
+    }
+
     private <T> FeedResponse<T> prepareFeedResponse(FeedResponse<Document> response, Class<T> classType) {
+        return prepareFeedResponse(response, classType, null);
+    }
+
+    private <T> FeedResponse<T> prepareFeedResponse(FeedResponse<Document> response, Class<T> classType, Function<Document, Document> transformer) {
         QueryInfo queryInfo = ModelBridgeInternal.getQueryInfoFromFeedResponse(response);
         if (queryInfo != null && queryInfo.hasSelectValue()) {
             List<T> transformedResults = response.getResults()
                                              .stream()
-                                             .map(d -> d.has(Constants.Properties.VALUE) ?
+                                              .map(d -> d.has(Constants.Properties.VALUE) ?
                                                  transform(d.get(Constants.Properties.VALUE), classType) :
-                                                 ModelBridgeInternal.toObjectFromJsonSerializable(d, classType))
+                                                 ModelBridgeInternal.toObjectFromJsonSerializable(d, classType, transformer))
                                              .collect(Collectors.toList());
 
             return BridgeInternal.createFeedResponseWithQueryMetrics(transformedResults,
@@ -467,8 +488,9 @@ public class CosmosAsyncContainer {
 
         }
         return BridgeInternal.createFeedResponseWithQueryMetrics(
-            (response.getResults().stream().map(document -> ModelBridgeInternal.toObjectFromJsonSerializable(document
-                , classType))
+            (response.getResults().stream().map(document -> ModelBridgeInternal.toObjectFromJsonSerializable(document,
+                classType,
+                transformer))
                  .collect(Collectors.toList())), response.getResponseHeaders(),
             ModelBridgeInternal.queryMetrics(response));
     }
@@ -565,7 +587,7 @@ public class CosmosAsyncContainer {
      * Deletes an item.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single Cosmos item response with the replaced item.
+     * The {@link Mono} upon successful completion will contain a single Cosmos item response for the deleted item.
      *
      * @param itemId the item id.
      * @param partitionKey the partition key.
@@ -579,7 +601,7 @@ public class CosmosAsyncContainer {
      * Deletes the item.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single Cosmos item response with the replaced item.
+     * The {@link Mono} upon successful completion will contain a single Cosmos item response for the deleted item.
      *
      * @param itemId id of the item.
      * @param partitionKey partitionKey of the item.

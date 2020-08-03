@@ -5,7 +5,7 @@ package com.azure.spring.data.cosmos.core;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
-import com.azure.spring.data.cosmos.core.query.DocumentQuery;
+import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.domain.Person;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
@@ -43,10 +43,10 @@ public class CosmosTemplateIllegalTest {
     @Test
     public void deleteIllegalShouldFail() throws NoSuchMethodException {
         final Method method = dbTemplateClass.getMethod("delete",
-            DocumentQuery.class, Class.class, String.class);
+            CosmosQuery.class, Class.class, String.class);
         final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL,
             "faker", Arrays.asList("faker-value"), Part.IgnoreCaseType.NEVER);
-        final DocumentQuery query = new DocumentQuery(criteria);
+        final CosmosQuery query = new CosmosQuery(criteria);
 
         checkIllegalArgument(method, null, Person.class, DUMMY_COLL);
         checkIllegalArgument(method, query, null, DUMMY_COLL);

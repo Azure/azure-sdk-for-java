@@ -133,6 +133,15 @@
           </rules>
         </configuration>
       </plugin>
+
+      <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>3.1.12.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+        <configuration>
+          <includeTests>true</includeTests>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 </project>

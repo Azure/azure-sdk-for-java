@@ -1,6 +1,6 @@
 ## Guide for migrating to `com.azure.resourcemanager.**` from `com.microsoft.azure.management.**`
 
-This document is intended for users that are familiar with an older version of the Java SDK for managment libraries (`com.microsoft.azure.management.**`) ad wish to migrate their application 
+This document is intended for users that are familiar with an older version of the Java SDK for managment libraries (`com.microsoft.azure.management.**`) and wish to migrate their application 
 to the next version of Azure resource management libraries (`com.azure.resourcemanager.**`)
 
 For users new to the Java SDK for resource management libraries, please see the [README for 'com.azure.resourcemanager.*`](http://aka.ms/azure-sdk-java-mgmt)

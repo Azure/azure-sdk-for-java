@@ -6,7 +6,7 @@ package com.azure.spring.data.cosmos.core;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
-import com.azure.spring.data.cosmos.core.query.DocumentQuery;
+import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -165,10 +165,10 @@ public interface ReactiveCosmosOperations {
      * @param query the document query
      * @param domainType type class
      * @param containerName the container name
-     * @param <T> type class of domaintype
+     * @param <T> type class of domainType
      * @return Flux
      */
-    <T> Flux<T> delete(DocumentQuery query, Class<T> domainType, String containerName);
+    <T> Flux<T> delete(CosmosQuery query, Class<T> domainType, String containerName);
 
     /**
      * Find items
@@ -176,10 +176,10 @@ public interface ReactiveCosmosOperations {
      * @param query the document query
      * @param domainType type class
      * @param containerName the container name
-     * @param <T> type class of domaintype
+     * @param <T> type class of domainType
      * @return Flux
      */
-    <T> Flux<T> find(DocumentQuery query, Class<T> domainType, String containerName);
+    <T> Flux<T> find(CosmosQuery query, Class<T> domainType, String containerName);
 
     /**
      * Exists
@@ -189,13 +189,13 @@ public interface ReactiveCosmosOperations {
      * @param containerName the container name
      * @return Mono
      */
-    Mono<Boolean> exists(DocumentQuery query, Class<?> domainType, String containerName);
+    Mono<Boolean> exists(CosmosQuery query, Class<?> domainType, String containerName);
 
     /**
      * Exists
      * @param id the id
      * @param domainType type class
-     * @param containerName the containercontainer nam,e
+     * @param containerName the container name
      * @return Mono
      */
     Mono<Boolean> existsById(Object id, Class<?> domainType, String containerName);
@@ -215,7 +215,7 @@ public interface ReactiveCosmosOperations {
      * @param containerName the container name
      * @return Mono
      */
-    Mono<Long> count(DocumentQuery query, String containerName);
+    Mono<Long> count(CosmosQuery query, String containerName);
 
     /**
      * To get converter
