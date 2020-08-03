@@ -764,7 +764,9 @@ public final class RntbdTransportClient extends TransportClient {
             }
 
             public Builder idleChannelTimerResolution(final Duration value) {
-                checkNotNull(value, "expected non-null value");
+                checkArgument(value != null && value.compareTo(Duration.ZERO) <= 0,
+                    "expected positive value, not %s",
+                    value);
                 this.idleChannelTimerResolution = value;
                 return this;
             }

@@ -116,13 +116,11 @@ public class RntbdClientChannelHandler extends ChannelInitializer<Channel> imple
 
         final long idleConnectionTimerResolutionInNanos = config.idleConnectionTimerResolutionInNanos();
 
-        if (idleConnectionTimerResolutionInNanos > 0) {
-            pipeline.addFirst(new IdleStateHandler(
-                idleConnectionTimerResolutionInNanos,
-                idleConnectionTimerResolutionInNanos,
-                0,
-                TimeUnit.NANOSECONDS));
-        }
+        pipeline.addFirst(new IdleStateHandler(
+            idleConnectionTimerResolutionInNanos,
+            idleConnectionTimerResolutionInNanos,
+            0,
+            TimeUnit.NANOSECONDS));
 
         channel.attr(REQUEST_MANAGER).set(requestManager);
     }
