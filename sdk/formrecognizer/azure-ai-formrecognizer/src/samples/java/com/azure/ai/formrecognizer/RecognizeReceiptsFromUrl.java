@@ -47,7 +47,7 @@ public class RecognizeReceiptsFromUrl {
             System.out.printf("----------- Recognized receipt info for page %d -----------%n", i);
             FormField merchantNameField = recognizedFields.get("MerchantName");
             if (merchantNameField != null) {
-                if (FieldValueType.STRING == merchantNameField.getValue().getType()) {
+                if (FieldValueType.STRING == merchantNameField.getValue().getValueType()) {
                     String merchantName = merchantNameField.getValue().asString();
                     System.out.printf("Merchant Name: %s, confidence: %.2f%n",
                         merchantName, merchantNameField.getConfidence());
@@ -56,7 +56,7 @@ public class RecognizeReceiptsFromUrl {
 
             FormField merchantAddressField = recognizedFields.get("MerchantAddress");
             if (merchantAddressField != null) {
-                if (FieldValueType.STRING == merchantAddressField.getValue().getType()) {
+                if (FieldValueType.STRING == merchantAddressField.getValue().getValueType()) {
                     String merchantAddress = merchantAddressField.getValue().asString();
                     System.out.printf("Merchant Address: %s, confidence: %.2f%n",
                         merchantAddress, merchantAddressField.getConfidence());
@@ -65,7 +65,7 @@ public class RecognizeReceiptsFromUrl {
 
             FormField merchantPhoneNumberField = recognizedFields.get("MerchantPhoneNumber");
             if (merchantPhoneNumberField != null) {
-                if (FieldValueType.PHONE_NUMBER == merchantPhoneNumberField.getValue().getType()) {
+                if (FieldValueType.PHONE_NUMBER == merchantPhoneNumberField.getValue().getValueType()) {
                     String merchantAddress = merchantPhoneNumberField.getValue().asPhoneNumber();
                     System.out.printf("Merchant Phone number: %s, confidence: %.2f%n",
                         merchantAddress, merchantPhoneNumberField.getConfidence());
@@ -74,7 +74,7 @@ public class RecognizeReceiptsFromUrl {
 
             FormField transactionDateField = recognizedFields.get("TransactionDate");
             if (transactionDateField != null) {
-                if (FieldValueType.DATE == transactionDateField.getValue().getType()) {
+                if (FieldValueType.DATE == transactionDateField.getValue().getValueType()) {
                     LocalDate transactionDate = transactionDateField.getValue().asDate();
                     System.out.printf("Transaction Date: %s, confidence: %.2f%n",
                         transactionDate, transactionDateField.getConfidence());
@@ -84,35 +84,35 @@ public class RecognizeReceiptsFromUrl {
             FormField receiptItemsField = recognizedFields.get("Items");
             if (receiptItemsField != null) {
                 System.out.printf("Receipt Items: %n");
-                if (FieldValueType.LIST == receiptItemsField.getValue().getType()) {
+                if (FieldValueType.LIST == receiptItemsField.getValue().getValueType()) {
                     List<FormField> receiptItems = receiptItemsField.getValue().asList();
                     receiptItems.stream()
-                        .filter(receiptItem -> FieldValueType.MAP == receiptItem.getValue().getType())
+                        .filter(receiptItem -> FieldValueType.MAP == receiptItem.getValue().getValueType())
                         .map(formField -> formField.getValue().asMap())
                         .forEach(formFieldMap -> formFieldMap.forEach((key, formField) -> {
                             if ("Name".equals(key)) {
-                                if (FieldValueType.STRING == formField.getValue().getType()) {
+                                if (FieldValueType.STRING == formField.getValue().getValueType()) {
                                     String name = formField.getValue().asString();
                                     System.out.printf("Name: %s, confidence: %.2fs%n",
                                         name, formField.getConfidence());
                                 }
                             }
                             if ("Quantity".equals(key)) {
-                                if (FieldValueType.DOUBLE == formField.getValue().getType()) {
+                                if (FieldValueType.DOUBLE == formField.getValue().getValueType()) {
                                     Double quantity = formField.getValue().asDouble();
                                     System.out.printf("Quantity: %f, confidence: %.2f%n",
                                         quantity, formField.getConfidence());
                                 }
                             }
                             if ("Price".equals(key)) {
-                                if (FieldValueType.DOUBLE == formField.getValue().getType()) {
+                                if (FieldValueType.DOUBLE == formField.getValue().getValueType()) {
                                     Double price = formField.getValue().asDouble();
                                     System.out.printf("Price: %f, confidence: %.2f%n",
                                         price, formField.getConfidence());
                                 }
                             }
                             if ("TotalPrice".equals(key)) {
-                                if (FieldValueType.DOUBLE == formField.getValue().getType()) {
+                                if (FieldValueType.DOUBLE == formField.getValue().getValueType()) {
                                     Double totalPrice = formField.getValue().asDouble();
                                     System.out.printf("Total Price: %f, confidence: %.2f%n",
                                         totalPrice, formField.getConfidence());

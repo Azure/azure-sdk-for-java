@@ -46,8 +46,8 @@ public class RecognizeCustomFormsAsync {
         String modelId = "{modelId}";
         PollerFlux<OperationResult, List<RecognizedForm>> recognizeFormPoller;
         try (InputStream targetStream = new ByteArrayInputStream(fileContent)) {
-            recognizeFormPoller = client.beginRecognizeCustomForms(toFluxByteBuffer(targetStream), sourceFile.length(),
-                modelId);
+            recognizeFormPoller = client.beginRecognizeCustomForms(modelId, toFluxByteBuffer(targetStream),
+                sourceFile.length());
         }
 
         Mono<List<RecognizedForm>> recognizeFormResult = recognizeFormPoller

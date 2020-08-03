@@ -56,7 +56,7 @@ public class FormTrainingClientJavaDocCodeSnippets {
     public void beginTrainingWithOptions() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingClient.beginTraining#string-boolean-trainingFileFilter-Duration-Context
         String trainingFilesUrl = "{SAS-URL-of-your-container-in-blob-storage}";
-        TrainingFileFilter trainingFileFilter = new TrainingFileFilter().setIncludeSubFolders(false).setPrefix("Invoice");
+        TrainingFileFilter trainingFileFilter = new TrainingFileFilter().setSubfoldersIncluded(false).setPrefix("Invoice");
         boolean useTrainingLabels = true;
 
         CustomFormModel customFormModel = formTrainingClient.beginTraining(trainingFilesUrl, useTrainingLabels,
