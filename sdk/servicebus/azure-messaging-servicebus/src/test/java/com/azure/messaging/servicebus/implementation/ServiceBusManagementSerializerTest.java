@@ -343,7 +343,7 @@ class ServiceBusManagementSerializerTest {
             entry.getContent().getSubscriptionProperties());
 
         // Assert
-        assertEquals(messageCount, actual.getMessageCount());
+        assertEquals(messageCount, actual.getTotalMessageCount());
 
         assertEquals(createdAt, actual.getCreatedAt());
         assertEquals(updatedAt, actual.getUpdatedAt());

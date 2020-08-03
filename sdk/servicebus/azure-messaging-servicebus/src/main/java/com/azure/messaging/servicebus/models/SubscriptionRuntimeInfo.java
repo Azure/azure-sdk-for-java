@@ -71,7 +71,7 @@ public class SubscriptionRuntimeInfo {
      *
      * @return The number of messages in the subscription.
      */
-    public long getMessageCount() {
+    public long getTotalMessageCount() {
         return messageCount;
     }
 
