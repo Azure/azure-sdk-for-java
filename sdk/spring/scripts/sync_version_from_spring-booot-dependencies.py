@@ -11,13 +11,14 @@ import xml.etree.ElementTree as ET
 def main():
     start_time = time.time()
     change_to_root_dir()
-    print('Working directory: ' + os.getcwd())
+    print('Current working directory = {}.'.format(os.getcwd()))
     spring_boot_version = get_spring_boot_version()
-    print('spring_boot_version={}'.format(spring_boot_version))
-    get_spring_boot_dependencies()
+    print('spring_boot_version = {}.'.format(spring_boot_version))
+    dependencyDict = get_spring_boot_dependencies()
+    #print_dict(dependencyDict)
 
     elapsed_time = time.time() - start_time
-    print('elapsed_time={}'.format(elapsed_time))
+    print('elapsed_time = {}'.format(elapsed_time))
 
 
 def change_to_root_dir():
@@ -31,21 +32,32 @@ def get_spring_boot_version():
     count = 0
     for line in Lines:
         if line.startswith('org.springframework.boot:spring-boot;'):
-            return line.split(';', 1)[1]
+            return line.split(';', 1)[1].strip()
     raise Exception("Can not get spring boot version.")
 
 
 def get_spring_boot_dependencies():
     r = requests.get('https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.3.0.RELEASE/spring-boot-dependencies-2.3.0.RELEASE.pom')
-    root = ET.fromstring(r.text)
-    ns = {'maven', 'http://maven.apache.org/POM/4.0.0'}
-    properties = root.find('{http://maven.apache.org/POM/4.0.0}properties')
+    projectElement = ET.fromstring(r.text)
+    nameSpace = {'maven': 'http://maven.apache.org/POM/4.0.0'}
+    # get properties
+    properties = projectElement.find('maven:properties', nameSpace)
     propertyDict = {}
     for property in properties:
         key = property.tag.split('}', 1)[1]
         value = property.text
         propertyDict[key] = value
-    print_dict(propertyDict)
+    # get dependencies
+    dependencyDict = {}
+    dependencyElements = projectElement.findall('./maven:dependencyManagement/maven:dependencies/maven:dependency', nameSpace)
+    for dependencyElement in dependencyElements:
+        groupId = dependencyElement.find("./maven:groupId", nameSpace).text.strip(' ')
+        artifactId = dependencyElement.find("./maven:artifactId", nameSpace).text.strip(' ')
+        version = dependencyElement.find("./maven:version", nameSpace).text.strip(' ${}')
+        key = groupId + ':' + artifactId
+        value = propertyDict[version]
+        dependencyDict[key] = value
+    return dependencyDict
 
 
 def print_dict(dict):
