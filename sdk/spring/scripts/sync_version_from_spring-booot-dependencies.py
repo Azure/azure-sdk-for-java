@@ -9,6 +9,10 @@ import time
 import xml.etree.ElementTree as ET
 
 
+EXTERNAL_DEPENDENCIES_FILE = 'eng/versioning/external_dependencies.txt'
+SPRING_BOOT_DEPENDENCIES_FILE = 'https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.3.0.RELEASE/spring-boot-dependencies-2.3.0.RELEASE.pom'
+
+
 def main():
     start_time = time.time()
     change_to_root_dir()
@@ -28,7 +32,7 @@ def change_to_root_dir():
 
 
 def get_spring_boot_version():
-    file1 = open('eng/versioning/external_dependencies.txt', 'r')
+    file1 = open(EXTERNAL_DEPENDENCIES_FILE, 'r')
     Lines = file1.readlines()
     count = 0
     for line in Lines:
@@ -38,7 +42,7 @@ def get_spring_boot_version():
 
 
 def get_spring_boot_dependencies():
-    r = requests.get('https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.3.0.RELEASE/spring-boot-dependencies-2.3.0.RELEASE.pom')
+    r = requests.get(SPRING_BOOT_DEPENDENCIES_FILE)
     projectElement = ET.fromstring(r.text)
     nameSpace = {'maven': 'http://maven.apache.org/POM/4.0.0'}
     # get properties
@@ -62,9 +66,9 @@ def get_spring_boot_dependencies():
 
 
 def update_version_for_external_dependencies(dependencyDict):
-    file_line_count = sum(1 for line in open('eng/versioning/external_dependencies.txt'))
+    file_line_count = sum(1 for line in open(EXTERNAL_DEPENDENCIES_FILE))
     print("file_line_count = {}".format(file_line_count))
-    for line in fileinput.input('eng/versioning/external_dependencies.txt', inplace=True):
+    for line in fileinput.input(EXTERNAL_DEPENDENCIES_FILE, inplace=True):
         line = line.strip()
         endValue = '' if fileinput.filelineno() == file_line_count else '\n'
         if line.startswith('#') or not line:
