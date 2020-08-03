@@ -134,8 +134,12 @@ public class NettyAsyncHttpClientBuilder {
                 }
             }
 
+            Duration buildWriteTimeout = (writeTimeout == null) ? Duration.ofSeconds(60) : writeTimeout;
+            Duration buildResponseTimeout = (responseTimeout == null) ? Duration.ofSeconds(60) : responseTimeout;
+            Duration buildReadTimeout = (readTimeout == null) ? Duration.ofSeconds(60) : readTimeout;
+
             return tcpClient.doOnConnected(connection -> connection
-                .addHandlerLast(new TimeoutHandler(writeTimeout, responseTimeout, readTimeout)));
+                .addHandlerLast(new TimeoutHandler(buildWriteTimeout, buildResponseTimeout, buildReadTimeout)));
         });
 
         return new NettyAsyncHttpClient(nettyHttpClient, disableBufferCopy);
