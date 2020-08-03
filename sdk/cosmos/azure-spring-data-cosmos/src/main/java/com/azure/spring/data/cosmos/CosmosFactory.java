@@ -6,7 +6,6 @@ package com.azure.spring.data.cosmos;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.spring.data.cosmos.common.PropertyLoader;
-import com.azure.spring.data.cosmos.config.CosmosClientConfig;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,16 +65,14 @@ public class CosmosFactory {
     /**
      * Create Cosmos Async Client
      *
-     * @param config CosmosClientConfig
+     * @param cosmosClientBuilder CosmosClientBuilder
      * @return CosmosAsyncClient
      */
-    public static CosmosAsyncClient createCosmosAsyncClient(CosmosClientConfig config) {
-        final CosmosClientBuilder cosmosClientBuilder = getCosmosClientBuilderFromConfig(config);
-        return cosmosClientBuilder.buildAsyncClient();
+    public static CosmosAsyncClient createCosmosAsyncClient(CosmosClientBuilder cosmosClientBuilder) {
+        return updateCosmosClientBuilderWithUASuffix(cosmosClientBuilder).buildAsyncClient();
     }
 
-    private static CosmosClientBuilder getCosmosClientBuilderFromConfig(CosmosClientConfig cosmosClientConfig) {
-        final CosmosClientBuilder cosmosClientBuilder = cosmosClientConfig.getCosmosClientBuilder();
+    private static CosmosClientBuilder updateCosmosClientBuilderWithUASuffix(CosmosClientBuilder cosmosClientBuilder) {
         cosmosClientBuilder.contentResponseOnWriteEnabled(true);
         final String userAgentSuffixValue = getUserAgentSuffixValue(cosmosClientBuilder);
         String userAgentSuffix = getUserAgentSuffix();
@@ -83,7 +80,7 @@ public class CosmosFactory {
             userAgentSuffix += userAgentSuffixValue;
         }
 
-        return cosmosClientConfig.getCosmosClientBuilder().userAgentSuffix(userAgentSuffix);
+        return cosmosClientBuilder.userAgentSuffix(userAgentSuffix);
     }
 
     private static String getUserAgentSuffixValue(CosmosClientBuilder cosmosClientBuilder) {

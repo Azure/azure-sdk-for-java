@@ -4,18 +4,18 @@ package com.azure.spring.data.cosmos.core;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.common.ResponseDiagnosticsTestUtils;
 import com.azure.spring.data.cosmos.common.TestConstants;
-import com.azure.spring.data.cosmos.config.CosmosClientConfig;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
 import com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext;
+import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
-import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.domain.Person;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
@@ -89,7 +89,7 @@ public class ReactiveCosmosTemplateIT {
     @Autowired
     private CosmosConfig cosmosConfig;
     @Autowired
-    private CosmosClientConfig cosmosClientConfig;
+    private CosmosClientBuilder cosmosClientBuilder;
     @Autowired
     private ResponseDiagnosticsTestUtils responseDiagnosticsTestUtils;
 
@@ -97,9 +97,9 @@ public class ReactiveCosmosTemplateIT {
     public void setUp() throws ClassNotFoundException {
         if (!initialized) {
             azureKeyCredential = new AzureKeyCredential(cosmosDbKey);
-            cosmosClientConfig.getCosmosClientBuilder().credential(azureKeyCredential);
-            CosmosAsyncClient client = CosmosFactory.createCosmosAsyncClient(cosmosClientConfig);
-            final CosmosFactory dbFactory = new CosmosFactory(client, cosmosClientConfig.getDatabase());
+            cosmosClientBuilder.credential(azureKeyCredential);
+            CosmosAsyncClient client = CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder);
+            final CosmosFactory dbFactory = new CosmosFactory(client, cosmosConfig.getDatabase());
 
             final CosmosMappingContext mappingContext = new CosmosMappingContext();
             personInfo = new CosmosEntityInformation<>(Person.class);

@@ -11,6 +11,8 @@ import java.beans.ConstructorProperties;
  */
 public class CosmosConfig {
 
+    private final String database;
+
     private final ResponseDiagnosticsProcessor responseDiagnosticsProcessor;
 
     private final boolean queryMetricsEnabled;
@@ -18,13 +20,25 @@ public class CosmosConfig {
     /**
      * Initialization
      *
+     * @param database name must not be {@literal null}
      * @param responseDiagnosticsProcessor must not be {@literal null}
      * @param queryMetricsEnabled must not be {@literal null}
      */
-    @ConstructorProperties({"responseDiagnosticsProcessor", "queryMetricsEnabled"})
-    public CosmosConfig(ResponseDiagnosticsProcessor responseDiagnosticsProcessor, boolean queryMetricsEnabled) {
+    @ConstructorProperties({"database", "responseDiagnosticsProcessor", "queryMetricsEnabled"})
+    public CosmosConfig(String database, ResponseDiagnosticsProcessor responseDiagnosticsProcessor,
+                        boolean queryMetricsEnabled) {
+        this.database = database;
         this.responseDiagnosticsProcessor = responseDiagnosticsProcessor;
         this.queryMetricsEnabled = queryMetricsEnabled;
+    }
+
+    /**
+     * Gets the database name
+     *
+     * @return database name
+     */
+    public String getDatabase() {
+        return database;
     }
 
     /**
@@ -58,9 +72,20 @@ public class CosmosConfig {
      * Builder class for cosmos config
      */
     public static class CosmosConfigBuilder {
+        private String database;
         private ResponseDiagnosticsProcessor responseDiagnosticsProcessor;
         private boolean queryMetricsEnabled;
         CosmosConfigBuilder() {
+        }
+
+        /**
+         * Sets the database name
+         * @param database database name
+         * @return database name
+         */
+        public CosmosConfigBuilder database(String database) {
+            this.database = database;
+            return this;
         }
 
         /**
@@ -92,12 +117,13 @@ public class CosmosConfig {
          * @return CosmosConfig
          */
         public CosmosConfig build() {
-            return new CosmosConfig(this.responseDiagnosticsProcessor, this.queryMetricsEnabled);
+            return new CosmosConfig(this.database, this.responseDiagnosticsProcessor, this.queryMetricsEnabled);
         }
 
         @Override
         public String toString() {
             return "CosmosConfigBuilder{"
+                + "database=" + database
                 + "responseDiagnosticsProcessor=" + responseDiagnosticsProcessor
                 + ", queryMetricsEnabled=" + queryMetricsEnabled
                 + '}';

@@ -3,9 +3,9 @@
 package com.azure.spring.data.cosmos.core;
 
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
-import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.domain.Person;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;

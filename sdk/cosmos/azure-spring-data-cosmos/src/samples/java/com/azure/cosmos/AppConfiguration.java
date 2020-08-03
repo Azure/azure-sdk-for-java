@@ -9,7 +9,6 @@ package com.azure.cosmos;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration;
-import com.azure.spring.data.cosmos.config.CosmosClientConfig;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.ResponseDiagnostics;
 import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
@@ -45,26 +44,23 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
     private AzureKeyCredential azureKeyCredential;
 
     @Bean
-    public CosmosClientConfig getClientConfig() {
+    public CosmosClientBuilder getCosmosClientBuilder() {
         this.azureKeyCredential = new AzureKeyCredential(key);
         DirectConnectionConfig directConnectionConfig = new DirectConnectionConfig();
         GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
-        CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
+        return new CosmosClientBuilder()
             .endpoint(uri)
             .credential(azureKeyCredential)
             .directMode(directConnectionConfig, gatewayConnectionConfig);
-        return CosmosClientConfig.builder()
-            .cosmosClientBuilder(cosmosClientBuilder)
-            .database(getDatabaseName())
-            .build();
     }
 
     @Override
     public CosmosConfig cosmosConfig() {
         return CosmosConfig.builder()
-            .enableQueryMetrics(queryMetricsEnabled)
-            .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
-            .build();
+                           .database(getDatabaseName())
+                           .enableQueryMetrics(queryMetricsEnabled)
+                           .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
+                           .build();
     }
 
     public void switchToSecondaryKey() {
