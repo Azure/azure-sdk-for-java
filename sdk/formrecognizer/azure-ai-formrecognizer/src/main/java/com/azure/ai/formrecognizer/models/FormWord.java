@@ -6,7 +6,7 @@ package com.azure.ai.formrecognizer.models;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The FormTable model.
+ * The FormWord model.
  */
 @Immutable
 public final class FormWord extends FormElement {
@@ -17,11 +17,12 @@ public final class FormWord extends FormElement {
     private final float confidence;
 
     /**
-     * Creates raw OCR item.
-     *  @param text The text content of ExtractedField.
-     * @param boundingBox The BoundingBox of ExtractedField.
-     * @param pageNumber The 1 based page number.
-     * @param confidence the confidence.
+     * Constructs a FormWord object.
+     *
+     * @param text the text content of recognized field.
+     * @param boundingBox the BoundingBox of recognized field.
+     * @param pageNumber the 1 based page number.
+     * @param confidence the confidence property of the Form Word.
      */
     public FormWord(String text, BoundingBox boundingBox, int pageNumber, final float confidence) {
         super(text, boundingBox, pageNumber);
@@ -31,7 +32,7 @@ public final class FormWord extends FormElement {
     /**
      * Gets the confidence property of the Form Word.
      *
-     * @return The confidence property of the Form Word.
+     * @return the confidence property of the Form Word.
      */
     public float getConfidence() {
         return this.confidence;

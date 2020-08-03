@@ -37,8 +37,8 @@ public final class FormTable {
     /**
      * Constructs a FormTable object.
      *
-     * @param rowCount Number of rows.
-     * @param columnCount Number of columns.
+     * @param rowCount the number of rows in the table.
+     * @param columnCount the number of columns in the table.
      * @param cells the list of cells contained in the table.
      * @param pageNumber the 1-based page number in the input document.
      */
@@ -51,25 +51,25 @@ public final class FormTable {
     }
 
     /**
-     * Get the rows property: Number of rows.
+     * Get the number of rows in the table.
      *
-     * @return the rows value.
+     * @return the number of rows in the table.
      */
     public int getRowCount() {
         return this.rowCount;
     }
 
     /**
-     * Get the columns property: Number of columns.
+     * Get the number of columns in the table.
      *
-     * @return the columns value.
+     * @return the number of columns in the table.
      */
     public int getColumnCount() {
         return this.columnCount;
     }
 
     /**
-     * Get the cells property: List of cells contained in the table.
+     * Get the list of cells contained in the table.
      *
      * @return the unmodifiable list of cells in the table.
      */
@@ -80,7 +80,7 @@ public final class FormTable {
     /**
      * Get the 1-based page number in the input document.
      *
-     * @return the page number value.
+     * @return the 1-based page number in the input document.
      */
     public int getPageNumber() {
         return this.pageNumber;

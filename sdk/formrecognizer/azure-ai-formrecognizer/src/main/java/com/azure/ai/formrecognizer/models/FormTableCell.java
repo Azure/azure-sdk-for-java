@@ -57,16 +57,17 @@ public final class FormTableCell extends FormElement {
 
     /**
      * Constructs a FormTableCell object.
-     *  @param rowIndex Row index of the cell.
-     * @param columnIndex Column index of the cell.
-     * @param rowSpan Number of rows spanned by this cell.
-     * @param columnSpan Number of columns spanned by this cell.
-     * @param text The recognized text value.
-     * @param boundingBox The bounding box properties of the cell.
-     * @param confidence Confidence value of the recognized text.
-     * @param isHeader Is the current cell a header cell?
-     * @param isFooter Is the current cell a footer cell?
-     * @param pageNumber The 1 based page number of the cell
+     *
+     * @param rowIndex the row index of the cell.
+     * @param columnIndex the column index of the cell.
+     * @param rowSpan the number of rows spanned by this cell.
+     * @param columnSpan the number of columns spanned by this cell.
+     * @param text the recognized text value.
+     * @param boundingBox the bounding box properties of the cell.
+     * @param confidence the confidence value of the recognized text.
+     * @param isHeader the boolean indicating if the current cell a header cell?
+     * @param isFooter the boolean indicating if the current cell a footer cell?
+     * @param pageNumber the 1 based page number of the cell
      * @param fieldElements a list of references to the elements constituting this table cell.
      */
     public FormTableCell(final int rowIndex, final int columnIndex, final int rowSpan,
@@ -85,9 +86,9 @@ public final class FormTableCell extends FormElement {
     }
 
     /**
-     * Get the confidence of the text of the cell.
+     * Get the confidence value of the recognized text of the cell.
      *
-     * @return the confidence value.
+     * @return the confidence value of the recognized text of the cell.
      */
     public float getConfidence() {
         return this.confidence;
@@ -120,7 +121,7 @@ public final class FormTableCell extends FormElement {
     /**
      * Get the row index of the cell.
      *
-     * @return the rowIndex value.
+     * @return the row index of the cell.
      */
     public int getRowIndex() {
         return this.rowIndex;
@@ -129,7 +130,7 @@ public final class FormTableCell extends FormElement {
     /**
      * Get the column index of the cell.
      *
-     * @return the columnIndex value.
+     * @return the column index of the cell.
      */
     public int getColumnIndex() {
         return this.columnIndex;
@@ -138,7 +139,7 @@ public final class FormTableCell extends FormElement {
     /**
      * Get the number of rows spanned by this cell.
      *
-     * @return the rowSpan value.
+     * @return the number of rows spanned by this cell.
      */
     public int getRowSpan() {
         return this.rowSpan;
@@ -148,7 +149,7 @@ public final class FormTableCell extends FormElement {
     /**
      * Get the number of columns spanned by this cell.
      *
-     * @return the columnSpan value.
+     * @return the number of columns spanned by this cell.
      */
     public int getColumnSpan() {
         return this.columnSpan;
@@ -167,7 +168,7 @@ public final class FormTableCell extends FormElement {
     /**
      * Get the boolean if the current cell a header cell.
      *
-     * @return the isHeader value.
+     * @return the boolean indicating if the current cell a header cell.
      */
     public boolean isHeader() {
         return this.isHeader;
@@ -176,7 +177,7 @@ public final class FormTableCell extends FormElement {
     /**
      * Get the boolean if the current cell a footer cell.
      *
-     * @return the isFooter value.
+     * @return the boolean indicating if the current cell is a footer cell.
      */
     public boolean isFooter() {
         return this.isFooter;
