@@ -19,7 +19,7 @@ public abstract class FormElement {
     /*
      * The 1-based page number in the input document.
      */
-    private final Integer pageNumber;
+    private final int pageNumber;
 
     /*
      * BoundingBox specifying relative coordinates of the element.
@@ -28,12 +28,11 @@ public abstract class FormElement {
 
     /**
      * Creates raw OCR item.
-     *
-     * @param text The text content of the extracted element.
+     *  @param text The text content of the extracted element.
      * @param boundingBox The BoundingBox specifying relative coordinates of the element.
      * @param pageNumber the 1 based page number.
      */
-    FormElement(final String text, final BoundingBox boundingBox, final Integer pageNumber) {
+    FormElement(final String text, final BoundingBox boundingBox, final int pageNumber) {
         this.text = text;
         this.boundingBox = boundingBox;
         this.pageNumber = pageNumber;
@@ -62,7 +61,7 @@ public abstract class FormElement {
      *
      * @return the page number value.
      */
-    public Integer getPageNumber() {
+    public int getPageNumber() {
         return this.pageNumber;
     }
 }

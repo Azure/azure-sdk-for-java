@@ -72,7 +72,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         String modelId = "{custom_trained_model_id}";
 
         // if training polling operation completed, retrieve the final result.
-        formRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl(formUrl, modelId)
+        formRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl(modelId, formUrl)
             // if training polling operation completed, retrieve the final result.
             .flatMap(AsyncPollResponse::getFinalResult)
             .flatMap(Flux::fromIterable)
@@ -95,7 +95,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         String modelId = "{model_id}";
         boolean includeFieldElements = true;
 
-        formRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl(formUrl, modelId,
+        formRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl(modelId, formUrl,
             new RecognizeOptions()
                 .setFieldElementsIncluded(includeFieldElements)
                 .setPollInterval(Duration.ofSeconds(10)))
@@ -117,14 +117,14 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public void beginRecognizeCustomForms() throws IOException {
-        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#Flux-long-string
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#string-Flux-long
         File form = new File("{local/file_path/fileName.jpg}");
         String modelId = "{custom_trained_model_id}";
         // Utility method to convert input stream to Byte buffer
         Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(form.toPath())));
 
         // if training polling operation completed, retrieve the final result.
-        formRecognizerAsyncClient.beginRecognizeCustomForms(buffer, form.length(), modelId)
+        formRecognizerAsyncClient.beginRecognizeCustomForms(modelId, buffer, form.length())
             // if training polling operation completed, retrieve the final result.
             .flatMap(AsyncPollResponse::getFinalResult)
             .flatMap(Flux::fromIterable)
@@ -134,18 +134,18 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                     System.out.printf("Field value data text: %s%n", formField.getValueData().getText());
                     System.out.printf("Confidence score: %.2f%n", formField.getConfidence());
                 }));
-        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#Flux-long-string
+        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#string-Flux-long
     }
 
     /**
      * Code snippet for
-     * {@link FormRecognizerAsyncClient#beginRecognizeCustomForms(Flux, long, String, RecognizeOptions)}
+     * {@link FormRecognizerAsyncClient#beginRecognizeCustomForms(String, Flux, long, RecognizeOptions)}
      * with options
      *
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public void beginRecognizeCustomFormsWithOptions() throws IOException {
-        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#Flux-long-string-recognizeOptions
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#string-Flux-long-recognizeOptions
         File form = new File("{local/file_path/fileName.jpg}");
         String modelId = "{custom_trained_model_id}";
         boolean includeFieldElements = true;
@@ -153,7 +153,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(form.toPath())));
 
         // if training polling operation completed, retrieve the final result.
-        formRecognizerAsyncClient.beginRecognizeCustomForms(buffer, form.length(), modelId,
+        formRecognizerAsyncClient.beginRecognizeCustomForms(modelId, buffer, form.length(),
             new RecognizeOptions()
                 .setContentType(FormContentType.IMAGE_JPEG)
                 .setFieldElementsIncluded(includeFieldElements)
@@ -167,7 +167,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                     System.out.printf("Field value data text: %s%n", formField.getValueData().getText());
                     System.out.printf("Confidence score: %.2f%n", formField.getConfidence());
                 }));
-        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#Flux-long-string-recognizeOptions
+        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#string-Flux-long-recognizeOptions
     }
 
     // Recognize Content
@@ -293,7 +293,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                     System.out.printf("----------- Recognized Receipt page %d -----------%n", i);
                     FormField merchantNameField = recognizedFields.get("MerchantName");
                     if (merchantNameField != null) {
-                        if (FieldValueType.STRING == merchantNameField.getValue().getType()) {
+                        if (FieldValueType.STRING == merchantNameField.getValue().getValueType()) {
                             String merchantName = merchantNameField.getValue().asString();
                             System.out.printf("Merchant Name: %s, confidence: %.2f%n",
                                 merchantName, merchantNameField.getConfidence());
@@ -302,7 +302,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
 
                     FormField merchantPhoneNumberField = recognizedFields.get("MerchantPhoneNumber");
                     if (merchantPhoneNumberField != null) {
-                        if (FieldValueType.PHONE_NUMBER == merchantPhoneNumberField.getValue().getType()) {
+                        if (FieldValueType.PHONE_NUMBER == merchantPhoneNumberField.getValue().getValueType()) {
                             String merchantAddress = merchantPhoneNumberField.getValue().asPhoneNumber();
                             System.out.printf("Merchant Phone number: %s, confidence: %.2f%n",
                                 merchantAddress, merchantPhoneNumberField.getConfidence());
@@ -311,7 +311,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
 
                     FormField transactionDateField = recognizedFields.get("TransactionDate");
                     if (transactionDateField != null) {
-                        if (FieldValueType.DATE == transactionDateField.getValue().getType()) {
+                        if (FieldValueType.DATE == transactionDateField.getValue().getValueType()) {
                             LocalDate transactionDate = transactionDateField.getValue().asDate();
                             System.out.printf("Transaction Date: %s, confidence: %.2f%n",
                                 transactionDate, transactionDateField.getConfidence());
@@ -321,14 +321,14 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                     FormField receiptItemsField = recognizedFields.get("Items");
                     if (receiptItemsField != null) {
                         System.out.printf("Receipt Items: %n");
-                        if (FieldValueType.LIST == receiptItemsField.getValue().getType()) {
+                        if (FieldValueType.LIST == receiptItemsField.getValue().getValueType()) {
                             List<FormField> receiptItems = receiptItemsField.getValue().asList();
                             receiptItems.stream()
-                                .filter(receiptItem -> FieldValueType.MAP == receiptItem.getValue().getType())
+                                .filter(receiptItem -> FieldValueType.MAP == receiptItem.getValue().getValueType())
                                 .map(formField -> formField.getValue().asMap())
                                 .forEach(formFieldMap -> formFieldMap.forEach((key, formField) -> {
                                     if ("Quantity".equals(key)) {
-                                        if (FieldValueType.DOUBLE == formField.getValue().getType()) {
+                                        if (FieldValueType.DOUBLE == formField.getValue().getValueType()) {
                                             Double quantity = formField.getValue().asDouble();
                                             System.out.printf("Quantity: %f, confidence: %.2f%n",
                                                 quantity, formField.getConfidence());
@@ -362,7 +362,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                     System.out.printf("----------- Recognized Receipt page %d -----------%n", i);
                     FormField merchantNameField = recognizedFields.get("MerchantName");
                     if (merchantNameField != null) {
-                        if (FieldValueType.STRING == merchantNameField.getValue().getType()) {
+                        if (FieldValueType.STRING == merchantNameField.getValue().getValueType()) {
                             String merchantName = merchantNameField.getValue().asString();
                             System.out.printf("Merchant Name: %s, confidence: %.2f%n",
                                 merchantName, merchantNameField.getConfidence());
@@ -371,7 +371,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
 
                     FormField merchantPhoneNumberField = recognizedFields.get("MerchantPhoneNumber");
                     if (merchantPhoneNumberField != null) {
-                        if (FieldValueType.PHONE_NUMBER == merchantPhoneNumberField.getValue().getType()) {
+                        if (FieldValueType.PHONE_NUMBER == merchantPhoneNumberField.getValue().getValueType()) {
                             String merchantAddress = merchantPhoneNumberField.getValue().asPhoneNumber();
                             System.out.printf("Merchant Phone number: %s, confidence: %.2f%n",
                                 merchantAddress, merchantPhoneNumberField.getConfidence());
@@ -380,7 +380,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
 
                     FormField transactionDateField = recognizedFields.get("TransactionDate");
                     if (transactionDateField != null) {
-                        if (FieldValueType.DATE == transactionDateField.getValue().getType()) {
+                        if (FieldValueType.DATE == transactionDateField.getValue().getValueType()) {
                             LocalDate transactionDate = transactionDateField.getValue().asDate();
                             System.out.printf("Transaction Date: %s, confidence: %.2f%n",
                                 transactionDate, transactionDateField.getConfidence());
@@ -390,14 +390,14 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                     FormField receiptItemsField = recognizedFields.get("Items");
                     if (receiptItemsField != null) {
                         System.out.printf("Receipt Items: %n");
-                        if (FieldValueType.LIST == receiptItemsField.getValue().getType()) {
+                        if (FieldValueType.LIST == receiptItemsField.getValue().getValueType()) {
                             List<FormField> receiptItems = receiptItemsField.getValue().asList();
                             receiptItems.stream()
-                                .filter(receiptItem -> FieldValueType.MAP == receiptItem.getValue().getType())
+                                .filter(receiptItem -> FieldValueType.MAP == receiptItem.getValue().getValueType())
                                 .map(formField -> formField.getValue().asMap())
                                 .forEach(formFieldMap -> formFieldMap.forEach((key, formField) -> {
                                     if ("Quantity".equals(key)) {
-                                        if (FieldValueType.DOUBLE == formField.getValue().getType()) {
+                                        if (FieldValueType.DOUBLE == formField.getValue().getValueType()) {
                                             Double quantity = formField.getValue().asDouble();
                                             System.out.printf("Quantity: %f, confidence: %.2f%n",
                                                 quantity, formField.getConfidence());
@@ -430,7 +430,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                             System.out.printf("----------- Recognized Receipt page %d -----------%n", i);
                             FormField merchantNameField = recognizedFields.get("MerchantName");
                             if (merchantNameField != null) {
-                                if (FieldValueType.STRING == merchantNameField.getValue().getType()) {
+                                if (FieldValueType.STRING == merchantNameField.getValue().getValueType()) {
                                     String merchantName = merchantNameField.getValue().asString();
                                     System.out.printf("Merchant Name: %s, confidence: %.2f%n",
                                         merchantName, merchantNameField.getConfidence());
@@ -439,7 +439,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
 
                             FormField merchantPhoneNumberField = recognizedFields.get("MerchantPhoneNumber");
                             if (merchantPhoneNumberField != null) {
-                                if (FieldValueType.PHONE_NUMBER == merchantPhoneNumberField.getValue().getType()) {
+                                if (FieldValueType.PHONE_NUMBER == merchantPhoneNumberField.getValue().getValueType()) {
                                     String merchantAddress = merchantPhoneNumberField.getValue().asPhoneNumber();
                                     System.out.printf("Merchant Phone number: %s, confidence: %.2f%n",
                                         merchantAddress, merchantPhoneNumberField.getConfidence());
@@ -448,7 +448,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
 
                             FormField transactionDateField = recognizedFields.get("TransactionDate");
                             if (transactionDateField != null) {
-                                if (FieldValueType.DATE == transactionDateField.getValue().getType()) {
+                                if (FieldValueType.DATE == transactionDateField.getValue().getValueType()) {
                                     LocalDate transactionDate = transactionDateField.getValue().asDate();
                                     System.out.printf("Transaction Date: %s, confidence: %.2f%n",
                                         transactionDate, transactionDateField.getConfidence());
@@ -458,14 +458,14 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                             FormField receiptItemsField = recognizedFields.get("Items");
                             if (receiptItemsField != null) {
                                 System.out.printf("Receipt Items: %n");
-                                if (FieldValueType.LIST == receiptItemsField.getValue().getType()) {
+                                if (FieldValueType.LIST == receiptItemsField.getValue().getValueType()) {
                                     List<FormField> receiptItems = receiptItemsField.getValue().asList();
                                     receiptItems.stream()
-                                        .filter(receiptItem -> FieldValueType.MAP == receiptItem.getValue().getType())
+                                        .filter(receiptItem -> FieldValueType.MAP == receiptItem.getValue().getValueType())
                                         .map(formField -> formField.getValue().asMap())
                                         .forEach(formFieldMap -> formFieldMap.forEach((key, formField) -> {
                                             if ("Quantity".equals(key)) {
-                                                if (FieldValueType.DOUBLE == formField.getValue().getType()) {
+                                                if (FieldValueType.DOUBLE == formField.getValue().getValueType()) {
                                                     Double quantity = formField.getValue().asDouble();
                                                     System.out.printf("Quantity: %f, confidence: %.2f%n",
                                                         quantity, formField.getConfidence());
@@ -505,7 +505,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                     System.out.printf("----------- Recognized Receipt page %d -----------%n", i);
                     FormField merchantNameField = recognizedFields.get("MerchantName");
                     if (merchantNameField != null) {
-                        if (FieldValueType.STRING == merchantNameField.getValue().getType()) {
+                        if (FieldValueType.STRING == merchantNameField.getValue().getValueType()) {
                             String merchantName = merchantNameField.getValue().asString();
                             System.out.printf("Merchant Name: %s, confidence: %.2f%n",
                                 merchantName, merchantNameField.getConfidence());
@@ -514,7 +514,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
 
                     FormField merchantPhoneNumberField = recognizedFields.get("MerchantPhoneNumber");
                     if (merchantPhoneNumberField != null) {
-                        if (FieldValueType.PHONE_NUMBER == merchantPhoneNumberField.getValue().getType()) {
+                        if (FieldValueType.PHONE_NUMBER == merchantPhoneNumberField.getValue().getValueType()) {
                             String merchantAddress = merchantPhoneNumberField.getValue().asPhoneNumber();
                             System.out.printf("Merchant Phone number: %s, confidence: %.2f%n",
                                 merchantAddress, merchantPhoneNumberField.getConfidence());
@@ -523,7 +523,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
 
                     FormField transactionDateField = recognizedFields.get("TransactionDate");
                     if (transactionDateField != null) {
-                        if (FieldValueType.DATE == transactionDateField.getValue().getType()) {
+                        if (FieldValueType.DATE == transactionDateField.getValue().getValueType()) {
                             LocalDate transactionDate = transactionDateField.getValue().asDate();
                             System.out.printf("Transaction Date: %s, confidence: %.2f%n",
                                 transactionDate, transactionDateField.getConfidence());
@@ -533,14 +533,14 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                     FormField receiptItemsField = recognizedFields.get("Items");
                     if (receiptItemsField != null) {
                         System.out.printf("Receipt Items: %n");
-                        if (FieldValueType.LIST == receiptItemsField.getValue().getType()) {
+                        if (FieldValueType.LIST == receiptItemsField.getValue().getValueType()) {
                             List<FormField> receiptItems = receiptItemsField.getValue().asList();
                             receiptItems.stream()
-                                .filter(receiptItem -> FieldValueType.MAP == receiptItem.getValue().getType())
+                                .filter(receiptItem -> FieldValueType.MAP == receiptItem.getValue().getValueType())
                                 .map(formField -> formField.getValue().asMap())
                                 .forEach(formFieldMap -> formFieldMap.forEach((key, formField) -> {
                                     if ("Quantity".equals(key)) {
-                                        if (FieldValueType.DOUBLE == formField.getValue().getType()) {
+                                        if (FieldValueType.DOUBLE == formField.getValue().getValueType()) {
                                             Double quantity = formField.getValue().asDouble();
                                             System.out.printf("Quantity: %f, confidence: %.2f%n",
                                                 quantity, formField.getConfidence());
