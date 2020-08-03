@@ -116,12 +116,12 @@ public final class FieldValue {
      * Gets the value of the field as a {@link Float}.
      *
      * @return the value of the field as a {@link Float}.
-     * @throws UnsupportedOperationException if {@link FieldValue#getType()} is not {@link FieldValueType#FLOAT}.
+     * @throws UnsupportedOperationException if {@link FieldValue#getValueType()} is not {@link FieldValueType#FLOAT}.
      */
     public Float asFloat() {
         if (FLOAT != this.getValueType()) {
             throw logger.logExceptionAsError((new UnsupportedOperationException(String.format("Cannot get field as "
-                + "%s from field value of type %s", FLOAT, this.getType()))));
+                + "%s from field value of type %s", FLOAT, this.getValueType()))));
         }
         return this.formFieldFloat;
     }

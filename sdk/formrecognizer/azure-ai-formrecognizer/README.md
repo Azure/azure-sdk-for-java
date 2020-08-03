@@ -301,8 +301,8 @@ for (int i = 0; i < receiptPageResults.size(); i++) {
                 .map(formField -> formField.getValue().asMap())
                 .forEach(formFieldMap -> formFieldMap.forEach((key, formField) -> {
                     if ("Quantity".equals(key)) {
-                        if (FieldValueType.DOUBLE == formField.getValue().getValueType()) {
-                            Double quantity = formField.getValue().asDouble();
+                        if (FieldValueType.FLOAT == formField.getValue().getValueType()) {
+                            Float quantity = formField.getValue().asFloat();
                             System.out.printf("Quantity: %f, confidence: %.2f%n",
                                 quantity, formField.getConfidence());
                         }
