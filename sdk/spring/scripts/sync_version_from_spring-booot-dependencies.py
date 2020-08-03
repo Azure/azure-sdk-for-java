@@ -62,17 +62,20 @@ def get_spring_boot_dependencies():
 
 
 def update_version_for_external_dependencies(dependencyDict):
+    file_line_count = sum(1 for line in open('eng/versioning/external_dependencies.txt'))
+    print("file_line_count = {}".format(file_line_count))
     for line in fileinput.input('eng/versioning/external_dependencies.txt', inplace=True):
         line = line.strip()
+        endValue = '' if fileinput.filelineno() == file_line_count else '\n'
         if line.startswith('#') or not line:
-            print(line)
+            print(line, end = endValue)
         else:
             keyValue = line.split(';', 1)
             key = keyValue[0]
             value = keyValue[1]
             if key in dependencyDict:
                 value = dependencyDict[key]
-            print('{};{}'.format(key, value))
+            print('{};{}'.format(key, value), end = endValue)
 
 
 def print_dict(dict):
