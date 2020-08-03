@@ -25,7 +25,7 @@ public class CreateTopicOptionsTest {
     @Test
     void constructor() {
         // Arrange
-        final String queueName = "a-queue";
+        final String queueName = "a-topic";
 
         // Act
         final CreateTopicOptions actual = new CreateTopicOptions(queueName);
@@ -46,6 +46,7 @@ public class CreateTopicOptionsTest {
         assertFalse(actual.requiresSession());
         assertFalse(actual.deadLetteringOnMessageExpiration());
         assertNull(actual.getUserMetadata());
+        assertEquals(EntityStatus.ACTIVE, actual.getStatus());
     }
 
     @Test
@@ -61,7 +62,8 @@ public class CreateTopicOptionsTest {
             .setEnablePartitioning(true)
             .setMaxSizeInMegabytes(2048L)
             .setRequiresDuplicateDetection(true)
-            .setUserMetadata("Test-queue-Metadata");
+            .setUserMetadata("Test-queue-Metadata")
+            .setStatus(EntityStatus.DELETING);
 
         // Act
         final CreateTopicOptions actual = new CreateTopicOptions(expected);
@@ -77,5 +79,6 @@ public class CreateTopicOptionsTest {
         assertEquals(expected.enablePartitioning(), actual.enablePartitioning());
         assertEquals(expected.requiresDuplicateDetection(), actual.requiresDuplicateDetection());
         assertEquals(expected.getUserMetadata(), actual.getUserMetadata());
+        assertEquals(expected.getStatus(), actual.getStatus());
     }
 }
