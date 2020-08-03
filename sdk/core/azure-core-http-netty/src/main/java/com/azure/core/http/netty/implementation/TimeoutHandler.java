@@ -12,7 +12,6 @@ import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.LastHttpContent;
 
 import java.time.Duration;
-import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
@@ -126,13 +125,16 @@ public final class TimeoutHandler extends ChannelDuplexHandler {
     }
 
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        ctx.fireChannelRead(msg);
-    }
-
-    @Override
     public void channelReadComplete(ChannelHandlerContext ctx) {
         lastReadNanos = System.nanoTime();
+
+        /*
+         * If there is an on-going response cancel it as we've began reading the response.
+         */
+        if (responseTimeout != null && !responseTimeout.isDone()) {
+            responseTimeout.cancel(false);
+            responseTimeout = null;
+        }
 
         if (readTimeoutNanos > 0 && readTimeout == null) {
             readTimeout = ctx.executor().schedule(() -> readTask(ctx), readTimeoutNanos, NANOSECONDS);
@@ -184,11 +186,13 @@ public final class TimeoutHandler extends ChannelDuplexHandler {
         if (responseTimeout != null && !responseTimeout.isDone()) {
             System.out.println("Cancelling outstanding response timeout.");
             responseTimeout.cancel(false);
+            responseTimeout = null;
         }
 
         if (readTimeout != null && !readTimeout.isDone()) {
             System.out.println("Cancelling outstanding read timeout.");
             readTimeout.cancel(false);
+            readTimeout = null;
         }
     }
 
@@ -248,6 +252,6 @@ public final class TimeoutHandler extends ChannelDuplexHandler {
             return 0;
         }
 
-        return Math.max(timeout.get(ChronoUnit.NANOS), MINIMUM_TIMEOUT_NANOS);
+        return Math.max(timeout.toNanos(), MINIMUM_TIMEOUT_NANOS);
     }
 }
