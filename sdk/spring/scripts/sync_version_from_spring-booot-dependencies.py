@@ -2,9 +2,10 @@
 # Licensed under the MIT License.
 
 
+import fileinput
 import os
-import time
 import requests
+import time
 import xml.etree.ElementTree as ET
 
 
@@ -15,7 +16,7 @@ def main():
     spring_boot_version = get_spring_boot_version()
     print('spring_boot_version = {}.'.format(spring_boot_version))
     dependencyDict = get_spring_boot_dependencies()
-    #print_dict(dependencyDict)
+    update_version_for_external_dependencies(dependencyDict)
 
     elapsed_time = time.time() - start_time
     print('elapsed_time = {}'.format(elapsed_time))
@@ -58,6 +59,22 @@ def get_spring_boot_dependencies():
         value = propertyDict[version]
         dependencyDict[key] = value
     return dependencyDict
+
+
+def update_version_for_external_dependencies(dependencyDict):
+    print("test")
+    print('Current working directory = {}.'.format(os.getcwd()))
+    for line in fileinput.input('eng/versioning/external_dependencies.txt', inplace=True):
+        line = line.strip()
+        if line.startswith('#') or not line:
+            print(line)
+        else:
+            keyValue = line.split(';', 1)
+            key = keyValue[0]
+            value = keyValue[1]
+            if key in dependencyDict:
+                value = dependencyDict[key]
+            print('{};{}'.format(key, value))
 
 
 def print_dict(dict):
