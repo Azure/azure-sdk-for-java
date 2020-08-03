@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.models.CreateSubscriptionOptions;
 import com.azure.messaging.servicebus.models.CreateTopicOptions;
 import com.azure.messaging.servicebus.models.QueueDescription;
 import com.azure.messaging.servicebus.models.SubscriptionDescription;
@@ -25,6 +26,31 @@ public final class EntityHelper {
         } catch (ClassNotFoundException e) {
             throw new ClientLogger(EntityHelper.class).logExceptionAsError(new IllegalStateException(e));
         }
+
+        try {
+            Class.forName(SubscriptionDescription.class.getName(), true,
+                SubscriptionDescription.class.getClassLoader());
+        } catch (ClassNotFoundException e) {
+            throw new ClientLogger(EntityHelper.class).logExceptionAsError(new IllegalStateException(e));
+        }
+    }
+
+    /**
+     * Creates a new subscription given the options.
+     *
+     * @param options Options to create topic with.
+     *
+     * @return A new {@link SubscriptionDescription} with the set options.
+     */
+    public static SubscriptionDescription createSubscription(CreateSubscriptionOptions options) {
+        Objects.requireNonNull(options, "'options' cannot be null.");
+
+        if (subscriptionAccessor == null) {
+            throw new ClientLogger(EntityHelper.class).logExceptionAsError(
+                new IllegalStateException("'subscriptionAccessor' should not be null."));
+        }
+
+        return subscriptionAccessor.createSubscription(options);
     }
 
     /**
@@ -171,6 +197,14 @@ public final class EntityHelper {
      */
     public interface SubscriptionAccessor {
         /**
+         * Creates a subscription with the given options.
+         *
+         * @param options Options used to create subscription.
+         * @return A new subscription.
+         */
+        SubscriptionDescription createSubscription(CreateSubscriptionOptions options);
+
+        /**
          * Sets the topic name on a subscription.
          *
          * @param subscriptionDescription Subscription to set name on.
@@ -192,11 +226,11 @@ public final class EntityHelper {
      */
     public interface TopicAccessor {
         /**
-         * Sets properties on the QueueDescription based on the CreateQueueOptions.
+         * Sets properties on the TopicProperties based on the CreateTopicOptions.
          *
-         * @param options The create queue options to set.
+         * @param options The options to set.
          *
-         * @return A new QueueDescription with the properties set.
+         * @return A new topic with the properties set.
          */
         TopicProperties createTopic(CreateTopicOptions options);
 
