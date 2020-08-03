@@ -10,7 +10,7 @@ import xml.etree.ElementTree as ET
 
 
 EXTERNAL_DEPENDENCIES_FILE = 'eng/versioning/external_dependencies.txt'
-SPRING_BOOT_DEPENDENCIES_FILE = 'https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.3.0.RELEASE/spring-boot-dependencies-2.3.0.RELEASE.pom'
+SPRING_BOOT_DEPENDENCIES_FILE = 'https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/{}/spring-boot-dependencies-{}.pom'
 
 
 def main():
@@ -19,7 +19,7 @@ def main():
     print('Current working directory = {}.'.format(os.getcwd()))
     spring_boot_version = get_spring_boot_version()
     print('spring_boot_version = {}.'.format(spring_boot_version))
-    dependencyDict = get_spring_boot_dependencies()
+    dependencyDict = get_spring_boot_dependencies(spring_boot_version)
     update_version_for_external_dependencies(dependencyDict)
 
     elapsed_time = time.time() - start_time
@@ -41,8 +41,8 @@ def get_spring_boot_version():
     raise Exception("Can not get spring boot version.")
 
 
-def get_spring_boot_dependencies():
-    r = requests.get(SPRING_BOOT_DEPENDENCIES_FILE)
+def get_spring_boot_dependencies(spring_boot_version):
+    r = requests.get(SPRING_BOOT_DEPENDENCIES_FILE.format(spring_boot_version, spring_boot_version))
     projectElement = ET.fromstring(r.text)
     nameSpace = {'maven': 'http://maven.apache.org/POM/4.0.0'}
     # get properties
