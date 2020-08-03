@@ -67,8 +67,6 @@
             <bannedDependencies>
               <includes>
                 <include>com.microsoft.azure:spring-integration-azure-core:[1.2.8-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-integration-azure-core;current} -->
-                <include>com.azure:azure-messaging-eventhubs:[5.1.2]</include> <!-- {x-include-update;com.azure:azure-messaging-eventhubs;dependency} -->
-                <include>com.azure:azure-messaging-eventhubs-checkpointstore-blob:[1.1.2]</include> <!-- {x-include-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
