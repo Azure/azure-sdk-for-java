@@ -384,10 +384,6 @@ public class EncryptionCosmosAsyncContainer {
                 throw exception;
             }
 
-            decryptionResultHandler.accept(DecryptionResult.createFailure(
-                input,
-                exception));
-
             decryptionResultHandler.accept(
                 DecryptionResult.createFailure(
                     input,

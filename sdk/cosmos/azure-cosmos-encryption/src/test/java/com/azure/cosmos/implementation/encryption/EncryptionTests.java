@@ -9,6 +9,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.encryption.DecryptionResult;
 import com.azure.cosmos.encryption.EncryptionCosmosAsyncContainer;
 import com.azure.cosmos.encryption.EncryptionItemRequestOptions;
 import com.azure.cosmos.encryption.EncryptionKeyUnwrapResult;
@@ -48,9 +49,11 @@ import org.testng.annotations.Test;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
@@ -79,6 +82,8 @@ public class EncryptionTests extends TestSuiteBase {
     private static CosmosAsyncContainer keyContainer;
     private static CosmosDataEncryptionKeyProvider dekProvider;
     //    private static TestEncryptor encryptor;
+    private String decryptionFailedDocId;
+    private List<DecryptionResult> capturedDecryptionResults = Collections.synchronizedList(new ArrayList<>());
 
     @DataProvider
     public static Object[][] directClientBuilderWithSessionConsistency() {
@@ -112,6 +117,9 @@ public class EncryptionTests extends TestSuiteBase {
 
         EncryptionTests.encryptionContainer = WithEncryption.withEncryptor(EncryptionTests.itemContainer, encryptor);
         EncryptionTests.dekProperties = EncryptionTests.createDek(EncryptionTests.dekProvider, dekId);
+
+        capturedDecryptionResults.clear();
+        EncryptionTests.encryptor.failDecryption = false;
     }
 
     @BeforeClass(groups = { "encryption" })
@@ -349,8 +357,66 @@ public class EncryptionTests extends TestSuiteBase {
     public void encryptionChangeFeedDecryptionSuccessful() {
     }
 
-    @Test(groups = {"encryption"}, enabled = false, timeOut = TIMEOUT)
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT * 100)
     public void encryptionHandleDecryptionFailure() {
+        String dek2 = "failDek";
+        EncryptionTests.createDek(EncryptionTests.dekProvider, dek2);
+
+        TestDoc testDoc1 =  EncryptionTests.createItem(EncryptionTests.encryptionContainer, dek2, TestDoc.PathsToEncrypt).getItem();
+        TestDoc testDoc2 =  EncryptionTests.createItem(EncryptionTests.encryptionContainer, EncryptionTests.dekId, TestDoc.PathsToEncrypt).getItem();
+
+        String projectionQueryWithNoEncryptedFields = String.format("SELECT * FROM c WHERE c.PK in ('%s', '%s')", testDoc1.pk, testDoc2.pk);
+
+        // success
+        EncryptionTests.validateQueryResultsMultipleDocuments(EncryptionTests.encryptionContainer, testDoc1, testDoc2, projectionQueryWithNoEncryptedFields);
+        assertThat(capturedDecryptionResults).hasSize(0);
+
+        // induce failure
+        EncryptionTests.encryptor.failDecryption = true;
+        decryptionFailedDocId = testDoc1.id;
+        testDoc1.sensitive = null;
+
+         EncryptionTests.verifyItemByRead(
+            EncryptionTests.encryptionContainer,
+            testDoc1,
+            getItemRequestOptionsWithDecryptionResultHandler());
+
+        assertThat(capturedDecryptionResults).hasSize(1);
+        capturedDecryptionResults.clear();
+
+        EncryptionQueryRequestOption queryRequestOptions = new EncryptionQueryRequestOption();
+        queryRequestOptions.setDecryptionResultHandler(this::errorHandler);
+
+         EncryptionTests.validateQueryResultsMultipleDocuments(
+            EncryptionTests.encryptionContainer,
+            testDoc1,
+            testDoc2,
+            projectionQueryWithNoEncryptedFields,
+            queryRequestOptions);
+
+        capturedDecryptionResults.clear();
+        assertThat(capturedDecryptionResults).hasSize(0);
+
+
+        EncryptionTests.validateQueryResultsMultipleDocuments(
+            EncryptionTests.encryptionContainer,
+            testDoc1,
+            testDoc2,
+            String.format("SELECT * FROM r where r.id in ('%s', '%s')", testDoc1.id, testDoc2.id),
+            queryRequestOptions);
+
+        assertThat(capturedDecryptionResults).hasSize(1);
+        capturedDecryptionResults.clear();
+
+
+        //        await this.ValidateChangeFeedIteratorResponse(
+//            EncryptionTests.encryptionContainer,
+//            testDoc1,
+//            testDoc2,
+//            EncryptionTests.ErrorHandler);
+
+        // await this.ValidateChangeFeedProcessorResponse(EncryptionTests.itemContainerCore, testDoc1, testDoc2, false);
+        EncryptionTests.encryptor.failDecryption = false;
     }
 
     @Test(groups = { "encryption" }, timeOut = TIMEOUT)
@@ -618,7 +684,7 @@ public class EncryptionTests extends TestSuiteBase {
         CosmosItemResponse<TestDoc> readResponse = container.readItem(testDoc.id, new PartitionKey(testDoc.pk),
             requestOptions, TestDoc.class).block();
 
-        assertThat(readResponse.getStatusCode()).isEqualTo(200);
+        assertThat(readResponse.getStatusCode()).isEqualTo(ResponseStatusCode.OK);
         assertThat(readResponse.getItem()).isEqualTo(testDoc);
     }
 
@@ -724,19 +790,19 @@ public class EncryptionTests extends TestSuiteBase {
     // This class is same as CosmosEncryptor but copied so as to induce decryption failure easily for testing.
     public static class TestEncryptor implements Encryptor {
         public final DataEncryptionKeyProvider dataEncryptionKeyProvider;
-        public boolean FailDecryption;
+        public boolean failDecryption;
 
         public TestEncryptor(DataEncryptionKeyProvider dataEncryptionKeyProvider) {
             this.dataEncryptionKeyProvider = dataEncryptionKeyProvider;
-            this.FailDecryption = false;
+            this.failDecryption = false;
         }
 
         public byte[] decryptAsync(
             byte[] cipherText,
             String dataEncryptionKeyId,
             String encryptionAlgorithm) {
-            if (this.FailDecryption && dataEncryptionKeyId.equals("failDek")) {
-                throw new IllegalArgumentException("Null {nameof(DataEncryptionKey)} returned.");
+            if (this.failDecryption && dataEncryptionKeyId.equals("failDek")) {
+                throw new IllegalArgumentException("Null DataEncryptionKey returned.");
             }
 
             DataEncryptionKey dek = this.dataEncryptionKeyProvider.getDataEncryptionKey(
@@ -744,8 +810,8 @@ public class EncryptionTests extends TestSuiteBase {
                 encryptionAlgorithm);
 
             if (dek == null) {
-                throw new IllegalArgumentException("Null {nameof(DataEncryptionKey)} returned from {nameof(this"
-                    + ".DataEncryptionKeyProvider.FetchDataEncryptionKeyAsync)}.");
+                throw new IllegalArgumentException("Null DataEncryptionKey returned from this"
+                    + ".DataEncryptionKeyProvider.FetchDataEncryptionKeyAsync}.");
             }
 
             return dek.decryptData(cipherText);
@@ -887,6 +953,30 @@ public class EncryptionTests extends TestSuiteBase {
         assertThat(deleteResponse.getStatusCode()).isEqualTo(ResponseStatusCode.NO_CONTENT);
         assertThat(deleteResponse.getItem()).isNull();
         return deleteResponse;
+    }
+
+    private void errorHandler(DecryptionResult decryptionErrorDetails) {
+        capturedDecryptionResults.add(decryptionErrorDetails);
+        assertThat(decryptionErrorDetails.getException().getMessage()).isEqualTo("Null DataEncryptionKey returned.");
+        byte[] content = decryptionErrorDetails.getEncryptedContent();
+
+        ObjectNode itemJObj = TestCommon.fromStream(content, ObjectNode.class);
+        JsonNode encryptionPropertiesJProp = itemJObj.get("_ei");
+        assertThat(encryptionPropertiesJProp).isNotNull();
+        assertThat(itemJObj.get("id").textValue()).isEqualTo(decryptionFailedDocId);
+    }
+
+    private CosmosItemRequestOptions getItemRequestOptionsWithDecryptionResultHandler()
+    {
+        EncryptionItemRequestOptions options = new EncryptionItemRequestOptions();
+
+        options.setDecryptionResultHandler(new Consumer<DecryptionResult>() {
+            @Override
+            public void accept(DecryptionResult decryptionResult) {
+                errorHandler(decryptionResult);
+            }
+        });
+        return options;
     }
 
     public static class ResponseStatusCode {
