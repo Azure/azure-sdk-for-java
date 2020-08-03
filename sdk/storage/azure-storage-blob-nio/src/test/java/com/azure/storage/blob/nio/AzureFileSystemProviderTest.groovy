@@ -643,7 +643,7 @@ class AzureFileSystemProviderTest extends APISpec {
     }
 
     @Unroll
-    def "Copy closed fs source"() {
+    def "Copy closed fs"() {
         setup:
         def fs = createFS(config)
         basicSetupForCopyTest(fs)
@@ -1246,6 +1246,22 @@ class AzureFileSystemProviderTest extends APISpec {
         thrown(IOException)
     }
 
+    def "ReadAttributes str closed fs"() {
+        setup:
+        def fs = createFS(config)
+        def path = ((AzurePath) fs.getPath(getNonDefaultRootDir(fs), generateBlobName()))
+        def blobClient = path.toBlobClient().getBlockBlobClient()
+
+        blobClient.upload(defaultInputStream.get(), defaultDataSize)
+
+        when:
+        fs.close()
+        fs.provider().readAttributes(path, "basic:*")
+
+        then:
+        thrown(IOException)
+    }
+
     @Unroll
     def "SetAttributes headers"() {
         setup:
@@ -1385,6 +1401,22 @@ class AzureFileSystemProviderTest extends APISpec {
         when: "Path does not exist"
         // Covers virtual directory, too
         fs.provider().setAttribute(fs.getPath("path"), "azureBlob:metadata", Collections.emptyMap())
+
+        then:
+        thrown(IOException)
+    }
+
+    def "SetAttributes fs closed"() {
+        setup:
+        def fs = createFS(config)
+        def path = ((AzurePath) fs.getPath(getNonDefaultRootDir(fs), generateBlobName()))
+        def blobClient = path.toBlobClient().getBlockBlobClient()
+
+        blobClient.upload(defaultInputStream.get(), defaultDataSize)
+
+        when:
+        fs.close()
+        fs.provider().setAttribute(path, "azureBlob:blobHttpHeaders", new BlobHttpHeaders())
 
         then:
         thrown(IOException)
