@@ -91,9 +91,10 @@ public class CreateTopicOptions {
         Objects.requireNonNull(topicOptions.getName(), "Topic name cannot be null");
 
         if (topicOptions.getName().isEmpty()) {
-            ClientLogger logger = new ClientLogger(CreateTopicOptions.class);
-            throw logger.logThrowableAsError(new IllegalArgumentException("Topic name cannot be empty."));
+            final ClientLogger logger = new ClientLogger(CreateTopicOptions.class);
+            throw logger.logExceptionAsError(new IllegalArgumentException("Topic name cannot be empty."));
         }
+
         this.name = topicOptions.getName();
         this.autoDeleteOnIdle = topicOptions.getAutoDeleteOnIdle();
         this.defaultMessageTimeToLive = topicOptions.getDefaultMessageTimeToLive();

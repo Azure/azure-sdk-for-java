@@ -21,9 +21,9 @@ public final class EntityHelper {
 
     static {
         try {
-            Class.forName(QueueAccessor.class.getName(), true, QueueAccessor.class.getClassLoader());
+            Class.forName(TopicDescription.class.getName(), true, TopicDescription.class.getClassLoader());
         } catch (ClassNotFoundException e) {
-            throw new ClientLogger(EntityHelper.class).logThrowableAsError(new AssertionError(e));
+            throw new ClientLogger(EntityHelper.class).logExceptionAsError(new IllegalStateException(e));
         }
     }
 
