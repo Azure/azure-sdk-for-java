@@ -1,7 +1,6 @@
 package com.azure.storage.internal.avro.implementation
 
 import com.azure.core.util.FluxUtil
-import com.azure.storage.common.implementation.Constants
 import com.azure.storage.internal.avro.implementation.schema.primitive.AvroNullSchema
 import reactor.core.publisher.Flux
 import reactor.test.StepVerifier
@@ -248,7 +247,7 @@ class AvroReaderTest extends Specification {
 
         /* Special use case for Changefeed - parse header and block separate. */
         when:
-        Flux<ByteBuffer> header = FluxUtil.readFile(fileChannel, 0, 5 * Constants.KB)
+        Flux<ByteBuffer> header = FluxUtil.readFile(fileChannel, 0, 5 * 1024)
         Flux<ByteBuffer> body = FluxUtil.readFile(fileChannel, blockOffset, fileChannel.size())
         def complexVerifier = StepVerifier.create(
             new AvroReaderFactory().getAvroReader(header, body, blockOffset, -1 as long)
@@ -293,7 +292,7 @@ class AvroReaderTest extends Specification {
 
         /* Special use case for Changefeed - parse header and block separate. */
         when:
-        Flux<ByteBuffer> header = FluxUtil.readFile(fileChannel, 0, 5 * Constants.KB)
+        Flux<ByteBuffer> header = FluxUtil.readFile(fileChannel, 0, 5 * 1024)
         Flux<ByteBuffer> body = FluxUtil.readFile(fileChannel, blockOffset, fileChannel.size())
         def complexVerifier = StepVerifier.create(
             new AvroReaderFactory().getAvroReader(header, body, blockOffset, filterIndex)
