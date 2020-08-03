@@ -26,13 +26,13 @@ class OperationDetailImpl extends WrapperImpl<OperationDetailInner> implements O
     }
 
     @Override
-    public Boolean dataAction() {
-        return this.inner().dataAction();
+    public OperationDisplay display() {
+        return this.inner().display();
     }
 
     @Override
-    public OperationDisplay display() {
-        return this.inner().display();
+    public Boolean isDataAction() {
+        return this.inner().isDataAction();
     }
 
     @Override
