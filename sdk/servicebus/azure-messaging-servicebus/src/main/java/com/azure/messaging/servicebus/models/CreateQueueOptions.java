@@ -92,9 +92,10 @@ public class CreateQueueOptions {
         Objects.requireNonNull(queue.getName(), "Queue name cannot be null.");
 
         if (queue.getName().isEmpty()) {
-            ClientLogger logger = new ClientLogger(CreateQueueOptions.class);
-            throw logger.logThrowableAsError(new IllegalArgumentException("Queue name cannot be empty."));
+            final ClientLogger logger = new ClientLogger(CreateQueueOptions.class);
+            throw logger.logExceptionAsError(new IllegalArgumentException("Queue name cannot be empty."));
         }
+
         this.name = queue.getName();
         this.autoDeleteOnIdle = queue.getAutoDeleteOnIdle();
         this.defaultMessageTimeToLive = queue.getDefaultMessageTimeToLive();

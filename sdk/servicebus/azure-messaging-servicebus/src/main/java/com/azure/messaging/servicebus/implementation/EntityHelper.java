@@ -23,20 +23,20 @@ public final class EntityHelper {
         try {
             Class.forName(QueueProperties.class.getName(), true, QueueProperties.class.getClassLoader());
         } catch (ClassNotFoundException e) {
-            throw new ClientLogger(EntityHelper.class).logThrowableAsError(new AssertionError(e));
+            throw new ClientLogger(EntityHelper.class).logExceptionAsError(new IllegalStateException(e));
         }
 
         try {
             Class.forName(TopicDescription.class.getName(), true, TopicDescription.class.getClassLoader());
         } catch (ClassNotFoundException e) {
-            throw new ClientLogger(EntityHelper.class).logThrowableAsError(new AssertionError(e));
+            throw new ClientLogger(EntityHelper.class).logExceptionAsError(new IllegalStateException(e));
         }
 
         try {
             Class.forName(SubscriptionDescription.class.getName(), true,
                 SubscriptionDescription.class.getClassLoader());
         } catch (ClassNotFoundException e) {
-            throw new ClientLogger(EntityHelper.class).logThrowableAsError(new AssertionError(e));
+            throw new ClientLogger(EntityHelper.class).logExceptionAsError(new IllegalStateException(e));
         }
     }
 
