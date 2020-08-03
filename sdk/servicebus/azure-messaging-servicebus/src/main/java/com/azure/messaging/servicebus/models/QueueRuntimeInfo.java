@@ -91,7 +91,7 @@ public class QueueRuntimeInfo {
      *
      * @return The number of messages in the queue.
      */
-    public long getMessageCount() {
+    public long getTotalMessageCount() {
         return messageCount;
     }
 

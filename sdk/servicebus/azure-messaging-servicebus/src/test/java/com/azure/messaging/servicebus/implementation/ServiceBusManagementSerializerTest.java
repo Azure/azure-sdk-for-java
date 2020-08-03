@@ -109,7 +109,7 @@ class ServiceBusManagementSerializerTest {
 
         // Assert
         assertEquals(sizeInBytes, actual.getSizeInBytes());
-        assertEquals(messageCount, actual.getMessageCount());
+        assertEquals(messageCount, actual.getTotalMessageCount());
 
         assertEquals(createdAt, actual.getCreatedAt());
         assertEquals(updatedAt, actual.getUpdatedAt());

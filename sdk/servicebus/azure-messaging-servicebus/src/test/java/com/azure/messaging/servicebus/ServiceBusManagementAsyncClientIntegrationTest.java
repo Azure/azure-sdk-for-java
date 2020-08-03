@@ -92,7 +92,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
                 assertEquals(expected.requiresSession(), actual.requiresSession());
 
                 final QueueRuntimeInfo runtimeInfo = new QueueRuntimeInfo(actual);
-                assertEquals(0, runtimeInfo.getMessageCount());
+                assertEquals(0, runtimeInfo.getTotalMessageCount());
                 assertEquals(0, runtimeInfo.getSizeInBytes());
                 assertNotNull(runtimeInfo.getCreatedAt());
             })

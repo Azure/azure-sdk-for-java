@@ -269,7 +269,7 @@ class ServiceBusManagementAsyncClientTest {
         StepVerifier.create(client.getQueueRuntimeInfo(queueName))
             .assertNext(info -> {
                 assertEquals(name, info.getName());
-                assertEquals(messageCount, info.getMessageCount());
+                assertEquals(messageCount, info.getTotalMessageCount());
                 assertEquals(sizeInBytes, info.getSizeInBytes());
                 assertEquals(createdAt, info.getCreatedAt());
                 assertEquals(updatedAt, info.getUpdatedAt());
@@ -316,7 +316,7 @@ class ServiceBusManagementAsyncClientTest {
 
                 final QueueRuntimeInfo info = response.getValue();
                 assertEquals(name, info.getName());
-                assertEquals(messageCount, info.getMessageCount());
+                assertEquals(messageCount, info.getTotalMessageCount());
                 assertEquals(sizeInBytes, info.getSizeInBytes());
                 assertEquals(createdAt, info.getCreatedAt());
                 assertEquals(updatedAt, info.getUpdatedAt());
