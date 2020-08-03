@@ -20,9 +20,7 @@ import reactor.netty.tcp.ProxyProvider;
 
 import java.nio.ByteBuffer;
 import java.time.Duration;
-import java.time.temporal.ChronoUnit;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -136,19 +134,8 @@ public class NettyAsyncHttpClientBuilder {
                 }
             }
 
-            /*
-             * For testing purposes we'll use 60 seconds as the default timeout period.
-             */
-            long sixtySeconds = TimeUnit.SECONDS.toNanos(60);
-
-            long writeTimeoutNanos = (writeTimeout == null) ? sixtySeconds : writeTimeout.get(ChronoUnit.NANOS);
-            long responseTimeoutNanos = (responseTimeout == null)
-                ? sixtySeconds
-                : responseTimeout.get(ChronoUnit.NANOS);
-            long readTimeoutNanos = (readTimeout == null) ? sixtySeconds : readTimeout.get(ChronoUnit.NANOS);
-
             return tcpClient.doOnConnected(connection -> connection
-                .addHandlerLast(new TimeoutHandler(writeTimeoutNanos, responseTimeoutNanos, readTimeoutNanos)));
+                .addHandlerLast(new TimeoutHandler(writeTimeout, responseTimeout, readTimeout)));
         });
 
         return new NettyAsyncHttpClient(nettyHttpClient, disableBufferCopy);

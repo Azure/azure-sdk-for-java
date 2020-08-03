@@ -11,10 +11,11 @@ import io.netty.channel.ChannelPromise;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.LastHttpContent;
 
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
@@ -64,34 +65,15 @@ public final class TimeoutHandler extends ChannelDuplexHandler {
     /**
      * Constructs a {@link TimeoutHandler}.
      *
-     * @param writeTimeoutSeconds Write timeout in seconds, if less than {@code 0} there is no timeout.
-     * @param responseTimeoutSeconds Response timeout in seconds, if less than {@code 0} there is no timeout.
-     * @param readTimeoutSeconds Read timeout in seconds, if less than {@code 0} there is no timeout.
+     * @param writeTimeout Write timeout duration, if {@code null} or less than or equal {@code 0} there is no timeout.
+     * @param responseTimeout Response timeout duration, if {@code null} or less than or equal {@code 0} there is no
+     * timeout.
+     * @param readTimeout Read timeout duration, if {@code null} or less than or equal {@code 0} there is no timeout.
      */
-    public TimeoutHandler(long writeTimeoutSeconds, long responseTimeoutSeconds, long readTimeoutSeconds) {
-        this(writeTimeoutSeconds, responseTimeoutSeconds, readTimeoutSeconds, TimeUnit.SECONDS);
-    }
-
-    /**
-     * Constructs a {@link TimeoutHandler}.
-     *
-     * @param writeTimeout Write timeout, if less than {@code 0} there is no timeout.
-     * @param responseTimeout Response timeout, if less than {@code 0} there is no timeout.
-     * @param readTimeout Read timeout, if less than {@code 0} there is no timeout.
-     * @param timeUnit {@link TimeUnit} used by the timeouts.
-     */
-    public TimeoutHandler(long writeTimeout, long responseTimeout, long readTimeout, TimeUnit timeUnit) {
-        writeTimeoutNanos = (writeTimeout <= 0)
-            ? 0
-            : Math.max(timeUnit.toNanos(writeTimeout), MINIMUM_TIMEOUT_NANOS);
-
-        responseTimeoutNanos = (responseTimeout <= 0)
-            ? 0
-            : Math.max(timeUnit.toNanos(responseTimeout), MINIMUM_TIMEOUT_NANOS);
-
-        readTimeoutNanos = (readTimeout <= 0)
-            ? 0
-            : Math.max(timeUnit.toNanos(readTimeout), MINIMUM_TIMEOUT_NANOS);
+    public TimeoutHandler(Duration writeTimeout, Duration responseTimeout, Duration readTimeout) {
+        this.writeTimeoutNanos = getTimeoutNanos(writeTimeout);
+        this.responseTimeoutNanos = getTimeoutNanos(responseTimeout);
+        this.readTimeoutNanos = getTimeoutNanos(readTimeout);
     }
 
     @Override
@@ -267,5 +249,17 @@ public final class TimeoutHandler extends ChannelDuplexHandler {
 
             removeWriteTask(this, ctx, false);
         }
+    }
+
+    /*
+     * Helper function to convert the timeout duration into nanoseconds. If the duration is null, 0, or negative there
+     * is no timeout period, so return 0. Otherwise, return the maximum of the duration and the minimum timeout period.
+     */
+    private static long getTimeoutNanos(Duration timeout) {
+        if (timeout == null || timeout.isZero() || timeout.isNegative()) {
+            return 0;
+        }
+
+        return Math.max(timeout.get(ChronoUnit.NANOS), MINIMUM_TIMEOUT_NANOS);
     }
 }

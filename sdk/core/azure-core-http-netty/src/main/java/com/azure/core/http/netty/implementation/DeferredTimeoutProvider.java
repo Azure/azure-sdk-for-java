@@ -7,6 +7,7 @@ import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import reactor.netty.ConnectionObserver;
 
+import java.time.Duration;
 import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -15,22 +16,22 @@ import java.util.function.Function;
  * This class defers supplying a channel pipeline with a timeout handler.
  */
 public class DeferredTimeoutProvider implements Function<Bootstrap, BiConsumer<ConnectionObserver, Channel>> {
-    private final long writeTimeoutNanos;
-    private final long responseTimeoutNanos;
-    private final long readTimeoutNanos;
+    private final Duration writeTimeout;
+    private final Duration responseTimeout;
+    private final Duration readTimeout;
 
     public static final String NAME = "azure.timeoutHandler";
 
-    public DeferredTimeoutProvider(long writeTimeoutNanos, long responseTimeoutNanos, long readTimeoutNanos) {
-        this.writeTimeoutNanos = writeTimeoutNanos;
-        this.responseTimeoutNanos = responseTimeoutNanos;
-        this.readTimeoutNanos = readTimeoutNanos;
+    public DeferredTimeoutProvider(Duration writeTimeout, Duration responseTimeout, Duration readTimeout) {
+        this.writeTimeout = writeTimeout;
+        this.responseTimeout = responseTimeout;
+        this.readTimeout = readTimeout;
     }
 
     @Override
     public BiConsumer<ConnectionObserver, Channel> apply(Bootstrap bootstrap) {
         return (connectionObserver, channel) -> channel.pipeline()
-            .addFirst(NAME, new TimeoutHandler(writeTimeoutNanos, responseTimeoutNanos, readTimeoutNanos));
+            .addFirst(NAME, new TimeoutHandler(writeTimeout, responseTimeout, readTimeout));
     }
 
     @Override
@@ -45,13 +46,13 @@ public class DeferredTimeoutProvider implements Function<Bootstrap, BiConsumer<C
 
         DeferredTimeoutProvider other = (DeferredTimeoutProvider) o;
 
-        return writeTimeoutNanos == other.writeTimeoutNanos
-            && responseTimeoutNanos == other.responseTimeoutNanos
-            && readTimeoutNanos == other.readTimeoutNanos;
+        return Objects.equals(writeTimeout, other.writeTimeout)
+            && Objects.equals(responseTimeout, other.responseTimeout)
+            && Objects.equals(readTimeout, other.readTimeout);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(writeTimeoutNanos, responseTimeoutNanos, readTimeoutNanos);
+        return Objects.hash(writeTimeout, responseTimeout, readTimeout);
     }
 }
