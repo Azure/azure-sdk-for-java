@@ -277,6 +277,7 @@ public class HttpTransportClient extends TransportClient {
         // HttpRequestMessage -> StreamContent -> MemoryStream all get disposed, the original stream will be left open.
         switch (resourceOperation.operationType) {
             case Create:
+            case Batch:
                 requestUri = getResourceFeedUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
                 method = HttpMethod.POST;
                 assert request.getContentAsByteBufFlux() != null;
@@ -471,6 +472,14 @@ public class HttpTransportClient extends TransportClient {
         HttpTransportClient.addHeader(httpRequestHeaders, WFConstants.BackendHeaders.ALLOW_TENTATIVE_WRITES, request);
 
         HttpTransportClient.addHeader(httpRequestHeaders, CustomHeaders.HttpHeaders.EXCLUDE_SYSTEM_PROPERTIES, request);
+
+        if (resourceOperation.operationType == OperationType.Batch)
+        {
+            HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.IS_BATCH_REQUEST, request);
+            HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.SHOULD_BATCH_CONTINUE_ON_ERROR, request);
+            HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.IS_BATCH_ORDERED, request);
+            HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.IS_BATCH_ATOMIC, request);
+        }
 
         return httpRequestMessage;
     }

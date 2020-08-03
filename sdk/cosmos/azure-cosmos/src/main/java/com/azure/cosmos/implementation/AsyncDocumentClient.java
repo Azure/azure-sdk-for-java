@@ -4,7 +4,11 @@ package com.azure.cosmos.implementation;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.batch.ServerBatchRequest;
+import com.azure.cosmos.batch.TransactionalBatchResponse;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
+import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
@@ -779,6 +783,24 @@ public interface AsyncDocumentClient {
                                                                List<Object> procedureParams);
 
     /**
+     * Executes a batch request
+     * <p>
+     * After subscription the operation will be performed.
+     * The {@link Mono} upon successful completion will contain a single resource response with the created document.
+     * In case of failure the {@link Mono} will error.
+     *
+     * @param collectionLink               the link to the parent document collection.
+     * @param serverBatchRequest           the batch request with the content and flags
+     * @param options                      the request options.
+     * @param disableAutomaticIdGeneration the flag for disabling automatic id generation.
+     * @return a {@link Mono} containing the single resource response with the created document or an error.
+     */
+    Mono<TransactionalBatchResponse> executeBatchRequest(String collectionLink,
+                                                         ServerBatchRequest serverBatchRequest,
+                                                         RequestOptions options,
+                                                         boolean disableAutomaticIdGeneration);
+
+    /**
      * Creates a trigger.
      * <p>
      * After subscription the operation will be performed.
@@ -1367,6 +1389,21 @@ public interface AsyncDocumentClient {
         String collectionLink,
         CosmosQueryRequestOptions options,
         Class<T> klass);
+
+
+    /**
+     * Gets the collection cache.
+     *
+     * @return the collection Cache
+     */
+    RxClientCollectionCache getCollectionCache();
+
+    /**
+     * Gets the partition key range cache.
+     *
+     * @return the partition key range cache
+     */
+    RxPartitionKeyRangeCache getPartitionKeyRangeCache();
 
     /**
      * Close this {@link AsyncDocumentClient} instance and cleans up the resources.

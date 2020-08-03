@@ -96,6 +96,7 @@ public class CosmosClientBuilder {
     private boolean endpointDiscoveryEnabled = true;
     private boolean multipleWriteRegionsEnabled = true;
     private boolean readRequestsFallbackEnabled = true;
+    private boolean bulkExecutionEnabled;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -374,6 +375,36 @@ public class CosmosClientBuilder {
      */
     public CosmosClientBuilder contentResponseOnWriteEnabled(boolean contentResponseOnWriteEnabled) {
         this.contentResponseOnWriteEnabled = contentResponseOnWriteEnabled;
+        return this;
+    }
+
+    /**
+     * Gets the boolean which indicates whether bulk is enabled for the requests or not.
+     *
+     * If set to true, it will combine multiple operations in background to create a batch request
+     * for increased performance.
+     *
+     * By-default, this is false.
+     *
+     * @return a boolean indicating whether whether bulk is enabled for the requests or not.
+     */
+    boolean isBulkExecutionEnabled() {
+        return bulkExecutionEnabled;
+    }
+
+    /**
+     * Sets the boolean to enable bulk for the requests.
+     *
+     * If set to true, it will combine multiple operations in background to create a batch request
+     * for increased performance.
+     *
+     * By-default, this is false.
+     *
+     * @param bulkExecutionEnabled a boolean indicating whether to enable bulk for the requests
+     * @return current cosmosClientBuilder
+     */
+    public CosmosClientBuilder bulkExecutionEnabled(boolean bulkExecutionEnabled) {
+        this.bulkExecutionEnabled = bulkExecutionEnabled;
         return this;
     }
 

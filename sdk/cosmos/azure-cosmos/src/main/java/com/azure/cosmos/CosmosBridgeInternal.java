@@ -3,9 +3,7 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.implementation.ConnectionPolicy;
-import com.azure.cosmos.implementation.Warning;
+import com.azure.cosmos.implementation.*;
 
 import static com.azure.cosmos.implementation.Warning.INTERNAL_USE_ONLY_WARNING;
 
@@ -30,6 +28,21 @@ public final class CosmosBridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static AsyncDocumentClient getAsyncDocumentClient(CosmosAsyncDatabase cosmosAsyncDatabase) {
         return cosmosAsyncDatabase.getDocClientWrapper();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static AsyncDocumentClient getAsyncDocumentClient(CosmosAsyncContainer cosmosAsyncContainer) {
+        return cosmosAsyncContainer.getDatabase().getDocClientWrapper();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static TracerProvider getTracerProvider(CosmosAsyncContainer cosmosAsyncContainer) {
+        return cosmosAsyncContainer.getDatabase().getClient().getTracerProvider();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static String getServiceEndpoint(CosmosAsyncContainer cosmosAsyncContainer) {
+        return cosmosAsyncContainer.getDatabase().getClient().getServiceEndpoint();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

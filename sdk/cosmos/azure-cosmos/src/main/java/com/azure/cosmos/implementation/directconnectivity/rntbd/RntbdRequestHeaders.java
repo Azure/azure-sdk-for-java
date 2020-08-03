@@ -151,6 +151,9 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         this.fillTokenFromHeader(headers, this::getTargetLsn, HttpHeaders.TARGET_LSN);
         this.fillTokenFromHeader(headers, this::getTimeToLiveInSeconds, BackendHeaders.TIME_TO_LIVE_IN_SECONDS);
         this.fillTokenFromHeader(headers, this::getTransportRequestID, HttpHeaders.TRANSPORT_REQUEST_ID);
+        this.fillTokenFromHeader(headers, this::isBatchAtomic, HttpHeaders.IS_BATCH_ATOMIC);
+        this.fillTokenFromHeader(headers, this::shouldBatchContinueOnError, HttpHeaders.SHOULD_BATCH_CONTINUE_ON_ERROR);
+        this.fillTokenFromHeader(headers, this::isBatchOrdered, HttpHeaders.IS_BATCH_ORDERED);
 
         // Will be null in case of direct, which is fine - BE will use the value slice the connection context this.
         // When this is used in Gateway, the header value will be populated with the proxied HTTP request's header,
@@ -562,6 +565,19 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
 
     private RntbdToken getUserName() {
         return this.get(RntbdRequestHeader.UserName);
+    }
+
+    // Batch
+    private RntbdToken isBatchAtomic() {
+        return this.get(RntbdRequestHeader.IsBatchAtomic);
+    }
+
+    private RntbdToken shouldBatchContinueOnError() {
+        return this.get(RntbdRequestHeader.ShouldBatchContinueOnError);
+    }
+
+    private RntbdToken isBatchOrdered() {
+        return this.get(RntbdRequestHeader.IsBatchOrdered);
     }
 
     private void addAimHeader(final Map<String, String> headers) {

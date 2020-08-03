@@ -60,6 +60,7 @@ public final class CosmosAsyncClient implements Closeable {
     private final TracerProvider tracerProvider;
     private final boolean contentResponseOnWriteEnabled;
     private static final Tracer TRACER;
+    private final boolean bulkExecutionEnabled;
 
     static {
         ServiceLoader<Tracer> serviceLoader = ServiceLoader.load(Tracer.class);
@@ -84,6 +85,7 @@ public final class CosmosAsyncClient implements Closeable {
         this.enableTransportClientSharing = builder.isConnectionSharingAcrossClientsEnabled();
         this.contentResponseOnWriteEnabled = builder.isContentResponseOnWriteEnabled();
         this.tracerProvider = new TracerProvider(TRACER);
+        this.bulkExecutionEnabled = builder.isBulkExecutionEnabled();
         this.asyncDocumentClient = new AsyncDocumentClient.Builder()
                                        .withServiceEndpoint(this.serviceEndpoint)
                                        .withMasterKeyOrResourceToken(this.keyOrResourceToken)
@@ -201,6 +203,20 @@ public final class CosmosAsyncClient implements Closeable {
      */
     boolean isContentResponseOnWriteEnabled() {
         return contentResponseOnWriteEnabled;
+    }
+
+    /**
+     * Gets the boolean which indicates whether bulk is enabled for the requests or not.
+     *
+     * If set to true, it will combine multiple operations in background to create a batch request
+     * for increased performance.
+     *
+     * By-default, this is false.
+     *
+     * @return a boolean indicating whether whether bulk is enabled for the requests or not.
+     */
+    boolean isBulkExecutionEnabled() {
+        return bulkExecutionEnabled;
     }
 
     /**

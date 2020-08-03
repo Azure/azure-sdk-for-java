@@ -235,6 +235,13 @@ Licensed under the MIT License.
       <scope>test</scope>
     </dependency>
 
+    <!--    Temp. May be replcae with inhouse json/gson serializer-->
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20140107</version>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -282,6 +289,7 @@ Licensed under the MIT License.
                 <include>io.micrometer:micrometer-core:[1.3.0]</include> <!-- {x-include-update;io.micrometer:micrometer-core;external_dependency} -->
                 <include>io.netty:netty-codec-http:[4.1.51.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http;external_dependency} -->
                 <include>io.netty:netty-codec-http2:[4.1.51.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http2;external_dependency} -->
+                <include>org.json:json:[20140107]</include> <!-- {x-include-update;org.json:json;external_dependency} -->
                 <include>io.netty:netty-handler:[4.1.51.Final]</include> <!-- {x-include-update;io.netty:netty-handler;external_dependency} -->
                 <include>io.netty:netty-handler-proxy:[4.1.51.Final]</include> <!-- {x-include-update;io.netty:netty-handler-proxy;external_dependency} -->
                 <include>io.netty:netty-transport-native-epoll:[4.1.51.Final]</include> <!-- {x-include-update;io.netty:netty-transport-native-epoll;external_dependency} -->

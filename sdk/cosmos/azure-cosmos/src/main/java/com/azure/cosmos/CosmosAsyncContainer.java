@@ -3,30 +3,13 @@
 package com.azure.cosmos;
 
 import com.azure.core.util.Context;
-import com.azure.cosmos.implementation.Constants;
-import com.azure.cosmos.implementation.Document;
-import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.InternalObjectNode;
-import com.azure.cosmos.implementation.ItemDeserializer;
-import com.azure.cosmos.implementation.Offer;
-import com.azure.cosmos.implementation.Paths;
-import com.azure.cosmos.implementation.RequestOptions;
-import com.azure.cosmos.implementation.TracerProvider;
-import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.batch.BatchAsyncContainerExecutor;
+import com.azure.cosmos.batch.ItemBatchOperation;
+import com.azure.cosmos.batch.TransactionalBatchCore;
+import com.azure.cosmos.implementation.*;
+import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.query.QueryInfo;
-import com.azure.cosmos.models.CosmosConflictProperties;
-import com.azure.cosmos.models.CosmosContainerProperties;
-import com.azure.cosmos.models.CosmosContainerRequestOptions;
-import com.azure.cosmos.models.CosmosContainerResponse;
-import com.azure.cosmos.models.CosmosItemRequestOptions;
-import com.azure.cosmos.models.CosmosItemResponse;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.cosmos.models.ThroughputProperties;
-import com.azure.cosmos.models.ThroughputResponse;
+import com.azure.cosmos.models.*;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import reactor.core.publisher.Flux;
@@ -36,6 +19,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.cosmos.batch.BatchRequestResponseConstant.MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES;
+import static com.azure.cosmos.batch.BatchRequestResponseConstant.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST;
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
 
 /**
@@ -62,11 +47,22 @@ public class CosmosAsyncContainer {
     private final String readAllConflictsSpanName;
     private final String queryConflictsSpanName;
     private CosmosAsyncScripts scripts;
+    private final boolean bulkExecutionEnabled;
+    private BatchAsyncContainerExecutor executor;
 
     CosmosAsyncContainer(String id, CosmosAsyncDatabase database) {
         this.id = id;
         this.database = database;
         this.link = getParentLink() + "/" + getURIPathSegment() + "/" + getId();
+
+        this.bulkExecutionEnabled = database.getClient().isBulkExecutionEnabled();
+        if(this.bulkExecutionEnabled) {
+            this.executor = new BatchAsyncContainerExecutor(
+                this,
+                MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST,
+                MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES);
+        }
+
         this.replaceContainerSpanName = "replaceContainer." + this.id;
         this.deleteContainerSpanName = "deleteContainer." + this.id;
         this.replaceThroughputSpanName = "replaceThroughput." + this.id;
@@ -244,6 +240,17 @@ public class CosmosAsyncContainer {
         }
 
         final CosmosItemRequestOptions requestOptions = options;
+
+        if (this.bulkExecutionEnabled) {
+            @SuppressWarnings("unchecked")
+            Class<T> itemType = (Class<T>) item.getClass();
+            return bulkExecutionInternal(ModelBridgeInternal.toRequestOptions(requestOptions),
+                item,
+                null,
+                OperationType.Create,
+                itemType);
+        }
+
         return withContext(context -> createItemInternal(item, requestOptions, context));
     }
 
@@ -297,6 +304,17 @@ public class CosmosAsyncContainer {
      */
     public <T> Mono<CosmosItemResponse<T>> upsertItem(T item, CosmosItemRequestOptions options) {
         final CosmosItemRequestOptions requestOptions = options == null ? new CosmosItemRequestOptions() : options;
+
+        if (this.bulkExecutionEnabled) {
+            @SuppressWarnings("unchecked")
+            Class<T> itemType = (Class<T>) item.getClass();
+            return bulkExecutionInternal(ModelBridgeInternal.toRequestOptions(requestOptions),
+                item,
+                null,
+                OperationType.Upsert,
+                itemType);
+        }
+
         return withContext(context -> upsertItemInternal(item, requestOptions, context));
     }
 
@@ -316,6 +334,17 @@ public class CosmosAsyncContainer {
     public <T> Mono<CosmosItemResponse<T>> upsertItem(T item, PartitionKey partitionKey, CosmosItemRequestOptions options) {
         final CosmosItemRequestOptions requestOptions = options == null ? new CosmosItemRequestOptions() : options;
         ModelBridgeInternal.setPartitionKey(requestOptions, partitionKey);
+
+        if (this.bulkExecutionEnabled) {
+            @SuppressWarnings("unchecked")
+            Class<T> itemType = (Class<T>) item.getClass();
+            return bulkExecutionInternal(ModelBridgeInternal.toRequestOptions(requestOptions),
+                item,
+                null,
+                OperationType.Upsert,
+                itemType);
+        }
+
         return withContext(context -> upsertItemInternal(item, requestOptions, context));
     }
 
@@ -478,6 +507,19 @@ public class CosmosAsyncContainer {
     }
 
     /**
+     * Create an instance of transactional batch
+     * <p>
+     * After subscription the operation will be performed.
+     *
+     * @param partitionKey the partition key.
+     *
+     * @return an {@link TransactionalBatchCore} containing the Cosmos item response with the read item or an error.
+     */
+    public TransactionalBatchCore createTransactionalBatch(PartitionKey partitionKey) {
+        return new TransactionalBatchCore(this, partitionKey);
+    }
+
+    /**
      * Reads an item.
      * <p>
      * After subscription the operation will be performed.
@@ -515,6 +557,15 @@ public class CosmosAsyncContainer {
 
         ModelBridgeInternal.setPartitionKey(options, partitionKey);
         RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(options);
+
+        if (this.bulkExecutionEnabled) {
+            return bulkExecutionInternal(requestOptions,
+                null,
+                itemId,
+                OperationType.Read,
+                itemType);
+        }
+
         return withContext(context -> readItemInternal(itemId, requestOptions, itemType, context));
     }
 
@@ -558,6 +609,15 @@ public class CosmosAsyncContainer {
         @SuppressWarnings("unchecked")
         Class<T> itemType = (Class<T>) item.getClass();
         final CosmosItemRequestOptions requestOptions = options;
+
+        if (this.bulkExecutionEnabled) {
+            return bulkExecutionInternal(ModelBridgeInternal.toRequestOptions(options),
+                item,
+                itemId,
+                OperationType.Replace,
+                itemType);
+        }
+
         return withContext(context -> replaceItemInternal(itemType, itemId, doc, requestOptions, context));
     }
 
@@ -594,6 +654,15 @@ public class CosmosAsyncContainer {
         }
         ModelBridgeInternal.setPartitionKey(options, partitionKey);
         RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(options);
+
+        if (this.bulkExecutionEnabled) {
+            return bulkExecutionInternal(requestOptions,
+                null,
+                itemId,
+                OperationType.Delete,
+                Object.class);
+        }
+
         return withContext(context -> deleteItemInternal(itemId, requestOptions, context));
     }
 
@@ -723,6 +792,13 @@ public class CosmosAsyncContainer {
 
     String getLink() {
         return this.link;
+    }
+
+    public Mono<DocumentCollection> getCollectionInfoAsync() {
+        RxClientCollectionCache clientCollectionCache = this.getDatabase().getDocClientWrapper().getCollectionCache();
+
+        return clientCollectionCache
+            .resolveByNameAsync(BridgeInternal.getMetaDataDiagnosticContext(new CosmosDiagnostics()), getLink(), null);
     }
 
     private Mono<CosmosItemResponse<Object>> deleteItemInternal(
@@ -890,6 +966,31 @@ public class CosmosAsyncContainer {
                     return this.database.getDocClientWrapper()
                         .replaceOffer(updatedOffer);
                 }).map(ModelBridgeInternal::createThroughputRespose));
+    }
+
+    private <T> Mono<CosmosItemResponse<T>> bulkExecutionInternal(RequestOptions bulkRequestOptions,
+                                                                  T item,
+                                                                  String itemId,
+                                                                  OperationType operationType,
+                                                                  Class<T> itemType) {
+
+        ItemBatchOperation<T> operation = new ItemBatchOperation.Builder<T>(operationType,0)
+            .requestOptions(bulkRequestOptions)
+            .partitionKey(bulkRequestOptions.getPartitionKey())
+            .resource(item)
+            .id(itemId)
+            .build();
+
+        Mono<CosmosItemResponse<T>> responseMono = this.executor.addAsync(operation, bulkRequestOptions)
+            .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(
+                BridgeInternal.toResourceResponse(response.toResponseMessage(), Document.class), itemType, getItemDeserializer()));
+
+        return withContext(context -> database.getClient().getTracerProvider().
+            traceEnabledCosmosItemResponsePublisher(responseMono,
+                context,
+                this.createItemSpanName,
+                database.getId(),
+                database.getClient().getServiceEndpoint()));
     }
 
     ItemDeserializer getItemDeserializer() {
