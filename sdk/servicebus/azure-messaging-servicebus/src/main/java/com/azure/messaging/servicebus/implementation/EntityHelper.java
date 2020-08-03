@@ -41,6 +41,22 @@ public final class EntityHelper {
     }
 
     /**
+     * Creates a new queue given the options.
+     * @param options Options to create queue with.
+     * @return A new {@link QueueProperties} with the set options.
+     */
+    public static QueueProperties createQueue(CreateQueueOptions options) {
+        Objects.requireNonNull(options, "'options' cannot be null.");
+
+        if (queueAccessor == null) {
+            throw new ClientLogger(EntityHelper.class).logExceptionAsError(
+                new IllegalStateException("'queueAccessor' should not be null."));
+        }
+
+        return queueAccessor.createQueue(options);
+    }
+
+    /**
      * Sets the queue accessor.
      *
      * @param accessor The queue accessor to set on the queue helper.
@@ -69,15 +85,6 @@ public final class EntityHelper {
         }
 
         queueAccessor.setName(queueProperties, name);
-    }
-
-    public static QueueProperties createQueue(CreateQueueOptions options) {
-        if (queueAccessor == null) {
-            throw new ClientLogger(EntityHelper.class).logExceptionAsError(
-                new IllegalStateException("'queueAccessor' should not be null."));
-        }
-
-        return queueAccessor.createQueue(options);
     }
 
     /**
@@ -162,20 +169,20 @@ public final class EntityHelper {
      */
     public interface QueueAccessor {
         /**
+         * Sets properties on the {@link QueueProperties} based on the CreateQueueOptions.
+         *
+         * @param options The create queue options to set.
+         * @return A new {@link QueueProperties} with the properties set.
+         */
+        QueueProperties createQueue(CreateQueueOptions options);
+
+        /**
          * Sets the name on a queueDescription.
          *
          * @param queueProperties Queue to set name on.
          * @param name Name of the queue.
          */
         void setName(QueueProperties queueProperties, String name);
-
-        /**
-         * Sets properties on the QueueDescription based on the CreateQueueOptions.
-         *
-         * @param options The create queue options to set.
-         * @return A new QueueDescription with the properties set.
-         */
-        QueueProperties createQueue(CreateQueueOptions options);
     }
 
     /**
