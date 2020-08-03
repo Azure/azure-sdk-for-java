@@ -1,4 +1,4 @@
-# Integration test for both azure-spring-data-2-2-cosmos and azure-spring-data-2-3-cosmos.
+# Azure spring data test client library for java
 
 ## Key concepts
 ## Getting started

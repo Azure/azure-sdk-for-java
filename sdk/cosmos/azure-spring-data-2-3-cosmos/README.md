@@ -1,4 +1,4 @@
-# Azure cosmos integrated with spring-data 2.3
+# Azure spring data 2.3 client library for java
 
 ## Key concepts
 ## Getting started
