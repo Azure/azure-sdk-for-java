@@ -277,7 +277,6 @@ final class Transforms {
                 break;
             case INTEGER:
                 com.azure.ai.formrecognizer.models.FieldValue longFieldValue;
-                // TODO (savaity): service bug
                 if (fieldValue.getValueInteger() == null) {
                     longFieldValue =
                         new com.azure.ai.formrecognizer.models.FieldValue(null, FieldValueType.LONG);
@@ -290,17 +289,9 @@ final class Transforms {
                     setDefaultConfidenceValue(fieldValue.getConfidence()));
                 break;
             case NUMBER:
-                com.azure.ai.formrecognizer.models.FieldValue doubleFieldValue;
-                // TODO (savaity): service bug
-                if (fieldValue.getValueNumber() == null) {
-                    doubleFieldValue =
-                        new com.azure.ai.formrecognizer.models.FieldValue(null, FieldValueType.FLOAT);
-                } else {
-                    doubleFieldValue =
-                        new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueNumber().floatValue(),
-                            FieldValueType.FLOAT);
-                }
-                value = new FormField(key, labelText, valueText, doubleFieldValue,
+                value = new FormField(key, labelText, valueText,
+                    new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueNumber(),
+                        FieldValueType.FLOAT),
                     setDefaultConfidenceValue(fieldValue.getConfidence()));
                 break;
             case ARRAY:
