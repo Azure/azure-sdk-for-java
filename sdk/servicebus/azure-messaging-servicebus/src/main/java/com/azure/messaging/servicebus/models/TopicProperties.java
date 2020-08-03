@@ -261,6 +261,7 @@ public final class TopicProperties {
         this.enablePartitioning = options.enablePartitioning();
         this.maxSizeInMegabytes = options.getMaxSizeInMegabytes();
         this.requiresDuplicateDetection = options.requiresDuplicateDetection();
+        this.status = options.getStatus();
         this.userMetadata = options.getUserMetadata();
 
         this.authorizationRules = new AuthorizationRulesWrapper(new ArrayList<>());
@@ -494,7 +495,7 @@ public final class TopicProperties {
      * @param status the status value to set.
      * @return the TopicDescription object itself.
      */
-    TopicProperties setStatus(EntityStatus status) {
+    public TopicProperties setStatus(EntityStatus status) {
         this.status = status;
         return this;
     }

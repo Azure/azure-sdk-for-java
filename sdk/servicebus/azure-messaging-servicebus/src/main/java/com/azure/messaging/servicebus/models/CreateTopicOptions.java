@@ -34,6 +34,7 @@ public class CreateTopicOptions {
     private long maxSizeInMegabytes;
     private boolean requiresDuplicateDetection;
     private boolean requiresSession;
+    private EntityStatus status;
     private String userMetadata;
 
     /**
@@ -51,6 +52,7 @@ public class CreateTopicOptions {
      *     <li>{@link #setMaxDeliveryCount(int)} is 10.</li>
      *     <li>{@link #setMaxSizeInMegabytes(long)} is 1024MB.</li>
      *     <li>{@link #setRequiresSession(boolean)} is false.</li>
+     *     <li>{@link #setStatus(EntityStatus)} is {@link EntityStatus#ACTIVE}.</li>
      * </ul>
      *
      * @param topicName Name of the queue.
@@ -77,6 +79,7 @@ public class CreateTopicOptions {
         this.maxSizeInMegabytes = DEFAULT_TOPIC_SIZE;
         this.requiresDuplicateDetection = false;
         this.requiresSession = false;
+        this.status = EntityStatus.ACTIVE;
         this.deadLetteringOnMessageExpiration = false;
     }
 
@@ -103,6 +106,7 @@ public class CreateTopicOptions {
         this.enablePartitioning = topicOptions.enablePartitioning();
         this.maxSizeInMegabytes = topicOptions.getMaxSizeInMegabytes();
         this.requiresDuplicateDetection = topicOptions.requiresDuplicateDetection();
+        this.status = topicOptions.getStatus();
         this.userMetadata = topicOptions.getUserMetadata();
     }
 
@@ -252,6 +256,27 @@ public class CreateTopicOptions {
      */
     public CreateTopicOptions setEnablePartitioning(boolean enablePartitioning) {
         this.enablePartitioning = enablePartitioning;
+        return this;
+    }
+
+    /**
+     * Get the status property: Status of a Service Bus resource.
+     *
+     * @return the status value.
+     */
+    public EntityStatus getStatus() {
+        return this.status;
+    }
+
+    /**
+     * Set the status property: Status of a Service Bus resource.
+     *
+     * @param status the status value to set.
+     *
+     * @return the CreateTopicOptions object itself.
+     */
+    public CreateTopicOptions setStatus(EntityStatus status) {
+        this.status = status;
         return this;
     }
 
