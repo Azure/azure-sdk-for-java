@@ -200,7 +200,7 @@ so they're tailored to your forms. You should only recognize forms of the same f
 String formUrl = "{form_url}";
 String modelId = "{custom_trained_model_id}";
 SyncPoller<OperationResult, List<RecognizedForm>> recognizeFormPoller =
-    formRecognizerClient.beginRecognizeCustomFormsFromUrl(formUrl, modelId);
+    formRecognizerClient.beginRecognizeCustomFormsFromUrl(modelId, formUrl);
 
 List<RecognizedForm> recognizedForms = recognizeFormPoller.getFinalResult();
 
@@ -266,7 +266,7 @@ for (int i = 0; i < receiptPageResults.size(); i++) {
     System.out.printf("----------- Recognizing receipt info for page %d -----------%n", i);
     FormField merchantNameField = recognizedFields.get("MerchantName");
     if (merchantNameField != null) {
-        if (FieldValueType.STRING == merchantNameField.getValue().getType()) {
+        if (FieldValueType.STRING == merchantNameField.getValue().getValueType()) {
             String merchantName = merchantNameField.getValue().asString();
             System.out.printf("Merchant Name: %s, confidence: %.2f%n",
                 merchantName, merchantNameField.getConfidence());
@@ -275,7 +275,7 @@ for (int i = 0; i < receiptPageResults.size(); i++) {
 
     FormField merchantPhoneNumberField = recognizedFields.get("MerchantPhoneNumber");
     if (merchantPhoneNumberField != null) {
-        if (FieldValueType.PHONE_NUMBER == merchantPhoneNumberField.getValue().getType()) {
+        if (FieldValueType.PHONE_NUMBER == merchantPhoneNumberField.getValue().getValueType()) {
             String merchantAddress = merchantPhoneNumberField.getValue().asPhoneNumber();
             System.out.printf("Merchant Phone number: %s, confidence: %.2f%n",
                 merchantAddress, merchantPhoneNumberField.getConfidence());
@@ -284,7 +284,7 @@ for (int i = 0; i < receiptPageResults.size(); i++) {
 
     FormField transactionDateField = recognizedFields.get("TransactionDate");
     if (transactionDateField != null) {
-        if (FieldValueType.DATE == transactionDateField.getValue().getType()) {
+        if (FieldValueType.DATE == transactionDateField.getValue().getValueType()) {
             LocalDate transactionDate = transactionDateField.getValue().asDate();
             System.out.printf("Transaction Date: %s, confidence: %.2f%n",
                 transactionDate, transactionDateField.getConfidence());
@@ -294,14 +294,14 @@ for (int i = 0; i < receiptPageResults.size(); i++) {
     FormField receiptItemsField = recognizedFields.get("Items");
     if (receiptItemsField != null) {
         System.out.printf("Receipt Items: %n");
-        if (FieldValueType.LIST == receiptItemsField.getValue().getType()) {
+        if (FieldValueType.LIST == receiptItemsField.getValue().getValueType()) {
             List<FormField> receiptItems = receiptItemsField.getValue().asList();
             receiptItems.stream()
-                .filter(receiptItem -> FieldValueType.MAP == receiptItem.getValue().getType())
+                .filter(receiptItem -> FieldValueType.MAP == receiptItem.getValue().getValueType())
                 .map(formField -> formField.getValue().asMap())
                 .forEach(formFieldMap -> formFieldMap.forEach((key, formField) -> {
                     if ("Quantity".equals(key)) {
-                        if (FieldValueType.DOUBLE == formField.getValue().getType()) {
+                        if (FieldValueType.DOUBLE == formField.getValue().getValueType()) {
                             Double quantity = formField.getValue().asDouble();
                             System.out.printf("Quantity: %f, confidence: %.2f%n",
                                 quantity, formField.getConfidence());
