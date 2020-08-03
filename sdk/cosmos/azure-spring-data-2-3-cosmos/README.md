@@ -1,4 +1,4 @@
-# Azure Spring Data client library for java
+# Azure Spring Data 2.3 Cosmos client library for Java
 
 ## Key concepts
 ## Getting started
