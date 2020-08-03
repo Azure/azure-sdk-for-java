@@ -67,7 +67,6 @@ def get_spring_boot_dependencies(spring_boot_version):
 
 def update_version_for_external_dependencies(dependencyDict):
     file_line_count = sum(1 for line in open(EXTERNAL_DEPENDENCIES_FILE))
-    print("file_line_count = {}".format(file_line_count))
     for line in fileinput.input(EXTERNAL_DEPENDENCIES_FILE, inplace=True):
         line = line.strip()
         endValue = '' if fileinput.filelineno() == file_line_count else '\n'
