@@ -60,7 +60,6 @@ class VirtualMachineExtensionImageVersionImpl extends WrapperImpl<VirtualMachine
         final VirtualMachineExtensionImageVersionImpl self = this;
         return client
             .getAsync(regionName(), type().publisher().name(), type().name(), name())
-            .onErrorResume(e -> Mono.empty())
             .map(inner -> new VirtualMachineExtensionImageImpl(self, inner));
     }
 }

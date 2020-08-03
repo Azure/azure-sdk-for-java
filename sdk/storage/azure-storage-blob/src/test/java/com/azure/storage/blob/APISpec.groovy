@@ -28,6 +28,7 @@ import com.azure.storage.blob.models.BlobServiceProperties
 import com.azure.storage.blob.models.CopyStatusType
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.ListBlobContainersOptions
+import com.azure.storage.blob.options.BlobBreakLeaseOptions
 import com.azure.storage.blob.specialized.BlobAsyncClientBase
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.BlobLeaseClient
@@ -46,6 +47,7 @@ import spock.lang.Timeout
 import java.nio.ByteBuffer
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
+import java.time.Duration
 import java.time.OffsetDateTime
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit
@@ -203,7 +205,7 @@ class APISpec extends Specification {
             def containerClient = primaryBlobServiceClient.getBlobContainerClient(container.getName())
 
             if (container.getProperties().getLeaseState() == LeaseStateType.LEASED) {
-                createLeaseClient(containerClient).breakLeaseWithResponse(0, null, null, null)
+                createLeaseClient(containerClient).breakLeaseWithResponse(new BlobBreakLeaseOptions().setBreakPeriod(Duration.ofSeconds(0)), null, null)
             }
 
             containerClient.delete()
@@ -554,21 +556,26 @@ class APISpec extends Specification {
      */
     def compareFiles(File file1, File file2, long offset, long count) {
         def pos = 0L
-        def readBuffer = 8 * Constants.KB
+        def defaultBufferSize = 128 * Constants.KB
         def stream1 = new FileInputStream(file1)
         stream1.skip(offset)
         def stream2 = new FileInputStream(file2)
 
         try {
+            // If the amount we are going to read is smaller than the default buffer size use that instead.
+            def bufferSize = (int) Math.min(defaultBufferSize, count)
+
             while (pos < count) {
-                def bufferSize = (int) Math.min(readBuffer, count - pos)
-                def buffer1 = new byte[bufferSize]
-                def buffer2 = new byte[bufferSize]
+                // Number of bytes we expect to read.
+                def expectedReadCount = (int) Math.min(bufferSize, count - pos)
+                def buffer1 = new byte[expectedReadCount]
+                def buffer2 = new byte[expectedReadCount]
 
                 def readCount1 = stream1.read(buffer1)
                 def readCount2 = stream2.read(buffer2)
 
-                assert readCount1 == readCount2 && buffer1 == buffer2
+                // Use Arrays.equals as it is more optimized than Groovy/Spock's '==' for arrays.
+                assert readCount1 == readCount2 && Arrays.equals(buffer1, buffer2)
 
                 pos += bufferSize
             }
@@ -883,5 +890,9 @@ class APISpec extends Specification {
                 } as Function<Long, Mono<HttpResponse>>)
             }
         }
+    }
+
+    def getPollingDuration(long liveTestDurationInMillis) {
+        return (testMode == TestMode.PLAYBACK) ? Duration.ofMillis(10) : Duration.ofMillis(liveTestDurationInMillis)
     }
 }

@@ -4,7 +4,7 @@
 package com.azure.core.serializer.avro.apache;
 
 import com.azure.core.experimental.serializer.AvroSerializerProvider;
-import com.azure.core.experimental.serializer.ObjectSerializer;
+import com.azure.core.util.serializer.ObjectSerializer;
 
 /**
  * Implementation of {@link AvroSerializerProvider}.

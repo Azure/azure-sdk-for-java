@@ -101,9 +101,6 @@
 
   <!-- Remove this after fixing: https://github.com/Azure/azure-sdk-for-java/issues/5030 -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files=".*CredentialBuilderBase.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files=".*CreateKeyOptions.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
-            files=".*LocalKeyCryptographyClient.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files=".*SearchIndexClientBuilder.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
             files=".*SearchServiceClientBuilder.java"/>
@@ -276,6 +273,8 @@
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.formrecognizer.training.CustomModelTransforms.java" />
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.formrecognizer.implementation.Utility.java" />
 
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.ai.formrecognizer.models.FieldValue" />
+
   <!-- Common vocabulary error for LRO methods starting with begin* https://github.com/Azure/azure-sdk-for-java/issues/10147 -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.ai.formrecognizer.FormRecognizerAsyncClient.java" />
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.ai.formrecognizer.FormRecognizerClient.java" />
@@ -283,7 +282,7 @@
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.java" />
 
   <!-- The variables are assigned by json creator annotation injection framework, cannot be made final. -->
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.ai.formrecognizer.models.CopyAuthorization.java" />
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.ai.formrecognizer.training.models.CopyAuthorization.java" />
 
   <!-- Throws a non-runtime exception -->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
@@ -430,10 +429,14 @@
 
   <!-- Cosmos sdk suppressions -->
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-cosmos[/\\]src[/\\]test[/\\]"/>
+  <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-cosmos-encryption[/\\]src[/\\]test[/\\]"/>
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]cosmos[/\\]examples[/\\]"/>
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]cosmos[/\\]implementation[/\\]"/>
   <suppress checks="[a-zA-Z0-9]*"
             files=".*[/\\]azure-cosmos[/\\]((?!(BridgeInternal|CosmosBridgeInternal|CommonsBridgeInternal)).*)"/>
+  <suppress checks="[a-zA-Z0-9]*"
+            files=".*[/\\]azure-cosmos-encryption[/\\]((?!(EncryptionBridgeInternal)).*)"/>
+
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]cosmos[/\\]rx[/\\]examples[/\\]"/>
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-cosmos-benchmark[/\\]"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
@@ -492,7 +495,11 @@
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck|ExternalDependencyExposedCheck|ThrowFromClientLoggerCheck" files="com.azure.spring.data.cosmos.*\.java"/>
   <suppress checks="MethodName|MemberName|ParameterName|VisibilityModifier" files="com.azure.spring.data.cosmos.domain|repository|config.*\.java"/>
   <suppress checks="ConstantName" files="com.azure.spring.data.cosmos.repository|common.*\.java" />
-  <suppress checks="ConstantName|MemberName" files="com.azure.cosmos.UserRepositoryConfiguration|AppConfiguration|MyDocument.java" />
+  <suppress checks="ConstantName|MemberName" files="com.azure.cosmos.UserRepositoryConfiguration|AppConfiguration|MyItem.java" />
+
+  <!-- Checkstyle suppressions for spring-data-gremlin package  -->
+  <suppress checks="PackageName" files="com.microsoft.spring.data.gremlin.*" />
+  <suppress checks="MethodName" files="com.microsoft.spring.data.gremlin.common.GremlinConfig.java" />
 
   <!-- These suppressions were added due to limitations in our custom Checkstyle rules and should be addressed in the future. -->
   <!-- API naming is too restrictive -->
@@ -501,5 +508,6 @@
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.search.documents.indexes.SearchIndexerClient.java"
             lines="495,513,529,547"/>
 
-  <!-- ServiceMethod return type for Collection doesn't check for sub-types -->
+  <!-- Static logger instances for short lived objects. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.util.serializer.TypeReference.java" />
 </suppressions>

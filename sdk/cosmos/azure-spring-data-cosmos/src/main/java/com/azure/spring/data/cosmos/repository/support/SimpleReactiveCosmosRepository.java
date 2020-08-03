@@ -2,19 +2,17 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.support;
 
-import com.azure.data.cosmos.CosmosContainerResponse;
-import com.azure.data.cosmos.PartitionKey;
+import com.azure.cosmos.models.CosmosContainerResponse;
+import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosOperations;
+import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
-import com.azure.spring.data.cosmos.core.query.DocumentQuery;
 import com.azure.spring.data.cosmos.repository.ReactiveCosmosRepository;
 import org.reactivestreams.Publisher;
-import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.Sort;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -27,22 +25,6 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
 
     private final CosmosEntityInformation<T, K> entityInformation;
     private final ReactiveCosmosOperations cosmosOperations;
-
-    /**
-     * Initialization with metadata and applicationContext will create container if required
-     *
-     * @param metadata for entityInformation
-     * @param applicationContext for cosmosOperations
-     */
-    public SimpleReactiveCosmosRepository(CosmosEntityInformation<T, K> metadata,
-                                          ApplicationContext applicationContext) {
-        this.cosmosOperations = applicationContext.getBean(ReactiveCosmosOperations.class);
-        this.entityInformation = metadata;
-
-        if (this.entityInformation.isAutoCreateContainer()) {
-            createContainerIfNotExists();
-        }
-    }
 
     /**
      * Initialization with metadata and reactiveCosmosOperations
@@ -68,8 +50,8 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
     public Flux<T> findAll(Sort sort) {
         Assert.notNull(sort, "Sort must not be null!");
 
-        final DocumentQuery query =
-            new DocumentQuery(Criteria.getInstance(CriteriaType.ALL)).with(sort);
+        final CosmosQuery query =
+            new CosmosQuery(Criteria.getInstance(CriteriaType.ALL)).with(sort);
 
         return cosmosOperations.find(query, entityInformation.getJavaType(),
             entityInformation.getContainerName());
@@ -90,8 +72,7 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
                 entity,
                 createKey(entityInformation.getPartitionKeyFieldValue(entity)));
         } else {
-            return cosmosOperations.upsert(entityInformation.getContainerName(),
-                entity, createKey(entityInformation.getPartitionKeyFieldValue(entity)));
+            return cosmosOperations.upsert(entityInformation.getContainerName(), entity);
         }
     }
 
@@ -228,13 +209,12 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
 
     @Override
     public Mono<Void> deleteAll() {
-        return cosmosOperations.deleteAll(entityInformation.getContainerName(),
-            entityInformation.getPartitionKeyFieldName());
+        return cosmosOperations.deleteAll(entityInformation.getContainerName(), entityInformation.getJavaType());
     }
 
-    private PartitionKey createKey(String partitionKeyValue) {
-        if (StringUtils.isEmpty(partitionKeyValue)) {
-            return null;
+    private PartitionKey createKey(Object partitionKeyValue) {
+        if (partitionKeyValue == null) {
+            return PartitionKey.NONE;
         }
         return new PartitionKey(partitionKeyValue);
     }

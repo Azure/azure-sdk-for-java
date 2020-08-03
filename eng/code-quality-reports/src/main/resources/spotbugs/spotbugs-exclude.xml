@@ -382,6 +382,13 @@
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
   </Match>
 
+  <!-- The fields are checked for null in the build method and throw exceptions if values for fields are not specified. -->
+  <Match>
+      <Class name="com.azure.identity.InteractiveBrowserCredentialBuilder"/>
+      <Field name="port"/>
+      <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
+  </Match>
+
   <!-- The major fields of poll strategy data subclass are non-serializable, and there is another design for serializing
   the class proposed. Suppress the warning for current design. -->
   <Match>
@@ -790,6 +797,25 @@
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
 
+  <Match>
+    <Class name="com.azure.cosmos.implementation.encryption.AeadAes256CbcHmac256Algorithm"/>
+    <Method name="decryptData"/>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.cosmos.implementation.encryption.AeadAes256CbcHmac256Algorithm"/>
+    <Method name="encryptData"/>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
+  </Match>
+
+
+  <Match>
+    <Class name="com.azure.cosmos.implementation.encryption.SecurityUtility"/>
+    <Method name="getSHA256Hash"/>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
+  </Match>
+
   <!-- Suppress false positive, there is no null in the flagged code -->
   <Match>
     <Class name="com.azure.cosmos.implementation.TestConfigurations"/>
@@ -920,14 +946,14 @@
   <!-- Suppress URF_UNREAD_FIELD, the fields are read but during serialization -->
   <Match>
     <Class name="com.azure.cosmos.ClientSideRequestStatistics$AddressResolutionStatistics"/>
-    <Field name="endTime"/>
+    <Field name="endTimeUTC"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
   <!-- Suppress URF_UNREAD_FIELD, the fields are read but during serialization -->
   <Match>
     <Class name="com.azure.cosmos.ClientSideRequestStatistics$AddressResolutionStatistics"/>
-    <Field name="startTime"/>
+    <Field name="startTimeUTC"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
@@ -948,7 +974,7 @@
   <!-- Suppress URF_UNREAD_FIELD, the field is read but during serialization -->
   <Match>
     <Class name="com.azure.cosmos.ClientSideRequestStatistics$StoreResponseStatistics"/>
-    <Field name="requestResponseTime"/>
+    <Field name="requestResponseTimeUTC"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
@@ -1238,6 +1264,12 @@
     <Bug pattern="REC_CATCH_EXCEPTION"/>
   </Match>
 
+  <Match>
+    <Class name="com.azure.cosmos.encryption.EncryptionCosmosAsyncContainer"/>
+    <Method name="decryptResponseAsync"/>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+  </Match>
+
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9089 -->
   <Match>
     <Class name="com.azure.cosmos.implementation.PathsHelper"/>
@@ -1452,6 +1484,12 @@
     <Bug pattern="DLS_DEAD_LOCAL_STORE_OF_NULL"/>
   </Match>
 
+  <Match>
+    <Class name="com.azure.cosmos.implementation.encryption.AeadAes256CbcHmac256Algorithm"/>
+    <Method name="encryptData"/>
+    <Bug pattern="DLS_DEAD_LOCAL_STORE"/>
+  </Match>
+
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9093 -->
   <Match>
     <Class name="com.azure.cosmos.implementation.QueryMetrics"/>
@@ -1649,7 +1687,70 @@
 
   <!-- Returning a new copy of the object is not necessary -->
   <Match>
+    <Class name="com.azure.cosmos.encryption.EncryptionKeyUnwrapResult"/>
+    <Method name="getDataEncryptionKey"/>
+    <Bug pattern="EI_EXPOSE_REP"/>
+  </Match>
+
+  <!-- Returning a new copy of the object is not necessary -->
+  <Match>
+    <Class name="com.azure.cosmos.encryption.EncryptionKeyUnwrapResult"/>
+    <Method name="getWrappedDataEncryptionKey"/>
+    <Bug pattern="EI_EXPOSE_REP"/>
+  </Match>
+
+  <!-- Returning a new copy of the object is not necessary -->
+  <Match>
+    <Class name="com.azure.cosmos.encryption.DecryptionResult"/>
+    <Method name="getEncryptedContent"/>
+    <Bug pattern="EI_EXPOSE_REP"/>
+  </Match>
+
+  <!-- Returning a new copy of the object is not necessary -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.encryption.EncryptionProperties"/>
+    <Method name="getEncryptedData"/>
+    <Bug pattern="EI_EXPOSE_REP"/>
+  </Match>
+
+  <!-- Returning a new copy of the object is not necessary -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.encryption.EncryptionProperties"/>
+    <Method name="&lt;init&gt;"/>
+    <Bug pattern="EI_EXPOSE_REP2"/>
+  </Match>
+
+  <!-- Returning a new copy of the object is not necessary -->
+  <Match>
+    <Class name="com.azure.cosmos.encryption.EncryptionKeyUnwrapResult"/>
+    <Method name="&lt;init&gt;"/>
+    <Bug pattern="EI_EXPOSE_REP2"/>
+  </Match>
+
+  <!-- Returning a new copy of the object is not necessary -->
+  <Match>
     <Class name="com.azure.cosmos.implementation.directconnectivity.StoreResponse"/>
+    <Method name="&lt;init&gt;"/>
+    <Bug pattern="EI_EXPOSE_REP2"/>
+  </Match>
+
+  <!-- Returning a new copy of the object is not necessary -->
+  <Match>
+    <Class name="com.azure.cosmos.encryption.EncryptionKeyWrapResult"/>
+    <Method name="getWrappedDataEncryptionKey"/>
+    <Bug pattern="EI_EXPOSE_REP2,EI_EXPOSE_REP"/>
+  </Match>
+
+  <!-- Returning a new copy of the object is not necessary -->
+  <Match>
+    <Class name="com.azure.cosmos.encryption.EncryptionKeyWrapResult"/>
+    <Method name="getEncryptionKeyWrapMetadata"/>
+    <Bug pattern="EI_EXPOSE_REP2,EI_EXPOSE_REP"/>
+  </Match>
+
+  <!-- Returning a new copy of the object is not necessary -->
+  <Match>
+    <Class name="com.azure.cosmos.encryption.EncryptionKeyWrapResult"/>
     <Method name="&lt;init&gt;"/>
     <Bug pattern="EI_EXPOSE_REP2"/>
   </Match>
@@ -1814,6 +1915,12 @@
   <Match>
     <Class name="com.azure.cosmos.implementation.routing.Range"/>
     <Method name="isMinInclusive"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.cosmos.implementation.encryption.CosmosDataEncryptionKeyProvider"/>
+    <Method name="initialize"/>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
 
@@ -2003,6 +2110,13 @@
                   RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"/>
   </Match>
 
+  <Match>
+    <Or>
+      <Class name="com.microsoft.azure.telemetry.TelemetryEventData$EventData$CustomData"/> <!-- false positive -->
+    </Or>
+    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
+  </Match>
+
 
   <!-- These fields are designed to be not written. They are for deserializing. -->
   <Match>
@@ -2034,6 +2148,11 @@
   <Match>
     <Class name="~com\.azure\.search\.documents\.indexes\.implementation\.models\.(Suggester|SynonymMap)" />
     <Bug pattern="IP_PARAMETER_IS_DEAD_BUT_OVERWRITTEN"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.core.experimental.serializer.JsonSerializer"/>
+    <Bug pattern="NM_SAME_SIMPLE_NAME_AS_INTERFACE"/>
   </Match>
 
 </FindBugsFilter>

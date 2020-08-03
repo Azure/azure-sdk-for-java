@@ -22,8 +22,10 @@ import com.azure.storage.blob.models.LeaseStatusType
 import com.azure.storage.blob.models.ListBlobsOptions
 import com.azure.storage.blob.models.ObjectReplicationPolicy
 import com.azure.storage.blob.models.ObjectReplicationStatus
-import com.azure.storage.blob.options.PageBlobCreateOptions
 import com.azure.storage.blob.models.PublicAccessType
+import com.azure.storage.blob.models.RehydratePriority
+import com.azure.storage.blob.options.BlobSetAccessTierOptions
+import com.azure.storage.blob.options.PageBlobCreateOptions
 import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.common.Utility
@@ -572,15 +574,7 @@ class ContainerAPITest extends APISpec {
         when:
         def blobs = cc.listBlobs(new ListBlobsOptions().setPrefix(blobPrefix), null).iterator()
 
-        //ContainerListBlobFlatSegmentHeaders headers = response.headers()
-        //List<BlobItem> blobs = responseiterator()()
-
         then:
-//        response.getStatusCode() == 200
-//        headers.contentType() != null
-//        headers.requestId() != null
-//        headers.getVersion() != null
-//        headers.date() != null
         def blob = blobs.next()
         !blobs.hasNext()
         blob.getName() == name
@@ -609,6 +603,48 @@ class ContainerAPITest extends APISpec {
         blob.getProperties().getAccessTier() == AccessTier.HOT
         blob.getProperties().getArchiveStatus() == null
         blob.getProperties().getCreationTime() != null
+    }
+
+    def "List append blobs flat"() {
+        setup:
+        def name = generateBlobName()
+        def bu = cc.getBlobClient(name).getAppendBlobClient()
+        bu.create()
+        bu.seal()
+
+        when:
+        def blobs = cc.listBlobs(new ListBlobsOptions().setPrefix(blobPrefix), null).iterator()
+
+        then:
+        def blob = blobs.next()
+        !blobs.hasNext()
+        blob.getName() == name
+        blob.getProperties().getBlobType() == BlobType.APPEND_BLOB
+        blob.getProperties().getCopyCompletionTime() == null
+        blob.getProperties().getCopyStatusDescription() == null
+        blob.getProperties().getCopyId() == null
+        blob.getProperties().getCopyProgress() == null
+        blob.getProperties().getCopySource() == null
+        blob.getProperties().getCopyStatus() == null
+        blob.getProperties().isIncrementalCopy() == null
+        blob.getProperties().getDestinationSnapshot() == null
+        blob.getProperties().getLeaseDuration() == null
+        blob.getProperties().getLeaseState() == LeaseStateType.AVAILABLE
+        blob.getProperties().getLeaseStatus() == LeaseStatusType.UNLOCKED
+        blob.getProperties().getContentLength() != null
+        blob.getProperties().getContentType() != null
+        blob.getProperties().getContentMd5() == null
+        blob.getProperties().getContentEncoding() == null
+        blob.getProperties().getContentDisposition() == null
+        blob.getProperties().getContentLanguage() == null
+        blob.getProperties().getCacheControl() == null
+        blob.getProperties().getBlobSequenceNumber() == null
+        blob.getProperties().isServerEncrypted()
+        blob.getProperties().isAccessTierInferred() == null
+        blob.getProperties().getAccessTier() == null
+        blob.getProperties().getArchiveStatus() == null
+        blob.getProperties().getCreationTime() != null
+        blob.getProperties().isSealed()
     }
 
     def "List page blobs flat"() {
@@ -678,7 +714,7 @@ class ContainerAPITest extends APISpec {
         normal.create(512)
 
         def copyBlob = cc.getBlobClient(copyName).getPageBlobClient()
-        copyBlob.beginCopy(normal.getBlobUrl(), Duration.ofSeconds(5)).waitForCompletion()
+        copyBlob.beginCopy(normal.getBlobUrl(), getPollingDuration(5000)).waitForCompletion()
 
         def metadataBlob = cc.getBlobClient(metadataName).getPageBlobClient()
         def metadata = new HashMap<String, String>()
@@ -935,6 +971,32 @@ class ContainerAPITest extends APISpec {
         pagedResponse1.getValue().size() == PAGE_SIZE
         pagedResponse2.getValue().size() == NUM_BLOBS - PAGE_SIZE
         pagedResponse2.getContinuationToken() == null
+    }
+
+    @Unroll
+    def "List blobs flat rehydrate priority"() {
+        setup:
+        def name = generateBlobName()
+        def bc = cc.getBlobClient(name).getBlockBlobClient()
+        bc.upload(defaultInputStream.get(), 7)
+
+        if (rehydratePriority != null) {
+            bc.setAccessTier(AccessTier.ARCHIVE)
+
+            bc.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT).setPriority(rehydratePriority), null, null)
+        }
+
+        when:
+        def item = cc.listBlobs().iterator().next()
+
+        then:
+        item.getProperties().getRehydratePriority() == rehydratePriority
+
+        where:
+        rehydratePriority          || _
+        null                       || _
+        RehydratePriority.STANDARD || _
+        RehydratePriority.HIGH     || _
     }
 
     def "List blobs flat error"() {
@@ -1315,6 +1377,74 @@ class ContainerAPITest extends APISpec {
 
         expect: "listing operation will fetch all 10 blobs, despite page size being smaller than 10"
         cc.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(PAGE_SIZE), null).stream().count() == NUM_BLOBS
+    }
+
+    @Unroll
+    def "List blobs hier rehydrate priority"() {
+        setup:
+        def name = generateBlobName()
+        def bc = cc.getBlobClient(name).getBlockBlobClient()
+        bc.upload(defaultInputStream.get(), 7)
+
+        if (rehydratePriority != null) {
+            bc.setAccessTier(AccessTier.ARCHIVE)
+
+            bc.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT).setPriority(rehydratePriority), null, null)
+        }
+
+        when:
+        def item = cc.listBlobsByHierarchy(null).iterator().next()
+
+        then:
+        item.getProperties().getRehydratePriority() == rehydratePriority
+
+        where:
+        rehydratePriority          || _
+        null                       || _
+        RehydratePriority.STANDARD || _
+        RehydratePriority.HIGH     || _
+    }
+
+    def "List append blobs hier"() {
+        setup:
+        def name = generateBlobName()
+        def bu = cc.getBlobClient(name).getAppendBlobClient()
+        bu.create()
+        bu.seal()
+
+        when:
+        def blobs = cc.listBlobsByHierarchy(null, new ListBlobsOptions().setPrefix(blobPrefix), null).iterator()
+
+        then:
+        def blob = blobs.next()
+        !blobs.hasNext()
+        blob.getName() == name
+        blob.getProperties().getBlobType() == BlobType.APPEND_BLOB
+        blob.getProperties().getCopyCompletionTime() == null
+        blob.getProperties().getCopyStatusDescription() == null
+        blob.getProperties().getCopyId() == null
+        blob.getProperties().getCopyProgress() == null
+        blob.getProperties().getCopySource() == null
+        blob.getProperties().getCopyStatus() == null
+        blob.getProperties().isIncrementalCopy() == null
+        blob.getProperties().getDestinationSnapshot() == null
+        blob.getProperties().getLeaseDuration() == null
+        blob.getProperties().getLeaseState() == LeaseStateType.AVAILABLE
+        blob.getProperties().getLeaseStatus() == LeaseStatusType.UNLOCKED
+        blob.getProperties().getContentLength() != null
+        blob.getProperties().getContentType() != null
+        blob.getProperties().getContentMd5() == null
+        blob.getProperties().getContentEncoding() == null
+        blob.getProperties().getContentDisposition() == null
+        blob.getProperties().getContentLanguage() == null
+        blob.getProperties().getCacheControl() == null
+        blob.getProperties().getBlobSequenceNumber() == null
+        blob.getProperties().isServerEncrypted()
+        blob.getProperties().isAccessTierInferred() == null
+        blob.getProperties().getAccessTier() == null
+        blob.getProperties().getArchiveStatus() == null
+        blob.getProperties().getCreationTime() != null
+        blob.getProperties().isSealed()
     }
 
     def "List blobs hier error"() {
