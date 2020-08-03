@@ -6,6 +6,7 @@ package com.azure.search.documents.indexes;
 import com.azure.core.serializer.json.jackson.JacksonJsonSerializerProvider;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.MemberNameConverter;
+import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
@@ -25,6 +26,10 @@ import java.util.stream.Collectors;
 
 /**
  * Helper to convert model class to Search {@link SearchField fields}.
+ * <p>
+ * {@link FieldBuilder} currently only read fields of Java model class.
+ * If passed a custom {@link ObjectSerializer} in API, please remember the helper class is only able to read the rename
+ * annotation on the field instead of getter/setter methods.
  */
 public final class FieldBuilder {
     private static final int MAX_DEPTH = 10000;
