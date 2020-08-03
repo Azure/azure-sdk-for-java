@@ -85,10 +85,9 @@ class ReactorNettyClient implements HttpClient {
             //  By default, keep alive is enabled on http client
             tcpClient = tcpClient.option(ChannelOption.CONNECT_TIMEOUT_MILLIS,
                 (int) configs.getConnectionAcquireTimeout().toMillis());
-            tcpClient = tcpClient.doOnConnected(connection -> {
-                connection.addHandlerLast(new WriteTimeoutHandler(this.httpClientConfig.getRequestTimeout().toMinutes(), TimeUnit.MILLISECONDS));
-                connection.addHandlerLast(new ReadTimeoutHandler(this.httpClientConfig.getRequestTimeout().toMinutes(), TimeUnit.MILLISECONDS));
-            });
+            tcpClient = tcpClient.doOnConnected(conn -> {
+                conn.addHandlerLast(new WriteTimeoutHandler(this.httpClientConfig.getRequestTimeout().toMillis(), TimeUnit.MILLISECONDS));
+                conn.addHandlerLast(new ReadTimeoutHandler(this.httpClientConfig.getRequestTimeout().toMillis(), TimeUnit.MILLISECONDS));});
             return tcpClient;
         }).httpResponseDecoder(httpResponseDecoderSpec -> {
             httpResponseDecoderSpec.maxInitialLineLength(configs.getMaxHttpInitialLineLength());
