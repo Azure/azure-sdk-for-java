@@ -100,7 +100,7 @@ public class EntityHelperTest {
     }
 
     @Test
-    void setSubscriptionNames() {
+    void setTopicAndSubscriptionName() {
         // Arrange
         final String topicName = "I'm a new topic name";
         final String subscriptionName = "I'm a new subscription name";
@@ -108,7 +108,7 @@ public class EntityHelperTest {
         final SubscriptionProperties properties = EntityHelper.createSubscription(options);
 
         // Act
-        EntityHelper.setTopicName(properties, subscriptionName);
+        EntityHelper.setTopicName(properties, topicName);
         EntityHelper.setSubscriptionName(properties, subscriptionName);
 
         // Assert

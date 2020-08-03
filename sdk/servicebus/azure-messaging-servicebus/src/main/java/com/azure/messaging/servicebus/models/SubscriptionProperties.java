@@ -221,6 +221,7 @@ public final class SubscriptionProperties {
         this.autoDeleteOnIdle = options.getAutoDeleteOnIdle();
         this.defaultMessageTimeToLive = options.getDefaultMessageTimeToLive();
         this.deadLetteringOnMessageExpiration = options.deadLetteringOnMessageExpiration();
+        this.deadLetteringOnFilterEvaluationExceptions = options.enableDeadLetteringOnFilterEvaluationExceptions();
         this.enableBatchedOperations = options.enableBatchedOperations();
         this.forwardTo = options.getForwardTo();
         this.forwardDeadLetteredMessagesTo = options.getForwardDeadLetteredMessagesTo();
