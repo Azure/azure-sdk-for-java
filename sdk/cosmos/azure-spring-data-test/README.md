@@ -1,4 +1,4 @@
-# Azure spring data test client library for java
+# Azure Spring Data Test client library for java
 
 ## Key concepts
 ## Getting started

@@ -1,4 +1,4 @@
-# Azure spring data 2.2 client library for java
+# Azure Spring Data client library for java
 
 ## Key concepts
 ## Getting started
