@@ -5,7 +5,6 @@
 package com.azure.messaging.servicebus.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.EntityHelper;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
@@ -15,8 +14,7 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.MAX_DURATION;
+import java.util.Objects;
 
 /** The TopicDescription model. */
 @JacksonXmlRootElement(
@@ -227,7 +225,17 @@ public final class TopicDescription {
 
     static {
         // This is used by classes in different packages to get access to private and package-private methods.
-        EntityHelper.setTopicAccessor((topicDescription, name) -> topicDescription.setName(name));
+        EntityHelper.setTopicAccessor(new EntityHelper.TopicAccessor() {
+            @Override
+            public TopicDescription createTopic(CreateTopicOptions options) {
+                return new TopicDescription(options);
+            }
+
+            @Override
+            public void setName(TopicDescription topicDescription, String name) {
+                topicDescription.setName(name);
+            }
+        });
     }
 
     /**
@@ -238,43 +246,22 @@ public final class TopicDescription {
     }
 
     /**
-     * Creates an instance with the name of the topic. Default values for the topic are populated. The properties
-     * populated with defaults are:
+     * Creates a topic with the given options.
      *
-     * <ul>
-     *     <li>{@link #setAutoDeleteOnIdle(Duration)} is max duration value.</li>
-     *     <li>{@link #setDefaultMessageTimeToLive(Duration)} is max duration value.</li>
-     *     <li>{@link #setDuplicateDetectionHistoryTimeWindow(Duration)} is max duration value, but duplication
-     *     detection is disabled.</li>
-     *     <li>{@link #setEnableBatchedOperations(Boolean)} is true.</li>
-     *     <li>{@link #setEnablePartitioning(Boolean)} is false.</li>
-     *     <li>{@link #setMaxSizeInMegabytes(Long)} is 1024MB.</li>
-     *     <li>{@link #setRequiresDuplicateDetection(Boolean)} is false.</li>
-     *     <li>{@link #setSupportOrdering(Boolean)} is false.</li>
-     * </ul>
-     *
-     * @param topicName Name of the topic.
-     * @throws NullPointerException if {@code topicName} is null.
-     * @throws IllegalArgumentException if {@code topicName} is an empty string.
+     * @param options Options to set on the topic.
      */
-    public TopicDescription(String topicName) {
-        final ClientLogger logger = new ClientLogger(TopicDescription.class);
-        if (topicName == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'topicName' cannot be null."));
-        } else if (topicName.isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'topicName' cannot be an empty string."));
-        }
+    TopicDescription(CreateTopicOptions options) {
+        Objects.requireNonNull(options, "'options' cannot be null.");
 
-        this.topicName = topicName;
-
-        this.autoDeleteOnIdle = MAX_DURATION;
-        this.defaultMessageTimeToLive = MAX_DURATION;
-        this.requiresDuplicateDetection = false;
-        this.enablePartitioning = false;
-        this.enableBatchedOperations = true;
-        this.duplicateDetectionHistoryTimeWindow = Duration.ofSeconds(60);
-        this.maxSizeInMegabytes = 1024L;
-        this.supportOrdering = false;
+        this.topicName = options.getName();
+        this.autoDeleteOnIdle = options.getAutoDeleteOnIdle();
+        this.defaultMessageTimeToLive = options.getDefaultMessageTimeToLive();
+        this.duplicateDetectionHistoryTimeWindow = options.getDuplicateDetectionHistoryTimeWindow();
+        this.enableBatchedOperations = options.enableBatchedOperations();
+        this.enablePartitioning = options.enablePartitioning();
+        this.maxSizeInMegabytes = options.getMaxSizeInMegabytes();
+        this.requiresDuplicateDetection = options.requiresDuplicateDetection();
+        this.userMetadata = options.getUserMetadata();
 
         this.authorizationRules = new AuthorizationRulesWrapper(new ArrayList<>());
     }

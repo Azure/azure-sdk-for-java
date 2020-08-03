@@ -34,7 +34,7 @@ public final class EntityHelper {
      *
      * @return A new {@link TopicDescription} with the set options.
      */
-    public static TopicDescription createQueue(CreateTopicOptions options) {
+    public static TopicDescription createTopic(CreateTopicOptions options) {
         Objects.requireNonNull(options, "'options' cannot be null.");
 
         if (topicAccessor == null) {

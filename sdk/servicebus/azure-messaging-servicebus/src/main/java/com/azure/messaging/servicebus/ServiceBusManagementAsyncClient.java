@@ -42,6 +42,7 @@ import com.azure.messaging.servicebus.implementation.models.SubscriptionDescript
 import com.azure.messaging.servicebus.implementation.models.SubscriptionDescriptionFeed;
 import com.azure.messaging.servicebus.implementation.models.TopicDescriptionEntry;
 import com.azure.messaging.servicebus.implementation.models.TopicDescriptionFeed;
+import com.azure.messaging.servicebus.models.CreateTopicOptions;
 import com.azure.messaging.servicebus.models.NamespaceProperties;
 import com.azure.messaging.servicebus.models.QueueDescription;
 import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
@@ -256,32 +257,32 @@ public final class ServiceBusManagementAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TopicDescription> createTopic(String topicName) {
         try {
-            return createTopic(new TopicDescription(topicName));
+            return createTopic(new CreateTopicOptions(topicName));
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
     }
 
     /**
-     * Creates a topic with the {@link TopicDescription}.
+     * Creates a topic with the {@link CreateTopicOptions}.
      *
-     * @param topic Information about the topic to create.
+     * @param topicOptions Information about the topic to create.
      *
      * @return A Mono that completes with information about the created topic.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the topic quota is exceeded, or an error
      *     occurred processing the request.
-     * @throws IllegalArgumentException if {@link TopicDescription#getName() topic.getName()} is null or an empty
+     * @throws IllegalArgumentException if {@link CreateTopicOptions#getName() topic.getName()} is null or an empty
      *     string.
-     * @throws NullPointerException if {@code topic} is null.
-     * @throws ResourceExistsException if a topic exists with the same {@link TopicDescription#getName()
+     * @throws NullPointerException if {@code topicOptions} is null.
+     * @throws ResourceExistsException if a topic exists with the same {@link CreateTopicOptions#getName()
      *     topicName}.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TopicDescription> createTopic(TopicDescription topic) {
-        return createTopicWithResponse(topic).map(Response::getValue);
+    public Mono<TopicDescription> createTopic(CreateTopicOptions topicOptions) {
+        return createTopicWithResponse(topicOptions).map(Response::getValue);
     }
 
     /**
@@ -302,7 +303,7 @@ public final class ServiceBusManagementAsyncClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TopicDescription>> createTopicWithResponse(TopicDescription topic) {
+    public Mono<Response<TopicDescription>> createTopicWithResponse(CreateTopicOptions topic) {
         return withContext(context -> createTopicWithResponse(topic, context));
     }
 
@@ -1141,20 +1142,21 @@ public final class ServiceBusManagementAsyncClient {
     }
 
     /**
-     * Creates a topic with its context.
+     * Creates a topicOptions with its context.
      *
-     * @param topic Topic to create.
+     * @param topicOptions Topic to create.
      * @param context Context to pass into request.
      *
      * @return A Mono that completes with the created {@link TopicDescription}.
      */
-    Mono<Response<TopicDescription>> createTopicWithResponse(TopicDescription topic, Context context) {
-        if (topic == null) {
-            return monoError(logger, new NullPointerException("'topic' cannot be null"));
+    Mono<Response<TopicDescription>> createTopicWithResponse(CreateTopicOptions topicOptions, Context context) {
+        if (topicOptions == null) {
+            return monoError(logger, new NullPointerException("'topicOptions' cannot be null"));
         } else if (context == null) {
             return monoError(logger, new NullPointerException("'context' cannot be null."));
         }
 
+        final TopicDescription topic = EntityHelper.createTopic(topicOptions);
         final CreateTopicBodyContent content = new CreateTopicBodyContent()
             .setType(CONTENT_TYPE)
             .setTopicDescription(topic);
@@ -1164,7 +1166,7 @@ public final class ServiceBusManagementAsyncClient {
         final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
 
         try {
-            return entityClient.putWithResponseAsync(topic.getName(), createEntity, null, withTracing)
+            return entityClient.putWithResponseAsync(topicOptions.getName(), createEntity, null, withTracing)
                 .onErrorMap(ServiceBusManagementAsyncClient::mapException)
                 .map(this::deserializeTopic);
         } catch (RuntimeException ex) {

@@ -11,6 +11,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
+import com.azure.messaging.servicebus.models.CreateTopicOptions;
 import com.azure.messaging.servicebus.models.NamespaceType;
 import com.azure.messaging.servicebus.models.QueueDescription;
 import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
@@ -169,7 +170,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
         // Arrange
         final ServiceBusManagementAsyncClient client = createClient(httpClient);
         final String topicName = testResourceNamer.randomName("test", 10);
-        final TopicDescription expected = new TopicDescription(topicName)
+        final CreateTopicOptions expected = new CreateTopicOptions(topicName)
             .setMaxSizeInMegabytes(2048L)
             .setRequiresDuplicateDetection(true)
             .setDuplicateDetectionHistoryTimeWindow(Duration.ofMinutes(2))
