@@ -38,12 +38,6 @@
       <groupId>com.microsoft.azure</groupId>
       <artifactId>msal4j-persistence-extension</artifactId>
       <version>1.0.0</version> <!-- {x-version-update;com.microsoft.azure:msal4j-persistence-extension;external_dependency} -->
-      <exclusions>
-        <exclusion>
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-log4j12</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.nimbusds</groupId>
