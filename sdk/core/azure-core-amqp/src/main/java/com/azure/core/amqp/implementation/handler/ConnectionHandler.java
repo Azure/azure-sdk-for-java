@@ -42,14 +42,14 @@ public class ConnectionHandler extends Handler {
     /**
      * Creates a handler that handles proton-j's connection events.
      *
-     * @param applicationId applicationId to be used in user agent while making connection.
      * @param connectionId Identifier for this connection.
      * @param hostname Hostname of the AMQP message broker to create a connection to.
      * @param product The name of the product this connection handler is created for.
      * @param clientVersion The version of the client library creating the connection handler.
+     * @param applicationId applicationId to be used in user agent while making connection.
      */
-    public ConnectionHandler(final String applicationId, final String connectionId, final String hostname,
-        String product, String clientVersion) {
+    public ConnectionHandler(final String connectionId, final String hostname,
+        String product, String clientVersion, final String applicationId) {
         super(connectionId, hostname);
 
         add(new Handshaker());

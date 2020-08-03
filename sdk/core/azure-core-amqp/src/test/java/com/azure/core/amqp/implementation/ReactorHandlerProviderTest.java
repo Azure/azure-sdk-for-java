@@ -87,7 +87,7 @@ public class ReactorHandlerProviderTest {
     public void getsConnectionHandlerAMQP() {
         // Act
         final ConnectionHandler handler = provider.createConnectionHandler(CONNECTION_ID, HOSTNAME,
-            AmqpTransportType.AMQP, null, PRODUCT, CLIENT_VERSION);
+            AmqpTransportType.AMQP, null, PRODUCT, CLIENT_VERSION, null);
 
         // Assert
         Assertions.assertNotNull(handler);
@@ -102,7 +102,7 @@ public class ReactorHandlerProviderTest {
     public void getsConnectionHandlerWebSockets(ProxyOptions configuration) {
         // Act
         final ConnectionHandler handler = provider.createConnectionHandler(CONNECTION_ID, HOSTNAME,
-            AmqpTransportType.AMQP_WEB_SOCKETS, configuration, PRODUCT, CLIENT_VERSION);
+            AmqpTransportType.AMQP_WEB_SOCKETS, configuration, PRODUCT, CLIENT_VERSION, null);
 
         // Assert
         Assertions.assertNotNull(handler);
@@ -123,7 +123,7 @@ public class ReactorHandlerProviderTest {
 
         // Act
         final ConnectionHandler handler = provider.createConnectionHandler(CONNECTION_ID, hostname,
-            AmqpTransportType.AMQP_WEB_SOCKETS, configuration, PRODUCT, CLIENT_VERSION);
+            AmqpTransportType.AMQP_WEB_SOCKETS, configuration, PRODUCT, CLIENT_VERSION, null);
 
         // Assert
         Assertions.assertNotNull(handler);
@@ -147,7 +147,7 @@ public class ReactorHandlerProviderTest {
 
         // Act
         final ConnectionHandler handler = provider.createConnectionHandler(CONNECTION_ID, hostname,
-            AmqpTransportType.AMQP_WEB_SOCKETS, configuration, PRODUCT, CLIENT_VERSION);
+            AmqpTransportType.AMQP_WEB_SOCKETS, configuration, PRODUCT, CLIENT_VERSION, null);
 
         // Act and Assert
         Assertions.assertEquals(PROXY_ADDRESS.getHostName(), handler.getHostname());

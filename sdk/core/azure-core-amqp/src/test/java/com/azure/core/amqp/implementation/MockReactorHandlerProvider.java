@@ -34,7 +34,7 @@ class MockReactorHandlerProvider extends ReactorHandlerProvider {
 
     @Override
     public ConnectionHandler createConnectionHandler(String connectionId, String hostname,
-        AmqpTransportType transportType, ProxyOptions configuration, String product, String clientVersion) {
+        AmqpTransportType transportType, ProxyOptions configuration, String product, String clientVersion, String applicationId) {
 
         return connectionHandler;
     }

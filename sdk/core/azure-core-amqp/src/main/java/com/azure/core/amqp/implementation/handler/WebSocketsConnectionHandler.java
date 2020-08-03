@@ -32,7 +32,7 @@ public class WebSocketsConnectionHandler extends ConnectionHandler {
      */
     public WebSocketsConnectionHandler(final String connectionId, final String hostname, final String product,
         final String clientVersion) {
-        super(connectionId, hostname, product, clientVersion);
+        super(connectionId, hostname, product, clientVersion, null);
     }
 
     @Override

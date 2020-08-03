@@ -46,7 +46,7 @@ public class ConnectionHandlerTest {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        handler = new ConnectionHandler(CONNECTION_ID, HOSTNAME, PRODUCT, CLIENT_VERSION);
+        handler = new ConnectionHandler(CONNECTION_ID, HOSTNAME, PRODUCT, CLIENT_VERSION, null);
     }
 
     @AfterEach

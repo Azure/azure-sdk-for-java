@@ -24,10 +24,11 @@ public class ConnectionOptions {
     private final Scheduler scheduler;
     private final String fullyQualifiedNamespace;
     private final CbsAuthorizationType authorizationType;
+    private final String applicationId;
 
     public ConnectionOptions(String fullyQualifiedNamespace, TokenCredential tokenCredential,
             CbsAuthorizationType authorizationType, AmqpTransportType transport, AmqpRetryOptions retryOptions,
-            ProxyOptions proxyOptions, Scheduler scheduler) {
+            ProxyOptions proxyOptions, Scheduler scheduler, String applicationId) {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' is required.");
         this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' is required.");
@@ -36,6 +37,11 @@ public class ConnectionOptions {
         this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' is required.");
         this.proxyOptions = Objects.requireNonNull(proxyOptions, "'proxyConfiguration' is required.");
         this.scheduler = Objects.requireNonNull(scheduler, "'scheduler' is required.");
+        this.applicationId = applicationId;
+    }
+
+    public String getApplicationId() {
+        return applicationId;
     }
 
     public String getFullyQualifiedNamespace() {
