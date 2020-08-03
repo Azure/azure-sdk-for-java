@@ -86,6 +86,7 @@ public final class JacksonJsonSerializer implements MemberNameConverter, JsonSer
                 String propertyName = f.getDeclaredAnnotation(JsonProperty.class).value();
                 return CoreUtils.isNullOrEmpty(propertyName) ? f.getName() : propertyName;
             }
+            return member.getName();
         }
 
         if (member instanceof Method) {
@@ -97,8 +98,9 @@ public final class JacksonJsonSerializer implements MemberNameConverter, JsonSer
                 String propertyName = m.getDeclaredAnnotation(JsonProperty.class).value();
                 return CoreUtils.isNullOrEmpty(propertyName) ? m.getName() : propertyName;
             }
+            return member.getName();
         }
 
-        return member.getName();
+        return null;
     }
 }

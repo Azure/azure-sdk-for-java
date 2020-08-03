@@ -102,7 +102,6 @@ public class GsonPropertyNameTests {
         Constructor<?>[] constructors = Hotel.class.getConstructors();
         assertEquals(1, constructors.length);
 
-        assertEquals(serializer.convertMemberName(constructors[0]),
-            "com.azure.core.serializer.json.gson.Hotel");
+        assertNull(serializer.convertMemberName(constructors[0]));
     }
 }

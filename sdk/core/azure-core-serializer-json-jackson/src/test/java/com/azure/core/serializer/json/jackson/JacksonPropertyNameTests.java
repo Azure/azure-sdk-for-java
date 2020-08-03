@@ -32,7 +32,7 @@ public class JacksonPropertyNameTests {
             String hotelName;
         }
         Field f = LocalHotel.class.getDeclaredField("hotelName");
-        assertMemberValue(f, "hotelName");
+        assertEquals("hotelName", serializer.convertMemberName(f));
     }
 
     @Test
@@ -52,7 +52,7 @@ public class JacksonPropertyNameTests {
             String hotelName;
         }
         Field f = LocalHotel.class.getDeclaredField("hotelName");
-        assertMemberValue(f, EXPECT_VALUE_IN_FIELD);
+        assertEquals(EXPECT_VALUE_IN_FIELD, serializer.convertMemberName(f));
     }
 
     @Test
@@ -63,7 +63,7 @@ public class JacksonPropertyNameTests {
         }
         Field f = LocalHotel.class.getDeclaredField("hotelName");
 
-        assertMemberValue(f, "hotelName");
+        assertEquals("hotelName", serializer.convertMemberName(f));
     }
 
     @Test
@@ -73,7 +73,7 @@ public class JacksonPropertyNameTests {
             String hotelName;
         }
         Field f = LocalHotel.class.getDeclaredField("hotelName");
-        assertMemberValue(f, "hotelName");
+        assertEquals("hotelName", serializer.convertMemberName(f));
     }
 
     @Test
@@ -87,7 +87,7 @@ public class JacksonPropertyNameTests {
         }
 
         Method m = LocalHotel.class.getDeclaredMethod("getHotelName");
-        assertMemberValue(m, "getHotelName");
+        assertEquals("getHotelName", serializer.convertMemberName(m));
     }
 
     @Test
@@ -116,7 +116,7 @@ public class JacksonPropertyNameTests {
         }
 
         Method m = LocalHotel.class.getDeclaredMethod("getHotelName");
-        assertMemberValue(m, EXPECT_VALUE_IN_METHOD);
+        assertEquals(EXPECT_VALUE_IN_METHOD, serializer.convertMemberName(m));
     }
 
 
@@ -132,7 +132,7 @@ public class JacksonPropertyNameTests {
         }
 
         Method m = LocalHotel.class.getDeclaredMethod("getHotelName");
-        assertMemberValue(m, "getHotelName");
+        assertEquals("getHotelName", serializer.convertMemberName(m));
     }
 
     @Test
@@ -147,11 +147,8 @@ public class JacksonPropertyNameTests {
         }
 
         Method m = LocalHotel.class.getDeclaredMethod("getHotelName");
-        assertMemberValue(m, "getHotelName");
-    }
 
-    public void assertMemberValue(Member m, String expectValue) {
-        assertEquals(expectValue, serializer.convertMemberName(m));
+        assertEquals("getHotelName", serializer.convertMemberName(m));
     }
 
     public void assertMemberNull(Member m) {
@@ -164,7 +161,6 @@ public class JacksonPropertyNameTests {
         Constructor<?>[] constructors = Hotel.class.getConstructors();
         assertEquals(1, constructors.length);
 
-        assertEquals(serializer.convertMemberName(constructors[0]),
-            "com.azure.core.serializer.json.jackson.Hotel");
+        assertNull(serializer.convertMemberName(constructors[0]));
     }
 }
