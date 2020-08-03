@@ -176,7 +176,7 @@ public class IdentityReadmeSamples {
      */
     public void createIntelliJCredential() {
         IntelliJCredential intelliJCredential = new IntelliJCredentialBuilder()
-            // KeePass configuration required for Windows
+            // KeePass configuration required only for Windows. No configuration needed for Linux / Mac
             .keePassDatabasePath("C:\\Users\\user\\AppData\\Roaming\\JetBrains\\IdeaIC2020.1\\c.kdbx")
             .build();
 
@@ -192,6 +192,7 @@ public class IdentityReadmeSamples {
      */
     public void createInteractiveBrowserCredential() {
         InteractiveBrowserCredential interactiveBrowserCredential = new InteractiveBrowserCredentialBuilder()
+            .clientId("<YOUR CLIENT ID>")
             .port(8765)
             .build();
 

@@ -122,7 +122,7 @@ If a managed identity isn't available, the `DefaultAzureCredential` will then at
 
 1. `DefaultAzureCredential` will read from a local user token cache. `AZURE_USERNAME` environment variable must be specified if there are more than one accounts in the cache. The local token cache is shared between this library, Visual Studio (2019+), and Azure CLI. See [Enable applications for shared token cache credential](#enable-applications-for-shared-token-cache-credential) for how to populate / clean up this token cache.
 2. `DefaultAzureCredential` will then read the currently signed in user in Azure Toolkit for IntelliJ. See [Sign in Azure Toolkit for IntelliJ for IntelliJCredential](#sign-in-azure-toolkit-for-intellij-for-intellijcredential) for how to sign in to IntelliJ IDEA to enable this. 
-3. `DefaultAzureCredential` will then read the currently signed in user in Azure plugin in Visual Studio Code. See [Sign in Visual Studio Code for VisualStudioCodeCredential](#sign-in-visual-studio-code-for-visualstudiocodecredential) for how to sign in to Visual Studio code to enable this.
+3. `DefaultAzureCredential` will then read the currently signed in user in Azure plugin in Visual Studio Code. See [Sign in Visual Studio Code Azure Extension for VisualStudioCodeCredential](#sign-in-visual-studio-code-azure-extension-for-visualstudiocodecredential) for how to sign in to Visual Studio code to enable this.
 4. `DefaultAzureCredential` will then read the currently signed in user in Azure CLI. See [Sign in Azure CLI for AzureCliCredential](#sign-in-azure-cli-for-azureclicredential) for how to sign in to Azure CLI to enable this.
 
 If a credential or a tool isn't available, `DefaultAzureCredential` will catch the `CredentialUnavailableException` and simply try the next credential. If no credential can be used, a `ClientAuthenticationException` containing all the individual credential unavailable exceptions will be thrown at the end.
@@ -255,13 +255,14 @@ This example demonstrates authenticating the `KeyClient` from the [azure-securit
 
 See more about how to configure an AAD application for interactive browser authentication and listen on a port locally in [Enable applications for interactive browser oauth 2 flow](#enable-applications-for-interactive-browser-oauth-2-flow)
 
-<!-- embedme ../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java#L190-L203 -->
+<!-- embedme ../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java#L190-L204 -->
 ```java
 /**
  * Authenticate interactively in the browser.
  */
 public void createInteractiveBrowserCredential() {
     InteractiveBrowserCredential interactiveBrowserCredential = new InteractiveBrowserCredentialBuilder()
+        .clientId("<YOUR CLIENT ID>")
         .port(8765)
         .build();
 
@@ -334,7 +335,7 @@ See more about how to configure your IntelliJ IDEA in [Sign in Azure Toolkit for
  */
 public void createIntelliJCredential() {
     IntelliJCredential intelliJCredential = new IntelliJCredentialBuilder()
-        // KeePass configuration required for Windows
+        // KeePass configuration required only for Windows. No configuration needed for Linux / Mac
         .keePassDatabasePath("C:\\Users\\user\\AppData\\Roaming\\JetBrains\\IdeaIC2020.1\\c.kdbx")
         .build();
 
@@ -349,7 +350,7 @@ public void createIntelliJCredential() {
 ### Authenticating a user account with Visual Studio Code
 This example demonstrates authenticating the `KeyClient` from the [azure-security-keyvault-keys][keys_client_library] client library using the `VisualStudioCodeCredential` on a workstation with Visual Studio Code installed, and the user has signed in with an Azure account.
 
-See more about how to configure your Visual Studio Code in [Sign in Visual Studio Code for VisualStudioCodeCredential](#sign-in-visual-studio-code-for-visualstudiocodecredential)
+See more about how to configure your Visual Studio Code in [Sign in Visual Studio Code Azure Extension for VisualStudioCodeCredential](#sign-in-visual-studio-code-azure-extension-for-visualstudiocodecredential)
 
 <!-- embedme ../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java#L161-L172 -->
 ```java
@@ -402,6 +403,17 @@ public void createChainedCredential() {
 ```
 
 ## Configurations
+
+### Configure `DefaultAzureCredential`
+
+`DefaultAzureCredential` supports a set of configurations through setters on the `DefaultAzureCredentialBuilder` or environment variables.
+
+- Setting environment variables `AZURE_CLIENT_ID`, `AZURE_CLIENT_SECRET`, and `AZURE_TENANT_ID` as defined in [Environment Variables](#environment-variables) configures the `DefaultAzureCredential` to authenticate as the service principal specified by the values.
+- Setting `.managedIdentityClientId(String)` on the builder or environment variable `AZURE_CLIENT_ID` configures the `DefaultAzureCredential` to authenticate as a user defined managed identity, verse leaving them empty configures it to authenticate as a system assigned managed identity.
+- Setting `.tenantId(String)` on the builder or environment variable `AZURE_TENANT_ID` configures the `DefaultAzureCredential` to authenticate to a specific tenant for shared token cache, Visual Studio Code and IntelliJ IDEA.
+- Setting environment variable `AZURE_USERNAME` configures the `DefaultAzureCredential` to pick the corresponding cached token from the shared token cache.
+- Setting `.intelliJKeePassDatabasePath(String)` on the builder configures the `DefaultAzureCredential` to read a specific KeePass file when authenticating with IntelliJ credentials.
+
 ### Creating a Service Principal with the Azure CLI
 Use the [Azure CLI][azure_cli] snippet below to create/get client secret credentials.
 
@@ -504,7 +516,7 @@ On Windows, you will also need the KeePass database path to read IntelliJ creden
 
 ![intellij keepass](./images/intellij-keepass.png)
 
-### Sign in Visual Studio Code for VisualStudioCodeCredential
+### Sign in Visual Studio Code Azure Extension for VisualStudioCodeCredential
 
 The Visual Studio Code authentication is handled by an integration with the Azure Account extension. To use, install the Azure Account extension, then use View->Command Palette to execute the “Azure: Sign In” command:
 
@@ -513,16 +525,6 @@ The Visual Studio Code authentication is handled by an integration with the Azur
 This will open a browser that allows you to sign in to Azure. Once you have completed the login process, you can close the browser as directed. Running your application (either in the debugger or anywhere on the development machine) will use the credential from your sign-in.
 
 ![vscode logged in](./images/vscode-logged-in.png)
-
-### Configure `DefaultAzureCredential`
-
-`DefaultAzureCredential` supports a set of configurations through setters on the `DefaultAzureCredentialBuilder` or environment variables.
-
-- Setting environment variables `AZURE_CLIENT_ID`, `AZURE_CLIENT_SECRET`, and `AZURE_TENANT_ID` as defined in [Environment Variables](#environment-variables) configures the `DefaultAzureCredential` to authenticate as the service principal specified by the values.
-- Setting `.managedIdentityClientId(String)` on the builder or environment variable `AZURE_CLIENT_ID` configures the `DefaultAzureCredential` to authenticate as a user defined managed identity, verse leaving them empty configures it to authenticate as a system assigned managed identity.
-- Setting `.tenantId(String)` on the builder or environment variable `AZURE_TENANT_ID` configures the `DefaultAzureCredential` to authenticate to a specific tenant for shared token cache, Visual Studio Code and IntelliJ IDEA.
-- Setting environment variable `AZURE_USERNAME` configures the `DefaultAzureCredential` to pick the corresponding cached token from the shared token cache.
-- Setting `.intelliJKeePassDatabasePath(String)` on the builder configures the `DefaultAzureCredential` to read a specific KeePass file when authenticating with IntelliJ credentials.
 
 ## Troubleshooting
 Credentials raise exceptions when they fail to authenticate. `ClientAuthenticationException` has a `message` attribute which
