@@ -8,6 +8,7 @@ import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.MemberNameConverter;
 import com.azure.core.util.serializer.TypeReference;
 import com.google.gson.Gson;
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import reactor.core.publisher.Mono;
 
@@ -78,9 +79,6 @@ public final class GsonJsonSerializer implements JsonSerializer, MemberNameConve
         }
         if (member instanceof Field) {
             Field f = (Field) member;
-            if (gson.excluder().excludeField(f, true)) {
-                return null;
-            }
             if (f.isAnnotationPresent(SerializedName.class)) {
                 return f.getDeclaredAnnotation(SerializedName.class).value();
             }
