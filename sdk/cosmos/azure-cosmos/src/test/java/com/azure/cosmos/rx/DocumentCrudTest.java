@@ -5,6 +5,7 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.TestObject;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -21,6 +22,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -29,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.apache.commons.io.FileUtils.ONE_MB;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -215,6 +218,37 @@ public class DocumentCrudTest extends TestSuiteBase {
             .documentClientExceptionToStringExcludesHeader(HttpConstants.HttpHeaders.AUTHORIZATION)
             .build();
         validateItemFailure(readObservable, validator);
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
+    public void readDocument_DoesntExistOnErrorContinue(String documentId) throws InterruptedException {
+        InternalObjectNode docDefinition = getDocumentDefinition(documentId);
+
+        container.createItem(docDefinition, new CosmosItemRequestOptions()).block();
+
+        CosmosItemRequestOptions options = new CosmosItemRequestOptions();
+        container.deleteItem(docDefinition.getId(), new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(docDefinition, "mypk"))).block();
+
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
+
+        final AtomicInteger failureCount = new AtomicInteger();
+        final AtomicInteger readCount = new AtomicInteger();
+        Flux.range(0, 2).flatMap(range -> {
+            return container.readItem(docDefinition.getId(),
+                new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(docDefinition, "mypk")),
+                options, InternalObjectNode.class);
+        }).doOnNext(item -> {
+            readCount.incrementAndGet();
+        }).onErrorContinue((throwable, object) -> {
+            if (throwable.getMessage().contains("Source was empty")) {
+                failureCount.incrementAndGet();
+            }
+        }).subscribe();
+
+        Thread.sleep(2000);
+
+        assertThat(failureCount.get()).isEqualTo(0);
+        assertThat(readCount.get()).isEqualTo(0);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
