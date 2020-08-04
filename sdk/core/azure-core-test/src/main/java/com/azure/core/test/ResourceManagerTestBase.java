@@ -6,7 +6,6 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HostPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -21,11 +20,6 @@ import com.azure.identity.ClientSecretCredentialBuilder;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.Proxy;
-import java.net.ProxySelector;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -140,50 +134,12 @@ public abstract class ResourceManagerTestBase extends TestBase {
         initializeClients(httpPipeline, profile);
     }
 
-    private HttpClient generateHttpClientWithProxy(ProxyOptions proxyOptions) {
-        NettyAsyncHttpClientBuilder clientBuilder = new NettyAsyncHttpClientBuilder();
-        if (proxyOptions != null) {
-            clientBuilder.proxy(proxyOptions);
-        } else {
-            try {
-                System.setProperty(USE_SYSTEM_PROXY, VALUE_TRUE);
-                List<Proxy> proxies = ProxySelector.getDefault().select(new URI(AzureEnvironment.AZURE.getResourceManagerEndpoint()));
-                if (!proxies.isEmpty()) {
-                    for (Proxy proxy : proxies) {
-                        if (proxy.address() instanceof InetSocketAddress) {
-                            String host = ((InetSocketAddress) proxy.address()).getHostName();
-                            int port = ((InetSocketAddress) proxy.address()).getPort();
-                            switch (proxy.type()) {
-                                case HTTP:
-                                    return clientBuilder.proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress(host, port))).build();
-                                case SOCKS:
-                                    return clientBuilder.proxy(new ProxyOptions(ProxyOptions.Type.SOCKS5, new InetSocketAddress(host, port))).build();
-                                default:
-                            }
-                        }
-                    }
-                }
-                String host = null;
-                int port = 0;
-                if (System.getProperty(HTTPS_PROXY_HOST) != null && System.getProperty(HTTPS_PROXY_PORT) != null) {
-                    host = System.getProperty(HTTPS_PROXY_HOST);
-                    port = Integer.parseInt(System.getProperty(HTTPS_PROXY_PORT));
-                } else if (System.getProperty(HTTP_PROXY_HOST) != null && System.getProperty(HTTP_PROXY_PORT) != null) {
-                    host = System.getProperty(HTTP_PROXY_HOST);
-                    port = Integer.parseInt(System.getProperty(HTTP_PROXY_PORT));
-                }
-                if (host != null) {
-                    clientBuilder.proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress(host, port)));
-                }
-            } catch (URISyntaxException e) { }
-        }
-        return clientBuilder.build();
-    }
-
     @Override
     protected void afterTest() {
         cleanUpResources();
     }
+
+    protected abstract HttpClient generateHttpClientWithProxy(ProxyOptions proxyOptions);
 
     protected abstract HttpPipeline buildHttpPipeline(
         TokenCredential credential, AzureProfile profile, List<HttpPipelinePolicy> policies, HttpClient httpClient);
