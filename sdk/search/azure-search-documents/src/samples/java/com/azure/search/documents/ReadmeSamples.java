@@ -14,6 +14,8 @@ import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.SearchIndexerAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexerClient;
 import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
+import com.azure.search.documents.indexes.SearchableFieldProperty;
+import com.azure.search.documents.indexes.SimpleFieldProperty;
 import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.SearchField;
@@ -268,5 +270,18 @@ public class ReadmeSamples {
             Collections.singletonList(suggester));
         // Create an index
         searchIndexClient.createIndex(index);
+    }
+
+    public void createIndexUseFieldBuilder() {
+        class Hotel {
+            @SimpleFieldProperty(isKey = true)
+            String hotelId;
+            @SearchableFieldProperty
+            String hotelName;
+            @SearchableFieldProperty
+            String address;
+        }
+        List<SearchField> searchFields = SearchIndexClient.buildSearchFields(Hotel.class, null);
+        searchIndexClient.createIndex(new SearchIndex("index", searchFields));
     }
 }
