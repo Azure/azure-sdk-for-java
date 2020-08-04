@@ -33,10 +33,8 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
     private final Object currentWorkLock = new Object();
 
     private Disposable currentTimeoutOperation;
-    private Disposable timeoutBeforeNextMessageOperation;
     private SynchronousReceiveWork currentWork;
     private boolean subscriberInitialized;
-    private Duration shortTimeoutBetweenMessages;
 
     private volatile Subscription subscription;
 
@@ -45,11 +43,9 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
             "subscription");
 
 
-    SynchronousMessageSubscriber(long prefetch, SynchronousReceiveWork initialWork,
-        Duration shortTimeoutBetweenMessages) {
+    SynchronousMessageSubscriber(long prefetch, SynchronousReceiveWork initialWork) {
         this.workQueue.add(initialWork);
         requested = initialWork.getNumberOfEvents() > prefetch ? initialWork.getNumberOfEvents() : prefetch;
-        this.shortTimeoutBetweenMessages = shortTimeoutBetweenMessages;
     }
 
     /**

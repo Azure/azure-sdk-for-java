@@ -105,15 +105,11 @@ class SynchronousReceiveWork {
      */
     void next(ServiceBusReceivedMessageContext message) {
         try {
-
             if (timeoutBeforeNextMessageOperation != null && !timeoutBeforeNextMessageOperation.isDisposed()) {
                 timeoutBeforeNextMessageOperation.dispose();
             }
-
             emitter.next(message);
-
             remaining.decrementAndGet();
-
             timeoutBeforeNextMessageOperation = getShortTimeoutBetweenMessages();
         } catch (Exception e) {
             logger.warning("Exception occurred while publishing downstream.", e);
@@ -137,16 +133,6 @@ class SynchronousReceiveWork {
         logger.info("[{}]: Work timeout occurred. Completing the work.", id);
         emitter.complete();
         workTimedOut = true;
-        close();
-    }
-
-    /**
-     * Completes the publisher and sets the state to timeout.
-     */
-    private void timeoutNextMessage() {
-        logger.info("[{}]: Work timeout occurred due to next message not arriving in time. Completing the work.", id);
-        emitter.complete();
-        nextMessageTimedOut = true;
         close();
     }
 
@@ -184,6 +170,12 @@ class SynchronousReceiveWork {
         return this.processingStarted;
     }
 
+    private void close(){
+        if (timeoutBeforeNextMessageOperation != null && !timeoutBeforeNextMessageOperation.isDisposed()) {
+            timeoutBeforeNextMessageOperation.dispose();
+        }
+    }
+
     /**
      *
      * @return {@link Disposable} for the timeout operation.
@@ -195,9 +187,14 @@ class SynchronousReceiveWork {
             });
     }
 
-    private void close(){
-        if (timeoutBeforeNextMessageOperation != null && !timeoutBeforeNextMessageOperation.isDisposed()) {
-            timeoutBeforeNextMessageOperation.dispose();
-        }
+
+    /**
+     * Completes the publisher and sets the state to timeout.
+     */
+    private void timeoutNextMessage() {
+        logger.info("[{}]: Work timeout occurred due to next message not arriving in time. Completing the work.", id);
+        emitter.complete();
+        nextMessageTimedOut = true;
+        close();
     }
 }
