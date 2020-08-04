@@ -10,6 +10,7 @@ import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.spring.data.cosmos.Constants;
 import com.azure.spring.data.cosmos.core.mapping.Container;
 import com.azure.spring.data.cosmos.core.mapping.CosmosIndexingPolicy;
+import com.azure.spring.data.cosmos.common.Memoizer;
 import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.springframework.data.annotation.Id;
@@ -21,6 +22,7 @@ import org.springframework.util.ReflectionUtils;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 import static com.azure.spring.data.cosmos.common.ExpressionResolver.resolveExpression;
 
@@ -29,14 +31,30 @@ import static com.azure.spring.data.cosmos.common.ExpressionResolver.resolveExpr
  */
 public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T, ID> {
 
-    private static final String ETAG = "_etag";
+    private static final Function<Class<?>, CosmosEntityInformation<?, ?>> entityInformationCreator =
+        Memoizer.memoize(CosmosEntityInformation::getCosmosEntityInformation);
+
+    private static CosmosEntityInformation<?, ?> getCosmosEntityInformation(Class<?> domainClass) {
+        return new CosmosEntityInformation<>(domainClass);
+    }
+
+    /**
+     * Static Factory
+     *
+     * @param domainClass to specify id field
+     * @return new CosmosEntityInformation
+     */
+    public static CosmosEntityInformation<?, ?> getInstance(Class<?> domainClass) {
+        return entityInformationCreator.apply(domainClass);
+    }
+
     private final Field id;
     private final Field partitionKeyField;
+    private final Field versionField;
     private final String containerName;
     private final Integer requestUnit;
     private final Integer timeToLive;
     private final IndexingPolicy indexingPolicy;
-    private final boolean isVersioned;
     private final boolean autoCreateContainer;
 
     /**
@@ -56,10 +74,14 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
             ReflectionUtils.makeAccessible(this.partitionKeyField);
         }
 
+        this.versionField = getVersionedField(domainType);
+        if (this.versionField != null) {
+            ReflectionUtils.makeAccessible(this.versionField);
+        }
+
         this.requestUnit = getRequestUnit(domainType);
         this.timeToLive = getTimeToLive(domainType);
         this.indexingPolicy = getIndexingPolicy(domainType);
-        this.isVersioned = getIsVersioned(domainType);
         this.autoCreateContainer = getIsAutoCreateContainer(domainType);
     }
 
@@ -137,7 +159,16 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
      * @return boolean
      */
     public boolean isVersioned() {
-        return isVersioned;
+        return versionField != null;
+    }
+
+    /**
+     * Get name of field annotated with @Version if any
+     *
+     * @return String
+     */
+    public String getVersionFieldName() {
+        return versionField == null ? null : versionField.getName();
     }
 
     /**
@@ -317,11 +348,20 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
         return pathArrayList;
     }
 
-    private boolean getIsVersioned(Class<T> domainType) {
-        final Field findField = ReflectionUtils.findField(domainType, ETAG);
-        return findField != null
-                && findField.getType() == String.class
-                && findField.isAnnotationPresent(Version.class);
+    private Field getVersionedField(Class<T> domainClass) {
+        Field version = null;
+        final List<Field> fields = FieldUtils.getFieldsListWithAnnotation(domainClass, Version.class);
+
+        if (fields.size() == 1) {
+            version = fields.get(0);
+        } else if (fields.size() > 1) {
+            throw new IllegalArgumentException("Azure Cosmos DB supports only one field with @Version annotation!");
+        }
+
+        if (version != null && version.getType() != String.class) {
+            throw new IllegalArgumentException("type of Version field must be String");
+        }
+        return version;
     }
 
     private boolean getIsAutoCreateContainer(Class<T> domainType) {

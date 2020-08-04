@@ -109,12 +109,11 @@ public class CosmosEntityInformationUnitTest {
     }
 
     @Test
-    public void testEntityShouldNotBeVersionedWithoutAnnotationOnEtag() {
-        final CosmosEntityInformation<VersionOnWrongField, String> entityInformation =
-                new CosmosEntityInformation<VersionOnWrongField, String>(VersionOnWrongField.class);
-
+    public void testEntityShouldBeVersionedIfUsingAnnotationOnAStringField() {
+        final CosmosEntityInformation<VersionFieldDifferentName, String> entityInformation =
+                new CosmosEntityInformation<VersionFieldDifferentName, String>(VersionFieldDifferentName.class);
         final boolean isVersioned = entityInformation.isVersioned();
-        assertThat(isVersioned).isFalse();
+        assertThat(isVersioned).isTrue();
     }
 
     @Test
@@ -315,13 +314,13 @@ public class CosmosEntityInformationUnitTest {
     }
 
     @Container
-    private static class VersionOnWrongField {
+    private static class VersionFieldDifferentName {
         private String id;
-        @Version
         private String name;
-        private String _etag;
+        @Version
+        private String version;
 
-        VersionOnWrongField() {
+        VersionFieldDifferentName() {
         }
 
         public String getId() {
@@ -340,12 +339,12 @@ public class CosmosEntityInformationUnitTest {
             this.name = name;
         }
 
-        public String get_etag() {
-            return _etag;
+        public String getVersion() {
+            return version;
         }
 
-        public void set_etag(String _etag) {
-            this._etag = _etag;
+        public void setVersion(String version) {
+            this.version = version;
         }
 
         @Override
@@ -356,28 +355,28 @@ public class CosmosEntityInformationUnitTest {
             if (o == null || getClass() != o.getClass()) {
                 return false;
             }
-            VersionOnWrongField that = (VersionOnWrongField) o;
+            VersionFieldDifferentName that = (VersionFieldDifferentName) o;
             return Objects.equals(id, that.id)
                 && Objects.equals(name, that.name)
-                && Objects.equals(_etag, that._etag);
+                && Objects.equals(version, that.version);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(id, name, _etag);
+            return Objects.hash(id, name, version);
         }
 
         @Override
         public String toString() {
-            return "VersionOnWrongField{"
+            return "VersionFieldDifferentName{"
                 + "id='"
                 + id
                 + '\''
                 + ", name='"
                 + name
                 + '\''
-                + ", _etag='"
-                + _etag
+                + ", version='"
+                + version
                 + '\''
                 + '}';
         }
