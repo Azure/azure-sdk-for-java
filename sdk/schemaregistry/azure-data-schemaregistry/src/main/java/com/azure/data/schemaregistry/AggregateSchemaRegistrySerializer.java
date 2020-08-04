@@ -93,12 +93,12 @@ public class AggregateSchemaRegistrySerializer implements ObjectSerializer {
     }
 
     @Override
-    public <S extends OutputStream> S serialize(S stream, Object value) {
-        return serializer.serializeAsync(stream, value).block();
+    public void serialize(OutputStream stream, Object value) {
+        serializer.serializeAsync(stream, value).block();
     }
 
     @Override
-    public <S extends OutputStream> Mono<S> serializeAsync(S stream, Object value) {
+    public Mono<Void> serializeAsync(OutputStream stream, Object value) {
         return serializer.serializeAsync(stream, value);
     }
 

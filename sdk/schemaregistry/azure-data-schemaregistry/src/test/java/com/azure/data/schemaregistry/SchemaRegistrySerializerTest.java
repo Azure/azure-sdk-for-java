@@ -56,7 +56,8 @@ public class SchemaRegistrySerializerTest {
             mockRegistryClient, false);
 
         try {
-            ByteArrayOutputStream payload = serializer.serializeAsync(new ByteArrayOutputStream(), 1).block();
+            ByteArrayOutputStream payload =  new ByteArrayOutputStream();
+            serializer.serializeAsync(payload, 1).block();
             ByteBuffer buffer = ByteBuffer.wrap(payload.toByteArray());
             byte[] schemaGuidByteArray = new byte[SchemaRegistrySerializer.SCHEMA_ID_SIZE];
             buffer.get(schemaGuidByteArray);

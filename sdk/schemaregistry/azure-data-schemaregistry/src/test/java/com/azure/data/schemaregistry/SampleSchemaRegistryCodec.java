@@ -16,7 +16,6 @@ public class SampleSchemaRegistryCodec implements SchemaRegistryCodec {
         return "schema name";
     }
 
-    @Override
     public String getSchemaGroup() {
         return "schema group";
     }

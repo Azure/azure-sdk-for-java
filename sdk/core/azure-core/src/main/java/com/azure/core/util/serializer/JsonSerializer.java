@@ -39,20 +39,17 @@ public interface JsonSerializer extends ObjectSerializer {
      *
      * @param stream {@link OutputStream} where the object's JSON will be written.
      * @param value The object.
-     * @param <S> Type of the output stream.
-     * @return The stream where the object's JSON was written.
      */
     @Override
-    <S extends OutputStream> S serialize(S stream, Object value);
+    void serialize(OutputStream stream, Object value);
 
     /**
      * Writes an object's JSON into a stream..
      *
      * @param stream {@link OutputStream} where the object's JSON will be written.
      * @param value The object.
-     * @param <S> Type of the output stream.
-     * @return The stream where the object's JSON was written.
+     * @return Reactive stream that will indicate operation completion.
      */
     @Override
-    <S extends OutputStream> Mono<S> serializeAsync(S stream, Object value);
+    Mono<Void> serializeAsync(OutputStream stream, Object value);
 }
