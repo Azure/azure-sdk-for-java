@@ -37,7 +37,6 @@ public class MappingCosmosConverter
     JsonNode>,
     ApplicationContextAware {
 
-    private static final String ETAG_KEY = "_etag";
     protected final MappingContext<? extends CosmosPersistentEntity<?>,
         CosmosPersistentProperty> mappingContext;
     protected GenericConversionService conversionService;
@@ -84,12 +83,9 @@ public class MappingCosmosConverter
                 objectNode.remove(Constants.ID_PROPERTY_NAME);
                 objectNode.set(idProperty.getName(), idValue);
             }
-            final JsonNode etag = jsonNode.get(ETAG_KEY);
+            final JsonNode etag = jsonNode.get(Constants.ETAG_PROPERTY_DEFAULT_NAME);
             if (etag != null) {
-                final CosmosEntityInformation<?, ?> entityInfo = CosmosEntityInformation.getInstance(type);
-                if (entityInfo.isVersioned()) {
-                    objectNode.set(entityInfo.getVersionFieldName(), etag);
-                }
+                mapEtagToVersionField(type, objectNode, etag);
             }
             return objectMapper.treeToValue(objectNode, type);
         } catch (JsonProcessingException e) {
@@ -137,7 +133,33 @@ public class MappingCosmosConverter
             cosmosObjectNode.put("id", id);
         }
 
+        mapVersionFieldToEtag(sourceEntity, cosmosObjectNode);
+
         return cosmosObjectNode;
+    }
+
+    //the field on the underlying cosmos document will always be _etag, so we map the field that the
+    //user has marked with @version to _etag and remove the @version annotated field from the
+    //object if the field is not named _etag
+    private void mapVersionFieldToEtag(Object sourceEntity, ObjectNode cosmosObjectNode) {
+        final CosmosEntityInformation<?, ?> entityInfo = CosmosEntityInformation.getInstance(sourceEntity.getClass());
+        if (entityInfo.isVersioned()) {
+            if (!entityInfo.getVersionFieldName().equals(Constants.ETAG_PROPERTY_DEFAULT_NAME)) {
+                cosmosObjectNode.remove(entityInfo.getVersionFieldName());
+                cosmosObjectNode.put(Constants.ETAG_PROPERTY_DEFAULT_NAME,
+                    entityInfo.getVersionFieldValue(sourceEntity));
+            }
+        }
+    }
+
+    private <R> void mapEtagToVersionField(Class<R> type, ObjectNode objectNode, JsonNode etagValue) {
+        final CosmosEntityInformation<?, ?> entityInfo = CosmosEntityInformation.getInstance(type);
+        if (entityInfo.isVersioned()) {
+            objectNode.set(entityInfo.getVersionFieldName(), etagValue);
+            if (!entityInfo.getVersionFieldName().equals(Constants.ETAG_PROPERTY_DEFAULT_NAME)) {
+                objectNode.remove(Constants.ETAG_PROPERTY_DEFAULT_NAME);
+            }
+        }
     }
 
     /**

@@ -17,6 +17,7 @@ public final class Constants {
     public static final boolean DEFAULT_AUTO_CREATE_CONTAINER = true;
 
     public static final String ID_PROPERTY_NAME = "id";
+    public static final String ETAG_PROPERTY_DEFAULT_NAME = "_etag";
 
     public static final String COSMOS_MODULE_NAME = "cosmos";
     public static final String COSMOS_MODULE_PREFIX = "cosmos";

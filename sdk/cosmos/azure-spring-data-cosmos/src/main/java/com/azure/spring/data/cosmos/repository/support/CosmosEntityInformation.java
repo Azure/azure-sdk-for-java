@@ -186,6 +186,16 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
     }
 
     /**
+     * Get the value of the field marked as the version field
+     *
+     * @param entity the object to get the value from
+     * @return the value of the version field
+     */
+    public String getVersionFieldValue(Object entity) {
+        return versionField == null ? null : (String) ReflectionUtils.getField(versionField, entity);
+    }
+
+    /**
      * Get the field value represented by the supplied partitionKeyField object on the
      * specified entity object.
      *
@@ -374,6 +384,5 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
 
         return autoCreateContainer;
     }
-
 }
 
