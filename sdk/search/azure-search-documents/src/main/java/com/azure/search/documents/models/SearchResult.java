@@ -69,9 +69,7 @@ public final class SearchResult {
      * @return the additionalProperties value.
      */
     public <T> T getDocument(Class<T> modelClass) {
-        if (jsonSerializer == null) {
-            jsonSerializer = Utility.creatDefaultJsonSerializerInstance();
-        }
+        jsonSerializer = Utility.creatDefaultJsonSerializerInstance();
         ByteArrayOutputStream sourceStream = jsonSerializer.serialize(new ByteArrayOutputStream(),
             additionalProperties);
         return jsonSerializer.deserialize(new ByteArrayInputStream(sourceStream.toByteArray()),

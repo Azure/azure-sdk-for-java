@@ -9,10 +9,10 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
-import com.azure.core.serializer.json.jackson.JacksonJsonSerializerProvider;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.MemberNameConverterProviders;
 import com.azure.search.documents.SearchAsyncClient;
 import com.azure.search.documents.SearchClientBuilder;
 import com.azure.search.documents.SearchServiceVersion;
@@ -735,11 +735,11 @@ public final class SearchIndexAsyncClient {
      * @return The list {@link SearchField} for search index schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public static Mono<List<SearchField>> buildSearchField(Class<?> model, FieldBuilderOptions options) {
+    public static List<SearchField> buildSearchField(Class<?> model, FieldBuilderOptions options) {
         if (options == null) {
-            return Mono.just(FieldBuilder.build(model, new JacksonJsonSerializerProvider().createInstance()));
+            return FieldBuilder.build(model, MemberNameConverterProviders.createInstance());
         }
-        return Mono.just(FieldBuilder.build(model, options.getSerializer()));
+        return FieldBuilder.build(model, options.getSerializer());
     }
 
     Mono<Response<Void>> deleteSynonymMapWithResponse(String synonymMapName, String etag,
