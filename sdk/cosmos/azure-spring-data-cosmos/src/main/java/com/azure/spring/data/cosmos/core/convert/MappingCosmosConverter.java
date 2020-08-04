@@ -83,7 +83,7 @@ public class MappingCosmosConverter
                 objectNode.remove(Constants.ID_PROPERTY_NAME);
                 objectNode.set(idProperty.getName(), idValue);
             }
-            final JsonNode etag = jsonNode.get(ETAG_KEY);
+            final JsonNode etag = jsonNode.get(Constants.ETAG_PROPERTY_DEFAULT_NAME);
             if (etag != null) {
                 mapEtagToVersionField(type, objectNode, etag);
             }
@@ -146,7 +146,8 @@ public class MappingCosmosConverter
         if (entityInfo.isVersioned()) {
             if (!entityInfo.getVersionFieldName().equals(Constants.ETAG_PROPERTY_DEFAULT_NAME)) {
                 cosmosObjectNode.remove(entityInfo.getVersionFieldName());
-                cosmosObjectNode.put(Constants.ETAG_PROPERTY_DEFAULT_NAME, entityInfo.getVersionFieldValue(sourceEntity));
+                cosmosObjectNode.put(Constants.ETAG_PROPERTY_DEFAULT_NAME,
+                    entityInfo.getVersionFieldValue(sourceEntity));
             }
         }
     }
