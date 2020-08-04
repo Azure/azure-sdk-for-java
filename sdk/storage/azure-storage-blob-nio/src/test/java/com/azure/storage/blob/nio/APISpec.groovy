@@ -394,7 +394,8 @@ class APISpec extends Specification {
     }
 
     private String generateResourceName(String prefix, int entityNo) {
-        return resourceNamer.randomName(prefix + testName + entityNo, 63)
+        def str = prefix + testName + entityNo
+        return resourceNamer.randomName(str, 63)
     }
 
     String getConfigValue(String value) {

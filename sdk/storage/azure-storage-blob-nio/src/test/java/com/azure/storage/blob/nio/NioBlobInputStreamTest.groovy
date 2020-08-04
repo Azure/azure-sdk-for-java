@@ -15,7 +15,6 @@ class NioBlobInputStreamTest extends APISpec {
     NioBlobInputStream nioStream
     FileInputStream fileStream
     AzureFileSystem fs
-    def config = new HashMap<String, Object>()
 
     def setup() {
         sourceFile = getRandomFile(10 * 1024 * 1024)
@@ -24,11 +23,7 @@ class NioBlobInputStreamTest extends APISpec {
         bc = cc.getBlobClient(generateBlobName())
         bc.uploadFromFile(sourceFile.getPath())
 
-        config = initializeConfigMap()
-        config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName() + "," + generateContainerName()
-        config[AzureFileSystem.AZURE_STORAGE_ACCOUNT_KEY] = getAccountKey(PRIMARY_STORAGE)
-
-        fs = new AzureFileSystem(new AzureFileSystemProvider(), getAccountName(PRIMARY_STORAGE), config)
+        fs = createFS(initializeConfigMap())
         def path = ((AzurePath) fs.getPath(getNonDefaultRootDir(fs), bc.getBlobName()))
 
         nioStream = new NioBlobInputStream(bc.openInputStream(), path)
