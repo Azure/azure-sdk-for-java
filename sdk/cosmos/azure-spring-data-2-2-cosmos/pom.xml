@@ -41,7 +41,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework.data:spring-data-commons:[2.2.0.RELEASE]</include> <!-- {x-include-update;spring_data_2_2_org.springframework.data:spring-data-commons;external_dependency} -->
+                <include>data:[2.2.0.RELEASE]</include> <!-- {x-include-update;spring_data_2_2_org.springframework.data:spring-data-commons;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
