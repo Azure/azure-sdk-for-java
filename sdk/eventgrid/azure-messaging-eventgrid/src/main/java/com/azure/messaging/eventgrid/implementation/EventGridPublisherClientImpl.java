@@ -26,6 +26,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.messaging.eventgrid.implementation.models.CloudEvent;
 import com.azure.messaging.eventgrid.implementation.models.EventGridEvent;
 import java.util.List;
@@ -60,9 +62,25 @@ public final class EventGridPublisherClientImpl {
         return this.httpPipeline;
     }
 
+    /** The serializer to serialize an object into a string. */
+    private final SerializerAdapter serializerAdapter;
+
+    /**
+     * Gets The serializer to serialize an object into a string.
+     *
+     * @return the serializerAdapter value.
+     */
+    public SerializerAdapter getSerializerAdapter() {
+        return this.serializerAdapter;
+    }
+
     /** Initializes an instance of EventGridPublisherClient client. */
     EventGridPublisherClientImpl() {
-        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build());
+        this(
+                new HttpPipelineBuilder()
+                        .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
+                        .build(),
+                JacksonAdapter.createDefaultSerializerAdapter());
     }
 
     /**
@@ -71,9 +89,21 @@ public final class EventGridPublisherClientImpl {
      * @param httpPipeline The HTTP pipeline to send requests through.
      */
     EventGridPublisherClientImpl(HttpPipeline httpPipeline) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter());
+    }
+
+    /**
+     * Initializes an instance of EventGridPublisherClient client.
+     *
+     * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param serializerAdapter The serializer to serialize an object into a string.
+     */
+    EventGridPublisherClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter) {
         this.httpPipeline = httpPipeline;
+        this.serializerAdapter = serializerAdapter;
         this.apiVersion = "2018-01-01";
-        this.service = RestProxy.create(EventGridPublisherClientService.class, this.httpPipeline);
+        this.service =
+                RestProxy.create(EventGridPublisherClientService.class, this.httpPipeline, this.getSerializerAdapter());
     }
 
     /**
