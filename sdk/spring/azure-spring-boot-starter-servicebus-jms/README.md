@@ -1,11 +1,10 @@
-#Azure Service Bus JMS Spring Boot Starter client library for Java
+# Azure Service Bus JMS Spring Boot Starter client library for Java
 
-## Key concepts
 With this starter you could easily use Spring JMS Queue and Topic with Azure Service Bus.
 
-### Java agent based monitoring
+## Key concepts
 
-Azure Application Insights has released one Java agent that can be used to capture metrics inside JVM. Consider use the Java agent based approach. 
+**Java agent based monitoring**: Azure Application Insights has released one Java agent that can be used to capture metrics inside JVM. Consider use the Java agent based approach. 
 
 Refer following document for more details:
 
@@ -39,6 +38,19 @@ Running these samples will be charged by Azure. You can check the usage and bill
 
 
 ## Troubleshooting
+If the JDK version you use is greater than 1.8, You may meet this problem: 
+```
+NoClassDefFoundError: javax/xml/bind/JAXBException
+```
+
+To solve this issue, you need to add the dependency below into your classpath:
+```
+<dependency>
+   <groupId>javax.xml.bind</groupId>
+   <artifactId>jaxb-api</artifactId>
+   <version>2.3.0</version>
+</dependency>
+```
 
 ## Next steps
 
@@ -51,3 +63,6 @@ When telemetry is enabled, an HTTP request will be sent to URL `https://dc.servi
 Find more information about Azure Service Privacy Statement, please check [Microsoft Online Services Privacy Statement](https://www.microsoft.com/privacystatement/OnlineServices/Default.aspx). 
 
 ## Contributing
+This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
+
+Please follow [instructions here](../CONTRIBUTING.md) to build from source or contribute.

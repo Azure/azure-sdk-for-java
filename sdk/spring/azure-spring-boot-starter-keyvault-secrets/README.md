@@ -1,7 +1,5 @@
-## Azure Key Vault Secrets Spring boot starter client library for Java
+# Azure Key Vault Secrets Spring Boot starter client library for Java
 Azure Key Vault Secrets Spring boot starter is Spring starter for [Azure Key Vault Secrets](https://docs.microsoft.com/rest/api/keyvault/about-keys--secrets-and-certificates#BKMK_WorkingWithSecrets). With this starter, Azure Key Vault is added as one of Spring PropertySource, so secrets stored in Azure Key Vault could be easily used and conveniently accessed like other externalized configuration property, e.g. properties in files.
-
-## Key concepts
 
 ## Getting started
 ### Add the dependency
@@ -99,15 +97,8 @@ public class KeyVaultSample implements CommandLineRunner {
 ## Examples
 Please refer to [sample project here](../azure-spring-boot-samples/azure-spring-boot-sample-keyvault-secrets).
 
-## Allow telemetry
-Microsoft would like to collect data about how users use this Spring boot starter. Microsoft uses this information to improve our tooling experience. Participation is voluntary. If you don't want to participate, just simply disable it by setting below configuration in `application.properties`.
-```
-azure.keyvault.allow.telemetry=false
-```
-When telemetry is enabled, an HTTP request will be sent to URL `https://dc.services.visualstudio.com/v2/track`. So please make sure it's not blocked by your firewall.    
-Find more information about Azure Service Privacy Statement, please check [Microsoft Online Services Privacy Statement](https://www.microsoft.com/privacystatement/OnlineServices/Default.aspx). 
-
-## Multiple Key Vault support
+## Key concepts
+### Multiple Key Vault support
 
 If you want to use multiple key vaults you need to define names for each of the
 key vaults you want to use and in which order the key vaults should be consulted.
@@ -134,7 +125,7 @@ existing configuration, please make sure you migrate that configuration to the
 multiple key vault variant. Mixing multiple key vaults with an existing single
 key vault configuration is a non supported scenario.
 
-## Case sensitive key mode
+### Case sensitive key mode
 
 The new case sensitive mode allows you to use case sensitive key vault names. Note
 that the key vault secret key still needs to honor the naming limitation as 
@@ -146,7 +137,7 @@ To enable case sensitive mode use:
 azure.keyvault.case-sensitive-keys=true
 ```
 
-## Placeholders in properties
+### Placeholders in properties
 
 If your Spring property is using a name that does not honor the key vault secret
 key limitation use the following technique as described by 
@@ -164,5 +155,22 @@ The application will take care of getting the value that is backed by the
 `my.not.compliant.property`.
 
 ## Troubleshooting
+If you encounter any bug, please file an issue [here](https://github.com/Azure/azure-sdk-for-java/issues).
+
+To suggest a new feature or changes that could be made, file an issue the same way you would for a bug.
+
+You can participate community driven [![Gitter](https://badges.gitter.im/Microsoft/spring-on-azure.svg)](https://gitter.im/Microsoft/spring-on-azure)
+
 ## Next steps
+### Allow telemetry
+Microsoft would like to collect data about how users use this Spring boot starter. Microsoft uses this information to improve our tooling experience. Participation is voluntary. If you don't want to participate, just simply disable it by setting below configuration in `application.properties`.
+```
+azure.keyvault.allow.telemetry=false
+```
+When telemetry is enabled, an HTTP request will be sent to URL `https://dc.services.visualstudio.com/v2/track`. So please make sure it's not blocked by your firewall.    
+Find more information about Azure Service Privacy Statement, please check [Microsoft Online Services Privacy Statement](https://www.microsoft.com/privacystatement/OnlineServices/Default.aspx). 
+
 ## Contributing
+This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
+
+Please follow [instructions here](../CONTRIBUTING.md) to build from source or contribute.
