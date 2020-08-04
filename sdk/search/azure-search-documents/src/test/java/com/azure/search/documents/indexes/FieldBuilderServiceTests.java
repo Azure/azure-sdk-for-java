@@ -4,6 +4,7 @@
 package com.azure.search.documents.indexes;
 
 import com.azure.search.documents.SearchTestBase;
+import com.azure.search.documents.implementation.util.FieldBuilder;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SynonymMap;
 import com.azure.search.documents.test.environment.models.Hotel;
@@ -42,7 +43,7 @@ public class FieldBuilderServiceTests extends SearchTestBase {
     public void createIndexWithFieldBuilder() {
         SynonymMap synonymMap = new SynonymMap(synonymMapName).setSynonyms("hotel,motel");
         client.createSynonymMap(synonymMap);
-        index.setFields(FieldBuilder.build(Hotel.class, null));
+        index.setFields(SearchIndexClient.buildSearchField(Hotel.class, null));
         client.createIndex(index);
         indexesToDelete.add(index.getName());
         assertObjectEquals(index, client.getIndex(index.getName()), true);

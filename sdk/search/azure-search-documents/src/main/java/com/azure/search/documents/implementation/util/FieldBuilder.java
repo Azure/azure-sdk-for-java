@@ -1,12 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.search.documents.indexes;
+package com.azure.search.documents.implementation.util;
 
-import com.azure.core.serializer.json.jackson.JacksonJsonSerializerProvider;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.MemberNameConverter;
 import com.azure.core.util.serializer.ObjectSerializer;
+import com.azure.search.documents.indexes.FieldIgnore;
+import com.azure.search.documents.indexes.SearchableFieldProperty;
+import com.azure.search.documents.indexes.SimpleFieldProperty;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
@@ -67,9 +69,6 @@ public final class FieldBuilder {
      * @return A collection of fields.
      */
     public static <T> List<SearchField> build(Class<T> modelClass, MemberNameConverter serializer) {
-        if (serializer == null) {
-            serializer = new JacksonJsonSerializerProvider().createInstance();
-        }
         ClientLogger logger = new ClientLogger(FieldBuilder.class);
         return build(modelClass, new Stack<>(), serializer, logger);
     }

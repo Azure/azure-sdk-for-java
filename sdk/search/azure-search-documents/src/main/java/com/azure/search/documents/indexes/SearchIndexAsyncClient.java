@@ -9,6 +9,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
+import com.azure.core.serializer.json.jackson.JacksonJsonSerializerProvider;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -18,18 +19,22 @@ import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.converters.AnalyzeRequestConverter;
 import com.azure.search.documents.implementation.converters.SearchIndexConverter;
 import com.azure.search.documents.implementation.converters.SynonymMapConverter;
+import com.azure.search.documents.implementation.util.FieldBuilder;
 import com.azure.search.documents.implementation.util.MappingUtils;
 import com.azure.search.documents.indexes.implementation.SearchServiceClientImpl;
 import com.azure.search.documents.indexes.implementation.SearchServiceClientImplBuilder;
 import com.azure.search.documents.indexes.implementation.models.ListSynonymMapsResult;
 import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
+import com.azure.search.documents.indexes.models.FieldBuilderOptions;
+import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexStatistics;
 import com.azure.search.documents.indexes.models.SearchServiceStatistics;
 import com.azure.search.documents.indexes.models.SynonymMap;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -720,6 +725,13 @@ public final class SearchIndexAsyncClient {
         Objects.requireNonNull(synonymMap, "'SynonymMap' cannot be null");
         String etag = onlyIfUnchanged ? synonymMap.getETag() : null;
         return withContext(context -> deleteSynonymMapWithResponse(synonymMap.getName(), etag, context));
+    }
+
+    public static Mono<List<SearchField>> buildSearchField(Class<?> model, FieldBuilderOptions options) {
+        if (options == null) {
+            return Mono.just(FieldBuilder.build(model, new JacksonJsonSerializerProvider().createInstance()));
+        }
+        return Mono.just(FieldBuilder.build(model, options.getSerializer()));
     }
 
     Mono<Response<Void>> deleteSynonymMapWithResponse(String synonymMapName, String etag,

@@ -4,6 +4,7 @@
 package com.azure.search.documents.indexes;
 
 import com.azure.search.documents.TestHelpers;
+import com.azure.search.documents.implementation.util.FieldBuilder;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.test.environment.models.HotelAnalyzerException;
@@ -28,24 +29,24 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FieldBuilderTests {
-
     @Test
     public void hotelSearchableThrowException() {
         Exception exception = assertThrows(RuntimeException.class, () ->
-            FieldBuilder.build(HotelSearchException.class, null));
+            SearchIndexClient.buildSearchField(HotelSearchException.class, null));
         assertExceptionMassageAndDataType(exception, SearchFieldDataType.INT32, "hotelId");
     }
 
     @Test
     public void hotelListFieldSearchableThrowException() {
         Exception exception = assertThrows(RuntimeException.class, () ->
-            FieldBuilder.build(HotelSearchableExceptionOnList.class, null));
+            SearchIndexClient.buildSearchField(HotelSearchableExceptionOnList.class, null));
         assertExceptionMassageAndDataType(exception, SearchFieldDataType.collection(SearchFieldDataType.INT32), "passcode");
     }
 
     @Test
     public void hotelCircularDependencies() {
-        List<SearchField> actualFields = sortByFieldName(FieldBuilder.build(HotelCircularDependencies.class, null));
+        List<SearchField> actualFields = sortByFieldName(
+            SearchIndexClient.buildSearchField(HotelCircularDependencies.class, null));
         List<SearchField> expectedFields = sortByFieldName(buildHotelCircularDependenciesModel());
         assertListFieldEquals(expectedFields, actualFields);
     }
@@ -53,7 +54,7 @@ public class FieldBuilderTests {
     @Test
     public void hotelWithEmptySynonymMaps() {
         // We cannot put null in the annotation. So no need to test null case.
-        List<SearchField> actualFields = FieldBuilder.build(HotelWithEmptyInSynonymMaps.class, null);
+        List<SearchField> actualFields = SearchIndexClient.buildSearchField(HotelWithEmptyInSynonymMaps.class, null);
 
         List<SearchField> expectedFields = Collections.singletonList(new SearchField("tags",
             SearchFieldDataType.collection(SearchFieldDataType.STRING))
@@ -69,29 +70,31 @@ public class FieldBuilderTests {
 
     @Test
     public void hotelWithTwoDimensionalType() {
-        Exception exception = assertThrows(RuntimeException.class, () -> FieldBuilder.build(HotelTwoDimensional.class,
-            null));
+        Exception exception = assertThrows(RuntimeException.class, () ->
+            SearchIndexClient.buildSearchField(HotelTwoDimensional.class, null));
         assertExceptionMassageAndDataType(exception, null, "single-dimensional");
     }
 
     @Test
     public void hotelAnalyzerException() {
         Exception exception = assertThrows(RuntimeException.class, () ->
-            FieldBuilder.build(HotelAnalyzerException.class, null));
+            SearchIndexClient.buildSearchField(HotelAnalyzerException.class, null));
         assertExceptionMassageAndDataType(exception, null,
             "either analyzer or both searchAnalyzer and indexAnalyzer");
     }
 
     @Test
     public void hotelWithArrayType() {
-        List<SearchField> actualFields = sortByFieldName(FieldBuilder.build(HotelWithArray.class, null));
+        List<SearchField> actualFields = sortByFieldName(
+            SearchIndexClient.buildSearchField(HotelWithArray.class, null));
         List<SearchField> expectedFields = sortByFieldName(buildHotelWithArrayModel());
         assertListFieldEquals(expectedFields, actualFields);
     }
 
     @Test
     public void propertyRename() {
-        List<SearchField> actualFields = sortByFieldName(FieldBuilder.build(HotelRenameProperty.class, null));
+        List<SearchField> actualFields = sortByFieldName(
+            SearchIndexClient.buildSearchField(HotelRenameProperty.class, null));
         List<String> expectedFieldNames = Arrays.asList("HotelName", "hotelId", "description");
         Collections.sort(expectedFieldNames);
         assertEquals(expectedFieldNames.get(0), actualFields.get(0).getName());
@@ -108,7 +111,7 @@ public class FieldBuilderTests {
 
     @Test
     public void unsupportedFields() {
-        List<SearchField> actualFields = FieldBuilder.build(HotelWithUnsupportedField.class, null);
+        List<SearchField> actualFields = SearchIndexClient.buildSearchField(HotelWithUnsupportedField.class, null);
         assertEquals(1, actualFields.size());
         assertEquals("hotelId", actualFields.get(0).getName());
     }
