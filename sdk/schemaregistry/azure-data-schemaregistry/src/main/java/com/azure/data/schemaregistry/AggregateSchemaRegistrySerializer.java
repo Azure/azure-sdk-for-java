@@ -13,6 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 public class AggregateSchemaRegistrySerializer implements ObjectSerializer {
@@ -44,9 +45,13 @@ public class AggregateSchemaRegistrySerializer implements ObjectSerializer {
     @Override
     @SuppressWarnings("unchecked")
     public <T> Mono<T> deserializeAsync(InputStream stream, TypeReference<T> typeReference) {
-        if (Object.class.equals(typeReference.getJavaType())) {
+        Objects.requireNonNull(stream, "'stream' cannot be null.");
 
+        if (!Object.class.equals(typeReference.getJavaType())) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Aggregate deserialization requires TypeReference<Object> type reference parameter."));
         }
+
         return Mono.fromCallable(() -> {
             byte[] payload = new byte[stream.available()];
             while (stream.read(payload) != -1) {}
