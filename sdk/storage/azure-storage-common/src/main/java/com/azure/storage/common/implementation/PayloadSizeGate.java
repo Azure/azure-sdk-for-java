@@ -41,6 +41,10 @@ final class PayloadSizeGate {
         /* TODO (gapra): Investigate if there is way to avoid copying the data twice since this may result in lower
             perf. The other copy is when we write the buffer to the pool */
         /* Deep copy the buffer. This is required to ensure integrity of data. */
+        if (isThresholdBreached()) {
+            return Flux.just(buf);
+        }
+
         ByteBuffer cachedBuffer = ByteBuffer.allocate(buf.remaining()).put(buf);
         cachedBuffer.flip();
 

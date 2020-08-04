@@ -16,9 +16,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeoutException;
+import java.util.function.Supplier;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
-import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
 /**
  * This class observes a network calls request and response and manages triggering a timeout if the operation stalls.
@@ -43,14 +43,14 @@ import static java.util.concurrent.TimeUnit.NANOSECONDS;
  * response is consumed.
  */
 public final class TimeoutHandler extends ChannelDuplexHandler {
-    private static final long MINIMUM_TIMEOUT_NANOS = MILLISECONDS.toNanos(1);
-    private static final String WRITE_TIMED_OUT_MESSAGE = "Channel write operation timed out.";
-    private static final String RESPONSE_TIMED_OUT_MESSAGE = "Channel response timed out.";
-    private static final String READ_TIMED_OUT_MESSAGE = "Channel read timed out.";
+    private static final long MINIMUM_TIMEOUT = MILLISECONDS.toMillis(1);
+    private static final String WRITE_TIMED_OUT_MESSAGE = "Channel write operation timed out after %d milliseconds.";
+    private static final String RESPONSE_TIMED_OUT_MESSAGE = "Channel response timed out after %d milliseconds.";
+    private static final String READ_TIMED_OUT_MESSAGE = "Channel read timed out after %d milliseconds.";
 
-    private final long writeTimeoutNanos;
-    private final long responseTimeoutNanos;
-    private final long readTimeoutNanos;
+    private final long writeTimeoutMillis;
+    private final long responseTimeoutMillis;
+    private final long readTimeoutMillis;
 
     private final Set<WriteTask> writeTasks = new HashSet<>();
 
@@ -58,7 +58,7 @@ public final class TimeoutHandler extends ChannelDuplexHandler {
     private boolean finalWriteProcessed = false;
     private ScheduledFuture<?> responseTimeout;
     private ScheduledFuture<?> readTimeout;
-    private long lastReadNanos;
+    private long lastReadMillis;
     private boolean closed;
 
     /**
@@ -70,15 +70,14 @@ public final class TimeoutHandler extends ChannelDuplexHandler {
      * @param readTimeout Read timeout duration, if {@code null} or less than or equal {@code 0} there is no timeout.
      */
     public TimeoutHandler(Duration writeTimeout, Duration responseTimeout, Duration readTimeout) {
-        this.writeTimeoutNanos = getTimeoutNanos(writeTimeout);
-        this.responseTimeoutNanos = getTimeoutNanos(responseTimeout);
-        this.readTimeoutNanos = getTimeoutNanos(readTimeout);
+        this.writeTimeoutMillis = getTimeoutMillis(writeTimeout);
+        this.responseTimeoutMillis = getTimeoutMillis(responseTimeout);
+        this.readTimeoutMillis = getTimeoutMillis(readTimeout);
     }
 
     @Override
     public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) {
         if (msg == LastHttpContent.EMPTY_LAST_CONTENT || msg instanceof FullHttpRequest) {
-            System.out.println("Final write handled for request.");
             finalWriteProcessed = true;
         }
 
@@ -87,7 +86,7 @@ public final class TimeoutHandler extends ChannelDuplexHandler {
          * write operation completing to determine if the response timeout should begin.
          */
         promise = promise.unvoid();
-        addWriteTimeoutTask(ctx, promise, writeTimeoutNanos > 0);
+        addWriteTimeoutTask(ctx, promise, writeTimeoutMillis > 0);
 
         ctx.write(msg, promise);
     }
@@ -114,19 +113,23 @@ public final class TimeoutHandler extends ChannelDuplexHandler {
          * If we haven't processed the final write operation or have outstanding write operations that are still running
          * don't begin the response timeout task.
          */
-        if (!finalWriteProcessed || outstandingWriteOperations != 0 || responseTimeoutNanos == 0) {
+        if (!finalWriteProcessed || outstandingWriteOperations != 0 || responseTimeoutMillis == 0) {
             return;
         }
 
         // Start the timeout task.
-        System.out.println("Beginning response timeout.");
-        responseTimeout = ctx.executor().schedule(() -> operationTimedOut(ctx, RESPONSE_TIMED_OUT_MESSAGE),
-            responseTimeoutNanos, NANOSECONDS);
+        responseTimeout = ctx.executor().schedule(() -> operationTimedOut(ctx, () ->
+            String.format(RESPONSE_TIMED_OUT_MESSAGE, readTimeoutMillis)), responseTimeoutMillis, MILLISECONDS);
+    }
+
+    @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg) {
+        ctx.fireChannelRead(msg);
     }
 
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) {
-        lastReadNanos = System.nanoTime();
+        lastReadMillis = System.currentTimeMillis();
 
         /*
          * If there is an on-going response cancel it as we've began reading the response.
@@ -136,25 +139,24 @@ public final class TimeoutHandler extends ChannelDuplexHandler {
             responseTimeout = null;
         }
 
-        if (readTimeoutNanos > 0 && readTimeout == null) {
-            readTimeout = ctx.executor().schedule(() -> readTask(ctx), readTimeoutNanos, NANOSECONDS);
+        if (readTimeoutMillis > 0 && readTimeout == null) {
+            readTimeout = ctx.executor().schedule(() -> readTask(ctx), readTimeoutMillis, MILLISECONDS);
         }
 
         ctx.fireChannelReadComplete();
     }
 
     private void readTask(ChannelHandlerContext ctx) {
-        if (readTimeoutNanos - (System.nanoTime() - lastReadNanos) <= 0) {
-            operationTimedOut(ctx, READ_TIMED_OUT_MESSAGE);
+        if (readTimeoutMillis - (System.currentTimeMillis() - lastReadMillis) <= 0) {
+            operationTimedOut(ctx, () -> String.format(READ_TIMED_OUT_MESSAGE, readTimeoutMillis));
         } else {
-            readTimeout = ctx.executor().schedule(() -> readTask(ctx), readTimeoutNanos, NANOSECONDS);
+            readTimeout = ctx.executor().schedule(() -> readTask(ctx), readTimeoutMillis, MILLISECONDS);
         }
     }
 
-    private void operationTimedOut(ChannelHandlerContext ctx, String errorMessage) {
-        System.out.println(errorMessage);
+    private void operationTimedOut(ChannelHandlerContext ctx, Supplier<String> errorMessageSupplier) {
         if (!closed) {
-            ctx.fireExceptionCaught(new TimeoutException(errorMessage));
+            ctx.fireExceptionCaught(new TimeoutException(errorMessageSupplier.get()));
             ctx.close();
             closed = true;
         }
@@ -175,22 +177,18 @@ public final class TimeoutHandler extends ChannelDuplexHandler {
      * Cleanup any remaining tasks when the handler is removed or when the channel becomes inactive.
      */
     private void cleanupHandler() {
-        System.out.println("Channel complete.");
         for (WriteTask writeTask : writeTasks) {
             if (writeTask.scheduledTimeout != null && !writeTask.scheduledTimeout.isDone()) {
-                System.out.println("Cancelling outstanding write operation.");
                 writeTask.scheduledTimeout.cancel(false);
             }
         }
 
         if (responseTimeout != null && !responseTimeout.isDone()) {
-            System.out.println("Cancelling outstanding response timeout.");
             responseTimeout.cancel(false);
             responseTimeout = null;
         }
 
         if (readTimeout != null && !readTimeout.isDone()) {
-            System.out.println("Cancelling outstanding read timeout.");
             readTimeout.cancel(false);
             readTimeout = null;
         }
@@ -213,7 +211,7 @@ public final class TimeoutHandler extends ChannelDuplexHandler {
              * operations counter.
              */
             this.scheduledTimeout = (hasTimeout)
-                ? ctx.executor().schedule(this, writeTimeoutNanos, NANOSECONDS)
+                ? ctx.executor().schedule(this, writeTimeoutMillis, MILLISECONDS)
                 : null;
         }
 
@@ -224,7 +222,7 @@ public final class TimeoutHandler extends ChannelDuplexHandler {
              * attempt to cancel all currently running write tasks.
              */
             if (!promise.isDone()) {
-                operationTimedOut(ctx, WRITE_TIMED_OUT_MESSAGE);
+                operationTimedOut(ctx, () -> String.format(WRITE_TIMED_OUT_MESSAGE, writeTimeoutMillis));
                 removeWriteTask(this, ctx, true);
 
                 return;
@@ -244,14 +242,14 @@ public final class TimeoutHandler extends ChannelDuplexHandler {
     }
 
     /*
-     * Helper function to convert the timeout duration into nanoseconds. If the duration is null, 0, or negative there
+     * Helper function to convert the timeout duration into MILLISECONDS. If the duration is null, 0, or negative there
      * is no timeout period, so return 0. Otherwise, return the maximum of the duration and the minimum timeout period.
      */
-    private static long getTimeoutNanos(Duration timeout) {
+    private static long getTimeoutMillis(Duration timeout) {
         if (timeout == null || timeout.isZero() || timeout.isNegative()) {
             return 0;
         }
 
-        return Math.max(timeout.toNanos(), MINIMUM_TIMEOUT_NANOS);
+        return Math.max(timeout.toMillis(), MINIMUM_TIMEOUT);
     }
 }
