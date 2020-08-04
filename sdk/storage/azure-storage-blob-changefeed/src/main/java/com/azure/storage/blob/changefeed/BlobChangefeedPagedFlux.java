@@ -9,7 +9,6 @@ import com.azure.core.util.paging.ContinuablePage;
 import com.azure.core.util.paging.ContinuablePagedFlux;
 import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedCursor;
 import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper;
-import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor;
 import com.azure.storage.blob.changefeed.models.BlobChangefeedEvent;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.CoreSubscriber;
@@ -124,21 +123,18 @@ public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, 
                 Flux<BlobChangefeedEventWrapper> cachedEventWrappers = eventWrappers.cache();
                 /* 2. Get the last element in the flux and grab it's cursor. This will be the continuationToken
                       returned to the user if they want to get the next page. */
-                Mono<ChangefeedCursor> c = cachedEventWrappers.last()
+                Mono<BlobChangefeedCursor> c = cachedEventWrappers.last()
                     .map(BlobChangefeedEventWrapper::getCursor);
-
-                Mono<BlobChangefeedCursor> cursor = cachedEventWrappers.last()
-                    .map(BlobChangefeedEventWrapper::getNewCursor);
                 /* 3. Map all the BlobChangefeedEventWrapper to just the BlobChangefeedEvents, and turn them into
                       a list. */
                 Mono<List<BlobChangefeedEvent>> e = cachedEventWrappers
                     .map(BlobChangefeedEventWrapper::getEvent)
                     .collectList();
                 /* Zip them together into a tuple to construct a BlobChangefeedPagedResponse. */
-                return Mono.zip(e, c, cursor);
+                return Mono.zip(e, c);
             })
             /* Construct the BlobChangefeedPagedResponse. */
-            .map(tuple2 -> new BlobChangefeedPagedResponse(tuple2.getT1(), tuple2.getT2(), tuple2.getT3()));
+            .map(tuple2 -> new BlobChangefeedPagedResponse(tuple2.getT1(), tuple2.getT2()));
     }
 
     @Override

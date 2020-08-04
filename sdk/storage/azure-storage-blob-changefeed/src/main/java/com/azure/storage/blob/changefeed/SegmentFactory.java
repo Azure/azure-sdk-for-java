@@ -30,12 +30,12 @@ class SegmentFactory {
     /**
      * Gets a new instance of a Segment.
      */
-    Segment getSegment(String segmentPath, ChangefeedCursor cfCursor, BlobChangefeedCursor changefeedCursor,
+    Segment getSegment(String segmentPath, BlobChangefeedCursor changefeedCursor,
         SegmentCursor userCursor) {
         /* Validate parameters. */
         StorageImplUtils.assertNotNull("segmentPath", segmentPath);
         StorageImplUtils.assertNotNull("changefeedCursor", changefeedCursor);
 
-        return new Segment(this.client, segmentPath, cfCursor, changefeedCursor, userCursor, shardFactory);
+        return new Segment(this.client, segmentPath, changefeedCursor, userCursor, shardFactory);
     }
 }

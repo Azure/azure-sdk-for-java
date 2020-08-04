@@ -45,7 +45,6 @@ class Changefeed {
     private final OffsetDateTime startTime; /* User provided start time. */
     private final OffsetDateTime endTime; /* User provided end time. */
     private final BlobChangefeedCursor changefeedCursor; /* Cursor associated with changefeed. */
-    private final ChangefeedCursor cfCursor;
     private final BlobChangefeedCursor userCursor; /* User provided cursor. */
     private final SegmentFactory segmentFactory; /* Segment factory. */
 
@@ -59,8 +58,6 @@ class Changefeed {
         this.endTime = endTime;
         this.userCursor = userCursor;
         this.segmentFactory = segmentFactory;
-
-        this.cfCursor = new ChangefeedCursor(this.endTime);
         byte[] urlHash;
         try {
             urlHash = MessageDigest.getInstance("MD5")
@@ -157,16 +154,12 @@ class Changefeed {
         OffsetDateTime segmentTime = TimeUtils.convertPathToTime(segment);
         /* Only pass the user cursor in to the segment of interest. */
         if (userCursor != null && segmentTime.isEqual(startTime)) {
-            return segmentFactory.getSegment(segment, cfCursor.toSegmentCursor(segmentTime), changefeedCursor.toSegmentCursor(segment), userCursor.getCurrentSegmentCursor()).getEvents();
+            return segmentFactory.getSegment(segment, changefeedCursor.toSegmentCursor(segment),
+                userCursor.getCurrentSegmentCursor()).getEvents();
         } else {
-            return segmentFactory.getSegment(segment, cfCursor.toSegmentCursor(segmentTime), changefeedCursor.toSegmentCursor(segment), null).getEvents();
+            return segmentFactory.getSegment(segment, changefeedCursor.toSegmentCursor(segment),
+                null).getEvents();
         }
-//        if (userCursor != null && segmentTime.isEqual(OffsetDateTime.parse(userCursor.getSegmentTime()))) {
-//            return segmentFactory.getSegment(segment, cfCursor.toSegmentCursor(segmentTime), changefeedCursor.toSegmentCursor(segment), userCursor)
-//                .getEvents();
-//        }
-//        return segmentFactory.getSegment(segment, cfCursor.toSegmentCursor(segmentTime), changefeedCursor.toSegmentCursor(segment), null)
-//            .getEvents();
     }
 
 }

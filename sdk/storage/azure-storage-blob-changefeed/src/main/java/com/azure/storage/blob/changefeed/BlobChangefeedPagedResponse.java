@@ -25,19 +25,16 @@ import java.util.List;
 public class BlobChangefeedPagedResponse implements ContinuablePage<String, BlobChangefeedEvent> {
 
     private final List<BlobChangefeedEvent> events;
-    private final ChangefeedCursor cursor;
-    private final BlobChangefeedCursor changefeedCursor;
+    private final BlobChangefeedCursor cursor;
 
     /**
      * Package-private constructor for use by {@link BlobChangefeedPagedFlux}
      * @param events A {@link List} of {@link BlobChangefeedEvent BlobChangefeedEvents}.
      * @param cursor A {@link ChangefeedCursor cursor}.
      */
-    BlobChangefeedPagedResponse(List<BlobChangefeedEvent> events, ChangefeedCursor cursor,
-        BlobChangefeedCursor changefeedCursor) {
+    BlobChangefeedPagedResponse(List<BlobChangefeedEvent> events, BlobChangefeedCursor cursor) {
         this.events = events;
         this.cursor = cursor;
-        this.changefeedCursor = changefeedCursor;
     }
 
     /**
@@ -66,10 +63,5 @@ public class BlobChangefeedPagedResponse implements ContinuablePage<String, Blob
     public String getContinuationToken() {
         /* Serialize the cursor and return it to the user as a String. */
         return cursor.serialize();
-    }
-
-    public String getCursor() {
-        /* Serialize the cursor and return it to the user as a String. */
-        return changefeedCursor.serialize();
     }
 }

@@ -20,18 +20,16 @@ import reactor.core.publisher.Flux;
 class Chunk {
 
     private final String chunkPath;
-    private final ChangefeedCursor shardCursor;
     private final BlobChangefeedCursor changefeedCursor; /* Cursor associated with parent shard. */
     private final AvroReader avroReader; /* AvroReader to read objects off of. */
 
     /**
      * Creates a new Chunk.
      */
-    Chunk(String chunkPath, ChangefeedCursor shardCursor, BlobChangefeedCursor changefeedCursor, AvroReader avroReader) {
-        StorageImplUtils.assertNotNull("shardCursor", shardCursor);
+    Chunk(String chunkPath, BlobChangefeedCursor changefeedCursor, AvroReader avroReader) {
+        StorageImplUtils.assertNotNull("changefeedCursor", changefeedCursor);
         StorageImplUtils.assertNotNull("avroReader", avroReader);
         this.chunkPath = chunkPath;
-        this.shardCursor = shardCursor;
         this.changefeedCursor = changefeedCursor;
         this.avroReader = avroReader;
     }
@@ -51,13 +49,12 @@ class Chunk {
                 Object object = avroObject.getObject();
 
                 /* Get the event cursor associated with this event. */
-                ChangefeedCursor eventCursor = shardCursor.toEventCursor(blockOffset, eventIndex);
-                BlobChangefeedCursor eventsCursor = changefeedCursor.toEventCursor(chunkPath, blockOffset, eventIndex);
+                BlobChangefeedCursor eventCursor = changefeedCursor.toEventCursor(chunkPath, blockOffset, eventIndex);
 
                 BlobChangefeedEvent event = InternalBlobChangefeedEvent.fromRecord(object);
 
                 /* Wrap the event and cursor. */
-                return new BlobChangefeedEventWrapper(event, eventCursor, eventsCursor);
+                return new BlobChangefeedEventWrapper(event, eventCursor);
             });
     }
 }

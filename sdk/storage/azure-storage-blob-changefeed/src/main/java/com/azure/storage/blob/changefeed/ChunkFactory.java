@@ -39,16 +39,16 @@ class ChunkFactory {
      * Gets a new instance of a Chunk.
      *
      * @param chunkPath The path to the chunk blob.
-     * @param shardCursor The parent shard cursor.
+     * @param changefeedCursor The parent changefeed cursor.
      * @param blockOffset The offset of the block to start reading from. If 0, this indicates we should read the whole
      *                    avro file from the beginning.
      * @param eventIndex The index of the last object in the block that was returned to the user.
      * @return {@link Chunk}
      */
-    Chunk getChunk(String chunkPath, ChangefeedCursor shardCursor, BlobChangefeedCursor changefeedCursor, long blockOffset, long eventIndex) {
+    Chunk getChunk(String chunkPath, BlobChangefeedCursor changefeedCursor, long blockOffset, long eventIndex) {
         /* Validate parameters. */
         StorageImplUtils.assertNotNull("chunkPath", chunkPath);
-        StorageImplUtils.assertNotNull("shardCursor", shardCursor);
+        StorageImplUtils.assertNotNull("changefeedCursor", changefeedCursor);
         StorageImplUtils.assertInBounds("blockOffset", blockOffset, 0, Long.MAX_VALUE);
         StorageImplUtils.assertInBounds("eventIndex", eventIndex, 0, Long.MAX_VALUE);
 
@@ -78,7 +78,7 @@ class ChunkFactory {
             avroReader = avroReaderFactory.getAvroReader(avroHeader, avroBody, blockOffset, eventIndex);
         }
 
-        return new Chunk(chunkPath, shardCursor, changefeedCursor, avroReader);
+        return new Chunk(chunkPath, changefeedCursor, avroReader);
     }
 
 }

@@ -17,7 +17,7 @@ relationship programmatically, so we have recorded a successful interaction and 
 class ChangefeedNetworkTest extends APISpec {
 
 //    @Requires( { playbackMode() })
-//    @Ignore("Infeasible to record due to large number of events. ")
+    @Ignore("Infeasible to record due to large number of events. ")
     def "min"() {
         setup:
         BlobChangefeedPagedFlux flux = new BlobChangefeedClientBuilder(primaryBlobServiceAsyncClient)
@@ -41,7 +41,7 @@ class ChangefeedNetworkTest extends APISpec {
 //        def continuationToken = ""
 //        while (pagedResponses.hasNext() && i < 14) {
 //            BlobChangefeedPagedResponse resp = pagedResponses.next()
-//            continuationToken = resp.getCursor()
+//            continuationToken = resp.getContinuationToken()
 //            i++
 //        }
 //

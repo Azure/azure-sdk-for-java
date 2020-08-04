@@ -15,18 +15,16 @@ import com.azure.storage.blob.changefeed.models.BlobChangefeedEvent;
 public class BlobChangefeedEventWrapper {
 
     private final BlobChangefeedEvent event;
-    private final ChangefeedCursor cursor;
-    private final BlobChangefeedCursor changefeedCursor;
+    private final BlobChangefeedCursor cursor;
 
     /**
      * Creates a new instance of a BlobChangefeedEventWrapper
      * @param event {@link BlobChangefeedEvent}
-     * @param cursor {@link ChangefeedCursor}
+     * @param cursor {@link BlobChangefeedCursor}
      */
-    public BlobChangefeedEventWrapper(BlobChangefeedEvent event, ChangefeedCursor cursor, BlobChangefeedCursor changefeedCursor) {
+    public BlobChangefeedEventWrapper(BlobChangefeedEvent event, BlobChangefeedCursor cursor) {
         this.event = event;
         this.cursor = cursor;
-        this.changefeedCursor = changefeedCursor;
     }
 
     /**
@@ -37,16 +35,9 @@ public class BlobChangefeedEventWrapper {
     }
 
     /**
-     * @return {@link ChangefeedCursor}
-     */
-    public ChangefeedCursor getCursor() {
-        return cursor;
-    }
-
-    /**
      * @return {@link BlobChangefeedCursor}
      */
-    public BlobChangefeedCursor getNewCursor() {
-        return changefeedCursor;
+    public BlobChangefeedCursor getCursor() {
+        return cursor;
     }
 }

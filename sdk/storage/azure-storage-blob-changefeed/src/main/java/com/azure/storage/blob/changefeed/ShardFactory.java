@@ -30,15 +30,15 @@ class ShardFactory {
     /**
      * Gets a new instance of a shard.
      * @param shardPath The prefix of the shard virtual directory.
-     * @param segmentCursor The parent segment cursor.
+     * @param changefeedCursor The parent changefeed cursor.
      * @param userCursor The cursor provided by the user.
      * @return {@link Shard}
      */
-    Shard getShard(String shardPath, ChangefeedCursor segmentCursor, BlobChangefeedCursor changefeedCursor, ShardCursor userCursor) {
+    Shard getShard(String shardPath, BlobChangefeedCursor changefeedCursor, ShardCursor userCursor) {
         /* Validate parameters. */
         StorageImplUtils.assertNotNull("shardPath", shardPath);
-        StorageImplUtils.assertNotNull("segmentCursor", segmentCursor);
+        StorageImplUtils.assertNotNull("changefeedCursor", changefeedCursor);
 
-        return new Shard(this.client, shardPath, segmentCursor, changefeedCursor, userCursor, chunkFactory);
+        return new Shard(this.client, shardPath, changefeedCursor, userCursor, chunkFactory);
     }
 }

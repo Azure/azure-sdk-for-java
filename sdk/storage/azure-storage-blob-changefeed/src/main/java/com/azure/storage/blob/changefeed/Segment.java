@@ -44,19 +44,16 @@ class Segment {
     private final BlobContainerAsyncClient client; /* Changefeed container */
     private final String segmentPath; /* Segment manifest location. */
     private final BlobChangefeedCursor changefeedCursor; /* Cursor associated with parent changefeed. */
-    private final ChangefeedCursor cfCursor;
     private final SegmentCursor userCursor; /* User provided cursor. */
     private final ShardFactory shardFactory;
 
     /**
      * Creates a new Segment.
      */
-    Segment(BlobContainerAsyncClient client, String segmentPath, ChangefeedCursor cfCursor,
-        BlobChangefeedCursor changefeedCursor,
+    Segment(BlobContainerAsyncClient client, String segmentPath, BlobChangefeedCursor changefeedCursor,
         SegmentCursor userCursor, ShardFactory shardFactory) {
         this.client = client;
         this.segmentPath = segmentPath;
-        this.cfCursor = cfCursor;
         this.changefeedCursor = changefeedCursor;
         this.userCursor = userCursor;
         this.shardFactory = shardFactory;
@@ -94,27 +91,7 @@ class Segment {
                     .findFirst()
                     .orElse(null); /* If this shard does not exist in the list of shard cursors, read shard from the beginning. */
             }
-            shards.add(shardFactory.getShard(shardPath, cfCursor.toShardCursor(shardPath), changefeedCursor.toShardCursor(shardPath), shardCursor));
-
-
-
-//            if (userCursor == null) {
-//                validShard = true;
-//            } else {
-//                /* If a user cursor was provided, figure out the associated shard to start at. */
-//                if (shardPath.equals(userCursor.getShardPath())) {
-//                    validShard = true;
-//                }
-//            }
-//
-//            if (validShard) {
-//                /* Only pass the user cursor in to the shard of interest. */
-//                if (userCursor != null && shardPath.equals(userCursor.getShardPath())) {
-//                    shards.add(shardFactory.getShard(shardPath, cfCursor.toShardCursor(shardPath), changefeedCursor.toShardCursor(shardPath), userCursor));
-//                } else {
-//                    shards.add(shardFactory.getShard(shardPath, cfCursor.toShardCursor(shardPath), changefeedCursor.toShardCursor(shardPath), null));
-//                }
-//            }
+            shards.add(shardFactory.getShard(shardPath, changefeedCursor.toShardCursor(shardPath), shardCursor));
         }
         return Flux.fromIterable(shards);
     }

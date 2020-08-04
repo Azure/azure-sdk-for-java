@@ -27,19 +27,17 @@ class Shard  {
     private final BlobContainerAsyncClient client; /* Changefeed container */
     private final String shardPath; /* Shard virtual directory path/prefix. */
     private final BlobChangefeedCursor changefeedCursor; /* Cursor associated with parent segment. */
-    private final ChangefeedCursor segmentCursor;
     private final ShardCursor userCursor; /* User provided cursor. */
     private final ChunkFactory chunkFactory;
 
     /**
      * Creates a new Shard.
      */
-    Shard(BlobContainerAsyncClient client, String shardPath, ChangefeedCursor segmentCursor, BlobChangefeedCursor changefeedCursor,
+    Shard(BlobContainerAsyncClient client, String shardPath, BlobChangefeedCursor changefeedCursor,
         ShardCursor userCursor, ChunkFactory chunkFactory) {
         this.client = client;
         this.shardPath = shardPath;
         this.changefeedCursor = changefeedCursor;
-        this.segmentCursor = segmentCursor;
         this.userCursor = userCursor;
         this.chunkFactory = chunkFactory;
     }
@@ -63,8 +61,7 @@ class Shard  {
                     blockOffset = userCursor.getBlockOffset();
                     eventIndex = userCursor.getEventIndex();
                 }
-                return chunkFactory.getChunk(chunkPath, segmentCursor.toChunkCursor(chunkPath), changefeedCursor,
-                    blockOffset, eventIndex)
+                return chunkFactory.getChunk(chunkPath, changefeedCursor, blockOffset, eventIndex)
                     .getEvents();
             });
     }
