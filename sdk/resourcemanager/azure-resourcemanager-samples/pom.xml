@@ -147,7 +147,19 @@
         </resources>
       </build>
     </profile>
-
+    <profile>
+      <id>java-lts</id>
+      <activation>
+        <jdk>[11,)</jdk>
+      </activation>
+      <build>
+        <resources>
+          <resource>
+            <directory>src/main/resources</directory>
+          </resource>
+        </resources>
+      </build>
+    </profile>
     <profile>
       <id>azure-mgmt-sdk-test-jar</id>
       <activation>
