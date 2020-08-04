@@ -147,6 +147,9 @@ public final class TestConstants {
     public static final String DYNAMIC_PROPERTY_COLLECTION_NAME = "spel-property-collection";
     public static final String DYNAMIC_BEAN_COLLECTION_NAME = "spel-bean-collection";
 
+    public static final String COURSE_NAME = "test-course";
+    public static final String DEPARTMENT = "test-department";
+
     private TestConstants() {
     }
 }

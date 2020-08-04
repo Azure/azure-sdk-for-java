@@ -5,6 +5,7 @@ package com.azure.spring.data.cosmos.domain;
 import com.azure.spring.data.cosmos.core.mapping.Container;
 import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Version;
 
 import java.util.Objects;
 
@@ -16,6 +17,8 @@ public class Course {
     private String name;
     @PartitionKey
     private String department;
+    @Version
+    private String etag;
 
     public Course(String courseId, String name, String department) {
         this.courseId = courseId;
@@ -50,6 +53,14 @@ public class Course {
         this.department = department;
     }
 
+    public String getEtag() {
+        return this.etag;
+    }
+
+    public void setEtag(String etag) {
+        this.etag = etag;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -80,6 +91,9 @@ public class Course {
             + '\''
             + ", department='"
             + department
+            + '\''
+            + ", etag='"
+            + etag
             + '\''
             + '}';
     }
