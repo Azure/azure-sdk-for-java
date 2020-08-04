@@ -5,7 +5,7 @@ package com.azure.data.schemaregistry.avro;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.schemaregistry.SchemaRegistryCodec;
-import com.azure.data.schemaregistry.models.SerializationException;
+import com.azure.data.schemaregistry.models.SerializationType;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericDatumReader;
 import org.apache.avro.generic.GenericDatumWriter;
@@ -43,8 +43,8 @@ public class AvroSchemaRegistryCodec implements SchemaRegistryCodec {
     }
 
     @Override
-    public String getSchemaType() {
-        return "avro";
+    public SerializationType getSerializationType() {
+        return SerializationType.AVRO;
     }
 
     /**
@@ -88,7 +88,6 @@ public class AvroSchemaRegistryCodec implements SchemaRegistryCodec {
      * Returns ByteArrayOutputStream containing Avro encoding of object parameter
      * @param object Object to be encoded into byte stream
      * @return closed ByteArrayOutputStream
-     * @throws SerializationException wraps runtime exceptions
      */
     @Override
     public byte[] encode(Object object) {
@@ -113,7 +112,7 @@ public class AvroSchemaRegistryCodec implements SchemaRegistryCodec {
         } catch (IOException | RuntimeException e) {
             // Avro serialization can throw AvroRuntimeException, NullPointerException, ClassCastException, etc
             throw logger.logExceptionAsError(
-                new SerializationException("Error serializing Avro message", e));
+                new IllegalStateException("Error serializing Avro message", e));
         }
     }
 
@@ -122,7 +121,6 @@ public class AvroSchemaRegistryCodec implements SchemaRegistryCodec {
      * @param b byte array containing encoded bytes
      * @param object schema for Avro reader read - fetched from Azure Schema Registry
      * @return deserialized object
-     * @throws SerializationException upon deserialization failure
      */
     @Override
     public Object decode(byte[] b, Object object) {
@@ -130,7 +128,7 @@ public class AvroSchemaRegistryCodec implements SchemaRegistryCodec {
 
         if (!(object instanceof Schema)) {
             throw logger.logExceptionAsError(
-                new SerializationException("Object must be an Avro schema."));
+                new IllegalStateException("Object must be an Avro schema."));
         }
         Schema schema = (Schema) object;
 
@@ -150,7 +148,7 @@ public class AvroSchemaRegistryCodec implements SchemaRegistryCodec {
             return result;
         } catch (IOException | RuntimeException e) {
             // avro deserialization may throw AvroRuntimeException, NullPointerException, etc
-            throw logger.logExceptionAsError(new SerializationException("Error deserializing Avro message.", e));
+            throw logger.logExceptionAsError(new IllegalStateException("Error deserializing Avro message.", e));
         }
     }
 

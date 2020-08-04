@@ -3,7 +3,7 @@
 
 package com.azure.data.schemaregistry;
 
-import com.azure.data.schemaregistry.models.SerializationException;
+import com.azure.data.schemaregistry.models.SerializationType;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
@@ -12,7 +12,7 @@ public class SampleSchemaRegistryCodec implements SchemaRegistryCodec {
     public SampleSchemaRegistryCodec() { }
 
     @Override
-    public String getSchemaName(Object object) throws SerializationException {
+    public String getSchemaName(Object object) {
         return "schema name";
     }
 
@@ -27,7 +27,7 @@ public class SampleSchemaRegistryCodec implements SchemaRegistryCodec {
     }
 
     @Override
-    public byte[] encode(Object object) throws SerializationException {
+    public byte[] encode(Object object) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try {
             outputStream.write("sample payload".getBytes());
@@ -35,14 +35,14 @@ public class SampleSchemaRegistryCodec implements SchemaRegistryCodec {
             outputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
-            throw new SerializationException("this should never happen", e);
+            throw new IllegalStateException("this should never happen", e);
         }
         return outputStream.toByteArray();
     }
 
     @Override
-    public String getSchemaType() {
-        return "test";
+    public SerializationType getSerializationType() {
+        return SerializationType.fromString("test");
     }
 
     @Override
@@ -53,7 +53,7 @@ public class SampleSchemaRegistryCodec implements SchemaRegistryCodec {
     public static final String CONSTANT_PAYLOAD = "sample payload!";
 
     @Override
-    public Object decode(byte[] bytes, Object o) throws SerializationException {
+    public Object decode(byte[] bytes, Object o) {
         return CONSTANT_PAYLOAD;
     }
 }

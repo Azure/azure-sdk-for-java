@@ -36,11 +36,11 @@ import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.function.Function;
 
 /**
- * Builder implementation for {@link CachedSchemaRegistryAsyncClient}.
+ * Builder implementation for {@link SchemaRegistryAsyncClient}.
  */
-@ServiceClientBuilder(serviceClients = CachedSchemaRegistryAsyncClient.class)
-public class CachedSchemaRegistryClientBuilder {
-    private final ClientLogger logger = new ClientLogger(CachedSchemaRegistryClientBuilder.class);
+@ServiceClientBuilder(serviceClients = SchemaRegistryAsyncClient.class)
+public class SchemaRegistryClientBuilder {
+    private final ClientLogger logger = new ClientLogger(SchemaRegistryClientBuilder.class);
 
     private static final String DEFAULT_SCOPE = "https://eventhubs.azure.net/.default";
     private static final String CLIENT_PROPERTIES = "azure-data-schemaregistry-client.properties";
@@ -65,7 +65,7 @@ public class CachedSchemaRegistryClientBuilder {
     /**
      * Constructor for CachedSchemaRegistryClientBuilder.  Supplies client defaults.
      */
-    public CachedSchemaRegistryClientBuilder() {
+    public SchemaRegistryClientBuilder() {
         this.policies = new ArrayList<>();
         this.httpLogOptions = new HttpLogOptions();
         this.maxSchemaMapSize = null;
@@ -86,12 +86,12 @@ public class CachedSchemaRegistryClientBuilder {
     /**
      * Sets the service endpoint for the Azure Schema Registry instance.
      *
-     * @return The updated {@link CachedSchemaRegistryClientBuilder} object.
+     * @return The updated {@link SchemaRegistryClientBuilder} object.
      * @param schemaRegistryUrl The URL of the Azure Schema Registry instance
      * @throws NullPointerException if {@code schemaRegistryUrl} is null
      * @throws IllegalArgumentException if {@code schemaRegistryUrl} cannot be parsed into a valid URL
      */
-    public CachedSchemaRegistryClientBuilder endpoint(String schemaRegistryUrl) {
+    public SchemaRegistryClientBuilder endpoint(String schemaRegistryUrl) {
         Objects.requireNonNull(schemaRegistryUrl, "'schemaRegistryUrl' cannot be null.");
 
         try {
@@ -113,15 +113,15 @@ public class CachedSchemaRegistryClientBuilder {
     /**
      * Sets schema cache size limit.  If limit is exceeded on any cache, all caches are recycled.
      *
-     * @param maxCacheSize max size for internal schema caches in {@link CachedSchemaRegistryAsyncClient}
-     * @return The updated {@link CachedSchemaRegistryClientBuilder} object.
+     * @param maxCacheSize max size for internal schema caches in {@link SchemaRegistryAsyncClient}
+     * @return The updated {@link SchemaRegistryClientBuilder} object.
      * @throws IllegalArgumentException on invalid maxCacheSize value
      */
-    public CachedSchemaRegistryClientBuilder maxCacheSize(int maxCacheSize) {
-        if (maxCacheSize < CachedSchemaRegistryAsyncClient.MAX_SCHEMA_MAP_SIZE_MINIMUM) {
+    public SchemaRegistryClientBuilder maxCacheSize(int maxCacheSize) {
+        if (maxCacheSize < SchemaRegistryAsyncClient.MAX_SCHEMA_MAP_SIZE_MINIMUM) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 String.format("Schema map size must be greater than %s entries",
-                    CachedSchemaRegistryAsyncClient.MAX_SCHEMA_MAP_SIZE_MINIMUM)));
+                    SchemaRegistryAsyncClient.MAX_SCHEMA_MAP_SIZE_MINIMUM)));
         }
 
         this.maxSchemaMapSize = maxCacheSize;
@@ -132,9 +132,9 @@ public class CachedSchemaRegistryClientBuilder {
      * Sets the HTTP client to use for sending and receiving requests to and from the service.
      *
      * @param httpClient The HTTP client to use for requests.
-     * @return The updated {@link CachedSchemaRegistryClientBuilder} object.
+     * @return The updated {@link SchemaRegistryClientBuilder} object.
      */
-    public CachedSchemaRegistryClientBuilder httpClient(HttpClient httpClient) {
+    public SchemaRegistryClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
     }
@@ -142,12 +142,12 @@ public class CachedSchemaRegistryClientBuilder {
     /**
      * Sets the HTTP pipeline to use for the service client.
      * <p>
-     * If {@code pipeline} is set, all other HTTP settings are ignored to build {@link CachedSchemaRegistryAsyncClient}.
+     * If {@code pipeline} is set, all other HTTP settings are ignored to build {@link SchemaRegistryAsyncClient}.
      *
      * @param httpPipeline The HTTP pipeline to use for sending service requests and receiving responses.
-     * @return The updated {@link CachedSchemaRegistryClientBuilder} object.
+     * @return The updated {@link SchemaRegistryClientBuilder} object.
      */
-    public CachedSchemaRegistryClientBuilder pipeline(HttpPipeline httpPipeline) {
+    public SchemaRegistryClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
             logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
         }
@@ -159,13 +159,13 @@ public class CachedSchemaRegistryClientBuilder {
 
     /**
      * Sets the {@link TokenCredential} to use when authenticating HTTP requests for this
-     * {@link CachedSchemaRegistryAsyncClient}.
+     * {@link SchemaRegistryAsyncClient}.
      *
      * @param credential {@link TokenCredential}
-     * @return The updated {@link CachedSchemaRegistryClientBuilder} object.
+     * @return The updated {@link SchemaRegistryClientBuilder} object.
      * @throws NullPointerException If {@code credential} is {@code null}
      */
-    public CachedSchemaRegistryClientBuilder credential(TokenCredential credential) {
+    public SchemaRegistryClientBuilder credential(TokenCredential credential) {
         this.credential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         return this;
     }
@@ -176,9 +176,9 @@ public class CachedSchemaRegistryClientBuilder {
      * <p> If logLevel is not provided, default value of {@link HttpLogDetailLevel#NONE} is set. </p>
      *
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
-     * @return The updated {@link CachedSchemaRegistryClientBuilder} object.
+     * @return The updated {@link SchemaRegistryClientBuilder} object.
      */
-    public CachedSchemaRegistryClientBuilder httpLogOptions(HttpLogOptions logOptions) {
+    public SchemaRegistryClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.httpLogOptions = logOptions;
         return this;
     }
@@ -186,12 +186,12 @@ public class CachedSchemaRegistryClientBuilder {
     /**
      * Sets the {@link RetryPolicy} that is used when each request is sent.
      * <p>
-     * The default retry policy will be used if not provided to build {@link CachedSchemaRegistryAsyncClient} .
+     * The default retry policy will be used if not provided to build {@link SchemaRegistryAsyncClient} .
      *
      * @param retryPolicy user's retry policy applied to each request.
-     * @return The updated {@link CachedSchemaRegistryClientBuilder} object.
+     * @return The updated {@link SchemaRegistryClientBuilder} object.
      */
-    public CachedSchemaRegistryClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+    public SchemaRegistryClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
     }
@@ -200,10 +200,10 @@ public class CachedSchemaRegistryClientBuilder {
      * Adds a policy to the set of existing policies that are executed after required policies.
      *
      * @param policy The retry policy for service requests.
-     * @return The updated {@link CachedSchemaRegistryClientBuilder} object.
+     * @return The updated {@link SchemaRegistryClientBuilder} object.
      * @throws NullPointerException If {@code policy} is {@code null}.
      */
-    public CachedSchemaRegistryClientBuilder addPolicy(HttpPipelinePolicy policy) {
+    public SchemaRegistryClientBuilder addPolicy(HttpPipelinePolicy policy) {
         policies.add(Objects.requireNonNull(policy, "'policy' cannot be null."));
         return this;
     }
@@ -219,34 +219,35 @@ public class CachedSchemaRegistryClientBuilder {
      * The parseMethod argument should be a stateless, idempotent function.
      *
      * @param schemaRegistryCodec Codec class implementation
-     * @return The updated {@link CachedSchemaRegistryClientBuilder} object.
+     * @return The updated {@link SchemaRegistryClientBuilder} object.
      */
-    public CachedSchemaRegistryClientBuilder addCodec(SchemaRegistryCodec schemaRegistryCodec) {
+    public SchemaRegistryClientBuilder addSchemaRegistryCodec(SchemaRegistryCodec schemaRegistryCodec) {
         Objects.requireNonNull(schemaRegistryCodec, "'codec' cannot be null.");
-        if (CoreUtils.isNullOrEmpty(schemaRegistryCodec.getSchemaType())) {
+        if (schemaRegistryCodec.getSerializationType() == null) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Serialization type cannot be null or empty."));
         }
-        if (this.typeParserMap.containsKey(schemaRegistryCodec.getSchemaType())) {
+        if (this.typeParserMap.containsKey(schemaRegistryCodec.getSerializationType())) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Multiple parse methods for single serialization type may not be added."));
         }
-        this.typeParserMap.put(schemaRegistryCodec.getSchemaType(), schemaRegistryCodec::parseSchemaString);
+        this.typeParserMap.put(schemaRegistryCodec.getSerializationType().toString(),
+            schemaRegistryCodec::parseSchemaString);
         return this;
     }
 
     /**
-     * Creates a {@link CachedSchemaRegistryAsyncClient} based on options set in the builder.
-     * Every time {@code buildClient()} is called a new instance of {@link CachedSchemaRegistryAsyncClient} is created.
+     * Creates a {@link SchemaRegistryAsyncClient} based on options set in the builder.
+     * Every time {@code buildClient()} is called a new instance of {@link SchemaRegistryAsyncClient} is created.
      *
      * If {@link #pipeline(HttpPipeline) pipeline} is set, then all HTTP pipeline related settings are ignored
-     * endpoint} are when creating the {@link CachedSchemaRegistryAsyncClient client}.
+     * endpoint} are when creating the {@link SchemaRegistryAsyncClient client}.
      *
-     * @return A {@link CachedSchemaRegistryAsyncClient} with the options set from the builder.
+     * @return A {@link SchemaRegistryAsyncClient} with the options set from the builder.
      * @throws NullPointerException if parameters are incorrectly set.
      * @throws IllegalArgumentException if credential is not set.
      */
-    public CachedSchemaRegistryAsyncClient buildAsyncClient() {
+    public SchemaRegistryAsyncClient buildAsyncClient() {
         // Authentications
         if (credential == null) {
             // Throw exception that credential and tokenCredential cannot be null
@@ -290,18 +291,18 @@ public class CachedSchemaRegistryClientBuilder {
 
         this.maxSchemaMapSize = this.maxSchemaMapSize != null
             ? this.maxSchemaMapSize
-            : CachedSchemaRegistryAsyncClient.MAX_SCHEMA_MAP_SIZE_DEFAULT;
+            : SchemaRegistryAsyncClient.MAX_SCHEMA_MAP_SIZE_DEFAULT;
 
-        return new CachedSchemaRegistryAsyncClient(restService, maxSchemaMapSize, typeParserMap);
+        return new SchemaRegistryAsyncClient(restService, maxSchemaMapSize, typeParserMap);
     }
 
     /**
-     * Creates synchronous {@link CachedSchemaRegistryClient} instance.
+     * Creates synchronous {@link SchemaRegistryClient} instance.
      * See async builder method for options validation.
      *
-     * @return {@link CachedSchemaRegistryClient} with the options set from the builder.
+     * @return {@link SchemaRegistryClient} with the options set from the builder.
      */
-     public CachedSchemaRegistryClient buildClient() {
-        return new CachedSchemaRegistryClient(this.buildAsyncClient());
+     public SchemaRegistryClient buildClient() {
+        return new SchemaRegistryClient(this.buildAsyncClient());
      }
 }
