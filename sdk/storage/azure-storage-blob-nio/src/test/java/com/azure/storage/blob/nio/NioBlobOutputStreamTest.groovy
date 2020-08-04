@@ -14,12 +14,14 @@ class NioBlobOutputStreamTest extends APISpec {
     def blockSize = 50
     def maxSingleUploadSize = 200
     AzureFileSystem fs
+    def config = new HashMap<String, Object>()
 
     def setup() {
         cc.create()
         bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
-        fs = createFS(initializeConfigMap())
+        config = initializeConfigMap()
+        fs = createFS(config)
         def path = ((AzurePath) fs.getPath(getNonDefaultRootDir(fs), bc.getBlobName()))
 
         nioStream = new NioBlobOutputStream(bc.getBlobOutputStream(new ParallelTransferOptions(blockSize, null, null,
