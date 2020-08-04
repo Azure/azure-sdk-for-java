@@ -205,6 +205,16 @@ public class InterceptorManager implements AutoCloseable {
     }
 
     /**
+     * Gets a new HTTP pipeline policy with the replacement rules managed by {@link
+     * InterceptorManager}.
+     *
+     * @return HttpPipelinePolicy to record network calls.
+     */
+    public HttpPipelinePolicy getRecordReplacementPolicy() {
+        return new RecordNetworkCallPolicy(recordedData, textReplacementRules);
+    }
+
+    /**
      * Gets a new HTTP client that plays back test session records managed by {@link InterceptorManager}.
      *
      * @return An HTTP client that plays back network calls from its recorded data.

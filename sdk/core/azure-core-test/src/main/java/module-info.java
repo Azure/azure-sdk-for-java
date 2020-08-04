@@ -3,13 +3,12 @@
 
 module com.azure.core.test {
     requires transitive com.azure.core;
-
+    requires com.azure.core.management;
+    requires com.azure.identity;
+    requires com.azure.http.netty;
     requires org.junit.jupiter.api;
     requires reactor.test;
 
-    exports com.azure.core.test;
-    exports com.azure.core.test.http;
-    exports com.azure.core.test.models;
     exports com.azure.core.test.policy;
     exports com.azure.core.test.utils;
     exports com.azure.core.test.implementation;

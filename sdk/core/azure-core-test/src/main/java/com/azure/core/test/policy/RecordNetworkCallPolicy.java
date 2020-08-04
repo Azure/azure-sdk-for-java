@@ -49,6 +49,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
 
     private final ClientLogger logger = new ClientLogger(RecordNetworkCallPolicy.class);
     private final RecordedData recordedData;
+    private final Map<String, String> textReplacementRules;
 
     /**
      * Creates a policy that records network calls into {@code recordedData}.
@@ -58,6 +59,19 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
     public RecordNetworkCallPolicy(RecordedData recordedData) {
         Objects.requireNonNull(recordedData, "'recordedData' cannot be null.");
         this.recordedData = recordedData;
+        this.textReplacementRules = null;
+    }
+
+    /**
+     * Creates a policy that records network calls into {@code recordedData} with replacement rules.
+     *
+     * @param recordedData The record to persist network calls into.
+     * @param textReplacementRules The replacement rules
+     */
+    public RecordNetworkCallPolicy(RecordedData recordedData, Map<String, String> textReplacementRules) {
+        Objects.requireNonNull(recordedData, "'recordedData' cannot be null.");
+        this.recordedData = recordedData;
+        this.textReplacementRules = textReplacementRules;
     }
 
     @Override
@@ -80,7 +94,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
         if (urlBuilder.getQuery().containsKey(SIG)) {
             urlBuilder.setQueryParameter(SIG, "REDACTED");
         }
-        networkCallRecord.setUri(urlBuilder.toString().replaceAll("\\?$", ""));
+        networkCallRecord.setUri(applyReplacementRule(urlBuilder.toString().replaceAll("\\?$", "")));
 
         return next.process()
             .doOnError(throwable -> {
@@ -107,11 +121,24 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
             });
     }
 
-    private void redactedAccountName(UrlBuilder urlBuilder) {
-        String[] hostParts = urlBuilder.getHost().split("\\.");
-        hostParts[0] = "REDACTED";
+    private String applyReplacementRule(String text) {
+        if (textReplacementRules != null) {
+            for (Map.Entry<String, String> rule : textReplacementRules.entrySet()) {
+                if (rule.getValue() != null) {
+                    text = text.replaceAll(rule.getKey(), rule.getValue());
+                }
+            }
+        }
+        return text;
+    }
 
-        urlBuilder.setHost(String.join(".", hostParts));
+    private void redactedAccountName(UrlBuilder urlBuilder) {
+        if (textReplacementRules == null) {
+            String[] hostParts = urlBuilder.getHost().split("\\.");
+            hostParts[0] = "REDACTED";
+
+            urlBuilder.setHost(String.join(".", hostParts));
+        }
     }
 
     private void captureRequestHeaders(HttpHeaders requestHeaders, Map<String, String> captureHeaders,
@@ -139,7 +166,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
                 headerValueToStore = "REDACTED";
             }
 
-            responseData.put(header.getName(), headerValueToStore);
+            responseData.put(header.getName(), applyReplacementRule(headerValueToStore));
         }
 
         if (!addedRetryAfter) {
@@ -170,7 +197,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
             });
         } else if (contentType.contains("json") || response.getHeaderValue(CONTENT_ENCODING) == null) {
             return response.getBodyAsString(StandardCharsets.UTF_8).switchIfEmpty(Mono.just("")).map(content -> {
-                responseData.put(BODY, new RecordingRedactor().redact(content));
+                responseData.put(BODY, applyReplacementRule(new RecordingRedactor().redact(content)));
                 return responseData;
             });
         } else {
