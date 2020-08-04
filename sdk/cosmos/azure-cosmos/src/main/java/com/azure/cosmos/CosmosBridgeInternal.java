@@ -4,6 +4,12 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.*;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.util.CosmosPagedFlux;
+import reactor.core.scheduler.Scheduler;
+
+import java.util.function.Function;
 
 import static com.azure.cosmos.implementation.Warning.INTERNAL_USE_ONLY_WARNING;
 
@@ -101,5 +107,15 @@ public final class CosmosBridgeInternal {
             .readRequestsFallbackEnabled(builder.isReadRequestsFallbackEnabled());
 
         return copy;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <T> CosmosPagedFlux<T> queryItemsInternal(CosmosAsyncContainer container,
+                                                            SqlQuerySpec sqlQuerySpec,
+                                                            CosmosQueryRequestOptions cosmosQueryRequestOptions,
+                                                            Class<T> classType, Function<Document, Document> transformer,
+                                                            Scheduler scheduler) {
+        return container.queryItemsInternal(
+            sqlQuerySpec, cosmosQueryRequestOptions, classType, transformer, scheduler);
     }
 }

@@ -3,20 +3,24 @@
 
 package com.azure.core.serializer.json.jackson;
 
-import com.azure.core.experimental.serializer.JsonNode;
-import com.azure.core.experimental.serializer.JsonSerializer;
-import com.azure.core.experimental.serializer.TypeReference;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JsonSerializer;
+import com.azure.core.util.serializer.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UncheckedIOException;
 
 /**
  * Jackson based implementation of the {@link JsonSerializer} interface.
  */
 public final class JacksonJsonSerializer implements JsonSerializer {
+    private final ClientLogger logger = new ClientLogger(JacksonJsonSerializer.class);
+
     private final ObjectMapper mapper;
     private final TypeFactory typeFactory;
 
@@ -31,43 +35,36 @@ public final class JacksonJsonSerializer implements JsonSerializer {
     }
 
     @Override
-    public <T> Mono<T> deserialize(InputStream stream, TypeReference<T> typeReference) {
-        return Mono.fromCallable(() -> {
-            if (stream == null) {
-                return null;
-            }
+    public <T> T deserialize(InputStream stream, TypeReference<T> typeReference) {
+        if (stream == null) {
+            return null;
+        }
 
+        try {
             return mapper.readValue(stream, typeFactory.constructType(typeReference.getJavaType()));
-        });
+        } catch (IOException ex) {
+            throw logger.logExceptionAsError(new UncheckedIOException(ex));
+        }
     }
 
     @Override
-    public <T> Mono<T> deserializeTree(JsonNode jsonNode, TypeReference<T> typeReference) {
-        return Mono.fromCallable(() -> mapper.readerFor(typeFactory.constructType(typeReference.getJavaType()))
-            .readValue(JsonNodeUtils.toJacksonNode(jsonNode)));
+    public <T> Mono<T> deserializeAsync(InputStream stream, TypeReference<T> typeReference) {
+        return Mono.fromCallable(() -> deserialize(stream, typeReference));
     }
 
     @Override
-    public <S extends OutputStream> Mono<S> serialize(S stream, Object value) {
-        return Mono.fromCallable(() -> {
+    public <S extends OutputStream> S serialize(S stream, Object value) {
+        try {
             mapper.writeValue(stream, value);
+        } catch (IOException ex) {
+            throw logger.logExceptionAsError(new UncheckedIOException(ex));
+        }
 
-            return stream;
-        });
+        return stream;
     }
 
     @Override
-    public Mono<OutputStream> serializeTree(OutputStream stream, JsonNode jsonNode) {
-        return serialize(stream, JsonNodeUtils.toJacksonNode(jsonNode));
-    }
-
-    @Override
-    public Mono<JsonNode> toTree(InputStream stream) {
-        return Mono.fromCallable(() -> JsonNodeUtils.fromJacksonNode(mapper.readTree(stream)));
-    }
-
-    @Override
-    public Mono<JsonNode> toTree(Object value) {
-        return Mono.fromCallable(() -> JsonNodeUtils.fromJacksonNode(mapper.valueToTree(value)));
+    public <S extends OutputStream> Mono<S> serializeAsync(S stream, Object value) {
+        return Mono.fromCallable(() -> serialize(stream, value));
     }
 }

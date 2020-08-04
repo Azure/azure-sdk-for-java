@@ -49,6 +49,8 @@ final class Transforms {
     // Pattern match to find all non-digits in the provided string.
     private static final Pattern NON_DIGIT_PATTERN = Pattern.compile("[^0-9]+");
     private static final float DEFAULT_CONFIDENCE_VALUE = 1.0f;
+    private static final int DEFAULT_PAGE_NUMBER = 1;
+    private static final int DEFAULT_TABLE_SPAN = 1;
 
     private Transforms() {
     }
@@ -162,7 +164,8 @@ final class Transforms {
                         .stream()
                         .map(dataTableCell -> new FormTableCell(
                             dataTableCell.getRowIndex(), dataTableCell.getColumnIndex(),
-                            dataTableCell.getRowSpan(), dataTableCell.getColumnSpan(),
+                            getOrDefault(dataTableCell.getRowSpan(), DEFAULT_TABLE_SPAN),
+                            getOrDefault(dataTableCell.getColumnSpan(), DEFAULT_TABLE_SPAN),
                             dataTableCell.getText(), toBoundingBox(dataTableCell.getBoundingBox()),
                             dataTableCell.getConfidence(),
                             dataTableCell.isHeader() == null ? false : dataTableCell.isHeader(),
@@ -170,6 +173,10 @@ final class Transforms {
                             pageNumber, setReferenceElements(dataTableCell.getElements(), readResults, pageNumber)))
                         .collect(Collectors.toList()), pageNumber))
             .collect(Collectors.toList());
+    }
+
+    private static int getOrDefault(Integer value, int defaultValue) {
+        return value == null ? defaultValue : value;
     }
 
     /**
@@ -205,7 +212,7 @@ final class Transforms {
         if (!CoreUtils.isNullOrEmpty(documentResultItem.getFields())) {
             documentResultItem.getFields().forEach((key, fieldValue) -> {
                 if (fieldValue != null) {
-                    Integer pageNumber = fieldValue.getPage();
+                    int pageNumber = getOrDefault(fieldValue.getPage(), DEFAULT_PAGE_NUMBER);
                     FieldData labelText = new FieldData(key, null, pageNumber, null);
                     List<FormElement> formElementList = null;
                     if (includeFieldElements) {
@@ -217,7 +224,7 @@ final class Transforms {
                     extractedFieldMap.put(key, setFormField(labelText, key, fieldValue, valueText, pageNumber,
                         readResults));
                 } else {
-                    FieldData labelText = new FieldData(key, null, null, null);
+                    FieldData labelText = new FieldData(key, null, DEFAULT_PAGE_NUMBER, null);
                     extractedFieldMap.put(key, new FormField(key, labelText, null, null,
                         DEFAULT_CONFIDENCE_VALUE
                     ));
@@ -452,7 +459,7 @@ final class Transforms {
                 TextWord textWord =
                     readResults.get(readResultIndex).getLines().get(lineIndex).getWords().get(wordIndex);
                 FormWord wordElement = new FormWord(textWord.getText(), toBoundingBox(textWord.getBoundingBox()),
-                    pageNumber,
+                    getOrDefault(pageNumber, DEFAULT_PAGE_NUMBER),
                     setDefaultConfidenceValue(textWord.getConfidence()));
                 formElementList.add(wordElement);
             } else {

@@ -59,6 +59,17 @@ Sample code to create a `AzureProfile`:
 AzureProfile profile = new AzureProfile("<YOUR_TENANT_ID>", "<YOUR_SUBSCRIPTION_ID>", AzureEnvironment.AZURE);
 ```
 
+The sample code assumes global Azure. Please change `AzureEnvironment.AZURE` variable if otherwise.
+
+Sample code for Azure Germany, with `EnvironmentCredential`:
+
+```java
+AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE_GERMANY);
+EnvironmentCredential credential = new EnvironmentCredentialBuilder()
+    .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+    .build();
+```
+
 ### Authenticating with default HttpPipeline
 
 Once the `TokenCredential` and `AzureProfile` are ready, you can move forward with below authenticating code. It helps build http pipeline internally with [default configuration](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resources/mgmt/src/main/java/com/azure/resourcemanager/resources/fluentcore/utils/HttpPipelineProvider.java#L43).

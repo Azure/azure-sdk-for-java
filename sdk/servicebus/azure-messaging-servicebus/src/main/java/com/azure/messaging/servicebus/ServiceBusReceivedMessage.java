@@ -19,6 +19,7 @@ import java.util.UUID;
 public final class ServiceBusReceivedMessage {
     private UUID lockToken;
     private long sequenceNumber;
+    private long enqueuedSequenceNumber;
     private long deliveryCount;
     private Instant enqueuedTime;
     private Instant lockedUntil;
@@ -39,7 +40,7 @@ public final class ServiceBusReceivedMessage {
     private String to;
     private String viaPartitionKey;
     private String deadLetterReason;
-    private String deadLetterDescription;
+    private String deadLetterErrorDescription;
 
     ServiceBusReceivedMessage(byte[] body) {
         this.body = Objects.requireNonNull(body, "'body' cannot be null.");
@@ -91,8 +92,8 @@ public final class ServiceBusReceivedMessage {
      *
      * @return The description for a message that has been dead-lettered.
      */
-    public String getDeadLetterDescription() {
-        return deadLetterDescription;
+    public String getDeadLetterErrorDescription() {
+        return deadLetterErrorDescription;
     }
 
     /**
@@ -134,6 +135,21 @@ public final class ServiceBusReceivedMessage {
      */
     public long getDeliveryCount() {
         return deliveryCount;
+    }
+
+    /**
+     * Gets the enqueued sequence number assigned to a message by Service Bus.
+     * <p>
+     * The sequence number is a unique 64-bit integer first assigned to a message as it is accepted at its original
+     * point of submission.
+     *
+     * @return enqueued sequence number of this message
+     *
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-sequencing">Message Sequencing and
+     *     Timestamps</a>
+     */
+    public long getEnqueuedSequenceNumber() {
+        return this.enqueuedSequenceNumber;
     }
 
     /**
@@ -395,10 +411,10 @@ public final class ServiceBusReceivedMessage {
     /**
      * Sets the dead letter description.
      *
-     * @param deadLetterDescription Dead letter description.
+     * @param deadLetterErrorDescription Dead letter description.
      */
-    void setDeadLetterDescription(String deadLetterDescription) {
-        this.deadLetterDescription = deadLetterDescription;
+    void setDeadLetterErrorDescription(String deadLetterErrorDescription) {
+        this.deadLetterErrorDescription = deadLetterErrorDescription;
     }
 
     /**
@@ -428,6 +444,10 @@ public final class ServiceBusReceivedMessage {
      */
     void setDeliveryCount(long deliveryCount) {
         this.deliveryCount = deliveryCount;
+    }
+
+    void setEnqueuedSequenceNumber(long enqueuedSequenceNumber) {
+        this.enqueuedSequenceNumber = enqueuedSequenceNumber;
     }
 
     /**
