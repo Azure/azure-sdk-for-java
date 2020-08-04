@@ -140,6 +140,9 @@ public final class TestConstants {
     public static final String PROPERTY_MESSAGE = "message";
     public static final String PROPERTY_DATE = "date";
 
+    public static final String PROPERTY_ETAG_DEFAULT = "_etag";
+    public static final String PROPERTY_ETAG_RENAMED = "etag";
+
     public static final int PAGE_SIZE_1 = 1;
     public static final int PAGE_SIZE_2 = 2;
     public static final int PAGE_SIZE_3 = 3;

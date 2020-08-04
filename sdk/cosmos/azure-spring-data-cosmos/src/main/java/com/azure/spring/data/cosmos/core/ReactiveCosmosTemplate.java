@@ -42,6 +42,8 @@ import static com.azure.spring.data.cosmos.common.CosmosUtils.createPartitionKey
 @SuppressWarnings("unchecked")
 public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, ApplicationContextAware {
 
+    private static final String ETAG_KEY = "_etag";
+
     private final MappingCosmosConverter mappingCosmosConverter;
     private final String databaseName;
     private final ResponseDiagnosticsProcessor responseDiagnosticsProcessor;
@@ -682,7 +684,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                                  CosmosItemRequestOptions options) {
         CosmosEntityInformation<?, ?> entityInformation = CosmosEntityInformation.getInstance(domainType);
         if (entityInformation.isVersioned()) {
-            options.setIfMatchETag(jsonNode.get(entityInformation.getVersionFieldName()).asText());
+            options.setIfMatchETag(jsonNode.get(ETAG_KEY).asText());
         }
     }
 }

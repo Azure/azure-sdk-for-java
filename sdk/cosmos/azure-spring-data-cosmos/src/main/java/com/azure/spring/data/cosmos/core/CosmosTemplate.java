@@ -57,6 +57,7 @@ import static com.azure.spring.data.cosmos.common.CosmosUtils.createPartitionKey
 public class CosmosTemplate implements CosmosOperations, ApplicationContextAware {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosTemplate.class);
+    private static final String ETAG_KEY = "_etag";
 
     private final MappingCosmosConverter mappingCosmosConverter;
     private final IsNewAwareAuditingHandler cosmosAuditingHandler;
@@ -781,7 +782,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                                  CosmosItemRequestOptions options) {
         CosmosEntityInformation<?, ?> entityInformation = CosmosEntityInformation.getInstance(domainType);
         if (entityInformation.isVersioned()) {
-            options.setIfMatchETag(jsonNode.get(entityInformation.getVersionFieldName()).asText());
+            options.setIfMatchETag(jsonNode.get(ETAG_KEY).asText());
         }
     }
 

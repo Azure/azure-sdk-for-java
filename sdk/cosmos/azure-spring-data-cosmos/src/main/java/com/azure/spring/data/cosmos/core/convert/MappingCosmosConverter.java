@@ -89,6 +89,9 @@ public class MappingCosmosConverter
                 final CosmosEntityInformation<?, ?> entityInfo = CosmosEntityInformation.getInstance(type);
                 if (entityInfo.isVersioned()) {
                     objectNode.set(entityInfo.getVersionFieldName(), etag);
+                    if (!entityInfo.getVersionFieldName().equals(ETAG_KEY)) {
+                        objectNode.remove(ETAG_KEY);
+                    }
                 }
             }
             return objectMapper.treeToValue(objectNode, type);
@@ -137,7 +140,22 @@ public class MappingCosmosConverter
             cosmosObjectNode.put("id", id);
         }
 
+        mapVersionFieldToEtag(sourceEntity, cosmosObjectNode);
+
         return cosmosObjectNode;
+    }
+
+    //the field on the underlying cosmos document will always be _etag, so we map the field that the
+    //user has marked with @version to _etag and remove the @version annotated field from the
+    //object if the field is not named _etag
+    private void mapVersionFieldToEtag(Object sourceEntity, ObjectNode cosmosObjectNode) {
+        final CosmosEntityInformation<?, ?> entityInfo = CosmosEntityInformation.getInstance(sourceEntity.getClass());
+        if (entityInfo.isVersioned()) {
+            if (!entityInfo.getVersionFieldName().equals(ETAG_KEY)) {
+                cosmosObjectNode.remove(entityInfo.getVersionFieldName());
+                cosmosObjectNode.put(ETAG_KEY, entityInfo.getVersionFieldValue(sourceEntity));
+            }
+        }
     }
 
     /**
