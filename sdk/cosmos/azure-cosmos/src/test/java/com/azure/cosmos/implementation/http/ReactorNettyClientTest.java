@@ -3,20 +3,24 @@
 package com.azure.cosmos.implementation.http;
 
 import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.LifeCycleUtils;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
+import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.rx.TestSuiteBase;
 import io.netty.handler.timeout.ReadTimeoutException;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.mockito.Mockito;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 import reactor.netty.Connection;
@@ -24,32 +28,46 @@ import reactor.netty.ConnectionObserver;
 import reactor.netty.http.client.HttpClientState;
 import reactor.test.StepVerifier;
 
-import java.io.IOException;
 import java.time.Duration;
 
-import static java.lang.Thread.sleep;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ReactorNettyClientTest extends TestSuiteBase {
-    private CosmosAsyncClient gatewayClient;
     private RxDocumentClientImpl rxDocumentClient;
     private ReactorNettyClient reactorNettyClient;
     private reactor.netty.http.client.HttpClient httpClient;
     private HttpClientConfig httpClientConfig;
+    private CosmosAsyncClient directClient;
+    private CosmosAsyncClient gatewayClient;
     private CosmosAsyncDatabase cosmosAsyncDatabase;
+    private CosmosAsyncContainer cosmosAsyncContainer;
 
     @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() throws Exception {
-        assertThat(this.gatewayClient).isNull();
-        GatewayConnectionConfig connectionConfig = new GatewayConnectionConfig();
+    public void beforeClass() {
         gatewayClient = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
-            .contentResponseOnWriteEnabled(true)
-            .gatewayMode(connectionConfig)
+            .gatewayMode()
             .buildAsyncClient();
-        cosmosAsyncDatabase = getSharedCosmosDatabase(gatewayClient);
-        rxDocumentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(gatewayClient);
+
+        directClient = new CosmosClientBuilder()
+            .endpoint(TestConfigurations.HOST)
+            .key(TestConfigurations.MASTER_KEY)
+            .directMode()
+            .buildAsyncClient();
+    }
+
+    @DataProvider(name = "cosmosClients")
+    public Object[][] cosmosClients() {
+        return new Object[][]{
+            {gatewayClient}, {directClient}};
+    }
+
+    @Test(groups = {"emulator"}, dataProvider = "cosmosClients", timeOut = SETUP_TIMEOUT)
+    public void httpClientRequestTimeout(CosmosAsyncClient cosmosAsyncClient) throws Exception {
+        cosmosAsyncDatabase = getSharedCosmosDatabase(cosmosAsyncClient);
+        cosmosAsyncContainer = getSharedMultiPartitionCosmosContainer(cosmosAsyncClient);
+        rxDocumentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(cosmosAsyncClient);
         reactorNettyClient = (ReactorNettyClient) ReflectionUtils.getHttpClient(rxDocumentClient);
         httpClient = (reactor.netty.http.client.HttpClient) FieldUtils.readField(reactorNettyClient,
             "httpClient",
@@ -57,26 +75,23 @@ public class ReactorNettyClientTest extends TestSuiteBase {
         httpClientConfig = (HttpClientConfig) FieldUtils.readField(reactorNettyClient,
             "httpClientConfig",
             true);
-    }
 
-    @Test(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
-    public void httpClientRequestTimeout() throws Exception {
         reactor.netty.http.client.HttpClient spyClient = Mockito.spy(httpClient);
         FieldUtils.writeField(reactorNettyClient, "httpClient", spyClient, true);
-
-        cosmosAsyncDatabase.read().block(); //warming up the connection chanel
 
         // lowering down the timeout for testing various scenarios.
         httpClientConfig = httpClientConfig.withRequestTimeout(Duration.ofMillis(1000));
         FieldUtils.writeField(reactorNettyClient, "httpClientConfig", httpClientConfig, true);
 
+        //Attaching test observer to create timeouts
         TestConnectionObserver testConnectionObserver = new TestConnectionObserver();
         Mockito.doReturn(spyClient.observe(testConnectionObserver)).when(spyClient).observe(Mockito.any(ConnectionObserver.class));
 
-        Mono<CosmosDatabaseResponse> response = cosmosAsyncDatabase.read();
-        testConnectionObserver.sleepOnConnectedOrAcquired = 1100; // adding sleep > timeout on connected/acquired,
-        // verifying failure
-        StepVerifier.create(response)
+        Mono<CosmosDatabaseResponse> databaseResponse = cosmosAsyncDatabase.read();
+
+        // adding sleep > timeout on requestConfigured verifying failure
+        testConnectionObserver.sleepOnConfigured = 1100;
+        StepVerifier.create(databaseResponse)
             .expectSubscription()
             .consumeErrorWith(throwable -> {
                 assertThat(throwable).isInstanceOf(CosmosException.class);
@@ -84,36 +99,21 @@ public class ReactorNettyClientTest extends TestSuiteBase {
             })
             .verify();
 
-        testConnectionObserver.sleepOnConnectedOrAcquired = 500; // adding sleep < timeout on connected/acquired,
-        // verifying success
-        StepVerifier.create(response)
+        // adding sleep < timeout on requestConfigured verifying success
+        testConnectionObserver.sleepOnConfigured = 500;
+        StepVerifier.create(databaseResponse)
             .expectSubscription()
-            .consumeNextWith(databaseResponse -> {
-                assertThat(databaseResponse.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.OK);
+            .consumeNextWith(response -> {
+                assertThat(response.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.OK);
             })
             .verifyComplete();
 
-        testConnectionObserver.sleepOnConnectedOrAcquired = 0;
-        testConnectionObserver.sleepOnConfigured = 1100; //adding sleep > timeout on configures, verifying failure
-        StepVerifier.create(response)
-            .expectSubscription()
-            .consumeErrorWith(throwable -> {
-                assertThat(throwable).isInstanceOf(CosmosException.class);
-                assertThat(throwable.getCause()).isInstanceOf(ReadTimeoutException.class);
-            })
-            .verify();
 
-        testConnectionObserver.sleepOnConfigured = 500; //adding sleep < timeout on configures, verifying success
-        StepVerifier.create(response)
-            .expectSubscription()
-            .consumeNextWith(databaseResponse -> {
-                assertThat(databaseResponse.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.OK);
-            })
-            .verifyComplete();
-
+        Mono<CosmosContainerResponse> containerResponse = cosmosAsyncContainer.read();
         testConnectionObserver.sleepOnConfigured = 0;
-        testConnectionObserver.sleepOnRequestSent = 1100; //adding sleep > timeout on requestSent, verifying failure
-        StepVerifier.create(response)
+        // adding sleep > timeout on requestPrepared verifying failure
+        testConnectionObserver.sleepOnRequestPrepared = 1100;
+        StepVerifier.create(containerResponse)
             .expectSubscription()
             .consumeErrorWith(throwable -> {
                 assertThat(throwable).isInstanceOf(CosmosException.class);
@@ -121,53 +121,33 @@ public class ReactorNettyClientTest extends TestSuiteBase {
             })
             .verify();
 
-        testConnectionObserver.sleepOnRequestSent = 500; //adding sleep < timeout on configures, verifying success
-        StepVerifier.create(response)
+        // adding sleep < timeout on requestPrepared verifying success
+        testConnectionObserver.sleepOnRequestPrepared = 500;
+        StepVerifier.create(containerResponse)
             .expectSubscription()
-            .consumeNextWith(databaseResponse -> {
-                assertThat(databaseResponse.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.OK);
-            })
-            .verifyComplete();
-
-
-        testConnectionObserver.sleepOnRequestSent = 0;
-        testConnectionObserver.sleepOnResponseReceived = 1100; //adding sleep > timeout on responseReceived,
-        // verifying failure
-        StepVerifier.create(response)
-            .expectSubscription()
-            .consumeErrorWith(throwable -> {
-                assertThat(throwable).isInstanceOf(CosmosException.class);
-                assertThat(throwable.getCause()).isInstanceOf(ReadTimeoutException.class);
-            })
-            .verify();
-
-        testConnectionObserver.sleepOnResponseReceived = 500; //adding sleep < timeout on responseReceived
-        // verifying success
-        StepVerifier.create(response)
-            .expectSubscription()
-            .consumeNextWith(databaseResponse -> {
-                assertThat(databaseResponse.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.OK);
+            .consumeNextWith(response -> {
+                assertThat(response.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.OK);
             })
             .verifyComplete();
     }
 
+    @AfterClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
+    public void afterClass() {
+        LifeCycleUtils.closeQuietly(this.gatewayClient);
+        LifeCycleUtils.closeQuietly(this.directClient);
+    }
+
     public class TestConnectionObserver implements ConnectionObserver {
-        int sleepOnConnectedOrAcquired;
         int sleepOnConfigured;
-        int sleepOnRequestSent;
-        int sleepOnResponseReceived;
+        int sleepOnRequestPrepared;
 
         @Override
         public void onStateChange(Connection connection, State state) {
             try {
-                if (state.equals(HttpClientState.CONNECTED) || state.equals(HttpClientState.ACQUIRED)) {
-                    sleep(sleepOnConnectedOrAcquired);
-                } else if (state.equals(HttpClientState.CONFIGURED)) {
-                    sleep(sleepOnConfigured);
-                } else if (state.equals(HttpClientState.REQUEST_SENT)) {
-                    sleep(sleepOnRequestSent);
-                } else if (state.equals(HttpClientState.RESPONSE_RECEIVED)) {
-                    sleep(sleepOnResponseReceived);
+                if (state.equals(HttpClientState.CONFIGURED)) {
+                    Thread.sleep(sleepOnConfigured);
+                } else if (state.equals(HttpClientState.REQUEST_PREPARED)) {
+                    Thread.sleep(sleepOnRequestPrepared);
                 }
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
