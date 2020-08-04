@@ -7,10 +7,17 @@ import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.TypeReference;
 import com.azure.search.documents.implementation.serializer.SerializationUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.util.Map;
+
 public final class Utility {
+    // Type reference that used across many places. Have one copy here to minimize the memory.
+    public static final TypeReference<Map<String, Object>> TYPE_REFERENCE = new TypeReference<Map<String, Object>>() {
+    };
+
     /**
      * Helper class to initialize the SerializerAdapter.
      * @return The SerializeAdapter instance.
