@@ -29,11 +29,6 @@ public final class Utility {
         return adapter;
     }
 
-//    public static JsonSerializer creatDefaultJsonSerializerInstance() {
-//        JacksonAdapter adapter = (JacksonAdapter) initializeSerializerAdapter();
-//        return new JacksonJsonSerializerBuilder().serializer(adapter.serializer()).build();
-//    }
-
     private Utility() {
     }
 }
