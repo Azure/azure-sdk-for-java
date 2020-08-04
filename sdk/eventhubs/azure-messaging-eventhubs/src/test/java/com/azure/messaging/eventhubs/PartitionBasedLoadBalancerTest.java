@@ -520,8 +520,8 @@ public class PartitionBasedLoadBalancerTest {
             .setFullyQualifiedNamespace(fqNamespace)
             .setEventHubName(eventHubName)
             .setConsumerGroup(consumerGroupName)
-            .setPartitionId("1")
-            .setOwnerId("owner1")
+            .setPartitionId(partitionId)
+            .setOwnerId(ownerId)
             .setETag(UUID.randomUUID().toString())
             .setLastModifiedTime(System.currentTimeMillis());
     }
