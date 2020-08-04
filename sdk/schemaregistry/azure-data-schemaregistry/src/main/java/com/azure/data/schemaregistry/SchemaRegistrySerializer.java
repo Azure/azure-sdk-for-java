@@ -3,12 +3,11 @@
 
 package com.azure.data.schemaregistry;
 
-import static com.azure.core.util.FluxUtil.monoError;
-
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.schemaregistry.models.SchemaRegistryObject;
 import com.azure.data.schemaregistry.models.SerializationType;
+import reactor.core.publisher.Mono;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -16,11 +15,8 @@ import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.ConcurrentSkipListMap;
-import reactor.core.publisher.Mono;
+
+import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * Common implementation for all registry-based serializers.
@@ -83,10 +79,9 @@ public abstract class SchemaRegistrySerializer {
      *
      * @param s Output stream destination for encoded bytes
      * @param object object to be serialized
-     * @param <S> Type of the output stream parameter.
-     * @return byte array containing encoded bytes with prefixed schema ID
+     * @return Reactive stream that will indicate operation completion.
      */
-    protected <S extends OutputStream> Mono<S> serializeAsync(S s, Object object) {
+    protected Mono<Void> serializeAsync(OutputStream s, Object object) {
         if (object == null) {
             return monoError(logger, new NullPointerException(
                 "Null object, behavior should be defined in concrete serializer implementation."));
@@ -105,7 +100,6 @@ public abstract class SchemaRegistrySerializer {
                 } catch (IOException e) {
                     sink.error(new UncheckedIOException(e.getMessage(), e));
                 }
-                sink.next(s);
             });
     }
 
