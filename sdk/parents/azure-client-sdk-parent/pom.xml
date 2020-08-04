@@ -553,9 +553,7 @@
             <excludePackageNames>
               *.impl*:
               *.implementation*:
-              <!-- RMDocs do utils and samples actually do anything -->
-              *.utils:
-              *.samples
+              *.samples:
               com.azure.tools.checkstyle*:
               com.azure.core.test*:
               com.azure.endtoend*:
@@ -690,8 +688,8 @@
                 <packages>com.azure.ai.textanalytics*</packages>
               </group>
               <group>
-                  <title>Azure Management</title>
-                  <packages>com.azure.management*</packages>
+                  <title>Azure Resource Manager</title>
+                  <packages>com.azure.resourcemanager*</packages>
               </group>
             </groups>
             <links>
