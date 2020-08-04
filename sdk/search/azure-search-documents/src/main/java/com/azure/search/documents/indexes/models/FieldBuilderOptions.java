@@ -17,8 +17,8 @@ public class FieldBuilderOptions {
 
     /**
      * Gets the serializer use to build search fields in
-     * {@link SearchIndexClient#buildSearchField(Class, FieldBuilderOptions)} buildSearchField} or
-     * {@link SearchIndexAsyncClient#buildSearchField(Class, FieldBuilderOptions) buildSearchField}
+     * {@link SearchIndexClient#buildSearchFields(Class, FieldBuilderOptions)} buildSearchFields} or
+     * {@link SearchIndexAsyncClient#buildSearchFields(Class, FieldBuilderOptions) buildSearchFields}
      *
      * @return the custom serializer.
      */

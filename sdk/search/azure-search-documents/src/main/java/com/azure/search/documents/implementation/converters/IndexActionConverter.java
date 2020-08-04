@@ -3,21 +3,28 @@
 
 package com.azure.search.documents.implementation.converters;
 
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.JsonSerializer;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Map;
 
 import static com.azure.search.documents.implementation.util.Utility.TYPE_REFERENCE;
+import static com.azure.search.documents.implementation.util.Utility.initializeSerializerAdapter;
 
 /**
  * A converter between {@link com.azure.search.documents.implementation.models.IndexAction} and {@link IndexAction}.
  */
 public final class IndexActionConverter {
+    private static final ClientLogger LOGGER = new ClientLogger(IndexActionConverter.class);
+    private static final JacksonAdapter searchJacksonAdapter = (JacksonAdapter) initializeSerializerAdapter();
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.IndexAction} to {@link IndexAction}.
@@ -62,9 +69,19 @@ public final class IndexActionConverter {
         Map<String, Object> mapProperties = PrivateFieldAccessHelper.get(obj, "properties", Map.class);
         if (mapProperties == null) {
             T properties = obj.getDocument();
-            ByteArrayOutputStream sourceStream = serializer.serialize(new ByteArrayOutputStream(), properties);
-            mapProperties = serializer.deserialize(new ByteArrayInputStream(sourceStream.toByteArray()),
-                TYPE_REFERENCE);
+            if (serializer == null) {
+                try {
+                    String serializedJson = searchJacksonAdapter.serialize(properties, SerializerEncoding.JSON);
+                    mapProperties = searchJacksonAdapter.deserialize(serializedJson, TYPE_REFERENCE.getJavaType(),
+                        SerializerEncoding.JSON);
+                } catch (IOException ex) {
+                    throw LOGGER.logExceptionAsError(
+                        new RuntimeException("Something wrong with the serialization."));
+                }
+            } else {
+                ByteArrayOutputStream sourceStream = serializer.serialize(new ByteArrayOutputStream(), properties);
+                mapProperties = serializer.deserialize(new ByteArrayInputStream(sourceStream.toByteArray()), TYPE_REFERENCE);
+            }
         }
 
         indexAction.setAdditionalProperties(mapProperties);

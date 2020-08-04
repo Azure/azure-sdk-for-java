@@ -3,7 +3,6 @@
 
 package com.azure.search.documents;
 
-import com.azure.core.util.serializer.TypeReference;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -17,8 +16,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.azure.search.documents.TestHelpers.SERIALIZER;
 import static com.azure.search.documents.TestHelpers.assertMapEquals;
+import static com.azure.search.documents.TestHelpers.convertStreamToMap;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -36,8 +35,7 @@ public class SearchDocumentConverterTests {
         // Document is simply a Hash Map.
         // in this case we simulate creation of the object created by azure-core
         ByteArrayInputStream inputStream = new ByteArrayInputStream(json.getBytes());
-        SearchDocument doc = new SearchDocument(SERIALIZER.deserialize(inputStream,
-            new TypeReference<SearchDocument>() { }));
+        SearchDocument doc = new SearchDocument(convertStreamToMap(inputStream));
         cleanupODataAnnotation(doc);
         return doc;
     }

@@ -14,6 +14,7 @@ import com.azure.core.util.ServiceVersion;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.search.documents.implementation.SearchIndexClientImpl;
 import com.azure.search.documents.implementation.SearchIndexClientImplBuilder;
 import com.azure.search.documents.implementation.converters.AutocompleteModeConverter;
@@ -57,6 +58,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -535,6 +537,16 @@ public final class SearchAsyncClient {
                 .getWithResponseAsync(key, selectedFields, null, context)
                 .onErrorMap(DocumentResponseConversions::exceptionMapper)
                 .map(res -> {
+                    if (serializer == null) {
+                        try {
+                            String serializedJson = ADAPTER.serialize(res.getValue(), SerializerEncoding.JSON);
+                            T document = ADAPTER.deserialize(serializedJson, modelClass, SerializerEncoding.JSON);
+                            return new SimpleResponse<>(res, document);
+                        } catch (IOException ex) {
+                            throw logger.logExceptionAsError(
+                                new RuntimeException("Something wrong with the serialization."));
+                        }
+                    }
                     ByteArrayOutputStream sourceStream = serializer.serialize(new ByteArrayOutputStream(),
                         res.getValue());
                     T doc = serializer.deserialize(new ByteArrayInputStream(sourceStream.toByteArray()),

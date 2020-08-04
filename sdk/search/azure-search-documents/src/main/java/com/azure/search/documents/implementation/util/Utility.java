@@ -3,9 +3,7 @@
 
 package com.azure.search.documents.implementation.util;
 
-import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
 import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.search.documents.implementation.serializer.SerializationUtil;
@@ -31,10 +29,10 @@ public final class Utility {
         return adapter;
     }
 
-    public static JsonSerializer creatDefaultJsonSerializerInstance() {
-        JacksonAdapter adapter = (JacksonAdapter) initializeSerializerAdapter();
-        return new JacksonJsonSerializerBuilder().serializer(adapter.serializer()).build();
-    }
+//    public static JsonSerializer creatDefaultJsonSerializerInstance() {
+//        JacksonAdapter adapter = (JacksonAdapter) initializeSerializerAdapter();
+//        return new JacksonJsonSerializerBuilder().serializer(adapter.serializer()).build();
+//    }
 
     private Utility() {
     }

@@ -5,7 +5,6 @@ package com.azure.search.documents;
 
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.serializer.TypeReference;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
@@ -26,8 +25,6 @@ import com.azure.search.documents.util.SearchPagedIterable;
 import com.azure.search.documents.util.SearchPagedResponse;
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.text.ParseException;
@@ -48,10 +45,10 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.azure.search.documents.TestHelpers.SERIALIZER;
 import static com.azure.search.documents.TestHelpers.assertHttpResponseException;
 import static com.azure.search.documents.TestHelpers.assertMapEquals;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
+import static com.azure.search.documents.TestHelpers.convertMapToValue;
 import static com.azure.search.documents.TestHelpers.uploadDocuments;
 import static com.azure.search.documents.TestHelpers.uploadDocumentsJson;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -237,9 +234,7 @@ public class SearchSyncTests extends SearchTestBase {
         }
 
         List<Hotel> hotelsList = hotels.stream().map(hotel -> {
-            ByteArrayOutputStream sourceStream = SERIALIZER.serialize(new ByteArrayOutputStream(), hotel);
-            return SERIALIZER.deserialize(new ByteArrayInputStream(sourceStream.toByteArray()),
-                new TypeReference<Hotel>() { });
+            return convertMapToValue(hotel, Hotel.class);
         }).collect(Collectors.toList());
         assertEquals(hotelsList.size(), actualResults.size());
         actualResults.sort(Comparator.comparing(doc -> Integer.parseInt(doc.hotelId())));

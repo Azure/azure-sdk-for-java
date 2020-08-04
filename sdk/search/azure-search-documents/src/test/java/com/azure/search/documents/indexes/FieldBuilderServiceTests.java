@@ -42,7 +42,7 @@ public class FieldBuilderServiceTests extends SearchTestBase {
     public void createIndexWithFieldBuilder() {
         SynonymMap synonymMap = new SynonymMap(synonymMapName).setSynonyms("hotel,motel");
         client.createSynonymMap(synonymMap);
-        index.setFields(SearchIndexClient.buildSearchField(Hotel.class, null));
+        index.setFields(SearchIndexClient.buildSearchFields(Hotel.class, null));
         client.createIndex(index);
         indexesToDelete.add(index.getName());
         assertObjectEquals(index, client.getIndex(index.getName()), true);
