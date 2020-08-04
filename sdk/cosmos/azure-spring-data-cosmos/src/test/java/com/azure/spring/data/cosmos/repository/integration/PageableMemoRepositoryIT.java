@@ -5,7 +5,7 @@ package com.azure.spring.data.cosmos.repository.integration;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
-import com.azure.spring.data.cosmos.config.CosmosClientConfig;
+import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
 import com.azure.spring.data.cosmos.domain.Importance;
@@ -57,7 +57,7 @@ public class PageableMemoRepositoryIT {
     private ApplicationContext applicationContext;
 
     @Autowired
-    private CosmosClientConfig cosmosClientConfig;
+    private CosmosFactory cosmosFactory;
 
     private static Set<PageableMemo> memoSet;
 
@@ -141,7 +141,7 @@ public class PageableMemoRepositoryIT {
         final String query = "SELECT * from c OFFSET " + skipCount + " LIMIT " + takeCount;
 
         final CosmosAsyncClient cosmosAsyncClient = applicationContext.getBean(CosmosAsyncClient.class);
-        return cosmosAsyncClient.getDatabase(cosmosClientConfig.getDatabase())
+        return cosmosAsyncClient.getDatabase(cosmosFactory.getDatabaseName())
                            .getContainer(entityInformation.getContainerName())
                            .queryItems(query, options, PageableMemo.class)
                            .byPage();

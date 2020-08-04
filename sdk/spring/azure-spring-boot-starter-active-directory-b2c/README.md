@@ -1,5 +1,4 @@
 # Azure AD B2C Spring Boot Starter client library for Java
-## Overview
 
 Azure Active Directory (Azure AD) B2C is an identity management service that enables you to customize and control how
 customers sign up, sign in, and manage their profiles when using your applications. Azure AD B2C enables these actions
@@ -194,8 +193,16 @@ you should be redirected to login page.
 4. After you have logged in successfully, you should see the sample `home page` from the browser.
 
 ## Key concepts
+In this documentation, you created a new Java web application using the Azure Active Directory B2C starter,
+configured a new Azure AD B2C tenant and registered a new application in it, and then configured your
+application to use the Spring annotations and classes to protect the web app.
 
 ## Troubleshooting
+If you encounter any bug, please file an issue [here](https://github.com/Azure/azure-sdk-for-java/issues).
+
+To suggest a new feature or changes that could be made, file an issue the same way you would for a bug.
+
+You can participate community driven [![Gitter](https://badges.gitter.im/Microsoft/spring-on-azure.svg)](https://gitter.im/Microsoft/spring-on-azure)
 
 ## Next steps
 #### Allow telemetry
@@ -211,10 +218,8 @@ When telemetry is enabled, an HTTP request will be sent to URL `https://dc.servi
 Find more information about Azure Service Privacy Statement, please check [Microsoft Online Services Privacy Statement](https://www.microsoft.com/privacystatement/OnlineServices/Default.aspx).
 
 ## Contributing
+This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
 
-## Summary
+Please follow [instructions here](../CONTRIBUTING.md) to build from source or contribute.
 
-In this documentation, you created a new Java web application using the Azure Active Directory B2C starter,
-configured a new Azure AD B2C tenant and registered a new application in it, and then configured your
-application to use the Spring annotations and classes to protect the web app.
 

@@ -3,13 +3,13 @@
 package com.azure.spring.data.cosmos.repository.integration;
 
 import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.common.TestUtils;
-import com.azure.spring.data.cosmos.config.CosmosClientConfig;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
@@ -55,7 +55,7 @@ public class CosmosAnnotationIT {
     @Autowired
     private CosmosConfig cosmosConfig;
     @Autowired
-    private CosmosClientConfig cosmosClientConfig;
+    private CosmosClientBuilder cosmosClientBuilder;
     @Autowired
     private RoleRepository repository;
 
@@ -70,8 +70,8 @@ public class CosmosAnnotationIT {
     @Before
     public void setUp() throws ClassNotFoundException {
         if (!initialized) {
-            CosmosAsyncClient client = CosmosFactory.createCosmosAsyncClient(cosmosClientConfig);
-            final CosmosFactory cosmosFactory = new CosmosFactory(client, cosmosClientConfig.getDatabase());
+            CosmosAsyncClient client = CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder);
+            final CosmosFactory cosmosFactory = new CosmosFactory(client, TestConstants.DB_NAME);
 
             roleInfo = new CosmosEntityInformation<>(Role.class);
             sampleInfo = new CosmosEntityInformation<>(TimeToLiveSample.class);

@@ -4,8 +4,6 @@ package com.azure.spring.data.cosmos;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.spring.data.cosmos.common.TestConstants;
-import com.azure.spring.data.cosmos.config.CosmosClientConfig;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.Test;
@@ -30,40 +28,32 @@ public class CosmosFactoryTestIT {
 
     @Test
     public void testNullKey() {
-        CosmosAsyncClient cosmosAsyncClient = null;
+        CosmosAsyncClient ignored = null;
         try {
-            final CosmosClientConfig cosmosClientConfig = CosmosClientConfig.builder()
-                                                                            .database(TestConstants.DB_NAME)
-                                                                            .cosmosClientBuilder(new CosmosClientBuilder()
-                                                                                .endpoint(cosmosDbUri)
-                                                                                .key(null))
-                                                                            .build();
-            cosmosAsyncClient =  CosmosFactory.createCosmosAsyncClient(cosmosClientConfig);
+            ignored = CosmosFactory.createCosmosAsyncClient(new CosmosClientBuilder()
+                .endpoint(cosmosDbUri)
+                .key(null));
         } catch (Exception e) {
             assertThat(e instanceof IllegalArgumentException).isTrue();
         } finally {
-            if (cosmosAsyncClient != null) {
-                cosmosAsyncClient.close();
+            if (ignored != null) {
+                ignored.close();
             }
         }
     }
 
     @Test
     public void testNullEndpoint() {
-        CosmosAsyncClient cosmosAsyncClient = null;
+        CosmosAsyncClient ignored = null;
         try {
-            final CosmosClientConfig cosmosClientConfig = CosmosClientConfig.builder()
-                                                                            .database(TestConstants.DB_NAME)
-                                                                            .cosmosClientBuilder(new CosmosClientBuilder()
-                                                                                .endpoint(null)
-                                                                                .key(cosmosDbKey))
-                                                                            .build();
-            cosmosAsyncClient =  CosmosFactory.createCosmosAsyncClient(cosmosClientConfig);
+            ignored = CosmosFactory.createCosmosAsyncClient(new CosmosClientBuilder()
+                .endpoint(null)
+                .key(cosmosDbKey));
         } catch (Exception e) {
             assertThat(e instanceof IllegalArgumentException).isTrue();
         } finally {
-            if (cosmosAsyncClient != null) {
-                cosmosAsyncClient.close();
+            if (ignored != null) {
+                ignored.close();
             }
         }
     }
@@ -71,15 +61,12 @@ public class CosmosFactoryTestIT {
     @Test
     public void testConnectionPolicyUserAgentKept() throws IllegalAccessException {
 
-        final CosmosClientConfig cosmosClientConfig = CosmosClientConfig.builder()
-            .database(TestConstants.DB_NAME)
-            .cosmosClientBuilder(new CosmosClientBuilder()
-                .endpoint(cosmosDbUri)
-                .key(cosmosDbKey))
-            .build();
-        CosmosFactory.createCosmosAsyncClient(cosmosClientConfig);
+        final CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
+            .endpoint(cosmosDbUri)
+            .key(cosmosDbKey);
+        CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder);
 
-        final String uaSuffix = getUserAgentSuffixValue(cosmosClientConfig.getCosmosClientBuilder());
+        final String uaSuffix = getUserAgentSuffixValue(cosmosClientBuilder);
         assertThat(uaSuffix).contains("spring-data");
     }
 
