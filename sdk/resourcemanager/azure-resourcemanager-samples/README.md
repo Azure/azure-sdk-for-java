@@ -1,6 +1,6 @@
-# Azure Resource Manager sample library for Java
+# Azure Resource Manager sample client library for Java
 
-Azure Resource Manager sample library for Java
+Azure Resource Manager sample client library for Java
 
 ## Getting started
 
