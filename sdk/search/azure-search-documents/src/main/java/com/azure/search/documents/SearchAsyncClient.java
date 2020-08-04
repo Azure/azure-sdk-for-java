@@ -547,8 +547,8 @@ public final class SearchAsyncClient {
                                 new RuntimeException("Something wrong with the serialization."));
                         }
                     }
-                    ByteArrayOutputStream sourceStream = serializer.serialize(new ByteArrayOutputStream(),
-                        res.getValue());
+                    ByteArrayOutputStream sourceStream = new ByteArrayOutputStream();
+                    serializer.serialize(sourceStream, res.getValue());
                     T doc = serializer.deserialize(new ByteArrayInputStream(sourceStream.toByteArray()),
                         createInstance(modelClass));
                     return new SimpleResponse<>(res, doc);

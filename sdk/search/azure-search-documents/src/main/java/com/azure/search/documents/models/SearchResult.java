@@ -85,8 +85,8 @@ public final class SearchResult {
                 throw logger.logExceptionAsError(new RuntimeException("Something wrong with the serialization."));
             }
         }
-        ByteArrayOutputStream sourceStream = jsonSerializer.serialize(new ByteArrayOutputStream(),
-            additionalProperties);
+        ByteArrayOutputStream sourceStream = new ByteArrayOutputStream();
+        jsonSerializer.serialize(sourceStream, additionalProperties);
         return jsonSerializer.deserialize(new ByteArrayInputStream(sourceStream.toByteArray()),
             createInstance(modelClass));
     }

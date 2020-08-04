@@ -79,7 +79,9 @@ public final class IndexActionConverter {
                         new RuntimeException("Something wrong with the serialization."));
                 }
             } else {
-                ByteArrayOutputStream sourceStream = serializer.serialize(new ByteArrayOutputStream(), properties);
+
+                ByteArrayOutputStream sourceStream = new ByteArrayOutputStream();
+                serializer.serialize(sourceStream, properties);
                 mapProperties = serializer.deserialize(new ByteArrayInputStream(sourceStream.toByteArray()), TYPE_REFERENCE);
             }
         }
