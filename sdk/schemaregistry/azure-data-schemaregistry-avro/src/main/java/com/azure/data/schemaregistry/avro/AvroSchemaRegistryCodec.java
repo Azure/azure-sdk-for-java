@@ -79,11 +79,6 @@ public class AvroSchemaRegistryCodec implements SchemaRegistryCodec {
         return AvroSchemaUtils.getSchema(object).getFullName();
     }
 
-    @Override
-    public String getSchemaGroup() {
-        return "$Default";
-    }
-
     /**
      * Returns ByteArrayOutputStream containing Avro encoding of object parameter
      * @param object Object to be encoded into byte stream
