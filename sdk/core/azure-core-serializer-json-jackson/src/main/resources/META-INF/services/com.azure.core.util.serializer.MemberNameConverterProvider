@@ -1,1 +1,1 @@
-com.azure.core.serializer.json.jackson.JacksonPropertyNameSerializerProvider
+com.azure.core.serializer.json.jackson.JacksonJsonSerializerProvider
