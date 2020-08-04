@@ -2,97 +2,267 @@ package com.azure.storage.blob.changefeed
 
 import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedCursor
-import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor
 import com.azure.storage.blob.changefeed.implementation.models.SegmentCursor
 import com.azure.storage.blob.changefeed.implementation.models.ShardCursor
 import spock.lang.Specification
 
-import javax.xml.bind.DatatypeConverter
 import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
 import java.time.OffsetDateTime
 
 class ChangefeedCursorTest extends Specification {
 
-    OffsetDateTime endTime = OffsetDateTime.now()
-    OffsetDateTime segmentTime = OffsetDateTime.now()
-    String shardPath = "shardPath"
-    String chunkPath = "chunkPath"
-    long blockOffset = 83
-    long objectBlockIndex = 36
+    byte[] urlHash = MessageDigest.getInstance("MD5").digest('https://testaccount.blob.core.windows.net/$blobchangefeed'.getBytes(StandardCharsets.UTF_8))
+    OffsetDateTime endTime = OffsetDateTime.MAX
+
+    String segmentPath = "idx/segments/2020/08/02/2300/meta.json"
+    String currentShardPath0 = "log/00/2020/08/02/2300/"
+    String currentShardPath1 = "log/01/2020/08/02/2300/"
+
+    String chunk0 = "log/00/2020/08/02/2300/00000.avro"
+    String chunk1 = "log/00/2020/08/02/2300/00001.avro"
+    String chunk2 = "log/01/2020/08/02/2300/00000.avro"
+
+    long offset0 = 2434
+    long offset1 = 18954
+
+    long index0 = 2
+    long index1 = 15
 
     def "constructor"() {
         when:
-        ChangefeedCursor cursor = new ChangefeedCursor(endTime)
+        BlobChangefeedCursor cursor = new BlobChangefeedCursor(urlHash, endTime)
 
         then:
-        cursor.getEndTime() == endTime.toString()
-        cursor.getSegmentTime() == null
-        cursor.getShardPath() == null
+        cursor.getCursorVersion() == 1
+        cursor.getUrlHash() == urlHash
+        cursor.getEndTime() == endTime
+        cursor.getCurrentSegmentCursor() == null
     }
 
     def "toSegmentCursor"() {
         when:
-        ChangefeedCursor cursor = new ChangefeedCursor(endTime)
-            .toSegmentCursor(segmentTime)
+        BlobChangefeedCursor cursor = new BlobChangefeedCursor(urlHash, endTime)
+            .toSegmentCursor(segmentPath)
 
         then:
-        cursor.getEndTime() == endTime.toString()
-        cursor.getSegmentTime() == segmentTime.toString()
-        cursor.getShardPath() == null
+        cursor.getCursorVersion() == 1
+        cursor.getUrlHash() == urlHash
+        cursor.getEndTime() == endTime
+        cursor.getCurrentSegmentCursor() != null
+        cursor.getCurrentSegmentCursor().getSegmentPath() == segmentPath
+        cursor.getCurrentSegmentCursor().getShardCursors() != null
+        cursor.getCurrentSegmentCursor().getShardCursors().size() == 0
+        cursor.getCurrentSegmentCursor().getCurrentShardPath() == null
     }
 
     def "toShardCursor"() {
         when:
-        ChangefeedCursor cursor = new ChangefeedCursor(endTime)
-            .toSegmentCursor(segmentTime)
-            .toShardCursor(shardPath)
+        BlobChangefeedCursor cursor = new BlobChangefeedCursor(urlHash, endTime)
+            .toSegmentCursor(segmentPath)
+            .toShardCursor(currentShardPath0)
 
         then:
-        cursor.getEndTime() == endTime.toString()
-        cursor.getSegmentTime() == segmentTime.toString()
-        cursor.getShardPath() == shardPath
-    }
-
-    def "toChunkCursor"() {
-        when:
-        ChangefeedCursor cursor = new ChangefeedCursor(endTime)
-            .toSegmentCursor(segmentTime)
-            .toShardCursor(shardPath)
-            .toChunkCursor(chunkPath)
-
-        then:
-        cursor.getEndTime() == endTime.toString()
-        cursor.getSegmentTime() == segmentTime.toString()
-        cursor.getShardPath() == shardPath
-        cursor.getChunkPath() == chunkPath
+        cursor.getCursorVersion() == 1
+        cursor.getUrlHash() == urlHash
+        cursor.getEndTime() == endTime
+        cursor.getCurrentSegmentCursor() != null
+        cursor.getCurrentSegmentCursor().getSegmentPath() == segmentPath
+        cursor.getCurrentSegmentCursor().getShardCursors() != null
+        cursor.getCurrentSegmentCursor().getShardCursors().size() == 0
+        cursor.getCurrentSegmentCursor().getCurrentShardPath() == currentShardPath0
     }
 
     def "toEventCursor"() {
         when:
-        ChangefeedCursor cursor = new ChangefeedCursor(endTime)
-            .toSegmentCursor(segmentTime)
-            .toShardCursor(shardPath)
-            .toChunkCursor(chunkPath)
-            .toEventCursor(blockOffset, objectBlockIndex)
+        BlobChangefeedCursor cursor = new BlobChangefeedCursor(urlHash, endTime)
+            .toSegmentCursor(segmentPath)
+            .toShardCursor(currentShardPath0)
+            .toEventCursor(chunk0, offset0, index0)
 
         then:
-        cursor.getEndTime() == endTime.toString()
-        cursor.getSegmentTime() == segmentTime.toString()
-        cursor.getShardPath() == shardPath
-        cursor.getChunkPath() == chunkPath
-        cursor.getBlockOffset() == blockOffset
-        cursor.getObjectBlockIndex() == objectBlockIndex
+        cursor.getCursorVersion() == 1
+        cursor.getUrlHash() == urlHash
+        cursor.getEndTime() == endTime
+        cursor.getCurrentSegmentCursor() != null
+        cursor.getCurrentSegmentCursor().getSegmentPath() == segmentPath
+        cursor.getCurrentSegmentCursor().getShardCursors() != null
+        cursor.getCurrentSegmentCursor().getShardCursors().size() == 1
+        cursor.getCurrentSegmentCursor().getShardCursors().get(0).getCurrentChunkPath() == chunk0
+        cursor.getCurrentSegmentCursor().getShardCursors().get(0).getBlockOffset() == offset0
+        cursor.getCurrentSegmentCursor().getShardCursors().get(0).getEventIndex() == index0
+        cursor.getCurrentSegmentCursor().getCurrentShardPath() == currentShardPath0
+    }
+
+    def "state is saved in cursor across events"() {
+        /* Note only state we care about is across events. */
+        when:
+        BlobChangefeedCursor changefeedCursor = new BlobChangefeedCursor(urlHash, endTime)
+
+        BlobChangefeedCursor segmentCursor = changefeedCursor.toSegmentCursor(segmentPath)
+
+        BlobChangefeedCursor shardCursor0 = segmentCursor.toShardCursor(currentShardPath0)
+
+        BlobChangefeedCursor eventCursor0 = shardCursor0.toEventCursor(chunk0, offset0, 0)
+        BlobChangefeedCursor eventCursor1 = shardCursor0.toEventCursor(chunk0, offset0, 1)
+        BlobChangefeedCursor eventCursor2 = shardCursor0.toEventCursor(chunk1, offset1, 0) /* Make sure it still works across chunks. */
+
+        BlobChangefeedCursor shardCursor1 = segmentCursor.toShardCursor(currentShardPath1)
+
+        BlobChangefeedCursor eventCursor3 = shardCursor1.toEventCursor(chunk2, offset1, 0)
+        BlobChangefeedCursor eventCursor4 = shardCursor1.toEventCursor(chunk2, offset1, 1)
+        BlobChangefeedCursor eventCursor5 = shardCursor1.toEventCursor(chunk2, offset1, 2)
+
+        then:
+        // Changefeed cursor.
+        changefeedCursor.getCursorVersion() == 1
+        changefeedCursor.getUrlHash() == urlHash
+        changefeedCursor.getEndTime() == endTime
+        changefeedCursor.getCurrentSegmentCursor() == null
+
+        // Segment cursor (the shard cursors list should be equivalent to the last event cursor.)
+        segmentCursor.getCursorVersion() == 1
+        segmentCursor.getUrlHash() == urlHash
+        segmentCursor.getEndTime() == endTime
+        segmentCursor.getCurrentSegmentCursor() != null
+        segmentCursor.getCurrentSegmentCursor().getSegmentPath() == segmentPath
+        segmentCursor.getCurrentSegmentCursor().getCurrentShardPath() == null
+        segmentCursor.getCurrentSegmentCursor().getShardCursors() != null
+        segmentCursor.getCurrentSegmentCursor().getShardCursors().size() == 2
+        segmentCursor.getCurrentSegmentCursor().getShardCursors().get(0).getCurrentChunkPath() == chunk1
+        segmentCursor.getCurrentSegmentCursor().getShardCursors().get(0).getBlockOffset() == offset1
+        segmentCursor.getCurrentSegmentCursor().getShardCursors().get(0).getEventIndex() == 0
+        segmentCursor.getCurrentSegmentCursor().getShardCursors().get(1).getCurrentChunkPath() == chunk2
+        segmentCursor.getCurrentSegmentCursor().getShardCursors().get(1).getBlockOffset() == offset1
+        segmentCursor.getCurrentSegmentCursor().getShardCursors().get(1).getEventIndex() == 2
+
+        // Shard cursor 0 (Should be equivalent to last event cursor with correct shard cursor populated)
+        shardCursor0.getCursorVersion() == 1
+        shardCursor0.getUrlHash() == urlHash
+        shardCursor0.getEndTime() == endTime
+        shardCursor0.getCurrentSegmentCursor() != null
+        shardCursor0.getCurrentSegmentCursor().getSegmentPath() == segmentPath
+        shardCursor0.getCurrentSegmentCursor().getCurrentShardPath() == currentShardPath0
+        shardCursor0.getCurrentSegmentCursor().getShardCursors() != null
+        shardCursor0.getCurrentSegmentCursor().getShardCursors().size() == 2
+        shardCursor0.getCurrentSegmentCursor().getShardCursors().get(0).getCurrentChunkPath() == chunk1
+        shardCursor0.getCurrentSegmentCursor().getShardCursors().get(0).getBlockOffset() == offset1
+        shardCursor0.getCurrentSegmentCursor().getShardCursors().get(0).getEventIndex() == 0
+        shardCursor0.getCurrentSegmentCursor().getShardCursors().get(1).getCurrentChunkPath() == chunk2
+        shardCursor0.getCurrentSegmentCursor().getShardCursors().get(1).getBlockOffset() == offset1
+        shardCursor0.getCurrentSegmentCursor().getShardCursors().get(1).getEventIndex() == 2
+
+        // Shard cursor 1 (Should be equivalent to last event cursor with correct shard cursor populated)
+        shardCursor1.getCursorVersion() == 1
+        shardCursor1.getUrlHash() == urlHash
+        shardCursor1.getEndTime() == endTime
+        shardCursor1.getCurrentSegmentCursor() != null
+        shardCursor1.getCurrentSegmentCursor().getSegmentPath() == segmentPath
+        shardCursor1.getCurrentSegmentCursor().getCurrentShardPath() == currentShardPath1
+        shardCursor1.getCurrentSegmentCursor().getShardCursors() != null
+        shardCursor1.getCurrentSegmentCursor().getShardCursors().size() == 2
+        shardCursor1.getCurrentSegmentCursor().getShardCursors().get(0).getCurrentChunkPath() == chunk1
+        shardCursor1.getCurrentSegmentCursor().getShardCursors().get(0).getBlockOffset() == offset1
+        shardCursor1.getCurrentSegmentCursor().getShardCursors().get(0).getEventIndex() == 0
+        shardCursor1.getCurrentSegmentCursor().getShardCursors().get(1).getCurrentChunkPath() == chunk2
+        shardCursor1.getCurrentSegmentCursor().getShardCursors().get(1).getBlockOffset() == offset1
+        shardCursor1.getCurrentSegmentCursor().getShardCursors().get(1).getEventIndex() == 2
+
+        // Event cursor 0
+        eventCursor0.getCursorVersion() == 1
+        eventCursor0.getUrlHash() == urlHash
+        eventCursor0.getEndTime() == endTime
+        eventCursor0.getCurrentSegmentCursor() != null
+        eventCursor0.getCurrentSegmentCursor().getSegmentPath() == segmentPath
+        eventCursor0.getCurrentSegmentCursor().getCurrentShardPath() == currentShardPath0
+        eventCursor0.getCurrentSegmentCursor().getShardCursors() != null
+        eventCursor0.getCurrentSegmentCursor().getShardCursors().size() == 1
+        eventCursor0.getCurrentSegmentCursor().getShardCursors().get(0).getCurrentChunkPath() == chunk0
+        eventCursor0.getCurrentSegmentCursor().getShardCursors().get(0).getBlockOffset() == offset0
+        eventCursor0.getCurrentSegmentCursor().getShardCursors().get(0).getEventIndex() == 0
+
+        // Event cursor 1
+        eventCursor1.getCursorVersion() == 1
+        eventCursor1.getUrlHash() == urlHash
+        eventCursor1.getEndTime() == endTime
+        eventCursor1.getCurrentSegmentCursor() != null
+        eventCursor1.getCurrentSegmentCursor().getSegmentPath() == segmentPath
+        eventCursor1.getCurrentSegmentCursor().getCurrentShardPath() == currentShardPath0
+        eventCursor1.getCurrentSegmentCursor().getShardCursors() != null
+        eventCursor1.getCurrentSegmentCursor().getShardCursors().size() == 1
+        eventCursor1.getCurrentSegmentCursor().getShardCursors().get(0).getCurrentChunkPath() == chunk0
+        eventCursor1.getCurrentSegmentCursor().getShardCursors().get(0).getBlockOffset() == offset0
+        eventCursor1.getCurrentSegmentCursor().getShardCursors().get(0).getEventIndex() == 1
+
+        // Event cursor 2
+        eventCursor2.getCursorVersion() == 1
+        eventCursor2.getUrlHash() == urlHash
+        eventCursor2.getEndTime() == endTime
+        eventCursor2.getCurrentSegmentCursor() != null
+        eventCursor2.getCurrentSegmentCursor().getSegmentPath() == segmentPath
+        eventCursor2.getCurrentSegmentCursor().getCurrentShardPath() == currentShardPath0
+        eventCursor2.getCurrentSegmentCursor().getShardCursors() != null
+        eventCursor2.getCurrentSegmentCursor().getShardCursors().size() == 1
+        eventCursor2.getCurrentSegmentCursor().getShardCursors().get(0).getCurrentChunkPath() == chunk1
+        eventCursor2.getCurrentSegmentCursor().getShardCursors().get(0).getBlockOffset() == offset1
+        eventCursor2.getCurrentSegmentCursor().getShardCursors().get(0).getEventIndex() == 0
+
+        // Event cursor 3
+        eventCursor3.getCursorVersion() == 1
+        eventCursor3.getUrlHash() == urlHash
+        eventCursor3.getEndTime() == endTime
+        eventCursor3.getCurrentSegmentCursor() != null
+        eventCursor3.getCurrentSegmentCursor().getSegmentPath() == segmentPath
+        eventCursor3.getCurrentSegmentCursor().getCurrentShardPath() == currentShardPath1
+        eventCursor3.getCurrentSegmentCursor().getShardCursors() != null
+        eventCursor3.getCurrentSegmentCursor().getShardCursors().size() == 2
+        eventCursor3.getCurrentSegmentCursor().getShardCursors().get(0).getCurrentChunkPath() == chunk1
+        eventCursor3.getCurrentSegmentCursor().getShardCursors().get(0).getBlockOffset() == offset1
+        eventCursor3.getCurrentSegmentCursor().getShardCursors().get(0).getEventIndex() == 0
+        eventCursor3.getCurrentSegmentCursor().getShardCursors().get(1).getCurrentChunkPath() == chunk2
+        eventCursor3.getCurrentSegmentCursor().getShardCursors().get(1).getBlockOffset() == offset1
+        eventCursor3.getCurrentSegmentCursor().getShardCursors().get(1).getEventIndex() == 0
+
+        // Event cursor 4
+        eventCursor4.getCursorVersion() == 1
+        eventCursor4.getUrlHash() == urlHash
+        eventCursor4.getEndTime() == endTime
+        eventCursor4.getCurrentSegmentCursor() != null
+        eventCursor4.getCurrentSegmentCursor().getSegmentPath() == segmentPath
+        eventCursor4.getCurrentSegmentCursor().getCurrentShardPath() == currentShardPath1
+        eventCursor4.getCurrentSegmentCursor().getShardCursors() != null
+        eventCursor4.getCurrentSegmentCursor().getShardCursors().size() == 2
+        eventCursor4.getCurrentSegmentCursor().getShardCursors().get(0).getCurrentChunkPath() == chunk1
+        eventCursor4.getCurrentSegmentCursor().getShardCursors().get(0).getBlockOffset() == offset1
+        eventCursor4.getCurrentSegmentCursor().getShardCursors().get(0).getEventIndex() == 0
+        eventCursor4.getCurrentSegmentCursor().getShardCursors().get(1).getCurrentChunkPath() == chunk2
+        eventCursor4.getCurrentSegmentCursor().getShardCursors().get(1).getBlockOffset() == offset1
+        eventCursor4.getCurrentSegmentCursor().getShardCursors().get(1).getEventIndex() == 1
+
+        // Event cursor 5
+        eventCursor5.getCursorVersion() == 1
+        eventCursor5.getUrlHash() == urlHash
+        eventCursor5.getEndTime() == endTime
+        eventCursor5.getCurrentSegmentCursor() != null
+        eventCursor5.getCurrentSegmentCursor().getSegmentPath() == segmentPath
+        eventCursor5.getCurrentSegmentCursor().getCurrentShardPath() == currentShardPath1
+        eventCursor5.getCurrentSegmentCursor().getShardCursors() != null
+        eventCursor5.getCurrentSegmentCursor().getShardCursors().size() == 2
+        eventCursor5.getCurrentSegmentCursor().getShardCursors().get(0).getCurrentChunkPath() == chunk1
+        eventCursor5.getCurrentSegmentCursor().getShardCursors().get(0).getBlockOffset() == offset1
+        eventCursor5.getCurrentSegmentCursor().getShardCursors().get(0).getEventIndex() == 0
+        eventCursor5.getCurrentSegmentCursor().getShardCursors().get(1).getCurrentChunkPath() == chunk2
+        eventCursor5.getCurrentSegmentCursor().getShardCursors().get(1).getBlockOffset() == offset1
+        eventCursor5.getCurrentSegmentCursor().getShardCursors().get(1).getEventIndex() == 2
     }
 
     def "serialize"() {
         setup:
-        OffsetDateTime endTime = OffsetDateTime.MAX
         List<ShardCursor> shardCursors = new ArrayList<>()
-        shardCursors.add(new ShardCursor("log/00/2020/08/02/2300/00000.avro", 2434, 2))
-        shardCursors.add(new ShardCursor("log/01/2020/08/02/2300/00000.avro", 18954, 15))
-        SegmentCursor segmentCursor = new SegmentCursor("idx/segments/2020/08/02/2300/meta.json", shardCursors, "log/01/2020/08/02/2300/")
-        byte[] urlHash = MessageDigest.getInstance("MD5").digest('https://testaccount.blob.core.windows.net/$blobchangefeed'.getBytes(StandardCharsets.UTF_8))
+        shardCursors.add(new ShardCursor(chunk0, offset0, index0))
+        shardCursors.add(new ShardCursor(chunk2, offset1, index1))
+        SegmentCursor segmentCursor = new SegmentCursor(segmentPath, shardCursors, currentShardPath1)
+
 
         BlobChangefeedCursor cursor = new BlobChangefeedCursor(1, urlHash, endTime, segmentCursor)
 
@@ -112,18 +282,16 @@ class ChangefeedCursorTest extends Specification {
 
         then:
         deserialized.getCursorVersion() == 1
-        deserialized.getUrlHash() == MessageDigest.getInstance("MD5").digest('https://testaccount.blob.core.windows.net/$blobchangefeed'.getBytes(StandardCharsets.UTF_8))
-        deserialized.getEndTime() == OffsetDateTime.MAX
-        List<ShardCursor> shardCursors = new ArrayList<>()
-        shardCursors.add(new ShardCursor("log/00/2020/08/02/2300/00000.avro", 2434, 2))
-        deserialized.getCurrentSegmentCursor().getSegmentPath() == "idx/segments/2020/08/02/2300/meta.json"
-        deserialized.getCurrentSegmentCursor().getCurrentShardPath() == "log/01/2020/08/02/2300/"
-        deserialized.getCurrentSegmentCursor().getShardCursors().get(0).getCurrentChunkPath() == "log/00/2020/08/02/2300/00000.avro"
-        deserialized.getCurrentSegmentCursor().getShardCursors().get(0).getBlockOffset() == 2434
-        deserialized.getCurrentSegmentCursor().getShardCursors().get(0).getEventIndex() == 2
-        deserialized.getCurrentSegmentCursor().getShardCursors().get(1).getCurrentChunkPath() == "log/01/2020/08/02/2300/00000.avro"
-        deserialized.getCurrentSegmentCursor().getShardCursors().get(1).getBlockOffset() == 18954
-        deserialized.getCurrentSegmentCursor().getShardCursors().get(1).getEventIndex() == 15
+        deserialized.getUrlHash() == urlHash
+        deserialized.getEndTime() == endTime
+        deserialized.getCurrentSegmentCursor().getSegmentPath() == segmentPath
+        deserialized.getCurrentSegmentCursor().getCurrentShardPath() == currentShardPath1
+        deserialized.getCurrentSegmentCursor().getShardCursors().get(0).getCurrentChunkPath() == chunk0
+        deserialized.getCurrentSegmentCursor().getShardCursors().get(0).getBlockOffset() == offset0
+        deserialized.getCurrentSegmentCursor().getShardCursors().get(0).getEventIndex() == index0
+        deserialized.getCurrentSegmentCursor().getShardCursors().get(1).getCurrentChunkPath() == chunk2
+        deserialized.getCurrentSegmentCursor().getShardCursors().get(1).getBlockOffset() == offset1
+        deserialized.getCurrentSegmentCursor().getShardCursors().get(1).getEventIndex() == index1
     }
 
 }

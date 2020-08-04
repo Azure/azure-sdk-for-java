@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob.changefeed.implementation.models;
 
 import com.azure.core.annotation.Fluent;
@@ -14,6 +17,10 @@ import java.io.UncheckedIOException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 
+/**
+ * FOR INTERNAL USE ONLY.
+ * Represents a cursor for BlobChangefeed.
+ */
 @Fluent
 public class BlobChangefeedCursor {
 
@@ -52,21 +59,49 @@ public class BlobChangefeedCursor {
         this.currentSegmentCursor = currentSegmentCursor;
     }
 
+    /**
+     * Creates a new changefeed level cursor with the specified end time.
+     *
+     * @param urlHash The url hash of the changefeed container.
+     * @param endTime The {@link OffsetDateTime end time}.
+     */
     public BlobChangefeedCursor(byte[] urlHash, OffsetDateTime endTime) {
         this(1, urlHash, endTime, null);
     }
 
+    /**
+     * Creates a new segment level cursor with the specified segment path.
+     *
+     * @param segmentPath The segment path.
+     * @return A new segment level {@link BlobChangefeedCursor cursor}.
+     */
     public BlobChangefeedCursor toSegmentCursor(String segmentPath) {
         return new BlobChangefeedCursor(this.cursorVersion, this.urlHash, this.endTime,
             new SegmentCursor(segmentPath, new ArrayList<>(), null));
     }
 
+    /**
+     * Creates a new shard level cursor with the specified shard path.
+     *
+     * @param shardPath The shard path.
+     * @return A new shard level {@link BlobChangefeedCursor cursor}.
+     */
     public BlobChangefeedCursor toShardCursor(String shardPath) {
-        return new BlobChangefeedCursor(this.cursorVersion, this.urlHash, this.endTime, currentSegmentCursor.toShardCursor(shardPath));
+        return new BlobChangefeedCursor(this.cursorVersion, this.urlHash, this.endTime,
+            currentSegmentCursor.toShardCursor(shardPath));
     }
 
+    /**
+     * Creates a new event level cursor with the specified chunk path, block offset and event index.
+     *
+     * @param chunkPath The chunk path.
+     * @param blockOffset The block offset.
+     * @param eventIndex The event index.
+     * @return A new event level {@link BlobChangefeedCursor cursor}.
+     */
     public BlobChangefeedCursor toEventCursor(String chunkPath, long blockOffset, long eventIndex) {
-        return new BlobChangefeedCursor(this.cursorVersion, this.urlHash, this.endTime, currentSegmentCursor.toEventCursor(chunkPath, blockOffset, eventIndex));
+        return new BlobChangefeedCursor(this.cursorVersion, this.urlHash, this.endTime,
+            currentSegmentCursor.toEventCursor(chunkPath, blockOffset, eventIndex));
     }
 
     /**
