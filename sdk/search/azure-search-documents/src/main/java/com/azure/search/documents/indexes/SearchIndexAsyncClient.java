@@ -727,6 +727,14 @@ public final class SearchIndexAsyncClient {
         return withContext(context -> deleteSynonymMapWithResponse(synonymMap.getName(), etag, context));
     }
 
+    /**
+     * Helper method to build list of {@link SearchField}.
+     *
+     * @param model The model class where {@link SearchField} converts from.
+     * @param options The option property bag.
+     * @return The list {@link SearchField} for search index schema.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public static Mono<List<SearchField>> buildSearchField(Class<?> model, FieldBuilderOptions options) {
         if (options == null) {
             return Mono.just(FieldBuilder.build(model, new JacksonJsonSerializerProvider().createInstance()));

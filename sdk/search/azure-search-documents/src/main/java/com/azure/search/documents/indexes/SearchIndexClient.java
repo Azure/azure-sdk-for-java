@@ -602,6 +602,13 @@ public final class SearchIndexClient {
         return asyncClient.getServiceStatisticsWithResponse(context).block();
     }
 
+    /**
+     * Helper method to build list of {@link SearchField}.
+     *
+     * @param model The model class where {@link SearchField} converts from.
+     * @param options The option property bag.
+     * @return The list {@link SearchField} for search index schema.
+     */
     public static List<SearchField> buildSearchField(Class<?> model, FieldBuilderOptions options) {
         return SearchIndexAsyncClient.buildSearchField(model, options).block();
     }

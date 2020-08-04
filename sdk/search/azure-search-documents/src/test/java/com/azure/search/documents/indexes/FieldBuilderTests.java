@@ -4,7 +4,6 @@
 package com.azure.search.documents.indexes;
 
 import com.azure.search.documents.TestHelpers;
-import com.azure.search.documents.implementation.util.FieldBuilder;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.test.environment.models.HotelAnalyzerException;
@@ -104,7 +103,7 @@ public class FieldBuilderTests {
 
     @Test
     public void ignoredPropertyName() {
-        List<SearchField> actualFields = FieldBuilder.build(HotelWithIgnoredFields.class, null);
+        List<SearchField> actualFields = SearchIndexClient.buildSearchField(HotelWithIgnoredFields.class, null);
         assertEquals(1, actualFields.size());
         assertEquals("notIgnoredName", actualFields.get(0).getName());
     }
@@ -157,30 +156,6 @@ public class FieldBuilderTests {
             .setFilterable(false)
             .setFacetable(false);
         return Arrays.asList(hotelId, tags);
-    }
-
-    private List<SearchField> buildHotelAddressField() {
-        SearchField streetAddress = new SearchField("streetAddress", SearchFieldDataType.STRING).setFacetable(true)
-            .setKey(true);
-        SearchField city = new SearchField("city", SearchFieldDataType.STRING).setFilterable(true);
-        SearchField stateProvince = new SearchField("stateProvince", SearchFieldDataType.STRING);
-        SearchField country =
-            new SearchField("country", SearchFieldDataType.STRING).setSynonymMapNames(Arrays.asList("America -> USA",
-                "USA -> US"));
-        SearchField postalCode = new SearchField("postalCode", SearchFieldDataType.STRING);
-        return Arrays.asList(streetAddress, city, stateProvince, country, postalCode);
-    }
-
-    private List<SearchField> buildHotelRoomField() {
-        SearchField description = new SearchField("description", SearchFieldDataType.STRING);
-        SearchField descriptionFr = new SearchField("descriptionFr", SearchFieldDataType.STRING);
-        SearchField type = new SearchField("type", SearchFieldDataType.STRING);
-        SearchField baseRate = new SearchField("baseRate", SearchFieldDataType.DOUBLE);
-        SearchField bedOptions = new SearchField("bedOptions", SearchFieldDataType.STRING);
-        SearchField sleepsCount = new SearchField("sleepsCount", SearchFieldDataType.INT32);
-        SearchField smokingAllowed = new SearchField("smokingAllowed", SearchFieldDataType.BOOLEAN);
-        SearchField tags = new SearchField("tags", SearchFieldDataType.collection(SearchFieldDataType.STRING));
-        return Arrays.asList(description, descriptionFr, type, baseRate, bedOptions, sleepsCount, smokingAllowed, tags);
     }
 
     private List<SearchField> sortByFieldName(List<SearchField> fields) {
