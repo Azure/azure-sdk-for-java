@@ -106,7 +106,9 @@ class BlobBaseAPITest extends APISpec {
 
         /* Input Stream. */
         when:
+        System.out.println("===== Opening query stream =====")
         InputStream qqStream = bc.openQueryInputStream(expression)
+        System.out.println("===== Opened query stream =====")
 
         System.out.println("===== Reading query stream =====")
         byte[] queryData = readFromInputStream(qqStream, downloadedData.length)
