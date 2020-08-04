@@ -223,33 +223,37 @@ final class Transforms {
         return recognizedFieldMap;
     }
 
+    /**
+     * Helper method that converts the incoming service field value to one of the strongly typed SDK level
+     * {@link FormField} with reference elements set when {@code includeFieldElements} is set to true.
+     *
+     * @param name The name of the field.
+     * @param fieldValue The named field values returned by the service.
+     * @param valueData The value text of the field.
+     * @param readResults The text extraction result returned by the service.
+     *
+     * @return The strongly typed {@link FormField} for the field input.
+     */
     private static FormField setFormField(String name, FieldData valueData, FieldValue fieldValue,
         List<ReadResult> readResults) {
-        FormField value;
+        com.azure.ai.formrecognizer.models.FieldValue value;
         switch (fieldValue.getType()) {
             case PHONE_NUMBER:
-                value = new FormField(name, null, valueData,
-                    new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValuePhoneNumber(),
-                        FieldValueType.PHONE_NUMBER),
-                    setDefaultConfidenceValue(fieldValue.getConfidence()));
+                value = new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValuePhoneNumber(),
+                    FieldValueType.PHONE_NUMBER);
                 break;
             case STRING:
-                value = new FormField(name, null, valueData,
-                    new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueString(),
-                        FieldValueType.STRING),
-                    setDefaultConfidenceValue(fieldValue.getConfidence()));
+                value = new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueString(),
+                    FieldValueType.STRING);
                 break;
             case TIME:
                 LocalTime fieldTime = fieldValue.getValueTime() == null ? null : LocalTime
                     .parse(fieldValue.getValueTime(), DateTimeFormatter.ofPattern("HH:mm:ss"));
-                value = new FormField(name, null, valueData,
-                    new com.azure.ai.formrecognizer.models.FieldValue(fieldTime, FieldValueType.TIME),
-                    setDefaultConfidenceValue(fieldValue.getConfidence()));
+                value = new com.azure.ai.formrecognizer.models.FieldValue(fieldTime, FieldValueType.TIME);
                 break;
             case DATE:
-                value = new FormField(name, null, valueData,
-                    new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueDate(), FieldValueType.DATE),
-                    setDefaultConfidenceValue(fieldValue.getConfidence()));
+                value = new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueDate(),
+                    FieldValueType.DATE);
                 break;
             case INTEGER:
                 com.azure.ai.formrecognizer.models.FieldValue longFieldValue;
@@ -261,31 +265,25 @@ final class Transforms {
                         new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueInteger().longValue(),
                             FieldValueType.LONG);
                 }
-                value = new FormField(name, null, valueData, longFieldValue,
-                    setDefaultConfidenceValue(fieldValue.getConfidence()));
+                value = longFieldValue;
                 break;
             case NUMBER:
-                value = new FormField(name, null, valueData,
-                    new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueNumber(),
-                        FieldValueType.FLOAT),
-                    setDefaultConfidenceValue(fieldValue.getConfidence()));
+                value = new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueNumber(),
+                    FieldValueType.FLOAT);
                 break;
             case ARRAY:
-                value = new FormField(name, null, valueData,
-                    new com.azure.ai.formrecognizer.models.FieldValue(
-                        toFieldValueArray(fieldValue.getValueArray(), readResults), FieldValueType.LIST),
-                    setDefaultConfidenceValue(fieldValue.getConfidence()));
+                value = new com.azure.ai.formrecognizer.models.FieldValue(
+                    toFieldValueArray(fieldValue.getValueArray(), readResults), FieldValueType.LIST);
                 break;
             case OBJECT:
-                value = new FormField(name, null, valueData,
-                    new com.azure.ai.formrecognizer.models.FieldValue(
-                        toFieldValueObject(fieldValue.getValueObject(), readResults), FieldValueType.MAP),
-                    setDefaultConfidenceValue(fieldValue.getConfidence()));
+                value = new com.azure.ai.formrecognizer.models.FieldValue(
+                    toFieldValueObject(fieldValue.getValueObject(), readResults), FieldValueType.MAP);
                 break;
             default:
                 throw LOGGER.logExceptionAsError(new RuntimeException("FieldValue Type not supported"));
         }
-        return value;
+        return new FormField(name, null, valueData, value,
+            setDefaultConfidenceValue(fieldValue.getConfidence()));
     }
 
     /**
