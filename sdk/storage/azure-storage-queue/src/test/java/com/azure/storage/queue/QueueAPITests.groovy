@@ -3,11 +3,9 @@
 
 package com.azure.storage.queue
 
-
 import com.azure.core.util.Context
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
-import com.azure.storage.queue.implementation.util.BuilderHelper
 import com.azure.storage.queue.models.QueueAccessPolicy
 import com.azure.storage.queue.models.QueueErrorCode
 import com.azure.storage.queue.models.QueueMessageItem
@@ -436,7 +434,7 @@ class QueueAPITests extends APISpec {
         when:
         def updateMsgResponse = queueClient.updateMessageWithResponse(dequeueMsg.getMessageId(),
             dequeueMsg.getPopReceipt(), updateMsg, Duration.ofSeconds(1), null,  null)
-        QueueTestHelper.sleepInRecord(Duration.ofSeconds(2))
+        sleepIfLive(2000)
         def peekMsgIter = queueClient.peekMessage()
         then:
         QueueTestHelper.assertResponseStatusCode(updateMsgResponse, 204)
