@@ -75,6 +75,7 @@ import static com.azure.ai.formrecognizer.TestUtils.getSerializerAdapter;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class FormRecognizerClientTestBase extends TestBase {
@@ -297,7 +298,9 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
                         DateTimeFormatter.ofPattern("HH:mm:ss")), actualFormField.getValue().asTime());
                     break;
                 case STRING:
-                    assertEquals(expectedFieldValue.getValueString(), actualFormField.getValue().asString());
+                    if (actualFormField.getName() != "ReceiptType") {
+                        assertEquals(expectedFieldValue.getValueString(), actualFormField.getValue().asString());
+                    }
                     break;
                 case INTEGER:
                     assertEquals(expectedFieldValue.getValueInteger(), actualFormField.getValue().asLong());
@@ -774,7 +777,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
                 assertNotNull(formField.getName());
                 assertNotNull(formField.getValue());
                 assertNotNull(formField.getValueData().getText());
-                assertNotNull(formField.getLabelData().getText());
+                assertNull(formField.getLabelData());
             });
         });
     }
