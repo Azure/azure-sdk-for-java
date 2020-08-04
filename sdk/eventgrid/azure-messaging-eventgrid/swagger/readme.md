@@ -15,7 +15,7 @@ Install Autorest beta with NPM:
 ## Using
 
 Fork and clone the autorest.java repo (https://github.com/Azure/autorest.java)
-and checkout the v4 branch. Then run `mvn package -Dlocal` to generate build files.
+and checkout the v4 branch. Then run `mvn clean package -Dlocal` to generate build files.
 
 Then fork and clone the Azure rest API specs from the repo 
 (https://github.com/Azure/azure-rest-api-specs) and run `autorest --java readme.md` 

@@ -150,14 +150,6 @@ public final class EventGridEvent {
     }
 
     /**
-     * Get the version of the EventGrid data schema.
-     * @return the event schema version.
-     */
-    public String getMetadataVersion() {
-        return this.event.getMetadataVersion();
-    }
-
-    /**
      * Get the version of the data in the event. This can be used to specify versioning of event data schemas over time.
      * @return the version of the event data.
      */

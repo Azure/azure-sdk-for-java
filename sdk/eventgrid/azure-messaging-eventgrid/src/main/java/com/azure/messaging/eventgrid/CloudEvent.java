@@ -94,7 +94,7 @@ public class CloudEvent {
     }
 
     /**
-     * Gets the data if it was set as binary data, using the {@link CloudEvent#setData(byte[], String)} overload.
+     * Gets the data if it was set as binary data, using the {@link CloudEvent#setBinaryData(byte[], String)} overload.
      * @return return the binary data that was set, or null if there was no binary data set.
      */
     public byte[] getBinaryData() {
@@ -134,9 +134,7 @@ public class CloudEvent {
                 .map(Objects::toString)
                 .subscribe(this.cloudEvent::setData);
         }
-        this.cloudEvent
-            .setDatacontenttype(dataContentType)
-            .setDataBase64(null);
+        this.cloudEvent.setDatacontenttype(dataContentType);
         return this;
     }
 
@@ -147,10 +145,9 @@ public class CloudEvent {
      *
      * @return the cloud event itself.
      */
-    public CloudEvent setData(byte[] data, String dataContentType) {
+    public CloudEvent setBinaryData(byte[] data, String dataContentType) {
         this.cloudEvent
             .setDataBase64(Base64.getEncoder().encodeToString(data))
-            .setData(null)
             .setDatacontenttype(dataContentType);
         return this;
     }
@@ -230,46 +227,23 @@ public class CloudEvent {
     }
 
     /**
-     * Get a map of the additional user-defined properties associated with this event.
-     * @return the additional properties as an unmodifiable map.
+     * Get a map of the additional user-defined attributes associated with this event.
+     * @return the extension attributes as an unmodifiable map.
      */
-    public Map<String, Object> getAdditionalProperties() {
+    public Map<String, Object> getExtensionAttributes() {
         return Collections.unmodifiableMap(this.cloudEvent.getAdditionalProperties());
     }
 
     /**
-     * Add/Overwrite a single additional property to the cloud event envelope. The property name will be transformed to lowercase
-     * and must not share a name with any reserved cloud event properties.
-     * @param name  the name of the property.
+     * Add/Overwrite a single extension attribute to the cloud event envelope. The property name will be transformed
+     * to lowercase and must not share a name with any reserved cloud event properties.
+     * @param name  the name of the attribute.
      * @param value the value to associate with the name.
      *
      * @return the cloud event itself.
      */
-    public CloudEvent addAdditionalProperty(String name, Object value) {
+    public CloudEvent addExtensionAttribute(String name, Object value) {
         this.cloudEvent.getAdditionalProperties().put(name.toLowerCase(Locale.ENGLISH), value);
         return this;
-    }
-
-    /**
-     * Add/overwrite multiple additional properties to the cloud event envelope. The property names will be transformed
-     * to lowercase and must not share a name with any reserved cloud event properties.
-     * @param additionalProperties the map of properties to set.
-     *
-     * @return the cloud event itself.
-     */
-    public CloudEvent addAdditionalProperties(Map<String, Object> additionalProperties) {
-        for (Map.Entry<String, Object> entry : additionalProperties.entrySet()) {
-            addAdditionalProperty(entry.getKey(), entry.getValue());
-        }
-        return this;
-    }
-
-    /**
-     * Get the version of the CloudEvents specification to which this event follows. Note that this SDK currently only
-     * supports the CloudEvents 1.0 spec version.
-     * @return the version of the CloudEvents specification this event follows.
-     */
-    public String getSpecVersion() {
-        return this.cloudEvent.getSpecversion();
     }
 }
