@@ -4,6 +4,7 @@
 package com.azure.storage.blob.changefeed;
 
 import com.azure.storage.blob.BlobContainerAsyncClient;
+import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedCursor;
 import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper;
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor;
 import com.azure.storage.blob.models.BlobItem;
@@ -24,17 +25,19 @@ class Shard  {
 
     private final BlobContainerAsyncClient client; /* Changefeed container */
     private final String shardPath; /* Shard virtual directory path/prefix. */
-    private final ChangefeedCursor segmentCursor; /* Cursor associated with parent segment. */
+    private final BlobChangefeedCursor changefeedCursor; /* Cursor associated with parent segment. */
+    private final ChangefeedCursor segmentCursor;
     private final ChangefeedCursor userCursor; /* User provided cursor. */
     private final ChunkFactory chunkFactory;
 
     /**
      * Creates a new Shard.
      */
-    Shard(BlobContainerAsyncClient client, String shardPath, ChangefeedCursor segmentCursor,
+    Shard(BlobContainerAsyncClient client, String shardPath, ChangefeedCursor segmentCursor, BlobChangefeedCursor changefeedCursor,
         ChangefeedCursor userCursor, ChunkFactory chunkFactory) {
         this.client = client;
         this.shardPath = shardPath;
+        this.changefeedCursor = changefeedCursor;
         this.segmentCursor = segmentCursor;
         this.userCursor = userCursor;
         this.chunkFactory = chunkFactory;
@@ -59,7 +62,7 @@ class Shard  {
                     blockOffset = userCursor.getBlockOffset();
                     objectBlockIndex = userCursor.getObjectBlockIndex();
                 }
-                return chunkFactory.getChunk(chunkPath, segmentCursor.toChunkCursor(chunkPath),
+                return chunkFactory.getChunk(chunkPath, segmentCursor.toChunkCursor(chunkPath), changefeedCursor,
                     blockOffset, objectBlockIndex)
                     .getEvents();
             });

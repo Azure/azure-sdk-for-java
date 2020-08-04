@@ -8,6 +8,7 @@ import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
+import java.security.NoSuchAlgorithmException;
 import java.time.OffsetDateTime;
 
 /**

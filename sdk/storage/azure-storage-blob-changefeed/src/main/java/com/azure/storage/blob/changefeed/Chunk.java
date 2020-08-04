@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.changefeed;
 
+import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedCursor;
 import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper;
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor;
 import com.azure.storage.blob.changefeed.implementation.models.InternalBlobChangefeedEvent;
@@ -18,16 +19,20 @@ import reactor.core.publisher.Flux;
  */
 class Chunk {
 
-    private final ChangefeedCursor shardCursor; /* Cursor associated with parent shard. */
+    private final String chunkPath;
+    private final ChangefeedCursor shardCursor;
+    private final BlobChangefeedCursor changefeedCursor; /* Cursor associated with parent shard. */
     private final AvroReader avroReader; /* AvroReader to read objects off of. */
 
     /**
      * Creates a new Chunk.
      */
-    Chunk(ChangefeedCursor shardCursor, AvroReader avroReader) {
+    Chunk(String chunkPath, ChangefeedCursor shardCursor, BlobChangefeedCursor changefeedCursor, AvroReader avroReader) {
         StorageImplUtils.assertNotNull("shardCursor", shardCursor);
         StorageImplUtils.assertNotNull("avroReader", avroReader);
+        this.chunkPath = chunkPath;
         this.shardCursor = shardCursor;
+        this.changefeedCursor = changefeedCursor;
         this.avroReader = avroReader;
     }
 
@@ -47,10 +52,12 @@ class Chunk {
 
                 /* Get the event cursor associated with this event. */
                 ChangefeedCursor eventCursor = shardCursor.toEventCursor(blockOffset, objectBlockIndex);
+                BlobChangefeedCursor eventsCursor = changefeedCursor.toEventCursor(chunkPath, blockOffset, objectBlockIndex);
+
                 BlobChangefeedEvent event = InternalBlobChangefeedEvent.fromRecord(object);
 
                 /* Wrap the event and cursor. */
-                return new BlobChangefeedEventWrapper(event, eventCursor);
+                return new BlobChangefeedEventWrapper(event, eventCursor, eventsCursor);
             });
     }
 }

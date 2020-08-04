@@ -1,0 +1,116 @@
+package com.azure.storage.blob.changefeed.implementation.models;
+
+import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Fluent
+public class SegmentCursor {
+
+    @JsonProperty("ShardCursors")
+    private List<ShardCursor> shardCursors;
+
+    @JsonProperty("CurrentShardPath")
+    private String currentShardPath; // 'log/00/2020/07/06/1600/'
+
+    @JsonProperty("SegmentPath")
+    private String segmentPath; //  'idx/segments/2020/07/06/1600/meta.json'
+
+    /**
+     * Default constructor (used to serialize and deserialize).
+     */
+    public SegmentCursor() {
+    }
+
+    /**
+     * Constructor for use by to*Cursor methods.
+     */
+    public SegmentCursor(String segmentPath, List<ShardCursor> shardCursors, String currentShardPath) {
+        this.segmentPath = segmentPath;
+        this.shardCursors = shardCursors;
+        this.currentShardPath = currentShardPath;
+    }
+
+    /**
+     * @return the segment path.
+     */
+    public String getSegmentPath() {
+        return segmentPath;
+    }
+
+    /**
+     * @return the shard cursors.
+     */
+    public List<ShardCursor> getShardCursors() {
+        return shardCursors;
+    }
+
+    /**
+     * @return the shard path.
+     */
+    public String getCurrentShardPath() {
+        return currentShardPath;
+    }
+
+    /**
+     * @param segmentPath the segment path.
+     * @return the updated SegmentCursor
+     */
+    public SegmentCursor setSegmentPath(String segmentPath) {
+        this.segmentPath = segmentPath;
+        return this;
+    }
+
+    /**
+     * @param shardCursors the shard cursors.
+     * @return the updated SegmentCursor
+     */
+    public SegmentCursor setShardCursors(List<ShardCursor> shardCursors) {
+        this.shardCursors = shardCursors;
+        return this;
+    }
+
+    /**
+     * @param currentShardPath the shard path.
+     * @return the updated SegmentCursor
+     */
+    public SegmentCursor setCurrentShardPath(String currentShardPath) {
+        this.currentShardPath = currentShardPath;
+        return this;
+    }
+
+    public SegmentCursor toShardCursor(String shardPath) {
+        /* Not cloning shard cursors list so we save state within the segment level. */
+        return new SegmentCursor(this.segmentPath, this.shardCursors, shardPath);
+    }
+
+    public SegmentCursor toEventCursor(String chunkPath, long blockOffset, long eventIndex) {
+        /* Deep copy the list to attach to the event. */
+        List<ShardCursor> copy = new ArrayList<>(this.shardCursors.size() + 1);
+
+        boolean found = false; /* Whether or not this shardPath exists in the list. */
+        for (ShardCursor cursor : this.shardCursors) {
+            /* If we found a shard cursor for this shard, modify it. */
+            if (cursor.getCurrentChunkPath().contains(this.currentShardPath)) {
+                found = true;
+                cursor
+                    .setCurrentChunkPath(chunkPath)
+                    .setBlockOffset(blockOffset)
+                    .setEventIndex(eventIndex);
+            }
+            /* Add the cursor to the copied list after modifying it. */
+            copy.add(new ShardCursor(cursor.getCurrentChunkPath(), cursor.getBlockOffset(), cursor.getEventIndex()));
+        }
+
+        /* If a shard cursor for this shard does not exist in the list, add it,
+           and add it to the copied list as well. */
+        if (!found) {
+            this.shardCursors.add(new ShardCursor(chunkPath, blockOffset, eventIndex));
+            copy.add(new ShardCursor(chunkPath, blockOffset, eventIndex));
+        }
+
+        return new SegmentCursor(this.segmentPath, copy, this.currentShardPath);
+    }
+}

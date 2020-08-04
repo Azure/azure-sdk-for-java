@@ -5,8 +5,10 @@ import reactor.test.StepVerifier
 import spock.lang.Requires
 import spock.lang.Unroll
 
+import java.time.Duration
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
+import java.time.temporal.TemporalAmount
 
 /*
 These tests requires an accounts having a fixed size changefeed It is not feasible to setup that
@@ -14,16 +16,16 @@ relationship programmatically, so we have recorded a successful interaction and 
  */
 class ChangefeedNetworkTest extends APISpec {
 
-    @Requires( { playbackMode() })
+//    @Requires( { playbackMode() })
     def "min"() {
         setup:
         BlobChangefeedPagedFlux flux = new BlobChangefeedClientBuilder(primaryBlobServiceAsyncClient)
             .buildAsyncClient()
-            .getEvents()
+            .getEvents(OffsetDateTime.now().minus(Duration.ofDays(1)), OffsetDateTime.MAX)
         when:
         def sv = StepVerifier.create(flux)
         then:
-        sv.expectNextCount(3238) /* Note this number should be adjusted to verify the number of events expected if re-recording. */
+        sv.expectNextCount(14440) /* Note this number should be adjusted to verify the number of events expected if re-recording. */
             .verifyComplete()
     }
 

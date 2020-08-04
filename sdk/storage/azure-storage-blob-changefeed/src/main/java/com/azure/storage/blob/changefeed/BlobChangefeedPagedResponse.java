@@ -5,6 +5,7 @@ package com.azure.storage.blob.changefeed;
 
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.paging.ContinuablePage;
+import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedCursor;
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor;
 import com.azure.storage.blob.changefeed.models.BlobChangefeedEvent;
 
@@ -25,15 +26,18 @@ public class BlobChangefeedPagedResponse implements ContinuablePage<String, Blob
 
     private final List<BlobChangefeedEvent> events;
     private final ChangefeedCursor cursor;
+    private final BlobChangefeedCursor changefeedCursor;
 
     /**
      * Package-private constructor for use by {@link BlobChangefeedPagedFlux}
      * @param events A {@link List} of {@link BlobChangefeedEvent BlobChangefeedEvents}.
      * @param cursor A {@link ChangefeedCursor cursor}.
      */
-    BlobChangefeedPagedResponse(List<BlobChangefeedEvent> events, ChangefeedCursor cursor) {
+    BlobChangefeedPagedResponse(List<BlobChangefeedEvent> events, ChangefeedCursor cursor,
+        BlobChangefeedCursor changefeedCursor) {
         this.events = events;
         this.cursor = cursor;
+        this.changefeedCursor = changefeedCursor;
     }
 
     /**
@@ -62,5 +66,10 @@ public class BlobChangefeedPagedResponse implements ContinuablePage<String, Blob
     public String getContinuationToken() {
         /* Serialize the cursor and return it to the user as a String. */
         return cursor.serialize();
+    }
+
+    public String getCursor() {
+        /* Serialize the cursor and return it to the user as a String. */
+        return changefeedCursor.serialize();
     }
 }

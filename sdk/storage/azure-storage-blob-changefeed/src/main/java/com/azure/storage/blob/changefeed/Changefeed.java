@@ -6,19 +6,20 @@ package com.azure.storage.blob.changefeed;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
+import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedCursor;
 import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper;
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor;
 import com.azure.storage.blob.changefeed.implementation.util.DownloadUtils;
 import com.azure.storage.blob.changefeed.implementation.util.TimeUtils;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.ListBlobsOptions;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.function.Tuples;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.OffsetDateTime;
 
 /**
@@ -38,15 +39,12 @@ class Changefeed {
 
     private static final String SEGMENT_PREFIX = "idx/segments/";
     private static final String METADATA_SEGMENT_PATH = "meta/segments.json";
-    private static final ObjectMapper MAPPER = new ObjectMapper();
 
     private final BlobContainerAsyncClient client; /* Changefeed container */
     private final OffsetDateTime startTime; /* User provided start time. */
     private final OffsetDateTime endTime; /* User provided end time. */
-    private OffsetDateTime lastConsumable; /* Last consumable time. The latest time the changefeed can safely be
-                                              read from.*/
-    private OffsetDateTime safeEndTime; /* Soonest time between lastConsumable and endTime. */
-    private final ChangefeedCursor cfCursor; /* Cursor associated with changefeed. */
+    private final BlobChangefeedCursor changefeedCursor; /* Cursor associated with changefeed. */
+    private final ChangefeedCursor cfCursor;
     private final ChangefeedCursor userCursor; /* User provided cursor. */
     private final SegmentFactory segmentFactory; /* Segment factory. */
 
@@ -62,7 +60,14 @@ class Changefeed {
         this.segmentFactory = segmentFactory;
 
         this.cfCursor = new ChangefeedCursor(this.endTime);
-        this.safeEndTime = endTime;
+        byte[] urlHash;
+        try {
+            urlHash = MessageDigest.getInstance("MD5")
+                .digest(client.getBlobContainerUrl().getBytes(StandardCharsets.UTF_8));
+        } catch (NoSuchAlgorithmException e) {
+            throw logger.logExceptionAsError(new RuntimeException(e));
+        }
+        this.changefeedCursor = new BlobChangefeedCursor(urlHash, this.endTime);
     }
 
     /**
@@ -72,8 +77,14 @@ class Changefeed {
     Flux<BlobChangefeedEventWrapper> getEvents() {
         return validateChangefeed()
             .then(populateLastConsumable())
-            .thenMany(listYears())
-            .concatMap(this::listSegmentsForYear)
+            .flatMapMany(safeEndTime ->
+                listYears(safeEndTime).map(str -> Tuples.of(safeEndTime, str))
+            )
+            .concatMap(tuple2 -> {
+                OffsetDateTime safeEndTime = tuple2.getT1();
+                String year = tuple2.getT2();
+                return listSegmentsForYear(safeEndTime, year);
+            })
             .concatMap(this::getEventsForSegment);
     }
 
@@ -91,7 +102,6 @@ class Changefeed {
             });
     }
 
-    /* TODO (gapra) : Investigate making this thread safe. */
     /**
      * Populates the last consumable property from changefeed metadata.
      * Log files in any segment that is dated after the date of the LastConsumable property in the
@@ -100,25 +110,24 @@ class Changefeed {
     private Mono<OffsetDateTime> populateLastConsumable() {
         /* We can keep the entire metadata file in memory since it is expected to only be a few hundred bytes. */
         return DownloadUtils.downloadToByteArray(this.client, METADATA_SEGMENT_PATH)
+            .flatMap(DownloadUtils::parseJson)
             /* Parse JSON for last consumable. */
-            .flatMap(json -> {
-                try {
-                    JsonNode jsonNode = MAPPER.reader().readTree(json);
-                    this.lastConsumable = OffsetDateTime.parse(jsonNode.get("lastConsumable").asText());
-                    if (this.lastConsumable.isBefore(endTime)) {
-                        this.safeEndTime = this.lastConsumable;
-                    }
-                    return Mono.just(this.lastConsumable);
-                } catch (IOException e) {
-                    return FluxUtil.monoError(logger, new UncheckedIOException(e));
+            .flatMap(jsonNode -> {
+                /* Last consumable time. The latest time the changefeed can safely be read from.*/
+                OffsetDateTime lastConsumableTime = OffsetDateTime.parse(jsonNode.get("lastConsumable").asText());
+                /* Soonest time between lastConsumable and endTime. */
+                OffsetDateTime safeEndTime = this.endTime;
+                if (lastConsumableTime.isBefore(endTime)) {
+                    safeEndTime = lastConsumableTime;
                 }
+                return Mono.just(safeEndTime);
             });
     }
 
     /**
      * List years for which changefeed data exists.
      */
-    private Flux<String> listYears() {
+    private Flux<String> listYears(OffsetDateTime safeEndTime) {
         return client.listBlobsByHierarchy(SEGMENT_PREFIX)
             .map(BlobItem::getName)
             .filter(yearPath -> TimeUtils.validYear(yearPath, startTime, safeEndTime));
@@ -127,7 +136,7 @@ class Changefeed {
     /**
      * List segments for years of interest.
      */
-    private Flux<String> listSegmentsForYear(String year) {
+    private Flux<String> listSegmentsForYear(OffsetDateTime safeEndTime, String year) {
         return client.listBlobs(new ListBlobsOptions().setPrefix(year))
             .map(BlobItem::getName)
             .filter(segmentPath -> TimeUtils.validSegment(segmentPath, startTime, safeEndTime));
@@ -140,10 +149,10 @@ class Changefeed {
         OffsetDateTime segmentTime = TimeUtils.convertPathToTime(segment);
         /* Only pass the user cursor in to the segment of interest. */
         if (userCursor != null && segmentTime.isEqual(OffsetDateTime.parse(userCursor.getSegmentTime()))) {
-            return segmentFactory.getSegment(segment, cfCursor.toSegmentCursor(segmentTime), userCursor)
+            return segmentFactory.getSegment(segment, cfCursor.toSegmentCursor(segmentTime), changefeedCursor.toSegmentCursor(segment), userCursor)
                 .getEvents();
         }
-        return segmentFactory.getSegment(segment, cfCursor.toSegmentCursor(segmentTime), null)
+        return segmentFactory.getSegment(segment, cfCursor.toSegmentCursor(segmentTime), changefeedCursor.toSegmentCursor(segment), null)
             .getEvents();
     }
 
