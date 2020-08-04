@@ -458,7 +458,7 @@
       "content-type" : "application/json",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "80b51f8c-5d3c-42e4-985f-b2051c3319a2",
-      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"zCXSuQuprNRIPqhi4XXKs2qCrFKQJEqbvV2rC4Cip+anObkKJmdC/lkfv8Nx/U4+IMFstOx/fsmsiVuEVfpjaA==\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"ldA1e1U2sE4S8EkICl9L5dv1qazdrbAb28QzaXM6JcxH9QL8OC39278lBcvqWIFvT/PK8btyoNOXwgkKLk5ZnQ==\",\"permissions\":\"FULL\"}]}"
+      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"}]}"
     }
   }, {
     "Method" : "PUT",

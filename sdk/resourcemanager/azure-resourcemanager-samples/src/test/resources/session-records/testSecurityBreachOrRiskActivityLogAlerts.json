@@ -178,7 +178,7 @@
       "content-type" : "application/json",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "18ecd74d-b030-4aba-8bbd-8d31a3926b87",
-      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"Boxe1sfXo5cC4oK1FAK4fcdG4DljK9ztji6q7tHtBD1Csk+cC4t1/GwgHtrYQxc1I2vsiMRp03r6c1Udne/P1A==\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"36tJPogWqmgAQvuGoP7Ukuo9VZWSMAKWKHpr32YgBPoGm1wFGNebQGWyMoB84yjEWND0lBHRvTEgyv6fSo3U2g==\",\"permissions\":\"FULL\"}]}"
+      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"}]}"
     }
   }, {
     "Method" : "GET",
