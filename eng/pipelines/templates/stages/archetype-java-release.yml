@@ -98,9 +98,14 @@ stages:
                 deploy:
                   steps:
                     - checkout: self
+                    - template: /eng/pipelines/templates/steps/stage-artifacts.yml
+                      parameters:
+                        SourceFolder: ${{parameters.ArtifactName}}-signed
+                        TargetFolder: ${{artifact.safeName}}
+                        PackageName: ${{artifact.name}}
                     - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
                       parameters:
-                        ArtifactLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
+                        ArtifactLocation: $(Pipeline.Workspace)/${{artifact.safeName}}
                         PackageRepository: Maven
                         ReleaseSha: $(Build.SourceVersion)
                         RepoId: Azure/azure-sdk-for-java
@@ -150,9 +155,10 @@ stages:
               displayName: "Publish Updates for Docs.MS"
               condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
               environment: github
-              dependsOn: PublishPackage
+              #dependsOn: PublishPackage
               variables:
-                - template: ../variables/globals.yml
+                CIConfigs: "{'targets':[{'path_to_config':'package.json','mode':'Preview','monikerid':'1'},{'path_to_config':'package.json','mode':'Latest','monikerid':'0'}]}"
+                skipComponentGovernanceDetection: true
               pool:
                 vmImage: vs2017-win2016
               strategy:
@@ -160,19 +166,30 @@ stages:
                   deploy:
                     steps:
                       - checkout: self
+                      - template: /eng/pipelines/templates/steps/stage-artifacts.yml
+                        parameters:
+                          SourceFolder: ${{parameters.ArtifactName}}-signed
+                          TargetFolder: ${{artifact.safeName}}
+                          PackageName: ${{artifact.name}}
+                      - template: /eng/common/pipelines/templates/steps/get-pr-owners.yml
+                        parameters:
+                          TargetVariable: "OwningGHUser"
+                          ServiceDirectory: ${{parameters.ServiceDirectory}}
                       - template: /eng/common/pipelines/templates/steps/docs-metadata-release.yml
                         parameters:
-                          ArtifactLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
+                          ArtifactLocation: $(Pipeline.Workspace)/${{artifact.safeName}}
                           PackageRepository: Maven
                           ReleaseSha: $(Build.SourceVersion)
                           RepoId: Azure/azure-sdk-for-java
                           WorkingDirectory: $(System.DefaultWorkingDirectory)
                           TargetDocRepoOwner: ${{parameters.TargetDocRepoOwner}}
                           TargetDocRepoName: ${{parameters.TargetDocRepoName}}
-                          PRBranchName: 'smoke-test-rdme'
-                          ArtifactName: ${{parameters.ArtifactName}}
+                          PRBranchName: onboarding-${{artifact.name}}-$(Build.BuildId)
+                          ArtifactName: ${{artifact.name}}
                           Language: 'java'
                           DocRepoDestinationPath: 'docs-ref-services/'
+                          GHReviewersVariable: 'OwningGHUser'
+                          CIConfigs: $(CIConfigs)
 
           - ${{if ne(artifact.options.skipPublishDocs, 'true')}}:
             - deployment: PublishDocs
@@ -189,13 +206,18 @@ stages:
                   deploy:
                     steps:
                       - checkout: self
+                      - template: /eng/pipelines/templates/steps/stage-artifacts.yml
+                        parameters:
+                          SourceFolder: ${{parameters.ArtifactName}}-signed
+                          TargetFolder: ${{artifact.safeName}}
+                          PackageName: ${{artifact.name}}
                       - pwsh: |
-                          Get-ChildItem -Recurse $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
+                          Get-ChildItem -Recurse $(Pipeline.Workspace)/${{artifact.safeName}}
                         workingDirectory: $(Pipeline.Workspace)
                         displayName: Output Visible Artifacts
                       - template: /eng/common/pipelines/templates/steps/publish-blobs.yml
                         parameters:
-                          FolderForUpload: '$(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}'
+                          FolderForUpload: '$(Pipeline.Workspace)/${{artifact.safeName}}'
                           BlobSASKey: '$(azure-sdk-docs-prod-sas)'
                           BlobName: '$(azure-sdk-docs-prod-blob-name)'
                           TargetLanguage: 'java'
