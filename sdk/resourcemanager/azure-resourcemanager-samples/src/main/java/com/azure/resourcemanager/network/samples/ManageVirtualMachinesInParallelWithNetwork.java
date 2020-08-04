@@ -28,7 +28,7 @@ import java.util.List;
 
 /**
  * Azure Network sample for managing virtual machines with virtual network -
- * Create a virtual network with two Subnets – frontend and backend
+ * Create a virtual network with two Subnets - frontend and backend
  * Frontend allows HTTP in and denies Internet out
  * Backend denies Internet in and Internet out
  * Create m Linux virtual machines in the frontend

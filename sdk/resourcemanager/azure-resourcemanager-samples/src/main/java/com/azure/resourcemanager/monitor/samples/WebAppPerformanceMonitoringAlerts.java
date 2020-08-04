@@ -77,7 +77,7 @@ public final class WebAppPerformanceMonitoringAlerts {
                     .withTargetResource(servicePlan.id())
                     .withPeriod(Duration.ofMinutes(5))
                     .withFrequency(Duration.ofMinutes(1))
-                    .withAlertDetails(3, "This alert rule is for U5 – Single resource-multiple criteria – with dimensions – with star")
+                    .withAlertDetails(3, "This alert rule is for U5 - Single resource-multiple criteria - with dimensions - with star")
                     .withActionGroups(ag.id())
                     .defineAlertCriteria("Metric1")
                         .withMetricName("CPUPercentage", "Microsoft.Web/serverfarms")

@@ -38,16 +38,16 @@ import com.azure.storage.blob.models.BlobItem;
 /**
  * Azure Network sample for managing network watcher.
  * - Create Network Watcher
- * - Manage packet capture – track traffic to and from a virtual machine
+ * - Manage packet capture - track traffic to and from a virtual machine
  * Create a VM
  * Start a packet capture
  * Stop a packet capture
  * Get a packet capture
  * Delete a packet capture
- * - Verify IP flow – verify if traffic is allowed to or from a virtual machine
+ * - Verify IP flow - verify if traffic is allowed to or from a virtual machine
  * Get the IP address of a NIC on a virtual machine
  * Test IP flow on the NIC
- * - Analyze next hop – get the next hop type and IP address for a virtual machine
+ * - Analyze next hop - get the next hop type and IP address for a virtual machine
  * - Retrieve network topology for a resource group
  * - Analyze Virtual Machine Security by examining effective network security rules applied to a VM
  * Get security group view for the VM
@@ -101,7 +101,7 @@ public final class ManageNetworkWatcher {
             Utils.print(nw);
 
             //============================================================
-            // Manage packet capture – track traffic to and from a virtual machine
+            // Manage packet capture - track traffic to and from a virtual machine
 
             // Create network security group, virtual network and VM; add packetCapture extension to enable
             System.out.println("Creating network security group...");
@@ -186,7 +186,7 @@ public final class ManageNetworkWatcher {
             nw.packetCaptures().deleteByName(packetCapture.name());
 
             //============================================================
-            // Verify IP flow – verify if traffic is allowed to or from a virtual machine
+            // Verify IP flow - verify if traffic is allowed to or from a virtual machine
             // Get the IP address of a NIC on a virtual machine
             String ipAddress = vm.getPrimaryNetworkInterface().primaryIPConfiguration().privateIpAddress();
             // Test IP flow on the NIC
@@ -203,7 +203,7 @@ public final class ManageNetworkWatcher {
             Utils.print(verificationIPFlow);
 
             //============================================================
-            // Analyze next hop – get the next hop type and IP address for a virtual machine
+            // Analyze next hop - get the next hop type and IP address for a virtual machine
             System.out.println("Calculating next hop...");
             NextHop nextHop = nw.nextHop().withTargetResourceId(vm.id())
                     .withSourceIpAddress(ipAddress)
