@@ -3,12 +3,12 @@
 
 package com.azure.data.schemaregistry.avro;
 
-import com.azure.core.experimental.serializer.ObjectSerializer;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.ObjectSerializer;
+import com.azure.core.util.serializer.TypeReference;
 import com.azure.data.schemaregistry.SchemaRegistrySerializer;
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
 import com.azure.data.schemaregistry.models.SerializationType;
-import com.fasterxml.jackson.core.type.TypeReference;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericDatumReader;
 import org.apache.avro.generic.GenericDatumWriter;
@@ -40,13 +40,13 @@ public final class SchemaRegistryAvroSerializer extends SchemaRegistrySerializer
     /**
      *
      * @param registryClient
-     * @param codec
+     * @param avroSpecificReader
      * @param schemaGroup
      * @param autoRegisterSchemas
      */
     SchemaRegistryAvroSerializer(SchemaRegistryAsyncClient registryClient, Boolean avroSpecificReader,
                                       String schemaGroup, Boolean autoRegisterSchemas) {
-        super(registryClient, codec, Collections.singletonList(codec), autoRegisterSchemas, schemaGroup);
+        super(registryClient, autoRegisterSchemas, schemaGroup);
 
         if (avroSpecificReader == null) {
             this.avroSpecificReader = SchemaRegistryAvroSerializer.AVRO_SPECIFIC_READER_DEFAULT;
@@ -93,14 +93,14 @@ public final class SchemaRegistryAvroSerializer extends SchemaRegistrySerializer
         return (new Schema.Parser()).parse(schemaString);
     }
 
+
     @Override
     public <T> T deserialize(InputStream stream, TypeReference<T> typeReference) {
         return null;
     }
 
     @Override
-    public <T> Mono<T> deserializeAsync(InputStream stream,
-        TypeReference<T> typeReference) {
+    public <T> Mono<T> deserializeAsync(InputStream stream, TypeReference<T> typeReference) {
         return null;
     }
 

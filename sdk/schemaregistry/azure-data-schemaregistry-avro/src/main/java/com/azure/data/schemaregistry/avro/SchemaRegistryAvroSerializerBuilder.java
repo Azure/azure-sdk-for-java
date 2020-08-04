@@ -131,7 +131,7 @@ public final class SchemaRegistryAvroSerializerBuilder {
         AvroSchemaRegistryCodec codec = new AvroSchemaRegistryCodec(this.avroSpecificReader);
 
         SchemaRegistryAsyncClient client = builder
-            .addSchemaRegistryCodec(SchemaRegistryAvroSerializer::parseSchemaString)
+//            .addSchemaRegistryCodec(SchemaRegistryAvroSerializer::parseSchemaString)
             .buildAsyncClient();
 
         return new SchemaRegistryAvroSerializer(client, this.avroSpecificReader, this.schemaGroup,
