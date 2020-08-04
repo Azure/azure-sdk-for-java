@@ -479,7 +479,7 @@ public class PartitionBasedLoadBalancerTest {
         PartitionBasedLoadBalancer partitionBasedLoadBalancer = new PartitionBasedLoadBalancer(checkpointStore,
             eventHubAsyncClient, fqNamespace, eventHubName, consumerGroupName, "owner1",
             TimeUnit.SECONDS.toSeconds(10), partitionPumpManager,
-            ec -> {});
+            ec -> { });
 
         partitionBasedLoadBalancer.loadBalance();
         // after first iteration, both partitions are owned by owner1, so both partitions should be renewed
