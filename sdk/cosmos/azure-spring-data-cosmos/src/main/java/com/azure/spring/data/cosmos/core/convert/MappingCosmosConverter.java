@@ -86,13 +86,7 @@ public class MappingCosmosConverter
             }
             final JsonNode etag = jsonNode.get(ETAG_KEY);
             if (etag != null) {
-                final CosmosEntityInformation<?, ?> entityInfo = CosmosEntityInformation.getInstance(type);
-                if (entityInfo.isVersioned()) {
-                    objectNode.set(entityInfo.getVersionFieldName(), etag);
-                    if (!entityInfo.getVersionFieldName().equals(ETAG_KEY)) {
-                        objectNode.remove(ETAG_KEY);
-                    }
-                }
+                mapEtagToVersionField(type, objectNode, etag);
             }
             return objectMapper.treeToValue(objectNode, type);
         } catch (JsonProcessingException e) {
@@ -154,6 +148,16 @@ public class MappingCosmosConverter
             if (!entityInfo.getVersionFieldName().equals(ETAG_KEY)) {
                 cosmosObjectNode.remove(entityInfo.getVersionFieldName());
                 cosmosObjectNode.put(ETAG_KEY, entityInfo.getVersionFieldValue(sourceEntity));
+            }
+        }
+    }
+
+    private <R> void mapEtagToVersionField(Class<R> type, ObjectNode objectNode, JsonNode etagValue) {
+        final CosmosEntityInformation<?, ?> entityInfo = CosmosEntityInformation.getInstance(type);
+        if (entityInfo.isVersioned()) {
+            objectNode.set(entityInfo.getVersionFieldName(), etagValue);
+            if (!entityInfo.getVersionFieldName().equals(ETAG_KEY)) {
+                objectNode.remove(ETAG_KEY);
             }
         }
     }
