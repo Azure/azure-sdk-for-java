@@ -3,10 +3,10 @@
 
 package com.azure.spring.data.cosmos.repository.integration;
 
-import com.azure.spring.data.cosmos.domain.Person;
+import com.azure.spring.data.cosmos.domain.PersonWithEtag;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
-import com.azure.spring.data.cosmos.repository.repository.PersonRepository;
+import com.azure.spring.data.cosmos.repository.repository.PersonWithEtagRepository;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
@@ -32,85 +32,85 @@ import static com.azure.spring.data.cosmos.common.TestConstants.LAST_NAME;
 public class EtagIT {
 
     @Autowired
-    PersonRepository personRepository;
+    PersonWithEtagRepository personWithEtagRepository;
 
     @After
     public void cleanup() {
-        personRepository.deleteAll();
+        personWithEtagRepository.deleteAll();
     }
 
-    private static Person createPerson() {
-        return new Person(UUID.randomUUID().toString(), FIRST_NAME, LAST_NAME, HOBBIES, ADDRESSES);
+    private static PersonWithEtag createPersonWithEtag() {
+        return new PersonWithEtag(UUID.randomUUID().toString(), FIRST_NAME, LAST_NAME, HOBBIES, ADDRESSES);
     }
 
     @Test
     public void testCrudOperationsShouldApplyEtag() {
-        final Person insertedPerson = personRepository.save(createPerson());
-        Assert.assertNotNull(insertedPerson.getEtag());
+        final PersonWithEtag insertedPersonWithEtag = personWithEtagRepository.save(createPersonWithEtag());
+        Assert.assertNotNull(insertedPersonWithEtag.getEtag());
 
-        insertedPerson.setFirstName(LAST_NAME);
-        final Person updatedPerson = personRepository.save(insertedPerson);
-        Assert.assertNotNull(updatedPerson.getEtag());
-        Assert.assertNotEquals(insertedPerson.getEtag(), updatedPerson.getEtag());
+        insertedPersonWithEtag.setFirstName(LAST_NAME);
+        final PersonWithEtag updatedPersonWithEtag = personWithEtagRepository.save(insertedPersonWithEtag);
+        Assert.assertNotNull(updatedPersonWithEtag.getEtag());
+        Assert.assertNotEquals(insertedPersonWithEtag.getEtag(), updatedPersonWithEtag.getEtag());
 
-        final Optional<Person> foundPerson = personRepository.findById(insertedPerson.getId());
-        Assert.assertTrue(foundPerson.isPresent());
-        Assert.assertNotNull(foundPerson.get().getEtag());
-        Assert.assertEquals(updatedPerson.getEtag(), foundPerson.get().getEtag());
+        final Optional<PersonWithEtag> foundPersonWithEtag = personWithEtagRepository.findById(insertedPersonWithEtag.getId());
+        Assert.assertTrue(foundPersonWithEtag.isPresent());
+        Assert.assertNotNull(foundPersonWithEtag.get().getEtag());
+        Assert.assertEquals(updatedPersonWithEtag.getEtag(), foundPersonWithEtag.get().getEtag());
     }
 
     @Test
     public void testCrudListOperationsShouldApplyEtag() {
-        final List<Person> people = new ArrayList<>();
-        people.add(createPerson());
-        people.add(createPerson());
+        final List<PersonWithEtag> people = new ArrayList<>();
+        people.add(createPersonWithEtag());
+        people.add(createPersonWithEtag());
 
-        final List<Person> insertedPeople = toList(personRepository.saveAll(people));
+        final List<PersonWithEtag> insertedPeople = toList(personWithEtagRepository.saveAll(people));
         insertedPeople.forEach(person -> Assert.assertNotNull(person.getEtag()));
 
         insertedPeople.forEach(person -> person.setFirstName(LAST_NAME));
-        final List<Person> updatedPeople = toList(personRepository.saveAll(insertedPeople));
+        final List<PersonWithEtag> updatedPeople = toList(personWithEtagRepository.saveAll(insertedPeople));
         for (int i = 0; i < updatedPeople.size(); i++) {
-            Person insertedPerson = insertedPeople.get(i);
-            Person updatedPerson = updatedPeople.get(i);
-            Assert.assertEquals(insertedPerson.getId(), updatedPerson.getId());
-            Assert.assertNotNull(updatedPerson.getEtag());
-            Assert.assertNotEquals(insertedPerson.getEtag(), updatedPerson.getEtag());
+            PersonWithEtag insertedPersonWithEtag = insertedPeople.get(i);
+            PersonWithEtag updatedPersonWithEtag = updatedPeople.get(i);
+            Assert.assertEquals(insertedPersonWithEtag.getId(), updatedPersonWithEtag.getId());
+            Assert.assertNotNull(updatedPersonWithEtag.getEtag());
+            Assert.assertNotEquals(insertedPersonWithEtag.getEtag(), updatedPersonWithEtag.getEtag());
         }
 
         final List<String> peopleIds = updatedPeople.stream()
-            .map(Person::getId)
+            .map(PersonWithEtag::getId)
             .collect(Collectors.toList());
-        final List<Person> foundPeople = toList(personRepository.findAllById(peopleIds));
+        final List<PersonWithEtag> foundPeople = toList(personWithEtagRepository.findAllById(peopleIds));
         for (int i = 0; i < foundPeople.size(); i++) {
-            Person updatedPerson = updatedPeople.get(i);
-            Person foundPerson = foundPeople.get(i);
-            Assert.assertNotNull(foundPerson.getEtag());
-            Assert.assertEquals(updatedPerson.getEtag(), foundPerson.getEtag());
+            PersonWithEtag updatedPersonWithEtag = updatedPeople.get(i);
+            PersonWithEtag foundPersonWithEtag = foundPeople.get(i);
+            Assert.assertNotNull(foundPersonWithEtag.getEtag());
+            Assert.assertEquals(updatedPersonWithEtag.getEtag(), foundPersonWithEtag.getEtag());
         }
     }
 
-    private List<Person> toList(Iterable<Person> people) {
+    private List<PersonWithEtag> toList(Iterable<PersonWithEtag> people) {
         return StreamSupport.stream(people.spliterator(), false)
             .collect(Collectors.toList());
     }
 
     @Test
     public void testShouldFailIfEtagDoesNotMatch() {
-        Person insertedPerson = personRepository.save(createPerson());
-        insertedPerson.setFirstName(LAST_NAME);
+        PersonWithEtag insertedPersonWithEtag = personWithEtagRepository.save(createPersonWithEtag());
+        insertedPersonWithEtag.setFirstName(LAST_NAME);
 
-        Person updatedPerson = personRepository.save(insertedPerson);
-        updatedPerson.setEtag(insertedPerson.getEtag());
+        PersonWithEtag updatedPersonWithEtag = personWithEtagRepository.save(insertedPersonWithEtag);
+        updatedPersonWithEtag.setEtag(insertedPersonWithEtag.getEtag());
 
         try {
-            personRepository.save(updatedPerson);
+            personWithEtagRepository.save(updatedPersonWithEtag);
             Assert.fail();
         } catch (CosmosAccessException ex) {
         }
 
         try {
-            personRepository.delete(updatedPerson);
+            personWithEtagRepository.delete(updatedPersonWithEtag);
             Assert.fail();
         } catch (CosmosAccessException ex) {
         }

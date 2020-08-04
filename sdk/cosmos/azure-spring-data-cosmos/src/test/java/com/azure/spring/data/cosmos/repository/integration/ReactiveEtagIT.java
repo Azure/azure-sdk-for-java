@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.integration;
 
-import com.azure.spring.data.cosmos.domain.Course;
+import com.azure.spring.data.cosmos.domain.CourseWithEtag;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
-import com.azure.spring.data.cosmos.repository.repository.ReactiveCourseRepository;
+import com.azure.spring.data.cosmos.repository.repository.ReactiveCourseWithEtagRepository;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
@@ -29,81 +29,81 @@ import static com.azure.spring.data.cosmos.common.TestConstants.DEPARTMENT;
 public class ReactiveEtagIT {
 
     @Autowired
-    ReactiveCourseRepository courseRepository;
+    ReactiveCourseWithEtagRepository reactiveCourseWithEtagRepository;
 
     @After
     public void cleanup() {
-        courseRepository.deleteAll();
+        reactiveCourseWithEtagRepository.deleteAll();
     }
 
-    private static Course createCourse() {
-        return new Course(UUID.randomUUID().toString(), COURSE_NAME, DEPARTMENT);
+    private static CourseWithEtag createCourseWithEtag() {
+        return new CourseWithEtag(UUID.randomUUID().toString(), COURSE_NAME, DEPARTMENT);
     }
 
     @Test
     public void testCrudOperationsShouldApplyEtag() {
-        final Mono<Course> insertedCourseMono = courseRepository.save(createCourse());
-        Course insertedCourse = insertedCourseMono.block();
-        Assert.assertNotNull(insertedCourse);
-        Assert.assertNotNull(insertedCourse.getEtag());
+        final Mono<CourseWithEtag> insertedCourseWithEtagMono = reactiveCourseWithEtagRepository.save(createCourseWithEtag());
+        CourseWithEtag insertedCourseWithEtag = insertedCourseWithEtagMono.block();
+        Assert.assertNotNull(insertedCourseWithEtag);
+        Assert.assertNotNull(insertedCourseWithEtag.getEtag());
 
-        insertedCourse.setName("CHANGED");
-        final Mono<Course> updatedCourseMono = courseRepository.save(insertedCourse);
-        Course updatedCourse = updatedCourseMono.block();
-        Assert.assertNotNull(updatedCourse);
-        Assert.assertNotNull(updatedCourse.getEtag());
-        Assert.assertNotEquals(updatedCourse.getEtag(), insertedCourse.getEtag());
+        insertedCourseWithEtag.setName("CHANGED");
+        final Mono<CourseWithEtag> updatedCourseWithEtagMono = reactiveCourseWithEtagRepository.save(insertedCourseWithEtag);
+        CourseWithEtag updatedCourseWithEtag = updatedCourseWithEtagMono.block();
+        Assert.assertNotNull(updatedCourseWithEtag);
+        Assert.assertNotNull(updatedCourseWithEtag.getEtag());
+        Assert.assertNotEquals(updatedCourseWithEtag.getEtag(), insertedCourseWithEtag.getEtag());
 
-        final Mono<Course> foundCourseMono = courseRepository.findById(insertedCourse.getCourseId());
-        Course foundCourse = foundCourseMono.block();
-        Assert.assertNotNull(foundCourse);
-        Assert.assertNotNull(foundCourse.getEtag());
-        Assert.assertEquals(foundCourse.getEtag(), updatedCourse.getEtag());
+        final Mono<CourseWithEtag> foundCourseWithEtagMono = reactiveCourseWithEtagRepository.findById(insertedCourseWithEtag.getCourseId());
+        CourseWithEtag foundCourseWithEtag = foundCourseWithEtagMono.block();
+        Assert.assertNotNull(foundCourseWithEtag);
+        Assert.assertNotNull(foundCourseWithEtag.getEtag());
+        Assert.assertEquals(foundCourseWithEtag.getEtag(), updatedCourseWithEtag.getEtag());
     }
 
     @Test
     public void testCrudListOperationsShouldApplyEtag() {
-        final List<Course> courses = new ArrayList<>();
-        courses.add(createCourse());
-        courses.add(createCourse());
+        final List<CourseWithEtag> courses = new ArrayList<>();
+        courses.add(createCourseWithEtag());
+        courses.add(createCourseWithEtag());
 
-        final Flux<Course> insertedCoursesFlux = courseRepository.saveAll(courses);
-        List<Course> insertedCourses = insertedCoursesFlux.collectList().block();
+        final Flux<CourseWithEtag> insertedCourseWithEtagsFlux = reactiveCourseWithEtagRepository.saveAll(courses);
+        List<CourseWithEtag> insertedCourseWithEtags = insertedCourseWithEtagsFlux.collectList().block();
 
-        Assert.assertNotNull(insertedCourses);
-        insertedCourses.forEach(course -> Assert.assertNotNull(course.getEtag()));
+        Assert.assertNotNull(insertedCourseWithEtags);
+        insertedCourseWithEtags.forEach(course -> Assert.assertNotNull(course.getEtag()));
 
-        insertedCourses.forEach(course -> course.setName("CHANGED"));
-        final Flux<Course> updatedCoursesFlux = courseRepository.saveAll(insertedCourses);
-        List<Course> updatedCourses = updatedCoursesFlux.collectList().block();
+        insertedCourseWithEtags.forEach(course -> course.setName("CHANGED"));
+        final Flux<CourseWithEtag> updatedCourseWithEtagsFlux = reactiveCourseWithEtagRepository.saveAll(insertedCourseWithEtags);
+        List<CourseWithEtag> updatedCourseWithEtags = updatedCourseWithEtagsFlux.collectList().block();
 
-        Assert.assertNotNull(updatedCourses);
-        for (int i = 0; i < updatedCourses.size(); i++) {
-            Course insertedCourse = insertedCourses.get(i);
-            Course updatedCourse = updatedCourses.get(i);
-            Assert.assertEquals(insertedCourse.getCourseId(), updatedCourse.getCourseId());
-            Assert.assertNotNull(updatedCourse.getEtag());
-            Assert.assertNotEquals(insertedCourse.getEtag(), updatedCourse.getEtag());
+        Assert.assertNotNull(updatedCourseWithEtags);
+        for (int i = 0; i < updatedCourseWithEtags.size(); i++) {
+            CourseWithEtag insertedCourseWithEtag = insertedCourseWithEtags.get(i);
+            CourseWithEtag updatedCourseWithEtag = updatedCourseWithEtags.get(i);
+            Assert.assertEquals(insertedCourseWithEtag.getCourseId(), updatedCourseWithEtag.getCourseId());
+            Assert.assertNotNull(updatedCourseWithEtag.getEtag());
+            Assert.assertNotEquals(insertedCourseWithEtag.getEtag(), updatedCourseWithEtag.getEtag());
         }
     }
 
     @Test
     public void testShouldFailIfEtagDoesNotMatch() {
-        Mono<Course> insertedCourseMono = courseRepository.save(createCourse());
-        Course insertedCourse = insertedCourseMono.block();
-        Assert.assertNotNull(insertedCourse);
+        Mono<CourseWithEtag> insertedCourseWithEtagMono = reactiveCourseWithEtagRepository.save(createCourseWithEtag());
+        CourseWithEtag insertedCourseWithEtag = insertedCourseWithEtagMono.block();
+        Assert.assertNotNull(insertedCourseWithEtag);
 
-        insertedCourse.setName("CHANGED");
-        Mono<Course> updatedCourseMono = courseRepository.save(insertedCourse);
-        Course updatedCourse = updatedCourseMono.block();
-        Assert.assertNotNull(updatedCourse);
-        updatedCourse.setEtag(insertedCourse.getEtag());
+        insertedCourseWithEtag.setName("CHANGED");
+        Mono<CourseWithEtag> updatedCourseWithEtagMono = reactiveCourseWithEtagRepository.save(insertedCourseWithEtag);
+        CourseWithEtag updatedCourseWithEtag = updatedCourseWithEtagMono.block();
+        Assert.assertNotNull(updatedCourseWithEtag);
+        updatedCourseWithEtag.setEtag(insertedCourseWithEtag.getEtag());
 
 
-        Mono<Course> courseMono = courseRepository.save(updatedCourse);
+        Mono<CourseWithEtag> courseMono = reactiveCourseWithEtagRepository.save(updatedCourseWithEtag);
         StepVerifier.create(courseMono).verifyError(CosmosAccessException.class);
 
-        Mono<Void> deleteMono = courseRepository.delete(updatedCourse);
+        Mono<Void> deleteMono = reactiveCourseWithEtagRepository.delete(updatedCourseWithEtag);
         StepVerifier.create(deleteMono).verifyError(CosmosAccessException.class);
     }
 

@@ -6,13 +6,14 @@ package com.azure.spring.data.cosmos.domain;
 import com.azure.spring.data.cosmos.core.mapping.Container;
 import com.azure.spring.data.cosmos.core.mapping.CosmosIndexingPolicy;
 import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
+import org.springframework.data.annotation.Version;
 
 import java.util.List;
 import java.util.Objects;
 
 @Container()
 @CosmosIndexingPolicy()
-public class Person {
+public class PersonWithEtag {
     private String id;
     private String firstName;
 
@@ -20,8 +21,10 @@ public class Person {
     private String lastName;
     private List<String> hobbies;
     private List<Address> shippingAddresses;
+    @Version
+    private String etag;
 
-    public Person(String id, String firstName, String lastName, List<String> hobbies, List<Address> shippingAddresses) {
+    public PersonWithEtag(String id, String firstName, String lastName, List<String> hobbies, List<Address> shippingAddresses) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -29,7 +32,7 @@ public class Person {
         this.shippingAddresses = shippingAddresses;
     }
 
-    public Person() {
+    public PersonWithEtag() {
     }
 
     public String getId() {
@@ -72,6 +75,14 @@ public class Person {
         this.shippingAddresses = shippingAddresses;
     }
 
+    public String getEtag() {
+        return etag;
+    }
+
+    public void setEtag(String etag) {
+        this.etag = etag;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -80,7 +91,7 @@ public class Person {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Person person = (Person) o;
+        PersonWithEtag person = (PersonWithEtag) o;
         return Objects.equals(id, person.id)
             && Objects.equals(firstName, person.firstName)
             && Objects.equals(lastName, person.lastName)
@@ -109,6 +120,8 @@ public class Person {
             + hobbies
             + ", shippingAddresses="
             + shippingAddresses
+            + ", etag='"
+            + etag
             + '\''
             + '}';
     }
