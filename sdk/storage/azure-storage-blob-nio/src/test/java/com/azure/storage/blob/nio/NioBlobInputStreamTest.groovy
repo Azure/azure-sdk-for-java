@@ -22,7 +22,6 @@ class NioBlobInputStreamTest extends APISpec {
         cc.create()
         bc = cc.getBlobClient(generateBlobName())
         bc.uploadFromFile(sourceFile.getPath())
-
         fs = createFS(initializeConfigMap())
         def path = ((AzurePath) fs.getPath(getNonDefaultRootDir(fs), bc.getBlobName()))
 

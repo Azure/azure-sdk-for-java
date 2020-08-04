@@ -28,7 +28,6 @@ import com.azure.storage.blob.models.ListBlobContainersOptions
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.common.StorageSharedKeyCredential
-import com.azure.storage.common.implementation.Constants
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import spock.lang.Requires
@@ -112,7 +111,8 @@ class APISpec extends Specification {
      */
     static final String receivedEtag = "received"
 
-    static final int MB = 1024 * 1024
+    static final int KB = 1024
+    static final int MB = 1024 * KB
 
     def setupSpec() {
         testMode = setupTestMode()
@@ -397,8 +397,7 @@ class APISpec extends Specification {
     }
 
     private String generateResourceName(String prefix, int entityNo) {
-        def str = prefix + testName + entityNo
-        return resourceNamer.randomName(str, 63)
+        return resourceNamer.randomName(prefix + testName + entityNo, 63)
     }
 
     String getConfigValue(String value) {
@@ -479,7 +478,7 @@ class APISpec extends Specification {
 
     def compareInputStreams(InputStream stream1, InputStream stream2, long count) {
         def pos = 0L
-        def defaultReadBuffer = 128 * Constants.KB
+        def defaultReadBuffer = 128 * KB
         try {
             // If the amount we are going to read is smaller than the default buffer size use that instead.
             def bufferSize = (int) Math.min(defaultReadBuffer, count)
