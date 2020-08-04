@@ -179,7 +179,7 @@ succeeded, to get the result.
 Methods that train models or recognize values from forms are modeled as long-running operations. The client exposes
 a `begin<MethodName>` method that returns a `SyncPoller` or `PollerFlux` instance.
 Callers should wait for the operation to completed by calling `getFinalResult()` on the returned operation from the
-`begin<method-name>` method. Sample code snippets are provided to illustrate using long-running operations
+`begin<MethodName>` method. Sample code snippets are provided to illustrate using long-running operations
 [below](#Examples).
 
 ## Examples
@@ -406,9 +406,6 @@ the client library to use the Netty HTTP client. Configuring or changing the HTT
 
 ## Next steps
 The following section provides several code snippets illustrating common patterns used in the Form Recognizer API.
-
-### More sample code
-
 These code samples show common scenario operations with the Azure Form Recognizer client library.
 
 * Recognize receipts: [RecognizeReceipts][recognize_receipts]
