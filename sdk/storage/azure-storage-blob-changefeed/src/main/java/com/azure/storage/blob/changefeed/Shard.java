@@ -7,6 +7,7 @@ import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedCursor;
 import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper;
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor;
+import com.azure.storage.blob.changefeed.implementation.models.ShardCursor;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import reactor.core.publisher.Flux;
@@ -27,14 +28,14 @@ class Shard  {
     private final String shardPath; /* Shard virtual directory path/prefix. */
     private final BlobChangefeedCursor changefeedCursor; /* Cursor associated with parent segment. */
     private final ChangefeedCursor segmentCursor;
-    private final ChangefeedCursor userCursor; /* User provided cursor. */
+    private final ShardCursor userCursor; /* User provided cursor. */
     private final ChunkFactory chunkFactory;
 
     /**
      * Creates a new Shard.
      */
     Shard(BlobContainerAsyncClient client, String shardPath, ChangefeedCursor segmentCursor, BlobChangefeedCursor changefeedCursor,
-        ChangefeedCursor userCursor, ChunkFactory chunkFactory) {
+        ShardCursor userCursor, ChunkFactory chunkFactory) {
         this.client = client;
         this.shardPath = shardPath;
         this.changefeedCursor = changefeedCursor;
@@ -53,17 +54,17 @@ class Shard  {
             .concatMap(chunkPath -> {
                 /* Defaults for blockOffset and objectBlockIndex. */
                 long blockOffset = 0;
-                long objectBlockIndex = 0;
+                long eventIndex = 0;
                 /* If a user cursor was provided and it points to this chunk path, the chunk should get events based
-                   off the blockOffset and objectBlockIndex.
-                   This just makes sure only the targeted chunkPath uses the blockOffset and objectBlockIndex to
+                   off the blockOffset and eventIndex.
+                   This just makes sure only the targeted chunkPath uses the blockOffset and eventIndex to
                    read events. Any subsequent chunk will read all of its events (i.e. blockOffset = 0). */
-                if (userCursor != null && userCursor.getChunkPath().equals(chunkPath)) {
+                if (userCursor != null && userCursor.getCurrentChunkPath().equals(chunkPath)) {
                     blockOffset = userCursor.getBlockOffset();
-                    objectBlockIndex = userCursor.getObjectBlockIndex();
+                    eventIndex = userCursor.getEventIndex();
                 }
                 return chunkFactory.getChunk(chunkPath, segmentCursor.toChunkCursor(chunkPath), changefeedCursor,
-                    blockOffset, objectBlockIndex)
+                    blockOffset, eventIndex)
                     .getEvents();
             });
     }
@@ -98,8 +99,8 @@ class Shard  {
                     } else {
                     /* If we hit the chunk specified in the user cursor, set pass to true and pass this chunk
                        and any subsequent chunks through. */
-                        if (userCursor.getChunkPath().equals(chunkPath)) {
-                            pass.set(true); /* This allows us to pass subsequent chunks through.*/
+                        if (userCursor.getCurrentChunkPath().equals(chunkPath)) {
+                            pass.set(true); /* Thiso allows us to pass subsequent chunks through.*/
                             return true; /* This allows us to pass this chunk through. */
                         } else {
                             return false;

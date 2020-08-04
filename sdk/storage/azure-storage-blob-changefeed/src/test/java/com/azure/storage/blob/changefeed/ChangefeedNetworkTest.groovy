@@ -17,16 +17,47 @@ relationship programmatically, so we have recorded a successful interaction and 
 class ChangefeedNetworkTest extends APISpec {
 
 //    @Requires( { playbackMode() })
+//    @Ignore("Infeasible to record due to large number of events. ")
     def "min"() {
         setup:
         BlobChangefeedPagedFlux flux = new BlobChangefeedClientBuilder(primaryBlobServiceAsyncClient)
             .buildAsyncClient()
-            .getEvents(OffsetDateTime.now().minus(Duration.ofDays(1)), OffsetDateTime.MAX)
+            .getEvents(OffsetDateTime.now().minusDays(1), OffsetDateTime.MAX)
         when:
         def sv = StepVerifier.create(flux)
         then:
-        sv.expectNextCount(14440) /* Note this number should be adjusted to verify the number of events expected if re-recording. */
+        sv.expectNextCount(15000) /* Note this number should be adjusted to verify the number of events expected if re-recording. */
             .verifyComplete()
+    }
+
+    def "min resume from cursor"() {
+//        when:
+//        BlobChangefeedPagedIterable iterable = new BlobChangefeedClientBuilder(primaryBlobServiceClient)
+//            .buildClient()
+//            .getEvents(OffsetDateTime.now().minusDays(1), OffsetDateTime.MAX)
+//        Iterator<BlobChangefeedPagedResponse> pagedResponses = iterable.iterableByPage(1000).iterator()
+//
+//        def i = 0
+//        def continuationToken = ""
+//        while (pagedResponses.hasNext() && i < 14) {
+//            BlobChangefeedPagedResponse resp = pagedResponses.next()
+//            continuationToken = resp.getCursor()
+//            i++
+//        }
+//
+//        then:
+//        System.out.println(continuationToken)
+
+        when:
+        String continuationToken = '{"CursorVersion":1,"UrlHash":"5gX9e+3lzudCNddoahIvqg==","EndTime":"+999999999-12-31T23:59:59.999999999-18:00","CurrentSegmentCursor":{"ShardCursors":[{"CurrentChunkPath":"log/00/2020/08/04/2000/00000.avro","BlockOffset":96853,"EventIndex":6}],"CurrentShardPath":"log/00/2020/08/04/2000/","SegmentPath":"idx/segments/2020/08/04/2000/meta.json"}}'
+        BlobChangefeedPagedFlux flux = new BlobChangefeedClientBuilder(primaryBlobServiceAsyncClient)
+            .buildAsyncClient()
+            .getEvents(continuationToken)
+        def sv = StepVerifier.create(flux)
+        then:
+        sv.expectNextCount(443) /* Note this number should be adjusted to verify the number of events expected if re-recording. */
+            .verifyComplete()
+
     }
 
     @Requires( { playbackMode() })

@@ -42,15 +42,15 @@ class ChunkFactory {
      * @param shardCursor The parent shard cursor.
      * @param blockOffset The offset of the block to start reading from. If 0, this indicates we should read the whole
      *                    avro file from the beginning.
-     * @param objectBlockIndex The index of the last object in the block that was returned to the user.
+     * @param eventIndex The index of the last object in the block that was returned to the user.
      * @return {@link Chunk}
      */
-    Chunk getChunk(String chunkPath, ChangefeedCursor shardCursor, BlobChangefeedCursor changefeedCursor, long blockOffset, long objectBlockIndex) {
+    Chunk getChunk(String chunkPath, ChangefeedCursor shardCursor, BlobChangefeedCursor changefeedCursor, long blockOffset, long eventIndex) {
         /* Validate parameters. */
         StorageImplUtils.assertNotNull("chunkPath", chunkPath);
         StorageImplUtils.assertNotNull("shardCursor", shardCursor);
         StorageImplUtils.assertInBounds("blockOffset", blockOffset, 0, Long.MAX_VALUE);
-        StorageImplUtils.assertInBounds("objectBlockIndex", objectBlockIndex, 0, Long.MAX_VALUE);
+        StorageImplUtils.assertInBounds("eventIndex", eventIndex, 0, Long.MAX_VALUE);
 
         /* Determine which AvroReader should be used. */
         AvroReader avroReader;
@@ -63,7 +63,7 @@ class ChunkFactory {
                 .download();
             avroReader = avroReaderFactory.getAvroReader(avro);
         /* If blockOffset > 0, that means we are reading the avro file header and body separately.
-           Read events starting at the designated blockOffset and objectBlockIndex. */
+           Read events starting at the designated blockOffset and eventIndex. */
         } else {
             /* Download the first DEFAULT_HEADER_SIZE bytes from the blob lazily in chunks and use that as the header
                source for the AvroReader. */
@@ -75,7 +75,7 @@ class ChunkFactory {
             Flux<ByteBuffer> avroBody =
                 blobChunkedDownloaderFactory.getBlobLazyDownloader(chunkPath, DEFAULT_BODY_SIZE, blockOffset)
                     .download();
-            avroReader = avroReaderFactory.getAvroReader(avroHeader, avroBody, blockOffset, objectBlockIndex);
+            avroReader = avroReaderFactory.getAvroReader(avroHeader, avroBody, blockOffset, eventIndex);
         }
 
         return new Chunk(chunkPath, shardCursor, changefeedCursor, avroReader);

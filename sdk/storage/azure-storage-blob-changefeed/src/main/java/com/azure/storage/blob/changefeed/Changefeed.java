@@ -21,6 +21,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 
 /**
  * A class that represents a Changefeed.
@@ -45,14 +46,14 @@ class Changefeed {
     private final OffsetDateTime endTime; /* User provided end time. */
     private final BlobChangefeedCursor changefeedCursor; /* Cursor associated with changefeed. */
     private final ChangefeedCursor cfCursor;
-    private final ChangefeedCursor userCursor; /* User provided cursor. */
+    private final BlobChangefeedCursor userCursor; /* User provided cursor. */
     private final SegmentFactory segmentFactory; /* Segment factory. */
 
     /**
      * Creates a new Changefeed.
      */
     Changefeed(BlobContainerAsyncClient client, OffsetDateTime startTime, OffsetDateTime endTime,
-        ChangefeedCursor userCursor, SegmentFactory segmentFactory) {
+        BlobChangefeedCursor userCursor, SegmentFactory segmentFactory) {
         this.client = client;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -68,6 +69,13 @@ class Changefeed {
             throw logger.logExceptionAsError(new RuntimeException(e));
         }
         this.changefeedCursor = new BlobChangefeedCursor(urlHash, this.endTime);
+
+        /* Validate the cursor. */
+        if (userCursor != null) {
+            if (!Arrays.equals(userCursor.getUrlHash(), urlHash)) {
+                throw logger.logExceptionAsError(new RuntimeException("Cursor url does not match the container url."));
+            }
+        }
     }
 
     /**
@@ -148,12 +156,17 @@ class Changefeed {
     private Flux<BlobChangefeedEventWrapper> getEventsForSegment(String segment) {
         OffsetDateTime segmentTime = TimeUtils.convertPathToTime(segment);
         /* Only pass the user cursor in to the segment of interest. */
-        if (userCursor != null && segmentTime.isEqual(OffsetDateTime.parse(userCursor.getSegmentTime()))) {
-            return segmentFactory.getSegment(segment, cfCursor.toSegmentCursor(segmentTime), changefeedCursor.toSegmentCursor(segment), userCursor)
-                .getEvents();
+        if (userCursor != null && segmentTime.isEqual(startTime)) {
+            return segmentFactory.getSegment(segment, cfCursor.toSegmentCursor(segmentTime), changefeedCursor.toSegmentCursor(segment), userCursor.getCurrentSegmentCursor()).getEvents();
+        } else {
+            return segmentFactory.getSegment(segment, cfCursor.toSegmentCursor(segmentTime), changefeedCursor.toSegmentCursor(segment), null).getEvents();
         }
-        return segmentFactory.getSegment(segment, cfCursor.toSegmentCursor(segmentTime), changefeedCursor.toSegmentCursor(segment), null)
-            .getEvents();
+//        if (userCursor != null && segmentTime.isEqual(OffsetDateTime.parse(userCursor.getSegmentTime()))) {
+//            return segmentFactory.getSegment(segment, cfCursor.toSegmentCursor(segmentTime), changefeedCursor.toSegmentCursor(segment), userCursor)
+//                .getEvents();
+//        }
+//        return segmentFactory.getSegment(segment, cfCursor.toSegmentCursor(segmentTime), changefeedCursor.toSegmentCursor(segment), null)
+//            .getEvents();
     }
 
 }

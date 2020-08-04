@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Represents a Segment in Changefeed.
@@ -44,7 +45,7 @@ class Segment {
     private final String segmentPath; /* Segment manifest location. */
     private final BlobChangefeedCursor changefeedCursor; /* Cursor associated with parent changefeed. */
     private final ChangefeedCursor cfCursor;
-    private final ChangefeedCursor userCursor; /* User provided cursor. */
+    private final SegmentCursor userCursor; /* User provided cursor. */
     private final ShardFactory shardFactory;
 
     /**
@@ -52,7 +53,7 @@ class Segment {
      */
     Segment(BlobContainerAsyncClient client, String segmentPath, ChangefeedCursor cfCursor,
         BlobChangefeedCursor changefeedCursor,
-        ChangefeedCursor userCursor, ShardFactory shardFactory) {
+        SegmentCursor userCursor, ShardFactory shardFactory) {
         this.client = client;
         this.segmentPath = segmentPath;
         this.cfCursor = cfCursor;
@@ -78,7 +79,7 @@ class Segment {
 
     private Flux<Shard> getShards(JsonNode node) {
         List<Shard> shards = new ArrayList<>();
-        boolean validShard = false;
+//        boolean validShard = false;
 
         /* Iterate over each shard element. */
         for (JsonNode shard : node.withArray(CHUNK_FILE_PATHS)) {
@@ -86,23 +87,34 @@ class Segment {
             String shardPath =
                 shard.asText().substring(BlobChangefeedClientBuilder.CHANGEFEED_CONTAINER_NAME.length() + 1);
 
-            if (userCursor == null) {
-                validShard = true;
-            } else {
-                /* If a user cursor was provided, figure out the associated shard to start at. */
-                if (shardPath.equals(userCursor.getShardPath())) {
-                    validShard = true;
-                }
+            ShardCursor shardCursor = null; /* By default, read shard from the beginning. */
+            if (userCursor != null) {
+                shardCursor = userCursor.getShardCursors().stream()
+                    .filter(sc -> sc.getCurrentChunkPath().contains(shardPath))
+                    .findFirst()
+                    .orElse(null); /* If this shard does not exist in the list of shard cursors, read shard from the beginning. */
             }
+            shards.add(shardFactory.getShard(shardPath, cfCursor.toShardCursor(shardPath), changefeedCursor.toShardCursor(shardPath), shardCursor));
 
-            if (validShard) {
-                /* Only pass the user cursor in to the shard of interest. */
-                if (userCursor != null && shardPath.equals(userCursor.getShardPath())) {
-                    shards.add(shardFactory.getShard(shardPath, cfCursor.toShardCursor(shardPath), changefeedCursor.toShardCursor(shardPath), userCursor));
-                } else {
-                    shards.add(shardFactory.getShard(shardPath, cfCursor.toShardCursor(shardPath), changefeedCursor.toShardCursor(shardPath), null));
-                }
-            }
+
+
+//            if (userCursor == null) {
+//                validShard = true;
+//            } else {
+//                /* If a user cursor was provided, figure out the associated shard to start at. */
+//                if (shardPath.equals(userCursor.getShardPath())) {
+//                    validShard = true;
+//                }
+//            }
+//
+//            if (validShard) {
+//                /* Only pass the user cursor in to the shard of interest. */
+//                if (userCursor != null && shardPath.equals(userCursor.getShardPath())) {
+//                    shards.add(shardFactory.getShard(shardPath, cfCursor.toShardCursor(shardPath), changefeedCursor.toShardCursor(shardPath), userCursor));
+//                } else {
+//                    shards.add(shardFactory.getShard(shardPath, cfCursor.toShardCursor(shardPath), changefeedCursor.toShardCursor(shardPath), null));
+//                }
+//            }
         }
         return Flux.fromIterable(shards);
     }

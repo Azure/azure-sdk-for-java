@@ -31,7 +31,7 @@ class SegmentFactory {
      * Gets a new instance of a Segment.
      */
     Segment getSegment(String segmentPath, ChangefeedCursor cfCursor, BlobChangefeedCursor changefeedCursor,
-        ChangefeedCursor userCursor) {
+        SegmentCursor userCursor) {
         /* Validate parameters. */
         StorageImplUtils.assertNotNull("segmentPath", segmentPath);
         StorageImplUtils.assertNotNull("changefeedCursor", changefeedCursor);
