@@ -228,6 +228,7 @@ public class ReactiveCosmosTemplateIT {
     @Test
     public void testUpsert() {
         final Person p = TEST_PERSON_2;
+        p.set_etag(insertedPerson.get_etag());
         final ArrayList<String> hobbies = new ArrayList<>(p.getHobbies());
         hobbies.add("more code");
         p.setHobbies(hobbies);
@@ -244,6 +245,7 @@ public class ReactiveCosmosTemplateIT {
         final Person updated = new Person(TEST_PERSON.getId(), TestConstants.UPDATED_FIRST_NAME,
             TEST_PERSON.getLastName(), TEST_PERSON.getHobbies(),
             TEST_PERSON.getShippingAddresses());
+        updated.set_etag(WRONG_ETAG);
 
         try {
             cosmosTemplate.upsert(updated).block();

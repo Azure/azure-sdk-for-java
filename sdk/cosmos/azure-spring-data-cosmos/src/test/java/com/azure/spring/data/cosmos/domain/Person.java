@@ -6,6 +6,7 @@ package com.azure.spring.data.cosmos.domain;
 import com.azure.spring.data.cosmos.core.mapping.Container;
 import com.azure.spring.data.cosmos.core.mapping.CosmosIndexingPolicy;
 import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
+import org.springframework.data.annotation.Version;
 
 import java.util.List;
 import java.util.Objects;
@@ -20,6 +21,8 @@ public class Person {
     private String lastName;
     private List<String> hobbies;
     private List<Address> shippingAddresses;
+    @Version
+    private String _etag;
 
     public Person(String id, String firstName, String lastName, List<String> hobbies, List<Address> shippingAddresses) {
         this.id = id;
@@ -72,6 +75,14 @@ public class Person {
         this.shippingAddresses = shippingAddresses;
     }
 
+    public String get_etag() {
+        return _etag;
+    }
+
+    public void set_etag(String _etag) {
+        this._etag = _etag;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -109,6 +120,8 @@ public class Person {
             + hobbies
             + ", shippingAddresses="
             + shippingAddresses
+            + ", _etag='"
+            + _etag
             + '\''
             + '}';
     }

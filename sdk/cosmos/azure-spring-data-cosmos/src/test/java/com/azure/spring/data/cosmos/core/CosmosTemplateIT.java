@@ -199,6 +199,7 @@ public class CosmosTemplateIT {
     public void testUpdateWithReturnEntity() {
         final Person updated = new Person(TEST_PERSON.getId(), UPDATED_FIRST_NAME,
             TEST_PERSON.getLastName(), TEST_PERSON.getHobbies(), TEST_PERSON.getShippingAddresses());
+        updated.set_etag(insertedPerson.get_etag());
 
         final Person updatedPerson = cosmosTemplate.upsertAndReturnEntity(Person.class.getSimpleName(), updated);
 
@@ -206,12 +207,14 @@ public class CosmosTemplateIT {
             updatedPerson.getId(), Person.class);
 
         assertEquals(updatedPerson, updated);
+        assertThat(updatedPerson.get_etag()).isEqualTo(findPersonById.get_etag());
     }
 
     @Test
     public void testUpdate() {
         final Person updated = new Person(TEST_PERSON.getId(), UPDATED_FIRST_NAME,
                 TEST_PERSON.getLastName(), TEST_PERSON.getHobbies(), TEST_PERSON.getShippingAddresses());
+        updated.set_etag(insertedPerson.get_etag());
 
         final Person person = cosmosTemplate.upsertAndReturnEntity(Person.class.getSimpleName(), updated);
 
@@ -225,6 +228,7 @@ public class CosmosTemplateIT {
     public void testOptimisticLockWhenUpdatingWithWrongEtag() {
         final Person updated = new Person(TEST_PERSON.getId(), UPDATED_FIRST_NAME,
                 TEST_PERSON.getLastName(), TEST_PERSON.getHobbies(), TEST_PERSON.getShippingAddresses());
+        updated.set_etag(WRONG_ETAG);
 
         try {
             cosmosTemplate.upsert(Person.class.getSimpleName(), updated);
