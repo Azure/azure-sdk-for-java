@@ -79,8 +79,8 @@ public final class FormRecognizerAsyncClient {
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl#string-string}
      *
-     * @param formUrl The URL of the form to analyze.
      * @param modelId The UUID string format custom trained model Id to be used.
+     * @param formUrl The URL of the form to analyze.
      *
      * @return A {@link PollerFlux} that polls the recognize custom form operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
@@ -90,8 +90,8 @@ public final class FormRecognizerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedForm>>
-        beginRecognizeCustomFormsFromUrl(String formUrl, String modelId) {
-        return beginRecognizeCustomFormsFromUrl(formUrl, modelId, null);
+        beginRecognizeCustomFormsFromUrl(String modelId, String formUrl) {
+        return beginRecognizeCustomFormsFromUrl(modelId, formUrl, null);
     }
 
     /**
@@ -103,8 +103,8 @@ public final class FormRecognizerAsyncClient {
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl#string-string-recognizeOptions}
      *
-     * @param formUrl The source URL to the input form.
      * @param modelId The UUID string format custom trained model Id to be used.
+     * @param formUrl The source URL to the input form.
      * @param recognizeOptions The additional configurable {@link RecognizeOptions options} that may be passed when
      * recognizing custom form.
      *
@@ -116,7 +116,7 @@ public final class FormRecognizerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedForm>>
-        beginRecognizeCustomFormsFromUrl(String formUrl, String modelId, RecognizeOptions recognizeOptions) {
+        beginRecognizeCustomFormsFromUrl(String modelId, String formUrl, RecognizeOptions recognizeOptions) {
         return beginRecognizeCustomFormsFromUrl(formUrl, modelId, recognizeOptions, Context.NONE);
     }
 
@@ -158,11 +158,11 @@ public final class FormRecognizerAsyncClient {
      * {@code Flux} must produce the same data each time it is subscribed to.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#Flux-long-string}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#string-Flux-long}
      *
+     * @param modelId The UUID string format custom trained model Id to be used.
      * @param form The data of the form to recognize form information from.
      * @param length The exact length of the data.
-     * @param modelId The UUID string format custom trained model Id to be used.
      *
      * @return A {@link PollerFlux} that polls the recognize custom form operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
@@ -172,8 +172,8 @@ public final class FormRecognizerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedForm>>
-        beginRecognizeCustomForms(Flux<ByteBuffer> form, long length, String modelId) {
-        return beginRecognizeCustomForms(form, length, modelId, null);
+        beginRecognizeCustomForms(String modelId, Flux<ByteBuffer> form, long length) {
+        return beginRecognizeCustomForms(modelId, form, length, null);
     }
 
     /**
@@ -186,11 +186,11 @@ public final class FormRecognizerAsyncClient {
      * {@code Flux} must produce the same data each time it is subscribed to.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#Flux-long-string-recognizeOptions}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#string-Flux-long-recognizeOptions}
      *
+     * @param modelId The UUID string format custom trained model Id to be used.
      * @param form The data of the form to recognize form information from.
      * @param length The exact length of the data.
-     * @param modelId The UUID string format custom trained model Id to be used.
      * @param recognizeOptions The additional configurable {@link RecognizeOptions options} that may be passed when
      * recognizing custom form.
      *
@@ -202,13 +202,13 @@ public final class FormRecognizerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedForm>>
-        beginRecognizeCustomForms(Flux<ByteBuffer> form, long length, String modelId,
+        beginRecognizeCustomForms(String modelId, Flux<ByteBuffer> form, long length,
         RecognizeOptions recognizeOptions) {
-        return beginRecognizeCustomForms(form, length, modelId, recognizeOptions, Context.NONE);
+        return beginRecognizeCustomForms(modelId, form, length, recognizeOptions, Context.NONE);
     }
 
     PollerFlux<OperationResult, List<RecognizedForm>>
-        beginRecognizeCustomForms(Flux<ByteBuffer> form, long length, String modelId,
+        beginRecognizeCustomForms(String modelId, Flux<ByteBuffer> form, long length,
         RecognizeOptions recognizeOptions, Context context) {
         try {
             Objects.requireNonNull(form, "'form' is required and cannot be null.");
@@ -592,7 +592,8 @@ public final class FormRecognizerAsyncClient {
                 final UUID resultUuid = UUID.fromString(operationResultPollResponse.getValue().getResultId());
                 return pollingFunction.apply(resultUuid)
                     .flatMap(modelSimpleResponse -> processAnalyzeModelResponse(modelSimpleResponse,
-                        operationResultPollResponse));
+                        operationResultPollResponse))
+                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
             }

@@ -8,6 +8,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Configuration;
 import com.azure.identity.AzureAuthorityHosts;
+import com.azure.identity.implementation.util.ValidationUtil;
 import com.microsoft.aad.msal4jextensions.PersistenceSettings;
 import com.sun.jna.Platform;
 
@@ -57,6 +58,7 @@ public final class IdentityClientOptions {
         Configuration configuration = Configuration.getGlobalConfiguration();
         authorityHost = configuration.get(Configuration.PROPERTY_AZURE_AUTHORITY_HOST,
             AzureAuthorityHosts.AZURE_PUBLIC_CLOUD);
+        ValidationUtil.validateAuthHost(getClass().getSimpleName(), authorityHost);
         maxRetry = MAX_RETRY_DEFAULT_LIMIT;
         retryTimeout = i -> Duration.ofSeconds((long) Math.pow(2, i.getSeconds() - 1));
     }

@@ -442,4 +442,24 @@ public class CosmosTemplateIT {
         assertThat(secondPageResults.get(0).getFirstName()).isEqualTo(NEW_FIRST_NAME);
         assertThat(secondPageResults.get(1).getFirstName()).isEqualTo(NEW_FIRST_NAME);
     }
+
+    @Test
+    public void testExists() {
+        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
+            Collections.singletonList(TEST_PERSON.getFirstName()), Part.IgnoreCaseType.NEVER);
+        final CosmosQuery query = new CosmosQuery(criteria);
+        final Boolean exists = cosmosTemplate.exists(query, Person.class, containerName);
+        assertThat(exists).isTrue();
+
+        // add ignore testing
+        final Criteria criteriaIgnoreCase = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
+            Collections.singletonList(TEST_PERSON.getFirstName().toUpperCase()), Part.IgnoreCaseType.ALWAYS);
+        final CosmosQuery queryIgnoreCase = new CosmosQuery(criteriaIgnoreCase);
+        final Boolean existsIgnoreCase = cosmosTemplate.exists(queryIgnoreCase, Person.class, containerName);
+        assertThat(existsIgnoreCase).isTrue();
+
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
+    }
 }

@@ -180,7 +180,7 @@ public final class FormTrainingAsyncClient {
         return new PollerFlux<OperationResult, CustomFormModel>(
             interval,
             getTrainingActivationOperation(trainingFilesUrl,
-                trainingFileFilter != null ? trainingFileFilter.isIncludeSubFolders() : false,
+                trainingFileFilter != null ? trainingFileFilter.isSubfoldersIncluded() : false,
                 trainingFileFilter != null ? trainingFileFilter.getPrefix() : null,
                 useTrainingLabels, context),
             createTrainingPollOperation(context),
@@ -629,12 +629,12 @@ public final class FormTrainingAsyncClient {
     }
 
     private Function<PollingContext<OperationResult>, Mono<OperationResult>> getTrainingActivationOperation(
-        String trainingFilesUrl, boolean includeSubFolders, String filePrefix, boolean useTrainingLabels,
+        String trainingFilesUrl, boolean includeSubfolders, String filePrefix, boolean useTrainingLabels,
         Context context) {
         return (pollingContext) -> {
             try {
                 Objects.requireNonNull(trainingFilesUrl, "'trainingFilesUrl' cannot be null.");
-                TrainSourceFilter trainSourceFilter = new TrainSourceFilter().setIncludeSubFolders(includeSubFolders)
+                TrainSourceFilter trainSourceFilter = new TrainSourceFilter().setIncludeSubFolders(includeSubfolders)
                     .setPrefix(filePrefix);
                 TrainRequest serviceTrainRequest = new TrainRequest().setSource(trainingFilesUrl).
                     setSourceFilter(trainSourceFilter).setUseLabelFile(useTrainingLabels);

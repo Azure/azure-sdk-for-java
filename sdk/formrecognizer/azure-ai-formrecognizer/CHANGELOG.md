@@ -2,8 +2,15 @@
 
 ## 1.0.0-beta.5 (Unreleased)
 - Added support for context passing.
-- Renamed accessors for property `includeFieldElements` to `isFieldElementsIncluded` and `setFieldElementsIncluded`
 - Moved training client models under `com.azure.ai.formrecognizer.training.models` namespace
+- Renamed accessors for property `includeFieldElements` to `isFieldElementsIncluded` and `setFieldElementsIncluded`
+- Renamed property `type` on `FieldValue` model to `valueType`
+- Renamed property `formWords` on `FormLine` model to `words`
+- Renamed property `code` on `FormRecognizerError` model to `errorCode`
+- Renamed accessors for property `includeSubFolders` to `isSubfoldersIncluded` and `setSubfoldersIncluded`
+- Renamed property `trainingStatus` and `documentErrors` on `TrainingDocumentInfo` model to `status` and `errors` 
+respectively
+- Changed param ordering for methods `beginRecognizeCustomForms` and `beginRecognizeCustomFormsFromUrl`
 
 ### Key Bug Fixes
 - Fixed `getFields()` to preserve service side ordering of fields.
