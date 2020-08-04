@@ -95,8 +95,10 @@ class LargeFileTest extends APISpec{
     }
 
     @Requires({ liveMode() })
+    @Ignore("Allocates too much memory for current CI machines") // TODO: Enable when test resources can allocate 8GB
     // This test does not send large payload over the wire
     def "Upload Large Data Async"() {
+
         given:
         def data = createLargeBuffer(2 * maxBlockSize)
 
@@ -109,6 +111,7 @@ class LargeFileTest extends APISpec{
     }
 
     @Requires({ liveMode() })
+    @Ignore("Allocates too much memory for current CI machines") // TODO: Enable when test resources can allocate 8GB
     // This test does not send large payload over the wire
     def "Append Large File"() {
         given:
