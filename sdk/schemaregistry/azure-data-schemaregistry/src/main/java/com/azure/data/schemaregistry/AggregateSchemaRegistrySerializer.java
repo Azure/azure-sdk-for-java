@@ -1,7 +1,8 @@
 package com.azure.data.schemaregistry;
 
-import com.azure.core.experimental.serializer.ObjectSerializer;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.ObjectSerializer;
+import com.azure.core.util.serializer.TypeReference;
 import com.azure.data.schemaregistry.models.SerializationType;
 import reactor.core.publisher.Mono;
 
@@ -36,10 +37,19 @@ public class AggregateSchemaRegistrySerializer implements ObjectSerializer {
     }
 
     @Override
-    public <T> Mono<T> deserialize(InputStream s, Class<T> clazz) {
+    public <T> T deserialize(InputStream stream, TypeReference<T> typeReference) {
+        return deserializeAsync(stream, typeReference).block();
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> Mono<T> deserializeAsync(InputStream stream, TypeReference<T> typeReference) {
+        if (Object.class.equals(typeReference.getJavaType())) {
+
+        }
         return Mono.fromCallable(() -> {
-            byte[] payload = new byte[s.available()];
-            while (s.read(payload) != -1) {}
+            byte[] payload = new byte[stream.available()];
+            while (stream.read(payload) != -1) {}
             return payload;
         }).flatMap(payload -> {
             if (payload == null || payload.length == 0) {
@@ -71,14 +81,20 @@ public class AggregateSchemaRegistrySerializer implements ObjectSerializer {
                     byte[] b = Arrays.copyOfRange(buffer.array(), start, start + length);
 
                     SchemaRegistrySerializer innerDeserializer = getDeserializer(registryObject.getSerializationType());
-                    sink.next((T) innerDeserializer.decode(b, payloadSchema));
+                    Object deserialized = innerDeserializer.decode(b, payloadSchema);
+                    sink.next((T)deserialized);
                 });
         });
     }
 
     @Override
-    public <S extends OutputStream> Mono<S> serialize(S s, Object value) {
-        return serializer.serializeAsync(s, value);
+    public <S extends OutputStream> S serialize(S stream, Object value) {
+        return serializer.serializeAsync(stream, value).block();
+    }
+
+    @Override
+    public <S extends OutputStream> Mono<S> serializeAsync(S stream, Object value) {
+        return serializer.serializeAsync(stream, value);
     }
 
     private SchemaRegistrySerializer getDeserializer(SerializationType type) {
