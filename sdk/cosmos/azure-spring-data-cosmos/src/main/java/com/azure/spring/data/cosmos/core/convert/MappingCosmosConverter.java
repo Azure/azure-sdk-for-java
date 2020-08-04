@@ -37,7 +37,6 @@ public class MappingCosmosConverter
     JsonNode>,
     ApplicationContextAware {
 
-    private static final String ETAG_KEY = "_etag";
     protected final MappingContext<? extends CosmosPersistentEntity<?>,
         CosmosPersistentProperty> mappingContext;
     protected GenericConversionService conversionService;
@@ -145,9 +144,9 @@ public class MappingCosmosConverter
     private void mapVersionFieldToEtag(Object sourceEntity, ObjectNode cosmosObjectNode) {
         final CosmosEntityInformation<?, ?> entityInfo = CosmosEntityInformation.getInstance(sourceEntity.getClass());
         if (entityInfo.isVersioned()) {
-            if (!entityInfo.getVersionFieldName().equals(ETAG_KEY)) {
+            if (!entityInfo.getVersionFieldName().equals(Constants.ETAG_PROPERTY_DEFAULT_NAME)) {
                 cosmosObjectNode.remove(entityInfo.getVersionFieldName());
-                cosmosObjectNode.put(ETAG_KEY, entityInfo.getVersionFieldValue(sourceEntity));
+                cosmosObjectNode.put(Constants.ETAG_PROPERTY_DEFAULT_NAME, entityInfo.getVersionFieldValue(sourceEntity));
             }
         }
     }
@@ -156,8 +155,8 @@ public class MappingCosmosConverter
         final CosmosEntityInformation<?, ?> entityInfo = CosmosEntityInformation.getInstance(type);
         if (entityInfo.isVersioned()) {
             objectNode.set(entityInfo.getVersionFieldName(), etagValue);
-            if (!entityInfo.getVersionFieldName().equals(ETAG_KEY)) {
-                objectNode.remove(ETAG_KEY);
+            if (!entityInfo.getVersionFieldName().equals(Constants.ETAG_PROPERTY_DEFAULT_NAME)) {
+                objectNode.remove(Constants.ETAG_PROPERTY_DEFAULT_NAME);
             }
         }
     }
