@@ -3,8 +3,6 @@
 
 package com.azure.core.serializer.json.gson;
 
-import com.google.gson.GsonBuilder;
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -42,23 +40,6 @@ public class GsonPropertyNameTests {
         }
         Field f = LocalHotel.class.getDeclaredField("hotelName");
         assertNull(serializer.convertMemberName(f));
-    }
-
-    @Test
-    public void testPropertyNameOnExposeIgnoredFieldName() throws NoSuchFieldException {
-        class LocalHotel {
-            String hotelName;
-
-            @Expose
-            String hotelId;
-        }
-        Field f1 = LocalHotel.class.getDeclaredField("hotelName");
-        Field f2 = LocalHotel.class.getDeclaredField("hotelId");
-
-        GsonJsonSerializer serializerWithSetting = new GsonJsonSerializerBuilder()
-            .serializer(new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()).build();
-        assertNull(serializerWithSetting.convertMemberName(f1));
-        assertEquals(serializer.convertMemberName(f2), "hotelId");
     }
 
     @Test
