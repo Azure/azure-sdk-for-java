@@ -33,8 +33,6 @@ public interface SchemaRegistryCodec {
      */
     String getSchemaName(Object object);
 
-    String getSchemaGroup();
-
     /**
      * Returns string representation of schema object to be stored in the service.
      *

@@ -6,6 +6,8 @@ package com.azure.data.schemaregistry.avro;
 import com.azure.core.credential.TokenCredential;
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
 import com.azure.data.schemaregistry.SchemaRegistryClientBuilder;
+import com.azure.data.schemaregistry.SchemaRegistrySerializer;
+import org.apache.avro.Schema;
 
 import java.util.Objects;
 
@@ -129,10 +131,10 @@ public final class SchemaRegistryAvroSerializerBuilder {
         AvroSchemaRegistryCodec codec = new AvroSchemaRegistryCodec(this.avroSpecificReader);
 
         SchemaRegistryAsyncClient client = builder
-            .addSchemaRegistryCodec(codec)
+            .addSchemaRegistryCodec(SchemaRegistryAvroSerializer::parseSchemaString)
             .buildAsyncClient();
 
-        return new SchemaRegistryAvroSerializer(client, codec, this.schemaGroup,
+        return new SchemaRegistryAvroSerializer(client, this.avroSpecificReader, this.schemaGroup,
             this.autoRegisterSchemas);
     }
 }
