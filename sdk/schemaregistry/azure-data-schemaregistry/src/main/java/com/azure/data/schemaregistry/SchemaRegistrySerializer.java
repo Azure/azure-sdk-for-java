@@ -90,6 +90,14 @@ public abstract class SchemaRegistrySerializer {
     }
 
     /**
+     * @return String representation of schema type, e.g. "avro" or "json".
+     *
+     * Utilized by schema registry store and client as non-case-sensitive tags for
+     * schemas of a specific type.
+     */
+    protected abstract SerializationType getSerializationType();
+
+    /**
      * Core implementation of registry-based serialization.
      * ID for data schema is fetched from the registry and prefixed to the encoded byte array
      * representation of the object param.
@@ -114,8 +122,8 @@ public abstract class SchemaRegistrySerializer {
             serializationType = serializerSchemaRegistryCodec.getSerializationType();
         }
 
-        String schemaString = serializerSchemaRegistryCodec.getSchemaString(object);
-        String schemaName = serializerSchemaRegistryCodec.getSchemaName(object);
+        String schemaString = getSchemaString(object);
+        String schemaName = getSchemaName(object);
 
         return this.maybeRegisterSchema(this.schemaGroup, schemaName, schemaString, this.serializationType)
 //            .onErrorMap(e -> {
@@ -149,7 +157,7 @@ public abstract class SchemaRegistrySerializer {
                     .put(id.getBytes(StandardCharsets.UTF_8));
                 try {
                     s.write(idBuffer.array());
-                    s.write(serializerSchemaRegistryCodec.encode(object));
+                    s.write(encode(object));
                 } catch (IOException e) {
                     sink.error(new UncheckedIOException(e.getMessage(), e));
                 }
@@ -182,7 +190,6 @@ public abstract class SchemaRegistrySerializer {
 
                 ByteBuffer buffer = ByteBuffer.wrap(payload);
                 String schemaId = getSchemaIdFromPayload(buffer);
-                System.out.println(schemaId);
 
                 return this.schemaRegistryClient.getSchema(schemaId)
 //                    .onErrorMap(IOException.class,
@@ -202,8 +209,7 @@ public abstract class SchemaRegistrySerializer {
                         int length = buffer.limit() - SchemaRegistrySerializer.SCHEMA_ID_SIZE;
                         byte[] b = Arrays.copyOfRange(buffer.array(), start, start + length);
 
-                        SchemaRegistryCodec schemaRegistryCodec = getDeserializerCodec(registryObject);
-                        sink.next(schemaRegistryCodec.decode(b, payloadSchema));
+                        sink.next(decode(b, payloadSchema));
                     });
 //                    .onErrorMap(e -> {
 //                        if (e instanceof SchemaRegistryClientException) {
@@ -228,6 +234,37 @@ public abstract class SchemaRegistrySerializer {
             });
     }
 
+    /**
+     * Return schema name for storing in registry store
+     * @param object Schema object
+     * Refer to Schema Registry documentation for information on schema grouping and naming.
+     *
+     * @return schema name
+     */
+    protected abstract String getSchemaName(Object object);
+
+    /**
+     * Returns string representation of schema object to be stored in the service.
+     *
+     * @param object Schema object used to generate schema string
+     * @return String representation of schema object parameter
+     */
+    protected abstract String getSchemaString(Object object);
+
+    /**
+     * Converts object into stream containing the encoded representation of the object.
+     * @param object Object to be encoded into byte stream
+     * @return output stream containing byte representation of object
+     */
+    protected abstract byte[] encode(Object object);
+
+    /**
+     * Decodes byte array into Object given provided schema object.
+     * @param encodedBytes payload to be decoded
+     * @param schemaObject object used to decode the payload
+     * @return deserialized object
+     */
+    protected abstract Object decode(byte[] encodedBytes, Object schemaObject);
 
     /**
      * Fetches the correct Codec based on schema type of the message.
