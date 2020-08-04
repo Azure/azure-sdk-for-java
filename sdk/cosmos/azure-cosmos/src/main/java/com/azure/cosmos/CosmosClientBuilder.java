@@ -381,8 +381,8 @@ public class CosmosClientBuilder {
     /**
      * Gets the boolean which indicates whether bulk is enabled for the requests or not.
      *
-     * If set to true, it will combine multiple operations in background to create a batch request
-     * for increased performance.
+     * Allows optimistic batching of requests to service. Setting this option might impact the latency of the operations.
+     * Hence this option is recommended for non-latency sensitive scenarios only.
      *
      * By-default, this is false.
      *
@@ -395,8 +395,8 @@ public class CosmosClientBuilder {
     /**
      * Sets the boolean to enable bulk for the requests.
      *
-     * If set to true, it will combine multiple operations in background to create a batch request
-     * for increased performance.
+     * Allows optimistic batching of requests to service. Setting this option might impact the latency of the operations.
+     * Hence this option is recommended for non-latency sensitive scenarios only.
      *
      * By-default, this is false.
      *

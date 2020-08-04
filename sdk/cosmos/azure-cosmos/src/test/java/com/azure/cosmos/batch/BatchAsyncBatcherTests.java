@@ -139,8 +139,7 @@ public class BatchAsyncBatcherTests {
         throw expectedException;
     }
 
-    private Mono<Void> reBatchAsync(ItemBatchOperation<?> operation)  {
-        return Mono.just(true).then();
+    private void reBatchAsync(ItemBatchOperation<?> operation)  {
     }
 
     @Test(groups = {"simple"}, timeOut = BATCH_TEST_TIMEOUT, expectedExceptions = IllegalArgumentException.class)

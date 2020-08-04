@@ -3,11 +3,9 @@
 
 package com.azure.cosmos.batch;
 
-import reactor.core.publisher.Mono;
-
 /**
  * Delegate to process a request for retry an operation
  */
 interface BatchAsyncBatcherRetrier {
-    Mono<Void> apply(ItemBatchOperation<?> request);
+    void apply(ItemBatchOperation<?> request);
 }

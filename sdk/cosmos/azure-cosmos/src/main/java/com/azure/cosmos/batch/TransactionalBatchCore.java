@@ -141,7 +141,6 @@ public class TransactionalBatchCore implements TransactionalBatch {
             requestOptions);
 
         this.operations.clear();
-
         Mono<TransactionalBatchResponse> responseMono = executor.executeAsync();
 
         return withContext(context -> CosmosBridgeInternal.getTracerProvider(container).

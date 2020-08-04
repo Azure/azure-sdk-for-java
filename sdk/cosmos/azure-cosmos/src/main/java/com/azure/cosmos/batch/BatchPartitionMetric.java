@@ -25,7 +25,6 @@ public class BatchPartitionMetric {
      * @param numberOfThrottles The number of throttles encountered to insert the documents.
      */
     public BatchPartitionMetric(long numberOfItemsOperatedOn, long timeTakenInMilliseconds, long numberOfThrottles) {
-
         checkArgument(numberOfItemsOperatedOn >= 0, "numberOfItemsOperatedOn must be non negative");
         checkArgument(timeTakenInMilliseconds >= 0, "timeTakenInMilliseconds must be non negative");
         checkArgument(numberOfThrottles >= 0, "numberOfThrottles must be non negative");

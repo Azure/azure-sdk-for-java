@@ -65,14 +65,8 @@ public class BatchAsyncStreamer implements AutoCloseable {
         final BatchAsyncBatcherExecutor executor,
         final BatchAsyncBatcherRetrier retrier) {
 
-        checkArgument(maxBatchOperationCount > 0,
-            "expected maxBatchOperationCount > 0, not %s",
-            maxBatchOperationCount);
-
-        checkArgument(maxBatchByteSize > 0,
-            "expected maxBatchByteSize > 0, not %s",
-            maxBatchByteSize);
-
+        checkArgument(maxBatchOperationCount > 0, "expected maxBatchOperationCount > 0, not %s", maxBatchOperationCount);
+        checkArgument(maxBatchByteSize > 0, "expected maxBatchByteSize > 0, not %s", maxBatchByteSize);
         checkNotNull(timer, "expected non-null timer");
         checkNotNull(limiter, "expected non-null limiter");
         checkNotNull(executor, "expected non-null executor");
@@ -135,7 +129,7 @@ public class BatchAsyncStreamer implements AutoCloseable {
         }
 
         if (toDispatch != null) {
-            // Verified it. Mono blocks the thread but completable future runs in a async manner and leave this thread very fast
+            // Completable future runs in a async manner and leave this thread very fast
             toDispatch.dispatchBatch(this.partitionMetric);  // discarded for fire and forget
         }
 

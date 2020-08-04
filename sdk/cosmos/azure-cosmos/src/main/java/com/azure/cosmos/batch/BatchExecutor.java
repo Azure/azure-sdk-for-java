@@ -6,7 +6,6 @@ package com.azure.cosmos.batch;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosBridgeInternal;
-import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import reactor.core.publisher.Mono;
@@ -39,7 +38,6 @@ public final class BatchExecutor {
 
         BatchExecUtils.ensureValid(this.operations, this.options);
         final ArrayList<ItemBatchOperation<?>> operations = new ArrayList<>(this.operations);
-
         SinglePartitionKeyServerBatchRequest request = SinglePartitionKeyServerBatchRequest.createAsync(this.partitionKey, operations);
 
         return executeBatchRequestAsync(request);
@@ -58,7 +56,7 @@ public final class BatchExecutor {
         request.setAtomicBatch(true);
         request.setShouldContinueOnError(false);
 
-        return CosmosBridgeInternal.getAsyncDocumentClient(container)
+        return CosmosBridgeInternal.getAsyncDocumentClient(container.getDatabase())
             .executeBatchRequest(BridgeInternal.getLink(container), request, options, false);
     }
 }

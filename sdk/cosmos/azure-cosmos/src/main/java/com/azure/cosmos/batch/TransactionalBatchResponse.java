@@ -245,18 +245,6 @@ public class TransactionalBatchResponse implements AutoCloseable, List<Transacti
     }
 
     /**
-     * Gets the result of the operation at the provided index in the batch.
-     *
-     * @param index 0-based index of the operation in the batch whose result needs to be returned.
-     *
-     * @return Result of operation at the provided index in the batch.
-     */
-    @Override
-    public TransactionalBatchOperationResult<?> get(int index) {
-        return this.results.get(index);
-    }
-
-    /**
      * Gets the result of the operation at the provided index in the current {@link TransactionalBatchResponse batch}.
      * <p>
      * @param <T> the type parameter.
@@ -284,54 +272,8 @@ public class TransactionalBatchResponse implements AutoCloseable, List<Transacti
         return new TransactionalBatchOperationResult<T>(result, resource);
     }
 
-    @Override
-    public int indexOf(Object o) {
-        return 0;
-    }
-
-    @Override
-    public Iterator<TransactionalBatchOperationResult<?>> iterator() {
-        return this.results.iterator();
-    }
-
-    @Override
-    public int lastIndexOf(Object o) {
-        return 0;
-    }
-
-    @Override
-    public ListIterator<TransactionalBatchOperationResult<?>> listIterator() {
-        return null;
-    }
-
-    @Override
-    public ListIterator<TransactionalBatchOperationResult<?>> listIterator(int index) {
-        return null;
-    }
-
-    @Override
-    public boolean remove(Object result) {
-        return this.results.remove(result);
-    }
-
-    @Override
-    public TransactionalBatchOperationResult<?> remove(int index) {
-        return null;
-    }
-
-    @Override
-    public boolean removeAll(Collection<?> collection) {
-        return this.results.removeAll(collection);
-    }
-
-    @Override
-    public boolean retainAll(Collection<?> collection) {
-        return this.results.retainAll(collection);
-    }
-
-    @Override
-    public TransactionalBatchOperationResult<?> set(int index, TransactionalBatchOperationResult<?> result) {
-        return this.results.set(index, result);
+    public CosmosDiagnostics getCosmosDiagnostics() {
+        return cosmosDiagnostics;
     }
 
     /**
@@ -341,19 +283,14 @@ public class TransactionalBatchResponse implements AutoCloseable, List<Transacti
         return this.results == null ? 0 : this.results.size();
     }
 
-    @Override
-    public List<TransactionalBatchOperationResult<?>> subList(int fromIndex, int toIndex) {
-        return null;
-    }
-
-    @Override
-    public Object[] toArray() {
-        return this.results.toArray();
-    }
-
-    @Override
-    public <T> T[] toArray(T[] a) {
-        return this.results.toArray(a);
+    /**
+     * Returns a value indicating whether the batch was successfully processed.
+     *
+     * @return a value indicating whether the batch was successfully processed.
+     */
+    public boolean isSuccessStatusCode() {
+        int statusCode = this.responseStatus.code();
+        return statusCode >= 200 && statusCode <= 299;
     }
 
     /**
@@ -424,28 +361,93 @@ public class TransactionalBatchResponse implements AutoCloseable, List<Transacti
      * @return the amount of time to wait before retrying this or any other request due to throttling.
      */
     public Duration getRetryAfter() {
-        // verify
         return Duration.parse(this.responseHeaders.getOrDefault(RETRY_AFTER, null));
     }
-
 
     public int getSubStatusCode() {
         return this.subStatusCode;
     }
 
+    /**
+     * Gets the result of the operation at the provided index in the batch.
+     *
+     * @param index 0-based index of the operation in the batch whose result needs to be returned.
+     *
+     * @return Result of operation at the provided index in the batch.
+     */
+    @Override
+    public TransactionalBatchOperationResult<?> get(int index) {
+        return this.results.get(index);
+    }
+
+    @Override
+    public int indexOf(Object o) {
+        return this.results.indexOf(o);
+    }
+
+    @Override
+    public Iterator<TransactionalBatchOperationResult<?>> iterator() {
+        return this.results.iterator();
+    }
+
+    @Override
+    public int lastIndexOf(Object o) {
+        return 0;
+    }
+
+    @Override
+    public ListIterator<TransactionalBatchOperationResult<?>> listIterator() {
+        return null;
+    }
+
+    @Override
+    public ListIterator<TransactionalBatchOperationResult<?>> listIterator(int index) {
+        return null;
+    }
+
+    @Override
+    public boolean remove(Object result) {
+        return this.results.remove(result);
+    }
+
+    @Override
+    public TransactionalBatchOperationResult<?> remove(int index) {
+        return null;
+    }
+
+    @Override
+    public boolean removeAll(Collection<?> collection) {
+        return this.results.removeAll(collection);
+    }
+
+    @Override
+    public boolean retainAll(Collection<?> collection) {
+        return this.results.retainAll(collection);
+    }
+
+    @Override
+    public TransactionalBatchOperationResult<?> set(int index, TransactionalBatchOperationResult<?> result) {
+        return this.results.set(index, result);
+    }
+
+    @Override
+    public List<TransactionalBatchOperationResult<?>> subList(int fromIndex, int toIndex) {
+        return this.results.subList(fromIndex, toIndex);
+    }
+
+    @Override
+    public Object[] toArray() {
+        return this.results.toArray();
+    }
+
+    @Override
+    public <T> T[] toArray(T[] a) {
+        return this.results.toArray(a);
+    }
+
     @Override
     public boolean isEmpty() {
         return this.results.isEmpty();
-    }
-
-    /**
-     * Returns a value indicating whether the batch was successfully processed.
-     *
-     * @return a value indicating whether the batch was successfully processed.
-     */
-    public boolean isSuccessStatusCode() {
-        int statusCode = this.responseStatus.code();
-        return statusCode >= 200 && statusCode <= 299;
     }
 
     @Override
@@ -455,7 +457,7 @@ public class TransactionalBatchResponse implements AutoCloseable, List<Transacti
 
     @Override
     public void add(int index, TransactionalBatchOperationResult<?> element) {
-
+        this.results.add(index, element);
     }
 
     @Override
@@ -473,9 +475,18 @@ public class TransactionalBatchResponse implements AutoCloseable, List<Transacti
         this.results.clear();
     }
 
+    @Override
+    public boolean contains(Object result) {
+        return this.results.contains(result);
+    }
+
+    @Override
+    public boolean containsAll(Collection<?> c) {
+        return false;
+    }
+
     /**
      * Closes the current {@link TransactionalBatchResponse}.
-     *
      */
     public void close() {
         if (!this.isDisposed) {
@@ -488,19 +499,5 @@ public class TransactionalBatchResponse implements AutoCloseable, List<Transacti
                 this.operations = null;
             }
         }
-    }
-
-    @Override
-    public boolean contains(Object result) {
-        return this.results.contains(result);
-    }
-
-    @Override
-    public boolean containsAll(Collection<?> c) {
-        return false;
-    }
-
-    public CosmosDiagnostics getCosmosDiagnostics() {
-        return cosmosDiagnostics;
     }
 }

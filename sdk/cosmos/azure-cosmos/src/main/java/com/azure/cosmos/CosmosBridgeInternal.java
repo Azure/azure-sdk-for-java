@@ -31,11 +31,6 @@ public final class CosmosBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static AsyncDocumentClient getAsyncDocumentClient(CosmosAsyncContainer cosmosAsyncContainer) {
-        return cosmosAsyncContainer.getDatabase().getDocClientWrapper();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static TracerProvider getTracerProvider(CosmosAsyncContainer cosmosAsyncContainer) {
         return cosmosAsyncContainer.getDatabase().getClient().getTracerProvider();
     }

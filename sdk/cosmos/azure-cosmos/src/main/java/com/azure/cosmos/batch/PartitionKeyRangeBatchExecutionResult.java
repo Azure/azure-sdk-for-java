@@ -42,5 +42,4 @@ public final class PartitionKeyRangeBatchExecutionResult {
     public TransactionalBatchResponse getServerResponse() {
         return serverResponse;
     }
-
 }

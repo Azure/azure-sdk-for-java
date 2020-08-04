@@ -57,19 +57,13 @@ public class BatchAsyncContainerExecutor implements AutoCloseable {
         final int maxPayloadLength) {
 
         checkNotNull(container, "expected non-null containerCore");
-
-        checkArgument(maxOperationCount > 0,
-            "expected maxServerRequestOperationCount > 0, not %s",
-            maxOperationCount);
-
-        checkArgument(maxPayloadLength > 0,
-            "expected maxServerRequestBodyLength > 0, not %s",
-            maxPayloadLength);
+        checkArgument(maxOperationCount > 0, "expected maxServerRequestOperationCount > 0, not %s", maxOperationCount);
+        checkArgument(maxPayloadLength > 0, "expected maxServerRequestBodyLength > 0, not %s", maxPayloadLength);
 
         this.container = container;
         this.maxOperationCount = maxOperationCount;
         this.maxPayloadLength = maxPayloadLength;
-        this.docClientWrapper = CosmosBridgeInternal.getAsyncDocumentClient(container);
+        this.docClientWrapper = CosmosBridgeInternal.getAsyncDocumentClient(container.getDatabase());
         this.throttlingRetryOptions = docClientWrapper.getConnectionPolicy().getThrottlingRetryOptions();
     }
 
@@ -87,8 +81,11 @@ public class BatchAsyncContainerExecutor implements AutoCloseable {
 
                             BatchAsyncStreamer streamer = this.getOrAddStreamerForPartitionKeyRange(resolvedPartitionKeyRangeId);
 
-                            ItemBatchOperationContext context = new ItemBatchOperationContext(resolvedPartitionKeyRangeId, BatchAsyncContainerExecutor.getRetryPolicy(this.throttlingRetryOptions));
+                            ItemBatchOperationContext context = new ItemBatchOperationContext(
+                                resolvedPartitionKeyRangeId,
+                                BatchAsyncContainerExecutor.getRetryPolicy(this.throttlingRetryOptions));
                             operation.attachContext(context);
+
                             streamer.add(operation);
 
                             return context.getOperationResultFuture();
@@ -143,14 +140,15 @@ public class BatchAsyncContainerExecutor implements AutoCloseable {
                 throttlingRetryOptions.getMaxRetryWaitTime()));
     }
 
-    private Mono<Void> reBatchAsync(ItemBatchOperation<?> operation) {
-         this.resolvePartitionKeyRangeIdAsync(operation).thenComposeAsync((resolvedPartitionKeyRangeId) -> {
-            BatchAsyncStreamer streamer = this.getOrAddStreamerForPartitionKeyRange(resolvedPartitionKeyRangeId);
-            streamer.add(operation);
-            return null;
-        });
+    private void reBatchAsync(ItemBatchOperation<?> operation) {
 
-         return Mono.just(true).then();
+        CompletableFuture.runAsync(() -> {
+            this.resolvePartitionKeyRangeIdAsync(operation).thenAccept(
+                (String resolvedPartitionKeyRangeId) -> {
+                    BatchAsyncStreamer streamer = this.getOrAddStreamerForPartitionKeyRange(resolvedPartitionKeyRangeId);
+                    streamer.add(operation);
+            });
+        });
     }
 
     private CompletableFuture<String> resolvePartitionKeyRangeIdAsync(final ItemBatchOperation<?> operation) {
@@ -170,12 +168,12 @@ public class BatchAsyncContainerExecutor implements AutoCloseable {
             throw new IllegalStateException("EPK is not supported");
         }
 
-        String pkrangeId = null;
+        String pkRangeId = null;
         DocumentCollection collection = this.container.getCollectionInfoAsync().block();
 
         if (collection != null) {
             PartitionKeyDefinition definition = collection.getPartitionKey();
-            pkrangeId = this.docClientWrapper.getPartitionKeyRangeCache()
+            pkRangeId = this.docClientWrapper.getPartitionKeyRangeCache()
                 .tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(null), collection.getResourceId(), null, null)
                 .map((Utils.ValueHolder<CollectionRoutingMap> routingMap) -> {
 
@@ -189,7 +187,7 @@ public class BatchAsyncContainerExecutor implements AutoCloseable {
                 }).block();
         }
 
-        return CompletableFuture.completedFuture(pkrangeId);
+        return CompletableFuture.completedFuture(pkRangeId);
     }
 
     private static void validateOperationEpk(

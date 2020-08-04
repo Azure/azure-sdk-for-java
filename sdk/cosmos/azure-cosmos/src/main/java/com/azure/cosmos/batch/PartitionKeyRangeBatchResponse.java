@@ -97,14 +97,6 @@ public class PartitionKeyRangeBatchResponse extends TransactionalBatchResponse {
     }
 
     @Override
-    public void close() {
-        if (this.serverResponse != null) {
-            this.serverResponse.close();
-        }
-        super.close();
-    }
-
-    @Override
     public TransactionalBatchOperationResult<?> get(int index) {
         return this.resultsByOperationIndex[index];
     }
@@ -125,5 +117,13 @@ public class PartitionKeyRangeBatchResponse extends TransactionalBatchResponse {
     @Override
     public int size() {
         return this.resultsByOperationIndex.length;
+    }
+
+    @Override
+    public void close() {
+        if (this.serverResponse != null) {
+            this.serverResponse.close();
+        }
+        super.close();
     }
 }

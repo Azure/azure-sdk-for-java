@@ -50,42 +50,6 @@ public class ItemBatchOperationContext implements AutoCloseable {
     }
 
     /**
-     * Gets current batcher.
-     *
-     * @return the current batcher
-     */
-    public final BatchAsyncBatcher getCurrentBatcher() {
-        return currentBatcher;
-    }
-
-    /**
-     * Sets current batcher.
-     *
-     * @param value the value
-     */
-    public final void setCurrentBatcher(BatchAsyncBatcher value) {
-        currentBatcher = value;
-    }
-
-    /**
-     * Gets operation result future.
-     *
-     * @return the operation result future
-     */
-    public final CompletableFuture<TransactionalBatchOperationResult<?>> getOperationResultFuture() {
-        return this.operationResultFuture;
-    }
-
-    /**
-     * Gets partition key range id.
-     *
-     * @return the partition key range id
-     */
-    public final String getPartitionKeyRangeId() {
-        return partitionKeyRangeId;
-    }
-
-    /**
      * Complete.
      *
      * @param completer the completer
@@ -129,14 +93,6 @@ public class ItemBatchOperationContext implements AutoCloseable {
         return this.retryPolicy.shouldRetry(result.toResponseMessage());
     }
 
-    /**
-     * Closes the current {@link ItemBatchOperationContext item batch operation context}.
-     */
-    public final void close() {
-        this.operationResultFuture.cancel(true);
-        this.setCurrentBatcher(null);
-    }
-
     private boolean assertBatcher(BatchAsyncBatcher completer) {
         return assertBatcher(completer, null);
     }
@@ -150,5 +106,49 @@ public class ItemBatchOperationContext implements AutoCloseable {
         }
 
         return true;
+    }
+
+    /**
+     * Gets current batcher.
+     *
+     * @return the current batcher
+     */
+    public final BatchAsyncBatcher getCurrentBatcher() {
+        return currentBatcher;
+    }
+
+    /**
+     * Sets current batcher.
+     *
+     * @param value the value
+     */
+    public final void setCurrentBatcher(BatchAsyncBatcher value) {
+        currentBatcher = value;
+    }
+
+    /**
+     * Gets operation result future.
+     *
+     * @return the operation result future
+     */
+    public final CompletableFuture<TransactionalBatchOperationResult<?>> getOperationResultFuture() {
+        return this.operationResultFuture;
+    }
+
+    /**
+     * Gets partition key range id.
+     *
+     * @return the partition key range id
+     */
+    public final String getPartitionKeyRangeId() {
+        return partitionKeyRangeId;
+    }
+
+    /**
+     * Closes the current {@link ItemBatchOperationContext item batch operation context}.
+     */
+    public final void close() {
+        this.operationResultFuture.cancel(true);
+        this.setCurrentBatcher(null);
     }
 }

@@ -4,7 +4,6 @@
 package com.azure.cosmos.batch;
 
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
-import io.netty.handler.codec.http.HttpResponseStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,6 +16,7 @@ import java.util.concurrent.CompletionException;
 import java.util.concurrent.Semaphore;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.*;
+import static io.netty.handler.codec.http.HttpResponseStatus.TOO_MANY_REQUESTS;
 
 /**
  * Maintains a batch of operations and dispatches it as a unit of work.
@@ -32,7 +32,6 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.*;
  * </ol>
  * The result of the request is used to wire up all responses with the original tasks for each operation.
  * @see ItemBatchOperation
- *
  */
 public class BatchAsyncBatcher {
 
@@ -53,14 +52,8 @@ public class BatchAsyncBatcher {
         final BatchAsyncBatcherExecutor executor,
         final BatchAsyncBatcherRetrier retrier) {
 
-        checkArgument(maxBatchOperationCount > 0,
-            "expected maxBatchOperationCount > 0, not %s",
-            maxBatchOperationCount);
-
-        checkArgument(maxBatchByteSize > 0,
-            "expected maxBatchByteSize > 0, not %s",
-            maxBatchByteSize);
-
+        checkArgument(maxBatchOperationCount > 0, "expected maxBatchOperationCount > 0, not %s", maxBatchOperationCount);
+        checkArgument(maxBatchByteSize > 0, "expected maxBatchByteSize > 0, not %s", maxBatchByteSize);
         checkNotNull(executor, "expected non-null executor");
         checkNotNull(retrier, "expected non-null retrier");
 
@@ -152,7 +145,6 @@ public class BatchAsyncBatcher {
         // All operations should be for the same PKRange
         final String partitionKeyRangeId = this.operations.get(0).getContext().getPartitionKeyRangeId();
 
-        // Check on what happens to this list
         final List<ItemBatchOperation<?>> operations = UnmodifiableList.unmodifiableList(this.operations);
         return PartitionKeyRangeServerBatchRequest.createAsync(
             partitionKeyRangeId,
@@ -169,8 +161,7 @@ public class BatchAsyncBatcher {
             .subscribe((PartitionKeyRangeBatchExecutionResult executionResult) -> {
 
                 // Fill partition metric
-                boolean throttled = executionResult.getServerResponse().stream()
-                    .anyMatch(r -> r.getStatus() == HttpResponseStatus.TOO_MANY_REQUESTS);
+                boolean throttled = executionResult.getServerResponse().stream().anyMatch(r -> r.getStatus() == TOO_MANY_REQUESTS);
                 partitionMetric.add(
                     executionResult.getServerResponse().size(),
                     Duration.between(startBatchExecution, Instant.now()).toMillis(),
@@ -182,11 +173,9 @@ public class BatchAsyncBatcher {
 
                 for (ItemBatchOperation<?> itemBatchOperation : batchResponse.getBatchOperations()) {
 
-                    final TransactionalBatchOperationResult<?> operationResult = batchResponse.get(itemBatchOperation.getOperationIndex());
-                    final ItemBatchOperationContext context = itemBatchOperation.getContext();
+                    TransactionalBatchOperationResult<?> operationResult = batchResponse.get(itemBatchOperation.getOperationIndex());
+                    ItemBatchOperationContext context = itemBatchOperation.getContext();
 
-                    // Bulk has diagnostics per a item itemBatchOperation.
-                    // Batch has a single diagnostics for the execute itemBatchOperation
                     operationResult.setCosmosDiagnostics(batchResponse.getCosmosDiagnostics());
 
                     if (!operationResult.isSuccessStatusCode()) {
