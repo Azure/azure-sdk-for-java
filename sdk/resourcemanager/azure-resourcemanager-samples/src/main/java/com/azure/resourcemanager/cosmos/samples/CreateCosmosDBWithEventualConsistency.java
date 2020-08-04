@@ -102,7 +102,7 @@ public final class CreateCosmosDBWithEventualConsistency {
         return false;
     }
 
-    private static void createDBAndAddCollection(String masterKey, String endPoint){
+    private static void createDBAndAddCollection(String masterKey, String endPoint) {
         try {
             CosmosClient cosmosClient = new CosmosClientBuilder()
                 .endpoint(endPoint)
@@ -115,7 +115,7 @@ public final class CreateCosmosDBWithEventualConsistency {
             cosmosClient.createDatabase(DATABASE_ID, ThroughputProperties.createManualThroughput(400));
             CosmosDatabase myDatabase = cosmosClient.getDatabase(DATABASE_ID);
 
-                System.out.println("Created a new database:");
+            System.out.println("Created a new database:");
             System.out.println(myDatabase.toString());
 
             // Create a new collection.

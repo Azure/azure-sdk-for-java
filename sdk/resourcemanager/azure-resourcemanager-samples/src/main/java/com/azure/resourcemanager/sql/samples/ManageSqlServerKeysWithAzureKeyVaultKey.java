@@ -24,9 +24,7 @@ import com.azure.security.keyvault.keys.models.KeyOperation;
 import com.azure.security.keyvault.keys.models.KeyType;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Azure SQL sample for managing SQL secrets (Server Keys) using Azure Key Vault -
