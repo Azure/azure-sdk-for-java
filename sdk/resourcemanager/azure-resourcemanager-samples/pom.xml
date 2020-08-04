@@ -135,6 +135,20 @@
   </dependencies>
   <profiles>
     <profile>
+      <id>java8</id>
+      <activation>
+        <jdk>[1.8,9)</jdk>
+      </activation>
+      <build>
+        <resources>
+          <resource>
+            <directory>src/main/resources</directory>
+          </resource>
+        </resources>
+      </build>
+    </profile>
+
+    <profile>
       <id>azure-mgmt-sdk-test-jar</id>
       <activation>
         <property>
