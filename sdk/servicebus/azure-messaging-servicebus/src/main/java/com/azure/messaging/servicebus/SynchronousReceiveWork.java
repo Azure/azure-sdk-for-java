@@ -4,7 +4,9 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.util.logging.ClientLogger;
+import reactor.core.Disposable;
 import reactor.core.publisher.FluxSink;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -29,6 +31,9 @@ class SynchronousReceiveWork {
     // Indicate that if processing started or not.
     private boolean processingStarted;
 
+    private final Duration shortTimeoutBetweenMessages;
+    private Disposable timeoutBeforeNextMessageOperation;
+
     private volatile Throwable error = null;
 
     /**
@@ -40,12 +45,13 @@ class SynchronousReceiveWork {
      * @param emitter Sink to publish received messages to.
      */
     SynchronousReceiveWork(long id, int numberToReceive, Duration timeout,
-        FluxSink<ServiceBusReceivedMessageContext> emitter) {
+        FluxSink<ServiceBusReceivedMessageContext> emitter, Duration shortTimeoutBetweenMessages) {
         this.id = id;
         this.remaining = new AtomicInteger(numberToReceive);
         this.numberToReceive = numberToReceive;
         this.timeout = timeout;
         this.emitter = emitter;
+        this.shortTimeoutBetweenMessages = shortTimeoutBetweenMessages;
     }
 
     /**
@@ -99,8 +105,16 @@ class SynchronousReceiveWork {
      */
     void next(ServiceBusReceivedMessageContext message) {
         try {
+
+            if (timeoutBeforeNextMessageOperation != null && !timeoutBeforeNextMessageOperation.isDisposed()) {
+                timeoutBeforeNextMessageOperation.dispose();
+            }
+
             emitter.next(message);
+
             remaining.decrementAndGet();
+
+            timeoutBeforeNextMessageOperation = getShortTimeoutBetweenMessages();
         } catch (Exception e) {
             logger.warning("Exception occurred while publishing downstream.", e);
             error(e);
@@ -113,6 +127,7 @@ class SynchronousReceiveWork {
     void complete() {
         logger.info("[{}]: Completing task.", id);
         emitter.complete();
+        close();
     }
 
     /**
@@ -122,15 +137,17 @@ class SynchronousReceiveWork {
         logger.info("[{}]: Work timeout occurred. Completing the work.", id);
         emitter.complete();
         workTimedOut = true;
+        close();
     }
 
     /**
      * Completes the publisher and sets the state to timeout.
      */
-    void timeoutNextMessage() {
+    private void timeoutNextMessage() {
         logger.info("[{}]: Work timeout occurred due to next message not arriving in time. Completing the work.", id);
         emitter.complete();
         nextMessageTimedOut = true;
+        close();
     }
 
     /**
@@ -141,6 +158,7 @@ class SynchronousReceiveWork {
     void error(Throwable error) {
         this.error = error;
         emitter.error(error);
+        close();
     }
 
     /**
@@ -164,5 +182,22 @@ class SynchronousReceiveWork {
      */
     boolean isProcessingStarted() {
         return this.processingStarted;
+    }
+
+    /**
+     *
+     * @return {@link Disposable} for the timeout operation.
+     */
+    private Disposable getShortTimeoutBetweenMessages() {
+        return Mono.delay(shortTimeoutBetweenMessages)
+            .subscribe(l -> {
+                timeoutNextMessage();
+            });
+    }
+
+    private void close(){
+        if (timeoutBeforeNextMessageOperation != null && !timeoutBeforeNextMessageOperation.isDisposed()) {
+            timeoutBeforeNextMessageOperation.dispose();
+        }
     }
 }

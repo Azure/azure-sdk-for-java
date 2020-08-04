@@ -16,6 +16,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -425,12 +427,14 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         final int messagesToReceive = 2;
         final Duration shortTimeout = Duration.ofSeconds(5);
         setSenderAndReceiver(entityType, 0, isSessionEnabled);
+        DateFormat simple = new SimpleDateFormat("dd MMM yyyy HH:mm:ss:SSS Z");
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
 
         sendMessage(message);
         sendMessage(message);
+        Date start = new Date();
         // Act
         final Stream<ServiceBusReceivedMessage> messages = receiver.receiveMessages(maxMessages, TIMEOUT)
             .stream()

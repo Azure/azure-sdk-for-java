@@ -134,11 +134,6 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
                     currentTimeoutOperation.dispose();
                 }
                 currentTimeoutOperation = null;
-
-                if (timeoutBeforeNextMessageOperation != null && !timeoutBeforeNextMessageOperation.isDisposed()) {
-                    timeoutBeforeNextMessageOperation.dispose();
-                }
-                timeoutBeforeNextMessageOperation = null;
             }
 
             // We should process a work when
@@ -168,15 +163,8 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
 
                 // Send messages to currentWork from buffer
                 while (bufferMessages.size() > 0 && !currentWork.isTerminal()) {
-
-                    if (timeoutBeforeNextMessageOperation != null && !timeoutBeforeNextMessageOperation.isDisposed()) {
-                        timeoutBeforeNextMessageOperation.dispose();
-                    }
                     currentWork.next(bufferMessages.poll());
                     remaining.decrementAndGet();
-                    // When we send a message to receiver, the next message should come with in a fixed short timeout
-                    // duration `PER_MESSAGE_SHORT_TIMEOUT`
-                    timeoutBeforeNextMessageOperation = getShortTimeoutBetweenMessages(currentWork);
                 }
 
                 // if  we have delivered all the messages to currentWork, we will complete it.
@@ -188,9 +176,6 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
                     workQueue.remove(currentWork);
                     if (currentTimeoutOperation != null && !currentTimeoutOperation.isDisposed()) {
                         currentTimeoutOperation.dispose();
-                    }
-                    if (timeoutBeforeNextMessageOperation != null && !timeoutBeforeNextMessageOperation.isDisposed()) {
-                        timeoutBeforeNextMessageOperation.dispose();
                     }
                     logger.verbose("The work [{}] is complete.", currentWork.getId());
                 } else {
@@ -219,22 +204,6 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
                 synchronized (currentWorkLock) {
                     if (currentWork == work) {
                         work.timeout();
-                    }
-                }
-            });
-    }
-
-    /**
-     * @param work on which short timeout between message timeout thread need to start.
-     *
-     * @return {@link Disposable} for the timeout operation.
-     */
-    private Disposable getShortTimeoutBetweenMessages(SynchronousReceiveWork work) {
-        return Mono.delay(shortTimeoutBetweenMessages).thenReturn(work)
-            .subscribe(l -> {
-                synchronized (currentWorkLock) {
-                    if (currentWork == work) {
-                        work.timeoutNextMessage();
                     }
                 }
             });
