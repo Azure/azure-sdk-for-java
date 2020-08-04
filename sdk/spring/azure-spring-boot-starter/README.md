@@ -53,7 +53,3 @@ Find more information about Azure Service Privacy Statement, please check [Micro
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
 
 Please follow [instructions here](../CONTRIBUTING.md) to build from source or contribute.
-
-### Pull Requests
-
-Pull requests are welcome. To open your own pull request, click [here](https://github.com/Microsoft/azure-spring-boot/compare). When creating a pull request, make sure you are pointing to the fork and branch that your changes were made in.

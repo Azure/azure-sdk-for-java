@@ -5,13 +5,13 @@ This repo is for Spring Boot Starters of Azure services. It helps Spring Boot de
 To start a new project using Azure, go on [start.spring.io](https://start.spring.io) and select "Azure
 Support": this will configure the project to make sure you can integrate easily with Azure service.
 
-For instance, let's assume that you want to use Service Bus, you can add the usual `azure-servicebus`
+For instance, let's assume that you want to use Key Vault secrets, you can add the usual `azure-security-keyvault-secrets`
 dependency to your project and the Spring Boot auto-configuration will kick-in: 
 
 ```xml
 <dependency>
-    <groupId>com.microsoft.azure</groupId>
-    <artifactId>azure-servicebus</artifactId>
+  <groupId>com.azure</groupId>
+  <artifactId>azure-security-keyvault-secrets</artifactId>
 </dependency>
 ```
 
@@ -19,12 +19,12 @@ Note that there is no need to add a `version` as those are managed already by th
 
 Alternatively you may want to use the [starters](../azure-spring-boot-starters)
 
-[//]: # ({x-version-update-start;com.azure:azure-servicebus-spring-boot-starter;dependency})
+[//]: # ({x-version-update-start;com.microsoft.azure:azure-keyvault-secrets-spring-boot-starter;dependency})
 ```xml
 <dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-servicebus-spring-boot-starter</artifactId>
-    <version>1.0.0-beta.1</version>
+    <groupId>com.microsoft.azure</groupId>
+    <artifactId>azure-keyvault-secrets-spring-boot-starter</artifactId>
+    <version>2.3.3-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -77,7 +77,4 @@ To suggest a new feature or changes that could be made, file an issue the same w
 
 You can participate community driven [![Gitter](https://badges.gitter.im/Microsoft/spring-on-azure.svg)](https://gitter.im/Microsoft/spring-on-azure)
 
-### Pull Requests
-
-Pull requests are welcome. To open your own pull request, click [here](https://github.com/Microsoft/azure-spring-boot/compare). When creating a pull request, make sure you are pointing to the fork and branch that your changes were made in.
 
