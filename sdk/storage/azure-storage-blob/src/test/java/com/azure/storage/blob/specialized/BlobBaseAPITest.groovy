@@ -94,17 +94,23 @@ class BlobBaseAPITest extends APISpec {
             .setEscapeChar('\0' as char)
             .setFieldQuote('\0' as char)
             .setHeadersPresent(false)
+
+        System.out.println("===== Uploading CSV =====")
         uploadCsv(ser, numCopies)
         def expression = "SELECT * from BlobStorage"
 
         ByteArrayOutputStream downloadData = new ByteArrayOutputStream()
+        System.out.println("===== Downloading data =====")
         bc.download(downloadData)
         byte[] downloadedData = downloadData.toByteArray()
 
         /* Input Stream. */
         when:
         InputStream qqStream = bc.openQueryInputStream(expression)
+
+        System.out.println("===== Reading query stream =====")
         byte[] queryData = readFromInputStream(qqStream, downloadedData.length)
+        System.out.println("===== Completed reading query stream =====")
 
         then:
         notThrown(IOException)
@@ -113,7 +119,9 @@ class BlobBaseAPITest extends APISpec {
         /* Output Stream. */
         when:
         OutputStream os = new ByteArrayOutputStream()
+        System.out.println("===== Querying =====")
         bc.query(os, expression)
+        System.out.println("===== Querying complete =====")
         byte[] osData = os.toByteArray()
 
         then:
