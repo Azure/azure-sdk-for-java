@@ -7,7 +7,7 @@ import java.util.Collections;
 
 public class TestDummySerializer extends SchemaRegistrySerializer {
     TestDummySerializer(
-        CachedSchemaRegistryAsyncClient mockClient,
+        SchemaRegistryAsyncClient mockClient,
         boolean autoRegisterSchemas) {
         super(mockClient, new SampleSchemaRegistryCodec(), Collections.singletonList(new SampleSchemaRegistryCodec()));
 

@@ -3,17 +3,15 @@
 
 package com.azure.data.schemaregistry;
 
-import com.azure.core.exception.HttpResponseException;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.data.schemaregistry.models.SchemaRegistryClientException;
-import com.azure.data.schemaregistry.models.SchemaRegistryObject;
-import com.azure.data.schemaregistry.models.SerializationException;
-import reactor.core.publisher.Mono;
+import static com.azure.core.util.FluxUtil.monoError;
 
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.data.schemaregistry.models.SchemaRegistryObject;
+import com.azure.data.schemaregistry.models.SerializationType;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.BufferUnderflowException;
+import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -21,8 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentSkipListMap;
-
-import static com.azure.core.util.FluxUtil.monoError;
+import reactor.core.publisher.Mono;
 
 /**
  * Common implementation for all registry-based serializers.
@@ -34,11 +31,11 @@ public abstract class SchemaRegistrySerializer {
     static final String SCHEMA_GROUP_DEFAULT = "$default";
     static final int SCHEMA_ID_SIZE = 32;
 
-    CachedSchemaRegistryAsyncClient schemaRegistryClient;
+    SchemaRegistryAsyncClient schemaRegistryClient;
 
     private SchemaRegistryCodec serializerSchemaRegistryCodec;
     private final Map<String, SchemaRegistryCodec> deserializerCodecMap = new ConcurrentSkipListMap<>(String.CASE_INSENSITIVE_ORDER);
-    private String schemaType;
+    private SerializationType serializationType;
 
     Boolean autoRegisterSchemas = SchemaRegistrySerializer.AUTO_REGISTER_SCHEMAS_DEFAULT;
     String schemaGroup = SchemaRegistrySerializer.SCHEMA_GROUP_DEFAULT;
@@ -50,12 +47,12 @@ public abstract class SchemaRegistrySerializer {
      * @param serializerSchemaRegistryCodec Codec to be used for serialization operations
      * @param deserializerSchemaRegistryCodecList list of Codecs to be used to deserialize incoming payloads
      */
-    public SchemaRegistrySerializer(CachedSchemaRegistryAsyncClient schemaRegistryClient,
+    public SchemaRegistrySerializer(SchemaRegistryAsyncClient schemaRegistryClient,
                                             SchemaRegistryCodec serializerSchemaRegistryCodec, List<SchemaRegistryCodec> deserializerSchemaRegistryCodecList) {
         this(schemaRegistryClient, serializerSchemaRegistryCodec, deserializerSchemaRegistryCodecList, null, null);
     }
 
-    public SchemaRegistrySerializer(CachedSchemaRegistryAsyncClient schemaRegistryClient,
+    public SchemaRegistrySerializer(SchemaRegistryAsyncClient schemaRegistryClient,
         SchemaRegistryCodec serializerSchemaRegistryCodec, List<SchemaRegistryCodec> deserializerSchemaRegistryCodecList, Boolean autoRegisterSchemas,
         String schemaGroup) {
 
@@ -75,11 +72,11 @@ public abstract class SchemaRegistrySerializer {
         this.schemaRegistryClient = schemaRegistryClient;
         this.serializerSchemaRegistryCodec = serializerSchemaRegistryCodec;
         for (SchemaRegistryCodec c : deserializerSchemaRegistryCodecList) {
-            if (this.deserializerCodecMap.containsKey(c.getSchemaType())) {
+            if (this.deserializerCodecMap.containsKey(c.getSerializationType())) {
                 throw logger.logExceptionAsError(
                     new IllegalArgumentException("Only on Codec can be provided per schema serialization type."));
             }
-            this.deserializerCodecMap.put(c.getSchemaType(), c);
+            this.deserializerCodecMap.put(c.getSerializationType().toString(), c);
         }
 
         // send configurations only
@@ -101,53 +98,52 @@ public abstract class SchemaRegistrySerializer {
      * @param object object to be serialized
      * @param <T> Type of the output stream parameter.
      * @return byte array containing encoded bytes with prefixed schema ID
-     * @throws SerializationException if serialization operation fails during runtime.
      */
-    protected <T extends OutputStream> Mono<T> serialize(T s, Object object) {
+    protected <S extends OutputStream> Mono<S> serializeAsync(S s, Object object) {
         if (object == null) {
-            return monoError(logger, new SerializationException(
+            return monoError(logger, new NullPointerException(
                 "Null object, behavior should be defined in concrete serializer implementation."));
         }
 
         if (serializerSchemaRegistryCodec == null) {
-            return monoError(logger, new SerializationException(
+            return monoError(logger, new NullPointerException(
                 "Byte encoder null, serializer must be initialized with a byte encoder."));
         }
 
-        if (schemaType == null) {
-            schemaType = serializerSchemaRegistryCodec.getSchemaType();
+        if (serializationType == null) {
+            serializationType = serializerSchemaRegistryCodec.getSerializationType();
         }
 
         String schemaString = serializerSchemaRegistryCodec.getSchemaString(object);
         String schemaName = serializerSchemaRegistryCodec.getSchemaName(object);
 
-        return this.maybeRegisterSchema(this.schemaGroup, schemaName, schemaString, this.schemaType)
-            .onErrorMap(e -> {
-                if (e instanceof SchemaRegistryClientException) {
-                    StringBuilder builder = new StringBuilder();
-                    if (this.autoRegisterSchemas) {
-                        builder.append(String.format("Error registering Avro schema. Group: %s, name: %s. ",
-                            schemaGroup, schemaName));
-                    } else {
-                        builder.append(String.format("Error retrieving Avro schema. Group: %s, name: %s. ",
-                            schemaGroup, schemaName));
-                    }
-
-                    if (e.getCause() instanceof HttpResponseException) {
-                        HttpResponseException httpException = (HttpResponseException) e.getCause();
-                        builder.append("HTTP ")
-                            .append(httpException.getResponse().getStatusCode())
-                            .append(" ")
-                            .append(httpException.getResponse().getBodyAsString());
-                    } else {
-                        builder.append(e.getCause().getMessage());
-                    }
-
-                    return logger.logExceptionAsError(new SerializationException(builder.toString(), e));
-                } else {
-                    return logger.logExceptionAsError(new SerializationException(e.getMessage(), e));
-                }
-            })
+        return this.maybeRegisterSchema(this.schemaGroup, schemaName, schemaString, this.serializationType)
+//            .onErrorMap(e -> {
+//                if (e instanceof SchemaRegistryClientException) {
+//                    StringBuilder builder = new StringBuilder();
+//                    if (this.autoRegisterSchemas) {
+//                        builder.append(String.format("Error registering Avro schema. Group: %s, name: %s. ",
+//                            schemaGroup, schemaName));
+//                    } else {
+//                        builder.append(String.format("Error retrieving Avro schema. Group: %s, name: %s. ",
+//                            schemaGroup, schemaName));
+//                    }
+//
+//                    if (e.getCause() instanceof HttpResponseException) {
+//                        HttpResponseException httpException = (HttpResponseException) e.getCause();
+//                        builder.append("HTTP ")
+//                            .append(httpException.getResponse().getStatusCode())
+//                            .append(" ")
+//                            .append(httpException.getResponse().getBodyAsString());
+//                    } else {
+//                        builder.append(e.getCause().getMessage());
+//                    }
+//
+//                    return logger.logExceptionAsError(new SerializationException(builder.toString(), e));
+//                } else {
+//                    return logger.logExceptionAsError(new SerializationException(e.getMessage(), e));
+//                }
+//            })
             .handle((id, sink) -> {
                 ByteBuffer idBuffer = ByteBuffer.allocate(SchemaRegistrySerializer.SCHEMA_ID_SIZE)
                     .put(id.getBytes(StandardCharsets.UTF_8));
@@ -155,7 +151,7 @@ public abstract class SchemaRegistrySerializer {
                     s.write(idBuffer.array());
                     s.write(serializerSchemaRegistryCodec.encode(object));
                 } catch (IOException e) {
-                    sink.error(new SerializationException(e.getMessage(), e));
+                    sink.error(new UncheckedIOException(e.getMessage(), e));
                 }
                 sink.next(s);
             });
@@ -168,9 +164,8 @@ public abstract class SchemaRegistrySerializer {
      *
      * @param s InputStream containing bytes encoded by an Azure Schema Registry producer
      * @return object, deserialized with the prefixed schema
-     * @throws SerializationException if deserialization of registry schema or message payload fails.
      */
-    protected Mono<Object> deserialize(InputStream s) {
+    protected Mono<Object> deserializeAsync(InputStream s) {
         if (s == null) {
             return Mono.empty();
         }
@@ -189,19 +184,17 @@ public abstract class SchemaRegistrySerializer {
                 String schemaId = getSchemaIdFromPayload(buffer);
                 System.out.println(schemaId);
 
-                SchemaRegistryObject block = this.schemaRegistryClient.getSchema(schemaId).block();
-                System.out.println(block);
                 return this.schemaRegistryClient.getSchema(schemaId)
-                    .onErrorMap(IOException.class,
-                        e -> logger.logExceptionAsError(new SerializationException(e.getMessage(), e)))
+//                    .onErrorMap(IOException.class,
+//                        e -> logger.logExceptionAsError(new SerializationException(e.getMessage(), e)))
                     .handle((registryObject, sink) -> {
                         Object payloadSchema = registryObject.getSchema();
 
                         if (payloadSchema == null) {
                             sink.error(logger.logExceptionAsError(
-                                new SerializationException(
+                                new NullPointerException(
                                     String.format("Payload schema returned as null. Schema type: %s, Schema ID: %s",
-                                        registryObject.getSchemaType(), registryObject.getSchemaId()))));
+                                        registryObject.getSerializationType(), registryObject.getSchemaId()))));
                             return;
                         }
 
@@ -211,27 +204,27 @@ public abstract class SchemaRegistrySerializer {
 
                         SchemaRegistryCodec schemaRegistryCodec = getDeserializerCodec(registryObject);
                         sink.next(schemaRegistryCodec.decode(b, payloadSchema));
-                    })
-                    .onErrorMap(e -> {
-                        if (e instanceof SchemaRegistryClientException) {
-                            StringBuilder builder = new StringBuilder(
-                                String.format("Failed to retrieve schema for id %s", schemaId));
-
-                            if (e.getCause() instanceof HttpResponseException) {
-                                HttpResponseException httpException = (HttpResponseException) e.getCause();
-                                builder.append("HTTP ")
-                                    .append(httpException.getResponse().getStatusCode())
-                                    .append(" ")
-                                    .append(httpException.getResponse().getBodyAsString());
-                            } else {
-                                builder.append(e.getCause().getMessage());
-                            }
-
-                            return logger.logExceptionAsError(new SerializationException(builder.toString(), e));
-                        } else {
-                            return logger.logExceptionAsError(new SerializationException(e.getMessage(), e));
-                        }
                     });
+//                    .onErrorMap(e -> {
+//                        if (e instanceof SchemaRegistryClientException) {
+//                            StringBuilder builder = new StringBuilder(
+//                                String.format("Failed to retrieve schema for id %s", schemaId));
+//
+//                            if (e.getCause() instanceof HttpResponseException) {
+//                                HttpResponseException httpException = (HttpResponseException) e.getCause();
+//                                builder.append("HTTP ")
+//                                    .append(httpException.getResponse().getStatusCode())
+//                                    .append(" ")
+//                                    .append(httpException.getResponse().getBodyAsString());
+//                            } else {
+//                                builder.append(e.getCause().getMessage());
+//                            }
+//
+//                            return logger.logExceptionAsError(new SerializationException(builder.toString(), e));
+//                        } else {
+//                            return logger.logExceptionAsError(new SerializationException(e.getMessage(), e));
+//                        }
+//                    });
             });
     }
 
@@ -241,15 +234,14 @@ public abstract class SchemaRegistrySerializer {
      *
      * @param registryObject object returned from CachedSchemaRegistryAsyncClient, contains schema type
      * @return Codec to be used to deserialize encoded payload bytes
-     * @throws SerializationException if decoder for the required schema type has not been loaded
      */
-    private SchemaRegistryCodec getDeserializerCodec(SchemaRegistryObject registryObject) throws SerializationException {
-        SchemaRegistryCodec schemaRegistryCodec = deserializerCodecMap.get(registryObject.getSchemaType());
+    private SchemaRegistryCodec getDeserializerCodec(SchemaRegistryObject registryObject) {
+        SchemaRegistryCodec schemaRegistryCodec = deserializerCodecMap.get(registryObject.getSerializationType());
         if (schemaRegistryCodec == null) {
             throw logger.logExceptionAsError(
-                new SerializationException(
+                new NullPointerException(
                     String.format("No deserializer codec class found for schema type '%s'.",
-                        registryObject.getSchemaType())
+                        registryObject.getSerializationType())
                 ));
         }
         return schemaRegistryCodec;
@@ -258,15 +250,10 @@ public abstract class SchemaRegistrySerializer {
     /**
      * @param buffer full payload bytes
      * @return String representation of schema ID
-     * @throws SerializationException if schema ID could not be extracted from payload
      */
-    private String getSchemaIdFromPayload(ByteBuffer buffer) throws SerializationException {
+    private String getSchemaIdFromPayload(ByteBuffer buffer) {
         byte[] schemaGuidByteArray = new byte[SchemaRegistrySerializer.SCHEMA_ID_SIZE];
-        try {
-            buffer.get(schemaGuidByteArray);
-        } catch (BufferUnderflowException e) {
-            throw logger.logExceptionAsError(new SerializationException("Payload too short, no readable guid.", e));
-        }
+        buffer.get(schemaGuidByteArray);
 
         return new String(schemaGuidByteArray, StandardCharsets.UTF_8);
     }
@@ -279,18 +266,17 @@ public abstract class SchemaRegistrySerializer {
      * @param schemaGroup Schema group where schema should be registered.
      * @param schemaName name of schema
      * @param schemaString string representation of schema being stored - must match group schema type
-     * @param schemaType type of schema being stored, e.g. avro
+     * @param serializationType type of schema being stored, e.g. avro
      * @return string representation of schema ID
-     * @throws SchemaRegistryClientException upon registry client operation failure
      */
     private Mono<String> maybeRegisterSchema(
-        String schemaGroup, String schemaName, String schemaString, String schemaType) {
+        String schemaGroup, String schemaName, String schemaString, SerializationType serializationType) {
         if (this.autoRegisterSchemas) {
-            return this.schemaRegistryClient.registerSchema(schemaGroup, schemaName, schemaString, schemaType)
+            return this.schemaRegistryClient.registerSchema(schemaGroup, schemaName, schemaString, serializationType)
                 .map(SchemaRegistryObject::getSchemaId);
         } else {
             return this.schemaRegistryClient.getSchemaId(
-                schemaGroup, schemaName, schemaString, schemaType);
+                schemaGroup, schemaName, schemaString, serializationType);
         }
     }
 }

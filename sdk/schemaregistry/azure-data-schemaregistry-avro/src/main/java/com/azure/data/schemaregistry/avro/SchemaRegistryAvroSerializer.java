@@ -3,58 +3,68 @@
 
 package com.azure.data.schemaregistry.avro;
 
+import com.azure.core.experimental.serializer.ObjectSerializer;
+import com.azure.core.experimental.serializer.TypeReference;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.schemaregistry.SchemaRegistrySerializer;
-import com.azure.data.schemaregistry.models.SerializationException;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
+import reactor.core.publisher.Mono;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Collections;
 
 /**
- * A serializer implementation capable of serializing objects and automatedly storing serialization schemas
- * in the Azure Schema Registry store.
- *
- * SchemaRegistryAvroSerializer instances should be built using the static Builder class.
- *
- * Pluggable with the core Azure SDK Serializer interface.
- *
- * @see SchemaRegistrySerializer See AbstractSchemaRegistrySerializer for internal serialization implementation
+ * Asynchronous registry-based serializer implementation.
  */
-public final class SchemaRegistryAvroSerializer {
-    private final SchemaRegistryAvroAsyncSerializer serializer;
-    SchemaRegistryAvroSerializer(SchemaRegistryAvroAsyncSerializer serializer) {
-        this.serializer = serializer;
-    }
+public final class SchemaRegistryAvroSerializer extends SchemaRegistrySerializer implements ObjectSerializer {
+    private final ClientLogger logger = new ClientLogger(SchemaRegistryAvroSerializer.class);
 
     /**
-     * Serializes object into byte array payload using the configured byte encoder.
-     * @param object target of serialization
-     * @return byte array containing unique ID reference to schema, then the object serialized into bytes
-     * @throws SerializationException Throws on serialization failure.
+     *
+     * @param registryClient
+     * @param codec
+     * @param schemaGroup
+     * @param autoRegisterSchemas
      */
-    public byte[] serialize(Object object) {
+    SchemaRegistryAvroSerializer(SchemaRegistryAsyncClient registryClient, AvroSchemaRegistryCodec codec,
+                                      String schemaGroup, Boolean autoRegisterSchemas) {
+        super(registryClient, codec, Collections.singletonList(codec), autoRegisterSchemas, schemaGroup);
+    }
+
+    @Override
+    public <T> T deserialize(InputStream stream, TypeReference<T> typeReference) {
+        return null;
+    }
+
+    @Override
+    public <T> Mono<T> deserializeAsync(InputStream stream,
+        TypeReference<T> typeReference) {
+        return null;
+    }
+
+    @Override
+    public <S extends OutputStream> S serialize(S stream, Object value) {
+        return null;
+    }
+
+    @Override
+    public <S extends OutputStream> Mono<S> serializeAsync(S stream, Object object) {
         if (object == null) {
-            return null;
+            return Mono.empty();
         }
 
-        ByteArrayOutputStream s = serializer.serialize(new ByteArrayOutputStream(), object).block();
-        if (s != null){
-            s.toByteArray();
-        }
-
-        throw new SerializationException("Serialization failed, null output stream returned.");
+        return super.serializeAsync(stream, object);
     }
 
-    /**
-     * Deserializes byte array into Java object using payload-specified schema.
-     *
-     * @param data Byte array containing serialized bytes
-     * @return decoded Java object
-     *
-     * @throws SerializationException Throws on deserialization failure.
-     * Exception may contain inner exceptions detailing failure condition.
-     */
-    public <T> T deserialize(byte[] data, Class<T> clazz) {
-        return serializer.deserialize(new ByteArrayInputStream(data), clazz).block();
-    }
+//    @Override
+//    public <T> Mono<T> deserialize(InputStream stream, Class<T> clazz) {
+//        return this.deserialize(stream)
+//            .map(o -> {
+//                if (clazz.isInstance(o)) {
+//                    return clazz.cast(o);
+//                }
+//                throw logger.logExceptionAsError(new IllegalStateException("Deserialized object not of class %s"));
+//            });
+//    }
 }
 

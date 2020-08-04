@@ -4,13 +4,13 @@
 package com.azure.data.schemaregistry.avro;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.data.schemaregistry.CachedSchemaRegistryAsyncClient;
-import com.azure.data.schemaregistry.CachedSchemaRegistryClientBuilder;
+import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
+import com.azure.data.schemaregistry.SchemaRegistryClientBuilder;
 
 import java.util.Objects;
 
 /**
- * Builder implemenation for building {@link SchemaRegistryAvroSerializer} and {@link SchemaRegistryAvroAsyncSerializer}
+ * Builder implemenation for building {@link SchemaRegistryAvroSerializer} and {@link SchemaRegistryAvroSerializer}
  */
 public final class SchemaRegistryAvroSerializerBuilder {
     private String registryUrl;
@@ -109,26 +109,16 @@ public final class SchemaRegistryAvroSerializerBuilder {
         return this;
     }
 
+
     /**
-     * Instantiates {@link SchemaRegistryAvroSerializer}
+     * Instantiates SchemaRegistry
      * @return {@link SchemaRegistryAvroSerializer} instance
      *
      * @throws NullPointerException if parameters are incorrectly set.
      * @throws IllegalArgumentException if credential is not set.
      */
     public SchemaRegistryAvroSerializer buildSerializer() {
-        return new SchemaRegistryAvroSerializer(this.buildAsyncSerializer());
-    }
-
-    /**
-     * Instantiates SchemaRegistry
-     * @return {@link SchemaRegistryAvroAsyncSerializer} instance
-     *
-     * @throws NullPointerException if parameters are incorrectly set.
-     * @throws IllegalArgumentException if credential is not set.
-     */
-    public SchemaRegistryAvroAsyncSerializer buildAsyncSerializer() {
-        CachedSchemaRegistryClientBuilder builder = new CachedSchemaRegistryClientBuilder()
+        SchemaRegistryClientBuilder builder = new SchemaRegistryClientBuilder()
             .endpoint(registryUrl)
             .credential(credential);
 
@@ -138,11 +128,11 @@ public final class SchemaRegistryAvroSerializerBuilder {
 
         AvroSchemaRegistryCodec codec = new AvroSchemaRegistryCodec(this.avroSpecificReader);
 
-        CachedSchemaRegistryAsyncClient client = builder
-            .addCodec(codec)
+        SchemaRegistryAsyncClient client = builder
+            .addSchemaRegistryCodec(codec)
             .buildAsyncClient();
 
-        return new SchemaRegistryAvroAsyncSerializer(client, codec, this.schemaGroup,
+        return new SchemaRegistryAvroSerializer(client, codec, this.schemaGroup,
             this.autoRegisterSchemas);
     }
 }
