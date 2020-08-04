@@ -609,7 +609,7 @@ public final class SearchIndexClient {
      * @param options The option property bag.
      * @return The list {@link SearchField} for search index schema.
      */
-    public static List<SearchField> buildSearchField(Class<?> model, FieldBuilderOptions options) {
+    public static List<SearchField> buildSearchFields(Class<?> model, FieldBuilderOptions options) {
         return SearchIndexAsyncClient.buildSearchField(model, options).block();
     }
 
