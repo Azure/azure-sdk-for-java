@@ -150,6 +150,7 @@ public interface ReactiveCosmosOperations {
      * @param entity the entity object
      * @param id the id
      * @param partitionKey the partition key
+     * @return void Mono
      */
     Mono<Void> deleteEntityById(String containerName, Object entity, Object id, PartitionKey partitionKey);
 

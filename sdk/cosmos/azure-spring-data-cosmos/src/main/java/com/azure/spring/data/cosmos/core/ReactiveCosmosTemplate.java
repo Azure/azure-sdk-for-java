@@ -15,7 +15,6 @@ import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.common.CosmosUtils;
-import com.azure.spring.data.cosmos.common.Memoizer;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
 import com.azure.spring.data.cosmos.core.generator.CountQueryGenerator;
@@ -34,8 +33,6 @@ import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.util.function.Function;
 
 import static com.azure.spring.data.cosmos.common.CosmosUtils.createPartitionKey;
 
@@ -456,6 +453,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      * @param entity the entity to delete
      * @param id item id
      * @param partitionKey the partition key
+     * @return void Mono
      */
     public Mono<Void> deleteEntityById(String containerName, Object entity, Object id, PartitionKey partitionKey) {
         Assert.notNull(entity, "entity to be deleted should not be null");
