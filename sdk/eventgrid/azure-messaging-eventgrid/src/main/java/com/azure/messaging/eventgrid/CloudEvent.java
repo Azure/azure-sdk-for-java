@@ -7,10 +7,8 @@
 package com.azure.messaging.eventgrid;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.experimental.serializer.ObjectSerializer;
 import com.azure.core.util.CoreUtils;
 
-import java.io.ByteArrayOutputStream;
 import java.time.OffsetDateTime;
 import java.util.*;
 
@@ -94,7 +92,7 @@ public class CloudEvent {
     }
 
     /**
-     * Gets the data if it was set as binary data, using the {@link CloudEvent#setBinaryData(byte[], String)} overload.
+     * Gets the binary data if it was set.
      * @return return the binary data that was set, or null if there was no binary data set.
      */
     public byte[] getBinaryData() {
@@ -105,50 +103,26 @@ public class CloudEvent {
     }
 
     /**
-     * Set the data associated with this event, to be serialized in Json format.
+     * Set the data associated with this event, to be serialized by the serializer set on the Publisher Client.
      * @param data the data to set.
      *
      * @return the cloud event itself.
      */
     public CloudEvent setData(Object data) {
-        return setData(data, null, JSON_TYPE);
-    }
-
-    /**
-     * Set data using a custom serializer. This can be used for non-JSON data fields, and the dataContentType should
-     * indicate the format of the data, such as "text/xml" for XML data.
-     * @param data            the data to serialize and set.
-     * @param serializer      the {@link ObjectSerializer} to serialize the data. If this is not given, the data will be
-     *                        serialized as a json using the default serializer that all other fields use.
-     * @param dataContentType the content type of the data, indicating the format it is in. If not given, this will
-     *                        default to an "application/json" type.
-     *
-     * @return the cloud event itself.
-     */
-    public CloudEvent setData(Object data, ObjectSerializer serializer, String dataContentType) {
-        if (serializer == null) {
-            // expect the data to already be serialized as a string or similar type
-            this.cloudEvent.setData(data);
-        } else {
-            serializer.serialize(new ByteArrayOutputStream(), data)
-                .map(Objects::toString)
-                .subscribe(this.cloudEvent::setData);
-        }
-        this.cloudEvent.setDatacontenttype(dataContentType);
+        this.cloudEvent.setData(data);
         return this;
     }
 
     /**
-     * Set binary data associated with this event, as well as the content type of the binary data.
-     * @param data            the data to set.
-     * @param dataContentType the format that the data is written in, since the data is no longer in json format.
+     * Set binary data associated with this event, as well as the content type of the binary data. The
+     * {@link CloudEvent#setDataContentType(String)} should be used alongside this, as the binary data is no longer
+     * in application/json format.
+     * @param data the data to set.
      *
      * @return the cloud event itself.
      */
-    public CloudEvent setBinaryData(byte[] data, String dataContentType) {
-        this.cloudEvent
-            .setDataBase64(Base64.getEncoder().encodeToString(data))
-            .setDatacontenttype(dataContentType);
+    public CloudEvent setBinaryData(byte[] data) {
+        this.cloudEvent.setDataBase64(Base64.getEncoder().encodeToString(data));
         return this;
     }
 
@@ -186,6 +160,20 @@ public class CloudEvent {
      */
     public String getDataContentType() {
         return this.cloudEvent.getDatacontenttype();
+    }
+
+    /**
+     * Set the content type of the data field. An unset value will be interpreted as the data being in the
+     * "application/json" content type. Note that the envelope will still be serialized as a JSON regardless
+     * of this property, as this property only applies to the data and binaryData properties.
+     * @param dataContentType the data content type identifying string, such as "text/xml" for data serialized as
+     *                        an xml string.
+     *
+     * @return the cloud event itself.
+     */
+    public CloudEvent setDataContentType(String dataContentType) {
+        this.cloudEvent.setDatacontenttype(dataContentType);
+        return this;
     }
 
     /**

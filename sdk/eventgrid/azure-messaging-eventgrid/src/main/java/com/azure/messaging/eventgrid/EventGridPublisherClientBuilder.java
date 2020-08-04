@@ -12,6 +12,8 @@ import com.azure.core.http.policy.*;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -62,6 +64,8 @@ public class EventGridPublisherClientBuilder {
 
     private RetryPolicy retryPolicy;
 
+    private SerializerAdapter serializer;
+
     /**
      * Construct a new instance with default building settings. The endpoint and one credential method must be set
      * in order for the client to be built.
@@ -89,9 +93,12 @@ public class EventGridPublisherClientBuilder {
             throw logger.logExceptionAsError(new IllegalArgumentException("Cannot parse endpoint"));
         }
 
+        SerializerAdapter buildSerializer = serializer == null ?
+            JacksonAdapter.createDefaultSerializerAdapter() :
+            serializer;
 
         if (httpPipeline != null) {
-            return new EventGridPublisherAsyncClient(httpPipeline, hostname);
+            return new EventGridPublisherAsyncClient(httpPipeline, hostname, buildSerializer);
         }
 
         Configuration buildConfiguration = (configuration == null)
@@ -131,7 +138,8 @@ public class EventGridPublisherClientBuilder {
             .policies(httpPipelinePolicies.toArray(new HttpPipelinePolicy[0]))
             .build();
 
-        return new EventGridPublisherAsyncClient(buildPipeline, hostname);
+
+        return new EventGridPublisherAsyncClient(buildPipeline, hostname, buildSerializer);
     }
 
     /**
@@ -244,5 +252,15 @@ public class EventGridPublisherClientBuilder {
         return this;
     }
 
-
+    /**
+     * Set the serializer to use when serializing events to be sent. Default is
+     * {@link JacksonAdapter#createDefaultSerializerAdapter()}.
+     * @param serializer the serializer to set.
+     *
+     * @return the builder itself.
+     */
+    public EventGridPublisherClientBuilder serializer(SerializerAdapter serializer) {
+        this.serializer = serializer;
+        return this;
+    }
 }

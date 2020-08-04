@@ -10,6 +10,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImpl;
 import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImplBuilder;
 import reactor.core.publisher.Mono;
@@ -33,8 +34,11 @@ public final class EventGridPublisherAsyncClient {
 
     private final EventGridPublisherClientImpl impl;
 
-    EventGridPublisherAsyncClient(HttpPipeline pipeline, String hostname) {
-        this.impl = new EventGridPublisherClientImplBuilder().pipeline(pipeline).buildClient();
+    EventGridPublisherAsyncClient(HttpPipeline pipeline, String hostname, SerializerAdapter serializerAdapter) {
+        this.impl = new EventGridPublisherClientImplBuilder()
+            .pipeline(pipeline)
+            .serializerAdapter(serializerAdapter)
+            .buildClient();
 
         this.hostname = hostname;
     }
