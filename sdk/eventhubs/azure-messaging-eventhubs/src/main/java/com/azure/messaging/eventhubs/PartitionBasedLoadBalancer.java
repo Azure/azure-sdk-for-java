@@ -264,7 +264,7 @@ final class PartitionBasedLoadBalancer {
             .stream()
             .filter(
                 partitionId -> partitionOwnershipMap.containsKey(partitionId) && partitionOwnershipMap.get(partitionId)
-                    .equals(this.ownerId))
+                    .getOwnerId().equals(this.ownerId))
             .map(partitionId -> createPartitionOwnershipRequest(partitionOwnershipMap, partitionId))
             .collect(Collectors.toList()))
             .subscribe(ignored -> {
@@ -393,7 +393,7 @@ final class PartitionBasedLoadBalancer {
             .stream()
             .filter(
                 partitionId -> partitionOwnershipMap.containsKey(partitionId) && partitionOwnershipMap.get(partitionId)
-                    .equals(this.ownerId))
+                    .getOwnerId().equals(this.ownerId))
             .map(partitionId -> createPartitionOwnershipRequest(partitionOwnershipMap, partitionId))
             .collect(Collectors.toList()));
 
