@@ -66,7 +66,7 @@ public class ReactiveCosmosTemplatePartitionIT {
     public void setUp() throws ClassNotFoundException {
         if (!initialized) {
             CosmosAsyncClient client = CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder);
-            final CosmosFactory dbFactory = new CosmosFactory(client, cosmosConfig.getDatabase());
+            final CosmosFactory dbFactory = new CosmosFactory(client, TestConstants.DB_NAME);
 
             final CosmosMappingContext mappingContext = new CosmosMappingContext();
             personInfo =

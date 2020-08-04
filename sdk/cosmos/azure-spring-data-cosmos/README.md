@@ -146,7 +146,7 @@ For reactive repository support, use `@EnableReactiveCosmosRepositories`
 2.2.x supports Response Diagnostics String and Query Metrics. 
 Set `queryMetricsEnabled` flag to true in application.properties to enable query metrics.
 In addition to setting the flag, implement `ResponseDiagnosticsProcessor` to log diagnostics information. 
-<!-- embedme src/samples/java/com/azure/cosmos/AppConfiguration.java#L23-L83 -->
+<!-- embedme src/samples/java/com/azure/cosmos/AppConfiguration.java#L23-L82 -->
 
 ```java
 @Configuration
@@ -186,7 +186,6 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
     @Override
     public CosmosConfig cosmosConfig() {
         return CosmosConfig.builder()
-                           .database(getDatabaseName())
                            .enableQueryMetrics(queryMetricsEnabled)
                            .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
                            .build();
@@ -212,7 +211,7 @@ public class AppConfiguration extends AbstractCosmosConfiguration {
 }
 ```
 Or if you want to customize your config:
-<!-- embedme src/samples/java/com/azure/cosmos/AppConfigurationCodeSnippet.java#L45-L62 -->
+<!-- embedme src/samples/java/com/azure/cosmos/AppConfigurationCodeSnippet.java#L45-L61 -->
 
 ```java
 @Bean
@@ -228,7 +227,6 @@ public CosmosClientBuilder getCosmosClientBuilder() {
 @Override
 public CosmosConfig cosmosConfig() {
     return CosmosConfig.builder()
-                       .database(getDatabaseName())
                        .enableQueryMetrics(queryMetricsEnabled)
                        .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
                        .build();
@@ -407,7 +405,7 @@ You can put different database entities into different packages.
 ### Setup configuration
 The `@EnableReactiveCosmosRepositories` or `@EnableCosmosRepositories` support user-define the cosmos template, use `reactiveCosmosTemplateRef` or `cosmosTemplateRef` to config the name of the `ReactiveCosmosTemplate` or `CosmosTemplate` bean to be used with the repositories detected.
 If you have multiple cosmos database accounts, you can define multiple `CosmosAsyncClient`. If the single cosmos account has multiple databases, you can use the same `CosmosAsyncClient` to initialize the cosmos template.
-<!-- embedme src/samples/java/com/azure/cosmos/multidatasource/DatabaseConfiguration.java#L34-L132 -->
+<!-- embedme src/samples/java/com/azure/cosmos/multidatasource/DatabaseConfiguration.java#L34-L131 -->
 
 ```java
 @Configuration
@@ -477,7 +475,6 @@ public class DatabaseConfiguration extends AbstractCosmosConfiguration {
         return CosmosConfig.builder()
                            .enableQueryMetrics(true)
                            .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
-                           .database(secondaryProperties.getDatabase())
                            .build();
     }
 
@@ -524,7 +521,7 @@ public CosmosAsyncClient getCosmosAsyncClient(CosmosClientBuilder secondaryCosmo
 
 Besides, if you want to define `queryMetricsEnabled` or `ResponseDiagnosticsProcessor` , you can create the `CosmosConfig` for your cosmos template.
 
-<!-- embedme src/samples/java/com/azure/cosmos/multidatasource/DatabaseConfiguration.java#L96-L103-->
+<!-- embedme src/samples/java/com/azure/cosmos/multidatasource/DatabaseConfiguration.java#L96-L102-->
 
 ```java
 @Bean("secondaryCosmosConfig")
@@ -532,7 +529,6 @@ public CosmosConfig getCosmosConfig() {
     return CosmosConfig.builder()
                        .enableQueryMetrics(true)
                        .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
-                       .database(secondaryProperties.getDatabase())
                        .build();
 }
 ```

@@ -43,7 +43,6 @@ public class UserRepositoryConfiguration extends AbstractCosmosConfiguration {
     @Bean
     public CosmosConfig cosmosConfig() {
         return CosmosConfig.builder()
-                           .database(getDatabaseName())
                            .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
                            .enableQueryMetrics(properties.isQueryMetricsEnabled())
                            .build();

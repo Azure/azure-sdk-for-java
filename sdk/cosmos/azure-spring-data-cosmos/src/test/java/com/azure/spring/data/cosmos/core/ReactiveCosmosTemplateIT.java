@@ -99,7 +99,7 @@ public class ReactiveCosmosTemplateIT {
             azureKeyCredential = new AzureKeyCredential(cosmosDbKey);
             cosmosClientBuilder.credential(azureKeyCredential);
             CosmosAsyncClient client = CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder);
-            final CosmosFactory dbFactory = new CosmosFactory(client, cosmosConfig.getDatabase());
+            final CosmosFactory dbFactory = new CosmosFactory(client, TestConstants.DB_NAME);
 
             final CosmosMappingContext mappingContext = new CosmosMappingContext();
             personInfo = new CosmosEntityInformation<>(Person.class);

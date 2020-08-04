@@ -71,7 +71,7 @@ public class CosmosAnnotationIT {
     public void setUp() throws ClassNotFoundException {
         if (!initialized) {
             CosmosAsyncClient client = CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder);
-            final CosmosFactory cosmosFactory = new CosmosFactory(client, cosmosConfig.getDatabase());
+            final CosmosFactory cosmosFactory = new CosmosFactory(client, TestConstants.DB_NAME);
 
             roleInfo = new CosmosEntityInformation<>(Role.class);
             sampleInfo = new CosmosEntityInformation<>(TimeToLiveSample.class);

@@ -55,7 +55,6 @@ public class AppConfigurationCodeSnippet extends AbstractCosmosConfiguration {
     @Override
     public CosmosConfig cosmosConfig() {
         return CosmosConfig.builder()
-                           .database(getDatabaseName())
                            .enableQueryMetrics(queryMetricsEnabled)
                            .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
                            .build();

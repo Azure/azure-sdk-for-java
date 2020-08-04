@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.common.PageTestUtils;
+import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
 import com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext;
@@ -79,7 +80,7 @@ public class CosmosTemplatePartitionIT {
     public void setUp() throws ClassNotFoundException {
         if (!initialized) {
             CosmosAsyncClient client = CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder);
-            final CosmosFactory cosmosFactory = new CosmosFactory(client, cosmosConfig.getDatabase());
+            final CosmosFactory cosmosFactory = new CosmosFactory(client, TestConstants.DB_NAME);
             final CosmosMappingContext mappingContext = new CosmosMappingContext();
 
             personInfo = new CosmosEntityInformation<>(PartitionPerson.class);

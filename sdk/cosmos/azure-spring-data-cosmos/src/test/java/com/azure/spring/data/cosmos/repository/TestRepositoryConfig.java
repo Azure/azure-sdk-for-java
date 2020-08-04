@@ -55,7 +55,6 @@ public class TestRepositoryConfig extends AbstractCosmosConfiguration {
     @Override
     public CosmosConfig cosmosConfig() {
         return CosmosConfig.builder()
-                           .database(getDatabaseName())
                            .enableQueryMetrics(queryMetricsEnabled)
                            .responseDiagnosticsProcessor(responseDiagnosticsTestUtils().getResponseDiagnosticsProcessor())
                            .build();

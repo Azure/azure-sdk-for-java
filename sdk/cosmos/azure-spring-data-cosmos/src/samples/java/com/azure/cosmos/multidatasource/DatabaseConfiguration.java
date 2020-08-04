@@ -98,7 +98,6 @@ public class DatabaseConfiguration extends AbstractCosmosConfiguration {
         return CosmosConfig.builder()
                            .enableQueryMetrics(true)
                            .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
-                           .database(secondaryProperties.getDatabase())
                            .build();
     }
 
