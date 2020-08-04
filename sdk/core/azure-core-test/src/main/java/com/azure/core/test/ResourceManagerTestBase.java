@@ -46,7 +46,21 @@ public abstract class ResourceManagerTestBase extends TestBase {
     private static final String HTTP_PROXY_PORT = "http.proxyPort";
     private static final String USE_SYSTEM_PROXY = "java.net.useSystemProxies";
     private static final String VALUE_TRUE = "true";
-    protected String playbackUri;
+    private static final String PLAYBACK_URI = PLAYBACK_URI_BASE + "1234";
+    private static final AzureProfile PLAYBACK_PROFILE = new AzureProfile(
+        ZERO_TENANT,
+        ZERO_SUBSCRIPTION,
+        new AzureEnvironment(
+            new HashMap<String, String>() {
+                {
+                    put("managementEndpointUrl", PLAYBACK_URI);
+                    put("resourceManagerEndpointUrl", PLAYBACK_URI);
+                    put("sqlManagementEndpointUrl", PLAYBACK_URI);
+                    put("galleryEndpointUrl", PLAYBACK_URI);
+                    put("activeDirectoryEndpointUrl", PLAYBACK_URI);
+                    put("activeDirectoryResourceId", PLAYBACK_URI);
+                    put("activeDirectoryGraphResourceId", PLAYBACK_URI);
+                }}));
 
     private final ClientLogger logger = new ClientLogger(ResourceManagerTestBase.class);
 
@@ -67,30 +81,17 @@ public abstract class ResourceManagerTestBase extends TestBase {
         HttpPipeline httpPipeline;
         AzureProfile profile;
 
-        playbackUri = PLAYBACK_URI_BASE + "1234";
         if (getTestMode() == TestMode.PLAYBACK) {
-            profile = new AzureProfile(
-                ZERO_TENANT, ZERO_SUBSCRIPTION,
-                new AzureEnvironment(
-                    new HashMap<String, String>() {
-                        {
-                            put("managementEndpointUrl", playbackUri);
-                            put("resourceManagerEndpointUrl", playbackUri);
-                            put("sqlManagementEndpointUrl", playbackUri);
-                            put("galleryEndpointUrl", playbackUri);
-                            put("activeDirectoryEndpointUrl", playbackUri);
-                            put("activeDirectoryResourceId", playbackUri);
-                            put("activeDirectoryGraphResourceId", playbackUri);
-                        }}));
+            profile = PLAYBACK_PROFILE;
 
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(interceptorManager.getRecordReplacementPolicy());
-            policies.add(new HostPolicy(playbackUri + "/"));
+            policies.add(new HostPolicy(PLAYBACK_URI + "/"));
             policies.add(new CookiePolicy());
             httpPipeline = buildHttpPipeline(null, profile, policies, interceptorManager.getPlaybackClient());
 
-            interceptorManager.addTextReplacementRule(PLAYBACK_URI_BASE + "1234", playbackUri);
-            System.out.println(playbackUri);
+            interceptorManager.addTextReplacementRule(PLAYBACK_URI_BASE + "1234", PLAYBACK_URI);
+            System.out.println(PLAYBACK_URI);
         } else {
             if (System.getenv(AZURE_AUTH_LOCATION) != null) { // Record mode
                 final File credFile = new File(System.getenv(AZURE_AUTH_LOCATION));
@@ -133,8 +134,8 @@ public abstract class ResourceManagerTestBase extends TestBase {
 
             interceptorManager.addTextReplacementRule(profile.getSubscriptionId(), ZERO_SUBSCRIPTION);
             interceptorManager.addTextReplacementRule(profile.getTenantId(), ZERO_TENANT);
-            interceptorManager.addTextReplacementRule(AzureEnvironment.AZURE.getResourceManagerEndpoint(), playbackUri + "/");
-            interceptorManager.addTextReplacementRule(AzureEnvironment.AZURE.getGraphEndpoint(), playbackUri + "/");
+            interceptorManager.addTextReplacementRule(AzureEnvironment.AZURE.getResourceManagerEndpoint(), PLAYBACK_URI + "/");
+            interceptorManager.addTextReplacementRule(AzureEnvironment.AZURE.getGraphEndpoint(), PLAYBACK_URI + "/");
         }
         initializeClients(httpPipeline, profile);
     }

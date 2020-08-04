@@ -9,6 +9,9 @@ module com.azure.core.test {
     requires org.junit.jupiter.api;
     requires reactor.test;
 
+    exports com.azure.core.test;
+    exports com.azure.core.test.http;
+    exports com.azure.core.test.models;
     exports com.azure.core.test.policy;
     exports com.azure.core.test.utils;
     exports com.azure.core.test.implementation;
