@@ -267,8 +267,7 @@ final class PartitionBasedLoadBalancer {
                     .getOwnerId().equals(this.ownerId))
             .map(partitionId -> createPartitionOwnershipRequest(partitionOwnershipMap, partitionId))
             .collect(Collectors.toList()))
-            .subscribe(ignored -> {
-                },
+            .subscribe(ignored -> { },
                 ex -> {
                     logger.error("Error renewing partition ownership", ex);
                     isLoadBalancerRunning.set(false);
