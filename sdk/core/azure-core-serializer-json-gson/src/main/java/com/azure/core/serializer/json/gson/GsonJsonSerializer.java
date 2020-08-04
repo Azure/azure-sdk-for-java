@@ -20,7 +20,6 @@ import java.io.UncheckedIOException;
 import java.io.Writer;
 import java.lang.reflect.Field;
 import java.lang.reflect.Member;
-import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.nio.charset.StandardCharsets;
 
@@ -87,10 +86,6 @@ public final class GsonJsonSerializer implements JsonSerializer, MemberNameConve
             }
             return member.getName();
         }
-        if (member instanceof Method) {
-            return member.getName();
-        }
-
         return null;
     }
 }

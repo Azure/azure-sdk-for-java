@@ -94,7 +94,7 @@ public class GsonPropertyNameTests {
 
         Method m = LocalHotel.class.getDeclaredMethod("getHotelName");
 
-        assertEquals(serializer.convertMemberName(m), "getHotelName");
+        assertNull(serializer.convertMemberName(m));
     }
 
     @Test
