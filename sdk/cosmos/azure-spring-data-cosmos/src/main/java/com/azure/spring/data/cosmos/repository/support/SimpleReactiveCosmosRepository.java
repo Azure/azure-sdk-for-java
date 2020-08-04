@@ -184,7 +184,8 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
         Assert.notNull(entity, "entity to be deleted must not be null!");
 
         final Object id = entityInformation.getId(entity);
-        return cosmosOperations.deleteById(entityInformation.getContainerName(),
+        return cosmosOperations.deleteEntityById(entityInformation.getContainerName(),
+            entity,
             id,
             createKey(entityInformation.getPartitionKeyFieldValue(entity)));
     }

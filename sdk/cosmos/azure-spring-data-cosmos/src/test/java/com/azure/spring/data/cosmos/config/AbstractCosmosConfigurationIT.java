@@ -99,13 +99,10 @@ public class AbstractCosmosConfigurationIT {
         private String database;
 
         @Bean
-        public CosmosClientConfig getClientConfig() {
-            return CosmosClientConfig.builder()
-                .cosmosClientBuilder(new CosmosClientBuilder()
-                    .endpoint(cosmosDbUri)
-                    .key(cosmosDbKey))
-                .database(getDatabaseName())
-                .build();
+        public CosmosClientBuilder getCosmosClientBuilder() {
+            return new CosmosClientBuilder()
+                .endpoint(cosmosDbUri)
+                .key(cosmosDbKey);
         }
 
         @Override
@@ -136,16 +133,11 @@ public class AbstractCosmosConfigurationIT {
         private String database;
 
         @Bean
-        public CosmosClientConfig getClientConfig() {
-            final CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
+        public CosmosClientBuilder getCosmosClientBuilder() {
+            return new CosmosClientBuilder()
                 .key(cosmosDbKey)
                 .endpoint(cosmosDbUri)
                 .consistencyLevel(ConsistencyLevel.CONSISTENT_PREFIX);
-            return CosmosClientConfig.builder()
-                .cosmosClientBuilder(cosmosClientBuilder)
-                .database(getDatabaseName())
-                .build();
-
         }
 
         @Override
