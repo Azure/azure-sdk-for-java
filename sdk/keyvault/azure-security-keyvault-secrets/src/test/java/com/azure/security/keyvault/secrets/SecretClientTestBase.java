@@ -89,7 +89,7 @@ public abstract class SecretClientTestBase extends TestBase {
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
 
-        if (!interceptorManager.isPlaybackMode()) {
+        if (!interceptorManager.isPlaybackMode() && !interceptorManager.isLiveMode()) {
             policies.add(interceptorManager.getRecordPolicy());
         }
 
