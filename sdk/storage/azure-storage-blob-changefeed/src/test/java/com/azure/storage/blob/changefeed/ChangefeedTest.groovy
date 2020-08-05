@@ -5,11 +5,14 @@ import com.azure.core.http.rest.PagedResponse
 import com.azure.core.http.rest.PagedResponseBase
 import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobContainerAsyncClient
+import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedCursor
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor
+import com.azure.storage.blob.changefeed.implementation.models.SegmentCursor
 import com.azure.storage.blob.models.BlobItem
 import com.azure.storage.blob.models.ListBlobsOptions
 import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatcher
+import org.mockito.Mockito
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
@@ -37,6 +40,8 @@ class ChangefeedTest extends Specification {
         mockSegmentFactory = mock(SegmentFactory.class)
 
         mockMetadataClient = mock(BlobAsyncClient.class)
+        when(mockContainer.getBlobContainerUrl())
+            .thenReturn('https://testaccount.blob.core.windows.net/$blobchangefeed')
         when(mockContainer.exists())
             .thenReturn(Mono.just(true))
         when(mockContainer.getBlobAsyncClient(anyString()))
@@ -57,7 +62,7 @@ class ChangefeedTest extends Specification {
 
         mockSegment = mock(Segment.class)
 
-        when(mockSegmentFactory.getSegment(anyString(), any(ChangefeedCursor.class), nullable(ChangefeedCursor.class)))
+        when(mockSegmentFactory.getSegment(anyString(), any(BlobChangefeedCursor.class), nullable(SegmentCursor.class)))
             .thenReturn(mockSegment)
         when(mockSegment.getEvents())
             .thenReturn(Flux.empty())
@@ -102,25 +107,42 @@ class ChangefeedTest extends Specification {
         verify(mockMetadataClient).download() || true
     }
 
-    @Unroll
-    def "changefeed last consumable populated"() {
+    def "changefeed last consumable populated endTime after"() {
+        setup:
+        /* endTime is after. Limited by lastConsumable. */
+        OffsetDateTime endTime = OffsetDateTime.MAX
+        OffsetDateTime safeEndTime = OffsetDateTime.of(2020, 5, 4, 20, 0, 0, 0, ZoneOffset.UTC)
+
         when:
         ChangefeedFactory changefeedFactory = new ChangefeedFactory(mockSegmentFactory, mockContainer)
-        Changefeed changefeed = changefeedFactory.getChangefeed(null, endTime) /* End time definitely later than endTime*/
+        Changefeed changefeed = spy(changefeedFactory.getChangefeed(null, endTime)) /* End time definitely later than endTime*/
         def sv = StepVerifier.create(changefeed.getEvents())
 
         then:
         sv.verifyComplete()
-        changefeed.lastConsumable == OffsetDateTime.of(2020, 5, 4, 19, 0, 0, 0, ZoneOffset.UTC)
-        changefeed.safeEndTime == safeEndTime
         verify(mockContainer).exists() || true
         verify(mockContainer).getBlobAsyncClient(Changefeed.METADATA_SEGMENT_PATH) || true
         verify(mockMetadataClient).download() || true
+        verify(changefeed).listYears(safeEndTime) || true
+    }
 
-        where:
-        endTime                                                     || safeEndTime
-        OffsetDateTime.MAX                                          || OffsetDateTime.of(2020, 5, 4, 19, 0, 0, 0, ZoneOffset.UTC)    /* endTime is after. Limited by lastConsumable. */
-        OffsetDateTime.of(2019, 5, 4, 19, 0, 0, 0, ZoneOffset.UTC)  || OffsetDateTime.of(2019, 5, 4, 19, 0, 0, 0, ZoneOffset.UTC)    /* endTime is before. Limited by endTime. */
+    def "changefeed last consumable populated endTime before"() {
+        setup:
+        /* endTime is before. Limited by endTime. */
+        OffsetDateTime endTime = OffsetDateTime.of(2019, 5, 4, 19, 0, 0, 0, ZoneOffset.UTC)
+        OffsetDateTime safeEndTime = OffsetDateTime.of(2020, 5, 4, 20, 0, 0, 0, ZoneOffset.UTC)
+
+        when:
+        ChangefeedFactory changefeedFactory = new ChangefeedFactory(mockSegmentFactory, mockContainer)
+        Changefeed changefeed = spy(changefeedFactory.getChangefeed(null, endTime)) /* End time definitely later than endTime*/
+        def sv = StepVerifier.create(changefeed.getEvents())
+
+        then:
+        sv.verifyComplete()
+        verify(mockContainer).exists() || true
+        verify(mockContainer).getBlobAsyncClient(Changefeed.METADATA_SEGMENT_PATH) || true
+        verify(mockMetadataClient).download() || true
+        verify(changefeed).listYears(safeEndTime) || true
     }
 
     /* 4 years 2017-2020. */

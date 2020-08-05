@@ -123,7 +123,7 @@ class Changefeed {
                 /* Soonest time between lastConsumable and endTime. */
                 OffsetDateTime safeEndTime = this.endTime;
                 if (lastConsumableTime.isBefore(endTime)) {
-                    safeEndTime = lastConsumableTime;
+                    safeEndTime = lastConsumableTime.plusHours(1);
                 }
                 return Mono.just(safeEndTime);
             });
