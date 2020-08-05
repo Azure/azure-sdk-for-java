@@ -47,7 +47,7 @@ public class EventGridConsumerBuilder {
      * Build an instance of the async consumer. If no deserializer is provided, then a default Jackson one is provided.
      * @return the async consumer with the settings that were already set.
      */
-    public EventGridAsyncConsumer buildAsync() {
+    public EventGridAsyncConsumer buildAsyncConsumer() {
         JsonSerializer buildDeserializer = deserializer;
         if (buildDeserializer == null) {
             buildDeserializer = new JacksonJsonSerializerBuilder()
@@ -76,8 +76,8 @@ public class EventGridConsumerBuilder {
      * Build an instance of the sync consumer. If no deserializer is provided, then a default Jackson one is provided.
      * @return the sync consumer with the settings that were already set.
      */
-    public EventGridConsumer build() {
-        return new EventGridConsumer(buildAsync());
+    public EventGridConsumer buildConsumer() {
+        return new EventGridConsumer(buildAsyncConsumer());
     }
 
     /**
@@ -91,7 +91,7 @@ public class EventGridConsumerBuilder {
      *
      * @return the builder itself.
      */
-    public EventGridConsumerBuilder putDataMapping(String eventType, Class<?> dataClass) {
+    public EventGridConsumerBuilder addDataMapping(String eventType, Class<?> dataClass) {
         if (CoreUtils.isNullOrEmpty(eventType)) {
             throw new IllegalArgumentException("event type cannot be null or empty");
         }
