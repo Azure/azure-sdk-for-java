@@ -208,22 +208,25 @@ public class IdentityClient {
         if (options.isSharedTokenCacheEnabled()) {
             try {
                 PersistenceSettings.Builder persistenceSettingsBuilder = PersistenceSettings.builder(
-                    DEFAULT_CONFIDENTIAL_CACHE_FILE_NAME, DEFAULT_CACHE_FILE_PATH)
-                    .setMacKeychain(DEFAULT_KEYCHAIN_SERVICE, DEFAULT_CONFIDENTIAL_KEYCHAIN_ACCOUNT);
-                PersistenceSettings persistenceSettings;
-                try {
-                    persistenceSettings = persistenceSettingsBuilder
-                        .setLinuxKeyring(DEFAULT_KEYRING_NAME, DEFAULT_KEYRING_SCHEMA,
-                            DEFAULT_CONFIDENTIAL_KEYRING_ITEM_NAME, DEFAULT_KEYRING_ATTR_NAME,
-                            DEFAULT_KEYRING_ATTR_VALUE, null, null)
-                        .build();
-                } catch (KeyRingAccessException e) {
-                    persistenceSettings = persistenceSettingsBuilder
-                        .setLinuxUseUnprotectedFileAsCacheStorage(true)
-                        .build();
+                    DEFAULT_CONFIDENTIAL_CACHE_FILE_NAME, DEFAULT_CACHE_FILE_PATH);
+                if (Platform.isMac()) {
+                    persistenceSettingsBuilder.setMacKeychain(
+                        DEFAULT_KEYCHAIN_SERVICE, DEFAULT_CONFIDENTIAL_KEYCHAIN_ACCOUNT);
                 }
-                applicationBuilder.setTokenCacheAccessAspect(
-                    new PersistenceTokenCacheAccessAspect(persistenceSettings));
+                if (Platform.isLinux()) {
+                    try {
+                        persistenceSettingsBuilder
+                            .setLinuxKeyring(DEFAULT_KEYRING_NAME, DEFAULT_KEYRING_SCHEMA,
+                                DEFAULT_CONFIDENTIAL_KEYRING_ITEM_NAME, DEFAULT_KEYRING_ATTR_NAME,
+                                DEFAULT_KEYRING_ATTR_VALUE, null, null);
+                        applicationBuilder.setTokenCacheAccessAspect(
+                            new PersistenceTokenCacheAccessAspect(persistenceSettingsBuilder.build()));
+                    } catch (KeyRingAccessException e) {
+                        persistenceSettingsBuilder.setLinuxUseUnprotectedFileAsCacheStorage(true);
+                        applicationBuilder.setTokenCacheAccessAspect(
+                            new PersistenceTokenCacheAccessAspect(persistenceSettingsBuilder.build()));
+                    }
+                }
             } catch (Throwable t) {
                 throw logger.logExceptionAsError(new ClientAuthenticationException(
                     "Shared token cache is unavailable in this environment.", null, t));
@@ -258,22 +261,25 @@ public class IdentityClient {
         if (options.isSharedTokenCacheEnabled()) {
             try {
                 PersistenceSettings.Builder persistenceSettingsBuilder = PersistenceSettings.builder(
-                        DEFAULT_PUBLIC_CACHE_FILE_NAME,DEFAULT_CACHE_FILE_PATH)
-                    .setMacKeychain(DEFAULT_KEYCHAIN_SERVICE, DEFAULT_PUBLIC_KEYCHAIN_ACCOUNT);
-                PersistenceSettings persistenceSettings;
-                try {
-                    persistenceSettings = persistenceSettingsBuilder
-                        .setLinuxKeyring(DEFAULT_KEYRING_NAME, DEFAULT_KEYRING_SCHEMA,
-                            DEFAULT_PUBLIC_KEYRING_ITEM_NAME, DEFAULT_KEYRING_ATTR_NAME, DEFAULT_KEYRING_ATTR_VALUE,
-                            null, null)
-                        .build();
-                } catch (KeyRingAccessException e) {
-                    persistenceSettings = persistenceSettingsBuilder
-                        .setLinuxUseUnprotectedFileAsCacheStorage(true)
-                        .build();
+                        DEFAULT_PUBLIC_CACHE_FILE_NAME,DEFAULT_CACHE_FILE_PATH);
+                if (Platform.isMac()) {
+                    persistenceSettingsBuilder.setMacKeychain(
+                        DEFAULT_KEYCHAIN_SERVICE, DEFAULT_PUBLIC_KEYCHAIN_ACCOUNT);
                 }
-                publicClientApplicationBuilder.setTokenCacheAccessAspect(
-                    new PersistenceTokenCacheAccessAspect(persistenceSettings));
+                if (Platform.isLinux()) {
+                    try {
+                        persistenceSettingsBuilder
+                            .setLinuxKeyring(DEFAULT_KEYRING_NAME, DEFAULT_KEYRING_SCHEMA,
+                                DEFAULT_PUBLIC_KEYRING_ITEM_NAME, DEFAULT_KEYRING_ATTR_NAME, DEFAULT_KEYRING_ATTR_VALUE,
+                                null, null);
+                        publicClientApplicationBuilder.setTokenCacheAccessAspect(
+                            new PersistenceTokenCacheAccessAspect(persistenceSettingsBuilder.build()));
+                    } catch (KeyRingAccessException e) {
+                        persistenceSettingsBuilder.setLinuxUseUnprotectedFileAsCacheStorage(true);
+                        publicClientApplicationBuilder.setTokenCacheAccessAspect(
+                            new PersistenceTokenCacheAccessAspect(persistenceSettingsBuilder.build()));
+                    }
+                }
             } catch (Throwable t) {
                 String message = "Shared token cache is unavailable in this environment.";
                 if (sharedTokenCacheCredential) {
