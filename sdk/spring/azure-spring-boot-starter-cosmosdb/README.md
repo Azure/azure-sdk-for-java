@@ -1,4 +1,4 @@
-## Azure Cosmos DB Spring Boot Starter client library for Java
+# Azure Cosmos DB Spring Boot Starter client library for Java
 
 [Azure Cosmos DB](https://azure.microsoft.com/services/cosmos-db/) is a globally-distributed database service that allows developers to work with data using a variety of standard APIs, such as SQL, MongoDB, Graph, and Azure Table storage. 
 
@@ -7,29 +7,6 @@
 * [Key concepts](#key-concepts)
 * [Examples](#examples)
 * [Getting started](#getting-started)
-
-## Key concepts
-- Spring Data ReactiveCrudRepository basic CRUD functionality
-    - save
-    - findAll
-    - findOne by Id
-    - deleteAll
-    - delete by Id
-    - delete entity
-- Spring Data [@Id](https://github.com/spring-projects/spring-data-commons/blob/db62390de90c93a78743c97cc2cc9ccd964994a5/src/main/java/org/springframework/data/annotation/Id.java) annotation.
-  There're 2 ways to map a field in domain class to `id` of Azure Cosmos DB document.
-  - annotate a field in domain class with @Id, this field will be mapped to document `id` in Cosmos DB. 
-  - set name of this field to `id`, this field will be mapped to document `id` in Cosmos DB.
-    [Note] if both way applied,    
-- Custom collection Name.
-   By default, collection name will be class name of user domain class. To customize it, add annotation `@Document(collection="myCustomCollectionName")` to your domain class, that's all.
-- Supports [Azure Cosmos DB partition](https://docs.microsoft.com/azure/cosmos-db/partition-data). To specify a field of your domain class to be partition key field, just annotate it with `@PartitionKey`. When you do CRUD operation, please specify your partition value. For more sample on partition CRUD, please refer to [test here](./test/java/com/microsoft/azure/spring/data/cosmosdb/repository/AddressRepositoryIT.java)   
-- Supports [Spring Data custom query](https://docs.spring.io/spring-data/commons/docs/current/reference/html/#repositories.query-methods.details) find operation.
-- Supports [spring-boot-starter-data-rest](https://projects.spring.io/spring-data-rest/).
-- Supports List and nested type in domain class.
-
-## Examples
-Please refer to [sample project here](../azure-spring-boot-samples/azure-spring-boot-sample-cosmosdb).
 
 ## Getting started
 
@@ -205,10 +182,41 @@ azure.cosmosdb.allow-telemetry=false
 When telemetry is enabled, an HTTP request will be sent to URL `https://dc.services.visualstudio.com/v2/track`. So please make sure it's not blocked by your firewall.  
 Find more information about Azure Service Privacy Statement, please check [Microsoft Online Services Privacy Statement](https://www.microsoft.com/privacystatement/OnlineServices/Default.aspx). 
 
+## Key concepts
+- Spring Data ReactiveCrudRepository basic CRUD functionality
+    - save
+    - findAll
+    - findOne by Id
+    - deleteAll
+    - delete by Id
+    - delete entity
+- Spring Data [@Id](https://github.com/spring-projects/spring-data-commons/blob/db62390de90c93a78743c97cc2cc9ccd964994a5/src/main/java/org/springframework/data/annotation/Id.java) annotation.
+  There're 2 ways to map a field in domain class to `id` of Azure Cosmos DB document.
+  - annotate a field in domain class with @Id, this field will be mapped to document `id` in Cosmos DB. 
+  - set name of this field to `id`, this field will be mapped to document `id` in Cosmos DB.
+    [Note] if both way applied,    
+- Custom collection Name.
+   By default, collection name will be class name of user domain class. To customize it, add annotation `@Document(collection="myCustomCollectionName")` to your domain class, that's all.
+- Supports [Azure Cosmos DB partition](https://docs.microsoft.com/azure/cosmos-db/partition-data). To specify a field of your domain class to be partition key field, just annotate it with `@PartitionKey`. When you do CRUD operation, please specify your partition value. For more sample on partition CRUD, please refer to [test here](./test/java/com/microsoft/azure/spring/data/cosmosdb/repository/AddressRepositoryIT.java)   
+- Supports [Spring Data custom query](https://docs.spring.io/spring-data/commons/docs/current/reference/html/#repositories.query-methods.details) find operation.
+- Supports [spring-boot-starter-data-rest](https://projects.spring.io/spring-data-rest/).
+- Supports List and nested type in domain class.
+
+## Examples
+Please refer to [sample project here](../azure-spring-boot-samples/azure-spring-boot-sample-cosmosdb).
+
 ## Troubleshooting
+If you encounter any bug, please file an issue [here](https://github.com/Azure/azure-sdk-for-java/issues).
+
+To suggest a new feature or changes that could be made, file an issue the same way you would for a bug.
+
+You can participate community driven [![Gitter](https://badges.gitter.im/Microsoft/spring-on-azure.svg)](https://gitter.im/Microsoft/spring-on-azure)
 
 ## Next steps
 
-Besides using this Azure CosmosDb Spring Boot Starter, you can directly use Spring Data for Azure CosmosDb package for more complex scenarios. Please refer to [Spring Data for Azure CosmosDB](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-spring-data-cosmos) for more details.
+Besides using this Azure CosmosDb Spring Boot Starter, you can directly use Spring Data for Azure CosmosDb package for more complex scenarios. Please refer to [Spring Data for Azure CosmosDB](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-spring-data-cosmos-core) for more details.
 
 ## Contributing
+This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
+
+Please follow [instructions here](../CONTRIBUTING.md) to build from source or contribute.

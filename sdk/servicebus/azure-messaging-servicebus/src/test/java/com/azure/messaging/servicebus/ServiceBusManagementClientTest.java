@@ -10,7 +10,10 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.IterableStream;
-import com.azure.messaging.servicebus.models.QueueDescription;
+import com.azure.messaging.servicebus.implementation.EntityHelper;
+import com.azure.messaging.servicebus.implementation.models.QueueDescription;
+import com.azure.messaging.servicebus.models.CreateQueueOptions;
+import com.azure.messaging.servicebus.models.QueueProperties;
 import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,17 +41,15 @@ class ServiceBusManagementClientTest {
     @Mock
     private ServiceBusManagementAsyncClient asyncClient;
     @Mock
-    private Response<QueueDescription> queueDescriptionResponse;
+    private Response<QueueProperties> queueDescriptionResponse;
     @Mock
     private Response<QueueRuntimeInfo> queueRuntimeInfoResponse;
     @Mock
     private Response<Void> voidResponse;
     @Mock
-    private PagedFlux<QueueDescription> queuePagedFlux;
+    private PagedResponse<QueueProperties> pagedResponse;
     @Mock
-    private PagedResponse<QueueDescription> pagedResponse;
-    @Mock
-    private PagedResponse<QueueDescription> continuationPagedResponse;
+    private PagedResponse<QueueProperties> continuationPagedResponse;
 
     private final Context context = new Context("foo", "bar").addData("baz", "boo");
     private final String queueName = "some-queue";
@@ -68,17 +69,20 @@ class ServiceBusManagementClientTest {
     @Test
     void createQueue() {
         // Arrange
-        final QueueDescription description = new QueueDescription(queueName)
+        final CreateQueueOptions description = new CreateQueueOptions(queueName)
             .setMaxDeliveryCount(10)
             .setAutoDeleteOnIdle(Duration.ofSeconds(10));
-        final QueueDescription result = new QueueDescription("queue-name-2")
+
+        final CreateQueueOptions options = new CreateQueueOptions("queue-name-2")
             .setMaxDeliveryCount(4)
             .setAutoDeleteOnIdle(Duration.ofSeconds(30));
+        final QueueDescription queueDescription = EntityHelper.getQueueDescription(options);
+        final QueueProperties result = EntityHelper.toModel(queueDescription);
 
         when(asyncClient.createQueue(description)).thenReturn(Mono.just(result));
 
         // Act
-        final QueueDescription actual = client.createQueue(description);
+        final QueueProperties actual = client.createQueue(description);
 
         // Assert
         assertEquals(result, actual);
@@ -87,14 +91,14 @@ class ServiceBusManagementClientTest {
     @Test
     void createQueueWithResponse() {
         // Arrange
-        final QueueDescription description = mock(QueueDescription.class);
-        final QueueDescription result = mock(QueueDescription.class);
+        final CreateQueueOptions description = mock(CreateQueueOptions.class);
+        final QueueProperties result = mock(QueueProperties.class);
 
         when(queueDescriptionResponse.getValue()).thenReturn(result);
         when(asyncClient.createQueueWithResponse(description, context)).thenReturn(Mono.just(queueDescriptionResponse));
 
         // Act
-        final Response<QueueDescription> actual = client.createQueueWithResponse(description, context);
+        final Response<QueueProperties> actual = client.createQueueWithResponse(description, context);
 
         // Assert
         assertEquals(queueDescriptionResponse, actual);
@@ -128,12 +132,12 @@ class ServiceBusManagementClientTest {
     @Test
     void getQueue() {
         // Arrange
-        final QueueDescription result = mock(QueueDescription.class);
+        final QueueProperties result = mock(QueueProperties.class);
 
         when(asyncClient.getQueue(queueName)).thenReturn(Mono.just(result));
 
         // Act
-        final QueueDescription actual = client.getQueue(queueName);
+        final QueueProperties actual = client.getQueue(queueName);
 
         // Assert
         assertEquals(result, actual);
@@ -142,14 +146,14 @@ class ServiceBusManagementClientTest {
     @Test
     void getQueueWithResponse() {
         // Arrange
-        final QueueDescription result = mock(QueueDescription.class);
+        final QueueProperties result = mock(QueueProperties.class);
 
         when(queueDescriptionResponse.getValue()).thenReturn(result);
-        when(asyncClient.<QueueDescription>getQueueWithResponse(eq(queueName), eq(context), any()))
+        when(asyncClient.<QueueProperties>getQueueWithResponse(eq(queueName), eq(context), any()))
             .thenReturn(Mono.just(queueDescriptionResponse));
 
         // Act
-        final Response<QueueDescription> actual = client.getQueueWithResponse(queueName, context);
+        final Response<QueueProperties> actual = client.getQueueWithResponse(queueName, context);
 
         // Assert
         assertEquals(result, actual.getValue());
@@ -188,18 +192,18 @@ class ServiceBusManagementClientTest {
     @Test
     void listQueues() {
         // Arrange
-        final List<QueueDescription> queues = Arrays.asList(mock(QueueDescription.class), mock(QueueDescription.class));
+        final List<QueueProperties> queues = Arrays.asList(mock(QueueProperties.class), mock(QueueProperties.class));
         when(pagedResponse.getElements()).thenReturn(new IterableStream<>(queues));
         when(pagedResponse.getValue()).thenReturn(queues);
         when(pagedResponse.getStatusCode()).thenReturn(200);
         when(pagedResponse.getHeaders()).thenReturn(new HttpHeaders());
         when(pagedResponse.getContinuationToken()).thenReturn("");
 
-        final PagedFlux<QueueDescription> pagedFlux = new PagedFlux<>(() -> Mono.just(pagedResponse));
+        final PagedFlux<QueueProperties> pagedFlux = new PagedFlux<>(() -> Mono.just(pagedResponse));
         when(asyncClient.listQueues()).thenReturn(pagedFlux);
 
         // Act
-        final PagedIterable<QueueDescription> queueDescriptions = client.listQueues();
+        final PagedIterable<QueueProperties> queueDescriptions = client.listQueues();
 
         // Assert
         final long size = queueDescriptions.stream().count();
@@ -211,10 +215,10 @@ class ServiceBusManagementClientTest {
         // Arrange
         final String continuationToken = "foo";
         final String lastToken = "last";
-        final List<QueueDescription> firstPage = Arrays.asList(mock(QueueDescription.class),
-            mock(QueueDescription.class));
-        final List<QueueDescription> secondPage = Arrays.asList(mock(QueueDescription.class),
-            mock(QueueDescription.class), mock(QueueDescription.class));
+        final List<QueueProperties> firstPage = Arrays.asList(mock(QueueProperties.class),
+            mock(QueueProperties.class));
+        final List<QueueProperties> secondPage = Arrays.asList(mock(QueueProperties.class),
+            mock(QueueProperties.class), mock(QueueProperties.class));
 
         when(pagedResponse.getElements()).thenReturn(new IterableStream<>(firstPage));
         when(pagedResponse.getValue()).thenReturn(firstPage);
@@ -235,7 +239,7 @@ class ServiceBusManagementClientTest {
             .thenReturn(Mono.empty());
 
         // Act
-        final PagedIterable<QueueDescription> queueDescriptions = client.listQueues(context);
+        final PagedIterable<QueueProperties> queueDescriptions = client.listQueues(context);
 
         // Assert
         final long size = queueDescriptions.stream().count();
@@ -247,33 +251,34 @@ class ServiceBusManagementClientTest {
     @Test
     void updateQueue() {
         // Arrange
-        final QueueDescription description = new QueueDescription(queueName)
-            .setMaxDeliveryCount(10)
-            .setAutoDeleteOnIdle(Duration.ofSeconds(10));
-        final QueueDescription result = new QueueDescription("queue-name-2")
+
+        final CreateQueueOptions options = new CreateQueueOptions(queueName)
             .setMaxDeliveryCount(4)
             .setAutoDeleteOnIdle(Duration.ofSeconds(30));
+        final QueueDescription queueDescription = EntityHelper.getQueueDescription(options);
+        final QueueProperties description = EntityHelper.toModel(queueDescription);
 
-        when(asyncClient.updateQueue(description)).thenReturn(Mono.just(result));
+        final QueueProperties expected = EntityHelper.toModel(queueDescription);
+        when(asyncClient.updateQueue(description)).thenReturn(Mono.just(expected));
 
         // Act
-        final QueueDescription actual = client.updateQueue(description);
+        final QueueProperties actual = client.updateQueue(description);
 
         // Assert
-        assertEquals(result, actual);
+        assertEquals(expected, actual);
     }
 
     @Test
     void updateQueueWithResponse() {
         // Arrange
-        final QueueDescription description = mock(QueueDescription.class);
-        final QueueDescription result = mock(QueueDescription.class);
+        final QueueProperties description = mock(QueueProperties.class);
+        final QueueProperties result = mock(QueueProperties.class);
 
         when(queueDescriptionResponse.getValue()).thenReturn(result);
         when(asyncClient.updateQueueWithResponse(description, context)).thenReturn(Mono.just(queueDescriptionResponse));
 
         // Act
-        final Response<QueueDescription> actual = client.updateQueueWithResponse(description, context);
+        final Response<QueueProperties> actual = client.updateQueueWithResponse(description, context);
 
         // Assert
         assertEquals(queueDescriptionResponse, actual);

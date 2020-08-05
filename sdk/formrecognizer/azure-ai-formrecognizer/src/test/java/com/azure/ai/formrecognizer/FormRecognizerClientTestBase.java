@@ -179,7 +179,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
                     if (actualFormElementList.get(i) instanceof FormLine) {
                         FormLine actualFormLine = (FormLine) actualFormElementList.get(i);
-                        validateFormWordData(expectedTextLine.getWords(), actualFormLine.getFormWords());
+                        validateFormWordData(expectedTextLine.getWords(), actualFormLine.getWords());
                     }
                     FormWord actualFormWord = (FormWord) actualFormElementList.get(i);
                     assertEquals(expectedTextWord.getText(), actualFormWord.getText());
@@ -214,9 +214,16 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             DataTableCell expectedTableCell = expectedTableCells.get(i);
             FormTableCell actualTableCell = actualTableCellList.get(i);
             assertEquals(expectedTableCell.getColumnIndex(), actualTableCell.getColumnIndex());
-            assertEquals(expectedTableCell.getColumnSpan(), actualTableCell.getColumnSpan());
+            if (expectedTableCell.getColumnSpan() != null) {
+                assertEquals(expectedTableCell.getColumnSpan(), actualTableCell.getColumnSpan());
+            }
+            assertNotNull(actualTableCell.getColumnSpan());
+
             assertEquals(expectedTableCell.getRowIndex(), actualTableCell.getRowIndex());
-            assertEquals(expectedTableCell.getRowSpan(), actualTableCell.getRowSpan());
+            if (expectedTableCell.getRowSpan() != null) {
+                assertEquals(expectedTableCell.getRowSpan(), actualTableCell.getRowSpan());
+            }
+            assertNotNull(actualTableCell.getRowSpan());
             validateBoundingBoxData(expectedTableCell.getBoundingBox(), actualTableCell.getBoundingBox());
             if (includeFieldElements) {
                 validateReferenceElementsData(expectedTableCell.getElements(), actualTableCell.getFieldElements(),
@@ -232,7 +239,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             FormLine actualLine = actualLineList.get(i);
             assertEquals(expectedLine.getText(), actualLine.getText());
             validateBoundingBoxData(expectedLine.getBoundingBox(), actualLine.getBoundingBox());
-            validateFormWordData(expectedLine.getWords(), actualLine.getFormWords());
+            validateFormWordData(expectedLine.getWords(), actualLine.getWords());
         }
     }
 

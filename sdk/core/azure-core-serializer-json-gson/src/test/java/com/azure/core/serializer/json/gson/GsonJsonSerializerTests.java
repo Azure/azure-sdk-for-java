@@ -22,7 +22,6 @@ import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -76,11 +75,12 @@ public class GsonJsonSerializerTests {
         Person person = new Person(null, 50);
         byte[] expected = "{\"age\":50}".getBytes(StandardCharsets.UTF_8);
 
-        StepVerifier.create(DEFAULT_SERIALIZER.serializeAsync(new ByteArrayOutputStream(), person))
-            .assertNext(actual -> {
-                assertNotNull(actual);
-                assertArrayEquals(expected, actual.toByteArray());
-            }).verifyComplete();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+        StepVerifier.create(DEFAULT_SERIALIZER.serializeAsync(stream, person))
+            .verifyComplete();
+
+        assertArrayEquals(expected, stream.toByteArray());
     }
 
     @Test
@@ -88,11 +88,12 @@ public class GsonJsonSerializerTests {
         Person person = new Person(null, 50);
         byte[] expected = "{\"name\":\"John Doe\",\"age\":50}".getBytes(StandardCharsets.UTF_8);
 
-        StepVerifier.create(CUSTOM_SERIALIZER.serializeAsync(new ByteArrayOutputStream(), person))
-            .assertNext(actual -> {
-                assertNotNull(actual);
-                assertArrayEquals(expected, actual.toByteArray());
-            }).verifyComplete();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+        StepVerifier.create(CUSTOM_SERIALIZER.serializeAsync(stream, person))
+            .verifyComplete();
+
+        assertArrayEquals(expected, stream.toByteArray());
     }
 
     public static final class Person {

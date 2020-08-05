@@ -11,10 +11,10 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
+import com.azure.messaging.servicebus.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.models.CreateSubscriptionOptions;
 import com.azure.messaging.servicebus.models.CreateTopicOptions;
 import com.azure.messaging.servicebus.models.NamespaceType;
-import com.azure.messaging.servicebus.models.QueueDescription;
 import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
 import com.azure.messaging.servicebus.models.SubscriptionRuntimeInfo;
 import com.azure.messaging.servicebus.models.TopicProperties;
@@ -67,7 +67,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
         // Arrange
         final ServiceBusManagementAsyncClient client = createClient(httpClient);
         final String queueName = testResourceNamer.randomName("test", 10);
-        final QueueDescription expected = new QueueDescription(queueName)
+        final CreateQueueOptions expected = new CreateQueueOptions(queueName)
             .setMaxSizeInMegabytes(500)
             .setMaxDeliveryCount(7)
             .setLockDuration(Duration.ofSeconds(45))
@@ -87,13 +87,13 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
                 assertEquals(expected.getMaxSizeInMegabytes(), actual.getMaxSizeInMegabytes());
                 assertEquals(expected.getUserMetadata(), actual.getUserMetadata());
 
-                assertEquals(expected.deadLetteringOnMessageExpiration(), actual.deadLetteringOnMessageExpiration());
+                assertEquals(expected.deadLetteringOnMessageExpiration(), actual.isDeadLetteringOnMessageExpiration());
                 assertEquals(expected.enablePartitioning(), actual.enablePartitioning());
                 assertEquals(expected.requiresDuplicateDetection(), actual.requiresDuplicateDetection());
                 assertEquals(expected.requiresSession(), actual.requiresSession());
 
                 final QueueRuntimeInfo runtimeInfo = new QueueRuntimeInfo(actual);
-                assertEquals(0, runtimeInfo.getMessageCount());
+                assertEquals(0, runtimeInfo.getTotalMessageCount());
                 assertEquals(0, runtimeInfo.getSizeInBytes());
                 assertNotNull(runtimeInfo.getCreatedAt());
             })
@@ -107,11 +107,11 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
         final String queueName = interceptorManager.isPlaybackMode()
             ? "queue-5"
             : getEntityName(TestUtils.getQueueBaseName(), 5);
-        final QueueDescription queueDescription = new QueueDescription(queueName);
+        final CreateQueueOptions queueProperties = new CreateQueueOptions(queueName);
         final ServiceBusManagementAsyncClient client = createClient(httpClient);
 
         // Act & Assert
-        StepVerifier.create(client.createQueue(queueDescription))
+        StepVerifier.create(client.createQueue(queueProperties))
             .expectError(ResourceExistsException.class)
             .verify();
     }
@@ -449,12 +449,11 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
                 assertEquals(subscriptionName, description.getSubscriptionName());
 
                 assertTrue(description.getTotalMessageCount() >= 0);
-                assertNotNull(description.getDetails());
-                assertNotNull(description.getDetails().getActiveMessageCount());
-                assertNotNull(description.getDetails().getScheduledMessageCount());
-                assertNotNull(description.getDetails().getTransferDeadLetterMessageCount());
-                assertNotNull(description.getDetails().getTransferMessageCount());
-                assertNotNull(description.getDetails().getDeadLetterMessageCount());
+                assertEquals(0, description.getActiveMessageCount());
+                assertEquals(0, description.getScheduledMessageCount());
+                assertEquals(0, description.getTransferDeadLetterMessageCount());
+                assertEquals(0, description.getTransferMessageCount());
+                assertEquals(0, description.getDeadLetterMessageCount());
 
                 assertNotNull(description.getCreatedAt());
                 assertTrue(nowUtc.isAfter(description.getCreatedAt()));

@@ -271,6 +271,8 @@ public class LROPollerTests {
                                 .build();
                         } else if (getCallCount[0] == serverConfigure.pollingCountTillSuccess) {
                             return new com.github.tomakehurst.wiremock.http.Response.Builder()
+                                .headers(new HttpHeaders(
+                                    new HttpHeader("x-ms-request-id", UUID.randomUUID().toString())))
                                 .body("{\"status\": \"Failed\"}")
                                 .build();
                         }
@@ -318,6 +320,9 @@ public class LROPollerTests {
                 } else if (onNextCallCount[0] == 2) {
                     Assertions.assertEquals(LongRunningOperationStatus.FAILED,
                         response.getStatus());
+                    Assertions.assertEquals(200, response.getValue().getError().getResponseStatusCode());
+                    Assertions.assertNotNull(response.getValue().getError());
+                    UUID validUuid = UUID.fromString(response.getValue().getError().getResponseHeaders().getValue("x-ms-request-id"));
                 } else {
                     throw new IllegalStateException("Poller emitted more than expected value.");
                 }

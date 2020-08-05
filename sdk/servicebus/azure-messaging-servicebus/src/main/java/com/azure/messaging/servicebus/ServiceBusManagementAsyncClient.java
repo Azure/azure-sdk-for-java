@@ -33,6 +33,7 @@ import com.azure.messaging.servicebus.implementation.models.CreateSubscriptionBo
 import com.azure.messaging.servicebus.implementation.models.CreateTopicBody;
 import com.azure.messaging.servicebus.implementation.models.CreateTopicBodyContent;
 import com.azure.messaging.servicebus.implementation.models.NamespacePropertiesEntry;
+import com.azure.messaging.servicebus.implementation.models.QueueDescription;
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionEntry;
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionFeed;
 import com.azure.messaging.servicebus.implementation.models.ResponseLink;
@@ -42,10 +43,11 @@ import com.azure.messaging.servicebus.implementation.models.SubscriptionDescript
 import com.azure.messaging.servicebus.implementation.models.SubscriptionDescriptionFeed;
 import com.azure.messaging.servicebus.implementation.models.TopicDescriptionEntry;
 import com.azure.messaging.servicebus.implementation.models.TopicDescriptionFeed;
+import com.azure.messaging.servicebus.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.models.CreateSubscriptionOptions;
 import com.azure.messaging.servicebus.models.CreateTopicOptions;
 import com.azure.messaging.servicebus.models.NamespaceProperties;
-import com.azure.messaging.servicebus.models.QueueDescription;
+import com.azure.messaging.servicebus.models.QueueProperties;
 import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
 import com.azure.messaging.servicebus.models.SubscriptionProperties;
 import com.azure.messaging.servicebus.models.SubscriptionRuntimeInfo;
@@ -128,18 +130,18 @@ public final class ServiceBusManagementAsyncClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<QueueDescription> createQueue(String queueName) {
+    public Mono<QueueProperties> createQueue(String queueName) {
         try {
-            return createQueue(new QueueDescription(queueName));
+            return createQueue(new CreateQueueOptions(queueName));
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
     }
 
     /**
-     * Creates a queue with the {@link QueueDescription}.
+     * Creates a queue with the {@link CreateQueueOptions}.
      *
-     * @param queue Information about the queue to create.
+     * @param queueOptions Information about the queue to create.
      *
      * @return A Mono that completes with information about the created queue.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
@@ -147,13 +149,12 @@ public final class ServiceBusManagementAsyncClient {
      * @throws HttpResponseException If the request body was invalid, the queue quota is exceeded, or an error
      *     occurred processing the request.
      * @throws NullPointerException if {@code queue} is null.
-     * @throws ResourceExistsException if a queue exists with the same {@link QueueDescription#getName()
-     *     queueName}.
+     * @throws ResourceExistsException if a queue exists with the same {@link QueueProperties#getName() queueName}.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<QueueDescription> createQueue(QueueDescription queue) {
-        return createQueueWithResponse(queue).map(Response::getValue);
+    public Mono<QueueProperties> createQueue(CreateQueueOptions queueOptions) {
+        return createQueueWithResponse(queueOptions).map(Response::getValue);
     }
 
     /**
@@ -167,12 +168,11 @@ public final class ServiceBusManagementAsyncClient {
      * @throws HttpResponseException If the request body was invalid, the queue quota is exceeded, or an error
      *     occurred processing the request.
      * @throws NullPointerException if {@code queue} is null.
-     * @throws ResourceExistsException if a queue exists with the same {@link QueueDescription#getName()
-     *     queueName}.
+     * @throws ResourceExistsException if a queue exists with the same {@link QueueProperties#getName() queueName}.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<QueueDescription>> createQueueWithResponse(QueueDescription queue) {
+    public Mono<Response<QueueProperties>> createQueueWithResponse(CreateQueueOptions queue) {
         return withContext(context -> createQueueWithResponse(queue, context));
     }
 
@@ -439,7 +439,7 @@ public final class ServiceBusManagementAsyncClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<QueueDescription> getQueue(String queueName) {
+    public Mono<QueueProperties> getQueue(String queueName) {
         return getQueueWithResponse(queueName).map(Response::getValue);
     }
 
@@ -458,7 +458,7 @@ public final class ServiceBusManagementAsyncClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<QueueDescription>> getQueueWithResponse(String queueName) {
+    public Mono<Response<QueueProperties>> getQueueWithResponse(String queueName) {
         return withContext(context -> getQueueWithResponse(queueName, context, Function.identity()));
     }
 
@@ -794,14 +794,14 @@ public final class ServiceBusManagementAsyncClient {
     /**
      * Fetches all the queues in the Service Bus namespace.
      *
-     * @return A Flux of {@link QueueDescription queues} in the Service Bus namespace.
+     * @return A Flux of {@link QueueProperties queues} in the Service Bus namespace.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/enumeration">List entities, subscriptions, or
      *     authorization rules</a>
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<QueueDescription> listQueues() {
+    public PagedFlux<QueueProperties> listQueues() {
         return new PagedFlux<>(
             () -> withContext(context -> listQueuesFirstPage(context)),
             token -> withContext(context -> listQueuesNextPage(token, context)));
@@ -850,7 +850,7 @@ public final class ServiceBusManagementAsyncClient {
     }
 
     /**
-     * Updates a queue with the given {@link QueueDescription}. The {@link QueueDescription} must be fully populated as
+     * Updates a queue with the given {@link QueueProperties}. The {@link QueueProperties} must be fully populated as
      * all of the properties are replaced. If a property is not set the service default value is used.
      *
      * The suggested flow is:
@@ -863,11 +863,11 @@ public final class ServiceBusManagementAsyncClient {
      * <p>
      * There are a subset of properties that can be updated. More information can be found in the links below. They are:
      * <ul>
-     * <li>{@link QueueDescription#setDefaultMessageTimeToLive(Duration) DefaultMessageTimeToLive}</li>
-     * <li>{@link QueueDescription#setLockDuration(Duration) LockDuration}</li>
-     * <li>{@link QueueDescription#setDuplicateDetectionHistoryTimeWindow(Duration) DuplicateDetectionHistoryTimeWindow}
+     * <li>{@link QueueProperties#setDefaultMessageTimeToLive(Duration) DefaultMessageTimeToLive}</li>
+     * <li>{@link QueueProperties#setLockDuration(Duration) LockDuration}</li>
+     * <li>{@link QueueProperties#setDuplicateDetectionHistoryTimeWindow(Duration) DuplicateDetectionHistoryTimeWindow}
      * </li>
-     * <li>{@link QueueDescription#setMaxDeliveryCount(Integer) MaxDeliveryCount}</li>
+     * <li>{@link QueueProperties#setMaxDeliveryCount(Integer) MaxDeliveryCount}</li>
      * </ul>
      *
      * @param queue Information about the queue to update. You must provide all the property values that are desired
@@ -883,12 +883,12 @@ public final class ServiceBusManagementAsyncClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-queue">Update Queue</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<QueueDescription> updateQueue(QueueDescription queue) {
+    public Mono<QueueProperties> updateQueue(QueueProperties queue) {
         return updateQueueWithResponse(queue).map(Response::getValue);
     }
 
     /**
-     * Updates a queue with the given {@link QueueDescription}. The {@link QueueDescription} must be fully populated as
+     * Updates a queue with the given {@link QueueProperties}. The {@link QueueProperties} must be fully populated as
      * all of the properties are replaced. If a property is not set the service default value is used.
      *
      * The suggested flow is:
@@ -901,11 +901,11 @@ public final class ServiceBusManagementAsyncClient {
      * <p>
      * There are a subset of properties that can be updated. More information can be found in the links below. They are:
      * <ul>
-     * <li>{@link QueueDescription#setDefaultMessageTimeToLive(Duration) DefaultMessageTimeToLive}</li>
-     * <li>{@link QueueDescription#setLockDuration(Duration) LockDuration}</li>
-     * <li>{@link QueueDescription#setDuplicateDetectionHistoryTimeWindow(Duration) DuplicateDetectionHistoryTimeWindow}
+     * <li>{@link QueueProperties#setDefaultMessageTimeToLive(Duration) DefaultMessageTimeToLive}</li>
+     * <li>{@link QueueProperties#setLockDuration(Duration) LockDuration}</li>
+     * <li>{@link QueueProperties#setDuplicateDetectionHistoryTimeWindow(Duration) DuplicateDetectionHistoryTimeWindow}
      * </li>
-     * <li>{@link QueueDescription#setMaxDeliveryCount(Integer) MaxDeliveryCount}</li>
+     * <li>{@link QueueProperties#setMaxDeliveryCount(Integer) MaxDeliveryCount}</li>
      * </ul>
      *
      * @param queue Information about the queue to update. You must provide all the property values that are desired
@@ -921,7 +921,7 @@ public final class ServiceBusManagementAsyncClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-queue">Update Queue</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<QueueDescription>> updateQueueWithResponse(QueueDescription queue) {
+    public Mono<Response<QueueProperties>> updateQueueWithResponse(QueueProperties queue) {
         return withContext(context -> updateQueueWithResponse(queue, context));
     }
 
@@ -1082,28 +1082,29 @@ public final class ServiceBusManagementAsyncClient {
     /**
      * Creates a queue with its context.
      *
-     * @param queue Queue to create.
+     * @param createQueueOptions Queue to create.
      * @param context Context to pass into request.
      *
-     * @return A Mono that completes with the created {@link QueueDescription}.
+     * @return A Mono that completes with the created {@link QueueProperties}.
      */
-    Mono<Response<QueueDescription>> createQueueWithResponse(QueueDescription queue, Context context) {
-        if (queue == null) {
-            return monoError(logger, new NullPointerException("'queue' cannot be null"));
+    Mono<Response<QueueProperties>> createQueueWithResponse(CreateQueueOptions createQueueOptions, Context context) {
+        if (createQueueOptions == null) {
+            return monoError(logger, new NullPointerException("'createQueueOptions' cannot be null"));
         } else if (context == null) {
             return monoError(logger, new NullPointerException("'context' cannot be null."));
         }
 
+        final QueueDescription description = EntityHelper.getQueueDescription(createQueueOptions);
         final CreateQueueBodyContent content = new CreateQueueBodyContent()
             .setType(CONTENT_TYPE)
-            .setQueueDescription(queue);
+            .setQueueDescription(description);
         final CreateQueueBody createEntity = new CreateQueueBody()
             .setContent(content);
 
         final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
 
         try {
-            return entityClient.putWithResponseAsync(queue.getName(), createEntity, null, withTracing)
+            return entityClient.putWithResponseAsync(createQueueOptions.getName(), createEntity, null, withTracing)
                 .onErrorMap(ServiceBusManagementAsyncClient::mapException)
                 .map(this::deserializeQueue);
         } catch (RuntimeException ex) {
@@ -1182,7 +1183,7 @@ public final class ServiceBusManagementAsyncClient {
      * @param queueName Name of queue to delete.
      * @param context Context to pass into request.
      *
-     * @return A Mono that completes with the created {@link QueueDescription}.
+     * @return A Mono that completes with the created {@link QueueProperties}.
      */
     Mono<Response<Void>> deleteQueueWithResponse(String queueName, Context context) {
         if (queueName == null) {
@@ -1302,10 +1303,10 @@ public final class ServiceBusManagementAsyncClient {
      * @param queueName Name of queue to fetch information for.
      * @param context Context to pass into request.
      *
-     * @return A Mono that completes with the {@link QueueDescription}.
+     * @return A Mono that completes with the {@link QueueProperties}.
      */
     <T> Mono<Response<T>> getQueueWithResponse(String queueName, Context context,
-        Function<QueueDescription, T> mapper) {
+        Function<QueueProperties, T> mapper) {
         if (queueName == null) {
             return monoError(logger, new NullPointerException("'queueName' cannot be null"));
         } else if (queueName.isEmpty()) {
@@ -1320,7 +1321,7 @@ public final class ServiceBusManagementAsyncClient {
             return entityClient.getWithResponseAsync(queueName, true, withTracing)
                 .onErrorMap(ServiceBusManagementAsyncClient::mapException)
                 .handle((response, sink) -> {
-                    final Response<QueueDescription> deserialize = deserializeQueue(response);
+                    final Response<QueueProperties> deserialize = deserializeQueue(response);
 
                     // if this is null, then the queue could not be found.
                     if (deserialize.getValue() == null) {
@@ -1460,7 +1461,7 @@ public final class ServiceBusManagementAsyncClient {
      *
      * @return A Mono that completes with a page of queues.
      */
-    Mono<PagedResponse<QueueDescription>> listQueuesFirstPage(Context context) {
+    Mono<PagedResponse<QueueProperties>> listQueuesFirstPage(Context context) {
         final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
 
         try {
@@ -1478,7 +1479,7 @@ public final class ServiceBusManagementAsyncClient {
      *
      * @return A Mono that completes with a page of queues or empty if there are no items left.
      */
-    Mono<PagedResponse<QueueDescription>> listQueuesNextPage(String continuationToken, Context context) {
+    Mono<PagedResponse<QueueProperties>> listQueuesNextPage(String continuationToken, Context context) {
         if (continuationToken == null || continuationToken.isEmpty()) {
             return Mono.empty();
         }
@@ -1581,18 +1582,19 @@ public final class ServiceBusManagementAsyncClient {
      *     on the updated entity. Any values not provided are set to the service default values.
      * @param context Context to pass into request.
      *
-     * @return A Mono that completes with the updated {@link QueueDescription}.
+     * @return A Mono that completes with the updated {@link QueueProperties}.
      */
-    Mono<Response<QueueDescription>> updateQueueWithResponse(QueueDescription queue, Context context) {
+    Mono<Response<QueueProperties>> updateQueueWithResponse(QueueProperties queue, Context context) {
         if (queue == null) {
             return monoError(logger, new NullPointerException("'queue' cannot be null"));
         } else if (context == null) {
             return monoError(logger, new NullPointerException("'context' cannot be null."));
         }
 
+        final QueueDescription queueDescription = EntityHelper.toImplementation(queue);
         final CreateQueueBodyContent content = new CreateQueueBodyContent()
             .setType(CONTENT_TYPE)
-            .setQueueDescription(queue);
+            .setQueueDescription(queueDescription);
         final CreateQueueBody createEntity = new CreateQueueBody()
             .setContent(content);
         final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
@@ -1713,13 +1715,13 @@ public final class ServiceBusManagementAsyncClient {
 
     /**
      * Converts a Response into its corresponding {@link QueueDescriptionEntry} then mapped into {@link
-     * QueueDescription}.
+     * QueueProperties}.
      *
      * @param response HTTP Response to deserialize.
      *
      * @return The corresponding HTTP response with convenience properties set.
      */
-    private Response<QueueDescription> deserializeQueue(Response<Object> response) {
+    private Response<QueueProperties> deserializeQueue(Response<Object> response) {
         final QueueDescriptionEntry entry = deserialize(response.getValue(), QueueDescriptionEntry.class);
 
         // This was an empty response (ie. 204).
@@ -1730,7 +1732,7 @@ public final class ServiceBusManagementAsyncClient {
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
         }
 
-        final QueueDescription result = entry.getContent().getQueueDescription();
+        final QueueProperties result = EntityHelper.toModel(entry.getContent().getQueueDescription());
         final String queueName = getTitleValue(entry.getTitle());
         EntityHelper.setQueueName(result, queueName);
 
@@ -1767,7 +1769,7 @@ public final class ServiceBusManagementAsyncClient {
 
     /**
      * Converts a Response into its corresponding {@link TopicDescriptionEntry} then mapped into {@link
-     * QueueDescription}.
+     * QueueProperties}.
      *
      * @param response HTTP Response to deserialize.
      *
@@ -1837,7 +1839,7 @@ public final class ServiceBusManagementAsyncClient {
      *
      * @return A Mono that completes with a paged response of queues.
      */
-    private Mono<PagedResponse<QueueDescription>> listQueues(int skip, Context context) {
+    private Mono<PagedResponse<QueueProperties>> listQueues(int skip, Context context) {
         return managementClient.listEntitiesWithResponseAsync(QUEUES_ENTITY_TYPE, skip, NUMBER_OF_ELEMENTS, context)
             .onErrorMap(ServiceBusManagementAsyncClient::mapException)
             .flatMap(response -> {
@@ -1849,14 +1851,16 @@ public final class ServiceBusManagementAsyncClient {
                     return Mono.empty();
                 }
 
-                final List<QueueDescription> entities = feed.getEntry().stream()
+                final List<QueueProperties> entities = feed.getEntry().stream()
                     .filter(e -> e.getContent() != null && e.getContent().getQueueDescription() != null)
                     .map(e -> {
                         final String queueName = getTitleValue(e.getTitle());
-                        final QueueDescription queueDescription = e.getContent().getQueueDescription();
-                        EntityHelper.setQueueName(queueDescription, queueName);
+                        final QueueProperties queueProperties = EntityHelper.toModel(
+                            e.getContent().getQueueDescription());
 
-                        return queueDescription;
+                        EntityHelper.setQueueName(queueProperties, queueName);
+
+                        return queueProperties;
                     })
                     .collect(Collectors.toList());
                 try {
