@@ -510,4 +510,7 @@
 
   <!-- Static logger instances for short lived objects. -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.experimental.serializer.TypeReference.java" />
+
+  <!-- False positive as these methods are implemented in an anonymous class that is not exposed publicly. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.messaging.servicebus.models.QueueProperties.java"/>
 </suppressions>
