@@ -4,7 +4,11 @@ Azure Active Directory (Azure AD) B2C is an identity management service that ena
 customers sign up, sign in, and manage their profiles when using your applications. Azure AD B2C enables these actions
 while protecting the identities of your customers at the same time.
 
-## Prerequisites
+[Package (Maven)][package] | [API reference documentation][refdocs] | [Product documentation][docs] | [Samples][sample]
+
+## Getting started
+
+### Prerequisites
 
 The following prerequisites are required in order to complete the steps in this article:
 
@@ -13,8 +17,20 @@ The following prerequisites are required in order to complete the steps in this 
 * Azure subscription.
 
 If you don't have an Azure subscription, create a [free account](https://azure.microsoft.com/free/?WT.mc_id=A261C142F) before you begin.
+### Include the package
 
-## Getting started
+`azure-active-directory-spring-boot-starter` is published on Maven Central Repository.
+If you are using Maven, add the following dependency.
+
+[//]: # "{x-version-update-start;com.microsoft.azure:azure-spring-boot-starter-active-directory-b2c;current}"
+```xml
+<dependency>
+    <groupId>com.microsoft.azure</groupId>
+    <artifactId>azure-spring-boot-starter-active-directory-b2c</artifactId>
+    <version>2.3.3-beta.1</version>
+</dependency>
+```
+[//]: # "{x-version-update-end}"
 
 ### Create the Active Directory instance
 
@@ -198,28 +214,23 @@ configured a new Azure AD B2C tenant and registered a new application in it, and
 application to use the Spring annotations and classes to protect the web app.
 
 ## Troubleshooting
-If you encounter any bug, please file an issue [here](https://github.com/Azure/azure-sdk-for-java/issues).
-
-To suggest a new feature or changes that could be made, file an issue the same way you would for a bug.
-
-You can participate community driven [![Gitter](https://badges.gitter.im/Microsoft/spring-on-azure.svg)](https://gitter.im/Microsoft/spring-on-azure)
+### Enable client logging
+Azure SDKs for Java offer a consistent logging story to help aid in troubleshooting application errors and expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
 
 ## Next steps
-#### Allow telemetry
-
-Microsoft would like to collect data about how users use this Spring boot starter. Microsoft uses this information to improve our tooling experience. Participation is voluntary. If you don't want to participate, just simply disable it by setting below configuration in `application.properties`.
-
-```
-azure.activedirectory.b2c.allow-telemetry=false
-```
-
-When telemetry is enabled, an HTTP request will be sent to URL `https://dc.services.visualstudio.com/v2/track`. So please make sure it's not blocked by your firewall.
-
-Find more information about Azure Service Privacy Statement, please check [Microsoft Online Services Privacy Statement](https://www.microsoft.com/privacystatement/OnlineServices/Default.aspx).
+The following section provide a sample project illustrating how to use the starter.
+### More sample code
+- [Azure Active Directory B2C](../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-oidc)
 
 ## Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
 
 Please follow [instructions here](../CONTRIBUTING.md) to build from source or contribute.
 
+<!-- LINKS -->
+[docs]: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-active-directory-b2c-oidc
+[refdocs]: https://azure.github.io/azure-sdk-for-java/spring.html#azure-active-directory-b2c-spring-boot-starter
+[package]: https://mvnrepository.com/artifact/com.microsoft.azure/azure-active-directory-b2c-spring-boot-starter
+[sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-oidc
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 
