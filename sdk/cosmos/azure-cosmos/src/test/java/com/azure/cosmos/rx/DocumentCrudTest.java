@@ -221,37 +221,6 @@ public class DocumentCrudTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
-    public void readDocument_DoesntExistOnErrorContinue(String documentId) throws InterruptedException {
-        InternalObjectNode docDefinition = getDocumentDefinition(documentId);
-
-        container.createItem(docDefinition, new CosmosItemRequestOptions()).block();
-
-        CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-        container.deleteItem(docDefinition.getId(), new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(docDefinition, "mypk"))).block();
-
-        waitIfNeededForReplicasToCatchUp(getClientBuilder());
-
-        final AtomicInteger failureCount = new AtomicInteger();
-        final AtomicInteger readCount = new AtomicInteger();
-        Flux.range(0, 2).flatMap(range -> {
-            return container.readItem(docDefinition.getId(),
-                new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(docDefinition, "mypk")),
-                options, InternalObjectNode.class);
-        }).doOnNext(item -> {
-            readCount.incrementAndGet();
-        }).onErrorContinue((throwable, object) -> {
-            if (throwable.getMessage().contains("Source was empty")) {
-                failureCount.incrementAndGet();
-            }
-        }).subscribe();
-
-        Thread.sleep(2000);
-
-        assertThat(failureCount.get()).isEqualTo(0);
-        assertThat(readCount.get()).isEqualTo(0);
-    }
-
-    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
     public void deleteDocument(String documentId) throws InterruptedException {
         InternalObjectNode docDefinition = getDocumentDefinition(documentId);
 
