@@ -5,7 +5,6 @@ package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.models.QueueDescription;
-import com.azure.messaging.servicebus.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.models.QueueProperties;
 import com.azure.messaging.servicebus.models.SubscriptionDescription;
 import com.azure.messaging.servicebus.models.TopicDescription;
@@ -42,19 +41,37 @@ public final class EntityHelper {
     }
 
     /**
-     * Creates a new queue given the options.
-     * @param options Options to create queue with.
+     * Creates a new queue given the existing queue.
+     *
+     * @param description Options to create queue with.
      * @return A new {@link QueueProperties} with the set options.
      */
-    public static QueueProperties createQueue(CreateQueueOptions options) {
-        Objects.requireNonNull(options, "'options' cannot be null.");
+    public static QueueDescription toImplementation(QueueProperties description) {
+        Objects.requireNonNull(description, "'description' cannot be null.");
 
         if (queueAccessor == null) {
             throw new ClientLogger(EntityHelper.class).logExceptionAsError(
                 new IllegalStateException("'queueAccessor' should not be null."));
         }
 
-        return queueAccessor.createQueue(options);
+        return queueAccessor.createQueue(description);
+    }
+
+    /**
+     * Creates a new queue given the existing queue.
+     *
+     * @param description Options to create queue with.
+     * @return A new {@link QueueProperties} with the set options.
+     */
+    public static QueueProperties toModel(QueueDescription description) {
+        Objects.requireNonNull(description, "'description' cannot be null.");
+
+        if (queueAccessor == null) {
+            throw new ClientLogger(EntityHelper.class).logExceptionAsError(
+                new IllegalStateException("'queueAccessor' should not be null."));
+        }
+
+        return queueAccessor.createQueue(description);
     }
 
     /**
@@ -170,12 +187,12 @@ public final class EntityHelper {
      */
     public interface QueueAccessor {
         /**
-         * Sets properties on the {@link QueueProperties} based on the CreateQueueOptions.
+         * Creates a new queue from the given {@code queueDescription}.
          *
-         * @param options The create queue options to set.
-         * @return A new {@link QueueProperties} with the properties set.
+         * @param queueDescription Queue description to use.
+         * @return A new queue with the properties set.
          */
-        QueueProperties createQueue(CreateQueueOptions options);
+        QueueDescription createQueue(QueueProperties queueDescription);
 
         /**
          * Creates a new queue from the given {@code queueDescription}.
