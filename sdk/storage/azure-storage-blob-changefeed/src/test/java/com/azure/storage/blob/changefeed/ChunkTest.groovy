@@ -2,6 +2,7 @@ package com.azure.storage.blob.changefeed
 
 import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobContainerAsyncClient
+import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedCursor
 import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor
 
@@ -14,6 +15,8 @@ import reactor.core.publisher.Flux
 import reactor.test.StepVerifier
 import spock.lang.Specification
 import spock.lang.Unroll
+
+import java.time.OffsetDateTime
 
 import static org.mockito.ArgumentMatchers.*
 import static org.mockito.Mockito.*
@@ -28,7 +31,7 @@ class ChunkTest extends Specification {
     BlobChunkedDownloader mockBlobLazyDownloader
 
     String chunkPath = "chunkPath"
-    ChangefeedCursor chunkCursor
+    BlobChangefeedCursor chunkCursor
 
     List<BlobChangefeedEvent> mockEvents
     List<Map<String, Object>> mockRecords
@@ -36,7 +39,7 @@ class ChunkTest extends Specification {
 
     def setup() {
         setupEvents()
-        chunkCursor = new ChangefeedCursor("endTime", "segmentTime", "shardPath", chunkPath, 0, 0)
+        chunkCursor = new BlobChangefeedCursor(new byte[0], OffsetDateTime.MAX)
 
         mockContainer = mock(BlobContainerAsyncClient.class)
         mockBlob = mock(BlobAsyncClient.class)
