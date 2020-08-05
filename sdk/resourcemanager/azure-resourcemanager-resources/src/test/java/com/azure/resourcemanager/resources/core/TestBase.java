@@ -165,8 +165,9 @@ public abstract class TestBase {
         final String skipMessage = shouldCancelTest(isPlaybackMode());
         Assumptions.assumeTrue(skipMessage == null, skipMessage);
 
-        String skipOutput = System.getProperty("skipOutput");
+        String skipOutput = Configuration.getGlobalConfiguration().get("skipOutput");
         if (isPlaybackMode() && skipOutput != null && skipOutput.equalsIgnoreCase("true")) {
+            System.out.println("------------------------------------------------------------ Skip Output");
             System.setOut(new PrintStream(new OutputStream() {
                 @Override
                 public void write(int b) throws IOException {
@@ -180,6 +181,9 @@ public abstract class TestBase {
 
                 }
             }));
+        } else {
+            System.out.println("------------------------------------------------------------ Not Skip Output");
+            System.out.println(skipOutput);
         }
 
         interceptorManager = InterceptorManager.create(testMothodName, testMode);
