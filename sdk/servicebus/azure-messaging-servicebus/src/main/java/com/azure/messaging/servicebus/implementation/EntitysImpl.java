@@ -67,7 +67,7 @@ public final class EntitysImpl {
                 @PathParam("entityName") String entityName,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("If-Match") String ifMatch,
-                @BodyParam("application/xml") Object requestBody,
+                @BodyParam("application/atom+xml") Object requestBody,
                 Context context);
 
         @Delete("/{entityName}")
