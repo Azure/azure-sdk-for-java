@@ -20,7 +20,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
-import com.azure.security.keyvault.keys.models.KeyVaultKey;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +72,7 @@ public final class CryptographyClientBuilder {
     private static final String SDK_VERSION = "version";
     private TokenCredential credential;
     private HttpPipeline pipeline;
-    private KeyVaultKey keyVaultKey;
+    private JsonWebKey jsonWebKey;
     private String keyId;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
@@ -127,15 +126,15 @@ public final class CryptographyClientBuilder {
      * CryptographyClientBuilder#keyIdentifier(String)} have not been set.
      */
     public CryptographyAsyncClient buildAsyncClient() {
-        if (keyVaultKey == null && Strings.isNullOrEmpty(keyId)) {
+        if (jsonWebKey == null && Strings.isNullOrEmpty(keyId)) {
             throw logger.logExceptionAsError(new IllegalStateException(
                 "Json Web Key or jsonWebKey identifier are required to create cryptography client"));
         }
         CryptographyServiceVersion serviceVersion = version != null ? version : CryptographyServiceVersion.getLatest();
 
         if (pipeline != null) {
-            if (keyVaultKey != null) {
-                return new CryptographyAsyncClient(keyVaultKey, pipeline, serviceVersion);
+            if (jsonWebKey != null) {
+                return new CryptographyAsyncClient(jsonWebKey, pipeline, serviceVersion);
             } else {
                 return new CryptographyAsyncClient(keyId, pipeline, serviceVersion);
             }
@@ -148,8 +147,8 @@ public final class CryptographyClientBuilder {
 
         HttpPipeline pipeline = setupPipeline();
 
-        if (keyVaultKey != null) {
-            return new CryptographyAsyncClient(keyVaultKey, pipeline, serviceVersion);
+        if (jsonWebKey != null) {
+            return new CryptographyAsyncClient(jsonWebKey, pipeline, serviceVersion);
         } else {
             return new CryptographyAsyncClient(keyId, pipeline, serviceVersion);
         }
@@ -298,20 +297,6 @@ public final class CryptographyClientBuilder {
      */
     public CryptographyClientBuilder serviceVersion(CryptographyServiceVersion version) {
         this.version = version;
-        return this;
-    }
-
-    /**
-     * Sets the jsonWebKey to be used for cryptography operations.
-     *
-     * <p>If {@code key} is provided then it takes precedence over key identifier and gets used for cryptography
-     * operations.</p>
-     *
-     * @param key The key to be used for cryptography operations.
-     * @return the updated builder object.
-     */
-    CryptographyClientBuilder key(KeyVaultKey key) {
-        this.keyVaultKey = key;
         return this;
     }
 
