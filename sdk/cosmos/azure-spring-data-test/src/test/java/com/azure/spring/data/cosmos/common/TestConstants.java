@@ -9,24 +9,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public final class TestConstants {
-    private static final int SUFFIX_LENGTH = 1;
 
     private static final Address ADDRESS_1 = new Address("201107", "Zixing Road", "Shanghai");
     private static final Address ADDRESS_2 = new Address("200000", "Xuhui", "Shanghai");
     public static final List<String> HOBBIES = Arrays.asList("photography", "fishing");
-    public static final List<String> UPDATED_HOBBIES = Arrays.asList("updatedPhotography", "updatedFishing");
     public static final List<Address> ADDRESSES = Arrays.asList(ADDRESS_1, ADDRESS_2);
-
-    public static final int DEFAULT_TIME_TO_LIVE = -1;
-    public static final boolean DEFAULT_INDEXING_POLICY_AUTOMATIC = true;
-    public static final IndexingMode DEFAULT_INDEXING_POLICY_MODE = IndexingMode.CONSISTENT;
-    public static final String[] DEFAULT_EXCLUDED_PATHS = {};
-    public static final String[] DEFAULT_INCLUDED_PATHS = {
-        "{\"path\":\"/*\",\"indexes\":["
-                    + "{\"kind\":\"Range\",\"dataType\":\"Number\",\"precision\":-1},"
-                    + "{\"kind\":\"Hash\",\"dataType\":\"String\",\"precision\":3}"
-                    + "]}",
-    };
 
     public static final String ROLE_COLLECTION_NAME = "RoleCollectionName";
     public static final int TIME_TO_LIVE = 5;
@@ -74,7 +61,6 @@ public final class TestConstants {
     };
 
     public static final String DB_NAME = "testdb";
-    public static final String SECONDARY_DB_NAME = "second_testdb";
     public static final String FIRST_NAME = "first_name_li";
     public static final String LAST_NAME = "last_name_p";
     public static final Integer ZIP_CODE = 12345;
@@ -97,9 +83,6 @@ public final class TestConstants {
     public static final String DATE_FUTURE_STRING_1 = "9/13/2017";
     public static final String DATE_FUTURE_STRING_2 = "9/14/2017";
     public static final String DATE_FORMAT = "dd/MM/yyyy";
-    public static final String DATE_TIMEZONE_STRING = "1/1/2000 00:00 GMT";
-    public static final String DATE_TIMEZONE_FORMAT = "dd/MM/yyyy HH:mm ZZZ";
-    public static final long MILLI_SECONDS = 946684800000L;
 
     public static final String POSTAL_CODE = "98052";
     public static final String POSTAL_CODE_0 = "00000";
@@ -117,31 +100,8 @@ public final class TestConstants {
     public static final String MESSAGE = "test pojo with date";
     public static final String NEW_MESSAGE = "new test message";
 
-    public static final String CRITERIA_KEY = "CriteriaTestKey";
-    public static final String CRITERIA_FAKE_KEY = "CriteriaFakeKey";
-    public static final String CRITERIA_OBJECT = "CriteriaTestObject";
-
-    public static final String COSMOSDB_FAKE_HOST = "https://fakeuri";
-    public static final String COSMOSDB_FAKE_KEY = "fakekey";
-    public static final String COSMOSDB_FAKE_CONNECTION_STRING =
-            "AccountEndpoint=https://fakeuri/;AccountKey=fakekey;";
-    public static final String COSMOSDB_INVALID_FAKE_CONNECTION_STRING = "invalid connection string";
-
     public static final String PROPERTY_ID = "id";
-    public static final String PROPERTY_FIRST_NAME = "firstName";
-    public static final String PROPERTY_LAST_NAME = "lastName";
     public static final String PROPERTY_ZIP_CODE = "zipCode";
-    public static final String PROPERTY_HOBBIES = "hobbies";
-    public static final String PROPERTY_SHIPPING_ADDRESSES = "shippingAddresses";
-
-    public static final String PROPERTY_CITY = "city";
-    public static final String PROPERTY_STREET = "street";
-
-    public static final String PROPERTY_MESSAGE = "message";
-    public static final String PROPERTY_DATE = "date";
-
-    public static final String PROPERTY_ETAG_DEFAULT = "_etag";
-    public static final String PROPERTY_ETAG_RENAMED = "etag";
 
     public static final int PAGE_SIZE_1 = 1;
     public static final int PAGE_SIZE_2 = 2;
