@@ -14,7 +14,7 @@ import java.time.OffsetDateTime;
  * information on those particular access conditions.
  */
 @Fluent
-public class BlobRequestConditions extends BlobSourceRequestConditions {
+public class BlobRequestConditions extends BlobLeaseRequestConditions {
     private String leaseId;
 
     /**

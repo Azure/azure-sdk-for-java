@@ -13,7 +13,7 @@ import java.time.OffsetDateTime;
  * properties may be set to null when passed to a method to indicate that those conditions are not desired. Please
  * refer to the type of each field for more information on those particular access conditions.
  */
-public class BlobSourceRequestConditions extends RequestConditions {
+public class BlobBeginCopySourceRequestConditions extends RequestConditions {
     private String tagsConditions;
 
     /**
@@ -23,7 +23,7 @@ public class BlobSourceRequestConditions extends RequestConditions {
      * @return The updated BlobSourceRequestConditions object.
      */
     @Override
-    public BlobSourceRequestConditions setIfMatch(String ifMatch) {
+    public BlobBeginCopySourceRequestConditions setIfMatch(String ifMatch) {
         super.setIfMatch(ifMatch);
         return this;
     }
@@ -35,7 +35,7 @@ public class BlobSourceRequestConditions extends RequestConditions {
      * @return The updated BlobSourceRequestConditions object.
      */
     @Override
-    public BlobSourceRequestConditions setIfNoneMatch(String ifNoneMatch) {
+    public BlobBeginCopySourceRequestConditions setIfNoneMatch(String ifNoneMatch) {
         super.setIfNoneMatch(ifNoneMatch);
         return this;
     }
@@ -48,7 +48,7 @@ public class BlobSourceRequestConditions extends RequestConditions {
      * @return The updated BlobSourceRequestConditions object.
      */
     @Override
-    public BlobSourceRequestConditions setIfModifiedSince(OffsetDateTime ifModifiedSince) {
+    public BlobBeginCopySourceRequestConditions setIfModifiedSince(OffsetDateTime ifModifiedSince) {
         super.setIfModifiedSince(ifModifiedSince);
         return this;
     }
@@ -61,7 +61,7 @@ public class BlobSourceRequestConditions extends RequestConditions {
      * @return The updated BlobSourceRequestConditions object.
      */
     @Override
-    public BlobSourceRequestConditions setIfUnmodifiedSince(OffsetDateTime ifUnmodifiedSince) {
+    public BlobBeginCopySourceRequestConditions setIfUnmodifiedSince(OffsetDateTime ifUnmodifiedSince) {
         super.setIfUnmodifiedSince(ifUnmodifiedSince);
         return this;
     }
@@ -81,7 +81,7 @@ public class BlobSourceRequestConditions extends RequestConditions {
      * @param tagsConditions The SQL statement that apply to the tags of the blob.
      * @return The updated BlobSourceRequestConditions object.
      */
-    public BlobSourceRequestConditions setTagsConditions(String tagsConditions) {
+    public BlobBeginCopySourceRequestConditions setTagsConditions(String tagsConditions) {
         this.tagsConditions = tagsConditions;
         return this;
     }

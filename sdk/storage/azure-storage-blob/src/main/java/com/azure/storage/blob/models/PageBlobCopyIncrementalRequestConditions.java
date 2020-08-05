@@ -13,7 +13,7 @@ import java.time.OffsetDateTime;
  * properties may be set to null when passed to a method to indicate that those conditions are not desired. Please
  * refer to the type of each field for more information on those particular access conditions.
  */
-public class BlobDestinationRequestConditions extends RequestConditions {
+public class PageBlobCopyIncrementalRequestConditions extends RequestConditions {
     private String tagsConditions;
 
     /**
@@ -23,7 +23,7 @@ public class BlobDestinationRequestConditions extends RequestConditions {
      * @return The updated BlobDestinationRequestConditions object.
      */
     @Override
-    public BlobDestinationRequestConditions setIfMatch(String ifMatch) {
+    public PageBlobCopyIncrementalRequestConditions setIfMatch(String ifMatch) {
         super.setIfMatch(ifMatch);
         return this;
     }
@@ -35,7 +35,7 @@ public class BlobDestinationRequestConditions extends RequestConditions {
      * @return The updated BlobDestinationRequestConditions object.
      */
     @Override
-    public BlobDestinationRequestConditions setIfNoneMatch(String ifNoneMatch) {
+    public PageBlobCopyIncrementalRequestConditions setIfNoneMatch(String ifNoneMatch) {
         super.setIfNoneMatch(ifNoneMatch);
         return this;
     }
@@ -48,7 +48,7 @@ public class BlobDestinationRequestConditions extends RequestConditions {
      * @return The updated BlobDestinationRequestConditions object.
      */
     @Override
-    public BlobDestinationRequestConditions setIfModifiedSince(OffsetDateTime ifModifiedSince) {
+    public PageBlobCopyIncrementalRequestConditions setIfModifiedSince(OffsetDateTime ifModifiedSince) {
         super.setIfModifiedSince(ifModifiedSince);
         return this;
     }
@@ -61,7 +61,7 @@ public class BlobDestinationRequestConditions extends RequestConditions {
      * @return The updated BlobDestinationRequestConditions object.
      */
     @Override
-    public BlobDestinationRequestConditions setIfUnmodifiedSince(OffsetDateTime ifUnmodifiedSince) {
+    public PageBlobCopyIncrementalRequestConditions setIfUnmodifiedSince(OffsetDateTime ifUnmodifiedSince) {
         super.setIfUnmodifiedSince(ifUnmodifiedSince);
         return this;
     }
@@ -81,7 +81,7 @@ public class BlobDestinationRequestConditions extends RequestConditions {
      * @param tagsConditions The SQL statement that apply to the tags of the blob.
      * @return The updated BlobDestinationRequestConditions object.
      */
-    public BlobDestinationRequestConditions setTagsConditions(String tagsConditions) {
+    public PageBlobCopyIncrementalRequestConditions setTagsConditions(String tagsConditions) {
         this.tagsConditions = tagsConditions;
         return this;
     }

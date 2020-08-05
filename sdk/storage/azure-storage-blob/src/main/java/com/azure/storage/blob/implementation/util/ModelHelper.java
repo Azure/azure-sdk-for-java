@@ -9,11 +9,11 @@ import com.azure.storage.blob.implementation.models.BlobDownloadHeaders;
 import com.azure.storage.blob.implementation.models.BlobItemInternal;
 import com.azure.storage.blob.implementation.models.BlobItemPropertiesInternal;
 import com.azure.storage.blob.implementation.models.BlobTag;
-import com.azure.storage.blob.models.BlobDestinationRequestConditions;
+import com.azure.storage.blob.models.PageBlobCopyIncrementalRequestConditions;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobItemProperties;
 import com.azure.storage.blob.models.BlobLeaseRequestConditions;
-import com.azure.storage.blob.models.BlobSourceRequestConditions;
+import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions;
 import com.azure.storage.blob.models.ObjectReplicationPolicy;
 import com.azure.storage.blob.models.ObjectReplicationRule;
 import com.azure.storage.blob.models.ObjectReplicationStatus;
@@ -309,17 +309,17 @@ public class ModelHelper {
     }
 
     /**
-     * Transforms {@link RequestConditions} into a {@link BlobSourceRequestConditions}.
+     * Transforms {@link RequestConditions} into a {@link BlobBeginCopySourceRequestConditions}.
      *
      * @param requestConditions {@link RequestConditions}
-     * @return {@link BlobSourceRequestConditions}
+     * @return {@link BlobBeginCopySourceRequestConditions}
      */
-    public static BlobSourceRequestConditions populateBlobSourceRequestConditions(RequestConditions requestConditions) {
+    public static BlobBeginCopySourceRequestConditions populateBlobSourceRequestConditions(RequestConditions requestConditions) {
         if (requestConditions == null) {
             return null;
         }
 
-        return new BlobSourceRequestConditions()
+        return new BlobBeginCopySourceRequestConditions()
             .setIfMatch(requestConditions.getIfMatch())
             .setIfNoneMatch(requestConditions.getIfNoneMatch())
             .setIfModifiedSince(requestConditions.getIfModifiedSince())
@@ -328,18 +328,18 @@ public class ModelHelper {
     }
 
     /**
-     * Transforms {@link RequestConditions} into a {@link BlobDestinationRequestConditions}.
+     * Transforms {@link RequestConditions} into a {@link PageBlobCopyIncrementalRequestConditions}.
      *
      * @param requestConditions {@link RequestConditions}
-     * @return {@link BlobDestinationRequestConditions}
+     * @return {@link PageBlobCopyIncrementalRequestConditions}
      */
-    public static BlobDestinationRequestConditions populateBlobDestinationRequestConditions(
+    public static PageBlobCopyIncrementalRequestConditions populateBlobDestinationRequestConditions(
         RequestConditions requestConditions) {
         if (requestConditions == null) {
             return null;
         }
 
-        return new BlobDestinationRequestConditions()
+        return new PageBlobCopyIncrementalRequestConditions()
             .setIfMatch(requestConditions.getIfMatch())
             .setIfNoneMatch(requestConditions.getIfNoneMatch())
             .setIfModifiedSince(requestConditions.getIfModifiedSince())

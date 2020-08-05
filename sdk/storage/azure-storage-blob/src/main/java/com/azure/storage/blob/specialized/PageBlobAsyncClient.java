@@ -22,7 +22,7 @@ import com.azure.storage.blob.implementation.models.PageBlobUpdateSequenceNumber
 import com.azure.storage.blob.implementation.models.PageBlobUploadPagesFromURLHeaders;
 import com.azure.storage.blob.implementation.models.PageBlobUploadPagesHeaders;
 import com.azure.storage.blob.implementation.util.ModelHelper;
-import com.azure.storage.blob.models.BlobDestinationRequestConditions;
+import com.azure.storage.blob.models.PageBlobCopyIncrementalRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
@@ -934,7 +934,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         RequestConditions modifiedRequestConditions) {
         try {
             return copyIncrementalWithResponse(new PageBlobCopyIncrementalOptions(source, snapshot)
-                .setDestinationRequestConditions(
+                .setRequestConditions(
                     ModelHelper.populateBlobDestinationRequestConditions(modifiedRequestConditions)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -974,8 +974,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         StorageImplUtils.assertNotNull("options", options);
         UrlBuilder builder = UrlBuilder.parse(options.getSource());
         builder.setQueryParameter(Constants.UrlConstants.SNAPSHOT_QUERY_PARAMETER, options.getSnapshot());
-        BlobDestinationRequestConditions modifiedRequestConditions = (options.getDestinationRequestConditions() == null)
-            ? new BlobDestinationRequestConditions() : options.getDestinationRequestConditions();
+        PageBlobCopyIncrementalRequestConditions modifiedRequestConditions = (options.getRequestConditions() == null)
+            ? new PageBlobCopyIncrementalRequestConditions() : options.getRequestConditions();
 
         URL url;
         try {

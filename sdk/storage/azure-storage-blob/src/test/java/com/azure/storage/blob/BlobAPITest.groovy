@@ -9,7 +9,7 @@ import com.azure.core.util.polling.LongRunningOperationStatus
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.ArchiveStatus
-import com.azure.storage.blob.models.BlobSourceRequestConditions
+import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.models.BlobRange
@@ -1724,7 +1724,7 @@ class BlobAPITest extends APISpec {
         bc.setTags(t)
         def copyDestBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient()
         match = setupBlobMatchCondition(bc, match)
-        def mac = new BlobSourceRequestConditions()
+        def mac = new BlobBeginCopySourceRequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
@@ -1753,7 +1753,7 @@ class BlobAPITest extends APISpec {
         setup:
         def copyDestBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient()
         noneMatch = setupBlobMatchCondition(bc, noneMatch)
-        def mac = new BlobSourceRequestConditions()
+        def mac = new BlobBeginCopySourceRequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)

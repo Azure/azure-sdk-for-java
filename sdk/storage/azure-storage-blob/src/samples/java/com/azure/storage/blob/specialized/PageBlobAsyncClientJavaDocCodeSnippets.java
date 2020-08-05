@@ -4,7 +4,7 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.http.RequestConditions;
-import com.azure.storage.blob.models.BlobDestinationRequestConditions;
+import com.azure.storage.blob.models.PageBlobCopyIncrementalRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
@@ -412,11 +412,11 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
     public void copyIncrementalWithResponseCodeSnippet2() {
         // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.copyIncrementalWithResponse#PageBlobCopyIncrementalOptions
         final String snapshot = "copy snapshot";
-        BlobDestinationRequestConditions sourceRequestConditions = new BlobDestinationRequestConditions()
+        PageBlobCopyIncrementalRequestConditions destinationRequestConditions = new PageBlobCopyIncrementalRequestConditions()
             .setIfNoneMatch("snapshotMatch");
 
         client.copyIncrementalWithResponse(new PageBlobCopyIncrementalOptions(url, snapshot)
-            .setDestinationRequestConditions(sourceRequestConditions))
+            .setRequestConditions(destinationRequestConditions))
             .subscribe(response -> {
                 CopyStatusType statusType = response.getValue();
 

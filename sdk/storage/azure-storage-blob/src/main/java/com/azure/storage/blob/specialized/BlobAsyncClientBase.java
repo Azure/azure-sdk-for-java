@@ -36,7 +36,7 @@ import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.ArchiveStatus;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
-import com.azure.storage.blob.models.BlobSourceRequestConditions;
+import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.models.BlobCopyInfo;
@@ -471,8 +471,8 @@ public class BlobAsyncClientBase {
         StorageImplUtils.assertNotNull("options", options);
         final Duration interval = options.getPollInterval() != null
             ? options.getPollInterval() : Duration.ofSeconds(1);
-        final BlobSourceRequestConditions sourceModifiedCondition = options.getSourceRequestConditions() == null
-            ? new BlobSourceRequestConditions()
+        final BlobBeginCopySourceRequestConditions sourceModifiedCondition = options.getSourceRequestConditions() == null
+            ? new BlobBeginCopySourceRequestConditions()
             : options.getSourceRequestConditions();
         final BlobRequestConditions destinationRequestConditions =
             options.getDestinationRequestConditions() == null
@@ -516,7 +516,7 @@ public class BlobAsyncClientBase {
 
     private Mono<BlobCopyInfo> onStart(String sourceUrl, Map<String, String> metadata, Map<String, String> tags,
         AccessTier tier, RehydratePriority priority, Boolean sealBlob,
-        BlobSourceRequestConditions sourceModifiedRequestConditions,
+        BlobBeginCopySourceRequestConditions sourceModifiedRequestConditions,
         BlobRequestConditions destinationRequestConditions) {
         URL url;
         try {

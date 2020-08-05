@@ -6,12 +6,11 @@ package com.azure.storage.blob.specialized
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobContainerClient
-import com.azure.storage.blob.models.BlobDestinationRequestConditions
+import com.azure.storage.blob.models.PageBlobCopyIncrementalRequestConditions
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.BlobRequestConditions
-import com.azure.storage.blob.models.BlobSourceRequestConditions
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.CopyStatusType
 import com.azure.storage.blob.options.BlobGetTagsOptions
@@ -1168,7 +1167,7 @@ class PageBlobAPITest extends APISpec {
 
         snapshot = bc.createSnapshot().getSnapshotId()
         match = setupBlobMatchCondition(bu2, match)
-        def mac = new BlobDestinationRequestConditions()
+        def mac = new PageBlobCopyIncrementalRequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
@@ -1176,7 +1175,7 @@ class PageBlobAPITest extends APISpec {
             .setTagsConditions(tags)
 
         expect:
-        bu2.copyIncrementalWithResponse(new PageBlobCopyIncrementalOptions(bc.getBlobUrl(), snapshot).setDestinationRequestConditions(mac), null, null).getStatusCode() == 202
+        bu2.copyIncrementalWithResponse(new PageBlobCopyIncrementalOptions(bc.getBlobUrl(), snapshot).setRequestConditions(mac), null, null).getStatusCode() == 202
 
         where:
         modified | unmodified | match        | noneMatch    | tags
@@ -1197,7 +1196,7 @@ class PageBlobAPITest extends APISpec {
         bu2.copyIncremental(bc.getBlobUrl(), snapshot)
         snapshot = bc.createSnapshot().getSnapshotId()
         noneMatch = setupBlobMatchCondition(bu2, noneMatch)
-        def mac = new BlobDestinationRequestConditions()
+        def mac = new PageBlobCopyIncrementalRequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
@@ -1205,7 +1204,7 @@ class PageBlobAPITest extends APISpec {
             .setTagsConditions(tags)
 
         when:
-        bu2.copyIncrementalWithResponse(new PageBlobCopyIncrementalOptions(bc.getBlobUrl(), snapshot).setDestinationRequestConditions(mac),null, null)
+        bu2.copyIncrementalWithResponse(new PageBlobCopyIncrementalOptions(bc.getBlobUrl(), snapshot).setRequestConditions(mac),null, null)
 
         then:
         thrown(BlobStorageException)
