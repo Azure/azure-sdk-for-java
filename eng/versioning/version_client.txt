@@ -57,6 +57,7 @@ com.azure:azure-spring-boot-test-aad;1.0.0;1.0.0
 com.azure:azure-spring-boot-test-core;1.0.0;1.0.0
 com.azure:azure-spring-boot-test-cosmosdb;1.0.0;1.0.0
 com.azure:azure-spring-boot-test-keyvault;1.0.0;1.0.0
+com.azure:azure-spring-cloud-test-eventhubs;1.0.0;1.0.0
 com.azure:azure-spring-data-gremlin;2.3.1-beta.1;2.3.1-beta.1
 com.microsoft.azure:azure-active-directory-b2c-spring-boot-starter;2.3.3-beta.1;2.3.3-beta.1
 com.microsoft.azure:azure-active-directory-spring-boot-starter;2.3.3-beta.1;2.3.3-beta.1
