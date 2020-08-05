@@ -4,9 +4,12 @@
 
 package com.azure.messaging.servicebus.models;
 
+import com.azure.messaging.servicebus.implementation.EntityHelper;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
+import java.util.Arrays;
+import java.util.List;
 
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.DEFAULT_DUPLICATE_DETECTION_DURATION;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.DEFAULT_LOCK_DURATION;
@@ -52,12 +55,15 @@ class CreateQueueOptionsTest {
     @Test
     void constructorWithOptions() {
         // Arrange
-        final String queueName = "some-queue";
+        final List<AuthorizationRule> rules = Arrays.asList(
+            new AuthorizationRule().setClaimType("a").setClaimValue("b").setKeyName("c").setPrimaryKey("pk")
+                .setSecondaryKey("sk").setRights(Arrays.asList("r1", "r2")),
+            new AuthorizationRule().setClaimType("a2").setClaimValue("b2").setKeyName("c2").setPrimaryKey("pk2")
+                .setSecondaryKey("sk2").setRights(Arrays.asList("r12", "r23"))
+        );
         final QueueProperties expected = new QueueProperties()
-            .setName(queueName)
             .setAutoDeleteOnIdle(Duration.ofSeconds(15))
             .setDefaultMessageTimeToLive(Duration.ofSeconds(50))
-            .setDeadLetteringOnMessageExpiration(null)
             .setDuplicateDetectionHistoryTimeWindow(Duration.ofSeconds(13))
             .setEnableBatchedOperations(false)
             .setEnablePartitioning(true)
@@ -70,6 +76,9 @@ class CreateQueueOptionsTest {
             .setRequiresSession(true)
             .setUserMetadata("Test-queue-Metadata")
             .setStatus(EntityStatus.DISABLED);
+        final String queueName = "some-queue";
+
+        EntityHelper.setQueueName(expected, queueName);
 
         // Act
         final CreateQueueOptions actual = new CreateQueueOptions(expected);
