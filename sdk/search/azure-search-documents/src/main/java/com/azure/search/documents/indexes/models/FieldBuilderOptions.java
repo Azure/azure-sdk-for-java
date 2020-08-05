@@ -33,7 +33,7 @@ public class FieldBuilderOptions {
      * @return The {@link FieldBuilderOptions} object itself.
      */
     public FieldBuilderOptions setConverter(MemberNameConverter converter) {
-        this.converter = Objects.requireNonNull(converter, "The serializer cannot be null");
+        this.converter = Objects.requireNonNull(converter, "The converter cannot be null");
         return this;
     }
 
