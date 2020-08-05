@@ -3,8 +3,7 @@
 
 module com.azure.core.test {
     requires transitive com.azure.core;
-    requires com.azure.core.management;
-    requires com.azure.identity;
+
     requires org.junit.jupiter.api;
     requires reactor.test;
 
