@@ -74,7 +74,7 @@ az cognitiveservices account show --name "resource-name" --resource-group "resou
 
 #### Create a Form Recognizer client using AzureKeyCredential
 To use `AzureKeyCredential` authentication, provide the [key][key] as a string to the [AzureKeyCredential][azure_key_credential].
-This key can be found in the [Azure Portal][azure_portal] under the "Keys and Endpoint" section in your created Form Recognizer
+This key can be found in the [Azure Portal][azure_portal] in your created Form Recognizer
 resource, or by running the following Azure CLI command to get the key from the Form Recognizer resource:
 
 ```bash
@@ -454,14 +454,12 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [azure_key_credential]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/credential/AzureKeyCredential.java
 [key]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows#get-the-keys-for-your-resource
 [api_reference_doc]: https://aka.ms/azsdk-java-formrecognizer-ref-docs
-[authentication]: https://docs.microsoft.com/azure/cognitive-services/authentication
 [azure_identity_credential_type]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity#credentials
 [azure_cli]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account-cli?tabs=windows
 [azure_cli_endpoint]: https://docs.microsoft.com/cli/azure/cognitiveservices/account?view=azure-cli-latest#az-cognitiveservices-account-show
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity#credentials
 [azure_portal]: https://ms.portal.azure.com
 [azure_subscription]: https://azure.microsoft.com/free
-[azure_key_credential]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/credential/AzureKeyCredential.java
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
@@ -481,7 +479,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [http_response_exception]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/exception/HttpResponseException.java
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [package]: https://mvnrepository.com/artifact/com.azure/azure-ai-formrecognizer
-[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [product_documentation]: https://docs.microsoft.com/azure/cognitive-services/form-recognizer/overview
 [sample_readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/README.md
 [manage_custom_models]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/ManageCustomModels.java
@@ -502,8 +499,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [copy_model]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/CopyModel.java
 [copy_model_async]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/CopyModelAsync.java
 [service_access]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows
-[service_doc_train_unlabeled]: https://docs.microsoft.com/azure/cognitive-services/form-recognizer/overview#train-without-labels
-[service_doc_train_labeled]: https://docs.microsoft.com/azure/cognitive-services/form-recognizer/overview#train-with-labels
 [service_recognize_receipt]: https://aka.ms/formrecognizer/receiptfields
 [strongly_typed_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/StronglyTypedRecognizedForm.java
 [source_code]: src
