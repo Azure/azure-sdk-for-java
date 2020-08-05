@@ -28,7 +28,7 @@ All of these samples need the endpoint to your Form Recognizer resource ([instru
 |**File Name**|**Description**|
 |----------------|-------------|
 |[Authentication][authentication_sample]|Authenticate the client|
-|[RecognizeContent][recognize_content] and [RecognizeContentFromUrlAsync][recognize_content_async]|Recognize text and table structures of a document|
+|[RecognizeContent][recognize_content] and [RecognizeContentFromUrlAsync][recognize_content_from_url_async]|Recognize text and table structures of a document|
 |[RecognizeReceipts][recognize_receipts] and [RecognizeReceiptsAsync][recognize_receipts_async]|Recognize data from a file of a US sales receipt using a prebuilt model|
 |[RecognizeReceiptsFromUrl][recognize_receipts_from_url] and [RecognizeReceiptsFromUrlAsync][recognize_receipts_from_url_async]|Recognize data from a URL of a US sales receipt using a prebuilt model|
 |[RecognizeCustomFormsFromUrl][recognize_custom_forms] and [RecognizeCustomFormsAsync][recognize_custom_forms_async]|Recognize forms with your custom model|
@@ -75,7 +75,7 @@ Guidelines][SDK_README_CONTRIBUTING] for more information.
 [recognize_receipts_from_url]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/RecognizeReceiptsFromUrl.java
 [recognize_receipts_from_url_async]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/RecognizeReceiptsFromUrlAsync.java
 [recognize_content]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/RecognizeContent.java
-[recognize_content_async]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/RecognizeContentFromUrlAsync.java
+[recognize_content_from_url_async]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/RecognizeContentFromUrlAsync.java
 [recognize_custom_forms]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/RecognizeCustomFormsFromUrl.java
 [recognize_custom_forms_async]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/RecognizeCustomFormsAsync.java
 [train_unlabeled_model]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/TrainModelWithoutLabels.java

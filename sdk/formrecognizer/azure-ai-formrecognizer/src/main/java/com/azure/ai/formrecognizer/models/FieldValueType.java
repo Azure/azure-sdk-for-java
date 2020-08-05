@@ -20,7 +20,7 @@ public enum FieldValueType {
     /** Enum value floating point number. */
     FLOAT,
 
-    /** Enum value long/integer. */
+    /** Enum value long. */
     LONG,
 
     /** Enum value list. */
