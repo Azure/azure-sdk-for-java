@@ -9,7 +9,7 @@ package com.azure.cosmos;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration;
-import com.azure.spring.data.cosmos.config.CosmosClientConfig;
+import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.ResponseDiagnostics;
 import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
 import com.azure.spring.data.cosmos.repository.config.EnableReactiveCosmosRepositories;
@@ -35,12 +35,17 @@ public class UserRepositoryConfiguration extends AbstractCosmosConfiguration {
     private AzureKeyCredential azureKeyCredential;
 
     @Bean
-    public CosmosClientConfig cosmosClientConfig() {
+    public CosmosClientBuilder cosmosClientBuilder() {
         this.azureKeyCredential = new AzureKeyCredential(properties.getKey());
-        return CosmosClientConfig.builder()
-            .cosmosClientBuilder(new CosmosClientBuilder().credential(azureKeyCredential))
-            .database(getDatabaseName())
-            .build();
+        return new CosmosClientBuilder().credential(azureKeyCredential);
+    }
+
+    @Bean
+    public CosmosConfig cosmosConfig() {
+        return CosmosConfig.builder()
+                           .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
+                           .enableQueryMetrics(properties.isQueryMetricsEnabled())
+                           .build();
     }
 
     public void switchToSecondaryKey() {

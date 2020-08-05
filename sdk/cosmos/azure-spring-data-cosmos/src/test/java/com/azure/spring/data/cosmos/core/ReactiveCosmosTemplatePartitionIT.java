@@ -3,16 +3,16 @@
 package com.azure.spring.data.cosmos.core;
 
 import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.common.TestConstants;
-import com.azure.spring.data.cosmos.config.CosmosClientConfig;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
 import com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext;
+import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
-import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.domain.PartitionPerson;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
@@ -60,13 +60,13 @@ public class ReactiveCosmosTemplatePartitionIT {
     @Autowired
     private CosmosConfig cosmosConfig;
     @Autowired
-    private CosmosClientConfig cosmosClientConfig;
+    private CosmosClientBuilder cosmosClientBuilder;
 
     @Before
     public void setUp() throws ClassNotFoundException {
         if (!initialized) {
-            CosmosAsyncClient client = CosmosFactory.createCosmosAsyncClient(cosmosClientConfig);
-            final CosmosFactory dbFactory = new CosmosFactory(client, cosmosClientConfig.getDatabase());
+            CosmosAsyncClient client = CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder);
+            final CosmosFactory dbFactory = new CosmosFactory(client, TestConstants.DB_NAME);
 
             final CosmosMappingContext mappingContext = new CosmosMappingContext();
             personInfo =

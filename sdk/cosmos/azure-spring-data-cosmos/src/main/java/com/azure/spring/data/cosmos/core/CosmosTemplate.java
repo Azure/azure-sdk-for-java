@@ -15,9 +15,9 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
+import com.azure.spring.data.cosmos.Constants;
 import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.common.CosmosUtils;
-import com.azure.spring.data.cosmos.common.Memoizer;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
 import com.azure.spring.data.cosmos.core.generator.CountQueryGenerator;
@@ -48,7 +48,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.azure.spring.data.cosmos.common.CosmosUtils.createPartitionKey;
@@ -67,9 +66,6 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     private final ResponseDiagnosticsProcessor responseDiagnosticsProcessor;
     private final boolean queryMetricsEnabled;
     private final CosmosAsyncClient cosmosAsyncClient;
-    private final Function<Class<?>, CosmosEntityInformation<?, ?>> entityInfoCreator =
-        Memoizer.memoize(this::getCosmosEntityInformation);
-
     /**
      * Initialization
      *
@@ -415,8 +411,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     @Override
     public String getContainerName(Class<?> domainType) {
         Assert.notNull(domainType, "domainType should not be null");
-
-        return entityInfoCreator.apply(domainType).getContainerName();
+        return CosmosEntityInformation.getInstance(domainType).getContainerName();
     }
 
     @Override
@@ -471,6 +466,29 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
      * @param partitionKey the partition key
      */
     public void deleteById(String containerName, Object id, PartitionKey partitionKey) {
+        deleteById(containerName, id, partitionKey, new CosmosItemRequestOptions());
+    }
+
+
+    /**
+     * Delete the DocumentQuery, need to query by id at first, then delete the item from the result.
+     * This method respects the version of the entity whereas deleteById does not
+     *
+     * @param containerName Container name of database
+     * @param entity the entity to delete
+     * @param id item id
+     * @param partitionKey the partition key
+     */
+    public void deleteEntityById(String containerName, Object entity, Object id, PartitionKey partitionKey) {
+        Assert.notNull(entity, "entity to be deleted should not be null");
+        final JsonNode originalItem = mappingCosmosConverter.writeJsonNode(entity);
+        final CosmosItemRequestOptions options = new CosmosItemRequestOptions();
+        applyVersioning(entity.getClass(), originalItem, options);
+        deleteById(containerName, id, partitionKey, options);
+    }
+
+    private void deleteById(String containerName, Object id, PartitionKey partitionKey,
+                            CosmosItemRequestOptions options) {
         Assert.hasText(containerName, "containerName should not be null, empty or only whitespaces");
         String idToDelete = CosmosUtils.getStringIDValue(id);
         LOGGER.debug("execute deleteById in database {} container {}", this.databaseName,
@@ -479,16 +497,17 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         if (partitionKey == null) {
             partitionKey = PartitionKey.NONE;
         }
+
         cosmosAsyncClient.getDatabase(this.databaseName)
-                         .getContainer(containerName)
-                         .deleteItem(idToDelete, partitionKey)
-                         .doOnNext(response ->
-                             CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
-                                 response.getDiagnostics(), null))
-                         .onErrorResume(throwable ->
-                             CosmosExceptionUtils.exceptionHandler("Failed to delete item",
-                                 throwable))
-                         .block();
+            .getContainer(containerName)
+            .deleteItem(idToDelete, partitionKey, options)
+            .doOnNext(response ->
+                CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
+                    response.getDiagnostics(), null))
+            .onErrorResume(throwable ->
+                CosmosExceptionUtils.exceptionHandler("Failed to delete item",
+                    throwable))
+            .block();
     }
 
     @Override
@@ -737,7 +756,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                              String containerName,
                              @NonNull Class<T> domainType) {
 
-        final PartitionKey partitionKey = createPartitionKey(jsonNode, entityInfoCreator.apply(domainType));
+        final PartitionKey partitionKey = createPartitionKey(jsonNode, CosmosEntityInformation.getInstance(domainType));
 
         final CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         applyVersioning(domainType, jsonNode, options);
@@ -761,13 +780,10 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     private void applyVersioning(Class<?> domainType,
                                  JsonNode jsonNode,
                                  CosmosItemRequestOptions options) {
-
-        if (entityInfoCreator.apply(domainType).isVersioned()) {
-            options.setIfMatchETag(jsonNode.get("_etag").asText());
+        CosmosEntityInformation<?, ?> entityInformation = CosmosEntityInformation.getInstance(domainType);
+        if (entityInformation.isVersioned()) {
+            options.setIfMatchETag(jsonNode.get(Constants.ETAG_PROPERTY_DEFAULT_NAME).asText());
         }
     }
 
-    private CosmosEntityInformation<?, ?> getCosmosEntityInformation(Class<?> domainType) {
-        return new CosmosEntityInformation<>(domainType);
-    }
 }
