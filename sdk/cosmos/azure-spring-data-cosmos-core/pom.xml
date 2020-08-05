@@ -11,12 +11,12 @@
   </parent>
 
   <groupId>com.azure</groupId>
-  <artifactId>azure-spring-data-cosmos</artifactId>
-  <version>3.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
+  <artifactId>azure-spring-data-cosmos-core</artifactId>
+  <version>3.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos-core;current} -->
   <packaging>jar</packaging>
   <name>Spring Data for Azure Cosmos DB SQL API</name>
   <description>Spring Data for Azure Cosmos DB SQL API</description>
-  <url>https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-spring-data-cosmos</url>
+  <url>https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-spring-data-cosmos-core</url>
 
   <properties>
     <maven.build.timestamp.format>MM-dd-HH-mm-ss</maven.build.timestamp.format>

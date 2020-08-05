@@ -43,9 +43,9 @@ extends:
       - name: azure-cosmos
         groupId: com.azure
         safeName: azurecosmos
-      - name: azure-spring-data-cosmos
+      - name: azure-spring-data-cosmos-core
         groupId: com.azure
-        safeName: azurespringdatacosmos
+        safeName: azurespringdatacosmoscore
       - name: azure-spring-data-2-2-cosmos
         groupId: com.azure
         safeName: azurespringdata22cosmos

@@ -117,14 +117,14 @@ public class AuditableUser {
 ## Quick Start
 
 ### Add the dependency
-`azure-spring-data-cosmos` is published on Maven Central Repository.  
+`azure-spring-data-cosmos-core` is published on Maven Central Repository.  
 If you are using Maven, add the following dependency. 
 
-[//]: # "{x-version-update-start;com.azure:azure-spring-data-cosmos;current}"
+[//]: # "{x-version-update-start;com.azure:azure-spring-data-cosmos-core;current}"
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
-    <artifactId>azure-spring-data-cosmos</artifactId>
+    <artifactId>azure-spring-data-cosmos-core</artifactId>
     <version>3.0.0-beta.1</version>
 </dependency>
 ```
@@ -367,14 +367,14 @@ public class SampleApplication implements CommandLineRunner {
 Autowired UserRepository interface, then can do save, delete and find operations. Spring Data Azure Cosmos DB uses the CosmosTemplate to execute the queries behind *find*, *save* methods. You can use the template yourself for more complex queries.
 
 ## Support multi-database configuration
-The `azure-spring-data-cosmos` support multi-database configuration, includes "multiple account" and "single account, multiple database". Here is an example.
+The `azure-spring-data-cosmos-core` support multi-database configuration, includes "multiple account" and "single account, multiple database". Here is an example.
 
 ### Add the dependency
-[//]: # "{x-version-update-start;com.azure:azure-spring-data-cosmos;current}"
+[//]: # "{x-version-update-start;com.azure:azure-spring-data-cosmos-core;current}"
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
-    <artifactId>azure-spring-data-cosmos</artifactId>
+    <artifactId>azure-spring-data-cosmos-core</artifactId>
     <version>3.0.0-beta.1</version>
 </dependency>
 ```
@@ -399,7 +399,7 @@ azure.cosmos.secondary.populateQueryMetrics=if-populate-query-metrics
 ```
 
 ### Define Entities and Repositories
-The [Entity](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-spring-data-cosmos#define-an-entity)  and [Repository](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-spring-data-cosmos#create-repositories) definition is similar as above.
+The [Entity](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-spring-data-cosmos-core#define-an-entity)  and [Repository](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-spring-data-cosmos-core#create-repositories) definition is similar as above.
 You can put different database entities into different packages.
 
 ### Setup configuration
