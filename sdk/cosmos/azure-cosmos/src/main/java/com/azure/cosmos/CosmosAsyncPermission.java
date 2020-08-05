@@ -128,7 +128,8 @@ public class CosmosAsyncPermission {
         Mono<CosmosPermissionResponse> responseMono = cosmosUser.getDatabase()
             .getDocClientWrapper()
             .readPermission(getLink(), ModelBridgeInternal.toRequestOptions(options))
-            .map(response -> ModelBridgeInternal.createCosmosPermissionResponse(response));
+            .map(response -> ModelBridgeInternal.createCosmosPermissionResponse(response))
+            .single();
         return cosmosUser.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
             spanName,
             cosmosUser.getDatabase().getId(),
@@ -145,7 +146,8 @@ public class CosmosAsyncPermission {
             .getDocClientWrapper()
             .replacePermission(ModelBridgeInternal.getPermission(permissionProperties, databaseContext.getId()),
                 ModelBridgeInternal.toRequestOptions(options))
-            .map(response -> ModelBridgeInternal.createCosmosPermissionResponse(response));
+            .map(response -> ModelBridgeInternal.createCosmosPermissionResponse(response))
+            .single();
         return cosmosUser.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
             spanName,
             cosmosUser.getDatabase().getId(),
@@ -159,7 +161,8 @@ public class CosmosAsyncPermission {
         Mono<CosmosPermissionResponse> responseMono = cosmosUser.getDatabase()
             .getDocClientWrapper()
             .deletePermission(getLink(), ModelBridgeInternal.toRequestOptions(options))
-            .map(response -> ModelBridgeInternal.createCosmosPermissionResponse(response));
+            .map(response -> ModelBridgeInternal.createCosmosPermissionResponse(response))
+            .single();
         return cosmosUser.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
             spanName,
             cosmosUser.getDatabase().getId(),

@@ -777,7 +777,7 @@ public class CosmosAsyncDatabase {
         Mono<CosmosContainerResponse> responseMono = getDocClientWrapper()
             .createCollection(this.getLink(), ModelBridgeInternal.getV2Collection(containerProperties),
                 ModelBridgeInternal.toRequestOptions(options))
-            .map(response -> ModelBridgeInternal.createCosmosContainerResponse(response));
+            .map(response -> ModelBridgeInternal.createCosmosContainerResponse(response)).single();
         return this.client.getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
             spanName,
             getId(),
@@ -788,7 +788,7 @@ public class CosmosAsyncDatabase {
         String spanName = "readDatabase." + this.getId();
         Mono<CosmosDatabaseResponse> responseMono = getDocClientWrapper().readDatabase(getLink(),
             ModelBridgeInternal.toRequestOptions(options))
-            .map(response -> ModelBridgeInternal.createCosmosDatabaseResponse(response));
+            .map(response -> ModelBridgeInternal.createCosmosDatabaseResponse(response)).single();
         return this.client.getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
             spanName,
             getId(),
@@ -799,7 +799,7 @@ public class CosmosAsyncDatabase {
         String spanName = "deleteDatabase." + this.getId();
         Mono<CosmosDatabaseResponse> responseMono = getDocClientWrapper().deleteDatabase(getLink(),
             ModelBridgeInternal.toRequestOptions(options))
-            .map(response -> ModelBridgeInternal.createCosmosDatabaseResponse(response));
+            .map(response -> ModelBridgeInternal.createCosmosDatabaseResponse(response)).single();
         return this.client.getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
             spanName,
             getId(),
@@ -809,7 +809,7 @@ public class CosmosAsyncDatabase {
     private Mono<CosmosUserResponse> createUserInternal(CosmosUserProperties userProperties, Context context) {
         String spanName = "createUser." + this.getId();
         Mono<CosmosUserResponse> responseMono = getDocClientWrapper().createUser(this.getLink(), ModelBridgeInternal.getV2User(userProperties), null)
-            .map(response -> ModelBridgeInternal.createCosmosUserResponse(response));
+            .map(response -> ModelBridgeInternal.createCosmosUserResponse(response)).single();
         return this.client.getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
             spanName,
             getId(),
@@ -819,7 +819,7 @@ public class CosmosAsyncDatabase {
     private Mono<CosmosUserResponse> upsertUserInternal(CosmosUserProperties userProperties, Context context) {
         String spanName = "upsertUser." + this.getId();
         Mono<CosmosUserResponse> responseMono = getDocClientWrapper().upsertUser(this.getLink(), ModelBridgeInternal.getV2User(userProperties), null)
-            .map(response -> ModelBridgeInternal.createCosmosUserResponse(response));
+            .map(response -> ModelBridgeInternal.createCosmosUserResponse(response)).single();
         return this.client.getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
             spanName, getId(), getClient().getServiceEndpoint());
     }
@@ -856,7 +856,8 @@ public class CosmosAsyncDatabase {
                             throughputProperties);
 
                     return this.getDocClientWrapper()
-                        .replaceOffer(updatedOffer);
+                        .replaceOffer(updatedOffer)
+                        .single();
                 })
                 .map(ModelBridgeInternal::createThroughputRespose));
     }
@@ -889,7 +890,8 @@ public class CosmosAsyncDatabase {
                     return getDocClientWrapper()
                         .readOffer(offerFeedResponse.getResults()
                             .get(0)
-                            .getSelfLink());
+                            .getSelfLink())
+                        .single();
                 })
                 .map(ModelBridgeInternal::createThroughputRespose));
     }
