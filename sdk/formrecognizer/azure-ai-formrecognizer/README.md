@@ -247,14 +247,14 @@ for (int i = 0; i < contentPageResults.size(); i++) {
 ```
 
 ### Recognize receipts
-Recognize data from a USA sales receipts using a prebuilt model. [Here][service_recognize_receipt] are the fields
-the service returns for a recognized receipt.
-See [StronglyTypedRecognizedForm.java][strongly_typed_sample] for a suggested approach to extract
+Recognize data from a USA sales receipts using a prebuilt model. Receipt fields recognized by the service 
+can be found [here][service_recognize_receipt].
+See [StronglyTypedRecognizedForm][strongly_typed_sample] for a suggested approach to extract
 information from receipts.
 
 <!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L140-L196-->
 ```java
-String receiptUrl = "https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/media"
+String receiptUrl = "https://docs.microsoft.com/azure/cognitive-services/form-recognizer/media"
     + "/contoso-allinone.jpg";
 SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
     formRecognizerClient.beginRecognizeReceiptsFromUrl(receiptUrl);
@@ -343,7 +343,7 @@ customFormModel.getSubmodels().forEach(customFormSubmodel -> {
 ```
 
 ### Manage your models
-Manage the custom models attached to your account.
+Manage the custom models in your Form Recognizer account.
 <!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L224-L252 -->
 ```java
 // First, we see how many custom models we have, and what our limit is
@@ -411,7 +411,7 @@ These code samples show common scenario operations with the Azure Form Recognize
 * Recognize receipts: [RecognizeReceipts][recognize_receipts]
 * Recognize receipts from a URL: [RecognizeReceiptsFromUrl][recognize_receipts_from_url]
 * Recognize content: [RecognizeContent][recognize_content]
-* Recognize custom forms: [RecognizeCustomForms][recognize_custom_forms]
+* Recognize custom forms from a URL: [RecognizeCustomFormsFromUrl][recognize_custom_forms]
 * Train a model without labels: [TrainModelWithoutLabels][train_unlabeled_model]
 * Train a model with labels: [TrainModelWithLabels][train_labeled_model]
 * Manage custom models: [ManageCustomModels][manage_custom_models]
@@ -430,7 +430,7 @@ FormRecognizerAsyncClient formRecognizerAsyncClient = new FormRecognizerClientBu
 
 * Recognize receipts : [RecognizeReceiptsAsync][recognize_receipts_async]
 * Recognize receipts from a URL: [RecognizeReceiptsFromUrlAsync][recognize_receipts_from_url_async]
-* Recognize content: [RecognizeContentAsync][recognize_content_async]
+* Recognize content from a URL: [RecognizeContentFromUrlAsync][recognize_content_async]
 * Recognize custom forms: [RecognizeCustomFormsAsync][recognize_custom_forms_async]
 * Train a model without labels: [TrainModelWithoutLabelsAsync][train_unlabeled_model_async]
 * Train a model with labels: [TrainModelWithLabelsAsync][train_labeled_model_async]
