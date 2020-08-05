@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.implementation.models.QueueDescription;
 import com.azure.messaging.servicebus.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.models.QueueProperties;
 import com.azure.messaging.servicebus.models.SubscriptionDescription;
@@ -175,6 +176,14 @@ public final class EntityHelper {
          * @return A new {@link QueueProperties} with the properties set.
          */
         QueueProperties createQueue(CreateQueueOptions options);
+
+        /**
+         * Creates a new queue from the given {@code queueDescription}.
+         *
+         * @param queueDescription Queue description to use.
+         * @return A new queue with the properties set.
+         */
+        QueueProperties createQueue(QueueDescription queueDescription);
 
         /**
          * Sets the name on a queueDescription.
