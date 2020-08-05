@@ -41,13 +41,16 @@ public class UsageInner {
 
     /**
      * Creates an instance of UsageInner class.
+     * @param currentValue the current usage of the resource.
+     * @param limit the maximum permitted usage of the resource.
+     * @param name the name of the type of usage.
      */
     public UsageInner() {
         unit = "Count";
     }
 
     /**
-     * Get the unit value.
+     * Get an enum describing the unit of usage measurement.
      *
      * @return the unit value
      */
@@ -56,7 +59,7 @@ public class UsageInner {
     }
 
     /**
-     * Set the unit value.
+     * Set an enum describing the unit of usage measurement.
      *
      * @param unit the unit value to set
      * @return the UsageInner object itself.
@@ -67,7 +70,7 @@ public class UsageInner {
     }
 
     /**
-     * Get the currentValue value.
+     * Get the current usage of the resource.
      *
      * @return the currentValue value
      */
@@ -76,7 +79,7 @@ public class UsageInner {
     }
 
     /**
-     * Set the currentValue value.
+     * Set the current usage of the resource.
      *
      * @param currentValue the currentValue value to set
      * @return the UsageInner object itself.
@@ -87,7 +90,7 @@ public class UsageInner {
     }
 
     /**
-     * Get the limit value.
+     * Get the maximum permitted usage of the resource.
      *
      * @return the limit value
      */
@@ -96,7 +99,7 @@ public class UsageInner {
     }
 
     /**
-     * Set the limit value.
+     * Set the maximum permitted usage of the resource.
      *
      * @param limit the limit value to set
      * @return the UsageInner object itself.
@@ -107,7 +110,7 @@ public class UsageInner {
     }
 
     /**
-     * Get the name value.
+     * Get the name of the type of usage.
      *
      * @return the name value
      */
@@ -116,7 +119,7 @@ public class UsageInner {
     }
 
     /**
-     * Set the name value.
+     * Set the name of the type of usage.
      *
      * @param name the name value to set
      * @return the UsageInner object itself.
