@@ -38,20 +38,17 @@ public interface JsonSerializer extends com.azure.core.util.serializer.JsonSeria
      *
      * @param stream {@link OutputStream} where the JSON tree will be written.
      * @param jsonNode The JSON tree.
-     * @param <S> Type of the output stream.
-     * @return The stream where the JSON tree was written.
      */
-    <S extends OutputStream> S serializeTree(S stream, JsonNode jsonNode);
+    void serializeTree(OutputStream stream, JsonNode jsonNode);
 
     /**
      * Writes a JSON tree into a stream.
      *
      * @param stream {@link OutputStream} where the JSON tree will be written.
      * @param jsonNode The JSON tree.
-     * @param <S> Type of the output stream.
-     * @return The stream where the JSON tree was written.
+     * @return Reactive stream that will indicate operation completion.
      */
-    <S extends OutputStream> Mono<S> serializeTreeAsync(S stream, JsonNode jsonNode);
+    Mono<Void> serializeTreeAsync(OutputStream stream, JsonNode jsonNode);
 
     /**
      * Reads a JSON stream into its JSON tree representation.

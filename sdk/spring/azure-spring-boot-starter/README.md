@@ -26,6 +26,8 @@ If you are using Maven, add the following dependency.
 ```
 [//]: # ({x-version-update-end})
 
+## Examples
+
 ## Key concepts
 ### Usage
 

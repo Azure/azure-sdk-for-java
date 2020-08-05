@@ -53,18 +53,16 @@ public final class JacksonJsonSerializer implements JsonSerializer {
     }
 
     @Override
-    public <S extends OutputStream> S serialize(S stream, Object value) {
+    public void serialize(OutputStream stream, Object value) {
         try {
             mapper.writeValue(stream, value);
         } catch (IOException ex) {
             throw logger.logExceptionAsError(new UncheckedIOException(ex));
         }
-
-        return stream;
     }
 
     @Override
-    public <S extends OutputStream> Mono<S> serializeAsync(S stream, Object value) {
-        return Mono.fromCallable(() -> serialize(stream, value));
+    public Mono<Void> serializeAsync(OutputStream stream, Object value) {
+        return Mono.fromRunnable(() -> serialize(stream, value));
     }
 }
