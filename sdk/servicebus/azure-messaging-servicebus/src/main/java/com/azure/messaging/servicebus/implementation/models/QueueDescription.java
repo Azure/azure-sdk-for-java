@@ -6,7 +6,6 @@ package com.azure.messaging.servicebus.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.messaging.servicebus.models.AuthorizationRule;
-import com.azure.messaging.servicebus.models.EntityAvailabilityStatus;
 import com.azure.messaging.servicebus.models.EntityStatus;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
