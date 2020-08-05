@@ -68,7 +68,7 @@ public class ImageDataDisk {
     private StorageAccountTypes storageAccountType;
 
     /**
-     * Get the lun value.
+     * Get specifies the logical unit number of the data disk. This value is used to identify data disks within the VM and therefore must be unique for each data disk attached to a VM.
      *
      * @return the lun value
      */
@@ -77,7 +77,7 @@ public class ImageDataDisk {
     }
 
     /**
-     * Set the lun value.
+     * Set specifies the logical unit number of the data disk. This value is used to identify data disks within the VM and therefore must be unique for each data disk attached to a VM.
      *
      * @param lun the lun value to set
      * @return the ImageDataDisk object itself.
@@ -88,7 +88,7 @@ public class ImageDataDisk {
     }
 
     /**
-     * Get the snapshot value.
+     * Get the snapshot.
      *
      * @return the snapshot value
      */
@@ -97,7 +97,7 @@ public class ImageDataDisk {
     }
 
     /**
-     * Set the snapshot value.
+     * Set the snapshot.
      *
      * @param snapshot the snapshot value to set
      * @return the ImageDataDisk object itself.
@@ -108,7 +108,7 @@ public class ImageDataDisk {
     }
 
     /**
-     * Get the managedDisk value.
+     * Get the managedDisk.
      *
      * @return the managedDisk value
      */
@@ -117,7 +117,7 @@ public class ImageDataDisk {
     }
 
     /**
-     * Set the managedDisk value.
+     * Set the managedDisk.
      *
      * @param managedDisk the managedDisk value to set
      * @return the ImageDataDisk object itself.
@@ -128,7 +128,7 @@ public class ImageDataDisk {
     }
 
     /**
-     * Get the blobUri value.
+     * Get the Virtual Hard Disk.
      *
      * @return the blobUri value
      */
@@ -137,7 +137,7 @@ public class ImageDataDisk {
     }
 
     /**
-     * Set the blobUri value.
+     * Set the Virtual Hard Disk.
      *
      * @param blobUri the blobUri value to set
      * @return the ImageDataDisk object itself.
@@ -148,7 +148,7 @@ public class ImageDataDisk {
     }
 
     /**
-     * Get the caching value.
+     * Get specifies the caching requirements. &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **None** &lt;br&gt;&lt;br&gt; **ReadOnly** &lt;br&gt;&lt;br&gt; **ReadWrite** &lt;br&gt;&lt;br&gt; Default: **None for Standard storage. ReadOnly for Premium storage**. Possible values include: 'None', 'ReadOnly', 'ReadWrite'.
      *
      * @return the caching value
      */
@@ -157,7 +157,7 @@ public class ImageDataDisk {
     }
 
     /**
-     * Set the caching value.
+     * Set specifies the caching requirements. &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **None** &lt;br&gt;&lt;br&gt; **ReadOnly** &lt;br&gt;&lt;br&gt; **ReadWrite** &lt;br&gt;&lt;br&gt; Default: **None for Standard storage. ReadOnly for Premium storage**. Possible values include: 'None', 'ReadOnly', 'ReadWrite'.
      *
      * @param caching the caching value to set
      * @return the ImageDataDisk object itself.
@@ -168,7 +168,7 @@ public class ImageDataDisk {
     }
 
     /**
-     * Get the diskSizeGB value.
+     * Get specifies the size of empty data disks in gigabytes. This element can be used to overwrite the name of the disk in a virtual machine image. &lt;br&gt;&lt;br&gt; This value cannot be larger than 1023 GB.
      *
      * @return the diskSizeGB value
      */
@@ -177,7 +177,7 @@ public class ImageDataDisk {
     }
 
     /**
-     * Set the diskSizeGB value.
+     * Set specifies the size of empty data disks in gigabytes. This element can be used to overwrite the name of the disk in a virtual machine image. &lt;br&gt;&lt;br&gt; This value cannot be larger than 1023 GB.
      *
      * @param diskSizeGB the diskSizeGB value to set
      * @return the ImageDataDisk object itself.
@@ -188,7 +188,7 @@ public class ImageDataDisk {
     }
 
     /**
-     * Get the storageAccountType value.
+     * Get specifies the storage account type for the managed disk. Possible values are: Standard_LRS or Premium_LRS. Possible values include: 'Standard_LRS', 'Premium_LRS'.
      *
      * @return the storageAccountType value
      */
@@ -197,7 +197,7 @@ public class ImageDataDisk {
     }
 
     /**
-     * Set the storageAccountType value.
+     * Set specifies the storage account type for the managed disk. Possible values are: Standard_LRS or Premium_LRS. Possible values include: 'Standard_LRS', 'Premium_LRS'.
      *
      * @param storageAccountType the storageAccountType value to set
      * @return the ImageDataDisk object itself.

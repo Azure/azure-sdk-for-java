@@ -23,7 +23,7 @@ public class NetworkProfile {
     private List<NetworkInterfaceReference> networkInterfaces;
 
     /**
-     * Get the networkInterfaces value.
+     * Get specifies the list of resource Ids for the network interfaces associated with the virtual machine.
      *
      * @return the networkInterfaces value
      */
@@ -32,7 +32,7 @@ public class NetworkProfile {
     }
 
     /**
-     * Set the networkInterfaces value.
+     * Set specifies the list of resource Ids for the network interfaces associated with the virtual machine.
      *
      * @param networkInterfaces the networkInterfaces value to set
      * @return the NetworkProfile object itself.
