@@ -199,7 +199,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                     .setContentType(FormContentType.APPLICATION_PDF).setPollInterval(durationTestMode))
                     .getSyncPoller().getFinalResult());
             ErrorInformation errorInformation = (ErrorInformation) httpResponseException.getValue();
-            assertEquals(EXPECTED_BAD_ARGUMENT_CODE, errorInformation.getCode());
+            assertEquals(EXPECTED_BAD_ARGUMENT_CODE, errorInformation.getErrorCode());
             assertEquals(EXPECTED_BAD_ARGUMENT_ERROR_MESSAGE, errorInformation.getMessage());
         });
     }
@@ -237,7 +237,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                 new String(errorResponseException.getResponse().getRequest().getBody().blockFirst().array(),
                     StandardCharsets.UTF_8));
             ErrorInformation errorInformation = (ErrorInformation) errorResponseException.getValue();
-            assertEquals(FAILED_TO_DOWNLOAD_IMAGE_CODE, errorInformation.getCode());
+            assertEquals(FAILED_TO_DOWNLOAD_IMAGE_CODE, errorInformation.getErrorCode());
             assertEquals(FAILED_TO_DOWNLOAD_IMAGE_ERROR_MESSAGE, errorInformation.getMessage());
         });
     }
@@ -254,7 +254,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                 () -> client.beginRecognizeReceiptsFromUrl(invalidSourceUrl, new RecognizeOptions()
                     .setPollInterval(durationTestMode)).getSyncPoller().getFinalResult());
             ErrorInformation errorInformation = (ErrorInformation) errorResponseException.getValue();
-            assertEquals(INVALID_IMAGE_URL_ERROR_CODE, errorInformation.getCode());
+            assertEquals(INVALID_IMAGE_URL_ERROR_CODE, errorInformation.getErrorCode());
             assertEquals(IMAGE_URL_IS_BADLY_FORMATTED_ERROR_MESSAGE, errorInformation.getMessage());
         });
     }
@@ -401,7 +401,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                     .setContentType(FormContentType.APPLICATION_PDF).setPollInterval(durationTestMode))
                     .getSyncPoller().getFinalResult());
             ErrorInformation errorInformation = (ErrorInformation) errorResponseException.getValue();
-            assertEquals(EXPECTED_INVALID_IMAGE_CODE, errorInformation.getCode());
+            assertEquals(EXPECTED_INVALID_IMAGE_CODE, errorInformation.getErrorCode());
             assertEquals(EXPECTED_INVALID_IMAGE_ERROR_MESSAGE, errorInformation.getMessage());
         });
     }
@@ -439,7 +439,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                 new String(errorResponseException.getResponse().getRequest().getBody().blockFirst().array(),
                     StandardCharsets.UTF_8));
             ErrorInformation errorInformation = (ErrorInformation) errorResponseException.getValue();
-            assertEquals(FAILED_TO_DOWNLOAD_IMAGE_CODE, errorInformation.getCode());
+            assertEquals(FAILED_TO_DOWNLOAD_IMAGE_CODE, errorInformation.getErrorCode());
             assertEquals(FAILED_TO_DOWNLOAD_IMAGE_ERROR_MESSAGE, errorInformation.getMessage());
         });
     }
@@ -472,7 +472,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                 () -> client.beginRecognizeContentFromUrl(invalidSourceUrl, new RecognizeOptions()
                     .setPollInterval(durationTestMode)).getSyncPoller().getFinalResult());
             ErrorInformation errorInformation = (ErrorInformation) errorResponseException.getValue();
-            assertEquals(INVALID_IMAGE_URL_ERROR_CODE, errorInformation.getCode());
+            assertEquals(INVALID_IMAGE_URL_ERROR_CODE, errorInformation.getErrorCode());
             assertEquals(IMAGE_URL_IS_BADLY_FORMATTED_ERROR_MESSAGE, errorInformation.getMessage());
         });
     }
@@ -1076,7 +1076,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                 () -> client.beginRecognizeCustomFormsFromUrl(NON_EXIST_MODEL_ID, fileUrl,
                     new RecognizeOptions().setPollInterval(durationTestMode)).getSyncPoller().getFinalResult());
             ErrorInformation errorInformation = (ErrorInformation) errorResponseException.getValue();
-            assertEquals(EXPECTED_INVALID_MODEL_ID_ERROR_CODE, errorInformation.getCode());
+            assertEquals(EXPECTED_INVALID_MODEL_ID_ERROR_CODE, errorInformation.getErrorCode());
             assertEquals(EXPECTED_INVALID_MODEL_ID_ERROR_MESSAGE, errorInformation.getMessage());
         }, FORM_JPG);
     }

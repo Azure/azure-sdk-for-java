@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.azure.ai.formrecognizer.models.FieldValueType.DATE;
-import static com.azure.ai.formrecognizer.models.FieldValueType.DOUBLE;
+import static com.azure.ai.formrecognizer.models.FieldValueType.FLOAT;
 import static com.azure.ai.formrecognizer.models.FieldValueType.LIST;
 import static com.azure.ai.formrecognizer.models.FieldValueType.LONG;
 import static com.azure.ai.formrecognizer.models.FieldValueType.MAP;
@@ -29,7 +29,7 @@ public final class FieldValue {
     private final FieldValueType valueType;
     private Map<String, FormField> formFieldMap;
     private List<FormField> formFieldList;
-    private Double formFieldDouble;
+    private Float formFieldFloat;
     private Long formFieldLong;
     private LocalDate formFieldDate;
     private LocalTime formFieldTime;
@@ -58,8 +58,8 @@ public final class FieldValue {
             case PHONE_NUMBER:
                 formFieldPhoneNumber = (String) value;
                 break;
-            case DOUBLE:
-                formFieldDouble = (Double) value;
+            case FLOAT:
+                formFieldFloat = (Float) value;
                 break;
             case LONG:
                 formFieldLong = (Long) value;
@@ -113,17 +113,17 @@ public final class FieldValue {
     }
 
     /**
-     * Gets the value of the field as a {@link Double}.
+     * Gets the value of the field as a {@link Float}.
      *
-     * @return the value of the field as a {@link Double}.
-     * @throws UnsupportedOperationException if {@link FieldValue#getValueType()} is not {@link FieldValueType#DOUBLE}.
+     * @return the value of the field as a {@link Float}.
+     * @throws UnsupportedOperationException if {@link FieldValue#getValueType()} is not {@link FieldValueType#FLOAT}.
      */
-    public Double asDouble() {
-        if (DOUBLE != this.getValueType()) {
+    public Float asFloat() {
+        if (FLOAT != this.getValueType()) {
             throw logger.logExceptionAsError((new UnsupportedOperationException(String.format("Cannot get field as "
-                + "%s from field value of type %s", DOUBLE, this.getValueType()))));
+                + "%s from field value of type %s", FLOAT, this.getValueType()))));
         }
-        return this.formFieldDouble;
+        return this.formFieldFloat;
     }
 
     /**
