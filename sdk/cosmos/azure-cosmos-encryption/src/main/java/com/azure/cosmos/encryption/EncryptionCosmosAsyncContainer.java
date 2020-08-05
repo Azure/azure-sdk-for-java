@@ -347,7 +347,6 @@ public class EncryptionCosmosAsyncContainer {
     private Function<Document, Mono<Document>> createTransformer(Consumer<DecryptionResult> decryptionResultConsumer) {
 
         return document -> {
-//            try {
                 byte[] contentAsByteArray = EncryptionUtils.toByteArray(document.serializeJsonToByteBuffer());
                 Mono<byte[]> resultMono = decryptResponseAsync(contentAsByteArray, decryptionResultConsumer);
 

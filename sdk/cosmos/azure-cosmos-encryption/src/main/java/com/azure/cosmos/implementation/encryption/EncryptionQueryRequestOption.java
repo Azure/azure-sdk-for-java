@@ -33,3 +33,6 @@ public class EncryptionQueryRequestOption extends CosmosQueryRequestOptions {
         return decryptionResultHandler;
     }
 }
+
+// TODO: moderakh should we implement all the parent class apis here?
+
