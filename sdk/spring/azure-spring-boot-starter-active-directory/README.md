@@ -1,18 +1,6 @@
 # Azure AD Spring Boot Starter client library for Java
 
-## Overview
 With Spring Starter for Azure Active Directory, now you can get started quickly to build the authentication workflow for a web application that uses Azure AD and OAuth 2.0 to secure its back end. It also enables developers to create a role based authorization workflow for a Web API secured by Azure AD, with the power of the Spring Security Filter Chain. 
-
-## Key concepts
-This package provides 2 ways to integrate with Spring Security and authenticate with Azure Active Directory.
-* Authenticate in backend, auto configuration for common Azure Active Directory OAuth2 properties and `OAuth2UserService` to map authorities are provided.
-* Authenticate in frontend, sends bearer authorization code to backend, in backend a Spring Security filter validates the Jwt token from Azure AD and save authentication. The Jwt token is also used to acquire a On-Behalf-Of token for Azure AD Graph API so that authenticated user's membership information is available for authorization of access of API resources. Below is a diagram that shows the layers and typical flow for Single Page Application with Spring Boot web API backend that uses the filter for Authentication and Authorization.
-![Single Page Application + Spring Boot Web API + Azure AD](resource/spring-aad.png)
-
-The authorization flow is composed of 3 phrases:
-* Login with credentials and validate id_token from Azure AD 
-* Get On-Behalf-Of token and membership info from Azure AD Graph API
-* Evaluate the permission based on membership info to grant or deny access
 
 ## Getting started
 #### Register the Application in Azure AD
@@ -35,6 +23,16 @@ If you are using Maven, add the following dependency.
 ```
 [//]: # "{x-version-update-end}"
 
+## Key concepts
+This package provides 2 ways to integrate with Spring Security and authenticate with Azure Active Directory.
+* Authenticate in backend, auto configuration for common Azure Active Directory OAuth2 properties and `OAuth2UserService` to map authorities are provided.
+* Authenticate in frontend, sends bearer authorization code to backend, in backend a Spring Security filter validates the Jwt token from Azure AD and save authentication. The Jwt token is also used to acquire a On-Behalf-Of token for Azure AD Graph API so that authenticated user's membership information is available for authorization of access of API resources. Below is a diagram that shows the layers and typical flow for Single Page Application with Spring Boot web API backend that uses the filter for Authentication and Authorization.
+![Single Page Application + Spring Boot Web API + Azure AD](resource/spring-aad.png)
+
+The authorization flow is composed of 3 phrases:
+* Login with credentials and validate id_token from Azure AD 
+* Get On-Behalf-Of token and membership info from Azure AD Graph API
+* Evaluate the permission based on membership info to grant or deny access
 ## Examples
 ### Configure application.properties and autowire beans
 
@@ -236,6 +234,14 @@ When telemetry is enabled, an HTTP request will be sent to URL `https://dc.servi
 Find more information about Azure Service Privacy Statement, please check [Microsoft Online Services Privacy Statement](https://www.microsoft.com/privacystatement/OnlineServices/Default.aspx). 
 
 ## Troubleshooting
+If you encounter any bug, please file an issue [here](https://github.com/Azure/azure-sdk-for-java/issues).
+
+To suggest a new feature or changes that could be made, file an issue the same way you would for a bug.
+
+You can participate community driven [![Gitter](https://badges.gitter.im/Microsoft/spring-on-azure.svg)](https://gitter.im/Microsoft/spring-on-azure)
 
 ## Contributing
+This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
+
+Please follow [instructions here](../CONTRIBUTING.md) to build from source or contribute.
 

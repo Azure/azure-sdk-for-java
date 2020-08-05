@@ -491,7 +491,7 @@
   <!-- Checkstyle suppressions for azure-spring AADB2C package name-->
   <suppress checks="PackageName" files="com.microsoft.azure.spring.autoconfigure.*|com.azure.spring.*"/>
 
-  <!-- Checkstyle suppressions for azure-spring-data-cosmos package -->
+  <!-- Checkstyle suppressions for azure.spring.data.cosmos package -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck|ExternalDependencyExposedCheck|ThrowFromClientLoggerCheck" files="com.azure.spring.data.cosmos.*\.java"/>
   <suppress checks="MethodName|MemberName|ParameterName|VisibilityModifier" files="com.azure.spring.data.cosmos.domain|repository|config.*\.java"/>
   <suppress checks="ConstantName" files="com.azure.spring.data.cosmos.repository|common.*\.java" />
@@ -509,7 +509,7 @@
             lines="495,513,529,547"/>
 
   <!-- Static logger instances for short lived objects. -->
-  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.experimental.serializer.TypeReference.java" />
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.util.serializer.TypeReference.java" />
 
   <!-- False positive as these methods are implemented in an anonymous class that is not exposed publicly. -->
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.messaging.servicebus.models.QueueProperties.java"/>

@@ -2,6 +2,10 @@
 
 ## 1.0.0-beta.3 (Unreleased)
 
+- Added optional `Context` parameter to methods in `PollerFactory` class, which will be shared for all polling requests.
+- Added `getResponseHeaders()` method to `PollResult.Error` class.
+- Added `AzureProfile` class.
+- Added `IdentifierProvider` and `DelayProvider` interfaces.
 
 ## 1.0.0-beta.2 (2020-07-09)
 

@@ -124,8 +124,8 @@ public abstract class FormTrainingClientTestBase extends TestBase {
             assertEquals(expectedTrainingDocument.getDocumentName(), actualTrainingDocument.getName());
             assertEquals(expectedTrainingDocument.getPages(), actualTrainingDocument.getPageCount());
             assertEquals(expectedTrainingDocument.getStatus().toString(),
-                actualTrainingDocument.getTrainingStatus().toString());
-            validateErrorData(expectedTrainingDocument.getErrors(), actualTrainingDocument.getDocumentErrors());
+                actualTrainingDocument.getStatus().toString());
+            validateErrorData(expectedTrainingDocument.getErrors(), actualTrainingDocument.getErrors());
         }
     }
 
@@ -136,7 +136,7 @@ public abstract class FormTrainingClientTestBase extends TestBase {
             for (int i = 0; i < actualErrors.size(); i++) {
                 ErrorInformation expectedError = expectedErrors.get(i);
                 FormRecognizerError actualError = actualErrors.get(i);
-                assertEquals(expectedError.getCode(), actualError.getCode());
+                assertEquals(expectedError.getCode(), actualError.getErrorCode());
                 assertEquals(expectedError.getMessage(), actualError.getMessage());
             }
         }

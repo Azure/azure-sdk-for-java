@@ -114,21 +114,19 @@ public class UsernamePasswordCredentialTest {
 
         // test
         try {
-            UsernamePasswordCredential credential = new UsernamePasswordCredentialBuilder().username(username).password(password).build();
+            new UsernamePasswordCredentialBuilder().username(username).password(password).build();
             fail();
         } catch (IllegalArgumentException e) {
             Assert.assertTrue(e.getMessage().contains("clientId"));
         }
         try {
-            UsernamePasswordCredential credential =
-                new UsernamePasswordCredentialBuilder().clientId(clientId).username(username).build();
+            new UsernamePasswordCredentialBuilder().clientId(clientId).username(username).build();
             fail();
         } catch (IllegalArgumentException e) {
             Assert.assertTrue(e.getMessage().contains("password"));
         }
         try {
-            UsernamePasswordCredential credential =
-                new UsernamePasswordCredentialBuilder().clientId(clientId).password(password).build();
+            new UsernamePasswordCredentialBuilder().clientId(clientId).password(password).build();
             fail();
         } catch (IllegalArgumentException e) {
             Assert.assertTrue(e.getMessage().contains("username"));
