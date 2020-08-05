@@ -502,6 +502,12 @@
   <suppress checks="PackageName" files="com.microsoft.spring.data.gremlin.*" />
   <suppress checks="MethodName" files="com.microsoft.spring.data.gremlin.common.GremlinConfig.java" />
 
+  <!-- Checkstyle suppressions for azure-spring-integration-core package -->
+  <suppress checks="MethodName" files="com.microsoft.azure.spring.integration.core.api.CheckpointConfig.java"/>
+
+  <!-- Checkstyle suppressions for azure-spring-integration-servicebus package -->
+  <suppress checks="MethodName" files="com.microsoft.azure.spring.integration.servicebus.ServiceBusClientConfig.java"/>
+
   <!-- These suppressions were added due to limitations in our custom Checkstyle rules and should be addressed in the future. -->
   <!-- API naming is too restrictive -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.search.documents.indexes.SearchIndexerAsyncClient.java"

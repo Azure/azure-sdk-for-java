@@ -42,6 +42,11 @@
     <module>azure-spring-cloud-context</module>
     <module>azure-spring-cloud-telemetry</module>
     <module>azure-spring-data-gremlin</module>
+    <module>azure-spring-integration-core</module>
+    <module>azure-spring-integration-eventhubs</module>
+    <module>azure-spring-integration-servicebus</module>
+    <module>azure-spring-integration-storage-queue</module>
+    <module>azure-spring-integration-test</module>
   </modules>
 
 </project>
