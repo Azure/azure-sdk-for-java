@@ -23,30 +23,30 @@ import static com.azure.messaging.servicebus.implementation.MessageUtils.toPrimi
 @Fluent
 public final class QueueProperties {
     private Duration autoDeleteOnIdle;
-    private OffsetDateTime accessedAt;
+    private final OffsetDateTime accessedAt;
     private List<AuthorizationRule> authorizationRules;
-    private OffsetDateTime createdAt;
+    private final OffsetDateTime createdAt;
     private Duration defaultMessageTimeToLive;
     private boolean deadLetteringOnMessageExpiration;
     private Duration duplicateDetectionHistoryTimeWindow;
     private boolean enableBatchedOperations;
-    private Boolean enableExpress;
+    private final Boolean enableExpress;
     private boolean enablePartitioning;
-    private EntityAvailabilityStatus entityAvailabilityStatus;
+    private final EntityAvailabilityStatus entityAvailabilityStatus;
     private String forwardTo;
     private String forwardDeadLetteredMessagesTo;
-    private Boolean isAnonymousAccessible;
+    private final Boolean isAnonymousAccessible;
     private Duration lockDuration;
     private int maxDeliveryCount;
     private long maxSizeInMegabytes;
-    private int messageCount;
-    private MessageCountDetails messageCountDetails;
+    private final int messageCount;
+    private final MessageCountDetails messageCountDetails;
     private boolean requiresDuplicateDetection;
     private boolean requiresSession;
-    private int sizeInBytes;
+    private final int sizeInBytes;
     private EntityStatus status;
-    private Boolean supportOrdering;
-    private OffsetDateTime updatedAt;
+    private final Boolean supportOrdering;
+    private final OffsetDateTime updatedAt;
     private String userMetadata;
     private String queueName;
 
@@ -95,11 +95,8 @@ public final class QueueProperties {
         });
     }
 
-    QueueProperties() {
-    }
-
     /**
-     * Creates a queue using a {@link {@link QueueProperties}}.
+     * Creates a queue using a {@link QueueDescription}.
      *
      * @param description The queue to use.
      */

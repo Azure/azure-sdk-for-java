@@ -5,6 +5,7 @@
 package com.azure.messaging.servicebus.models;
 
 import com.azure.messaging.servicebus.implementation.EntityHelper;
+import com.azure.messaging.servicebus.implementation.models.QueueDescription;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -61,7 +62,7 @@ class CreateQueueOptionsTest {
             new AuthorizationRule().setClaimType("a2").setClaimValue("b2").setKeyName("c2").setPrimaryKey("pk2")
                 .setSecondaryKey("sk2").setRights(Arrays.asList("r12", "r23"))
         );
-        final QueueProperties expected = new QueueProperties()
+        final QueueProperties expected = EntityHelper.toModel(new QueueDescription())
             .setAutoDeleteOnIdle(Duration.ofSeconds(15))
             .setDefaultMessageTimeToLive(Duration.ofSeconds(50))
             .setDuplicateDetectionHistoryTimeWindow(Duration.ofSeconds(13))

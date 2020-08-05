@@ -25,7 +25,6 @@ import com.azure.messaging.servicebus.implementation.models.QueueDescriptionEntr
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionFeed;
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionResponse;
 import com.azure.messaging.servicebus.models.CreateQueueOptions;
-import com.azure.messaging.servicebus.models.QueueProperties;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -114,10 +113,10 @@ class ServiceBusManagementClientImplIntegrationTests extends TestBase {
         StepVerifier.create(entityClient.putWithResponseAsync(queueName, createEntity, null, Context.NONE))
             .assertNext(response -> {
                 Object body = response.getValue();
-                QueueProperties deserialize = null;
+                QueueDescription deserialize = null;
                 try {
                     deserialize = new ServiceBusManagementSerializer()
-                        .deserialize(String.valueOf(body), QueueProperties.class);
+                        .deserialize(String.valueOf(body), QueueDescription.class);
                 } catch (IOException e) {
                     fail("An exception was thrown. " + e);
                 }

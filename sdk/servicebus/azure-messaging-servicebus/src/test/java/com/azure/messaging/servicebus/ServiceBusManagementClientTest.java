@@ -47,8 +47,6 @@ class ServiceBusManagementClientTest {
     @Mock
     private Response<Void> voidResponse;
     @Mock
-    private PagedFlux<QueueProperties> queuePagedFlux;
-    @Mock
     private PagedResponse<QueueProperties> pagedResponse;
     @Mock
     private PagedResponse<QueueProperties> continuationPagedResponse;
