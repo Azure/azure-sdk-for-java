@@ -11,6 +11,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.IterableStream;
 import com.azure.messaging.servicebus.implementation.EntityHelper;
+import com.azure.messaging.servicebus.implementation.models.QueueDescription;
 import com.azure.messaging.servicebus.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.models.QueueProperties;
 import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
@@ -77,8 +78,8 @@ class ServiceBusManagementClientTest {
         final CreateQueueOptions options = new CreateQueueOptions("queue-name-2")
             .setMaxDeliveryCount(4)
             .setAutoDeleteOnIdle(Duration.ofSeconds(30));
-        final QueueProperties result = EntityHelper.createQueue(options);
-
+        final QueueDescription queueDescription = EntityHelper.getQueueDescription(options);
+        final QueueProperties result = EntityHelper.toModel(queueDescription);
 
         when(asyncClient.createQueue(description)).thenReturn(Mono.just(result));
 
@@ -256,20 +257,17 @@ class ServiceBusManagementClientTest {
         final CreateQueueOptions options = new CreateQueueOptions(queueName)
             .setMaxDeliveryCount(4)
             .setAutoDeleteOnIdle(Duration.ofSeconds(30));
-        final QueueProperties description = EntityHelper.createQueue(options);
+        final QueueDescription queueDescription = EntityHelper.getQueueDescription(options);
+        final QueueProperties description = EntityHelper.toModel(queueDescription);
 
-        final CreateQueueOptions updated = new CreateQueueOptions("queue-name-2")
-            .setMaxDeliveryCount(10)
-            .setAutoDeleteOnIdle(Duration.ofSeconds(30));
-        final QueueProperties result = EntityHelper.createQueue(options);
-
-        when(asyncClient.updateQueue(description)).thenReturn(Mono.just(result));
+        final QueueProperties expected = EntityHelper.toModel(queueDescription);
+        when(asyncClient.updateQueue(description)).thenReturn(Mono.just(expected));
 
         // Act
         final QueueProperties actual = client.updateQueue(description);
 
         // Assert
-        assertEquals(result, actual);
+        assertEquals(expected, actual);
     }
 
     @Test

@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus.implementation;
 
+import com.azure.messaging.servicebus.implementation.models.QueueDescription;
 import com.azure.messaging.servicebus.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.models.EntityStatus;
 import com.azure.messaging.servicebus.models.QueueProperties;
@@ -38,22 +39,21 @@ class EntityHelperTest {
             .setStatus(EntityStatus.DISABLED);
 
         // Act
-        final QueueProperties actual = EntityHelper.createQueue(expected);
+        final QueueDescription actual = EntityHelper.getQueueDescription(expected);
 
         // Assert
-        assertEquals(expected.getName(), actual.getName());
         assertEquals(expected.getAutoDeleteOnIdle(), actual.getAutoDeleteOnIdle());
         assertEquals(expected.getDefaultMessageTimeToLive(), actual.getDefaultMessageTimeToLive());
-        assertEquals(expected.deadLetteringOnMessageExpiration(), actual.deadLetteringOnMessageExpiration());
+        assertEquals(expected.deadLetteringOnMessageExpiration(), actual.isDeadLetteringOnMessageExpiration());
         assertEquals(expected.getDuplicateDetectionHistoryTimeWindow(), actual.getDuplicateDetectionHistoryTimeWindow());
-        assertEquals(expected.enableBatchedOperations(), actual.enableBatchedOperations());
-        assertEquals(expected.enablePartitioning(), actual.enablePartitioning());
+        assertEquals(expected.enableBatchedOperations(), actual.isEnableBatchedOperations());
+        assertEquals(expected.enablePartitioning(), actual.isEnablePartitioning());
         assertEquals(expected.getForwardTo(), actual.getForwardTo());
         assertEquals(expected.getForwardDeadLetteredMessagesTo(), actual.getForwardDeadLetteredMessagesTo());
         assertEquals(expected.getLockDuration(), actual.getLockDuration());
         assertEquals(expected.getMaxDeliveryCount(), actual.getMaxDeliveryCount());
-        assertEquals(expected.requiresDuplicateDetection(), actual.requiresDuplicateDetection());
-        assertEquals(expected.requiresSession(), actual.requiresSession());
+        assertEquals(expected.requiresDuplicateDetection(), actual.isRequiresDuplicateDetection());
+        assertEquals(expected.requiresSession(), actual.isRequiresSession());
         assertEquals(expected.getUserMetadata(), actual.getUserMetadata());
         assertEquals(expected.getStatus(), actual.getStatus());
     }
@@ -63,7 +63,7 @@ class EntityHelperTest {
         // Arrange
         final String newName = "I'm a new name";
         final CreateQueueOptions options = new CreateQueueOptions("some name");
-        final QueueProperties properties = EntityHelper.createQueue(options);
+        final QueueProperties properties = EntityHelper.toModel(EntityHelper.getQueueDescription(options));
 
         // Act
         EntityHelper.setQueueName(properties, newName);

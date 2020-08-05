@@ -15,6 +15,7 @@ import com.azure.messaging.servicebus.implementation.ServiceBusManagementSeriali
 import com.azure.messaging.servicebus.implementation.models.CreateQueueBody;
 import com.azure.messaging.servicebus.implementation.models.CreateQueueBodyContent;
 import com.azure.messaging.servicebus.implementation.models.MessageCountDetails;
+import com.azure.messaging.servicebus.implementation.models.QueueDescription;
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionEntry;
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionEntryContent;
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionFeed;
@@ -131,10 +132,10 @@ class ServiceBusManagementAsyncClientTest {
         // Arrange
         final String updatedName = "some-new-name";
         final CreateQueueOptions description = new CreateQueueOptions(queueName);
-        final QueueProperties expectedDescription = EntityHelper.createQueue(description);
+        final QueueDescription expectedDescription = EntityHelper.getQueueDescription(description);
         final QueueDescriptionEntry expected = new QueueDescriptionEntry()
             .setTitle(getResponseTitle(updatedName))
-            .setContent(new QueueDescriptionEntryContent().setQueueProperties(expectedDescription));
+            .setContent(new QueueDescriptionEntryContent().setQueueDescription(expectedDescription));
 
         when(entitys.putWithResponseAsync(eq(queueName),
             argThat(arg -> createBodyContentEquals(arg, description)), isNull(), any(Context.class)))
@@ -144,7 +145,7 @@ class ServiceBusManagementAsyncClientTest {
 
         // Act & Assert
         StepVerifier.create(client.createQueue(description))
-            .expectNext(expectedDescription)
+            .assertNext(e -> assertEquals(updatedName, e.getName()))
             .verifyComplete();
     }
 
@@ -153,10 +154,10 @@ class ServiceBusManagementAsyncClientTest {
         // Arrange
         final String updatedName = "some-new-name";
         final CreateQueueOptions description = new CreateQueueOptions(queueName);
-        final QueueProperties expectedDescription = EntityHelper.createQueue(description);
+        final QueueDescription expectedDescription = EntityHelper.getQueueDescription(description);
         final QueueDescriptionEntry expected = new QueueDescriptionEntry()
             .setTitle(getResponseTitle(updatedName))
-            .setContent(new QueueDescriptionEntryContent().setQueueProperties(expectedDescription));
+            .setContent(new QueueDescriptionEntryContent().setQueueDescription(expectedDescription));
 
         when(entitys.putWithResponseAsync(eq(queueName),
             argThat(arg -> createBodyContentEquals(arg, description)), isNull(), any(Context.class)))
@@ -168,7 +169,6 @@ class ServiceBusManagementAsyncClientTest {
         StepVerifier.create(client.createQueueWithResponse(description))
             .assertNext(response -> {
                 assertResponse(objectResponse, response);
-                assertEquals(expectedDescription, response.getValue());
                 assertEquals(updatedName, response.getValue().getName());
             })
             .verifyComplete();
@@ -200,10 +200,10 @@ class ServiceBusManagementAsyncClientTest {
     @Test
     void getQueue() throws IOException {
         // Arrange
-        final QueueProperties expected = EntityHelper.createQueue(new CreateQueueOptions(queueName));
+        final QueueDescription expected = new QueueDescription();
         final QueueDescriptionEntry entry = new QueueDescriptionEntry()
             .setTitle(getResponseTitle(queueName))
-            .setContent(new QueueDescriptionEntryContent().setQueueProperties(expected));
+            .setContent(new QueueDescriptionEntryContent().setQueueDescription(expected));
 
         when(entitys.getWithResponseAsync(eq(queueName), eq(true), any(Context.class)))
             .thenReturn(Mono.just(objectResponse));
@@ -212,7 +212,7 @@ class ServiceBusManagementAsyncClientTest {
 
         // Act & Assert
         StepVerifier.create(client.getQueue(queueName))
-            .expectNext(expected)
+            .assertNext(e -> assertEquals(queueName, e.getName()))
             .verifyComplete();
     }
 
@@ -220,10 +220,10 @@ class ServiceBusManagementAsyncClientTest {
     void getQueueWithResponse() throws IOException {
         // Arrange
         final String updatedName = "some-new-name";
-        final QueueProperties expectedDescription = EntityHelper.createQueue(new CreateQueueOptions(queueName));
+        final QueueDescription expectedDescription = new QueueDescription();
         final QueueDescriptionEntry expected = new QueueDescriptionEntry()
             .setTitle(getResponseTitle(updatedName))
-            .setContent(new QueueDescriptionEntryContent().setQueueProperties(expectedDescription));
+            .setContent(new QueueDescriptionEntryContent().setQueueDescription(expectedDescription));
 
         when(entitys.getWithResponseAsync(eq(queueName), eq(true), any(Context.class)))
             .thenReturn(Mono.just(objectResponse));
@@ -234,7 +234,6 @@ class ServiceBusManagementAsyncClientTest {
         StepVerifier.create(client.getQueueWithResponse(queueName))
             .assertNext(response -> {
                 assertResponse(objectResponse, response);
-                assertEquals(expectedDescription, response.getValue());
                 assertEquals(updatedName, response.getValue().getName());
             })
             .verifyComplete();
@@ -339,9 +338,9 @@ class ServiceBusManagementAsyncClientTest {
         final String entityType = "queues";
         final List<QueueDescriptionEntry> firstEntries = IntStream.range(0, 4).mapToObj(number -> {
             final String name = String.valueOf(number);
-            final QueueProperties description = EntityHelper.createQueue(new CreateQueueOptions(queueName));
+            final QueueDescription description = EntityHelper.getQueueDescription(new CreateQueueOptions(queueName));
             final QueueDescriptionEntryContent content = new QueueDescriptionEntryContent()
-                .setQueueProperties(description);
+                .setQueueDescription(description);
             return new QueueDescriptionEntry()
                 .setContent(content)
                 .setTitle(getResponseTitle(name));
@@ -358,9 +357,9 @@ class ServiceBusManagementAsyncClientTest {
 
         final List<QueueDescriptionEntry> secondEntries = IntStream.range(5, 7).mapToObj(number -> {
             final String name = String.valueOf(number);
-            final QueueProperties description = EntityHelper.createQueue(new CreateQueueOptions(name));
+            final QueueDescription description = EntityHelper.getQueueDescription(new CreateQueueOptions(name));
             final QueueDescriptionEntryContent content = new QueueDescriptionEntryContent()
-                .setQueueProperties(description);
+                .setQueueDescription(description);
 
             return new QueueDescriptionEntry()
                 .setContent(content)
@@ -394,14 +393,15 @@ class ServiceBusManagementAsyncClientTest {
     @Test
     void updateQueue() throws IOException {
         // Arrange
-        final QueueProperties description = EntityHelper.createQueue(new CreateQueueOptions(queueName));
+        final QueueDescription description = new QueueDescription();
+        final QueueProperties properties = EntityHelper.toModel(description);
+        EntityHelper.setQueueName(properties, queueName);
 
         final String updatedName = "some-new-name";
-        final CreateQueueOptions updated = new CreateQueueOptions(updatedName);
-        final QueueProperties expectedDescription = EntityHelper.createQueue(updated);
+        final QueueDescription expectedDescription = new QueueDescription();
         final QueueDescriptionEntry expected = new QueueDescriptionEntry()
             .setTitle(getResponseTitle(updatedName))
-            .setContent(new QueueDescriptionEntryContent().setQueueProperties(expectedDescription));
+            .setContent(new QueueDescriptionEntryContent().setQueueDescription(expectedDescription));
 
         when(entitys.putWithResponseAsync(eq(queueName),
             argThat(arg -> {
@@ -410,11 +410,7 @@ class ServiceBusManagementAsyncClientTest {
                 }
 
                 final CreateQueueBody argument = (CreateQueueBody) arg;
-                if (argument.getContent() == null || argument.getContent().getQueueProperties() == null) {
-                    return false;
-                }
-
-                return queueName.equals(argument.getContent().getQueueProperties().getName());
+                return argument.getContent() != null && argument.getContent().getQueueDescription() != null;
             }),
             eq("*"),
             any(Context.class)))
@@ -423,22 +419,23 @@ class ServiceBusManagementAsyncClientTest {
         when(serializer.deserialize(responseString, QueueDescriptionEntry.class)).thenReturn(expected);
 
         // Act & Assert
-        StepVerifier.create(client.updateQueue(description))
-            .expectNext(expectedDescription)
+        StepVerifier.create(client.updateQueue(properties))
+            .assertNext(e -> assertEquals(updatedName, e.getName()))
             .verifyComplete();
     }
 
     @Test
     void updateQueueWithResponse() throws IOException {
         // Arrange
-        final QueueProperties description = EntityHelper.createQueue(new CreateQueueOptions(queueName));
+        final QueueDescription description = new QueueDescription();
+        final QueueProperties properties = EntityHelper.toModel(description);
+        EntityHelper.setQueueName(properties, queueName);
 
         final String updatedName = "some-new-name";
-        final CreateQueueOptions updated = new CreateQueueOptions(updatedName);
-        final QueueProperties expectedDescription = EntityHelper.createQueue(updated);
+        final QueueDescription expectedDescription = new QueueDescription();
         final QueueDescriptionEntry expected = new QueueDescriptionEntry()
             .setTitle(getResponseTitle(updatedName))
-            .setContent(new QueueDescriptionEntryContent().setQueueProperties(expectedDescription));
+            .setContent(new QueueDescriptionEntryContent().setQueueDescription(expectedDescription));
 
         when(entitys.putWithResponseAsync(eq(queueName),
             argThat(arg -> {
@@ -447,11 +444,7 @@ class ServiceBusManagementAsyncClientTest {
                 }
 
                 final CreateQueueBody argument = (CreateQueueBody) arg;
-                if (argument.getContent() == null || argument.getContent().getQueueProperties() == null) {
-                    return false;
-                }
-
-                return queueName.equals(argument.getContent().getQueueProperties().getName());
+                return argument.getContent() != null && argument.getContent().getQueueDescription() != null;
             }),
             eq("*"),
             any(Context.class)))
@@ -460,10 +453,9 @@ class ServiceBusManagementAsyncClientTest {
         when(serializer.deserialize(responseString, QueueDescriptionEntry.class)).thenReturn(expected);
 
         // Act & Assert
-        StepVerifier.create(client.updateQueueWithResponse(description))
+        StepVerifier.create(client.updateQueueWithResponse(properties))
             .assertNext(response -> {
                 assertResponse(objectResponse, response);
-                assertEquals(expectedDescription, response.getValue());
                 assertEquals(updatedName, response.getValue().getName());
             })
             .verifyComplete();
@@ -505,27 +497,26 @@ class ServiceBusManagementAsyncClientTest {
 
         final CreateQueueBody body = (CreateQueueBody) requestBody;
         final CreateQueueBodyContent content = body.getContent();
-        final QueueProperties properties = content.getQueueProperties();
+        final QueueDescription properties = content.getQueueDescription();
 
         if (properties == null) {
             return false;
         }
 
-        return equals(expected.getName(), properties.getName())
-            && equals(expected.getAutoDeleteOnIdle(), properties.getAutoDeleteOnIdle())
+        return equals(expected.getAutoDeleteOnIdle(), properties.getAutoDeleteOnIdle())
             && equals(expected.getDefaultMessageTimeToLive(), properties.getDefaultMessageTimeToLive())
-            && equals(expected.deadLetteringOnMessageExpiration(), properties.deadLetteringOnMessageExpiration())
+            && equals(expected.deadLetteringOnMessageExpiration(), properties.isDeadLetteringOnMessageExpiration())
             && equals(expected.getDuplicateDetectionHistoryTimeWindow(),
             properties.getDuplicateDetectionHistoryTimeWindow())
-            && equals(expected.enableBatchedOperations(), properties.enableBatchedOperations())
-            && equals(expected.enablePartitioning(), properties.enablePartitioning())
+            && equals(expected.enableBatchedOperations(), properties.isEnableBatchedOperations())
+            && equals(expected.enablePartitioning(), properties.isEnablePartitioning())
             && equals(expected.getForwardTo(), properties.getForwardTo())
             && equals(expected.getForwardDeadLetteredMessagesTo(), properties.getForwardDeadLetteredMessagesTo())
             && equals(expected.getLockDuration(), properties.getLockDuration())
             && equals(expected.getMaxDeliveryCount(), properties.getMaxDeliveryCount())
             && equals(expected.getMaxSizeInMegabytes(), properties.getMaxSizeInMegabytes())
-            && equals(expected.requiresDuplicateDetection(), properties.requiresDuplicateDetection())
-            && equals(expected.requiresSession(), properties.requiresSession())
+            && equals(expected.requiresDuplicateDetection(), properties.isRequiresDuplicateDetection())
+            && equals(expected.requiresSession(), properties.isRequiresSession())
             && equals(expected.getUserMetadata(), properties.getUserMetadata())
             && "application/xml".equals(content.getType());
     }

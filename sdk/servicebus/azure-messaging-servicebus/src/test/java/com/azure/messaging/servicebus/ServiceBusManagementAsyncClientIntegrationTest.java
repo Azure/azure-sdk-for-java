@@ -86,7 +86,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
                 assertEquals(expected.getMaxSizeInMegabytes(), actual.getMaxSizeInMegabytes());
                 assertEquals(expected.getUserMetadata(), actual.getUserMetadata());
 
-                assertEquals(expected.deadLetteringOnMessageExpiration(), actual.deadLetteringOnMessageExpiration());
+                assertEquals(expected.deadLetteringOnMessageExpiration(), actual.isDeadLetteringOnMessageExpiration());
                 assertEquals(expected.enablePartitioning(), actual.enablePartitioning());
                 assertEquals(expected.requiresDuplicateDetection(), actual.requiresDuplicateDetection());
                 assertEquals(expected.requiresSession(), actual.requiresSession());

@@ -20,6 +20,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.TestUtils;
 import com.azure.messaging.servicebus.implementation.models.CreateQueueBody;
 import com.azure.messaging.servicebus.implementation.models.CreateQueueBodyContent;
+import com.azure.messaging.servicebus.implementation.models.QueueDescription;
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionEntry;
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionFeed;
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionResponse;
@@ -80,7 +81,7 @@ class ServiceBusManagementClientImplIntegrationTests extends TestBase {
                 assertNotNull(deserialize);
                 assertNotNull(deserialize.getContent());
 
-                final QueueProperties properties = deserialize.getContent().getQueueProperties();
+                final QueueDescription properties = deserialize.getContent().getQueueDescription();
                 assertNotNull(properties);
                 assertFalse(properties.getLockDuration().isZero());
             })
@@ -98,13 +99,13 @@ class ServiceBusManagementClientImplIntegrationTests extends TestBase {
         final EntitysImpl entityClient = managementClient.getEntitys();
 
         final String queueName = testResourceNamer.randomName("test", 7);
-        final CreateQueueOptions description = new CreateQueueOptions(queueName)
+        final CreateQueueOptions options = new CreateQueueOptions(queueName)
             .setMaxDeliveryCount(15);
-        final QueueProperties queueProperties = EntityHelper.createQueue(description);
+        final QueueDescription queueProperties = EntityHelper.getQueueDescription(options);
         final CreateQueueBody createEntity = new CreateQueueBody();
         final CreateQueueBodyContent content = new CreateQueueBodyContent()
             .setType("application/xml")
-            .setQueueProperties(queueProperties);
+            .setQueueDescription(queueProperties);
         createEntity.setContent(content);
 
         logger.info("Creating queue: {}", queueName);
@@ -139,11 +140,11 @@ class ServiceBusManagementClientImplIntegrationTests extends TestBase {
         final String queueName = testResourceNamer.randomName("test", 7);
         final CreateQueueOptions description = new CreateQueueOptions(queueName)
             .setMaxDeliveryCount(15);
-        final QueueProperties queueProperties = EntityHelper.createQueue(description);
+        final QueueDescription queueProperties = EntityHelper.getQueueDescription(description);
         final CreateQueueBody createEntity = new CreateQueueBody();
         final CreateQueueBodyContent content = new CreateQueueBodyContent()
             .setType("application/xml")
-            .setQueueProperties(queueProperties);
+            .setQueueDescription(queueProperties);
         createEntity.setContent(content);
 
         logger.info("Creating queue: {}", queueName);
@@ -178,7 +179,7 @@ class ServiceBusManagementClientImplIntegrationTests extends TestBase {
             .block(Duration.ofSeconds(30));
         assertNotNull(response);
         final QueueDescriptionResponse deserialize = deserialize(response, QueueDescriptionResponse.class);
-        final QueueProperties properties = deserialize.getContent().getQueueProperties();
+        final QueueDescription properties = deserialize.getContent().getQueueDescription();
 
         final int maxDeliveryCount = properties.getMaxDeliveryCount();
         final int newDeliveryCount = maxDeliveryCount + 5;
@@ -192,7 +193,7 @@ class ServiceBusManagementClientImplIntegrationTests extends TestBase {
         properties.setAutoDeleteOnIdle(autoDeleteOnIdle);
 
         CreateQueueBody updated = new CreateQueueBody().setContent(
-            new CreateQueueBodyContent().setQueueProperties(properties).setType("application/xml"));
+            new CreateQueueBodyContent().setQueueDescription(properties).setType("application/xml"));
 
         // Act & Assert
         StepVerifier.create(entityClient.putWithResponseAsync(queueName, updated, "*", Context.NONE))
