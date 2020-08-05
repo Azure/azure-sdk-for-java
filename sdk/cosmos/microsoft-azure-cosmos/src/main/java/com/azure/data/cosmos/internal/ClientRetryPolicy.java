@@ -101,6 +101,7 @@ public class ClientRetryPolicy implements IDocumentClientRetryPolicy {
                 logger.warn("Endpoint not reachable. Will refresh cache and retry. ", e);
                 return this.shouldRetryOnEndpointFailureAsync(this.isReadRequest, false);
             } else {
+                logger.warn("Endpoint not reachable. Can't retry on write", e);
                 return this.shouldNotRetryOnEndpointFailureAsync(this.isReadRequest, false);
             }
         }
