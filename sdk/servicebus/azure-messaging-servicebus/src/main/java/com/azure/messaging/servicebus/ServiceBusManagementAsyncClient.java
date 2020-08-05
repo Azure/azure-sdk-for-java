@@ -33,6 +33,7 @@ import com.azure.messaging.servicebus.implementation.models.CreateSubscriptionBo
 import com.azure.messaging.servicebus.implementation.models.CreateTopicBody;
 import com.azure.messaging.servicebus.implementation.models.CreateTopicBodyContent;
 import com.azure.messaging.servicebus.implementation.models.NamespacePropertiesEntry;
+import com.azure.messaging.servicebus.implementation.models.QueueDescription;
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionEntry;
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionFeed;
 import com.azure.messaging.servicebus.implementation.models.ResponseLink;
@@ -146,8 +147,7 @@ public final class ServiceBusManagementAsyncClient {
      * @throws HttpResponseException If the request body was invalid, the queue quota is exceeded, or an error
      *     occurred processing the request.
      * @throws NullPointerException if {@code queue} is null.
-     * @throws ResourceExistsException if a queue exists with the same {@link QueueProperties#getName()
-     *     queueName}.
+     * @throws ResourceExistsException if a queue exists with the same {@link QueueProperties#getName() queueName}.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -166,8 +166,7 @@ public final class ServiceBusManagementAsyncClient {
      * @throws HttpResponseException If the request body was invalid, the queue quota is exceeded, or an error
      *     occurred processing the request.
      * @throws NullPointerException if {@code queue} is null.
-     * @throws ResourceExistsException if a queue exists with the same {@link QueueProperties#getName()
-     *     queueName}.
+     * @throws ResourceExistsException if a queue exists with the same {@link QueueProperties#getName() queueName}.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1093,10 +1092,10 @@ public final class ServiceBusManagementAsyncClient {
             return monoError(logger, new NullPointerException("'context' cannot be null."));
         }
 
-        final QueueProperties description = EntityHelper.createQueue(createQueueOptions);
+        final QueueDescription description = EntityHelper.getQueueDescription(createQueueOptions);
         final CreateQueueBodyContent content = new CreateQueueBodyContent()
             .setType(CONTENT_TYPE)
-            .setQueueProperties(description);
+            .setQueueDescription(description);
         final CreateQueueBody createEntity = new CreateQueueBody()
             .setContent(content);
 
@@ -1588,9 +1587,10 @@ public final class ServiceBusManagementAsyncClient {
             return monoError(logger, new NullPointerException("'context' cannot be null."));
         }
 
+        final QueueDescription queueDescription = EntityHelper.toImplementation(queue);
         final CreateQueueBodyContent content = new CreateQueueBodyContent()
             .setType(CONTENT_TYPE)
-            .setQueueProperties(queue);
+            .setQueueDescription(queueDescription);
         final CreateQueueBody createEntity = new CreateQueueBody()
             .setContent(content);
         final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
@@ -1728,7 +1728,7 @@ public final class ServiceBusManagementAsyncClient {
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
         }
 
-        final QueueProperties result = entry.getContent().getQueueProperties();
+        final QueueProperties result = EntityHelper.toModel(entry.getContent().getQueueDescription());
         final String queueName = getTitleValue(entry.getTitle());
         EntityHelper.setQueueName(result, queueName);
 
@@ -1848,10 +1848,12 @@ public final class ServiceBusManagementAsyncClient {
                 }
 
                 final List<QueueProperties> entities = feed.getEntry().stream()
-                    .filter(e -> e.getContent() != null && e.getContent().getQueueProperties() != null)
+                    .filter(e -> e.getContent() != null && e.getContent().getQueueDescription() != null)
                     .map(e -> {
                         final String queueName = getTitleValue(e.getTitle());
-                        final QueueProperties queueProperties = e.getContent().getQueueProperties();
+                        final QueueProperties queueProperties = EntityHelper.toModel(
+                            e.getContent().getQueueDescription());
+
                         EntityHelper.setQueueName(queueProperties, queueName);
 
                         return queueProperties;
