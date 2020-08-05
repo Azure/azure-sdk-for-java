@@ -20,6 +20,7 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
+import com.azure.core.experimental.serializer.ObjectSerializer;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -135,6 +136,7 @@ public class EventHubClientBuilder {
     private String consumerGroup;
     private EventHubConnectionProcessor eventHubConnectionProcessor;
     private int prefetchCount;
+    private ObjectSerializer serializer;
 
     /**
      * Keeps track of the open clients that were created from this builder when there is a shared connection.
@@ -362,6 +364,18 @@ public class EventHubClientBuilder {
     }
 
     /**
+     * Set ObjectSerializer implementation to be used for creating ObjectBatch.
+     *
+     * @param serializer ObjectSerializer implementation
+     *
+     * @return updated builder instance
+     */
+    public EventHubClientBuilder serializer(ObjectSerializer serializer) {
+        this.serializer = serializer;
+        return this;
+    }
+
+    /**
      * Package-private method that sets the scheduler for the created Event Hub client.
      *
      * @param scheduler Scheduler to set.
@@ -485,7 +499,7 @@ public class EventHubClientBuilder {
 
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
 
-        return new EventHubAsyncClient(processor, tracerProvider, messageSerializer, scheduler,
+        return new EventHubAsyncClient(processor, tracerProvider, messageSerializer, serializer, scheduler,
             isSharedConnection.get(), this::onClientClose);
     }
 

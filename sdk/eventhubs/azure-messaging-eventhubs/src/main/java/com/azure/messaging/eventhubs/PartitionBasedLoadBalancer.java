@@ -270,6 +270,9 @@ final class PartitionBasedLoadBalancer {
         // renew ownership of already owned partitions
         checkpointStore.claimOwnership(partitionPumpManager.getPartitionPumps().keySet()
             .stream()
+            .filter(
+                partitionId -> partitionOwnershipMap.containsKey(partitionId) && partitionOwnershipMap.get(partitionId)
+                    .getOwnerId().equals(this.ownerId))
             .map(partitionId -> createPartitionOwnershipRequest(partitionOwnershipMap, partitionId))
             .collect(Collectors.toList()))
             .subscribe(ignored -> { },
@@ -395,6 +398,9 @@ final class PartitionBasedLoadBalancer {
         partitionsToClaim.addAll(partitionPumpManager.getPartitionPumps()
             .keySet()
             .stream()
+            .filter(
+                partitionId -> partitionOwnershipMap.containsKey(partitionId) && partitionOwnershipMap.get(partitionId)
+                    .getOwnerId().equals(this.ownerId))
             .map(partitionId -> createPartitionOwnershipRequest(partitionOwnershipMap, partitionId))
             .collect(Collectors.toList()));
 
