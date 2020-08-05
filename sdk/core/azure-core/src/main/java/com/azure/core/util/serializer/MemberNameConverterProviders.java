@@ -34,7 +34,7 @@ public final class MemberNameConverterProviders {
         if (attemptedLoad && defaultProvider != null) {
             return;
         } else if (attemptedLoad) {
-            throw new IllegalStateException(CANNOT_FIND_JSON_SERIALIZER_PROVIDER);
+            throw new IllegalStateException(CANNOT_FIND_MEMBER_NAME_CONVERTER_PROVIDER);
         }
 
         attemptedLoad = true;
@@ -43,7 +43,7 @@ public final class MemberNameConverterProviders {
         if (iterator.hasNext()) {
             defaultProvider = iterator.next();
         } else {
-            throw new IllegalStateException(CANNOT_FIND_JSON_SERIALIZER_PROVIDER);
+            throw new IllegalStateException(CANNOT_FIND_MEMBER_NAME_CONVERTER_PROVIDER);
         }
     }
 
