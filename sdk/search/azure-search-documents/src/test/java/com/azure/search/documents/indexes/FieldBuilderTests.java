@@ -110,9 +110,9 @@ public class FieldBuilderTests {
 
     @Test
     public void unsupportedFields() {
-        List<SearchField> actualFields = SearchIndexClient.buildSearchFields(HotelWithUnsupportedField.class, null);
-        assertEquals(1, actualFields.size());
-        assertEquals("hotelId", actualFields.get(0).getName());
+        Exception exception = assertThrows(IllegalArgumentException.class, () ->
+            SearchIndexClient.buildSearchFields(HotelWithUnsupportedField.class, null));
+        assertExceptionMassageAndDataType(exception, null, "is not supported");
     }
 
     private void assertListFieldEquals(List<SearchField> expected, List<SearchField> actual) {

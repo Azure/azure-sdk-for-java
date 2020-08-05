@@ -735,7 +735,7 @@ public final class SearchIndexAsyncClient {
      * @return The list {@link SearchField} for search index schema.
      */
     public static List<SearchField> buildSearchFields(Class<?> model, FieldBuilderOptions options) {
-        if (options == null) {
+        if (options == null || options.getConverter() == null) {
             return FieldBuilder.build(model, MemberNameConverterProviders.createInstance());
         }
         return FieldBuilder.build(model, options.getConverter());

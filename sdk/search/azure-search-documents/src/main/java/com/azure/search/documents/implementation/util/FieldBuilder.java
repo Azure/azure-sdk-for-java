@@ -108,9 +108,6 @@ public final class FieldBuilder {
             return null;
         }
         Type type = classField.getGenericType();
-        if (UNSUPPORTED_TYPES.contains(type)) {
-            return null;
-        }
 
         if (SUPPORTED_NONE_PARAMETERIZED_TYPE.containsKey(type)) {
             return buildNoneParameterizedType(fieldName, classField, logger);
@@ -154,9 +151,7 @@ public final class FieldBuilder {
     private static SearchField buildCollectionField(String fieldName, Field classField,
         Stack<Class<?>> classChain, MemberNameConverter serializer, ClientLogger logger) {
         Type componentOrElementType = getComponentOrElementType(classField.getGenericType(), logger);
-        if (UNSUPPORTED_TYPES.contains(componentOrElementType)) {
-            return null;
-        }
+
         validateType(componentOrElementType, true, logger);
         if (SUPPORTED_NONE_PARAMETERIZED_TYPE.containsKey(componentOrElementType)) {
             SearchField searchField = convertToBasicSearchField(fieldName, classField, logger);
@@ -259,6 +254,11 @@ public final class FieldBuilder {
 
     private static void validateType(Type type, boolean hasArrayOrCollectionWrapped, ClientLogger logger) {
         if (!(type instanceof ParameterizedType)) {
+            if (UNSUPPORTED_TYPES.contains(type)) {
+                throw logger.logExceptionAsError(new IllegalArgumentException(String.format("%s is not supported. "
+                        + "Please use FieldIgnore annotation to exclude the field "
+                        + "and manually add to SearchField list.", type.getTypeName())));
+            }
             return;
         }
         ParameterizedType parameterizedType = (ParameterizedType) type;
