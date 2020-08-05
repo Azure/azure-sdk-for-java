@@ -45,6 +45,20 @@ public class JacksonPropertyNameTests {
         assertMemberNull(f);
     }
 
+
+    @Test
+    public void testPropertyNameOnTransientFieldName() throws NoSuchFieldException {
+        class LocalHotel {
+            transient String hotelName;
+
+            public String getHotelName() {
+                return hotelName;
+            }
+        }
+        Field f = LocalHotel.class.getDeclaredField("hotelName");
+        assertMemberNull(f);
+    }
+
     @Test
     public void testPropertyNameOnFieldAnnotation() throws NoSuchFieldException {
         class LocalHotel {

@@ -4,7 +4,7 @@
 package com.azure.core.serializer.json.jackson;
 
 public class Hotel {
-    String hotelName;
+    transient String hotelName;
 
     public Hotel() {
     }
@@ -13,7 +13,7 @@ public class Hotel {
         return hotelName;
     }
 
-    public Hotel setHotelName() {
+    public Hotel setHotelName(String hotelName) {
         this.hotelName = hotelName;
         return this;
     }

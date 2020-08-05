@@ -21,6 +21,7 @@ import java.io.UncheckedIOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 
 /**
  * Jackson based implementation of the {@link JsonSerializer} interface.
@@ -75,6 +76,9 @@ public final class JacksonJsonSerializer implements MemberNameConverter, JsonSer
 
     @Override
     public String convertMemberName(Member member) {
+        if (Modifier.isTransient(member.getModifiers())) {
+            return null;
+        }
         if (member instanceof Field) {
             Field f = (Field) member;
             if (f.isAnnotationPresent(JsonIgnore.class)) {
