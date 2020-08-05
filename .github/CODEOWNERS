@@ -11,6 +11,7 @@
 # BOM
 # PRLabel: %Azure.Core
 /sdk/boms/azure-sdk-bom/                            @alzimmermsft @jonathangiles @srnagar @hemanttanwar @anuchandy
+/sdk/boms/azure-spring-boot-bom/                    @saragluna @yiliuTo @chenrujun @zhoufenqin @jialindai
 
 ####
 # Service teams

@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation.encryption;
 
-import com.azure.cosmos.implementation.encryption.api.EncryptionType;
+import com.azure.cosmos.encryption.EncryptionType;
 
 public class AeadAes256CbcHmac256AlgorithmProvider {
     public static void generateRandomBytes(byte[] randomBytes) {

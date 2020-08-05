@@ -3,12 +3,10 @@
 
 package com.azure.core.serializer.json.gson;
 
-import com.azure.core.experimental.serializer.JsonNode;
-import com.azure.core.experimental.serializer.JsonSerializer;
-import com.azure.core.experimental.serializer.TypeReference;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JsonSerializer;
+import com.azure.core.util.serializer.TypeReference;
 import com.google.gson.Gson;
-import com.google.gson.JsonParser;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -50,17 +48,7 @@ public final class GsonJsonSerializer implements JsonSerializer {
     }
 
     @Override
-    public <T> T deserializeTree(JsonNode jsonNode, TypeReference<T> typeReference) {
-        return gson.fromJson(JsonNodeUtils.toGsonElement(jsonNode), typeReference.getJavaType());
-    }
-
-    @Override
-    public <T> Mono<T> deserializeTreeAsync(JsonNode jsonNode, TypeReference<T> typeReference) {
-        return Mono.fromCallable(() -> deserializeTree(jsonNode, typeReference));
-    }
-
-    @Override
-    public <S extends OutputStream> S serialize(S stream, Object value) {
+    public void serialize(OutputStream stream, Object value) {
         Writer writer = new OutputStreamWriter(stream, UTF_8);
         gson.toJson(value, writer);
 
@@ -69,42 +57,10 @@ public final class GsonJsonSerializer implements JsonSerializer {
         } catch (IOException ex) {
             throw logger.logExceptionAsError(new UncheckedIOException(ex));
         }
-
-        return stream;
     }
 
     @Override
-    public <S extends OutputStream> Mono<S> serializeAsync(S stream, Object value) {
-        return Mono.fromCallable(() -> serialize(stream, value));
-    }
-
-    @Override
-    public <S extends OutputStream> S serializeTree(S stream, JsonNode jsonNode) {
-        return serialize(stream, JsonNodeUtils.toGsonElement(jsonNode));
-    }
-
-    @Override
-    public <S extends OutputStream> Mono<S> serializeTreeAsync(S stream, JsonNode jsonNode) {
-        return serializeAsync(stream, JsonNodeUtils.toGsonElement(jsonNode));
-    }
-
-    @Override
-    public JsonNode toTree(InputStream stream) {
-        return JsonNodeUtils.fromGsonElement(new JsonParser().parse(new InputStreamReader(stream, UTF_8)));
-    }
-
-    @Override
-    public Mono<JsonNode> toTreeAsync(InputStream stream) {
-        return Mono.fromCallable(() -> toTree(stream));
-    }
-
-    @Override
-    public JsonNode toTree(Object value) {
-        return JsonNodeUtils.fromGsonElement(gson.toJsonTree(value));
-    }
-
-    @Override
-    public Mono<JsonNode> toTreeAsync(Object value) {
-        return Mono.fromCallable(() -> toTree(value));
+    public Mono<Void> serializeAsync(OutputStream stream, Object value) {
+        return Mono.fromRunnable(() -> serialize(stream, value));
     }
 }

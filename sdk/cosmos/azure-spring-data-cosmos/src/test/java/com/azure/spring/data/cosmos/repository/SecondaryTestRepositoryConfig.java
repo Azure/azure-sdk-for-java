@@ -5,7 +5,6 @@ package com.azure.spring.data.cosmos.repository;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.spring.data.cosmos.CosmosFactory;
-import com.azure.spring.data.cosmos.config.CosmosClientConfig;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
@@ -36,20 +35,16 @@ public class SecondaryTestRepositoryConfig {
     private boolean queryMetricsEnabled;
 
     @Bean
-    public CosmosClientConfig secondaryCosmosClientConfig() {
-        CosmosClientConfig cosmosClientConfig = CosmosClientConfig.builder()
-            .cosmosClientBuilder(new CosmosClientBuilder()
-                .key(cosmosDbKey)
-                .endpoint(cosmosDbUri)
-                .contentResponseOnWriteEnabled(true))
-            .database(getFirstDatabase())
-            .build();
-        return cosmosClientConfig;
+    public CosmosClientBuilder secondaryCosmosClientBuilder() {
+        return new CosmosClientBuilder()
+            .key(cosmosDbKey)
+            .endpoint(cosmosDbUri)
+            .contentResponseOnWriteEnabled(true);
     }
 
     @Bean("secondaryCosmosAsyncClient")
-    public CosmosAsyncClient getCosmosAsyncClient(CosmosClientConfig secondaryCosmosClientConfig) {
-        return CosmosFactory.createCosmosAsyncClient(secondaryCosmosClientConfig);
+    public CosmosAsyncClient getCosmosAsyncClient(CosmosClientBuilder secondaryCosmosClientBuilder) {
+        return CosmosFactory.createCosmosAsyncClient(secondaryCosmosClientBuilder);
     }
 
     /**

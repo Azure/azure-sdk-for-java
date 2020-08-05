@@ -8,12 +8,14 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.implementation.AuthenticationRecord;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.MsalAuthenticationAccount;
 import com.azure.identity.implementation.MsalToken;
 import com.azure.identity.implementation.util.LoggingUtil;
+import com.azure.identity.implementation.util.ValidationUtil;
 import reactor.core.publisher.Mono;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -51,15 +53,18 @@ public class SharedTokenCacheCredential implements TokenCredential {
         }
         if (clientId == null) {
             this.clientId = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID);
+            ValidationUtil.validateClientIdCharacterRange(getClass().getSimpleName(), this.clientId);
         } else {
             this.clientId = clientId;
         }
         if (tenantId == null) {
             this.tenantId = configuration.contains(Configuration.PROPERTY_AZURE_TENANT_ID)
                     ? configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID) : "common";
+            ValidationUtil.validateTenantIdCharacterRange(getClass().getSimpleName(), this.tenantId);
         } else {
             this.tenantId = tenantId;
         }
+
         this.identityClient = new IdentityClientBuilder()
                 .tenantId(this.tenantId)
                 .clientId(this.clientId)

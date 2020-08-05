@@ -77,12 +77,14 @@ public final class TestConstants {
     public static final String SECONDARY_DB_NAME = "second_testdb";
     public static final String FIRST_NAME = "first_name_li";
     public static final String LAST_NAME = "last_name_p";
+    public static final Integer ZIP_CODE = 12345;
     public static final String ID_1 = "id-1";
     public static final String ID_2 = "id-2";
     public static final String ID_3 = "id-3";
     public static final String ID_4 = "id-4";
     public static final String NEW_FIRST_NAME = "new_first_name";
     public static final String NEW_LAST_NAME = "new_last_name";
+    public static final Integer NEW_ZIP_CODE = 67890;
     public static final String UPDATED_FIRST_NAME = "updated_first_name";
     public static final String UPDATED_LAST_NAME = "updated_last_name";
     public static final String LEVEL = "B";
@@ -128,6 +130,7 @@ public final class TestConstants {
     public static final String PROPERTY_ID = "id";
     public static final String PROPERTY_FIRST_NAME = "firstName";
     public static final String PROPERTY_LAST_NAME = "lastName";
+    public static final String PROPERTY_ZIP_CODE = "zipCode";
     public static final String PROPERTY_HOBBIES = "hobbies";
     public static final String PROPERTY_SHIPPING_ADDRESSES = "shippingAddresses";
 
@@ -143,6 +146,9 @@ public final class TestConstants {
 
     public static final String DYNAMIC_PROPERTY_COLLECTION_NAME = "spel-property-collection";
     public static final String DYNAMIC_BEAN_COLLECTION_NAME = "spel-bean-collection";
+
+    public static final String COURSE_NAME = "test-course";
+    public static final String DEPARTMENT = "test-department";
 
     private TestConstants() {
     }

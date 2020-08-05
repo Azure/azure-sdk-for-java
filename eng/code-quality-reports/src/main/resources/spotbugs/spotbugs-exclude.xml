@@ -381,7 +381,7 @@
     <Class name="com.azure.core.auth.credentials.AzureCliCredentials"/>
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
   </Match>
-  
+
   <!-- The fields are checked for null in the build method and throw exceptions if values for fields are not specified. -->
   <Match>
       <Class name="com.azure.identity.InteractiveBrowserCredentialBuilder"/>
@@ -1265,7 +1265,7 @@
   </Match>
 
   <Match>
-    <Class name="com.azure.cosmos.EncryptionCosmosAsyncContainer"/>
+    <Class name="com.azure.cosmos.encryption.EncryptionCosmosAsyncContainer"/>
     <Method name="decryptResponseAsync"/>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
@@ -1687,15 +1687,22 @@
 
   <!-- Returning a new copy of the object is not necessary -->
   <Match>
-    <Class name="com.azure.cosmos.implementation.encryption.EncryptionKeyUnwrapResult"/>
+    <Class name="com.azure.cosmos.encryption.EncryptionKeyUnwrapResult"/>
     <Method name="getDataEncryptionKey"/>
     <Bug pattern="EI_EXPOSE_REP"/>
   </Match>
 
   <!-- Returning a new copy of the object is not necessary -->
   <Match>
-    <Class name="com.azure.cosmos.implementation.encryption.EncryptionKeyUnwrapResult"/>
+    <Class name="com.azure.cosmos.encryption.EncryptionKeyUnwrapResult"/>
     <Method name="getWrappedDataEncryptionKey"/>
+    <Bug pattern="EI_EXPOSE_REP"/>
+  </Match>
+
+  <!-- Returning a new copy of the object is not necessary -->
+  <Match>
+    <Class name="com.azure.cosmos.encryption.DecryptionResult"/>
+    <Method name="getEncryptedContent"/>
     <Bug pattern="EI_EXPOSE_REP"/>
   </Match>
 
@@ -1706,7 +1713,6 @@
     <Bug pattern="EI_EXPOSE_REP"/>
   </Match>
 
-
   <!-- Returning a new copy of the object is not necessary -->
   <Match>
     <Class name="com.azure.cosmos.implementation.encryption.EncryptionProperties"/>
@@ -1716,7 +1722,7 @@
 
   <!-- Returning a new copy of the object is not necessary -->
   <Match>
-    <Class name="com.azure.cosmos.implementation.encryption.EncryptionKeyUnwrapResult"/>
+    <Class name="com.azure.cosmos.encryption.EncryptionKeyUnwrapResult"/>
     <Method name="&lt;init&gt;"/>
     <Bug pattern="EI_EXPOSE_REP2"/>
   </Match>
@@ -1730,21 +1736,21 @@
 
   <!-- Returning a new copy of the object is not necessary -->
   <Match>
-    <Class name="com.azure.cosmos.implementation.encryption.EncryptionKeyWrapResult"/>
+    <Class name="com.azure.cosmos.encryption.EncryptionKeyWrapResult"/>
     <Method name="getWrappedDataEncryptionKey"/>
     <Bug pattern="EI_EXPOSE_REP2,EI_EXPOSE_REP"/>
   </Match>
 
   <!-- Returning a new copy of the object is not necessary -->
   <Match>
-    <Class name="com.azure.cosmos.implementation.encryption.EncryptionKeyWrapResult"/>
+    <Class name="com.azure.cosmos.encryption.EncryptionKeyWrapResult"/>
     <Method name="getEncryptionKeyWrapMetadata"/>
     <Bug pattern="EI_EXPOSE_REP2,EI_EXPOSE_REP"/>
   </Match>
 
   <!-- Returning a new copy of the object is not necessary -->
   <Match>
-    <Class name="com.azure.cosmos.implementation.encryption.EncryptionKeyWrapResult"/>
+    <Class name="com.azure.cosmos.encryption.EncryptionKeyWrapResult"/>
     <Method name="&lt;init&gt;"/>
     <Bug pattern="EI_EXPOSE_REP2"/>
   </Match>
@@ -2144,4 +2150,25 @@
     <Bug pattern="IP_PARAMETER_IS_DEAD_BUT_OVERWRITTEN"/>
   </Match>
 
+  <Match>
+    <Class name="com.azure.core.experimental.serializer.JsonSerializer"/>
+    <Bug pattern="NM_SAME_SIMPLE_NAME_AS_INTERFACE"/>
+  </Match>
+
+  <!-- Setup in Identity Test classes, required for the tests to work properly.-->
+  <Match>
+      <Class name="com.azure.identity.ClientCertificateCredentialTest" />
+      <Bug pattern="DMI_HARDCODED_ABSOLUTE_FILENAME"/>
+  </Match>
+  
+  <Match>
+      <Or>
+          <Class name="com.azure.identity.implementation.IdentityClientTests"/>
+          <Class name="com.azure.identity.implementation.SynchronizedAccessorTests"/>
+      </Or>
+      <Or>
+          <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/> <!-- false positive -->
+          <Bug pattern="UI_INHERITANCE_UNSAFE_GETRESOURCE"/>
+      </Or>
+  </Match>
 </FindBugsFilter>

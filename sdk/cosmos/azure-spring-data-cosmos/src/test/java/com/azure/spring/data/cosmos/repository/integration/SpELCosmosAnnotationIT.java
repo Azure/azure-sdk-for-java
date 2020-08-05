@@ -6,7 +6,6 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.common.TestConstants;
-import com.azure.spring.data.cosmos.config.CosmosClientConfig;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
@@ -89,13 +88,10 @@ public class SpELCosmosAnnotationIT {
 
     @Test
     public void testDatabaseOperationsOnDynamicallyNamedCollection() throws ClassNotFoundException {
-        final CosmosClientConfig cosmosClientConfig = CosmosClientConfig.builder()
-            .cosmosClientBuilder(new CosmosClientBuilder()
-                .endpoint(dbUri)
-                .key(dbKey))
-            .database(TestConstants.DB_NAME)
-            .build();
-        CosmosAsyncClient client = CosmosFactory.createCosmosAsyncClient(cosmosClientConfig);
+        final CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
+            .endpoint(dbUri)
+            .key(dbKey);
+        CosmosAsyncClient client = CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder);
         final CosmosFactory dbFactory = new CosmosFactory(client, TestConstants.DB_NAME);
 
         cosmosEntityInformation = new CosmosEntityInformation<>(SpELPropertyStudent.class);

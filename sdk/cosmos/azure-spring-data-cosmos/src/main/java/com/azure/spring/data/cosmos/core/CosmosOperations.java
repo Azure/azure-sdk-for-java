@@ -6,7 +6,7 @@ package com.azure.spring.data.cosmos.core;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
-import com.azure.spring.data.cosmos.core.query.DocumentQuery;
+import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -145,6 +145,16 @@ public interface CosmosOperations {
     void deleteById(String containerName, Object id, PartitionKey partitionKey);
 
     /**
+     * Delete using entity
+     *
+     * @param containerName the container name
+     * @param entity the entity object
+     * @param id the id
+     * @param partitionKey the partition key
+     */
+    void deleteEntityById(String containerName, Object entity, Object id, PartitionKey partitionKey);
+
+    /**
      * Delete all items in a container
      *
      * @param containerName the container name
@@ -168,7 +178,7 @@ public interface CosmosOperations {
      * @param <T> type class of domainType
      * @return deleted items in a List
      */
-    <T> List<T> delete(DocumentQuery query, Class<T> domainType, String containerName);
+    <T> List<T> delete(CosmosQuery query, Class<T> domainType, String containerName);
 
     /**
      * Find query
@@ -179,7 +189,7 @@ public interface CosmosOperations {
      * @param <T> type class of domainType
      * @return found results in a List
      */
-    <T> List<T> find(DocumentQuery query, Class<T> domainType, String containerName);
+    <T> List<T> find(CosmosQuery query, Class<T> domainType, String containerName);
 
     /**
      * Find by ids
@@ -202,7 +212,7 @@ public interface CosmosOperations {
      * @param <T> type of domainType
      * @return Boolean
      */
-    <T> Boolean exists(DocumentQuery query, Class<T> domainType, String containerName);
+    <T> Boolean exists(CosmosQuery query, Class<T> domainType, String containerName);
 
     /**
      * Find all items in a given container with partition key
@@ -223,7 +233,7 @@ public interface CosmosOperations {
      * @param <T> type class of domainType
      * @return Page
      */
-    <T> Page<T> paginationQuery(DocumentQuery query, Class<T> domainType, String containerName);
+    <T> Page<T> paginationQuery(CosmosQuery query, Class<T> domainType, String containerName);
 
     /**
      * Count
@@ -241,7 +251,7 @@ public interface CosmosOperations {
      * @param <T> type class of domainType
      * @return count result
      */
-    <T> long count(DocumentQuery query, String containerName);
+    <T> long count(CosmosQuery query, String containerName);
 
     /**
      * To get converter

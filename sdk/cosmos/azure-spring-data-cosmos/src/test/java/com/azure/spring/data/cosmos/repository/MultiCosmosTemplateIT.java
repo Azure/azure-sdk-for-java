@@ -8,7 +8,6 @@ import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
 import com.azure.spring.data.cosmos.domain.Person;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
-import java.lang.reflect.Field;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.After;
@@ -21,6 +20,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import reactor.core.publisher.Mono;
+
+import java.lang.reflect.Field;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {TestRepositoryConfig.class, SecondaryTestRepositoryConfig.class})

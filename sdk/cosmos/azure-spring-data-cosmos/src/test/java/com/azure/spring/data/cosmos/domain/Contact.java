@@ -2,12 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.domain;
 
-import com.azure.spring.data.cosmos.core.mapping.Document;
+import com.azure.spring.data.cosmos.core.mapping.Container;
 import org.springframework.data.annotation.Id;
 
 import java.util.Objects;
 
-@Document()
+@Container()
 public class Contact {
     @Id
     private String logicId;
