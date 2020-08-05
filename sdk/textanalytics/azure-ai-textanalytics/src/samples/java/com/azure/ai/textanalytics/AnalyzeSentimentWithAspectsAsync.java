@@ -3,7 +3,7 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.AspectSentiment;
+import com.azure.ai.textanalytics.models.MinedOpinion;
 import com.azure.ai.textanalytics.models.OpinionSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.ai.textanalytics.models.TextSentiment;
@@ -43,48 +43,48 @@ public class AnalyzeSentimentWithAspectsAsync {
                     "Recognized document sentiment: %s, positive score: %f, neutral score: %f, negative score: %f.%n",
                     documentSentiment.getSentiment(), scores.getPositive(), scores.getNeutral(), scores.getNegative());
 
-                List<AspectSentiment> positiveAspects = new ArrayList<>();
-                List<AspectSentiment> mixedAspects = new ArrayList<>();
-                List<AspectSentiment> negativeAspects = new ArrayList<>();
+                List<MinedOpinion> positiveMinedOpinions = new ArrayList<>();
+                List<MinedOpinion> mixedMinedOpinions = new ArrayList<>();
+                List<MinedOpinion> negativeMinedOpinions = new ArrayList<>();
                 documentSentiment.getSentences().forEach(sentenceSentiment -> {
                     SentimentConfidenceScores sentenceScores = sentenceSentiment.getConfidenceScores();
                     System.out.printf("\tsentence sentiment: %s, positive score: %f, neutral score: %f, negative score: %f.%n",
                         sentenceSentiment.getSentiment(), sentenceScores.getPositive(), sentenceScores.getNeutral(), sentenceScores.getNegative());
 
-                    sentenceSentiment.getAspects().forEach(aspectSentiment -> {
-                        TextSentiment aspectTextSentiment = aspectSentiment.getSentiment();
+                    sentenceSentiment.getMinedOpinions().forEach(minedOpinion -> {
+                        TextSentiment aspectTextSentiment = minedOpinion.getAspect().getSentiment();
                         if (NEGATIVE.equals(aspectTextSentiment)) {
-                            negativeAspects.add(aspectSentiment);
+                            negativeMinedOpinions.add(minedOpinion);
                         } else if (POSITIVE.equals(aspectTextSentiment)) {
-                            positiveAspects.add(aspectSentiment);
+                            positiveMinedOpinions.add(minedOpinion);
                         } else if (MIXED.equals(aspectTextSentiment)) {
-                            mixedAspects.add(aspectSentiment);
+                            mixedMinedOpinions.add(minedOpinion);
                         }
                     });
                 });
 
-                System.out.printf("Positive aspects count: %d%n", positiveAspects.size());
-                for (AspectSentiment positiveAspect : positiveAspects) {
-                    System.out.printf("\tAspect: %s%n", positiveAspect.getText());
-                    for (OpinionSentiment opinionSentiment : positiveAspect.getOpinions()) {
+                System.out.printf("Positive aspects count: %d%n", positiveMinedOpinions.size());
+                for (MinedOpinion positiveMinedOpinion : positiveMinedOpinions) {
+                    System.out.printf("\tAspect: %s%n", positiveMinedOpinion.getAspect().getText());
+                    for (OpinionSentiment opinionSentiment : positiveMinedOpinion.getOpinions()) {
                         System.out.printf("\t\t'%s' sentiment because of \"%s\". Does the aspect negated: %s.%n",
                             opinionSentiment.getSentiment(), opinionSentiment.getText(), opinionSentiment.isNegated());
                     }
                 }
 
-                System.out.printf("Mixed aspects count: %d%n", mixedAspects.size());
-                for (AspectSentiment mixedAspect : mixedAspects) {
-                    System.out.printf("\tAspect: %s%n", mixedAspect.getText());
-                    for (OpinionSentiment opinionSentiment : mixedAspect.getOpinions()) {
+                System.out.printf("Mixed aspects count: %d%n", mixedMinedOpinions.size());
+                for (MinedOpinion mixedMinedOpinion : mixedMinedOpinions) {
+                    System.out.printf("\tAspect: %s%n", mixedMinedOpinion.getAspect().getText());
+                    for (OpinionSentiment opinionSentiment : mixedMinedOpinion.getOpinions()) {
                         System.out.printf("\t\t'%s' sentiment because of \"%s\". Does the aspect negated: %s.%n",
                             opinionSentiment.getSentiment(), opinionSentiment.getText(), opinionSentiment.isNegated());
                     }
                 }
 
-                System.out.printf("Negative aspects count: %d%n", negativeAspects.size());
-                for (AspectSentiment negativeAspect : negativeAspects) {
-                    System.out.printf("\tAspect: %s%n", negativeAspect.getText());
-                    for (OpinionSentiment opinionSentiment : negativeAspect.getOpinions()) {
+                System.out.printf("Negative aspects count: %d%n", negativeMinedOpinions.size());
+                for (MinedOpinion negativeMinedOpinion : negativeMinedOpinions) {
+                    System.out.printf("\tAspect: %s%n", negativeMinedOpinion.getAspect().getText());
+                    for (OpinionSentiment opinionSentiment : negativeMinedOpinion.getOpinions()) {
                         System.out.printf("\t\t'%s' sentiment because of \"%s\". Does the aspect negated: %s.%n",
                             opinionSentiment.getSentiment(), opinionSentiment.getText(), opinionSentiment.isNegated());
                     }

@@ -15,21 +15,35 @@ public final class SentenceSentiment {
     private final String text;
     private final SentimentConfidenceScores confidenceScores;
     private final TextSentiment sentiment;
-    private final IterableStream<AspectSentiment> aspects;
+    private final IterableStream<MinedOpinion> minedOpinions;
 
     /**
      * Creates a {@link SentenceSentiment} model that describes the sentiment analysis of sentence.
      * @param text The sentence text.
      * @param sentiment The sentiment label of the sentence.
-     * @param aspects The aspect of the sentence sentiment.
      * @param confidenceScores The sentiment confidence score (Softmax score) between 0 and 1, for each sentiment label.
      *   Higher values signify higher confidence.
      */
-    public SentenceSentiment(String text, TextSentiment sentiment, IterableStream<AspectSentiment> aspects,
+    public SentenceSentiment(String text, TextSentiment sentiment, SentimentConfidenceScores confidenceScores) {
+        this.text = text;
+        this.sentiment = sentiment;
+        this.minedOpinions = null;
+        this.confidenceScores = confidenceScores;
+    }
+
+    /**
+     * Creates a {@link SentenceSentiment} model that describes the sentiment analysis of sentence.
+     * @param text The sentence text.
+     * @param sentiment The sentiment label of the sentence.
+     * @param minedOpinions The mined opinions of the sentence sentiment.
+     * @param confidenceScores The sentiment confidence score (Softmax score) between 0 and 1, for each sentiment label.
+     *   Higher values signify higher confidence.
+     */
+    public SentenceSentiment(String text, TextSentiment sentiment, IterableStream<MinedOpinion> minedOpinions,
         SentimentConfidenceScores confidenceScores) {
         this.text = text;
         this.sentiment = sentiment;
-        this.aspects = aspects;
+        this.minedOpinions = minedOpinions;
         this.confidenceScores = confidenceScores;
     }
 
@@ -52,12 +66,12 @@ public final class SentenceSentiment {
     }
 
     /**
-     * Get the aspects of sentence sentiment.
+     * Get the mined opinions of sentence sentiment.
      *
-     * @return The aspects of sentence sentiment.
+     * @return The mined opinions of sentence sentiment.
      */
-    public IterableStream<AspectSentiment> getAspects() {
-        return aspects;
+    public IterableStream<MinedOpinion> getMinedOpinions() {
+        return minedOpinions;
     }
 
     /**

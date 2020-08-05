@@ -10,6 +10,7 @@ import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
+import com.azure.ai.textanalytics.models.MinedOpinion;
 import com.azure.ai.textanalytics.models.OpinionSentiment;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
@@ -180,6 +181,21 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     @Test
     abstract void analyzeSentimentForListLanguageHint(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeSentimentForTextInputWithOpinionMining(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeSentimentDuplicateIdInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeSentimentForListStringWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeSentimentForListStringWithOptionsAndOpinionMining(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeSentimentForBatchInputShowStatisticsAndIncludeOpinionMining(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     // Detect Language runner
     void detectLanguageShowStatisticsRunner(BiConsumer<List<DetectLanguageInput>,
@@ -585,23 +601,26 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         assertEquals(expectedSentiment.getSentiment(), actualSentiment.getSentiment());
         assertEquals(expectedSentiment.getText(), actualSentiment.getText());
         if (includeOpinionMining) {
-            validateSentenceAspects(expectedSentiment.getAspects().stream().collect(Collectors.toList()),
-                actualSentiment.getAspects().stream().collect(Collectors.toList()));
+            validateSentenceMinedOpinions(expectedSentiment.getMinedOpinions().stream().collect(Collectors.toList()),
+                actualSentiment.getMinedOpinions().stream().collect(Collectors.toList()));
         }
     }
 
     /**
-     * Helper method to validate sentence's aspects. Can't really validate score numbers because it
-     * frequently changed by background model computation.
+     * Helper method to validate sentence's mined opinions.
      *
-     * @param expectedAspectSentiments a list of analyzed aspect sentiment returned by the service.
-     * @param actualAspectSentiments a list of analyzed aspect sentiment returned by the API.
+     * @param expectedMinedOpinions a list of mined opinions returned by the service.
+     * @param actualMinedOpinions a list of mined opinions returned by the API.
      */
-    static void validateSentenceAspects(List<AspectSentiment> expectedAspectSentiments,
-        List<AspectSentiment> actualAspectSentiments) {
-        assertEquals(expectedAspectSentiments.size(), actualAspectSentiments.size());
-        for (int i = 0; i < actualAspectSentiments.size(); i++) {
-            validateAspectSentiment(expectedAspectSentiments.get(i), actualAspectSentiments.get(i));
+    static void validateSentenceMinedOpinions(List<MinedOpinion> expectedMinedOpinions,
+        List<MinedOpinion> actualMinedOpinions) {
+        assertEquals(expectedMinedOpinions.size(), actualMinedOpinions.size());
+        for (int i = 0; i < actualMinedOpinions.size(); i++) {
+            final MinedOpinion expectedMinedOpinion = expectedMinedOpinions.get(i);
+            final MinedOpinion actualMinedOpinion = actualMinedOpinions.get(i);
+            validateAspectSentiment(expectedMinedOpinion.getAspect(), actualMinedOpinion.getAspect());
+            validateAspectOpinionList(expectedMinedOpinion.getOpinions().stream().collect(Collectors.toList()),
+                actualMinedOpinion.getOpinions().stream().collect(Collectors.toList()));
         }
     }
 
@@ -614,8 +633,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     static void validateAspectSentiment(AspectSentiment expectedAspectSentiment, AspectSentiment actualAspectSentiment) {
         assertEquals(expectedAspectSentiment.getSentiment(), actualAspectSentiment.getSentiment());
         assertEquals(expectedAspectSentiment.getText(), actualAspectSentiment.getText());
-        validateAspectOpinionList(expectedAspectSentiment.getOpinions().stream().collect(Collectors.toList()),
-            actualAspectSentiment.getOpinions().stream().collect(Collectors.toList()));
         assertEquals(expectedAspectSentiment.getLength(), actualAspectSentiment.getLength());
         assertEquals(expectedAspectSentiment.getOffset(), actualAspectSentiment.getOffset());
     }

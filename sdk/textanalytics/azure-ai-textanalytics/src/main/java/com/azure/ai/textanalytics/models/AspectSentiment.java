@@ -4,7 +4,6 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.IterableStream;
 
 /**
  * The {@link AspectSentiment} model.
@@ -13,7 +12,6 @@ import com.azure.core.util.IterableStream;
 public final class AspectSentiment {
     private final String text;
     private final TextSentiment sentiment;
-    private final IterableStream<OpinionSentiment> opinions;
     private final SentimentConfidenceScores confidenceScores;
     private final int length;
     private final int offset;
@@ -23,16 +21,14 @@ public final class AspectSentiment {
      *
      * @param text The aspect text property.
      * @param sentiment The text sentiment label: POSITIVE, NEGATIVE.
-     * @param opinions The opinions of the aspect text.
      * @param offset The offset of aspect text.
      * @param length The length of aspect text.
      * @param confidenceScores The {@link SentimentConfidenceScores}.
      */
-    public AspectSentiment(String text, TextSentiment sentiment, IterableStream<OpinionSentiment> opinions,
+    public AspectSentiment(String text, TextSentiment sentiment,
         int offset, int length, SentimentConfidenceScores confidenceScores) {
         this.text = text;
         this.sentiment = sentiment;
-        this.opinions = opinions;
         this.confidenceScores = confidenceScores;
         this.length = length;
         this.offset = offset;
@@ -55,14 +51,6 @@ public final class AspectSentiment {
         return sentiment;
     }
 
-    /**
-     * Get the opinions of the aspect text.
-     *
-     * @return The opinions of the aspect text.
-     */
-    public IterableStream<OpinionSentiment> getOpinions() {
-        return opinions;
-    }
 
     /**
      * Get the offset of aspect text.

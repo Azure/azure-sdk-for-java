@@ -609,8 +609,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void analyzeSentimentForListStringWithOptionsAndOpinionMining(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         analyzeBatchStringSentimentShowStatsRunner((inputs, options) ->
-            validateSentimentResultCollection(true, false, getExpectedBatchTextSentiment(),
-                client.analyzeSentimentBatch(inputs, null, options)));
+            validateSentimentResultCollection(true, true, getExpectedBatchTextSentiment(),
+                client.analyzeSentimentBatch(inputs, true, null, options)));
     }
 
     /**

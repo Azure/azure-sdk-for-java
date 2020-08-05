@@ -700,8 +700,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void analyzeSentimentForBatchInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         analyzeBatchSentimentRunner(inputs ->
-            StepVerifier.create(client.analyzeSentimentBatchWithResponse(inputs, null))
-                .assertNext(response -> validateSentimentResultCollectionWithResponse(false, false, getExpectedBatchTextSentiment(), 200, response))
+            StepVerifier.create(client.analyzeSentimentBatchWithResponse(inputs, true, null))
+                .assertNext(response -> validateSentimentResultCollectionWithResponse(false, true, getExpectedBatchTextSentiment(), 200, response))
                 .verifyComplete());
     }
 
