@@ -9,6 +9,7 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.experimental.serializer.JsonSerializerProviders;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.serializer.JacksonAdapter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -133,14 +134,14 @@ public class EventGridPublisherClientTests {
         EventGridPublisherAsyncClient egClient = new EventGridPublisherClientBuilder()
             .keyCredential(new AzureKeyCredential(key))
             .endpoint(endpoint)
+            .serializer(JacksonAdapter.createDefaultSerializerAdapter())
             .buildAsyncClient();
 
         List<CloudEvent> events = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             events.add(new CloudEvent("/microsoft/testEvent", "Microsoft.MockPublisher.TestEvent")
                 .setSubject("Test " + i)
-                .setData(new TestData().setName("Hello " + i),
-                    JsonSerializerProviders.createInstance(), null));
+                .setData(new TestData().setName("Hello " + i)));
         }
 
         Response<Void> response = egClient.sendCloudEventsWithResponse(events).block();
