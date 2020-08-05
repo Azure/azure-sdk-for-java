@@ -71,7 +71,10 @@ public abstract class KeyEncryptionKeyClientTestBase extends TestBase {
         }
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
-        policies.add(interceptorManager.getRecordPolicy());
+
+        if (!interceptorManager.isPlaybackMode()) {
+            policies.add(interceptorManager.getRecordPolicy());
+        }
 
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
