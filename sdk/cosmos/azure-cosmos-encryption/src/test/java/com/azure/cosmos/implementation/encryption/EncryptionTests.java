@@ -46,6 +46,7 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -797,7 +798,7 @@ public class EncryptionTests extends TestSuiteBase {
             this.failDecryption = false;
         }
 
-        public byte[] decryptAsync(
+        public Mono<byte[]> decryptAsync(
             byte[] cipherText,
             String dataEncryptionKeyId,
             String encryptionAlgorithm) {
@@ -805,27 +806,36 @@ public class EncryptionTests extends TestSuiteBase {
                 throw new IllegalArgumentException("Null DataEncryptionKey returned.");
             }
 
-            DataEncryptionKey dek = this.dataEncryptionKeyProvider.getDataEncryptionKey(
+            Mono<DataEncryptionKey> dekMono = this.dataEncryptionKeyProvider.getDataEncryptionKey(
                 dataEncryptionKeyId,
                 encryptionAlgorithm);
 
-            if (dek == null) {
-                throw new IllegalArgumentException("Null DataEncryptionKey returned from this"
-                    + ".DataEncryptionKeyProvider.FetchDataEncryptionKeyAsync}.");
-            }
+            return dekMono.switchIfEmpty(
+                Mono.error(
+             new IllegalArgumentException("Null DataEncryptionKey returned from this"
+                + ".DataEncryptionKeyProvider.FetchDataEncryptionKeyAsync}.")
+                )
 
-            return dek.decryptData(cipherText);
+            ).map(
+                dek -> {
+                    return dek.decryptData(cipherText);
+                }
+            );
         }
 
-        public byte[] encryptAsync(
+        public Mono<byte[]> encryptAsync(
             byte[] plainText,
             String dataEncryptionKeyId,
             String encryptionAlgorithm) {
-            DataEncryptionKey dek = this.dataEncryptionKeyProvider.getDataEncryptionKey(
+            Mono<DataEncryptionKey> dekMono = this.dataEncryptionKeyProvider.getDataEncryptionKey(
                 dataEncryptionKeyId,
                 encryptionAlgorithm);
 
-            return dek.encryptData(plainText);
+            return dekMono.map(
+                dek -> {
+                     return dek.encryptData(plainText);
+                }
+            );
         }
     }
 

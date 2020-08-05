@@ -356,8 +356,8 @@ public class CosmosAsyncContainer {
                 this.readAllItemsSpanName,
                 this.getDatabase().getClient().getServiceEndpoint(), database.getId());
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
-            return getDatabase().getDocClientWrapper().readDocuments(getLink(), options).map(
-                response -> prepareFeedResponse(response, classType));
+            return getDatabase().getDocClientWrapper().readDocuments(getLink(), options).flatMap(
+                response -> prepareFeedResponse(response, classType), 1);
         });
     }
 
@@ -445,7 +445,7 @@ public class CosmosAsyncContainer {
     }
 
     <T> CosmosPagedFlux<T> queryItemsInternal(
-        SqlQuerySpec sqlQuerySpec, CosmosQueryRequestOptions cosmosQueryRequestOptions, Class<T> classType, Function<Document, Document> transformer, Scheduler scheduler) {
+        SqlQuerySpec sqlQuerySpec, CosmosQueryRequestOptions cosmosQueryRequestOptions, Class<T> classType, Function<Document, Mono<Document>> transformer, Scheduler scheduler) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             String spanName = this.queryItemsSpanName;
             pagedFluxOptions.setTracerInformation(this.getDatabase().getClient().getTracerProvider(), spanName,
@@ -460,39 +460,43 @@ public class CosmosAsyncContainer {
         });
     }
 
-    private <T> Flux<FeedResponse<T>> applyTransformer(Flux<FeedResponse<Document>> queryDocuments, Function<Document, Document> transformer, Scheduler scheduler, Class<T> classType) {
+    private <T> Flux<FeedResponse<T>> applyTransformer(Flux<FeedResponse<Document>> queryDocuments, Function<Document, Mono<Document>> transformer, Scheduler scheduler, Class<T> classType) {
         if (transformer == null) {
-            return queryDocuments.map(response -> prepareFeedResponse(response, classType));
+            return queryDocuments.flatMap(response -> prepareFeedResponse(response, classType));
         } else {
-            return queryDocuments.publishOn(scheduler).subscribeOn(scheduler).map(response -> prepareFeedResponse(response, classType, transformer));
+            return queryDocuments.publishOn(scheduler).subscribeOn(scheduler).flatMap(response -> prepareFeedResponse(response, classType, transformer));
         }
     }
 
-    private <T> FeedResponse<T> prepareFeedResponse(FeedResponse<Document> response, Class<T> classType) {
+    private <T> Mono<FeedResponse<T>> prepareFeedResponse(FeedResponse<Document> response, Class<T> classType) {
         return prepareFeedResponse(response, classType, null);
     }
 
-    private <T> FeedResponse<T> prepareFeedResponse(FeedResponse<Document> response, Class<T> classType, Function<Document, Document> transformer) {
+    private <T> Mono<FeedResponse<T>> prepareFeedResponse(FeedResponse<Document> response, Class<T> classType, Function<Document, Mono<Document>> transformer) {
         QueryInfo queryInfo = ModelBridgeInternal.getQueryInfoFromFeedResponse(response);
         if (queryInfo != null && queryInfo.hasSelectValue()) {
-            List<T> transformedResults = response.getResults()
+            List<Mono<T>> transformedResultsAsync = response.getResults()
                                              .stream()
                                               .map(d -> d.has(Constants.Properties.VALUE) ?
-                                                 transform(d.get(Constants.Properties.VALUE), classType) :
+                                                 Mono.just(transform(d.get(Constants.Properties.VALUE), classType)) :
                                                  ModelBridgeInternal.toObjectFromJsonSerializable(d, classType, transformer))
                                              .collect(Collectors.toList());
 
-            return BridgeInternal.createFeedResponseWithQueryMetrics(transformedResults,
-                                                                     response.getResponseHeaders(),
-                                                                     ModelBridgeInternal.queryMetrics(response));
-
+            return Flux.merge(transformedResultsAsync).collectList().map(
+                transformedResults ->
+                    BridgeInternal.createFeedResponseWithQueryMetrics(transformedResults,
+                        response.getResponseHeaders(),
+                        ModelBridgeInternal.queryMetrics(response))
+            );
         }
-        return BridgeInternal.createFeedResponseWithQueryMetrics(
-            (response.getResults().stream().map(document -> ModelBridgeInternal.toObjectFromJsonSerializable(document,
-                classType,
-                transformer))
-                 .collect(Collectors.toList())), response.getResponseHeaders(),
-            ModelBridgeInternal.queryMetrics(response));
+
+        return Flux.merge(response.getResults().stream().map(
+            document -> ModelBridgeInternal.toObjectFromJsonSerializable(document, classType, transformer)).collect(Collectors.toList())).collectList().map(
+            results ->
+                BridgeInternal.createFeedResponseWithQueryMetrics(
+                    results, response.getResponseHeaders(),
+                    ModelBridgeInternal.queryMetrics(response))
+        );
     }
 
     private <T> T transform(Object object, Class<T> classType) {

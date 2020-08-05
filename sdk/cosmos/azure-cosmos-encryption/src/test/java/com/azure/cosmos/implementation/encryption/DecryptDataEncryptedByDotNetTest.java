@@ -104,7 +104,7 @@ public class DecryptDataEncryptedByDotNetTest extends TestSuiteBase {
         ObjectNode dataEncryptionKeyProperties = TestUtils.loadPojo("./encryption/dotnet/DataEncryptionKeyProperties.json", ObjectNode.class);
         keyContainer.createItem(dataEncryptionKeyProperties).block();
 
-        DataEncryptionKey loadedKey = dekProvider.getDataEncryptionKey(dataEncryptionKeyProperties.get("id").asText(), CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256_RANDOMIZED);
+        DataEncryptionKey loadedKey = dekProvider.getDataEncryptionKey(dataEncryptionKeyProperties.get("id").asText(), CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256_RANDOMIZED).block();
 
         assertThat(loadedKey.getEncryptionAlgorithm()).isEqualTo(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256_RANDOMIZED);
         assertThat(loadedKey.getEncryptionAlgorithm()).isEqualTo(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256_RANDOMIZED);

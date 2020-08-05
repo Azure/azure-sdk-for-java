@@ -43,6 +43,7 @@ import com.azure.cosmos.implementation.routing.Range;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import reactor.core.publisher.Mono;
 
 import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
@@ -488,11 +489,11 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> T toObjectFromJsonSerializable(Document jsonSerializable, Class<T> c, Function<Document, Document> transformer) {
+    public static <T> Mono<T> toObjectFromJsonSerializable(Document jsonSerializable, Class<T> c, Function<Document, Mono<Document>> transformer) {
         if (transformer != null) {
-            return transformer.apply(jsonSerializable).toObject(c);
+            return transformer.apply(jsonSerializable).map(js -> js.toObject(c));
         } else {
-            return jsonSerializable.toObject(c);
+            return Mono.just(jsonSerializable.toObject(c));
         }
     }
 

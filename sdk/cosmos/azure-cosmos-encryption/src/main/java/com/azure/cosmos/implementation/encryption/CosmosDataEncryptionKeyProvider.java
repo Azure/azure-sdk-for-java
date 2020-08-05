@@ -103,13 +103,12 @@ public class CosmosDataEncryptionKeyProvider implements DataEncryptionKeyProvide
     }
 
     @Override
-    public DataEncryptionKey getDataEncryptionKey(String id,
+    public Mono<DataEncryptionKey> getDataEncryptionKey(String id,
                                                   String encryptionAlgorithm) {
         Mono<Tuple2<DataEncryptionKeyProperties, InMemoryRawDek>> fetchUnwrapMono = this
             .dataEncryptionKeyContainerCore.fetchUnwrappedAsync(id);
 
         return fetchUnwrapMono
-            .map(fetchUnwrap -> fetchUnwrap.getT2().getDataEncryptionKey())
-            .block(); // TODO: @moderakh I will be looking at if we should do this API async or non async.
+            .map(fetchUnwrap -> fetchUnwrap.getT2().getDataEncryptionKey());
     }
 }

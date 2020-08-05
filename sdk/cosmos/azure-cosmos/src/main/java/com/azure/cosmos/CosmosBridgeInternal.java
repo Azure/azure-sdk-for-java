@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.Warning;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
+import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 
 import java.util.function.Function;
@@ -106,7 +107,7 @@ public final class CosmosBridgeInternal {
     public static <T> CosmosPagedFlux<T> queryItemsInternal(CosmosAsyncContainer container,
                                                             SqlQuerySpec sqlQuerySpec,
                                                             CosmosQueryRequestOptions cosmosQueryRequestOptions,
-                                                            Class<T> classType, Function<Document, Document> transformer,
+                                                            Class<T> classType, Function<Document, Mono<Document>> transformer,
                                                             Scheduler scheduler) {
         return container.queryItemsInternal(
             sqlQuerySpec, cosmosQueryRequestOptions, classType, transformer, scheduler);

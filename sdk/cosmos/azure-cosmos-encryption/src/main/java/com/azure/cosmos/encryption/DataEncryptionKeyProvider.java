@@ -3,6 +3,8 @@
 
 package com.azure.cosmos.encryption;
 
+import reactor.core.publisher.Mono;
+
 /**
  * Abstraction for a provider to get data encryption keys for use in client-side encryption.
  * See https://aka.ms/CosmosClientEncryption for more information on client-side encryption support in Azure Cosmos DB.
@@ -15,10 +17,8 @@ public interface DataEncryptionKeyProvider {
      * @param encryptionAlgorithm Encryption algorithm that the retrieved key will be used with.
      * @return Data encryption key bytes.
      */
-    DataEncryptionKey getDataEncryptionKey(
+    Mono<DataEncryptionKey> getDataEncryptionKey(
         String id,
         String encryptionAlgorithm);
 }
-
-// TODO: @moderakh look into if this method needs to be async.
 
