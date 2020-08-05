@@ -6,8 +6,6 @@ package com.azure.data.schemaregistry.avro;
 import com.azure.core.credential.TokenCredential;
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
 import com.azure.data.schemaregistry.SchemaRegistryClientBuilder;
-import com.azure.data.schemaregistry.SchemaRegistrySerializer;
-import org.apache.avro.Schema;
 
 import java.util.Objects;
 

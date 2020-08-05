@@ -3,6 +3,7 @@
 
 package com.azure.core.serializer.avro.apache;
 
+import com.azure.core.experimental.serializer.AvroSerializer;
 import com.azure.core.serializer.avro.apache.generatedtestsources.HandOfCards;
 import com.azure.core.serializer.avro.apache.generatedtestsources.LongLinkedList;
 import com.azure.core.serializer.avro.apache.generatedtestsources.PlayingCard;
@@ -46,7 +47,7 @@ public class ApacheAvroSerializerTests {
     private static final String INT_MAP_SCHEMA = "{\"type\":\"map\",\"values\":\"int\","
         + "\"avro.java.string\":\"String\"}";
 
-    private static ApacheAvroSerializer getSerializer(String schema) {
+    private static AvroSerializer getSerializer(String schema) {
         return new ApacheAvroSerializerBuilder()
             .schema(schema)
             .build();
