@@ -29,7 +29,7 @@ public class CosmosDataEncryptionKeyProvider implements DataEncryptionKeyProvide
     //Then the code-docs and samples needs to explicit cover it.
     private final DataEncryptionKeyContainerCore dataEncryptionKeyContainerCore;
     private final DekCache dekCache;
-    private final com.azure.cosmos.encryption.EncryptionKeyWrapProvider encryptionKeyWrapProvider;
+    private final EncryptionKeyWrapProvider encryptionKeyWrapProvider;
     private CosmosAsyncContainer container;
 
     public CosmosDataEncryptionKeyProvider(EncryptionKeyWrapProvider encryptionKeyWrapProvider) {

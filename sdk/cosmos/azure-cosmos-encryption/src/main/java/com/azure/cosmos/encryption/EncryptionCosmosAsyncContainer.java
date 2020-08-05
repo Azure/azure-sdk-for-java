@@ -14,7 +14,6 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.encryption.CosmosResponseFactory;
 import com.azure.cosmos.implementation.encryption.CosmosResponseFactoryCore;
 import com.azure.cosmos.implementation.encryption.EncryptionProcessor;
-import com.azure.cosmos.implementation.encryption.EncryptionQueryRequestOption;
 import com.azure.cosmos.implementation.encryption.EncryptionUtils;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -332,8 +331,8 @@ public class EncryptionCosmosAsyncContainer {
             options = new CosmosQueryRequestOptions();
         }
 
-        EncryptionQueryRequestOption encryptionQueryRequestOptions = Utils.as(options,
-            EncryptionQueryRequestOption.class);
+        EncryptionQueryRequestOptions encryptionQueryRequestOptions = Utils.as(options,
+            EncryptionQueryRequestOptions.class);
 
         Consumer<DecryptionResult> decryptionResultConsumer = null;
         if (encryptionQueryRequestOptions != null) {

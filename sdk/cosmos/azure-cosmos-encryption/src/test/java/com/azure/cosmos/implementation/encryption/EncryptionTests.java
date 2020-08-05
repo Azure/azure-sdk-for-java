@@ -16,6 +16,7 @@ import com.azure.cosmos.encryption.EncryptionKeyUnwrapResult;
 import com.azure.cosmos.encryption.EncryptionKeyWrapMetadata;
 import com.azure.cosmos.encryption.EncryptionKeyWrapProvider;
 import com.azure.cosmos.encryption.EncryptionKeyWrapResult;
+import com.azure.cosmos.encryption.EncryptionQueryRequestOptions;
 import com.azure.cosmos.encryption.Encryptor;
 import com.azure.cosmos.encryption.WithEncryption;
 import com.azure.cosmos.implementation.DatabaseForTest;
@@ -385,7 +386,7 @@ public class EncryptionTests extends TestSuiteBase {
         assertThat(capturedDecryptionResults).hasSize(1);
         capturedDecryptionResults.clear();
 
-        EncryptionQueryRequestOption queryRequestOptions = new EncryptionQueryRequestOption();
+        EncryptionQueryRequestOptions queryRequestOptions = new EncryptionQueryRequestOptions();
         queryRequestOptions.setDecryptionResultHandler(this::errorHandler);
 
          EncryptionTests.validateQueryResultsMultipleDocuments(
