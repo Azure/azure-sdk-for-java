@@ -29,6 +29,50 @@
       <artifactId>azure-spring-data-cosmos-core</artifactId>
       <version>3.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos-core;current} -->
     </dependency>
+
+    <!-- Test -->
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>3.3.3</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.powermock</groupId>
+      <artifactId>powermock-module-junit4</artifactId>
+      <version>2.0.2</version> <!-- {x-version-update;org.powermock:powermock-module-junit4;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.powermock</groupId>
+      <artifactId>powermock-api-mockito2</artifactId>
+      <version>2.0.2</version> <!-- {x-version-update;org.powermock:powermock-api-mockito2;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <version>2.3.0.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>com.vaadin.external.google</groupId>
+          <artifactId>android-json</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>io.projectreactor</groupId>
+      <artifactId>reactor-test</artifactId>
+      <version>3.3.8.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <version>1.7.30</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
