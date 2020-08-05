@@ -471,7 +471,8 @@ public class BlobAsyncClientBase {
         StorageImplUtils.assertNotNull("options", options);
         final Duration interval = options.getPollInterval() != null
             ? options.getPollInterval() : Duration.ofSeconds(1);
-        final BlobBeginCopySourceRequestConditions sourceModifiedCondition = options.getSourceRequestConditions() == null
+        final BlobBeginCopySourceRequestConditions sourceModifiedCondition =
+            options.getSourceRequestConditions() == null
             ? new BlobBeginCopySourceRequestConditions()
             : options.getSourceRequestConditions();
         final BlobRequestConditions destinationRequestConditions =
