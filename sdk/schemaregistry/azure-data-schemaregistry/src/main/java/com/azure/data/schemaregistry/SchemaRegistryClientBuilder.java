@@ -221,7 +221,7 @@ public class SchemaRegistryClientBuilder {
      * @param schemaRegistryCodec Codec class implementation
      * @return The updated {@link SchemaRegistryClientBuilder} object.
      */
-    public SchemaRegistryClientBuilder addSchemaRegistryCodec(SchemaRegistryCodec schemaRegistryCodec) {
+    public SchemaRegistryClientBuilder addSchemaRegistryUtils(SchemaRegistrySerializerUtils schemaRegistryCodec) {
         Objects.requireNonNull(schemaRegistryCodec, "'codec' cannot be null.");
         if (schemaRegistryCodec.getSerializationType() == null) {
             throw logger.logExceptionAsError(

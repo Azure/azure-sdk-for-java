@@ -41,7 +41,7 @@ public class SchemaRegistrySerializerTest {
         SchemaRegistryObject registered = new SchemaRegistryObject(MOCK_GUID,
             encoder.getSerializationType(),
             encoder.getSchemaName(null),
-            encoder.getSchemaGroup(),
+            "schema-group",
             encoder.getSchemaString(null).getBytes(), // always returns same schema string
             encoder::parseSchemaString);
 
@@ -111,7 +111,7 @@ public class SchemaRegistrySerializerTest {
         SchemaRegistryObject registered = new SchemaRegistryObject(MOCK_GUID,
             decoder.getSerializationType(),
             decoder.getSchemaName(null),
-            decoder.getSchemaGroup(),
+            "schema-group",
             MOCK_AVRO_SCHEMA_STRING.getBytes(),
             decoder::parseSchemaString);
 

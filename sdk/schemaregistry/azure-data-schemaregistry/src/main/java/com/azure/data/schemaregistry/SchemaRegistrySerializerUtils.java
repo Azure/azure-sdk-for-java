@@ -8,7 +8,7 @@ import com.azure.data.schemaregistry.models.SerializationType;
 /**
  * An interface defining operations required for registry-based serialization and deserialization.
  */
-public interface SchemaRegistryCodec {
+public interface SchemaRegistrySerializerUtils {
     /**
      * @return String representation of schema type, e.g. "avro" or "json".
      *

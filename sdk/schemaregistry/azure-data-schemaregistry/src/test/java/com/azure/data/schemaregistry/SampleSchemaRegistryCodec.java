@@ -7,18 +7,13 @@ import com.azure.data.schemaregistry.models.SerializationType;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-public class SampleSchemaRegistryCodec implements SchemaRegistryCodec {
+public class SampleSchemaRegistryCodec implements SchemaRegistrySerializerUtils {
 
     public SampleSchemaRegistryCodec() { }
 
     @Override
     public String getSchemaName(Object object) {
         return "schema name";
-    }
-
-    @Override
-    public String getSchemaGroup() {
-        return "schema group";
     }
 
     @Override

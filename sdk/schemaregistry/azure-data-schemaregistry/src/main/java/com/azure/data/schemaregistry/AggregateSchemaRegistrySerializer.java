@@ -31,7 +31,7 @@ public class AggregateSchemaRegistrySerializer implements ObjectSerializer {
         for (SchemaRegistrySerializer d : deserializerList) {
             if (this.deserializerMap.containsKey(d.getSerializationType())) {
                 throw logger.logExceptionAsError(
-                    new IllegalArgumentException("Only on Codec can be provided per schema serialization type."));
+                    new IllegalArgumentException("Only one SR serializer can be provided per schema serialization type."));
             }
             this.deserializerMap.put(d.getSerializationType().toString(), d);
         }
