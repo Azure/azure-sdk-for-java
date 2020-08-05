@@ -8,21 +8,31 @@
 
 package com.microsoft.azure.management.compute.v2017_03_30;
 
-import com.microsoft.azure.arm.collection.SupportsCreating;
-import com.microsoft.azure.arm.resources.collection.SupportsDeletingByResourceGroup;
-import com.microsoft.azure.arm.resources.collection.SupportsBatchDeletion;
-import com.microsoft.azure.arm.resources.collection.SupportsGettingByResourceGroup;
 import rx.Observable;
-import com.microsoft.azure.arm.resources.collection.SupportsListingByResourceGroup;
-import com.microsoft.azure.arm.collection.SupportsListing;
-import com.microsoft.azure.management.compute.v2017_03_30.implementation.VirtualMachinesInner;
-import com.microsoft.azure.arm.model.HasInner;
+import com.microsoft.azure.management.compute.v2017_03_30.VirtualMachine;
+import rx.Completable;
 import com.microsoft.azure.management.compute.v2017_03_30.VirtualMachineVirtualMachineSize;
 
 /**
  * Type representing VirtualMachines.
  */
-public interface VirtualMachines extends SupportsCreating<VirtualMachine.DefinitionStages.Blank>, SupportsDeletingByResourceGroup, SupportsBatchDeletion, SupportsGettingByResourceGroup<VirtualMachine>, SupportsListingByResourceGroup<VirtualMachine>, SupportsListing<VirtualMachine>, HasInner<VirtualMachinesInner> {
+public interface VirtualMachines {
+    /**
+     * Begins definition for a new VirtualMachine resource.
+     * @param name resource name.
+     * @return the first stage of the new VirtualMachine definition.
+     */
+    VirtualMachine.DefinitionStages.Blank defineVirtualMachine(String name);
+
+    /**
+     * Gets all the virtual machines under the specified subscription for the specified location.
+     *
+     * @param location The location for which virtual machines under the subscription are queried.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<VirtualMachine> listByLocationAsync(final String location);
+
     /**
      * Captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create similar VMs.
      *
@@ -33,6 +43,26 @@ public interface VirtualMachines extends SupportsCreating<VirtualMachine.Definit
      * @return the observable for the request
      */
     Observable<VirtualMachineCaptureResult> captureAsync(String resourceGroupName, String vmName, VirtualMachineCaptureParameters parameters);
+
+    /**
+     * The operation to delete a virtual machine.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<OperationStatusResponse> deleteAsync(String resourceGroupName, String vmName);
+
+    /**
+     * Retrieves information about the model view or the instance view of a virtual machine.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<VirtualMachine> getByResourceGroupAsync(String resourceGroupName, String vmName);
 
     /**
      * Retrieves information about the run-time state of a virtual machine.
@@ -105,7 +135,7 @@ public interface VirtualMachines extends SupportsCreating<VirtualMachine.Definit
     Observable<OperationStatusResponse> startAsync(String resourceGroupName, String vmName);
 
     /**
-     * The operation to redeploy a virtual machine.
+     * Shuts down the virtual machine, moves it to a new node, and powers it back on.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
@@ -134,6 +164,23 @@ public interface VirtualMachines extends SupportsCreating<VirtualMachine.Definit
      * @return the observable for the request
      */
     Observable<RunCommandResult> runCommandAsync(String resourceGroupName, String vmName, RunCommandInput parameters);
+
+    /**
+     * Lists all of the virtual machines in the specified resource group. Use the nextLink property in the response to get the next page of virtual machines.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<VirtualMachine> listByResourceGroupAsync(final String resourceGroupName);
+
+    /**
+     * Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get the next page of virtual machines.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<VirtualMachine> listAsync();
 
     /**
      * The operation to get all extensions of a Virtual Machine.

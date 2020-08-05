@@ -8,16 +8,20 @@
 
 package com.microsoft.azure.management.compute.v2017_03_30;
 
-import com.microsoft.azure.arm.collection.SupportsCreating;
-import rx.Completable;
 import rx.Observable;
-import com.microsoft.azure.management.compute.v2017_03_30.implementation.VirtualMachineExtensionsInner;
-import com.microsoft.azure.arm.model.HasInner;
+import rx.Completable;
 
 /**
  * Type representing VirtualMachineExtensions.
  */
-public interface VirtualMachineExtensions extends SupportsCreating<VirtualMachineExtension.DefinitionStages.Blank>, HasInner<VirtualMachineExtensionsInner> {
+public interface VirtualMachineExtensions {
+    /**
+     * Begins definition for a new Extension resource.
+     * @param name resource name.
+     * @return the first stage of the new Extension definition.
+     */
+    VirtualMachineExtension.DefinitionStages.Blank defineExtension(String name);
+
     /**
      * The operation to get the extension.
      *

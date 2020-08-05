@@ -29,13 +29,16 @@ public class Sku {
     private String tier;
 
     /**
-     * Specifies the number of virtual machines in the scale set.
+     * Specifies the number of virtual machines in the scale set. NOTE: If the
+     * new VM SKU is not supported on the hardware the scale set is currently
+     * on, you need to deallocate the VMs in the scale set before you modify
+     * the SKU name.
      */
     @JsonProperty(value = "capacity")
     private Long capacity;
 
     /**
-     * Get the name value.
+     * Get the sku name.
      *
      * @return the name value
      */
@@ -44,7 +47,7 @@ public class Sku {
     }
 
     /**
-     * Set the name value.
+     * Set the sku name.
      *
      * @param name the name value to set
      * @return the Sku object itself.
@@ -55,7 +58,7 @@ public class Sku {
     }
 
     /**
-     * Get the tier value.
+     * Get specifies the tier of virtual machines in a scale set.&lt;br /&gt;&lt;br /&gt; Possible Values:&lt;br /&gt;&lt;br /&gt; **Standard**&lt;br /&gt;&lt;br /&gt; **Basic**.
      *
      * @return the tier value
      */
@@ -64,7 +67,7 @@ public class Sku {
     }
 
     /**
-     * Set the tier value.
+     * Set specifies the tier of virtual machines in a scale set.&lt;br /&gt;&lt;br /&gt; Possible Values:&lt;br /&gt;&lt;br /&gt; **Standard**&lt;br /&gt;&lt;br /&gt; **Basic**.
      *
      * @param tier the tier value to set
      * @return the Sku object itself.
@@ -75,7 +78,7 @@ public class Sku {
     }
 
     /**
-     * Get the capacity value.
+     * Get specifies the number of virtual machines in the scale set. NOTE: If the new VM SKU is not supported on the hardware the scale set is currently on, you need to deallocate the VMs in the scale set before you modify the SKU name.
      *
      * @return the capacity value
      */
@@ -84,7 +87,7 @@ public class Sku {
     }
 
     /**
-     * Set the capacity value.
+     * Set specifies the number of virtual machines in the scale set. NOTE: If the new VM SKU is not supported on the hardware the scale set is currently on, you need to deallocate the VMs in the scale set before you modify the SKU name.
      *
      * @param capacity the capacity value to set
      * @return the Sku object itself.
