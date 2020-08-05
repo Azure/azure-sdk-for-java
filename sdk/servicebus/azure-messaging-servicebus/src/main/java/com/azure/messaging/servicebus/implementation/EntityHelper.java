@@ -5,6 +5,7 @@ package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.models.QueueDescription;
+import com.azure.messaging.servicebus.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.models.QueueProperties;
 import com.azure.messaging.servicebus.models.SubscriptionDescription;
 import com.azure.messaging.servicebus.models.TopicDescription;
@@ -180,6 +181,26 @@ public final class EntityHelper {
         }
 
         topicAccessor.setName(topicDescription, topicName);
+    }
+
+    public static QueueDescription getQueueDescription(CreateQueueOptions options) {
+        Objects.requireNonNull(options, "'options' cannot be null.");
+        return new QueueDescription()
+            .setAutoDeleteOnIdle(options.getAutoDeleteOnIdle())
+            .setDefaultMessageTimeToLive(options.getDefaultMessageTimeToLive())
+            .setDeadLetteringOnMessageExpiration(options.deadLetteringOnMessageExpiration())
+            .setDuplicateDetectionHistoryTimeWindow(options.getDuplicateDetectionHistoryTimeWindow())
+            .setEnableBatchedOperations(options.enableBatchedOperations())
+            .setEnablePartitioning(options.enablePartitioning())
+            .setForwardTo(options.getForwardTo())
+            .setForwardDeadLetteredMessagesTo(options.getForwardDeadLetteredMessagesTo())
+            .setLockDuration(options.getLockDuration())
+            .setMaxDeliveryCount(options.getMaxDeliveryCount())
+            .setMaxSizeInMegabytes(options.getMaxSizeInMegabytes())
+            .setRequiresDuplicateDetection(options.requiresDuplicateDetection())
+            .setRequiresSession(options.requiresSession())
+            .setStatus(options.getStatus())
+            .setUserMetadata(options.getUserMetadata());
     }
 
     /**
