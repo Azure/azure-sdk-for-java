@@ -2,6 +2,7 @@
 
 ## 12.2.0-beta.2 (Unreleased)
 - Fixed bug where Query Input Stream would throw when a ByteBuffer of length 0 was encountered.
+- Fixed a bug that would cause buffered upload to always put an empty file before uploading actual data. 
 
 ## 12.2.0-beta.1 (2019-07-07)
 - Added support for the 2019-12-12 service version.

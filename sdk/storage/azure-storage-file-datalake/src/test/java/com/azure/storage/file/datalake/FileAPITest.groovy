@@ -7,6 +7,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
+import com.azure.storage.file.datalake.implementation.util.ModelHelper
 import com.azure.storage.file.datalake.models.DownloadRetryOptions
 import com.azure.storage.common.ParallelTransferOptions
 import com.azure.storage.common.ProgressReceiver
@@ -535,7 +536,7 @@ class FileAPITest extends APISpec {
         null     | null       | garbageEtag | null         | null
         null     | null       | null        | receivedEtag | null
 //        null     | null       | null        | null         | garbageLeaseID
-    // known bug in dfs endpoint so this test fails
+        // known bug in dfs endpoint so this test fails
     }
 
     def "Get properties default"() {
@@ -1277,6 +1278,7 @@ class FileAPITest extends APISpec {
         8 * 1026 * 1024 + 10 | _ // medium file not aligned to block
         50 * Constants.MB    | _ // large file requiring multiple requests
     }
+
     @Unroll
     def "Download file range"() {
         setup:
@@ -1615,11 +1617,11 @@ class FileAPITest extends APISpec {
         response.getStatusCode() == 200
 
         where:
-        source     | destination || _
-        ""         | ""          || _ /* Both non encoded. */
-        "%20%25"   | ""          || _ /* One encoded. */
-        ""         | "%20%25"    || _
-        "%20%25"   | "%20%25"    || _ /* Both encoded. */
+        source   | destination || _
+        ""       | ""          || _ /* Both non encoded. */
+        "%20%25" | ""          || _ /* One encoded. */
+        ""       | "%20%25"    || _
+        "%20%25" | "%20%25"    || _ /* Both encoded. */
     }
 
     @Unroll
@@ -2027,7 +2029,8 @@ class FileAPITest extends APISpec {
     // "No overwrite interrupted" tests were not ported over for datalake. This is because the access condition check
     // occurs on the create method, so simple access conditions tests suffice.
     @Unroll
-    @Requires({liveMode()}) // Test uploads large amount of data
+    @Requires({ liveMode() })
+    // Test uploads large amount of data
     def "Upload from file"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
@@ -2054,11 +2057,11 @@ class FileAPITest extends APISpec {
         file.delete()
 
         where:
-        fileSize                                       | blockSize       || commitedBlockCount
-        10                                             | null            || 0  // Size is too small to trigger block uploading
-        10 * Constants.KB                              | null            || 0  // Size is too small to trigger block uploading
-        50 * Constants.MB                              | null            || 0  // Size is too small to trigger block uploading
-        101 * Constants.MB                             | 4 * 1024 * 1024 || 0  // Size is too small to trigger block uploading
+        fileSize           | blockSize       || commitedBlockCount
+        10                 | null            || 0  // Size is too small to trigger block uploading
+        10 * Constants.KB  | null            || 0  // Size is too small to trigger block uploading
+        50 * Constants.MB  | null            || 0  // Size is too small to trigger block uploading
+        101 * Constants.MB | 4 * 1024 * 1024 || 0  // Size is too small to trigger block uploading
     }
 
     def "Upload from file with metadata"() {
@@ -2127,6 +2130,7 @@ class FileAPITest extends APISpec {
      * number of reportings as upload from file hooks into the loading data from disk data stream which is a hard-coded
      * read size.
      */
+
     class FileUploadReporter implements ProgressReceiver {
         private long reportedByteCount
 
@@ -2189,9 +2193,9 @@ class FileAPITest extends APISpec {
         file.delete()
 
         where:
-        dataSize                                       | singleUploadSize | blockSize || expectedBlockCount
-        100                                            | 50               | null      || 1 // Test that singleUploadSize is respected
-        100                                            | 50               | 20        || 5 // Test that blockSize is respected
+        dataSize | singleUploadSize | blockSize || expectedBlockCount
+        100      | 50               | null      || 1 // Test that singleUploadSize is respected
+        100      | 50               | 20        || 5 // Test that blockSize is respected
     }
 
     @Requires({ liveMode() })
@@ -2201,7 +2205,7 @@ class FileAPITest extends APISpec {
 
         expect:
         StepVerifier.create(fac.upload(Flux.just(ByteBuffer.wrap(new byte[0])), null))
-            .verifyErrorSatisfies({it instanceof DataLakeStorageException})
+            .verifyErrorSatisfies({ it instanceof DataLakeStorageException })
     }
 
     @Unroll
@@ -2228,7 +2232,8 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() }) // Test uploads large amount of data
+    @Requires({ liveMode() })
+    // Test uploads large amount of data
     def "Async buffered upload"() {
         setup:
         DataLakeFileAsyncClient fac = getPrimaryServiceClientForWrites(bufferSize)
@@ -2331,7 +2336,8 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires({liveMode()}) // Test uploads large amount of data
+    @Requires({ liveMode() })
+    // Test uploads large amount of data
     def "Buffered upload chunked source"() {
         setup:
         DataLakeFileAsyncClient fac = getPrimaryServiceClientForWrites(bufferSize)
@@ -2495,21 +2501,24 @@ class FileAPITest extends APISpec {
     def "Buffered upload options"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
+        def spyClient = Spy(fac)
         def data = getRandomData(dataSize)
 
         when:
-        fac.uploadWithResponse(Flux.just(data),
-            new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxSingleUploadSizeLong(singleUploadSize), null, null, null).block()
+        spyClient.uploadWithResponse(Flux.just(data),
+            new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxSingleUploadSizeLong(singleUploadSize),
+            null, null, null).block()
 
         then:
         fac.getProperties().block().getFileSize() == dataSize
+        numAppends * spyClient.appendWithResponse(_, _, _, _, _)
 
         where:
-        dataSize                                          | singleUploadSize | blockSize || _
-        DataLakeFileAsyncClient.MAX_APPEND_FILE_BYTES - 1 | null             | null      || _
-        DataLakeFileAsyncClient.MAX_APPEND_FILE_BYTES + 1 | null             | null      || _
-        100                                               | 50               | null      || _
-        100                                               | 50               | 20        || _
+        dataSize       | singleUploadSize | blockSize || numAppends
+        (100 * MB) - 1 | null             | null      || 1
+        (100 * MB) + 1 | null             | null      || Math.ceil(((double) (100 * MB) + 1) / (double) (4 * MB))
+        100            | 50               | null      || 1
+        100            | 50               | 20        || 5
     }
 
     @Unroll
@@ -2755,7 +2764,7 @@ class FileAPITest extends APISpec {
     def uploadSmallJson(int numCopies) {
         StringBuilder b = new StringBuilder()
         b.append('{\n')
-        for(int i = 0; i < numCopies; i++) {
+        for (int i = 0; i < numCopies; i++) {
             b.append(String.format('\t"name%d": "owner%d",\n', i, i))
         }
         b.append('}')
@@ -2946,6 +2955,7 @@ class FileAPITest extends APISpec {
     }
 
     /* Note: Input delimited tested everywhere else. */
+
     @Unroll
     def "Query Input json"() {
         setup:
@@ -3178,7 +3188,8 @@ class FileAPITest extends APISpec {
         mockReceiver.progressList.contains(sizeofBlobToRead)
     }
 
-    @Requires( { liveMode() } ) // Large amount of data.
+    @Requires({ liveMode() })
+    // Large amount of data.
     def "Query multiple records with progress receiver"() {
         setup:
         FileQueryDelimitedSerialization ser = new FileQueryDelimitedSerialization()
@@ -3258,9 +3269,9 @@ class FileAPITest extends APISpec {
         thrown(IllegalArgumentException)
 
         where:
-        input   | output   || _
-        true    | false    || _
-        false   | true     || _
+        input | output || _
+        true  | false  || _
+        false | true   || _
     }
 
     @Unroll

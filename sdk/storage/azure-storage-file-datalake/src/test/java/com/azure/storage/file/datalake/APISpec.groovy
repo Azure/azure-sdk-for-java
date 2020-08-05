@@ -127,6 +127,9 @@ class APISpec extends Specification {
     protected String testName
     def fileSystemName
 
+    static int KB = 1024
+    static int MB = 1024 * KB
+
     def setupSpec() {
         testMode = setupTestMode()
         primaryCredential = getCredential(DATA_LAKE_STORAGE)
