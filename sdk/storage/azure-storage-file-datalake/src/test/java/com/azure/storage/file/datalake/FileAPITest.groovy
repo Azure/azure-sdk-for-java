@@ -2243,7 +2243,8 @@ class FileAPITest extends APISpec {
 
         when:
         def data = getRandomData(dataSize)
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(bufferSize).setMaxConcurrency(numBuffs).setMaxSingleUploadSizeLong(4 * Constants.MB)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(bufferSize)
+            .setMaxConcurrency(numBuffs).setMaxSingleUploadSizeLong(4 * MB)
         fac.upload(Flux.just(data), parallelTransferOptions, true).block()
         data.position(0)
 
@@ -2256,15 +2257,15 @@ class FileAPITest extends APISpec {
         }
 
         where:
-        dataSize           | bufferSize        | numBuffs || blockCount
-        35 * Constants.MB  | 5 * Constants.MB  | 2        || 7 // Requires cycling through the same buffers multiple times.
-        35 * Constants.MB  | 5 * Constants.MB  | 5        || 7 // Most buffers may only be used once.
-        100 * Constants.MB | 10 * Constants.MB | 2        || 10 // Larger data set.
-        100 * Constants.MB | 10 * Constants.MB | 5        || 10 // Larger number of Buffs.
-        10 * Constants.MB  | 1 * Constants.MB  | 10       || 10 // Exactly enough buffer space to hold all the data.
-        50 * Constants.MB  | 10 * Constants.MB | 2        || 5 // Larger data.
-        10 * Constants.MB  | 2 * Constants.MB  | 4        || 5
-        10 * Constants.MB  | 3 * Constants.MB  | 3        || 4 // Data does not squarely fit in buffers.
+        dataSize | bufferSize | numBuffs || blockCount
+        35 * MB  | 5 * MB     | 2        || 7 // Requires cycling through the same buffers multiple times.
+        35 * MB  | 5 * MB     | 5        || 7 // Most buffers may only be used once.
+        100 * MB | 10 * MB    | 2        || 10 // Larger data set.
+        100 * MB | 10 * MB    | 5        || 10 // Larger number of Buffs.
+        10 * MB  | 1 * MB     | 10       || 10 // Exactly enough buffer space to hold all the data.
+        50 * MB  | 10 * MB    | 2        || 5 // Larger data.
+        10 * MB  | 2 * MB     | 4        || 5
+        10 * MB  | 3 * MB     | 3        || 4 // Data does not squarely fit in buffers.
     }
 
     def compareListToBuffer(List<ByteBuffer> buffers, ByteBuffer result) {

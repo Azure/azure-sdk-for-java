@@ -299,7 +299,7 @@ class APISpec extends Specification {
      * timeout value--about 10s/MB. Won't be less than 1 minute.
      */
     DataLakeServiceAsyncClient getPrimaryServiceClientForWrites(long perRequestDataSize) {
-        int retryTimeout = Math.toIntExact((long) (perRequestDataSize / Constants.MB) * 10)
+        int retryTimeout = Math.toIntExact((long) (perRequestDataSize / MB) * 10)
         retryTimeout = Math.max(60, retryTimeout)
         return getServiceClientBuilder(primaryCredential,
             String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
