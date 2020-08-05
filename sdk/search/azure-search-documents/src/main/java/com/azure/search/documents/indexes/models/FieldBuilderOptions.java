@@ -13,7 +13,7 @@ import java.util.Objects;
  * Additional parameters to build {@link SearchField}.
  */
 public class FieldBuilderOptions {
-    private MemberNameConverter serializer;
+    private MemberNameConverter converter;
 
     /**
      * Gets the serializer use to build search fields in
@@ -22,18 +22,18 @@ public class FieldBuilderOptions {
      *
      * @return the custom serializer.
      */
-    public MemberNameConverter getSerializer() {
-        return serializer;
+    public MemberNameConverter getConverter() {
+        return converter;
     }
 
     /**
      * Sets the custom serializer.
      *
-     * @param serializer The custom serializer to set
+     * @param converter The custom serializer to set
      * @return The {@link FieldBuilderOptions} object itself.
      */
-    public FieldBuilderOptions setSerializer(MemberNameConverter serializer) {
-        this.serializer = Objects.requireNonNull(serializer, "The serializer cannot be null");
+    public FieldBuilderOptions setConverter(MemberNameConverter converter) {
+        this.converter = Objects.requireNonNull(converter, "The serializer cannot be null");
         return this;
     }
 

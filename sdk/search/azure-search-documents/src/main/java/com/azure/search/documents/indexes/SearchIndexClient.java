@@ -9,9 +9,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.core.util.serializer.MemberNameConverterProviders;
 import com.azure.search.documents.SearchClient;
-import com.azure.search.documents.implementation.util.FieldBuilder;
 import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
 import com.azure.search.documents.indexes.models.FieldBuilderOptions;
@@ -611,12 +609,8 @@ public final class SearchIndexClient {
      * @param options The option property bag.
      * @return The list {@link SearchField} for search index schema.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public static List<SearchField> buildSearchFields(Class<?> model, FieldBuilderOptions options) {
-        if (options == null) {
-            return FieldBuilder.build(model, MemberNameConverterProviders.createInstance());
-        }
-        return FieldBuilder.build(model, options.getSerializer());
+        return SearchIndexAsyncClient.buildSearchFields(model, options);
     }
 
 }

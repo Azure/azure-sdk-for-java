@@ -4,6 +4,7 @@
 package com.azure.search.documents.implementation.converters;
 
 import com.azure.core.util.serializer.JsonSerializer;
+import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexBatchBase;
 
@@ -32,7 +33,7 @@ public final class IndexBatchBaseConverter {
      * Maps from {@link IndexBatchBase} to {@link com.azure.search.documents.implementation.models.IndexBatch}.
      */
     public static <T> com.azure.search.documents.implementation.models.IndexBatch map(IndexBatchBase<T> obj,
-        JsonSerializer jsonSerializer) {
+        ObjectSerializer jsonSerializer) {
         if (obj == null) {
             return null;
         }

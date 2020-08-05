@@ -104,20 +104,20 @@ URL endpoint and admin key.
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L66-L69 -->
 ```Java
-
-public void createIndexClient() {
-    SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
-        .endpoint(endpoint)
+SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
+    .endpoint(endpoint)
+    .credential(new AzureKeyCredential(apiKey))
+    .buildClient();
 ```
 
 or
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L73-L76 -->
 ```Java
-
-public void createIndexAsyncClient() {
-    SearchIndexAsyncClient searchIndexAsyncClient = new SearchIndexClientBuilder()
-        .endpoint(endpoint)
+SearchIndexAsyncClient searchIndexAsyncClient = new SearchIndexClientBuilder()
+    .endpoint(endpoint)
+    .credential(new AzureKeyCredential(apiKey))
+    .buildAsyncClient();
 ```
 
 #### Create a SearchIndexerClient
@@ -127,20 +127,20 @@ URL endpoint and admin key.
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L80-L83 -->
 ```Java
-
-public void createIndexerClient() {
-    SearchIndexerClient searchIndexerClient = new SearchIndexerClientBuilder()
-        .endpoint(endpoint)
+SearchIndexerClient searchIndexerClient = new SearchIndexerClientBuilder()
+    .endpoint(endpoint)
+    .credential(new AzureKeyCredential(apiKey))
+    .buildClient();
 ```
 
 or
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L87-L90 -->
 ```Java
-
-public void createIndexerAsyncClient() {
-    SearchIndexerAsyncClient searchIndexerAsyncClient = new SearchIndexerClientBuilder()
-        .endpoint(endpoint)
+SearchIndexerAsyncClient searchIndexerAsyncClient = new SearchIndexerClientBuilder()
+    .endpoint(endpoint)
+    .credential(new AzureKeyCredential(apiKey))
+    .buildAsyncClient();
 ```
 
 #### Create a SearchClient
@@ -150,22 +150,22 @@ admin key, you can create the `SearchClient/SearchAsyncClient` with an existing 
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L50-L54 -->
 ```Java
-
-public void createSearchClient() {
-    SearchClient searchClient = new SearchClientBuilder()
-        .endpoint(endpoint)
-        .credential(new AzureKeyCredential(adminKey))
+SearchClient searchClient = new SearchClientBuilder()
+    .endpoint(endpoint)
+    .credential(new AzureKeyCredential(adminKey))
+    .indexName(indexName)
+    .buildClient();
 ```
 
 or
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L58-L62 -->
 ```Java
-
-public void createAsyncSearchClient() {
-    SearchAsyncClient searchAsyncClient = new SearchClientBuilder()
-        .endpoint(endpoint)
-        .credential(new AzureKeyCredential(adminKey))
+SearchAsyncClient searchAsyncClient = new SearchClientBuilder()
+    .endpoint(endpoint)
+    .credential(new AzureKeyCredential(adminKey))
+    .indexName(indexName)
+    .buildAsyncClient();
 ```
 
 ### Send your first search query
@@ -176,8 +176,6 @@ subscription or Azure Cognitive Search service to try out this query.
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L119-L144 -->
 ```Java
-
-ic void sandBoxConnection() {
 // We'll connect to the Azure Cognitive Search public sandbox and send a
 // query to its "nycjobs" index built from a public dataset of available jobs
 // in New York.
@@ -202,6 +200,8 @@ for (SearchResult searchResult: searchResultsIterable) {
     String title = (String) document.get("business_title");
     String description = (String) document.get("job_description");
     System.out.printf("The business title is %s, and here is the description: %s.%n",
+        title, description);
+}
 ```
 
 ## Key concepts
@@ -260,53 +260,53 @@ extract data using `SearchDocument`'s dictionary indexer.
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L148-L154 -->
 ```Java
-
-public void searchWithDynamicType() {
-    SearchPagedIterable searchResultsIterable = searchClient.search("luxury");
-    for (SearchResult searchResult: searchResultsIterable) {
-        SearchDocument doc = searchResult.getDocument(SearchDocument.class);
-        String id = (String) doc.get("hotelId");
-        String name = (String) doc.get("hotelName");
+SearchPagedIterable searchResultsIterable = searchClient.search("luxury");
+for (SearchResult searchResult: searchResultsIterable) {
+    SearchDocument doc = searchResult.getDocument(SearchDocument.class);
+    String id = (String) doc.get("hotelId");
+    String name = (String) doc.get("hotelName");
+    System.out.printf("This is hotelId %s, and this is hotel name %s.%n", id, name);
+}
 ```
 
 #### Use Java model class for search results
 Define a `Hotel` class.
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L157-L178 -->
 ```Java
+public class Hotel {
+    private String id;
+    private String name;
 
+    public String getId() {
+        return id;
+    }
 
-ic class Hotel {
-private String id;
-private String name;
+    public Hotel setId(String id) {
+        this.id = id;
+        return this;
+    }
 
-public String getId() {
-    return id;
+    public String getName() {
+        return name;
+    }
+
+    public Hotel setName(String name) {
+        this.name = name;
+        return this;
+    }
 }
-
-public Hotel setId(String id) {
-    this.id = id;
-    return this;
-}
-
-public String getName() {
-    return name;
-}
-
-public Hotel setName(String name) {
-    this.name = name;
-    return this;
 ```
 
 And use them in place of `SearchDocument` when querying.
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L181-L187 -->
 ```Java
-
-public void searchWithStronglyType() {
-    SearchPagedIterable searchResultsIterable = searchClient.search("luxury");
-    for (SearchResult searchResult: searchResultsIterable) {
-        Hotel doc = searchResult.getDocument(Hotel.class);
-        String id = doc.getId();
-        String name = doc.getName();
+SearchPagedIterable searchResultsIterable = searchClient.search("luxury");
+for (SearchResult searchResult: searchResultsIterable) {
+    Hotel doc = searchResult.getDocument(Hotel.class);
+    String id = doc.getId();
+    String name = doc.getName();
+    System.out.printf("This is hotelId %s, and this is hotel name %s.%n", id, name);
+}
 ```
 
 If you're working with a search index and know the schema, creating Java model class
@@ -319,13 +319,13 @@ Let's search for the top 5 luxury hotels with a good rating.
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L191-L197 -->
 ```Java 
-
-public void searchWithSearchOptions() {
-    int stars = 4;
-    SearchOptions options = new SearchOptions()
-        .setFilter(String.format("rating ge %s", stars))
-        .setOrderBy("rating desc")
-        .setTop(5);
+int stars = 4;
+SearchOptions options = new SearchOptions()
+    .setFilter(String.format("rating ge %s", stars))
+    .setOrderBy("rating desc")
+    .setTop(5);
+SearchPagedIterable searchResultsIterable = searchClient.search("luxury", options, Context.NONE);
+// ...
 ```
 
 ### Creating an index
@@ -337,22 +337,14 @@ There are multiple ways of preparing search fields for search index. For basic n
 `buildSearchFields` in `SearchIndexClient` and `SearchIndexAsyncClient`, which can convert Java POJO class into `List<SearchField>`.
 There are three annotations `SimpleFieldProperty`, `SearchFieldProperty` and `FieldIgnore` to config the field of model class.
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L276-L285 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L274-L275 -->
 ```java
-class Hotel {
-    @SimpleFieldProperty(isKey = true)
-    String hotelId;
-    @SearchableFieldProperty
-    String hotelName;
-    @SearchableFieldProperty
-    String address;
-}
 List<SearchField> searchFields = SearchIndexClient.buildSearchFields(Hotel.class, null);
 searchIndexClient.createIndex(new SearchIndex("index", searchFields));
 ```
 
 For advanced scenarios, we can build search fields using `SearchField` directly.
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L223-L272 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L221-L270 -->
 ```Java
 List<SearchField> searchFieldList = new ArrayList<>();
 searchFieldList.add(new SearchField("hotelId", SearchFieldDataType.STRING)
@@ -415,8 +407,8 @@ information about it or navigate your customer to that document.
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L209-L210 -->
 ```Java 
-
-public void retrieveDocuments() {
+Hotel hotel = searchClient.getDocument("1", Hotel.class);
+System.out.printf("This is hotelId %s, and this is hotel name %s.%n", hotel.getId(), hotel.getName());
 ```
 
 ### Adding documents to your index
@@ -428,10 +420,10 @@ to be aware of.
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L214-L217 -->
 ```Java
-
-public void batchDocumentsOperations() {
-    IndexDocumentsBatch<Hotel> batch = new IndexDocumentsBatch<Hotel>();
-    batch.addUploadActions(Collections.singletonList(new Hotel().setId("783").setName("Upload Inn")));
+IndexDocumentsBatch<Hotel> batch = new IndexDocumentsBatch<Hotel>();
+batch.addUploadActions(Collections.singletonList(new Hotel().setId("783").setName("Upload Inn")));
+batch.addMergeActions(Collections.singletonList(new Hotel().setId("12").setName("Renovated Ranch")));
+searchClient.indexDocuments(batch);
 ```
 
 The request will throw `IndexBatchException` by default if any of the individual actions fail, and you can use 
@@ -445,14 +437,13 @@ with an `IndexDocumentsResult` for inspection.
 All of the examples so far have been using synchronous APIs, but we provide full
 support for async APIs as well. You'll need to use [SearchAsyncClient](#Create-a-SearchClient)
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L201-L206 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L201-L205 -->
 ```Java
-
-public void searchWithAsyncClient() {
-    searchAsyncClient.search("luxury")
-        .subscribe(result -> {
-            Hotel hotel = result.getDocument(Hotel.class);
-            System.out.printf("This is hotelId %s, and this is hotel name %s.%n", hotel.getId(), hotel.getName());
+searchAsyncClient.search("luxury")
+    .subscribe(result -> {
+        Hotel hotel = result.getDocument(Hotel.class);
+        System.out.printf("This is hotelId %s, and this is hotel name %s.%n", hotel.getId(), hotel.getName());
+    });
 ```
 
 ## Troubleshooting
@@ -471,15 +462,15 @@ helpful [`Status codes`][status_codes].  Many of these errors are recoverable.
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L107-L115 -->
 ```Java
-
-public void handleErrorsWithSyncClient() {
-    try {
-        Iterable<SearchResult> results = searchClient.search("hotel");
-    } catch (HttpResponseException ex) {
-        // The exception contains the HTTP status code and the detailed message
-        // returned from the search service
-        HttpResponse response = ex.getResponse();
-        System.out.println("Status Code: " + response.getStatusCode());
+try {
+    Iterable<SearchResult> results = searchClient.search("hotel");
+} catch (HttpResponseException ex) {
+    // The exception contains the HTTP status code and the detailed message
+    // returned from the search service
+    HttpResponse response = ex.getResponse();
+    System.out.println("Status Code: " + response.getStatusCode());
+    System.out.println("Message: " + ex.getMessage());
+}
 ```
 
 You can also easily [enable console logging][logging] if you want to dig
@@ -499,8 +490,8 @@ detailed in the [HTTP clients wiki](https://github.com/Azure/azure-sdk-for-java/
 ## Next steps
 
 - Samples are explained in detail [here][samples_readme].
-- [Watch a demo or deep dive video](https://azure.microsoft.com/resources/videos/index/?services=search)
-- [Read more about the Azure Cognitive Search service](https://docs.microsoft.com/azure/search/search-what-is-azure-search)
+- Watch a [demo or deep dive video](https://azure.microsoft.com/resources/videos/index/?services=search)
+- Read more about the [Azure Cognitive Search service](https://docs.microsoft.com/azure/search/search-what-is-azure-search)
 
 ## Contributing
 

@@ -734,12 +734,11 @@ public final class SearchIndexAsyncClient {
      * @param options The option property bag.
      * @return The list {@link SearchField} for search index schema.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public static List<SearchField> buildSearchFields(Class<?> model, FieldBuilderOptions options) {
         if (options == null) {
             return FieldBuilder.build(model, MemberNameConverterProviders.createInstance());
         }
-        return FieldBuilder.build(model, options.getSerializer());
+        return FieldBuilder.build(model, options.getConverter());
     }
 
     Mono<Response<Void>> deleteSynonymMapWithResponse(String synonymMapName, String etag,

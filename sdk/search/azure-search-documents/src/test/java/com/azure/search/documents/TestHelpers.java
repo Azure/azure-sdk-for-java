@@ -34,7 +34,7 @@ import java.util.Objects;
 import java.util.Scanner;
 import java.util.Set;
 
-import static com.azure.search.documents.implementation.util.Utility.TYPE_REFERENCE;
+import static com.azure.search.documents.implementation.util.Utility.MAP_STRING_OBJECT_TYPE_REFERENCE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -328,7 +328,7 @@ public final class TestHelpers {
             sb.append(sc.nextLine());
         }
         try {
-            return SERIALIZER.deserialize(sb.toString(), TYPE_REFERENCE.getJavaType(),
+            return SERIALIZER.deserialize(sb.toString(), MAP_STRING_OBJECT_TYPE_REFERENCE.getJavaType(),
                 SerializerEncoding.JSON);
         } catch (IOException e) {
             throw Exceptions.propagate(e);

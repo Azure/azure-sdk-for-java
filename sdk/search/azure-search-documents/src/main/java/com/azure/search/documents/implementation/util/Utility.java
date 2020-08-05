@@ -13,8 +13,8 @@ import java.util.Map;
 
 public final class Utility {
     // Type reference that used across many places. Have one copy here to minimize the memory.
-    public static final TypeReference<Map<String, Object>> TYPE_REFERENCE = new TypeReference<Map<String, Object>>() {
-    };
+    public static final TypeReference<Map<String, Object>> MAP_STRING_OBJECT_TYPE_REFERENCE =
+        new TypeReference<Map<String, Object>>() { };
 
     /**
      * Helper class to initialize the SerializerAdapter.

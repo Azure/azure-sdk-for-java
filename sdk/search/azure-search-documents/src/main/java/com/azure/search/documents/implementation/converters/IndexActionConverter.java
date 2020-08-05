@@ -5,7 +5,7 @@ package com.azure.search.documents.implementation.converters;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.JsonSerializer;
+import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
 import com.azure.search.documents.models.IndexAction;
@@ -16,7 +16,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Map;
 
-import static com.azure.search.documents.implementation.util.Utility.TYPE_REFERENCE;
+import static com.azure.search.documents.implementation.util.Utility.MAP_STRING_OBJECT_TYPE_REFERENCE;
 import static com.azure.search.documents.implementation.util.Utility.initializeSerializerAdapter;
 
 /**
@@ -52,7 +52,7 @@ public final class IndexActionConverter {
      */
     @SuppressWarnings("unchecked")
     public static <T> com.azure.search.documents.implementation.models.IndexAction map(IndexAction<T> obj,
-        JsonSerializer serializer) {
+        ObjectSerializer serializer) {
         if (obj == null) {
             return null;
         }
@@ -72,7 +72,7 @@ public final class IndexActionConverter {
             if (serializer == null) {
                 try {
                     String serializedJson = searchJacksonAdapter.serialize(properties, SerializerEncoding.JSON);
-                    mapProperties = searchJacksonAdapter.deserialize(serializedJson, TYPE_REFERENCE.getJavaType(),
+                    mapProperties = searchJacksonAdapter.deserialize(serializedJson, MAP_STRING_OBJECT_TYPE_REFERENCE.getJavaType(),
                         SerializerEncoding.JSON);
                 } catch (IOException ex) {
                     throw LOGGER.logExceptionAsError(
@@ -82,7 +82,7 @@ public final class IndexActionConverter {
 
                 ByteArrayOutputStream sourceStream = new ByteArrayOutputStream();
                 serializer.serialize(sourceStream, properties);
-                mapProperties = serializer.deserialize(new ByteArrayInputStream(sourceStream.toByteArray()), TYPE_REFERENCE);
+                mapProperties = serializer.deserialize(new ByteArrayInputStream(sourceStream.toByteArray()), MAP_STRING_OBJECT_TYPE_REFERENCE);
             }
         }
 
