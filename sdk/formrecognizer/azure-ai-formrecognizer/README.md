@@ -65,7 +65,7 @@ will create the synchronous client, while invoking `buildAsyncClient` will creat
 You will need an **endpoint** and a **key** to instantiate a client object.
 
 ##### Looking up the endpoint
-You can find the **endpoint** for your Form Recognizer resource in the [Azure Portal][azure_portal] under the "Keys and Endpoint",
+You can find the **endpoint** for your Form Recognizer resource in the [Azure Portal][azure_portal],
 or [Azure CLI][azure_cli_endpoint].
 ```bash
 # Get the endpoint for the resource

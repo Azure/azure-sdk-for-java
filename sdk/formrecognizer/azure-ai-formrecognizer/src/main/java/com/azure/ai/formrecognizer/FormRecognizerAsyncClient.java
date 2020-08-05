@@ -9,6 +9,7 @@ import com.azure.ai.formrecognizer.implementation.models.AnalyzeOperationResult;
 import com.azure.ai.formrecognizer.implementation.models.ContentType;
 import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
 import com.azure.ai.formrecognizer.implementation.models.SourcePath;
+import com.azure.ai.formrecognizer.models.ErrorInformation;
 import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.FormRecognizerException;
@@ -35,6 +36,7 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import static com.azure.ai.formrecognizer.Transforms.toRecognizedForm;
 import static com.azure.ai.formrecognizer.Transforms.toRecognizedLayout;
@@ -629,7 +631,10 @@ public final class FormRecognizerAsyncClient {
                 break;
             case FAILED:
                 throw logger.logExceptionAsError(new FormRecognizerException("Analyze operation failed",
-                    analyzeOperationResultSimpleResponse.getValue().getAnalyzeResult().getErrors()));
+                    analyzeOperationResultSimpleResponse.getValue().getAnalyzeResult().getErrors().stream()
+                        .map(errorInformation ->
+                            new ErrorInformation(errorInformation.getCode(), errorInformation.getMessage()))
+                        .collect(Collectors.toList())));
             default:
                 status = LongRunningOperationStatus.fromString(
                     analyzeOperationResultSimpleResponse.getValue().getStatus().toString(), true);
@@ -638,11 +643,7 @@ public final class FormRecognizerAsyncClient {
         return Mono.just(new PollResponse<>(status, operationResultPollResponse.getValue()));
     }
 
-    private RecognizeOptions getRecognizeOptionsProperties(RecognizeOptions userProvidedOptions) {
-        if (userProvidedOptions != null) {
-            return userProvidedOptions;
-        } else {
-            return new RecognizeOptions();
-        }
+    private static RecognizeOptions getRecognizeOptionsProperties(RecognizeOptions userProvidedOptions) {
+        return userProvidedOptions == null ? new RecognizeOptions() : userProvidedOptions;
     }
 }
