@@ -88,12 +88,12 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.8.1</version> <!-- {x-version-update;org.apache.commons:commons-lang3;external_dependency} -->
+      <version>3.10</version> <!-- {x-version-update;org.apache.commons:commons-lang3;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>commons-codec</groupId>
       <artifactId>commons-codec</artifactId>
-      <version>1.13</version> <!-- {x-version-update;commons-codec:commons-codec;external_dependency} -->
+      <version>1.14</version> <!-- {x-version-update;commons-codec:commons-codec;external_dependency} -->
     </dependency>
 
 
