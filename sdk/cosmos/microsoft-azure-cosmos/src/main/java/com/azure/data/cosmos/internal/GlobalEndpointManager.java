@@ -112,12 +112,12 @@ public class GlobalEndpointManager implements AutoCloseable {
     }
 
     public void markEndpointUnavailableForRead(URL endpoint) {
-        logger.debug("Marking endpoint {} unavailable for read",endpoint);
+        logger.info("Marking endpoint {} unavailable for read",endpoint);
         this.locationCache.markEndpointUnavailableForRead(endpoint);;
     }
 
     public void markEndpointUnavailableForWrite(URL endpoint) {
-        logger.debug("Marking  endpoint {} unavailable for Write",endpoint);
+        logger.info("Marking  endpoint {} unavailable for Write",endpoint);
         this.locationCache.markEndpointUnavailableForWrite(endpoint);
     }
 
@@ -128,7 +128,7 @@ public class GlobalEndpointManager implements AutoCloseable {
     public void close() {
         this.isClosed = true;
         this.executor.shutdown();
-        logger.debug("GlobalEndpointManager closed.");
+        logger.info("GlobalEndpointManager closed.");
     }
 
     public Mono<Void> refreshLocationAsync(DatabaseAccount databaseAccount, boolean forceRefresh) {
@@ -255,7 +255,7 @@ public class GlobalEndpointManager implements AutoCloseable {
     private Mono<DatabaseAccount> getDatabaseAccountAsync(URL serviceEndpoint) {
         try {
             return this.owner.getDatabaseAccountFromEndpoint(serviceEndpoint.toURI())
-                    .doOnNext(i -> logger.debug("account retrieved: {}", i)).single();
+                    .doOnNext(i -> logger.debug("database account retrieved")).single();
         } catch (URISyntaxException e) {
             return Mono.error(e);
         }
