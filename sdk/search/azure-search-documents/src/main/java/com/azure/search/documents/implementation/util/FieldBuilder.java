@@ -255,9 +255,12 @@ public final class FieldBuilder {
     private static void validateType(Type type, boolean hasArrayOrCollectionWrapped, ClientLogger logger) {
         if (!(type instanceof ParameterizedType)) {
             if (UNSUPPORTED_TYPES.contains(type)) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(String.format("%s is not supported. "
-                        + "Please use FieldIgnore annotation to exclude the field "
-                        + "and manually add to SearchField list.", type.getTypeName())));
+                throw logger.logExceptionAsError(new IllegalArgumentException(
+                    String.format("Type '%s' is not supported. "
+                        + "Please use @FieldIgnore to exclude the field "
+                        + "and manually build SearchField to the list if the field is needed. %n"
+                        + "For more info, refer to link: aka.ms/azsdk/java/search/fieldbuilder",
+                    type.getTypeName())));
             }
             return;
         }

@@ -112,6 +112,7 @@ public class FieldBuilderTests {
     public void unsupportedFields() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
             SearchIndexClient.buildSearchFields(HotelWithUnsupportedField.class, null));
+        System.out.println(exception.getMessage());
         assertExceptionMassageAndDataType(exception, null, "is not supported");
     }
 
