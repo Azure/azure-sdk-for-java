@@ -77,7 +77,7 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
     public void beginTrainingWithOptions() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginTraining#string-boolean-trainingFileFilter-Duration
         String trainingFilesUrl = "{SAS-URL-of-your-container-in-blob-storage}";
-        TrainingFileFilter trainingFileFilter = new TrainingFileFilter().setIncludeSubFolders(true).setPrefix("Invoice");
+        TrainingFileFilter trainingFileFilter = new TrainingFileFilter().setSubfoldersIncluded(true).setPrefix("Invoice");
 
         formTrainingAsyncClient.beginTraining(trainingFilesUrl, true, trainingFileFilter,
             Duration.ofSeconds(5))

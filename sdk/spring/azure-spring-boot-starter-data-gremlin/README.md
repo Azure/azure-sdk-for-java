@@ -1,13 +1,4 @@
-# Sample for Azure Gremlin Spring Boot Starter client library for Java
-
-## Key concepts
-
-**Spring Data Gremlin** provides initial Spring Data support for those databases using Gremlin query language. With annotation oriented programming model, it simplified the mapping to the database entity. It also provides supports for basic and custom query. 
-
-This project works with *any Gremlin-compatible* data store, and also with [Azure Cosmos DB](https://docs.microsoft.com/azure/cosmos-db/introduction). Cosmos is a globally-distributed database service that allows developers to work with data using a variety of standard APIs, such as Graph, MongoDB, and SQL. Spring Data Gremlin provides a delightful experience to interact with Azure Cosmos DB Graph API. 
-
-## Examples
-Please refer to [sample project here](../azure-spring-boot-samples/azure-spring-boot-sample-data-gremlin).
+# Azure Gremlin Spring Boot Starter client library for Java
 
 ## Getting started
 
@@ -192,7 +183,25 @@ public class SampleApplication implements CommandLineRunner {
 ```
 Autowired UserRepository interface, then can do save, delete and find operations. Spring Data Azure Cosmos DB uses the DocumentTemplate to execute the queries behind *find*, *save* methods. You can use the template yourself for more complex queries.
 
-## Allow telemetry
+## Key concepts
+
+**Spring Data Gremlin** provides initial Spring Data support for those databases using Gremlin query language. With annotation oriented programming model, it simplified the mapping to the database entity. It also provides supports for basic and custom query. 
+
+This project works with *any Gremlin-compatible* data store, and also with [Azure Cosmos DB](https://docs.microsoft.com/azure/cosmos-db/introduction). Cosmos is a globally-distributed database service that allows developers to work with data using a variety of standard APIs, such as Graph, MongoDB, and SQL. Spring Data Gremlin provides a delightful experience to interact with Azure Cosmos DB Graph API. 
+
+## Examples
+Please refer to [sample project here](../azure-spring-boot-samples/azure-spring-boot-sample-data-gremlin).
+
+## Troubleshooting
+
+If you encounter any bug, please file an issue [here](https://github.com/Azure/azure-sdk-for-java/issues).
+
+To suggest a new feature or changes that could be made, file an issue the same way you would for a bug.
+
+You can participate community driven [![Gitter](https://badges.gitter.im/Microsoft/spring-on-azure.svg)](https://gitter.im/Microsoft/spring-on-azure)
+
+## Next steps
+### Allow telemetry
 Microsoft would like to collect data about how users use this Spring boot starter. Microsoft uses this information to improve our tooling experience. Participation is voluntary. If you don't want to participate, just simply disable it by setting below configuration in `application.properties`.
 ```properties
 gremlin.allow-telemetry=false
@@ -200,12 +209,7 @@ gremlin.allow-telemetry=false
 When telemetry is enabled, an HTTP request will be sent to URL `https://dc.services.visualstudio.com/v2/track`. So please make sure it's not blocked by your firewall.  
 Find more information about Azure Service Privacy Statement, please check [Microsoft Online Services Privacy Statement](https://www.microsoft.com/privacystatement/OnlineServices/Default.aspx). 
 
-
-## Troubleshooting
-
-If you encounter any bug, please file an issue [here](https://github.com/Microsoft/spring-data-gremlin/issues/new?template=custom.md).
-
-To suggest a new feature or changes that could be made, file an issue the same way you would for a bug.
-
-## Next steps
 ## Contributing
+This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
+
+Please follow [instructions here](../CONTRIBUTING.md) to build from source or contribute.

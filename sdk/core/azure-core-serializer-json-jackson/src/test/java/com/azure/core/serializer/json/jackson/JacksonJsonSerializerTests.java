@@ -3,7 +3,7 @@
 
 package com.azure.core.serializer.json.jackson;
 
-import com.azure.core.experimental.serializer.TypeReference;
+import com.azure.core.util.serializer.TypeReference;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
@@ -25,7 +25,6 @@ import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -41,7 +40,7 @@ public class JacksonJsonSerializerTests {
 
     @Test
     public void deserializeNull() {
-        StepVerifier.create(DEFAULT_SERIALIZER.deserializeAsync(null, new TypeReference<Person>() { }))
+        StepVerifier.create(DEFAULT_SERIALIZER.deserializeAsync(null, TypeReference.createInstance(Person.class)))
             .verifyComplete();
     }
 
@@ -52,7 +51,7 @@ public class JacksonJsonSerializerTests {
 
         InputStream jsonStream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
 
-        StepVerifier.create(DEFAULT_SERIALIZER.deserializeAsync(jsonStream, new TypeReference<Person>() { }))
+        StepVerifier.create(DEFAULT_SERIALIZER.deserializeAsync(jsonStream, TypeReference.createInstance(Person.class)))
             .assertNext(actual -> assertEquals(expected, actual))
             .verifyComplete();
     }
@@ -64,7 +63,7 @@ public class JacksonJsonSerializerTests {
 
         InputStream jsonStream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
 
-        StepVerifier.create(CUSTOM_SERIALIZER.deserializeAsync(jsonStream, new TypeReference<Person>() { }))
+        StepVerifier.create(CUSTOM_SERIALIZER.deserializeAsync(jsonStream, TypeReference.createInstance(Person.class)))
             .assertNext(actual -> assertEquals(expected, actual))
             .verifyComplete();
     }
@@ -75,7 +74,7 @@ public class JacksonJsonSerializerTests {
 
         InputStream jsonStream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
 
-        StepVerifier.create(DEFAULT_SERIALIZER.deserializeAsync(jsonStream, new TypeReference<ObjectNode>() { }))
+        StepVerifier.create(DEFAULT_SERIALIZER.deserializeAsync(jsonStream, TypeReference.createInstance(ObjectNode.class)))
             .assertNext(actual -> {
                 assertEquals(50, actual.get("age").asInt());
                 assertTrue(actual.get("name").isNull());
@@ -87,11 +86,12 @@ public class JacksonJsonSerializerTests {
         Person person = new Person().setAge(50);
         byte[] expected = "{\"name\":null,\"age\":50}".getBytes(StandardCharsets.UTF_8);
 
-        StepVerifier.create(DEFAULT_SERIALIZER.serializeAsync(new ByteArrayOutputStream(), person))
-            .assertNext(actual -> {
-                assertNotNull(actual);
-                assertArrayEquals(expected, actual.toByteArray());
-            }).verifyComplete();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+        StepVerifier.create(DEFAULT_SERIALIZER.serializeAsync(stream, person))
+            .verifyComplete();
+
+        assertArrayEquals(expected, stream.toByteArray());
     }
 
     @Test
@@ -99,11 +99,12 @@ public class JacksonJsonSerializerTests {
         Person person = new Person().setAge(50);
         byte[] expected = "{\"name\":\"John Doe\",\"age\":50}".getBytes(StandardCharsets.UTF_8);
 
-        StepVerifier.create(CUSTOM_SERIALIZER.serializeAsync(new ByteArrayOutputStream(), person))
-            .assertNext(actual -> {
-                assertNotNull(actual);
-                assertArrayEquals(expected, actual.toByteArray());
-            }).verifyComplete();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+        StepVerifier.create(CUSTOM_SERIALIZER.serializeAsync(stream, person))
+            .verifyComplete();
+
+        assertArrayEquals(expected, stream.toByteArray());
     }
 
     private static final class PersonSerializer extends JsonSerializer<Person> {

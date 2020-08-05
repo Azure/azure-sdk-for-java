@@ -218,17 +218,7 @@ final class PartitionBasedLoadBalancer {
                 // If the partitions are evenly distributed among all active event processors, no change required.
                 logger.info("Load is balanced with this event processor owning {} partitions",
                     ownerPartitionMap.get(ownerId).size());
-                // renew ownership of already owned partitions
-                checkpointStore.claimOwnership(partitionPumpManager.getPartitionPumps().keySet()
-                    .stream()
-                    .map(partitionId -> createPartitionOwnershipRequest(partitionOwnershipMap, partitionId))
-                    .collect(Collectors.toList()))
-                    .subscribe(ignored -> { },
-                        ex -> {
-                            logger.error("Error renewing partition ownership", ex);
-                            isLoadBalancerRunning.set(false);
-                        },
-                        () -> isLoadBalancerRunning.set(false));
+                renewOwnership(partitionOwnershipMap);
                 return;
             }
 
@@ -236,17 +226,7 @@ final class PartitionBasedLoadBalancer {
                 // This event processor already has enough partitions and shouldn't own more.
                 logger.info("This event processor owns {} partitions and shouldn't own more",
                     ownerPartitionMap.get(ownerId).size());
-                // renew ownership of already owned partitions
-                checkpointStore.claimOwnership(partitionPumpManager.getPartitionPumps().keySet()
-                    .stream()
-                    .map(partitionId -> createPartitionOwnershipRequest(partitionOwnershipMap, partitionId))
-                    .collect(Collectors.toList()))
-                    .subscribe(ignored -> { },
-                        ex -> {
-                            logger.error("Error renewing partition ownership", ex);
-                            isLoadBalancerRunning.set(false);
-                        },
-                        () -> isLoadBalancerRunning.set(false));
+                renewOwnership(partitionOwnershipMap);
                 return;
             }
 
@@ -276,6 +256,23 @@ final class PartitionBasedLoadBalancer {
 
             claimOwnership(partitionOwnershipMap, ownerPartitionMap, partitionToClaim);
         });
+    }
+
+    private void renewOwnership(Map<String, PartitionOwnership> partitionOwnershipMap) {
+        // renew ownership of already owned partitions
+        checkpointStore.claimOwnership(partitionPumpManager.getPartitionPumps().keySet()
+            .stream()
+            .filter(
+                partitionId -> partitionOwnershipMap.containsKey(partitionId) && partitionOwnershipMap.get(partitionId)
+                    .getOwnerId().equals(this.ownerId))
+            .map(partitionId -> createPartitionOwnershipRequest(partitionOwnershipMap, partitionId))
+            .collect(Collectors.toList()))
+            .subscribe(ignored -> { },
+                ex -> {
+                    logger.error("Error renewing partition ownership", ex);
+                    isLoadBalancerRunning.set(false);
+                },
+                () -> isLoadBalancerRunning.set(false));
     }
 
     private String format(Map<String, List<PartitionOwnership>> ownerPartitionMap) {
@@ -393,6 +390,9 @@ final class PartitionBasedLoadBalancer {
         partitionsToClaim.addAll(partitionPumpManager.getPartitionPumps()
             .keySet()
             .stream()
+            .filter(
+                partitionId -> partitionOwnershipMap.containsKey(partitionId) && partitionOwnershipMap.get(partitionId)
+                    .getOwnerId().equals(this.ownerId))
             .map(partitionId -> createPartitionOwnershipRequest(partitionOwnershipMap, partitionId))
             .collect(Collectors.toList()));
 
