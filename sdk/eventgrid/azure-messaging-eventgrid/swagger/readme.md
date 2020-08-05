@@ -34,6 +34,7 @@ namespace: com.azure.messaging.eventgrid
 license-header: MICROSOFT_MIT_NO_CODEGEN
 generate-client-as-impl: true
 context-client-method-parameter: true
+models-subpackage: systemevents
 custom-types-subpackage: implementation.models
 custom-types: CloudEvent,EventGridEvent
 input-file:

@@ -4,6 +4,7 @@
 
 package com.azure.messaging.eventgrid;
 
+import com.azure.messaging.eventgrid.systemevents.*;
 import com.azure.messaging.eventgrid.models.*;
 import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
@@ -42,7 +43,7 @@ public class DeserializationTests {
         Assert.assertNotNull(events);
         Assert.assertEquals(1, events.size());
 
-        Assert.assertEquals(events.get(0).getSource(), "contoso/items");
+        Assert.assertEquals(events.get(0).getSpecVersion(), "1.0");
 
         Assert.assertNull(events.get(0).getData());
     }
@@ -59,7 +60,7 @@ public class DeserializationTests {
         Assert.assertNotNull(events);
         Assert.assertEquals(1, events.size());
 
-        Assert.assertEquals(events.get(0).getSource(), "contoso/items");
+        Assert.assertEquals(events.get(0).getSpecVersion(), "1.0");
 
         Assert.assertNotNull(events.get(0).getBinaryData());
 
@@ -81,7 +82,7 @@ public class DeserializationTests {
         Assert.assertNotNull(events);
         Assert.assertEquals(1, events.size());
 
-        Assert.assertEquals(events.get(0).getSource(), "contoso/items");
+        Assert.assertEquals(events.get(0).getSpecVersion(), "1.0");
 
         Assert.assertTrue(events.get(0).getData() instanceof ContosoItemReceivedEventData);
         ContosoItemReceivedEventData data = (ContosoItemReceivedEventData) events.get(0).getData();

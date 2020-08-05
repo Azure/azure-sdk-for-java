@@ -157,4 +157,12 @@ public final class EventGridEvent {
         return this.event.getDataVersion();
     }
 
+    /**
+     * Get the metadata version of this event. Note that metadata version is a read-only property set by the service.
+     * @return the metadata version of this event.
+     */
+    public String getMetadataVersion() {
+        return this.event.getMetadataVersion();
+    }
+
 }

@@ -6,7 +6,6 @@ package com.azure.messaging.eventgrid;
 
 
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.experimental.serializer.JsonSerializerProviders;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.JacksonAdapter;

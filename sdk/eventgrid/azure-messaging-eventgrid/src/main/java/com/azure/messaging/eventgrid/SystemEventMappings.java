@@ -4,7 +4,7 @@
 
 package com.azure.messaging.eventgrid;
 
-import com.azure.messaging.eventgrid.models.*;
+import com.azure.messaging.eventgrid.systemevents.*;
 
 import java.util.Collections;
 import java.util.HashMap;

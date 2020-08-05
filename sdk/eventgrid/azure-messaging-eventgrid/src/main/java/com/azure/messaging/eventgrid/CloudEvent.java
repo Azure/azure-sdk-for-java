@@ -8,6 +8,7 @@ package com.azure.messaging.eventgrid;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.SerializerAdapter;
 
 import java.time.OffsetDateTime;
 import java.util.*;
@@ -21,8 +22,6 @@ import java.util.*;
 public class CloudEvent {
 
     private static final String SPEC_VERSION = "1.0";
-
-    private static final String JSON_TYPE = "application/json";
 
     private final com.azure.messaging.eventgrid.implementation.models.CloudEvent cloudEvent;
 
@@ -104,7 +103,9 @@ public class CloudEvent {
 
     /**
      * Set the data associated with this event, to be serialized by the serializer set on the Publisher Client.
-     * @param data the data to set.
+     * @param data the data to set. Should be serializable with the serializer set on the publisher client, meaning it
+     *             should contain Jackson {@link com.fasterxml.jackson.annotation.JsonProperty} annotations if the
+     *             default serializer is used.
      *
      * @return the cloud event itself.
      */
@@ -114,15 +115,36 @@ public class CloudEvent {
     }
 
     /**
-     * Set binary data associated with this event, as well as the content type of the binary data. The
-     * {@link CloudEvent#setDataContentType(String)} should be used alongside this, as the binary data is no longer
-     * in application/json format.
+     * Set the data along with a dataContentType media type identifier. if dataContentType is null, the media type
+     * will be interpreted as "application/json." Note that the same serializer set on
+     * {@link EventGridPublisherClientBuilder#serializer(SerializerAdapter)} will be used to serialize the object, as
+     * well as the rest of the event, in JSON format, regardless of the dataContentType set here. To set the data as
+     * a different media type, either use {@link #setBinaryData(byte[], String)} or add a module to the
+     * custom serializer which will serialize this specific data object in a different format and wrap it as a JSON
+     * string.
+     * @param data            the data to set. Should be serializable with the serializer set on the publisher client, meaning it
+     *                        should contain Jackson {@link com.fasterxml.jackson.annotation.JsonProperty} annotations if the
+     *                        default serializer is used.
+     * @param dataContentType the string identifying the media type of the data field.
+     *
+     * @return the cloud event itself.
+     */
+    public CloudEvent setData(Object data, String dataContentType) {
+        this.cloudEvent.setDatacontenttype(dataContentType);
+        return this.setData(data);
+    }
+
+    /**
+     * Set binary data associated with this event, as well as the content type of the binary data. The data content
+     * type should be a string identifying the media type of the data, as it is no longer in application/json format.
      * @param data the data to set.
      *
      * @return the cloud event itself.
      */
-    public CloudEvent setBinaryData(byte[] data) {
-        this.cloudEvent.setDataBase64(Base64.getEncoder().encodeToString(data));
+    public CloudEvent setBinaryData(byte[] data, String dataContentType) {
+        this.cloudEvent
+            .setDataBase64(Base64.getEncoder().encodeToString(data))
+            .setDatacontenttype(dataContentType);
         return this;
     }
 
@@ -163,20 +185,6 @@ public class CloudEvent {
     }
 
     /**
-     * Set the content type of the data field. An unset value will be interpreted as the data being in the
-     * "application/json" content type. Note that the envelope will still be serialized as a JSON regardless
-     * of this property, as this property only applies to the data and binaryData properties.
-     * @param dataContentType the data content type identifying string, such as "text/xml" for data serialized as
-     *                        an xml string.
-     *
-     * @return the cloud event itself.
-     */
-    public CloudEvent setDataContentType(String dataContentType) {
-        this.cloudEvent.setDatacontenttype(dataContentType);
-        return this;
-    }
-
-    /**
      * Get the schema that the data adheres to.
      * @return a URI of the data schema, or null if it is not set.
      */
@@ -212,6 +220,14 @@ public class CloudEvent {
     public CloudEvent setSubject(String subject) {
         this.cloudEvent.setSubject(subject);
         return this;
+    }
+
+    /**
+     * Get the spec version that this cloud event adheres to. Note that only CloudEvents spec version 1.0 is supported.
+     * @return the cloud event spec version.
+     */
+    public String getSpecVersion() {
+        return this.cloudEvent.getSpecversion();
     }
 
     /**
