@@ -53,8 +53,7 @@ public final class FormPage {
 
     /**
      * Constructs a FormPage object.
-     *
-     * @param height The height of the image/PDF in pixels/inches, respectively.
+     *  @param height The height of the image/PDF in pixels/inches, respectively.
      * @param textAngle The general orientation of the text in clockwise direction.
      * @param unit The unit used by the width, height and boundingBox properties.
      * @param width The width of the image/PDF in pixels/inches, respectively.
@@ -63,7 +62,7 @@ public final class FormPage {
      * @param pageNumber the 1-based page number in the input document.
      */
     public FormPage(final float height, final float textAngle, final LengthUnit unit,
-        final float width, final List<FormLine> lines, final List<FormTable> tables, final Integer pageNumber) {
+        final float width, final List<FormLine> lines, final List<FormTable> tables, final int pageNumber) {
         this.height = height;
         this.textAngle = textAngle > 180 ? textAngle - 360 : textAngle;
         this.unit = unit;

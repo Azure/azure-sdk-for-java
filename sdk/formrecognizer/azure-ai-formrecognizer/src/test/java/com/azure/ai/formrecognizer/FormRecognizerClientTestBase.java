@@ -726,7 +726,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
     private void validateUnLabeledResult(RecognizedForm actualForm, boolean includeFieldElements,
         List<ReadResult> readResults, PageResult expectedPage) {
-        validatePageRangeData(expectedPage.getPage(), actualForm.getFormPageRange());
+        validatePageRangeData(expectedPage.getPage(), actualForm.getPageRange());
         int i = 0;
         for (Map.Entry<String, FormField> entry : actualForm.getFields().entrySet()) {
             FormField actualFormField = entry.getValue();
@@ -750,8 +750,8 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     private void validateLabeledData(RecognizedForm actualForm, boolean includeFieldElements,
         List<ReadResult> readResults, DocumentResult documentResult) {
 
-        assertEquals(documentResult.getPageRange().get(0), actualForm.getFormPageRange().getFirstPageNumber());
-        assertEquals(documentResult.getPageRange().get(1), actualForm.getFormPageRange().getLastPageNumber());
+        assertEquals(documentResult.getPageRange().get(0), actualForm.getPageRange().getFirstPageNumber());
+        assertEquals(documentResult.getPageRange().get(1), actualForm.getPageRange().getLastPageNumber());
         assertEquals(documentResult.getFields().keySet(), actualForm.getFields().keySet());
         documentResult.getFields().forEach((label, expectedFieldValue) -> {
             final FormField actualFormField = actualForm.getFields().get(label);
@@ -770,8 +770,8 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     static void validateMultiPageDataLabeled(List<RecognizedForm> actualRecognizedFormsList) {
         actualRecognizedFormsList.forEach(recognizedForm -> {
             assertEquals("custom:form", recognizedForm.getFormType());
-            assertEquals(1, recognizedForm.getFormPageRange().getFirstPageNumber());
-            assertEquals(3, recognizedForm.getFormPageRange().getLastPageNumber());
+            assertEquals(1, recognizedForm.getPageRange().getFirstPageNumber());
+            assertEquals(3, recognizedForm.getPageRange().getLastPageNumber());
             assertEquals(3, recognizedForm.getPages().size());
             recognizedForm.getFields().forEach((label, formField) -> {
                 assertNotNull(formField.getName());
@@ -802,8 +802,8 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         RecognizedForm receiptPage2 = recognizedReceipts.get(1);
         RecognizedForm receiptPage3 = recognizedReceipts.get(2);
 
-        assertEquals(1, receiptPage1.getFormPageRange().getFirstPageNumber());
-        assertEquals(1, receiptPage1.getFormPageRange().getLastPageNumber());
+        assertEquals(1, receiptPage1.getPageRange().getFirstPageNumber());
+        assertEquals(1, receiptPage1.getPageRange().getLastPageNumber());
         Map<String, FormField> receiptPage1Fields = receiptPage1.getFields();
         assertEquals(EXPECTED_MULTIPAGE_ADDRESS_VALUE, receiptPage1Fields.get("MerchantAddress")
             .getValue().asString());
@@ -821,11 +821,11 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         assertEquals(1, receipt2Pages.size());
         assertEquals(0, receipt2Pages.stream().findFirst().get().getTables().size());
         assertEquals(0, receipt2Pages.stream().findFirst().get().getLines().size());
-        assertEquals(2, receiptPage2.getFormPageRange().getFirstPageNumber());
-        assertEquals(2, receiptPage2.getFormPageRange().getLastPageNumber());
+        assertEquals(2, receiptPage2.getPageRange().getFirstPageNumber());
+        assertEquals(2, receiptPage2.getPageRange().getLastPageNumber());
 
-        assertEquals(3, receiptPage3.getFormPageRange().getFirstPageNumber());
-        assertEquals(3, receiptPage3.getFormPageRange().getLastPageNumber());
+        assertEquals(3, receiptPage3.getPageRange().getFirstPageNumber());
+        assertEquals(3, receiptPage3.getPageRange().getLastPageNumber());
         Map<String, FormField> receiptPage3Fields = receiptPage3.getFields();
         assertEquals(EXPECTED_MULTIPAGE_ADDRESS_VALUE, receiptPage3Fields.get("MerchantAddress").getValue().asString());
         assertEquals("Frodo Baggins", receiptPage3Fields.get("MerchantName").getValue().asString());
