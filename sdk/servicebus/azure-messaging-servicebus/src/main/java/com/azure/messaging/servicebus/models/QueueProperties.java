@@ -30,7 +30,7 @@ public final class QueueProperties {
     private boolean deadLetteringOnMessageExpiration;
     private Duration duplicateDetectionHistoryTimeWindow;
     private boolean enableBatchedOperations;
-    private boolean enableExpress;
+    private Boolean enableExpress;
     private boolean enablePartitioning;
     private EntityAvailabilityStatus entityAvailabilityStatus;
     private String forwardTo;
@@ -121,11 +121,11 @@ public final class QueueProperties {
         this.lockDuration = description.getLockDuration();
         this.maxDeliveryCount = toPrimitive(description.getMaxDeliveryCount());
         this.maxSizeInMegabytes = toPrimitive(description.getMaxSizeInMegabytes());
-        this.messageCount = description.getMessageCount();
+        this.messageCount = toPrimitive(description.getMessageCount());
         this.messageCountDetails = description.getMessageCountDetails();
         this.requiresDuplicateDetection = toPrimitive(description.isRequiresDuplicateDetection());
         this.requiresSession = toPrimitive(description.isRequiresSession());
-        this.sizeInBytes = description.getSizeInBytes();
+        this.sizeInBytes = toPrimitive(description.getSizeInBytes());
         this.supportOrdering = description.isSupportOrdering();
         this.status = description.getStatus();
         this.updatedAt = description.getUpdatedAt();
