@@ -96,26 +96,25 @@ abstract class AsyncBenchmark<T> {
             }
         }
 
+        cosmosAsyncContainer = cosmosAsyncDatabase.getContainer(this.configuration.getCollectionId());
+
         try {
-            cosmosAsyncContainer = cosmosAsyncDatabase.getContainer(this.configuration.getCollectionId());
-
-            cosmosAsyncContainer.read().block();
-
+            cosmosAsyncContainer.delete().block();
         } catch (CosmosException e) {
-            if (e.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
-                cosmosAsyncDatabase.createContainer(
-                    this.configuration.getCollectionId(),
-                    Configuration.DEFAULT_PARTITION_KEY_PATH,
-                    ThroughputProperties.createManualThroughput(this.configuration.getThroughput())
-                ).block();
-
-                cosmosAsyncContainer = cosmosAsyncDatabase.getContainer(this.configuration.getCollectionId());
-                logger.info("Collection {} is created for this test", this.configuration.getCollectionId());
-                collectionCreated = true;
-            } else {
+            if (e.getStatusCode() != HttpConstants.StatusCodes.NOTFOUND) {
                 throw e;
             }
         }
+
+        cosmosAsyncDatabase.createContainer(
+            this.configuration.getCollectionId(),
+            Configuration.DEFAULT_PARTITION_KEY_PATH,
+            ThroughputProperties.createManualThroughput(this.configuration.getThroughput())
+        ).block();
+
+        cosmosAsyncContainer = cosmosAsyncDatabase.getContainer(this.configuration.getCollectionId());
+        logger.info("Collection {} is created for this test", this.configuration.getCollectionId());
+        collectionCreated = true;
 
         partitionKey = cosmosAsyncContainer.read().block().getProperties().getPartitionKeyDefinition()
             .getPaths().iterator().next().split("/")[1];
