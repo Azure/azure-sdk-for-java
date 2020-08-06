@@ -11,6 +11,7 @@ package com.microsoft.azure.management.sql.v2014_04_01.implementation;
 
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.sql.v2014_04_01.Extensions;
+import rx.Completable;
 import rx.functions.Func1;
 import rx.Observable;
 import java.util.List;
@@ -25,6 +26,12 @@ class ExtensionsImpl extends WrapperImpl<ExtensionsInner> implements Extensions 
 
     public SqlManager manager() {
         return this.manager;
+    }
+
+    @Override
+    public Completable getAsync(String resourceGroupName, String serverName, String databaseName) {
+        ExtensionsInner client = this.inner();
+        return client.getAsync(resourceGroupName, serverName, databaseName).toCompletable();
     }
 
     @Override

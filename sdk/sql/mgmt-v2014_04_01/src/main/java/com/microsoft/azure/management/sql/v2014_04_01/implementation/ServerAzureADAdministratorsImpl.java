@@ -64,10 +64,14 @@ class ServerAzureADAdministratorsImpl extends WrapperImpl<ServerAzureADAdministr
     public Observable<ServerAzureADAdministrator> getAsync(String resourceGroupName, String serverName) {
         ServerAzureADAdministratorsInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName)
-        .map(new Func1<ServerAzureADAdministratorInner, ServerAzureADAdministrator>() {
+        .flatMap(new Func1<ServerAzureADAdministratorInner, Observable<ServerAzureADAdministrator>>() {
             @Override
-            public ServerAzureADAdministrator call(ServerAzureADAdministratorInner inner) {
-                return wrapModel(inner);
+            public Observable<ServerAzureADAdministrator> call(ServerAzureADAdministratorInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ServerAzureADAdministrator)wrapModel(inner));
+                }
             }
        });
     }
