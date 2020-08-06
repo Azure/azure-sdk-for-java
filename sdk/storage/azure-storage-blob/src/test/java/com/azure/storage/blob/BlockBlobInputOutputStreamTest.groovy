@@ -36,21 +36,6 @@ class BlockBlobInputOutputStreamTest extends APISpec {
 
     }
 
-    def "BlobInputStream read 0 bytes"() {
-        setup:
-        byte[] data = getRandomByteArray(6 * 1024 * 1024)
-        bc.upload(new ByteArrayInputStream(data), data.length, true)
-        def is = bc.openInputStream()
-        byte[] outArr = new byte[10 * 1024 * 1024]
-
-        when:
-        def count = is.read(outArr)
-
-        then:
-        Arrays.compare(data, 0, data.length, outArr, 0, data.length) == 0
-        count == data.length
-    }
-
     // Only run this test in live mode as BlobOutputStream dynamically assigns blocks
     @Requires({ liveMode() })
     def "Upload download"() {
