@@ -18,6 +18,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -49,7 +50,7 @@ public class CustomerRepositoryIT {
     private static final Customer CUSTOMER_2 = new Customer(CUSTOMER_ID_2, CUSTOMER_LEVEL_1, USER_2);
 
     private static final CosmosEntityInformation<Customer, String> entityInformation =
-            new CosmosEntityInformation<>(Customer.class);
+        new CosmosEntityInformation<>(Customer.class);
 
     private static CosmosTemplate staticTemplate;
     private static boolean isSetupDone;
@@ -92,13 +93,15 @@ public class CustomerRepositoryIT {
     @Test
     public void testFindByUserAndLevel() {
         final List<Customer> references = Arrays.asList(CUSTOMER_0, CUSTOMER_2);
-        List<Customer> customers = this.repository.findByUser_Name(USER_NAME_0);
+        Iterable<Customer> customers = this.repository.findByUser_Name(USER_NAME_0);
+        List<Customer> results = new ArrayList<>();
+        customers.forEach(results::add);
 
-        assertCustomerListEquals(references, customers);
+        assertCustomerListEquals(references, results);
 
         customers = this.repository.findByUser_Name(FAKE_USER_NAME);
 
-        Assert.assertTrue(customers.isEmpty());
+        Assert.assertFalse(customers.iterator().hasNext());
     }
 
 }

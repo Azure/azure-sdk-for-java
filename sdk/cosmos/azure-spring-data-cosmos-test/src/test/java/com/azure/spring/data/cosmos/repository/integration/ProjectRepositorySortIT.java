@@ -80,7 +80,7 @@ public class ProjectRepositorySortIT {
         PROJECT_2, PROJECT_1, PROJECT_0);
 
     private static final CosmosEntityInformation<SortedProject, String> entityInformation =
-            new CosmosEntityInformation<>(SortedProject.class);
+        new CosmosEntityInformation<>(SortedProject.class);
 
     private static CosmosTemplate staticTemplate;
     private static boolean isSetupDone;
@@ -149,7 +149,7 @@ public class ProjectRepositorySortIT {
     public void testFindAllSortMoreThanOneOrderException() {
         final Sort sort = Sort.by(Sort.Direction.ASC, "name", "creator");
 
-        this.repository.findAll(sort);
+        this.repository.findAll(sort).iterator().next();
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -164,7 +164,7 @@ public class ProjectRepositorySortIT {
     public void testFindAllSortMissMatchException() {
         final Sort sort = Sort.by(Sort.Direction.ASC, "fake-name");
 
-        this.repository.findAll(sort);
+        this.repository.findAll(sort).iterator().next();
     }
 
     public void testFindAllSortWithIdName() {
@@ -174,7 +174,7 @@ public class ProjectRepositorySortIT {
         final Sort sort = Sort.by(Sort.Direction.ASC, "id");
         final List<SortedProject> results = StreamSupport.stream(this.repository.findAll(sort).spliterator(),
             false)
-                .collect(Collectors.toList());
+                                                         .collect(Collectors.toList());
 
         Assert.assertEquals(projectListSortedById, results);
     }
