@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>spring-cloud-azure</artifactId>
+        <groupId>com.microsoft.azure</groupId>
+        <version>1.2.8-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>spring-cloud-azure-storage</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.microsoft.azure</groupId>
+            <artifactId>spring-cloud-azure-context</artifactId>
+        </dependency>
+        
+        <dependency>
+	        <groupId>com.microsoft.azure</groupId>
+	        <artifactId>spring-cloud-azure-telemetry</artifactId>
+		</dependency>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-storage-blob</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-storage-file-share</artifactId>
+        </dependency>
+        
+        <!-- Storage -->
+		<dependency>
+			<groupId>com.azure</groupId>
+			<artifactId>azure-storage-queue</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+		<!-- Storage Queue -->
+		<dependency>
+			<groupId>com.microsoft.azure</groupId>
+			<artifactId>spring-integration-storage-queue</artifactId>
+			<optional>true</optional>
+		</dependency>
+        
+    </dependencies>
+
+</project>
