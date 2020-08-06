@@ -38,6 +38,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -447,20 +448,25 @@ public class ReactorNettyClientTests {
         }
     }
 
-//    @Test
-//    public void slowRequestBodyTimesOut() {
-//        HttpClient httpClient = new NettyAsyncHttpClientBuilder()
-//            .writeTimeout(Duration.ofMillis(100))
-//            .build();
-//
-//        Flux<ByteBuffer> requestBody = Flux.just(ByteBuffer.wrap(new byte[] { 0 }))
-//            .concatWith(Flux.just(ByteBuffer.wrap(new byte[] { 1 })).delayElements(Duration.ofMillis(250)));
-//
-//        HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/slowRequestBody"), new HttpHeaders(), requestBody);
-//
-//        StepVerifier.create(httpClient.send(request))
-//            .verifyError(TimeoutException.class);
-//    }
+    @Test
+    public void slowRequestBodyTimesOut() {
+        byte[] body = new byte[10000000];
+        SecureRandom secureRandom = new SecureRandom();
+        secureRandom.nextBytes(body);
+
+        HttpClient httpClient = new NettyAsyncHttpClientBuilder()
+            .writeTimeout(Duration.ofMillis(1))
+            .build();
+
+        Flux<ByteBuffer> requestBody = Flux.just(ByteBuffer.wrap(body))
+            .concatWith(Flux.just(ByteBuffer.wrap(body)).delayElements(Duration.ofMillis(250)));
+
+        HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/slowRequestBody"), new HttpHeaders(),
+            requestBody);
+
+        StepVerifier.create(httpClient.send(request))
+            .verifyError(TimeoutException.class);
+    }
 
     @Test
     public void delayedResponseTimesOut() {

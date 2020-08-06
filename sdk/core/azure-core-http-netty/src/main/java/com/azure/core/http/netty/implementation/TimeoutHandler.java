@@ -15,6 +15,7 @@ import java.time.Duration;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Supplier;
 
@@ -56,6 +57,7 @@ public final class TimeoutHandler extends ChannelDuplexHandler {
 
     private long outstandingWriteOperations = 0;
     private boolean finalWriteProcessed = false;
+    private boolean readingHasBegun = false;
     private ScheduledFuture<?> responseTimeout;
     private ScheduledFuture<?> readTimeout;
     private long lastReadMillis;
@@ -63,11 +65,13 @@ public final class TimeoutHandler extends ChannelDuplexHandler {
 
     /**
      * Constructs a {@link TimeoutHandler}.
+     * <p>
+     * If a {@code null} timeout is passed a default of 60 seconds will be used. If a timeout is less than or equal to
+     * 0 then no timeout is used.
      *
-     * @param writeTimeout Write timeout duration, if {@code null} or less than or equal {@code 0} there is no timeout.
-     * @param responseTimeout Response timeout duration, if {@code null} or less than or equal {@code 0} there is no
-     * timeout.
-     * @param readTimeout Read timeout duration, if {@code null} or less than or equal {@code 0} there is no timeout.
+     * @param writeTimeout Write timeout duration.
+     * @param responseTimeout Response timeout duration.
+     * @param readTimeout Read timeout duration.
      */
     public TimeoutHandler(Duration writeTimeout, Duration responseTimeout, Duration readTimeout) {
         this.writeTimeoutMillis = getTimeoutMillis(writeTimeout);
@@ -91,6 +95,9 @@ public final class TimeoutHandler extends ChannelDuplexHandler {
         ctx.write(msg, promise);
     }
 
+    /*
+     * Add a new write task. This will create a new future
+     */
     private void addWriteTimeoutTask(ChannelHandlerContext ctx, ChannelPromise promise, boolean hasTimeout) {
         final WriteTask writeTask = new WriteTask(ctx, promise, hasTimeout);
         outstandingWriteOperations += 1;
@@ -124,23 +131,31 @@ public final class TimeoutHandler extends ChannelDuplexHandler {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
+        this.readingHasBegun = true;
         ctx.fireChannelRead(msg);
     }
 
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) {
-        lastReadMillis = System.currentTimeMillis();
-
         /*
-         * If there is an on-going response cancel it as we've began reading the response.
+         * Only trigger operations if reading has begun. Occasionally channelReadComplete will fire before the response
+         * begins to read, we don't want to inadvertently cancel our response timeout and start our read timeout if
+         * that happens.
          */
-        if (responseTimeout != null && !responseTimeout.isDone()) {
-            responseTimeout.cancel(false);
-            responseTimeout = null;
-        }
+        if (readingHasBegun) {
+            lastReadMillis = System.currentTimeMillis();
 
-        if (readTimeoutMillis > 0 && readTimeout == null) {
-            readTimeout = ctx.executor().schedule(() -> readTask(ctx), readTimeoutMillis, MILLISECONDS);
+            /*
+             * If there is an on-going response cancel it as we've began reading the response.
+             */
+            if (responseTimeout != null && !responseTimeout.isDone()) {
+                responseTimeout.cancel(false);
+                responseTimeout = null;
+            }
+
+            if (readTimeoutMillis > 0 && readTimeout == null) {
+                readTimeout = ctx.executor().schedule(() -> readTask(ctx), readTimeoutMillis, MILLISECONDS);
+            }
         }
 
         ctx.fireChannelReadComplete();
@@ -246,7 +261,11 @@ public final class TimeoutHandler extends ChannelDuplexHandler {
      * is no timeout period, so return 0. Otherwise, return the maximum of the duration and the minimum timeout period.
      */
     private static long getTimeoutMillis(Duration timeout) {
-        if (timeout == null || timeout.isZero() || timeout.isNegative()) {
+        if (timeout == null) {
+            return TimeUnit.SECONDS.toMillis(60);
+        }
+
+        if (timeout.isZero() || timeout.isNegative()) {
             return 0;
         }
 
