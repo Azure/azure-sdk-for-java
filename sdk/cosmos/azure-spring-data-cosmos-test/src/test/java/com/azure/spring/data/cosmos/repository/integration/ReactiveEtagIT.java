@@ -33,7 +33,7 @@ public class ReactiveEtagIT {
 
     @After
     public void cleanup() {
-        reactiveCourseWithEtagRepository.deleteAll();
+        reactiveCourseWithEtagRepository.deleteAll().block();
     }
 
     private static CourseWithEtag createCourseWithEtag() {
