@@ -45,7 +45,6 @@ public class JacksonPropertyNameTests {
         assertMemberNull(f);
     }
 
-
     @Test
     public void testPropertyNameOnTransientFieldName() throws NoSuchFieldException {
         class LocalHotel {
@@ -98,28 +97,35 @@ public class JacksonPropertyNameTests {
             public String getHotelName() {
                 return hotelName;
             }
-        }
-
-        Method m = LocalHotel.class.getDeclaredMethod("getHotelName");
-        assertEquals("hotelName", serializer.convertMemberName(m));
-    }
-
-    @Test
-    public void testPropertyNameOnSetterMethodName() throws NoSuchMethodException {
-        class LocalHotel {
-            String hotelName;
-
-            public String getHotelName() {
-                return hotelName;
-            }
-
             public void setHotelName(String hotelName) {
                 this.hotelName = hotelName;
             }
         }
 
-        Method m = LocalHotel.class.getDeclaredMethod("setHotelName", String.class);
-        assertEquals("hotelName", serializer.convertMemberName(m));
+        Method getterM = LocalHotel.class.getDeclaredMethod("getHotelName");
+        assertEquals("hotelName", serializer.convertMemberName(getterM));
+        Method setterM = LocalHotel.class.getDeclaredMethod("setHotelName", String.class);
+        assertEquals("hotelName", serializer.convertMemberName(setterM));
+    }
+
+    @Test
+    public void testPropertyNameOnMethodNameWithoutGetSet() throws NoSuchMethodException {
+        class LocalHotel {
+            String hotelName;
+
+            public String hotelName1() {
+                return hotelName;
+            }
+
+            public void hotelName2(String hotelName) {
+                this.hotelName = hotelName;
+            }
+        }
+
+        Method getterM = LocalHotel.class.getDeclaredMethod("hotelName1");
+        assertEquals("hotelName1", serializer.convertMemberName(getterM));
+        Method setterM = LocalHotel.class.getDeclaredMethod("hotelName2", String.class);
+        assertEquals("hotelName2", serializer.convertMemberName(setterM));
     }
 
     @Test
