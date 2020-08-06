@@ -14,6 +14,8 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.messaging.eventgrid.models.CloudEvent;
+import com.azure.messaging.eventgrid.models.EventGridEvent;
 
 import java.net.MalformedURLException;
 import java.net.URL;

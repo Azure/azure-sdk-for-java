@@ -7,11 +7,14 @@ package com.azure.messaging.eventgrid;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.experimental.serializer.JsonArray;
 import com.azure.core.experimental.serializer.JsonSerializer;
+import com.azure.messaging.eventgrid.models.CloudEvent;
+import com.azure.messaging.eventgrid.models.EventGridEvent;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Map;
 
 /**
@@ -58,19 +61,28 @@ public final class EventGridAsyncConsumer {
 
                 }
             })
-            .flatMap(this::richDataAndConvert);
+            .flatMap(this::richData)
+            .map(this::convert);
     }
 
 
-    private Mono<EventGridEvent> richDataAndConvert(com.azure.messaging.eventgrid.implementation.models.EventGridEvent
-                                                        event) {
+    private Mono<com.azure.messaging.eventgrid.implementation.models.EventGridEvent>
+    richData(com.azure.messaging.eventgrid.implementation.models.EventGridEvent event) {
         String eventType = SystemEventMappings.canonicalizeEventType(event.getEventType());
         if (typeMappings.containsKey(eventType)) {
             return deserializer.toTree(event.getData())
                 .flatMap(jsonNode -> deserializer.deserializeTree(jsonNode, typeMappings.get(eventType)))
-                .map(data -> new EventGridEvent(event).setData(data));
+                .map(event::setData);
         }
-        return Mono.just(new EventGridEvent(event));
+        return Mono.just(event);
+    }
+
+    private EventGridEvent convert(com.azure.messaging.eventgrid.implementation.models.EventGridEvent event) {
+        return new EventGridEvent(event.getSubject(), event.getEventType(), event.getDataVersion())
+            .setData(event.getData())
+            .setEventTime(event.getEventTime())
+            .setId(event.getId())
+            .setTopic(event.getTopic());
     }
 
     /**
@@ -93,17 +105,36 @@ public final class EventGridAsyncConsumer {
                         .as(Flux::from);
                 }
             })
-            .flatMap(this::richDataAndConvert);
+            .flatMap(this::richData)
+            .map(this::convert);
     }
 
-    private Mono<CloudEvent> richDataAndConvert(com.azure.messaging.eventgrid.implementation.models.CloudEvent event) {
+    private Mono<com.azure.messaging.eventgrid.implementation.models.CloudEvent>
+    richData(com.azure.messaging.eventgrid.implementation.models.CloudEvent event) {
         String eventType = SystemEventMappings.canonicalizeEventType(event.getType());
         if (typeMappings.containsKey(eventType) && event.getData() != null) {
             return deserializer.toTree(event.getData())
                 .flatMap(jsonNode -> deserializer.deserializeTree(jsonNode, typeMappings.get(eventType)))
-                .map(data -> new CloudEvent(event).setData(data));
+                .map(event::setData);
         }
-        return Mono.just(new CloudEvent(event));
+        return Mono.just(event);
+    }
+
+    private CloudEvent convert(com.azure.messaging.eventgrid.implementation.models.CloudEvent event) {
+        CloudEvent ans = new CloudEvent(event.getSource(), event.getType())
+            .setBinaryData(Base64.getDecoder().decode(event.getDataBase64()), event.getDatacontenttype())
+            // we set dataContentType in binary, so we don't need it twice even if binary data was null
+            .setData(event.getData())
+            .setDataSchema(event.getDataschema())
+            .setId(event.getId())
+            .setSubject(event.getSubject())
+            .setTime(event.getTime());
+
+        Map<String, Object> extensions = event.getAdditionalProperties();
+        for (Map.Entry<String, Object> entry : extensions.entrySet()) {
+            ans.addExtensionAttribute(entry.getKey(), entry.getValue());
+        }
+        return ans;
     }
 
     /**

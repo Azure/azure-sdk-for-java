@@ -2,5 +2,5 @@
 // Licensed under the MIT License. See License.txt in the project root for
 // license information.
 
-/** Package containing the classes for EventGridClient. Azure EventGrid Client. */
-package com.azure.messaging.eventgrid;
+/** Package containing Events, such as CloudEvent and EventGridEvent, for sending and receiving. */
+package com.azure.messaging.eventgrid.models;
