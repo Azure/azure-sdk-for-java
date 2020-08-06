@@ -26,11 +26,13 @@ com.microsoft.azure:azure-servicebus-jms;0.0.2
 com.microsoft.azure:qpid-proton-j-extensions;1.2.3
 com.microsoft.rest:client-runtime;1.7.4
 com.microsoft.rest.v2:client-runtime;2.1.1
+com.microsoft.sqlserver:mssql-jdbc;6.4.0.jre7
 com.microsoft.azure:spring-data-cosmosdb;2.3.0
 com.microsoft.spring.data.gremlin:spring-data-gremlin;2.3.0
 com.squareup.okhttp3:okhttp;4.2.2
 commons-codec:commons-codec;1.13
-commons-net:commons-net;3.3
+commons-net:commons-net;3.6
+io.fabric8:kubernetes-client;4.9.1
 io.micrometer:micrometer-core;1.2.0
 io.micrometer:micrometer-registry-azure-monitor;1.2.0
 io.micrometer:micrometer-registry-graphite;1.2.0
@@ -107,6 +109,7 @@ pl.pragmatists:JUnitParams;1.1.1
 cglib:cglib-nodep;3.2.7
 com.alibaba:fastjson;1.2.61
 com.github.cverges.expect4j:expect4j;1.6
+com.github.docker-java:docker-java;3.2.1
 com.github.tomakehurst:wiremock-standalone;2.24.1
 com.jcraft:jsch;0.1.53
 com.microsoft.azure:adal4j;1.6.5
@@ -135,7 +138,7 @@ org.eclipse.aether:aether-connector-basic;1.1.0
 org.eclipse.aether:aether-transport-wagon;1.1.0
 org.eclipse.jetty:jetty-http;9.4.11.v20180605
 org.eclipse.jetty:jetty-server;9.4.11.v20180605
-org.eclipse.jgit:org.eclipse.jgit;4.5.0.201609210915-r
+org.eclipse.jgit:org.eclipse.jgit;4.5.7.201904151645-r
 org.hamcrest:hamcrest-all;1.3
 org.hamcrest:hamcrest-library;2.2
 # https://junit.org/junit5/docs/current/user-guide/#running-tests-ide-intellij-idea
@@ -278,6 +281,8 @@ resourcemanager_com.jcraft:jsch;0.1.55
 # sdk\resourcemanager\azure-resourcemanager-compute\pom.xml
 resourcemanager_com.microsoft.azure:azure-storage;6.1.0
 
+# sdk\resourcemanager\azure-resourcemanager-samples\pom.xml
+resourcemanager_org.apache.httpcomponents:httpclient;4.5.12
 
 # sdk\storage\azure-storage-blob-cryptography\pom.xml
 storage_com.microsoft.azure:azure-storage;8.4.0

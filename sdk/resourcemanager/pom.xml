@@ -24,6 +24,7 @@
     <module>azure-resourcemanager-msi</module>
     <module>azure-resourcemanager-network</module>
     <module>azure-resourcemanager-resources</module>
+    <module>azure-resourcemanager-samples</module>
     <module>azure-resourcemanager-sql</module>
     <module>azure-resourcemanager-storage</module>
   </modules>

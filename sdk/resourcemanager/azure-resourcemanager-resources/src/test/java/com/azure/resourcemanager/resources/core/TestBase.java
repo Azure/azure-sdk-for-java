@@ -165,8 +165,11 @@ public abstract class TestBase {
         final String skipMessage = shouldCancelTest(isPlaybackMode());
         Assumptions.assumeTrue(skipMessage == null, skipMessage);
 
-        String skipOutput = System.getProperty("skipOutput");
-        if (isPlaybackMode() && skipOutput != null && skipOutput.equalsIgnoreCase("true")) {
+        String showOutput = Configuration.getGlobalConfiguration().get("showOutput");
+        if (!isPlaybackMode() || (showOutput != null && showOutput.equalsIgnoreCase("true"))) {
+            System.out.println("------------------------------------------------------------ Show Output");
+        } else {
+            System.out.println("------------------------------------------------------------ Skip Output");
             System.setOut(new PrintStream(new OutputStream() {
                 @Override
                 public void write(int b) throws IOException {

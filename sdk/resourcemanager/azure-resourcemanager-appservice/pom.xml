@@ -89,7 +89,7 @@
     <dependency>
       <groupId>commons-net</groupId>
       <artifactId>commons-net</artifactId>
-      <version>3.3</version> <!-- {x-version-update;commons-net:commons-net;external_dependency} -->
+      <version>3.6</version> <!-- {x-version-update;commons-net:commons-net;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -113,7 +113,7 @@
     <dependency>
       <groupId>org.eclipse.jgit</groupId>
       <artifactId>org.eclipse.jgit</artifactId>
-      <version>4.5.0.201609210915-r</version> <!-- {x-version-update;org.eclipse.jgit:org.eclipse.jgit;external_dependency} -->
+      <version>4.5.7.201904151645-r</version> <!-- {x-version-update;org.eclipse.jgit:org.eclipse.jgit;external_dependency} -->
       <exclusions>
         <exclusion>
           <groupId>org.apache.httpcomponents</groupId>
