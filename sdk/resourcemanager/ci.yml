@@ -86,3 +86,5 @@ extends:
         groupId: com.azure
       - name: azure-cosmos
         groupId: com.azure
+      - name: azure-storage-perf
+        groupId: com.azure
