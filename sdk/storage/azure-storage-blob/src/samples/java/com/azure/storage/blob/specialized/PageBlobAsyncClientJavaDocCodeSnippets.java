@@ -366,16 +366,20 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
     public void copyIncrementalCodeSnippet() {
         // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.copyIncremental#String-String
         final String snapshot = "copy snapshot";
-        client.copyIncremental(url, snapshot).subscribe(response -> {
-            switch (response) {
+        client.copyIncremental(url, snapshot).subscribe(statusType -> {
+            switch (statusType) {
                 case SUCCESS:
                     System.out.println("Page blob copied successfully");
+                    break;
                 case FAILED:
                     System.out.println("Page blob copied failed");
+                    break;
                 case ABORTED:
                     System.out.println("Page blob copied aborted");
+                    break;
                 case PENDING:
                     System.out.println("Page blob copied pending");
+                    break;
             }
         });
         // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.copyIncremental#String-String
@@ -397,12 +401,16 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
                 switch (statusType) {
                     case SUCCESS:
                         System.out.println("Page blob copied successfully");
+                        break;
                     case FAILED:
                         System.out.println("Page blob copied failed");
+                        break;
                     case ABORTED:
                         System.out.println("Page blob copied aborted");
+                        break;
                     case PENDING:
                         System.out.println("Page blob copied pending");
+                        break;
                 }
             });
         // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.copyIncrementalWithResponse#String-String-RequestConditions
@@ -425,12 +433,16 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
                 switch (statusType) {
                     case SUCCESS:
                         System.out.println("Page blob copied successfully");
+                        break;
                     case FAILED:
                         System.out.println("Page blob copied failed");
+                        break;
                     case ABORTED:
                         System.out.println("Page blob copied aborted");
+                        break;
                     case PENDING:
                         System.out.println("Page blob copied pending");
+                        break;
                 }
             });
         // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.copyIncrementalWithResponse#PageBlobCopyIncrementalOptions

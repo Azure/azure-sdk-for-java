@@ -391,12 +391,16 @@ public class PageBlobClientJavaDocCodeSnippets {
         switch (statusType) {
             case SUCCESS:
                 System.out.println("Page blob copied successfully");
+                break;
             case FAILED:
                 System.out.println("Page blob copied failed");
+                break;
             case ABORTED:
                 System.out.println("Page blob copied aborted");
+                break;
             case PENDING:
                 System.out.println("Page blob copied pending");
+                break;
         }
         // END: com.azure.storage.blob.specialized.PageBlobClient.copyIncremental#String-String
     }
@@ -418,12 +422,16 @@ public class PageBlobClientJavaDocCodeSnippets {
         switch (statusType) {
             case SUCCESS:
                 System.out.println("Page blob copied successfully");
+                break;
             case FAILED:
                 System.out.println("Page blob copied failed");
+                break;
             case ABORTED:
                 System.out.println("Page blob copied aborted");
+                break;
             case PENDING:
                 System.out.println("Page blob copied pending");
+                break;
         }
         // END: com.azure.storage.blob.specialized.PageBlobClient.copyIncrementalWithResponse#String-String-RequestConditions-Duration-Context
     }
@@ -446,12 +454,16 @@ public class PageBlobClientJavaDocCodeSnippets {
         switch (statusType) {
             case SUCCESS:
                 System.out.println("Page blob copied successfully");
+                break;
             case FAILED:
                 System.out.println("Page blob copied failed");
+                break;
             case ABORTED:
                 System.out.println("Page blob copied aborted");
+                break;
             case PENDING:
                 System.out.println("Page blob copied pending");
+                break;
         }
         // END: com.azure.storage.blob.specialized.PageBlobClient.copyIncrementalWithResponse#PageBlobCopyIncrementalOptions-Duration-Context
     }
