@@ -54,7 +54,7 @@ public final class QueueProperties {
         // This is used by classes in different packages to get access to private and package-private methods.
         EntityHelper.setQueueAccessor(new EntityHelper.QueueAccessor() {
             @Override
-            public QueueDescription createQueue(QueueProperties queue) {
+            public QueueDescription toImplementation(QueueProperties queue) {
                 return new QueueDescription()
                     .setAccessedAt(queue.getAccessedAt())
                     .setAuthorizationRules(queue.getAuthorizationRules())
@@ -84,7 +84,7 @@ public final class QueueProperties {
             }
 
             @Override
-            public QueueProperties createQueue(QueueDescription queueDescription) {
+            public QueueProperties toModel(QueueDescription queueDescription) {
                 return new QueueProperties(queueDescription);
             }
 
