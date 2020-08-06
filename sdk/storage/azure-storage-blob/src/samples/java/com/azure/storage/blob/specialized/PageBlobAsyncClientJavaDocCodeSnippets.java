@@ -367,14 +367,15 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.copyIncremental#String-String
         final String snapshot = "copy snapshot";
         client.copyIncremental(url, snapshot).subscribe(response -> {
-            if (CopyStatusType.SUCCESS == response) {
-                System.out.println("Page blob copied successfully");
-            } else if (CopyStatusType.FAILED == response) {
-                System.out.println("Page blob copied failed");
-            } else if (CopyStatusType.ABORTED == response) {
-                System.out.println("Page blob copied aborted");
-            } else if (CopyStatusType.PENDING == response) {
-                System.out.println("Page blob copied pending");
+            switch (response) {
+                case SUCCESS:
+                    System.out.println("Page blob copied successfully");
+                case FAILED:
+                    System.out.println("Page blob copied failed");
+                case ABORTED:
+                    System.out.println("Page blob copied aborted");
+                case PENDING:
+                    System.out.println("Page blob copied pending");
             }
         });
         // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.copyIncremental#String-String
@@ -393,14 +394,15 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
             .subscribe(response -> {
                 CopyStatusType statusType = response.getValue();
 
-                if (CopyStatusType.SUCCESS == statusType) {
-                    System.out.println("Page blob copied successfully");
-                } else if (CopyStatusType.FAILED == statusType) {
-                    System.out.println("Page blob copied failed");
-                } else if (CopyStatusType.ABORTED == statusType) {
-                    System.out.println("Page blob copied aborted");
-                } else if (CopyStatusType.PENDING == statusType) {
-                    System.out.println("Page blob copied pending");
+                switch (statusType) {
+                    case SUCCESS:
+                        System.out.println("Page blob copied successfully");
+                    case FAILED:
+                        System.out.println("Page blob copied failed");
+                    case ABORTED:
+                        System.out.println("Page blob copied aborted");
+                    case PENDING:
+                        System.out.println("Page blob copied pending");
                 }
             });
         // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.copyIncrementalWithResponse#String-String-RequestConditions
@@ -420,14 +422,15 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
             .subscribe(response -> {
                 CopyStatusType statusType = response.getValue();
 
-                if (CopyStatusType.SUCCESS == statusType) {
-                    System.out.println("Page blob copied successfully");
-                } else if (CopyStatusType.FAILED == statusType) {
-                    System.out.println("Page blob copied failed");
-                } else if (CopyStatusType.ABORTED == statusType) {
-                    System.out.println("Page blob copied aborted");
-                } else if (CopyStatusType.PENDING == statusType) {
-                    System.out.println("Page blob copied pending");
+                switch (statusType) {
+                    case SUCCESS:
+                        System.out.println("Page blob copied successfully");
+                    case FAILED:
+                        System.out.println("Page blob copied failed");
+                    case ABORTED:
+                        System.out.println("Page blob copied aborted");
+                    case PENDING:
+                        System.out.println("Page blob copied pending");
                 }
             });
         // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.copyIncrementalWithResponse#PageBlobCopyIncrementalOptions
