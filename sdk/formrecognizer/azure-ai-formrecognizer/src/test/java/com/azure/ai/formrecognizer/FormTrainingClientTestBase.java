@@ -103,12 +103,11 @@ public abstract class FormTrainingClientTestBase extends TestBase {
             .serviceVersion(serviceVersion)
             .addPolicy(interceptorManager.getRecordPolicy());
 
-        // if (getTestMode() == TestMode.PLAYBACK) {
-        //     builder.credential(new AzureKeyCredential(INVALID_KEY));
-        // } else {
-        //     builder.credential(new DefaultAzureCredentialBuilder().build());
-        // }// fix for testing until AAd fixed in V2.0
-        builder.credential(new AzureKeyCredential(getAPIKey()));
+        if (getTestMode() == TestMode.PLAYBACK) {
+            builder.credential(new AzureKeyCredential(INVALID_KEY));
+        } else {
+            builder.credential(new DefaultAzureCredentialBuilder().build());
+        }
         return builder;
     }
 

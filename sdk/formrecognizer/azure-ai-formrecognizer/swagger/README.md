@@ -18,9 +18,9 @@ cd <swagger-folder>
 autorest --java --use=C:/work/autorest.java
 ```
 
+// TODO change after service swagger update
 ### Code generation settings
 ``` yaml
-// TODO change after service swagger update
 input-file: https://gist.githubusercontent.com/samvaity/dace4dac2737657f1a93183193c1f762/raw/744945a449676b292f33d4123a91a849064584f5/frGA.json
 java: true
 output-folder: ..\
