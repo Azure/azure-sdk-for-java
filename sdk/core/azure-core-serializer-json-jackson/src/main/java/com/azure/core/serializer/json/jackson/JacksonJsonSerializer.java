@@ -22,6 +22,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.Locale;
 
 /**
  * Jackson based implementation of the {@link JsonSerializer} interface.
@@ -116,6 +117,6 @@ public final class JacksonJsonSerializer implements MemberNameConverter, JsonSer
         if (noPrefix.length() == 0) {
             return methodName;
         }
-        return noPrefix.substring(0, 1).toLowerCase() + noPrefix.substring(1);
+        return noPrefix.substring(0, 1).toLowerCase(Locale.ROOT) + noPrefix.substring(1);
     }
 }
