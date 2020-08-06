@@ -4,6 +4,7 @@ import com.azure.core.http.rest.PagedFlux
 import com.azure.core.http.rest.PagedResponse
 import com.azure.core.http.rest.PagedResponseBase
 import com.azure.storage.blob.BlobContainerAsyncClient
+import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedCursor
 import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor
 
@@ -55,11 +56,11 @@ class ShardTest extends Specification {
         when(mockContainer.listBlobs(any(ListBlobsOptions.class)))
             .thenReturn(mockPagedFlux)
 
-        when(mockChunkFactory.getChunk(eq("chunk0"), any(ChangefeedCursor.class), anyLong(), anyLong()))
+        when(mockChunkFactory.getChunk(eq("chunk0"), any(BlobChangefeedCursor.class), anyLong(), anyLong()))
             .thenReturn(mockChunk0)
-        when(mockChunkFactory.getChunk(eq("chunk1"), any(ChangefeedCursor.class), anyLong(), anyLong()))
+        when(mockChunkFactory.getChunk(eq("chunk1"), any(BlobChangefeedCursor.class), anyLong(), anyLong()))
             .thenReturn(mockChunk1)
-        when(mockChunkFactory.getChunk(eq("chunk2"), any(ChangefeedCursor.class), anyLong(), anyLong()))
+        when(mockChunkFactory.getChunk(eq("chunk2"), any(BlobChangefeedCursor.class), anyLong(), anyLong()))
             .thenReturn(mockChunk2)
 
         when(mockChunk0.getEvents())
