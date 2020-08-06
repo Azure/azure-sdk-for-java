@@ -1,7 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.microsoft.azure.identity.spring;
 
 import com.azure.core.credential.TokenCredential;
@@ -132,14 +130,15 @@ public class AzureIdentitySpringHelper {
      * @param name the name.
      */
     private void populateNamedCredential(Environment environment, String name) {
+        String standardizedName = name;
         
-        if (!name.equals("") && !name.endsWith(".")) {
-            name = name + ".";
+        if (!standardizedName.equals("") && !standardizedName.endsWith(".")) {
+            standardizedName = standardizedName + ".";
         }
         
-        String tenantIdKey = AZURE_CREDENTIAL_PREFIX + name + "tenantId";
-        String clientIdKey = AZURE_CREDENTIAL_PREFIX + name + "clientId";
-        String clientSecretKey = AZURE_CREDENTIAL_PREFIX + name + "clientSecret";
+        String tenantIdKey = AZURE_CREDENTIAL_PREFIX + standardizedName + "tenantId";
+        String clientIdKey = AZURE_CREDENTIAL_PREFIX + standardizedName + "clientId";
+        String clientSecretKey = AZURE_CREDENTIAL_PREFIX + standardizedName + "clientSecret";
 
         String tenantId = environment.getProperty(tenantIdKey);
         String clientId = environment.getProperty(clientIdKey);
@@ -155,10 +154,10 @@ public class AzureIdentitySpringHelper {
             return;
         }
         
-        String clientCertificateKey = AZURE_CREDENTIAL_PREFIX + name + "clientCertificate";
+        String clientCertificateKey = AZURE_CREDENTIAL_PREFIX + standardizedName + "clientCertificate";
         String clientCertificatePath = environment.getProperty(clientCertificateKey);
         
-        if (clientCertificatePath != null) {
+        if (tenantId != null && clientId != null && clientCertificatePath != null) {
             TokenCredential credential = new ClientCertificateCredentialBuilder()
                     .tenantId(tenantId)
                     .clientId(clientId)
@@ -168,7 +167,9 @@ public class AzureIdentitySpringHelper {
             return;
         }
         
-        throw new RuntimeException("Configuration for azure.credential" + name + " is incomplete");
+        if (!name.equals("")) {
+            throw new RuntimeException("Configuration for azure.credential." + name + " is incomplete");
+        }
     }
 
     /**
