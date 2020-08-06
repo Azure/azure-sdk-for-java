@@ -5,6 +5,7 @@ package com.azure.core.serializer.json.jackson;
 
 public class Hotel {
     String hotelName;
+    String HTTP;
 
     public Hotel() {
     }
@@ -15,6 +16,15 @@ public class Hotel {
 
     public Hotel setHotelName(String hotelName) {
         this.hotelName = hotelName;
+        return this;
+    }
+
+    public String getHTTP() {
+        return HTTP;
+    }
+
+    public Hotel setHTTP(String HTTP) {
+        this.HTTP = HTTP;
         return this;
     }
 }

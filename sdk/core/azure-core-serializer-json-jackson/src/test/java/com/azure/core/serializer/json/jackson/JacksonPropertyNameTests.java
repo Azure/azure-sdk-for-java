@@ -112,11 +112,11 @@ public class JacksonPropertyNameTests {
         Method getterM = LocalHotel.class.getDeclaredMethod("getHotelName");
         assertEquals("hotelName", serializer.convertMemberName(getterM));
         Method setterM = LocalHotel.class.getDeclaredMethod("setHotelName", String.class);
-        assertEquals("hotelName", serializer.convertMemberName(setterM));
+        assertNull(serializer.convertMemberName(setterM));
         Method getterWithIs = LocalHotel.class.getDeclaredMethod("isFlag");
         assertEquals("flag", serializer.convertMemberName(getterWithIs));
-        Method setterWithIs = LocalHotel.class.getDeclaredMethod("isFlag");
-        assertEquals("flag", serializer.convertMemberName(setterWithIs));
+        Method setterWithIs = LocalHotel.class.getDeclaredMethod("setFlag", boolean.class);
+        assertNull(serializer.convertMemberName(setterWithIs));
     }
 
     @Test
@@ -201,10 +201,11 @@ public class JacksonPropertyNameTests {
     }
 
     @Test
-    public void testPropertyNameOnConstructor() {
+    public void testPropertyNameOnConstructor() throws NoSuchMethodException {
         Constructor<?>[] constructors = Hotel.class.getConstructors();
         assertEquals(1, constructors.length);
 
         assertNull(serializer.convertMemberName(constructors[0]));
+;
     }
 }

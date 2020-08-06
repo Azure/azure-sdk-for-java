@@ -91,7 +91,7 @@ public final class JacksonJsonSerializer implements MemberNameConverter, JsonSer
                 String propertyName = f.getDeclaredAnnotation(JsonProperty.class).value();
                 return CoreUtils.isNullOrEmpty(propertyName) ? f.getName() : propertyName;
             }
-            return member.getName();
+            return f.getName();
         }
 
         if (member instanceof Method) {
@@ -104,19 +104,13 @@ public final class JacksonJsonSerializer implements MemberNameConverter, JsonSer
                 String propertyName = m.getDeclaredAnnotation(JsonProperty.class).value();
                 return CoreUtils.isNullOrEmpty(propertyName) ? methodNameWithoutJavaBeans : propertyName;
             }
-            return methodNameWithoutJavaBeans;
         }
 
         return null;
     }
 
     private String removePrefix(Method method) {
-        String nameWithoutBeans = BeanUtil.okNameForGetter(
+        return BeanUtil.okNameForGetter(
                 new AnnotatedMethod(null, method, null, null), false);
-        if (nameWithoutBeans == null) {
-            nameWithoutBeans = BeanUtil.okNameForMutator(
-                new AnnotatedMethod(null, method, null, null), "set",false);
-        }
-        return nameWithoutBeans == null ? method.getName() : nameWithoutBeans;
     }
 }
