@@ -17,11 +17,6 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
         super(options, ReceiveMode.RECEIVE_AND_DELETE);
     }
 
-    private  Mono<Void> sendMessages()
-    {
-        ServiceBusMessage message =  new ServiceBusMessage(CONTENTS.getBytes());
-        return senderAsync.sendMessage(message).then();
-    }
 
     public Mono<Void> globalSetupAsync() {
         // Since test does warm up and test many times, we are sending many messages, so we will have them available.
@@ -29,9 +24,7 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
 
         ServiceBusMessage message =  new ServiceBusMessage(CONTENTS.getBytes());
         return Flux.range(0, options.getMessagesToSend() * totalMessageMultiplier)
-            .flatMap(count -> {
-                return senderAsync.sendMessage(message);
-            })
+            .flatMap(count -> senderAsync.sendMessage(message))
             .then();
     }
 

@@ -55,9 +55,7 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
             .flatMap(count -> {
                 try {
                     sender.send(message);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ServiceBusException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 return Mono.empty();
