@@ -401,6 +401,8 @@ public class PageBlobClientJavaDocCodeSnippets {
             case PENDING:
                 System.out.println("Page blob copied pending");
                 break;
+            default:
+                break;
         }
         // END: com.azure.storage.blob.specialized.PageBlobClient.copyIncremental#String-String
     }
@@ -431,6 +433,8 @@ public class PageBlobClientJavaDocCodeSnippets {
                 break;
             case PENDING:
                 System.out.println("Page blob copied pending");
+                break;
+            default:
                 break;
         }
         // END: com.azure.storage.blob.specialized.PageBlobClient.copyIncrementalWithResponse#String-String-RequestConditions-Duration-Context
@@ -463,6 +467,8 @@ public class PageBlobClientJavaDocCodeSnippets {
                 break;
             case PENDING:
                 System.out.println("Page blob copied pending");
+                break;
+            default:
                 break;
         }
         // END: com.azure.storage.blob.specialized.PageBlobClient.copyIncrementalWithResponse#PageBlobCopyIncrementalOptions-Duration-Context

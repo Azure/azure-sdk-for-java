@@ -380,6 +380,8 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
                 case PENDING:
                     System.out.println("Page blob copied pending");
                     break;
+                default:
+                    break;
             }
         });
         // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.copyIncremental#String-String
@@ -410,6 +412,8 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
                         break;
                     case PENDING:
                         System.out.println("Page blob copied pending");
+                        break;
+                    default:
                         break;
                 }
             });
@@ -442,6 +446,8 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
                         break;
                     case PENDING:
                         System.out.println("Page blob copied pending");
+                        break;
+                    default:
                         break;
                 }
             });
