@@ -3,6 +3,8 @@
 
 package com.azure.messaging.servicebus.models;
 
+import com.azure.messaging.servicebus.implementation.EntityHelper;
+import com.azure.messaging.servicebus.implementation.models.TopicDescription;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -44,7 +46,6 @@ public class CreateTopicOptionsTest {
         assertEquals(DEFAULT_TOPIC_SIZE, actual.getMaxSizeInMegabytes());
         assertFalse(actual.requiresDuplicateDetection());
         assertFalse(actual.requiresSession());
-        assertFalse(actual.deadLetteringOnMessageExpiration());
         assertNull(actual.getUserMetadata());
         assertEquals(EntityStatus.ACTIVE, actual.getStatus());
     }
@@ -52,9 +53,8 @@ public class CreateTopicOptionsTest {
     @Test
     void constructorWithOptions() {
         // Arrange
-        final String queueName = "some-queue";
-        final TopicProperties expected = new TopicProperties()
-            .setName(queueName)
+        final String topicName = "some-topic";
+        final TopicDescription description = new TopicDescription()
             .setAutoDeleteOnIdle(Duration.ofSeconds(15))
             .setDefaultMessageTimeToLive(Duration.ofSeconds(50))
             .setDuplicateDetectionHistoryTimeWindow(Duration.ofSeconds(13))
@@ -65,6 +65,9 @@ public class CreateTopicOptionsTest {
             .setUserMetadata("Test-queue-Metadata")
             .setStatus(EntityStatus.DELETING);
 
+        final TopicProperties expected = EntityHelper.toModel(description);
+        EntityHelper.setTopicName(expected, topicName);
+
         // Act
         final CreateTopicOptions actual = new CreateTopicOptions(expected);
 
@@ -72,7 +75,6 @@ public class CreateTopicOptionsTest {
         assertEquals(expected.getName(), actual.getName());
         assertEquals(expected.getAutoDeleteOnIdle(), actual.getAutoDeleteOnIdle());
         assertEquals(expected.getDefaultMessageTimeToLive(), actual.getDefaultMessageTimeToLive());
-        assertFalse(actual.deadLetteringOnMessageExpiration());
         assertEquals(expected.getDuplicateDetectionHistoryTimeWindow(),
             actual.getDuplicateDetectionHistoryTimeWindow());
         assertEquals(expected.enableBatchedOperations(), actual.enableBatchedOperations());

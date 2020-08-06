@@ -39,8 +39,10 @@ import com.azure.messaging.servicebus.implementation.models.QueueDescriptionFeed
 import com.azure.messaging.servicebus.implementation.models.ResponseLink;
 import com.azure.messaging.servicebus.implementation.models.ServiceBusManagementError;
 import com.azure.messaging.servicebus.implementation.models.ServiceBusManagementErrorException;
+import com.azure.messaging.servicebus.implementation.models.SubscriptionDescription;
 import com.azure.messaging.servicebus.implementation.models.SubscriptionDescriptionEntry;
 import com.azure.messaging.servicebus.implementation.models.SubscriptionDescriptionFeed;
+import com.azure.messaging.servicebus.implementation.models.TopicDescription;
 import com.azure.messaging.servicebus.implementation.models.TopicDescriptionEntry;
 import com.azure.messaging.servicebus.implementation.models.TopicDescriptionFeed;
 import com.azure.messaging.servicebus.models.CreateQueueOptions;
@@ -1126,10 +1128,10 @@ public final class ServiceBusManagementAsyncClient {
             return monoError(logger, new NullPointerException("'subscription' cannot be null."));
         }
 
-        final SubscriptionProperties subscription = EntityHelper.createSubscription(options);
+        final SubscriptionDescription subscription = EntityHelper.getSubscriptionDescription(options);
         final CreateSubscriptionBodyContent content = new CreateSubscriptionBodyContent()
             .setType(CONTENT_TYPE)
-            .setSubscriptionProperties(subscription);
+            .setSubscriptionDescription(subscription);
         final CreateSubscriptionBody createEntity = new CreateSubscriptionBody().setContent(content);
 
         final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
@@ -1159,10 +1161,10 @@ public final class ServiceBusManagementAsyncClient {
             return monoError(logger, new NullPointerException("'context' cannot be null."));
         }
 
-        final TopicProperties topic = EntityHelper.createTopic(topicOptions);
+        final TopicDescription topic = EntityHelper.getTopicDescription(topicOptions);
         final CreateTopicBodyContent content = new CreateTopicBodyContent()
             .setType(CONTENT_TYPE)
-            .setTopicProperties(topic);
+            .setTopicDescription(topic);
         final CreateTopicBody createEntity = new CreateTopicBody()
             .setContent(content);
 
@@ -1628,9 +1630,10 @@ public final class ServiceBusManagementAsyncClient {
 
         final String topicName = subscription.getTopicName();
         final String subscriptionName = subscription.getSubscriptionName();
+        final SubscriptionDescription implementation = EntityHelper.toImplementation(subscription);
         final CreateSubscriptionBodyContent content = new CreateSubscriptionBodyContent()
             .setType(CONTENT_TYPE)
-            .setSubscriptionProperties(subscription);
+            .setSubscriptionDescription(implementation);
         final CreateSubscriptionBody createEntity = new CreateSubscriptionBody()
             .setContent(content);
         final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
@@ -1662,9 +1665,10 @@ public final class ServiceBusManagementAsyncClient {
             return monoError(logger, new NullPointerException("'context' cannot be null."));
         }
 
+        final TopicDescription implementation = EntityHelper.toImplementation(topic);
         final CreateTopicBodyContent content = new CreateTopicBodyContent()
             .setType(CONTENT_TYPE)
-            .setTopicProperties(topic);
+            .setTopicDescription(implementation);
         final CreateTopicBody createEntity = new CreateTopicBody()
             .setContent(content);
         final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
@@ -1758,7 +1762,8 @@ public final class ServiceBusManagementAsyncClient {
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
         }
 
-        final SubscriptionProperties subscription = entry.getContent().getSubscriptionProperties();
+        final SubscriptionProperties subscription = EntityHelper.toModel(
+            entry.getContent().getSubscriptionDescription());
         final String subscriptionName = getTitleValue(entry.getTitle());
         EntityHelper.setSubscriptionName(subscription, subscriptionName);
         EntityHelper.setTopicName(subscription, topicName);
@@ -1786,9 +1791,9 @@ public final class ServiceBusManagementAsyncClient {
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
         }
 
-        final TopicProperties result = entry.getContent().getTopicProperties();
-        final String queueName = getTitleValue(entry.getTitle());
-        EntityHelper.setTopicName(result, queueName);
+        final TopicProperties result = EntityHelper.toModel(entry.getContent().getTopicDescription());
+        final String topicName = getTitleValue(entry.getTitle());
+        EntityHelper.setTopicName(result, topicName);
 
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), result);
     }
@@ -1896,10 +1901,11 @@ public final class ServiceBusManagementAsyncClient {
                 }
 
                 final List<SubscriptionProperties> entities = feed.getEntry().stream()
-                    .filter(e -> e.getContent() != null && e.getContent().getSubscriptionProperties() != null)
+                    .filter(e -> e.getContent() != null && e.getContent().getSubscriptionDescription() != null)
                     .map(e -> {
                         final String subscriptionName = getTitleValue(e.getTitle());
-                        final SubscriptionProperties description = e.getContent().getSubscriptionProperties();
+                        final SubscriptionProperties description = EntityHelper.toModel(
+                            e.getContent().getSubscriptionDescription());
 
                         EntityHelper.setTopicName(description, topicName);
                         EntityHelper.setSubscriptionName(description, subscriptionName);
@@ -1937,10 +1943,11 @@ public final class ServiceBusManagementAsyncClient {
                 }
 
                 final List<TopicProperties> entities = feed.getEntry().stream()
-                    .filter(e -> e.getContent() != null && e.getContent().getTopicProperties() != null)
+                    .filter(e -> e.getContent() != null && e.getContent().getTopicDescription() != null)
                     .map(e -> {
                         final String topicName = getTitleValue(e.getTitle());
-                        final TopicProperties topicProperties = e.getContent().getTopicProperties();
+                        final TopicProperties topicProperties = EntityHelper.toModel(
+                            e.getContent().getTopicDescription());
                         EntityHelper.setTopicName(topicProperties, topicName);
 
                         return topicProperties;

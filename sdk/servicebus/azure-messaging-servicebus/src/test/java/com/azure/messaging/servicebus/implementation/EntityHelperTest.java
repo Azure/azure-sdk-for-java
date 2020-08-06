@@ -4,6 +4,8 @@
 package com.azure.messaging.servicebus.implementation;
 
 import com.azure.messaging.servicebus.implementation.models.QueueDescription;
+import com.azure.messaging.servicebus.implementation.models.SubscriptionDescription;
+import com.azure.messaging.servicebus.implementation.models.TopicDescription;
 import com.azure.messaging.servicebus.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.models.CreateSubscriptionOptions;
 import com.azure.messaging.servicebus.models.CreateTopicOptions;
@@ -30,16 +32,20 @@ class EntityHelperTest {
             .setUserMetadata("Test-topic-Metadata");
 
         // Act
-        final TopicProperties actual = EntityHelper.createTopic(expected);
+        final TopicDescription actual = EntityHelper.getTopicDescription(expected);
 
         // Assert
-        assertEquals(expected.getName(), actual.getName());
         assertEquals(expected.getAutoDeleteOnIdle(), actual.getAutoDeleteOnIdle());
         assertEquals(expected.getDefaultMessageTimeToLive(), actual.getDefaultMessageTimeToLive());
-        assertEquals(expected.getDuplicateDetectionHistoryTimeWindow(), actual.getDuplicateDetectionHistoryTimeWindow());
-        assertEquals(expected.enableBatchedOperations(), actual.enableBatchedOperations());
-        assertEquals(expected.enablePartitioning(), actual.enablePartitioning());
-        assertEquals(expected.requiresDuplicateDetection(), actual.requiresDuplicateDetection());
+        assertEquals(expected.getDuplicateDetectionHistoryTimeWindow(),
+            actual.getDuplicateDetectionHistoryTimeWindow());
+        assertEquals(expected.enableBatchedOperations(), actual.isEnableBatchedOperations());
+        assertEquals(expected.enablePartitioning(), actual.isEnablePartitioning());
+        assertEquals(expected.getMaxSizeInMegabytes(), actual.getMaxSizeInMegabytes());
+        assertEquals(expected.getStatus(), actual.getStatus());
+        assertEquals(expected.requiresDuplicateDetection(), actual.isRequiresDuplicateDetection());
+        assertEquals(expected.isSupportOrdering(), actual.isSupportOrdering());
+        assertEquals(expected.getUserMetadata(), actual.getUserMetadata());
     }
 
     @Test
@@ -87,8 +93,7 @@ class EntityHelperTest {
     void setTopicName() {
         // Arrange
         final String newName = "I'm a new name";
-        final CreateTopicOptions options = new CreateTopicOptions("some name");
-        final TopicProperties properties = EntityHelper.createTopic(options);
+        final TopicProperties properties = EntityHelper.toModel(new TopicDescription());
 
         // Act
         EntityHelper.setTopicName(properties, newName);
@@ -131,16 +136,20 @@ class EntityHelperTest {
             .setUserMetadata("Test-topic-Metadata");
 
         // Act
-        final SubscriptionProperties actual = EntityHelper.createSubscription(expected);
+        final SubscriptionDescription actual = EntityHelper.getSubscriptionDescription(expected);
 
         // Assert
-        assertEquals(expected.getTopicName(), actual.getTopicName());
-        assertEquals(expected.getSubscriptionName(), actual.getSubscriptionName());
         assertEquals(expected.getAutoDeleteOnIdle(), actual.getAutoDeleteOnIdle());
         assertEquals(expected.getDefaultMessageTimeToLive(), actual.getDefaultMessageTimeToLive());
+        assertEquals(expected.deadLetteringOnMessageExpiration(), actual.isDeadLetteringOnMessageExpiration());
+        assertEquals(expected.enableBatchedOperations(), actual.isEnableBatchedOperations());
         assertEquals(expected.enableDeadLetteringOnFilterEvaluationExceptions(),
-            actual.enableDeadLetteringOnFilterEvaluationExceptions());
-        assertEquals(expected.enableBatchedOperations(), actual.enableBatchedOperations());
+            actual.isDeadLetteringOnFilterEvaluationExceptions());
+        assertEquals(expected.getForwardTo(), actual.getForwardTo());
+        assertEquals(expected.getForwardDeadLetteredMessagesTo(), actual.getForwardDeadLetteredMessagesTo());
+        assertEquals(expected.getLockDuration(), actual.getLockDuration());
+        assertEquals(expected.getMaxDeliveryCount(), actual.getMaxDeliveryCount());
+        assertEquals(expected.requiresSession(), actual.isRequiresSession());
         assertEquals(expected.getUserMetadata(), actual.getUserMetadata());
         assertEquals(expected.getStatus(), actual.getStatus());
     }
@@ -150,8 +159,7 @@ class EntityHelperTest {
         // Arrange
         final String topicName = "I'm a new topic name";
         final String subscriptionName = "I'm a new subscription name";
-        final CreateSubscriptionOptions options = new CreateSubscriptionOptions("some name", "sub-name");
-        final SubscriptionProperties properties = EntityHelper.createSubscription(options);
+        final SubscriptionProperties properties = EntityHelper.toModel(new SubscriptionDescription());
 
         // Act
         EntityHelper.setTopicName(properties, topicName);

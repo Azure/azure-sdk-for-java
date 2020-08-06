@@ -4,6 +4,8 @@
 
 package com.azure.messaging.servicebus.models;
 
+import com.azure.messaging.servicebus.implementation.EntityHelper;
+import com.azure.messaging.servicebus.implementation.models.SubscriptionDescription;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -17,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CreateSubscriptionOptionsTest {
-
     /**
      * Creates an instance with the given defaults.
      */
@@ -50,9 +51,7 @@ class CreateSubscriptionOptionsTest {
         // Arrange
         final String topicName = "some-topic";
         final String subscriptionName = "some-subscription";
-        final SubscriptionProperties expected = new SubscriptionProperties()
-            .setTopicName(topicName)
-            .setSubscriptionName(subscriptionName)
+        final SubscriptionDescription description = new SubscriptionDescription()
             .setAutoDeleteOnIdle(Duration.ofSeconds(15))
             .setDefaultMessageTimeToLive(Duration.ofSeconds(50))
             .setEnableBatchedOperations(false)
@@ -63,6 +62,10 @@ class CreateSubscriptionOptionsTest {
             .setRequiresSession(true)
             .setStatus(EntityStatus.DELETING)
             .setUserMetadata("Test-queue-Metadata");
+
+        final SubscriptionProperties expected = EntityHelper.toModel(description);
+        EntityHelper.setTopicName(expected, topicName);
+        EntityHelper.setSubscriptionName(expected, subscriptionName);
 
         // Act
         final CreateSubscriptionOptions actual = new CreateSubscriptionOptions(expected);

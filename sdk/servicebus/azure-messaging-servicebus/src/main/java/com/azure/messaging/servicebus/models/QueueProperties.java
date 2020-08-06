@@ -70,6 +70,7 @@ public final class QueueProperties {
                     .setForwardTo(queue.getForwardTo())
                     .setForwardDeadLetteredMessagesTo(queue.getForwardDeadLetteredMessagesTo())
                     .setIsAnonymousAccessible(queue.isAnonymousAccessible)
+                    .setLockDuration(queue.getLockDuration())
                     .setMaxSizeInMegabytes(queue.getMaxSizeInMegabytes())
                     .setMaxDeliveryCount(queue.getMaxDeliveryCount())
                     .setMessageCount(queue.messageCount)

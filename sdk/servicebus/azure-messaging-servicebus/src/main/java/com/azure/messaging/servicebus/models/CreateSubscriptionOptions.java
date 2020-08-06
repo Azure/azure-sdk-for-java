@@ -12,7 +12,6 @@ import java.time.Duration;
 import java.util.Objects;
 
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.DEFAULT_LOCK_DURATION;
-import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.DEFAULT_MAX_DELIVERY_COUNT;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.MAX_DURATION;
 
 /**
@@ -91,7 +90,7 @@ public class CreateSubscriptionOptions {
 
     /**
      * Initializes a new instance based on the specified {@link SubscriptionProperties} instance. This is useful for
-     * creating a new queue based on the properties of an existing subscription.
+     * creating a new subscription based on the properties of an existing subscription.
      *
      * @param subscription Existing subscription to create options with.
      */
@@ -103,24 +102,15 @@ public class CreateSubscriptionOptions {
         this.topicName = subscription.getTopicName();
         this.subscriptionName = subscription.getSubscriptionName();
         this.autoDeleteOnIdle = subscription.getAutoDeleteOnIdle();
-        this.deadLetteringOnMessageExpiration = subscription.deadLetteringOnMessageExpiration() != null
-            ? subscription.deadLetteringOnMessageExpiration()
-            : false;
-
+        this.deadLetteringOnMessageExpiration = subscription.deadLetteringOnMessageExpiration();
+        this.deadLetteringOnFilterEvaluationExceptions = subscription.enableDeadLetteringOnFilterEvaluationExceptions();
         this.defaultMessageTimeToLive = subscription.getDefaultMessageTimeToLive();
-        this.enableBatchedOperations = subscription.enableBatchedOperations() != null
-            ? subscription.enableBatchedOperations()
-            : false;
+        this.enableBatchedOperations = subscription.enableBatchedOperations();
         this.forwardTo = subscription.getForwardTo();
         this.forwardDeadLetteredMessagesTo = subscription.getForwardDeadLetteredMessagesTo();
         this.lockDuration = subscription.getLockDuration();
-
-        this.maxDeliveryCount = subscription.getMaxDeliveryCount() != null
-            ? subscription.getMaxDeliveryCount()
-            : DEFAULT_MAX_DELIVERY_COUNT;
-        this.requiresSession = subscription.requiresSession() != null
-            ? subscription.requiresSession()
-            : false;
+        this.maxDeliveryCount = subscription.getMaxDeliveryCount();
+        this.requiresSession = subscription.requiresSession();
         this.status = subscription.getStatus();
         this.userMetadata = subscription.getUserMetadata();
     }

@@ -31,9 +31,8 @@ public class TopicRuntimeInfo {
         Objects.requireNonNull(topicProperties, "'topicDescription' cannot be null.");
 
         this.name = topicProperties.getName();
-        this.subscriptionCount = topicProperties.getSubscriptionCount() != null
-            ? topicProperties.getSubscriptionCount() : 0;
-        this.sizeInBytes = topicProperties.getSizeInBytes() != null ? topicProperties.getSizeInBytes() : 0L;
+        this.subscriptionCount = topicProperties.getSubscriptionCount();
+        this.sizeInBytes = topicProperties.getSizeInBytes();
         this.accessedAt = topicProperties.getAccessedAt();
         this.createdAt = topicProperties.getCreatedAt();
         this.updatedAt = topicProperties.getUpdatedAt();

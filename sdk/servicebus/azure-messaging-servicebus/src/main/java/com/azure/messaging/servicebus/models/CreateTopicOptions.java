@@ -23,12 +23,9 @@ public class CreateTopicOptions {
 
     private Duration autoDeleteOnIdle;
     private Duration defaultMessageTimeToLive;
-    private boolean deadLetteringOnMessageExpiration;
     private Duration duplicateDetectionHistoryTimeWindow;
     private boolean enableBatchedOperations;
     private boolean enablePartitioning;
-    private String forwardTo;
-    private String forwardDeadLetteredMessagesTo;
     private Duration lockDuration;
     private int maxDeliveryCount;
     private long maxSizeInMegabytes;
@@ -81,7 +78,6 @@ public class CreateTopicOptions {
         this.requiresDuplicateDetection = false;
         this.requiresSession = false;
         this.status = EntityStatus.ACTIVE;
-        this.deadLetteringOnMessageExpiration = false;
     }
 
     /**
@@ -107,6 +103,7 @@ public class CreateTopicOptions {
         this.enablePartitioning = topicOptions.enablePartitioning();
         this.maxSizeInMegabytes = topicOptions.getMaxSizeInMegabytes();
         this.requiresDuplicateDetection = topicOptions.requiresDuplicateDetection();
+        this.supportOrdering = topicOptions.supportOrdering();
         this.status = topicOptions.getStatus();
         this.userMetadata = topicOptions.getUserMetadata();
     }
@@ -165,29 +162,6 @@ public class CreateTopicOptions {
      */
     public CreateTopicOptions setDefaultMessageTimeToLive(Duration defaultMessageTimeToLive) {
         this.defaultMessageTimeToLive = defaultMessageTimeToLive;
-        return this;
-    }
-
-    /**
-     * Get the deadLetteringOnMessageExpiration property: A value that indicates whether this queue has dead letter
-     * support when a message expires.
-     *
-     * @return the deadLetteringOnMessageExpiration value.
-     */
-    public Boolean deadLetteringOnMessageExpiration() {
-        return this.deadLetteringOnMessageExpiration;
-    }
-
-    /**
-     * Set the deadLetteringOnMessageExpiration property: A value that indicates whether this queue has dead letter
-     * support when a message expires.
-     *
-     * @param deadLetteringOnMessageExpiration the deadLetteringOnMessageExpiration value to set.
-     *
-     * @return the CreateTopicOptions object itself.
-     */
-    public CreateTopicOptions setDeadLetteringOnMessageExpiration(boolean deadLetteringOnMessageExpiration) {
-        this.deadLetteringOnMessageExpiration = deadLetteringOnMessageExpiration;
         return this;
     }
 
@@ -278,52 +252,6 @@ public class CreateTopicOptions {
      */
     public CreateTopicOptions setStatus(EntityStatus status) {
         this.status = status;
-        return this;
-    }
-
-    /**
-     * Get the forwardTo property: The name of the recipient entity to which all the messages sent to the queue are
-     * forwarded to.
-     *
-     * @return the forwardTo value.
-     */
-    public String getForwardTo() {
-        return this.forwardTo;
-    }
-
-    /**
-     * Set the forwardTo property: The name of the recipient entity to which all the messages sent to the queue are
-     * forwarded to.
-     *
-     * @param forwardTo the forwardTo value to set.
-     *
-     * @return the CreateTopicOptions object itself.
-     */
-    public CreateTopicOptions setForwardTo(String forwardTo) {
-        this.forwardTo = forwardTo;
-        return this;
-    }
-
-    /**
-     * Get the forwardDeadLetteredMessagesTo property: The name of the recipient entity to which all the dead-lettered
-     * messages of this queue are forwarded to.
-     *
-     * @return the forwardDeadLetteredMessagesTo value.
-     */
-    public String getForwardDeadLetteredMessagesTo() {
-        return this.forwardDeadLetteredMessagesTo;
-    }
-
-    /**
-     * Set the forwardDeadLetteredMessagesTo property: The name of the recipient entity to which all the dead-lettered
-     * messages of this queue are forwarded to.
-     *
-     * @param forwardDeadLetteredMessagesTo the forwardDeadLetteredMessagesTo value to set.
-     *
-     * @return the CreateTopicOptions object itself.
-     */
-    public CreateTopicOptions setForwardDeadLetteredMessagesTo(String forwardDeadLetteredMessagesTo) {
-        this.forwardDeadLetteredMessagesTo = forwardDeadLetteredMessagesTo;
         return this;
     }
 

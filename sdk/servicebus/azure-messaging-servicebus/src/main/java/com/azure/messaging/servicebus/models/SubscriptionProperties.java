@@ -8,184 +8,66 @@ import com.azure.core.annotation.Fluent;
 import com.azure.messaging.servicebus.implementation.EntityHelper;
 import com.azure.messaging.servicebus.implementation.models.EntityAvailabilityStatus;
 import com.azure.messaging.servicebus.implementation.models.MessageCountDetails;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.messaging.servicebus.implementation.models.SubscriptionDescription;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 
-/** The SubscriptionDescription model. */
-@JacksonXmlRootElement(
-        localName = "SubscriptionDescription",
-        namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
+import static com.azure.messaging.servicebus.implementation.MessageUtils.toPrimitive;
+
+/** The SubscriptionProperties model. */
 @Fluent
 public final class SubscriptionProperties {
-    /*
-     * ISO 8601 timespan duration of a peek-lock; that is, the amount of time
-     * that the message is locked for other receivers. The maximum value for
-     * LockDuration is 5 minutes; the default value is 1 minute.
-     */
-    @JacksonXmlProperty(
-            localName = "LockDuration",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private Duration lockDuration;
-
-    /*
-     * A value that indicates whether the queue supports the concept of
-     * sessions.
-     */
-    @JacksonXmlProperty(
-            localName = "RequiresSession",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private Boolean requiresSession;
-
-    /*
-     * ISO 8601 default message timespan to live value. This is the duration
-     * after which the message expires, starting from when the message is sent
-     * to Service Bus. This is the default value used when TimeToLive is not
-     * set on a message itself.
-     */
-    @JacksonXmlProperty(
-            localName = "DefaultMessageTimeToLive",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
+    private final boolean requiresSession;
     private Duration defaultMessageTimeToLive;
-
-    /*
-     * A value that indicates whether this subscription has dead letter support
-     * when a message expires.
-     */
-    @JacksonXmlProperty(
-            localName = "DeadLetteringOnMessageExpiration",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private Boolean deadLetteringOnMessageExpiration;
-
-    /*
-     * A value that indicates whether this subscription has dead letter support
-     * when a message expires.
-     */
-    @JacksonXmlProperty(
-            localName = "DeadLetteringOnFilterEvaluationExceptions",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private Boolean deadLetteringOnFilterEvaluationExceptions;
-
-    /*
-     * The number of messages in the subscription.
-     */
-    @JacksonXmlProperty(
-            localName = "MessageCount",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private Integer messageCount;
-
-    /*
-     * The maximum delivery count. A message is automatically deadlettered
-     * after this number of deliveries. Default value is 10.
-     */
-    @JacksonXmlProperty(
-            localName = "MaxDeliveryCount",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private Integer maxDeliveryCount;
-
-    /*
-     * Value that indicates whether server-side batched operations are enabled.
-     */
-    @JacksonXmlProperty(
-            localName = "EnableBatchedOperations",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private Boolean enableBatchedOperations;
-
-    /*
-     * Status of a Service Bus resource
-     */
-    @JacksonXmlProperty(
-            localName = "Status",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
+    private boolean deadLetteringOnMessageExpiration;
+    private boolean deadLetteringOnFilterEvaluationExceptions;
+    private int messageCount;
+    private int maxDeliveryCount;
+    private boolean enableBatchedOperations;
     private EntityStatus status;
-
-    /*
-     * The name of the recipient entity to which all the messages sent to the
-     * subscription are forwarded to.
-     */
-    @JacksonXmlProperty(
-            localName = "ForwardTo",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private String forwardTo;
-
-    /*
-     * The exact time the subscription was created.
-     */
-    @JacksonXmlProperty(
-            localName = "CreatedAt",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private OffsetDateTime createdAt;
-
-    /*
-     * The exact time a message was updated in the subscription.
-     */
-    @JacksonXmlProperty(
-            localName = "UpdatedAt",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private OffsetDateTime updatedAt;
-
-    /*
-     * Last time a message was sent, or the last time there was a receive
-     * request to this subscription.
-     */
-    @JacksonXmlProperty(
-            localName = "AccessedAt",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private OffsetDateTime accessedAt;
-
-    /*
-     * Details about the message counts in entity.
-     */
-    @JacksonXmlProperty(
-            localName = "CountDetails",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private MessageCountDetails messageCountDetails;
-
-    /*
-     * Metadata associated with the subscription. Maximum number of characters
-     * is 1024.
-     */
-    @JacksonXmlProperty(
-            localName = "UserMetadata",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
+    private final OffsetDateTime createdAt;
+    private final OffsetDateTime updatedAt;
+    private final OffsetDateTime accessedAt;
+    private final MessageCountDetails messageCountDetails;
     private String userMetadata;
-
-    /*
-     * The name of the recipient entity to which all the messages sent to the
-     * subscription are forwarded to.
-     */
-    @JacksonXmlProperty(
-            localName = "ForwardDeadLetteredMessagesTo",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private String forwardDeadLetteredMessagesTo;
-
-    /*
-     * ISO 8601 timeSpan idle interval after which the subscription is
-     * automatically deleted. The minimum duration is 5 minutes.
-     */
-    @JacksonXmlProperty(
-            localName = "AutoDeleteOnIdle",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private Duration autoDeleteOnIdle;
-
-    /*
-     * Availability status of the entity
-     */
-    @JacksonXmlProperty(
-            localName = "EntityAvailabilityStatus",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private EntityAvailabilityStatus entityAvailabilityStatus;
+    private final EntityAvailabilityStatus entityAvailabilityStatus;
 
     static {
         // This is used by classes in different packages to get access to private and package-private methods.
         EntityHelper.setSubscriptionAccessor(new EntityHelper.SubscriptionAccessor() {
             @Override
-            public SubscriptionProperties createSubscription(CreateSubscriptionOptions options) {
-                return new SubscriptionProperties(options);
+            public SubscriptionProperties toModel(SubscriptionDescription description) {
+                return new SubscriptionProperties(description);
+            }
+
+            @Override
+            public SubscriptionDescription toImplementation(SubscriptionProperties subscription) {
+                return new SubscriptionDescription()
+                    .setAccessedAt(subscription.getAccessedAt())
+                    .setAutoDeleteOnIdle(subscription.getAutoDeleteOnIdle())
+                    .setCreatedAt(subscription.getCreatedAt())
+                    .setDeadLetteringOnFilterEvaluationExceptions(
+                        subscription.enableDeadLetteringOnFilterEvaluationExceptions())
+                    .setDeadLetteringOnMessageExpiration(subscription.deadLetteringOnMessageExpiration())
+                    .setDefaultMessageTimeToLive(subscription.getDefaultMessageTimeToLive())
+                    .setEnableBatchedOperations(subscription.enableBatchedOperations)
+                    .setEntityAvailabilityStatus(subscription.entityAvailabilityStatus)
+                    .setForwardTo(subscription.getForwardTo())
+                    .setForwardDeadLetteredMessagesTo(subscription.getForwardDeadLetteredMessagesTo())
+                    .setLockDuration(subscription.getLockDuration())
+                    .setMaxDeliveryCount(subscription.getMaxDeliveryCount())
+                    .setMessageCount(subscription.messageCount)
+                    .setMessageCountDetails(subscription.getMessageCountDetails())
+                    .setStatus(subscription.getStatus())
+                    .setRequiresSession(subscription.requiresSession())
+                    .setUpdatedAt(subscription.getUpdatedAt())
+                    .setUserMetadata(subscription.getUserMetadata());
             }
 
             @Override
@@ -204,34 +86,31 @@ public final class SubscriptionProperties {
     private String subscriptionName;
 
     /**
-     * Json deserialization constructor.
-     */
-    @JsonCreator
-    SubscriptionProperties() {
-    }
-
-    /**
      * Creates a new instance with the given options.
      *
-     * @param options Options used to create a subscription.
+     * @param description Options used to create a subscription.
      */
-    SubscriptionProperties(CreateSubscriptionOptions options) {
-        Objects.requireNonNull(options, "'options' cannot be null.");
-
-        this.topicName = options.getTopicName();
-        this.subscriptionName = options.getSubscriptionName();
-        this.autoDeleteOnIdle = options.getAutoDeleteOnIdle();
-        this.defaultMessageTimeToLive = options.getDefaultMessageTimeToLive();
-        this.deadLetteringOnMessageExpiration = options.deadLetteringOnMessageExpiration();
-        this.deadLetteringOnFilterEvaluationExceptions = options.enableDeadLetteringOnFilterEvaluationExceptions();
-        this.enableBatchedOperations = options.enableBatchedOperations();
-        this.forwardTo = options.getForwardTo();
-        this.forwardDeadLetteredMessagesTo = options.getForwardDeadLetteredMessagesTo();
-        this.lockDuration = options.getLockDuration();
-        this.maxDeliveryCount = options.getMaxDeliveryCount();
-        this.requiresSession = options.requiresSession();
-        this.status = options.getStatus();
-        this.userMetadata = options.getUserMetadata();
+    SubscriptionProperties(SubscriptionDescription description) {
+        Objects.requireNonNull(description, "'options' cannot be null.");
+        this.accessedAt = description.getAccessedAt();
+        this.autoDeleteOnIdle = description.getAutoDeleteOnIdle();
+        this.createdAt = description.getCreatedAt();
+        this.defaultMessageTimeToLive = description.getDefaultMessageTimeToLive();
+        this.deadLetteringOnMessageExpiration = toPrimitive(description.isDeadLetteringOnMessageExpiration());
+        this.deadLetteringOnFilterEvaluationExceptions =
+            toPrimitive(description.isDeadLetteringOnFilterEvaluationExceptions());
+        this.enableBatchedOperations = toPrimitive(description.isEnableBatchedOperations());
+        this.entityAvailabilityStatus = description.getEntityAvailabilityStatus();
+        this.forwardTo = description.getForwardTo();
+        this.forwardDeadLetteredMessagesTo = description.getForwardDeadLetteredMessagesTo();
+        this.lockDuration = description.getLockDuration();
+        this.maxDeliveryCount = toPrimitive(description.getMaxDeliveryCount());
+        this.messageCount = toPrimitive(description.getMessageCount());
+        this.messageCountDetails = description.getMessageCountDetails();
+        this.requiresSession = toPrimitive(description.isRequiresSession());
+        this.status = description.getStatus();
+        this.updatedAt = description.getUpdatedAt();
+        this.userMetadata = description.getUserMetadata();
     }
 
     /**
@@ -246,7 +125,7 @@ public final class SubscriptionProperties {
      * Sets the name of the topic.
      *
      * @param topicName Name of the topic.
-     * @return the SubscriptionDescription object itself.
+     * @return the SubscriptionProperties object itself.
      */
     SubscriptionProperties setTopicName(String topicName) {
         this.topicName = topicName;
@@ -266,7 +145,7 @@ public final class SubscriptionProperties {
      * Sets the name of the subscription.
      *
      * @param subscriptionName Name of the subscription.
-     * @return the SubscriptionDescription object itself.
+     * @return the SubscriptionProperties object itself.
      */
     SubscriptionProperties setSubscriptionName(String subscriptionName) {
         this.subscriptionName = subscriptionName;
@@ -290,7 +169,7 @@ public final class SubscriptionProperties {
      * minute.
      *
      * @param lockDuration the lockDuration value to set.
-     * @return the SubscriptionDescription object itself.
+     * @return the SubscriptionProperties object itself.
      */
     public SubscriptionProperties setLockDuration(Duration lockDuration) {
         this.lockDuration = lockDuration;
@@ -302,19 +181,8 @@ public final class SubscriptionProperties {
      *
      * @return the requiresSession value.
      */
-    public Boolean requiresSession() {
+    public boolean requiresSession() {
         return this.requiresSession;
-    }
-
-    /**
-     * Set the requiresSession property: A value that indicates whether the queue supports the concept of sessions.
-     *
-     * @param requiresSession the requiresSession value to set.
-     * @return the SubscriptionDescription object itself.
-     */
-    public SubscriptionProperties setRequiresSession(boolean requiresSession) {
-        this.requiresSession = requiresSession;
-        return this;
     }
 
     /**
@@ -334,7 +202,7 @@ public final class SubscriptionProperties {
      * used when TimeToLive is not set on a message itself.
      *
      * @param defaultMessageTimeToLive the defaultMessageTimeToLive value to set.
-     * @return the SubscriptionDescription object itself.
+     * @return the SubscriptionProperties object itself.
      */
     public SubscriptionProperties setDefaultMessageTimeToLive(Duration defaultMessageTimeToLive) {
         this.defaultMessageTimeToLive = defaultMessageTimeToLive;
@@ -347,7 +215,7 @@ public final class SubscriptionProperties {
      *
      * @return the deadLetteringOnMessageExpiration value.
      */
-    public Boolean deadLetteringOnMessageExpiration() {
+    public boolean deadLetteringOnMessageExpiration() {
         return this.deadLetteringOnMessageExpiration;
     }
 
@@ -356,7 +224,7 @@ public final class SubscriptionProperties {
      * letter support when a message expires.
      *
      * @param deadLetteringOnMessageExpiration the deadLetteringOnMessageExpiration value to set.
-     * @return the SubscriptionDescription object itself.
+     * @return the SubscriptionProperties object itself.
      */
     public SubscriptionProperties setDeadLetteringOnMessageExpiration(boolean deadLetteringOnMessageExpiration) {
         this.deadLetteringOnMessageExpiration = deadLetteringOnMessageExpiration;
@@ -369,7 +237,7 @@ public final class SubscriptionProperties {
      *
      * @return the deadLetteringOnFilterEvaluationExceptions value.
      */
-    public Boolean enableDeadLetteringOnFilterEvaluationExceptions() {
+    public boolean enableDeadLetteringOnFilterEvaluationExceptions() {
         return this.deadLetteringOnFilterEvaluationExceptions;
     }
 
@@ -378,10 +246,10 @@ public final class SubscriptionProperties {
      * dead letter support when a message expires.
      *
      * @param deadLetteringOnFilterEvaluationExceptions the deadLetteringOnFilterEvaluationExceptions value to set.
-     * @return the SubscriptionDescription object itself.
+     * @return the SubscriptionProperties object itself.
      */
     public SubscriptionProperties setEnableDeadLetteringOnFilterEvaluationExceptions(
-            Boolean deadLetteringOnFilterEvaluationExceptions) {
+            boolean deadLetteringOnFilterEvaluationExceptions) {
         this.deadLetteringOnFilterEvaluationExceptions = deadLetteringOnFilterEvaluationExceptions;
         return this;
     }
@@ -391,7 +259,7 @@ public final class SubscriptionProperties {
      *
      * @return the messageCount value.
      */
-    Integer getMessageCount() {
+    int getMessageCount() {
         return this.messageCount;
     }
 
@@ -399,9 +267,9 @@ public final class SubscriptionProperties {
      * Set the messageCount property: The number of messages in the subscription.
      *
      * @param messageCount the messageCount value to set.
-     * @return the SubscriptionDescription object itself.
+     * @return the SubscriptionProperties object itself.
      */
-    SubscriptionProperties setMessageCount(Integer messageCount) {
+    SubscriptionProperties setMessageCount(int messageCount) {
         this.messageCount = messageCount;
         return this;
     }
@@ -412,7 +280,7 @@ public final class SubscriptionProperties {
      *
      * @return the maxDeliveryCount value.
      */
-    public Integer getMaxDeliveryCount() {
+    public int getMaxDeliveryCount() {
         return this.maxDeliveryCount;
     }
 
@@ -421,7 +289,7 @@ public final class SubscriptionProperties {
      * number of deliveries. Default value is 10.
      *
      * @param maxDeliveryCount the maxDeliveryCount value to set.
-     * @return the SubscriptionDescription object itself.
+     * @return the SubscriptionProperties object itself.
      */
     public SubscriptionProperties setMaxDeliveryCount(int maxDeliveryCount) {
         this.maxDeliveryCount = maxDeliveryCount;
@@ -434,7 +302,7 @@ public final class SubscriptionProperties {
      *
      * @return the enableBatchedOperations value.
      */
-    public Boolean enableBatchedOperations() {
+    public boolean enableBatchedOperations() {
         return this.enableBatchedOperations;
     }
 
@@ -443,7 +311,7 @@ public final class SubscriptionProperties {
      * enabled.
      *
      * @param enableBatchedOperations the enableBatchedOperations value to set.
-     * @return the SubscriptionDescription object itself.
+     * @return the SubscriptionProperties object itself.
      */
     public SubscriptionProperties setEnableBatchedOperations(boolean enableBatchedOperations) {
         this.enableBatchedOperations = enableBatchedOperations;
@@ -463,7 +331,7 @@ public final class SubscriptionProperties {
      * Set the status property: Status of a Service Bus resource.
      *
      * @param status the status value to set.
-     * @return the SubscriptionDescription object itself.
+     * @return the SubscriptionProperties object itself.
      */
     public SubscriptionProperties setStatus(EntityStatus status) {
         this.status = status;
@@ -485,7 +353,7 @@ public final class SubscriptionProperties {
      * are forwarded to.
      *
      * @param forwardTo the forwardTo value to set.
-     * @return the SubscriptionDescription object itself.
+     * @return the SubscriptionProperties object itself.
      */
     public SubscriptionProperties setForwardTo(String forwardTo) {
         this.forwardTo = forwardTo;
@@ -502,34 +370,12 @@ public final class SubscriptionProperties {
     }
 
     /**
-     * Set the createdAt property: The exact time the subscription was created.
-     *
-     * @param createdAt the createdAt value to set.
-     * @return the SubscriptionDescription object itself.
-     */
-    SubscriptionProperties setCreatedAt(OffsetDateTime createdAt) {
-        this.createdAt = createdAt;
-        return this;
-    }
-
-    /**
      * Get the updatedAt property: The exact time a message was updated in the subscription.
      *
      * @return the updatedAt value.
      */
     OffsetDateTime getUpdatedAt() {
         return this.updatedAt;
-    }
-
-    /**
-     * Set the updatedAt property: The exact time a message was updated in the subscription.
-     *
-     * @param updatedAt the updatedAt value to set.
-     * @return the SubscriptionDescription object itself.
-     */
-    SubscriptionProperties setUpdatedAt(OffsetDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-        return this;
     }
 
     /**
@@ -543,35 +389,12 @@ public final class SubscriptionProperties {
     }
 
     /**
-     * Set the accessedAt property: Last time a message was sent, or the last time there was a receive request to this
-     * subscription.
-     *
-     * @param accessedAt the accessedAt value to set.
-     * @return the SubscriptionDescription object itself.
-     */
-    SubscriptionProperties setAccessedAt(OffsetDateTime accessedAt) {
-        this.accessedAt = accessedAt;
-        return this;
-    }
-
-    /**
      * Get the messageCountDetails property: Details about the message counts in entity.
      *
      * @return the messageCountDetails value.
      */
     MessageCountDetails getMessageCountDetails() {
         return this.messageCountDetails;
-    }
-
-    /**
-     * Set the messageCountDetails property: Details about the message counts in entity.
-     *
-     * @param messageCountDetails the messageCountDetails value to set.
-     * @return the SubscriptionDescription object itself.
-     */
-    SubscriptionProperties setMessageCountDetails(MessageCountDetails messageCountDetails) {
-        this.messageCountDetails = messageCountDetails;
-        return this;
     }
 
     /**
@@ -587,7 +410,7 @@ public final class SubscriptionProperties {
      * Set the userMetadata property: Metadata associated with the subscription. Maximum number of characters is 1024.
      *
      * @param userMetadata the userMetadata value to set.
-     * @return the SubscriptionDescription object itself.
+     * @return the SubscriptionProperties object itself.
      */
     public SubscriptionProperties setUserMetadata(String userMetadata) {
         this.userMetadata = userMetadata;
@@ -609,7 +432,7 @@ public final class SubscriptionProperties {
      * to the subscription are forwarded to.
      *
      * @param forwardDeadLetteredMessagesTo the forwardDeadLetteredMessagesTo value to set.
-     * @return the SubscriptionDescription object itself.
+     * @return the SubscriptionProperties object itself.
      */
     public SubscriptionProperties setForwardDeadLetteredMessagesTo(String forwardDeadLetteredMessagesTo) {
         this.forwardDeadLetteredMessagesTo = forwardDeadLetteredMessagesTo;
@@ -631,7 +454,7 @@ public final class SubscriptionProperties {
      * deleted. The minimum duration is 5 minutes.
      *
      * @param autoDeleteOnIdle the autoDeleteOnIdle value to set.
-     * @return the SubscriptionDescription object itself.
+     * @return the SubscriptionProperties object itself.
      */
     public SubscriptionProperties setAutoDeleteOnIdle(Duration autoDeleteOnIdle) {
         this.autoDeleteOnIdle = autoDeleteOnIdle;
@@ -645,16 +468,5 @@ public final class SubscriptionProperties {
      */
     EntityAvailabilityStatus getEntityAvailabilityStatus() {
         return this.entityAvailabilityStatus;
-    }
-
-    /**
-     * Set the entityAvailabilityStatus property: Availability status of the entity.
-     *
-     * @param entityAvailabilityStatus the entityAvailabilityStatus value to set.
-     * @return the SubscriptionDescription object itself.
-     */
-    SubscriptionProperties setEntityAvailabilityStatus(EntityAvailabilityStatus entityAvailabilityStatus) {
-        this.entityAvailabilityStatus = entityAvailabilityStatus;
-        return this;
     }
 }
