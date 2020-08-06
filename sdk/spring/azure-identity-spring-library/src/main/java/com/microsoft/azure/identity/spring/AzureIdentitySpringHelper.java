@@ -14,6 +14,48 @@ import org.springframework.stereotype.Component;
 
 /**
  * A helper class to deal with credentials in a Spring environment.
+ * 
+ * <p>
+ *  This helper class makes it possible to configure credentials to be used 
+ *  within a Spring context. 
+ * </p>
+ * 
+ * <table>
+ *   <tr>
+ *    <th>Property Tuples</th>
+ *    <th>Description</th>
+ *   </tr>
+ *   <tr>
+ *    <td>
+ *     azure.credential.(name.)tenantId <br>
+ *     azure.credential.(name.)clientId <br>
+ *     azure.credential.(name.)clientSecret
+ *    </td>
+ *    <td>
+ *     the Azure Tenant ID <br>
+ *     the Client ID <br>
+ *     the Client Certificate <br>
+ *    </td>
+ *   </tr>
+ *   <tr>
+ *    <td>
+ *     azure.credential.(name.)tenantId <br>
+ *     azure.credential.(name.)clientId <br>
+ *     azure.credential.(name.)clientCertificate
+ *    </td>
+ *    <td>
+ *     the Azure Tenant ID <br>
+ *     the Client ID <br>
+ *     the path to the PEM client certificate
+ *    </td>
+ *   </tr>
+ * </table>
+ * 
+ * where name is the <code>name</code> of the credential. Note if 
+ * <code>name</code> is entirely omitted it is taken to be the default 
+ * credential. Note if the default credential is omitted it is configure to use
+ * AzureDefaultCredential which allows for the use a Managed Identity (if it is
+ * present).
  *
  * @author manfred.riem@microsoft.com
  */
@@ -113,7 +155,7 @@ public class AzureIdentitySpringHelper {
             return;
         }
         
-        String clientCertificateKey = AZURE_CREDENTIAL_PREFIX + name + "clientSecret";
+        String clientCertificateKey = AZURE_CREDENTIAL_PREFIX + name + "clientCertificate";
         String clientCertificatePath = environment.getProperty(clientCertificateKey);
         
         if (clientCertificatePath != null) {
