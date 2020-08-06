@@ -104,6 +104,7 @@ public final class JacksonJsonSerializer implements MemberNameConverter, JsonSer
                 String propertyName = m.getDeclaredAnnotation(JsonProperty.class).value();
                 return CoreUtils.isNullOrEmpty(propertyName) ? methodNameWithoutJavaBeans : propertyName;
             }
+            return methodNameWithoutJavaBeans;
         }
 
         return null;
