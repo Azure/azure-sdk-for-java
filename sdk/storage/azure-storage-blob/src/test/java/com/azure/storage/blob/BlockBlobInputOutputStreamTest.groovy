@@ -5,12 +5,50 @@ import com.azure.storage.blob.specialized.BlobOutputStream
 import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.common.implementation.Constants
 import spock.lang.Requires
+import spock.lang.Unroll
 
 class BlockBlobInputOutputStreamTest extends APISpec {
     BlockBlobClient bc
 
     def setup() {
         bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+    }
+
+    @Unroll
+    def "BlobInputStream read to large buffer"() {
+        setup:
+        byte[] data = getRandomByteArray(6 * 1024 * 1024)
+        bc.upload(new ByteArrayInputStream(data), data.length, true)
+        def is = bc.openInputStream()
+        byte[] outArr = new byte[10 * 1024 * 1024]
+
+        when:
+        def count = is.read(outArr)
+
+        then:
+        Arrays.compare(data, 0, data.length, outArr, 0, data.length) == 0
+        count == data.length
+
+        where:
+        dataSize        || retVal
+        0               || -1
+        6 * 1024 * 1024 || 6 * 1024 * 1024 // Test for github issue #13811
+
+    }
+
+    def "BlobInputStream read 0 bytes"() {
+        setup:
+        byte[] data = getRandomByteArray(6 * 1024 * 1024)
+        bc.upload(new ByteArrayInputStream(data), data.length, true)
+        def is = bc.openInputStream()
+        byte[] outArr = new byte[10 * 1024 * 1024]
+
+        when:
+        def count = is.read(outArr)
+
+        then:
+        Arrays.compare(data, 0, data.length, outArr, 0, data.length) == 0
+        count == data.length
     }
 
     // Only run this test in live mode as BlobOutputStream dynamically assigns blocks
