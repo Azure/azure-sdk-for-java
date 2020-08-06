@@ -101,6 +101,7 @@ public class ClientRetryPolicy implements IDocumentClientRetryPolicy {
                 logger.warn("Endpoint not reachable. Will refresh cache and retry. ", e);
                 return this.shouldRetryOnEndpointFailureAsync(this.isReadRequest, false);
             } else {
+                logger.warn("Endpoint not reachable. Can't retry on write", e);
                 return this.shouldNotRetryOnEndpointFailureAsync(this.isReadRequest, false);
             }
         }
@@ -116,8 +117,8 @@ public class ClientRetryPolicy implements IDocumentClientRetryPolicy {
 
     private ShouldRetryResult shouldRetryOnSessionNotAvailable() {
         this.sessionTokenRetryCount++;
-
         if (!this.enableEndpointDiscovery) {
+            logger.warn("SessionNotAvailable: no retry due to enableEndpointDiscovery=false");
             // if endpoint discovery is disabled, the request cannot be retried anywhere else
             return ShouldRetryResult.noRetry();
         } else {
@@ -127,8 +128,11 @@ public class ClientRetryPolicy implements IDocumentClientRetryPolicy {
                 if (this.sessionTokenRetryCount > endpoints.size()) {
                     // When use multiple write locations is true and the request has been tried
                     // on all locations, then don't retry the request
+
+                    logger.warn("SessionNotAvailable: canUseMultipleWriteLocations = true, sessionTokenRetryCount = {}, retried all locations. retry exhausted!", sessionTokenRetryCount);
                     return ShouldRetryResult.noRetry();
                 } else {
+                    logger.info("SessionNotAvailable: canUseMultipleWriteLocations = true, sessionTokenRetryCount = {}, going to retry on next location", sessionTokenRetryCount);
                     this.retryContext = new RetryContext(this.sessionTokenRetryCount - 1, this.sessionTokenRetryCount > 1);
                     return ShouldRetryResult.retryAfter(Duration.ZERO);
                 }
@@ -136,8 +140,10 @@ public class ClientRetryPolicy implements IDocumentClientRetryPolicy {
                 if (this.sessionTokenRetryCount > 1) {
                     // When cannot use multiple write locations, then don't retry the request if
                     // we have already tried this request on the write location
+                    logger.warn("SessionNotAvailable: canUseMultipleWriteLocations = false, sessionTokenRetryCount = {}, no more retries", sessionTokenRetryCount);
                     return ShouldRetryResult.noRetry();
                 } else {
+                    logger.info("SessionNotAvailable: canUseMultipleWriteLocations = false, sessionTokenRetryCount = {}, going to retry", sessionTokenRetryCount);
                     this.retryContext = new RetryContext(this.sessionTokenRetryCount - 1, false);
                     return ShouldRetryResult.retryAfter(Duration.ZERO);
                 }

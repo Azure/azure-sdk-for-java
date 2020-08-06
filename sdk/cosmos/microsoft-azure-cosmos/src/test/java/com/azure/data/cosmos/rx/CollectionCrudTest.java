@@ -288,13 +288,13 @@ public class CollectionCrudTest extends TestSuiteBase {
 
         // replace indexing mode
         IndexingPolicy indexingMode = new IndexingPolicy();
-        indexingMode.indexingMode(IndexingMode.LAZY);
+        indexingMode.indexingMode(IndexingMode.CONSISTENT);
         collectionSettings.indexingPolicy(indexingMode);
         Mono<CosmosContainerResponse> readObservable = collection.replace(collectionSettings, new CosmosContainerRequestOptions());
 
         // validate
         CosmosResponseValidator<CosmosContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosContainerResponse>()
-                        .indexingMode(IndexingMode.LAZY).build();
+                        .indexingMode(IndexingMode.CONSISTENT).build();
         validateSuccess(readObservable, validator);
         safeDeleteAllCollections(database);
     }
@@ -314,14 +314,14 @@ public class CollectionCrudTest extends TestSuiteBase {
 
         // replace indexing mode
         IndexingPolicy indexingMode = new IndexingPolicy();
-        indexingMode.indexingMode(IndexingMode.LAZY);
+        indexingMode.indexingMode(IndexingMode.CONSISTENT);
         collectionSettings.indexingPolicy(indexingMode);
         collectionSettings.defaultTimeToLive(defaultTimeToLive * 2);
         Mono<CosmosContainerResponse> readObservable = collection.replace(collectionSettings, new CosmosContainerRequestOptions());
 
         // validate
         CosmosResponseValidator<CosmosContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosContainerResponse>()
-            .indexingMode(IndexingMode.LAZY).withDefaultTimeToLive(defaultTimeToLive * 2).build();
+            .indexingMode(IndexingMode.CONSISTENT).withDefaultTimeToLive(defaultTimeToLive * 2).build();
         validateSuccess(readObservable, validator);
         safeDeleteAllCollections(database);
     }
