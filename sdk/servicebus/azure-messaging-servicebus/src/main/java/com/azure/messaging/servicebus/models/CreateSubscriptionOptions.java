@@ -26,18 +26,18 @@ public class CreateSubscriptionOptions {
     private final String topicName;
     private final String subscriptionName;
 
-    private Duration lockDuration;
-    private boolean requiresSession;
+    private Duration autoDeleteOnIdle;
     private Duration defaultMessageTimeToLive;
     private boolean deadLetteringOnMessageExpiration;
     private boolean deadLetteringOnFilterEvaluationExceptions;
-    private int maxDeliveryCount;
     private boolean enableBatchedOperations;
-    private EntityStatus status;
     private String forwardTo;
-    private String userMetadata;
     private String forwardDeadLetteredMessagesTo;
-    private Duration autoDeleteOnIdle;
+    private EntityStatus status;
+    private Duration lockDuration;
+    private int maxDeliveryCount;
+    private boolean requiresSession;
+    private String userMetadata;
 
     /**
      * Creates an instance with the name of the subscription and its associated topic. Default values for the
