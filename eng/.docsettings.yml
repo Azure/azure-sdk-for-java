@@ -4,6 +4,7 @@ omitted_paths:
   - loganalytics/data-plane/samples/*
   - sdk/*/azure-*/samples/*
   - sdk/applicationinsights/microsoft-azure-applicationinsights-query/samples/*
+  - sdk/spring/azure-spring-boot-samples/*
   - sdk/loganalytics/microsoft-azure-loganalytics/samples/*
   - "*/resource-manager/*"
   - "sdk/*/mgmt-*/*"

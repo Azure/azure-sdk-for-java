@@ -3,8 +3,8 @@
 
 package com.azure.core.serializer.json.gson;
 
-import com.azure.core.experimental.serializer.JsonSerializer;
-import com.azure.core.experimental.serializer.JsonSerializerProvider;
+import com.azure.core.util.serializer.JsonSerializer;
+import com.azure.core.util.serializer.JsonSerializerProvider;
 
 /**
  * Implementation of {@link JsonSerializerProvider}.

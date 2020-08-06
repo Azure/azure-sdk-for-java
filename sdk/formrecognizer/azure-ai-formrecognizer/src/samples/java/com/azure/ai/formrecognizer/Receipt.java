@@ -3,6 +3,7 @@
 
 package com.azure.ai.formrecognizer;
 
+import com.azure.ai.formrecognizer.models.FieldData;
 import com.azure.ai.formrecognizer.models.FormField;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.annotation.Immutable;
@@ -15,7 +16,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The Receipt model.
+ * Represents a receipt recognized from the input document and provides strongly-typed properties
+ * for accessing common fields present in recognized receipts.
  */
 public final class Receipt {
 
@@ -32,87 +34,85 @@ public final class Receipt {
     /**
      * Recognized field merchant name.
      */
-    private FormField<String> merchantName;
+    private TypedFormField<String> merchantName;
 
     /**
      * Recognized field merchant address.
      */
-    private FormField<String> merchantAddress;
+    private TypedFormField<String> merchantAddress;
 
     /**
      * Recognized field merchant phone number.
      */
-    private FormField<String> merchantPhoneNumber;
+    private TypedFormField<String> merchantPhoneNumber;
 
     /**
      * Recognized field subtotal.
      */
-    private FormField<Float> subtotal;
+    private TypedFormField<Double> subtotal;
 
     /**
      * Recognized field tax.
      */
-    private FormField<Float> tax;
+    private TypedFormField<Double> tax;
 
     /**
      * Recognized field tip.
      */
-    private FormField<Float> tip;
+    private TypedFormField<Double> tip;
 
     /**
      * Recognized field total.
      */
-    private FormField<Float> total;
+    private TypedFormField<Double> total;
 
     /**
      * Recognized field transaction date.
      */
-    private FormField<LocalDate> transactionDate;
+    private TypedFormField<LocalDate> transactionDate;
 
     /**
      * Recognized field transaction time.
      */
-    private FormField<LocalTime> transactionTime;
+    private TypedFormField<LocalTime> transactionTime;
 
-    @SuppressWarnings("unchecked")
     public Receipt(RecognizedForm recognizedForm) {
-        for (Map.Entry<String, FormField<?>> entry : recognizedForm.getFields().entrySet()) {
+        for (Map.Entry<String, FormField> entry : recognizedForm.getFields().entrySet()) {
             String key = entry.getKey();
-            FormField<?> fieldValue = entry.getValue();
+            FormField formField = entry.getValue();
             switch (key) {
                 case "ReceiptType":
-                    receiptType = new ReceiptType(((FormField<String>) fieldValue).getValue(),
-                        fieldValue.getConfidence());
+                    receiptType = new ReceiptType(formField.getValue().asString(), formField.getConfidence());
                     break;
                 case "MerchantName":
-                    merchantName = (FormField<String>) fieldValue;
+                    merchantName = new TypedFormField<>(formField, String.class);
                     break;
                 case "MerchantAddress":
-                    merchantAddress = (FormField<String>) fieldValue;
+                    merchantAddress = new TypedFormField<>(formField, String.class);
                     break;
                 case "MerchantPhoneNumber":
-                    merchantPhoneNumber = (FormField<String>) fieldValue;
+                    merchantPhoneNumber = new TypedFormField<>(formField, String.class);
                     break;
                 case "Subtotal":
-                    subtotal = (FormField<Float>) fieldValue;
+                    subtotal = new TypedFormField<>(formField, Double.class);
                     break;
                 case "Tax":
-                    tax = (FormField<Float>) fieldValue;
+                    tax = new TypedFormField<>(formField, Double.class);
                     break;
                 case "Tip":
-                    tip = (FormField<Float>) fieldValue;
+                    tip = new TypedFormField<>(formField, Double.class);
                     break;
                 case "Total":
-                    total = (FormField<Float>) fieldValue;
+                    total = new TypedFormField<>(formField, Double.class);
                     break;
                 case "TransactionDate":
-                    transactionDate = (FormField<LocalDate>) fieldValue;
+                    transactionDate = new TypedFormField<>(formField, LocalDate.class);
                     break;
                 case "TransactionTime":
-                    transactionTime = (FormField<LocalTime>) fieldValue;
+                    transactionTime = new TypedFormField<>(formField, LocalTime.class);
                     break;
                 case "Items":
-                    receiptItems = Collections.unmodifiableList(toReceiptItems(fieldValue));
+                    receiptItems = Collections.unmodifiableList(toReceiptItems(formField));
                     break;
                 default:
                     break;
@@ -143,7 +143,7 @@ public final class Receipt {
      *
      * @return the merchantName value.
      */
-    public FormField<String> getMerchantName() {
+    public TypedFormField<String> getMerchantName() {
         return this.merchantName;
     }
 
@@ -152,7 +152,7 @@ public final class Receipt {
      *
      * @return the merchantAddress value.
      */
-    public FormField<String> getMerchantAddress() {
+    public TypedFormField<String> getMerchantAddress() {
         return this.merchantAddress;
     }
 
@@ -161,7 +161,7 @@ public final class Receipt {
      *
      * @return the merchantPhoneNumber value.
      */
-    public FormField<String> getMerchantPhoneNumber() {
+    public TypedFormField<String> getMerchantPhoneNumber() {
         return this.merchantPhoneNumber;
     }
 
@@ -170,7 +170,7 @@ public final class Receipt {
      *
      * @return the subtotal value.
      */
-    public FormField<Float> getSubtotal() {
+    public TypedFormField<Double> getSubtotal() {
         return this.subtotal;
     }
 
@@ -179,7 +179,7 @@ public final class Receipt {
      *
      * @return the tax value.
      */
-    public FormField<Float> getTax() {
+    public TypedFormField<Double> getTax() {
         return this.tax;
     }
 
@@ -188,7 +188,7 @@ public final class Receipt {
      *
      * @return the tip value.
      */
-    public FormField<Float> getTip() {
+    public TypedFormField<Double> getTip() {
         return this.tip;
     }
 
@@ -197,7 +197,7 @@ public final class Receipt {
      *
      * @return the total value.
      */
-    public FormField<Float> getTotal() {
+    public TypedFormField<Double> getTotal() {
         return this.total;
     }
 
@@ -206,7 +206,7 @@ public final class Receipt {
      *
      * @return the transactionDate value.
      */
-    public FormField<LocalDate> getTransactionDate() {
+    public TypedFormField<LocalDate> getTransactionDate() {
         return this.transactionDate;
     }
 
@@ -215,41 +215,37 @@ public final class Receipt {
      *
      * @return the transactionTime value.
      */
-    public FormField<LocalTime> getTransactionTime() {
+    public TypedFormField<LocalTime> getTransactionTime() {
         return this.transactionTime;
     }
 
     /**
-     * Helper method to convert the service level
-     * {@link com.azure.ai.formrecognizer.implementation.models.FieldValue#getValueArray() value items}
-     * to SDK level {@link ReceiptItem receipt items}.
+     * Helper method to convert the recognized itemized data to {@link ReceiptItem receipt items}.
      *
-     * @param fieldValueItems The strongly typed field values.
-     * b
+     * @param fieldValueItems The recognized itemized receipt data.
      *
      * @return An unmodifiable list of {@link ReceiptItem}.
      */
-    @SuppressWarnings("unchecked")
-    private static List<ReceiptItem> toReceiptItems(FormField<?> fieldValueItems) {
-        List<FormField<?>> fieldValueArray = (List<FormField<?>>) fieldValueItems.getValue();
+    private static List<ReceiptItem> toReceiptItems(FormField fieldValueItems) {
+        List<FormField> fieldValueArray = fieldValueItems.getValue().asList();
         List<ReceiptItem> receiptItemList = new ArrayList<>();
 
-        for (FormField<?> eachFieldValue : fieldValueArray) {
-            Map<String, FormField<?>> objectValue = ((Map<String, FormField<?>>) (eachFieldValue.getValue()));
-            FormField<String> name = null;
-            FormField<Float> quantity = null;
-            FormField<Float> price = null;
-            FormField<Float> totalPrice = null;
-            for (Map.Entry<String, FormField<?>> entry : objectValue.entrySet()) {
+        for (FormField eachFieldValue : fieldValueArray) {
+            Map<String, FormField> objectValue = eachFieldValue.getValue().asMap();
+            TypedFormField<String> name = null;
+            TypedFormField<Double> quantity = null;
+            TypedFormField<Double> price = null;
+            TypedFormField<Double> totalPrice = null;
+            for (Map.Entry<String, FormField> entry : objectValue.entrySet()) {
                 String key = entry.getKey();
                 if ("Quantity".equals(key)) {
-                    quantity = (FormField<Float>) entry.getValue();
+                    quantity = new TypedFormField<>(entry.getValue(), Double.class);
                 } else if ("Name".equals(key)) {
-                    name = (FormField<String>) entry.getValue();
+                    name = new TypedFormField<>(entry.getValue(), String.class);
                 } else if ("Price".equals(key)) {
-                    price = (FormField<Float>) entry.getValue();
+                    price = new TypedFormField<>(entry.getValue(), Double.class);
                 } else if ("Total Price".equals(key)) {
-                    totalPrice = (FormField<Float>) entry.getValue();
+                    totalPrice = new TypedFormField<>(entry.getValue(), Double.class);
                 }
             }
             receiptItemList.add(new ReceiptItem(name, quantity, price, totalPrice));
@@ -258,7 +254,125 @@ public final class Receipt {
     }
 
     /**
-     * The USReceiptType model.
+     * The strongly typed FormField representation model.
+     *
+     * @param <T> The type of value returned from the service call.
+     */
+    public static class TypedFormField<T> {
+        private final FormField formField;
+        private final Class<T> type;
+
+        /**
+         * Constructs a TypedFormField object.
+         *
+         * @param formField the SDK returned FormField object.
+         * @param type The type of the field value returned from the service call.
+         */
+        public TypedFormField(FormField formField, Class<T> type) {
+            this.formField = formField;
+            this.type = type;
+        }
+
+        /**
+         * Get the strongly typed value of the recognized field.
+         *
+         * @return the strongly typed value of the recognized field.
+         */
+        @SuppressWarnings("unchecked")
+        public T getValue() {
+            switch (formField.getValue().getValueType()) {
+                case STRING:
+                    if (type.isAssignableFrom(String.class)) {
+                        return (T) formField.getValue().asString();
+                    } else {
+                        throw new IllegalStateException("Type mismatch error occurred.");
+                    }
+                case DATE:
+                    if (type.isAssignableFrom(LocalDate.class)) {
+                        return (T) formField.getValue().asDate();
+                    } else {
+                        throw new IllegalStateException("Type mismatch error occurred.");
+                    }
+                case TIME:
+                    if (type.isAssignableFrom(LocalTime.class)) {
+                        return (T) formField.getValue().asTime();
+                    } else {
+                        throw new IllegalStateException("Type mismatch error occurred.");
+                    }
+                case PHONE_NUMBER:
+                    if (type.isAssignableFrom(String.class)) {
+                        return (T) formField.getValue().asPhoneNumber();
+                    } else {
+                        throw new IllegalStateException("Type mismatch error occurred.");
+                    }
+                case FLOAT:
+                    if (type.isAssignableFrom(Double.class)) {
+                        return (T) formField.getValue().asFloat();
+                    } else {
+                        throw new IllegalStateException("Type mismatch error occurred.");
+                    }
+                case LONG:
+                    if (type.isAssignableFrom(Long.class)) {
+                        return (T) formField.getValue().asLong();
+                    } else {
+                        throw new IllegalStateException("Type mismatch error occurred.");
+                    }
+                case LIST:
+                    if (type.isAssignableFrom(List.class)) {
+                        return (T) formField.getValue().asList();
+                    } else {
+                        throw new IllegalStateException("Type mismatch error occurred.");
+                    }
+                case MAP:
+                    if (type.isAssignableFrom(Map.class)) {
+                        return (T) formField.getValue().asMap();
+                    } else {
+                        throw new IllegalStateException("Type mismatch error occurred.");
+                    }
+                default:
+                    throw new IllegalStateException("Unexpected type value: " + formField.getValue().getValueType());
+            }
+        }
+
+        /**
+         * Get the estimated confidence value of the recognized field.
+         *
+         * @return the confidence value.
+         */
+        public float getConfidence() {
+            return this.formField.getConfidence();
+        }
+
+        /**
+         * Get the text, bounding box, and field elements for the field label.
+         *
+         * @return the text, bounding box, and field elements for the field value.
+         */
+        public FieldData getLabelData() {
+            return this.formField.getLabelData();
+        }
+
+        /**
+         * Get the name of the field in the provided document.
+         *
+         * @return the name of field or label.
+         */
+        public String getName() {
+            return this.formField.getName();
+        }
+
+        /**
+         * Get the text, bounding box, and field elements for the field value.
+         *
+         * @return the text, bounding box, and field elements for the field value.
+         */
+        public FieldData getValueData() {
+            return this.formField.getValueData();
+        }
+    }
+
+    /**
+     * The ReceiptType model.
      */
     @Immutable
     public static final class ReceiptType {
@@ -300,10 +414,10 @@ public final class Receipt {
      */
     @Immutable
     public static final class ReceiptItem {
-        private final FormField<String> name;
-        private final FormField<Float> quantity;
-        private final FormField<Float> price;
-        private final FormField<Float> totalPrice;
+        private final TypedFormField<String> name;
+        private final TypedFormField<Double> quantity;
+        private final TypedFormField<Double> price;
+        private final TypedFormField<Double> totalPrice;
 
         /**
          * Constructs a ReceiptItem object.
@@ -313,8 +427,9 @@ public final class Receipt {
          * @param price price of the field value.
          * @param totalPrice Total price of the field value.
          */
-        public ReceiptItem(final FormField<String> name, final FormField<Float> quantity, final FormField<Float> price,
-            final FormField<Float> totalPrice) {
+        public ReceiptItem(final TypedFormField<String> name, final TypedFormField<Double> quantity,
+            final TypedFormField<Double> price,
+            final TypedFormField<Double> totalPrice) {
             this.name = name;
             this.quantity = quantity;
             this.price = price;
@@ -326,7 +441,7 @@ public final class Receipt {
          *
          * @return The name of the field value.
          */
-        public FormField<String> getName() {
+        public TypedFormField<String> getName() {
             return name;
         }
 
@@ -335,7 +450,7 @@ public final class Receipt {
          *
          * @return the quantity of Receipt Item.
          */
-        public FormField<Float> getQuantity() {
+        public TypedFormField<Double> getQuantity() {
             return quantity;
         }
 
@@ -344,7 +459,7 @@ public final class Receipt {
          *
          * @return The total Price.
          */
-        public FormField<Float> getPrice() {
+        public TypedFormField<Double> getPrice() {
             return price;
         }
 
@@ -353,7 +468,7 @@ public final class Receipt {
          *
          * @return The total Price.
          */
-        public FormField<Float> getTotalPrice() {
+        public TypedFormField<Double> getTotalPrice() {
             return totalPrice;
         }
     }

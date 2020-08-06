@@ -6,15 +6,15 @@ package com.azure.ai.formrecognizer.training;
 import com.azure.ai.formrecognizer.implementation.models.Model;
 import com.azure.ai.formrecognizer.implementation.models.ModelInfo;
 import com.azure.ai.formrecognizer.implementation.models.ModelStatus;
-import com.azure.ai.formrecognizer.models.CustomFormModel;
-import com.azure.ai.formrecognizer.models.CustomFormModelField;
-import com.azure.ai.formrecognizer.models.CustomFormModelInfo;
-import com.azure.ai.formrecognizer.models.CustomFormModelStatus;
-import com.azure.ai.formrecognizer.models.CustomFormSubmodel;
+import com.azure.ai.formrecognizer.training.models.CustomFormModel;
+import com.azure.ai.formrecognizer.training.models.CustomFormModelField;
+import com.azure.ai.formrecognizer.training.models.CustomFormModelInfo;
+import com.azure.ai.formrecognizer.training.models.CustomFormModelStatus;
+import com.azure.ai.formrecognizer.training.models.CustomFormSubmodel;
 import com.azure.ai.formrecognizer.models.ErrorInformation;
 import com.azure.ai.formrecognizer.models.FormRecognizerError;
-import com.azure.ai.formrecognizer.models.TrainingDocumentInfo;
-import com.azure.ai.formrecognizer.models.TrainingStatus;
+import com.azure.ai.formrecognizer.training.models.TrainingDocumentInfo;
+import com.azure.ai.formrecognizer.training.models.TrainingStatus;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -128,7 +128,7 @@ final class CustomModelTransforms {
      * @return The list of {@link FormRecognizerError}
      */
     private static List<FormRecognizerError> transformTrainingErrors(
-        List<ErrorInformation> trainingErrorList) {
+        List<com.azure.ai.formrecognizer.implementation.models.ErrorInformation> trainingErrorList) {
         if (CoreUtils.isNullOrEmpty(trainingErrorList)) {
             return Collections.emptyList();
         } else {

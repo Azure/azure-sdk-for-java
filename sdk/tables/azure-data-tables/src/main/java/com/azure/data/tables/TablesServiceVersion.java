@@ -8,7 +8,7 @@ import com.azure.core.util.ServiceVersion;
  * The versions of Azure Storage Tables supported by this client library.
  */
 public enum TablesServiceVersion implements ServiceVersion {
-    V2019_02_02("no yet implemented");
+    V2019_02_02("2019-02-02");
     private final String version;
 
     TablesServiceVersion(String version) {

@@ -28,7 +28,7 @@ If you are an existing user of the older version of Azure management library for
 <dependency>
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager</artifactId>
-  <version>2.0.0-beta.2</version>
+  <version>2.0.0-beta.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -80,12 +80,13 @@ With above configuration, `azure` client can be authenticated by following code:
 ```java
 AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 TokenCredential credential = new DefaultAzureCredentialBuilder()
-    .authorityHost(profile.environment().getActiveDirectoryEndpoint())
     .build();
 Azure azure = Azure
     .authenticate(credential, profile)
     .withDefaultSubscription();
 ```
+
+The sample code assumes global Azure. Please change `AzureEnvironment.AZURE` variable if otherwise.
 
 See [Authentication][authenticate] for more options.
 
@@ -266,7 +267,7 @@ For example, here is sample maven dependency for Compute package.
 <dependency>
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-compute</artifactId>
-  <version>2.0.0-beta.2</version>
+  <version>2.0.0-beta.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

@@ -22,15 +22,19 @@ import java.util.Map;
  */
 public class CosmosItemResponse<T> {
     private final Class<T> itemClassType;
-    private final byte[] responseBodyAsByteArray;
     private final ItemDeserializer itemDeserializer;
+    byte[] responseBodyAsByteArray;
     private T item;
-    private final ResourceResponse<Document> resourceResponse;
+    final ResourceResponse<Document> resourceResponse;
     private InternalObjectNode props;
 
     CosmosItemResponse(ResourceResponse<Document> response, Class<T> classType, ItemDeserializer itemDeserializer) {
+        this(response, response.getBodyAsByteArray(), classType, itemDeserializer);
+    }
+
+    CosmosItemResponse(ResourceResponse<Document> response, byte[] responseBodyAsByteArray, Class<T> classType, ItemDeserializer itemDeserializer) {
         this.itemClassType = classType;
-        this.responseBodyAsByteArray = response.getBodyAsByteArray();
+        this.responseBodyAsByteArray = responseBodyAsByteArray;
         this.resourceResponse = response;
         this.itemDeserializer = itemDeserializer;
     }

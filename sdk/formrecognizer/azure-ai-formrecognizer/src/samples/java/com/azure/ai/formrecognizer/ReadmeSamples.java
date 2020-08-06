@@ -3,9 +3,9 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.models.AccountProperties;
-import com.azure.ai.formrecognizer.models.CustomFormModel;
-import com.azure.ai.formrecognizer.models.CustomFormModelInfo;
+import com.azure.ai.formrecognizer.training.models.AccountProperties;
+import com.azure.ai.formrecognizer.training.models.CustomFormModel;
+import com.azure.ai.formrecognizer.training.models.CustomFormModelInfo;
 import com.azure.ai.formrecognizer.models.FieldValueType;
 import com.azure.ai.formrecognizer.models.FormField;
 import com.azure.ai.formrecognizer.models.FormPage;
@@ -88,7 +88,7 @@ public class ReadmeSamples {
         String formUrl = "{form_url}";
         String modelId = "{custom_trained_model_id}";
         SyncPoller<OperationResult, List<RecognizedForm>> recognizeFormPoller =
-            formRecognizerClient.beginRecognizeCustomFormsFromUrl(formUrl, modelId);
+            formRecognizerClient.beginRecognizeCustomFormsFromUrl(modelId, formUrl);
 
         List<RecognizedForm> recognizedForms = recognizeFormPoller.getFinalResult();
 
@@ -137,7 +137,7 @@ public class ReadmeSamples {
     }
 
     public void recognizeReceipt() {
-        String receiptUrl = "https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/media"
+        String receiptUrl = "https://docs.microsoft.com/azure/cognitive-services/form-recognizer/media"
             + "/contoso-allinone.jpg";
         SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
             formRecognizerClient.beginRecognizeReceiptsFromUrl(receiptUrl);
@@ -145,54 +145,52 @@ public class ReadmeSamples {
 
         for (int i = 0; i < receiptPageResults.size(); i++) {
             RecognizedForm recognizedForm = receiptPageResults.get(i);
-            Map<String, FormField<?>> recognizedFields = recognizedForm.getFields();
+            Map<String, FormField> recognizedFields = recognizedForm.getFields();
             System.out.printf("----------- Recognizing receipt info for page %d -----------%n", i);
-            FormField<?> merchantNameField = recognizedFields.get("MerchantName");
+            FormField merchantNameField = recognizedFields.get("MerchantName");
             if (merchantNameField != null) {
-                if (FieldValueType.STRING == merchantNameField.getValueType()) {
-                    String merchantName = FieldValueType.STRING.cast(merchantNameField);
+                if (FieldValueType.STRING == merchantNameField.getValue().getValueType()) {
+                    String merchantName = merchantNameField.getValue().asString();
                     System.out.printf("Merchant Name: %s, confidence: %.2f%n",
                         merchantName, merchantNameField.getConfidence());
                 }
             }
 
-            FormField<?> merchantPhoneNumberField = recognizedFields.get("MerchantPhoneNumber");
+            FormField merchantPhoneNumberField = recognizedFields.get("MerchantPhoneNumber");
             if (merchantPhoneNumberField != null) {
-                if (FieldValueType.PHONE_NUMBER == merchantPhoneNumberField.getValueType()) {
-                    String merchantAddress = FieldValueType.PHONE_NUMBER.cast(merchantPhoneNumberField);
+                if (FieldValueType.PHONE_NUMBER == merchantPhoneNumberField.getValue().getValueType()) {
+                    String merchantAddress = merchantPhoneNumberField.getValue().asPhoneNumber();
                     System.out.printf("Merchant Phone number: %s, confidence: %.2f%n",
                         merchantAddress, merchantPhoneNumberField.getConfidence());
                 }
             }
 
-            FormField<?> transactionDateField = recognizedFields.get("TransactionDate");
+            FormField transactionDateField = recognizedFields.get("TransactionDate");
             if (transactionDateField != null) {
-                if (FieldValueType.DATE == transactionDateField.getValueType()) {
-                    LocalDate transactionDate = FieldValueType.DATE.cast(transactionDateField);
+                if (FieldValueType.DATE == transactionDateField.getValue().getValueType()) {
+                    LocalDate transactionDate = transactionDateField.getValue().asDate();
                     System.out.printf("Transaction Date: %s, confidence: %.2f%n",
                         transactionDate, transactionDateField.getConfidence());
                 }
             }
 
-            FormField<?> receiptItemsField = recognizedFields.get("Items");
+            FormField receiptItemsField = recognizedFields.get("Items");
             if (receiptItemsField != null) {
                 System.out.printf("Receipt Items: %n");
-                if (FieldValueType.LIST == receiptItemsField.getValueType()) {
-                    List<FormField<?>> receiptItems = FieldValueType.LIST.cast(receiptItemsField);
-                    receiptItems.forEach(receiptItem -> {
-                        if (FieldValueType.MAP == receiptItem.getValueType()) {
-                            Map<String, FormField<?>> formFieldMap = FieldValueType.MAP.cast(receiptItem);
-                            formFieldMap.forEach((key, formField) -> {
-                                if ("Quantity".equals(key)) {
-                                    if (FieldValueType.DOUBLE == formField.getValueType()) {
-                                        Float quantity = FieldValueType.DOUBLE.cast(formField);
-                                        System.out.printf("Quantity: %f, confidence: %.2f%n",
-                                            quantity, formField.getConfidence());
-                                    }
+                if (FieldValueType.LIST == receiptItemsField.getValue().getValueType()) {
+                    List<FormField> receiptItems = receiptItemsField.getValue().asList();
+                    receiptItems.stream()
+                        .filter(receiptItem -> FieldValueType.MAP == receiptItem.getValue().getValueType())
+                        .map(formField -> formField.getValue().asMap())
+                        .forEach(formFieldMap -> formFieldMap.forEach((key, formField) -> {
+                            if ("Quantity".equals(key)) {
+                                if (FieldValueType.FLOAT == formField.getValue().getValueType()) {
+                                    Float quantity = formField.getValue().asFloat();
+                                    System.out.printf("Quantity: %f, confidence: %.2f%n",
+                                        quantity, formField.getConfidence());
                                 }
-                            });
-                        }
-                    });
+                            }
+                        }));
                 }
             }
         }

@@ -55,19 +55,19 @@ public final class FormRecognizerClient {
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomFormsFromUrl#string-string}
      *
-     * @param formUrl The URL of the form to analyze.
      * @param modelId The UUID string format custom trained model Id to be used.
+     * @param formUrl The URL of the form to analyze.
      *
      * @return A {@link SyncPoller} to poll the progress of the recognize custom form operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code formUrl}, {@code modelId} is {@code null}.
+     * @throws NullPointerException If {@code formUrl}, {@code modelId} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<RecognizedForm>>
-        beginRecognizeCustomFormsFromUrl(String formUrl, String modelId) {
-        return beginRecognizeCustomFormsFromUrl(formUrl, modelId, null, Context.NONE);
+        beginRecognizeCustomFormsFromUrl(String modelId, String formUrl) {
+        return beginRecognizeCustomFormsFromUrl(modelId, formUrl, null, Context.NONE);
     }
 
     /**
@@ -79,8 +79,8 @@ public final class FormRecognizerClient {
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomFormsFromUrl#string-string-recognizeOptions-Context}
      *
-     * @param formUrl The source URL to the input form.
      * @param modelId The UUID string format custom trained model Id to be used.
+     * @param formUrl The source URL to the input form.
      * @param recognizeOptions The additional configurable {@link RecognizeOptions options} that may be passed when
      * recognizing custom form.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
@@ -89,11 +89,11 @@ public final class FormRecognizerClient {
      * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code formUrl}, {@code modelId} is {@code null}.
+     * @throws NullPointerException If {@code formUrl}, {@code modelId} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<RecognizedForm>>
-        beginRecognizeCustomFormsFromUrl(String formUrl, String modelId, RecognizeOptions recognizeOptions,
+        beginRecognizeCustomFormsFromUrl(String modelId, String formUrl, RecognizeOptions recognizeOptions,
         Context context) {
         return client.beginRecognizeCustomFormsFromUrl(formUrl, modelId, recognizeOptions, context).getSyncPoller();
     }
@@ -105,22 +105,23 @@ public final class FormRecognizerClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomForms#InputStream-long-string}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomForms#string-InputStream-long}
+     *
+     * @param modelId The UUID string format custom trained model Id to be used.
      *
      * @param form The data of the form to recognize form information from.
      * @param length The exact length of the data.
-     * @param modelId The UUID string format custom trained model Id to be used.
      *
      * @return A {@link SyncPoller} that polls the recognize custom form operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code form}, {@code modelId} is {@code null}.
+     * @throws NullPointerException If {@code form}, {@code modelId} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<RecognizedForm>>
-        beginRecognizeCustomForms(InputStream form, long length, String modelId) {
-        return beginRecognizeCustomForms(form, length, modelId, null, Context.NONE);
+        beginRecognizeCustomForms(String modelId, InputStream form, long length) {
+        return beginRecognizeCustomForms(modelId, form, length, null, Context.NONE);
     }
 
     /**
@@ -130,11 +131,11 @@ public final class FormRecognizerClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomForms#InputStream-long-string-recognizeOptions-Context}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomForms#string-InputStream-long-recognizeOptions-Context}
      *
+     * @param modelId The UUID string format custom trained model Id to be used.
      * @param form The data of the form to recognize form information from.
      * @param length The exact length of the data.
-     * @param modelId The UUID string format custom trained model Id to be used.
      * @param recognizeOptions The additional configurable {@link RecognizeOptions options} that may be passed when
      * recognizing custom form.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
@@ -143,14 +144,14 @@ public final class FormRecognizerClient {
      * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code form}, {@code modelId} is {@code null}.
+     * @throws NullPointerException If {@code form}, {@code modelId} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<RecognizedForm>>
-        beginRecognizeCustomForms(InputStream form, long length, String modelId, RecognizeOptions recognizeOptions,
+        beginRecognizeCustomForms(String modelId, InputStream form, long length, RecognizeOptions recognizeOptions,
         Context context) {
         Flux<ByteBuffer> buffer = Utility.toFluxByteBuffer(form);
-        return client.beginRecognizeCustomForms(buffer, length, modelId, recognizeOptions, context).getSyncPoller();
+        return client.beginRecognizeCustomForms(modelId, buffer, length, recognizeOptions, context).getSyncPoller();
     }
 
     /**
@@ -167,7 +168,7 @@ public final class FormRecognizerClient {
      * or has been cancelled. The completed operation returns a List of {@link FormPage}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code formUrl} is {@code null}.
+     * @throws NullPointerException If {@code formUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<FormPage>> beginRecognizeContentFromUrl(String formUrl) {
@@ -191,7 +192,7 @@ public final class FormRecognizerClient {
      * failed, or has been cancelled. The completed operation returns a List of {@link FormPage}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code formUrl} is {@code null}.
+     * @throws NullPointerException If {@code formUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<FormPage>>
@@ -214,7 +215,7 @@ public final class FormRecognizerClient {
      * or has been cancelled. The completed operation returns a List of {@link FormPage}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code form} is {@code null}.
+     * @throws NullPointerException If {@code form} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<FormPage>>
@@ -241,7 +242,7 @@ public final class FormRecognizerClient {
      * has failed, or has been cancelled. The completed operation returns a List of {@link FormPage}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code form} is {@code null}.
+     * @throws NullPointerException If {@code form} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<FormPage>> beginRecognizeContent(InputStream form, long length,
@@ -255,7 +256,7 @@ public final class FormRecognizerClient {
      * model.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support</p>
-     * See <a href="https://aka.ms/azsdk/python/formrecognizer/receiptfields">here</a> for fields found on a receipt.
+     * See <a href="https://aka.ms/formrecognizer/receiptfields">here</a> for fields found on a receipt.
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceiptsFromUrl#string}
@@ -266,7 +267,7 @@ public final class FormRecognizerClient {
      * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code receiptUrl} is {@code null}.
+     * @throws NullPointerException If {@code receiptUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<RecognizedForm>> beginRecognizeReceiptsFromUrl(String receiptUrl) {
@@ -291,7 +292,7 @@ public final class FormRecognizerClient {
      * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code receiptUrl} is {@code null}.
+     * @throws NullPointerException If {@code receiptUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<RecognizedForm>>
@@ -304,7 +305,7 @@ public final class FormRecognizerClient {
      * and a prebuilt trained receipt model.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support</p>
-     * See <a href="https://aka.ms/azsdk/python/formrecognizer/receiptfields">here</a> for fields found on a receipt.
+     * See <a href="https://aka.ms/formrecognizer/receiptfields">here</a> for fields found on a receipt.
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceipts#InputStream-long}
@@ -316,7 +317,7 @@ public final class FormRecognizerClient {
      * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code receipt} is {@code null}.
+     * @throws NullPointerException If {@code receipt} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<RecognizedForm>>
@@ -329,7 +330,7 @@ public final class FormRecognizerClient {
      * trained receipt model.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support</p>
-     * See <a href="https://aka.ms/azsdk/python/formrecognizer/receiptfields">here</a> for fields found on a receipt.
+     * See <a href="https://aka.ms/formrecognizer/receiptfields">here</a> for fields found on a receipt.
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceipts#InputStream-long-recognizeOptions-Context}
@@ -344,7 +345,7 @@ public final class FormRecognizerClient {
      * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code receipt} is {@code null}.
+     * @throws NullPointerException If {@code receipt} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<RecognizedForm>>

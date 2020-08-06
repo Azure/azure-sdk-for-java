@@ -389,27 +389,27 @@
         <artifactId>build-helper-maven-plugin</artifactId>
         <version>3.0.0</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
         <executions>
-            <execution>
+          <execution>
             <id>attach-artifacts</id>
             <phase>package</phase>
             <goals>
-                <goal>attach-artifact</goal>
+              <goal>attach-artifact</goal>
             </goals>
             <configuration>
-                <artifacts>
-                  <artifact>
-                      <file>${basedir}/README.md</file>
-                      <type>md</type>
-                      <classifier>readme</classifier>
-                  </artifact>
-                  <artifact>
-                    <file>${basedir}/CHANGELOG.md</file>
-                    <type>md</type>
-                    <classifier>changelog</classifier>
+              <artifacts>
+                <artifact>
+                  <file>${basedir}/README.md</file>
+                  <type>md</type>
+                  <classifier>readme</classifier>
+                </artifact>
+                <artifact>
+                  <file>${basedir}/CHANGELOG.md</file>
+                  <type>md</type>
+                  <classifier>changelog</classifier>
                 </artifact>
               </artifacts>
             </configuration>
-            </execution>
+          </execution>
         </executions>
       </plugin>
 
@@ -452,7 +452,7 @@
       <plugin>
         <groupId>net.jonathangiles.tools</groupId>
         <artifactId>whitelistgenerator-maven-plugin</artifactId>
-        <version>1.0.1</version> <!-- {x-version-update;net.jonathangiles.tools:whitelistgenerator-maven-plugin;external_dependency} -->
+        <version>1.0.2</version> <!-- {x-version-update;net.jonathangiles.tools:whitelistgenerator-maven-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>generateAllowlistReport</id>
@@ -1466,7 +1466,204 @@
               <systemPropertyVariables>
                 <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
                 <junit.jupiter.execution.parallel.mode.default>concurrent</junit.jupiter.execution.parallel.mode.default>
-                <junit.jupiter.execution.parallel.mode.classes.default>concurrent</junit.jupiter.execution.parallel.mode.classes.default>
+              </systemPropertyVariables>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>parallel-test-playback-no-azure-test-mode-env</id>
+      <activation>
+        <property>
+          <name>!env.AZURE_TEST_MODE</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+              <systemPropertyVariables>
+                <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
+                <junit.jupiter.execution.parallel.mode.default>concurrent</junit.jupiter.execution.parallel.mode.default>
+              </systemPropertyVariables>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>parallel-test-playback-azure-test-mode-playback-env</id>
+      <activation>
+        <property>
+          <name>env.AZURE_TEST_MODE</name>
+          <value>PLAYBACK</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+              <systemPropertyVariables>
+                <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
+                <junit.jupiter.execution.parallel.mode.default>concurrent</junit.jupiter.execution.parallel.mode.default>
+              </systemPropertyVariables>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>parallel-test-playback-no-azure-test-mode-prop</id>
+      <activation>
+        <property>
+          <name>AZURE_TEST_MODE</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+              <systemPropertyVariables>
+                <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
+                <junit.jupiter.execution.parallel.mode.default>concurrent</junit.jupiter.execution.parallel.mode.default>
+              </systemPropertyVariables>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>parallel-test-playback-azure-test-mode-playback-prop</id>
+      <activation>
+        <property>
+          <name>AZURE_TEST_MODE</name>
+          <value>PLAYBACK</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+              <systemPropertyVariables>
+                <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
+                <junit.jupiter.execution.parallel.mode.default>concurrent</junit.jupiter.execution.parallel.mode.default>
+              </systemPropertyVariables>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>sequential-test-azure-test-mode-live-env</id>
+      <activation>
+        <property>
+          <name>env.AZURE_TEST_MODE</name>
+          <value>LIVE</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+              <systemPropertyVariables>
+                <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
+                <junit.jupiter.execution.parallel.mode.default>concurrent</junit.jupiter.execution.parallel.mode.default>
+              </systemPropertyVariables>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>sequential-test-azure-test-mode-record-env</id>
+      <activation>
+        <property>
+          <name>env.AZURE_TEST_MODE</name>
+          <value>RECORD</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+              <systemPropertyVariables>
+                <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
+                <junit.jupiter.execution.parallel.mode.default>concurrent</junit.jupiter.execution.parallel.mode.default>
+              </systemPropertyVariables>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>sequential-test-azure-test-mode-live-prop</id>
+      <activation>
+        <property>
+          <name>AZURE_TEST_MODE</name>
+          <value>LIVE</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+              <systemPropertyVariables>
+                <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
+                <junit.jupiter.execution.parallel.mode.default>concurrent</junit.jupiter.execution.parallel.mode.default>
+              </systemPropertyVariables>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>sequential-test-azure-test-mode-record-prop</id>
+      <activation>
+        <property>
+          <name>AZURE_TEST_MODE</name>
+          <value>RECORD</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+              <systemPropertyVariables>
+                <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
+                <junit.jupiter.execution.parallel.mode.default>concurrent</junit.jupiter.execution.parallel.mode.default>
               </systemPropertyVariables>
             </configuration>
           </plugin>

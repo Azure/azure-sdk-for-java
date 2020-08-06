@@ -6,13 +6,15 @@ package com.azure.storage.blob.options;
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.blob.models.BlobLeaseRequestConditions;
 
+import java.time.Duration;
+
 /**
  * Extended options that may be passed when breaking a lease to a blob or container.
  */
 @Fluent
 public class BlobBreakLeaseOptions {
 
-    private Integer breakPeriodInSeconds;
+    private Duration breakPeriod;
     private BlobLeaseRequestConditions requestConditions;
 
     /**
@@ -21,19 +23,19 @@ public class BlobBreakLeaseOptions {
      * is used. A new lease will not be available before the break period has expired, but the lease may be held for
      * longer than the break period.
      */
-    public Integer getBreakPeriodInSeconds() {
-        return this.breakPeriodInSeconds;
+    public Duration getBreakPeriod() {
+        return this.breakPeriod;
     }
 
     /**
-     * @param breakPeriodInSeconds An optional duration, between 0 and 60 seconds, that the lease should continue before
+     * @param breakPeriod An optional duration, between 0 and 60 seconds, that the lease should continue before
      * it is broken. If the break period is longer than the time remaining on the lease the remaining time on the lease
      * is used. A new lease will not be available before the break period has expired, but the lease may be held for
      * longer than the break period.
      * @return The updated options.
      */
-    public BlobBreakLeaseOptions setBreakPeriodInSeconds(Integer breakPeriodInSeconds) {
-        this.breakPeriodInSeconds = breakPeriodInSeconds;
+    public BlobBreakLeaseOptions setBreakPeriod(Duration breakPeriod) {
+        this.breakPeriod = breakPeriod;
         return this;
     }
 
