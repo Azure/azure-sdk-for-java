@@ -153,6 +153,7 @@ public class IdentityClient {
             try {
                 if (certificatePassword == null) {
                     byte[] pemCertificateBytes = Files.readAllBytes(Paths.get(certificatePath));
+
                     credential = ClientCredentialFactory.createFromCertificate(
                         CertificateUtil.privateKeyFromPem(pemCertificateBytes),
                         CertificateUtil.publicKeyFromPem(pemCertificateBytes));

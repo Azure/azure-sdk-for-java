@@ -21,4 +21,24 @@ public class ServiceBusConstants {
      * Represents the default lock duration for a message.
      */
     public static final Duration DEFAULT_LOCK_DURATION = Duration.ofSeconds(60);
+
+    /**
+     * Represents the default duplicate detection duration.
+     */
+    public static final Duration DEFAULT_DUPLICATE_DETECTION_DURATION = Duration.ofSeconds(60);
+
+    /**
+     * Represents the default max delivery count for a message.
+     */
+    public static final int DEFAULT_MAX_DELIVERY_COUNT = 10;
+
+    /**
+     * Represents the default queue size in megabytes.
+     */
+    public static final int DEFAULT_QUEUE_SIZE = 1024;
+
+    /**
+     * Represents the default topic size in megabytes.
+     */
+    public static final int DEFAULT_TOPIC_SIZE = 1024;
 }

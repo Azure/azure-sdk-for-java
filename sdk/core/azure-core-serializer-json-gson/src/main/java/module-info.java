@@ -3,7 +3,7 @@
 
 module com.azure.core.serializer.json.gson {
     requires transitive com.azure.core;
-    requires transitive gson;
+    requires transitive com.google.gson;
 
     exports com.azure.core.serializer.json.gson;
 

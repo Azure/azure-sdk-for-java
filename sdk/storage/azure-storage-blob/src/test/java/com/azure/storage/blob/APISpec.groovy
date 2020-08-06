@@ -336,6 +336,36 @@ class APISpec extends Specification {
         return builder
     }
 
+    /**
+     * Some tests require extra configuration for retries when writing.
+     *
+     * It is possible that tests which upload a reasonable amount of data with tight resource limits may cause the
+     * service to silently close a connection without returning a response due to high read latency (the resource
+     * constraints cause a latency between sending the headers and writing the body often due to waiting for buffer pool
+     * buffers). Without configuring a retry timeout, the operation will hang indefinitely. This is always something
+     * that must be configured by the customer.
+     *
+     * Typically this needs to be configured in retries so that we can retry the individual block writes rather than
+     * the overall operation.
+     *
+     * According to the following link, writes can take up to 10 minutes per MB before the service times out. In this
+     * case, most of our instrumentation (e.g. CI pipelines) will timeout and fail anyway, so we don't want to wait that
+     * long. The value is going to be a best guess and should be played with to allow test passes to succeed
+     *
+     * https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-blob-service-operations
+     *
+     * @param perRequestDataSize The amount of data expected to go out in each request. Will be used to calculate a
+     * timeout value--about 10s/MB. Won't be less than 1 minute.
+     */
+    BlobServiceAsyncClient getPrimaryServiceClientForWrites(long perRequestDataSize) {
+        int retryTimeout = Math.toIntExact((long) (perRequestDataSize / Constants.MB) * 10)
+        retryTimeout = Math.max(60, retryTimeout)
+        return getServiceClientBuilder(primaryCredential,
+            String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
+        .retryOptions(new RequestRetryOptions(null, null, retryTimeout, null, null, null))
+            .buildAsyncClient()
+    }
+
     BlobContainerClient getContainerClient(String sasToken, String endpoint) {
         getContainerClientBuilder(endpoint).sasToken(sasToken).buildClient()
     }
@@ -577,7 +607,7 @@ class APISpec extends Specification {
                 // Use Arrays.equals as it is more optimized than Groovy/Spock's '==' for arrays.
                 assert readCount1 == readCount2 && Arrays.equals(buffer1, buffer2)
 
-                pos += bufferSize
+                pos += expectedReadCount
             }
 
             def verificationRead = stream2.read()

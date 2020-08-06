@@ -280,7 +280,7 @@ public final class Receipt {
          */
         @SuppressWarnings("unchecked")
         public T getValue() {
-            switch (formField.getValue().getType()) {
+            switch (formField.getValue().getValueType()) {
                 case STRING:
                     if (type.isAssignableFrom(String.class)) {
                         return (T) formField.getValue().asString();
@@ -305,9 +305,9 @@ public final class Receipt {
                     } else {
                         throw new IllegalStateException("Type mismatch error occurred.");
                     }
-                case DOUBLE:
+                case FLOAT:
                     if (type.isAssignableFrom(Double.class)) {
-                        return (T) formField.getValue().asDouble();
+                        return (T) formField.getValue().asFloat();
                     } else {
                         throw new IllegalStateException("Type mismatch error occurred.");
                     }
@@ -330,7 +330,7 @@ public final class Receipt {
                         throw new IllegalStateException("Type mismatch error occurred.");
                     }
                 default:
-                    throw new IllegalStateException("Unexpected type value: " + formField.getValue().getType());
+                    throw new IllegalStateException("Unexpected type value: " + formField.getValue().getValueType());
             }
         }
 

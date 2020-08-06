@@ -55,8 +55,8 @@ public final class FormRecognizerClient {
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomFormsFromUrl#string-string}
      *
-     * @param formUrl The URL of the form to analyze.
      * @param modelId The UUID string format custom trained model Id to be used.
+     * @param formUrl The URL of the form to analyze.
      *
      * @return A {@link SyncPoller} to poll the progress of the recognize custom form operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
@@ -66,8 +66,8 @@ public final class FormRecognizerClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<RecognizedForm>>
-        beginRecognizeCustomFormsFromUrl(String formUrl, String modelId) {
-        return beginRecognizeCustomFormsFromUrl(formUrl, modelId, null, Context.NONE);
+        beginRecognizeCustomFormsFromUrl(String modelId, String formUrl) {
+        return beginRecognizeCustomFormsFromUrl(modelId, formUrl, null, Context.NONE);
     }
 
     /**
@@ -79,8 +79,8 @@ public final class FormRecognizerClient {
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomFormsFromUrl#string-string-recognizeOptions-Context}
      *
-     * @param formUrl The source URL to the input form.
      * @param modelId The UUID string format custom trained model Id to be used.
+     * @param formUrl The source URL to the input form.
      * @param recognizeOptions The additional configurable {@link RecognizeOptions options} that may be passed when
      * recognizing custom form.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
@@ -93,7 +93,7 @@ public final class FormRecognizerClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<RecognizedForm>>
-        beginRecognizeCustomFormsFromUrl(String formUrl, String modelId, RecognizeOptions recognizeOptions,
+        beginRecognizeCustomFormsFromUrl(String modelId, String formUrl, RecognizeOptions recognizeOptions,
         Context context) {
         return client.beginRecognizeCustomFormsFromUrl(formUrl, modelId, recognizeOptions, context).getSyncPoller();
     }
@@ -105,11 +105,12 @@ public final class FormRecognizerClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomForms#InputStream-long-string}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomForms#string-InputStream-long}
+     *
+     * @param modelId The UUID string format custom trained model Id to be used.
      *
      * @param form The data of the form to recognize form information from.
      * @param length The exact length of the data.
-     * @param modelId The UUID string format custom trained model Id to be used.
      *
      * @return A {@link SyncPoller} that polls the recognize custom form operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
@@ -119,8 +120,8 @@ public final class FormRecognizerClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<RecognizedForm>>
-        beginRecognizeCustomForms(InputStream form, long length, String modelId) {
-        return beginRecognizeCustomForms(form, length, modelId, null, Context.NONE);
+        beginRecognizeCustomForms(String modelId, InputStream form, long length) {
+        return beginRecognizeCustomForms(modelId, form, length, null, Context.NONE);
     }
 
     /**
@@ -130,11 +131,11 @@ public final class FormRecognizerClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomForms#InputStream-long-string-recognizeOptions-Context}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomForms#string-InputStream-long-recognizeOptions-Context}
      *
+     * @param modelId The UUID string format custom trained model Id to be used.
      * @param form The data of the form to recognize form information from.
      * @param length The exact length of the data.
-     * @param modelId The UUID string format custom trained model Id to be used.
      * @param recognizeOptions The additional configurable {@link RecognizeOptions options} that may be passed when
      * recognizing custom form.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
@@ -147,10 +148,10 @@ public final class FormRecognizerClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<RecognizedForm>>
-        beginRecognizeCustomForms(InputStream form, long length, String modelId, RecognizeOptions recognizeOptions,
+        beginRecognizeCustomForms(String modelId, InputStream form, long length, RecognizeOptions recognizeOptions,
         Context context) {
         Flux<ByteBuffer> buffer = Utility.toFluxByteBuffer(form);
-        return client.beginRecognizeCustomForms(buffer, length, modelId, recognizeOptions, context).getSyncPoller();
+        return client.beginRecognizeCustomForms(modelId, buffer, length, recognizeOptions, context).getSyncPoller();
     }
 
     /**
