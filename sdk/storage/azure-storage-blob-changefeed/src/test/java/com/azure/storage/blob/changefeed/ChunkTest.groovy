@@ -100,7 +100,7 @@ class ChunkTest extends Specification {
 
     def "getEvents min shard 1"() {
         setup:
-        /* Default chunk cursor on shard 0. */
+        /* chunk cursor on shard 1. */
         BlobChangefeedCursor chunkCursor = new BlobChangefeedCursor(urlHash, endTime)
             .toSegmentCursor(segmentPath)
             .toShardCursor(currentShardPath0)
@@ -184,6 +184,58 @@ class ChunkTest extends Specification {
         9101        | 1                || _
     }
 
+    @Unroll
+    def "getEvents cursor shard 1"() {
+        setup:
+        /* chunk cursor on shard 1. */
+        BlobChangefeedCursor chunkCursor = new BlobChangefeedCursor(urlHash, endTime)
+            .toSegmentCursor(segmentPath)
+            .toShardCursor(currentShardPath0)
+            .toEventCursor(chunkPath0, 9109, 1)
+            .toShardCursor(currentShardPath1)
+        when(mockAvroReaderFactory.getAvroReader(any(Flux.class), any(Flux.class), anyLong(), anyLong()))
+            .thenReturn(mockAvroReader)
+        when(mockBlobLazyDownloaderFactory.getBlobLazyDownloader(anyString(), anyLong()))
+            .thenReturn(mockBlobLazyDownloader)
+
+        when:
+        ChunkFactory factory = new ChunkFactory(mockAvroReaderFactory, mockBlobLazyDownloaderFactory)
+        Chunk chunk = factory.getChunk(chunkPath1, chunkCursor, blockOffset, objectBlockIndex)
+        def sv = StepVerifier.create(chunk.getEvents().index())
+
+        then:
+        sv.expectNextMatches({ tuple2 -> verifyWrapperShard1(tuple2.getT2(), tuple2.getT1(), 1234, 0) })
+            .expectNextMatches({ tuple2 -> verifyWrapperShard1(tuple2.getT2(), tuple2.getT1(), 1234, 1) })
+            .expectNextMatches({ tuple2 -> verifyWrapperShard1(tuple2.getT2(), tuple2.getT1(), 1234, 2) })
+            .expectNextMatches({ tuple2 -> verifyWrapperShard1(tuple2.getT2(), tuple2.getT1(), 1234, 3) })
+            .expectNextMatches({ tuple2 -> verifyWrapperShard1(tuple2.getT2(), tuple2.getT1(), 5678, 0) })
+            .expectNextMatches({ tuple2 -> verifyWrapperShard1(tuple2.getT2(), tuple2.getT1(), 5678, 1) })
+            .expectNextMatches({ tuple2 -> verifyWrapperShard1(tuple2.getT2(), tuple2.getT1(), 5678, 2) })
+            .expectNextMatches({ tuple2 -> verifyWrapperShard1(tuple2.getT2(), tuple2.getT1(), 5678, 3) })
+            .expectNextMatches({ tuple2 -> verifyWrapperShard1(tuple2.getT2(), tuple2.getT1(), 9101, 0) })
+            .expectNextMatches({ tuple2 -> verifyWrapperShard1(tuple2.getT2(), tuple2.getT1(), 9101, 1) })
+            .verifyComplete()
+
+        verify(mockBlobLazyDownloaderFactory).getBlobLazyDownloader(chunkPath1, ChunkFactory.DEFAULT_HEADER_SIZE) || true
+        verify(mockBlobLazyDownloaderFactory).getBlobLazyDownloader(chunkPath1, ChunkFactory.DEFAULT_BODY_SIZE, blockOffset) || true
+        verify(mockBlobLazyDownloader, times(2)).download() || true
+        verify(mockAvroReaderFactory).getAvroReader(Flux.empty(), Flux.empty(), blockOffset, objectBlockIndex) || true
+        verify(mockAvroReader).read() || true
+
+        where:
+        blockOffset | objectBlockIndex || _
+        1234        | 0                || _
+        1234        | 1                || _
+        1234        | 2                || _
+        1234        | 3                || _
+        5678        | 0                || _
+        5678        | 1                || _
+        5678        | 2                || _
+        5678        | 3                || _
+        9101        | 0                || _
+        9101        | 1                || _
+    }
+
     boolean verifyWrapperShard0(BlobChangefeedEventWrapper wrapper, long index, long blockOffset, long blockIndex) {
         boolean verify = true
         verify &= wrapper.getCursor().getUrlHash() == urlHash
@@ -208,7 +260,7 @@ class ChunkTest extends Specification {
         verify &= wrapper.getCursor().getCurrentSegmentCursor().getShardCursors() != null
         verify &= wrapper.getCursor().getCurrentSegmentCursor().getShardCursors().size() == 2
         verify &= wrapper.getCursor().getCurrentSegmentCursor().getShardCursors().get(0).getCurrentChunkPath() == chunkPath0
-        verify &= wrapper.getCursor().getCurrentSegmentCursor().getShardCursors().get(0).getBlockOffset() == 9101
+        verify &= wrapper.getCursor().getCurrentSegmentCursor().getShardCursors().get(0).getBlockOffset() == 9109
         verify &= wrapper.getCursor().getCurrentSegmentCursor().getShardCursors().get(0).getEventIndex() == 1
         verify &= wrapper.getCursor().getCurrentSegmentCursor().getShardCursors().get(1).getCurrentChunkPath() == chunkPath1
         verify &= wrapper.getCursor().getCurrentSegmentCursor().getShardCursors().get(1).getBlockOffset() == blockOffset
