@@ -213,7 +213,7 @@ public class CosmosSyncContainerTest extends TestSuiteBase {
                                                               new IndexingPolicy().indexingMode(IndexingMode.LAZY)),
                                                               options);
         assertThat(replaceResponse1.properties().indexingPolicy().indexingMode())
-            .isEqualTo(IndexingMode.CONSISTENT);
+            .isEqualTo(IndexingMode.LAZY);
 
     }
 
