@@ -9,6 +9,7 @@ import com.azure.core.experimental.serializer.JsonSerializer;
 import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
 import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonDeserializer;
@@ -43,6 +44,27 @@ public class EventGridConsumerBuilder {
         typeMappings = new HashMap<>(SystemEventMappings.getSystemEventMappings());
     }
 
+    /* I'm unsure if all system events correctly give the time zone offset when sending their time, but the offset
+       should always be +0:00 or Z, aka UTC, so this will handle exceptions when there isn't an offset given by
+       assuming UTC time when not specified. This is needed because Jackson cannot deserialize OffsetDateTime
+       by itself, and so this is added as a module.
+
+       If the system events all send offsetDateTime correctly with an offset, then instead of this you can add
+       the OffsetDateTimeKeyDeserializer, or the entire JavaTime module.
+     */
+    private static class OffsetDateTimeUtcDefaultDeserializer extends JsonDeserializer<OffsetDateTime> {
+        @Override
+        public OffsetDateTime deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
+            throws IOException {
+            TemporalAccessor time = DateTimeFormatter.ISO_DATE_TIME.parse(jsonParser.getValueAsString());
+            try {
+                return OffsetDateTime.from(time);
+            } catch (DateTimeException e) {
+                return OffsetDateTime.of(LocalDateTime.from(time), ZoneOffset.UTC);
+            }
+        }
+    }
+
     /**
      * Build an instance of the async consumer. If no deserializer is provided, then a default Jackson one is provided.
      * @return the async consumer with the settings that were already set.
@@ -52,19 +74,8 @@ public class EventGridConsumerBuilder {
         if (buildDeserializer == null) {
             buildDeserializer = new JacksonJsonSerializerBuilder()
                 .serializer(new ObjectMapper().registerModule(
-                    new SimpleModule().addDeserializer(OffsetDateTime.class, new JsonDeserializer<OffsetDateTime>() {
-                        @Override
-                        public OffsetDateTime deserialize(JsonParser jsonParser,
-                                                          DeserializationContext deserializationContext)
-                            throws IOException {
-                            TemporalAccessor time = DateTimeFormatter.ISO_DATE_TIME.parse(jsonParser.getValueAsString());
-                            try {
-                                return OffsetDateTime.from(time);
-                            } catch (DateTimeException e) {
-                                return OffsetDateTime.of(LocalDateTime.from(time), ZoneOffset.UTC);
-                            }
-                        }
-                    }))
+                    new SimpleModule().addDeserializer(OffsetDateTime.class,
+                        new OffsetDateTimeUtcDefaultDeserializer()))
                     .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false))
                 .build();
         }

@@ -33,7 +33,7 @@ import static org.junit.Assert.assertNotNull;
 public class EventGridPublisherImplTests {
 
     @Test
-    //@Ignore
+    @Ignore
     public void testPublishEventGridEvents() throws MalformedURLException {
         // using @Ignore because it requires the correct environment variables
         String endpoint = System.getenv("EG_ENDPOINT");
