@@ -39,7 +39,7 @@ In this section, you see how to configure your app to use either a Service Bus q
 
 Append the following code to the end of the *application.properties* file. Replace the sample values with the appropriate values for your service bus:
 
-```yml
+```yaml
 spring.jms.servicebus.connection-string=<ServiceBusNamespaceConnectionString>
 spring.jms.servicebus.idle-timeout=<IdleTimeout>
 ```
@@ -48,7 +48,7 @@ spring.jms.servicebus.idle-timeout=<IdleTimeout>
 
 Append the following code to the end of the *application.properties* file. Replace the sample values with the appropriate values for your service bus:
 
-```yml
+```yaml
 spring.jms.servicebus.connection-string=<ServiceBusNamespaceConnectionString>
 spring.jms.servicebus.topic-client-id=<ServiceBusTopicClientId>
 spring.jms.servicebus.idle-timeout=<IdleTimeout>
@@ -136,17 +136,17 @@ public class SendController {
     import org.slf4j.LoggerFactory;
     import org.springframework.jms.annotation.JmsListener;
     import org.springframework.stereotype.Component;
-
+    
     @Component
     public class QueueReceiveController {
-
+    
         private static final String QUEUE_NAME = "<ServiceBusQueueName>";
-
-        private final Logger logger = LoggerFactory.getLogger(QueueReceiveController.class);
-
+    
+        private final Logger LOGGER = LoggerFactory.getLogger(QueueReceiveController.class);
+    
         @JmsListener(destination = QUEUE_NAME, containerFactory = "jmsListenerContainerFactory")
         public void receiveMessage(User user) {
-            logger.info("Received message: {}", user.getName());
+            LOGGER.info("Received message: {}", user.getName());
         }
     }
     ```
@@ -155,29 +155,29 @@ public class SendController {
     > Replace `<ServiceBusQueueName>` with your own queue name configured in your Service Bus namespace.
 
 - Receive messages from a Service Bus subscription
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/jms/TopicReceiveController.java#L11-L30 -->
 
     Create a Java file named *TopicReceiveController.java* in the package directory of your app. Add the following code to the new file. Replace the `<ServiceBusTopicName>` placeholder with your own topic name configured in your Service Bus namespace. Replace the `<ServiceBusSubscriptionName>` placeholder with your own subscription name for your Service Bus topic.
+<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/jms/TopicReceiveController.java#L11-L30 -->
 
     ```java
     import org.slf4j.Logger;
     import org.slf4j.LoggerFactory;
     import org.springframework.jms.annotation.JmsListener;
     import org.springframework.stereotype.Component;
-
+    
     @Component
     public class TopicReceiveController {
-
+    
         private static final String TOPIC_NAME = "<ServiceBusTopicName>";
-
+    
         private static final String SUBSCRIPTION_NAME = "<ServiceBusSubscriptionName>";
-
-        private final Logger logger = LoggerFactory.getLogger(TopicReceiveController.class);
-
+    
+        private final Logger LOGGER = LoggerFactory.getLogger(TopicReceiveController.class);
+    
         @JmsListener(destination = TOPIC_NAME, containerFactory = "topicJmsListenerContainerFactory",
-                subscription = SUBSCRIPTION_NAME)
+            subscription = SUBSCRIPTION_NAME)
         public void receiveMessage(User user) {
-            logger.info("Received message: {}", user.getName());
+            LOGGER.info("Received message: {}", user.getName());
         }
     }
     ```
@@ -204,13 +204,13 @@ Spring allow all the supported logging systems to set logger levels set in the S
 
 The following example shows potential logging settings in `application.properties`:
 
-```properties
+```
 logging.level.root=WARN
 logging.level.org.springframework.web=DEBUG
 logging.level.org.hibernate=ERROR
 ```
 
-For more information about setting loging in pring, please refer to the [official doc](https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/boot-features-logging.html).
+For more information about setting loging in pring, please refer to the [official doc](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging).
  
 
 ## Next steps
