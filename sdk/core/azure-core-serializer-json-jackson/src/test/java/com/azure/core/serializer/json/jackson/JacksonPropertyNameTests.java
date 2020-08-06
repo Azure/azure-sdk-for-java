@@ -140,6 +140,34 @@ public class JacksonPropertyNameTests {
     }
 
     @Test
+    public void testPropertyNameOnMethodNameWithGetInMiddle() throws NoSuchMethodException {
+        class LocalHotel {
+            String hotelName;
+            String hotelId;
+            String flag;
+
+            public String hotelgetName() {
+                return hotelName;
+            }
+
+            public String getHotelGetId() {
+                return hotelId;
+            }
+
+            public String isFlag() {
+                return flag;
+            }
+        }
+
+        Method getterM1 = LocalHotel.class.getDeclaredMethod("hotelgetName");
+        Method getterM2 = LocalHotel.class.getDeclaredMethod("getHotelGetId");
+        Method getterM3 = LocalHotel.class.getDeclaredMethod("isFlag");
+
+        assertNull(serializer.convertMemberName(getterM1));
+        assertEquals("hotelGetId", serializer.convertMemberName(getterM2));
+        assertNull(serializer.convertMemberName(getterM3));
+    }
+    @Test
     public void testPropertyNameOnIgnoredMethodName() throws NoSuchMethodException {
         class LocalHotel {
             String hotelName;
