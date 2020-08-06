@@ -19,7 +19,7 @@ The following prerequisites are required in order to complete the steps in this 
 If you don't have an Azure subscription, create a [free account](https://azure.microsoft.com/free/?WT.mc_id=A261C142F) before you begin.
 ### Include the package
 
-`azure-active-directory-spring-boot-starter` is published on Maven Central Repository.
+`azure-spring-boot-starter-active-directory-b2c` is published on Maven Central Repository.
 If you are using Maven, add the following dependency.
 
 [//]: # "{x-version-update-start;com.microsoft.azure:azure-spring-boot-starter-active-directory-b2c;current}"
@@ -217,6 +217,19 @@ application to use the Spring annotations and classes to protect the web app.
 ### Enable client logging
 Azure SDKs for Java offer a consistent logging story to help aid in troubleshooting application errors and expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
 
+### Enable Spring logging
+Spring allow all the supported logging systems to set logger levels set in the Spring Environment (for example, in application.properties) by using `logging.level.<logger-name>=<level>` where level is one of TRACE, DEBUG, INFO, WARN, ERROR, FATAL, or OFF. The root logger can be configured by using logging.level.root.
+
+The following example shows potential logging settings in `application.properties`:
+
+```properties
+logging.level.root=WARN
+logging.level.org.springframework.web=DEBUG
+logging.level.org.hibernate=ERROR
+```
+
+For more information about setting loging in pring, please refer to the [official doc](https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/boot-features-logging.html).
+ 
 ## Next steps
 The following section provide a sample project illustrating how to use the starter.
 ### More sample code
@@ -233,4 +246,3 @@ Please follow [instructions here](../CONTRIBUTING.md) to build from source or co
 [package]: https://mvnrepository.com/artifact/com.microsoft.azure/azure-active-directory-b2c-spring-boot-starter
 [sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-oidc
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
-

@@ -111,65 +111,23 @@ public class KeyVaultSample implements CommandLineRunner {
 }
 ```
 
-### Multiple Key Vault support
-
-If you want to use multiple key vaults you need to define names for each of the
-key vaults you want to use and in which order the key vaults should be consulted.
-If a property exists in multiple key vaults the order determine which value you
-will get back.
-
-The example below shows a setup for 2 key vaults, named `keyvault1` and
-`keyvault2`. The order specifies that `keyvault1` will be consulted first.
-
-```
-azure.keyvault.order=keyvault1,keyvault2
-azure.keyvault.keyvault1.uri=put-a-azure-keyvault-uri-here
-azure.keyvault.keyvault1.client-id=put-a-azure-client-id-here
-azure.keyvault.keyvault1.client-key=put-a-azure-client-key-here
-azure.keyvault.keyvault1.tenant-id=put-a-azure-tenant-id-here
-azure.keyvault.keyvault2.uri=put-a-azure-keyvault-uri-here
-azure.keyvault.keyvault2.client-id=put-a-azure-client-id-here
-azure.keyvault.keyvault2.client-key=put-a-azure-client-key-here
-azure.keyvault.keyvault2.tenant-id=put-a-azure-tenant-id-here
-```
-
-Note if you decide to use multiple key vault support and you already have an
-existing configuration, please make sure you migrate that configuration to the
-multiple key vault variant. Mixing multiple key vaults with an existing single
-key vault configuration is a non supported scenario.
-
-### Case sensitive key mode
-
-The new case sensitive mode allows you to use case sensitive key vault names. Note
-that the key vault secret key still needs to honor the naming limitation as 
-described in [About keys, secrets, and certificates](https://docs.microsoft.com/en-us/azure/key-vault/general/about-keys-secrets-certificates).
-
-To enable case sensitive mode use:
-
-```
-azure.keyvault.case-sensitive-keys=true
-```
-
-### Placeholders in properties
-
-If your Spring property is using a name that does not honor the key vault secret
-key limitation use the following technique as described by 
-[Externalized Configuration](https://docs.spring.io/autorepo/docs/spring-boot/2.2.7.RELEASE/reference/html/spring-boot-features.html#boot-features-external-config-placeholders-in-properties) 
-in the Spring Boot documentation.
-
-An example of using a placeholder:
-
-```
-my.not.compliant.property=${myCompliantKeyVaultSecret}
-```
-
-The application will take care of getting the value that is backed by the 
-`myCompliantKeyVaultSecret` key name and assign its value to the non compliant
-`my.not.compliant.property`.
-
 ## Troubleshooting
 ### Enable client logging
 Azure SDKs for Java offer a consistent logging story to help aid in troubleshooting application errors and expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
+
+### Enable Spring logging
+Spring allow all the supported logging systems to set logger levels set in the Spring Environment (for example, in application.properties) by using `logging.level.<logger-name>=<level>` where level is one of TRACE, DEBUG, INFO, WARN, ERROR, FATAL, or OFF. The root logger can be configured by using logging.level.root.
+
+The following example shows potential logging settings in `application.properties`:
+
+```properties
+logging.level.root=WARN
+logging.level.org.springframework.web=DEBUG
+logging.level.org.hibernate=ERROR
+```
+
+For more information about setting loging in pring, please refer to the [official doc](https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/boot-features-logging.html).
+ 
 
 ## Next steps
 The following section provide a sample project illustrating how to use the starter.

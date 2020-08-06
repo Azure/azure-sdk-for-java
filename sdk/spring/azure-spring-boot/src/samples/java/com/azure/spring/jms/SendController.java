@@ -21,14 +21,14 @@ public class SendController {
 
     private static final String DESTINATION_NAME = "<DestinationName>";
 
-    private static final Logger logger = LoggerFactory.getLogger(SendController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SendController.class);
 
     @Autowired
     private JmsTemplate jmsTemplate;
 
     @PostMapping("/messages")
     public String postMessage(@RequestParam String message) {
-        logger.info("Sending message");
+        LOGGER.info("Sending message");
         jmsTemplate.convertAndSend(DESTINATION_NAME, new User(message));
         return message;
     }
