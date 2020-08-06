@@ -174,7 +174,7 @@ com.azure:sdk-build-tools;1.0.0
 com.beust:jcommander;1.58
 com.google.code.findbugs:jsr305;3.0.2
 com.nimbusds:nimbus-jose-jwt;7.9
-com.nimbusds:oauth2-oidc-sdk;6.14
+com.nimbusds:oauth2-oidc-sdk;7.1.1
 com.puppycrawl.tools:checkstyle;8.29
 commons-io:commons-io;2.5
 commons-validator:commons-validator;1.6
