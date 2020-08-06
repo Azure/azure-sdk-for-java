@@ -5,7 +5,6 @@ package com.azure.core.serializer.json.jackson;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -202,7 +201,7 @@ public class JacksonPropertyNameTests {
     }
 
     @Test
-    public void testPropertyNameOnConstructor() throws JsonProcessingException, NoSuchMethodException {
+    public void testPropertyNameOnConstructor() {
         Constructor<?>[] constructors = Hotel.class.getConstructors();
         assertEquals(1, constructors.length);
 
