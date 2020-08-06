@@ -123,7 +123,10 @@ public class AzureIdentitySpringHelper {
                     .pemCertificate(clientCertificatePath)
                     .build();            
             credentials.put(name, credential);
+            return;
         }
+        
+        throw new RuntimeException("Configuration for azure.credential" + name + " is incomplete");
     }
 
     /**
