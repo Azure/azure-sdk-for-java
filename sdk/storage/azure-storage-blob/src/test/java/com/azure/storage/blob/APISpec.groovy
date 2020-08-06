@@ -38,6 +38,7 @@ import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.policy.RetryPolicyType
 import reactor.core.publisher.Flux
+import reactor.core.publisher.Hooks
 import reactor.core.publisher.Mono
 import spock.lang.Requires
 import spock.lang.Shared
@@ -150,7 +151,11 @@ class APISpec extends Specification {
     protected String testName
     String containerName
 
+    def static KB = 1024
+    def static MB = KB * 1024
+
     def setupSpec() {
+        Hooks.onOperatorDebug()
         testMode = setupTestMode()
         primaryCredential = getCredential(PRIMARY_STORAGE)
         alternateCredential = getCredential(SECONDARY_STORAGE)

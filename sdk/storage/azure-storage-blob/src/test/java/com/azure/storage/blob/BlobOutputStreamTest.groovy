@@ -7,7 +7,7 @@ import com.azure.storage.common.implementation.Constants
 import spock.lang.Requires
 
 class BlobOutputStreamTest extends APISpec {
-    private static int FOUR_MB = 4 * Constants.MB
+    private static int FOUR_MB = 4 * MB
 
     @Requires({ liveMode() })
     def "BlockBlob output stream"() {
