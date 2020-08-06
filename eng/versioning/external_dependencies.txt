@@ -87,8 +87,6 @@ org.springframework.boot:spring-boot-starter-validation;2.3.2.RELEASE
 org.springframework.boot:spring-boot-starter-web;2.3.2.RELEASE
 org.springframework.boot:spring-boot-starter;2.3.2.RELEASE
 org.springframework.boot:spring-boot;2.3.2.RELEASE
-org.springframework.cloud:spring-cloud-bus;2.2.0.RELEASE
-org.springframework.cloud:spring-cloud-context;2.2.0.RELEASE
 org.springframework.data:spring-data-commons;2.3.0.RELEASE
 org.springframework.integration:spring-integration-core;5.2.4.RELEASE
 org.springframework.security:spring-security-config;5.3.2.RELEASE
@@ -107,6 +105,10 @@ org.springframework:spring-messaging;5.2.4.RELEASE
 org.springframework:spring-tx;5.2.6.RELEASE
 org.springframework:spring-web;5.2.6.RELEASE
 org.springframework:spring-webmvc;5.2.6.RELEASE
+
+org.springframework.cloud:spring-cloud-bus;2.2.0.RELEASE
+org.springframework.cloud:spring-cloud-context;2.2.0.RELEASE
+
 pl.pragmatists:JUnitParams;1.1.1
 
 ## Test dependency versions
