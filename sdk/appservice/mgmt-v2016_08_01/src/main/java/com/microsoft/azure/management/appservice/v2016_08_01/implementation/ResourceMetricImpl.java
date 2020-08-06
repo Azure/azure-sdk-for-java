@@ -18,15 +18,15 @@ import com.microsoft.azure.management.appservice.v2016_08_01.ResourceMetricName;
 import com.microsoft.azure.management.appservice.v2016_08_01.ResourceMetricProperty;
 
 class ResourceMetricImpl extends WrapperImpl<ResourceMetricInner> implements ResourceMetric {
-    private final AppServiceManager manager;
+    private final WebManager manager;
 
-    ResourceMetricImpl(ResourceMetricInner inner,  AppServiceManager manager) {
+    ResourceMetricImpl(ResourceMetricInner inner,  WebManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 
