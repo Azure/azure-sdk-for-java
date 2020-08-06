@@ -522,8 +522,8 @@ public final class FormTrainingAsyncClient {
                 final UUID resultUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
                 Objects.requireNonNull(modelId, "'modelId' cannot be null.");
                 return service.getCustomModelCopyResultWithResponseAsync(UUID.fromString(modelId), resultUid, context)
-                    .map(modelResponse -> {
-                        CopyOperationResult copyOperationResult = modelResponse.getValue();
+                    .map(modelSimpleResponse -> {
+                        CopyOperationResult copyOperationResult = modelSimpleResponse.getValue();
                         return new CustomFormModelInfo(copyModelId,
                             copyOperationResult.getStatus() == OperationStatus.SUCCEEDED
                                 ? CustomFormModelStatus.READY
@@ -539,14 +539,14 @@ public final class FormTrainingAsyncClient {
     }
 
     private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>>
-        createCopyPollOperation(String modelId, Context context) {
+    createCopyPollOperation(String modelId, Context context) {
         return (pollingContext) -> {
             try {
                 PollResponse<OperationResult> operationResultPollResponse = pollingContext.getLatestResponse();
                 UUID targetId = UUID.fromString(operationResultPollResponse.getValue().getResultId());
                 return service.getCustomModelCopyResultWithResponseAsync(UUID.fromString(modelId), targetId, context)
-                        .flatMap(modelResponse ->
-                            processCopyModelResponse(modelResponse, operationResultPollResponse))
+                    .flatMap(modelSimpleResponse ->
+                        processCopyModelResponse(modelSimpleResponse, operationResultPollResponse))
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
             } catch (HttpResponseException ex) {
                 return monoError(logger, ex);
@@ -603,12 +603,12 @@ public final class FormTrainingAsyncClient {
     }
 
     private Function<PollingContext<OperationResult>, Mono<CustomFormModel>>
-        fetchTrainingModelResultOperation(Context context) {
+    fetchTrainingModelResultOperation(Context context) {
         return (pollingContext) -> {
             try {
                 final UUID modelUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
                 return service.getCustomModelWithResponseAsync(modelUid, true, context)
-                    .map(modelResponse -> toCustomFormModel(modelResponse.getValue()))
+                    .map(modelSimpleResponse -> toCustomFormModel(modelSimpleResponse.getValue()))
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
@@ -617,14 +617,14 @@ public final class FormTrainingAsyncClient {
     }
 
     private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>>
-        createTrainingPollOperation(Context context) {
+    createTrainingPollOperation(Context context) {
         return (pollingContext) -> {
             try {
                 PollResponse<OperationResult> operationResultPollResponse = pollingContext.getLatestResponse();
                 UUID modelUid = UUID.fromString(operationResultPollResponse.getValue().getResultId());
                 return service.getCustomModelWithResponseAsync(modelUid, true, context)
-                    .flatMap(modelResponse ->
-                        processTrainingModelResponse(modelResponse, operationResultPollResponse))
+                    .flatMap(modelSimpleResponse ->
+                        processTrainingModelResponse(modelSimpleResponse, operationResultPollResponse))
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
             }  catch (HttpResponseException ex) {
                 return monoError(logger, ex);
