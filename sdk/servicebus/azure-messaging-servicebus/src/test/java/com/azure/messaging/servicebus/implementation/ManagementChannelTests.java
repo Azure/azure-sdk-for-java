@@ -61,7 +61,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 /**
@@ -185,7 +185,7 @@ class ManagementChannelTests {
         StepVerifier.create(managementChannel.setSessionState("", sessionState, LINK_NAME))
             .verifyError(IllegalArgumentException.class);
 
-        verifyZeroInteractions(requestResponseChannel);
+        verifyNoInteractions(requestResponseChannel);
     }
 
     /**
@@ -234,7 +234,7 @@ class ManagementChannelTests {
         StepVerifier.create(managementChannel.getSessionState("", LINK_NAME))
             .verifyError(IllegalArgumentException.class);
 
-        verifyZeroInteractions(requestResponseChannel);
+        verifyNoInteractions(requestResponseChannel);
     }
 
     /**
@@ -314,7 +314,7 @@ class ManagementChannelTests {
         StepVerifier.create(managementChannel.renewSessionLock("", LINK_NAME))
             .verifyError(IllegalArgumentException.class);
 
-        verifyZeroInteractions(requestResponseChannel);
+        verifyNoInteractions(requestResponseChannel);
     }
 
     /**
