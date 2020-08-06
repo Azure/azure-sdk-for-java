@@ -101,7 +101,25 @@ public class JacksonPropertyNameTests {
         }
 
         Method m = LocalHotel.class.getDeclaredMethod("getHotelName");
-        assertEquals("getHotelName", serializer.convertMemberName(m));
+        assertEquals("hotelName", serializer.convertMemberName(m));
+    }
+
+    @Test
+    public void testPropertyNameOnSetterMethodName() throws NoSuchMethodException {
+        class LocalHotel {
+            String hotelName;
+
+            public String getHotelName() {
+                return hotelName;
+            }
+
+            public void setHotelName(String hotelName) {
+                this.hotelName = hotelName;
+            }
+        }
+
+        Method m = LocalHotel.class.getDeclaredMethod("setHotelName", String.class);
+        assertEquals("hotelName", serializer.convertMemberName(m));
     }
 
     @Test
@@ -146,7 +164,7 @@ public class JacksonPropertyNameTests {
         }
 
         Method m = LocalHotel.class.getDeclaredMethod("getHotelName");
-        assertEquals("getHotelName", serializer.convertMemberName(m));
+        assertEquals("hotelName", serializer.convertMemberName(m));
     }
 
     @Test
@@ -162,7 +180,7 @@ public class JacksonPropertyNameTests {
 
         Method m = LocalHotel.class.getDeclaredMethod("getHotelName");
 
-        assertEquals("getHotelName", serializer.convertMemberName(m));
+        assertEquals("hotelName", serializer.convertMemberName(m));
     }
 
     public void assertMemberNull(Member m) {
