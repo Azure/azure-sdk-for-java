@@ -18,6 +18,7 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
@@ -42,19 +43,22 @@ public class ReactiveEtagIT {
 
     @Test
     public void testCrudOperationsShouldApplyEtag() {
-        final Mono<CourseWithEtag> insertedCourseWithEtagMono = reactiveCourseWithEtagRepository.save(createCourseWithEtag());
+        final Mono<CourseWithEtag> insertedCourseWithEtagMono =
+            reactiveCourseWithEtagRepository.save(createCourseWithEtag());
         CourseWithEtag insertedCourseWithEtag = insertedCourseWithEtagMono.block();
         Assert.assertNotNull(insertedCourseWithEtag);
         Assert.assertNotNull(insertedCourseWithEtag.getEtag());
 
         insertedCourseWithEtag.setName("CHANGED");
-        final Mono<CourseWithEtag> updatedCourseWithEtagMono = reactiveCourseWithEtagRepository.save(insertedCourseWithEtag);
+        final Mono<CourseWithEtag> updatedCourseWithEtagMono =
+            reactiveCourseWithEtagRepository.save(insertedCourseWithEtag);
         CourseWithEtag updatedCourseWithEtag = updatedCourseWithEtagMono.block();
         Assert.assertNotNull(updatedCourseWithEtag);
         Assert.assertNotNull(updatedCourseWithEtag.getEtag());
         Assert.assertNotEquals(updatedCourseWithEtag.getEtag(), insertedCourseWithEtag.getEtag());
 
-        final Mono<CourseWithEtag> foundCourseWithEtagMono = reactiveCourseWithEtagRepository.findById(insertedCourseWithEtag.getCourseId());
+        final Mono<CourseWithEtag> foundCourseWithEtagMono =
+            reactiveCourseWithEtagRepository.findById(insertedCourseWithEtag.getCourseId());
         CourseWithEtag foundCourseWithEtag = foundCourseWithEtagMono.block();
         Assert.assertNotNull(foundCourseWithEtag);
         Assert.assertNotNull(foundCourseWithEtag.getEtag());
@@ -74,10 +78,15 @@ public class ReactiveEtagIT {
         insertedCourseWithEtags.forEach(course -> Assert.assertNotNull(course.getEtag()));
 
         insertedCourseWithEtags.forEach(course -> course.setName("CHANGED"));
-        final Flux<CourseWithEtag> updatedCourseWithEtagsFlux = reactiveCourseWithEtagRepository.saveAll(insertedCourseWithEtags);
+        final Flux<CourseWithEtag> updatedCourseWithEtagsFlux =
+            reactiveCourseWithEtagRepository.saveAll(insertedCourseWithEtags);
         List<CourseWithEtag> updatedCourseWithEtags = updatedCourseWithEtagsFlux.collectList().block();
 
         Assert.assertNotNull(updatedCourseWithEtags);
+
+        insertedCourseWithEtags.sort(Comparator.comparing(CourseWithEtag::getCourseId));
+        updatedCourseWithEtags.sort(Comparator.comparing(CourseWithEtag::getCourseId));
+
         for (int i = 0; i < updatedCourseWithEtags.size(); i++) {
             CourseWithEtag insertedCourseWithEtag = insertedCourseWithEtags.get(i);
             CourseWithEtag updatedCourseWithEtag = updatedCourseWithEtags.get(i);
