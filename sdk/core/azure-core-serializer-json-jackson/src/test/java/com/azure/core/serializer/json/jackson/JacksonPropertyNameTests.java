@@ -5,12 +5,12 @@ package com.azure.core.serializer.json.jackson;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -42,7 +42,7 @@ public class JacksonPropertyNameTests {
             String hotelName;
         }
         Field f = LocalHotel.class.getDeclaredField("hotelName");
-        assertMemberNull(f);
+        assertNull(serializer.convertMemberName(f));
     }
 
     @Test
@@ -55,7 +55,7 @@ public class JacksonPropertyNameTests {
             }
         }
         Field f = LocalHotel.class.getDeclaredField("hotelName");
-        assertMemberNull(f);
+        assertNull(serializer.convertMemberName(f));
     }
 
     @Test
@@ -93,6 +93,7 @@ public class JacksonPropertyNameTests {
     public void testPropertyNameOnMethodName() throws NoSuchMethodException {
         class LocalHotel {
             String hotelName;
+            boolean flag;
 
             public String getHotelName() {
                 return hotelName;
@@ -100,12 +101,23 @@ public class JacksonPropertyNameTests {
             public void setHotelName(String hotelName) {
                 this.hotelName = hotelName;
             }
+
+            public boolean isFlag() {
+                return flag;
+            }
+            public void setFlag(boolean flag) {
+                this.flag = flag;
+            }
         }
 
         Method getterM = LocalHotel.class.getDeclaredMethod("getHotelName");
         assertEquals("hotelName", serializer.convertMemberName(getterM));
         Method setterM = LocalHotel.class.getDeclaredMethod("setHotelName", String.class);
         assertEquals("hotelName", serializer.convertMemberName(setterM));
+        Method getterWithIs = LocalHotel.class.getDeclaredMethod("isFlag");
+        assertEquals("flag", serializer.convertMemberName(getterWithIs));
+        Method setterWithIs = LocalHotel.class.getDeclaredMethod("isFlag");
+        assertEquals("flag", serializer.convertMemberName(setterWithIs));
     }
 
     @Test
@@ -139,7 +151,7 @@ public class JacksonPropertyNameTests {
             }
         }
         Method m = LocalHotel.class.getDeclaredMethod("getHotelName");
-        assertMemberNull(m);
+        assertNull(serializer.convertMemberName(m));
     }
 
     @Test
@@ -189,13 +201,8 @@ public class JacksonPropertyNameTests {
         assertEquals("hotelName", serializer.convertMemberName(m));
     }
 
-    public void assertMemberNull(Member m) {
-        assertNull(serializer.convertMemberName(m));
-    }
-
-
     @Test
-    public void testPropertyNameOnConstructor() {
+    public void testPropertyNameOnConstructor() throws JsonProcessingException, NoSuchMethodException {
         Constructor<?>[] constructors = Hotel.class.getConstructors();
         assertEquals(1, constructors.length);
 

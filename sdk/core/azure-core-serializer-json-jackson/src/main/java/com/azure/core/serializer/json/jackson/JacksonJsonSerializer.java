@@ -11,7 +11,9 @@ import com.azure.core.util.serializer.TypeReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.introspect.AnnotatedMethod;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.fasterxml.jackson.databind.util.BeanUtil;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -22,7 +24,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.Locale;
 
 /**
  * Jackson based implementation of the {@link JsonSerializer} interface.
@@ -95,7 +96,7 @@ public final class JacksonJsonSerializer implements MemberNameConverter, JsonSer
 
         if (member instanceof Method) {
             Method m = (Method) member;
-            String methodNameWithoutJavaBeans = removePrefix(m.getName());
+            String methodNameWithoutJavaBeans = removePrefix(m);
             if (m.isAnnotationPresent(JsonIgnore.class)) {
                 return null;
             }
@@ -109,14 +110,13 @@ public final class JacksonJsonSerializer implements MemberNameConverter, JsonSer
         return null;
     }
 
-    private String removePrefix(String methodName) {
-        if (methodName == null || !(methodName.contains("get") || methodName.contains("set"))) {
-            return methodName;
+    private String removePrefix(Method method) {
+        String nameWithoutBeans = BeanUtil.okNameForGetter(
+                new AnnotatedMethod(null, method, null, null), false);
+        if (nameWithoutBeans == null) {
+            nameWithoutBeans = BeanUtil.okNameForMutator(
+                new AnnotatedMethod(null, method, null, null), "set",false);
         }
-        String noPrefix = methodName.replaceFirst("^get|set", "");
-        if (noPrefix.length() == 0) {
-            return methodName;
-        }
-        return noPrefix.substring(0, 1).toLowerCase(Locale.ROOT) + noPrefix.substring(1);
+        return nameWithoutBeans == null ? method.getName() : nameWithoutBeans;
     }
 }
