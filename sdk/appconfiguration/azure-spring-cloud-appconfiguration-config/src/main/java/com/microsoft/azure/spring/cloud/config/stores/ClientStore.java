@@ -4,7 +4,6 @@ package com.microsoft.azure.spring.cloud.config.stores;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.ExponentialBackoff;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
@@ -27,25 +26,6 @@ import org.slf4j.LoggerFactory;
 public class ClientStore {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ClientStore.class);
-
-    // TODO: Move all applicationId to one place after all module moved to this repo.
-    // There is 24 char limitation about the app id. So some abbreviation needs to be applied:
-    // az: for Azure
-    // sp: for Spring
-    // sc: for Spring Cloud
-    // sd: for Spring Data
-    // ss: for Spring Streams
-    // kv: for Key Vault
-    // sb: for Storage Blobs
-    // sf: for Storage Files
-    // eh: for Event Hub
-    // bus: for Service Bus
-    // cfg: for App Config
-    // cos: for Cosmos
-    // aad: for AAD
-    // b2c: for AAD B2C
-    private static final String AZURE_SPRING_CLOUD_APP_CONFIGURATION =
-        "az-sc-cfg/" + ClientStore.class.getPackage().getImplementationVersion();
 
     private AppConfigurationProviderProperties appProperties;
 
@@ -136,7 +116,6 @@ public class ClientStore {
             clientProvider.setup(builder, endpoint);
         }
 
-        builder.httpLogOptions(new HttpLogOptions().setApplicationId(AZURE_SPRING_CLOUD_APP_CONFIGURATION));
         return builder.buildAsyncClient();
     }
 
