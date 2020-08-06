@@ -134,9 +134,9 @@ public class JacksonPropertyNameTests {
         }
 
         Method getterM = LocalHotel.class.getDeclaredMethod("hotelName1");
-        assertEquals("hotelName1", serializer.convertMemberName(getterM));
+        assertNull(serializer.convertMemberName(getterM));
         Method setterM = LocalHotel.class.getDeclaredMethod("hotelName2", String.class);
-        assertEquals("hotelName2", serializer.convertMemberName(setterM));
+        assertNull(serializer.convertMemberName(setterM));
     }
 
     @Test
@@ -206,6 +206,5 @@ public class JacksonPropertyNameTests {
         assertEquals(1, constructors.length);
 
         assertNull(serializer.convertMemberName(constructors[0]));
-;
     }
 }
