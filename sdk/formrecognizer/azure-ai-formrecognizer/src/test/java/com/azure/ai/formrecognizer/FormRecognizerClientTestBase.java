@@ -51,7 +51,6 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
-import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_API_KEY;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_ENDPOINT;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL;
@@ -85,8 +84,8 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     private static final String INVOICE_PDF = "Invoice_6.pdf";
     private static final String MULTIPAGE_INVOICE_PDF = "multipage_invoice1.pdf";
     private static final Pattern NON_DIGIT_PATTERN = Pattern.compile("[^0-9]+");
-    private static final String EXPECTED_MULTIPAGE_ADDRESS_VALUE = "123 Hobbit Lane 567 Main St. Redmond, WA Redmond," +
-        " WA";
+    private static final String EXPECTED_MULTIPAGE_ADDRESS_VALUE = "123 Hobbit Lane 567 Main St. Redmond, WA Redmond,"
+        + " WA";
     private static final String EXPECTED_MULTIPAGE_PHONE_NUMBER_VALUE = "+15555555555";
     private static final String ITEMIZED_RECEIPT_VALUE = "Itemized";
     private static final String IS_PLAYBACK_MODE = "isPlaybackMode";
@@ -103,15 +102,15 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     static final String EXPECTED_HTTPS_EXCEPTION_MESSAGE =
         "Max retries 3 times exceeded. Error Details: Key credentials require HTTPS to prevent leaking the key.";
     static final String EXPECTED_INVALID_IMAGE_CODE = "InvalidImage";
-    static final String EXPECTED_INVALID_IMAGE_ERROR_MESSAGE = "The input data is not a valid image or password " +
-        "protected.";
+    static final String EXPECTED_INVALID_IMAGE_ERROR_MESSAGE = "The input data is not a valid image or password "
+        + "protected.";
     static final String EXPECTED_INVALID_MODEL_ID_ERROR_CODE = "1001";
     static final String EXPECTED_INVALID_MODEL_ID_ERROR_MESSAGE =
         "Specified model not found or not ready, Model Id: 00000000-0000-0000-0000-000000000000";
     static final String EXPECTED_INVALID_UUID_EXCEPTION_MESSAGE = "Invalid UUID string: ";
     static final String EXPECTED_MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE = "'modelId' is required and cannot be null.";
-    static final String EXPECTED_UNABLE_TO_READ_FILE = "Analyze operation failed, errorCode: [2005], message: Unable " +
-        "to read file.";
+    static final String EXPECTED_UNABLE_TO_READ_FILE = "Analyze operation failed, errorCode: [2005], message: Unable "
+        + "to read file.";
 
     static final String ENCODED_EMPTY_SPACE = "{\"source\":\"https://fakeuri.com/blank%20space\"}";
 
@@ -137,11 +136,13 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion)
             .addPolicy(interceptorManager.getRecordPolicy());
+
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new AzureKeyCredential(INVALID_KEY));
         } else {
             builder.credential(new DefaultAzureCredentialBuilder().build());
-        } return builder;
+        }
+        return builder;
     }
 
     FormTrainingClientBuilder getFormTrainingClientBuilder(HttpClient httpClient,
@@ -539,12 +540,10 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             actualRecognizedReceiptFields.get("MerchantAddress"), readResults, includeFieldElements);
         validateFieldValueTransforms(expectedReceiptFields.get("Total"), actualRecognizedReceiptFields.get("Total"),
             readResults, includeFieldElements);
-        validateFieldValueTransforms(expectedReceiptFields.get("Subtotal"), actualRecognizedReceiptFields.get(
-            "Subtotal"),
-            readResults, includeFieldElements);
+        validateFieldValueTransforms(expectedReceiptFields.get("Subtotal"),
+            actualRecognizedReceiptFields.get("Subtotal"), readResults, includeFieldElements);
         validateFieldValueTransforms(expectedReceiptFields.get("Tax"), actualRecognizedReceiptFields.get("Tax"),
-            readResults,
-            includeFieldElements);
+            readResults, includeFieldElements);
         validateFieldValueTransforms(expectedReceiptFields.get("TransactionDate"),
             actualRecognizedReceiptFields.get("TransactionDate"), readResults, includeFieldElements);
         validateFieldValueTransforms(expectedReceiptFields.get("TransactionTime"),
@@ -851,11 +850,6 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     protected String getEndpoint() {
         return interceptorManager.isPlaybackMode() ? "https://localhost:8080"
             : Configuration.getGlobalConfiguration().get(AZURE_FORM_RECOGNIZER_ENDPOINT);
-    }
-
-    protected String getAPIKey() {
-        return interceptorManager.isPlaybackMode() ? INVALID_KEY
-            : Configuration.getGlobalConfiguration().get(AZURE_FORM_RECOGNIZER_API_KEY);
     }
 
     /**

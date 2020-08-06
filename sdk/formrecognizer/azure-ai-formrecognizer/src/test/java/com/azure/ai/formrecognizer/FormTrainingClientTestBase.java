@@ -345,11 +345,6 @@ public abstract class FormTrainingClientTestBase extends TestBase {
             : Configuration.getGlobalConfiguration().get(AZURE_FORM_RECOGNIZER_ENDPOINT);
     }
 
-    protected String getAPIKey() {
-        return interceptorManager.isPlaybackMode() ? INVALID_KEY
-            : Configuration.getGlobalConfiguration().get(AZURE_FORM_RECOGNIZER_API_KEY);
-    }
-
     void validateBlankPdfResultData(List<RecognizedForm> actualReceiptList) {
         assertEquals(1, actualReceiptList.size());
         final RecognizedForm actualReceipt = actualReceiptList.get(0);

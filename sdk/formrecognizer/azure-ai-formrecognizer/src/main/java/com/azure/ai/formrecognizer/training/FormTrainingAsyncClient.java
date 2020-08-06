@@ -539,7 +539,7 @@ public final class FormTrainingAsyncClient {
     }
 
     private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>>
-    createCopyPollOperation(String modelId, Context context) {
+        createCopyPollOperation(String modelId, Context context) {
         return (pollingContext) -> {
             try {
                 PollResponse<OperationResult> operationResultPollResponse = pollingContext.getLatestResponse();
@@ -603,7 +603,7 @@ public final class FormTrainingAsyncClient {
     }
 
     private Function<PollingContext<OperationResult>, Mono<CustomFormModel>>
-    fetchTrainingModelResultOperation(Context context) {
+        fetchTrainingModelResultOperation(Context context) {
         return (pollingContext) -> {
             try {
                 final UUID modelUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
@@ -617,7 +617,7 @@ public final class FormTrainingAsyncClient {
     }
 
     private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>>
-    createTrainingPollOperation(Context context) {
+        createTrainingPollOperation(Context context) {
         return (pollingContext) -> {
             try {
                 PollResponse<OperationResult> operationResultPollResponse = pollingContext.getLatestResponse();

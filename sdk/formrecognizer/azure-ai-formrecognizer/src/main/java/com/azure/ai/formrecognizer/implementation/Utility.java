@@ -193,7 +193,7 @@ public final class Utility {
 
     /**
      * Mapping a {@link ErrorResponseException} to {@link HttpResponseException} if exist. Otherwise, return
-     * original {@link Throwable}
+     * original {@link Throwable}.
      *
      * @param throwable A {@link Throwable}.
      * @return A {@link HttpResponseException} or the original throwable type.
