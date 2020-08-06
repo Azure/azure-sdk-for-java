@@ -5,7 +5,6 @@
 package com.azure.messaging.servicebus.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.messaging.servicebus.models.SubscriptionProperties;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -20,12 +19,12 @@ public final class CreateSubscriptionBodyContent {
     private String type;
 
     /*
-     * Topic information to create.
+     * Subscription information to create.
      */
     @JacksonXmlProperty(
             localName = "SubscriptionDescription",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private SubscriptionProperties subscriptionProperties;
+    private SubscriptionDescription subscriptionDescription;
 
     /**
      * Get the type property: MIME type of content.
@@ -48,22 +47,22 @@ public final class CreateSubscriptionBodyContent {
     }
 
     /**
-     * Get the subscriptionDescription property: Topic information to create.
+     * Get the subscriptionDescription property: Subscription information to create.
      *
      * @return the subscriptionDescription value.
      */
-    public SubscriptionProperties getSubscriptionProperties() {
-        return this.subscriptionProperties;
+    public SubscriptionDescription getSubscriptionDescription() {
+        return this.subscriptionDescription;
     }
 
     /**
-     * Set the subscriptionDescription property: Topic information to create.
+     * Set the subscriptionDescription property: Subscription information to create.
      *
-     * @param subscriptionProperties the subscriptionDescription value to set.
+     * @param subscriptionDescription the subscriptionDescription value to set.
      * @return the CreateSubscriptionBodyContent object itself.
      */
-    public CreateSubscriptionBodyContent setSubscriptionProperties(SubscriptionProperties subscriptionProperties) {
-        this.subscriptionProperties = subscriptionProperties;
+    public CreateSubscriptionBodyContent setSubscriptionDescription(SubscriptionDescription subscriptionDescription) {
+        this.subscriptionDescription = subscriptionDescription;
         return this;
     }
 }
