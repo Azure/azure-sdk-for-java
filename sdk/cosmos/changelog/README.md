@@ -1,4 +1,8 @@
 ## Changelog
+
+### 3.7.5
+- Added more diagnostics logging.
+
 ### 3.7.4
 - Added Change Feed Processor lag estimator feature: PR (https://github.com/Azure/azure-sdk-for-java/pull/11713)
 - Added Change Feed Processor `isStarted()` API: PR (https://github.com/Azure/azure-sdk-for-java/pull/11713)
