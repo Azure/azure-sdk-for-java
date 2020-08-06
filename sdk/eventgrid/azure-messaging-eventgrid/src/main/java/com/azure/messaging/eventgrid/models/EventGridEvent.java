@@ -159,4 +159,22 @@ public final class EventGridEvent {
         return this.event.getMetadataVersion();
     }
 
+    /**
+     * This overload is for internal use only. Please use the
+     * {@link EventGridEvent#EventGridEvent(String, String, String)} method to create an EventGridEvent.
+     * @param impl the internal implementation model to construct the event.
+     */
+    public EventGridEvent(com.azure.messaging.eventgrid.implementation.models.EventGridEvent impl) {
+        this.event = impl;
+    }
+
+    /**
+     * This is meant for internal use only. Please access the properties of this event using
+     * the given access methods.
+     * @return the implementation model of this event.
+     */
+    public com.azure.messaging.eventgrid.implementation.models.EventGridEvent toImpl() {
+        return this.event;
+    }
+
 }

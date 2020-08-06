@@ -246,4 +246,21 @@ public class CloudEvent {
         this.cloudEvent.getAdditionalProperties().put(name.toLowerCase(Locale.ENGLISH), value);
         return this;
     }
+
+    /**
+     * This constructor is for internal use only. Please use {@link CloudEvent#CloudEvent(String, String)} to construct
+     * an instance of this method.
+     * @param impl the implementation model to construct this event.
+     */
+    public CloudEvent(com.azure.messaging.eventgrid.implementation.models.CloudEvent impl) {
+        this.cloudEvent = impl;
+    }
+
+    /**
+     * This is for internal use only. Please use the provided get methods to access properties of this event.
+     * @return the implementation model of this event.
+     */
+    public com.azure.messaging.eventgrid.implementation.models.CloudEvent toImpl() {
+        return this.cloudEvent;
+    }
 }

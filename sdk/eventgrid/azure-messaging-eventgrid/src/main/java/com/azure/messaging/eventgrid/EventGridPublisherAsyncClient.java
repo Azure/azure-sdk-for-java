@@ -18,7 +18,6 @@ import com.azure.messaging.eventgrid.models.EventGridEvent;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 
 import static com.azure.core.util.FluxUtil.withContext;
@@ -68,20 +67,9 @@ public final class EventGridPublisherAsyncClient {
     Mono<Void> publishEvents(Iterable<EventGridEvent> events, Context context) {
         List<com.azure.messaging.eventgrid.implementation.models.EventGridEvent> implList = new ArrayList<>();
         for (EventGridEvent event : events) {
-            implList.add(toImpl(event));
+            implList.add(event.toImpl());
         }
         return impl.publishEventsAsync(hostname, implList, context);
-    }
-
-    private com.azure.messaging.eventgrid.implementation.models.EventGridEvent toImpl(EventGridEvent event) {
-        return new com.azure.messaging.eventgrid.implementation.models.EventGridEvent()
-            .setData(event.getData())
-            .setEventTime(event.getEventTime())
-            .setTopic(event.getTopic())
-            .setId(event.getId())
-            .setDataVersion(event.getDataVersion())
-            .setEventType(event.getEventType())
-            .setSubject(event.getSubject());
     }
 
     /**
@@ -98,25 +86,10 @@ public final class EventGridPublisherAsyncClient {
     Mono<Void> publishCloudEvents(Iterable<CloudEvent> events, Context context) {
         List<com.azure.messaging.eventgrid.implementation.models.CloudEvent> implList = new ArrayList<>();
         for (CloudEvent event : events) {
-            implList.add(toImpl(event));
+            implList.add(event.toImpl());
         }
 
         return impl.publishCloudEventEventsAsync(hostname, implList, context);
-    }
-
-    private com.azure.messaging.eventgrid.implementation.models.CloudEvent toImpl(CloudEvent event) {
-        return new com.azure.messaging.eventgrid.implementation.models.CloudEvent()
-            .setDatacontenttype(event.getDataContentType())
-            .setData(event.getData())
-            .setAdditionalProperties(event.getExtensionAttributes())
-            .setDataBase64(Base64.getEncoder().encodeToString(event.getBinaryData()))
-            .setSubject(event.getSubject())
-            .setDataschema(event.getDataSchema())
-            .setTime(event.getTime())
-            .setType(event.getType())
-            .setSpecversion(event.getSpecVersion())
-            .setSource(event.getSource())
-            .setId(event.getId());
     }
 
     /**
@@ -153,7 +126,7 @@ public final class EventGridPublisherAsyncClient {
     Mono<Response<Void>> publishEventsWithResponse(Iterable<EventGridEvent> events, Context context) {
         List<com.azure.messaging.eventgrid.implementation.models.EventGridEvent> implList = new ArrayList<>();
         for (EventGridEvent event : events) {
-            implList.add(toImpl(event));
+            implList.add(event.toImpl());
         }
         return impl.publishEventsWithResponseAsync(hostname, implList, context);
     }
@@ -172,7 +145,7 @@ public final class EventGridPublisherAsyncClient {
     Mono<Response<Void>> publishCloudEventsWithResponse(Iterable<CloudEvent> events, Context context) {
         List<com.azure.messaging.eventgrid.implementation.models.CloudEvent> implList = new ArrayList<>();
         for (CloudEvent event : events) {
-            implList.add(toImpl(event));
+            implList.add(event.toImpl());
         }
 
         return impl.publishCloudEventEventsWithResponseAsync(hostname, implList, context);
