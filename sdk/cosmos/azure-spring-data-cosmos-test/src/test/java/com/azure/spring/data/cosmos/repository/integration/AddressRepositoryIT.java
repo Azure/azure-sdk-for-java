@@ -36,16 +36,16 @@ import static org.assertj.core.api.Assertions.fail;
 public class AddressRepositoryIT {
 
     private static final Address TEST_ADDRESS1_PARTITION1 = new Address(
-            TestConstants.POSTAL_CODE, TestConstants.STREET, TestConstants.CITY);
+        TestConstants.POSTAL_CODE, TestConstants.STREET, TestConstants.CITY);
     private static final Address TEST_ADDRESS2_PARTITION1 = new Address(
-            TestConstants.POSTAL_CODE_0, TestConstants.STREET_0, TestConstants.CITY);
+        TestConstants.POSTAL_CODE_0, TestConstants.STREET_0, TestConstants.CITY);
     private static final Address TEST_ADDRESS1_PARTITION2 = new Address(
-            TestConstants.POSTAL_CODE_1, TestConstants.STREET_1, TestConstants.CITY_0);
+        TestConstants.POSTAL_CODE_1, TestConstants.STREET_1, TestConstants.CITY_0);
     private static final Address TEST_ADDRESS4_PARTITION3 = new Address(
-            TestConstants.POSTAL_CODE, TestConstants.STREET_2, TestConstants.CITY_1);
+        TestConstants.POSTAL_CODE, TestConstants.STREET_2, TestConstants.CITY_1);
 
     private static final CosmosEntityInformation<Address, String> entityInformation
-            = new CosmosEntityInformation<>(Address.class);
+        = new CosmosEntityInformation<>(Address.class);
 
     private static CosmosTemplate staticTemplate;
     private static boolean isSetupDone;
@@ -103,7 +103,7 @@ public class AddressRepositoryIT {
 
     @Test
     public void testFindByIdForPartitionedCollection() {
-        final List<Address> addresses = repository.findByPostalCode(TestConstants.POSTAL_CODE);
+        final List<Address> addresses = TestUtils.toList(repository.findByPostalCode(TestConstants.POSTAL_CODE));
 
         assertThat(addresses.size()).isEqualTo(2);
         assertThat(addresses.get(0).getPostalCode()).isEqualTo(TestConstants.POSTAL_CODE);
@@ -125,9 +125,9 @@ public class AddressRepositoryIT {
         final String city = TEST_ADDRESS1_PARTITION1.getCity();
         final String street = TEST_ADDRESS1_PARTITION2.getStreet();
 
-        final List<Address> result = repository.findByStreetOrCity(street, city);
+        final List<Address> result = TestUtils.toList(repository.findByStreetOrCity(street, city));
         final List<Address> reference = Arrays.asList(
-                TEST_ADDRESS1_PARTITION1, TEST_ADDRESS1_PARTITION2, TEST_ADDRESS2_PARTITION1);
+            TEST_ADDRESS1_PARTITION1, TEST_ADDRESS1_PARTITION2, TEST_ADDRESS2_PARTITION1);
 
         result.sort(Comparator.comparing(Address::getPostalCode));
         reference.sort(Comparator.comparing(Address::getPostalCode));
@@ -159,7 +159,7 @@ public class AddressRepositoryIT {
         assertThat(count).isEqualTo(4);
 
         repository.deleteByPostalCodeAndCity(
-                TEST_ADDRESS1_PARTITION1.getPostalCode(), TEST_ADDRESS1_PARTITION1.getCity());
+            TEST_ADDRESS1_PARTITION1.getPostalCode(), TEST_ADDRESS1_PARTITION1.getCity());
 
         final List<Address> result = TestUtils.toList(repository.findAll());
 
@@ -203,19 +203,19 @@ public class AddressRepositoryIT {
     @Test
     public void testFindAllByPartitionKey() {
         List<Address> findAll =
-            repository.findAll(new PartitionKey(TEST_ADDRESS1_PARTITION1.getCity()));
+            TestUtils.toList(repository.findAll(new PartitionKey(TEST_ADDRESS1_PARTITION1.getCity())));
         //  Since there are two addresses with partition1
         assertThat(findAll.size()).isEqualTo(2);
         assertThat(findAll.containsAll(Lists.newArrayList(TEST_ADDRESS1_PARTITION1,
             TEST_ADDRESS2_PARTITION1))).isTrue();
 
-        findAll = repository.findAll(new PartitionKey(TEST_ADDRESS1_PARTITION2.getCity()));
+        findAll = TestUtils.toList(repository.findAll(new PartitionKey(TEST_ADDRESS1_PARTITION2.getCity())));
         //  Since there is one address with partition2
         assertThat(findAll.size()).isEqualTo(1);
         assertThat(findAll.contains(TEST_ADDRESS1_PARTITION2)).isTrue();
 
 
-        findAll = repository.findAll(new PartitionKey(TEST_ADDRESS4_PARTITION3.getCity()));
+        findAll = TestUtils.toList(repository.findAll(new PartitionKey(TEST_ADDRESS4_PARTITION3.getCity())));
         //  Since there is one address with partition3
         assertThat(findAll.size()).isEqualTo(1);
         assertThat(findAll.contains(TEST_ADDRESS4_PARTITION3)).isTrue();
@@ -224,12 +224,13 @@ public class AddressRepositoryIT {
     @Test
     public void testUpdateEntity() {
         final Address updatedAddress = new Address(TEST_ADDRESS1_PARTITION1.getPostalCode(), TestConstants.NEW_STREET,
-                TEST_ADDRESS1_PARTITION1.getCity());
+            TEST_ADDRESS1_PARTITION1.getCity());
 
         repository.save(updatedAddress);
 
         final List<Address> results =
-                repository.findByPostalCodeAndCity(updatedAddress.getPostalCode(), updatedAddress.getCity());
+            TestUtils.toList(repository.findByPostalCodeAndCity(updatedAddress.getPostalCode(),
+                updatedAddress.getCity()));
 
         assertThat(results.size()).isEqualTo(1);
         assertThat(results.get(0).getStreet()).isEqualTo(updatedAddress.getStreet());

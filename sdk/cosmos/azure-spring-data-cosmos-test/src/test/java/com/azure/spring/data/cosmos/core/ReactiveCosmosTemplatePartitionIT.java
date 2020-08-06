@@ -33,21 +33,23 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.UUID;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class ReactiveCosmosTemplatePartitionIT {
-    private static final PartitionPerson TEST_PERSON = new PartitionPerson(TestConstants.ID_1, TestConstants.FIRST_NAME, TestConstants.ZIP_CODE,
-            TestConstants.HOBBIES, TestConstants.ADDRESSES);
+    private static final PartitionPerson TEST_PERSON = new PartitionPerson(TestConstants.ID_1,
+        TestConstants.FIRST_NAME, TestConstants.ZIP_CODE,
+        TestConstants.HOBBIES, TestConstants.ADDRESSES);
 
-    private static final PartitionPerson TEST_PERSON_2 = new PartitionPerson(TestConstants.ID_2, TestConstants.NEW_FIRST_NAME,
-            TEST_PERSON.getZipCode(), TestConstants.HOBBIES, TestConstants.ADDRESSES);
+    private static final PartitionPerson TEST_PERSON_2 = new PartitionPerson(TestConstants.ID_2,
+        TestConstants.NEW_FIRST_NAME,
+        TEST_PERSON.getZipCode(), TestConstants.HOBBIES, TestConstants.ADDRESSES);
 
     private static ReactiveCosmosTemplate cosmosTemplate;
     private static String containerName;
@@ -98,7 +100,7 @@ public class ReactiveCosmosTemplatePartitionIT {
     @Test
     public void testFindWithPartition() {
         final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, TestConstants.PROPERTY_ZIP_CODE,
-            Arrays.asList(TestConstants.ZIP_CODE), Part.IgnoreCaseType.NEVER);
+            Collections.singletonList(TestConstants.ZIP_CODE), Part.IgnoreCaseType.NEVER);
         final CosmosQuery query = new CosmosQuery(criteria);
         final Flux<PartitionPerson> partitionPersonFlux = cosmosTemplate.find(query,
             PartitionPerson.class,
@@ -112,7 +114,7 @@ public class ReactiveCosmosTemplatePartitionIT {
     @Test
     public void testFindIgnoreCaseWithPartition() {
         final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, TestConstants.PROPERTY_ZIP_CODE,
-            Arrays.asList(TestConstants.ZIP_CODE), Part.IgnoreCaseType.NEVER);
+            Collections.singletonList(TestConstants.ZIP_CODE), Part.IgnoreCaseType.NEVER);
         final CosmosQuery query = new CosmosQuery(criteria);
         final Flux<PartitionPerson> partitionPersonFlux = cosmosTemplate.find(query,
             PartitionPerson.class,
@@ -162,7 +164,7 @@ public class ReactiveCosmosTemplatePartitionIT {
             .toStream()
             .filter(p -> TEST_PERSON.getId().equals(p.getId()))
             .findFirst().get();
-        assertTrue(person.equals(updated));
+        assertEquals(person, updated);
     }
 
     @Test
@@ -181,8 +183,6 @@ public class ReactiveCosmosTemplatePartitionIT {
     public void testDeleteAll() {
         cosmosTemplate.insert(TEST_PERSON_2, new PartitionKey(TEST_PERSON_2.getZipCode())).block();
         StepVerifier.create(cosmosTemplate.findAll(PartitionPerson.class)).expectNextCount(2).verifyComplete();
-        final CosmosEntityInformation<PartitionPerson, String> personInfo =
-            new CosmosEntityInformation<>(PartitionPerson.class);
         cosmosTemplate.deleteAll(containerName, PartitionPerson.class).block();
         StepVerifier.create(cosmosTemplate.findAll(PartitionPerson.class))
                     .expectNextCount(0)
@@ -202,7 +202,7 @@ public class ReactiveCosmosTemplatePartitionIT {
     public void testCountForPartitionedCollectionByQuery() {
         cosmosTemplate.insert(TEST_PERSON_2, new PartitionKey(TEST_PERSON_2.getZipCode())).block();
         final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
-            Arrays.asList(TEST_PERSON_2.getFirstName()), Part.IgnoreCaseType.NEVER);
+            Collections.singletonList(TEST_PERSON_2.getFirstName()), Part.IgnoreCaseType.NEVER);
         final CosmosQuery query = new CosmosQuery(criteria);
         StepVerifier.create(cosmosTemplate.count(query, containerName))
                     .expectNext((long) 1).verifyComplete();
@@ -212,10 +212,10 @@ public class ReactiveCosmosTemplatePartitionIT {
     public void testCountIgnoreCaseForPartitionedCollectionByQuery() {
         cosmosTemplate.insert(TEST_PERSON_2, new PartitionKey(TEST_PERSON_2.getZipCode())).block();
         final Criteria criteriaIgnoreCase = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
-            Arrays.asList(TEST_PERSON_2.getFirstName().toUpperCase()), Part.IgnoreCaseType.ALWAYS);
+            Collections.singletonList(TEST_PERSON_2.getFirstName().toUpperCase()), Part.IgnoreCaseType.ALWAYS);
         final CosmosQuery queryIgnoreCase = new CosmosQuery(criteriaIgnoreCase);
         StepVerifier.create(cosmosTemplate.count(queryIgnoreCase, containerName))
-            .expectNext((long) 1).verifyComplete();
+                    .expectNext((long) 1).verifyComplete();
     }
 }
 

@@ -35,7 +35,7 @@ public class ReactiveAuditableIT {
 
     @After
     public void cleanup() {
-        this.auditableRepository.deleteAll();
+        this.auditableRepository.deleteAll().block();
     }
 
     @Test

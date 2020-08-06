@@ -4,10 +4,12 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.http.RequestConditions;
+import com.azure.storage.blob.models.PageBlobCopyIncrementalRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.CopyStatusType;
+import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions;
 import com.azure.storage.blob.options.PageBlobCreateOptions;
 import com.azure.storage.blob.models.PageBlobRequestConditions;
 import com.azure.storage.blob.models.PageRange;
@@ -364,15 +366,22 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
     public void copyIncrementalCodeSnippet() {
         // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.copyIncremental#String-String
         final String snapshot = "copy snapshot";
-        client.copyIncremental(url, snapshot).subscribe(response -> {
-            if (CopyStatusType.SUCCESS == response) {
-                System.out.println("Page blob copied successfully");
-            } else if (CopyStatusType.FAILED == response) {
-                System.out.println("Page blob copied failed");
-            } else if (CopyStatusType.ABORTED == response) {
-                System.out.println("Page blob copied aborted");
-            } else if (CopyStatusType.PENDING == response) {
-                System.out.println("Page blob copied pending");
+        client.copyIncremental(url, snapshot).subscribe(statusType -> {
+            switch (statusType) {
+                case SUCCESS:
+                    System.out.println("Page blob copied successfully");
+                    break;
+                case FAILED:
+                    System.out.println("Page blob copied failed");
+                    break;
+                case ABORTED:
+                    System.out.println("Page blob copied aborted");
+                    break;
+                case PENDING:
+                    System.out.println("Page blob copied pending");
+                    break;
+                default:
+                    break;
             }
         });
         // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.copyIncremental#String-String
@@ -391,17 +400,58 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
             .subscribe(response -> {
                 CopyStatusType statusType = response.getValue();
 
-                if (CopyStatusType.SUCCESS == statusType) {
-                    System.out.println("Page blob copied successfully");
-                } else if (CopyStatusType.FAILED == statusType) {
-                    System.out.println("Page blob copied failed");
-                } else if (CopyStatusType.ABORTED == statusType) {
-                    System.out.println("Page blob copied aborted");
-                } else if (CopyStatusType.PENDING == statusType) {
-                    System.out.println("Page blob copied pending");
+                switch (statusType) {
+                    case SUCCESS:
+                        System.out.println("Page blob copied successfully");
+                        break;
+                    case FAILED:
+                        System.out.println("Page blob copied failed");
+                        break;
+                    case ABORTED:
+                        System.out.println("Page blob copied aborted");
+                        break;
+                    case PENDING:
+                        System.out.println("Page blob copied pending");
+                        break;
+                    default:
+                        break;
                 }
             });
         // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.copyIncrementalWithResponse#String-String-RequestConditions
+    }
+
+    /**
+     * Code snippets for {@link PageBlobAsyncClient#copyIncrementalWithResponse(PageBlobCopyIncrementalOptions)}
+     */
+    public void copyIncrementalWithResponseCodeSnippet2() {
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.copyIncrementalWithResponse#PageBlobCopyIncrementalOptions
+        final String snapshot = "copy snapshot";
+        PageBlobCopyIncrementalRequestConditions destinationRequestConditions = new PageBlobCopyIncrementalRequestConditions()
+            .setIfNoneMatch("snapshotMatch");
+
+        client.copyIncrementalWithResponse(new PageBlobCopyIncrementalOptions(url, snapshot)
+            .setRequestConditions(destinationRequestConditions))
+            .subscribe(response -> {
+                CopyStatusType statusType = response.getValue();
+
+                switch (statusType) {
+                    case SUCCESS:
+                        System.out.println("Page blob copied successfully");
+                        break;
+                    case FAILED:
+                        System.out.println("Page blob copied failed");
+                        break;
+                    case ABORTED:
+                        System.out.println("Page blob copied aborted");
+                        break;
+                    case PENDING:
+                        System.out.println("Page blob copied pending");
+                        break;
+                    default:
+                        break;
+                }
+            });
+        // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.copyIncrementalWithResponse#PageBlobCopyIncrementalOptions
     }
 
 }
