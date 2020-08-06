@@ -17,7 +17,7 @@ class BlockBlobInputOutputStreamTest extends APISpec {
     @Unroll
     def "BlobInputStream read to large buffer"() {
         setup:
-        byte[] data = getRandomByteArray(6 * 1024 * 1024)
+        byte[] data = getRandomByteArray(dataSize)
         bc.upload(new ByteArrayInputStream(data), data.length, true)
         def is = bc.openInputStream()
         byte[] outArr = new byte[10 * 1024 * 1024]
@@ -27,7 +27,7 @@ class BlockBlobInputOutputStreamTest extends APISpec {
 
         then:
         Arrays.compare(data, 0, data.length, outArr, 0, data.length) == 0
-        count == data.length
+        count == retVal
 
         where:
         dataSize        || retVal
