@@ -11,7 +11,7 @@ import java.time.Duration;
 public class ServiceBusConstants {
     public static final String AZURE_ACTIVE_DIRECTORY_SCOPE = "https://servicebus.azure.net/.default";
     public static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(60);
-    public static final Duration SHORT_TIMEOUT_BETWEEN_MESSAGES = Duration.ofMillis(1000 * 2 );
+    public static final Duration SHORT_TIMEOUT_BETWEEN_MESSAGES = Duration.ofMillis(20);
     public static final Duration TOKEN_VALIDITY = Duration.ofMinutes(20);
 
     /**

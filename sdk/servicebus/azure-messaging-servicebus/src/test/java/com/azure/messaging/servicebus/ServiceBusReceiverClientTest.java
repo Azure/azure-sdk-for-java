@@ -48,7 +48,6 @@ class ServiceBusReceiverClientTest {
     private static final String ENTITY_PATH = "test-entity-path";
     private static final String LOCK_TOKEN = UUID.randomUUID().toString();
     private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(5);
-    private static final Duration TIMEOUT_BETWEEN_MESSAGES = Duration.ofSeconds(3);
 
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiverClientTest.class);
 
@@ -71,7 +70,7 @@ class ServiceBusReceiverClientTest {
         when(asyncClient.getReceiverOptions()).thenReturn(new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1,
             maxAutoLockRenewalDuration));
 
-        client = new ServiceBusReceiverClient(asyncClient, OPERATION_TIMEOUT, TIMEOUT_BETWEEN_MESSAGES);
+        client = new ServiceBusReceiverClient(asyncClient, OPERATION_TIMEOUT);
     }
 
     @AfterEach
@@ -81,8 +80,8 @@ class ServiceBusReceiverClientTest {
 
     @Test
     void nullConstructor() {
-        assertThrows(NullPointerException.class, () -> new ServiceBusReceiverClient(null, OPERATION_TIMEOUT, TIMEOUT_BETWEEN_MESSAGES));
-        assertThrows(NullPointerException.class, () -> new ServiceBusReceiverClient(asyncClient, null, TIMEOUT_BETWEEN_MESSAGES));
+        assertThrows(NullPointerException.class, () -> new ServiceBusReceiverClient(null, OPERATION_TIMEOUT));
+        assertThrows(NullPointerException.class, () -> new ServiceBusReceiverClient(asyncClient, null));
     }
 
     @Test

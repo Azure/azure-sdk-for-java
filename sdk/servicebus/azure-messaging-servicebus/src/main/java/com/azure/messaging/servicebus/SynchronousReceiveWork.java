@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import reactor.core.Disposable;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
@@ -31,7 +32,6 @@ class SynchronousReceiveWork {
     // Indicate that if processing started or not.
     private boolean processingStarted;
 
-    private final Duration shortTimeoutBetweenMessages;
     private Disposable timeoutBeforeNextMessageOperation;
 
     private volatile Throwable error = null;
@@ -45,13 +45,12 @@ class SynchronousReceiveWork {
      * @param emitter Sink to publish received messages to.
      */
     SynchronousReceiveWork(long id, int numberToReceive, Duration timeout,
-        FluxSink<ServiceBusReceivedMessageContext> emitter, Duration shortTimeoutBetweenMessages) {
+        FluxSink<ServiceBusReceivedMessageContext> emitter) {
         this.id = id;
         this.remaining = new AtomicInteger(numberToReceive);
         this.numberToReceive = numberToReceive;
         this.timeout = timeout;
         this.emitter = emitter;
-        this.shortTimeoutBetweenMessages = shortTimeoutBetweenMessages;
     }
 
     /**
@@ -170,7 +169,7 @@ class SynchronousReceiveWork {
         return this.processingStarted;
     }
 
-    private void close(){
+    private void close() {
         if (timeoutBeforeNextMessageOperation != null && !timeoutBeforeNextMessageOperation.isDisposed()) {
             timeoutBeforeNextMessageOperation.dispose();
         }
@@ -181,7 +180,7 @@ class SynchronousReceiveWork {
      * @return {@link Disposable} for the timeout operation.
      */
     private Disposable getShortTimeoutBetweenMessages() {
-        return Mono.delay(shortTimeoutBetweenMessages)
+        return Mono.delay(ServiceBusConstants.SHORT_TIMEOUT_BETWEEN_MESSAGES)
             .subscribe(l -> {
                 timeoutNextMessage();
             });

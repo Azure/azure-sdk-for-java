@@ -436,15 +436,22 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         sendMessage(message);
         Date start = new Date();
         // Act
-        final Stream<ServiceBusReceivedMessage> messages = receiver.receiveMessages(maxMessages, TIMEOUT)
-            .stream()
-            .map(ServiceBusReceivedMessageContext::getMessage);
+        IterableStream<ServiceBusReceivedMessageContext> messages = receiver.receiveMessages(maxMessages, TIMEOUT);
 
         // Assert
         final AtomicInteger receivedMessageCount = new AtomicInteger();
         messages.forEach(receivedMessage -> {
             assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
-            receiver.complete(receivedMessage.getLockToken());
+            receiver.complete(receivedMessage.getMessage().getLockToken());
+            messagesPending.decrementAndGet();
+            receivedMessageCount.incrementAndGet();
+        });
+
+        messages = receiver.receiveMessages(maxMessages, TIMEOUT);
+
+        messages.forEach(receivedMessage -> {
+            assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+            receiver.complete(receivedMessage.getMessage().getLockToken());
             messagesPending.decrementAndGet();
             receivedMessageCount.incrementAndGet();
         });
@@ -849,6 +856,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
                 .buildClient();
         } else {
             this.receiver = getReceiverBuilder(false, entityType, entityIndex, Function.identity(), sharedConnection)
+                //.prefetchCount(5)
                 .buildClient();
             this.receiveAndDeleteReceiver = getReceiverBuilder(false, entityType, entityIndex,
                 Function.identity(), sharedConnection)
