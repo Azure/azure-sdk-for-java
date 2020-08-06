@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.servicebus.perf;
 
 
@@ -10,6 +13,9 @@ import com.azure.messaging.servicebus.perf.core.ServiceTest;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+/**
+ * Performance test.
+ */
 public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptions> {
 
     public ReceiveAndLockMessageTest(ServiceBusStressOptions options) {

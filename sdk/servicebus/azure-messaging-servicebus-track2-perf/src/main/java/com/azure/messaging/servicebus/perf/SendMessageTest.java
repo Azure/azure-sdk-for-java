@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.servicebus.perf;
 
 import com.azure.messaging.servicebus.ServiceBusMessage;
@@ -6,6 +9,9 @@ import com.azure.messaging.servicebus.perf.core.ServiceBusStressOptions;
 import com.azure.messaging.servicebus.perf.core.ServiceTest;
 import reactor.core.publisher.Mono;
 
+/**
+ * Performance test.
+ */
 public class SendMessageTest extends ServiceTest<ServiceBusStressOptions> {
     private ServiceBusMessage message =  new ServiceBusMessage(CONTENTS.getBytes());;
 

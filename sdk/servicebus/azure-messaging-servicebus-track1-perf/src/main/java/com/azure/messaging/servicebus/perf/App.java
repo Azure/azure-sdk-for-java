@@ -16,6 +16,11 @@ import com.azure.perf.test.core.PerfStressProgram;
  * Then run the App's main method via IDE.</p>
  */
 public class App {
+
+    /**
+     *  main function.
+     * @param args args
+     */
     public static void main(String[] args) {
         Class<?>[] testClasses;
 

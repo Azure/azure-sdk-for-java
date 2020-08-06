@@ -1,4 +1,6 @@
 package com.azure.messaging.servicebus.perf.core;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 import com.azure.core.util.CoreUtils;
 import com.azure.perf.test.core.PerfStressOptions;
@@ -21,23 +23,25 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
     protected IMessageSender sender;
     protected IMessageReceiver receiver;
 
-    public ServiceTest(TOptions options, ReceiveMode receiveMode) throws ExecutionException, InterruptedException, ServiceBusException {
+    public ServiceTest(TOptions options, ReceiveMode receiveMode) {
         super(options);
         String connectionString = System.getenv(AZURE_SERVICE_BUS_CONNECTION_STRING);
         if (CoreUtils.isNullOrEmpty(connectionString)) {
-            System.out.println("Environment variable AZURE_SERVICE_BUS_CONNECTION_STRING must be set");
-            System.exit(1);
+            throw new IllegalArgumentException("Environment variable "+AZURE_SERVICE_BUS_CONNECTION_STRING+" must be set");
         }
 
         String queueName = System.getenv(AZURE_SERVICEBUS_QUEUE_NAME);
         if (CoreUtils.isNullOrEmpty(queueName)) {
-            System.out.println("Environment variable AZURE_SERVICEBUS_QUEUE_NAME must be set");
-            System.exit(1);
+            throw new IllegalArgumentException("Environment variable "+AZURE_SERVICEBUS_QUEUE_NAME+" must be set");
         }
 
         // Setup the service client
-        this.factory = MessagingFactory.createFromConnectionString(connectionString);
-        this.sender = ClientFactory.createMessageSenderFromEntityPath(this.factory, queueName);
-        this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, queueName, receiveMode);
+        try {
+            this.factory = MessagingFactory.createFromConnectionString(connectionString);
+            this.sender = ClientFactory.createMessageSenderFromEntityPath(factory, queueName);
+            this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, queueName, receiveMode);
+        } catch (Exception e) {
+            throw new RuntimeException("Problem in creating client. " + e.getMessage());
+        }
     }
 }

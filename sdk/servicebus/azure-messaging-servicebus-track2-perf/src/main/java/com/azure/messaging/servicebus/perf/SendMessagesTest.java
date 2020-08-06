@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.servicebus.perf;
 
 import com.azure.messaging.servicebus.ServiceBusMessage;
@@ -10,6 +13,9 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Performance test.
+ */
 public class SendMessagesTest extends ServiceTest<ServiceBusStressOptions> {
     private List<ServiceBusMessage> messages = new ArrayList<>();
 
@@ -23,6 +29,10 @@ public class SendMessagesTest extends ServiceTest<ServiceBusStressOptions> {
         return senderAsync.sendMessage(message).then();
     }
 
+    /**
+     * global setup
+     * @return void
+     */
     public Mono<Void> globalSetupAsync() {
         ServiceBusMessage message =  new ServiceBusMessage(CONTENTS.getBytes());
         return Flux.range(0, options.getMessagesToSend())

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.servicebus.perf;
 
 import com.azure.core.util.IterableStream;
@@ -10,7 +13,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 
-
+/**
+ * Performance test.
+ */
 public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOptions> {
 
     public ReceiveAndDeleteMessageTest(ServiceBusStressOptions options) {

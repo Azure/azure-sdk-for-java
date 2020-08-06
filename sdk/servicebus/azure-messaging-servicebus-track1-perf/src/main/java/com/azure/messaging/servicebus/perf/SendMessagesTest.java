@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.servicebus.perf;
 
 import com.azure.messaging.servicebus.perf.core.ServiceBusStressOptions;
@@ -14,14 +17,15 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
+/**
+ * Performance test.
+ */
 public class SendMessagesTest extends ServiceTest<ServiceBusStressOptions> {
     private List<IMessage> messages = new ArrayList<>();
 
     public SendMessagesTest(ServiceBusStressOptions options) throws InterruptedException, ExecutionException, ServiceBusException {
         super(options, ReceiveMode.PEEKLOCK);
     }
-
-
 
     public Mono<Void> globalSetupAsync() {
         String messageId = UUID.randomUUID().toString();

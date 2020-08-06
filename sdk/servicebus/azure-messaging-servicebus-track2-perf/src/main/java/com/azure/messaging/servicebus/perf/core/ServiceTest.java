@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.servicebus.perf.core;
 
 import com.azure.core.amqp.AmqpRetryOptions;
@@ -12,11 +15,12 @@ import com.azure.messaging.servicebus.ServiceBusSenderClient;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.perf.test.core.PerfStressTest;
-import reactor.core.scheduler.Scheduler;
-import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 
+/**
+ * Performance test.
+ */
 public abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStressTest<TOptions> {
     protected static final Duration TIMEOUT = Duration.ofSeconds(60);
     protected static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions().setTryTimeout(TIMEOUT);
@@ -37,14 +41,12 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
         super(options);
         String connectionString = System.getenv(AZURE_SERVICE_BUS_CONNECTION_STRING);
         if (CoreUtils.isNullOrEmpty(connectionString)) {
-            System.out.println("Environment variable AZURE_SERVICE_BUS_CONNECTION_STRING must be set");
-            System.exit(1);
+            throw new IllegalArgumentException("Environment variable "+AZURE_SERVICE_BUS_CONNECTION_STRING+" must be set");
         }
 
         String queueName = System.getenv(AZURE_SERVICEBUS_QUEUE_NAME);
         if (CoreUtils.isNullOrEmpty(queueName)) {
-            System.out.println("Environment variable AZURE_SERVICEBUS_QUEUE_NAME must be set");
-            System.exit(1);
+            throw new IllegalArgumentException("Environment variable "+AZURE_SERVICEBUS_QUEUE_NAME+" must be set");
         }
 
         // Setup the service client
