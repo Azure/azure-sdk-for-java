@@ -511,6 +511,9 @@
   <!-- Static logger instances for short lived objects. -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.util.serializer.TypeReference.java" />
 
-  <!-- False positive as these methods are implemented in an anonymous class that is not exposed publicly. -->
+  <!-- False positive as the methods are implemented in an anonymous class that is not exposed publicly. EntityHelper's
+    accessor classes are not visible. -->
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.messaging.servicebus.models.QueueProperties.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.messaging.servicebus.models.SubscriptionProperties.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.messaging.servicebus.models.TopicProperties.java"/>
 </suppressions>
