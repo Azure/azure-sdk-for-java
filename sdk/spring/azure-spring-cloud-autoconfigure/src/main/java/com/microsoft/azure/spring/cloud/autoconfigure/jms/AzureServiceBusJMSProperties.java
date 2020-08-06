@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.spring.cloud.autoconfigure.jms;
 
@@ -49,16 +46,16 @@ public class AzureServiceBusJMSProperties {
     @PostConstruct
     public void validate() {
         if (!StringUtils.hasText(connectionString)) {
-            throw new IllegalArgumentException("'spring.cloud.azure.servicebus.jms.connection-string' " +
-                    "should be provided");
+            throw new IllegalArgumentException("'spring.cloud.azure.servicebus.jms.connection-string' "
+                + "should be provided");
         }
         if (!StringUtils.hasText(clientId)) {
-            throw new IllegalArgumentException("'spring.cloud.azure.servicebus.jms.client-id' " +
-                    "should be provided");
+            throw new IllegalArgumentException("'spring.cloud.azure.servicebus.jms.client-id' "
+                + "should be provided");
         }
         if (!StringUtils.hasText(idleTimeout + "")) {
-            throw new IllegalArgumentException("'spring.cloud.azure.servicebus.jms.idle-timeout' " +
-                    "should be provided");
+            throw new IllegalArgumentException("'spring.cloud.azure.servicebus.jms.idle-timeout' "
+                + "should be provided");
         }
     }
 }

@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.spring.cloud.autoconfigure.cloudfoundry;
 
@@ -17,9 +14,9 @@ enum AzureCfService {
     EVENTHUB("eventhub", "azure-eventhubs", ImmutableMap.of("connectionString", "connection-string")),
     STORAGE("storage", "azure-storage", ImmutableMap.of("storageAccountName", "account", "accessKey", "access-key")),
     STORAGE_EVENTHUB("eventhub", "azure-storage",
-            ImmutableMap.of("storageAccountName", "checkpoint-storage-account", "accessKey", "checkpoint-access-key")),
+        ImmutableMap.of("storageAccountName", "checkpoint-storage-account", "accessKey", "checkpoint-access-key")),
     REDIS("spring.redis", "azure-rediscache", ImmutableMap.of("host", "host", "password", "password", "port", "port"),
-            false);
+        false);
 
     private static final String SPRING_CLOUD_AZURE_PROPERTY_PREFIX = "spring.cloud.azure.";
 
@@ -46,7 +43,7 @@ enum AzureCfService {
     }
 
     AzureCfService(String azureServiceName, String cfServiceName, Map<String, String> cfToAzureProperties,
-            boolean isAzureProperty) {
+                   boolean isAzureProperty) {
         this.cfServiceName = cfServiceName;
         this.azureServiceName = azureServiceName;
         this.isAzureProperty = isAzureProperty;
@@ -67,7 +64,7 @@ enum AzureCfService {
 
     private Map<String, String> buildCfToAzureProperties(Map<String, String> cfToAzureProperties) {
         return cfToAzureProperties.entrySet().stream().collect(
-                Collectors.toMap(Map.Entry::getKey, e -> getPropertyPrefix() + e.getValue()));
+            Collectors.toMap(Map.Entry::getKey, e -> getPropertyPrefix() + e.getValue()));
     }
 
     private String getPropertyPrefix() {

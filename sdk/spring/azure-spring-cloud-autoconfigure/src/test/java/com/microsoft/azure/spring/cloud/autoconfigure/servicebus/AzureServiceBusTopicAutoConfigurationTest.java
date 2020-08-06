@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.spring.cloud.autoconfigure.servicebus;
 
@@ -17,17 +14,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class AzureServiceBusTopicAutoConfigurationTest {
     private ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(AzureServiceBusTopicAutoConfiguration.class));
+        .withConfiguration(AutoConfigurations.of(AzureServiceBusTopicAutoConfiguration.class));
 
     @Test
     public void testAzureServiceBusTopicDisabled() {
         this.contextRunner.withPropertyValues("spring.cloud.azure.servicebus.enabled=false")
-                          .run(context -> assertThat(context).doesNotHaveBean(ServiceBusTopicOperation.class));
+            .run(context -> assertThat(context).doesNotHaveBean(ServiceBusTopicOperation.class));
     }
 
     @Test
     public void testWithoutAzureServiceBusTopicClient() {
         this.contextRunner.withClassLoader(new FilteredClassLoader(TopicClient.class))
-                          .run(context -> assertThat(context).doesNotHaveBean(ServiceBusTopicOperation.class));
+            .run(context -> assertThat(context).doesNotHaveBean(ServiceBusTopicOperation.class));
     }
 }

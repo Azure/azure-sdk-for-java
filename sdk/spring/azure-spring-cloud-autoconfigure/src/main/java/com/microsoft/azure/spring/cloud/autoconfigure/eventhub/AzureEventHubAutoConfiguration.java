@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.spring.cloud.autoconfigure.eventhub;
 
@@ -19,7 +16,6 @@ import com.microsoft.azure.spring.integration.eventhub.api.EventHubOperation;
 import com.microsoft.azure.spring.integration.eventhub.factory.DefaultEventHubClientFactory;
 import com.microsoft.azure.spring.integration.eventhub.factory.EventHubConnectionStringProvider;
 import com.microsoft.azure.spring.integration.eventhub.impl.EventHubTemplate;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -63,10 +59,10 @@ public class AzureEventHubAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public EventHubConnectionStringProvider eventHubConnectionStringProvider(
-            AzureEventHubProperties eventHubProperties) {
+        AzureEventHubProperties eventHubProperties) {
         if (resourceManagerProvider != null) {
             EventHubNamespace namespace = resourceManagerProvider.getEventHubNamespaceManager()
-                                                                 .getOrCreate(eventHubProperties.getNamespace());
+                .getOrCreate(eventHubProperties.getNamespace());
             return new EventHubConnectionStringProvider(namespace);
         } else {
             String connectionString = eventHubProperties.getConnectionString();
@@ -76,7 +72,7 @@ public class AzureEventHubAutoConfiguration {
             }
 
             TelemetryCollector.getInstance()
-                              .addProperty(EVENT_HUB, NAMESPACE, EventHubUtils.getNamespace(connectionString));
+                .addProperty(EVENT_HUB, NAMESPACE, EventHubUtils.getNamespace(connectionString));
             return new EventHubConnectionStringProvider(connectionString);
         }
     }
@@ -84,20 +80,20 @@ public class AzureEventHubAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public EventHubClientFactory clientFactory(EventHubConnectionStringProvider connectionStringProvider,
-            AzureEventHubProperties eventHubProperties, EnvironmentProvider environmentProvider) {
+                                               AzureEventHubProperties eventHubProperties, EnvironmentProvider environmentProvider) {
         String checkpointConnectionString;
         if (resourceManagerProvider != null) {
             StorageAccount checkpointStorageAccount = resourceManagerProvider.getStorageAccountManager().getOrCreate(
-                    eventHubProperties.getCheckpointStorageAccount());
+                eventHubProperties.getCheckpointStorageAccount());
             checkpointConnectionString = StorageConnectionStringProvider
-                    .getConnectionString(checkpointStorageAccount, environmentProvider.getEnvironment());
+                .getConnectionString(checkpointStorageAccount, environmentProvider.getEnvironment());
         } else {
             checkpointConnectionString = StorageConnectionStringProvider
-                    .getConnectionString(eventHubProperties.getCheckpointStorageAccount(),
-                            eventHubProperties.getCheckpointAccessKey(), environmentProvider.getEnvironment());
+                .getConnectionString(eventHubProperties.getCheckpointStorageAccount(),
+                    eventHubProperties.getCheckpointAccessKey(), environmentProvider.getEnvironment());
         }
 
         return new DefaultEventHubClientFactory(connectionStringProvider, checkpointConnectionString,
-                eventHubProperties.getCheckpointContainer());
+            eventHubProperties.getCheckpointContainer());
     }
 }

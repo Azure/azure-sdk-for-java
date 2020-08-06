@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.spring.cloud.storage;
 
@@ -18,8 +15,8 @@ import org.springframework.core.io.WritableResource;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.InputStream;
 import java.net.URL;
 
 /**
@@ -29,7 +26,7 @@ import java.net.URL;
  * @author Warren Zhu
  */
 public class BlobStorageResource extends AzureStorageResource {
-    private static final Logger log = LoggerFactory.getLogger(BlobStorageResource.class);
+    private static final Logger LOG = LoggerFactory.getLogger(BlobStorageResource.class);
     private static final String MSG_FAIL_GET = "Failed to get blob or container";
     private static final String MSG_FAIL_OPEN_OUTPUT = "Failed to open output stream of cloud blob";
     private static final String MSG_FAIL_CHECK_EXIST = "Failed to check existence of blob or container";
@@ -66,7 +63,7 @@ public class BlobStorageResource extends AzureStorageResource {
             }
             return this.blockBlobClient.getBlobOutputStream();
         } catch (BlobStorageException e) {
-            log.error(MSG_FAIL_OPEN_OUTPUT, e);
+            LOG.error(MSG_FAIL_OPEN_OUTPUT, e);
             throw new IOException(MSG_FAIL_OPEN_OUTPUT, e);
         }
     }
@@ -110,7 +107,7 @@ public class BlobStorageResource extends AzureStorageResource {
     @Override
     public String getDescription() {
         return String.format("Azure storage account blob resource [container='%s', blob='%s']",
-                        this.blockBlobClient.getContainerName(), this.blockBlobClient.getBlobName());
+            this.blockBlobClient.getContainerName(), this.blockBlobClient.getBlobName());
     }
 
     @Override
@@ -119,7 +116,7 @@ public class BlobStorageResource extends AzureStorageResource {
             assertExisted();
             return this.blockBlobClient.openInputStream();
         } catch (BlobStorageException e) {
-            log.error(MSG_FAIL_OPEN_INPUT, e);
+            LOG.error(MSG_FAIL_OPEN_INPUT, e);
             throw new IOException(MSG_FAIL_OPEN_INPUT);
         }
     }

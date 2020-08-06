@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.spring.cloud.autoconfigure.servicebus;
 
@@ -14,7 +11,6 @@ import com.microsoft.azure.spring.integration.servicebus.factory.DefaultServiceB
 import com.microsoft.azure.spring.integration.servicebus.factory.ServiceBusQueueClientFactory;
 import com.microsoft.azure.spring.integration.servicebus.queue.ServiceBusQueueOperation;
 import com.microsoft.azure.spring.integration.servicebus.queue.ServiceBusQueueTemplate;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -51,14 +47,14 @@ public class AzureServiceBusQueueAutoConfiguration {
     public ServiceBusQueueClientFactory queueClientFactory(AzureServiceBusProperties serviceBusProperties) {
         String connectionString = serviceBusProperties.getConnectionString();
         DefaultServiceBusQueueClientFactory clientFactory =
-                new DefaultServiceBusQueueClientFactory(serviceBusProperties.getConnectionString());
+            new DefaultServiceBusQueueClientFactory(serviceBusProperties.getConnectionString());
 
         if (resourceManagerProvider != null) {
             clientFactory.setResourceManagerProvider(resourceManagerProvider);
             clientFactory.setNamespace(serviceBusProperties.getNamespace());
         } else {
             TelemetryCollector.getInstance().addProperty(SERVICE_BUS_QUEUE, NAMESPACE,
-                    ServiceBusUtils.getNamespace(connectionString));
+                ServiceBusUtils.getNamespace(connectionString));
         }
 
         return clientFactory;

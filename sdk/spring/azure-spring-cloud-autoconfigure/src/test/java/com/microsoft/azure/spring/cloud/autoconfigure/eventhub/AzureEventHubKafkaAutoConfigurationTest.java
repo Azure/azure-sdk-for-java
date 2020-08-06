@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.spring.cloud.autoconfigure.eventhub;
 
@@ -31,33 +28,33 @@ import static org.mockito.Mockito.when;
 
 public class AzureEventHubKafkaAutoConfigurationTest {
     private ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(AzureEventHubKafkaAutoConfiguration.class))
-            .withUserConfiguration(TestConfiguration.class);
+        .withConfiguration(AutoConfigurations.of(AzureEventHubKafkaAutoConfiguration.class))
+        .withUserConfiguration(TestConfiguration.class);
 
     @Test
     public void testAzureEventHubDisabled() {
         this.contextRunner.withPropertyValues("spring.cloud.azure.eventhub.enabled=false")
-                          .run(context -> assertThat(context).doesNotHaveBean(AzureEventHubProperties.class));
+            .run(context -> assertThat(context).doesNotHaveBean(AzureEventHubProperties.class));
     }
 
     @Test
     public void testWithoutKafkaTemplate() {
         this.contextRunner.withClassLoader(new FilteredClassLoader(KafkaTemplate.class))
-                          .run(context -> assertThat(context).doesNotHaveBean(AzureEventHubProperties.class));
+            .run(context -> assertThat(context).doesNotHaveBean(AzureEventHubProperties.class));
     }
 
     @Test(expected = IllegalStateException.class)
     public void testAzureEventHubPropertiesNamespaceIllegal() {
         this.contextRunner.withPropertyValues("spring.cloud.azure.eventhub.namespace=")
-                .withPropertyValues("spring.cloud.azure.eventhub.checkpoint-storage-account=")
-                .run(context -> context.getBean(AzureEventHubProperties.class));
+            .withPropertyValues("spring.cloud.azure.eventhub.checkpoint-storage-account=")
+            .run(context -> context.getBean(AzureEventHubProperties.class));
     }
 
     @Test(expected = IllegalStateException.class)
     public void testAzureEventHubPropertiesStorageAccountIllegal() {
         this.contextRunner.withPropertyValues("spring.cloud.azure.eventhub.namespace=nsl")
-                .withPropertyValues("spring.cloud.azure.eventhub.checkpoint-storage-account=1")
-                .run(context -> context.getBean(AzureEventHubProperties.class));
+            .withPropertyValues("spring.cloud.azure.eventhub.checkpoint-storage-account=1")
+            .run(context -> context.getBean(AzureEventHubProperties.class));
     }
 
     @Ignore("org.apache.kafka.common.serialization.StringSerializer required on classpath")
@@ -86,7 +83,7 @@ public class AzureEventHubKafkaAutoConfigurationTest {
             PagedList<EventHubNamespaceAuthorizationRule> rules = new PagedList<EventHubNamespaceAuthorizationRule>() {
                 @Override
                 public Page<EventHubNamespaceAuthorizationRule> nextPage(String nextPageLink)
-                        throws RestException, IOException {
+                    throws RestException, IOException {
                     return null;
                 }
             };

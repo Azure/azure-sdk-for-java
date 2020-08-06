@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.spring.cloud.autoconfigure.cloudfoundry;
 
@@ -18,7 +15,13 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.PropertiesPropertySource;
 import org.springframework.util.StringUtils;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.Arrays;
+
 
 /**
  * Converts Azure service broker metadata into Spring Cloud Azure configuration properties.
@@ -26,13 +29,13 @@ import java.util.*;
  * @author Warren
  */
 public class AzureCloudFoundryEnvironmentPostProcessor implements EnvironmentPostProcessor, Ordered {
-    private static final Logger log = LoggerFactory.getLogger(AzureCloudFoundryEnvironmentPostProcessor.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AzureCloudFoundryEnvironmentPostProcessor.class);
 
     private static final String VCAP_SERVICES_ENVVAR = "VCAP_SERVICES";
 
-    private static final JsonParser parser = JsonParserFactory.getJsonParser();
+    private static final JsonParser PARSER = JsonParserFactory.getJsonParser();
 
-    private static final int order = ConfigFileApplicationListener.DEFAULT_ORDER - 1;
+    private static final int ORDER = ConfigFileApplicationListener.DEFAULT_ORDER - 1;
 
     @SuppressWarnings("unchecked")
     private static Properties retrieveCfProperties(Map<String, Object> vcapMap, AzureCfService azureCfService) {
@@ -46,17 +49,17 @@ public class AzureCloudFoundryEnvironmentPostProcessor implements EnvironmentPos
             }
 
             if (serviceBindings.size() != 1) {
-                log.warn("The service " + azureCfService.getCfServiceName() + " has to be bound to a " +
-                        "Cloud Foundry application once and only once.");
+                LOG.warn("The service " + azureCfService.getCfServiceName() + " has to be bound to a "
+                    + "Cloud Foundry application once and only once.");
                 return properties;
             }
 
             Map<String, Object> serviceBinding = (Map<String, Object>) serviceBindings.get(0);
             Map<String, String> credentialsMap = (Map<String, String>) serviceBinding.get("credentials");
             azureCfService.getCfToAzureProperties().forEach(
-                    (cfPropKey, azurePropKey) -> properties.put(azurePropKey, credentialsMap.get(cfPropKey)));
+                (cfPropKey, azurePropKey) -> properties.put(azurePropKey, credentialsMap.get(cfPropKey)));
         } catch (ClassCastException e) {
-            log.warn("Unexpected format of CF (VCAP) properties", e);
+            LOG.warn("Unexpected format of CF (VCAP) properties", e);
         }
 
         return properties;
@@ -65,7 +68,7 @@ public class AzureCloudFoundryEnvironmentPostProcessor implements EnvironmentPos
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
         if (!StringUtils.isEmpty(environment.getProperty(VCAP_SERVICES_ENVVAR))) {
-            Map<String, Object> vcapMap = parser.parseMap(environment.getProperty(VCAP_SERVICES_ENVVAR));
+            Map<String, Object> vcapMap = PARSER.parseMap(environment.getProperty(VCAP_SERVICES_ENVVAR));
 
             Properties azureCfServiceProperties = new Properties();
 
@@ -74,12 +77,12 @@ public class AzureCloudFoundryEnvironmentPostProcessor implements EnvironmentPos
             servicesToMap.forEach(service -> azureCfServiceProperties.putAll(retrieveCfProperties(vcapMap, service)));
 
             environment.getPropertySources()
-                       .addFirst(new PropertiesPropertySource("azureCf", azureCfServiceProperties));
+                .addFirst(new PropertiesPropertySource("azureCf", azureCfServiceProperties));
         }
     }
 
     @Override
     public int getOrder() {
-        return order;
+        return ORDER;
     }
 }

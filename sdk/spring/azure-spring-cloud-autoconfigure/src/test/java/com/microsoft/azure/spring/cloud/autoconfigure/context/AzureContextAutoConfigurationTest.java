@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.spring.cloud.autoconfigure.context;
 
@@ -24,50 +21,50 @@ import static org.mockito.Mockito.mock;
 
 public class AzureContextAutoConfigurationTest {
     private ApplicationContextRunner contextRunner =
-            new ApplicationContextRunner().withConfiguration(AutoConfigurations.of(AzureContextAutoConfiguration.class))
-                                          .withUserConfiguration(TestConfiguration.class);
+        new ApplicationContextRunner().withConfiguration(AutoConfigurations.of(AzureContextAutoConfiguration.class))
+            .withUserConfiguration(TestConfiguration.class);
 
     @Test
     public void testAzurePropertiesConfigured() {
         this.contextRunner.withPropertyValues("spring.cloud.azure.credentialFilePath=credential")
-                          .withPropertyValues("spring.cloud.azure.resourceGroup=group1")
-                          .withPropertyValues("spring.cloud.azure.region=westUS").run(context -> {
-            assertThat(context).hasSingleBean(AzureProperties.class);
-            assertThat(context.getBean(AzureProperties.class).getCredentialFilePath()).isEqualTo("credential");
-            assertThat(context.getBean(AzureProperties.class).getResourceGroup()).isEqualTo("group1");
-            assertThat(context.getBean(AzureProperties.class).getRegion()).isEqualTo("westUS");
-            assertThat(context.getBean(AzureProperties.class).getEnvironment()).isEqualTo(AzureEnvironment.AZURE);
-        });
+            .withPropertyValues("spring.cloud.azure.resourceGroup=group1")
+            .withPropertyValues("spring.cloud.azure.region=westUS").run(context -> {
+                assertThat(context).hasSingleBean(AzureProperties.class);
+                assertThat(context.getBean(AzureProperties.class).getCredentialFilePath()).isEqualTo("credential");
+                assertThat(context.getBean(AzureProperties.class).getResourceGroup()).isEqualTo("group1");
+                assertThat(context.getBean(AzureProperties.class).getRegion()).isEqualTo("westUS");
+                assertThat(context.getBean(AzureProperties.class).getEnvironment()).isEqualTo(AzureEnvironment.AZURE);
+            });
     }
 
     @Test
     public void testRequiredAzureProperties() {
         this.contextRunner.withPropertyValues("spring.cloud.azure.credentialFilePath=credential")
-                          .withPropertyValues("spring.cloud.azure.resourceGroup=group1").run(context -> {
-            assertThat(context).hasSingleBean(AzureProperties.class);
-            assertThat(context.getBean(AzureProperties.class).getCredentialFilePath()).isEqualTo("credential");
-            assertThat(context.getBean(AzureProperties.class).getResourceGroup()).isEqualTo("group1");
-        });
+            .withPropertyValues("spring.cloud.azure.resourceGroup=group1").run(context -> {
+                assertThat(context).hasSingleBean(AzureProperties.class);
+                assertThat(context.getBean(AzureProperties.class).getCredentialFilePath()).isEqualTo("credential");
+                assertThat(context.getBean(AzureProperties.class).getResourceGroup()).isEqualTo("group1");
+            });
     }
 
     @Test
     public void testAzureDisabled() {
         this.contextRunner.withPropertyValues("spring.cloud.azure.enabled=false")
-                          .run(context -> assertThat(context).doesNotHaveBean(AzureProperties.class));
+            .run(context -> assertThat(context).doesNotHaveBean(AzureProperties.class));
     }
 
     @Test
     public void testWithoutAzureClass() {
         this.contextRunner.withClassLoader(new FilteredClassLoader(Azure.class))
-                          .run(context -> assertThat(context).doesNotHaveBean(AzureProperties.class));
+            .run(context -> assertThat(context).doesNotHaveBean(AzureProperties.class));
     }
 
     @Test(expected = IllegalStateException.class)
     public void testLocationRequiredWhenAutoCreateResources() {
         this.contextRunner.withPropertyValues("spring.cloud.azure.credentialFilePath=credential")
-                          .withPropertyValues("spring.cloud.azure.resourceGroup=group1")
-                          .withPropertyValues("spring.cloud.azure.auto-create-resources=true")
-                          .run(context -> context.getBean(AzureProperties.class));
+            .withPropertyValues("spring.cloud.azure.resourceGroup=group1")
+            .withPropertyValues("spring.cloud.azure.auto-create-resources=true")
+            .run(context -> context.getBean(AzureProperties.class));
     }
 
     @Configuration

@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.spring.cloud.autoconfigure.eventhub;
 
@@ -22,45 +19,45 @@ import static org.mockito.Mockito.mock;
 
 public class AzureEventHubAutoConfigurationTest {
     private ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(AzureEventHubAutoConfiguration.class))
-            .withUserConfiguration(TestConfiguration.class);
+        .withConfiguration(AutoConfigurations.of(AzureEventHubAutoConfiguration.class))
+        .withUserConfiguration(TestConfiguration.class);
 
     @Test
     public void testAzureEventHubDisabled() {
         this.contextRunner.withPropertyValues("spring.cloud.azure.eventhub.enabled=false")
-                          .run(context -> assertThat(context).doesNotHaveBean(AzureEventHubProperties.class));
+            .run(context -> assertThat(context).doesNotHaveBean(AzureEventHubProperties.class));
     }
 
     @Test
     public void testWithoutEventHubClient() {
         this.contextRunner.withClassLoader(new FilteredClassLoader(EventHubConsumerAsyncClient.class))
-                          .run(context -> assertThat(context).doesNotHaveBean(AzureEventHubProperties.class));
+            .run(context -> assertThat(context).doesNotHaveBean(AzureEventHubProperties.class));
     }
 
     @Test(expected = IllegalStateException.class)
     public void testAzureEventHubPropertiesNamespaceIllegal() {
         this.contextRunner.withPropertyValues("spring.cloud.azure.eventhub.namespace=")
-                          .withPropertyValues("spring.cloud.azure.eventhub.checkpoint-storage-account=")
-                          .run(context -> context.getBean(AzureEventHubProperties.class));
+            .withPropertyValues("spring.cloud.azure.eventhub.checkpoint-storage-account=")
+            .run(context -> context.getBean(AzureEventHubProperties.class));
     }
 
     @Test(expected = IllegalStateException.class)
     public void testAzureEventHubPropertiesStorageAccountIllegal() {
         this.contextRunner.withPropertyValues("spring.cloud.azure.eventhub.namespace=nsl")
-                          .withPropertyValues("spring.cloud.azure.eventhub.checkpoint-storage-account=1")
-                          .run(context -> context.getBean(AzureEventHubProperties.class));
+            .withPropertyValues("spring.cloud.azure.eventhub.checkpoint-storage-account=1")
+            .run(context -> context.getBean(AzureEventHubProperties.class));
     }
 
     @Test
     public void testAzureEventHubPropertiesConfigured() {
         this.contextRunner.withPropertyValues("spring.cloud.azure.eventhub.namespace=ns1").
-                withPropertyValues("spring.cloud.azure.eventhub.checkpoint-storage-account=sa1").run(context -> {
-            assertThat(context).hasSingleBean(AzureEventHubProperties.class);
-            assertThat(context.getBean(AzureEventHubProperties.class).getNamespace()).isEqualTo("ns1");
-            assertThat(context.getBean(AzureEventHubProperties.class).getCheckpointStorageAccount()).isEqualTo("sa1");
-            assertThat(context).hasSingleBean(EventHubClientFactory.class);
-            assertThat(context).hasSingleBean(EventHubOperation.class);
-        });
+            withPropertyValues("spring.cloud.azure.eventhub.checkpoint-storage-account=sa1").run(context -> {
+                assertThat(context).hasSingleBean(AzureEventHubProperties.class);
+                assertThat(context.getBean(AzureEventHubProperties.class).getNamespace()).isEqualTo("ns1");
+                assertThat(context.getBean(AzureEventHubProperties.class).getCheckpointStorageAccount()).isEqualTo("sa1");
+                assertThat(context).hasSingleBean(EventHubClientFactory.class);
+                assertThat(context).hasSingleBean(EventHubOperation.class);
+            });
     }
 
     @Configuration

@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.spring.cloud.autoconfigure.storage;
 
@@ -16,7 +13,6 @@ import com.microsoft.azure.spring.cloud.context.core.api.ResourceManagerProvider
 import com.microsoft.azure.spring.cloud.context.core.storage.StorageConnectionStringProvider;
 import com.microsoft.azure.spring.cloud.storage.AzureStorageProtocolResolver;
 import com.microsoft.azure.spring.cloud.telemetry.TelemetryCollector;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,11 +37,11 @@ import static com.microsoft.azure.spring.cloud.context.core.util.Constants.SPRIN
  */
 @Configuration
 @AutoConfigureAfter(AzureContextAutoConfiguration.class)
-@ConditionalOnClass({ BlobServiceClientBuilder.class, ShareServiceClientBuilder.class })
+@ConditionalOnClass({BlobServiceClientBuilder.class, ShareServiceClientBuilder.class})
 @ConditionalOnProperty(name = "spring.cloud.azure.storage.account")
 @EnableConfigurationProperties(AzureStorageProperties.class)
 public class AzureStorageAutoConfiguration {
-    private static final Logger log = LoggerFactory.getLogger(AzureStorageAutoConfiguration.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AzureStorageAutoConfiguration.class);
     private static final String STORAGE = "Storage";
     private static final String ACCOUNT_NAME = "AccountName";
 
@@ -60,7 +56,7 @@ public class AzureStorageAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public BlobServiceClientBuilder blobServiceClientBuilder(AzureStorageProperties storageProperties,
-            EnvironmentProvider environmentProvider) {
+                                                             EnvironmentProvider environmentProvider) {
         String connectionString;
 
         if (resourceManagerProvider != null) {
@@ -68,23 +64,23 @@ public class AzureStorageAutoConfiguration {
 
             StorageAccount storageAccount = resourceManagerProvider.getStorageAccountManager().getOrCreate(accountName);
             connectionString = StorageConnectionStringProvider.getConnectionString(storageAccount,
-                    environmentProvider.getEnvironment(), storageProperties.isSecureTransfer());
+                environmentProvider.getEnvironment(), storageProperties.isSecureTransfer());
         } else {
             connectionString = StorageConnectionStringProvider
-                    .getConnectionString(storageProperties.getAccount(), storageProperties.getAccessKey(),
-                            environmentProvider.getEnvironment());
+                .getConnectionString(storageProperties.getAccount(), storageProperties.getAccessKey(),
+                    environmentProvider.getEnvironment());
             TelemetryCollector.getInstance().addProperty(STORAGE, ACCOUNT_NAME, storageProperties.getAccount());
         }
 
 
         return new BlobServiceClientBuilder().connectionString(connectionString)
-                .httpLogOptions(new HttpLogOptions().setApplicationId(SPRING_CLOUD_STORAGE_BLOB_APPLICATION_ID));
+            .httpLogOptions(new HttpLogOptions().setApplicationId(SPRING_CLOUD_STORAGE_BLOB_APPLICATION_ID));
     }
 
     @Bean
     @ConditionalOnMissingBean
     public ShareServiceClientBuilder shareServiceClientBuilder(AzureStorageProperties storageProperties,
-                                                    EnvironmentProvider environmentProvider) {
+                                                               EnvironmentProvider environmentProvider) {
         String connectionString;
 
         if (resourceManagerProvider != null) {
@@ -93,23 +89,23 @@ public class AzureStorageAutoConfiguration {
             StorageAccount storageAccount = resourceManagerProvider.getStorageAccountManager().getOrCreate(accountName);
 
             connectionString = StorageConnectionStringProvider
-                    .getConnectionString(storageAccount, environmentProvider.getEnvironment(),
-                            storageProperties.isSecureTransfer());
+                .getConnectionString(storageAccount, environmentProvider.getEnvironment(),
+                    storageProperties.isSecureTransfer());
         } else {
             connectionString = StorageConnectionStringProvider
-                    .getConnectionString(storageProperties.getAccount(), storageProperties.getAccessKey(),
-                            environmentProvider.getEnvironment());
+                .getConnectionString(storageProperties.getAccount(), storageProperties.getAccessKey(),
+                    environmentProvider.getEnvironment());
             TelemetryCollector.getInstance().addProperty(STORAGE, ACCOUNT_NAME, storageProperties.getAccount());
         }
 
 
         return new ShareServiceClientBuilder().connectionString(connectionString)
-                .httpLogOptions(new HttpLogOptions().setApplicationId(SPRING_CLOUD_STORAGE_FILE_SHARE_APPLICATION_ID));
+            .httpLogOptions(new HttpLogOptions().setApplicationId(SPRING_CLOUD_STORAGE_FILE_SHARE_APPLICATION_ID));
     }
 
     @Configuration
     @ConditionalOnClass(AzureStorageProtocolResolver.class)
     @Import(AzureStorageProtocolResolver.class)
-    class StorageResourceConfiguration {
+    static class StorageResourceConfiguration {
     }
 }

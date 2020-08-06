@@ -1,12 +1,11 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.spring.cloud.storage;
 
 import org.springframework.util.Assert;
+
+import java.util.Locale;
 
 /**
  * Azure storage resource utility class
@@ -18,10 +17,10 @@ final class AzureStorageUtils {
 
     static boolean isAzureStorageResource(String location, StorageType storageType) {
         Assert.notNull(location, "Location must not be null");
-        return location.toLowerCase().startsWith(getStorageProtocolPrefix(storageType));
+        return location.toLowerCase(Locale.ROOT).startsWith(getStorageProtocolPrefix(storageType));
     }
 
-    static String getStorageProtocolPrefix(StorageType storageType){
+    static String getStorageProtocolPrefix(StorageType storageType) {
         return String.format(STORAGE_PROTOCOL_PREFIX, storageType.getType());
     }
 }

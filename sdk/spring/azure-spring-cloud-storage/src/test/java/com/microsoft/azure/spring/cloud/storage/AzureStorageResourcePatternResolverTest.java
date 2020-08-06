@@ -1,8 +1,6 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.spring.cloud.storage;
 
 import com.azure.core.http.rest.PagedIterable;
@@ -17,19 +15,21 @@ import com.azure.storage.file.share.ShareDirectoryClient;
 import com.azure.storage.file.share.ShareServiceClient;
 import com.azure.storage.file.share.models.ShareFileItem;
 import com.azure.storage.file.share.models.ShareItem;
-import java.io.IOException;
-import java.util.ArrayList;
-import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * The JUnit tests for the AzureStorageResourcePatternResolver class.
@@ -58,7 +58,7 @@ public class AzureStorageResourcePatternResolverTest {
     @Test
     public void testGetResources() throws IOException {
         AzureStorageResourcePatternResolver resolver
-                = new AzureStorageResourcePatternResolver(blobServiceClient);
+            = new AzureStorageResourcePatternResolver(blobServiceClient);
         assertNotNull(resolver.getResources("azure-blob://mycontainer/myblob"));
     }
 
@@ -70,7 +70,7 @@ public class AzureStorageResourcePatternResolverTest {
     @Test
     public void testGetResources2() throws IOException {
         AzureStorageResourcePatternResolver resolver
-                = new AzureStorageResourcePatternResolver(blobServiceClient);
+            = new AzureStorageResourcePatternResolver(blobServiceClient);
         assertNotNull(resolver.getResources("azure-blob://mycontainer/*"));
     }
 
@@ -82,7 +82,7 @@ public class AzureStorageResourcePatternResolverTest {
     @Test
     public void testGetResources3() throws IOException {
         AzureStorageResourcePatternResolver resolver
-                = new AzureStorageResourcePatternResolver(blobServiceClient);
+            = new AzureStorageResourcePatternResolver(blobServiceClient);
         assertNotNull(resolver.getResources("azure-blob://*/myblob"));
     }
 
@@ -94,7 +94,7 @@ public class AzureStorageResourcePatternResolverTest {
     @Test
     public void testGetResources4() throws IOException {
         AzureStorageResourcePatternResolver resolver
-                = new AzureStorageResourcePatternResolver(blobServiceClient);
+            = new AzureStorageResourcePatternResolver(blobServiceClient);
         assertNotNull(resolver.getResources("azure-blob://*/*"));
     }
 
@@ -106,7 +106,7 @@ public class AzureStorageResourcePatternResolverTest {
     @Test
     public void testGetResources5() throws IOException {
         AzureStorageResourcePatternResolver resolver
-                = new AzureStorageResourcePatternResolver(shareServiceClient);
+            = new AzureStorageResourcePatternResolver(shareServiceClient);
         assertNotNull(resolver.getResources("azure-file://myshare/myfile"));
     }
 
@@ -118,7 +118,7 @@ public class AzureStorageResourcePatternResolverTest {
     @Test
     public void testGetResources6() throws IOException {
         AzureStorageResourcePatternResolver resolver
-                = new AzureStorageResourcePatternResolver(shareServiceClient);
+            = new AzureStorageResourcePatternResolver(shareServiceClient);
         assertNotNull(resolver.getResources("azure-file://myshare/*"));
     }
 
@@ -130,7 +130,7 @@ public class AzureStorageResourcePatternResolverTest {
     @Test
     public void testGetResources7() throws IOException {
         AzureStorageResourcePatternResolver resolver
-                = new AzureStorageResourcePatternResolver(shareServiceClient);
+            = new AzureStorageResourcePatternResolver(shareServiceClient);
         assertNotNull(resolver.getResources("azure-file://*/myfile"));
     }
 
@@ -142,7 +142,7 @@ public class AzureStorageResourcePatternResolverTest {
     @Test
     public void testGetResources8() throws IOException {
         AzureStorageResourcePatternResolver resolver
-                = new AzureStorageResourcePatternResolver(shareServiceClient);
+            = new AzureStorageResourcePatternResolver(shareServiceClient);
         assertNotNull(resolver.getResources("azure-file://*/*"));
     }
 
@@ -150,6 +150,7 @@ public class AzureStorageResourcePatternResolverTest {
     @Import(AzureStorageProtocolResolver.class)
     static class StorageApplication {
 
+        @SuppressWarnings("unchecked")
         @Bean
         public BlobServiceClient getBlobServiceClient() {
             BlobServiceClient client = mock(BlobServiceClient.class);
@@ -161,12 +162,12 @@ public class AzureStorageResourcePatternResolverTest {
 
             BlobContainerItem containerItem1 = new BlobContainerItem();
             containerItem1.setName("mycontainer");
-            ArrayList containerList = new ArrayList<BlobContainerItem>();
+            ArrayList<BlobContainerItem> containerList = new ArrayList<>();
             containerList.add(containerItem1);
 
             BlobItem blobItem1 = new BlobItem();
             blobItem1.setName("myblob");
-            ArrayList blobList = new ArrayList<>();
+            ArrayList<BlobItem> blobList = new ArrayList<>();
             blobList.add(blobItem1);
 
             when(client.listBlobContainers()).thenReturn(blobContainerItems);
@@ -181,6 +182,7 @@ public class AzureStorageResourcePatternResolverTest {
             return client;
         }
 
+        @SuppressWarnings("unchecked")
         @Bean
         public ShareServiceClient getShareServiceClient() {
             ShareServiceClient client = mock(ShareServiceClient.class);
@@ -191,11 +193,11 @@ public class AzureStorageResourcePatternResolverTest {
 
             ShareItem shareItem1 = new ShareItem();
             shareItem1.setName("myshare");
-            ArrayList shareList = new ArrayList<ShareItem>();
+            ArrayList<ShareItem> shareList = new ArrayList<>();
             shareList.add(shareItem1);
 
             ShareFileItem shareFileItem1 = new ShareFileItem("myfile", false, 0L);
-            ArrayList shareFileList = new ArrayList<ShareFileItem>();
+            ArrayList<ShareFileItem> shareFileList = new ArrayList<>();
             shareFileList.add(shareFileItem1);
 
             when(client.listShares()).thenReturn(shareItems);

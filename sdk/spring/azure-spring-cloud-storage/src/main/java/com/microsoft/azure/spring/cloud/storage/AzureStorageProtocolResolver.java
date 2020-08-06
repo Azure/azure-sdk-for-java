@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.spring.cloud.storage;
 
@@ -25,7 +22,7 @@ import org.springframework.core.io.ResourceLoader;
  * @author Warren Zhu
  */
 public class AzureStorageProtocolResolver implements ProtocolResolver, BeanFactoryPostProcessor, ResourceLoaderAware {
-    private static final Logger log = LoggerFactory.getLogger(AzureStorageProtocolResolver.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AzureStorageProtocolResolver.class);
     private ConfigurableListableBeanFactory beanFactory;
     private BlobServiceClientBuilder blobServiceClientBuilder;
     private ShareServiceClientBuilder shareServiceClientBuilder;
@@ -37,10 +34,10 @@ public class AzureStorageProtocolResolver implements ProtocolResolver, BeanFacto
 
     @Override
     public void setResourceLoader(ResourceLoader resourceLoader) {
-        if (DefaultResourceLoader.class.isAssignableFrom(resourceLoader.getClass())) {
+        if (resourceLoader instanceof DefaultResourceLoader) {
             ((DefaultResourceLoader) resourceLoader).addProtocolResolver(this);
         } else {
-            log.warn("Custom Protocol using azure-blob:// or azure-file:// prefix will not be enabled.");
+            LOG.warn("Custom Protocol using azure-blob:// or azure-file:// prefix will not be enabled.");
         }
     }
 

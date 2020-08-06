@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.spring.cloud.storage;
 
@@ -18,8 +15,8 @@ import org.springframework.core.io.WritableResource;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.InputStream;
 import java.net.URL;
 
 /**
@@ -29,7 +26,7 @@ import java.net.URL;
  * @author Warren Zhu
  */
 public class FileStorageResource extends AzureStorageResource {
-    private static final Logger log = LoggerFactory.getLogger(FileStorageResource.class);
+    private static final Logger LOG = LoggerFactory.getLogger(FileStorageResource.class);
     private static final String MSG_FAIL_GET = "Failed to get file or container";
     private static final String MSG_FAIL_OPEN_OUTPUT = "Failed to open output stream of file";
     private static final String MSG_FAIL_CHECK_EXIST = "Failed to check existence of file or container";
@@ -66,7 +63,7 @@ public class FileStorageResource extends AzureStorageResource {
             }
             return this.shareFileClient.getFileOutputStream();
         } catch (ShareStorageException e) {
-            log.error(MSG_FAIL_OPEN_OUTPUT, e);
+            LOG.error(MSG_FAIL_OPEN_OUTPUT, e);
             throw new IOException(MSG_FAIL_OPEN_OUTPUT, e);
         }
     }
@@ -111,7 +108,7 @@ public class FileStorageResource extends AzureStorageResource {
     @Override
     public String getDescription() {
         return String.format("Azure storage account file resource [container='%s', file='%s']",
-                this.shareFileClient.getShareName(), this.getFilename());
+            this.shareFileClient.getShareName(), this.getFilename());
     }
 
     @Override
@@ -120,7 +117,7 @@ public class FileStorageResource extends AzureStorageResource {
             assertExisted();
             return this.shareFileClient.openInputStream();
         } catch (ShareStorageException e) {
-            log.error("Failed to open input stream of cloud file", e);
+            LOG.error("Failed to open input stream of cloud file", e);
             throw new IOException("Failed to open input stream of cloud file");
         }
     }

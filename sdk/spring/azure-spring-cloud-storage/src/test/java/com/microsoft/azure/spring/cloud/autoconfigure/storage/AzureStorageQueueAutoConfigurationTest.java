@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.spring.cloud.autoconfigure.storage;
 
@@ -14,32 +11,33 @@ import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
 public class AzureStorageQueueAutoConfigurationTest {
 
     private ApplicationContextRunner contextRunner =
-            new ApplicationContextRunner()
-                    .withConfiguration(AutoConfigurations.of(AzureStorageQueueAutoConfiguration.class))
-                    .withUserConfiguration(TestConfiguration.class);
+        new ApplicationContextRunner()
+            .withConfiguration(AutoConfigurations.of(AzureStorageQueueAutoConfiguration.class))
+            .withUserConfiguration(TestConfiguration.class);
 
     @Test
     public void testAzureStorageDisabled() {
         this.contextRunner.withPropertyValues("spring.cloud.azure.storage.queue.enabled=false")
-                .run(context -> assertThat(context).doesNotHaveBean(AzureStorageProperties.class));
+            .run(context -> assertThat(context).doesNotHaveBean(AzureStorageProperties.class));
     }
 
     @Test
     public void testWithoutCloudQueueClient() {
         this.contextRunner.withClassLoader(new FilteredClassLoader(CloudQueueClient.class))
-                .run(context -> assertThat(context).doesNotHaveBean(AzureStorageProperties.class));
+            .run(context -> assertThat(context).doesNotHaveBean(AzureStorageProperties.class));
     }
 
     @Test(expected = IllegalStateException.class)
     public void testAzureStoragePropertiesIllegal() {
         this.contextRunner.withPropertyValues("spring.cloud.azure.storage.account=a")
-                .run(context -> context.getBean(AzureStorageProperties.class));
+            .run(context -> context.getBean(AzureStorageProperties.class));
     }
 
     @Test

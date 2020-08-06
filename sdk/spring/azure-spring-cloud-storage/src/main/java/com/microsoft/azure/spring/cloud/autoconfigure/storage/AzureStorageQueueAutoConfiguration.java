@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.spring.cloud.autoconfigure.storage;
 
@@ -18,7 +15,6 @@ import com.microsoft.azure.spring.integration.storage.queue.StorageQueueOperatio
 import com.microsoft.azure.spring.integration.storage.queue.StorageQueueTemplate;
 import com.microsoft.azure.spring.integration.storage.queue.factory.DefaultStorageQueueClientFactory;
 import com.microsoft.azure.spring.integration.storage.queue.factory.StorageQueueClientFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -62,12 +58,12 @@ public class AzureStorageQueueAutoConfiguration {
             StorageAccount storageAccount = resourceManagerProvider.getStorageAccountManager().getOrCreate(accountName);
 
             connectionString = StorageConnectionStringProvider
-                    .getConnectionString(storageAccount, environmentProvider.getEnvironment(),
-                            storageProperties.isSecureTransfer());
+                .getConnectionString(storageAccount, environmentProvider.getEnvironment(),
+                    storageProperties.isSecureTransfer());
         } else {
             connectionString = StorageConnectionStringProvider
-                    .getConnectionString(storageProperties.getAccount(), storageProperties.getAccessKey(),
-                            environmentProvider.getEnvironment());
+                .getConnectionString(storageProperties.getAccount(), storageProperties.getAccessKey(),
+                    environmentProvider.getEnvironment());
         }
 
         return new DefaultStorageQueueClientFactory(connectionString);

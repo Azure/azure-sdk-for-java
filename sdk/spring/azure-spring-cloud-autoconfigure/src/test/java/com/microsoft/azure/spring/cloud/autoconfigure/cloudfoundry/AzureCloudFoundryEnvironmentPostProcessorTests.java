@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.spring.cloud.autoconfigure.cloudfoundry;
 
@@ -27,14 +24,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class AzureCloudFoundryEnvironmentPostProcessorTests {
 
     private ApplicationContextRunner contextRunner = new ApplicationContextRunner().withInitializer(
-            context -> new AzureCloudFoundryEnvironmentPostProcessor()
-                    .postProcessEnvironment(context.getEnvironment(), null)).withUserConfiguration(
-            AzureCfEnvPPTestConfiguration.class);
+        context -> new AzureCloudFoundryEnvironmentPostProcessor()
+            .postProcessEnvironment(context.getEnvironment(), null)).withUserConfiguration(
+        AzureCfEnvPPTestConfiguration.class);
 
     @Test
     public void testConfigurationProperties() throws IOException {
         String vcapFileContents =
-                new String(Files.readAllBytes(new ClassPathResource("VCAP_SERVICES").getFile().toPath()));
+            new String(Files.readAllBytes(new ClassPathResource("VCAP_SERVICES").getFile().toPath()));
         this.contextRunner.withSystemProperties("VCAP_SERVICES=" + vcapFileContents).run(context -> {
             assertServicebus(context);
 
@@ -64,19 +61,19 @@ public class AzureCloudFoundryEnvironmentPostProcessorTests {
         assertThat(eventHubProperties.getCheckpointStorageAccount()).isEqualTo("fake");
         assertThat(eventHubProperties.getCheckpointAccessKey()).isEqualTo("fakekey==");
         assertThat(eventHubProperties.getConnectionString()).isEqualTo(
-                "Endpoint=sb://fake.servicebus.windows.net/;" +
-                        "SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=fakelongstring=");
+            "Endpoint=sb://fake.servicebus.windows.net/;"
+                + "SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=fakelongstring=");
     }
 
     private void assertServicebus(AssertableApplicationContext context) {
         AzureServiceBusProperties serviceBusProperties = context.getBean(AzureServiceBusProperties.class);
         assertThat(serviceBusProperties.getConnectionString()).isEqualTo(
-                "Endpoint=sb://fake.servicebus.windows.net/;" +
-                        "SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=fakekey=");
+            "Endpoint=sb://fake.servicebus.windows.net/;"
+                + "SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=fakekey=");
     }
 
     @EnableConfigurationProperties({AzureServiceBusProperties.class, AzureStorageProperties.class,
-            RedisProperties.class, AzureEventHubProperties.class})
+        RedisProperties.class, AzureEventHubProperties.class})
     static class AzureCfEnvPPTestConfiguration {
 
     }

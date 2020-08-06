@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.spring.cloud.autoconfigure.storage;
 
@@ -20,8 +17,8 @@ import static org.mockito.Mockito.mock;
 
 public class AzureStorageAutoConfigurationTest {
     private ApplicationContextRunner contextRunner =
-            new ApplicationContextRunner().withConfiguration(AutoConfigurations.of(AzureStorageAutoConfiguration.class))
-                                          .withUserConfiguration(TestConfiguration.class);
+        new ApplicationContextRunner().withConfiguration(AutoConfigurations.of(AzureStorageAutoConfiguration.class))
+            .withUserConfiguration(TestConfiguration.class);
 
     @Test
     public void testAzureStorageDisabled() {
@@ -31,13 +28,13 @@ public class AzureStorageAutoConfigurationTest {
     @Test
     public void testWithoutStorageClient() {
         this.contextRunner.withClassLoader(new FilteredClassLoader(BlobServiceClientBuilder.class))
-                          .run(context -> assertThat(context).doesNotHaveBean(AzureStorageProperties.class));
+            .run(context -> assertThat(context).doesNotHaveBean(AzureStorageProperties.class));
     }
 
     @Test(expected = IllegalStateException.class)
     public void testAzureStoragePropertiesIllegal() {
         this.contextRunner.withPropertyValues("spring.cloud.azure.storage.account=a")
-                .run(context -> context.getBean(AzureStorageProperties.class));
+            .run(context -> context.getBean(AzureStorageProperties.class));
     }
 
     @Test
@@ -47,26 +44,26 @@ public class AzureStorageAutoConfigurationTest {
             assertThat(context.getBean(AzureStorageProperties.class).getAccount()).isEqualTo("acc1");
         });
     }
-    
+
     @Test
     public void testDefaultTransferIsSecure() {
         this.contextRunner.withPropertyValues("spring.cloud.azure.storage.account=acc1")
-                          .run(context -> {
-            assertThat(context).hasSingleBean(AzureStorageProperties.class);
-            assertThat(context.getBean(AzureStorageProperties.class).getAccount()).isEqualTo("acc1");
-            assertThat(context.getBean(AzureStorageProperties.class).isSecureTransfer()).isEqualTo(true);
-        });
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureStorageProperties.class);
+                assertThat(context.getBean(AzureStorageProperties.class).getAccount()).isEqualTo("acc1");
+                assertThat(context.getBean(AzureStorageProperties.class).isSecureTransfer()).isEqualTo(true);
+            });
     }
-    
+
     @Test
     public void testSecureTransferCanBeDisabled() {
         this.contextRunner.withPropertyValues("spring.cloud.azure.storage.account=acc1")
-                          .withPropertyValues("spring.cloud.azure.storage.secureTransfer=false")
-                          .run(context -> {
-            assertThat(context).hasSingleBean(AzureStorageProperties.class);
-            assertThat(context.getBean(AzureStorageProperties.class).getAccount()).isEqualTo("acc1");
-            assertThat(context.getBean(AzureStorageProperties.class).isSecureTransfer()).isEqualTo(false);
-        });
+            .withPropertyValues("spring.cloud.azure.storage.secureTransfer=false")
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureStorageProperties.class);
+                assertThat(context.getBean(AzureStorageProperties.class).getAccount()).isEqualTo("acc1");
+                assertThat(context.getBean(AzureStorageProperties.class).isSecureTransfer()).isEqualTo(false);
+            });
     }
 
     @Configuration
