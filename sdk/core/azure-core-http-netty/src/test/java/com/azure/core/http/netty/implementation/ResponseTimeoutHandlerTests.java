@@ -13,6 +13,7 @@ import java.time.Duration;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -79,6 +80,6 @@ public class ResponseTimeoutHandlerTests {
 
         Thread.sleep(150);
 
-        verify(ctx, times(1)).fireExceptionCaught(any());
+        verify(ctx, atLeast(1)).fireExceptionCaught(any());
     }
 }

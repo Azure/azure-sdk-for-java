@@ -17,6 +17,7 @@ import java.time.Duration;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -90,12 +91,12 @@ public class WriteTimeoutHandlerTests {
 
         Thread.sleep(150);
 
-        verify(ctx, times(1)).fireExceptionCaught(any());
+        verify(ctx, atLeast(1)).fireExceptionCaught(any());
     }
 
     @Test
     public void writingUpdatesTimeout() throws InterruptedException {
-        WriteTimeoutHandler writeTimeoutHandler = new WriteTimeoutHandler(Duration.ofMillis(100));
+        WriteTimeoutHandler writeTimeoutHandler = new WriteTimeoutHandler(Duration.ofMillis(500));
 
         Channel.Unsafe unsafe = mock(Channel.Unsafe.class);
         when(unsafe.outboundBuffer()).thenReturn(null);
@@ -113,12 +114,12 @@ public class WriteTimeoutHandlerTests {
 
         writeTimeoutHandler.handlerAdded(ctx);
 
-        Thread.sleep(50);
+        Thread.sleep(100);
 
         writeTimeoutHandler.write(ctx, null, channelPromise);
         channelPromise.setSuccess();
 
-        Thread.sleep(75);
+        Thread.sleep(450);
 
         writeTimeoutHandler.handlerRemoved(ctx);
 

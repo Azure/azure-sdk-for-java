@@ -13,6 +13,7 @@ import java.time.Duration;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -79,23 +80,23 @@ public class ReadTimeoutHandlerTests {
 
         Thread.sleep(150);
 
-        verify(ctx, times(1)).fireExceptionCaught(any());
+        verify(ctx, atLeast(1)).fireExceptionCaught(any());
     }
 
     @Test
     public void readingUpdatesTimeout() throws InterruptedException {
-        ReadTimeoutHandler readTimeoutHandler = new ReadTimeoutHandler(Duration.ofMillis(100));
+        ReadTimeoutHandler readTimeoutHandler = new ReadTimeoutHandler(Duration.ofMillis(500));
 
         ChannelHandlerContext ctx = mock(ChannelHandlerContext.class);
         when(ctx.executor()).thenReturn(new DefaultEventExecutor());
 
         readTimeoutHandler.handlerAdded(ctx);
 
-        Thread.sleep(50);
+        Thread.sleep(100);
 
         readTimeoutHandler.channelReadComplete(ctx);
 
-        Thread.sleep(75);
+        Thread.sleep(450);
 
         readTimeoutHandler.handlerRemoved(ctx);
 
