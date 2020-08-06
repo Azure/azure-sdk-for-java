@@ -16,6 +16,8 @@ import reactor.test.StepVerifier
 import spock.lang.Specification
 import spock.lang.Unroll
 
+import java.nio.charset.StandardCharsets
+import java.security.MessageDigest
 import java.time.OffsetDateTime
 
 import static org.mockito.ArgumentMatchers.*
@@ -30,7 +32,11 @@ class ChunkTest extends Specification {
     BlobChunkedDownloaderFactory mockBlobLazyDownloaderFactory
     BlobChunkedDownloader mockBlobLazyDownloader
 
-    String chunkPath = "chunkPath"
+    byte[] urlHash = MessageDigest.getInstance("MD5").digest('https://testaccount.blob.core.windows.net/$blobchangefeed'.getBytes(StandardCharsets.UTF_8))
+    OffsetDateTime endTime = OffsetDateTime.MAX
+    String segmentPath = "idx/segments/2020/08/02/2300/meta.json"
+    String currentShardPath0 = "log/00/2020/08/02/2300/"
+    String chunkPath = "log/00/2020/08/02/2300/00000.avro"
     BlobChangefeedCursor chunkCursor
 
     List<BlobChangefeedEvent> mockEvents
@@ -39,7 +45,8 @@ class ChunkTest extends Specification {
 
     def setup() {
         setupEvents()
-        chunkCursor = new BlobChangefeedCursor(new byte[0], OffsetDateTime.MAX)
+        /* Default chunk cursor on shard 0. */
+        chunkCursor = new BlobChangefeedCursor(urlHash, endTime).toSegmentCursor(segmentPath).toShardCursor(currentShardPath0)
 
         mockContainer = mock(BlobContainerAsyncClient.class)
         mockBlob = mock(BlobAsyncClient.class)
@@ -83,7 +90,7 @@ class ChunkTest extends Specification {
             .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 9101, 1) })
             .verifyComplete()
 
-//        verify(mockContainer).getBlobAsyncClient(chunkPath) || true /* TODO : Test this in the BlobLazyDownloader tests. */
+        verify(mockContainer).getBlobAsyncClient(chunkPath) || true /* TODO : Test this in the BlobLazyDownloader tests. */
         verify(mockBlobLazyDownloaderFactory).getBlobLazyDownloader(chunkPath, ChunkFactory.DEFAULT_BODY_SIZE, 0) || true
         verify(mockBlobLazyDownloader).download() || true
         verify(mockAvroReaderFactory).getAvroReader(Flux.empty()) || true
@@ -117,7 +124,6 @@ class ChunkTest extends Specification {
             .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 9101, 1) })
             .verifyComplete()
 
-//        verify(mockContainer).getBlobAsyncClient(chunkPath) || true
         verify(mockBlobLazyDownloaderFactory).getBlobLazyDownloader(chunkPath, ChunkFactory.DEFAULT_HEADER_SIZE) || true
         verify(mockBlobLazyDownloaderFactory).getBlobLazyDownloader(chunkPath, ChunkFactory.DEFAULT_BODY_SIZE, blockOffset) || true
         verify(mockBlobLazyDownloader, times(2)).download() || true
@@ -140,13 +146,13 @@ class ChunkTest extends Specification {
 
     boolean verifyWrapper(BlobChangefeedEventWrapper wrapper, long index, long blockOffset, long blockIndex) {
         boolean verify = true
-        verify &= wrapper.getCursor().getEndTime() == chunkCursor.getEndTime()
-        verify &= wrapper.getCursor().getSegmentTime() == chunkCursor.getSegmentTime()
-        verify &= wrapper.getCursor().getShardPath() == chunkCursor.getShardPath()
-        verify &= wrapper.getCursor().getChunkPath() == chunkCursor.getChunkPath()
+        verify &= wrapper.getCursor().getEndTime() == endTime
+        verify &= wrapper.getCursor().getCurrentSegmentCursor().getSegmentPath() == segmentPath
+        verify &= wrapper.getCursor().getCurrentSegmentCursor().getCurrentShardPath() == currentShardPath0
+        verify &= wrapper.getCursor().getCurrentSegmentCursor().getShardCursors().get(0).getCurrentChunkPath() == chunkPath
 
-        verify &= wrapper.getCursor().getBlockOffset() == blockOffset
-        verify &= wrapper.getCursor().getObjectBlockIndex() == blockIndex
+        verify &= wrapper.getCursor().getCurrentSegmentCursor().getShardCursors().get(0).getBlockOffset() == blockOffset
+        verify &= wrapper.getCursor().getCurrentSegmentCursor().getShardCursors().get(0).getEventIndex() == blockIndex
         /* Make sure the event in the wrapper is what was expected. */
         verify &= wrapper.getEvent().equals(mockEvents.get(index as int))
         return verify
