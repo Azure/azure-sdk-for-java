@@ -261,12 +261,16 @@ public class IdentityClient {
         if (options.isSharedTokenCacheEnabled()) {
             try {
                 PersistenceSettings.Builder persistenceSettingsBuilder = PersistenceSettings.builder(
-                        DEFAULT_PUBLIC_CACHE_FILE_NAME,DEFAULT_CACHE_FILE_PATH);
-                if (Platform.isMac()) {
+                        DEFAULT_PUBLIC_CACHE_FILE_NAME, DEFAULT_CACHE_FILE_PATH);
+                if (Platform.isWindows()) {
+                    publicClientApplicationBuilder.setTokenCacheAccessAspect(
+                        new PersistenceTokenCacheAccessAspect(persistenceSettingsBuilder.build()));
+                } else if (Platform.isMac()) {
                     persistenceSettingsBuilder.setMacKeychain(
                         DEFAULT_KEYCHAIN_SERVICE, DEFAULT_PUBLIC_KEYCHAIN_ACCOUNT);
-                }
-                if (Platform.isLinux()) {
+                    publicClientApplicationBuilder.setTokenCacheAccessAspect(
+                        new PersistenceTokenCacheAccessAspect(persistenceSettingsBuilder.build()));
+                } else if (Platform.isLinux()) {
                     try {
                         persistenceSettingsBuilder
                             .setLinuxKeyring(DEFAULT_KEYRING_NAME, DEFAULT_KEYRING_SCHEMA,
