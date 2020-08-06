@@ -223,7 +223,7 @@ public class IdentityClient {
                             new PersistenceTokenCacheAccessAspect(persistenceSettingsBuilder.build()));
                     } catch (KeyRingAccessException e) {
                         if (!options.getAllowUnencryptedCache()) {
-                            throw e;
+                            throw logger.logExceptionAsError(e);
                         }
                         persistenceSettingsBuilder.setLinuxUseUnprotectedFileAsCacheStorage(true);
                         applicationBuilder.setTokenCacheAccessAspect(
@@ -283,7 +283,7 @@ public class IdentityClient {
                             new PersistenceTokenCacheAccessAspect(persistenceSettingsBuilder.build()));
                     } catch (KeyRingAccessException e) {
                         if (!options.getAllowUnencryptedCache()) {
-                            throw e;
+                            throw logger.logExceptionAsError(e);
                         }
                         persistenceSettingsBuilder.setLinuxUseUnprotectedFileAsCacheStorage(true);
                         publicClientApplicationBuilder.setTokenCacheAccessAspect(
