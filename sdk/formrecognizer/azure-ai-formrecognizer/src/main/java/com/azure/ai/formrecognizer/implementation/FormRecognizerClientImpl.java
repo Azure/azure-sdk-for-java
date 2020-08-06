@@ -48,6 +48,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 import java.nio.ByteBuffer;
 import java.util.UUID;
 import reactor.core.publisher.Flux;
@@ -86,12 +88,25 @@ public final class FormRecognizerClientImpl {
         return this.httpPipeline;
     }
 
+    /** The serializer to serialize an object into a string. */
+    private final SerializerAdapter serializerAdapter;
+
+    /**
+     * Gets The serializer to serialize an object into a string.
+     *
+     * @return the serializerAdapter value.
+     */
+    public SerializerAdapter getSerializerAdapter() {
+        return this.serializerAdapter;
+    }
+
     /** Initializes an instance of FormRecognizerClient client. */
     FormRecognizerClientImpl(String endpoint) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
+                JacksonAdapter.createDefaultSerializerAdapter(),
                 endpoint);
     }
 
@@ -101,9 +116,21 @@ public final class FormRecognizerClientImpl {
      * @param httpPipeline The HTTP pipeline to send requests through.
      */
     FormRecognizerClientImpl(HttpPipeline httpPipeline, String endpoint) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint);
+    }
+
+    /**
+     * Initializes an instance of FormRecognizerClient client.
+     *
+     * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param serializerAdapter The serializer to serialize an object into a string.
+     */
+    FormRecognizerClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint) {
         this.httpPipeline = httpPipeline;
+        this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
-        this.service = RestProxy.create(FormRecognizerClientService.class, this.httpPipeline);
+        this.service =
+                RestProxy.create(FormRecognizerClientService.class, this.httpPipeline, this.getSerializerAdapter());
     }
 
     /**
@@ -144,7 +171,7 @@ public final class FormRecognizerClientImpl {
                 @PathParam("modelId") UUID modelId,
                 @QueryParam("includeTextDetails") Boolean includeTextDetails,
                 @HeaderParam("Content-Type") ContentType contentType,
-                @BodyParam("application/pdf") Flux<ByteBuffer> fileStream,
+                @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream,
                 @HeaderParam("Content-Length") long contentLength,
                 Context context);
 
@@ -198,7 +225,7 @@ public final class FormRecognizerClientImpl {
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("includeTextDetails") Boolean includeTextDetails,
                 @HeaderParam("Content-Type") ContentType contentType,
-                @BodyParam("application/pdf") Flux<ByteBuffer> fileStream,
+                @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream,
                 @HeaderParam("Content-Length") long contentLength,
                 Context context);
 
@@ -223,7 +250,7 @@ public final class FormRecognizerClientImpl {
         Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsync(
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("Content-Type") ContentType contentType,
-                @BodyParam("application/pdf") Flux<ByteBuffer> fileStream,
+                @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream,
                 @HeaderParam("Content-Length") long contentLength,
                 Context context);
 
