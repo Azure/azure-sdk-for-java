@@ -8,12 +8,11 @@ import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Optional;
 
 /**
- * Extension of {@link PagingAndSortingRepository} to provide additional methods to retrieve entities
- * using the pagination and sorting abstraction.
+ * Extension of {@link PagingAndSortingRepository} to provide additional methods to retrieve entities using the
+ * pagination and sorting abstraction.
  */
 @NoRepositoryBean
 public interface CosmosRepository<T, ID extends Serializable> extends PagingAndSortingRepository<T, ID> {
@@ -43,7 +42,7 @@ public interface CosmosRepository<T, ID extends Serializable> extends PagingAndS
      * @param partitionKey partition key value
      * @return list of items with partition key value
      */
-    List<T> findAll(PartitionKey partitionKey);
+    Iterable<T> findAll(PartitionKey partitionKey);
 
 }
 

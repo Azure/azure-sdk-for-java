@@ -11,8 +11,6 @@ import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.List;
-
 /**
  * Interface for cosmosDB operations
  */
@@ -20,6 +18,7 @@ public interface CosmosOperations {
 
     /**
      * To get container name by domainType
+     *
      * @param domainType class type
      * @return String
      */
@@ -27,6 +26,7 @@ public interface CosmosOperations {
 
     /**
      * Creates container if not exists
+     *
      * @param information CosmosEntityInformation
      * @return CosmosContainerProperties
      */
@@ -39,7 +39,7 @@ public interface CosmosOperations {
      * @param <T> class type of domain
      * @return found results in a List
      */
-    <T> List<T> findAll(Class<T> domainType);
+    <T> Iterable<T> findAll(Class<T> domainType);
 
     /**
      * Find the DocumentQuery, find all the items specified by domain type in the given container.
@@ -49,7 +49,7 @@ public interface CosmosOperations {
      * @param <T> class type of domain
      * @return found results in a List
      */
-    <T> List<T> findAll(String containerName, Class<T> domainType);
+    <T> Iterable<T> findAll(String containerName, Class<T> domainType);
 
     /**
      * Find the DocumentQuery, find all the items specified by domain type in the given container.
@@ -59,10 +59,11 @@ public interface CosmosOperations {
      * @param <T> class type of domain
      * @return found results in a List
      */
-    <T> List<T> findAll(PartitionKey partitionKey, Class<T> domainType);
+    <T> Iterable<T> findAll(PartitionKey partitionKey, Class<T> domainType);
 
     /**
      * Finds item by id
+     *
      * @param id must not be {@literal null}
      * @param domainType must not be {@literal null}
      * @param <T> type class of domain type
@@ -72,6 +73,7 @@ public interface CosmosOperations {
 
     /**
      * Finds item by id
+     *
      * @param containerName must not be {@literal null}
      * @param id must not be {@literal null}
      * @param domainType must not be {@literal null}
@@ -82,6 +84,7 @@ public interface CosmosOperations {
 
     /**
      * Finds item by id
+     *
      * @param id must not be {@literal null}
      * @param domainType must not be {@literal null}
      * @param partitionKey must not be {@literal null}
@@ -113,6 +116,7 @@ public interface CosmosOperations {
 
     /**
      * Upserts an item with partition key
+     *
      * @param object upsert object
      * @param <T> type of upsert object
      */
@@ -120,6 +124,7 @@ public interface CosmosOperations {
 
     /**
      * Upserts an item into container with partition key
+     *
      * @param containerName the container name
      * @param object upsert object
      * @param <T> type of upsert object
@@ -128,6 +133,7 @@ public interface CosmosOperations {
 
     /**
      * Upserts an item and return item properties
+     *
      * @param containerName the container name
      * @param object upsert object
      * @param <T> type of upsert object
@@ -178,7 +184,7 @@ public interface CosmosOperations {
      * @param <T> type class of domainType
      * @return deleted items in a List
      */
-    <T> List<T> delete(CosmosQuery query, Class<T> domainType, String containerName);
+    <T> Iterable<T> delete(CosmosQuery query, Class<T> domainType, String containerName);
 
     /**
      * Find query
@@ -189,7 +195,7 @@ public interface CosmosOperations {
      * @param <T> type class of domainType
      * @return found results in a List
      */
-    <T> List<T> find(CosmosQuery query, Class<T> domainType, String containerName);
+    <T> Iterable<T> find(CosmosQuery query, Class<T> domainType, String containerName);
 
     /**
      * Find by ids
@@ -201,7 +207,7 @@ public interface CosmosOperations {
      * @param <ID> type of ID
      * @return Mono
      */
-    <T, ID> List<T> findByIds(Iterable<ID> ids, Class<T> domainType, String containerName);
+    <T, ID> Iterable<T> findByIds(Iterable<ID> ids, Class<T> domainType, String containerName);
 
     /**
      * Exists
@@ -227,6 +233,7 @@ public interface CosmosOperations {
 
     /**
      * Pagination query
+     *
      * @param query the document query
      * @param domainType type class
      * @param containerName the container name
@@ -255,6 +262,7 @@ public interface CosmosOperations {
 
     /**
      * To get converter
+     *
      * @return MappingCosmosConverter
      */
     MappingCosmosConverter getConverter();
