@@ -270,6 +270,7 @@
 
   <!-- Use the logger in a Utility static method. -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.formrecognizer.Transforms.java" />
+  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(ThrowFromClientLoggerCheck|GoodLoggingCheck)" files="com.azure.ai.formrecognizer.training.models.CopyAuthorization" />
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.formrecognizer.training.CustomModelTransforms.java" />
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.formrecognizer.implementation.Utility.java" />
 
@@ -491,7 +492,7 @@
   <!-- Checkstyle suppressions for azure-spring AADB2C package name-->
   <suppress checks="PackageName" files="com.microsoft.azure.spring.autoconfigure.*|com.azure.spring.*"/>
 
-  <!-- Checkstyle suppressions for azure-spring-data-cosmos package -->
+  <!-- Checkstyle suppressions for azure.spring.data.cosmos package -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck|ExternalDependencyExposedCheck|ThrowFromClientLoggerCheck" files="com.azure.spring.data.cosmos.*\.java"/>
   <suppress checks="MethodName|MemberName|ParameterName|VisibilityModifier" files="com.azure.spring.data.cosmos.domain|repository|config.*\.java"/>
   <suppress checks="ConstantName" files="com.azure.spring.data.cosmos.repository|common.*\.java" />
@@ -500,6 +501,12 @@
   <!-- Checkstyle suppressions for spring-data-gremlin package  -->
   <suppress checks="PackageName" files="com.microsoft.spring.data.gremlin.*" />
   <suppress checks="MethodName" files="com.microsoft.spring.data.gremlin.common.GremlinConfig.java" />
+
+  <!-- Checkstyle suppressions for azure-spring-integration-core package -->
+  <suppress checks="MethodName" files="com.microsoft.azure.spring.integration.core.api.CheckpointConfig.java"/>
+
+  <!-- Checkstyle suppressions for azure-spring-integration-servicebus package -->
+  <suppress checks="MethodName" files="com.microsoft.azure.spring.integration.servicebus.ServiceBusClientConfig.java"/>
 
   <!-- These suppressions were added due to limitations in our custom Checkstyle rules and should be addressed in the future. -->
   <!-- API naming is too restrictive -->
@@ -510,4 +517,10 @@
 
   <!-- Static logger instances for short lived objects. -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.util.serializer.TypeReference.java" />
+
+  <!-- False positive as the methods are implemented in an anonymous class that is not exposed publicly. EntityHelper's
+    accessor classes are not visible. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.messaging.servicebus.models.QueueProperties.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.messaging.servicebus.models.SubscriptionProperties.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.messaging.servicebus.models.TopicProperties.java"/>
 </suppressions>

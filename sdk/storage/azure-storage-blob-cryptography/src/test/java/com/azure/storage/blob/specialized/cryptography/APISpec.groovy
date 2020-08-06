@@ -501,7 +501,7 @@ class APISpec extends Specification {
                 // Use Arrays.equals as it is more optimized than Groovy/Spock's '==' for arrays.
                 assert readCount1 == readCount2 && Arrays.equals(buffer1, buffer2)
 
-                pos += bufferSize
+                pos += expectedReadCount
             }
 
             def verificationRead = stream2.read()

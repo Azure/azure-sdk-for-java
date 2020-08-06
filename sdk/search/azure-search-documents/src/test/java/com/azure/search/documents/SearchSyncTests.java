@@ -5,8 +5,6 @@ package com.azure.search.documents;
 
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.search.documents.implementation.SerializationUtil;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
@@ -25,9 +23,9 @@ import com.azure.search.documents.test.environment.models.Hotel;
 import com.azure.search.documents.test.environment.models.NonNullableModel;
 import com.azure.search.documents.util.SearchPagedIterable;
 import com.azure.search.documents.util.SearchPagedResponse;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.text.ParseException;
 import java.time.Instant;
@@ -50,6 +48,7 @@ import java.util.stream.Stream;
 import static com.azure.search.documents.TestHelpers.assertHttpResponseException;
 import static com.azure.search.documents.TestHelpers.assertMapEquals;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
+import static com.azure.search.documents.TestHelpers.convertMapToValue;
 import static com.azure.search.documents.TestHelpers.uploadDocuments;
 import static com.azure.search.documents.TestHelpers.uploadDocumentsJson;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -208,7 +207,7 @@ public class SearchSyncTests extends SearchTestBase {
     }
 
     @Test
-    public void canSearchStaticallyTypedDocuments() {
+    public void canSearchStaticallyTypedDocuments() throws IOException {
         client = setupClient(this::createHotelIndex);
 
         List<Map<String, Object>> hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON_WITHOUT_FR_DESCRIPTION);
@@ -233,11 +232,10 @@ public class SearchSyncTests extends SearchTestBase {
                 actualResults.add(hotel);
             });
         }
-        ObjectMapper mapper = new JacksonAdapter().serializer();
-        SerializationUtil.configureMapper(mapper);
-        List<Hotel> hotelsList = hotels.stream().map(hotel -> mapper.convertValue(hotel, Hotel.class))
-            .collect(Collectors.toList());
 
+        List<Hotel> hotelsList = hotels.stream().map(hotel -> {
+            return convertMapToValue(hotel, Hotel.class);
+        }).collect(Collectors.toList());
         assertEquals(hotelsList.size(), actualResults.size());
         actualResults.sort(Comparator.comparing(doc -> Integer.parseInt(doc.hotelId())));
         for (int i = 0; i < hotelsList.size(); i++) {
@@ -629,7 +627,7 @@ public class SearchSyncTests extends SearchTestBase {
 //        uploadDocumentsJson(client, HOTELS_DATA_JSON);
 //        SearchOptions searchOptions = new SearchOptions()
 //            .setScoringProfile("nearest")
-//            .setScoringParameters(new ScoringParameter("myloc", createPointGeometry(49.0, -122.0)))
+//            //.setScoringParameters(new ScoringParameter("myloc", createPointGeometry(49.0, -122.0)))
 //            .setFilter("Rating eq 5 or Rating eq 1");
 //
 //        List<Map<String, Object>> response = getSearchResults(client.search("hotel",

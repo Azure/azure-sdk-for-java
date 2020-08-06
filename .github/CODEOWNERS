@@ -11,13 +11,14 @@
 # BOM
 # PRLabel: %Azure.Core
 /sdk/boms/azure-sdk-bom/                            @alzimmermsft @jonathangiles @srnagar @hemanttanwar @anuchandy
+/sdk/boms/azure-spring-boot-bom/                    @saragluna @yiliuTo @chenrujun @zhoufenqin @jialindai
 
 ####
 # Service teams
 ####
 # PRLabel: %AzConfig
 /sdk/appconfiguration/                              @mssfang @alzimmermsft @conniey @sima-zhu
-/sdk/appconfiguration/spring-cloud-azure-*          @mrm9084 @saragluna @yiliuTo @chenrujun @zhoufenqin @jialindai
+/sdk/appconfiguration/spring-cloud-azure-*/         @mrm9084 @saragluna @yiliuTo @chenrujun @zhoufenqin @jialindai
 
 # PRLabel: %Batch
 /sdk/batch/                                         @xingwu1 @bgklein @matthchr
@@ -30,7 +31,7 @@
 
 # PRLabel: %Cosmos
 /sdk/cosmos/                                        @moderakh @kushagraThapar @David-Noble-at-work @kirankumarkolli @mbhaskar
-/sdk/cosmos/azure-spring-data-cosmos/               @kushagraThapar @saragluna @yiliuTo @chenrujun @zhoufenqin @jialindai
+/sdk/cosmos/azure-spring-data-cosmos-core/               @kushagraThapar @saragluna @yiliuTo @chenrujun @zhoufenqin @jialindai
 
 # PRLabel: %Event Hubs
 /sdk/eventhubs/                                     @conniey @srnagar @mssfang

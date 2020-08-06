@@ -1766,7 +1766,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             @Override
             public Mono<RxDocumentServiceResponse> executeQueryAsync(RxDocumentServiceRequest request) {
-                return RxDocumentClientImpl.this.query(request);
+                return RxDocumentClientImpl.this.query(request).single();
             }
 
             @Override

@@ -31,7 +31,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-aop</artifactId>
-      <version>2.3.0.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-aop;external_dependency} -->
+      <version>2.3.2.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-aop;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -71,19 +71,19 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.13-beta-3</version> <!-- {x-version-update;junit:junit;external_dependency} -->
+      <version>4.13</version> <!-- {x-version-update;junit:junit;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>3.0.0</version><!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <version>3.3.3</version><!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>2.3.0.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>2.3.2.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -104,7 +104,7 @@
                 <include>commons-io:commons-io:[2.5]</include> <!-- {x-include-update;commons-io:commons-io;external_dependency} -->
                 <include>org.springframework:spring-context:[5.2.6.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-context;external_dependency} -->
                 <include>org.springframework:spring-context-support:[5.2.6.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-context-support;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-starter-aop:[2.3.0.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-aop;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter-aop:[2.3.2.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-aop;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
