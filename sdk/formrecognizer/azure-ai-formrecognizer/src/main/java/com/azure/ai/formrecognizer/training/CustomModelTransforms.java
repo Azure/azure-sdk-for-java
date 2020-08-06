@@ -128,7 +128,7 @@ final class CustomModelTransforms {
      * @return The list of {@link FormRecognizerError}
      */
     private static List<FormRecognizerError> transformTrainingErrors(
-        List<ErrorInformation> trainingErrorList) {
+        List<com.azure.ai.formrecognizer.implementation.models.ErrorInformation> trainingErrorList) {
         if (CoreUtils.isNullOrEmpty(trainingErrorList)) {
             return Collections.emptyList();
         } else {

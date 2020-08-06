@@ -1,47 +1,51 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "http://xclientdev2.blob.core.windows.net/jtccreatefailcontainercheck187068721773be0a32465?restype=container&sv=2019-07-07&ss=b&srt=c&se=2020-04-01T17%3A56%3A23Z&sp=d&sig=REDACTED",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtccreatefailcontainercheck1336312708fbf18e1e445?restype=container&sv=2019-12-12&ss=b&srt=c&se=2020-08-06T23%3A40%3A17Z&sp=d&sig=REDACTED",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.6.0-beta.1 (11.0.5; Windows 10 10.0)",
-      "x-ms-client-request-id" : "015ff8c0-be8c-43ef-a9b3-07f876002f09"
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.8.0-beta.2 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f7823580-a44a-44a4-8e86-0e5915182f2c"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "x-ms-version" : "2019-12-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-error-code" : "AuthorizationPermissionMismatch",
+      "Access-Control-Allow-Origin" : "*",
       "retry-after" : "0",
-      "Content-Length" : "279",
       "StatusCode" : "403",
-      "x-ms-request-id" : "fc895b74-a01e-0099-3cbc-069edf000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthorizationPermissionMismatch</Code><Message>This request is not authorized to perform this operation using this permission.\nRequestId:fc895b74-a01e-0099-3cbc-069edf000000\nTime:2020-03-30T17:56:23.3470753Z</Message></Error>",
-      "Date" : "Mon, 30 Mar 2020 17:56:22 GMT",
-      "x-ms-client-request-id" : "015ff8c0-be8c-43ef-a9b3-07f876002f09",
+      "Date" : "Tue, 04 Aug 2020 23:40:16 GMT",
+      "Access-Control-Expose-Headers" : "x-ms-client-request-id",
+      "x-ms-error-code" : "AuthorizationPermissionMismatch",
+      "Content-Length" : "279",
+      "x-ms-request-id" : "1a0157b1-301e-00b6-5bb8-6a3e8e000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthorizationPermissionMismatch</Code><Message>This request is not authorized to perform this operation using this permission.\nRequestId:1a0157b1-301e-00b6-5bb8-6a3e8e000000\nTime:2020-08-04T23:40:17.1443230Z</Message></Error>",
+      "x-ms-client-request-id" : "f7823580-a44a-44a4-8e86-0e5915182f2c",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://xclientdev2.blob.core.windows.net?prefix=jtccreatefailcontainercheck&comp=list",
+    "Uri" : "https://REDACTED.blob.core.windows.net?prefix=jtccreatefailcontainercheck&comp=list",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.6.0-beta.1 (11.0.5; Windows 10 10.0)",
-      "x-ms-client-request-id" : "557b4fb9-5f20-43f0-a705-90cf97f82e33"
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.8.0-beta.2 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7ac324ba-2289-4765-87a4-f61c70fafb3d"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-ms-version" : "2019-07-07",
+      "Access-Control-Expose-Headers" : "x-ms-client-request-id",
+      "x-ms-version" : "2019-12-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "Access-Control-Allow-Origin" : "*",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "fc895b7d-a01e-0099-44bc-069edf000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"http://xclientdev2.blob.core.windows.net/\"><Prefix>jtccreatefailcontainercheck</Prefix><Containers /><NextMarker /></EnumerationResults>",
-      "Date" : "Mon, 30 Mar 2020 17:56:22 GMT",
-      "x-ms-client-request-id" : "557b4fb9-5f20-43f0-a705-90cf97f82e33",
+      "x-ms-request-id" : "accb7e81-201e-010c-2bb8-6a98d2000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtccreatefailcontainercheck</Prefix><Containers /><NextMarker /></EnumerationResults>",
+      "Date" : "Tue, 04 Aug 2020 23:40:16 GMT",
+      "x-ms-client-request-id" : "7ac324ba-2289-4765-87a4-f61c70fafb3d",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtccreatefailcontainercheck07203503b7e2279466492", "jtccreatefailcontainercheck187068721773be0a32465" ]
+  "variables" : [ "jtccreatefailcontainercheck0090381549a5fc0c5943c", "jtccreatefailcontainercheck1336312708fbf18e1e445" ]
 }

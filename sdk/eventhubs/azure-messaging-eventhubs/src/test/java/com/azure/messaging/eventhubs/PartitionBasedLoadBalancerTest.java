@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -37,6 +38,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -76,6 +78,7 @@ public class PartitionBasedLoadBalancerTest {
     private PartitionProcessor partitionProcessor;
 
     private boolean batchReceiveMode = false;
+    private TracerProvider tracerProvider;
 
     @BeforeEach
     public void setup() {
@@ -91,6 +94,7 @@ public class PartitionBasedLoadBalancerTest {
             });
         when(eventHubClientBuilder.buildAsyncClient()).thenReturn(eventHubAsyncClient);
         this.checkpointStore = new SampleCheckpointStore();
+        this.tracerProvider = new TracerProvider(Collections.emptyList());
     }
 
     @AfterEach
@@ -454,9 +458,76 @@ public class PartitionBasedLoadBalancerTest {
         assertTrue(allPartitionIds.isEmpty(), "Expected it to claim all partitions.");
     }
 
-    private PartitionBasedLoadBalancer createPartitionLoadBalancer(String owner) {
-        TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
-        PartitionPumpManager partitionPumpManager = new PartitionPumpManager(checkpointStore,
+    @Test
+    public void testOwnershipRenewal() {
+        PartitionOwnership claim1 = getPartitionOwnership("1", "owner1");
+        PartitionOwnership claim2 = getPartitionOwnership("2", "owner1");
+        checkpointStore.claimOwnership(Arrays.asList(claim1, claim2)).collectList().block();
+
+        List<PartitionOwnership> ownershipList = checkpointStore.listOwnership(fqNamespace, eventHubName,
+            consumerGroupName).collectList().block();
+
+        Map<String, String> partitionEtag = new HashMap<>();
+        ownershipList.forEach(ownership -> partitionEtag.put(ownership.getPartitionId(), ownership.getETag()));
+
+        List<String> partitionIds = Arrays.asList("1", "2");
+        when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(partitionIds));
+
+        PartitionPumpManager partitionPumpManager = getPartitionPumpManager(tracerProvider);
+        partitionPumpManager.getPartitionPumps().put("1", eventHubConsumer);
+        partitionPumpManager.getPartitionPumps().put("2", eventHubConsumer);
+        PartitionBasedLoadBalancer partitionBasedLoadBalancer = new PartitionBasedLoadBalancer(checkpointStore,
+            eventHubAsyncClient, fqNamespace, eventHubName, consumerGroupName, "owner1",
+            TimeUnit.SECONDS.toSeconds(10), partitionPumpManager,
+            ec -> { });
+
+        partitionBasedLoadBalancer.loadBalance();
+        // after first iteration, both partitions are owned by owner1, so both partitions should be renewed
+        ownershipList = checkpointStore.listOwnership(fqNamespace, eventHubName,
+            consumerGroupName).collectList().block();
+
+        ownershipList.forEach(
+            ownership -> assertFalse(partitionEtag.get(ownership.getPartitionId()).equals(ownership.getETag())));
+        ownershipList.forEach(ownership -> partitionEtag.put(ownership.getPartitionId(), ownership.getETag()));
+
+        // Owner2 steals partition 2
+        claim2.setOwnerId("owner2");
+        checkpointStore.claimOwnership(Arrays.asList(claim1, claim2)).collectList().block()
+            .forEach(ownership -> partitionEtag.put(ownership.getPartitionId(), ownership.getETag()));
+
+
+        // Now, this iteration of load balance on owner1 should renew only partition 1, even if partition pump manager
+        // is still processing both partitions.
+        partitionBasedLoadBalancer.loadBalance();
+        ownershipList = checkpointStore.listOwnership(fqNamespace, eventHubName, consumerGroupName).collectList()
+            .block();
+
+        ownershipList.forEach(ownership -> {
+            // only partition 1's etag should be updated because owner1 renewed the ownership.
+            // partition 2's etag should not be updated
+            if (ownership.getPartitionId().equals("2")) {
+                assertTrue(partitionEtag.get(ownership.getPartitionId()).equals(ownership.getETag()));
+                assertTrue(ownership.getOwnerId().equals("owner2"));
+            } else {
+                assertFalse(partitionEtag.get(ownership.getPartitionId()).equals(ownership.getETag()));
+                assertTrue(ownership.getOwnerId().equals("owner1"));
+            }
+        });
+    }
+
+    private PartitionOwnership getPartitionOwnership(String partitionId, String ownerId) {
+        return new PartitionOwnership()
+            .setFullyQualifiedNamespace(fqNamespace)
+            .setEventHubName(eventHubName)
+            .setConsumerGroup(consumerGroupName)
+            .setPartitionId(partitionId)
+            .setOwnerId(ownerId)
+            .setETag(UUID.randomUUID().toString())
+            .setLastModifiedTime(System.currentTimeMillis());
+    }
+
+    private PartitionPumpManager getPartitionPumpManager(TracerProvider tracerProvider) {
+        return new PartitionPumpManager(checkpointStore,
             () -> new PartitionProcessor() {
                 @Override
                 public void processEvent(EventContext eventContext) {
@@ -476,6 +547,10 @@ public class PartitionBasedLoadBalancerTest {
                         eventProcessingErrorContext.getThrowable());
                 }
             }, eventHubClientBuilder, false, tracerProvider, new HashMap<>(), 1, null, batchReceiveMode);
+    }
+
+    private PartitionBasedLoadBalancer createPartitionLoadBalancer(String owner) {
+        PartitionPumpManager partitionPumpManager = getPartitionPumpManager(tracerProvider);
         return new PartitionBasedLoadBalancer(checkpointStore, eventHubAsyncClient, fqNamespace,
             eventHubName, consumerGroupName, owner, TimeUnit.SECONDS.toSeconds(5), partitionPumpManager,
             ec -> {
