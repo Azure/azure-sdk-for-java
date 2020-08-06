@@ -78,13 +78,13 @@ org.springframework.boot:spring-boot-actuator-autoconfigure;2.3.0.RELEASE
 org.springframework.boot:spring-boot-autoconfigure-processor;2.3.0.RELEASE
 org.springframework.boot:spring-boot-autoconfigure;2.3.0.RELEASE
 org.springframework.boot:spring-boot-configuration-processor;2.3.0.RELEASE
+# After you update spring-boot's version, please run this script: /sdk/spring/scripts/sync_version_from_spring-boot-dependencies.py
 org.springframework.boot:spring-boot-dependencies;2.3.0.RELEASE
 org.springframework.boot:spring-boot-starter-aop;2.3.0.RELEASE
 org.springframework.boot:spring-boot-starter-test;2.3.0.RELEASE
 org.springframework.boot:spring-boot-starter-validation;2.3.0.RELEASE
 org.springframework.boot:spring-boot-starter-web;2.3.0.RELEASE
 org.springframework.boot:spring-boot-starter;2.3.0.RELEASE
-# After you update spring-boot's version, please run this script: /sdk/spring/scripts/sync_version_from_spring-boot-dependencies.py
 org.springframework.boot:spring-boot;2.3.2.RELEASE
 org.springframework.boot:spring-boot-starter-parent;2.3.0.RELEASE
 org.springframework.data:spring-data-commons;2.3.0.RELEASE
