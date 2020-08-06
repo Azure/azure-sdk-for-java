@@ -35,6 +35,7 @@ public class CreateTopicOptions {
     private boolean requiresDuplicateDetection;
     private boolean requiresSession;
     private EntityStatus status;
+    private boolean supportOrdering;
     private String userMetadata;
 
     /**
@@ -323,6 +324,28 @@ public class CreateTopicOptions {
      */
     public CreateTopicOptions setForwardDeadLetteredMessagesTo(String forwardDeadLetteredMessagesTo) {
         this.forwardDeadLetteredMessagesTo = forwardDeadLetteredMessagesTo;
+        return this;
+    }
+
+    /**
+     * Defines whether ordering needs to be maintained. If true, messages sent to topic will be forwarded to the
+     * subscription in order.
+     *
+     * @return true if ordering should be maintained; false otherwise.
+     */
+    public boolean isSupportOrdering() {
+        return supportOrdering;
+    }
+
+    /**
+     * Defines whether ordering needs to be maintained. If true, messages sent to topic will be forwarded to the
+     * subscription in order.
+     *
+     * @param supportOrdering true if ordering should be maintained; false otherwise.
+     * @return the CreateTopicOptions object itself.
+     */
+    public CreateTopicOptions setSupportOrdering(boolean supportOrdering) {
+        this.supportOrdering = supportOrdering;
         return this;
     }
 
