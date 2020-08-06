@@ -82,3 +82,5 @@ extends:
         groupId: com.azure
       - name: azure-messaging-eventhubs
         groupId: com.azure
+      - name: azure-resourcemanager-samples
+        groupId: com.azure.resourcemanager

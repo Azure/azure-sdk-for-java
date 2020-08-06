@@ -72,9 +72,17 @@ extends:
       - name: azure-resourcemanager-resources
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerresources
+      - name: azure-resourcemanager-samples
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagersamples
       - name: azure-resourcemanager-sql
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagersql
       - name: azure-resourcemanager-storage
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerstorage
+    AdditionalModules:
+      - name: azure-storage-blob
+        groupId: com.azure
+      - name: azure-cosmos
+        groupId: com.azure
