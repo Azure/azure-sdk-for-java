@@ -16,6 +16,7 @@ import com.azure.ai.formrecognizer.implementation.models.ModelStatus;
 import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
 import com.azure.ai.formrecognizer.implementation.models.TrainRequest;
 import com.azure.ai.formrecognizer.implementation.models.TrainSourceFilter;
+import com.azure.ai.formrecognizer.models.ErrorInformation;
 import com.azure.ai.formrecognizer.models.FormRecognizerException;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.training.models.AccountProperties;
@@ -48,6 +49,7 @@ import java.time.Duration;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static com.azure.ai.formrecognizer.implementation.Utility.parseModelId;
 import static com.azure.ai.formrecognizer.training.CustomModelTransforms.DEFAULT_DURATION;
@@ -88,8 +90,8 @@ public final class FormTrainingAsyncClient {
     }
 
     /**
-     * Creates a new {@link FormRecognizerAsyncClient} object. The new {@link FormTrainingAsyncClient}
-     * uses the same request policy pipeline as the {@link FormTrainingAsyncClient}.
+     * Creates a new {@link FormRecognizerAsyncClient} object. The new {@code FormTrainingAsyncClient}
+     * uses the same request policy pipeline as the {@code FormTrainingAsyncClient}.
      *
      * @return A new {@link FormRecognizerAsyncClient} object.
      */
@@ -258,7 +260,7 @@ public final class FormTrainingAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AccountProperties>> getAccountPropertiesWithResponse() {
         try {
-            return withContext(context -> getAccountPropertiesWithResponse(context));
+            return withContext(this::getAccountPropertiesWithResponse);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -329,7 +331,7 @@ public final class FormTrainingAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CustomFormModelInfo> listCustomModels() {
         try {
-            return new PagedFlux<>(() -> withContext(context -> listFirstPageModelInfo(context)),
+            return new PagedFlux<>(() -> withContext(this::listFirstPageModelInfo),
                 continuationToken -> withContext(context -> listNextPageModelInfo(continuationToken, context)));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
@@ -589,7 +591,10 @@ public final class FormTrainingAsyncClient {
                 break;
             case FAILED:
                 throw logger.logExceptionAsError(new FormRecognizerException("Copy operation failed",
-                    copyModel.getValue().getCopyResult().getErrors()));
+                    copyModel.getValue().getCopyResult().getErrors().stream()
+                        .map(errorInformation ->
+                            new ErrorInformation(errorInformation.getCode(), errorInformation.getMessage()))
+                        .collect(Collectors.toList())));
             default:
                 status = LongRunningOperationStatus.fromString(copyModel.getValue().getStatus().toString(), true);
                 break;
@@ -621,9 +626,8 @@ public final class FormTrainingAsyncClient {
                     .flatMap(modelSimpleResponse ->
                         processTrainingModelResponse(modelSimpleResponse, operationResultPollResponse))
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
-            } catch (HttpResponseException e) {
-                logger.logExceptionAsError(e);
-                return Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null));
+            }  catch (HttpResponseException ex) {
+                return monoError(logger, ex);
             }
         };
     }
@@ -662,7 +666,10 @@ public final class FormTrainingAsyncClient {
             case INVALID:
                 throw logger.logExceptionAsError(new FormRecognizerException(String.format("Invalid model created"
                     + " with model Id %s", trainingModel.getValue().getModelInfo().getModelId()),
-                    trainingModel.getValue().getTrainResult().getErrors()));
+                    trainingModel.getValue().getTrainResult().getErrors().stream()
+                        .map(errorInformation ->
+                            new ErrorInformation(errorInformation.getCode(), errorInformation.getMessage()))
+                        .collect(Collectors.toList())));
             default:
                 status = LongRunningOperationStatus.fromString(
                     trainingModel.getValue().getModelInfo().getStatus().toString(), true);

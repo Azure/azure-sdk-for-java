@@ -23,6 +23,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.ObjectSerializer;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -84,7 +85,7 @@ public final class SearchClientBuilder {
     private Configuration configuration;
     private String indexName;
     private RetryPolicy retryPolicy;
-
+    private ObjectSerializer objectSerializer;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link SearchClient SearchClients} and {@link
@@ -130,7 +131,7 @@ public final class SearchClientBuilder {
             : serviceVersion;
 
         if (httpPipeline != null) {
-            return new SearchAsyncClient(endpoint, indexName, buildVersion, httpPipeline);
+            return new SearchAsyncClient(endpoint, indexName, buildVersion, httpPipeline, objectSerializer);
         }
 
         Objects.requireNonNull(credential, "'credential' cannot be null.");
@@ -164,7 +165,7 @@ public final class SearchClientBuilder {
             .policies(httpPipelinePolicies.toArray(new HttpPipelinePolicy[0]))
             .build();
 
-        return new SearchAsyncClient(endpoint, indexName, buildVersion, buildPipeline);
+        return new SearchAsyncClient(endpoint, indexName, buildVersion, buildPipeline, objectSerializer);
     }
 
     /**
@@ -238,6 +239,17 @@ public final class SearchClientBuilder {
      */
     public SearchClientBuilder addPolicy(HttpPipelinePolicy policy) {
         policies.add(Objects.requireNonNull(policy));
+        return this;
+    }
+
+    /**
+     * Adds customer serializer to apply to external defined models.
+     *
+     * @param objectSerializer The serializer to serialize user defined models.
+     * @return The updated SearchClientBuilder object.
+     */
+    public SearchClientBuilder serializer(ObjectSerializer objectSerializer) {
+        this.objectSerializer = objectSerializer;
         return this;
     }
 

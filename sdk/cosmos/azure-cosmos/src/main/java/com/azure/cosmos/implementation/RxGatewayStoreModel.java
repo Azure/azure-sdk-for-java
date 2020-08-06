@@ -282,7 +282,8 @@ class RxGatewayStoreModel implements RxStoreModel {
                                    DirectBridgeInternal.setCosmosDiagnostics(rsp, request.requestContext.cosmosDiagnostics);
                                }
                                return rsp;
-                       });
+                       })
+                       .single();
 
         }).map(RxDocumentServiceResponse::new)
                    .onErrorResume(throwable -> {
@@ -363,7 +364,7 @@ class RxGatewayStoreModel implements RxStoreModel {
     }
 
     private Mono<RxDocumentServiceResponse> invokeAsync(RxDocumentServiceRequest request) {
-        Callable<Mono<RxDocumentServiceResponse>> funcDelegate = () -> invokeAsyncInternal(request);
+        Callable<Mono<RxDocumentServiceResponse>> funcDelegate = () -> invokeAsyncInternal(request).single();
         return BackoffRetryUtility.executeRetry(funcDelegate, new WebExceptionRetryPolicy());
     }
 

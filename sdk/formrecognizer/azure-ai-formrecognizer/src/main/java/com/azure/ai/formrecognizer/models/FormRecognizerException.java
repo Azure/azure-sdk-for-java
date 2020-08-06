@@ -30,7 +30,7 @@ public class FormRecognizerException extends AzureException {
         if (!CoreUtils.isNullOrEmpty(errorInformationList)) {
             for (ErrorInformation errorInformation : errorInformationList) {
                 errorInformationStringBuilder.append(", " + "errorCode" + ": [")
-                    .append(errorInformation.getCode()).append("], ").append("message")
+                    .append(errorInformation.getErrorCode()).append("], ").append("message")
                     .append(": ").append(errorInformation.getMessage());
             }
             this.errorInformationList = Collections.unmodifiableList(errorInformationList);

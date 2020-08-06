@@ -137,7 +137,7 @@ public class ReadmeSamples {
     }
 
     public void recognizeReceipt() {
-        String receiptUrl = "https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/media"
+        String receiptUrl = "https://docs.microsoft.com/azure/cognitive-services/form-recognizer/media"
             + "/contoso-allinone.jpg";
         SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
             formRecognizerClient.beginRecognizeReceiptsFromUrl(receiptUrl);
@@ -184,8 +184,8 @@ public class ReadmeSamples {
                         .map(formField -> formField.getValue().asMap())
                         .forEach(formFieldMap -> formFieldMap.forEach((key, formField) -> {
                             if ("Quantity".equals(key)) {
-                                if (FieldValueType.DOUBLE == formField.getValue().getValueType()) {
-                                    Double quantity = formField.getValue().asDouble();
+                                if (FieldValueType.FLOAT == formField.getValue().getValueType()) {
+                                    Float quantity = formField.getValue().asFloat();
                                     System.out.printf("Quantity: %f, confidence: %.2f%n",
                                         quantity, formField.getConfidence());
                                 }
