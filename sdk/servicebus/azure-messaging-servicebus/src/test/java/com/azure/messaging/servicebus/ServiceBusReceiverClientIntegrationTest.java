@@ -251,8 +251,9 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void receiveTwoMessagesAndComplete(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
-        setSenderAndReceiver(entityType, 0, isSessionEnabled);
-        int maxMessages = 2;
+        setSenderAndReceiver(entityType, TestUtils.USE_CASE_RECEIVE_MORE_AND_COMPLETE, isSessionEnabled);
+        int maxMessages = 5;
+        int messagesToSend = 2;
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
@@ -265,6 +266,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
 
         // Assert
         int receivedMessageCount = 0;
+        final long startTime = System.currentTimeMillis();
         for (ServiceBusReceivedMessageContext context : messages) {
             ServiceBusReceivedMessage receivedMessage = context.getMessage();
             assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
@@ -272,8 +274,9 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
             messagesPending.decrementAndGet();
             ++receivedMessageCount;
         }
-
-        assertEquals(maxMessages, receivedMessageCount);
+        final long endTime = System.currentTimeMillis();
+        assertEquals(messagesToSend, receivedMessageCount);
+        assertTrue(TIMEOUT.toMillis() > (endTime - startTime) );
     }
 
     /**
@@ -413,50 +416,6 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
 
         assertEquals(maxMessages, receivedMessageCount.get());
 
-    }
-
-    /**
-     * Verifies that we can send and receive one messages.
-     */
-    @Test
-    void receiveMessageInMaxWaitTimeout() {
-        // Arrange
-        final MessagingEntityType entityType = MessagingEntityType.QUEUE;
-        final boolean isSessionEnabled = false;
-        final int maxMessages = 5;
-        final int messagesToReceive = 2;
-        final Duration shortTimeout = Duration.ofSeconds(5);
-        setSenderAndReceiver(entityType, 0, isSessionEnabled);
-        DateFormat simple = new SimpleDateFormat("dd MMM yyyy HH:mm:ss:SSS Z");
-
-        final String messageId = UUID.randomUUID().toString();
-        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
-
-        sendMessage(message);
-        sendMessage(message);
-        Date start = new Date();
-        // Act
-        IterableStream<ServiceBusReceivedMessageContext> messages = receiver.receiveMessages(maxMessages, TIMEOUT);
-
-        // Assert
-        final AtomicInteger receivedMessageCount = new AtomicInteger();
-        messages.forEach(receivedMessage -> {
-            assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
-            receiver.complete(receivedMessage.getMessage().getLockToken());
-            messagesPending.decrementAndGet();
-            receivedMessageCount.incrementAndGet();
-        });
-
-        messages = receiver.receiveMessages(maxMessages, TIMEOUT);
-
-        messages.forEach(receivedMessage -> {
-            assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
-            receiver.complete(receivedMessage.getMessage().getLockToken());
-            messagesPending.decrementAndGet();
-            receivedMessageCount.incrementAndGet();
-        });
-
-        assertEquals(messagesToReceive, receivedMessageCount.get());
     }
 
     /**
