@@ -3,9 +3,13 @@
 
 package com.azure.core.serializer.json.jackson;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
+import com.azure.core.util.serializer.MemberNameConverter;
 import com.azure.core.util.serializer.TypeReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import reactor.core.publisher.Mono;
@@ -14,11 +18,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Member;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 
 /**
  * Jackson based implementation of the {@link JsonSerializer} interface.
  */
-public final class JacksonJsonSerializer implements JsonSerializer {
+public final class JacksonJsonSerializer implements MemberNameConverter, JsonSerializer {
     private final ClientLogger logger = new ClientLogger(JacksonJsonSerializer.class);
 
     private final ObjectMapper mapper;
@@ -64,5 +72,37 @@ public final class JacksonJsonSerializer implements JsonSerializer {
     @Override
     public Mono<Void> serializeAsync(OutputStream stream, Object value) {
         return Mono.fromRunnable(() -> serialize(stream, value));
+    }
+
+    @Override
+    public String convertMemberName(Member member) {
+        if (Modifier.isTransient(member.getModifiers())) {
+            return null;
+        }
+        if (member instanceof Field) {
+            Field f = (Field) member;
+            if (f.isAnnotationPresent(JsonIgnore.class)) {
+                return null;
+            }
+            if (f.isAnnotationPresent(JsonProperty.class)) {
+                String propertyName = f.getDeclaredAnnotation(JsonProperty.class).value();
+                return CoreUtils.isNullOrEmpty(propertyName) ? f.getName() : propertyName;
+            }
+            return member.getName();
+        }
+
+        if (member instanceof Method) {
+            Method m = (Method) member;
+            if (m.isAnnotationPresent(JsonIgnore.class)) {
+                return null;
+            }
+            if (m.isAnnotationPresent(JsonProperty.class)) {
+                String propertyName = m.getDeclaredAnnotation(JsonProperty.class).value();
+                return CoreUtils.isNullOrEmpty(propertyName) ? m.getName() : propertyName;
+            }
+            return member.getName();
+        }
+
+        return null;
     }
 }

@@ -71,7 +71,7 @@ public @interface SearchableFieldProperty {
      *
      * @return {@link LexicalAnalyzerName} String value. Or default to an empty String.
      */
-    String indexAnalyzer() default "";
+    String indexAnalyzerName() default "";
 
     /**
      * Optional arguments defines the array of synonymMaps used for the field.

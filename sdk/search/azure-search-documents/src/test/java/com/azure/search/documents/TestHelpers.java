@@ -9,18 +9,17 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.search.documents.implementation.SerializationUtil;
-import com.fasterxml.jackson.core.type.TypeReference;
+import com.azure.core.util.serializer.TypeReference;
+import com.azure.search.documents.implementation.util.Utility;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.reactivestreams.Publisher;
+import reactor.core.Exceptions;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.UncheckedIOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -32,8 +31,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Scanner;
 import java.util.Set;
 
+import static com.azure.search.documents.implementation.util.Utility.MAP_STRING_OBJECT_TYPE_REFERENCE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -50,9 +51,12 @@ public final class TestHelpers {
     public static final String BLOB_DATASOURCE_TEST_NAME = "azs-java-test-blob";
     public static final String SQL_DATASOURCE_NAME = "azs-java-test-sql";
     public static final String ISO8601_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
-
-//    public static PointGeometry createPointGeometryString(Double latitude, Double longitude) {
-//        return new PointGeometry(new GeometryPosition(longitude, latitude), null, Collections.singletonMap("crs", new HashMap<String, Object>() {
+    public static final JacksonAdapter SERIALIZER = (JacksonAdapter) Utility.initializeSerializerAdapter();
+    public static final TypeReference<List<Map<String, Object>>> LIST_TYPE_REFERENCE =
+        new TypeReference<List<Map<String, Object>>>() { };
+//    public static PointGeometry createPointGeometry(Double latitude, Double longitude) {
+//        return new PointGeometry(new GeometryPosition(longitude, latitude), null,
+//            Collections.singletonMap("crs", new HashMap<String, Object>() {
 //            {
 //                put("type", "name");
 //                put("properties", Collections.singletonMap("name", "EPSG:4326"));
@@ -60,12 +64,6 @@ public final class TestHelpers {
 //        }));
 //    }
 
-    private static final ObjectMapper MAPPER;
-
-    static {
-        MAPPER = new JacksonAdapter().serializer();
-        SerializationUtil.configureMapper(MAPPER);
-    }
     /**
      * Assert whether two objects are equal.
      *
@@ -288,12 +286,61 @@ public final class TestHelpers {
     }
 
     private static List<Map<String, Object>> readJsonFileToList(String filename) {
-        Reader reader = new InputStreamReader(Objects.requireNonNull(TestHelpers.class.getClassLoader()
-            .getResourceAsStream(filename)));
+
+        InputStream inputStream = Objects.requireNonNull(TestHelpers.class.getClassLoader()
+            .getResourceAsStream(filename));
+        //Creating a Scanner object
+        Scanner sc = new Scanner(inputStream);
+        //Reading line by line from scanner to StringBuffer
+        StringBuilder sb = new StringBuilder();
+        while (sc.hasNext()) {
+            sb.append(sc.nextLine());
+        }
         try {
-            return MAPPER.readValue(reader, new TypeReference<List<Map<String, Object>>>() { });
+            return SERIALIZER.deserialize(sb.toString(), LIST_TYPE_REFERENCE.getJavaType(), SerializerEncoding.JSON);
         } catch (IOException e) {
-            throw new UncheckedIOException(e);
+            throw Exceptions.propagate(e);
+        }
+    }
+
+    public static List<Map<String, Object>> convertStreamToList(InputStream sourceStream) {
+        //Creating a Scanner object
+        Scanner sc = new Scanner(sourceStream);
+        //Reading line by line from scanner to StringBuffer
+        StringBuilder sb = new StringBuilder();
+        while (sc.hasNext()) {
+            sb.append(sc.nextLine());
+        }
+        try {
+            return SERIALIZER.deserialize(sb.toString(), LIST_TYPE_REFERENCE.getJavaType(),
+                SerializerEncoding.JSON);
+        } catch (IOException e) {
+            throw Exceptions.propagate(e);
+        }
+    }
+
+    public static Map<String, Object> convertStreamToMap(InputStream sourceStream) {
+        //Creating a Scanner object
+        Scanner sc = new Scanner(sourceStream);
+        //Reading line by line from scanner to StringBuffer
+        StringBuilder sb = new StringBuilder();
+        while (sc.hasNext()) {
+            sb.append(sc.nextLine());
+        }
+        try {
+            return SERIALIZER.deserialize(sb.toString(), MAP_STRING_OBJECT_TYPE_REFERENCE.getJavaType(),
+                SerializerEncoding.JSON);
+        } catch (IOException e) {
+            throw Exceptions.propagate(e);
+        }
+    }
+
+    public static <T> T convertMapToValue(Map<String, Object> value, Class<T> clazz) {
+        try {
+            String serializedJson = SERIALIZER.serialize(value, SerializerEncoding.JSON);
+            return SERIALIZER.deserialize(serializedJson, clazz, SerializerEncoding.JSON);
+        } catch (IOException ex) {
+            throw Exceptions.propagate(ex);
         }
     }
 }

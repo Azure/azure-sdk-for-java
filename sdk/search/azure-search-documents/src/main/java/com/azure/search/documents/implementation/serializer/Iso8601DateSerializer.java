@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.search.documents.implementation;
+package com.azure.search.documents.implementation.serializer;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
@@ -14,9 +14,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 /**
- * Custom serializer to serialize {@link java.util.Date} to Iso8601 standard date format "yyyy-MM-dd'T'hh:mm:ss.SSS'Z'".
+ * Custom serializer to serialize {@link Date} to Iso8601 standard date format "yyyy-MM-dd'T'hh:mm:ss.SSS'Z'".
  */
-final class Iso8601DateSerializer extends JsonSerializer<Date> {
+public final class Iso8601DateSerializer extends JsonSerializer<Date> {
 
     /**
      * Gets a module wrapping this serializer as an adapter for the Jackson
@@ -33,7 +33,7 @@ final class Iso8601DateSerializer extends JsonSerializer<Date> {
     /**
      * Serializes the date value to service accepted iso8601 format with UTC time zone.
      *
-     * @param dateValue The {@link java.util.Date} value.
+     * @param dateValue The {@link Date} value.
      * @param gen Generator used to output resulting Json content
      * @param serializers Provider that can be used to get serializers for serializing Objects value contains, if any.
      * @throws IOException Throws exception when the dateValue cannot convert to json content.

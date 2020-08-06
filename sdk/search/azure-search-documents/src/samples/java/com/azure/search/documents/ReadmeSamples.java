@@ -269,4 +269,9 @@ public class ReadmeSamples {
         // Create an index
         searchIndexClient.createIndex(index);
     }
+
+    public void createIndexUseFieldBuilder() {
+        List<SearchField> searchFields = SearchIndexClient.buildSearchFields(Hotel.class, null);
+        searchIndexClient.createIndex(new SearchIndex("index", searchFields));
+    }
 }

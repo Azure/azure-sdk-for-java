@@ -45,7 +45,8 @@ public final class SynonymMapsImpl {
      * @param client the instance of the service client containing this operation class.
      */
     SynonymMapsImpl(SearchServiceClientImpl client) {
-        this.service = RestProxy.create(SynonymMapsService.class, client.getHttpPipeline());
+        this.service =
+                RestProxy.create(SynonymMapsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
