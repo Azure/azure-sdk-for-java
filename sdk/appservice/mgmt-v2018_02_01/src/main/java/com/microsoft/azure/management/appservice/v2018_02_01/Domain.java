@@ -17,7 +17,7 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
 import java.util.List;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.DomainInner;
@@ -25,7 +25,7 @@ import com.microsoft.azure.management.appservice.v2018_02_01.implementation.Doma
 /**
  * Type representing Domain.
  */
-public interface Domain extends HasInner<DomainInner>, Resource, GroupableResourceCore<AppServiceManager, DomainInner>, HasResourceGroup, Refreshable<Domain>, Updatable<Domain.Update>, HasManager<AppServiceManager> {
+public interface Domain extends HasInner<DomainInner>, Resource, GroupableResourceCore<CertificateRegistrationManager, DomainInner>, HasResourceGroup, Refreshable<Domain>, Updatable<Domain.Update>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the authCode value.
      */

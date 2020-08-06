@@ -17,7 +17,7 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
 import java.util.List;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.StampCapacityInner;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServiceEnvironmentResourceInner;
@@ -25,7 +25,7 @@ import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppS
 /**
  * Type representing AppServiceEnvironmentResource.
  */
-public interface AppServiceEnvironmentResource extends HasInner<AppServiceEnvironmentResourceInner>, Resource, GroupableResourceCore<AppServiceManager, AppServiceEnvironmentResourceInner>, HasResourceGroup, Refreshable<AppServiceEnvironmentResource>, Updatable<AppServiceEnvironmentResource.Update>, HasManager<AppServiceManager> {
+public interface AppServiceEnvironmentResource extends HasInner<AppServiceEnvironmentResourceInner>, Resource, GroupableResourceCore<CertificateRegistrationManager, AppServiceEnvironmentResourceInner>, HasResourceGroup, Refreshable<AppServiceEnvironmentResource>, Updatable<AppServiceEnvironmentResource.Update>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the allowedMultiSizes value.
      */

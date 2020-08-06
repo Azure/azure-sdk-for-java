@@ -10,7 +10,7 @@ package com.microsoft.azure.management.appservice.v2018_02_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.SiteConfigResourceInner;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +20,7 @@ import org.joda.time.DateTime;
 /**
  * Type representing SiteConfigResource.
  */
-public interface SiteConfigResource extends HasInner<SiteConfigResourceInner>, HasManager<AppServiceManager> {
+public interface SiteConfigResource extends HasInner<SiteConfigResourceInner>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the alwaysOn value.
      */
