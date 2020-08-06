@@ -293,9 +293,6 @@ resourcemanager_com.jcraft:jsch;0.1.55
 # sdk\resourcemanager\azure-resourcemanager-compute\pom.xml
 resourcemanager_com.microsoft.azure:azure-storage;6.1.0
 
-# sdk\resourcemanager\azure-resourcemanager-samples\pom.xml
-resourcemanager_org.apache.httpcomponents:httpclient;4.5.12
-
 # sdk\storage\azure-storage-blob-cryptography\pom.xml
 storage_com.microsoft.azure:azure-storage;8.4.0
 

@@ -78,7 +78,7 @@
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
-      <version>4.5.12</version> <!-- {x-version-update;resourcemanager_org.apache.httpcomponents:httpclient;external_dependency} -->
+      <version>4.5.12</version> <!-- {x-version-update;org.apache.httpcomponents:httpclient;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.github.cverges.expect4j</groupId>
@@ -188,7 +188,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.apache.httpcomponents:httpclient:[4.5.12]</include> <!-- {x-include-update;resourcemanager_org.apache.httpcomponents:httpclient;external_dependency} -->
+                <include>org.apache.httpcomponents:httpclient:[4.5.12]</include> <!-- {x-include-update;org.apache.httpcomponents:httpclient;external_dependency} -->
                 <include>io.fabric8:kubernetes-client:[4.9.1]</include> <!-- {x-include-update;io.fabric8:kubernetes-client;external_dependency} -->
                 <include>com.jcraft:jsch:[0.1.55]</include> <!-- {x-include-update;resourcemanager_com.jcraft:jsch;external_dependency} -->
                 <include>org.slf4j:slf4j-simple:[1.7.25]</include> <!-- {x-include-update;org.slf4j:slf4j-simple;external_dependency} -->
