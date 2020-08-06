@@ -69,8 +69,12 @@ class Changefeed {
 
         /* Validate the cursor. */
         if (userCursor != null) {
+            if (userCursor.getCursorVersion() != 1) {
+                throw logger.logExceptionAsError(new IllegalArgumentException("Unsupported cursor version."));
+            }
             if (!Arrays.equals(userCursor.getUrlHash(), urlHash)) {
-                throw logger.logExceptionAsError(new RuntimeException("Cursor url does not match the container url."));
+                throw logger.logExceptionAsError(new IllegalArgumentException("Cursor URL does not match container "
+                    + "URL."));
             }
         }
     }

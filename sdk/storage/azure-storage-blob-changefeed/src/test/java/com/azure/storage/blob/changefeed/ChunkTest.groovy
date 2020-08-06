@@ -38,7 +38,6 @@ class ChunkTest extends Specification {
     String chunkPath0 = "log/00/2020/08/02/2300/00000.avro"
     String chunkPath1 = "log/01/2020/08/02/2300/00000.avro"
 
-
     List<BlobChangefeedEvent> mockEvents
     List<Map<String, Object>> mockRecords
     List<AvroObject> mockAvroObjects
