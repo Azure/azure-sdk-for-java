@@ -2192,7 +2192,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 .onErrorResume(throwable -> TransactionalBatchResponse.fromResponseMessageAsync(throwable, serverBatchRequest));
 
         } catch (Exception e) {
-            logger.debug("Failure in creating a document due to [{}]", e.getMessage(), e);
+            logger.debug("Failure in executing a batch due to [{}]", e.getMessage(), e);
             return Mono.error(e);
         }
     }
