@@ -200,20 +200,20 @@ public class CosmosSyncContainerTest extends TestSuiteBase {
         CosmosSyncContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
         validateContainerResponse(containerProperties, containerResponse);
 
-        assertThat(containerResponse.properties().indexingPolicy().indexingMode()).isEqualTo(IndexingMode.LAZY);
+        assertThat(containerResponse.properties().indexingPolicy().indexingMode()).isEqualTo(IndexingMode.CONSISTENT);
 
         CosmosSyncContainerResponse replaceResponse = containerResponse.container()
                                                           .replace(containerResponse.properties().indexingPolicy(
-                                                              new IndexingPolicy().indexingMode(IndexingMode.LAZY)));
+                                                              new IndexingPolicy().indexingMode(IndexingMode.CONSISTENT)));
         assertThat(replaceResponse.properties().indexingPolicy().indexingMode())
-            .isEqualTo(IndexingMode.LAZY);
+            .isEqualTo(IndexingMode.CONSISTENT);
 
         CosmosSyncContainerResponse replaceResponse1 = containerResponse.container()
                                                           .replace(containerResponse.properties().indexingPolicy(
-                                                              new IndexingPolicy().indexingMode(IndexingMode.LAZY)),
+                                                              new IndexingPolicy().indexingMode(IndexingMode.CONSISTENT)),
                                                               options);
         assertThat(replaceResponse1.properties().indexingPolicy().indexingMode())
-            .isEqualTo(IndexingMode.LAZY);
+            .isEqualTo(IndexingMode.CONSISTENT);
 
     }
 

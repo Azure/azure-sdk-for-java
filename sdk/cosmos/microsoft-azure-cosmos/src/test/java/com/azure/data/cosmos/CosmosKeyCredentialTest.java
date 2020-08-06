@@ -151,13 +151,13 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
 
         // replace indexing mode
         IndexingPolicy indexingMode = new IndexingPolicy();
-        indexingMode.indexingMode(IndexingMode.LAZY);
+        indexingMode.indexingMode(IndexingMode.CONSISTENT);
         collectionSettings.indexingPolicy(indexingMode);
         Mono<CosmosContainerResponse> readObservable = collection.replace(collectionSettings, new CosmosContainerRequestOptions());
 
         // validate
         CosmosResponseValidator<CosmosContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosContainerResponse>()
-            .indexingMode(IndexingMode.LAZY).build();
+            .indexingMode(IndexingMode.CONSISTENT).build();
         validateSuccess(readObservable, validator);
 
         //  sanity check
