@@ -481,7 +481,7 @@ public class BlobAsyncClientBase {
             (pollingContext) -> {
                 try {
                     return onStart(options.getSourceUrl(), options.getMetadata(), options.getTags(),
-                        options.getTier(), options.getRehydratePriority(), options.isSealingDestination(),
+                        options.getTier(), options.getRehydratePriority(), options.isSealDestination(),
                         sourceModifiedCondition, destinationRequestConditions);
                 } catch (RuntimeException ex) {
                     return monoError(logger, ex);

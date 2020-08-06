@@ -20,10 +20,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.TestUtils;
 import com.azure.messaging.servicebus.implementation.models.CreateQueueBody;
 import com.azure.messaging.servicebus.implementation.models.CreateQueueBodyContent;
+import com.azure.messaging.servicebus.implementation.models.QueueDescription;
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionEntry;
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionFeed;
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionResponse;
-import com.azure.messaging.servicebus.models.QueueDescription;
+import com.azure.messaging.servicebus.models.CreateQueueOptions;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -97,11 +98,13 @@ class ServiceBusManagementClientImplIntegrationTests extends TestBase {
         final EntitysImpl entityClient = managementClient.getEntitys();
 
         final String queueName = testResourceNamer.randomName("test", 7);
-        final QueueDescription description = new QueueDescription(queueName).setMaxDeliveryCount(15);
+        final CreateQueueOptions options = new CreateQueueOptions(queueName)
+            .setMaxDeliveryCount(15);
+        final QueueDescription queueProperties = EntityHelper.getQueueDescription(options);
         final CreateQueueBody createEntity = new CreateQueueBody();
         final CreateQueueBodyContent content = new CreateQueueBodyContent()
             .setType("application/xml")
-            .setQueueDescription(description);
+            .setQueueDescription(queueProperties);
         createEntity.setContent(content);
 
         logger.info("Creating queue: {}", queueName);
@@ -134,11 +137,13 @@ class ServiceBusManagementClientImplIntegrationTests extends TestBase {
         final EntitysImpl entityClient = managementClient.getEntitys();
 
         final String queueName = testResourceNamer.randomName("test", 7);
-        final QueueDescription description = new QueueDescription(queueName).setMaxDeliveryCount(15);
+        final CreateQueueOptions description = new CreateQueueOptions(queueName)
+            .setMaxDeliveryCount(15);
+        final QueueDescription queueProperties = EntityHelper.getQueueDescription(description);
         final CreateQueueBody createEntity = new CreateQueueBody();
         final CreateQueueBodyContent content = new CreateQueueBodyContent()
             .setType("application/xml")
-            .setQueueDescription(description);
+            .setQueueDescription(queueProperties);
         createEntity.setContent(content);
 
         logger.info("Creating queue: {}", queueName);

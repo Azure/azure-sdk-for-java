@@ -90,7 +90,7 @@ public class AzureADGraphClient {
         } else {
             conn.setRequestMethod(HttpMethod.GET.toString());
             conn.setRequestProperty("api-version", "1.6");
-            conn.setRequestProperty(HttpHeaders.AUTHORIZATION, accessToken);
+            conn.setRequestProperty(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", accessToken));
             conn.setRequestProperty(HttpHeaders.ACCEPT, "application/json;odata=minimalmetadata");
         }
         final String responseInJson = getResponseStringFromConn(conn);
