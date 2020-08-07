@@ -32,6 +32,7 @@ import com.azure.storage.file.datalake.specialized.DataLakeLeaseAsyncClient
 import com.azure.storage.file.datalake.specialized.DataLakeLeaseClient
 import com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder
 import reactor.core.publisher.Flux
+import reactor.core.publisher.Hooks
 import reactor.core.publisher.Mono
 import spock.lang.Requires
 import spock.lang.Shared
@@ -131,6 +132,7 @@ class APISpec extends Specification {
     static int MB = 1024 * KB
 
     def setupSpec() {
+        Hooks.onOperatorDebug()
         testMode = setupTestMode()
         primaryCredential = getCredential(DATA_LAKE_STORAGE)
     }

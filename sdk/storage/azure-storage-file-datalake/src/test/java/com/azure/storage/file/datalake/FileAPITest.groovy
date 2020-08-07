@@ -2250,7 +2250,7 @@ class FileAPITest extends APISpec {
 
         then:
         // Due to memory issues, this check only runs on small to medium sized data sets.
-        if (dataSize < 100 * 1024 * 1024) {
+        if (dataSize < 100 * MB) {
             StepVerifier.create(collectBytesInBuffer(fac.read()))
                 .assertNext({ assert it == data })
                 .verifyComplete()
