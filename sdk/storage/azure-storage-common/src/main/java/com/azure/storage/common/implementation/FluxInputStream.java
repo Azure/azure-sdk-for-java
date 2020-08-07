@@ -69,6 +69,7 @@ public class FluxInputStream extends InputStream {
 
     @Override
     public int read(byte[] b, int off, int len) throws IOException {
+        System.out.println(Thread.currentThread().getId() + String.format("Call to read. Offset %d. len %d.", off, len));
         validateParameters(b, off, len);
 
         /* If len is 0, then no bytes are read and 0 is returned. */
@@ -80,16 +81,19 @@ public class FluxInputStream extends InputStream {
 
         /* Not subscribed? subscribe and block for data */
         if (!subscribed) {
+            System.out.println(Thread.currentThread().getId() + " Not subscribed. Blocking for data");
             blockForData();
         }
         /* Now, we have subscribed. */
         /* At this point, buffer should not be null. If it is, that indicates either an error or completion event
            was emitted by the Flux. */
         if (this.buffer == null) { // Only executed on first subscription.
+            System.out.println(Thread.currentThread().getId() + " buffer is null");
             if (this.lastError != null) {
                 throw logger.logThrowableAsError(this.lastError);
             }
             if (this.fluxComplete) {
+                System.out.println(Thread.currentThread().getId() + " Flux complete");
                 return -1;
             }
             throw logger.logExceptionAsError(new IllegalStateException("An unexpected error occurred. No data was "
@@ -99,21 +103,26 @@ public class FluxInputStream extends InputStream {
         /* Now we are guaranteed that buffer is SOMETHING. */
         /* No data is available in the buffer.  */
         if (this.buffer.available() == 0) {
+            System.out.println(Thread.currentThread().getId() + " Buffer available is 0");
             /* If the flux completed, there is no more data available to be read from the stream. Return -1. */
             if (this.fluxComplete) {
+                System.out.println(Thread.currentThread().getId() + " Flux complete 2");
                 return -1;
             }
             /* Block current thread until data is available. */
+            System.out.println(Thread.currentThread().getId() + " Blocking for data 2");
             blockForData();
         }
 
         /* Data available in buffer, read the buffer. */
         if (this.buffer.available() > 0) {
+            System.out.println(Thread.currentThread().getId() + " Data available in buffer. Reading to array");
             return this.buffer.read(b, off, len);
         }
 
         /* If the flux completed, there is no more data available to be read from the stream. Return -1. */
         if (this.fluxComplete) {
+            System.out.println(Thread.currentThread().getId() + " Flux complete three");
             return -1;
         } else {
             throw logger.logExceptionAsError(new IllegalStateException("An unexpected error occurred. No data was "
@@ -123,6 +132,7 @@ public class FluxInputStream extends InputStream {
 
     @Override
     public void close() throws IOException {
+        System.out.println(Thread.currentThread().getId() + " Closing. Cancelling subscription");
         subscription.cancel();
         if (this.buffer != null) {
             this.buffer.close();
@@ -137,27 +147,36 @@ public class FluxInputStream extends InputStream {
      * Request more data and wait on data to become available.
      */
     private void blockForData() {
+        System.out.println(Thread.currentThread().getId() + " In block for data. Acquiring lock");
         lock.lock();
+        System.out.println(Thread.currentThread().getId() + " Lock acquired in block for data");
         try {
             waitingForData = true;
             if (!subscribed) {
+                System.out.println(Thread.currentThread().getId() + " Subscribing inside of block");
                 subscribeToData();
             } else {
+                System.out.println(Thread.currentThread().getId() + " Requesting one from subscription");
                 subscription.request(1);
             }
             // Block current thread until data is available.
+            System.out.println(Thread.currentThread().getId() + " Waiting for data");
             while (waitingForData) {
                 if (fluxComplete) {
+                    System.out.println(Thread.currentThread().getId() + " Flux completed while waiting. Breaking");
                     break;
                 } else {
                     try {
+                        System.out.println(Thread.currentThread().getId() + " Awaiting on condition");
                         dataAvailable.await();
+                        System.out.println(Thread.currentThread().getId() + " Passed condition variable");
                     } catch (InterruptedException e) {
                         throw logger.logExceptionAsError(new RuntimeException(e));
                     }
                 }
             }
         } finally {
+            System.out.println(Thread.currentThread().getId() + " releasing lock in block for data");
             lock.unlock();
         }
     }
@@ -166,6 +185,7 @@ public class FluxInputStream extends InputStream {
      * Subscribes to the data with a special subscriber.
      */
     private void subscribeToData() {
+
         this.data
             .filter(Buffer::hasRemaining) /* Filter to make sure only non empty byte buffers are emitted. */
             .onBackpressureBuffer()
@@ -173,23 +193,30 @@ public class FluxInputStream extends InputStream {
                 // ByteBuffer consumer
                 byteBuffer -> {
                     this.buffer = new ByteArrayInputStream(FluxUtil.byteBufferToArray(byteBuffer));
+                    System.out.println(Thread.currentThread().getId() + " Acquiring lock in onNext");
                     lock.lock();
+                    System.out.println(Thread.currentThread().getId() + " Acquired lock in onNext");
                     try {
                         this.waitingForData = false;
                         // Signal the consumer when data is available.
+                        System.out.println(Thread.currentThread().getId() + " Set waiting for data to false. Signaling CV");
                         dataAvailable.signal();
+                        System.out.println(Thread.currentThread().getId() + " Signaled CV");
                     } finally {
+                        System.out.println(Thread.currentThread().getId() + " Releasing lock in onNext");
                         lock.unlock();
                     }
                 },
                 // Error consumer
                 throwable -> {
                     // Signal the consumer in case an error occurs (indicates we completed without data).
+                    System.out.println(Thread.currentThread().getId() + " OnError");
                     if (throwable instanceof IOException) {
                         this.lastError = (IOException) throwable;
                     } else {
                         this.lastError = new IOException(throwable);
                     }
+                    System.out.println(Thread.currentThread().getId() + " Signaling onCompleteOrError");
                     signalOnCompleteOrError();
                 },
                 // Complete consumer
@@ -209,12 +236,17 @@ public class FluxInputStream extends InputStream {
      */
     private void signalOnCompleteOrError() {
         this.fluxComplete = true;
+        System.out.println(Thread.currentThread().getId() + " Set fluxComplete to true. Acquiring lock");
         lock.lock();
+        System.out.println(Thread.currentThread().getId() + " Acquired lock in fluxcomplete");
         try {
             this.waitingForData = false;
+            System.out.println(Thread.currentThread().getId() + " Signaling CV from onComplete/error");
             dataAvailable.signal();
+            System.out.println(Thread.currentThread().getId() + " Signaled CV from onComplete/error");
         } finally {
             lock.unlock();
+            System.out.println(Thread.currentThread().getId() + " Released lock from onComplete/Error");
         }
     }
 
