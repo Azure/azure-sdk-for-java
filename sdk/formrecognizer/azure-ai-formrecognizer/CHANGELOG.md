@@ -1,6 +1,6 @@
 # Release History
 
-## 3.0.0 (Unreleased)
+## 3.0.0-beta.1 (Unreleased)
 First stable release of the azure-ai-formrecognizer package. Targets the service's v2.0 API.
 
 - Added support for context passing.
