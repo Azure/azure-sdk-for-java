@@ -9,8 +9,6 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.messaging.eventgrid.models.CloudEvent;
-import com.azure.messaging.eventgrid.models.EventGridEvent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.junit.Ignore;
 import org.junit.Test;

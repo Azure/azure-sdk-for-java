@@ -13,8 +13,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImpl;
 import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImplBuilder;
-import com.azure.messaging.eventgrid.models.CloudEvent;
-import com.azure.messaging.eventgrid.models.EventGridEvent;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;

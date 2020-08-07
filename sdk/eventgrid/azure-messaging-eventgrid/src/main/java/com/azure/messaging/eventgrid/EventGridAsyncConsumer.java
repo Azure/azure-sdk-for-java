@@ -7,8 +7,6 @@ package com.azure.messaging.eventgrid;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.experimental.serializer.JsonArray;
 import com.azure.core.experimental.serializer.JsonSerializer;
-import com.azure.messaging.eventgrid.models.CloudEvent;
-import com.azure.messaging.eventgrid.models.EventGridEvent;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

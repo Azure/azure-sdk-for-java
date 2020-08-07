@@ -9,8 +9,6 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.messaging.eventgrid.models.CloudEvent;
-import com.azure.messaging.eventgrid.models.EventGridEvent;
 
 /**
  * A service client that publishes events to an EventGrid topic or domain. Use {@link EventGridPublisherClientBuilder}
