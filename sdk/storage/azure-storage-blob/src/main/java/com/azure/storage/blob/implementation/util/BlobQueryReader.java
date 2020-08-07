@@ -80,6 +80,7 @@ public class BlobQueryReader {
         }
         Map<?, ?> record = (Map<?, ?>) quickQueryRecord;
         Object recordSchema = record.get(AvroConstants.RECORD);
+        System.out.println("parsing avro: " + recordSchema.toString());
 
         switch (recordSchema.toString()) {
             case "resultData":

@@ -146,6 +146,7 @@ public class AvroParser {
      * @return A reactive stream of Objects found in this buffer.
      */
     public Flux<AvroObject> parse(ByteBuffer buffer) {
+        System.out.println("AvroParser.parse data " + buffer.remaining())
         /* Write a deep-copied buffer to the state's cache.
            As needed, bytes will be consumed from the cache by schemas.
            The bytes of a schema could be spread across any number of ByteBuffers in the stream, so we cache
@@ -191,8 +192,10 @@ public class AvroParser {
         /* Convert the records collected so far into a Flux. */
         Flux<AvroObject> result;
         if (this.objects.isEmpty()) {
+            System.out.println("AvroParser returning empty");
             result = Flux.empty();
         } else {
+            System.out.println("AvroParser returning " + this.objects.size());
             result = Flux.fromIterable(this.objects);
             this.objects = new ArrayList<>();
         }
