@@ -1304,7 +1304,7 @@ class BlockBlobAPITest extends APISpec {
         it will be chunked appropriately.
          */
         setup:
-        def blobAsyncClient = getPrimaryServiceClientForWrites(bufferSize)
+        def blobAsyncClient = getPrimaryServiceClientForWrites(Integer.MAX_VALUE)
             .getBlobContainerAsyncClient(blobAsyncClient.getContainerName())
             .getBlobAsyncClient(blobAsyncClient.getBlobName())
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(bufferSize * Constants.MB).setMaxConcurrency(numBuffers).setMaxSingleUploadSizeLong(4 * Constants.MB)
