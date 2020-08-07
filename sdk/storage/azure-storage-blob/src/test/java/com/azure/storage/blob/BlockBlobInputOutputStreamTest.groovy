@@ -28,15 +28,20 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         def count = is.read(outArr)
 
         then:
-        System.out.println("About to compare")
-        Arrays.compare(data, 0, data.length, outArr, 0, data.length) == 0
+        System.out.println("Comparing data")
+        for (int i=0; i < dataSize; i++) {
+            assert data[i] == outArr[i]
+        }
+        for (int i=dataSize; i < (outArr.length); i++) {
+            assert outArr[i] == (byte) 0
+        }
+
         count == retVal
 
         where:
         dataSize        || retVal
         0               || -1
         6 * 1024 * 1024 || 6 * 1024 * 1024 // Test for github issue #13811
-
     }
 
     // Only run this test in live mode as BlobOutputStream dynamically assigns blocks
