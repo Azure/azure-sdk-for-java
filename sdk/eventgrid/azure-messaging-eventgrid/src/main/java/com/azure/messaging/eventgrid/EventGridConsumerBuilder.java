@@ -35,7 +35,7 @@ public class EventGridConsumerBuilder {
 
     private final Map<String, Class<?>> typeMappings;
 
-    private JsonSerializer deserializer;
+    private JsonSerializer dataDeserializer;
 
     /**
      * Create the Consumer Builder with system event mappings already loaded.
@@ -44,43 +44,13 @@ public class EventGridConsumerBuilder {
         typeMappings = new HashMap<>(SystemEventMappings.getSystemEventMappings());
     }
 
-    /* I'm unsure if all system events correctly give the time zone offset when sending their time, but the offset
-       should always be +0:00 or Z, aka UTC, so this will handle exceptions when there isn't an offset given by
-       assuming UTC time when not specified. This is needed because Jackson cannot deserialize OffsetDateTime
-       by itself, and so this is added as a module.
-
-       If the system events all send offsetDateTime correctly with an offset, then instead of this you can add
-       the OffsetDateTimeKeyDeserializer, or the entire JavaTime module.
-     */
-    private static class OffsetDateTimeUtcDefaultDeserializer extends JsonDeserializer<OffsetDateTime> {
-        @Override
-        public OffsetDateTime deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
-            throws IOException {
-            TemporalAccessor time = DateTimeFormatter.ISO_DATE_TIME.parse(jsonParser.getValueAsString());
-            try {
-                return OffsetDateTime.from(time);
-            } catch (DateTimeException e) {
-                return OffsetDateTime.of(LocalDateTime.from(time), ZoneOffset.UTC);
-            }
-        }
-    }
 
     /**
      * Build an instance of the async consumer. If no deserializer is provided, then a default Jackson one is provided.
      * @return the async consumer with the settings that were already set.
      */
     public EventGridAsyncConsumer buildAsyncConsumer() {
-        JsonSerializer buildDeserializer = deserializer;
-        if (buildDeserializer == null) {
-            buildDeserializer = new JacksonJsonSerializerBuilder()
-                .serializer(new ObjectMapper().registerModule(
-                    new SimpleModule().addDeserializer(OffsetDateTime.class,
-                        new OffsetDateTimeUtcDefaultDeserializer()))
-                    .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false))
-                .build();
-        }
-
-        return new EventGridAsyncConsumer(typeMappings, buildDeserializer);
+        return new EventGridAsyncConsumer(typeMappings, dataDeserializer);
     }
 
     /**
@@ -111,14 +81,14 @@ public class EventGridConsumerBuilder {
     }
 
     /**
-     * Set the custom serializer to use when deserializing events. This deserializer should be able to decode all events
+     * Set the custom serializer to use when deserializing the event data. This deserializer should be able to decode all events
      * expected to be in the payload, including the {@link OffsetDateTime} that is included in most events
      * @param deserializer the deserializer to use.
      *
      * @return the builder itself.
      */
-    public EventGridConsumerBuilder deserializer(JsonSerializer deserializer) {
-        this.deserializer = deserializer;
+    public EventGridConsumerBuilder dataDeserializer(JsonSerializer deserializer) {
+        this.dataDeserializer = deserializer;
         return this;
     }
 }
