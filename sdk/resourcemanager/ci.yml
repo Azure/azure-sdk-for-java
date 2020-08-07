@@ -88,3 +88,7 @@ extends:
         groupId: com.azure
       - name: azure-storage-perf
         groupId: com.azure
+      - name: spring-integration-azure-core
+        groupId: com.microsoft.azure
+      - name: spring-integration-azure-test
+        groupId: com.microsoft.azure
