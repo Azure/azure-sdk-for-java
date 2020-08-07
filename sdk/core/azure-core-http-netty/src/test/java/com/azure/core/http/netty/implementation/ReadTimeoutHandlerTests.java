@@ -78,7 +78,7 @@ public class ReadTimeoutHandlerTests {
 
         readTimeoutHandler.handlerAdded(ctx);
 
-        Thread.sleep(150);
+        Thread.sleep(500);
 
         verify(ctx, atLeast(1)).fireExceptionCaught(any());
     }
