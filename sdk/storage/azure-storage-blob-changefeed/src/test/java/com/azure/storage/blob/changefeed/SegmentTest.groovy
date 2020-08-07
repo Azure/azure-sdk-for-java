@@ -105,65 +105,6 @@ class SegmentTest extends Specification {
         verify(mockShard2).getEvents() || true
     }
 
-    /* All we want to test here is that we only call chunk.getEvents if it is equal to or after the shard of interest. */
-//    @Unroll
-//    def "getEvents cursors"() {
-//        when:
-//        SegmentCursor userCursor = new SegmentCursor(segmentPath).toShardCursor(shardPath)
-//        SegmentFactory segmentFactory = new SegmentFactory(mockShardFactory, mockContainer)
-//        Segment segment = segmentFactory.getSegment(segmentPath, cfCursor, userCursor)
-//
-//        def sv = StepVerifier.create(segment.getEvents().index())
-//
-//        then:
-//        if (shardPath == shardPath0) {
-//            sv = sv.expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath0) })
-//                .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath0) })
-//                .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath0) })
-//        }
-//        if (shardPath == shardPath0 || shardPath == shardPath1) {
-//            sv = sv.expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath1)})
-//                .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath1)})
-//                .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath1)})
-//
-//        }
-//        if (shardPath == shardPath0 || shardPath == shardPath1 || shardPath == shardPath2) {
-//            sv = sv.expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath2)})
-//                .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath2)})
-//                .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath2)})
-//        }
-//        sv.verifyComplete()
-//
-//
-//        verify(mockContainer).getBlobAsyncClient(segmentPath) || true
-//        verify(mockBlob).download() || true
-//
-//        if (shardPath == shardPath0) {
-//            verify(mockShardFactory).getShard(shardPath0, cfCursor.toShardCursor(shardPath0), userCursor.getShardCursors().get(0)) || true
-//            verify(mockShard0).getEvents() || true
-//            verify(mockShardFactory).getShard(shardPath1, cfCursor.toShardCursor(shardPath1), null) || true
-//            verify(mockShard1).getEvents() || true
-//            verify(mockShardFactory).getShard(shardPath2, cfCursor.toShardCursor(shardPath2), null) || true
-//            verify(mockShard2).getEvents() || true
-//        }
-//        if (shardPath == shardPath1) {
-//            verify(mockShardFactory).getShard(shardPath1, cfCursor.toShardCursor(shardPath1), userCursor.getShardCursors().get(0)) || true
-//            verify(mockShard1).getEvents() || true
-//            verify(mockShardFactory).getShard(shardPath2, cfCursor.toShardCursor(shardPath2), null) || true
-//            verify(mockShard2).getEvents() || true
-//        }
-//        if (shardPath == shardPath2) {
-//            verify(mockShardFactory).getShard(shardPath2, cfCursor.toShardCursor(shardPath2), userCursor.getShardCursors().get(0)) || true
-//            verify(mockShard2).getEvents() || true
-//        }
-//
-//        where:
-//        shardPath                   || _
-//        shardPath0   || _
-//        shardPath1   || _
-//        shardPath2   || _
-//    }
-
     @Unroll
     def "getEvents cursor"() {
         when:
@@ -173,28 +114,23 @@ class SegmentTest extends Specification {
         def sv = StepVerifier.create(segment.getEvents().index())
 
         then:
-        if (caseNumber == 1) {
-            sv = sv.expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath0) })
-                .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath0) })
-                .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath0) })
-        }
-        if (caseNumber == 1) {
-            sv = sv.expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath1)})
-                .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath1)})
-                .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath1)})
+        sv.expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath0) })
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath0) })
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath0) })
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath1)})
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath1)})
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath1)})
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath2)})
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath2)})
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath2)})
 
-        }
-        if (caseNumber == 1) {
-            sv = sv.expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath2)})
-                .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath2)})
-                .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath2)})
-        }
         sv.verifyComplete()
 
 
         verify(mockContainer).getBlobAsyncClient(segmentPath) || true
         verify(mockBlob).download() || true
 
+        /* This is the stuff that actually matters. */
         if (caseNumber == 1) {
             verify(mockShardFactory).getShard(shardPath0, cfCursor.toShardCursor(shardPath0), new ShardCursor(shardPath0 + "00000.avro", 1257, 84)) || true
             verify(mockShard0).getEvents() || true
@@ -203,23 +139,28 @@ class SegmentTest extends Specification {
             verify(mockShardFactory).getShard(shardPath2, cfCursor.toShardCursor(shardPath2), null) || true
             verify(mockShard2).getEvents() || true
         }
-//        if (caseNumber == 1) {
-//            verify(mockShardFactory).getShard(shardPath1, cfCursor.toShardCursor(shardPath1), userCursor.getShardCursors().get(0)) || true
-//            verify(mockShard1).getEvents() || true
-//            verify(mockShardFactory).getShard(shardPath2, cfCursor.toShardCursor(shardPath2), null) || true
-//            verify(mockShard2).getEvents() || true
-//        }
-//        if (caseNumber == 1) {
-//            verify(mockShardFactory).getShard(shardPath2, cfCursor.toShardCursor(shardPath2), userCursor.getShardCursors().get(0)) || true
-//            verify(mockShard2).getEvents() || true
-//        }
+        if (caseNumber == 2) {
+            verify(mockShardFactory).getShard(shardPath0, cfCursor.toShardCursor(shardPath0), new ShardCursor(shardPath0 + "00000.avro", 2589, 3)) || true
+            verify(mockShard0).getEvents() || true
+            verify(mockShardFactory).getShard(shardPath1, cfCursor.toShardCursor(shardPath1), new ShardCursor(shardPath1 + "00000.avro", 345789, 8)) || true
+            verify(mockShard1).getEvents() || true
+            verify(mockShardFactory).getShard(shardPath2, cfCursor.toShardCursor(shardPath2), null) || true
+            verify(mockShard2).getEvents() || true
+        }
+        if (caseNumber == 3) {
+            verify(mockShardFactory).getShard(shardPath0, cfCursor.toShardCursor(shardPath0), new ShardCursor(shardPath0 + "00000.avro", 492, 67)) || true
+            verify(mockShard0).getEvents() || true
+            verify(mockShardFactory).getShard(shardPath1, cfCursor.toShardCursor(shardPath1), new ShardCursor(shardPath1 + "00001.avro", 1257, 84)) || true
+            verify(mockShard1).getEvents() || true
+            verify(mockShardFactory).getShard(shardPath2, cfCursor.toShardCursor(shardPath2), new ShardCursor(shardPath2 + "00002.avro", 5678, 6)) || true
+            verify(mockShard2).getEvents() || true
+        }
 
         where:
-        caseNumber | userCursor                                                                                                  || _
-        1          | new SegmentCursor(segmentPath).toShardCursor(shardPath0).toEventCursor(shardPath0 + "00000.avro", 1257, 84) || _  /* shard 0 should */
-//        2
-//        3
-//        4
+        caseNumber | userCursor                                                                                                                                                                                                                                                            || _
+        1          | new SegmentCursor(segmentPath).toShardCursor(shardPath0).toEventCursor(shardPath0 + "00000.avro", 1257, 84)                                                                                                                                                           || _ /* Shard 0 should use the cursor and Shard 1 and 2 should pass in null. */
+        2          | new SegmentCursor(segmentPath).toShardCursor(shardPath0).toEventCursor(shardPath0 + "00000.avro", 2589, 3).toShardCursor(shardPath1).toEventCursor(shardPath1 + "00000.avro", 345789, 8)                                                                              || _ /* Shard 0 and 1 should use the cursor and Shard 2 should pass in null. */
+        3          | new SegmentCursor(segmentPath).toShardCursor(shardPath0).toEventCursor(shardPath0 + "00000.avro", 492, 67).toShardCursor(shardPath1).toEventCursor(shardPath1 + "00001.avro", 1257, 84).toShardCursor(shardPath2).toEventCursor(shardPath2 + "00002.avro", 5678, 6) || _ /* Shard 0, 1 and 2 should use the cursor. */
     }
 
     def "segment metadata error"() {
