@@ -15,6 +15,13 @@ import in_place
 EXTERNAL_DEPENDENCIES_FILE = 'eng/versioning/external_dependencies.txt'
 POM = 'https://repo.maven.apache.org/maven2/{group}/{artifact}/{version}/{artifact}-{version}.pom'
 
+LOG_LEVEL_DEBUG = 5
+LOG_LEVEL_INFO = 4
+LOG_LEVEL_WARN = 3
+LOG_LEVEL_ERROR = 2
+LOG_LEVEL_NONE = 1
+logLevel = LOG_LEVEL_INFO
+
 
 class PomModule:
     def __init__(self, group_id, artifact_id, version):
@@ -35,11 +42,11 @@ class PomModule:
 def main():
     start_time = time.time()
     change_to_root_dir()
-    print('Current working directory = {}.'.format(os.getcwd()))
+    debug('Current working directory = {}.'.format(os.getcwd()))
     dependency_dict = get_dependency_dict()
     update_version_for_external_dependencies(dependency_dict)
     elapsed_time = time.time() - start_time
-    print('elapsed_time = {}'.format(elapsed_time))
+    info('elapsed_time = {}'.format(elapsed_time))
 
 
 def change_to_root_dir():
@@ -68,7 +75,7 @@ def get_dependency_dict():
     while not q.empty():
         pom_module = q.get()
         pom_url = pom_module.to_url()
-        print('Get dependencies from module: {}.'.format(pom_url))
+        info('Get dependencies from pom: {}.'.format(pom_url))
         tree = elementTree.ElementTree(file = request.urlopen(pom_url))
         project_element = tree.getroot()
         name_space = {'maven': 'http://maven.apache.org/POM/4.0.0'}
@@ -113,14 +120,14 @@ def get_dependency_dict():
                 version = property_dict[version]
             if key not in dependency_dict:
                 dependency_dict[key] = version
-                print('    Dependency version added. key = {}, value = {}'.format(key, version))
+                debug('    Dependency version added. key = {}, value = {}'.format(key, version))
             else:
-                print('    Dependency version skipped. key = {}, value = {}'.format(key, version))
+                debug('    Dependency version skipped. key = {}, value = {}'.format(key, version))
             artifact_type = dependency_element.find('./maven:type', name_space)
             if artifact_type is not None and artifact_type.text.strip() == 'pom':
                 new_pom_module = PomModule(group_id, artifact_id, version)
                 q.put(new_pom_module)
-                print('Added new pom module: {}.'.format(new_pom_module.to_url()))
+                debug('Added new pom pom: {}.'.format(new_pom_module.to_url()))
     return dependency_dict
 
 
@@ -137,11 +144,15 @@ def update_version_for_external_dependencies(dependency_dict):
                 if key in dependency_dict:
                     value_in_dict = dependency_dict[key]
                     if version_bigger_than(value, value_in_dict):
-                        print('WARN: Skip version update. key = {}, value = {}, value_in_dict = {}'
-                              .format(key, value, value_in_dict))
+                        warn('Version update skipped. key = {}, value = {}, value_in_dict = {}'
+                             .format(key, value, value_in_dict))
                         file.write(line)
-                    elif version_bigger_than(value, value_in_dict):
-                        file.write('{};{}'.format(key, value))
+                    elif version_bigger_than(value_in_dict, value):
+                        info('Version updated. key = {}, value = {}, new_value = {}'.format(
+                            key,
+                            value_in_dict,
+                            value))
+                        file.write('{};{}'.format(key, value_in_dict))
                     else:
                         file.write(line)
                 else:
@@ -168,6 +179,31 @@ def version_bigger_than(version1, version2):
     return False
 
 
+def print_dict(d):
+    for key, value in d.items():
+        print('key = {}, value = {}.'.format(key, value))
+
+
+def debug(string):
+    if (logLevel >= LOG_LEVEL_DEBUG):
+        print('[DEBUG] {}'.format(string))
+
+
+def info(string):
+    if (logLevel >= LOG_LEVEL_INFO):
+        print('[INFO ] {}'.format(string))
+
+
+def warn(string):
+    if (logLevel >= LOG_LEVEL_WARN):
+        print('[WARN ] {}'.format(string))
+
+
+def error(string):
+    if (logLevel >= LOG_LEVEL_ERROR):
+        print('[WARN ] {}'.format(string))
+
+
 class Tests(unittest.TestCase):
     def test_version_bigger_than(self):
         self.assertEqual(version_bigger_than('1', '2'), False)
@@ -184,11 +220,7 @@ class Tests(unittest.TestCase):
         self.assertEqual(version_bigger_than('1.1-RELEASE', '1.1.1-RELEASE'), False)
 
 
-def print_dict(d):
-    for key, value in d.items():
-        print('key = {}, value = {}.'.format(key, value))
-
-
 if __name__ == '__main__':
     # unittest.main()
+    logLevel = LOG_LEVEL_INFO
     main()
