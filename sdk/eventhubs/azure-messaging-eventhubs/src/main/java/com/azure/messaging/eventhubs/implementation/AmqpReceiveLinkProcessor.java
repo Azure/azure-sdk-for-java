@@ -329,9 +329,6 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
 
         isCancelled = true;
         drain();
-        if (currentLink != null) {
-            currentLink.dispose();
-        }
     }
 
     /**

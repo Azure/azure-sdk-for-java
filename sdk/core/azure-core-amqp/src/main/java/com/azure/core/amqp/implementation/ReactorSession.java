@@ -550,8 +550,7 @@ public class ReactorSession implements AmqpSession {
         }
 
         final ReceiveLinkHandler receiveLinkHandler = handlerProvider.createReceiveLinkHandler(
-            sessionHandler.getConnectionId(), sessionHandler.getHostname(), linkName, entityPath,
-            delivery -> decodeDelivery(receiver, delivery));
+            sessionHandler.getConnectionId(), sessionHandler.getHostname(), linkName, entityPath);
         BaseHandler.setHandler(receiver, receiveLinkHandler);
 
         receiver.open();
@@ -574,19 +573,6 @@ public class ReactorSession implements AmqpSession {
             });
 
         return new LinkSubscription<>(reactorReceiver, subscription);
-    }
-
-    private Message decodeDelivery(Receiver receiver, Delivery delivery) {
-        final int messageSize = delivery.pending();
-        final byte[] buffer = new byte[messageSize];
-        final int read = receiver.recv(buffer, 0, messageSize);
-        receiver.advance();
-
-        final Message message = Proton.message();
-        message.decode(buffer, 0, read);
-
-        delivery.settle();
-        return message;
     }
 
     private static final class LinkSubscription<T extends AmqpLink> implements Disposable {

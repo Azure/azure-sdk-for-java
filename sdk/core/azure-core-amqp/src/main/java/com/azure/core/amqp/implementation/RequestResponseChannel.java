@@ -123,12 +123,13 @@ public class RequestResponseChannel implements Disposable {
         this.receiveLink.setReceiverSettleMode(receiverSettleMode);
 
         this.receiveLinkHandler = handlerProvider.createReceiveLinkHandler(connectionId, fullyQualifiedNamespace,
-            linkName, entityPath, this::decodeDelivery);
+            linkName, entityPath);
         BaseHandler.setHandler(this.receiveLink, receiveLinkHandler);
 
         //@formatter:off
         this.subscriptions = Disposables.composite(
             receiveLinkHandler.getDeliveredMessages()
+                .map(this::decodeDelivery)
                 .subscribe(message -> {
                     logger.verbose("Settling message: {}", message.getCorrelationId());
                     settleMessage(message);
@@ -269,7 +270,7 @@ public class RequestResponseChannel implements Disposable {
         return receiveLinkHandler.getErrorContext(receiveLink);
     }
 
-    private Message decodeDelivery(Delivery delivery) {
+    protected Message decodeDelivery(Delivery delivery) {
         final Message response = Proton.message();
         final int msgSize = delivery.pending();
         final byte[] buffer = new byte[msgSize];

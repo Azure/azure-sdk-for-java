@@ -8,7 +8,6 @@ import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
-import java.util.function.Function;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.UnsignedLong;
 import org.apache.qpid.proton.amqp.transaction.TransactionalState;
@@ -27,7 +26,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.ArgumentMatchers;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -66,8 +64,8 @@ class RequestResponseChannelTest {
     private static final Duration TIMEOUT = Duration.ofSeconds(23);
 
     private final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setTryTimeout(TIMEOUT);
-    private final DirectProcessor<Message> deliveryProcessor = DirectProcessor.create();
-    private final FluxSink<Message> deliverySink = deliveryProcessor.sink();
+    private final DirectProcessor<Delivery> deliveryProcessor = DirectProcessor.create();
+    private final FluxSink<Delivery> deliverySink = deliveryProcessor.sink();
     private final ReplayProcessor<EndpointState> endpointStateReplayProcessor = ReplayProcessor.cacheLast();
 
     @Mock
@@ -115,8 +113,7 @@ class RequestResponseChannelTest {
         when(session.sender(LINK_NAME + ":sender")).thenReturn(sender);
         when(session.receiver(LINK_NAME + ":receiver")).thenReturn(receiver);
 
-        when(handlerProvider.createReceiveLinkHandler(eq(CONNECTION_ID), eq(NAMESPACE), eq(LINK_NAME), eq(ENTITY_PATH),
-            ArgumentMatchers.<Function<Delivery, Message>>any()))
+        when(handlerProvider.createReceiveLinkHandler(eq(CONNECTION_ID), eq(NAMESPACE), eq(LINK_NAME), eq(ENTITY_PATH)))
             .thenReturn(receiveLinkHandler);
         when(handlerProvider.createSendLinkHandler(CONNECTION_ID, NAMESPACE, LINK_NAME, ENTITY_PATH))
             .thenReturn(sendLinkHandler);
@@ -272,7 +269,7 @@ class RequestResponseChannelTest {
 
         // Act
         StepVerifier.create(channel.sendWithAck(message, transactionalState))
-            .then(() -> deliverySink.next(message))
+            .then(() -> deliverySink.next(delivery))
             .assertNext(received -> assertEquals(messageId, received.getCorrelationId()))
             .verifyComplete();
 
@@ -332,7 +329,7 @@ class RequestResponseChannelTest {
 
         // Act
         StepVerifier.create(channel.sendWithAck(message))
-            .then(() -> deliverySink.next(message))
+            .then(() -> deliverySink.next(delivery))
             .assertNext(received -> assertEquals(messageId, received.getCorrelationId()))
             .verifyComplete();
 

@@ -7,10 +7,7 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
-import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.Delivery;
-import org.apache.qpid.proton.engine.Event;
-import org.apache.qpid.proton.engine.Link;
 import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.Disposable;
@@ -57,8 +54,9 @@ public class ReactorReceiver implements AmqpReceiveLink {
         this.tokenManager = tokenManager;
         this.dispatcher = dispatcher;
         this.messagesProcessor = this.handler.getDeliveredMessages()
+            .map(this::decodeDelivery)
             .doOnNext(next -> {
-                if (receiver.getRemoteCredit() == 0) {
+                if (receiver.getRemoteCredit() == 0 && !isDisposed.get()) {
                     final Supplier<Integer> supplier = creditSupplier.get();
                     if (supplier == null) {
                         return;
@@ -183,6 +181,19 @@ public class ReactorReceiver implements AmqpReceiveLink {
     private void drain() {
         messagesProcessor.subscribe(message -> { }, error -> messagesProcessor.onComplete(),
             messagesProcessor::onComplete);
+    }
+
+    protected Message decodeDelivery(Delivery delivery) {
+        final int messageSize = delivery.pending();
+        final byte[] buffer = new byte[messageSize];
+        final int read = receiver.recv(buffer, 0, messageSize);
+        receiver.advance();
+
+        final Message message = Proton.message();
+        message.decode(buffer, 0, read);
+
+        delivery.settle();
+        return message;
     }
 
     @Override

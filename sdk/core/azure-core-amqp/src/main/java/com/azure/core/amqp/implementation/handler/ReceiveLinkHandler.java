@@ -3,16 +3,12 @@
 
 package com.azure.core.amqp.implementation.handler;
 
-import com.azure.core.amqp.implementation.ClientConstants;
 import com.azure.core.util.logging.ClientLogger;
-import java.util.function.Function;
-import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Link;
 import org.apache.qpid.proton.engine.Receiver;
-import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
@@ -21,31 +17,28 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ReceiveLinkHandler extends LinkHandler {
     private final String linkName;
-    private final Function<Delivery, Message> deliveryDecoder;
     private AtomicBoolean isFirstResponse = new AtomicBoolean(true);
-    private final DirectProcessor<Message> messages;
-    private FluxSink<Message> messageSink;
+    private final DirectProcessor<Delivery> deliveries;
+    private FluxSink<Delivery> deliverySink;
 
-    public ReceiveLinkHandler(String connectionId, String hostname, String linkName, String entityPath,
-        Function<Delivery, Message> deliveryDecoder) {
+    public ReceiveLinkHandler(String connectionId, String hostname, String linkName, String entityPath) {
         super(connectionId, hostname, entityPath, new ClientLogger(ReceiveLinkHandler.class));
-        this.messages = DirectProcessor.create();
-        this.messageSink = messages.sink(FluxSink.OverflowStrategy.BUFFER);
+        this.deliveries = DirectProcessor.create();
+        this.deliverySink = deliveries.sink(FluxSink.OverflowStrategy.BUFFER);
         this.linkName = linkName;
-        this.deliveryDecoder = deliveryDecoder;
     }
 
     public String getLinkName() {
         return linkName;
     }
 
-    public Flux<Message> getDeliveredMessages() {
-        return messages;
+    public Flux<Delivery> getDeliveredMessages() {
+        return deliveries;
     }
 
     @Override
     public void close() {
-        messageSink.complete();
+        deliverySink.complete();
         super.close();
     }
 
@@ -103,7 +96,7 @@ public class ReceiveLinkHandler extends LinkHandler {
                     logger.warning("connectionId[{}], delivery.isSettled[{}]", getConnectionId(), delivery.isSettled());
                 }
             } else {
-                messageSink.next(deliveryDecoder.apply(delivery));
+                deliverySink.next(delivery);
             }
         }
 
@@ -118,6 +111,6 @@ public class ReceiveLinkHandler extends LinkHandler {
     @Override
     public void onLinkRemoteClose(Event event) {
         super.onLinkRemoteClose(event);
-        messageSink.complete();
+        deliverySink.complete();
     }
 }
