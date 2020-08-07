@@ -144,14 +144,14 @@ def update_version_for_external_dependencies(dependency_dict):
                 if key in dependency_dict:
                     value_in_dict = dependency_dict[key]
                     if version_bigger_than(value, value_in_dict):
-                        warn('Version update skipped. key = {}, value = {}, value_in_dict = {}'
+                        warn('Version update skipped. key = {}, value = {}, new_value = {}'
                              .format(key, value, value_in_dict))
                         file.write(line)
                     elif version_bigger_than(value_in_dict, value):
                         info('Version updated. key = {}, value = {}, new_value = {}'.format(
                             key,
-                            value_in_dict,
-                            value))
+                            value,
+                            value_in_dict))
                         file.write('{};{}'.format(key, value_in_dict))
                     else:
                         file.write(line)
