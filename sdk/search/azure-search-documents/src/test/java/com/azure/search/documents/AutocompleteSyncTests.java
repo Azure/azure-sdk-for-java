@@ -6,8 +6,8 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedIterableBase;
+import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
-import com.azure.core.test.utils.ResourceNamer;
 import com.azure.core.util.Context;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
@@ -17,6 +17,7 @@ import com.azure.search.documents.models.AutocompleteMode;
 import com.azure.search.documents.models.AutocompleteOptions;
 import com.azure.search.documents.util.AutocompletePagedResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -40,12 +41,17 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class AutocompleteSyncTests extends SearchTestBase {
     private static final String HOTELS_DATA_JSON = "HotelsDataArray.json";
+    private static final String INDEX_NAME = "azsearch-autocomplete-shared-instance";
 
     private static SearchIndexClient searchIndexClient;
-    private static SearchClient client;
+    private SearchClient client;
+
+
 
     @BeforeAll
     public static void setupClass() {
+        TestBase.setupClass();
+
         if (TEST_MODE == TestMode.PLAYBACK) {
             return;
         }
@@ -63,8 +69,7 @@ public class AutocompleteSyncTests extends SearchTestBase {
                 return null;
             });
 
-            String newIndexName = new ResourceNamer("azsearch-autocomplete").randomName(index.getName(), 64);
-            searchIndexName.set(index, newIndexName);
+            searchIndexName.set(index, INDEX_NAME);
 
             searchIndexClient = new SearchIndexClientBuilder()
                 .endpoint(ENDPOINT)
@@ -72,18 +77,23 @@ public class AutocompleteSyncTests extends SearchTestBase {
                 .retryPolicy(new RetryPolicy(new ExponentialBackoff(3, Duration.ofSeconds(10), Duration.ofSeconds(30))))
                 .buildClient();
 
-            String indexName = searchIndexClient.createOrUpdateIndex(index).getName();
-
-            client = searchIndexClient.getSearchClient(indexName);
-            uploadDocumentsJson(client, HOTELS_DATA_JSON);
+            searchIndexClient.createOrUpdateIndex(index);
+            uploadDocumentsJson(searchIndexClient.getSearchClient(INDEX_NAME), HOTELS_DATA_JSON);
         } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
     }
 
     @Override
-    protected void afterTest() {
-        searchIndexClient.deleteIndex(client.getIndexName());
+    protected void beforeTest() {
+        client = getSearchClientBuilder(INDEX_NAME).buildClient();
+    }
+
+    @AfterAll
+    protected static void cleanupClass() {
+        if (TEST_MODE != TestMode.PLAYBACK) {
+            searchIndexClient.deleteIndex(INDEX_NAME);
+        }
     }
 
     @Test
