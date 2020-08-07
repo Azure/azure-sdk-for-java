@@ -6,6 +6,8 @@ import os
 import time
 import urllib.request as request
 import xml.etree.ElementTree as elementTree
+from itertools import takewhile
+import unittest
 
 import fileinput
 
@@ -82,10 +84,46 @@ def update_version_for_external_dependencies(dependency_dict):
             print('{};{}'.format(key, value))
 
 
+def version_bigger_than(version1, version2):
+    v1 = version1.split('.')
+    v2 = version2.split('.')
+    len_1 = len(v1)
+    len_2 = len(v2)
+    max_len = max(len_1, len_1)
+    for i in range(max_len):
+        if i < len_1 and i < len_2:
+            int_1 = int(''.join(takewhile(str.isdigit, v1[i])))
+            int_2 = int(''.join(takewhile(str.isdigit, v2[i])))
+            if int_1 != int_2:
+                return int_1 > int_2
+        elif i < len_1:
+            return True
+        else:
+            return False
+    return False
+
+
+class Tests(unittest.TestCase):
+    def test_version_bigger_than(self):
+        self.assertEqual(version_bigger_than('1', '2'), False)
+        self.assertEqual(version_bigger_than('2', '1'), True)
+        self.assertEqual(version_bigger_than('1.0', '2'), False)
+        self.assertEqual(version_bigger_than('2.0', '1'), True)
+        self.assertEqual(version_bigger_than('1.1', '1'), True)
+        self.assertEqual(version_bigger_than('1', '1.1'), False)
+        self.assertEqual(version_bigger_than('1.0-RELEASE', '1.1'), False)
+        self.assertEqual(version_bigger_than('1.1-RELEASE', '1'), True)
+        self.assertEqual(version_bigger_than('1.1-RELEASE', '1.0'), True)
+        self.assertEqual(version_bigger_than('1.1-RELEASE', '1.0.1'), True)
+        self.assertEqual(version_bigger_than('1.1-RELEASE', '1.0.1-RELEASE'), True)
+        self.assertEqual(version_bigger_than('1.1-RELEASE', '1.1.1-RELEASE'), False)
+
+
 def print_dict(d):
     for key, value in d.items():
         print('key = {}, value = {}.'.format(key, value))
 
 
 if __name__ == '__main__':
+    # unittest.main()
     main()
