@@ -8,7 +8,6 @@ public class Constants {
     public static final String AZURE_KEYVAULT_PROPERTYSOURCE_NAME = "azurekv";
 
     public static final long DEFAULT_REFRESH_INTERVAL_MS = 1800000L;
-    public static final long TOKEN_ACQUIRE_TIMEOUT_SECS = 60L;
 
     // for the User-Agent header set in track2 SDKs
     private static final String SNAPSHOT_VERSION = "snapshot";
