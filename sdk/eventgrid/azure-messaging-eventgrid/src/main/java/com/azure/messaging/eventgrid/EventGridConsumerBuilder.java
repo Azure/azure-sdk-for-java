@@ -81,8 +81,8 @@ public class EventGridConsumerBuilder {
     }
 
     /**
-     * Set the custom serializer to use when deserializing the event data. This deserializer should be able to decode all events
-     * expected to be in the payload, including the {@link OffsetDateTime} that is included in most events
+     * Set the custom serializer to use when deserializing the event data or custom schema events. This deserializer
+     * should be able to decode all types expected to be in the data field or the custom schema event.
      * @param deserializer the deserializer to use.
      *
      * @return the builder itself.
