@@ -2,19 +2,36 @@
 // Licensed under the MIT License.
 package com.azure.search.documents;
 
+import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.http.policy.ExponentialBackoff;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedIterableBase;
+import com.azure.core.test.TestMode;
+import com.azure.core.test.utils.ResourceNamer;
 import com.azure.core.util.Context;
+import com.azure.search.documents.indexes.SearchIndexClient;
+import com.azure.search.documents.indexes.SearchIndexClientBuilder;
+import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.models.AutocompleteItem;
 import com.azure.search.documents.models.AutocompleteMode;
 import com.azure.search.documents.models.AutocompleteOptions;
 import com.azure.search.documents.util.AutocompletePagedResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 import static com.azure.search.documents.TestHelpers.assertHttpResponseException;
 import static com.azure.search.documents.TestHelpers.uploadDocumentsJson;
@@ -24,19 +41,49 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 public class AutocompleteSyncTests extends SearchTestBase {
     private static final String HOTELS_DATA_JSON = "HotelsDataArray.json";
 
-    private SearchClient client;
+    private static SearchIndexClient searchIndexClient;
+    private static SearchClient client;
 
-    @Override
-    protected void beforeTest() {
-        super.beforeTest();
+    @BeforeAll
+    public static void setupClass() {
+        if (TEST_MODE == TestMode.PLAYBACK) {
+            return;
+        }
 
-        client = getSearchClientBuilder(createHotelIndex()).buildClient();
-        uploadDocumentsJson(client, HOTELS_DATA_JSON);
+        Reader indexData = new InputStreamReader(Objects.requireNonNull(AutocompleteSyncTests.class
+            .getClassLoader()
+            .getResourceAsStream(HOTELS_TESTS_INDEX_DATA_JSON)));
+
+        try {
+            SearchIndex index = new ObjectMapper().readValue(indexData, SearchIndex.class);
+
+            Field searchIndexName = index.getClass().getDeclaredField("name");
+            AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+                searchIndexName.setAccessible(true);
+                return null;
+            });
+
+            String newIndexName = new ResourceNamer("azsearch-autocomplete").randomName(index.getName(), 64);
+            searchIndexName.set(index, newIndexName);
+
+            searchIndexClient = new SearchIndexClientBuilder()
+                .endpoint(ENDPOINT)
+                .credential(new AzureKeyCredential(API_KEY))
+                .retryPolicy(new RetryPolicy(new ExponentialBackoff(3, Duration.ofSeconds(10), Duration.ofSeconds(30))))
+                .buildClient();
+
+            String indexName = searchIndexClient.createOrUpdateIndex(index).getName();
+
+            client = searchIndexClient.getSearchClient(indexName);
+            uploadDocumentsJson(client, HOTELS_DATA_JSON);
+        } catch (Throwable ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     @Override
     protected void afterTest() {
-        getSearchIndexClientBuilder().buildClient().deleteIndex(client.getIndexName());
+        searchIndexClient.deleteIndex(client.getIndexName());
     }
 
     @Test
