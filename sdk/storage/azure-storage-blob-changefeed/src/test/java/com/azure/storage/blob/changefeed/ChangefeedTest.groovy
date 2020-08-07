@@ -39,6 +39,10 @@ class ChangefeedTest extends Specification {
     byte[] urlHash = MessageDigest.getInstance("MD5").digest('https://testaccount.blob.core.windows.net/$blobchangefeed'.getBytes(StandardCharsets.UTF_8))
 
     def setup() {
+        String fullTestName = specificationContext.getCurrentIteration().getName().replace(' ', '').toLowerCase()
+        String className = specificationContext.getCurrentSpec().getName()
+        // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
+        System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
         mockContainer = mock(BlobContainerAsyncClient.class)
         mockSegmentFactory = mock(SegmentFactory.class)
 
@@ -110,42 +114,23 @@ class ChangefeedTest extends Specification {
         verify(mockMetadataClient).download() || true
     }
 
-    def "changefeed last consumable populated endTime after"() {
-        setup:
-        /* endTime is after. Limited by lastConsumable. */
-        OffsetDateTime endTime = OffsetDateTime.MAX
-        OffsetDateTime safeEndTime = OffsetDateTime.of(2020, 5, 4, 20, 0, 0, 0, ZoneOffset.UTC)
-
+    @Unroll
+    def "changefeed last consumable populated"() {
         when:
         ChangefeedFactory changefeedFactory = new ChangefeedFactory(mockSegmentFactory, mockContainer)
-        Changefeed changefeed = spy(changefeedFactory.getChangefeed(null, endTime)) /* End time definitely later than endTime*/
-        def sv = StepVerifier.create(changefeed.getEvents())
+        Changefeed changefeed = changefeedFactory.getChangefeed(null, endTime) /* End time definitely later than this.endTime */
+        def sv = StepVerifier.create(changefeed.populateLastConsumable())
 
         then:
-        sv.verifyComplete()
-        verify(mockContainer).exists() || true
+        sv.expectNext(safeEndTime)
+            .verifyComplete()
         verify(mockContainer).getBlobAsyncClient(Changefeed.METADATA_SEGMENT_PATH) || true
         verify(mockMetadataClient).download() || true
-        verify(changefeed).listYears(safeEndTime) || true
-    }
 
-    def "changefeed last consumable populated endTime before"() {
-        setup:
-        /* endTime is before. Limited by endTime. */
-        OffsetDateTime endTime = OffsetDateTime.of(2019, 5, 4, 19, 0, 0, 0, ZoneOffset.UTC)
-        OffsetDateTime safeEndTime = OffsetDateTime.of(2020, 5, 4, 20, 0, 0, 0, ZoneOffset.UTC)
-
-        when:
-        ChangefeedFactory changefeedFactory = new ChangefeedFactory(mockSegmentFactory, mockContainer)
-        Changefeed changefeed = spy(changefeedFactory.getChangefeed(null, endTime)) /* End time definitely later than endTime*/
-        def sv = StepVerifier.create(changefeed.getEvents())
-
-        then:
-        sv.verifyComplete()
-        verify(mockContainer).exists() || true
-        verify(mockContainer).getBlobAsyncClient(Changefeed.METADATA_SEGMENT_PATH) || true
-        verify(mockMetadataClient).download() || true
-        verify(changefeed).listYears(safeEndTime) || true
+        where:
+        endTime                                                    || safeEndTime
+        OffsetDateTime.MAX                                         || OffsetDateTime.of(2020, 5, 4, 20, 0, 0, 0, ZoneOffset.UTC) /* endTime is after. Limited by lastConsumable. */
+        OffsetDateTime.of(2019, 5, 4, 19, 0, 0, 0, ZoneOffset.UTC) || OffsetDateTime.of(2019, 5, 4, 19, 0, 0, 0, ZoneOffset.UTC) /* endTime is before. Limited by endTime. */
     }
 
     /* 4 years 2017-2020. */
@@ -192,7 +177,7 @@ class ChangefeedTest extends Specification {
         verifyEvents(OffsetDateTime.MAX, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], null)
         verifyYears(options.getAllValues(), "idx/segments/2017", "idx/segments/2018", "idx/segments/2019", "idx/segments/2020")
         verify(mockSegment, times(16)).getEvents() || true
-        verify(changefeed).listYears(OffsetDateTime.of(2020, 5, 4, 19, 0, 0, 0, ZoneOffset.UTC)) || true
+//        verify(changefeed).listYears(OffsetDateTime.of(2020, 5, 4, 19, 0, 0, 0, ZoneOffset.UTC)) || true
     }
 
     @Unroll

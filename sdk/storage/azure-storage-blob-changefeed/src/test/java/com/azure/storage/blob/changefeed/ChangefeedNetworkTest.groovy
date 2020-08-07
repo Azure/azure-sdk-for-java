@@ -29,7 +29,7 @@ class ChangefeedNetworkTest extends APISpec {
         sv.expectNextCount(15000) /* Note this number should be adjusted to verify the number of events expected if re-recording. */
             .verifyComplete()
     }
-
+    @Ignore
     def "min resume from cursor"() {
 //        when:
 //        BlobChangefeedPagedIterable iterable = new BlobChangefeedClientBuilder(primaryBlobServiceClient)
