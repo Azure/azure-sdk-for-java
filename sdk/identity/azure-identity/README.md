@@ -48,78 +48,13 @@ Click on each item above to learn about how to configure them for Azure Identity
 ## Key concepts
 ### Credentials
 
-A credential is a class which contains or can obtain the data needed for a service client to authenticate requests. Service clients across Azure SDK accept credentials when they are constructed and use those credentials to authenticate requests to the service.Azure Identity offers a variety of credential classes in the `azure-identity` package capable of acquiring an AAD token. All of these credential classes are implementations of the `TokenCredential` abstract class in [Azure Core][azure_core_library], and can be used by any service client which can be constructed with a `TokenCredential`.
+### Credentials
 
-The credential types in Azure Identity differ in the types of AAD identities they can authenticate and how they are configured:
-        
-<table border="1">
-  <thead>
-    <tr>
-      <th>credential class</th>
-      <th>identity</th>
-      <th>configuration</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>DefaultAzureCredential</code></td>
-      <td>service principal, user account, or managed identity</td>
-      <td><a href="#environment-variables">environment variables</a> for service principal, optional for managed identities or shared token cache</td>
-    </tr>
-    <tr>
-      <td><code>ManagedIdentityCredential</code></td>
-      <td>managed identity</td>
-      <td><code>ManagedIdentityCredentialBuilder</code></td>
-    </tr>
-    <tr>
-      <td><code>EnvironmentCredential</code></td>
-      <td>service principal or user account</td>
-      <td><a href="#environment-variables">environment variables</a></td>
-    </tr>
-    <tr>
-      <td><code>ClientSecretCredential</code></td>
-      <td>service principal</td>
-      <td><code>ClientSecretCredentialBuilder</code></td>
-    </tr>
-    <tr>
-      <td><code>ClientCertificateCredential</code></td>
-      <td>service principal</td>
-      <td><code>ClientCertificateCredentialBuilder</code></td>
-    </tr>
-    <tr>
-      <td><code>DeviceCodeCredential</code></td>
-      <td>user account</td>
-      <td><code>DeviceCodeCredentialBuilder</code></td>
-    </tr>
-    <tr>
-      <td><code>InteractiveBrowserCredential</code></td>
-      <td>user account</td>
-      <td><code>InteractiveBrowserCredentialBuilder</code></td>
-    </tr>
-    <tr>
-      <td><code>UsernamePasswordCredential</code></td>
-      <td>user account</td>
-      <td><code>UsernamePasswordCredentialBuilder</code></td>
-    </tr>
-    <tr>
-      <td><code>AzureCliCredential</code></td>
-      <td>service principal or user account</td>
-      <td><code>AzureCliCredentialBuilder</code></td>
-    </tr>
-    <tr>
-      <td><code>VisualStudioCodeCredential</code></td>
-      <td>user account</td>
-      <td><code>VisualStudioCodeCredentialBuilder</code></td>
-    </tr>
-    <tr>
-      <td><code>IntelliJCredential</code></td>
-      <td>user account</td>
-      <td><code>IntelliJCredentialBuilder</code></td>
-    </tr>
-  </tbody>
-</table>
+A credential is a class which contains or can obtain the data needed for a service client to authenticate requests. Service clients across Azure SDK accept credentials when they are constructed, and service clients use those credentials to authenticate requests to the service. 
 
-Credentials can be chained together to be tried in turn until one succeeds using the `ChainedTokenCredential`; see [chaining credentials](#chaining-credentials) for details.
+The Azure Identity library focuses on OAuth authentication with Azure Active directory, and it offers a variety of credential classes capable of acquiring an AAD token to authenticate service requests. All of the credential classes in this library are implementations of the `TokenCredential` abstract class in [Azure.Core][azure_core_library], and any of them can be used by to construct service clients capable of authenticating with a `TokenCredential`. 
+
+See [Credential Classes](#credential-classes)
 
 ### DefaultAzureCredential
 The `DefaultAzureCredential` is appropriate for most scenarios where the application is intended to ultimately be run in the Azure Cloud. This is because the `DefaultAzureCredential` combines credentials commonly used to authenticate when deployed, with credentials used to authenticate in a development environment. The `DefaultAzureCredential` will attempt to authenticate via the following mechanisms in order.
@@ -194,6 +129,150 @@ public void createIntelliJCredential() {
         .buildClient();
 }
 ```
+
+## Credential classes
+
+### Authenticating Azure Hosted Applications
+        
+<table border="1">
+  <thead>
+    <tr>
+      <th>credential class</th>
+      <th>usage</th>
+      <th>configuration</th>
+      <th>example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>DefaultAzureCredential</code></td>
+      <td>provides a simplified authentication experience to quickly start developing applications run in the Azure cloud</td>
+      <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-visual-studio-code">configuration</a></td>
+      <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-with-defaultazurecredential">example</a></td>
+    </tr>
+    <tr>
+      <td><code>ChainedTokenCredential</code></td>
+      <td>allows users to define custom authentication flows composing multiple credentials</td>
+      <td></td>
+      <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#chaining-credentials">example</a></td>
+    </tr>
+    <tr>
+      <td><code>EnvironmentCredential</code></td>
+      <td>authenticates a service principal or user via credential information specified in environment variables</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><code>ManagedIdentityCredential</code></td>
+      <td>authenticates the managed identity of an azure resource</td>
+      <td></td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+    
+### Authenticating Service Principals
+
+<table border="1">
+  <thead>
+    <tr>
+      <th>credential class</th>
+      <th>usage</th>
+      <th>configuration</th>
+      <th>example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>ClientSecretCredential</code></td>
+      <td>authenticates a service principal using a secret</td>
+      <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#creating-a-service-principal-with-the-azure-cli">configuration</a></td>
+      <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-service-principal-with-a-client-secret">example</a></td>
+    </tr>
+    <tr>
+      <td><code>ClientCertificateCredential</code></td>
+      <td>authenticates a service principal using a certificate</td>
+      <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#creating-a-service-principal-with-the-azure-cli">configuration</a></td>
+      <td>Similar to <code>ClientSecretCredential</code></td>
+    </tr>
+  </tbody>
+</table>
+
+### Authenticating Users
+
+<table border="1">
+  <thead>
+    <tr>
+      <th>credential class</th>
+      <th>usage</th>
+      <th>configuration</th>
+      <th>example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>DeviceCodeCredential</code></td>
+      <td>interactively authenticates a user on devices with limited UI</td>
+      <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#enable-applications-for-device-code-flow">configuration</a></td>
+      <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-device-code-flow">example</a></td>
+    </tr>
+    <tr>
+      <td><code>InteractiveBrowserCredential</code></td>
+      <td>interactively authenticates a user with the default system browser</td>
+      <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#enable-applications-for-interactive-browser-oauth-2-flow">configuration</a></td>
+      <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-interactively-in-the-browser">example</a></td>
+    </tr>
+    <tr>
+      <td><code>UsernamePasswordCredential</code></td>
+      <td>authenticates a user with a username and password without multi-factored auth</td>
+      <td></td>
+      <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-username-and-password">example</a></td>
+    </tr>
+    <tr>
+      <td><code>AuthorizationCodeCredential</code></td>
+      <td>authenticate a user with a previously obtained authorization code as part of an Oauth 2 flow</td>
+      <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#enable-applications-for-oauth-2-auth-code-flow">configuration</a></td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+
+### Authenticating via Development Tools
+
+<table border="1">
+  <thead>
+    <tr>
+      <th>credential class</th>
+      <th>usage</th>
+      <th>configuration</th>
+      <th>example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>AzureCliCredential</code></td>
+      <td>authenticate in a development environment with the enabled user or service principal in Azure CLI</td>
+      <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#sign-in-azure-cli-for-azureclicredential">configuration</a></td>
+      <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-azure-cli">example</a></td>
+    </tr>
+    <tr>
+      <td><code>IntelliJCredential</code></td>
+      <td>authenticate in a development environment with the account in Azure Toolkit for IntelliJ</td>
+      <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#sign-in-azure-toolkit-for-intellij-for-intellijcredential">configuration</a></td>
+      <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-intellij-idea">example</a></td>
+    </tr>
+    <tr>
+      <td><code>VisualStudioCodeCredential</code></td>
+      <td>authenticate in a development environment with the account in Visual Studio Azure Account extension</td>
+      <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#sign-in-visual-studio-code-azure-account-extension-for-visualstudiocodecredential">configuration</a></td>
+      <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-visual-studio-code">example</a></td>
+    </tr>
+  </tbody>
+</table>
+
+> __Note:__ All credential implementations in the Azure Identity library are threadsafe, and a single credential instance can be used to create multiple service clients.
+
+Credentials can be chained together to be tried in turn until one succeeds using the `ChainedTokenCredential`; see [chaining credentials](#chaining-credentials) for details.
 
 ## Troubleshooting
 Credentials raise exceptions when they fail to authenticate. `ClientAuthenticationException` has a `message` attribute which
