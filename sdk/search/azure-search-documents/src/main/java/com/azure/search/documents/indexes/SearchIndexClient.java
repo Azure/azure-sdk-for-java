@@ -12,12 +12,16 @@ import com.azure.core.util.Context;
 import com.azure.search.documents.SearchClient;
 import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
+import com.azure.search.documents.indexes.models.FieldBuilderOptions;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.LexicalTokenizerName;
+import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexStatistics;
 import com.azure.search.documents.indexes.models.SearchServiceStatistics;
 import com.azure.search.documents.indexes.models.SynonymMap;
+
+import java.util.List;
 
 /**
  * This class provides a client that contains the operations for creating, getting, listing, updating, or deleting
@@ -597,4 +601,16 @@ public final class SearchIndexClient {
     public Response<SearchServiceStatistics> getServiceStatisticsWithResponse(Context context) {
         return asyncClient.getServiceStatisticsWithResponse(context).block();
     }
+
+    /**
+     * Helper method to build list of {@link SearchField}.
+     *
+     * @param model The model class where {@link SearchField} converts from.
+     * @param options The option property bag.
+     * @return The list {@link SearchField} for search index schema.
+     */
+    public static List<SearchField> buildSearchFields(Class<?> model, FieldBuilderOptions options) {
+        return SearchIndexAsyncClient.buildSearchFields(model, options);
+    }
+
 }

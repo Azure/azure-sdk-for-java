@@ -1,25 +1,27 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "http://xclientdev2.blob.core.windows.net?prefix=jtccreatefilesysteminvaliduri&comp=list",
+    "Uri" : "https://REDACTED.blob.core.windows.net?prefix=jtccreatefilesysteminvaliduri&comp=list",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.6.0-beta.1 (11.0.5; Windows 10 10.0)",
-      "x-ms-client-request-id" : "52d95f02-e286-47e3-8576-249cbfc66c8c"
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.8.0-beta.2 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b2409a8d-a19a-42d8-b8af-f77c0b9a505f"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-ms-version" : "2019-07-07",
+      "Access-Control-Expose-Headers" : "x-ms-client-request-id",
+      "x-ms-version" : "2019-12-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "Access-Control-Allow-Origin" : "*",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "fc8919ef-a01e-0099-7ebc-069edf000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"http://xclientdev2.blob.core.windows.net/\"><Prefix>jtccreatefilesysteminvaliduri</Prefix><Containers /><NextMarker /></EnumerationResults>",
-      "Date" : "Mon, 30 Mar 2020 17:55:03 GMT",
-      "x-ms-client-request-id" : "52d95f02-e286-47e3-8576-249cbfc66c8c",
+      "x-ms-request-id" : "1a0114cf-301e-00b6-75b8-6a3e8e000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtccreatefilesysteminvaliduri</Prefix><Containers /><NextMarker /></EnumerationResults>",
+      "Date" : "Tue, 04 Aug 2020 23:39:09 GMT",
+      "x-ms-client-request-id" : "b2409a8d-a19a-42d8-b8af-f77c0b9a505f",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtccreatefilesysteminvaliduri06294275f0c4e9d1a344" ]
+  "variables" : [ "jtccreatefilesysteminvaliduri06649493b8e93df78a4d" ]
 }

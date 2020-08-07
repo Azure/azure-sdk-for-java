@@ -45,5 +45,6 @@ module com.azure.core {
     uses com.azure.core.http.policy.BeforeRetryPolicyProvider;
     uses com.azure.core.http.policy.AfterRetryPolicyProvider;
     uses com.azure.core.util.serializer.JsonSerializerProvider;
+    uses com.azure.core.util.serializer.MemberNameConverterProvider;
     uses com.azure.core.util.tracing.Tracer;
 }

@@ -13,6 +13,7 @@ import com.azure.core.http.clients.NoOpHttpClient;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.net.URL;
 import java.time.Duration;
@@ -93,8 +94,8 @@ public class RetryPolicyTests {
     @Test
     public void exponentialDelayRetry() throws Exception {
         final int maxRetries = 5;
-        final long baseDelayMillis = 1000;
-        final long maxDelayMillis = 100000;
+        final long baseDelayMillis = 100;
+        final long maxDelayMillis = 1000;
         ExponentialBackoff exponentialBackoff = new ExponentialBackoff(maxRetries, Duration.ofMillis(baseDelayMillis),
             Duration.ofMillis(maxDelayMillis));
         final HttpPipeline pipeline = new HttpPipelineBuilder()
@@ -118,8 +119,9 @@ public class RetryPolicyTests {
             .policies(new RetryPolicy(exponentialBackoff))
             .build();
 
-        HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET,
-            new URL("http://localhost/"))).block();
+        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost/"))))
+            .expectNextCount(1)
+            .verifyComplete();
     }
 
 
