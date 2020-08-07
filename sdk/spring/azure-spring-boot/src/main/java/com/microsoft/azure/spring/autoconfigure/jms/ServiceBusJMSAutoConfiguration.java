@@ -43,12 +43,13 @@ public class ServiceBusJMSAutoConfiguration {
 
         final ServiceBusJmsConnectionFactorySettings settings =
             new ServiceBusJmsConnectionFactorySettings(idleTimeout, false);
-        final ServiceBusJmsConnectionFactory serviceBusJmsConnectionFactory =
-            new ServiceBusJmsConnectionFactory(connectionString, settings);
+        final SpringServiceBusJmsConnectionFactory springServiceBusJmsConnectionFactory =
+            new SpringServiceBusJmsConnectionFactory(connectionString, settings);
 
-        serviceBusJmsConnectionFactory.setClientId(clientID);
+        springServiceBusJmsConnectionFactory.setClientId(clientID);
+        springServiceBusJmsConnectionFactory.setCustomUserAgent("todo");
 
-        return new CachingConnectionFactory(serviceBusJmsConnectionFactory);
+        return new CachingConnectionFactory(springServiceBusJmsConnectionFactory);
     }
 
     @Bean

@@ -1,0 +1,17 @@
+package com.microsoft.azure.spring.autoconfigure.jms;
+
+import com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
+import com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactorySettings;
+
+public class SpringServiceBusJmsConnectionFactory extends ServiceBusJmsConnectionFactory {
+    public SpringServiceBusJmsConnectionFactory(
+        String connectionString,
+        ServiceBusJmsConnectionFactorySettings settings
+    ) {
+        super(connectionString, settings);
+    }
+
+    public void setCustomUserAgent(String customUserAgent) {
+        super.setCustomUserAgent(customUserAgent);
+    }
+}
