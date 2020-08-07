@@ -20,11 +20,11 @@ public class TopicReceiveController {
 
     private static final String SUBSCRIPTION_NAME = "<ServiceBusSubscriptionName>";
 
-    private final Logger LOGGER = LoggerFactory.getLogger(TopicReceiveController.class);
+    private final Logger logger = LoggerFactory.getLogger(TopicReceiveController.class);
 
     @JmsListener(destination = TOPIC_NAME, containerFactory = "topicJmsListenerContainerFactory",
         subscription = SUBSCRIPTION_NAME)
     public void receiveMessage(User user) {
-        LOGGER.info("Received message: {}", user.getName());
+        logger.info("Received message: {}", user.getName());
     }
 }

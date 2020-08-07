@@ -18,10 +18,10 @@ public class QueueReceiveController {
 
     private static final String QUEUE_NAME = "<ServiceBusQueueName>";
 
-    private final Logger LOGGER = LoggerFactory.getLogger(QueueReceiveController.class);
+    private final Logger logger = LoggerFactory.getLogger(QueueReceiveController.class);
 
     @JmsListener(destination = QUEUE_NAME, containerFactory = "jmsListenerContainerFactory")
     public void receiveMessage(User user) {
-        LOGGER.info("Received message: {}", user.getName());
+        logger.info("Received message: {}", user.getName());
     }
 }
