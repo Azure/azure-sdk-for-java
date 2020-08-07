@@ -140,6 +140,12 @@ class WorkspaceImpl extends GroupableResourceCoreImpl<Workspace, WorkspaceInner,
     }
 
     @Override
+    public WorkspaceImpl withManagedResourceGroupName(String managedResourceGroupName) {
+        this.inner().withManagedResourceGroupName(managedResourceGroupName);
+        return this;
+    }
+
+    @Override
     public WorkspaceImpl withManagedVirtualNetwork(String managedVirtualNetwork) {
         this.inner().withManagedVirtualNetwork(managedVirtualNetwork);
         return this;
