@@ -9,7 +9,6 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import java.util.function.Function;
-import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.UnsignedLong;
 import org.apache.qpid.proton.amqp.transaction.TransactionalState;
@@ -28,6 +27,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -116,7 +116,7 @@ class RequestResponseChannelTest {
         when(session.receiver(LINK_NAME + ":receiver")).thenReturn(receiver);
 
         when(handlerProvider.createReceiveLinkHandler(eq(CONNECTION_ID), eq(NAMESPACE), eq(LINK_NAME), eq(ENTITY_PATH),
-            any(Function.class)))
+            ArgumentMatchers.<Function<Delivery, Message>>any()))
             .thenReturn(receiveLinkHandler);
         when(handlerProvider.createSendLinkHandler(CONNECTION_ID, NAMESPACE, LINK_NAME, ENTITY_PATH))
             .thenReturn(sendLinkHandler);
