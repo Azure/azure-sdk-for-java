@@ -51,3 +51,5 @@ extends:
         groupId: com.microsoft.azure
       - name: spring-integration-azure-test
         groupId: com.microsoft.azure
+      - name: azure-cosmos
+        groupId: com.azure
