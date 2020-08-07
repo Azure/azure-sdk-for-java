@@ -1,5 +1,7 @@
 package com.azure.storage.blob.specialized
 
+import com.azure.core.http.policy.HttpLogDetailLevel
+import com.azure.core.http.policy.HttpLogOptions
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.models.*
@@ -88,6 +90,12 @@ class BlobBaseAPITest extends APISpec {
     @Unroll
     def "Query min"() {
         setup:
+        def oldBc = bc
+        System.setProperty("AZURE_LOG_LEVEL", "INFO")
+        bc = getServiceClientBuilder(primaryCredential, primaryBlobServiceClient.getAccountUrl())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.HEADERS))
+            .buildClient().getBlobContainerClient(bc.getContainerName())
+            .getBlobClient(bc.getBlobName())
         BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()
             .setRecordSeparator('\n' as char)
             .setColumnSeparator(',' as char)
@@ -119,6 +127,9 @@ class BlobBaseAPITest extends APISpec {
         then:
         notThrown(BlobStorageException)
         osData == downloadedData
+
+        cleanup:
+        bc = oldBc
 
         // To calculate the size of data being tested = numCopies * 32 bytes
         where:
