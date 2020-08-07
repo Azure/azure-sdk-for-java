@@ -129,7 +129,7 @@ public class SendController {
 - Receive messages from a Service Bus queue
 
     Create a Java file named *QueueReceiveController.java* in the package directory of your app. Add the following code to the new file:
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/jms/QueueReceiveController.java#L6-L25 -->
+<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/jms/QueueReceiveController.java#L11-L27 -->
 
     ```java
     import org.slf4j.Logger;
@@ -146,11 +146,8 @@ public class SendController {
     
         @JmsListener(destination = QUEUE_NAME, containerFactory = "jmsListenerContainerFactory")
         public void receiveMessage(User user) {
-    
-            logger.info("Received message from queue: {}", user.getName());
-    
+            logger.info("Received message: {}", user.getName());
         }
-    
     }
     ```
 
@@ -160,7 +157,7 @@ public class SendController {
 - Receive messages from a Service Bus subscription
 
     Create a Java file named *TopicReceiveController.java* in the package directory of your app. Add the following code to the new file. Replace the `<ServiceBusTopicName>` placeholder with your own topic name configured in your Service Bus namespace. Replace the `<ServiceBusSubscriptionName>` placeholder with your own subscription name for your Service Bus topic.
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/jms/TopicReceiveController.java#L6-L28 -->
+<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/jms/TopicReceiveController.java#L11-L30 -->
 
     ```java
     import org.slf4j.Logger;
@@ -178,13 +175,10 @@ public class SendController {
         private final Logger logger = LoggerFactory.getLogger(TopicReceiveController.class);
     
         @JmsListener(destination = TOPIC_NAME, containerFactory = "topicJmsListenerContainerFactory",
-                subscription = SUBSCRIPTION_NAME)
+            subscription = SUBSCRIPTION_NAME)
         public void receiveMessage(User user) {
-    
-            logger.info("Received message from topic: {}", user.getName());
-    
+            logger.info("Received message: {}", user.getName());
         }
-    
     }
     ```
 
