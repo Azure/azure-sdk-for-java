@@ -20,6 +20,8 @@ import org.springframework.jms.listener.MessageListenerContainer;
 
 import javax.jms.ConnectionFactory;
 
+import static com.microsoft.azure.utils.ApplicationId.AZURE_SPRING_SERVICE_BUS;
+
 /**
  * Auto-configuration for Service Bus JMS.
  * <p>
@@ -45,7 +47,7 @@ public class ServiceBusJMSAutoConfiguration {
             new SpringServiceBusJmsConnectionFactory(connectionString, settings);
 
         springServiceBusJmsConnectionFactory.setClientId(clientID);
-        springServiceBusJmsConnectionFactory.setCustomUserAgent("todo");
+        springServiceBusJmsConnectionFactory.setCustomUserAgent(AZURE_SPRING_SERVICE_BUS);
 
         return new CachingConnectionFactory(springServiceBusJmsConnectionFactory);
     }
