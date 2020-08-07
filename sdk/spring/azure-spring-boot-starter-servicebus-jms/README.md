@@ -129,7 +129,7 @@ public class SendController {
 - Receive messages from a Service Bus queue
 
     Create a Java file named *QueueReceiveController.java* in the package directory of your app. Add the following code to the new file:
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/jms/QueueReceiveController.java#L11-L27 -->
+<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/jms/QueueReceiveController.java#L6-L25 -->
 
     ```java
     import org.slf4j.Logger;
@@ -142,12 +142,15 @@ public class SendController {
     
         private static final String QUEUE_NAME = "<ServiceBusQueueName>";
     
-        private final Logger LOGGER = LoggerFactory.getLogger(QueueReceiveController.class);
+        private final Logger logger = LoggerFactory.getLogger(QueueReceiveController.class);
     
         @JmsListener(destination = QUEUE_NAME, containerFactory = "jmsListenerContainerFactory")
         public void receiveMessage(User user) {
-            LOGGER.info("Received message: {}", user.getName());
+    
+            logger.info("Received message from queue: {}", user.getName());
+    
         }
+    
     }
     ```
 
@@ -157,7 +160,7 @@ public class SendController {
 - Receive messages from a Service Bus subscription
 
     Create a Java file named *TopicReceiveController.java* in the package directory of your app. Add the following code to the new file. Replace the `<ServiceBusTopicName>` placeholder with your own topic name configured in your Service Bus namespace. Replace the `<ServiceBusSubscriptionName>` placeholder with your own subscription name for your Service Bus topic.
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/jms/TopicReceiveController.java#L11-L30 -->
+<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/jms/TopicReceiveController.java#L6-L28qwqq -->
 
     ```java
     import org.slf4j.Logger;
@@ -172,13 +175,16 @@ public class SendController {
     
         private static final String SUBSCRIPTION_NAME = "<ServiceBusSubscriptionName>";
     
-        private final Logger LOGGER = LoggerFactory.getLogger(TopicReceiveController.class);
+        private final Logger logger = LoggerFactory.getLogger(TopicReceiveController.class);
     
         @JmsListener(destination = TOPIC_NAME, containerFactory = "topicJmsListenerContainerFactory",
-            subscription = SUBSCRIPTION_NAME)
+                subscription = SUBSCRIPTION_NAME)
         public void receiveMessage(User user) {
-            LOGGER.info("Received message: {}", user.getName());
+    
+            logger.info("Received message from topic: {}", user.getName());
+    
         }
+    
     }
     ```
 
