@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.spring.cloud.keyvault.config.auth;
 
@@ -21,10 +18,10 @@ import java.security.cert.X509Certificate;
  * Default implementation of {@link AuthenticationExecutorFactory}.
  */
 public class DefaultAuthenticationExecutorFactory implements AuthenticationExecutorFactory {
-    private static final String CREDENTIAL_NOT_COMPLETE = "Credentials configuration is not complete. " +
-            "Either clientCertificate or clientSecret should be configured for Azure Key Vault authentication.";
+    private static final String CREDENTIAL_NOT_COMPLETE = "Credentials configuration is not complete. "
+        + "Either clientCertificate or clientSecret should be configured for Azure Key Vault authentication.";
     private static final String READ_CERT_FAILED =
-            "Failed to read client certificate for Azure Key Vault authentication.";
+        "Failed to read client certificate for Azure Key Vault authentication.";
 
     @Override
     public AuthenticationExecutor create(Credentials credentials) {

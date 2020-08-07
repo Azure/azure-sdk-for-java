@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.spring.messaging.endpoint;
 
@@ -44,12 +41,16 @@ public abstract class AbstractAzureListenerEndpoint implements AzureListenerEndp
     /**
      * Create a {@link AzureMessageHandler} that is able to serve this endpoint for the
      * specified container.
+     *
+     * @param container MessageListenerContainer
+     * @return AzureMessageHandler
      */
     protected abstract AzureMessageHandler createMessageHandler(MessageListenerContainer container);
 
     /**
      * Return a description for this endpoint.
      * <p>Available to subclasses, for inclusion in their {@code toString()} result.
+     * @return StringBuilder
      */
     protected StringBuilder getEndpointDescription() {
         StringBuilder result = new StringBuilder();

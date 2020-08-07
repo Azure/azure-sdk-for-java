@@ -19,6 +19,7 @@ com.microsoft.azure:azure-client-authentication;1.7.3
 com.microsoft.azure:azure-client-runtime;1.7.3
 com.microsoft.azure:azure-core;0.9.8
 com.microsoft.azure:azure-cosmos;3.7.3
+com.microsoft.azure:azure-keyvault;1.0.0
 com.microsoft.azure:azure-keyvault-cryptography;1.2.2
 com.microsoft.azure:azure-media;0.9.8
 com.microsoft.azure:azure-servicebus;3.4.0

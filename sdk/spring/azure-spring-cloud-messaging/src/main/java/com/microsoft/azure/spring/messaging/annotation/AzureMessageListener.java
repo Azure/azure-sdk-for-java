@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.spring.messaging.annotation;
 
@@ -10,7 +7,12 @@ import com.microsoft.azure.spring.messaging.config.AzureListenerAnnotationBeanPo
 import com.microsoft.azure.spring.messaging.container.ListenerContainerFactory;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 
-import java.lang.annotation.*;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.lang.annotation.Documented;
+import java.lang.annotation.Repeatable;
 
 /**
  * Annotation that marks a method to be the target of a Azure message listener on the
@@ -22,7 +24,7 @@ import java.lang.annotation.*;
  *
  * <p>Processing of {@code @AzureMessageListener} annotations is performed by registering a
  * {@link AzureListenerAnnotationBeanPostProcessor}. This can be done through the
- * {@link @EnableAzureMessaging} annotation.
+ * {@link EnableAzureMessaging @EnableAzureMessaging} annotation.
  *
  * <p>Annotated Azure listener methods are allowed to have flexible signatures similar
  * to what {@link MessageMapping} provides:
@@ -32,7 +34,7 @@ import java.lang.annotation.*;
  * arguments, including support for validation</li>
  * <li>{@link org.springframework.messaging.handler.annotation.Header @Header}-annotated method
  * arguments to extract specific header values, including standard Azure headers defined by
- * {@link }</li>
+ * {@link String }</li>
  * <li>{@link org.springframework.messaging.handler.annotation.Headers @Headers}-annotated
  * method argument that must also be assignable to {@link java.util.Map} for obtaining
  * access to all headers</li>
@@ -59,6 +61,8 @@ public @interface AzureMessageListener {
     /**
      * The unique identifier of the container managing this endpoint.
      * <p>If none is specified, an auto-generated one is provided.
+     *
+     * @return String
      */
     String id() default "";
 
@@ -66,17 +70,20 @@ public @interface AzureMessageListener {
      * The bean name of the {@link ListenerContainerFactory}
      * to use to create the message listener container responsible for serving this endpoint.
      * <p>If not specified, the default container factory is used, if any.
+     * @return String
      */
     String containerFactory() default "";
 
     /**
      * The destination name for this listener, resolved through the container-wide
      * {@link org.springframework.messaging.core.DestinationResolver} strategy.
+     * @return String
      */
     String destination();
 
     /**
      * The name for the durable group, if any.
+     * @return String
      */
     String group() default "";
 
@@ -89,6 +96,7 @@ public @interface AzureMessageListener {
      * <p>Note that the underlying container may or may not support all features.
      * For instance, it may not be able to scale, in which case only the upper limit
      * is used.
+     * @return String
      */
     String concurrency() default "";
 

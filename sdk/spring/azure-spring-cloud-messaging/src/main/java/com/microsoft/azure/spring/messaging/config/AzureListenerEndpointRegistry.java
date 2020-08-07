@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.spring.messaging.config;
 
@@ -49,7 +46,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 class AzureListenerEndpointRegistry
         implements DisposableBean, SmartLifecycle, ApplicationContextAware, ApplicationListener<ContextRefreshedEvent> {
-    private static final Logger log = LoggerFactory.getLogger(AzureListenerEndpointRegistry.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AzureListenerEndpointRegistry.class);
 
     private final Map<String, MessageListenerContainer> listenerContainers = new ConcurrentHashMap<>();
 
@@ -142,8 +139,8 @@ class AzureListenerEndpointRegistry
         if (containerPhase < Integer.MAX_VALUE) {  // a custom phase value
             if (this.getPhase() < Integer.MAX_VALUE && this.getPhase() != containerPhase) {
                 throw new IllegalStateException(
-                        "Encountered phase mismatch between container factory definitions: " + this.getPhase() +
-                                " vs " + containerPhase);
+                    "Encountered phase mismatch between container factory definitions: " + this.getPhase()
+                        + " vs " + containerPhase);
             }
         }
 
@@ -207,7 +204,7 @@ class AzureListenerEndpointRegistry
                 try {
                     ((DisposableBean) listenerContainer).destroy();
                 } catch (Throwable ex) {
-                    log.warn("Failed to destroy message listener container", ex);
+                    LOG.warn("Failed to destroy message listener container", ex);
                 }
             }
         }
@@ -247,7 +244,7 @@ class AzureListenerEndpointRegistry
 
         private final Runnable finishCallback;
 
-        public AggregatingCallback(int count, Runnable finishCallback) {
+        AggregatingCallback(int count, Runnable finishCallback) {
             this.count = new AtomicInteger(count);
             this.finishCallback = finishCallback;
         }

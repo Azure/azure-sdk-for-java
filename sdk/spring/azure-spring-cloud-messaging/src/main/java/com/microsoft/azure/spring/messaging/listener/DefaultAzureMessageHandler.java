@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.spring.messaging.listener;
 
@@ -63,6 +60,8 @@ public class DefaultAzureMessageHandler implements AzureMessageHandler {
     /**
      * Set the {@link InvocableHandlerMethod} to use to invoke the method
      * processing an incoming {@link Message}.
+     *
+     * @param handlerMethod InvocableHandlerMethod
      */
     public void setHandlerMethod(InvocableHandlerMethod handlerMethod) {
         this.handlerMethod = handlerMethod;

@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.spring.messaging.config;
 
@@ -82,8 +79,8 @@ class AzureListenerEndpointRegistrar implements BeanFactoryAware, InitializingBe
             return this.containerFactory;
         } else {
             throw new IllegalStateException(
-                    "Could not resolve the " + ListenerContainerFactory.class.getSimpleName() + " to use for [" +
-                            descriptor.endpoint + "] no factory was given and no default is set.");
+                "Could not resolve the " + ListenerContainerFactory.class.getSimpleName() + " to use for ["
+                    + descriptor.endpoint + "] no factory was given and no default is set.");
         }
     }
 
@@ -153,8 +150,8 @@ class AzureListenerEndpointRegistrar implements BeanFactoryAware, InitializingBe
         @Nullable
         public final ListenerContainerFactory<?> containerFactory;
 
-        public AzureListenerEndpointDescriptor(AzureListenerEndpoint endpoint,
-                @Nullable ListenerContainerFactory<?> containerFactory) {
+        AzureListenerEndpointDescriptor(AzureListenerEndpoint endpoint,
+                                        @Nullable ListenerContainerFactory<?> containerFactory) {
 
             this.endpoint = endpoint;
             this.containerFactory = containerFactory;

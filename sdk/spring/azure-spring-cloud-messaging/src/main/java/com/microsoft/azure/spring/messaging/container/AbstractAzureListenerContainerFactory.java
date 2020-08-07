@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.spring.messaging.container;
 
@@ -36,6 +33,8 @@ abstract class AbstractAzureListenerContainerFactory<C extends AbstractListenerC
 
     /**
      * Create an empty container instance.
+     *
+     * @return C instance
      */
     protected abstract C createContainerInstance();
 
@@ -43,6 +42,7 @@ abstract class AbstractAzureListenerContainerFactory<C extends AbstractListenerC
      * Further initialize the specified container.
      * <p>Subclasses can inherit from this method to apply extra
      * configuration if necessary.
+     * @param instance instance
      */
     protected void initializeContainer(C instance) {
     }

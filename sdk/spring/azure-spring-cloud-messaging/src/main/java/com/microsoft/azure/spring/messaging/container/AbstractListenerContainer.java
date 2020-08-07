@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.spring.messaging.container;
 
@@ -13,7 +10,7 @@ import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.beans.factory.DisposableBean;
 
 abstract class AbstractListenerContainer implements BeanNameAware, DisposableBean, MessageListenerContainer {
-    private static final Logger log = LoggerFactory.getLogger(AbstractListenerContainer.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AbstractListenerContainer.class);
     private final Object lifecycleMonitor = new Object();
     private String destination;
     private String group;
@@ -41,7 +38,7 @@ abstract class AbstractListenerContainer implements BeanNameAware, DisposableBea
 
     @Override
     public void start() {
-        log.debug("Starting container with name {}", getBeanName());
+        LOG.debug("Starting container with name {}", getBeanName());
         synchronized (this.getLifecycleMonitor()) {
             this.running = true;
             this.getLifecycleMonitor().notifyAll();
@@ -51,7 +48,7 @@ abstract class AbstractListenerContainer implements BeanNameAware, DisposableBea
 
     @Override
     public void stop() {
-        log.debug("Stopping container with name {}", getBeanName());
+        LOG.debug("Stopping container with name {}", getBeanName());
         synchronized (this.getLifecycleMonitor()) {
             this.running = false;
             this.getLifecycleMonitor().notifyAll();

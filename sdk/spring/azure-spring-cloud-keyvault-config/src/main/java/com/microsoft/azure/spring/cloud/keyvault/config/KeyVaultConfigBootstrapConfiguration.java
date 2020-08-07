@@ -1,19 +1,7 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.spring.cloud.keyvault.config;
-
-import javax.annotation.PostConstruct;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import com.microsoft.azure.keyvault.KeyVaultClient;
 import com.microsoft.azure.spring.cloud.autoconfigure.telemetry.TelemetryAutoConfiguration;
@@ -23,6 +11,14 @@ import com.microsoft.azure.spring.cloud.keyvault.config.auth.AuthenticationExecu
 import com.microsoft.azure.spring.cloud.keyvault.config.auth.Credentials;
 import com.microsoft.azure.spring.cloud.keyvault.config.auth.DefaultAuthenticationExecutorFactory;
 import com.microsoft.azure.spring.cloud.telemetry.TelemetryCollector;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import javax.annotation.PostConstruct;
 
 /**
  * Spring Cloud Bootstrap Configuration for setting up an

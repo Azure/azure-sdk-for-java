@@ -1,16 +1,13 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.spring.cloud.keyvault.config;
-
-import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
+
+import static org.junit.Assert.assertEquals;
 
 public class KeyVaultConfigBootstrapConfigurationTest {
 

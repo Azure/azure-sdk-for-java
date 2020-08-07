@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.spring.cloud.keyvault.config.auth;
 
@@ -10,7 +7,12 @@ import com.microsoft.aad.adal4j.AuthenticationContext;
 import com.microsoft.azure.keyvault.authentication.KeyVaultCredentials;
 
 import java.net.MalformedURLException;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 
 /**
  * Subclass of {@link KeyVaultCredentials}.

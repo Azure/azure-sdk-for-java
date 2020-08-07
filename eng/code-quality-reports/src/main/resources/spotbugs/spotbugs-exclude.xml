@@ -1235,7 +1235,7 @@
     <Field name="errorInformationList" />
     <Bug pattern="SE_BAD_FIELD" />
   </Match>
-  
+
   <!-- Exception is required to catch, ref: code comment in the OrderbyRowComparer::compare() method  -->
   <Match>
     <Class name="com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer"/>
@@ -2131,6 +2131,11 @@
     </Or>
     <Method name="OnCloseSessionAsync"/>
     <Bug pattern="NM_METHOD_NAMING_CONVENTION"/>
+  </Match>
+
+  <Match>
+    <Class name="com.microsoft.azure.spring.messaging.config.AzureListenerEndpointRegistrar" />
+    <Bug pattern="NP_NULL_ON_SOME_PATH"/>
   </Match>
 
   <!-- These fields are designed to be not written. They are for deserializing. -->
