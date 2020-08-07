@@ -7,7 +7,6 @@ import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.LinkedEntity;
-import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
@@ -23,7 +22,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.net.HttpURLConnection;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,6 +32,7 @@ import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchDetectedLangu
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchKeyPhrases;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchLinkedEntities;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchTextSentiment;
+import static com.azure.ai.textanalytics.TestUtils.getLinkedEntitiesList1;
 import static com.azure.ai.textanalytics.models.WarningCode.LONG_WORDS_IN_DOCUMENT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -303,28 +302,30 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeLinkedEntitiesForTextInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
-        final LinkedEntityMatch linkedEntityMatch1 = new LinkedEntityMatch("Seattle", 0.0);
-        final LinkedEntity linkedEntity1 = new LinkedEntity("Seattle",
-            new IterableStream<>(Collections.singletonList(linkedEntityMatch1)),
-            "en", "Seattle", "https://en.wikipedia.org/wiki/Seattle", "Wikipedia");
-        final List<LinkedEntity> linkedEntities = client.recognizeLinkedEntities("I had a wonderful trip to Seattle last week.")
-            .stream().collect(Collectors.toList());
-        validateLinkedEntity(linkedEntity1, linkedEntities.get(0));
+        recognizeLinkedEntitiesForSingleTextInputRunner(input -> {
+            final List<LinkedEntity> linkedEntities = client.recognizeLinkedEntities(input)
+                .stream().collect(Collectors.toList());
+            validateLinkedEntity(getLinkedEntitiesList1().get(0), linkedEntities.get(0));
+        });
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeLinkedEntitiesForEmptyText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
-        TextAnalyticsException exception = assertThrows(TextAnalyticsException.class, () -> client.recognizeLinkedEntities("").iterator().hasNext());
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_EXPECTED_EXCEPTION_MESSAGE));
+        emptyTextRunner(input -> {
+            final TextAnalyticsException exception = assertThrows(TextAnalyticsException.class,
+                () -> client.recognizeLinkedEntities(input).iterator().hasNext());
+            assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_EXPECTED_EXCEPTION_MESSAGE));
+        });
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeLinkedEntitiesForFaultyText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
-        assertFalse(client.recognizeLinkedEntities("!@#%%").iterator().hasNext());
+        faultyTextRunner(input ->
+            assertFalse(client.recognizeLinkedEntities(input).iterator().hasNext()));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

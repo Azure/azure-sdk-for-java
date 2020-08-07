@@ -5,8 +5,6 @@ package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
-import com.azure.ai.textanalytics.models.LinkedEntity;
-import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
@@ -24,7 +22,6 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
@@ -34,6 +31,7 @@ import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchDetectedLangu
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchKeyPhrases;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchLinkedEntities;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchTextSentiment;
+import static com.azure.ai.textanalytics.TestUtils.getLinkedEntitiesList1;
 import static com.azure.ai.textanalytics.models.WarningCode.LONG_WORDS_IN_DOCUMENT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -235,19 +233,23 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeEntitiesForEmptyText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.recognizeEntities(""))
-            .expectErrorMatches(throwable -> throwable instanceof TextAnalyticsException
-                && throwable.getMessage().equals(INVALID_DOCUMENT_EXPECTED_EXCEPTION_MESSAGE))
-            .verify();
+        emptyTextRunner(input ->
+            StepVerifier.create(client.recognizeEntities(input))
+                .expectErrorMatches(throwable -> throwable instanceof TextAnalyticsException
+                    && throwable.getMessage().equals(INVALID_DOCUMENT_EXPECTED_EXCEPTION_MESSAGE))
+                .verify()
+        );
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeEntitiesForFaultyText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.recognizeEntities("!@#%%"))
-            .assertNext(result -> assertFalse(result.getWarnings().iterator().hasNext()))
-            .verifyComplete();
+        faultyTextRunner(input ->
+            StepVerifier.create(client.recognizeEntities("!@#%%"))
+                .assertNext(result -> assertFalse(result.getWarnings().iterator().hasNext()))
+                .verifyComplete()
+        );
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -346,31 +348,31 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeLinkedEntitiesForTextInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
-        final LinkedEntityMatch linkedEntityMatch = new LinkedEntityMatch("Seattle", 0.0);
-        final LinkedEntity linkedEntity = new LinkedEntity("Seattle", new IterableStream<>(Collections.singletonList(linkedEntityMatch)), "en", "Seattle", "https://en.wikipedia.org/wiki/Seattle", "Wikipedia");
-
-        StepVerifier.create(client.recognizeLinkedEntities("I had a wonderful trip to Seattle last week."))
-            .assertNext(response -> validateLinkedEntity(linkedEntity, response.iterator().next()))
-            .verifyComplete();
+        recognizeLinkedEntitiesForSingleTextInputRunner(input ->
+            StepVerifier.create(client.recognizeLinkedEntities(input))
+                .assertNext(response -> validateLinkedEntity(getLinkedEntitiesList1().get(0), response.iterator().next()))
+                .verifyComplete());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeLinkedEntitiesForEmptyText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.recognizeLinkedEntities(""))
-            .expectErrorMatches(throwable -> throwable instanceof TextAnalyticsException
-                && throwable.getMessage().equals(INVALID_DOCUMENT_EXPECTED_EXCEPTION_MESSAGE))
-            .verify();
+        emptyTextRunner(input ->
+            StepVerifier.create(client.recognizeLinkedEntities(input))
+                .expectErrorMatches(throwable -> throwable instanceof TextAnalyticsException
+                    && throwable.getMessage().equals(INVALID_DOCUMENT_EXPECTED_EXCEPTION_MESSAGE))
+                .verify());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeLinkedEntitiesForFaultyText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.recognizeLinkedEntities("!@#%%"))
-            .assertNext(result -> assertFalse(result.getWarnings().iterator().hasNext()))
-            .verifyComplete();
+        faultyTextRunner(input ->
+            StepVerifier.create(client.recognizeLinkedEntities(input))
+                .assertNext(result -> assertFalse(result.getWarnings().iterator().hasNext()))
+                .verifyComplete());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

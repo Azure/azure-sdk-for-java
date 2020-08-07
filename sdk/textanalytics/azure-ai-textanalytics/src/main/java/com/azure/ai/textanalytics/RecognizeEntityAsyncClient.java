@@ -151,7 +151,8 @@ class RecognizeEntityAsyncClient {
                 new CategorizedEntityCollection(
                     new IterableStream<>(documentEntities.getEntities().stream().map(entity ->
                         new CategorizedEntity(entity.getText(), EntityCategory.fromString(entity.getCategory()),
-                            entity.getSubcategory(), entity.getConfidenceScore()))
+                            entity.getSubcategory(), entity.getOffset(), entity.getLength(),
+                            entity.getConfidenceScore()))
                         .collect(Collectors.toList())),
                     new IterableStream<>(documentEntities.getWarnings().stream()
                         .map(warning -> {
