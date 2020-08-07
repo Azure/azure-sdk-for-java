@@ -364,7 +364,7 @@ class APISpec extends Specification {
      */
     BlobServiceAsyncClient getPrimaryServiceClientForWrites(long perRequestDataSize) {
         int retryTimeout = Math.toIntExact((long) (perRequestDataSize / Constants.MB) * 10)
-        retryTimeout = Math.max(120, retryTimeout)
+        retryTimeout = Math.max(60, retryTimeout)
         return getServiceClientBuilder(primaryCredential,
             String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
         .retryOptions(new RequestRetryOptions(null, null, retryTimeout, null, null, null))
