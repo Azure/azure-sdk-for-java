@@ -6,6 +6,8 @@ package com.azure.storage.blob.changefeed.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Objects;
+
 /**
  * FOR INTERNAL USE ONLY.
  * Represents a cursor for a shard in BlobChangefeed.
@@ -83,5 +85,20 @@ public class ShardCursor {
     public ShardCursor setEventIndex(long eventIndex) {
         this.eventIndex = eventIndex;
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ShardCursor)) return false;
+        ShardCursor cursor = (ShardCursor) o;
+        return getBlockOffset() == cursor.getBlockOffset() &&
+            getEventIndex() == cursor.getEventIndex() &&
+            Objects.equals(getCurrentChunkPath(), cursor.getCurrentChunkPath());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getCurrentChunkPath(), getBlockOffset(), getEventIndex());
     }
 }

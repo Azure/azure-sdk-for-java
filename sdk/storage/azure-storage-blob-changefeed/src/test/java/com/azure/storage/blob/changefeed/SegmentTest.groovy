@@ -3,13 +3,18 @@ package com.azure.storage.blob.changefeed
 import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobContainerAsyncClient
 import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper
-import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor
+import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedCursor
+import com.azure.storage.blob.changefeed.implementation.models.SegmentCursor
+import com.azure.storage.blob.changefeed.implementation.models.ShardCursor
 import reactor.core.publisher.Flux
 import reactor.test.StepVerifier
 import spock.lang.Specification
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
+import java.nio.charset.StandardCharsets
+import java.security.MessageDigest
+import java.time.OffsetDateTime
 
 import static org.mockito.ArgumentMatchers.*
 import static org.mockito.Mockito.*
@@ -23,8 +28,14 @@ class SegmentTest extends Specification {
     Shard mockShard1
     Shard mockShard2
 
-    String segmentPath = "segmentPath"
-    ChangefeedCursor cfCursor
+    static String shardPath0 = 'log/00/2020/03/25/0200/'
+    static String shardPath1 = 'log/01/2020/03/25/0200/'
+    static String shardPath2 = 'log/02/2020/03/25/0200/'
+
+    byte[] urlHash = MessageDigest.getInstance("MD5").digest('https://testaccount.blob.core.windows.net/$blobchangefeed'.getBytes(StandardCharsets.UTF_8))
+    OffsetDateTime endTime = OffsetDateTime.MAX
+    static String segmentPath = "idx/segments/2020/03/25/0200/meta.json"
+    BlobChangefeedCursor cfCursor
 
     def setup() {
         mockContainer = mock(BlobContainerAsyncClient.class)
@@ -34,7 +45,7 @@ class SegmentTest extends Specification {
         mockShard1 = mock(Shard.class)
         mockShard2 = mock(Shard.class)
 
-        cfCursor = new ChangefeedCursor("endTime", "segmentTime", null, null, 0, 0)
+        cfCursor = new BlobChangefeedCursor(urlHash, endTime).toSegmentCursor(segmentPath)
 
         when(mockContainer.getBlobAsyncClient(anyString()))
             .thenReturn(mockBlob)
@@ -42,19 +53,19 @@ class SegmentTest extends Specification {
         when(mockBlob.download())
             .thenReturn(MockedChangefeedResources.readFile("segment_manifest.json", getClass()))
 
-        when(mockShardFactory.getShard(eq('log/00/2020/03/25/0200/'), any(ChangefeedCursor.class), nullable(ChangefeedCursor.class)))
+        when(mockShardFactory.getShard(eq(shardPath0), any(BlobChangefeedCursor.class), nullable(ShardCursor.class)))
             .thenReturn(mockShard0)
-        when(mockShardFactory.getShard(eq('log/01/2020/03/25/0200/'), any(ChangefeedCursor.class), nullable(ChangefeedCursor.class)))
+        when(mockShardFactory.getShard(eq(shardPath1), any(BlobChangefeedCursor.class), nullable(ShardCursor.class)))
             .thenReturn(mockShard1)
-        when(mockShardFactory.getShard(eq('log/02/2020/03/25/0200/'), any(ChangefeedCursor.class), nullable(ChangefeedCursor.class)))
+        when(mockShardFactory.getShard(eq(shardPath2), any(BlobChangefeedCursor.class), nullable(ShardCursor.class)))
             .thenReturn(mockShard2)
 
         when(mockShard0.getEvents())
-            .thenReturn(Flux.fromIterable(getMockEventWrappers('log/00/2020/03/25/0200/')))
+            .thenReturn(Flux.fromIterable(getMockEventWrappers(shardPath0)))
         when(mockShard1.getEvents())
-            .thenReturn(Flux.fromIterable(getMockEventWrappers('log/01/2020/03/25/0200/')))
+            .thenReturn(Flux.fromIterable(getMockEventWrappers(shardPath1)))
         when(mockShard2.getEvents())
-            .thenReturn(Flux.fromIterable(getMockEventWrappers('log/02/2020/03/25/0200/')))
+            .thenReturn(Flux.fromIterable(getMockEventWrappers(shardPath2)))
     }
 
     List<BlobChangefeedEventWrapper> getMockEventWrappers(String shardPath) {
@@ -73,53 +84,110 @@ class SegmentTest extends Specification {
         def sv = StepVerifier.create(segment.getEvents().index())
 
         then:
-        sv.expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/00/2020/03/25/0200/')})
-            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/00/2020/03/25/0200/')})
-            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/00/2020/03/25/0200/')})
-            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/01/2020/03/25/0200/')})
-            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/01/2020/03/25/0200/')})
-            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/01/2020/03/25/0200/')})
-            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/02/2020/03/25/0200/')})
-            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/02/2020/03/25/0200/')})
-            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/02/2020/03/25/0200/')})
+        sv.expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath0)})
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath0)})
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath0)})
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath1)})
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath1)})
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath1)})
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath2)})
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath2)})
+            .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath2)})
             .verifyComplete()
 
         verify(mockContainer).getBlobAsyncClient(segmentPath) || true
         verify(mockBlob).download() || true
-        verify(mockShardFactory).getShard('log/00/2020/03/25/0200/', cfCursor.toShardCursor('log/00/2020/03/25/0200/'), null) || true
-        verify(mockShardFactory).getShard('log/01/2020/03/25/0200/', cfCursor.toShardCursor('log/01/2020/03/25/0200/'), null) || true
-        verify(mockShardFactory).getShard('log/02/2020/03/25/0200/', cfCursor.toShardCursor('log/02/2020/03/25/0200/'), null) || true
+        verify(mockShardFactory).getShard(shardPath0, cfCursor.toShardCursor(shardPath0), null) || true
+        verify(mockShardFactory).getShard(shardPath1, cfCursor.toShardCursor(shardPath1), null) || true
+        verify(mockShardFactory).getShard(shardPath2, cfCursor.toShardCursor(shardPath2), null) || true
         verify(mockShard0).getEvents() || true
         verify(mockShard1).getEvents() || true
         verify(mockShard2).getEvents() || true
     }
 
     /* All we want to test here is that we only call chunk.getEvents if it is equal to or after the shard of interest. */
+//    @Unroll
+//    def "getEvents cursors"() {
+//        when:
+//        SegmentCursor userCursor = new SegmentCursor(segmentPath).toShardCursor(shardPath)
+//        SegmentFactory segmentFactory = new SegmentFactory(mockShardFactory, mockContainer)
+//        Segment segment = segmentFactory.getSegment(segmentPath, cfCursor, userCursor)
+//
+//        def sv = StepVerifier.create(segment.getEvents().index())
+//
+//        then:
+//        if (shardPath == shardPath0) {
+//            sv = sv.expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath0) })
+//                .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath0) })
+//                .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath0) })
+//        }
+//        if (shardPath == shardPath0 || shardPath == shardPath1) {
+//            sv = sv.expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath1)})
+//                .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath1)})
+//                .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath1)})
+//
+//        }
+//        if (shardPath == shardPath0 || shardPath == shardPath1 || shardPath == shardPath2) {
+//            sv = sv.expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath2)})
+//                .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath2)})
+//                .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath2)})
+//        }
+//        sv.verifyComplete()
+//
+//
+//        verify(mockContainer).getBlobAsyncClient(segmentPath) || true
+//        verify(mockBlob).download() || true
+//
+//        if (shardPath == shardPath0) {
+//            verify(mockShardFactory).getShard(shardPath0, cfCursor.toShardCursor(shardPath0), userCursor.getShardCursors().get(0)) || true
+//            verify(mockShard0).getEvents() || true
+//            verify(mockShardFactory).getShard(shardPath1, cfCursor.toShardCursor(shardPath1), null) || true
+//            verify(mockShard1).getEvents() || true
+//            verify(mockShardFactory).getShard(shardPath2, cfCursor.toShardCursor(shardPath2), null) || true
+//            verify(mockShard2).getEvents() || true
+//        }
+//        if (shardPath == shardPath1) {
+//            verify(mockShardFactory).getShard(shardPath1, cfCursor.toShardCursor(shardPath1), userCursor.getShardCursors().get(0)) || true
+//            verify(mockShard1).getEvents() || true
+//            verify(mockShardFactory).getShard(shardPath2, cfCursor.toShardCursor(shardPath2), null) || true
+//            verify(mockShard2).getEvents() || true
+//        }
+//        if (shardPath == shardPath2) {
+//            verify(mockShardFactory).getShard(shardPath2, cfCursor.toShardCursor(shardPath2), userCursor.getShardCursors().get(0)) || true
+//            verify(mockShard2).getEvents() || true
+//        }
+//
+//        where:
+//        shardPath                   || _
+//        shardPath0   || _
+//        shardPath1   || _
+//        shardPath2   || _
+//    }
+
     @Unroll
     def "getEvents cursor"() {
         when:
-        ChangefeedCursor userCursor = new ChangefeedCursor("endTime", "segmentTime", shardPath, "somechunk", 56, 2)
         SegmentFactory segmentFactory = new SegmentFactory(mockShardFactory, mockContainer)
         Segment segment = segmentFactory.getSegment(segmentPath, cfCursor, userCursor)
 
         def sv = StepVerifier.create(segment.getEvents().index())
 
         then:
-        if (shardPath == 'log/00/2020/03/25/0200/') {
-            sv = sv.expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/00/2020/03/25/0200/') })
-                .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/00/2020/03/25/0200/') })
-                .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/00/2020/03/25/0200/') })
+        if (caseNumber == 1) {
+            sv = sv.expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath0) })
+                .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath0) })
+                .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath0) })
         }
-        if (shardPath == 'log/00/2020/03/25/0200/' || shardPath == 'log/01/2020/03/25/0200/') {
-            sv = sv.expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/01/2020/03/25/0200/')})
-                .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/01/2020/03/25/0200/')})
-                .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/01/2020/03/25/0200/')})
+        if (caseNumber == 1) {
+            sv = sv.expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath1)})
+                .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath1)})
+                .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath1)})
 
         }
-        if (shardPath == 'log/00/2020/03/25/0200/' || shardPath == 'log/01/2020/03/25/0200/' || shardPath == 'log/02/2020/03/25/0200/') {
-            sv = sv.expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/02/2020/03/25/0200/')})
-                .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/02/2020/03/25/0200/')})
-                .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/02/2020/03/25/0200/')})
+        if (caseNumber == 1) {
+            sv = sv.expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath2)})
+                .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath2)})
+                .expectNextMatches({ tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), shardPath2)})
         }
         sv.verifyComplete()
 
@@ -127,30 +195,31 @@ class SegmentTest extends Specification {
         verify(mockContainer).getBlobAsyncClient(segmentPath) || true
         verify(mockBlob).download() || true
 
-        if (shardPath == 'log/00/2020/03/25/0200/') {
-            verify(mockShardFactory).getShard('log/00/2020/03/25/0200/', cfCursor.toShardCursor('log/00/2020/03/25/0200/'), userCursor) || true
+        if (caseNumber == 1) {
+            verify(mockShardFactory).getShard(shardPath0, cfCursor.toShardCursor(shardPath0), new ShardCursor(shardPath0 + "00000.avro", 1257, 84)) || true
             verify(mockShard0).getEvents() || true
-            verify(mockShardFactory).getShard('log/01/2020/03/25/0200/', cfCursor.toShardCursor('log/01/2020/03/25/0200/'), null) || true
+            verify(mockShardFactory).getShard(shardPath1, cfCursor.toShardCursor(shardPath1), null) || true
             verify(mockShard1).getEvents() || true
-            verify(mockShardFactory).getShard('log/02/2020/03/25/0200/', cfCursor.toShardCursor('log/02/2020/03/25/0200/'), null) || true
+            verify(mockShardFactory).getShard(shardPath2, cfCursor.toShardCursor(shardPath2), null) || true
             verify(mockShard2).getEvents() || true
         }
-        if (shardPath == 'log/01/2020/03/25/0200/') {
-            verify(mockShardFactory).getShard('log/01/2020/03/25/0200/', cfCursor.toShardCursor('log/01/2020/03/25/0200/'), userCursor) || true
-            verify(mockShard1).getEvents() || true
-            verify(mockShardFactory).getShard('log/02/2020/03/25/0200/', cfCursor.toShardCursor('log/02/2020/03/25/0200/'), null) || true
-            verify(mockShard2).getEvents() || true
-        }
-        if (shardPath == 'log/02/2020/03/25/0200/') {
-            verify(mockShardFactory).getShard('log/02/2020/03/25/0200/', cfCursor.toShardCursor('log/02/2020/03/25/0200/'), userCursor) || true
-            verify(mockShard2).getEvents() || true
-        }
+//        if (caseNumber == 1) {
+//            verify(mockShardFactory).getShard(shardPath1, cfCursor.toShardCursor(shardPath1), userCursor.getShardCursors().get(0)) || true
+//            verify(mockShard1).getEvents() || true
+//            verify(mockShardFactory).getShard(shardPath2, cfCursor.toShardCursor(shardPath2), null) || true
+//            verify(mockShard2).getEvents() || true
+//        }
+//        if (caseNumber == 1) {
+//            verify(mockShardFactory).getShard(shardPath2, cfCursor.toShardCursor(shardPath2), userCursor.getShardCursors().get(0)) || true
+//            verify(mockShard2).getEvents() || true
+//        }
 
         where:
-        shardPath                   || _
-        'log/00/2020/03/25/0200/'   || _
-        'log/01/2020/03/25/0200/'   || _
-        'log/02/2020/03/25/0200/'   || _
+        caseNumber | userCursor                                                                                                  || _
+        1          | new SegmentCursor(segmentPath).toShardCursor(shardPath0).toEventCursor(shardPath0 + "00000.avro", 1257, 84) || _  /* shard 0 should */
+//        2
+//        3
+//        4
     }
 
     def "segment metadata error"() {
@@ -171,34 +240,10 @@ class SegmentTest extends Specification {
         verify(mockBlob).download() || true
     }
 
-    /* Should return no events. */
-    def "segment not finalized"() {
-        setup:
-        when(mockBlob.download())
-            .thenReturn(MockedChangefeedResources.readFile("segment_manifest_unfinalized.json", getClass()))
-
-        when:
-        SegmentFactory segmentFactory = new SegmentFactory(mockShardFactory, mockContainer)
-        Segment segment = segmentFactory.getSegment(segmentPath, cfCursor, null)
-
-        def sv = StepVerifier.create(segment.getEvents())
-
-        then:
-        sv.verifyComplete() /* Completes with no events. */
-
-        verify(mockContainer).getBlobAsyncClient(segmentPath) || true
-        verify(mockBlob).download() || true
-
-        verify(mockShardFactory, never()).getShard(anyString(), any(ChangefeedCursor.class),  any(ChangefeedCursor.class)) || true
-        verify(mockShard0, never()).getEvents() || true
-        verify(mockShard1, never()).getEvents() || true
-        verify(mockShard2, never()).getEvents() || true
-    }
-
     boolean verifyWrapper(BlobChangefeedEventWrapper wrapper, long index, String shardPath) {
         boolean verify = true
         verify &= wrapper.getEvent().equals(MockedChangefeedResources.getMockBlobChangefeedEvent(index%3 as int))
-        verify &= wrapper.getCursor().getShardPath() == shardPath
+        verify &= wrapper.getCursor().getCurrentSegmentCursor().getCurrentShardPath() == shardPath
         return verify
     }
 }

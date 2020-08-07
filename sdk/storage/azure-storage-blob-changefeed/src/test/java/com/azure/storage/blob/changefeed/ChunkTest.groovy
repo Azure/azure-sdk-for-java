@@ -64,10 +64,10 @@ class ChunkTest extends Specification {
             .thenReturn(Flux.fromIterable(mockAvroObjects))
     }
 
-    /* Tests no user cursor. */
+    /* Tests no user cursor. These tests check that the event cursor is properly populated. */
     def "getEvents min shard 0 chunk 0"() {
         setup:
-        /* Default chunk cursor on shard 0. */
+        /* Cursor on shard 0, chunk 0 - basically when you first encounter a chunk in a shard. */
         BlobChangefeedCursor chunkCursor = new BlobChangefeedCursor(urlHash, endTime)
             .toSegmentCursor(segmentPath)
             .toShardCursor(currentShardPath0)
@@ -100,10 +100,11 @@ class ChunkTest extends Specification {
 
     def "getEvents min shard 0 chunk 1"() {
         setup:
-        /* Default chunk cursor on shard 0. */
+        /* Cursor on shard 0, chunk 1 - basically when you encounter a chunk in a shard after having already encountered a different chunk. */
         BlobChangefeedCursor chunkCursor = new BlobChangefeedCursor(urlHash, endTime)
             .toSegmentCursor(segmentPath)
             .toShardCursor(currentShardPath0)
+            .toEventCursor(chunkPath0, 9109, 1)
         when(mockAvroReaderFactory.getAvroReader(any(Flux.class)))
             .thenReturn(mockAvroReader)
 
@@ -133,7 +134,7 @@ class ChunkTest extends Specification {
 
     def "getEvents min shard 1 chunk 0"() {
         setup:
-        /* chunk cursor on shard 1. */
+        /* Cursor on shard 1, chunk 0 - basically when you encounter a chunk in a shard after having already encountered a different shard. */
         BlobChangefeedCursor chunkCursor = new BlobChangefeedCursor(urlHash, endTime)
             .toSegmentCursor(segmentPath)
             .toShardCursor(currentShardPath0)
@@ -166,9 +167,9 @@ class ChunkTest extends Specification {
         verify(mockAvroReader).read() || true
     }
 
-    /* Tests user cursor. */
+    /* Tests user cursor. Tests that a chunk can properly read events with the user cursor information. */
     @Unroll
-    def "getEvents cursor shard 0 chunk 0"() {
+    def "getEvents cursor"() {
         setup:
         /* Default chunk cursor on shard 0. */
         BlobChangefeedCursor chunkCursor = new BlobChangefeedCursor(urlHash, endTime)
@@ -199,58 +200,6 @@ class ChunkTest extends Specification {
 
         verify(mockBlobLazyDownloaderFactory).getBlobLazyDownloader(chunkPath0, ChunkFactory.DEFAULT_HEADER_SIZE) || true
         verify(mockBlobLazyDownloaderFactory).getBlobLazyDownloader(chunkPath0, ChunkFactory.DEFAULT_BODY_SIZE, blockOffset) || true
-        verify(mockBlobLazyDownloader, times(2)).download() || true
-        verify(mockAvroReaderFactory).getAvroReader(Flux.empty(), Flux.empty(), blockOffset, objectBlockIndex) || true
-        verify(mockAvroReader).read() || true
-
-        where:
-        blockOffset | objectBlockIndex || _
-        1234        | 0                || _
-        1234        | 1                || _
-        1234        | 2                || _
-        1234        | 3                || _
-        5678        | 0                || _
-        5678        | 1                || _
-        5678        | 2                || _
-        5678        | 3                || _
-        9101        | 0                || _
-        9101        | 1                || _
-    }
-
-    @Unroll
-    def "getEvents cursor shard 1 chunk 0"() {
-        setup:
-        /* chunk cursor on shard 1. */
-        BlobChangefeedCursor chunkCursor = new BlobChangefeedCursor(urlHash, endTime)
-            .toSegmentCursor(segmentPath)
-            .toShardCursor(currentShardPath0)
-            .toEventCursor(chunkPath0, 9109, 1)
-            .toShardCursor(currentShardPath1)
-        when(mockAvroReaderFactory.getAvroReader(any(Flux.class), any(Flux.class), anyLong(), anyLong()))
-            .thenReturn(mockAvroReader)
-        when(mockBlobLazyDownloaderFactory.getBlobLazyDownloader(anyString(), anyLong()))
-            .thenReturn(mockBlobLazyDownloader)
-
-        when:
-        ChunkFactory factory = new ChunkFactory(mockAvroReaderFactory, mockBlobLazyDownloaderFactory)
-        Chunk chunk = factory.getChunk(chunkPath2, chunkCursor, blockOffset, objectBlockIndex)
-        def sv = StepVerifier.create(chunk.getEvents().index())
-
-        then:
-        sv.expectNextMatches({ tuple2 -> verifyWrapperShard1(tuple2.getT2(), tuple2.getT1(), 1234, 0) })
-            .expectNextMatches({ tuple2 -> verifyWrapperShard1(tuple2.getT2(), tuple2.getT1(), 1234, 1) })
-            .expectNextMatches({ tuple2 -> verifyWrapperShard1(tuple2.getT2(), tuple2.getT1(), 1234, 2) })
-            .expectNextMatches({ tuple2 -> verifyWrapperShard1(tuple2.getT2(), tuple2.getT1(), 1234, 3) })
-            .expectNextMatches({ tuple2 -> verifyWrapperShard1(tuple2.getT2(), tuple2.getT1(), 5678, 0) })
-            .expectNextMatches({ tuple2 -> verifyWrapperShard1(tuple2.getT2(), tuple2.getT1(), 5678, 1) })
-            .expectNextMatches({ tuple2 -> verifyWrapperShard1(tuple2.getT2(), tuple2.getT1(), 5678, 2) })
-            .expectNextMatches({ tuple2 -> verifyWrapperShard1(tuple2.getT2(), tuple2.getT1(), 5678, 3) })
-            .expectNextMatches({ tuple2 -> verifyWrapperShard1(tuple2.getT2(), tuple2.getT1(), 9101, 0) })
-            .expectNextMatches({ tuple2 -> verifyWrapperShard1(tuple2.getT2(), tuple2.getT1(), 9101, 1) })
-            .verifyComplete()
-
-        verify(mockBlobLazyDownloaderFactory).getBlobLazyDownloader(chunkPath2, ChunkFactory.DEFAULT_HEADER_SIZE) || true
-        verify(mockBlobLazyDownloaderFactory).getBlobLazyDownloader(chunkPath2, ChunkFactory.DEFAULT_BODY_SIZE, blockOffset) || true
         verify(mockBlobLazyDownloader, times(2)).download() || true
         verify(mockAvroReaderFactory).getAvroReader(Flux.empty(), Flux.empty(), blockOffset, objectBlockIndex) || true
         verify(mockAvroReader).read() || true

@@ -6,8 +6,10 @@ package com.azure.storage.blob.changefeed.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * FOR INTERNAL USE ONLY.
@@ -41,12 +43,23 @@ public class SegmentCursor {
     }
 
     /**
+     * Creates a new segment level cursor with the specified segment path.
+     *
+     * @param segmentPath The segment path.
+     */
+    public SegmentCursor(String segmentPath) {
+        this.segmentPath = segmentPath;
+        this.shardCursors = new ArrayList<>();
+        this.currentShardPath = null;
+    }
+
+    /**
      * Creates a new shard level cursor with the specified shard path.
      *
      * @param shardPath The shard path.
      * @return A new shard level {@link SegmentCursor cursor}.
      */
-    SegmentCursor toShardCursor(String shardPath) {
+    public SegmentCursor toShardCursor(String shardPath) {
         /* Not cloning shard cursors list so we save state within the segment level. */
         return new SegmentCursor(this.segmentPath, this.shardCursors, shardPath);
     }
@@ -59,7 +72,7 @@ public class SegmentCursor {
      * @param eventIndex The event index.
      * @return A new event level {@link SegmentCursor cursor}.
      */
-    SegmentCursor toEventCursor(String chunkPath, long blockOffset, long eventIndex) {
+    public SegmentCursor toEventCursor(String chunkPath, long blockOffset, long eventIndex) {
         /* Deep copy the list to attach to the event. */
         List<ShardCursor> copy = new ArrayList<>(this.shardCursors.size() + 1);
 
@@ -133,5 +146,20 @@ public class SegmentCursor {
     public SegmentCursor setCurrentShardPath(String currentShardPath) {
         this.currentShardPath = currentShardPath;
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SegmentCursor)) return false;
+        SegmentCursor that = (SegmentCursor) o;
+        return Objects.equals(getShardCursors(), that.getShardCursors()) &&
+            Objects.equals(getCurrentShardPath(), that.getCurrentShardPath()) &&
+            Objects.equals(getSegmentPath(), that.getSegmentPath());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getShardCursors(), getCurrentShardPath(), getSegmentPath());
     }
 }

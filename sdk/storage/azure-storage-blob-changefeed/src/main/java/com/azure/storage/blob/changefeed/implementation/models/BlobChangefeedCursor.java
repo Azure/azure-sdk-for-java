@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * FOR INTERNAL USE ONLY.
@@ -76,8 +78,7 @@ public class BlobChangefeedCursor {
      * @return A new segment level {@link BlobChangefeedCursor cursor}.
      */
     public BlobChangefeedCursor toSegmentCursor(String segmentPath) {
-        return new BlobChangefeedCursor(this.cursorVersion, this.urlHash, this.endTime,
-            new SegmentCursor(segmentPath, new ArrayList<>(), null));
+        return new BlobChangefeedCursor(this.cursorVersion, this.urlHash, this.endTime, new SegmentCursor(segmentPath));
     }
 
     /**
@@ -193,5 +194,23 @@ public class BlobChangefeedCursor {
         } catch (IOException e) {
             throw logger.logExceptionAsError(new UncheckedIOException(e));
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof BlobChangefeedCursor)) return false;
+        BlobChangefeedCursor that = (BlobChangefeedCursor) o;
+        return getCursorVersion() == that.getCursorVersion() &&
+            Arrays.equals(getUrlHash(), that.getUrlHash()) &&
+            Objects.equals(getEndTime(), that.getEndTime()) &&
+            Objects.equals(getCurrentSegmentCursor(), that.getCurrentSegmentCursor());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(logger, getCursorVersion(), getEndTime(), getCurrentSegmentCursor());
+        result = 31 * result + Arrays.hashCode(getUrlHash());
+        return result;
     }
 }
