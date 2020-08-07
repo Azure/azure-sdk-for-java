@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -42,9 +41,8 @@ public class JacksonPropertyNameTests {
             String hotelName;
         }
         Field f = LocalHotel.class.getDeclaredField("hotelName");
-        assertMemberNull(f);
+        assertNull(serializer.convertMemberName(f));
     }
-
 
     @Test
     public void testPropertyNameOnTransientFieldName() throws NoSuchFieldException {
@@ -56,7 +54,7 @@ public class JacksonPropertyNameTests {
             }
         }
         Field f = LocalHotel.class.getDeclaredField("hotelName");
-        assertMemberNull(f);
+        assertNull(serializer.convertMemberName(f));
     }
 
     @Test
@@ -94,16 +92,81 @@ public class JacksonPropertyNameTests {
     public void testPropertyNameOnMethodName() throws NoSuchMethodException {
         class LocalHotel {
             String hotelName;
+            boolean flag;
 
             public String getHotelName() {
                 return hotelName;
             }
+            public void setHotelName(String hotelName) {
+                this.hotelName = hotelName;
+            }
+
+            public boolean isFlag() {
+                return flag;
+            }
+            public void setFlag(boolean flag) {
+                this.flag = flag;
+            }
         }
 
-        Method m = LocalHotel.class.getDeclaredMethod("getHotelName");
-        assertEquals("getHotelName", serializer.convertMemberName(m));
+        Method getterM = LocalHotel.class.getDeclaredMethod("getHotelName");
+        assertEquals("hotelName", serializer.convertMemberName(getterM));
+        Method setterM = LocalHotel.class.getDeclaredMethod("setHotelName", String.class);
+        assertNull(serializer.convertMemberName(setterM));
+        Method getterWithIs = LocalHotel.class.getDeclaredMethod("isFlag");
+        assertEquals("flag", serializer.convertMemberName(getterWithIs));
+        Method setterWithIs = LocalHotel.class.getDeclaredMethod("setFlag", boolean.class);
+        assertNull(serializer.convertMemberName(setterWithIs));
     }
 
+    @Test
+    public void testPropertyNameOnMethodNameWithoutGetSet() throws NoSuchMethodException {
+        class LocalHotel {
+            String hotelName;
+
+            public String hotelName1() {
+                return hotelName;
+            }
+
+            public void hotelName2(String hotelName) {
+                this.hotelName = hotelName;
+            }
+        }
+
+        Method getterM = LocalHotel.class.getDeclaredMethod("hotelName1");
+        assertNull(serializer.convertMemberName(getterM));
+        Method setterM = LocalHotel.class.getDeclaredMethod("hotelName2", String.class);
+        assertNull(serializer.convertMemberName(setterM));
+    }
+
+    @Test
+    public void testPropertyNameOnMethodNameWithGetInMiddle() throws NoSuchMethodException {
+        class LocalHotel {
+            String hotelName;
+            String hotelId;
+            String flag;
+
+            public String hotelgetName() {
+                return hotelName;
+            }
+
+            public String getHotelGetId() {
+                return hotelId;
+            }
+
+            public String isFlag() {
+                return flag;
+            }
+        }
+
+        Method getterM1 = LocalHotel.class.getDeclaredMethod("hotelgetName");
+        Method getterM2 = LocalHotel.class.getDeclaredMethod("getHotelGetId");
+        Method getterM3 = LocalHotel.class.getDeclaredMethod("isFlag");
+
+        assertNull(serializer.convertMemberName(getterM1));
+        assertEquals("hotelGetId", serializer.convertMemberName(getterM2));
+        assertNull(serializer.convertMemberName(getterM3));
+    }
     @Test
     public void testPropertyNameOnIgnoredMethodName() throws NoSuchMethodException {
         class LocalHotel {
@@ -115,7 +178,7 @@ public class JacksonPropertyNameTests {
             }
         }
         Method m = LocalHotel.class.getDeclaredMethod("getHotelName");
-        assertMemberNull(m);
+        assertNull(serializer.convertMemberName(m));
     }
 
     @Test
@@ -146,7 +209,7 @@ public class JacksonPropertyNameTests {
         }
 
         Method m = LocalHotel.class.getDeclaredMethod("getHotelName");
-        assertEquals("getHotelName", serializer.convertMemberName(m));
+        assertEquals("hotelName", serializer.convertMemberName(m));
     }
 
     @Test
@@ -162,16 +225,11 @@ public class JacksonPropertyNameTests {
 
         Method m = LocalHotel.class.getDeclaredMethod("getHotelName");
 
-        assertEquals("getHotelName", serializer.convertMemberName(m));
+        assertEquals("hotelName", serializer.convertMemberName(m));
     }
-
-    public void assertMemberNull(Member m) {
-        assertNull(serializer.convertMemberName(m));
-    }
-
 
     @Test
-    public void testPropertyNameOnConstructor() {
+    public void testPropertyNameOnConstructor() throws NoSuchMethodException {
         Constructor<?>[] constructors = Hotel.class.getConstructors();
         assertEquals(1, constructors.length);
 

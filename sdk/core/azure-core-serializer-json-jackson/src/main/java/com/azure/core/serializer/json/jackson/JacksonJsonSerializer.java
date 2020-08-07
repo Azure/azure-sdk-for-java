@@ -11,7 +11,9 @@ import com.azure.core.util.serializer.TypeReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.introspect.AnnotatedMethod;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.fasterxml.jackson.databind.util.BeanUtil;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -74,6 +76,7 @@ public final class JacksonJsonSerializer implements MemberNameConverter, JsonSer
         return Mono.fromRunnable(() -> serialize(stream, value));
     }
 
+
     @Override
     public String convertMemberName(Member member) {
         if (Modifier.isTransient(member.getModifiers())) {
@@ -88,21 +91,27 @@ public final class JacksonJsonSerializer implements MemberNameConverter, JsonSer
                 String propertyName = f.getDeclaredAnnotation(JsonProperty.class).value();
                 return CoreUtils.isNullOrEmpty(propertyName) ? f.getName() : propertyName;
             }
-            return member.getName();
+            return f.getName();
         }
 
         if (member instanceof Method) {
             Method m = (Method) member;
+            String methodNameWithoutJavaBeans = removePrefix(m);
             if (m.isAnnotationPresent(JsonIgnore.class)) {
                 return null;
             }
             if (m.isAnnotationPresent(JsonProperty.class)) {
                 String propertyName = m.getDeclaredAnnotation(JsonProperty.class).value();
-                return CoreUtils.isNullOrEmpty(propertyName) ? m.getName() : propertyName;
+                return CoreUtils.isNullOrEmpty(propertyName) ? methodNameWithoutJavaBeans : propertyName;
             }
-            return member.getName();
+            return methodNameWithoutJavaBeans;
         }
 
         return null;
+    }
+
+    private String removePrefix(Method method) {
+        return BeanUtil.okNameForGetter(
+                new AnnotatedMethod(null, method, null, null), false);
     }
 }
