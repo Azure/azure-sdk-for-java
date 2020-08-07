@@ -18,7 +18,8 @@
             "javax\\.servlet(\\..+)?",
             "io\\.micrometer(\\..+)?",
             "com\\.azure\\.data\\.cosmos(\\..+)?",
-            "com\\.azure\\.spring\\.data\\.cosmos\\..+"
+            "com\\.azure\\.spring\\.data\\.cosmos\\..+",
+            "org\\.springframework\\.data\\..+"
           ]
         }
       }

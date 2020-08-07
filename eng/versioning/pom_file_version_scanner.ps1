@@ -200,7 +200,7 @@ function Test-Dependency-Tag-And-Version {
     {
         if (!$libHash.ContainsKey($depKey))
         {
-            return "Error: library dependency '$($depKey)' does not exist in any of the version_*.txt files. Please ensure the dependency type is correct or the dependency is added to the appropriate file."
+            return "Error: $($depKey)'s dependency type is '$($depType)' but the dependency does not exist in any of the version_*.txt files. Should this be an external_dependency? Please ensure the dependency type is correct or the dependency is added to the appropriate file."
         }
         else
         {
@@ -671,10 +671,18 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
                         }
                         else
                         {
+                            # If the tag isn't external_dependency then verify it exists in the library hash
+                            if (!$libHash.ContainsKey($depKey))
+                            {
+                                $script:FoundError = $true
+                                return "Error: $($depKey)'s dependency type is '$($depType)' but the dependency does not exist in any of the version_*.txt files. Should this be an external_dependency? Please ensure the dependency type is correct or the dependency is added to the appropriate file."
+
+                            }
                             if ($depType -eq $DependencyTypeDependency)
                             {
                                 if ($versionWithoutBraces -ne $libHash[$depKey].depVer)
                                 {
+                                    $script:FoundError = $true
                                     return "Error: $($depKey)'s <version> is '$($versionString)' but the dependency version is listed as $($libHash[$depKey].depVer)"
                                 }
                             }
@@ -683,10 +691,12 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
                                 # Verify that none of the 'current' dependencies are using a groupId that starts with 'unreleased_' or 'beta_'
                                 if ($depKey.StartsWith('unreleased_') -or $depKey.StartsWith('beta_'))
                                 {
+                                    $script:FoundError = $true
                                     return "Error: $($versionUpdateString) is using an unreleased_ or beta_ dependency and trying to set current value. Only dependency versions can be set with an unreleased or beta dependency."
                                 }
                                 if ($versionWithoutBraces -ne $libHash[$depKey].curVer)
                                 {
+                                    $script:FoundError = $true
                                     return "Error: $($depKey)'s <version> is '$($versionString)' but the current version is listed as $($libHash[$depKey].curVer)"
                                 }
                             }

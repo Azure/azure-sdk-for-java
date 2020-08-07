@@ -281,6 +281,8 @@ public class SpringCloudTest extends AppPlatformTest {
                     }
                     System.out.printf("Do request to %s with response code %d%n", url, connection.getResponseCode());
                 }
+            } catch (Exception e) {
+                System.err.printf("Do request to %s with error %s%n", url, e.getMessage());
             }  finally {
                 connection.disconnect();
             }
@@ -299,6 +301,8 @@ public class SpringCloudTest extends AppPlatformTest {
                     return true;
                 }
                 System.out.printf("Do request to %s with response code %d%n", url, connection.getResponseCode());
+            } catch (Exception e) {
+                System.err.printf("Do request to %s with error %s%n", url, e.getMessage());
             } finally {
                 connection.disconnect();
             }

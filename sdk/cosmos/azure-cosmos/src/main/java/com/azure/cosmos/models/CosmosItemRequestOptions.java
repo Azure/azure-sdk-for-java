@@ -4,21 +4,19 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.RequestOptions;
-import com.azure.cosmos.implementation.encryption.api.EncryptionOptions;
 
 import java.util.List;
 
 /**
  * Encapsulates options that can be specified for a request issued to cosmos Item.
  */
-public final class CosmosItemRequestOptions {
+public class CosmosItemRequestOptions {
     private ConsistencyLevel consistencyLevel;
     private IndexingDirective indexingDirective;
     private List<String> preTriggerInclude;
     private List<String> postTriggerInclude;
     private String sessionToken;
     private PartitionKey partitionKey;
-    private EncryptionOptions encryptionOptions;
     private String ifMatchETag;
     private String ifNoneMatchETag;
 
@@ -211,12 +209,6 @@ public final class CosmosItemRequestOptions {
         requestOptions.setPostTriggerInclude(postTriggerInclude);
         requestOptions.setSessionToken(sessionToken);
         requestOptions.setPartitionKey(partitionKey);
-        requestOptions.setEncryptionOptions(encryptionOptions);
         return requestOptions;
-    }
-
-    CosmosItemRequestOptions setEncryptionOptions(EncryptionOptions options) {
-        this.encryptionOptions = options;
-        return this;
     }
 }

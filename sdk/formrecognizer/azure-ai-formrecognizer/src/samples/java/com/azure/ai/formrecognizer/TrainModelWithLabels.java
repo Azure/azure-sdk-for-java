@@ -3,7 +3,7 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.models.CustomFormModel;
+import com.azure.ai.formrecognizer.training.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.training.FormTrainingClient;
 import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
@@ -60,12 +60,12 @@ public class TrainModelWithLabels {
         System.out.println();
         customFormModel.getTrainingDocuments().forEach(trainingDocumentInfo -> {
             System.out.printf("Document name: %s%n", trainingDocumentInfo.getName());
-            System.out.printf("Document status: %s%n", trainingDocumentInfo.getTrainingStatus());
+            System.out.printf("Document status: %s%n", trainingDocumentInfo.getStatus());
             System.out.printf("Document page count: %d%n", trainingDocumentInfo.getPageCount());
-            if (!trainingDocumentInfo.getDocumentErrors().isEmpty()) {
+            if (!trainingDocumentInfo.getErrors().isEmpty()) {
                 System.out.println("Document Errors:");
-                trainingDocumentInfo.getDocumentErrors().forEach(formRecognizerError ->
-                    System.out.printf("Error code %s, Error message: %s%n", formRecognizerError.getCode(),
+                trainingDocumentInfo.getErrors().forEach(formRecognizerError ->
+                    System.out.printf("Error code %s, Error message: %s%n", formRecognizerError.getErrorCode(),
                         formRecognizerError.getMessage()));
             }
         });

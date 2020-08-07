@@ -1,7 +1,8 @@
 # Release History
 
 ## 12.6.0-beta.2 (Unreleased)
-
+- Added support to set tier on a snapshot or version.
+- Added support to specify tags conditions and rehydrate priority on batch set tier. 
 
 ## 12.6.0-beta.1 (2020-07-07)
 - Updated azure-storage-common and azure-storage-blob dependencies to add support for the 2019-12-12 service version. 

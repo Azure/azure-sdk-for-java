@@ -71,6 +71,8 @@ public class InternalObjectNode extends Resource {
         Document typedItem;
         if (cosmosItem instanceof InternalObjectNode) {
             typedItem = new Document(((InternalObjectNode) cosmosItem).toJson());
+        } else if (cosmosItem instanceof byte[]) {
+            return new Document((byte[]) cosmosItem);
         } else {
             try {
                 return new Document(InternalObjectNode.MAPPER.writeValueAsString(cosmosItem));
@@ -85,11 +87,11 @@ public class InternalObjectNode extends Resource {
     public static ByteBuffer serializeJsonToByteBuffer(Object cosmosItem, ObjectMapper objectMapper) {
         if (cosmosItem instanceof InternalObjectNode) {
             return ((InternalObjectNode) cosmosItem).serializeJsonToByteBuffer();
+        } else if (cosmosItem instanceof Document) {
+            return ModelBridgeInternal.serializeJsonToByteBuffer((Document) cosmosItem);
+        } else if (cosmosItem instanceof byte[]) {
+            return ByteBuffer.wrap((byte[]) cosmosItem);
         } else {
-            if (cosmosItem instanceof Document) {
-                return ModelBridgeInternal.serializeJsonToByteBuffer((Document) cosmosItem);
-            }
-
             return Utils.serializeJsonToByteBuffer(objectMapper, cosmosItem);
         }
     }

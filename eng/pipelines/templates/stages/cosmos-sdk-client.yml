@@ -120,13 +120,13 @@ stages:
             AdditionalArgs: '-DargLine="-DACCOUNT_HOST=https://localhost:8081/"'
 
         TestStepMavenInputs:
-          goals: 'verify'
+          goals: 'clean verify'
           options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList)'
           mavenAuthenticateFeed: true
           jdkVersionOption: $(JavaTestVersion)
 
         PreRunSteps:
-        - template: ../steps/cosmos-emulator.yml
+        - template: /eng/common/pipelines/templates/steps/cosmos-emulator.yml
           parameters:
             StartParameters: '-PartitionCount 50 -Consistency Strong -Timeout 600'
         - powershell: |

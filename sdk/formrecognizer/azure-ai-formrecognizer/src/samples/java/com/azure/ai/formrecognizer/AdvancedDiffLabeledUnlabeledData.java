@@ -49,20 +49,19 @@ public class AdvancedDiffLabeledUnlabeledData {
 
         List<RecognizedForm> formsWithLabeledModel =
             client.beginRecognizeCustomForms(
-                new FileInputStream(analyzeFile), analyzeFile.length(),
-                "{labeled_model_Id}",
+                "{labeled_model_Id}", new FileInputStream(analyzeFile), analyzeFile.length(),
                 new RecognizeOptions()
                     .setContentType(FormContentType.APPLICATION_PDF)
-                    .setIncludeFieldElements(true)
+                    .setFieldElementsIncluded(true)
                     .setPollInterval(Duration.ofSeconds(5)), Context.NONE)
                 .getFinalResult();
 
         List<RecognizedForm> formsWithUnlabeledModel =
-            client.beginRecognizeCustomForms(new FileInputStream(analyzeFile), analyzeFile.length(),
-                "{unlabeled_model_Id}",
+            client.beginRecognizeCustomForms("{unlabeled_model_Id}", new FileInputStream(analyzeFile),
+                analyzeFile.length(),
                 new RecognizeOptions()
                     .setContentType(FormContentType.APPLICATION_PDF)
-                    .setIncludeFieldElements(true)
+                    .setFieldElementsIncluded(true)
                     .setPollInterval(Duration.ofSeconds(5)), Context.NONE)
                 .getFinalResult();
 
@@ -79,9 +78,9 @@ public class AdvancedDiffLabeledUnlabeledData {
                 formField.getValueData().getBoundingBox().getPoints().stream().map(point ->
                     String.format("[%.2f, %.2f]", point.getX(), point.getY())).forEach(boundingBoxStr::append);
             }
-            System.out.printf("Field %s has value %s based on %s within bounding box %s with a confidence score "
-                    + "of %.2f.%n",
-                label, formField.getValue(), formField.getValueData().getText(), boundingBoxStr,
+            System.out.printf("Field %s has value data text %s based on %s within bounding box %s with a confidence "
+                    + "score of %.2f.%n",
+                label, formField.getValueData().getText(), formField.getValueData().getText(), boundingBoxStr,
                 formField.getConfidence());
 
             // Find the value of a specific labeled field.
@@ -91,12 +90,13 @@ public class AdvancedDiffLabeledUnlabeledData {
                 .filter(formFieldEntry -> "MerchantName".equals(formFieldEntry.getKey())) // filter by form field key
                 .findAny()
                 .ifPresent(formFieldEntry ->
-                    System.out.printf("The Merchant name is: %s%n", formFieldEntry.getValue()));
-                // @since 9
-                // .ifPresentOrElse(
-                //     formFieldEntry -> System.out.printf("The Merchant name is: %s%n", formFieldEntry.getValue()),
-                //     () -> System.out.println("'Merchant' training-time label does not exist. Substitute it with "
-                //         + "your own training-time label."));
+                    System.out.printf("The Merchant name is: %s%n", formFieldEntry.getValue()
+                        .getValue().asString()));
+            // @since 9
+            // .ifPresentOrElse(
+            //     formFieldEntry -> System.out.printf("The Merchant name is: %s%n", formFieldEntry.getValue()),
+            //     () -> System.out.println("'Merchant' training-time label does not exist. Substitute it with "
+            //         + "your own training-time label."));
         }));
 
         System.out.println("-----------------------------------------------------------");
@@ -120,9 +120,9 @@ public class AdvancedDiffLabeledUnlabeledData {
                         + "of %.2f.%n",
                     label, formField.getLabelData().getText(), "", formField.getConfidence());
             }
-            System.out.printf("Field %s has value %s based on %s within bounding box %s with a confidence score "
-                    + "of %.2f.%n",
-                label, formField.getValue(), formField.getValueData().getText(), boundingBoxStr,
+            System.out.printf("Field %s has value data text %s based on %s within bounding box %s with a confidence "
+                    + "score of %.2f.%n",
+                label, formField.getValueData().getText(), formField.getValueData().getText(), boundingBoxStr,
                 formField.getConfidence());
 
             // Find the value of a specific unlabeled field. The specific key "Vendor Name:" provided in the example
@@ -132,11 +132,12 @@ public class AdvancedDiffLabeledUnlabeledData {
                 .filter(formFieldEntry -> "Vendor Name:".equals(formFieldEntry.getValue().getLabelData().getText()))
                 //filter by label text
                 .findAny()
-                .ifPresent(formFieldEntry -> System.out.printf("The Vendor name is: %s%n", formFieldEntry.getValue()));
-                // @since 9
-                // .ifPresentOrElse(
-                //     formFieldEntry -> System.out.printf("The Vendor name is: %s%n", formFieldEntry.getValue()),
-                //     () -> System.out.println("'Vendor Name:' label text does not exist"));
+                .ifPresent(formFieldEntry -> System.out.printf("The Vendor name is: %s%n", formFieldEntry.getValue()
+                    .getValue().asString()));
+            // @since 9
+            // .ifPresentOrElse(
+            //     formFieldEntry -> System.out.printf("The Vendor name is: %s%n", formFieldEntry.getValue()),
+            //     () -> System.out.println("'Vendor Name:' label text does not exist"));
         }));
     }
 }
