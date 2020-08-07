@@ -2341,7 +2341,7 @@ class FileAPITest extends APISpec {
     // Test uploads large amount of data
     def "Buffered upload chunked source"() {
         setup:
-        DataLakeFileAsyncClient fac = getPrimaryServiceClientForWrites(bufferSize)
+        DataLakeFileAsyncClient fac = getPrimaryServiceClientForWrites(bufferSize * Constants.MB)
             .getFileSystemAsyncClient(fscAsync.getFileSystemName())
             .getFileAsyncClient(generatePathName())
         fac.create().block()
