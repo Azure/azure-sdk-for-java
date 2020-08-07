@@ -12,6 +12,8 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Performance test.
@@ -35,12 +37,12 @@ public class SendMessagesTest extends ServiceTest<ServiceBusStressOptions> {
      */
     public Mono<Void> globalSetupAsync() {
         ServiceBusMessage message =  new ServiceBusMessage(CONTENTS.getBytes());
-        return Flux.range(0, options.getMessagesToSend())
-            .flatMap(count -> {
-                messages.add(message);
-                return Mono.empty();
-            })
-            .then();
+        return Mono.defer(() -> {
+            messages = IntStream.range(0, options.getMessagesToSend())
+                .mapToObj(index -> message)
+                .collect(Collectors.toList());
+            return Mono.empty();
+        });
     }
 
     @Override

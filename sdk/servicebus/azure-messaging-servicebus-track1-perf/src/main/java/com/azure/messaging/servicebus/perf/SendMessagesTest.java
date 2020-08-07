@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Performance test.
@@ -31,12 +33,13 @@ public class SendMessagesTest extends ServiceTest<ServiceBusStressOptions> {
         String messageId = UUID.randomUUID().toString();
         Message message = new Message(CONTENTS);
         message.setMessageId(messageId);
-        return Flux.range(0, options.getMessagesToSend())
-            .flatMap(count -> {
-                messages.add(message);
-                return Mono.empty();
-            })
-            .then();
+
+        return Mono.defer(() -> {
+            messages = IntStream.range(0, options.getMessagesToSend())
+            .mapToObj(index -> message)
+            .collect(Collectors.toList());
+            return Mono.empty();
+        });
     }
 
     @Override
