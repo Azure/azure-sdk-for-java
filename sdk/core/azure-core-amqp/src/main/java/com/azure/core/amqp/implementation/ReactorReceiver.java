@@ -54,7 +54,6 @@ public class ReactorReceiver implements AmqpReceiveLink {
         this.tokenManager = tokenManager;
         this.dispatcher = dispatcher;
         this.messagesProcessor = this.handler.getDeliveredMessages()
-            .map(delivery -> decodeDelivery(delivery))
             .doOnNext(next -> {
                 if (receiver.getRemoteCredit() == 0) {
                     final Supplier<Integer> supplier = creditSupplier.get();
@@ -115,10 +114,12 @@ public class ReactorReceiver implements AmqpReceiveLink {
 
     @Override
     public void addCredits(int credits) {
-        try {
-            dispatcher.invoke(() -> receiver.flow(credits));
-        } catch (IOException e) {
-            logger.warning("Unable to schedule work to add more credits.", e);
+        if (!isDisposed.get()) {
+            try {
+                dispatcher.invoke(() -> receiver.flow(credits));
+            } catch (IOException e) {
+                logger.warning("Unable to schedule work to add more credits.", e);
+            }
         }
     }
 
@@ -161,7 +162,7 @@ public class ReactorReceiver implements AmqpReceiveLink {
 
         subscriptions.dispose();
         endpointStateSink.complete();
-        messagesProcessor.onComplete();
+        drain();
         tokenManager.close();
         receiver.close();
 
@@ -176,17 +177,8 @@ public class ReactorReceiver implements AmqpReceiveLink {
         }
     }
 
-    protected Message decodeDelivery(Delivery delivery) {
-        final int messageSize = delivery.pending();
-        final byte[] buffer = new byte[messageSize];
-        final int read = receiver.recv(buffer, 0, messageSize);
-        receiver.advance();
-
-        final Message message = Proton.message();
-        message.decode(buffer, 0, read);
-
-        delivery.settle();
-        return message;
+    private void drain() {
+        messagesProcessor.subscribe(message -> { }, error -> { }, messagesProcessor::onComplete);
     }
 
     @Override

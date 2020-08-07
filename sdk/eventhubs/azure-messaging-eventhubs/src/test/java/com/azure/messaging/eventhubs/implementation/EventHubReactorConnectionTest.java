@@ -19,6 +19,7 @@ import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.CoreUtils;
+import java.util.function.Function;
 import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.engine.Record;
@@ -145,8 +146,9 @@ public class EventHubReactorConnectionTest {
         when(sender.attachments()).thenReturn(linkRecord);
         when(receiver.attachments()).thenReturn(linkRecord);
 
-        when(handlerProvider.createReceiveLinkHandler(eq(CONNECTION_ID), eq(HOSTNAME), anyString(), anyString()))
-            .thenReturn(new ReceiveLinkHandler(CONNECTION_ID, HOSTNAME, "receiver-name", "test-entity-path"));
+        when(handlerProvider.createReceiveLinkHandler(eq(CONNECTION_ID), eq(HOSTNAME), anyString(), anyString(),
+            any(Function.class)))
+            .thenReturn(new ReceiveLinkHandler(CONNECTION_ID, HOSTNAME, "receiver-name", "test-entity-path", null));
 
         when(handlerProvider.createSendLinkHandler(eq(CONNECTION_ID), eq(HOSTNAME), anyString(), anyString()))
             .thenReturn(new SendLinkHandler(CONNECTION_ID, HOSTNAME, "sender-name", "test-entity-path"));

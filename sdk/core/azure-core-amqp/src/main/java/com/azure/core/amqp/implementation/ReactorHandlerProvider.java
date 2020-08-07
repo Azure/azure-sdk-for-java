@@ -12,6 +12,9 @@ import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.amqp.implementation.handler.WebSocketsConnectionHandler;
 import com.azure.core.amqp.implementation.handler.WebSocketsProxyConnectionHandler;
 import com.azure.core.util.logging.ClientLogger;
+import java.util.function.Function;
+import org.apache.qpid.proton.engine.Delivery;
+import org.apache.qpid.proton.message.Message;
 import org.apache.qpid.proton.reactor.Reactor;
 
 import java.time.Duration;
@@ -103,7 +106,7 @@ public class ReactorHandlerProvider {
      * @return A new {@link ReceiveLinkHandler}.
      */
     public ReceiveLinkHandler createReceiveLinkHandler(String connectionId, String fullyQualifiedNamespace,
-            String receiverName, String entityPath) {
-        return new ReceiveLinkHandler(connectionId, fullyQualifiedNamespace, receiverName, entityPath);
+            String receiverName, String entityPath, Function<Delivery, Message> deliveryDecoder) {
+        return new ReceiveLinkHandler(connectionId, fullyQualifiedNamespace, receiverName, entityPath, deliveryDecoder);
     }
 }

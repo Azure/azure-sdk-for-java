@@ -13,6 +13,7 @@ import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.util.logging.ClientLogger;
+import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Source;
 import org.apache.qpid.proton.amqp.messaging.Target;
@@ -20,9 +21,11 @@ import org.apache.qpid.proton.amqp.transaction.Coordinator;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.engine.BaseHandler;
+import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.engine.Sender;
 import org.apache.qpid.proton.engine.Session;
+import org.apache.qpid.proton.message.Message;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
 import reactor.core.publisher.Flux;
@@ -547,7 +550,8 @@ public class ReactorSession implements AmqpSession {
         }
 
         final ReceiveLinkHandler receiveLinkHandler = handlerProvider.createReceiveLinkHandler(
-            sessionHandler.getConnectionId(), sessionHandler.getHostname(), linkName, entityPath);
+            sessionHandler.getConnectionId(), sessionHandler.getHostname(), linkName, entityPath,
+            delivery -> decodeDelivery(receiver, delivery));
         BaseHandler.setHandler(receiver, receiveLinkHandler);
 
         receiver.open();
@@ -570,6 +574,19 @@ public class ReactorSession implements AmqpSession {
             });
 
         return new LinkSubscription<>(reactorReceiver, subscription);
+    }
+
+    private Message decodeDelivery(Receiver receiver, Delivery delivery) {
+        final int messageSize = delivery.pending();
+        final byte[] buffer = new byte[messageSize];
+        final int read = receiver.recv(buffer, 0, messageSize);
+        receiver.advance();
+
+        final Message message = Proton.message();
+        message.decode(buffer, 0, read);
+
+        delivery.settle();
+        return message;
     }
 
     private static final class LinkSubscription<T extends AmqpLink> implements Disposable {

@@ -11,6 +11,9 @@ import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 
 import java.time.Duration;
+import java.util.function.Function;
+import org.apache.qpid.proton.engine.Delivery;
+import org.apache.qpid.proton.message.Message;
 
 class MockReactorHandlerProvider extends ReactorHandlerProvider {
     private final ConnectionHandler connectionHandler;
@@ -45,7 +48,8 @@ class MockReactorHandlerProvider extends ReactorHandlerProvider {
     }
 
     @Override
-    public ReceiveLinkHandler createReceiveLinkHandler(String connectionId, String fullyQualifiedNamespace, String receiverName, String entityPath) {
+    public ReceiveLinkHandler createReceiveLinkHandler(String connectionId, String fullyQualifiedNamespace,
+        String receiverName, String entityPath, Function<Delivery, Message> deliveryDecoder) {
         return receiveLinkHandler;
     }
 }

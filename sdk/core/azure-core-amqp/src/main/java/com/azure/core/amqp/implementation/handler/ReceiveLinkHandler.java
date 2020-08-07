@@ -4,11 +4,13 @@
 package com.azure.core.amqp.implementation.handler;
 
 import com.azure.core.util.logging.ClientLogger;
+import java.util.function.Function;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Link;
 import org.apache.qpid.proton.engine.Receiver;
+import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
@@ -17,28 +19,31 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ReceiveLinkHandler extends LinkHandler {
     private final String linkName;
+    private final Function<Delivery, Message> deliveryDecoder;
     private AtomicBoolean isFirstResponse = new AtomicBoolean(true);
-    private final DirectProcessor<Delivery> deliveries;
-    private FluxSink<Delivery> deliverySink;
+    private final DirectProcessor<Message> messages;
+    private FluxSink<Message> messageSink;
 
-    public ReceiveLinkHandler(String connectionId, String hostname, String linkName, String entityPath) {
+    public ReceiveLinkHandler(String connectionId, String hostname, String linkName, String entityPath,
+        Function<Delivery, Message> deliveryDecoder) {
         super(connectionId, hostname, entityPath, new ClientLogger(ReceiveLinkHandler.class));
-        this.deliveries = DirectProcessor.create();
-        this.deliverySink = deliveries.sink(FluxSink.OverflowStrategy.BUFFER);
+        this.messages = DirectProcessor.create();
+        this.messageSink = messages.sink(FluxSink.OverflowStrategy.BUFFER);
         this.linkName = linkName;
+        this.deliveryDecoder = deliveryDecoder;
     }
 
     public String getLinkName() {
         return linkName;
     }
 
-    public Flux<Delivery> getDeliveredMessages() {
-        return deliveries;
+    public Flux<Message> getDeliveredMessages() {
+        return messages;
     }
 
     @Override
     public void close() {
-        deliverySink.complete();
+        messageSink.complete();
         super.close();
     }
 
@@ -96,7 +101,7 @@ public class ReceiveLinkHandler extends LinkHandler {
                     logger.warning("connectionId[{}], delivery.isSettled[{}]", getConnectionId(), delivery.isSettled());
                 }
             } else {
-                deliverySink.next(delivery);
+                messageSink.next(deliveryDecoder.apply(delivery));
             }
         }
 

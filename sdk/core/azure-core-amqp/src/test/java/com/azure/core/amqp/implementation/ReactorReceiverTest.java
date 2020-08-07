@@ -8,6 +8,7 @@ import com.azure.core.amqp.AmqpMessageConstant;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
+import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Source;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
@@ -18,6 +19,7 @@ import org.apache.qpid.proton.engine.Link;
 import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.engine.Record;
 import org.apache.qpid.proton.engine.Session;
+import org.apache.qpid.proton.message.Message;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.apache.qpid.proton.reactor.Selectable;
 import org.junit.jupiter.api.AfterAll;
@@ -97,7 +99,7 @@ class ReactorReceiverTest {
 
         final String entityPath = "test-entity-path";
         receiverHandler = new ReceiveLinkHandler("test-connection-id", "test-host",
-            "test-receiver-name", entityPath);
+            "test-receiver-name", entityPath, this::decodeDelivery);
         final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(Mono.just(cbsNode),
             "test-tokenAudience", "test-scopes");
 
@@ -259,5 +261,18 @@ class ReactorReceiverTest {
         invocations.get(0).run();
 
         verify(receiver).flow(10);
+    }
+
+    private Message decodeDelivery(Delivery delivery) {
+        final int messageSize = delivery.pending();
+        final byte[] buffer = new byte[messageSize];
+        final int read = receiver.recv(buffer, 0, messageSize);
+        receiver.advance();
+
+        final Message message = Proton.message();
+        message.decode(buffer, 0, read);
+
+        delivery.settle();
+        return message;
     }
 }

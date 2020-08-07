@@ -123,13 +123,12 @@ public class RequestResponseChannel implements Disposable {
         this.receiveLink.setReceiverSettleMode(receiverSettleMode);
 
         this.receiveLinkHandler = handlerProvider.createReceiveLinkHandler(connectionId, fullyQualifiedNamespace,
-            linkName, entityPath);
+            linkName, entityPath, this::decodeDelivery);
         BaseHandler.setHandler(this.receiveLink, receiveLinkHandler);
 
         //@formatter:off
         this.subscriptions = Disposables.composite(
             receiveLinkHandler.getDeliveredMessages()
-                .map(this::decodeDelivery)
                 .subscribe(message -> {
                     logger.verbose("Settling message: {}", message.getCorrelationId());
                     settleMessage(message);
