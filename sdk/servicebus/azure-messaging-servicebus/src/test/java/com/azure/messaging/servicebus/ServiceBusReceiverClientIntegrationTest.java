@@ -253,11 +253,13 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         // Arrange
         setSenderAndReceiver(entityType, TestUtils.USE_CASE_RECEIVE_MORE_AND_COMPLETE, isSessionEnabled);
         int maxMessages = 5;
-        int messagesToSend = 2;
+        int messagesToSend = 4;
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
 
+        sendMessage(message);
+        sendMessage(message);
         sendMessage(message);
         sendMessage(message);
 
@@ -268,11 +270,13 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         int receivedMessageCount = 0;
         final long startTime = System.currentTimeMillis();
         for (ServiceBusReceivedMessageContext context : messages) {
+            logger.verbose("!!!! Test received SQ " + context.getMessage().getSequenceNumber());
             ServiceBusReceivedMessage receivedMessage = context.getMessage();
             assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
             receiver.complete(receivedMessage.getLockToken());
             messagesPending.decrementAndGet();
             ++receivedMessageCount;
+            logger.verbose("!!!! Test PROCESSED SQ " + context.getMessage().getSequenceNumber());
         }
         final long endTime = System.currentTimeMillis();
         assertEquals(messagesToSend, receivedMessageCount);

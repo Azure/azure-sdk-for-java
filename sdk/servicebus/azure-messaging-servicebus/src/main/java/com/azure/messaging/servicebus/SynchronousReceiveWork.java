@@ -11,14 +11,13 @@ import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Synchronous work for receiving messages.
  */
 class SynchronousReceiveWork implements AutoCloseable{
-    private static final Duration SHORT_TIMEOUT_BETWEEN_MESSAGES = Duration.ofMillis(200);
+    private static final Duration SHORT_TIMEOUT_BETWEEN_MESSAGES = Duration.ofMillis(100);
 
     private final ClientLogger logger = new ClientLogger(SynchronousReceiveWork.class);
     private final long id;
@@ -36,12 +35,10 @@ class SynchronousReceiveWork implements AutoCloseable{
     // Indicate that if processing started or not.
     private boolean processingStarted;
 
-    private Disposable timeoutBeforeNextMessageOperation;
     private Disposable nextMessageSubscriber;
 
     private volatile Throwable error = null;
 
-    private Flux<Object> nextMessagePublisher;
     private final DirectProcessor<ServiceBusReceivedMessageContext> messageReceivedEmitter = DirectProcessor.create();
     private final FluxSink<ServiceBusReceivedMessageContext> messageReceivedSink = messageReceivedEmitter.sink(FluxSink.OverflowStrategy.BUFFER);
 
@@ -61,8 +58,19 @@ class SynchronousReceiveWork implements AutoCloseable{
         this.timeout = timeout;
         this.emitter = emitter;
 
-
-
+        nextMessageSubscriber = Flux.switchOnNext(messageReceivedEmitter
+            .map(messageContext -> {
+                emitter.next(messageContext);
+                remaining.decrementAndGet();
+                return messageContext;
+            })
+            .flatMap(lockToken -> Mono.delay(SHORT_TIMEOUT_BETWEEN_MESSAGES))
+            //.takeUntilOther(Flux.first(Mono.delay(SHORT_TIMEOUT_BETWEEN_MESSAGES)))
+            .handle((l, sink) -> {
+                emitter.complete();
+                sink.complete();
+            }))
+            .subscribe();
     }
 
     /**
@@ -112,37 +120,13 @@ class SynchronousReceiveWork implements AutoCloseable{
     /**
      * Publishes the next message to a downstream subscriber.
      *
-     * @param message Event to publish downstream.
+     * @param messageContext Event to publish downstream.
      */
-    void next(ServiceBusReceivedMessageContext message) {
+    void next(ServiceBusReceivedMessageContext messageContext) {
         try {
-            if (nextMessageSubscriber == null) {
-                    final Flux<Object> shortTimeOutOccurred = Flux.first(Mono.delay(SHORT_TIMEOUT_BETWEEN_MESSAGES));
+            logger.verbose("!!!!  received SQ " + messageContext.getMessage().getSequenceNumber());
+            messageReceivedSink.next(messageContext);
 
-                    nextMessagePublisher = Flux.switchOnNext(messageReceivedEmitter.handle((messageContext, sink) -> {
-                        emitter.next(messageContext);
-                        remaining.decrementAndGet();
-                    }))
-                        .takeUntilOther(shortTimeOutOccurred);
-                    nextMessageSubscriber = nextMessagePublisher
-                        .subscribe(o -> {
-                            }
-                            , throwable -> {
-                            }
-                            , () -> {
-                                emitter.complete();
-                            });
-            }
-
-            messageReceivedSink.next(message);
-
-            /*if (timeoutBeforeNextMessageOperation != null && !timeoutBeforeNextMessageOperation.isDisposed()) {
-                timeoutBeforeNextMessageOperation.dispose();
-            }*/
-
-            //emitter.next(message);
-            //remaining.decrementAndGet();
-            //timeoutBeforeNextMessageOperation = getShortTimeoutBetweenMessages();
         } catch (Exception e) {
             logger.warning("Exception occurred while publishing downstream.", e);
             error(e);
@@ -204,22 +188,10 @@ class SynchronousReceiveWork implements AutoCloseable{
 
     @Override
     public void close() {
-        if (timeoutBeforeNextMessageOperation != null && !timeoutBeforeNextMessageOperation.isDisposed()) {
-            timeoutBeforeNextMessageOperation.dispose();
+        if (nextMessageSubscriber != null && !nextMessageSubscriber.isDisposed()) {
+            nextMessageSubscriber.dispose();
         }
     }
-
-    /**
-     *
-     * @return {@link Disposable} for the timeout operation.
-     */
-    private Disposable getShortTimeoutBetweenMessages() {
-        return Mono.delay(SHORT_TIMEOUT_BETWEEN_MESSAGES)
-            .subscribe(l -> {
-                timeoutNextMessage();
-            });
-    }
-
 
     /**
      * Completes the publisher and sets the state to timeout.
