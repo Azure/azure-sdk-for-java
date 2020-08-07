@@ -4,12 +4,12 @@
 
 import os
 import time
+import unittest
 import urllib.request as request
 import xml.etree.ElementTree as elementTree
 from itertools import takewhile
-import unittest
 
-import fileinput
+import in_place
 
 EXTERNAL_DEPENDENCIES_FILE = 'eng/versioning/external_dependencies.txt'
 SPRING_BOOT_DEPENDENCIES_FILE = \
@@ -71,17 +71,28 @@ def get_spring_boot_dependencies(spring_boot_version):
 
 
 def update_version_for_external_dependencies(dependency_dict):
-    for line in fileinput.input(EXTERNAL_DEPENDENCIES_FILE, inplace = True):
-        line = line.strip()
-        if line.startswith('#') or not line:
-            print(line)
-        else:
-            key_value = line.split(';', 1)
-            key = key_value[0]
-            value = key_value[1]
-            if key in dependency_dict:
-                value = dependency_dict[key]
-            print('{};{}'.format(key, value))
+    with in_place.InPlace(EXTERNAL_DEPENDENCIES_FILE) as file:
+        for line in file:
+            line = line.strip()
+            if line.startswith('#') or not line:
+                file.write(line)
+            else:
+                key_value = line.split(';', 1)
+                key = key_value[0]
+                value = key_value[1]
+                if key in dependency_dict:
+                    value_in_dict = dependency_dict[key]
+                    if version_bigger_than(value, value_in_dict):
+                        print('Not update version. key = {}, value = {}, value_in_dict = {}'
+                              .format(key, value, value_in_dict))
+                        file.write(line)
+                    elif version_bigger_than(value, value_in_dict):
+                        file.write('{};{}'.format(key, value))
+                    else:
+                        file.write(line)
+                else:
+                    file.write(line)
+            file.write('\n')
 
 
 def version_bigger_than(version1, version2):
@@ -92,8 +103,8 @@ def version_bigger_than(version1, version2):
     max_len = max(len_1, len_1)
     for i in range(max_len):
         if i < len_1 and i < len_2:
-            int_1 = int(''.join(takewhile(str.isdigit, v1[i])))
-            int_2 = int(''.join(takewhile(str.isdigit, v2[i])))
+            int_1 = int('0' + ''.join(takewhile(str.isdigit, v1[i])))
+            int_2 = int('0' + ''.join(takewhile(str.isdigit, v2[i])))
             if int_1 != int_2:
                 return int_1 > int_2
         elif i < len_1:
