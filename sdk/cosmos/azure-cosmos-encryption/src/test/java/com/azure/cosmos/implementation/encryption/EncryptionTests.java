@@ -590,6 +590,58 @@ public class EncryptionTests extends TestSuiteBase {
         assertThat(readWithoutDecryption.sensitive).isNull();
     }
 
+    // async write, upsert, read
+    @Test(groups = { "encryption" }, timeOut = TIMEOUT)
+    public void asyncCreateItemEncrypt_readItemDecrypt() throws Exception {
+        EncryptionItemRequestOptions requestOptions = new EncryptionItemRequestOptions();
+        EncryptionOptions encryptionOptions = new EncryptionOptions();
+        encryptionOptions.setPathsToEncrypt(ImmutableList.of("/Sensitive"));
+
+        encryptionOptions.setDataEncryptionKeyId(dekId);
+        encryptionOptions.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256_RANDOMIZED);
+        requestOptions.setEncryptionOptions(encryptionOptions);
+
+        TestDoc properties = getItem(UUID.randomUUID().toString());
+        itemContainer.createItem(
+            properties,
+            new PartitionKey(properties.pk),
+            requestOptions)
+                     .flatMap(
+                         createResponse -> {
+                             return encryptionContainer.upsertItem(
+                                 properties,
+                                 new PartitionKey(properties.pk),
+                                 requestOptions);
+                         })
+                     .flatMap(
+                         response -> {
+                             logger.info("1 on thread [{}]",
+                                 Thread.currentThread().getName());
+                             Mono<CosmosItemResponse<TestDoc>> readItem = encryptionContainer.readItem(properties.id,
+                                 new PartitionKey(properties.pk),
+                                 requestOptions, TestDoc.class);
+
+                             return readItem;
+                         })
+                     .flatMap(
+                         readItem -> {
+
+                             logger.info("2 on thread [{}]",
+                                 Thread.currentThread().getName());
+                             return itemContainer.readItem(properties.id, new PartitionKey(properties.pk), TestDoc.class);
+
+                         })
+                     .flatMap(
+                         readItem -> {
+                             logger.info("3 on thread [{}]",
+                                 Thread.currentThread().getName());
+                             return encryptionContainer.readItem(properties.id, new PartitionKey(properties.pk),
+                                 requestOptions,
+                                 TestDoc.class);
+                         }
+                     ).block();
+    }
+
     private void validateWriteResponseIsValid(TestDoc originalItem, TestDoc result) {
         assertThat(result.sensitive).isEqualTo(originalItem.sensitive);
         assertThat(result.id).isEqualTo(originalItem.id);

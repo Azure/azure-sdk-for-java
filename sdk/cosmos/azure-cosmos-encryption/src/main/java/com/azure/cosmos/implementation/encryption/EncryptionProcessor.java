@@ -15,6 +15,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -22,7 +24,14 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class EncryptionProcessor {
+    private final static Logger LOGGER = LoggerFactory.getLogger(EncryptionProcessor.class);
+
     public static Mono<byte[]> encryptAsync(byte[] payload, Encryptor encryptor, EncryptionOptions encryptionOptions) {
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Encrypting byte[] of size [{}] on thread [{}]",
+                payload == null ? null : payload.length,
+                Thread.currentThread().getName());
+        }
 
         ObjectNode itemJObj = Utils.parse(payload, ObjectNode.class);
 
@@ -84,6 +93,12 @@ public class EncryptionProcessor {
     }
 
     public static Mono<byte[]> decryptAsync(byte[] input, Encryptor encryptor) {
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Decrypting byte[] of size [{}] on thread [{}]",
+                input == null ? null : input.length,
+                Thread.currentThread().getName());
+        }
+
         ObjectNode itemJObj = Utils.parse(input, ObjectNode.class);
         Mono<ObjectNode> itemJObjMono = decryptAsync(itemJObj, encryptor);
         return itemJObjMono.flatMap(
@@ -146,7 +161,7 @@ public class EncryptionProcessor {
         );
     }
 
-    public static class SensitiveDataTransformer {
+    private static class SensitiveDataTransformer {
         public <T> ObjectNode toObjectNode(byte[] plainText) {
             if (Utils.isEmpty(plainText)) {
                 return null;
