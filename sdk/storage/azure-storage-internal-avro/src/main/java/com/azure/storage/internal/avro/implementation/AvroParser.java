@@ -146,7 +146,7 @@ public class AvroParser {
      * @return A reactive stream of Objects found in this buffer.
      */
     public Flux<AvroObject> parse(ByteBuffer buffer) {
-        System.out.println("AvroParser.parse data " + buffer.remaining())
+        System.out.println("AvroParser.parse data " + buffer.remaining());
         /* Write a deep-copied buffer to the state's cache.
            As needed, bytes will be consumed from the cache by schemas.
            The bytes of a schema could be spread across any number of ByteBuffers in the stream, so we cache
