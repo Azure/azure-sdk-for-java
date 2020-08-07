@@ -52,5 +52,7 @@ extends:
         groupId: com.microsoft.azure
       - name: spring-integration-azure-test
         groupId: com.microsoft.azure
+      - name: azure-storage-file-share
+        groupId: com.azure
       - name: azure-storage-queue
         groupId: com.azure
