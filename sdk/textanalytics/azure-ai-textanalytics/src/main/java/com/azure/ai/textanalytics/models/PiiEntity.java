@@ -21,7 +21,7 @@ public final class PiiEntity {
     private final EntityCategory category;
 
     /*
-     * PiiEntity sub category, such as Age/Year/TimeRange etc
+     * PiiEntity sub category, such as Medical/Stock exchange/Sports etc
      */
     private final String subcategory;
 
@@ -45,7 +45,7 @@ public final class PiiEntity {
      *
      * @param text The entity text as appears in the request.
      * @param category The entity category, such as Person/Location/Org/SSN etc.
-     * @param subcategory The entity subcategory, such as Age/Year/TimeRange etc.
+     * @param subcategory The entity subcategory, such as Medical/Stock exchange/Sports etc.
      * @param offset The start position for the entity text
      * @param length The length for the entity text
      * @param confidenceScore A confidence score between 0 and 1 of the extracted entity.
@@ -79,7 +79,7 @@ public final class PiiEntity {
     }
 
     /**
-     * Get the subcategory property: Categorized entity sub category, such as Age/Year/TimeRange etc.
+     * Get the subcategory property: Categorized entity sub category, such as Medical/Stock exchange/Sports etc.
      *
      * @return The subcategory value.
      */

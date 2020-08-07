@@ -11,7 +11,6 @@ import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.util.Configuration;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Sample demonstrates how to recognize the PII(Personally Identifiable Information) entities of documents.
+ * Sample demonstrates how to recognize the Personally Identifiable Information(PII) entities of documents.
  */
 public class RecognizePiiEntitiesBatchDocumentsAsync {
     /**
@@ -31,8 +30,8 @@ public class RecognizePiiEntitiesBatchDocumentsAsync {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_API_KEY")))
-            .endpoint(Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_ENDPOINT"))
+            .credential(new AzureKeyCredential("{key}"))
+            .endpoint("{endpoint}")
             .buildAsyncClient();
 
         // The texts that need be analyzed.
@@ -69,8 +68,8 @@ public class RecognizePiiEntitiesBatchDocumentsAsync {
                     } else {
                         // Valid document
                         entitiesResult.getEntities().forEach(entity -> System.out.printf(
-                            "Recognized Personally Identifiable Information entity: %s, entity category: %s, entity subcategory: %s, confidence score: %f.%n",
-                            entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore()));
+                            "Recognized Personally Identifiable Information entity: %s, entity category: %s, entity subcategory: %s, offset: %s, length: %s, confidence score: %f.%n",
+                            entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getOffset(), entity.getLength(), entity.getConfidenceScore()));
                     }
                 }
             },

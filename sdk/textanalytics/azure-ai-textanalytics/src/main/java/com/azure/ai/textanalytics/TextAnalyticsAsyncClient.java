@@ -372,26 +372,25 @@ public final class TextAnalyticsAsyncClient {
     // PII Entity
 
     /**
-     * Returns a list of general personally identifiable information entities in the provided document.
+     * Returns a list of Personally Identifiable Information(PII) entities in the provided document.
      *
-     * For a list of supported entity types, check: <a href="https://aka.ms/taner">this</a>.
-     * For a list of enabled languages, check: <a href="https://aka.ms/talangs">this</a>.
-     * This method will use the default language that sets up in
-     * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
-     * the language.
+     * For a list of supported entity types, check: <a href="https://aka.ms/tanerpii">this</a>.
+     * For a list of enabled languages, check: <a href="https://aka.ms/talangs">this</a>. This method will use the
+     * default language that sets up in {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is
+     * specified, service will use 'en' as the language.
      *
      * <p><strong>Code sample</strong></p>
-     * <p>Recognize personally identifiable information entities in a document. Subscribes to the call asynchronously
-     * and prints out the recognized entity details when a response is received.</p>
+     * <p>Recognize the PII entities details in a document.
+     * Subscribes to the call asynchronously and prints out the recognized entity details when a response is
+     * received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#string}
      *
-     * @param document The document to recognize personally identifiable information entities for.
+     * @param document The document to recognize PII entities details for.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      *
-     * @return A {@link Mono} contains a
-     * {@link PiiEntityCollection recognized personally identifiable information entities collection}.
+     * @return A {@link Mono} contains a {@link PiiEntityCollection recognized PII entities collection}.
      *
      * @throws NullPointerException if {@code document} is null.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
@@ -402,25 +401,24 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Returns a list of general personally identifiable information entities in the provided document.
+     * Returns a list of Personally Identifiable Information(PII) entities in the provided document
+     * with provided language code.
      *
-     * For a list of supported entity types, check: <a href="https://aka.ms/taner">this</a>.
+     * For a list of supported entity types, check: <a href="https://aka.ms/tanerpii">this</a>.
      * For a list of enabled languages, check: <a href="https://aka.ms/talangs">this</a>.
      *
      * <p><strong>Code sample</strong></p>
-     * <p>Recognize personally identifiable information entities in a document with provided language code. Subscribes
-     * to the call asynchronously and prints out the entity details when a response is received.</p>
+     * <p>Recognize the PII entities details in a document with provided language code.
+     * Subscribes to the call asynchronously and prints out the entity details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#string-string}
      *
-     * @param document the text to recognize personally identifiable information entities for.
+     * @param document the text to recognize PII entities details for.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
-     * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as
-     * default.
+     * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
      *
-     * @return A {@link Mono} contains a
-     * {@link PiiEntityCollection recognized personally identifiable information entities collection}.
+     * @return A {@link Mono} contains a {@link PiiEntityCollection recognized PII entities collection}.
      *
      * @throws NullPointerException if {@code document} is null.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
@@ -431,26 +429,26 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Returns a list of general personally identifiable information entities for the provided list of documents with
+     * Returns a list of Personally Identifiable Information(PII) entities for the provided list of documents with
      * the provided language code and request options.
      *
      * <p><strong>Code sample</strong></p>
-     * <p>Recognize personally identifiable information entities in a document with the provided language code.
+     * <p>Recognize Personally Identifiable Information entities in a document with the provided language code.
      * Subscribes to the call asynchronously and prints out the entity details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesBatch#Iterable-String-TextAnalyticsRequestOptions}
      *
-     * @param documents A list of documents to recognize personally identifiable information entities for.
+     * @param documents A list of documents to recognize PII entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
-     * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as
-     * default.
+     * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
      * @return A {@link Mono} contains a {@link RecognizePiiEntitiesResultCollection}.
      *
      * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RecognizePiiEntitiesResultCollection> recognizePiiEntitiesBatch(
@@ -469,17 +467,18 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Returns a list of general personally identifiable information entities for the provided list of
+     * Returns a list of Personally Identifiable Information entities for the provided list of
      * {@link TextDocumentInput document} with provided request options.
      *
      * <p><strong>Code sample</strong></p>
-     * <p>Recognize personally identifiable information entities in a list of {@link TextDocumentInput document}.
+     * <p>Recognize the PII entities details with http response in a list of {@link TextDocumentInput document}
+     * with provided request options.
      * Subscribes to the call asynchronously and prints out the entity details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesBatch#Iterable-TextAnalyticsRequestOptions}
      *
-     * @param documents A list of {@link TextDocumentInput documents} to recognize personally identifiable information
-     * entities for. For text length limits, maximum batch size, and supported text encoding, see
+     * @param documents A list of {@link TextDocumentInput documents} to recognize PII entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
@@ -487,6 +486,7 @@ public final class TextAnalyticsAsyncClient {
      * @return A {@link Mono} contains a {@link Response} which contains a {@link RecognizePiiEntitiesResultCollection}.
      *
      * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RecognizePiiEntitiesResultCollection>> recognizePiiEntitiesBatchWithResponse(
@@ -494,8 +494,7 @@ public final class TextAnalyticsAsyncClient {
         return recognizePiiEntityAsyncClient.recognizePiiEntitiesBatch(documents, options);
     }
 
-
-    // Linked Entity
+    // Linked Entities
 
     /**
      * Returns a list of recognized entities with links to a well-known knowledge base for the provided document. See

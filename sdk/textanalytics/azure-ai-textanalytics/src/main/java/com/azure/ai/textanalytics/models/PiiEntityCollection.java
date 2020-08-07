@@ -17,7 +17,7 @@ public final class PiiEntityCollection extends IterableStream<PiiEntity> {
     /**
      * Creates a {@link PiiEntityCollection} model that describes a entities collection including warnings.
      *
-     * @param entities An {@link IterableStream} of {@link PiiEntity personally identifiable information entities}.
+     * @param entities An {@link IterableStream} of {@link PiiEntity Personally Identifiable Information entities}.
      * @param warnings An {@link IterableStream} of {@link TextAnalyticsWarning warnings}.
      */
     public PiiEntityCollection(IterableStream<PiiEntity> entities, IterableStream<TextAnalyticsWarning> warnings) {

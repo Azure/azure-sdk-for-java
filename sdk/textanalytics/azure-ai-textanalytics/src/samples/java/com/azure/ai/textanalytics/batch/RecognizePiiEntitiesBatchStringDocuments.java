@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Sample demonstrates how to recognize the PII(Personally Identifiable Information) entities of {@code String} documents.
+ * Sample demonstrates how to recognize the Personally Identifiable Information(PII) entities of {@code String} documents.
  */
 public class RecognizePiiEntitiesBatchStringDocuments {
     /**
@@ -63,8 +63,8 @@ public class RecognizePiiEntitiesBatchStringDocuments {
             } else {
                 // Valid document
                 entitiesResult.getEntities().forEach(entity -> System.out.printf(
-                    "Recognized Personally Identifiable Information entity: %s, entity category: %s, entity subcategory: %s, confidence score: %f.%n",
-                    entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore()));
+                    "Recognized Personally Identifiable Information entity: %s, entity category: %s, entity subcategory: %s, offset: %s, length: %s, confidence score: %f.%n",
+                    entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getOffset(), entity.getLength(), entity.getConfidenceScore()));
             }
         }
     }

@@ -1,5 +1,5 @@
 # Azure Text Analytics client library for Java
-Text Analytics is a cloud-based service provides advanced natural language processing over raw text, 
+Text Analytics is a cloud-based service that provides advanced natural language processing over raw text, 
 and includes six main functions:
 
 - Sentiment Analysis
@@ -187,7 +187,7 @@ The following sections provide several code snippets covering some of the most c
 * [Detect Language](#detect-language "Detect language")
 * [Extract Key Phrases](#extract-key-phrases "Extract key phrases")
 * [Recognize Entities](#recognize-entities "Recognize entities")
-* [Recognize Personally Identifiable Information Entities](#recognize-pii-entities "Recognize personally identifiable information entities")
+* [Recognize Personally Identifiable Information Entities](#recognize-personally-identifiable-information-entities "Recognize Personally Identifiable Information entities")
 * [Recognize Linked Entities](#recognize-linked-entities "Recognize linked entities")
 
 ### Text Analytics Client
@@ -264,20 +264,21 @@ textAnalyticsClient.recognizeEntities(document).forEach(entity ->
 For samples on using the production recommended option `RecognizeEntitiesBatch` see [here][recognize_entities_sample].
 Please refer to the service documentation for a conceptual discussion of [named entity recognition][named_entity_recognition].
 
-### Recognize personally identifiable information entities
-Run a predictive model to identify a collection of personally identifiable information entities in the passed-in 
-document or batch of documents and categorize those entities into categories such as person, location, or 
-organization.  For more information on available categories, see [Text Analytics Named Entity Categories][named_entities_categories].
+### Recognize Personally Identifiable Information entities
+Run a predictive model to identify a collection of Personally Identifiable Information(PII) entities in the passed-in 
+document. It recognizes and categorizes PII entities in its input text, such as
+Social Security Numbers, bank account information, credit card numbers, and more. This endpoint is only available for 
+v3.1-preview.1 and up.
 
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L158-L161 -->
 ```java
 String document = "My SSN is 555-55-5555";
-textAnalyticsClient.recognizePiiEntities(document).forEach(piiEntity ->
-    System.out.printf("Recognized Personally Identifiable Information entity: %s, category: %s, subCategory: %s, score: %f.%n",
-        piiEntity.getText(), piiEntity.getCategory(), piiEntity.getSubcategory(), piiEntity.getConfidenceScore()));
+textAnalyticsClient.recognizePiiEntities(document).forEach(entity -> System.out.printf(
+    "Recognized Personally Identifiable Information entity: %s, entity category: %s, entity subcategory: %s, offset: %s, length: %s, confidence score: %f.%n",
+    entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getOffset(), entity.getLength(), entity.getConfidenceScore()));
 ```
 For samples on using the production recommended option `RecognizePiiEntitiesBatch` see [here][recognize_pii_entities_sample].
-Please refer to the service documentation for a conceptual discussion of [PII entity recognition][named_entity_recognition].
+Please refer to the service documentation for [supported PII entity types][pii_entity_recognition].
 
 ### Recognize linked entities
 Run a predictive model to identify a collection of entities found in the passed-in document or batch of documents, 
@@ -374,6 +375,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [named_entity_recognition]: https://docs.microsoft.com/azure/cognitive-services/text-analytics/how-tos/text-analytics-how-to-entity-linking
 [named_entity_recognition_types]: https://docs.microsoft.com/azure/cognitive-services/text-analytics/named-entity-types?tabs=personal
 [named_entities_categories]: https://docs.microsoft.com/azure/cognitive-services/Text-Analytics/named-entity-types
+[pii_entity_recognition]: https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/named-entity-types?tabs=personal
 [package]: https://mvnrepository.com/artifact/com.azure/azure-ai-textanalytics
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [product_documentation]: https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview

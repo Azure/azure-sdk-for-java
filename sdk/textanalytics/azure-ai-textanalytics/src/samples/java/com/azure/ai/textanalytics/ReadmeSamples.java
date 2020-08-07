@@ -156,8 +156,8 @@ public class ReadmeSamples {
      */
     public void recognizePiiEntity() {
         String document = "My SSN is 555-55-5555";
-        textAnalyticsClient.recognizePiiEntities(document).forEach(piiEntity ->
-            System.out.printf("Recognized Personally Identifiable Information entity: %s, category: %s, subCategory: %s, score: %f.%n",
-                piiEntity.getText(), piiEntity.getCategory(), piiEntity.getSubcategory(), piiEntity.getConfidenceScore()));
+        textAnalyticsClient.recognizePiiEntities(document).forEach(entity -> System.out.printf(
+            "Recognized Personally Identifiable Information entity: %s, entity category: %s, entity subcategory: %s, offset: %s, length: %s, confidence score: %f.%n",
+            entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getOffset(), entity.getLength(), entity.getConfidenceScore()));
     }
 }

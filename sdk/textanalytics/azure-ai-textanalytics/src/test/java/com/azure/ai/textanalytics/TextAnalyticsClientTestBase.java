@@ -141,8 +141,9 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     @Test
     abstract void recognizePiiEntitiesTooManyDocuments(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
-    @Test
-    abstract void recognizePiiEntitiesWithDomain(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    //TODO: add domain test back when domain feature is available
+//    @Test
+//    abstract void recognizePiiEntitiesWithDomain(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     // Linked Entities
     @Test
@@ -338,10 +339,10 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             Arrays.asList(documentInput, documentInput, documentInput, documentInput, documentInput, documentInput));
     }
 
-    void recognizePiiEntitiesWithDomainRunner(BiConsumer<List<String>, TextAnalyticsRequestOptions> testRunner) {
-        testRunner.accept(Arrays.asList(PII_ENTITY_INPUTS.get(0)),
-            new TextAnalyticsRequestOptions().setIncludeStatistics(true).setDomain("phi"));
-    }
+//    void recognizePiiEntitiesWithDomainRunner(BiConsumer<List<String>, TextAnalyticsRequestOptions> testRunner) {
+//        testRunner.accept(Arrays.asList(PII_ENTITY_INPUTS.get(0)),
+//            new TextAnalyticsRequestOptions().setIncludeStatistics(true).setDomain("phi"));
+//    }
 
     // Linked Entity runner
     void recognizeBatchStringLinkedEntitiesShowStatsRunner(

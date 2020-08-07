@@ -12,7 +12,6 @@ import com.azure.core.annotation.Fluent;
 public final class TextAnalyticsRequestOptions {
     private String modelVersion;
     private boolean includeStatistics;
-    private String domain;
 
     /**
      * Gets the version of the text analytics model used by this operation.
@@ -53,26 +52,6 @@ public final class TextAnalyticsRequestOptions {
      */
     public TextAnalyticsRequestOptions setIncludeStatistics(boolean includeStatistics) {
         this.includeStatistics = includeStatistics;
-        return this;
-    }
-
-    /**
-     * Get the value of {@code domain}.
-     *
-     * @return the value of domain.
-     */
-    public String getDomain() {
-        return domain;
-    }
-
-    /**
-     * Set the value of {@code domain}.
-     *
-     * @param domain (Optional) if set to 'PHI', response will contain only PHI entities.
-     * @return the {@link TextAnalyticsRequestOptions} object itself.
-     */
-    public TextAnalyticsRequestOptions setDomain(String domain) {
-        this.domain = domain;
         return this;
     }
 }

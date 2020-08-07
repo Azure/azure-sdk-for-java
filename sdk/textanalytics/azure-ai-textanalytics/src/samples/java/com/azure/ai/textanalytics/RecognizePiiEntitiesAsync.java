@@ -4,7 +4,6 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.util.Configuration;
 
 import java.util.concurrent.TimeUnit;
 
@@ -20,8 +19,8 @@ public class RecognizePiiEntitiesAsync {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_API_KEY")))
-            .endpoint(Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_ENDPOINT"))
+            .credential(new AzureKeyCredential("{key}"))
+            .endpoint("{endpoint}")
             .buildAsyncClient();
 
         // The document that needs be analyzed.

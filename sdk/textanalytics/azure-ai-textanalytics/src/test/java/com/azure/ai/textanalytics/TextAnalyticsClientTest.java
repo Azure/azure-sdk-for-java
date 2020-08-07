@@ -36,7 +36,6 @@ import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchDetectedLangu
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchKeyPhrases;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchLinkedEntities;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchPiiEntities;
-import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchPiiEntitiesWithDomainSpecified;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchTextSentiment;
 import static com.azure.ai.textanalytics.TestUtils.getPiiEntitiesList1;
 import static com.azure.ai.textanalytics.models.WarningCode.LONG_WORDS_IN_DOCUMENT;
@@ -404,14 +403,14 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         });
     }
 
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void recognizePiiEntitiesWithDomain(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsClient(httpClient, serviceVersion);
-        recognizePiiEntitiesWithDomainRunner((inputs, options) ->
-            validatePiiEntitiesResultCollection(true, getExpectedBatchPiiEntitiesWithDomainSpecified(),
-                client.recognizePiiEntitiesBatch(inputs, null, options)));
-    }
+//    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+//    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+//    public void recognizePiiEntitiesWithDomain(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+//        client = getTextAnalyticsClient(httpClient, serviceVersion);
+//        recognizePiiEntitiesWithDomainRunner((inputs, options) ->
+//            validatePiiEntitiesResultCollection(true, getExpectedBatchPiiEntitiesWithDomainSpecified(),
+//                client.recognizePiiEntitiesBatch(inputs, null, options)));
+//    }
 
     // Recognize linked entity
 
