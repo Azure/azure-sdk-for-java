@@ -12,24 +12,29 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.MemberNameConverterProviders;
 import com.azure.search.documents.SearchAsyncClient;
 import com.azure.search.documents.SearchClientBuilder;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.converters.AnalyzeRequestConverter;
 import com.azure.search.documents.implementation.converters.SearchIndexConverter;
 import com.azure.search.documents.implementation.converters.SynonymMapConverter;
+import com.azure.search.documents.implementation.util.FieldBuilder;
 import com.azure.search.documents.implementation.util.MappingUtils;
 import com.azure.search.documents.indexes.implementation.SearchServiceClientImpl;
 import com.azure.search.documents.indexes.implementation.SearchServiceClientImplBuilder;
 import com.azure.search.documents.indexes.implementation.models.ListSynonymMapsResult;
 import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
+import com.azure.search.documents.indexes.models.FieldBuilderOptions;
+import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexStatistics;
 import com.azure.search.documents.indexes.models.SearchServiceStatistics;
 import com.azure.search.documents.indexes.models.SynonymMap;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -38,7 +43,10 @@ import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
- * Asynchronous Client to manage and query indexes, as well as Synonym Map, on a Cognitive Search service
+ * This class provides a client that contains the operations for creating, getting, listing, updating, or deleting
+ * indexes or synonym map and analyzing text in an Azure Cognitive Search service.
+ *
+ * @see SearchIndexClientBuilder
  */
 @ServiceClient(builder = SearchIndexClientBuilder.class, isAsync = true)
 public final class SearchIndexAsyncClient {
@@ -75,7 +83,7 @@ public final class SearchIndexAsyncClient {
 
         this.restClient = new SearchServiceClientImplBuilder()
             .endpoint(endpoint)
-          //  .apiVersion(serviceVersion.getVersion())
+            //  .apiVersion(serviceVersion.getVersion())
             .pipeline(httpPipeline)
             .buildClient();
     }
@@ -308,8 +316,7 @@ public final class SearchIndexAsyncClient {
     PagedFlux<String> listIndexNames(Context context) {
         try {
             return new PagedFlux<>(() -> this.listIndexesWithResponse("name", context)
-                .map(MappingUtils::mappingPagingSearchIndexNames)
-            );
+                .map(MappingUtils::mappingPagingSearchIndexNames));
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
@@ -371,8 +378,7 @@ public final class SearchIndexAsyncClient {
             String ifMatch = onlyIfUnchanged ? index.getETag() : null;
             return restClient.getIndexes()
                 .createOrUpdateWithResponseAsync(index.getName(), SearchIndexConverter.map(index),
-                    allowIndexDowntime, ifMatch, null,
-                    null, context)
+                    allowIndexDowntime, ifMatch, null, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalSearchIndex);
         } catch (RuntimeException ex) {
@@ -421,8 +427,7 @@ public final class SearchIndexAsyncClient {
     Mono<Response<Void>> deleteIndexWithResponse(String indexName, String etag, Context context) {
         try {
             return restClient.getIndexes()
-                .deleteWithResponseAsync(indexName, etag, null,
-                    null, context)
+                .deleteWithResponseAsync(indexName, etag, null, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
@@ -465,8 +470,7 @@ public final class SearchIndexAsyncClient {
     private Mono<PagedResponse<AnalyzedTokenInfo>> analyzeTextWithResponse(String indexName,
         AnalyzeTextOptions analyzeTextOptions, Context context) {
         return restClient.getIndexes()
-            .analyzeWithResponseAsync(indexName, AnalyzeRequestConverter.map(analyzeTextOptions),
-                null, context)
+            .analyzeWithResponseAsync(indexName, AnalyzeRequestConverter.map(analyzeTextOptions), null, context)
             .onErrorMap(MappingUtils::exceptionMapper)
             .map(MappingUtils::mappingTokenInfo);
     }
@@ -510,8 +514,7 @@ public final class SearchIndexAsyncClient {
         Objects.requireNonNull(synonymMap, "'SynonymMap' cannot be null.");
         try {
             return restClient.getSynonymMaps()
-                .createWithResponseAsync(SynonymMapConverter.map(synonymMap),
-                    null, context)
+                .createWithResponseAsync(SynonymMapConverter.map(synonymMap), null, context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalSynonymMap);
         } catch (RuntimeException ex) {
@@ -553,8 +556,7 @@ public final class SearchIndexAsyncClient {
         return withContext(context -> getSynonymMapWithResponse(synonymMapName, context));
     }
 
-    Mono<Response<SynonymMap>> getSynonymMapWithResponse(String synonymMapName,
-        Context context) {
+    Mono<Response<SynonymMap>> getSynonymMapWithResponse(String synonymMapName, Context context) {
         try {
             return restClient.getSynonymMaps()
                 .getWithResponseAsync(synonymMapName, null, context)
@@ -627,8 +629,7 @@ public final class SearchIndexAsyncClient {
         }
     }
 
-    private Mono<Response<ListSynonymMapsResult>> listSynonymMapsWithResponse(String select,
-        Context context) {
+    private Mono<Response<ListSynonymMapsResult>> listSynonymMapsWithResponse(String select, Context context) {
         return restClient.getSynonymMaps()
             .listWithResponseAsync(select, null, context)
             .onErrorMap(MappingUtils::exceptionMapper);
@@ -679,9 +680,7 @@ public final class SearchIndexAsyncClient {
         try {
             return restClient.getSynonymMaps()
                 .createOrUpdateWithResponseAsync(synonymMap.getName(), SynonymMapConverter.map(synonymMap),
-                    ifMatch, null,
-                    null,
-                    context)
+                    ifMatch, null, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalSynonymMap);
         } catch (RuntimeException ex) {
@@ -725,16 +724,28 @@ public final class SearchIndexAsyncClient {
     public Mono<Response<Void>> deleteSynonymMapWithResponse(SynonymMap synonymMap, boolean onlyIfUnchanged) {
         Objects.requireNonNull(synonymMap, "'SynonymMap' cannot be null");
         String etag = onlyIfUnchanged ? synonymMap.getETag() : null;
-        return withContext(context ->
-            deleteSynonymMapWithResponse(synonymMap.getName(), etag, context));
+        return withContext(context -> deleteSynonymMapWithResponse(synonymMap.getName(), etag, context));
+    }
+
+    /**
+     * Helper method to build list of {@link SearchField}.
+     *
+     * @param model The model class where {@link SearchField} converts from.
+     * @param options The option property bag.
+     * @return The list {@link SearchField} for search index schema.
+     */
+    public static List<SearchField> buildSearchFields(Class<?> model, FieldBuilderOptions options) {
+        if (options == null || options.getConverter() == null) {
+            return FieldBuilder.build(model, MemberNameConverterProviders.createInstance());
+        }
+        return FieldBuilder.build(model, options.getConverter());
     }
 
     Mono<Response<Void>> deleteSynonymMapWithResponse(String synonymMapName, String etag,
         Context context) {
         try {
             return restClient.getSynonymMaps()
-                .deleteWithResponseAsync(synonymMapName, etag, null,
-                    null, context)
+                .deleteWithResponseAsync(synonymMapName, etag, null, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(Function.identity());
         } catch (RuntimeException ex) {

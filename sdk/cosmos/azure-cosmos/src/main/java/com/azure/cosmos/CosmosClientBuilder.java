@@ -22,7 +22,7 @@ import java.util.List;
  * Though consistencyLevel is not mandatory, but we strongly suggest to pay attention to this API when building client.
  * By default, account consistency level is used if none is provided.
  * <p>
- * By default, direct connection mode is used if none specified. 
+ * By default, direct connection mode is used if none specified.
  * <pre>
  *     Building Cosmos Async Client minimal APIs (without any customized configurations)
  * {@code
@@ -672,6 +672,7 @@ public class CosmosClientBuilder {
                 //   as gateway connection config will overwrite direct connection config settings
                 this.connectionPolicy.setRequestTimeout(this.gatewayConnectionConfig.getRequestTimeout());
                 this.connectionPolicy.setIdleHttpConnectionTimeout(this.gatewayConnectionConfig.getIdleConnectionTimeout());
+                this.connectionPolicy.setProxy(this.gatewayConnectionConfig.getProxy());
             }
         } else if (gatewayConnectionConfig != null) {
             this.connectionPolicy = new ConnectionPolicy(gatewayConnectionConfig);

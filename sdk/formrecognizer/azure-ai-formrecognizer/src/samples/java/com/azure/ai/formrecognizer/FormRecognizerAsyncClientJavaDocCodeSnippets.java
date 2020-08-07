@@ -11,6 +11,7 @@ import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.util.polling.AsyncPollResponse;
 import reactor.core.publisher.Flux;
 
 import java.io.ByteArrayInputStream;
@@ -70,17 +71,17 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         String formUrl = "{form_url}";
         String modelId = "{custom_trained_model_id}";
 
-        formRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl(formUrl, modelId).flatMap(
-            recognizePollingOperation ->
-                // if training polling operation completed, retrieve the final result.
-                recognizePollingOperation.getFinalResult()).subscribe(recognizedForms ->
-                    recognizedForms.forEach(recognizedForm -> {
-                        recognizedForm.getFields().forEach((fieldText, fieldValue) -> {
-                            System.out.printf("Field text: %s%n", fieldText);
-                            System.out.printf("Field value: %s%n", fieldValue.getValue());
-                            System.out.printf("Confidence score: %.2f%n", fieldValue.getConfidence());
-                        });
-                    }));
+        // if training polling operation completed, retrieve the final result.
+        formRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl(modelId, formUrl)
+            // if training polling operation completed, retrieve the final result.
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .flatMap(Flux::fromIterable)
+            .subscribe(recognizedForm -> recognizedForm.getFields()
+                .forEach((fieldText, formField) -> {
+                    System.out.printf("Field text: %s%n", fieldText);
+                    System.out.printf("Field value data text: %s%n", formField.getValueData().getText());
+                    System.out.printf("Confidence score: %.2f%n", formField.getConfidence());
+                }));
         // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl#string-string
     }
 
@@ -92,22 +93,21 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl#string-string-recognizeOptions
         String formUrl = "{formUrl}";
         String modelId = "{model_id}";
-        boolean includeTextContent = true;
+        boolean includeFieldElements = true;
 
-        formRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl(formUrl, modelId,
+        formRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl(modelId, formUrl,
             new RecognizeOptions()
-                .setIncludeFieldElements(includeTextContent)
+                .setFieldElementsIncluded(includeFieldElements)
                 .setPollInterval(Duration.ofSeconds(10)))
-            .flatMap(recognizePollingOperation ->
-                // if training polling operation completed, retrieve the final result.
-                recognizePollingOperation.getFinalResult()).subscribe(recognizedForms ->
-                    recognizedForms.forEach(recognizedForm -> {
-                        recognizedForm.getFields().forEach((fieldText, fieldValue) -> {
-                            System.out.printf("Field text: %s%n", fieldText);
-                            System.out.printf("Field value: %s%n", fieldValue.getValue());
-                            System.out.printf("Confidence score: %.2f%n", fieldValue.getConfidence());
-                        });
-                    }));
+            // if training polling operation completed, retrieve the final result.
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .flatMap(Flux::fromIterable)
+            .subscribe(recognizedForm -> recognizedForm.getFields()
+                .forEach((fieldText, formField) -> {
+                    System.out.printf("Field text: %s%n", fieldText);
+                    System.out.printf("Field value data text: %s%n", formField.getValueData().getText());
+                    System.out.printf("Confidence score: %.2f%n", formField.getConfidence());
+                }));
         // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl#string-string-recognizeOptions
     }
 
@@ -117,57 +117,57 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public void beginRecognizeCustomForms() throws IOException {
-        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#Flux-long-string
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#string-Flux-long
         File form = new File("{local/file_path/fileName.jpg}");
         String modelId = "{custom_trained_model_id}";
         // Utility method to convert input stream to Byte buffer
         Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(form.toPath())));
 
-        formRecognizerAsyncClient.beginRecognizeCustomForms(buffer, form.length(), modelId)
-            .flatMap(recognizePollingOperation ->
-                // if training polling operation completed, retrieve the final result.
-                recognizePollingOperation.getFinalResult()).subscribe(recognizedForms ->
-                    recognizedForms.forEach(recognizedForm -> {
-                        recognizedForm.getFields().forEach((fieldText, fieldValue) -> {
-                            System.out.printf("Field text: %s%n", fieldText);
-                            System.out.printf("Field value: %s%n", fieldValue.getValue());
-                            System.out.printf("Confidence score: %.2f%n", fieldValue.getConfidence());
-                        });
-                    }));
-        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#Flux-long-string
+        // if training polling operation completed, retrieve the final result.
+        formRecognizerAsyncClient.beginRecognizeCustomForms(modelId, buffer, form.length())
+            // if training polling operation completed, retrieve the final result.
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .flatMap(Flux::fromIterable)
+            .subscribe(recognizedForm -> recognizedForm.getFields()
+                .forEach((fieldText, formField) -> {
+                    System.out.printf("Field text: %s%n", fieldText);
+                    System.out.printf("Field value data text: %s%n", formField.getValueData().getText());
+                    System.out.printf("Confidence score: %.2f%n", formField.getConfidence());
+                }));
+        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#string-Flux-long
     }
 
     /**
      * Code snippet for
-     * {@link FormRecognizerAsyncClient#beginRecognizeCustomForms(Flux, long, String, RecognizeOptions)}
+     * {@link FormRecognizerAsyncClient#beginRecognizeCustomForms(String, Flux, long, RecognizeOptions)}
      * with options
      *
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public void beginRecognizeCustomFormsWithOptions() throws IOException {
-        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#Flux-long-string-recognizeOptions
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#string-Flux-long-recognizeOptions
         File form = new File("{local/file_path/fileName.jpg}");
         String modelId = "{custom_trained_model_id}";
         boolean includeFieldElements = true;
         // Utility method to convert input stream to Byte buffer
         Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(form.toPath())));
 
-        formRecognizerAsyncClient.beginRecognizeCustomForms(buffer, form.length(), modelId,
+        // if training polling operation completed, retrieve the final result.
+        formRecognizerAsyncClient.beginRecognizeCustomForms(modelId, buffer, form.length(),
             new RecognizeOptions()
                 .setContentType(FormContentType.IMAGE_JPEG)
-                .setIncludeFieldElements(includeFieldElements)
+                .setFieldElementsIncluded(includeFieldElements)
                 .setPollInterval(Duration.ofSeconds(5)))
-            .flatMap(recognizePollingOperation ->
-                // if training polling operation completed, retrieve the final result.
-                recognizePollingOperation.getFinalResult()).subscribe(recognizedForms ->
-                    recognizedForms.forEach(recognizedForm -> {
-                        recognizedForm.getFields().forEach((fieldText, fieldValue) -> {
-                            System.out.printf("Field text: %s%n", fieldText);
-                            System.out.printf("Field value: %s%n", fieldValue.getValue());
-                            System.out.printf("Confidence score: %.2f%n", fieldValue.getConfidence());
-                        });
-                    }));
-        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#Flux-long-string-recognizeOptions
+            // if training polling operation completed, retrieve the final result.
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .flatMap(Flux::fromIterable)
+            .subscribe(recognizedForm -> recognizedForm.getFields()
+                .forEach((fieldName, formField) -> {
+                    System.out.printf("Field text: %s%n", fieldName);
+                    System.out.printf("Field value data text: %s%n", formField.getValueData().getText());
+                    System.out.printf("Confidence score: %.2f%n", formField.getConfidence());
+                }));
+        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#string-Flux-long-recognizeOptions
     }
 
     // Recognize Content
@@ -178,18 +178,19 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
     public void beginRecognizeContentFromUrl() {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContentFromUrl#string
         String formUrl = "{formUrl}";
-        formRecognizerAsyncClient.beginRecognizeContentFromUrl(formUrl).flatMap(
-            recognizePollingOperation ->
-                recognizePollingOperation.getFinalResult()).subscribe(layoutPageResults ->
-                    layoutPageResults.forEach(recognizedForm -> {
-                        System.out.printf("Page Angle: %s%n", recognizedForm.getTextAngle());
-                        System.out.printf("Page Dimension unit: %s%n", recognizedForm.getUnit());
-                        // Table information
-                        System.out.println("Recognized Tables: ");
-                        recognizedForm.getTables().forEach(formTable ->
-                            formTable.getCells().forEach(recognizedTableCell ->
-                                System.out.printf("%s ", recognizedTableCell.getText())));
-                    }));
+        formRecognizerAsyncClient.beginRecognizeContentFromUrl(formUrl)
+            // if training polling operation completed, retrieve the final result.
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .flatMap(Flux::fromIterable)
+            .subscribe(formPage -> {
+                System.out.printf("Page Angle: %s%n", formPage.getTextAngle());
+                System.out.printf("Page Dimension unit: %s%n", formPage.getUnit());
+                // Table information
+                System.out.println("Recognized Tables: ");
+                formPage.getTables().forEach(formTable ->
+                    formTable.getCells().forEach(recognizedTableCell ->
+                        System.out.printf("%s ", recognizedTableCell.getText())));
+            });
         // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContentFromUrl#string
     }
 
@@ -200,21 +201,20 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
     public void beginRecognizeContentFromUrlWithOptions() {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContentFromUrl#string-recognizeOptions
         String formUrl = "{formUrl}";
+        // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeContentFromUrl(formUrl,
             new RecognizeOptions().setPollInterval(Duration.ofSeconds(5)))
-            .flatMap(recognizePollingOperation ->
-                // if training polling operation completed, retrieve the final result.
-                recognizePollingOperation.getFinalResult())
-            .subscribe(contentPageResult ->
-                contentPageResult.forEach(recognizedForm -> {
-                    System.out.printf("Page Angle: %s%n", recognizedForm.getTextAngle());
-                    System.out.printf("Page Dimension unit: %s%n", recognizedForm.getUnit());
-                    // Table information
-                    System.out.println("Recognized Tables: ");
-                    recognizedForm.getTables().forEach(formTable ->
-                        formTable.getCells().forEach(recognizedTableCell ->
-                            System.out.printf("%s ", recognizedTableCell.getText())));
-                }));
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .flatMap(Flux::fromIterable)
+            .subscribe(formPage -> {
+                System.out.printf("Page Angle: %s%n", formPage.getTextAngle());
+                System.out.printf("Page Dimension unit: %s%n", formPage.getUnit());
+                // Table information
+                System.out.println("Recognized Tables: ");
+                formPage.getTables().forEach(formTable ->
+                    formTable.getCells().forEach(recognizedTableCell ->
+                        System.out.printf("%s ", recognizedTableCell.getText())));
+            });
         // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContentFromUrl#string-recognizeOptions
     }
 
@@ -229,20 +229,19 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         // Utility method to convert input stream to Byte buffer
         Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(form.toPath())));
 
+        // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeContent(buffer, form.length())
-            .flatMap(recognizePollingOperation ->
-                // if training polling operation completed, retrieve the final result.
-                recognizePollingOperation.getFinalResult())
-            .subscribe(contentPageResult ->
-                contentPageResult.forEach(formPage -> {
-                    System.out.printf("Page Angle: %s%n", formPage.getTextAngle());
-                    System.out.printf("Page Dimension unit: %s%n", formPage.getUnit());
-                    // Table information
-                    System.out.println("Recognized Tables: ");
-                    formPage.getTables().forEach(formTable ->
-                        formTable.getCells().forEach(recognizedTableCell ->
-                            System.out.printf("%s ", recognizedTableCell.getText())));
-                }));
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .flatMap(Flux::fromIterable)
+            .subscribe(formPage -> {
+                System.out.printf("Page Angle: %s%n", formPage.getTextAngle());
+                System.out.printf("Page Dimension unit: %s%n", formPage.getUnit());
+                // Table information
+                System.out.println("Recognized Tables: ");
+                formPage.getTables().forEach(formTable ->
+                    formTable.getCells().forEach(recognizedTableCell ->
+                        System.out.printf("%s ", recognizedTableCell.getText())));
+            });
         // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContent#Flux-long
     }
 
@@ -257,22 +256,21 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         File form = new File("{local/file_path/fileName.jpg}");
         // Utility method to convert input stream to Byte buffer
         Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(form.toPath())));
+        // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeContent(buffer, form.length(),
             new RecognizeOptions()
                 .setContentType(FormContentType.APPLICATION_PDF)
                 .setPollInterval(Duration.ofSeconds(5)))
-            .flatMap(recognizePollingOperation ->
-                // if training polling operation completed, retrieve the final result.
-                recognizePollingOperation.getFinalResult())
-            .subscribe(contentPageResult ->
-                contentPageResult.forEach(formPage -> {
-                    System.out.printf("Page Angle: %s%n", formPage.getTextAngle());
-                    System.out.printf("Page Dimension unit: %s%n", formPage.getUnit());
-                    // Table information
-                    System.out.println("Recognized Tables: ");
-                    formPage.getTables().forEach(formTable -> formTable.getCells().forEach(recognizedTableCell ->
-                        System.out.printf("%s ", recognizedTableCell.getText())));
-                }));
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .flatMap(Flux::fromIterable)
+            .subscribe(formPage -> {
+                System.out.printf("Page Angle: %s%n", formPage.getTextAngle());
+                System.out.printf("Page Dimension unit: %s%n", formPage.getUnit());
+                // Table information
+                System.out.println("Recognized Tables: ");
+                formPage.getTables().forEach(formTable -> formTable.getCells().forEach(recognizedTableCell ->
+                    System.out.printf("%s ", recognizedTableCell.getText())));
+            });
         // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContent#Flux-long-recognizeOptions
     }
 
@@ -284,62 +282,59 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
     public void beginRecognizeReceiptsFromUrl() {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceiptsFromUrl#string
         String receiptUrl = "{receiptUrl}";
+        // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeReceiptsFromUrl(receiptUrl)
-            .flatMap(recognizePollingOperation ->
-                // if training polling operation completed, retrieve the final result.
-                recognizePollingOperation.getFinalResult())
+            // if training polling operation completed, retrieve the final result.
+            .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(recognizedReceipts -> {
                 for (int i = 0; i < recognizedReceipts.size(); i++) {
                     RecognizedForm recognizedForm = recognizedReceipts.get(i);
-                    Map<String, FormField<?>> recognizedFields = recognizedForm.getFields();
+                    Map<String, FormField> recognizedFields = recognizedForm.getFields();
                     System.out.printf("----------- Recognized Receipt page %d -----------%n", i);
-                    FormField<?> merchantNameField = recognizedFields.get("MerchantName");
+                    FormField merchantNameField = recognizedFields.get("MerchantName");
                     if (merchantNameField != null) {
-                        if (FieldValueType.STRING.equals(merchantNameField.getValueType())) {
-                            String merchantName = FieldValueType.STRING.cast(merchantNameField);
+                        if (FieldValueType.STRING == merchantNameField.getValue().getValueType()) {
+                            String merchantName = merchantNameField.getValue().asString();
                             System.out.printf("Merchant Name: %s, confidence: %.2f%n",
                                 merchantName, merchantNameField.getConfidence());
                         }
                     }
 
-                    FormField<?> merchantPhoneNumberField = recognizedFields.get("MerchantPhoneNumber");
+                    FormField merchantPhoneNumberField = recognizedFields.get("MerchantPhoneNumber");
                     if (merchantPhoneNumberField != null) {
-                        if (FieldValueType.PHONE_NUMBER.equals(merchantNameField.getValueType())) {
-                            String merchantAddress = FieldValueType.PHONE_NUMBER.cast(merchantPhoneNumberField);
+                        if (FieldValueType.PHONE_NUMBER == merchantPhoneNumberField.getValue().getValueType()) {
+                            String merchantAddress = merchantPhoneNumberField.getValue().asPhoneNumber();
                             System.out.printf("Merchant Phone number: %s, confidence: %.2f%n",
                                 merchantAddress, merchantPhoneNumberField.getConfidence());
                         }
                     }
 
-                    FormField<?> transactionDateField = recognizedFields.get("TransactionDate");
+                    FormField transactionDateField = recognizedFields.get("TransactionDate");
                     if (transactionDateField != null) {
-                        if (FieldValueType.DATE.equals(transactionDateField.getValueType())) {
-                            LocalDate transactionDate = FieldValueType.DATE.cast(transactionDateField);
+                        if (FieldValueType.DATE == transactionDateField.getValue().getValueType()) {
+                            LocalDate transactionDate = transactionDateField.getValue().asDate();
                             System.out.printf("Transaction Date: %s, confidence: %.2f%n",
                                 transactionDate, transactionDateField.getConfidence());
                         }
                     }
 
-                    FormField<?> receiptItemsField = recognizedFields.get("Items");
+                    FormField receiptItemsField = recognizedFields.get("Items");
                     if (receiptItemsField != null) {
                         System.out.printf("Receipt Items: %n");
-                        if (FieldValueType.LIST.equals(receiptItemsField.getValueType())) {
-                            List<FormField<?>> receiptItems = FieldValueType.LIST.cast(receiptItemsField);
-                            receiptItems.forEach(receiptItem -> {
-                                if (FieldValueType.MAP.equals(receiptItem.getValueType())) {
-
-                                    Map<String, FormField<?>> formFieldMap = FieldValueType.MAP.cast(receiptItem);
-                                    formFieldMap.forEach((key, formField) -> {
-                                        if ("Quantity".equals(key)) {
-                                            if (FieldValueType.DOUBLE.equals(formField.getValueType())) {
-                                                Float quantity = FieldValueType.DOUBLE.cast(formField);
-                                                System.out.printf("Quantity: %f, confidence: %.2f%n",
-                                                    quantity, formField.getConfidence());
-                                            }
+                        if (FieldValueType.LIST == receiptItemsField.getValue().getValueType()) {
+                            List<FormField> receiptItems = receiptItemsField.getValue().asList();
+                            receiptItems.stream()
+                                .filter(receiptItem -> FieldValueType.MAP == receiptItem.getValue().getValueType())
+                                .map(formField -> formField.getValue().asMap())
+                                .forEach(formFieldMap -> formFieldMap.forEach((key, formField) -> {
+                                    if ("Quantity".equals(key)) {
+                                        if (FieldValueType.FLOAT == formField.getValue().getValueType()) {
+                                            Float quantity = formField.getValue().asFloat();
+                                            System.out.printf("Quantity: %f, confidence: %.2f%n",
+                                                quantity, formField.getConfidence());
                                         }
-                                    });
-                                }
-                            });
+                                    }
+                                }));
                         }
                     }
                 }
@@ -353,66 +348,62 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
     public void beginRecognizeReceiptsFromUrlWithOptions() {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceiptsFromUrl#string-recognizeOptions
         String receiptUrl = "{receiptUrl}";
-        boolean includeTextContent = true;
+        boolean includeFieldElements = true;
+        // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeReceiptsFromUrl(receiptUrl,
             new RecognizeOptions()
-                .setIncludeFieldElements(includeTextContent)
+                .setFieldElementsIncluded(includeFieldElements)
                 .setPollInterval(Duration.ofSeconds(5)))
-            .flatMap(recognizePollingOperation ->
-                // if training polling operation completed, retrieve the final result.
-                recognizePollingOperation.getFinalResult())
+            .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(recognizedReceipts -> {
                 for (int i = 0; i < recognizedReceipts.size(); i++) {
                     RecognizedForm recognizedReceipt = recognizedReceipts.get(i);
-                    Map<String, FormField<?>> recognizedFields = recognizedReceipt.getFields();
+                    Map<String, FormField> recognizedFields = recognizedReceipt.getFields();
                     System.out.printf("----------- Recognized Receipt page %d -----------%n", i);
-                    FormField<?> merchantNameField = recognizedFields.get("MerchantName");
+                    FormField merchantNameField = recognizedFields.get("MerchantName");
                     if (merchantNameField != null) {
-                        if (FieldValueType.STRING.equals(merchantNameField.getValueType())) {
-                            String merchantName = FieldValueType.STRING.cast(merchantNameField);
+                        if (FieldValueType.STRING == merchantNameField.getValue().getValueType()) {
+                            String merchantName = merchantNameField.getValue().asString();
                             System.out.printf("Merchant Name: %s, confidence: %.2f%n",
                                 merchantName, merchantNameField.getConfidence());
                         }
                     }
 
-                    FormField<?> merchantPhoneNumberField = recognizedFields.get("MerchantPhoneNumber");
+                    FormField merchantPhoneNumberField = recognizedFields.get("MerchantPhoneNumber");
                     if (merchantPhoneNumberField != null) {
-                        if (FieldValueType.PHONE_NUMBER.equals(merchantNameField.getValueType())) {
-                            String merchantAddress = FieldValueType.PHONE_NUMBER.cast(merchantPhoneNumberField);
+                        if (FieldValueType.PHONE_NUMBER == merchantPhoneNumberField.getValue().getValueType()) {
+                            String merchantAddress = merchantPhoneNumberField.getValue().asPhoneNumber();
                             System.out.printf("Merchant Phone number: %s, confidence: %.2f%n",
                                 merchantAddress, merchantPhoneNumberField.getConfidence());
                         }
                     }
 
-                    FormField<?> transactionDateField = recognizedFields.get("TransactionDate");
+                    FormField transactionDateField = recognizedFields.get("TransactionDate");
                     if (transactionDateField != null) {
-                        if (FieldValueType.DATE.equals(transactionDateField.getValueType())) {
-                            LocalDate transactionDate = FieldValueType.DATE.cast(transactionDateField);
+                        if (FieldValueType.DATE == transactionDateField.getValue().getValueType()) {
+                            LocalDate transactionDate = transactionDateField.getValue().asDate();
                             System.out.printf("Transaction Date: %s, confidence: %.2f%n",
                                 transactionDate, transactionDateField.getConfidence());
                         }
                     }
 
-                    FormField<?> receiptItemsField = recognizedFields.get("Items");
+                    FormField receiptItemsField = recognizedFields.get("Items");
                     if (receiptItemsField != null) {
                         System.out.printf("Receipt Items: %n");
-                        if (FieldValueType.LIST.equals(receiptItemsField.getValueType())) {
-                            List<FormField<?>> receiptItems = FieldValueType.LIST.cast(receiptItemsField);
-                            receiptItems.forEach(receiptItem -> {
-                                if (FieldValueType.MAP.equals(receiptItem.getValueType())) {
-
-                                    Map<String, FormField<?>> formFieldMap = FieldValueType.MAP.cast(receiptItem);
-                                    formFieldMap.forEach((key, formField) -> {
-                                        if ("Quantity".equals(key)) {
-                                            if (FieldValueType.DOUBLE.equals(formField.getValueType())) {
-                                                Float quantity = FieldValueType.DOUBLE.cast(formField);
-                                                System.out.printf("Quantity: %f, confidence: %.2f%n",
-                                                    quantity, formField.getConfidence());
-                                            }
+                        if (FieldValueType.LIST == receiptItemsField.getValue().getValueType()) {
+                            List<FormField> receiptItems = receiptItemsField.getValue().asList();
+                            receiptItems.stream()
+                                .filter(receiptItem -> FieldValueType.MAP == receiptItem.getValue().getValueType())
+                                .map(formField -> formField.getValue().asMap())
+                                .forEach(formFieldMap -> formFieldMap.forEach((key, formField) -> {
+                                    if ("Quantity".equals(key)) {
+                                        if (FieldValueType.FLOAT == formField.getValue().getValueType()) {
+                                            Float quantity = formField.getValue().asFloat();
+                                            System.out.printf("Quantity: %f, confidence: %.2f%n",
+                                                quantity, formField.getConfidence());
                                         }
-                                    });
-                                }
-                            });
+                                    }
+                                }));
                         }
                     }
                 }
@@ -429,65 +420,62 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceipts#Flux-long
         File receipt = new File("{file_source_url}");
         Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(receipt.toPath())));
+        // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeReceipts(buffer, receipt.length())
-            .subscribe(recognizePollingOperation ->
-                // if training polling operation completed, retrieve the final result.
-                recognizePollingOperation.getFinalResult().subscribe(recognizedReceipts -> {
-                    for (int i = 0; i < recognizedReceipts.size(); i++) {
-                        RecognizedForm recognizedForm = recognizedReceipts.get(i);
-                        Map<String, FormField<?>> recognizedFields = recognizedForm.getFields();
-                        System.out.printf("----------- Recognized Receipt page %d -----------%n", i);
-                        FormField<?> merchantNameField = recognizedFields.get("MerchantName");
-                        if (merchantNameField != null) {
-                            if (FieldValueType.STRING.equals(merchantNameField.getValueType())) {
-                                String merchantName = FieldValueType.STRING.cast(merchantNameField);
-                                System.out.printf("Merchant Name: %s, confidence: %.2f%n",
-                                    merchantName, merchantNameField.getConfidence());
+            .flatMap(AsyncPollResponse::getFinalResult)
+                    .subscribe(recognizedReceipts -> {
+                        for (int i = 0; i < recognizedReceipts.size(); i++) {
+                            RecognizedForm recognizedForm = recognizedReceipts.get(i);
+                            Map<String, FormField> recognizedFields = recognizedForm.getFields();
+                            System.out.printf("----------- Recognized Receipt page %d -----------%n", i);
+                            FormField merchantNameField = recognizedFields.get("MerchantName");
+                            if (merchantNameField != null) {
+                                if (FieldValueType.STRING == merchantNameField.getValue().getValueType()) {
+                                    String merchantName = merchantNameField.getValue().asString();
+                                    System.out.printf("Merchant Name: %s, confidence: %.2f%n",
+                                        merchantName, merchantNameField.getConfidence());
+                                }
                             }
-                        }
 
-                        FormField<?> merchantPhoneNumberField = recognizedFields.get("MerchantPhoneNumber");
-                        if (merchantPhoneNumberField != null) {
-                            if (FieldValueType.PHONE_NUMBER.equals(merchantNameField.getValueType())) {
-                                String merchantAddress = FieldValueType.PHONE_NUMBER.cast(merchantPhoneNumberField);
-                                System.out.printf("Merchant Phone number: %s, confidence: %.2f%n",
-                                    merchantAddress, merchantPhoneNumberField.getConfidence());
+                            FormField merchantPhoneNumberField = recognizedFields.get("MerchantPhoneNumber");
+                            if (merchantPhoneNumberField != null) {
+                                if (FieldValueType.PHONE_NUMBER == merchantPhoneNumberField.getValue().getValueType()) {
+                                    String merchantAddress = merchantPhoneNumberField.getValue().asPhoneNumber();
+                                    System.out.printf("Merchant Phone number: %s, confidence: %.2f%n",
+                                        merchantAddress, merchantPhoneNumberField.getConfidence());
+                                }
                             }
-                        }
 
-                        FormField<?> transactionDateField = recognizedFields.get("TransactionDate");
-                        if (transactionDateField != null) {
-                            if (FieldValueType.DATE.equals(transactionDateField.getValueType())) {
-                                LocalDate transactionDate = FieldValueType.DATE.cast(transactionDateField);
-                                System.out.printf("Transaction Date: %s, confidence: %.2f%n",
-                                    transactionDate, transactionDateField.getConfidence());
+                            FormField transactionDateField = recognizedFields.get("TransactionDate");
+                            if (transactionDateField != null) {
+                                if (FieldValueType.DATE == transactionDateField.getValue().getValueType()) {
+                                    LocalDate transactionDate = transactionDateField.getValue().asDate();
+                                    System.out.printf("Transaction Date: %s, confidence: %.2f%n",
+                                        transactionDate, transactionDateField.getConfidence());
+                                }
                             }
-                        }
 
-                        FormField<?> receiptItemsField = recognizedFields.get("Items");
-                        if (receiptItemsField != null) {
-                            System.out.printf("Receipt Items: %n");
-                            if (FieldValueType.LIST.equals(receiptItemsField.getValueType())) {
-                                List<FormField<?>> receiptItems = FieldValueType.LIST.cast(receiptItemsField);
-                                receiptItems.forEach(receiptItem -> {
-                                    if (FieldValueType.MAP.equals(receiptItem.getValueType())) {
-
-                                        Map<String, FormField<?>> formFieldMap = FieldValueType.MAP.cast(receiptItem);
-                                        formFieldMap.forEach((key, formField) -> {
+                            FormField receiptItemsField = recognizedFields.get("Items");
+                            if (receiptItemsField != null) {
+                                System.out.printf("Receipt Items: %n");
+                                if (FieldValueType.LIST == receiptItemsField.getValue().getValueType()) {
+                                    List<FormField> receiptItems = receiptItemsField.getValue().asList();
+                                    receiptItems.stream()
+                                        .filter(receiptItem -> FieldValueType.MAP == receiptItem.getValue().getValueType())
+                                        .map(formField -> formField.getValue().asMap())
+                                        .forEach(formFieldMap -> formFieldMap.forEach((key, formField) -> {
                                             if ("Quantity".equals(key)) {
-                                                if (FieldValueType.DOUBLE.equals(formField.getValueType())) {
-                                                    Float quantity = FieldValueType.DOUBLE.cast(formField);
+                                                if (FieldValueType.FLOAT == formField.getValue().getValueType()) {
+                                                    Float quantity = formField.getValue().asFloat();
                                                     System.out.printf("Quantity: %f, confidence: %.2f%n",
                                                         quantity, formField.getConfidence());
                                                 }
                                             }
-                                        });
-                                    }
-                                });
+                                        }));
+                                }
                             }
                         }
-                    }
-                }));
+                    });
         // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceipts#Flux-long
     }
 
@@ -503,70 +491,66 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         boolean includeFieldElements = true;
         // Utility method to convert input stream to Byte buffer
         Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(receipt.toPath())));
+        // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeReceipts(buffer, receipt.length(),
             new RecognizeOptions()
                 .setContentType(FormContentType.IMAGE_JPEG)
-                .setIncludeFieldElements(includeFieldElements)
+                .setFieldElementsIncluded(includeFieldElements)
                 .setPollInterval(Duration.ofSeconds(5)))
-            .subscribe(recognizePollingOperation ->
-                // if training polling operation completed, retrieve the final result.
-                recognizePollingOperation.getFinalResult().subscribe(recognizedReceipts -> {
-                    for (int i = 0; i < recognizedReceipts.size(); i++) {
-                        RecognizedForm recognizedForm = recognizedReceipts.get(i);
-                        Map<String, FormField<?>> recognizedFields = recognizedForm.getFields();
-                        System.out.printf("----------- Recognized Receipt page %d -----------%n", i);
-                        FormField<?> merchantNameField = recognizedFields.get("MerchantName");
-                        if (merchantNameField != null) {
-                            if (FieldValueType.STRING.equals(merchantNameField.getValueType())) {
-                                String merchantName = FieldValueType.STRING.cast(merchantNameField);
-                                System.out.printf("Merchant Name: %s, confidence: %.2f%n",
-                                    merchantName, merchantNameField.getConfidence());
-                            }
-                        }
-
-                        FormField<?> merchantPhoneNumberField = recognizedFields.get("MerchantPhoneNumber");
-                        if (merchantPhoneNumberField != null) {
-                            if (FieldValueType.PHONE_NUMBER.equals(merchantNameField.getValueType())) {
-                                String merchantAddress = FieldValueType.PHONE_NUMBER.cast(merchantPhoneNumberField);
-                                System.out.printf("Merchant Phone number: %s, confidence: %.2f%n",
-                                    merchantAddress, merchantPhoneNumberField.getConfidence());
-                            }
-                        }
-
-                        FormField<?> transactionDateField = recognizedFields.get("TransactionDate");
-                        if (transactionDateField != null) {
-                            if (FieldValueType.DATE.equals(transactionDateField.getValueType())) {
-                                LocalDate transactionDate = FieldValueType.DATE.cast(transactionDateField);
-                                System.out.printf("Transaction Date: %s, confidence: %.2f%n",
-                                    transactionDate, transactionDateField.getConfidence());
-                            }
-                        }
-
-                        FormField<?> receiptItemsField = recognizedFields.get("Items");
-                        if (receiptItemsField != null) {
-                            System.out.printf("Receipt Items: %n");
-                            if (FieldValueType.LIST.equals(receiptItemsField.getValueType())) {
-                                List<FormField<?>> receiptItems = FieldValueType.LIST.cast(receiptItemsField);
-                                receiptItems.forEach(receiptItem -> {
-                                    if (FieldValueType.MAP.equals(receiptItem.getValueType())) {
-
-                                        Map<String, FormField<?>> formFieldMap = FieldValueType.MAP.cast(receiptItem);
-                                        formFieldMap.forEach((key, formField) -> {
-                                            if ("Quantity".equals(key)) {
-                                                if (FieldValueType.DOUBLE.equals(formField.getValueType())) {
-                                                    Float quantity = FieldValueType.DOUBLE.cast(formField);
-                                                    System.out.printf("Quantity: %f, confidence: %.2f%n",
-                                                        quantity, formField.getConfidence());
-                                                }
-                                            }
-                                        });
-                                    }
-                                });
-                            }
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .subscribe(recognizedReceipts -> {
+                for (int i = 0; i < recognizedReceipts.size(); i++) {
+                    RecognizedForm recognizedForm = recognizedReceipts.get(i);
+                    Map<String, FormField> recognizedFields = recognizedForm.getFields();
+                    System.out.printf("----------- Recognized Receipt page %d -----------%n", i);
+                    FormField merchantNameField = recognizedFields.get("MerchantName");
+                    if (merchantNameField != null) {
+                        if (FieldValueType.STRING == merchantNameField.getValue().getValueType()) {
+                            String merchantName = merchantNameField.getValue().asString();
+                            System.out.printf("Merchant Name: %s, confidence: %.2f%n",
+                                merchantName, merchantNameField.getConfidence());
                         }
                     }
-                }));
 
+                    FormField merchantPhoneNumberField = recognizedFields.get("MerchantPhoneNumber");
+                    if (merchantPhoneNumberField != null) {
+                        if (FieldValueType.PHONE_NUMBER == merchantPhoneNumberField.getValue().getValueType()) {
+                            String merchantAddress = merchantPhoneNumberField.getValue().asPhoneNumber();
+                            System.out.printf("Merchant Phone number: %s, confidence: %.2f%n",
+                                merchantAddress, merchantPhoneNumberField.getConfidence());
+                        }
+                    }
+
+                    FormField transactionDateField = recognizedFields.get("TransactionDate");
+                    if (transactionDateField != null) {
+                        if (FieldValueType.DATE == transactionDateField.getValue().getValueType()) {
+                            LocalDate transactionDate = transactionDateField.getValue().asDate();
+                            System.out.printf("Transaction Date: %s, confidence: %.2f%n",
+                                transactionDate, transactionDateField.getConfidence());
+                        }
+                    }
+
+                    FormField receiptItemsField = recognizedFields.get("Items");
+                    if (receiptItemsField != null) {
+                        System.out.printf("Receipt Items: %n");
+                        if (FieldValueType.LIST == receiptItemsField.getValue().getValueType()) {
+                            List<FormField> receiptItems = receiptItemsField.getValue().asList();
+                            receiptItems.stream()
+                                .filter(receiptItem -> FieldValueType.MAP == receiptItem.getValue().getValueType())
+                                .map(formField -> formField.getValue().asMap())
+                                .forEach(formFieldMap -> formFieldMap.forEach((key, formField) -> {
+                                    if ("Quantity".equals(key)) {
+                                        if (FieldValueType.FLOAT == formField.getValue().getValueType()) {
+                                            Float quantity = formField.getValue().asFloat();
+                                            System.out.printf("Quantity: %f, confidence: %.2f%n",
+                                                quantity, formField.getConfidence());
+                                        }
+                                    }
+                                }));
+                        }
+                    }
+                }
+            });
         // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceipts#Flux-long-recognizeOptions
     }
 }

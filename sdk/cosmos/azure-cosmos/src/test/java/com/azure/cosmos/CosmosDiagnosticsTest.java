@@ -3,8 +3,8 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
@@ -17,6 +17,7 @@ import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -25,19 +26,25 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.lang.reflect.Field;
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
 public class CosmosDiagnosticsTest extends TestSuiteBase {
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final DateTimeFormatter RESPONSE_TIME_FORMATTER =
+        DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm:ss" + ".SSS").withLocale(Locale.US).withZone(ZoneOffset.UTC);
     private CosmosClient gatewayClient;
     private CosmosClient directClient;
     private CosmosContainer container;
     private CosmosAsyncContainer cosmosAsyncContainer;
-    private CosmosClientBuilder cosmosClientBuilder;
 
     @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
@@ -77,9 +84,10 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(diagnostics).contains("\"operationType\":\"Create\"");
         assertThat(diagnostics).contains("\"metaDataName\":\"CONTAINER_LOOK_UP\"");
         assertThat(diagnostics).contains("\"serializationType\":\"PARTITION_KEY_FETCH_SERIALIZATION\"");
-        assertThat(diagnostics).contains("userAgent=" + Utils.getUserAgent());
+        assertThat(diagnostics).contains("\"userAgent\":\"" + Utils.getUserAgent() + "\"");
         assertThat(createResponse.getDiagnostics().getDuration()).isNotNull();
         validateTransportRequestTimelineGateway(diagnostics);
+        validateJson(diagnostics);
     }
 
     @Test(groups = {"simple"})
@@ -110,9 +118,10 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(diagnostics).doesNotContain(("\"gatewayStatistics\":null"));
             assertThat(diagnostics).contains("\"statusCode\":404");
             assertThat(diagnostics).contains("\"operationType\":\"Read\"");
-            assertThat(diagnostics).contains("userAgent=" + Utils.getUserAgent());
+            assertThat(diagnostics).contains("\"userAgent\":\"" + Utils.getUserAgent() + "\"");
             assertThat(exception.getDiagnostics().getDuration()).isNotNull();
             validateTransportRequestTimelineGateway(diagnostics);
+            validateJson(diagnostics);
         } finally {
             if (client != null) {
                 client.close();
@@ -130,7 +139,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(diagnostics).contains("availableMemory");
         assertThat(diagnostics).contains("processCpuLoad");
         assertThat(diagnostics).contains("systemCpuLoad");
-        assertThat(diagnostics).contains("userAgent=" + Utils.getUserAgent());
+        assertThat(diagnostics).contains("\"userAgent\":\"" + Utils.getUserAgent() + "\"");
         assertThat(createResponse.getDiagnostics().getDuration()).isNotNull();
     }
 
@@ -148,13 +157,13 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(diagnostics).contains("\"metaDataName\":\"PARTITION_KEY_RANGE_LOOK_UP\"");
         assertThat(diagnostics).contains("\"metaDataName\":\"SERVER_ADDRESS_LOOKUP\"");
         assertThat(diagnostics).contains("\"serializationType\":\"PARTITION_KEY_FETCH_SERIALIZATION\"");
-        assertThat(diagnostics).contains("userAgent=" + Utils.getUserAgent());
+        assertThat(diagnostics).contains("\"userAgent\":\"" + Utils.getUserAgent() + "\"");
         assertThat(createResponse.getDiagnostics().getDuration()).isNotNull();
         validateTransportRequestTimelineDirect(diagnostics);
+        validateJson(diagnostics);
     }
 
-    //  TODO: (naveen) - Check the priority
-    @Test(groups = {"simple"}, priority = 1, enabled = false)
+    @Test(groups = {"simple"})
     public void directDiagnosticsOnException() {
         CosmosContainer cosmosContainer = directClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
         InternalObjectNode internalObjectNode = getInternalObjectNode();
@@ -181,6 +190,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(exception.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
             assertThat(diagnostics).contains("\"connectionMode\":\"DIRECT\"");
             assertThat(exception.getDiagnostics().getDuration()).isNotNull();
+            validateJson(diagnostics);
             // TODO https://github.com/Azure/azure-sdk-for-java/issues/8035
             // uncomment below if above issue is fixed
             //validateTransportRequestTimelineDirect(diagnostics);
@@ -220,6 +230,25 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         supplementalResponseStatisticsListNode = (ArrayNode) jsonNode.get("supplementalResponseStatisticsList");
         assertThat(storeResponseStatistics.size()).isEqualTo(7);
         assertThat(supplementalResponseStatisticsListNode.size()).isEqualTo(7);
+
+        //verifying all components from StoreResponseStatistics
+        for(JsonNode node : supplementalResponseStatisticsListNode) {
+            assertThat(node.get("storeResult").asText()).isNotNull();
+
+            String requestResponseTimeUTC  = node.get("requestResponseTimeUTC").asText();
+            String formattedInstant = RESPONSE_TIME_FORMATTER.format(Instant.now());
+            String[] requestResponseTimeUTCList = requestResponseTimeUTC.split(" ");
+            String[] formattedInstantList = formattedInstant.split(" ");
+            assertThat(requestResponseTimeUTC.length()).isEqualTo(formattedInstant.length());
+            assertThat(requestResponseTimeUTCList.length).isEqualTo(formattedInstantList.length);
+            assertThat(requestResponseTimeUTCList[0]).isEqualTo(formattedInstantList[0]);
+            assertThat(requestResponseTimeUTCList[1]).isEqualTo(formattedInstantList[1]);
+            assertThat(requestResponseTimeUTCList[2]).isEqualTo(formattedInstantList[2]);
+
+            assertThat(node.get("requestResponseTimeUTC")).isNotNull();
+            assertThat(node.get("requestOperationType")).isNotNull();
+            assertThat(node.get("requestOperationType")).isNotNull();
+        }
     }
 
     @Test(groups = {"simple"})
@@ -257,7 +286,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         InternalObjectNode properties = readItemResponse.getItem();
         diagnostics = readItemResponse.getDiagnostics().toString();
         assertThat(diagnostics).contains("\"serializationType\":\"ITEM_DESERIALIZATION\"");
-        assertThat(diagnostics).contains("userAgent=" + Utils.getUserAgent());
+        assertThat(diagnostics).contains("\"userAgent\":\"" + Utils.getUserAgent() + "\"");
     }
 
     private InternalObjectNode getInternalObjectNode() {
@@ -297,6 +326,14 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(diagnostics).contains("\"eventName\":\"transitTime\"");
         assertThat(diagnostics).contains("\"eventName\":\"received\"");
         assertThat(diagnostics).contains("\"eventName\":\"completed\"");
+    }
+
+    private void validateJson(String jsonInString) {
+        try {
+            OBJECT_MAPPER.readTree(jsonInString);
+        } catch(JsonProcessingException ex) {
+            fail("Diagnostic string is not in json format");
+        }
     }
 
     public static class TestItem {

@@ -34,6 +34,7 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -51,6 +52,8 @@ public class AzureADGraphClient {
     private static final String DEFAULT_ROLE_PREFIX = "ROLE_";
     private static final String MICROSOFT_GRAPH_SCOPE = "https://graph.microsoft.com/user.read";
     private static final String AAD_GRAPH_API_SCOPE = "https://graph.windows.net/user.read";
+    // We use "aadfeed5" as suffix when client library is ADAL, upgrade to "aadfeed6" for MSAL
+    private static final String REQUEST_ID_SUFFIX = "aadfeed6";
 
     private final String clientId;
     private final String clientSecret;
@@ -87,7 +90,7 @@ public class AzureADGraphClient {
         } else {
             conn.setRequestMethod(HttpMethod.GET.toString());
             conn.setRequestProperty("api-version", "1.6");
-            conn.setRequestProperty(HttpHeaders.AUTHORIZATION, accessToken);
+            conn.setRequestProperty(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", accessToken));
             conn.setRequestProperty(HttpHeaders.ACCEPT, "application/json;odata=minimalmetadata");
         }
         final String responseInJson = getResponseStringFromConn(conn);
@@ -181,16 +184,15 @@ public class AzureADGraphClient {
     /**
      * Determines if this is a valid {@link UserGroup} to build to a GrantedAuthority.
      * <p>
-     * If the {@link AADAuthenticationProperties.UserGroupProperties#getAllowedGroups()} or the {@link
-     * AADAuthenticationProperties#getActiveDirectoryGroups()} contains the {@link UserGroup#getDisplayName()} return
+     * If the {@link AADAuthenticationProperties.UserGroupProperties#getAllowedGroups()}
+     *  contains the {@link UserGroup#getDisplayName()} return
      * true.
      *
      * @param group - User Group to check if valid to grant an authority to.
-     * @return true if either of the allowed-groups or active-directory-groups contains the UserGroup display name
+     * @return true if allowed-groups contains the UserGroup display name
      */
     private boolean isValidUserGroupToGrantAuthority(final UserGroup group) {
-        return aadAuthenticationProperties.getUserGroup().getAllowedGroups().contains(group.getDisplayName())
-            || aadAuthenticationProperties.getActiveDirectoryGroups().contains(group.getDisplayName());
+        return aadAuthenticationProperties.getUserGroup().getAllowedGroups().contains(group.getDisplayName());
     }
 
     public IAuthenticationResult acquireTokenForGraphApi(String idToken, String tenantId)
@@ -206,6 +208,7 @@ public class AzureADGraphClient {
             final ConfidentialClientApplication application = ConfidentialClientApplication
                 .builder(clientId, clientCredential)
                 .authority(serviceEndpoints.getAadSigninUri() + tenantId + "/")
+                .correlationId(getCorrelationId())
                 .build();
 
             final Set<String> scopes = new HashSet<>();
@@ -237,5 +240,10 @@ public class AzureADGraphClient {
             throw new ServiceUnavailableException("unable to acquire on-behalf-of token for client " + clientId);
         }
         return result;
+    }
+
+    private static String getCorrelationId() {
+        final String uuid = UUID.randomUUID().toString();
+        return uuid.substring(0, uuid.length() - REQUEST_ID_SUFFIX.length()) + REQUEST_ID_SUFFIX;
     }
 }

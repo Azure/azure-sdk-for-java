@@ -3,6 +3,8 @@
 
 package com.azure.identity;
 
+import com.azure.identity.implementation.util.ValidationUtil;
+
 /**
  * Fluent credential builder for instantiating a {@link VisualStudioCodeCredential}.
  *
@@ -19,6 +21,7 @@ public class VisualStudioCodeCredentialBuilder extends CredentialBuilderBase<Vis
      * @return An updated instance of this builder with the tenant id set as specified.
      */
     public VisualStudioCodeCredentialBuilder tenantId(String tenantId) {
+        ValidationUtil.validateTenantIdCharacterRange(getClass().getSimpleName(), tenantId);
         this.tenantId = tenantId;
         return this;
     }

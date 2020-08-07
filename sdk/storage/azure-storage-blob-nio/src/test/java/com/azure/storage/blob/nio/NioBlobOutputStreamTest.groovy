@@ -13,12 +13,17 @@ class NioBlobOutputStreamTest extends APISpec {
     NioBlobOutputStream nioStream
     def blockSize = 50
     def maxSingleUploadSize = 200
+    AzureFileSystem fs
 
     def setup() {
         cc.create()
         bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+
+        fs = createFS(initializeConfigMap())
+        def path = ((AzurePath) fs.getPath(getNonDefaultRootDir(fs), bc.getBlobName()))
+
         nioStream = new NioBlobOutputStream(bc.getBlobOutputStream(new ParallelTransferOptions(blockSize, null, null,
-            maxSingleUploadSize), null, null, null, null))
+            maxSingleUploadSize), null, null, null, null), path)
     }
 
     def cleanup() {
@@ -158,6 +163,27 @@ class NioBlobOutputStreamTest extends APISpec {
         thrown(IOException)
     }
 
+    def "Write fs closed"() {
+        when:
+        fs.close()
+        nioStream.write(5)
+
+        then:
+        thrown(IOException)
+
+        when:
+        nioStream.write(new byte[5])
+
+        then:
+        thrown(IOException)
+
+        when:
+        nioStream.write(new byte[5], 2, 1)
+
+        then:
+        thrown(IOException)
+    }
+
     // Flush does not actually flush data right now
     def "Flush"() {
         setup:
@@ -194,6 +220,18 @@ class NioBlobOutputStreamTest extends APISpec {
         thrown(IOException)
     }
 
+    def "Flush closed fs"() {
+        setup:
+        nioStream.write(1)
+
+        when:
+        fs.close()
+        nioStream.flush()
+
+        then:
+        thrown(IOException)
+    }
+
     def "Close"() {
         when:
         nioStream.close()
@@ -206,6 +244,15 @@ class NioBlobOutputStreamTest extends APISpec {
     def "Close error"() {
         when:
         nioStream.close()
+        nioStream.close()
+
+        then:
+        thrown(IOException)
+    }
+
+    def "Close fs closed"() {
+        when:
+        fs.close()
         nioStream.close()
 
         then:

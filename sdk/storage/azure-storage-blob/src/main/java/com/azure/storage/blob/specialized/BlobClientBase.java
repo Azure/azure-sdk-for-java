@@ -6,12 +6,14 @@ package com.azure.storage.blob.specialized;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.models.BlobProperties;
@@ -21,6 +23,7 @@ import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobQueryAsyncResponse;
+import com.azure.storage.blob.options.BlobGetTagsOptions;
 import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.models.BlobQueryResponse;
 import com.azure.storage.blob.models.BlobRange;
@@ -33,6 +36,8 @@ import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.options.BlobSetAccessTierOptions;
+import com.azure.storage.blob.options.BlobSetTagsOptions;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.FluxInputStream;
@@ -311,7 +316,8 @@ public class BlobClientBase {
             RehydratePriority priority, RequestConditions sourceModifiedRequestConditions,
             BlobRequestConditions destRequestConditions, Duration pollInterval) {
         return this.beginCopy(new BlobBeginCopyOptions(sourceUrl).setMetadata(metadata).setTier(tier)
-            .setRehydratePriority(priority).setSourceRequestConditions(sourceModifiedRequestConditions)
+            .setRehydratePriority(priority).setSourceRequestConditions(
+                ModelHelper.populateBlobSourceRequestConditions(sourceModifiedRequestConditions))
             .setDestinationRequestConditions(destRequestConditions).setPollInterval(pollInterval));
     }
 
@@ -798,7 +804,7 @@ public class BlobClientBase {
      * @return The blob's tags.
      */
     public Map<String, String> getTags() {
-        return this.getTagsWithResponse(null, Context.NONE).getValue();
+        return this.getTagsWithResponse(new BlobGetTagsOptions(), null, Context.NONE).getValue();
     }
 
     /**
@@ -806,17 +812,19 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.getTagsWithResponse#Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.getTagsWithResponse#BlobGetTagsOptions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-tags">Azure Docs</a></p>
      *
+     * @param options {@link BlobGetTagsOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The blob's tags.
      */
-    public Response<Map<String, String>> getTagsWithResponse(Duration timeout, Context context) {
-        Mono<Response<Map<String, String>>> response = client.getTagsWithResponse(context);
+    public Response<Map<String, String>> getTagsWithResponse(BlobGetTagsOptions options, Duration timeout,
+        Context context) {
+        Mono<Response<Map<String, String>>> response = client.getTagsWithResponse(options, context);
 
         return blockWithOptionalTimeout(response, timeout);
     }
@@ -835,7 +843,7 @@ public class BlobClientBase {
      * @param tags Tags to associate with the blob.
      */
     public void setTags(Map<String, String> tags) {
-        this.setTagsWithResponse(tags, null, Context.NONE);
+        this.setTagsWithResponse(new BlobSetTagsOptions(tags), null, Context.NONE);
     }
 
     /**
@@ -844,18 +852,18 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setTagsWithResponse#Map-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setTagsWithResponse#BlobSetTagsOptions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tags">Azure Docs</a></p>
      *
-     * @param tags Tags to associate with the blob.
+     * @param options {@link BlobSetTagsOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      */
-    public Response<Void> setTagsWithResponse(Map<String, String> tags, Duration timeout, Context context) {
-        Mono<Response<Void>> response = client.setTagsWithResponse(tags, context);
+    public Response<Void> setTagsWithResponse(BlobSetTagsOptions options, Duration timeout, Context context) {
+        Mono<Response<Void>> response = client.setTagsWithResponse(options, context);
 
         return blockWithOptionalTimeout(response, timeout);
     }
@@ -945,7 +953,31 @@ public class BlobClientBase {
      */
     public Response<Void> setAccessTierWithResponse(AccessTier tier, RehydratePriority priority, String leaseId,
         Duration timeout, Context context) {
-        return blockWithOptionalTimeout(client.setTierWithResponse(tier, priority, leaseId, context), timeout);
+        return setAccessTierWithResponse(new BlobSetAccessTierOptions(tier).setPriority(priority).setLeaseId(leaseId),
+            timeout, context);
+    }
+
+    /**
+     * Sets the tier on a blob. The operation is allowed on a page blob in a premium storage account or a block blob in
+     * a blob storage or GPV2 account. A premium page blob's tier determines the allowed size, IOPS, and bandwidth of
+     * the blob. A block blob's tier determines the Hot/Cool/Archive storage type. This does not update the blob's
+     * etag.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setAccessTierWithResponse#BlobSetAccessTierOptions-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tier">Azure Docs</a></p>
+     *
+     * @param options {@link BlobSetAccessTierOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing status code and HTTP headers.
+     */
+    public Response<Void> setAccessTierWithResponse(BlobSetAccessTierOptions options,
+        Duration timeout, Context context) {
+        return blockWithOptionalTimeout(client.setTierWithResponse(options, context), timeout);
     }
 
     /**
@@ -1068,7 +1100,7 @@ public class BlobClientBase {
      * @return An <code>InputStream</code> object that represents the stream to use for reading the query response.
      */
     public InputStream openQueryInputStream(String expression) {
-        return openQueryInputStream(new BlobQueryOptions(expression));
+        return openQueryInputStreamWithResponse(new BlobQueryOptions(expression)).getValue();
     }
 
     /**
@@ -1082,9 +1114,10 @@ public class BlobClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.openQueryInputStream#BlobQueryOptions}
      *
      * @param queryOptions {@link BlobQueryOptions The query options}.
-     * @return An <code>InputStream</code> object that represents the stream to use for reading the query response.
+     * @return A response containing status code and HTTP headers including an <code>InputStream</code> object
+     * that represents the stream to use for reading the query response.
      */
-    public InputStream openQueryInputStream(BlobQueryOptions queryOptions) {
+    public Response<InputStream> openQueryInputStreamWithResponse(BlobQueryOptions queryOptions) {
 
         // Data to subscribe to and read from.
         BlobQueryAsyncResponse response = client.queryWithResponse(queryOptions).block();
@@ -1093,7 +1126,8 @@ public class BlobClientBase {
         if (response == null) {
             throw logger.logExceptionAsError(new IllegalStateException("Query response cannot be null"));
         }
-        return new FluxInputStream(response.getValue());
+        return new ResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            new FluxInputStream(response.getValue()), response.getDeserializedHeaders());
     }
 
     /**
