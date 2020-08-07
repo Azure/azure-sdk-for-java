@@ -3,6 +3,7 @@
 
 
 import os
+import queue
 import time
 import unittest
 import urllib.request as request
@@ -27,6 +28,9 @@ class PomModule:
             artifact = self.artifact_id,
             version = self.version)
 
+    def __str__(self):
+        return '{}:{}:{}'.format(self.group_id, self.artifact_id, self.version)
+
 
 def main():
     start_time = time.time()
@@ -49,7 +53,7 @@ def get_spring_boot_version():
     for line in lines:
         if line.startswith('org.springframework.boot:spring-boot-dependencies;'):
             return line.split(';', 1)[1].strip()
-    raise Exception("Can not get spring boot version.")
+    raise Exception('Can not get spring boot version.')
 
 
 def get_dependency_dict():
@@ -58,29 +62,65 @@ def get_dependency_dict():
         'org.springframework.boot',
         'spring-boot-dependencies',
         spring_boot_version)
-    tree = elementTree.ElementTree(
-        file = request.urlopen(pom_module.to_url()))
-    project_element = tree.getroot()
-    name_space = {'maven': 'http://maven.apache.org/POM/4.0.0'}
-    # get properties
-    properties = project_element.find('maven:properties', name_space)
-    property_dict = {}
-    for p in properties:
-        key = p.tag.split('}', 1)[1]
-        value = p.text
-        property_dict[key] = value
-    # get dependencies
+    q = queue.Queue()
+    q.put(pom_module)
     dependency_dict = {}
-    dependency_elements = project_element.findall(
-        './maven:dependencyManagement/maven:dependencies/maven:dependency',
-        name_space)
-    for dependency_element in dependency_elements:
-        group_id = dependency_element.find("./maven:groupId", name_space).text.strip(' ')
-        artifact_id = dependency_element.find("./maven:artifactId", name_space).text.strip(' ')
-        version = dependency_element.find("./maven:version", name_space).text.strip(' ${}')
-        key = group_id + ':' + artifact_id
-        value = property_dict[version]
-        dependency_dict[key] = value
+    while not q.empty():
+        pom_module = q.get()
+        pom_url = pom_module.to_url()
+        print('Get dependencies from module: {}.'.format(pom_url))
+        tree = elementTree.ElementTree(file = request.urlopen(pom_url))
+        project_element = tree.getroot()
+        name_space = {'maven': 'http://maven.apache.org/POM/4.0.0'}
+        # get properties
+        properties = project_element.find('maven:properties', name_space)
+        property_dict = {}
+        # some property contain 'project.version', so put project_version first.
+        version_element = project_element.find('./maven:version', name_space)
+        if version_element is None:
+            version_element = project_element.find('./maven:parent/maven:version', name_space)
+        project_version = version_element.text.strip()
+        property_dict['project.version'] = project_version
+        # some property contain 'project.groupId', so put project_version first.
+        group_id_element = project_element.find('./maven:groupId', name_space)
+        if group_id_element is None:
+            group_id_element = project_element.find('./maven:parent/maven:groupId', name_space)
+        group_id = group_id_element.text.strip()
+        property_dict['project.groupId'] = group_id
+        if properties is not None:
+            for p in properties:
+                key = p.tag.split('}', 1)[1]
+                value = p.text.strip(' ${}')
+                if value in property_dict:
+                    value = property_dict[value]
+                property_dict[key] = value
+        # sometimes project_version contains '${foo}', so update project_version.
+        if project_version.startswith('${'):
+            property_dict['project.version'] = property_dict[project_version.strip(' ${}')]
+        # get dependencies
+        dependency_elements = project_element.findall(
+            './maven:dependencyManagement/maven:dependencies/maven:dependency',
+            name_space)
+        for dependency_element in dependency_elements:
+            group_id = dependency_element.find('./maven:groupId', name_space).text.strip(' ${}')
+            # some group_id contain 'project.groupId', so put project_version first.
+            if group_id in property_dict:
+                group_id = property_dict[group_id]
+            artifact_id = dependency_element.find('./maven:artifactId', name_space).text.strip(' ')
+            version = dependency_element.find('./maven:version', name_space).text.strip(' ${}')
+            key = group_id + ':' + artifact_id
+            if version in property_dict:
+                version = property_dict[version]
+            if key not in dependency_dict:
+                dependency_dict[key] = version
+                print('    Dependency version added. key = {}, value = {}'.format(key, version))
+            else:
+                print('    Dependency version skipped. key = {}, value = {}'.format(key, version))
+            artifact_type = dependency_element.find('./maven:type', name_space)
+            if artifact_type is not None and artifact_type.text.strip() == 'pom':
+                new_pom_module = PomModule(group_id, artifact_id, version)
+                q.put(new_pom_module)
+                print('Added new pom module: {}.'.format(new_pom_module.to_url()))
     return dependency_dict
 
 
@@ -97,7 +137,7 @@ def update_version_for_external_dependencies(dependency_dict):
                 if key in dependency_dict:
                     value_in_dict = dependency_dict[key]
                     if version_bigger_than(value, value_in_dict):
-                        print('Skip version update. key = {}, value = {}, value_in_dict = {}'
+                        print('WARN: Skip version update. key = {}, value = {}, value_in_dict = {}'
                               .format(key, value, value_in_dict))
                         file.write(line)
                     elif version_bigger_than(value, value_in_dict):
