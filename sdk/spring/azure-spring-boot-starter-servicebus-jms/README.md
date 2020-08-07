@@ -19,7 +19,7 @@ Add the following dependency to your project:
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-servicebus-jms-spring-boot-starter</artifactId>
-    <version>2.3.3-beta.1</version>
+    <version>2.3.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -142,11 +142,11 @@ public class SendController {
     
         private static final String QUEUE_NAME = "<ServiceBusQueueName>";
     
-        private final Logger LOGGER = LoggerFactory.getLogger(QueueReceiveController.class);
+        private final Logger logger = LoggerFactory.getLogger(QueueReceiveController.class);
     
         @JmsListener(destination = QUEUE_NAME, containerFactory = "jmsListenerContainerFactory")
         public void receiveMessage(User user) {
-            LOGGER.info("Received message: {}", user.getName());
+            logger.info("Received message: {}", user.getName());
         }
     }
     ```
@@ -172,12 +172,12 @@ public class SendController {
     
         private static final String SUBSCRIPTION_NAME = "<ServiceBusSubscriptionName>";
     
-        private final Logger LOGGER = LoggerFactory.getLogger(TopicReceiveController.class);
+        private final Logger logger = LoggerFactory.getLogger(TopicReceiveController.class);
     
         @JmsListener(destination = TOPIC_NAME, containerFactory = "topicJmsListenerContainerFactory",
             subscription = SUBSCRIPTION_NAME)
         public void receiveMessage(User user) {
-            LOGGER.info("Received message: {}", user.getName());
+            logger.info("Received message: {}", user.getName());
         }
     }
     ```

@@ -4,7 +4,7 @@
 package com.azure.core.serializer.json.jackson;
 
 public class Hotel {
-    transient String hotelName;
+    String hotelName;
 
     public Hotel() {
     }
