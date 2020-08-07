@@ -289,10 +289,12 @@ public abstract class StorageInputStream extends InputStream {
             System.out.println("calling readInternal");
             int results = this.readInternal(b, off + numOfBytesRead, len - numOfBytesRead);
             if (results == -1) {
+                System.out.println("read is received -1. Returning: " + (numOfBytesRead == 0 ? -1 : numOfBytesRead));
                 return numOfBytesRead == 0 ? -1 : numOfBytesRead;
             }
             numOfBytesRead += results;
         }
+        System.out.println("read has exited chunk loop. Returning: " + numOfBytesRead);
         return numOfBytesRead;
     }
 
@@ -324,6 +326,7 @@ public abstract class StorageInputStream extends InputStream {
 
         final int numberOfBytesRead;
         if (currentBuffer.remaining() == 0) {
+            System.out.println("Returning -1");
             numberOfBytesRead = -1;
         } else {
             numberOfBytesRead = Math.min(len, this.currentBuffer.remaining());

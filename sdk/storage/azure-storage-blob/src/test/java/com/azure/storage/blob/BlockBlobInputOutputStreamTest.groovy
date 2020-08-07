@@ -28,6 +28,7 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         def count = is.read(outArr)
 
         then:
+        System.out.println("About to compare")
         Arrays.compare(data, 0, data.length, outArr, 0, data.length) == 0
         count == retVal
 
