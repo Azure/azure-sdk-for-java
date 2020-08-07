@@ -211,7 +211,27 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         testRunner.accept(TestUtils.getDetectLanguageInputs());
     }
 
+    void detectSingleTextLanguageRunner(Consumer<String> testRunner) {
+        testRunner.accept(DETECT_LANGUAGE_INPUTS.get(0));
+    }
+
+    void detectLanguageInvalidCountryHintRunner(BiConsumer<String, String> testRunner) {
+        testRunner.accept(DETECT_LANGUAGE_INPUTS.get(1), "en");
+    }
+
+    void detectLanguageEmptyCountryHintRunner(BiConsumer<String, String> testRunner) {
+        testRunner.accept(DETECT_LANGUAGE_INPUTS.get(1), "");
+    }
+
+    void detectLanguageNoneCountryHintRunner(BiConsumer<String, String> testRunner) {
+        testRunner.accept(DETECT_LANGUAGE_INPUTS.get(1), "none");
+    }
+
     // Categorized Entity runner
+    void recognizeCategorizedEntitiesForSingleTextInputRunner(Consumer<String> testRunner) {
+        testRunner.accept(CATEGORIZED_ENTITY_INPUTS.get(0));
+    }
+
     void recognizeCategorizedEntityStringInputRunner(Consumer<List<String>> testRunner) {
         testRunner.accept(CATEGORIZED_ENTITY_INPUTS);
     }
@@ -296,6 +316,10 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     // Key Phrases runner
+    void extractKeyPhrasesForSingleTextInputRunner(Consumer<String> testRunner) {
+        testRunner.accept(KEY_PHRASE_INPUTS.get(1));
+    };
+
     void extractBatchStringKeyPhrasesShowStatsRunner(BiConsumer<List<String>, TextAnalyticsRequestOptions> testRunner) {
         testRunner.accept(KEY_PHRASE_INPUTS, new TextAnalyticsRequestOptions().setIncludeStatistics(true));
     }

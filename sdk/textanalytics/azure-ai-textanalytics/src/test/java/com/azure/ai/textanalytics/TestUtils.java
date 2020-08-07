@@ -144,22 +144,24 @@ final class TestUtils {
      * @return A {@link DetectLanguageResultCollection}.
      */
     static DetectLanguageResultCollection getExpectedBatchDetectedLanguages() {
-        DetectedLanguage detectedLanguage1 = new DetectedLanguage("English", "en", 0.0, null);
-        DetectedLanguage detectedLanguage2 = new DetectedLanguage("Spanish", "es", 0.0, null);
-        DetectedLanguage detectedLanguage3 = new DetectedLanguage("(Unknown)", "(Unknown)", 0.0, null);
-
-        TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics(26, 1);
-        TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics(40, 1);
-        TextDocumentStatistics textDocumentStatistics3 = new TextDocumentStatistics(6, 1);
-
-        DetectLanguageResult detectLanguageResult1 = new DetectLanguageResult("0", textDocumentStatistics1, null, detectedLanguage1);
-        DetectLanguageResult detectLanguageResult2 = new DetectLanguageResult("1", textDocumentStatistics2, null, detectedLanguage2);
-        DetectLanguageResult detectLanguageResult3 = new DetectLanguageResult("2", textDocumentStatistics3, null, detectedLanguage3);
-
-        TextDocumentBatchStatistics textDocumentBatchStatistics = new TextDocumentBatchStatistics(3, 3, 0, 3);
-        List<DetectLanguageResult> detectLanguageResultList = Arrays.asList(detectLanguageResult1, detectLanguageResult2, detectLanguageResult3);
-
+        final TextDocumentBatchStatistics textDocumentBatchStatistics = new TextDocumentBatchStatistics(3, 3, 0, 3);
+        final List<DetectLanguageResult> detectLanguageResultList = Arrays.asList(
+            new DetectLanguageResult("0", new TextDocumentStatistics(26, 1), null, getDetectedLanguageEnglish()),
+            new DetectLanguageResult("1", new TextDocumentStatistics(40, 1), null, getDetectedLanguageSpanish()),
+            new DetectLanguageResult("2", new TextDocumentStatistics(6, 1), null, getUnknownDetectedLanguage()));
         return new DetectLanguageResultCollection(detectLanguageResultList, DEFAULT_MODEL_VERSION, textDocumentBatchStatistics);
+    }
+
+    static DetectedLanguage getDetectedLanguageEnglish() {
+        return new DetectedLanguage("English", "en", 0.0, null);
+    }
+
+    static DetectedLanguage getDetectedLanguageSpanish() {
+        return new DetectedLanguage("Spanish", "es", 0.0, null);
+    }
+
+    static DetectedLanguage getUnknownDetectedLanguage() {
+        return new DetectedLanguage("(Unknown)", "(Unknown)", 0.0, null);
     }
 
     /**
