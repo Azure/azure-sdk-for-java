@@ -12,15 +12,20 @@ import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Performance test.
  */
 public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOptions> {
+    private List<Message> messages = new ArrayList<>();
 
     public ReceiveAndDeleteMessageTest(ServiceBusStressOptions options) throws InterruptedException, ExecutionException, ServiceBusException {
         super(options, ReceiveMode.RECEIVEANDDELETE);
@@ -56,16 +61,20 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
         Message message = new Message(CONTENTS);
         message.setMessageId(messageId);
 
-        return Flux.range(0, options.getMessagesToSend() * totalMessageMultiplier)
-            .flatMap(count -> {
-                try {
-                    sender.send(message);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return Mono.empty();
-            })
-            .then();
+        return Mono.defer(() -> {
+            messages = IntStream.range(0, options.getMessagesToSend() * totalMessageMultiplier)
+                .mapToObj(index -> message)
+                .collect(Collectors.toList());
+
+            try{
+                sender.sendBatch(messages);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ServiceBusException e) {
+                e.printStackTrace();
+            }
+            return Mono.empty();
+        });
     }
 
     @Override

@@ -12,11 +12,17 @@ import com.azure.messaging.servicebus.perf.core.ServiceTest;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 
 /**
  * Performance test.
  */
 public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOptions> {
+    private List<ServiceBusMessage> messages = new ArrayList<>();
 
     public ReceiveAndDeleteMessageTest(ServiceBusStressOptions options) {
         super(options, ReceiveMode.RECEIVE_AND_DELETE);
@@ -28,9 +34,13 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
         int totalMessageMultiplier = 500;
 
         ServiceBusMessage message =  new ServiceBusMessage(CONTENTS.getBytes());
-        return Flux.range(0, options.getMessagesToSend() * totalMessageMultiplier)
-            .flatMap(count -> senderAsync.sendMessage(message))
-            .then();
+
+        return Mono.defer(() -> {
+            messages = IntStream.range(0, options.getMessagesToSend() * totalMessageMultiplier)
+                .mapToObj(index -> message)
+                .collect(Collectors.toList());
+            return senderAsync.sendMessages(messages);
+        });
     }
 
     @Override
