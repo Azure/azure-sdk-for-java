@@ -11,11 +11,15 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResour
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
+import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
+import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 
 /** An immutable client-side representation of an Azure Private DNS Zone. */
 @Fluent
 public interface PrivateDnsZone
-    extends GroupableResource<PrivateDnsZoneManager, PrivateZoneInner> {
+    extends GroupableResource<PrivateDnsZoneManager, PrivateZoneInner>,
+        Refreshable<PrivateDnsZone>,
+        Updatable<PrivateDnsZone.Update> {
 
     /**
      * @return the ETag of the zone.
@@ -124,7 +128,7 @@ public interface PrivateDnsZone
     ARecordSets aRecordSets();
 
     /** @return the CNAME (canonical name) record set */
-    CnameRecordSet getCnameRecordSet();
+    CnameRecordSets cnameRecordSets();
 
     /** @return entry point to manage record sets in this zone containing MX (mail exchange) records */
     MxRecordSets mxRecordSets();
@@ -140,6 +144,9 @@ public interface PrivateDnsZone
 
     /** @return entry point to manage record sets in this zone containing TXT (text) records */
     TxtRecordSets txtRecordSets();
+
+    /** @return entry point to manage virtual network links in this zone */
+    VirtualNetworkLinks virtualNetworkLinks();
 
     /** The entirety of the private DNS zone definition. */
     interface Definition extends DefinitionStages.Blank, DefinitionStages.WithCreate {
@@ -176,7 +183,7 @@ public interface PrivateDnsZone
              * @param alias the CNAME record alias
              * @return the next stage of DNS zone definition
              */
-            WithCreate withCNameRecordSet(String name, String alias);
+            WithCreate withCnameRecordSet(String name, String alias);
 
             /**
              * Specifies definition of a CNAME record set.
@@ -184,7 +191,7 @@ public interface PrivateDnsZone
              * @param name name of the CNAME record set
              * @return the next stage of DNS zone definition
              */
-            PrivateDnsRecordSet.DefinitionStages.CNameRecordSetBlank<WithCreate> defineCNameRecordSet(String name);
+            PrivateDnsRecordSet.DefinitionStages.CNameRecordSetBlank<WithCreate> defineCnameRecordSet(String name);
 
             /**
              * Specifies definition of a MX record set.
@@ -192,7 +199,7 @@ public interface PrivateDnsZone
              * @param name name of the MX record set
              * @return the stage representing configuration for the MX record set
              */
-            PrivateDnsRecordSet.DefinitionStages.MXRecordSetBlank<WithCreate> defineMXRecordSet(String name);
+            PrivateDnsRecordSet.DefinitionStages.MXRecordSetBlank<WithCreate> defineMxRecordSet(String name);
 
             /**
              * Specifies definition of a PTR record set.
@@ -205,10 +212,9 @@ public interface PrivateDnsZone
             /**
              * Specifies definition of a SOA record set.
              *
-             * @param name name of the SOA record set
              * @return the stage representing configuration for the SOA record set
              */
-            PrivateDnsRecordSet.DefinitionStages.SoaRecordSetBlank<WithCreate> defineSoaRecordSet(String name);
+            PrivateDnsRecordSet.DefinitionStages.SoaRecordSetBlank<WithCreate> defineSoaRecordSet();
 
             /**
              * Specifies definition of a SRV record set.
@@ -288,7 +294,7 @@ public interface PrivateDnsZone
              * @param alias the CNAME record alias
              * @return the next stage of DNS zone definition
              */
-            Update withCNameRecordSet(String name, String alias);
+            Update withCnameRecordSet(String name, String alias);
 
             /**
              * Specifies definition of a CNAME record set.
@@ -296,7 +302,7 @@ public interface PrivateDnsZone
              * @param name name of the CNAME record set
              * @return the next stage of DNS zone definition
              */
-            PrivateDnsRecordSet.UpdateDefinitionStages.CNameRecordSetBlank<Update> defineCNameRecordSet(String name);
+            PrivateDnsRecordSet.UpdateDefinitionStages.CNameRecordSetBlank<Update> defineCnameRecordSet(String name);
 
             /**
              * Specifies definition of a MX record set to be attached to the private DNS zone.
@@ -304,7 +310,7 @@ public interface PrivateDnsZone
              * @param name name of the MX record set
              * @return the stage representing configuration for the MX record set
              */
-            PrivateDnsRecordSet.UpdateDefinitionStages.MXRecordSetBlank<Update> defineMXRecordSet(String name);
+            PrivateDnsRecordSet.UpdateDefinitionStages.MXRecordSetBlank<Update> defineMxRecordSet(String name);
 
             /**
              * Specifies definition of a PTR record set to be attached to the private DNS zone.
@@ -317,10 +323,9 @@ public interface PrivateDnsZone
             /**
              * Specifies definition of a SOA record set to be attached to the private DNS zone.
              *
-             * @param name name of the SOA record set
              * @return the stage representing configuration for the SOA record set
              */
-            PrivateDnsRecordSet.UpdateDefinitionStages.SoaRecordSetBlank<Update> defineSoaRecordSet(String name);
+            PrivateDnsRecordSet.UpdateDefinitionStages.SoaRecordSetBlank<Update> defineSoaRecordSet();
 
             /**
              * Specifies definition of a SRV record set to be attached to the private DNS zone.
@@ -360,7 +365,7 @@ public interface PrivateDnsZone
              * @param name name of the CNAME record set
              * @return the stage representing configuration for the CNAME record set
              */
-            PrivateDnsRecordSet.UpdateCNameRecordSet updateCNameRecordSet(String name);
+            PrivateDnsRecordSet.UpdateCNameRecordSet updateCnameRecordSet(String name);
 
             /**
              * Begins the description of an update of an existing MX record set in this DNS zone.
@@ -368,7 +373,7 @@ public interface PrivateDnsZone
              * @param name name of the MX record set
              * @return the stage representing configuration for the MX record set
              */
-            PrivateDnsRecordSet.UpdateMXRecordSet updateMXRecordSet(String name);
+            PrivateDnsRecordSet.UpdateMXRecordSet updateMxRecordSet(String name);
 
             /**
              * Begins the description of an update of an existing PTR record set in this DNS zone.

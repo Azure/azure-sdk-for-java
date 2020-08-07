@@ -3,13 +3,17 @@
 package com.azure.resourcemanager.privatedns.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.privatedns.fluent.inner.VirtualNetworkLinkInner;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.ExternalChildResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 
 /** An immutable client-side representation of an Azure Virtual Network Link. */
 @Fluent
-public interface VirtualNetworkLink {
+public interface VirtualNetworkLink
+    extends ExternalChildResource<VirtualNetworkLink, PrivateDnsZone>, HasInner<VirtualNetworkLinkInner> {
     /**
      * @return the ETag of the virtual network link.
      */
@@ -29,7 +33,7 @@ public interface VirtualNetworkLink {
     /**
      * @return the status of the virtual network link to the private DNS zone.
      */
-    VirtualNetworkLinkState virtualNetworkState();
+    VirtualNetworkLinkState virtualNetworkLinkState();
 
     /**
      * @return the provisioning state of the virtual network link.
@@ -206,11 +210,9 @@ public interface VirtualNetworkLink {
          */
         interface WithAttach<ParentT>
             extends Attachable.InUpdate<ParentT>,
-            DefinitionStages.WithAutoRegistration<ParentT>,
-            DefinitionStages.WithReferencedVirtualNetwork<ParentT>,
-            DefinitionStages.WithETagCheck<ParentT>,
-            Resource.DefinitionWithRegion<WithAttach<ParentT>>,
-            Resource.DefinitionWithTags<WithAttach<ParentT>> {
+            UpdateDefinitionStages.WithAutoRegistration<ParentT>,
+            UpdateDefinitionStages.WithReferencedVirtualNetwork<ParentT>,
+            UpdateDefinitionStages.WithETagCheck<ParentT> {
         }
     }
 

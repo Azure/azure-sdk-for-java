@@ -18,6 +18,10 @@ public interface PrivateDnsRecordSet
     extends ExternalChildResource<PrivateDnsRecordSet, PrivateDnsZone>,
         HasInner<RecordSetInner> {
     /**
+     * @return the type of the record set.
+     */
+    RecordType recordType();
+    /**
      * @return the ETag of the record set.
      */
     String etag();

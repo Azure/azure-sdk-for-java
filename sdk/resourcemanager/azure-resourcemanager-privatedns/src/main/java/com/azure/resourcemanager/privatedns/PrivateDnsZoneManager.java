@@ -1,10 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
 package com.azure.resourcemanager.privatedns;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.resourcemanager.privatedns.implementation.PrivateDnsZonesImpl;
+import com.azure.resourcemanager.privatedns.models.PrivateDnsZones;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.Manager;
@@ -14,6 +15,8 @@ import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 
 /** Entry point to Azure private DNS zone management. */
 public final class PrivateDnsZoneManager extends Manager<PrivateDnsZoneManager, PrivateDnsManagementClient> {
+
+    private PrivateDnsZones privateZones;
 
     /**
      * Get a Configurable instance that can be used to create {@link PrivateDnsZoneManager} with optional configuration.
@@ -88,5 +91,15 @@ public final class PrivateDnsZoneManager extends Manager<PrivateDnsZoneManager, 
                 .buildClient(),
             sdkContext
         );
+    }
+
+    /**
+     * @return the entry point to private DNS zone management.
+     */
+    public PrivateDnsZones privateZones() {
+        if (privateZones == null) {
+            privateZones = new PrivateDnsZonesImpl(this);
+        }
+        return privateZones;
     }
 }
