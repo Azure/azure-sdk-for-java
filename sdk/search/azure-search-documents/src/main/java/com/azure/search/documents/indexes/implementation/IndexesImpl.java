@@ -50,7 +50,7 @@ public final class IndexesImpl {
      * @param client the instance of the service client containing this operation class.
      */
     IndexesImpl(SearchServiceClientImpl client) {
-        this.service = RestProxy.create(IndexesService.class, client.getHttpPipeline());
+        this.service = RestProxy.create(IndexesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 

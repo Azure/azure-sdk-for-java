@@ -30,20 +30,20 @@ public class SubscriptionRuntimeInfo {
     /**
      * Creates a new instance with runtime properties extracted from the given SubscriptionDescription.
      *
-     * @param subscriptionDescription Subscription description to extract runtime information from.
+     * @param subscriptionProperties Subscription description to extract runtime information from.
      *
      * @throws NullPointerException if {@code subscriptionDescription} is null.
      */
-    public SubscriptionRuntimeInfo(SubscriptionDescription subscriptionDescription) {
-        Objects.requireNonNull(subscriptionDescription, "'subscriptionDescription' cannot be null.");
-        this.subscriptionName = subscriptionDescription.getSubscriptionName();
-        this.topicName = subscriptionDescription.getTopicName();
-        this.messageCount = subscriptionDescription.getMessageCount();
-        this.accessedAt = subscriptionDescription.getAccessedAt();
-        this.createdAt = subscriptionDescription.getCreatedAt();
-        this.updatedAt = subscriptionDescription.getUpdatedAt();
+    public SubscriptionRuntimeInfo(SubscriptionProperties subscriptionProperties) {
+        Objects.requireNonNull(subscriptionProperties, "'subscriptionProperties' cannot be null.");
+        this.subscriptionName = subscriptionProperties.getSubscriptionName();
+        this.topicName = subscriptionProperties.getTopicName();
+        this.messageCount = subscriptionProperties.getMessageCount();
+        this.accessedAt = subscriptionProperties.getAccessedAt();
+        this.createdAt = subscriptionProperties.getCreatedAt();
+        this.updatedAt = subscriptionProperties.getUpdatedAt();
 
-        final MessageCountDetails details = subscriptionDescription.getMessageCountDetails();
+        final MessageCountDetails details = subscriptionProperties.getMessageCountDetails();
         this.activeMessageCount = details != null ? details.getActiveMessageCount() : 0;
         this.deadLetterMessageCount = details != null ? details.getDeadLetterMessageCount() : 0;
         this.scheduledMessageCount = details != null ? details.getScheduledMessageCount() : 0;
@@ -92,7 +92,7 @@ public class SubscriptionRuntimeInfo {
      *
      * @return The number of messages in the subscription.
      */
-    public long getMessageCount() {
+    public long getTotalMessageCount() {
         return messageCount;
     }
 

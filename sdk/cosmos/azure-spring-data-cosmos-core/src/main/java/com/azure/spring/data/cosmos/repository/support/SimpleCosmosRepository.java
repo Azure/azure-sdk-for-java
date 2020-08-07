@@ -117,7 +117,7 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
      * @return return a List of all found entities
      */
     @Override
-    public List<T> findAllById(Iterable<ID> ids) {
+    public Iterable<T> findAllById(Iterable<ID> ids) {
         Assert.notNull(ids, "Iterable ids should not be null");
 
         return operation.findByIds(ids, information.getJavaType(), information.getContainerName());
@@ -250,8 +250,8 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
     }
 
     /**
-     * FindQuerySpecGenerator
-     * Returns a Page of entities meeting the paging restriction provided in the Pageable object.
+     * FindQuerySpecGenerator Returns a Page of entities meeting the paging restriction provided in the Pageable
+     * object.
      *
      * @param pageable the Pageable object providing paging restriction
      * @return a page of entities
@@ -265,7 +265,7 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
     }
 
     @Override
-    public List<T> findAll(PartitionKey partitionKey) {
+    public Iterable<T> findAll(PartitionKey partitionKey) {
         return operation.findAll(partitionKey, information.getJavaType());
     }
 }

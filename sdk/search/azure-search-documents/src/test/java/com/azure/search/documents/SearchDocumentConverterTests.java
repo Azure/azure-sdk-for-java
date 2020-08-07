@@ -3,12 +3,9 @@
 
 package com.azure.search.documents;
 
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.search.documents.implementation.SerializationUtil;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
+import java.io.ByteArrayInputStream;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -20,6 +17,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.azure.search.documents.TestHelpers.assertMapEquals;
+import static com.azure.search.documents.TestHelpers.convertStreamToMap;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -36,18 +34,9 @@ public class SearchDocumentConverterTests {
         // the result object is a map of key:value, get deserialized directly into the Document object
         // Document is simply a Hash Map.
         // in this case we simulate creation of the object created by azure-core
-
-        JacksonAdapter adapter = new JacksonAdapter();
-        SerializationUtil.configureMapper(adapter.serializer());
-
-        SearchDocument doc = new SearchDocument();
-        try {
-            doc = adapter.deserialize(json, SearchDocument.class, SerializerEncoding.JSON);
-            cleanupODataAnnotation(doc);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(json.getBytes());
+        SearchDocument doc = new SearchDocument(convertStreamToMap(inputStream));
+        cleanupODataAnnotation(doc);
         return doc;
     }
 
@@ -129,7 +118,7 @@ public class SearchDocumentConverterTests {
 //        String json = "{ \"field\": { \"type\": \"Point\", \"coordinates\": [-122.131577, 47.678581], "
 //            + "\"crs\":{\"type\":\"name\", \"properties\":{\"name\":\"EPSG:4326\"}}}}";
 //        SearchDocument expectedDoc = new SearchDocument(Collections.singletonMap("field",
-//            createPointGeometryString(47.678581, -122.131577)));
+//            createPointGeometry(47.678581, -122.131577)));
 //
 //        SearchDocument actualDoc = deserialize(json);
 //        expectedDoc.forEach((key, value) -> {
@@ -144,7 +133,7 @@ public class SearchDocumentConverterTests {
 //            + "{\"type\":\"Point\", \"coordinates\":[-121.0, 49.0], "
 //            + "\"crs\":{\"type\":\"name\", \"properties\":{\"name\":\"EPSG:4326\"}}}]}";
 //        SearchDocument expectedDoc = new SearchDocument(Collections.singletonMap("field",
-//            Arrays.asList(createPointGeometryString(47.678581, -122.131577), createPointGeometryString(49.0,
+//            Arrays.asList(createPointGeometry(47.678581, -122.131577), createPointGeometry(49.0,
 //                -121.0))));
 //
 //        SearchDocument actualDoc = deserialize(json);
@@ -210,7 +199,7 @@ public class SearchDocumentConverterTests {
 //            + "\"crs\":{\"type\":\"name\", \"properties\":{\"name\": \"EPSG:4326\"}}}, "
 //            + "{ \"name\": \"Arthur\", \"quest\": null }] }";
 //
-//        PointGeometry point = createPointGeometryString(47.678581, -122.131577);
+//        PointGeometry point = createPointGeometry(47.678581, -122.131577);
 //        SearchDocument innerDoc = new SearchDocument();
 //        innerDoc.put("name", "Arthur");
 //        innerDoc.put("quest", null);

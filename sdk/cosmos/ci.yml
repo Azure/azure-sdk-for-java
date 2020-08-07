@@ -58,6 +58,6 @@ extends:
     AdditionalModules:
       - name: azure-cosmos-benchmark
         groupId: com.azure
-      - name: azure-spring-data-test
+      - name: azure-spring-data-cosmos-test
         groupId: com.azure
 

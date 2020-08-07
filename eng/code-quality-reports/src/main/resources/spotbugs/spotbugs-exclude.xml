@@ -2099,10 +2099,12 @@
     <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE,SIC_INNER_SHOULD_BE_STATIC_ANON,SKIPPED_CLASS_TOO_BIG"/>
   </Match>
 
-  <!-- Exclude REC_CATCH_EXCEPTION for management samples. All samples in management catch Exception instead of throw it. -->
+  <!-- Exclude REC_CATCH_EXCEPTION and false positive error for management samples. All samples in management catch Exception instead of throw it. -->
   <Match>
     <Package name="~com\.azure\.resourcemanager(\.[^.]+)*\.samples(\.[^.]+)*"/>
-    <Bug pattern="REC_CATCH_EXCEPTION"/>
+    <Bug pattern="REC_CATCH_EXCEPTION,
+                  RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE, 
+                  RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
 
   <!-- Exclude from spring related classes -->
@@ -2170,12 +2172,31 @@
     <Bug pattern="NM_SAME_SIMPLE_NAME_AS_INTERFACE"/>
   </Match>
 
+  <!-- Use the property to take the custom serializer from SearchClient. -->
+  <Match>
+    <Class name="~com\.azure\.search\.documents\.models\.(SearchResult|SuggestResult)" />
+    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" />
+  </Match>
+
+  <!-- Use abstract TypeReference class for serialize and deserialize API. -->
+  <Match>
+    <Class name="~com\.azure\.search\.documents\.models\.(SearchResult|SuggestResult)" />
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON" />
+  </Match>
+
+  <Match>
+    <Or>
+      <Class name="com.azure.core.serializer.json.jackson.JacksonJsonSerializer"/>
+      <Class name="com.azure.core.serializer.json.gson.GsonJsonSerializer"/>
+    </Or>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
   <!-- Setup in Identity Test classes, required for the tests to work properly.-->
   <Match>
       <Class name="com.azure.identity.ClientCertificateCredentialTest" />
       <Bug pattern="DMI_HARDCODED_ABSOLUTE_FILENAME"/>
   </Match>
-  
+
   <Match>
       <Or>
           <Class name="com.azure.identity.implementation.IdentityClientTests"/>

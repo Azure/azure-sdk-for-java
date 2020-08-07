@@ -3,6 +3,7 @@
 
 package com.azure.search.documents.implementation.converters;
 
+import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.search.documents.SearchDocument;
 import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
 import com.azure.search.documents.models.SearchResult;
@@ -18,7 +19,8 @@ public final class SearchResultConverter {
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.SearchResult} to {@link SearchResult}.
      */
-    public static SearchResult map(com.azure.search.documents.implementation.models.SearchResult obj) {
+    public static SearchResult map(com.azure.search.documents.implementation.models.SearchResult obj,
+        ObjectSerializer serializer) {
         if (obj == null) {
             return null;
         }
@@ -30,6 +32,7 @@ public final class SearchResultConverter {
                     Map.Entry::getValue));
             PrivateFieldAccessHelper.set(searchResult, "highlights", highlights);
         }
+        PrivateFieldAccessHelper.set(searchResult, "jsonSerializer", serializer);
 
         SearchDocument additionalProperties = new SearchDocument(obj.getAdditionalProperties());
         PrivateFieldAccessHelper.set(searchResult, "additionalProperties", additionalProperties);
