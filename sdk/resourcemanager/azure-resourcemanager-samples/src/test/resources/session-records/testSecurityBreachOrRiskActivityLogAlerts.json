@@ -1,0 +1,262 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgmonitor61e240436?api-version=2020-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.0.0-beta.4 (11.0.3; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Mon, 03 Aug 2020 08:27:53 GMT",
+      "content-length" : "323",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1188",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "b17a900f-a65d-431d-8fbc-004986920c4a",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200803T082753Z:b17a900f-a65d-431d-8fbc-004986920c4a",
+      "connection" : "keep-alive",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "b17a900f-a65d-431d-8fbc-004986920c4a",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgmonitor61e240436\",\"name\":\"rgmonitor61e240436\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"eastus\",\"tags\":{\"date\":\"2020-08-03T08:27:49.256961200Z\",\"product\":\"javasdk\",\"cause\":\"automation\"},\"properties\":{\"provisioningState\":\"Succeeded\"}}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgmonitor61e240436/providers/Microsoft.Storage/storageAccounts/samonitor3df197141?api-version=2019-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.storage/2.0.0-beta.4 (11.0.3; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Mon, 03 Aug 2020 08:27:58 GMT",
+      "server" : "Microsoft-Azure-Storage-Resource-Provider/1.0,Microsoft-HTTPAPI/2.0 Microsoft-HTTPAPI/2.0",
+      "content-length" : "0",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1176",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "14052abb-25ba-490c-8799-ea98305a5ecb",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200803T082759Z:14052abb-25ba-490c-8799-ea98305a5ecb",
+      "connection" : "keep-alive",
+      "content-type" : "text/plain; charset=utf-8",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus/asyncoperations/9f3b26b2-ae57-4c3f-9bdd-926e26ac9336?monitor=true&api-version=2019-06-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "9f3b26b2-ae57-4c3f-9bdd-926e26ac9336",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus/asyncoperations/9f3b26b2-ae57-4c3f-9bdd-926e26ac9336?monitor=true&api-version=2019-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Mon, 03 Aug 2020 08:28:16 GMT",
+      "server" : "Microsoft-Azure-Storage-Resource-Provider/1.0,Microsoft-HTTPAPI/2.0 Microsoft-HTTPAPI/2.0",
+      "content-length" : "1169",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11965",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "46fd5261-f32f-4c64-a857-1b6f8f9b0755",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200803T082817Z:46fd5261-f32f-4c64-a857-1b6f8f9b0755",
+      "connection" : "keep-alive",
+      "content-type" : "application/json",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "ade55f2c-6136-4d6a-b75d-a97d5c958e86",
+      "Body" : "{\"sku\":{\"name\":\"Standard_GRS\",\"tier\":\"Standard\"},\"kind\":\"BlobStorage\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgmonitor61e240436/providers/Microsoft.Storage/storageAccounts/samonitor3df197141\",\"name\":\"samonitor3df197141\",\"type\":\"Microsoft.Storage/storageAccounts\",\"location\":\"eastus\",\"tags\":{},\"properties\":{\"privateEndpointConnections\":[],\"networkAcls\":{\"bypass\":\"AzureServices\",\"virtualNetworkRules\":[],\"ipRules\":[],\"defaultAction\":\"Allow\"},\"supportsHttpsTrafficOnly\":true,\"encryption\":{\"services\":{\"file\":{\"keyType\":\"Account\",\"enabled\":true,\"lastEnabledTime\":\"2020-08-03T08:27:58.7600435Z\"},\"blob\":{\"keyType\":\"Account\",\"enabled\":true,\"lastEnabledTime\":\"2020-08-03T08:27:58.7600435Z\"}},\"keySource\":\"Microsoft.Storage\"},\"accessTier\":\"Cool\",\"provisioningState\":\"Succeeded\",\"creationTime\":\"2020-08-03T08:27:58.6975701Z\",\"primaryEndpoints\":{\"dfs\":\"https://samonitor3df197141.dfs.core.windows.net/\",\"blob\":\"https://samonitor3df197141.blob.core.windows.net/\",\"table\":\"https://samonitor3df197141.table.core.windows.net/\"},\"primaryLocation\":\"eastus\",\"statusOfPrimary\":\"available\",\"secondaryLocation\":\"westus\",\"statusOfSecondary\":\"available\"}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgmonitor61e240436/providers/Microsoft.Storage/storageAccounts/samonitor3df197141?api-version=2019-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.storage/2.0.0-beta.4 (11.0.3; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Mon, 03 Aug 2020 08:28:17 GMT",
+      "server" : "Microsoft-Azure-Storage-Resource-Provider/1.0,Microsoft-HTTPAPI/2.0 Microsoft-HTTPAPI/2.0",
+      "content-length" : "1169",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11959",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "e5b07207-738e-4e00-8366-c9f44d82bc4a",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200803T082818Z:e5b07207-738e-4e00-8366-c9f44d82bc4a",
+      "connection" : "keep-alive",
+      "content-type" : "application/json",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "cd6180a4-ba09-4249-b5f0-56e0d8074747",
+      "Body" : "{\"sku\":{\"name\":\"Standard_GRS\",\"tier\":\"Standard\"},\"kind\":\"BlobStorage\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgmonitor61e240436/providers/Microsoft.Storage/storageAccounts/samonitor3df197141\",\"name\":\"samonitor3df197141\",\"type\":\"Microsoft.Storage/storageAccounts\",\"location\":\"eastus\",\"tags\":{},\"properties\":{\"privateEndpointConnections\":[],\"networkAcls\":{\"bypass\":\"AzureServices\",\"virtualNetworkRules\":[],\"ipRules\":[],\"defaultAction\":\"Allow\"},\"supportsHttpsTrafficOnly\":true,\"encryption\":{\"services\":{\"file\":{\"keyType\":\"Account\",\"enabled\":true,\"lastEnabledTime\":\"2020-08-03T08:27:58.7600435Z\"},\"blob\":{\"keyType\":\"Account\",\"enabled\":true,\"lastEnabledTime\":\"2020-08-03T08:27:58.7600435Z\"}},\"keySource\":\"Microsoft.Storage\"},\"accessTier\":\"Cool\",\"provisioningState\":\"Succeeded\",\"creationTime\":\"2020-08-03T08:27:58.6975701Z\",\"primaryEndpoints\":{\"dfs\":\"https://samonitor3df197141.dfs.core.windows.net/\",\"blob\":\"https://samonitor3df197141.blob.core.windows.net/\",\"table\":\"https://samonitor3df197141.table.core.windows.net/\"},\"primaryLocation\":\"eastus\",\"statusOfPrimary\":\"available\",\"secondaryLocation\":\"westus\",\"statusOfSecondary\":\"available\"}}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgmonitor61e240436/providers/microsoft.insights/actionGroups/securityBreachActionGroup?api-version=2019-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.monitor/2.0.0-beta.4 (11.0.3; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Mon, 03 Aug 2020 08:28:21 GMT",
+      "server" : "Microsoft-IIS/10.0",
+      "content-length" : "1301",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1151",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "cb88815d-5206-4255-923f-23a0444b7a19",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200803T082822Z:cb88815d-5206-4255-923f-23a0444b7a19",
+      "connection" : "keep-alive",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "2b237b34-b38b-478d-95b5-dc274ff3aa10",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgmonitor61e240436/providers/microsoft.insights/actionGroups/securityBreachActionGroup\",\"type\":\"Microsoft.Insights/ActionGroups\",\"name\":\"securityBreachActionGroup\",\"location\":\"Global\",\"kind\":null,\"tags\":{},\"properties\":{\"groupShortName\":\"securityBrea\",\"enabled\":true,\"emailReceivers\":[{\"name\":\"tierOne_-EmailAction-\",\"emailAddress\":\"security_guards@securecorporation.com\",\"status\":\"Enabled\",\"useCommonAlertSchema\":false},{\"name\":\"tierTwo_-EmailAction-\",\"emailAddress\":\"ceo@securecorporation.com\",\"status\":\"Enabled\",\"useCommonAlertSchema\":false}],\"smsReceivers\":[{\"name\":\"tierOne_-SMSAction-\",\"countryCode\":\"1\",\"phoneNumber\":\"4255655665\",\"status\":\"Enabled\"}],\"webhookReceivers\":[{\"name\":\"tierOne (WH)\",\"serviceUri\":\"https://www.weseemstobehacked.securecorporation.com\",\"useCommonAlertSchema\":false,\"useAadAuth\":false,\"objectId\":null,\"identifierUri\":null,\"tenantId\":null}],\"itsmReceivers\":[],\"azureAppPushReceivers\":[{\"name\":\"tierOne_-AzureAppAction-\",\"emailAddress\":\"security_on_duty@securecorporation.com\"}],\"automationRunbookReceivers\":[],\"voiceReceivers\":[{\"name\":\"tierOne_-VoiceAction-\",\"countryCode\":\"1\",\"phoneNumber\":\"2062066050\"}],\"logicAppReceivers\":[],\"azureFunctionReceivers\":[],\"armRoleReceivers\":[]},\"identity\":null}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgmonitor61e240436/providers/microsoft.insights/activityLogAlerts/Potential%20security%20breach%20alert?api-version=2017-04-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.monitor/2.0.0-beta.4 (11.0.3; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Mon, 03 Aug 2020 08:28:25 GMT",
+      "server" : "Microsoft-IIS/10.0",
+      "content-length" : "1170",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1164",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "821178da-7a75-4bdd-8513-485f63531892",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200803T082826Z:821178da-7a75-4bdd-8513-485f63531892",
+      "connection" : "keep-alive",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "eastasia_6aaad535f5404a39b5904997636f0a19_637320401049734078",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgmonitor61e240436/providers/microsoft.insights/activityLogAlerts/Potential security breach alert\",\"type\":\"Microsoft.Insights/ActivityLogAlerts\",\"name\":\"Potential security breach alert\",\"location\":\"Global\",\"kind\":null,\"tags\":{},\"properties\":{\"scopes\":[\"/subscriptions/00000000-0000-0000-0000-000000000000\"],\"condition\":{\"allOf\":[{\"field\":\"category\",\"equals\":\"Security\",\"containsAny\":null,\"odata.type\":null},{\"field\":\"operationName\",\"equals\":\"Microsoft.Storage/storageAccounts/listkeys/action\",\"containsAny\":null,\"odata.type\":null},{\"field\":\"resourceId\",\"equals\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgmonitor61e240436/providers/Microsoft.Storage/storageAccounts/samonitor3df197141\",\"containsAny\":null,\"odata.type\":null}],\"odata.type\":null},\"actions\":{\"actionGroups\":[{\"actionGroupId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgmonitor61e240436/providers/microsoft.insights/actionGroups/securityBreachActionGroup\",\"webhookProperties\":null}]},\"enabled\":true,\"description\":\"Security StorageAccounts ListAccountKeys trigger\"},\"identity\":null}"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgmonitor61e240436/providers/Microsoft.Storage/storageAccounts/samonitor3df197141/listKeys?api-version=2019-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.storage/2.0.0-beta.4 (11.0.3; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Mon, 03 Aug 2020 08:28:26 GMT",
+      "server" : "Microsoft-Azure-Storage-Resource-Provider/1.0,Microsoft-HTTPAPI/2.0 Microsoft-HTTPAPI/2.0",
+      "content-length" : "288",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "3db954c7-7d04-4d7d-8c74-680f5d6e9a12",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11999",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200803T082826Z:3db954c7-7d04-4d7d-8c74-680f5d6e9a12",
+      "connection" : "keep-alive",
+      "content-type" : "application/json",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "18ecd74d-b030-4aba-8bbd-8d31a3926b87",
+      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"}]}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/microsoft.insights/eventtypes/management/values?api-version=2015-04-01&$filter=eventTimestamp%20ge%20%272020-07-27T08%3A34%3A27.009944500Z%27%20and%20eventTimestamp%20le%20%272020-08-03T08%3A34%3A27.009944500Z%27%20and%20resourceUri%20eq%20%27/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgmonitor61e240436/providers/microsoft.insights/activityLogAlerts/Potential%20security%20breach%20alert%27",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.monitor/2.0.0-beta.4 (11.0.3; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Mon, 03 Aug 2020 08:34:27 GMT",
+      "server" : "Microsoft-IIS/10.0",
+      "content-length" : "6540",
+      "expires" : "-1",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11632",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "178c86df-6408-4953-a3d8-31d87bdfb8b1",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200803T083427Z:178c86df-6408-4953-a3d8-31d87bdfb8b1",
+      "connection" : "keep-alive",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "EastAsia_bd858b6bac1b4a56ac44ea61241f1e20_637320404679102026",
+      "Body" : "{\"value\":[{\"authorization\":{\"action\":\"microsoft.insights/activityLogAlerts/write\",\"scope\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgmonitor61e240436/providers/microsoft.insights/activityLogAlerts/Potential security breach alert\"},\"caller\":\"4f9eda12-45b5-45bb-ad92-294962ccae95\",\"channels\":\"Operation\",\"claims\":{\"aud\":\"https://management.core.windows.net\",\"iss\":\"https://sts.windows.net/00000000-0000-0000-0000-000000000000/\",\"iat\":\"1596443002\",\"nbf\":\"1596443002\",\"exp\":\"1596529702\",\"aio\":\"E2BgYLgpoi7Q+2mtvvYnGc7MzrolAA==\",\"appid\":\"0a5612a4-bc9a-47ea-b5dd-b9280aca1b09\",\"appidacr\":\"1\",\"http://schemas.microsoft.com/identity/claims/identityprovider\":\"https://sts.windows.net/00000000-0000-0000-0000-000000000000/\",\"http://schemas.microsoft.com/identity/claims/objectidentifier\":\"4f9eda12-45b5-45bb-ad92-294962ccae95\",\"rh\":\"0.AQEAv4j5cvGGr0GRqy180BHbR6QSVgqavOpHtd25KArKGwkaAAA.\",\"http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier\":\"4f9eda12-45b5-45bb-ad92-294962ccae95\",\"http://schemas.microsoft.com/identity/claims/tenantid\":\"00000000-0000-0000-0000-000000000000\",\"uti\":\"6ObB0PAi4EOrlGq7cWsIAA\",\"ver\":\"1.0\",\"xms_tcdt\":\"1289241547\"},\"correlationId\":\"821178da-7a75-4bdd-8513-485f63531892\",\"description\":\"\",\"eventDataId\":\"d8294fcb-af43-4a0b-92f5-ff3deb223746\",\"eventName\":{\"value\":\"EndRequest\",\"localizedValue\":\"End request\"},\"category\":{\"value\":\"Administrative\",\"localizedValue\":\"Administrative\"},\"httpRequest\":{\"clientRequestId\":\"c6433ba6-8b68-4413-9a97-b6bab43d2aab\",\"clientIpAddress\":\"167.220.255.19\",\"method\":\"PUT\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgmonitor61e240436/providers/microsoft.insights/activityLogAlerts/Potential+security+breach+alert/events/d8294fcb-af43-4a0b-92f5-ff3deb223746/ticks/637320401060406464\",\"level\":\"Informational\",\"resourceGroupName\":\"rgmonitor61e240436\",\"resourceProviderName\":{\"value\":\"microsoft.insights\",\"localizedValue\":\"Microsoft Insights\"},\"resourceId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgmonitor61e240436/providers/microsoft.insights/activityLogAlerts/Potential security breach alert\",\"resourceType\":{\"value\":\"microsoft.insights/activityLogAlerts\",\"localizedValue\":\"microsoft.insights/activityLogAlerts\"},\"operationId\":\"821178da-7a75-4bdd-8513-485f63531892\",\"operationName\":{\"value\":\"microsoft.insights/activityLogAlerts/write\",\"localizedValue\":\"Create or update activity log alert\"},\"properties\":{\"statusCode\":\"Created\",\"serviceRequestId\":\"eastasia_6aaad535f5404a39b5904997636f0a19_637320401049734078\",\"eventCategory\":\"Administrative\"},\"status\":{\"value\":\"Succeeded\",\"localizedValue\":\"Succeeded\"},\"subStatus\":{\"value\":\"Created\",\"localizedValue\":\"Created (HTTP Status Code: 201)\"},\"eventTimestamp\":\"2020-08-03T08:28:26.0406464Z\",\"submissionTimestamp\":\"2020-08-03T08:29:37.1802514Z\",\"subscriptionId\":\"00000000-0000-0000-0000-000000000000\",\"tenantId\":\"00000000-0000-0000-0000-000000000000\"},{\"authorization\":{\"action\":\"microsoft.insights/activityLogAlerts/write\",\"scope\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgmonitor61e240436/providers/microsoft.insights/activityLogAlerts/Potential security breach alert\"},\"caller\":\"4f9eda12-45b5-45bb-ad92-294962ccae95\",\"channels\":\"Operation\",\"claims\":{\"aud\":\"https://management.core.windows.net\",\"iss\":\"https://sts.windows.net/00000000-0000-0000-0000-000000000000/\",\"iat\":\"1596443002\",\"nbf\":\"1596443002\",\"exp\":\"1596529702\",\"aio\":\"E2BgYLgpoi7Q+2mtvvYnGc7MzrolAA==\",\"appid\":\"0a5612a4-bc9a-47ea-b5dd-b9280aca1b09\",\"appidacr\":\"1\",\"http://schemas.microsoft.com/identity/claims/identityprovider\":\"https://sts.windows.net/00000000-0000-0000-0000-000000000000/\",\"http://schemas.microsoft.com/identity/claims/objectidentifier\":\"4f9eda12-45b5-45bb-ad92-294962ccae95\",\"rh\":\"0.AQEAv4j5cvGGr0GRqy180BHbR6QSVgqavOpHtd25KArKGwkaAAA.\",\"http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier\":\"4f9eda12-45b5-45bb-ad92-294962ccae95\",\"http://schemas.microsoft.com/identity/claims/tenantid\":\"00000000-0000-0000-0000-000000000000\",\"uti\":\"6ObB0PAi4EOrlGq7cWsIAA\",\"ver\":\"1.0\",\"xms_tcdt\":\"1289241547\"},\"correlationId\":\"821178da-7a75-4bdd-8513-485f63531892\",\"description\":\"\",\"eventDataId\":\"3316139d-2a11-4771-93db-71afd9248786\",\"eventName\":{\"value\":\"BeginRequest\",\"localizedValue\":\"Begin request\"},\"category\":{\"value\":\"Administrative\",\"localizedValue\":\"Administrative\"},\"httpRequest\":{\"clientRequestId\":\"c6433ba6-8b68-4413-9a97-b6bab43d2aab\",\"clientIpAddress\":\"167.220.255.19\",\"method\":\"PUT\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgmonitor61e240436/providers/microsoft.insights/activityLogAlerts/Potential+security+breach+alert/events/3316139d-2a11-4771-93db-71afd9248786/ticks/637320401031606287\",\"level\":\"Informational\",\"resourceGroupName\":\"rgmonitor61e240436\",\"resourceProviderName\":{\"value\":\"microsoft.insights\",\"localizedValue\":\"Microsoft Insights\"},\"resourceId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgmonitor61e240436/providers/microsoft.insights/activityLogAlerts/Potential security breach alert\",\"resourceType\":{\"value\":\"microsoft.insights/activityLogAlerts\",\"localizedValue\":\"microsoft.insights/activityLogAlerts\"},\"operationId\":\"821178da-7a75-4bdd-8513-485f63531892\",\"operationName\":{\"value\":\"microsoft.insights/activityLogAlerts/write\",\"localizedValue\":\"Create or update activity log alert\"},\"properties\":{\"requestbody\":\"{\\\"location\\\":\\\"global\\\",\\\"tags\\\":{},\\\"properties\\\":{\\\"scopes\\\":[\\\"/subscriptions/00000000-0000-0000-0000-000000000000\\\"],\\\"enabled\\\":true,\\\"condition\\\":{\\\"allOf\\\":[{\\\"field\\\":\\\"category\\\",\\\"equals\\\":\\\"Security\\\"},{\\\"field\\\":\\\"operationName\\\",\\\"equals\\\":\\\"Microsoft.Storage/storageAccounts/listkeys/action\\\"},{\\\"field\\\":\\\"resourceId\\\",\\\"equals\\\":\\\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgmonitor61e240436/providers/Microsoft.Storage/storageAccounts/samonitor3df197141\\\"}]},\\\"actions\\\":{\\\"actionGroups\\\":[{\\\"actionGroupId\\\":\\\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgmonitor61e240436/providers/microsoft.insights/actionGroups/securityBreachActionGroup\\\"}]},\\\"description\\\":\\\"Security StorageAccounts ListAccountKeys trigger\\\"}}\",\"eventCategory\":\"Administrative\"},\"status\":{\"value\":\"Started\",\"localizedValue\":\"Started\"},\"subStatus\":{\"value\":\"\",\"localizedValue\":\"\"},\"eventTimestamp\":\"2020-08-03T08:28:23.1606287Z\",\"submissionTimestamp\":\"2020-08-03T08:29:37.1792513Z\",\"subscriptionId\":\"00000000-0000-0000-0000-000000000000\",\"tenantId\":\"00000000-0000-0000-0000-000000000000\"}]}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgmonitor61e240436?api-version=2020-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.0.0-beta.4 (11.0.3; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Mon, 03 Aug 2020 08:34:28 GMT",
+      "content-length" : "323",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11691",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "e167d0d6-e7af-46ce-a732-9822f7fe2ee3",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200803T083428Z:e167d0d6-e7af-46ce-a732-9822f7fe2ee3",
+      "connection" : "keep-alive",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "e167d0d6-e7af-46ce-a732-9822f7fe2ee3",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgmonitor61e240436\",\"name\":\"rgmonitor61e240436\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"eastus\",\"tags\":{\"date\":\"2020-08-03T08:27:49.256961200Z\",\"product\":\"javasdk\",\"cause\":\"automation\"},\"properties\":{\"provisioningState\":\"Succeeded\"}}"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgmonitor61e240436?api-version=2020-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.0.0-beta.4 (11.0.3; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Mon, 03 Aug 2020 08:34:30 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-deletes" : "14983",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "d8a418df-081c-4d06-b98a-897849e44557",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200803T083431Z:d8a418df-081c-4d06-b98a-897849e44557",
+      "connection" : "keep-alive",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR01PTklUT1I2MUUyNDA0MzYtRUFTVFVTIiwiam9iTG9jYXRpb24iOiJlYXN0dXMifQ?api-version=2020-06-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "d8a418df-081c-4d06-b98a-897849e44557",
+      "Body" : ""
+    }
+  } ],
+  "variables" : [ "samonitor3df197141", "rgmonitor61e240436", "2020-08-03T16:34:27.009944500+08:00" ]
+}

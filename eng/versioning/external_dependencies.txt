@@ -9,6 +9,7 @@ com.fasterxml.jackson.datatype:jackson-datatype-jdk8;2.10.0
 com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.10.1
 com.fasterxml.jackson.module:jackson-module-parameter-names;2.10.0
 com.github.spotbugs:spotbugs;4.0.0-beta3
+com.github.spotbugs:spotbugs-annotations;4.0.2
 com.github.spotbugs:spotbugs-maven-plugin;3.1.12.2
 com.google.code.gson:gson;2.8.6
 com.google.guava:guava;24.1.1-jre
@@ -32,6 +33,8 @@ com.microsoft.spring.data.gremlin:spring-data-gremlin;2.3.0
 com.squareup.okhttp3:okhttp;4.2.2
 com.zaxxer:HikariCP;3.4.5
 commons-codec:commons-codec;1.14
+commons-net:commons-net;3.6
+io.fabric8:kubernetes-client;4.9.1
 io.micrometer:micrometer-core;1.3.0
 io.micrometer:micrometer-registry-azure-monitor;1.3.0
 io.micrometer:micrometer-registry-graphite;1.3.0
@@ -56,6 +59,7 @@ net.minidev:json-smart;2.3
 org.apache.ant:ant;1.9.4
 org.apache.avro:avro;1.9.2
 org.apache.avro:avro-maven-plugin;1.9.2
+org.apache.commons:commons-compress;1.20
 org.apache.commons:commons-lang3;3.10
 org.apache.httpcomponents:httpclient;4.5.12
 org.apache.logging.log4j:log4j-api;2.11.1
@@ -125,6 +129,7 @@ pl.pragmatists:JUnitParams;1.1.1
 cglib:cglib-nodep;3.2.7
 com.alibaba:fastjson;1.2.61
 com.github.cverges.expect4j:expect4j;1.6
+com.github.docker-java:docker-java;3.2.1
 com.github.tomakehurst:wiremock-standalone;2.24.1
 com.jcraft:jsch;0.1.53
 com.microsoft.azure:adal4j;1.6.5
@@ -154,6 +159,7 @@ org.eclipse.aether:aether-connector-basic;1.1.0
 org.eclipse.aether:aether-transport-wagon;1.1.0
 org.eclipse.jetty:jetty-http;9.4.11.v20180605
 org.eclipse.jetty:jetty-server;9.4.11.v20180605
+org.eclipse.jgit:org.eclipse.jgit;4.5.7.201904151645-r
 org.hamcrest:hamcrest-all;1.3
 org.hamcrest:hamcrest-library;2.2
 # https://junit.org/junit5/docs/current/user-guide/#running-tests-ide-intellij-idea
@@ -288,6 +294,13 @@ media_commons-logging:commons-logging;1.1.1
 media_io.jsonwebtoken:jjwt;0.5.1
 media_org.mockito:mockito-all;1.9.0
 media_com.microsoft.azure:adal4j;1.2.0
+
+# sdk\resourcemanager\azure-resourcemanager\pom.xml
+# sdk\resourcemanager\azure-resourcemanager-compute\pom.xml
+resourcemanager_com.jcraft:jsch;0.1.55
+
+# sdk\resourcemanager\azure-resourcemanager-compute\pom.xml
+resourcemanager_com.microsoft.azure:azure-storage;6.1.0
 
 # sdk\storage\azure-storage-blob-cryptography\pom.xml
 storage_com.microsoft.azure:azure-storage;8.4.0
