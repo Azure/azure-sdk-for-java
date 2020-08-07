@@ -12,17 +12,27 @@ from itertools import takewhile
 import in_place
 
 EXTERNAL_DEPENDENCIES_FILE = 'eng/versioning/external_dependencies.txt'
-SPRING_BOOT_DEPENDENCIES_FILE = \
-    'https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/{}/spring-boot-dependencies-{}.pom '
+POM = 'https://repo.maven.apache.org/maven2/{group}/{artifact}/{version}/{artifact}-{version}.pom'
+
+
+class PomModule:
+    def __init__(self, group_id, artifact_id, version):
+        self.group_id = group_id
+        self.artifact_id = artifact_id
+        self.version = version
+
+    def to_url(self):
+        return POM.format(
+            group = self.group_id.replace('.', '/'),
+            artifact = self.artifact_id,
+            version = self.version)
 
 
 def main():
     start_time = time.time()
     change_to_root_dir()
     print('Current working directory = {}.'.format(os.getcwd()))
-    spring_boot_version = get_spring_boot_version()
-    print('spring_boot_version = {}.'.format(spring_boot_version))
-    dependency_dict = get_spring_boot_dependencies(spring_boot_version)
+    dependency_dict = get_dependency_dict()
     update_version_for_external_dependencies(dependency_dict)
     elapsed_time = time.time() - start_time
     print('elapsed_time = {}'.format(elapsed_time))
@@ -42,10 +52,14 @@ def get_spring_boot_version():
     raise Exception("Can not get spring boot version.")
 
 
-def get_spring_boot_dependencies(spring_boot_version):
+def get_dependency_dict():
+    spring_boot_version = get_spring_boot_version()
+    pom_module = PomModule(
+        'org.springframework.boot',
+        'spring-boot-dependencies',
+        spring_boot_version)
     tree = elementTree.ElementTree(
-        file = request.urlopen(
-            SPRING_BOOT_DEPENDENCIES_FILE.format(spring_boot_version, spring_boot_version)))
+        file = request.urlopen(pom_module.to_url()))
     project_element = tree.getroot()
     name_space = {'maven': 'http://maven.apache.org/POM/4.0.0'}
     # get properties
@@ -83,7 +97,7 @@ def update_version_for_external_dependencies(dependency_dict):
                 if key in dependency_dict:
                     value_in_dict = dependency_dict[key]
                     if version_bigger_than(value, value_in_dict):
-                        print('Not update version. key = {}, value = {}, value_in_dict = {}'
+                        print('Skip version update. key = {}, value = {}, value_in_dict = {}'
                               .format(key, value, value_in_dict))
                         file.write(line)
                     elif version_bigger_than(value, value_in_dict):
