@@ -23,7 +23,7 @@ import java.util.Base64;
 /**
  * A way to use a generated shared access signature as a credential to publish events to a topic through a client.
  */
-public final class EventGridSasTokenCredential {
+public final class EventGridSharedAccessSignatureCredential {
 
     private String accessToken;
 
@@ -62,7 +62,7 @@ public final class EventGridSasTokenCredential {
      * Create an instance of this object to authenticate calls to the EventGrid service.
      * @param accessToken the shared access signature to use.
      */
-    public EventGridSasTokenCredential(String accessToken) {
+    public EventGridSharedAccessSignatureCredential(String accessToken) {
         if (CoreUtils.isNullOrEmpty(accessToken)) {
             throw new IllegalArgumentException("the access token cannot be null or empty");
         }
@@ -73,16 +73,16 @@ public final class EventGridSasTokenCredential {
      * Get the token string to authenticate service calls
      * @return the SharedAccessSignature token as a string
      */
-    public String getAccessToken() {
+    public String getSignature() {
         return accessToken;
     }
 
 
     /**
      * Change the shared access signature token to a new one.
-     * @param accessToken the shared access signature token to use.
+     * @param accessSignature the shared access signature token to use.
      */
-    public void update(String accessToken) {
+    public void update(String accessSignature) {
         this.accessToken = accessToken;
     }
 }

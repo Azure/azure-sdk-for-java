@@ -58,10 +58,10 @@ public class EventGridPublisherClientTests {
         // using @Ignore because it requires the correct environment variables
         String endpoint = System.getenv("EG_ENDPOINT");
         String key = System.getenv("EG_KEY");
-        EventGridSasTokenCredential sasToken = new EventGridSasTokenCredential(
-            EventGridSasTokenCredential.createSharedAccessSignature(
+        EventGridSharedAccessSignatureCredential sasToken = new EventGridSharedAccessSignatureCredential(
+            EventGridSharedAccessSignatureCredential.createSharedAccessSignature(
                 endpoint, OffsetDateTime.now().plusMinutes(20), new AzureKeyCredential(key)));
-        System.out.println(sasToken.getAccessToken());
+        System.out.println(sasToken.getSignature());
 
         EventGridPublisherAsyncClient egClient = new EventGridPublisherClientBuilder()
             .sharedAccessToken(sasToken)

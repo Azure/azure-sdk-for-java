@@ -52,7 +52,7 @@ public class EventGridPublisherClientBuilder {
 
     private AzureKeyCredential keyCredential;
 
-    private EventGridSasTokenCredential sasToken;
+    private EventGridSharedAccessSignatureCredential sasToken;
 
     private String endpoint;
 
@@ -81,7 +81,7 @@ public class EventGridPublisherClientBuilder {
     /**
      * Build a publisher client with asynchronous publishing methods and the current settings. An endpoint must be set,
      * and either a pipeline with correct authentication must be set, or a credential must be set in the form of
-     * an {@link EventGridSasTokenCredential} or a {@link AzureKeyCredential} at the respective methods.
+     * an {@link EventGridSharedAccessSignatureCredential} or a {@link AzureKeyCredential} at the respective methods.
      * All other settings have defaults and are optional.
      * @return a publisher client with asynchronous publishing methods.
      */
@@ -120,7 +120,7 @@ public class EventGridPublisherClientBuilder {
         // Using token before key if both are set
         if (sasToken != null) {
             httpPipelinePolicies.add((context, next) -> {
-                context.getHttpRequest().getHeaders().put(AEG_SAS_TOKEN, sasToken.getAccessToken());
+                context.getHttpRequest().getHeaders().put(AEG_SAS_TOKEN, sasToken.getSignature());
                 return next.process();
             });
         } else {
@@ -197,7 +197,7 @@ public class EventGridPublisherClientBuilder {
      *
      * @return the builder itself.
      */
-    public EventGridPublisherClientBuilder sharedAccessToken(EventGridSasTokenCredential credential) {
+    public EventGridPublisherClientBuilder sharedAccessToken(EventGridSharedAccessSignatureCredential credential) {
         this.sasToken = credential;
         return this;
     }
