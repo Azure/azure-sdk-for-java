@@ -181,8 +181,7 @@ public class ReactorReceiver implements AmqpReceiveLink {
     private void drain() {
         // This is required because unprocessed deliveries on the link still linger in `TransportSession` as
         // unsettled deliveries and can lead to a memory leak if a lot of links are opened and closed.
-        messagesProcessor.subscribe(message -> {
-            }, error -> messagesProcessor.onComplete(),
+        messagesProcessor.subscribe(message -> { }, error -> messagesProcessor.onComplete(),
             messagesProcessor::onComplete);
     }
 
