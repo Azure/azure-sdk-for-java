@@ -4,18 +4,22 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import reactor.core.Disposable;
+import reactor.core.publisher.DirectProcessor;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Synchronous work for receiving messages.
  */
-class SynchronousReceiveWork {
+class SynchronousReceiveWork implements AutoCloseable{
+    private static final Duration SHORT_TIMEOUT_BETWEEN_MESSAGES = Duration.ofMillis(200);
+
     private final ClientLogger logger = new ClientLogger(SynchronousReceiveWork.class);
     private final long id;
     private final AtomicInteger remaining;
@@ -33,8 +37,13 @@ class SynchronousReceiveWork {
     private boolean processingStarted;
 
     private Disposable timeoutBeforeNextMessageOperation;
+    private Disposable nextMessageSubscriber;
 
     private volatile Throwable error = null;
+
+    private Flux<Object> nextMessagePublisher;
+    private final DirectProcessor<ServiceBusReceivedMessageContext> messageReceivedEmitter = DirectProcessor.create();
+    private final FluxSink<ServiceBusReceivedMessageContext> messageReceivedSink = messageReceivedEmitter.sink(FluxSink.OverflowStrategy.BUFFER);
 
     /**
      * Creates a new synchronous receive work.
@@ -51,6 +60,9 @@ class SynchronousReceiveWork {
         this.numberToReceive = numberToReceive;
         this.timeout = timeout;
         this.emitter = emitter;
+
+
+
     }
 
     /**
@@ -104,12 +116,33 @@ class SynchronousReceiveWork {
      */
     void next(ServiceBusReceivedMessageContext message) {
         try {
-            if (timeoutBeforeNextMessageOperation != null && !timeoutBeforeNextMessageOperation.isDisposed()) {
-                timeoutBeforeNextMessageOperation.dispose();
+            if (nextMessageSubscriber == null) {
+                    final Flux<Object> shortTimeOutOccurred = Flux.first(Mono.delay(SHORT_TIMEOUT_BETWEEN_MESSAGES));
+
+                    nextMessagePublisher = Flux.switchOnNext(messageReceivedEmitter.handle((messageContext, sink) -> {
+                        emitter.next(messageContext);
+                        remaining.decrementAndGet();
+                    }))
+                        .takeUntilOther(shortTimeOutOccurred);
+                    nextMessageSubscriber = nextMessagePublisher
+                        .subscribe(o -> {
+                            }
+                            , throwable -> {
+                            }
+                            , () -> {
+                                emitter.complete();
+                            });
             }
-            emitter.next(message);
-            remaining.decrementAndGet();
-            timeoutBeforeNextMessageOperation = getShortTimeoutBetweenMessages();
+
+            messageReceivedSink.next(message);
+
+            /*if (timeoutBeforeNextMessageOperation != null && !timeoutBeforeNextMessageOperation.isDisposed()) {
+                timeoutBeforeNextMessageOperation.dispose();
+            }*/
+
+            //emitter.next(message);
+            //remaining.decrementAndGet();
+            //timeoutBeforeNextMessageOperation = getShortTimeoutBetweenMessages();
         } catch (Exception e) {
             logger.warning("Exception occurred while publishing downstream.", e);
             error(e);
@@ -169,7 +202,8 @@ class SynchronousReceiveWork {
         return this.processingStarted;
     }
 
-    private void close() {
+    @Override
+    public void close() {
         if (timeoutBeforeNextMessageOperation != null && !timeoutBeforeNextMessageOperation.isDisposed()) {
             timeoutBeforeNextMessageOperation.dispose();
         }
@@ -180,7 +214,7 @@ class SynchronousReceiveWork {
      * @return {@link Disposable} for the timeout operation.
      */
     private Disposable getShortTimeoutBetweenMessages() {
-        return Mono.delay(ServiceBusConstants.SHORT_TIMEOUT_BETWEEN_MESSAGES)
+        return Mono.delay(SHORT_TIMEOUT_BETWEEN_MESSAGES)
             .subscribe(l -> {
                 timeoutNextMessage();
             });
