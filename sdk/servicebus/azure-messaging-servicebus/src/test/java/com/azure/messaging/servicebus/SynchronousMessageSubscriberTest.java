@@ -24,7 +24,6 @@ import static org.mockito.Mockito.when;
  * Unit test for sync subscriber.
  */
 public class SynchronousMessageSubscriberTest {
-    public static final Duration SHORT_TIMEOUT_BETWEEN_MESSAGES = Duration.ofMillis(1000 * 15);
     private static final int PREFETCH = 1;
 
     @Mock
