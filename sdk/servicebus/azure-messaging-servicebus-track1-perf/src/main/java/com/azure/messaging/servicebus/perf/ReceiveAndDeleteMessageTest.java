@@ -11,6 +11,7 @@ import com.microsoft.azure.servicebus.ReceiveMode;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import rx.Observable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -104,7 +105,20 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
             e.printStackTrace();
         }
 
-        return Mono.empty();
+        return Mono.defer(
+            () -> Mono.fromFuture(() -> {
+                try {
+                    Collection<IMessage> messages = receiveFuture.get();
+                    for(IMessage message : messages){
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            })
+        ).then();
     }
 
 }
