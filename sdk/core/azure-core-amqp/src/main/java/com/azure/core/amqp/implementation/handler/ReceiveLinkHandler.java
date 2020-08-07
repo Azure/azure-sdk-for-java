@@ -3,8 +3,10 @@
 
 package com.azure.core.amqp.implementation.handler;
 
+import com.azure.core.amqp.implementation.ClientConstants;
 import com.azure.core.util.logging.ClientLogger;
 import java.util.function.Function;
+import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
@@ -111,5 +113,11 @@ public class ReceiveLinkHandler extends LinkHandler {
                 getConnectionId(), link.getName(), link.getCredit(), link.getRemoteCredit(), link.getRemoteCondition(),
                 delivery.isPartial());
         }
+    }
+
+    @Override
+    public void onLinkRemoteClose(Event event) {
+        super.onLinkRemoteClose(event);
+        messageSink.complete();
     }
 }

@@ -7,7 +7,10 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
+import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.Delivery;
+import org.apache.qpid.proton.engine.Event;
+import org.apache.qpid.proton.engine.Link;
 import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.Disposable;
@@ -178,7 +181,8 @@ public class ReactorReceiver implements AmqpReceiveLink {
     }
 
     private void drain() {
-        messagesProcessor.subscribe(message -> { }, error -> { }, messagesProcessor::onComplete);
+        messagesProcessor.subscribe(message -> { }, error -> messagesProcessor.onComplete(),
+            messagesProcessor::onComplete);
     }
 
     @Override
