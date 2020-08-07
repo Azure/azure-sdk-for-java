@@ -6,20 +6,18 @@ import com.azure.spring.data.cosmos.domain.Address;
 import com.azure.spring.data.cosmos.repository.CosmosRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
 public interface AddressRepository extends CosmosRepository<Address, String> {
     void deleteByPostalCodeAndCity(String postalCode, String city);
 
     void deleteByCity(String city);
 
-    List<Address> findByPostalCodeAndCity(String postalCode, String city);
+    Iterable<Address> findByPostalCodeAndCity(String postalCode, String city);
 
-    List<Address> findByCity(String city);
+    Iterable<Address> findByCity(String city);
 
-    List<Address> findByPostalCode(String postalCode);
+    Iterable<Address> findByPostalCode(String postalCode);
 
-    List<Address> findByStreetOrCity(String street, String city);
+    Iterable<Address> findByStreetOrCity(String street, String city);
 
 }

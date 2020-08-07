@@ -138,10 +138,8 @@ public abstract class SearchTestBase extends TestBase {
             addPolicies(builder, policies);
             return builder;
         }
-//        builder.httpClient(new NettyAsyncHttpClientBuilder().proxy(
-//            new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))).build());
         addPolicies(builder, policies);
-
+        //builder.httpClient(new NettyAsyncHttpClientBuilder().proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))).build());
         builder.retryPolicy(new RetryPolicy(new ExponentialBackoff(3, Duration.ofSeconds(10), Duration.ofSeconds(30))));
 
         if (!interceptorManager.isLiveMode()) {
@@ -181,7 +179,7 @@ public abstract class SearchTestBase extends TestBase {
         if (interceptorManager.isPlaybackMode()) {
             return builder.httpClient(interceptorManager.getPlaybackClient());
         }
-
+        //builder.httpClient(new NettyAsyncHttpClientBuilder().proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))).build());
         builder.retryPolicy(new RetryPolicy(new ExponentialBackoff(3, Duration.ofSeconds(10), Duration.ofSeconds(30))));
 
         if (!interceptorManager.isLiveMode()) {

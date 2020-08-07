@@ -5,8 +5,6 @@ package com.azure.spring.data.cosmos.repository.repository;
 import com.azure.spring.data.cosmos.domain.Customer;
 import com.azure.spring.data.cosmos.repository.CosmosRepository;
 
-import java.util.List;
-
 public interface CustomerRepository extends CosmosRepository<Customer, String> {
-    List<Customer> findByUser_Name(String name);
+    Iterable<Customer> findByUser_Name(String name);
 }

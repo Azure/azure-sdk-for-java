@@ -31,7 +31,7 @@
 
 # PRLabel: %Cosmos
 /sdk/cosmos/                                        @moderakh @kushagraThapar @David-Noble-at-work @kirankumarkolli @mbhaskar
-/sdk/cosmos/azure-spring-data-cosmos-core/               @kushagraThapar @saragluna @yiliuTo @chenrujun @zhoufenqin @jialindai
+/sdk/cosmos/azure-spring-data-cosmos-core/          @kushagraThapar @saragluna @yiliuTo @chenrujun @zhoufenqin @jialindai @mbhaskar
 
 # PRLabel: %Event Hubs
 /sdk/eventhubs/                                     @conniey @srnagar @mssfang

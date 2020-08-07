@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.integration;
 
+import com.azure.spring.data.cosmos.common.TestUtils;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.domain.Student;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
@@ -51,7 +52,7 @@ public class StudentRepositoryIT {
     private static final List<Student> PEOPLE = Arrays.asList(STUDENT_0, STUDENT_1, STUDENT_2, STUDENT_3);
 
     private static final CosmosEntityInformation<Student, String> entityInformation =
-            new CosmosEntityInformation<>(Student.class);
+        new CosmosEntityInformation<>(Student.class);
 
     private static CosmosTemplate staticTemplate;
     private static boolean isSetupDone;
@@ -84,7 +85,7 @@ public class StudentRepositoryIT {
 
     @Test
     public void testFindByContaining() {
-        final List<Student> people = repository.findByFirstNameContaining(SUB_FIRST_NAME);
+        final List<Student> people = TestUtils.toList(repository.findByFirstNameContaining(SUB_FIRST_NAME));
         final List<Student> reference = Arrays.asList(STUDENT_1, STUDENT_2);
 
         assertPeopleEquals(people, reference);
@@ -92,7 +93,8 @@ public class StudentRepositoryIT {
 
     @Test
     public void testFindByContainingWithAnd() {
-        final List<Student> people = repository.findByFirstNameContainingAndLastNameContaining("eng", "h");
+        final List<Student> people = TestUtils.toList(repository
+            .findByFirstNameContainingAndLastNameContaining("eng", "h"));
         final List<Student> reference = Arrays.asList(STUDENT_1);
 
         assertPeopleEquals(people, reference);
@@ -100,7 +102,7 @@ public class StudentRepositoryIT {
 
     @Test
     public void testFindByEndsWith() {
-        final List<Student> people = repository.findByFirstNameEndsWith("en");
+        final List<Student> people = TestUtils.toList(repository.findByFirstNameEndsWith("en"));
         final List<Student> reference = Arrays.asList(STUDENT_3);
 
         assertPeopleEquals(people, reference);
@@ -108,7 +110,7 @@ public class StudentRepositoryIT {
 
     @Test
     public void testFindByNot() {
-        final List<Student> people = repository.findByFirstNameNot("Mary");
+        final List<Student> people = TestUtils.toList(repository.findByFirstNameNot("Mary"));
         final List<Student> reference = Arrays.asList(STUDENT_1, STUDENT_2, STUDENT_3);
 
         assertPeopleEquals(people, reference);
@@ -116,40 +118,40 @@ public class StudentRepositoryIT {
 
     @Test
     public void testFindByStartsWith() {
-        List<Student> people = repository.findByFirstNameStartsWith("Z");
+        List<Student> people = TestUtils.toList(repository.findByFirstNameStartsWith("Z"));
 
         assertPeopleEquals(people, Arrays.asList(STUDENT_2, STUDENT_3));
 
-        people = repository.findByLastNameStartsWith("C");
+        people = TestUtils.toList(repository.findByLastNameStartsWith("C"));
 
         assertPeopleEquals(people, Arrays.asList(STUDENT_0, STUDENT_1));
     }
 
     @Test
     public void testFindByStartsWithAndEndsWith() {
-        List<Student> people = repository.findByFirstNameStartsWithAndLastNameEndingWith("Z", "H");
+        List<Student> people = TestUtils.toList(repository.findByFirstNameStartsWithAndLastNameEndingWith("Z", "H"));
 
         assertPeopleEquals(people, Arrays.asList(STUDENT_3));
 
-        people = repository.findByFirstNameStartsWithAndLastNameEndingWith("Z", "en");
+        people = TestUtils.toList(repository.findByFirstNameStartsWithAndLastNameEndingWith("Z", "en"));
 
         assertPeopleEquals(people, Arrays.asList());
     }
 
     @Test
     public void testFindByStartsWithOrContaining() {
-        List<Student> people = repository.findByFirstNameStartsWithOrLastNameContaining("Zhen", "C");
+        List<Student> people = TestUtils.toList(repository.findByFirstNameStartsWithOrLastNameContaining("Zhen", "C"));
 
         assertPeopleEquals(people, PEOPLE);
 
-        people = repository.findByFirstNameStartsWithOrLastNameContaining("M", "N");
+        people = TestUtils.toList(repository.findByFirstNameStartsWithOrLastNameContaining("M", "N"));
 
         assertPeopleEquals(people, Arrays.asList(STUDENT_0, STUDENT_2));
     }
 
     @Test
     public void testFindByContainingAndNot() {
-        final List<Student> people = repository.findByFirstNameContainingAndLastNameNot("Zhe", "N");
+        final List<Student> people = TestUtils.toList(repository.findByFirstNameContainingAndLastNameNot("Zhe", "N"));
 
         assertPeopleEquals(people, Arrays.asList(STUDENT_3));
     }
@@ -172,15 +174,15 @@ public class StudentRepositoryIT {
 
     @Test
     public void testFindByLastNameIgnoreCase() {
-        List<Student> people = repository.findByLastNameIgnoreCase(LAST_NAME_0.toLowerCase());
+        List<Student> people = TestUtils.toList(repository.findByLastNameIgnoreCase(LAST_NAME_0.toLowerCase()));
         assertPeopleEquals(people, Arrays.asList(STUDENT_0));
         assertTrue(people.get(0).getLastName().equals(LAST_NAME_0));
     }
 
     @Test
     public void testFindByLastNameAndFirstNameAllIgnoreCase() {
-        List<Student> people = repository
-            .findByLastNameAndFirstNameAllIgnoreCase(LAST_NAME_0.toLowerCase(), FIRST_NAME_0.toLowerCase());
+        List<Student> people = TestUtils.toList(repository
+            .findByLastNameAndFirstNameAllIgnoreCase(LAST_NAME_0.toLowerCase(), FIRST_NAME_0.toLowerCase()));
         assertPeopleEquals(people, Arrays.asList(STUDENT_0));
         assertTrue(people.get(0).getFirstName().equals(FIRST_NAME_0));
         assertTrue(people.get(0).getLastName().equals(LAST_NAME_0));
@@ -188,24 +190,24 @@ public class StudentRepositoryIT {
 
     @Test
     public void testFindByLastNameOrFirstNameAllIgnoreCase() {
-        List<Student> people = repository
-            .findByLastNameOrFirstNameAllIgnoreCase(LAST_NAME_0.toLowerCase(), FIRST_NAME_1.toLowerCase());
+        List<Student> people = TestUtils.toList(repository
+            .findByLastNameOrFirstNameAllIgnoreCase(LAST_NAME_0.toLowerCase(), FIRST_NAME_1.toLowerCase()));
         assertPeopleEquals(people, Arrays.asList(STUDENT_0, STUDENT_1));
     }
 
     @Test
     public void testFindByFirstNameEndsWithIgnoreCase() {
-        List<Student> people = repository
-            .findByFirstNameEndsWithIgnoreCase(FIRST_NAME_0.toLowerCase().substring(2));
+        List<Student> people = TestUtils.toList(repository
+            .findByFirstNameEndsWithIgnoreCase(FIRST_NAME_0.toLowerCase().substring(2)));
         assertPeopleEquals(people, Arrays.asList(STUDENT_0));
         assertTrue(people.get(0).getFirstName().equals(FIRST_NAME_0));
     }
 
     @Test
     public void testFindByLastNameStartsWithAndFirstNameStartsWithAllIgnoreCase() {
-        List<Student> people = repository
+        List<Student> people = TestUtils.toList(repository
             .findByLastNameStartsWithAndFirstNameStartsWithAllIgnoreCase(
-                LAST_NAME_0.toLowerCase().substring(0, 2), FIRST_NAME_0.toLowerCase().substring(0, 2));
+                LAST_NAME_0.toLowerCase().substring(0, 2), FIRST_NAME_0.toLowerCase().substring(0, 2)));
         assertPeopleEquals(people, Arrays.asList(STUDENT_0));
         assertTrue(people.get(0).getLastName().equals(LAST_NAME_0));
         assertTrue(people.get(0).getFirstName().equals(FIRST_NAME_0));
@@ -213,9 +215,9 @@ public class StudentRepositoryIT {
 
     @Test
     public void testFindByLastNameStartsWithOrFirstNameStartsWithAllIgnoreCase() {
-        List<Student> people = repository
+        List<Student> people = TestUtils.toList(repository
             .findByLastNameStartsWithOrFirstNameStartsWithAllIgnoreCase(
-                LAST_NAME_0.toLowerCase().substring(0, 2), FIRST_NAME_1.toLowerCase().substring(0, 3));
+                LAST_NAME_0.toLowerCase().substring(0, 2), FIRST_NAME_1.toLowerCase().substring(0, 3)));
         assertPeopleEquals(people, Arrays.asList(STUDENT_0, STUDENT_1));
     }
 }
