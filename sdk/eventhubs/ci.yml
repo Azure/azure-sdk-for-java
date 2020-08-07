@@ -47,3 +47,8 @@ extends:
       - name: azure-messaging-eventhubs-checkpointstore-blob
         groupId: com.azure
         safeName: azuremessagingeventhubscheckpointstoreblob
+    AdditionalModules:
+      - name: spring-integration-azure-core
+        groupId: com.microsoft.azure
+      - name: spring-integration-azure-test
+        groupId: com.microsoft.azure
