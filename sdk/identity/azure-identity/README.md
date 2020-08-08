@@ -132,7 +132,7 @@ public void createIntelliJCredential() {
 
 ### Authenticating Azure Hosted Applications
         
-<table border="1">
+<table border="1" width="100%">
   <thead>
     <tr>
       <th>credential class</th>
@@ -171,7 +171,7 @@ public void createIntelliJCredential() {
     
 ### Authenticating Service Principals
 
-<table border="1">
+<table border="1" width="100%">
   <thead>
     <tr>
       <th>credential class</th>
@@ -198,7 +198,7 @@ public void createIntelliJCredential() {
 
 ### Authenticating Users
 
-<table border="1">
+<table border="1" width="100%">
   <thead>
     <tr>
       <th>credential class</th>
@@ -237,7 +237,7 @@ public void createIntelliJCredential() {
 
 ### Authenticating via Development Tools
 
-<table border="1">
+<table border="1" width="100%">
   <thead>
     <tr>
       <th>credential class</th>
@@ -276,7 +276,7 @@ Credentials can be chained together to be tried in turn until one succeeds using
 `DefaultAzureCredential` and `EnvironmentCredential` can be configured with environment variables. Each type of authentication requires values for specific variables:
 
 #### Service principal with secret
-<table border="1">
+<table border="1" width="100%">
   <thead>
     <tr>
       <th>variable name</th>
@@ -300,7 +300,7 @@ Credentials can be chained together to be tried in turn until one succeeds using
 </table>
 
 #### Service principal with certificate
-<table border="1">
+<table border="1" width="100%">
   <thead>
     <tr>
       <th>variable name</th>
@@ -324,7 +324,7 @@ Credentials can be chained together to be tried in turn until one succeeds using
 </table>
 
 #### Username and password
-<table border="1">
+<table border="1" width="100%">
   <thead>
     <tr>
       <th>variable name</th>
