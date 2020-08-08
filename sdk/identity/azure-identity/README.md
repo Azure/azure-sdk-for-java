@@ -54,7 +54,7 @@ A credential is a class which contains or can obtain the data needed for a servi
 
 The Azure Identity library focuses on OAuth authentication with Azure Active directory, and it offers a variety of credential classes capable of acquiring an AAD token to authenticate service requests. All of the credential classes in this library are implementations of the `TokenCredential` abstract class in [Azure.Core][azure_core_library], and any of them can be used by to construct service clients capable of authenticating with a `TokenCredential`. 
 
-See [Credential Classes](#credential-classes)
+See [Credential Classes](#credential-classes) for a complete list of available credential classes.
 
 ### DefaultAzureCredential
 The `DefaultAzureCredential` is appropriate for most scenarios where the application is intended to ultimately be run in the Azure Cloud. This is because the `DefaultAzureCredential` combines credentials commonly used to authenticate when deployed, with credentials used to authenticate in a development environment. The `DefaultAzureCredential` will attempt to authenticate via the following mechanisms in order.
@@ -87,7 +87,7 @@ You can find more examples of using various credentials in [Azure Identity Examp
 ### Authenticating with `DefaultAzureCredential`
 This example demonstrates authenticating the `SecretClient` from the [azure-security-keyvault-secrets][secrets_client_library] client library using the `DefaultAzureCredential`. There's also [a compilable sample](../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java) to create a Key Vault secret client you can copy-paste.
 
-<!-- embedme ../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java#L38-L50 -->
+<!-- embedme ../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java#L40-L52 -->
 ```java
 /**
  * The default credential first checks environment variables for configuration.
@@ -111,7 +111,7 @@ This example demonstrates authenticating the `KeyClient` from the [azure-securit
 
 See more about how to configure your IntelliJ IDEA in [Sign in Azure Toolkit for IntelliJ for IntelliJCredential](#sign-in-azure-toolkit-for-intellij-for-intellijcredential).
 
-<!-- embedme ../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java#L174-L188 -->
+<!-- embedme ../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java#L170-L184 -->
 ```java
 /**
  * Authenticate with IntelliJ IDEA.
@@ -147,7 +147,7 @@ public void createIntelliJCredential() {
     <tr>
       <td><code>DefaultAzureCredential</code></td>
       <td>provides a simplified authentication experience to quickly start developing applications run in the Azure cloud</td>
-      <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-visual-studio-code">configuration</a></td>
+      <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#configure-defaultazurecredential">configuration</a></td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-with-defaultazurecredential">example</a></td>
     </tr>
     <tr>
@@ -165,8 +165,8 @@ public void createIntelliJCredential() {
     <tr>
       <td><code>ManagedIdentityCredential</code></td>
       <td>authenticates the managed identity of an azure resource</td>
-      <td></td>
-      <td></td>
+      <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#enable-managed-identity-for-azure-resources">configuration</a></td>
+      <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-in-azure-with-managed-identity">example</a></td>
     </tr>
   </tbody>
 </table>
@@ -193,7 +193,7 @@ public void createIntelliJCredential() {
       <td><code>ClientCertificateCredential</code></td>
       <td>authenticates a service principal using a certificate</td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#creating-a-service-principal-with-the-azure-cli">configuration</a></td>
-      <td>Similar to <code>ClientSecretCredential</code></td>
+      <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-service-principal-with-a-client-certificate">example</a></td>
     </tr>
   </tbody>
 </table>
