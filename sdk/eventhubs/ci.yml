@@ -56,3 +56,5 @@ extends:
         groupId: com.azure
       - name: azure-storage-queue
         groupId: com.azure
+      - name: azure-resourcemanager
+        groupId: com.azure.resourcemanager
