@@ -66,19 +66,6 @@ The `DefaultAzureCredential` is appropriate for most scenarios where the applica
  - Azure CLI - If the developer has authenticated an account via the Azure CLI `az login` command, the `DefaultAzureCredential` will authenticate with that account.
  - Interactive - If enabled the `DefaultAzureCredential` will interactively authenticate the developer via the current system's default browser.
 
-### Environment variables
-
-`DefaultAzureCredential` and `EnvironmentCredential` are configured for service
-principal authentication with these environment variables:
-
-|variable name|value
-|-|-
-|`AZURE_CLIENT_ID`|service principal's app id
-|`AZURE_TENANT_ID`|id of the principal's Azure Active Directory tenant
-|`AZURE_CLIENT_SECRET`|one of the service principal's client secrets
-
-See more about how to create a service principal and get these values in [Creating a Service Principal with the Azure CLI](#creating-a-service-principal-with-the-azure-cli).
-
 ## Examples
 You can find more examples of using various credentials in [Azure Identity Examples Wiki page](https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples). 
 
