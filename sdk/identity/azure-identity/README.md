@@ -275,8 +275,18 @@ public void createIntelliJCredential() {
 Credentials can be chained together to be tried in turn until one succeeds using the `ChainedTokenCredential`; see [chaining credentials](#chaining-credentials) for details.
 
 ## Troubleshooting
-Credentials raise exceptions when they fail to authenticate. `ClientAuthenticationException` has a `message` attribute which
-describes why authentication failed. When raised by `ChainedTokenCredential`, the message collects error messages from each credential in the chain.
+Credentials raise exceptions either when they fail to authenticate or cannot execute authentication.
+When credentials fail to authenticate, the`ClientAuthenticationException` is raised and it has a `message` attribute which
+describes why authentication failed. When this exception is raised by `ChainedTokenCredential`, the chained execution of underlying list of credentials is stopped.
+
+When credentials cannot execute authentication due to one of the underlying resources required by the credential not being available on the machine, the`CredentialUnavailableException` is raised and it has a `message` attribute which
+describes why the credential is unavailable for authentication execution . When this exception is raised by `ChainedTokenCredential`, the message collects error messages from each credential in the chain.
+
+### Enable client logging
+
+Azure SDK for Java offers a consistent logging story to help aid in troubleshooting application errors and expedite
+their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help
+locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
 
 ## Next steps
 Currently the following client libraries support authenticating with `TokenCredential` and the Azure Identity library.  You can learn more about their use, and find additional documentation on use of these client libraries along samples with can be found in the links below.
