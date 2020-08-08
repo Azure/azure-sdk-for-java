@@ -65,9 +65,9 @@ public class WebHookActivity extends ControlActivity {
     private WebActivityAuthentication authentication;
 
     /**
-     * When set to true, statusCode, output and error in callback request body
-     * will be consumed by activity. The activity can be marked as failed by
-     * setting statusCode &gt;= 400 in callback request. Default is false.
+     * When set to true, statusCode, output and error in callback request body
+     * will be consumed by activity. The activity can be marked as failed by
+     * setting statusCode &gt;= 400 in callback request. Default is false.
      * Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "typeProperties.reportStatusOnCallBack")
@@ -202,7 +202,7 @@ public class WebHookActivity extends ControlActivity {
     }
 
     /**
-     * Get when set to true, statusCode, output and error in callback request body will be consumed by activity. The activity can be marked as failed by setting statusCode &gt;= 400 in callback request. Default is false. Type: boolean (or Expression with resultType boolean).
+     * Get when set to true, statusCode, output and error in callback request body will be consumed by activity. The activity can be marked as failed by setting statusCode &gt;= 400 in callback request. Default is false. Type: boolean (or Expression with resultType boolean).
      *
      * @return the reportStatusOnCallBack value
      */
@@ -211,7 +211,7 @@ public class WebHookActivity extends ControlActivity {
     }
 
     /**
-     * Set when set to true, statusCode, output and error in callback request body will be consumed by activity. The activity can be marked as failed by setting statusCode &gt;= 400 in callback request. Default is false. Type: boolean (or Expression with resultType boolean).
+     * Set when set to true, statusCode, output and error in callback request body will be consumed by activity. The activity can be marked as failed by setting statusCode &gt;= 400 in callback request. Default is false. Type: boolean (or Expression with resultType boolean).
      *
      * @param reportStatusOnCallBack the reportStatusOnCallBack value to set
      * @return the WebHookActivity object itself.
