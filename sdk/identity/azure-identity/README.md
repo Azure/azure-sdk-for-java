@@ -279,7 +279,7 @@ Credentials raise exceptions either when they fail to authenticate or cannot exe
 When credentials fail to authenticate, the`ClientAuthenticationException` is raised and it has a `message` attribute which
 describes why authentication failed. When this exception is raised by `ChainedTokenCredential`, the chained execution of underlying list of credentials is stopped.
 
-When credentials cannot execute authentication due to one of the underlying resources required by the credential not being available on the machine, the`CredentialUnavailableException` is raised and it has a `message` attribute which
+When credentials cannot execute authentication due to one of the underlying resources required by the credential being unavailable on the machine, the`CredentialUnavailableException` is raised and it has a `message` attribute which
 describes why the credential is unavailable for authentication execution . When this exception is raised by `ChainedTokenCredential`, the message collects error messages from each credential in the chain.
 
 ### Enable client logging
@@ -309,6 +309,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [aad_doc]: https://docs.microsoft.com/azure/active-directory/
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [keys_client_library]: ../../keyvault/azure-security-keyvault-keys
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [secrets_client_library]: ../../keyvault/azure-security-keyvault-secrets
 [eventhubs_client_library]: ../../eventhubs/azure-messaging-eventhubs
 [azure_core_library]: ../../core
