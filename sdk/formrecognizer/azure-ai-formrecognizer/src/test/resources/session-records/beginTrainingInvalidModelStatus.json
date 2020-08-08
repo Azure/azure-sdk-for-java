@@ -1,61 +1,42 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.0-preview//custom/models",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.0//custom/models",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.3 (11.0.5; Windows 10 10.0)",
-      "x-ms-client-request-id" : "bde9d573-7c29-4094-a69e-70c837aefc4d",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.5 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "1e362557-6d36-42ac-b013-4a8c4ff73b29",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-envoy-upstream-service-time" : "226",
+      "x-envoy-upstream-service-time" : "273",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "1f0d14b9-a5b8-4bf3-9c0f-34a19fccb8a7",
+      "apim-request-id" : "59b55436-89fb-4be6-9a60-9fed425c9459",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "Date" : "Tue, 02 Jun 2020 08:03:16 GMT",
-      "Location" : "https://savaity-formrecognizer.cognitiveservices.azure.com/formrecognizer/v2.0-preview/custom/models/cae9d062-71e0-44a3-8630-70b32ae94f4d"
+      "Date" : "Thu, 06 Aug 2020 22:49:31 GMT",
+      "Location" : "https://westus2formrecognizershawn.cognitiveservices.azure.com/formrecognizer/v2.0/custom/models/531ee6e0-6e88-4a5e-a9dd-c7624ca58126"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.0-preview//custom/models/cae9d062-71e0-44a3-8630-70b32ae94f4d?includeKeys=true",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.0//custom/models/531ee6e0-6e88-4a5e-a9dd-c7624ca58126?includeKeys=true",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.3 (11.0.5; Windows 10 10.0)",
-      "x-ms-client-request-id" : "8610f4d8-c7c3-4fcb-9231-11415944d9e2"
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.5 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "901fe6ef-7b13-437c-9f88-f494f4104f10"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "57",
+      "x-envoy-upstream-service-time" : "23",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "8c017874-7d7f-4231-8971-e7357ce70a74",
+      "apim-request-id" : "1288da4a-30b9-446a-8437-8c0604abb4ba",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"cae9d062-71e0-44a3-8630-70b32ae94f4d\",\"status\":\"invalid\",\"createdDateTime\":\"2020-06-02T08:03:16Z\",\"lastUpdatedDateTime\":\"2020-06-02T08:03:17Z\"},\"keys\":{\"clusters\":{}},\"trainResult\":{\"trainingDocuments\":[],\"errors\":[{\"code\":\"2012\",\"message\":\"Unable to list blobs on the Azure blob storage account.\"}]}}",
-      "Date" : "Tue, 02 Jun 2020 08:03:21 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.0-preview//custom/models/cae9d062-71e0-44a3-8630-70b32ae94f4d?includeKeys=true",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.3 (11.0.5; Windows 10 10.0)",
-      "x-ms-client-request-id" : "57382837-8174-45d1-a1c7-7dea3615b0ab"
-    },
-    "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "5147",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "407c4eaa-01fa-4fdc-9000-19a1f709692f",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"cae9d062-71e0-44a3-8630-70b32ae94f4d\",\"status\":\"invalid\",\"createdDateTime\":\"2020-06-02T08:03:16Z\",\"lastUpdatedDateTime\":\"2020-06-02T08:03:17Z\"},\"keys\":{\"clusters\":{}},\"trainResult\":{\"trainingDocuments\":[],\"errors\":[{\"code\":\"2012\",\"message\":\"Unable to list blobs on the Azure blob storage account.\"}]}}",
-      "Date" : "Tue, 02 Jun 2020 08:03:27 GMT",
+      "x-ms-cs-error-code" : "2012",
+      "Body" : "{\"modelInfo\":{\"modelId\":\"531ee6e0-6e88-4a5e-a9dd-c7624ca58126\",\"status\":\"invalid\",\"createdDateTime\":\"2020-08-06T22:49:31Z\",\"lastUpdatedDateTime\":\"2020-08-06T22:49:32Z\"},\"keys\":{\"clusters\":{}},\"trainResult\":{\"trainingDocuments\":[],\"errors\":[{\"code\":\"2012\",\"message\":\"Unable to list blobs on the Azure blob storage account.\"}]}}",
+      "Date" : "Thu, 06 Aug 2020 22:49:35 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

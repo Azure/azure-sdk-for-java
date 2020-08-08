@@ -11,6 +11,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.util.LoggingUtil;
+import com.azure.identity.implementation.util.ValidationUtil;
 import reactor.core.publisher.Mono;
 
 /**
@@ -55,6 +56,8 @@ public class EnvironmentCredential implements TokenCredential {
         String certPath = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH);
         String username = configuration.get(Configuration.PROPERTY_AZURE_USERNAME);
         String password = configuration.get(Configuration.PROPERTY_AZURE_PASSWORD);
+        ValidationUtil.validateTenantIdCharacterRange(getClass().getSimpleName(), tenantId);
+        ValidationUtil.validateClientIdCharacterRange(getClass().getSimpleName(), clientId);
         LoggingUtil.logAvailableEnvironmentVariables(logger, configuration);
         if (verifyNotNull(clientId)) {
             // 1 - Attempt ClientSecretCredential or ClientCertificateCredential

@@ -1,4 +1,4 @@
-# Azure Identity shared library for Java
+# Azure Identity client library for Java
 The Azure Identity library provides Azure Active Directory token authentication support across the Azure SDK. It provides a set of TokenCredential implementations which can be used to construct Azure SDK clients which support AAD token authentication.
 
  This library currently supports:
@@ -46,8 +46,6 @@ When debugging and executing code locally it is typical for a developer to use t
 Click on each item above to learn about how to configure them for Azure Identity authentication.
 
 ## Key concepts
-### Credentials
-
 ### Credentials
 
 A credential is a class which contains or can obtain the data needed for a service client to authenticate requests. Service clients across Azure SDK accept credentials when they are constructed, and service clients use those credentials to authenticate requests to the service. 

@@ -321,7 +321,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
             FormRecognizerException formRecognizerException = assertThrows(FormRecognizerException.class,
                 () -> client.beginTraining(invalidTrainingFilesUrl, useTrainingLabels).getFinalResult());
             ErrorInformation errorInformation = formRecognizerException.getErrorInformation().get(0);
-            assertEquals(EXPECTED_INVALID_MODEL_STATUS_ERROR_CODE, errorInformation.getCode());
+            assertEquals(EXPECTED_INVALID_MODEL_STATUS_ERROR_CODE, errorInformation.getErrorCode());
             assertEquals(EXPECTED_INVALID_MODEL_ERROR, errorInformation.getMessage());
             assertTrue(formRecognizerException.getMessage().contains(EXPECTED_INVALID_MODEL_STATUS_MESSAGE));
             assertTrue(formRecognizerException.getMessage().contains(EXPECTED_INVALID_STATUS_EXCEPTION_MESSAGE));
@@ -403,7 +403,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
         client = getFormTrainingClient(httpClient, serviceVersion);
         beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<OperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingFilesUrl,
-                useTrainingLabels, new TrainingFileFilter().setIncludeSubFolders(true).setPrefix(PREFIX_SUBFOLDER),
+                useTrainingLabels, new TrainingFileFilter().setSubfoldersIncluded(true).setPrefix(PREFIX_SUBFOLDER),
                 durationTestMode, Context.NONE);
             trainingPoller.waitForCompletion();
             validateCustomModelData(trainingPoller.getFinalResult(), false);
@@ -440,7 +440,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
         beginTrainingMultipageRunner(trainingFilesUrl -> {
             FormRecognizerException thrown = assertThrows(FormRecognizerException.class, () ->
                 client.beginTraining(trainingFilesUrl, false,
-                    new TrainingFileFilter().setIncludeSubFolders(true).setPrefix(INVALID_PREFIX_FILE_NAME),
+                    new TrainingFileFilter().setSubfoldersIncluded(true).setPrefix(INVALID_PREFIX_FILE_NAME),
                     durationTestMode, Context.NONE).getFinalResult());
             assertEquals(NO_VALID_BLOB_FOUND, thrown.getErrorInformation().get(0).getMessage());
         });
