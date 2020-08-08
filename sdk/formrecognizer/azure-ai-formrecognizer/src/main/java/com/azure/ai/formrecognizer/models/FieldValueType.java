@@ -17,15 +17,15 @@ public enum FieldValueType {
     /** Enum value phoneNumber. */
     PHONE_NUMBER,
 
-    /** Enum value number. */
-    DOUBLE,
+    /** Enum value floating point number. */
+    FLOAT,
 
-    /** Enum value integer. */
+    /** Enum value long. */
     LONG,
 
-    /** Enum value array. */
+    /** Enum value list. */
     LIST,
 
-    /** Enum value object. */
+    /** Enum value map. */
     MAP;
 }

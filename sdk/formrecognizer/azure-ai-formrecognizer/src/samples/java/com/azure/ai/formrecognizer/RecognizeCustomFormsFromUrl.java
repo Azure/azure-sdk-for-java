@@ -32,7 +32,7 @@ public class RecognizeCustomFormsFromUrl {
         String formUrl = "{form_url}";
         String modelId = "{custom_trained_model_id}";
         SyncPoller<OperationResult, List<RecognizedForm>> recognizeFormPoller =
-            client.beginRecognizeCustomFormsFromUrl(formUrl, modelId);
+            client.beginRecognizeCustomFormsFromUrl(modelId, formUrl);
 
         List<RecognizedForm> recognizedForms = recognizeFormPoller.getFinalResult();
 

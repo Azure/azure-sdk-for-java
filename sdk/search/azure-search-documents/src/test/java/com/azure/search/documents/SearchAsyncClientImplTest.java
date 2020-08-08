@@ -110,7 +110,7 @@ public class SearchAsyncClientImplTest extends SearchTestBase {
         expectedDoc.put("Rating", 3);
         expectedDoc.put("Address", addressDoc);
         expectedDoc.put("Rooms", rooms);
-//        expectedDoc.put("Location", createPointGeometryString(40.760586, -73.975403));
+        //expectedDoc.put("Location", createPointGeometry(40.760586, -73.975403));
 
         uploadDocument(asyncClient, expectedDoc);
 
