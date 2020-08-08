@@ -3,14 +3,20 @@
 
 package com.azure.search.documents;
 
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.ExponentialBackoff;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.search.documents.implementation.util.Utility;
+import com.azure.search.documents.indexes.SearchIndexClient;
+import com.azure.search.documents.indexes.SearchIndexClientBuilder;
+import com.azure.search.documents.indexes.models.SearchIndex;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -20,7 +26,13 @@ import reactor.test.StepVerifier;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
@@ -34,6 +46,10 @@ import java.util.Objects;
 import java.util.Scanner;
 import java.util.Set;
 
+import static com.azure.search.documents.SearchTestBase.API_KEY;
+import static com.azure.search.documents.SearchTestBase.ENDPOINT;
+import static com.azure.search.documents.SearchTestBase.HOTELS_DATA_JSON;
+import static com.azure.search.documents.SearchTestBase.HOTELS_TESTS_INDEX_DATA_JSON;
 import static com.azure.search.documents.implementation.util.Utility.MAP_STRING_OBJECT_TYPE_REFERENCE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -285,7 +301,7 @@ public final class TestHelpers {
         return searchAsyncClient.getHttpPipeline();
     }
 
-    private static List<Map<String, Object>> readJsonFileToList(String filename) {
+    public static List<Map<String, Object>> readJsonFileToList(String filename) {
 
         InputStream inputStream = Objects.requireNonNull(TestHelpers.class.getClassLoader()
             .getResourceAsStream(filename));
@@ -341,6 +357,37 @@ public final class TestHelpers {
             return SERIALIZER.deserialize(serializedJson, clazz, SerializerEncoding.JSON);
         } catch (IOException ex) {
             throw Exceptions.propagate(ex);
+        }
+    }
+
+    public static SearchIndexClient setupSharedIndex(String indexName) {
+        Reader indexData = new InputStreamReader(Objects.requireNonNull(AutocompleteSyncTests.class
+            .getClassLoader()
+            .getResourceAsStream(HOTELS_TESTS_INDEX_DATA_JSON)));
+
+        try {
+            SearchIndex index = new ObjectMapper().readValue(indexData, SearchIndex.class);
+
+            Field searchIndexName = index.getClass().getDeclaredField("name");
+            AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+                searchIndexName.setAccessible(true);
+                return null;
+            });
+
+            searchIndexName.set(index, indexName);
+
+            SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
+                .endpoint(ENDPOINT)
+                .credential(new AzureKeyCredential(API_KEY))
+                .retryPolicy(new RetryPolicy(new ExponentialBackoff(3, Duration.ofSeconds(10), Duration.ofSeconds(30))))
+                .buildClient();
+
+            searchIndexClient.createOrUpdateIndex(index);
+            uploadDocumentsJson(searchIndexClient.getSearchClient(indexName), HOTELS_DATA_JSON);
+
+            return searchIndexClient;
+        } catch (Throwable ex) {
+            throw new RuntimeException(ex);
         }
     }
 }

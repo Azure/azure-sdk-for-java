@@ -2,40 +2,27 @@
 // Licensed under the MIT License.
 package com.azure.search.documents;
 
-import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.policy.ExponentialBackoff;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedIterableBase;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Context;
 import com.azure.search.documents.indexes.SearchIndexClient;
-import com.azure.search.documents.indexes.SearchIndexClientBuilder;
-import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.models.AutocompleteItem;
 import com.azure.search.documents.models.AutocompleteMode;
 import com.azure.search.documents.models.AutocompleteOptions;
 import com.azure.search.documents.util.AutocompletePagedResponse;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
 
 import static com.azure.search.documents.TestHelpers.assertHttpResponseException;
-import static com.azure.search.documents.TestHelpers.uploadDocumentsJson;
+import static com.azure.search.documents.TestHelpers.setupSharedIndex;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
@@ -46,8 +33,6 @@ public class AutocompleteSyncTests extends SearchTestBase {
     private static SearchIndexClient searchIndexClient;
     private SearchClient client;
 
-
-
     @BeforeAll
     public static void setupClass() {
         TestBase.setupClass();
@@ -56,32 +41,7 @@ public class AutocompleteSyncTests extends SearchTestBase {
             return;
         }
 
-        Reader indexData = new InputStreamReader(Objects.requireNonNull(AutocompleteSyncTests.class
-            .getClassLoader()
-            .getResourceAsStream(HOTELS_TESTS_INDEX_DATA_JSON)));
-
-        try {
-            SearchIndex index = new ObjectMapper().readValue(indexData, SearchIndex.class);
-
-            Field searchIndexName = index.getClass().getDeclaredField("name");
-            AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
-                searchIndexName.setAccessible(true);
-                return null;
-            });
-
-            searchIndexName.set(index, INDEX_NAME);
-
-            searchIndexClient = new SearchIndexClientBuilder()
-                .endpoint(ENDPOINT)
-                .credential(new AzureKeyCredential(API_KEY))
-                .retryPolicy(new RetryPolicy(new ExponentialBackoff(3, Duration.ofSeconds(10), Duration.ofSeconds(30))))
-                .buildClient();
-
-            searchIndexClient.createOrUpdateIndex(index);
-            uploadDocumentsJson(searchIndexClient.getSearchClient(INDEX_NAME), HOTELS_DATA_JSON);
-        } catch (Throwable ex) {
-            throw new RuntimeException(ex);
-        }
+        searchIndexClient = setupSharedIndex(INDEX_NAME);
     }
 
     @Override
