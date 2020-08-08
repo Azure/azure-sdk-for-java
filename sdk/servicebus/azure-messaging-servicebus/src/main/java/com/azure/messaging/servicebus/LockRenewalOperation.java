@@ -7,6 +7,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.MessageUtils;
 import com.azure.messaging.servicebus.models.LockRenewalStatus;
 import reactor.core.Disposable;
+import reactor.core.Disposables;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
@@ -28,7 +29,7 @@ public class LockRenewalOperation implements AutoCloseable {
     private final AtomicReference<Instant> lockedUntil = new AtomicReference<>();
     private final AtomicReference<Throwable> throwable = new AtomicReference<>();
     private final AtomicReference<LockRenewalStatus> status = new AtomicReference<>(LockRenewalStatus.RUNNING);
-    private final MonoProcessor<Void> cancelReceiveProcessor = MonoProcessor.create();
+    private final MonoProcessor<Void> cancellationProcessor = MonoProcessor.create();
 
     private final String lockToken;
     private final boolean isSession;
@@ -112,11 +113,23 @@ public class LockRenewalOperation implements AutoCloseable {
             logger.verbose("token[{}] Cancelled operation.", lockToken);
         }
 
-        cancelReceiveProcessor.onComplete();
+        cancellationProcessor.onComplete();
         subscription.dispose();
     }
 
+    /**
+     * Gets the lock renewal operation. if the {@code maxLockRenewalDuration} is {@link Duration#isZero()}, then the
+     * lock is never renewed.
+     *
+     * @param initialLockedUntil When the initial call is locked until.
+     * @param maxLockRenewalDuration Duration to renew lock for.
+     * @return The subscription for the operation.
+     */
     private Disposable getRenewLockOperation(Instant initialLockedUntil, Duration maxLockRenewalDuration) {
+        if (maxLockRenewalDuration.isZero()) {
+            return Disposables.single();
+        }
+
         final Instant now = Instant.now();
         Duration initialInterval = Duration.between(now, initialLockedUntil);
 
@@ -124,6 +137,7 @@ public class LockRenewalOperation implements AutoCloseable {
             logger.info("Duration was negative. now[{}] lockedUntil[{}]", now, initialLockedUntil);
             initialInterval = Duration.ZERO;
         } else {
+            // Adjust the interval, so we can buffer time for the time it'll take to refresh.
             final Duration adjusted = MessageUtils.adjustServerTimeout(initialInterval);
             if (adjusted.isNegative()) {
                 logger.info("Adjusted duration is negative. Adjusted: {}ms", initialInterval.toMillis());
@@ -135,10 +149,9 @@ public class LockRenewalOperation implements AutoCloseable {
         final EmitterProcessor<Duration> emitterProcessor = EmitterProcessor.create();
         final FluxSink<Duration> sink = emitterProcessor.sink();
 
-        // Adjust the interval, so we can buffer time for the time it'll take to refresh.
-        sink.next(MessageUtils.adjustServerTimeout(initialInterval));
+        sink.next(initialInterval);
 
-        final Flux<Object> cancellationSignals = Flux.first(cancelReceiveProcessor, Mono.delay(maxLockRenewalDuration));
+        final Flux<Object> cancellationSignals = Flux.first(cancellationProcessor, Mono.delay(maxLockRenewalDuration));
 
         return Flux.switchOnNext(emitterProcessor.map(Flux::interval))
             .takeUntilOther(cancellationSignals)
@@ -164,13 +177,13 @@ public class LockRenewalOperation implements AutoCloseable {
                     logger.error("token[{}]. Error occurred while renewing lock token.", error);
                     status.set(LockRenewalStatus.FAILED);
                     throwable.set(error);
-                    cancelReceiveProcessor.onComplete();
+                    cancellationProcessor.onComplete();
                 }, () -> {
                     if (status.compareAndSet(LockRenewalStatus.RUNNING, LockRenewalStatus.COMPLETE)) {
-                        logger.verbose("token[{}]. Renewing session lock task completed.");
+                        logger.verbose("token[{}]. Renewing session lock task completed.", lockToken);
                     }
 
-                    cancelReceiveProcessor.onComplete();
+                    cancellationProcessor.onComplete();
                 });
     }
 }
