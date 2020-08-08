@@ -7,7 +7,6 @@ import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.MessageLockContainer;
-import com.azure.messaging.servicebus.implementation.MessageManagementOperations;
 import com.azure.messaging.servicebus.implementation.MessageUtils;
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
@@ -212,6 +211,7 @@ class UnnamedSessionReceiver implements AutoCloseable {
             logger.info("Duration was negative. now[{}] lockedUntil[{}]", now, initialLockedUntil);
             initialInterval = Duration.ZERO;
         } else {
+            // Adjust the interval, so we can buffer time for the time it'll take to refresh.
             final Duration adjusted = MessageUtils.adjustServerTimeout(initialInterval);
             if (adjusted.isNegative()) {
                 logger.info("Adjusted duration is negative. Adjusted: {}ms", initialInterval.toMillis());
@@ -223,8 +223,7 @@ class UnnamedSessionReceiver implements AutoCloseable {
         final EmitterProcessor<Duration> emitterProcessor = EmitterProcessor.create();
         final FluxSink<Duration> sink = emitterProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
 
-        // Adjust the interval, so we can buffer time for the time it'll take to refresh.
-        sink.next(MessageUtils.adjustServerTimeout(initialInterval));
+        sink.next(initialInterval);
 
         final Flux<Object> cancellationSignals;
         if (enableSessionLockRenewal) {
@@ -263,23 +262,5 @@ class UnnamedSessionReceiver implements AutoCloseable {
                     logger.verbose("Renewing session lock task completed.");
                     cancelReceiveProcessor.onComplete();
                 });
-    }
-
-    private static final class SessionMessageManagement implements MessageManagementOperations {
-        private final ServiceBusReceiveLink link;
-
-        private SessionMessageManagement(ServiceBusReceiveLink link) {
-            this.link = link;
-        }
-
-        @Override
-        public Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState) {
-            return link.updateDisposition(lockToken, deliveryState);
-        }
-
-        @Override
-        public Mono<Instant> renewMessageLock(String lockToken, String associatedLinkName) {
-            return Mono.just(Instant.now().plusSeconds(60));
-        }
     }
 }
