@@ -58,3 +58,5 @@ extends:
         groupId: com.azure
       - name: azure-resourcemanager
         groupId: com.azure.resourcemanager
+      - name: azure-cosmos
+        groupId: com.azure
