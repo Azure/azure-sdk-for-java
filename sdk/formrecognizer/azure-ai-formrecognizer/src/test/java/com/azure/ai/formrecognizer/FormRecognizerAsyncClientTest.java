@@ -3,12 +3,14 @@
 
 package com.azure.ai.formrecognizer;
 
+import com.azure.ai.formrecognizer.models.BeginRecognizeContentOptions;
+import com.azure.ai.formrecognizer.models.BeginRecognizeReceiptOptions;
 import com.azure.ai.formrecognizer.models.ErrorInformation;
 import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.FormRecognizerException;
 import com.azure.ai.formrecognizer.models.OperationResult;
-import com.azure.ai.formrecognizer.models.RecognizeOptions;
+import com.azure.ai.formrecognizer.models.BeginRecognizeCustomFormOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.training.FormTrainingAsyncClient;
 import com.azure.ai.formrecognizer.training.models.CustomFormModel;
@@ -82,7 +84,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         receiptDataRunner((data, dataLength) -> {
             SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeReceipts(toFluxByteBuffer(data), dataLength, new RecognizeOptions()
+                client.beginRecognizeReceipts(toFluxByteBuffer(data), dataLength, new BeginRecognizeReceiptOptions()
                 .setContentType(FormContentType.IMAGE_JPEG).setPollInterval(durationTestMode))
                     .getSyncPoller();
             syncPoller.waitForCompletion();
@@ -112,7 +114,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
 
         SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeReceipts(
-            getReplayableBufferData(RECEIPT_LOCAL_URL), RECEIPT_FILE_LENGTH, new RecognizeOptions()
+            getReplayableBufferData(RECEIPT_LOCAL_URL), RECEIPT_FILE_LENGTH, new BeginRecognizeReceiptOptions()
                 .setPollInterval(durationTestMode)).getSyncPoller();
 
         syncPoller.waitForCompletion();
@@ -128,7 +130,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         receiptDataRunnerFieldElements((data, includeFieldElements) -> {
             SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeReceipts(
-                toFluxByteBuffer(data), RECEIPT_FILE_LENGTH, new RecognizeOptions()
+                toFluxByteBuffer(data), RECEIPT_FILE_LENGTH, new BeginRecognizeReceiptOptions()
                     .setContentType(FormContentType.IMAGE_JPEG).setFieldElementsIncluded(includeFieldElements)
                     .setPollInterval(durationTestMode)).getSyncPoller();
             syncPoller.waitForCompletion();
@@ -146,7 +148,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         receiptPngDataRunnerFieldElements((data, includeFieldElements) -> {
             SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeReceipts(toFluxByteBuffer(data), RECEIPT_PNG_FILE_LENGTH, new RecognizeOptions()
+                client.beginRecognizeReceipts(toFluxByteBuffer(data), RECEIPT_PNG_FILE_LENGTH, new BeginRecognizeReceiptOptions()
                     .setContentType(FormContentType.IMAGE_PNG).setFieldElementsIncluded(includeFieldElements)
                     .setPollInterval(durationTestMode)).getSyncPoller();
             syncPoller.waitForCompletion();
@@ -164,7 +166,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         blankPdfDataRunner((data, dataLength) -> {
             SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeReceipts(toFluxByteBuffer(data), dataLength, new RecognizeOptions()
+                client.beginRecognizeReceipts(toFluxByteBuffer(data), dataLength, new BeginRecognizeReceiptOptions()
                     .setContentType(FormContentType.APPLICATION_PDF).setPollInterval(durationTestMode))
                     .getSyncPoller();
             syncPoller.waitForCompletion();
@@ -178,7 +180,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         multipageFromDataRunner((data, dataLength) -> {
             SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeReceipts(
-                toFluxByteBuffer(data), dataLength, new RecognizeOptions()
+                toFluxByteBuffer(data), dataLength, new BeginRecognizeReceiptOptions()
                     .setContentType(FormContentType.APPLICATION_PDF).setPollInterval(durationTestMode))
                 .getSyncPoller();
             syncPoller.waitForCompletion();
@@ -195,7 +197,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         damagedPdfDataRunner((data, dataLength) -> {
             HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
-                () -> client.beginRecognizeReceipts(toFluxByteBuffer(data), dataLength, new RecognizeOptions()
+                () -> client.beginRecognizeReceipts(toFluxByteBuffer(data), dataLength, new BeginRecognizeReceiptOptions()
                     .setContentType(FormContentType.APPLICATION_PDF).setPollInterval(durationTestMode))
                     .getSyncPoller().getFinalResult());
             ErrorInformation errorInformation = (ErrorInformation) httpResponseException.getValue();
@@ -231,7 +233,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         encodedBlankSpaceSourceUrlRunner(sourceUrl -> {
             HttpResponseException errorResponseException = assertThrows(HttpResponseException.class,
-                () -> client.beginRecognizeReceiptsFromUrl(sourceUrl, new RecognizeOptions()
+                () -> client.beginRecognizeReceiptsFromUrl(sourceUrl, new BeginRecognizeReceiptOptions()
                     .setPollInterval(durationTestMode)).getSyncPoller().getFinalResult());
             assertEquals(ENCODED_EMPTY_SPACE,
                 new String(errorResponseException.getResponse().getRequest().getBody().blockFirst().array(),
@@ -251,7 +253,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         invalidSourceUrlRunner((invalidSourceUrl) -> {
             HttpResponseException errorResponseException = assertThrows(HttpResponseException.class,
-                () -> client.beginRecognizeReceiptsFromUrl(invalidSourceUrl, new RecognizeOptions()
+                () -> client.beginRecognizeReceiptsFromUrl(invalidSourceUrl, new BeginRecognizeReceiptOptions()
                     .setPollInterval(durationTestMode)).getSyncPoller().getFinalResult());
             ErrorInformation errorInformation = (ErrorInformation) errorResponseException.getValue();
             assertEquals(INVALID_IMAGE_URL_ERROR_CODE, errorInformation.getErrorCode());
@@ -270,7 +272,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         receiptSourceUrlRunnerFieldElements((sourceUrl, includeFieldElements) -> {
             SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeReceiptsFromUrl(
-                sourceUrl, new RecognizeOptions().setFieldElementsIncluded(includeFieldElements)
+                sourceUrl, new BeginRecognizeReceiptOptions().setFieldElementsIncluded(includeFieldElements)
                     .setPollInterval(durationTestMode)).getSyncPoller();
             syncPoller.waitForCompletion();
             validateReceiptResultData(syncPoller.getFinalResult(), includeFieldElements);
@@ -288,7 +290,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         receiptPngSourceUrlRunnerFieldElements((sourceUrl, includeFieldElements) -> {
             SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeReceiptsFromUrl(
-                sourceUrl, new RecognizeOptions().setFieldElementsIncluded(includeFieldElements)
+                sourceUrl, new BeginRecognizeReceiptOptions().setFieldElementsIncluded(includeFieldElements)
                     .setPollInterval(durationTestMode))
                 .getSyncPoller();
             syncPoller.waitForCompletion();
@@ -302,7 +304,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         multipageFromUrlRunner(fileUrl -> {
             SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeReceiptsFromUrl(
-                fileUrl, new RecognizeOptions().setPollInterval(durationTestMode)).getSyncPoller();
+                fileUrl, new BeginRecognizeReceiptOptions().setPollInterval(durationTestMode)).getSyncPoller();
             syncPoller.waitForCompletion();
             validateMultipageReceiptData(syncPoller.getFinalResult());
         });
@@ -321,7 +323,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         contentFromDataRunner((data, dataLength) -> {
             SyncPoller<OperationResult, List<FormPage>> syncPoller = client.beginRecognizeContent(
-                toFluxByteBuffer(data), dataLength, new RecognizeOptions()
+                toFluxByteBuffer(data), dataLength, new BeginRecognizeContentOptions()
                     .setContentType(FormContentType.IMAGE_JPEG).setPollInterval(durationTestMode))
                 .getSyncPoller();
             syncPoller.waitForCompletion();
@@ -349,7 +351,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         contentFromDataRunner((data, dataLength) -> {
             SyncPoller<OperationResult, List<FormPage>> syncPoller = client.beginRecognizeContent(
-                getReplayableBufferData(LAYOUT_LOCAL_URL), dataLength, new RecognizeOptions()
+                getReplayableBufferData(LAYOUT_LOCAL_URL), dataLength, new BeginRecognizeContentOptions()
                     .setPollInterval(durationTestMode)).getSyncPoller();
             syncPoller.waitForCompletion();
             validateContentResultData(syncPoller.getFinalResult(), false);
@@ -365,7 +367,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         blankPdfDataRunner((data, dataLength)  -> {
             SyncPoller<OperationResult, List<FormPage>> syncPoller = client.beginRecognizeContent(
-                toFluxByteBuffer(data), dataLength, new RecognizeOptions()
+                toFluxByteBuffer(data), dataLength, new BeginRecognizeContentOptions()
                     .setContentType(FormContentType.APPLICATION_PDF).setPollInterval(durationTestMode))
                 .getSyncPoller();
             syncPoller.waitForCompletion();
@@ -379,7 +381,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         multipageFromDataRunner((data, dataLength) -> {
             SyncPoller<OperationResult, List<FormPage>> syncPoller = client.beginRecognizeContent(
-                toFluxByteBuffer(data), dataLength, new RecognizeOptions()
+                toFluxByteBuffer(data), dataLength, new BeginRecognizeContentOptions()
                     .setContentType(FormContentType.APPLICATION_PDF).setPollInterval(durationTestMode))
                 .getSyncPoller();
             syncPoller.waitForCompletion();
@@ -397,7 +399,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         damagedPdfDataRunner((data, dataLength) -> {
             HttpResponseException errorResponseException = assertThrows(HttpResponseException.class,
-                () -> client.beginRecognizeContent(toFluxByteBuffer(data), dataLength, new RecognizeOptions()
+                () -> client.beginRecognizeContent(toFluxByteBuffer(data), dataLength, new BeginRecognizeContentOptions()
                     .setContentType(FormContentType.APPLICATION_PDF).setPollInterval(durationTestMode))
                     .getSyncPoller().getFinalResult());
             ErrorInformation errorInformation = (ErrorInformation) errorResponseException.getValue();
@@ -433,7 +435,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         encodedBlankSpaceSourceUrlRunner(sourceUrl -> {
             HttpResponseException errorResponseException = assertThrows(HttpResponseException.class,
-                () -> client.beginRecognizeContentFromUrl(sourceUrl, new RecognizeOptions()
+                () -> client.beginRecognizeContentFromUrl(sourceUrl, new BeginRecognizeContentOptions()
                     .setPollInterval(durationTestMode)).getSyncPoller().getFinalResult());
             assertEquals(ENCODED_EMPTY_SPACE,
                 new String(errorResponseException.getResponse().getRequest().getBody().blockFirst().array(),
@@ -453,7 +455,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         pdfContentFromUrlRunner(sourceUrl -> {
             SyncPoller<OperationResult, List<FormPage>> syncPoller =
-                client.beginRecognizeContentFromUrl(sourceUrl, new RecognizeOptions().setPollInterval(durationTestMode))
+                client.beginRecognizeContentFromUrl(sourceUrl, new BeginRecognizeContentOptions().setPollInterval(durationTestMode))
                     .getSyncPoller();
             syncPoller.waitForCompletion();
             validateContentResultData(syncPoller.getFinalResult(), false);
@@ -469,7 +471,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         invalidSourceUrlRunner((invalidSourceUrl) -> {
             HttpResponseException errorResponseException = assertThrows(HttpResponseException.class,
-                () -> client.beginRecognizeContentFromUrl(invalidSourceUrl, new RecognizeOptions()
+                () -> client.beginRecognizeContentFromUrl(invalidSourceUrl, new BeginRecognizeContentOptions()
                     .setPollInterval(durationTestMode)).getSyncPoller().getFinalResult());
             ErrorInformation errorInformation = (ErrorInformation) errorResponseException.getValue();
             assertEquals(INVALID_IMAGE_URL_ERROR_CODE, errorInformation.getErrorCode());
@@ -483,7 +485,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         multipageFromUrlRunner((formUrl) -> {
             SyncPoller<OperationResult, List<FormPage>> syncPoller = client.beginRecognizeContentFromUrl(
-                formUrl, new RecognizeOptions().setPollInterval(durationTestMode)).getSyncPoller();
+                formUrl, new BeginRecognizeContentOptions().setPollInterval(durationTestMode)).getSyncPoller();
             syncPoller.waitForCompletion();
             validateContentResultData(syncPoller.getFinalResult(), false);
         });
@@ -509,7 +511,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
 
                 SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
                     client.beginRecognizeCustomForms(trainingPoller.getFinalResult().getModelId(), toFluxByteBuffer(data),
-                        dataLength, new RecognizeOptions()
+                        dataLength, new BeginRecognizeCustomFormOptions()
                         .setContentType(FormContentType.APPLICATION_PDF).setFieldElementsIncluded(true)
                         .setPollInterval(durationTestMode)).getSyncPoller();
                 syncPoller.waitForCompletion();
@@ -534,7 +536,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
 
                 SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomForms(
                     trainingPoller.getFinalResult().getModelId(), toFluxByteBuffer(data), dataLength,
-                    new RecognizeOptions()
+                    new BeginRecognizeCustomFormOptions()
                         .setContentType(FormContentType.IMAGE_JPEG)
                         .setPollInterval(durationTestMode)).getSyncPoller();
                 syncPoller.waitForCompletion();
@@ -559,7 +561,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
 
                 SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomForms(
                     trainingPoller.getFinalResult().getModelId(), toFluxByteBuffer(data), dataLength,
-                    new RecognizeOptions()
+                    new BeginRecognizeCustomFormOptions()
                         .setContentType(FormContentType.APPLICATION_PDF)
                         .setPollInterval(durationTestMode)).getSyncPoller();
                 syncPoller.waitForCompletion();
@@ -585,7 +587,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
 
                 SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomForms(
                     trainingPoller.getFinalResult().getModelId(), toFluxByteBuffer(data), dataLength,
-                    new RecognizeOptions()
+                    new BeginRecognizeCustomFormOptions()
                         .setContentType(FormContentType.APPLICATION_PDF)
                         .setPollInterval(durationTestMode)).getSyncPoller();
                 syncPoller.waitForCompletion();
@@ -610,7 +612,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
 
                 assertThrows(RuntimeException.class, () -> client.beginRecognizeCustomForms(
                     syncPoller.getFinalResult().getModelId(), null, dataLength,
-                    new RecognizeOptions()
+                    new BeginRecognizeCustomFormOptions()
                         .setContentType(FormContentType.APPLICATION_PDF)
                         .setFieldElementsIncluded(true).setPollInterval(durationTestMode)).getSyncPoller());
             }));
@@ -627,7 +629,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         customFormDataRunner((data, dataLength) -> {
             Exception ex = assertThrows(RuntimeException.class, () -> client.beginRecognizeCustomForms(
                 null, toFluxByteBuffer(data), dataLength,
-                new RecognizeOptions().setContentType(FormContentType.APPLICATION_PDF).setFieldElementsIncluded(true)
+                new BeginRecognizeCustomFormOptions().setContentType(FormContentType.APPLICATION_PDF).setFieldElementsIncluded(true)
                     .setPollInterval(durationTestMode)).getSyncPoller());
             assertEquals(EXPECTED_MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE, ex.getMessage());
         });
@@ -643,7 +645,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         customFormDataRunner((data, dataLength) -> {
             Exception ex = assertThrows(RuntimeException.class, () -> client.beginRecognizeCustomForms(
-                "", toFluxByteBuffer(data), dataLength, new RecognizeOptions()
+                "", toFluxByteBuffer(data), dataLength, new BeginRecognizeCustomFormOptions()
                     .setContentType(FormContentType.APPLICATION_PDF).setFieldElementsIncluded(true)
                     .setPollInterval(durationTestMode)).getSyncPoller());
             assertEquals(EXPECTED_INVALID_UUID_EXCEPTION_MESSAGE, ex.getMessage());
@@ -663,7 +665,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                 CustomFormModel createdModel = syncPoller.getFinalResult();
                 FormRecognizerException formRecognizerException = assertThrows(FormRecognizerException.class,
                     () -> client.beginRecognizeCustomFormsFromUrl(
-                        createdModel.getModelId(), invalidSourceUrl, new RecognizeOptions()
+                        createdModel.getModelId(), invalidSourceUrl, new BeginRecognizeCustomFormOptions()
                             .setPollInterval(durationTestMode))
                         .getSyncPoller().getFinalResult());
                 ErrorInformation errorInformation = formRecognizerException.getErrorInformation().get(0);
@@ -691,7 +693,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
 
                 SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomForms(
                     trainingPoller.getFinalResult().getModelId(), getReplayableBufferData(FORM_LOCAL_URL), dataLength,
-                    new RecognizeOptions()
+                    new BeginRecognizeCustomFormOptions()
                         .setFieldElementsIncluded(true).setPollInterval(durationTestMode)).getSyncPoller();
                 syncPoller.waitForCompletion();
                 validateRecognizedResult(syncPoller.getFinalResult(), true, true);
@@ -715,7 +717,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
 
                 SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomForms(
                     trainingPoller.getFinalResult().getModelId(), toFluxByteBuffer(data), dataLength,
-                    new RecognizeOptions()
+                    new BeginRecognizeCustomFormOptions()
                         .setContentType(FormContentType.APPLICATION_PDF).setPollInterval(durationTestMode))
                     .getSyncPoller();
                 syncPoller.waitForCompletion();
@@ -741,7 +743,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
 
                 SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomForms(
                     trainingPoller.getFinalResult().getModelId(), toFluxByteBuffer(data), dataLength,
-                    new RecognizeOptions()
+                    new BeginRecognizeCustomFormOptions()
                         .setContentType(FormContentType.APPLICATION_PDF).setPollInterval(durationTestMode))
                     .getSyncPoller();
                 syncPoller.waitForCompletion();
@@ -766,7 +768,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
 
                 SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomForms(
                     trainingPoller.getFinalResult().getModelId(), toFluxByteBuffer(data), dataLength,
-                    new RecognizeOptions()
+                    new BeginRecognizeCustomFormOptions()
                         .setContentType(FormContentType.APPLICATION_PDF)
                         .setFieldElementsIncluded(true).setPollInterval(durationTestMode)).getSyncPoller();
                 syncPoller.waitForCompletion();
@@ -792,7 +794,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
 
                 SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomForms(
                     trainingPoller.getFinalResult().getModelId(), toFluxByteBuffer(data), dataLength,
-                    new RecognizeOptions()
+                    new BeginRecognizeCustomFormOptions()
                         .setContentType(FormContentType.APPLICATION_PDF).setPollInterval(durationTestMode))
                     .getSyncPoller();
                 syncPoller.waitForCompletion();
@@ -818,7 +820,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
 
                 SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomForms(
                     trainingPoller.getFinalResult().getModelId(), toFluxByteBuffer(data), dataLength,
-                    new RecognizeOptions()
+                    new BeginRecognizeCustomFormOptions()
                         .setContentType(FormContentType.IMAGE_JPEG)
                         .setPollInterval(durationTestMode)).getSyncPoller();
                 syncPoller.waitForCompletion();
@@ -843,7 +845,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
 
                 SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomForms(
                     trainingPoller.getFinalResult().getModelId(), toFluxByteBuffer(data), dataLength,
-                    new RecognizeOptions()
+                    new BeginRecognizeCustomFormOptions()
                         .setContentType(FormContentType.APPLICATION_PDF).setPollInterval(durationTestMode))
                     .getSyncPoller();
                 syncPoller.waitForCompletion();
@@ -870,7 +872,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                 trainingPoller.waitForCompletion();
 
                 SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomFormsFromUrl(
-                    trainingPoller.getFinalResult().getModelId(), fileUrl, new RecognizeOptions()
+                    trainingPoller.getFinalResult().getModelId(), fileUrl, new BeginRecognizeCustomFormOptions()
                         .setPollInterval(durationTestMode)).getSyncPoller();
                 syncPoller.waitForCompletion();
                 validateRecognizedResult(syncPoller.getFinalResult(), false, false);
@@ -893,7 +895,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                 trainingPoller.waitForCompletion();
 
                 SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomFormsFromUrl(
-                    trainingPoller.getFinalResult().getModelId(), fileUrl, new RecognizeOptions()
+                    trainingPoller.getFinalResult().getModelId(), fileUrl, new BeginRecognizeCustomFormOptions()
                         .setFieldElementsIncluded(true).setPollInterval(durationTestMode)).getSyncPoller();
                 syncPoller.waitForCompletion();
                 validateRecognizedResult(syncPoller.getFinalResult(), true, false);
@@ -916,7 +918,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                 trainingPoller.waitForCompletion();
 
                 SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomFormsFromUrl(
-                    trainingPoller.getFinalResult().getModelId(), fileUrl, new RecognizeOptions()
+                    trainingPoller.getFinalResult().getModelId(), fileUrl, new BeginRecognizeCustomFormOptions()
                         .setPollInterval(durationTestMode)).getSyncPoller();
                 syncPoller.waitForCompletion();
                 validateMultiPageDataUnlabeled(syncPoller.getFinalResult());
@@ -954,7 +956,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         multipageFromUrlRunner(fileUrl -> {
             Exception ex = assertThrows(RuntimeException.class, () ->
-                client.beginRecognizeCustomFormsFromUrl(null, fileUrl, new RecognizeOptions()
+                client.beginRecognizeCustomFormsFromUrl(null, fileUrl, new BeginRecognizeCustomFormOptions()
                     .setPollInterval(durationTestMode)).getSyncPoller());
             assertEquals(EXPECTED_MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE, ex.getMessage());
         });
@@ -970,7 +972,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         multipageFromUrlRunner(fileUrl -> {
             Exception ex = assertThrows(RuntimeException.class, () ->
-                client.beginRecognizeCustomFormsFromUrl("", fileUrl, new RecognizeOptions()
+                client.beginRecognizeCustomFormsFromUrl("", fileUrl, new BeginRecognizeCustomFormOptions()
                     .setPollInterval(durationTestMode)).getSyncPoller());
             assertEquals(EXPECTED_INVALID_UUID_EXCEPTION_MESSAGE, ex.getMessage());
         });
@@ -991,7 +993,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                 trainingPoller.waitForCompletion();
 
                 SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomFormsFromUrl(
-                    trainingPoller.getFinalResult().getModelId(), fileUrl, new RecognizeOptions()
+                    trainingPoller.getFinalResult().getModelId(), fileUrl, new BeginRecognizeCustomFormOptions()
                         .setPollInterval(durationTestMode)).getSyncPoller();
                 syncPoller.waitForCompletion();
                 validateRecognizedResult(syncPoller.getFinalResult(), false, true);
@@ -1014,7 +1016,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                 trainingPoller.waitForCompletion();
 
                 SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomFormsFromUrl(
-                    trainingPoller.getFinalResult().getModelId(), fileUrl, new RecognizeOptions()
+                    trainingPoller.getFinalResult().getModelId(), fileUrl, new BeginRecognizeCustomFormOptions()
                         .setFieldElementsIncluded(true).setPollInterval(durationTestMode)).getSyncPoller();
                 syncPoller.waitForCompletion();
                 validateRecognizedResult(syncPoller.getFinalResult(), true, true);
@@ -1037,7 +1039,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                 trainingPoller.waitForCompletion();
 
                 SyncPoller<OperationResult, List<RecognizedForm>> syncPoller = client.beginRecognizeCustomFormsFromUrl(
-                    trainingPoller.getFinalResult().getModelId(), fileUrl, new RecognizeOptions()
+                    trainingPoller.getFinalResult().getModelId(), fileUrl, new BeginRecognizeCustomFormOptions()
                         .setPollInterval(durationTestMode)).getSyncPoller();
                 syncPoller.waitForCompletion();
                 validateMultiPageDataLabeled(syncPoller.getFinalResult());
@@ -1055,7 +1057,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         encodedBlankSpaceSourceUrlRunner(sourceUrl -> {
             HttpResponseException errorResponseException = assertThrows(HttpResponseException.class,
-                () -> client.beginRecognizeCustomFormsFromUrl(NON_EXIST_MODEL_ID, sourceUrl, new RecognizeOptions()
+                () -> client.beginRecognizeCustomFormsFromUrl(NON_EXIST_MODEL_ID, sourceUrl, new BeginRecognizeCustomFormOptions()
                     .setPollInterval(durationTestMode)).getSyncPoller().getFinalResult());
             assertEquals(ENCODED_EMPTY_SPACE,
                 new String(errorResponseException.getResponse().getRequest().getBody().blockFirst().array(),
@@ -1074,7 +1076,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         urlRunner(fileUrl -> {
             HttpResponseException errorResponseException = assertThrows(HttpResponseException.class,
                 () -> client.beginRecognizeCustomFormsFromUrl(NON_EXIST_MODEL_ID, fileUrl,
-                    new RecognizeOptions().setPollInterval(durationTestMode)).getSyncPoller().getFinalResult());
+                    new BeginRecognizeCustomFormOptions().setPollInterval(durationTestMode)).getSyncPoller().getFinalResult());
             ErrorInformation errorInformation = (ErrorInformation) errorResponseException.getValue();
             assertEquals(EXPECTED_INVALID_MODEL_ID_ERROR_CODE, errorInformation.getErrorCode());
             assertEquals(EXPECTED_INVALID_MODEL_ID_ERROR_MESSAGE, errorInformation.getMessage());
@@ -1098,7 +1100,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
 
                 FormRecognizerException errorResponseException = assertThrows(FormRecognizerException.class,
                     () -> client.beginRecognizeCustomForms(trainingPoller.getFinalResult().getModelId(),
-                        toFluxByteBuffer(data), dataLength, new RecognizeOptions()
+                        toFluxByteBuffer(data), dataLength, new BeginRecognizeCustomFormOptions()
                             .setContentType(FormContentType.APPLICATION_PDF).setPollInterval(durationTestMode))
                         .getSyncPoller().getFinalResult());
                 assertEquals(EXPECTED_UNABLE_TO_READ_FILE, errorResponseException.getMessage());

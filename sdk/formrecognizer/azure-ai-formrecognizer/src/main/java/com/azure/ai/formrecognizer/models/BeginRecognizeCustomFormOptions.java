@@ -10,7 +10,7 @@ import java.time.Duration;
  * Options that may be passed when using recognize APIs on Form Recognizer client.
  */
 @Fluent
-public class RecognizeOptions {
+public class BeginRecognizeCustomFormOptions {
     private FormContentType contentType;
     private boolean includeFieldElements;
     private Duration pollInterval = DEFAULT_POLL_INTERVAL;
@@ -51,7 +51,7 @@ public class RecognizeOptions {
      *
      * @return the updated {@code RecognizeOptions} value.
      */
-    public RecognizeOptions setContentType(final FormContentType contentType) {
+    public BeginRecognizeCustomFormOptions setContentType(final FormContentType contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -63,7 +63,7 @@ public class RecognizeOptions {
      *
      * @return the updated {@code RecognizeOptions} value.
      */
-    public RecognizeOptions setFieldElementsIncluded(final boolean includeFieldElements) {
+    public BeginRecognizeCustomFormOptions setFieldElementsIncluded(final boolean includeFieldElements) {
         this.includeFieldElements = includeFieldElements;
         return this;
     }
@@ -76,7 +76,7 @@ public class RecognizeOptions {
      *
      * @return the updated {@code RecognizeOptions} value.
      */
-    public RecognizeOptions setPollInterval(final Duration pollInterval) {
+    public BeginRecognizeCustomFormOptions setPollInterval(final Duration pollInterval) {
         this.pollInterval = pollInterval == null ? DEFAULT_POLL_INTERVAL : pollInterval;
         return this;
     }

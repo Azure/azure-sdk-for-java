@@ -3,6 +3,7 @@
 
 package com.azure.ai.formrecognizer;
 
+import com.azure.ai.formrecognizer.models.BeginRecognizeReceiptOptions;
 import com.azure.ai.formrecognizer.training.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.training.models.CustomFormModel;
 import com.azure.ai.formrecognizer.training.models.CustomFormModelInfo;
@@ -11,7 +12,6 @@ import com.azure.ai.formrecognizer.models.ErrorInformation;
 import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.FormRecognizerException;
 import com.azure.ai.formrecognizer.models.OperationResult;
-import com.azure.ai.formrecognizer.models.RecognizeOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.training.models.TrainingFileFilter;
 import com.azure.ai.formrecognizer.training.FormTrainingAsyncClient;
@@ -72,7 +72,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
         blankPdfDataRunner(data -> {
             SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
                 formRecognizerClient.beginRecognizeReceipts(toFluxByteBuffer(data), BLANK_FORM_FILE_LENGTH,
-                    new RecognizeOptions()
+                    new BeginRecognizeReceiptOptions()
                         .setContentType(FormContentType.APPLICATION_PDF)
                         .setPollInterval(durationTestMode))
                     .getSyncPoller();

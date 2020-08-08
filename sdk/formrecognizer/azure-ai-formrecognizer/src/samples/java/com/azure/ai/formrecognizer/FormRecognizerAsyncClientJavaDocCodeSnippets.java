@@ -3,10 +3,12 @@
 
 package com.azure.ai.formrecognizer;
 
+import com.azure.ai.formrecognizer.models.BeginRecognizeContentOptions;
+import com.azure.ai.formrecognizer.models.BeginRecognizeReceiptOptions;
 import com.azure.ai.formrecognizer.models.FieldValueType;
 import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.FormField;
-import com.azure.ai.formrecognizer.models.RecognizeOptions;
+import com.azure.ai.formrecognizer.models.BeginRecognizeCustomFormOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpPipeline;
@@ -87,16 +89,16 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
 
     /**
      * Code snippet for
-     * {@link FormRecognizerAsyncClient#beginRecognizeCustomFormsFromUrl(String, String, RecognizeOptions)} with options
+     * {@link FormRecognizerAsyncClient#beginRecognizeCustomFormsFromUrl(String, String, BeginRecognizeCustomFormOptions)} with options
      */
     public void beginRecognizeCustomFormsFromUrlWithOptions() {
-        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl#string-string-recognizeOptions
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl#string-string-BeginRecognizeCustomFormOptions
         String formUrl = "{formUrl}";
         String modelId = "{model_id}";
         boolean includeFieldElements = true;
 
         formRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl(modelId, formUrl,
-            new RecognizeOptions()
+            new BeginRecognizeCustomFormOptions()
                 .setFieldElementsIncluded(includeFieldElements)
                 .setPollInterval(Duration.ofSeconds(10)))
             // if training polling operation completed, retrieve the final result.
@@ -108,7 +110,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                     System.out.printf("Field value data text: %s%n", formField.getValueData().getText());
                     System.out.printf("Confidence score: %.2f%n", formField.getConfidence());
                 }));
-        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl#string-string-recognizeOptions
+        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl#string-string-BeginRecognizeCustomFormOptions
     }
 
     /**
@@ -139,13 +141,13 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
 
     /**
      * Code snippet for
-     * {@link FormRecognizerAsyncClient#beginRecognizeCustomForms(String, Flux, long, RecognizeOptions)}
+     * {@link FormRecognizerAsyncClient#beginRecognizeCustomForms(String, Flux, long, BeginRecognizeCustomFormOptions)}
      * with options
      *
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public void beginRecognizeCustomFormsWithOptions() throws IOException {
-        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#string-Flux-long-recognizeOptions
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#string-Flux-long-BeginRecognizeCustomFormOptions
         File form = new File("{local/file_path/fileName.jpg}");
         String modelId = "{custom_trained_model_id}";
         boolean includeFieldElements = true;
@@ -154,7 +156,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
 
         // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeCustomForms(modelId, buffer, form.length(),
-            new RecognizeOptions()
+            new BeginRecognizeCustomFormOptions()
                 .setContentType(FormContentType.IMAGE_JPEG)
                 .setFieldElementsIncluded(includeFieldElements)
                 .setPollInterval(Duration.ofSeconds(5)))
@@ -167,7 +169,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                     System.out.printf("Field value data text: %s%n", formField.getValueData().getText());
                     System.out.printf("Confidence score: %.2f%n", formField.getConfidence());
                 }));
-        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#string-Flux-long-recognizeOptions
+        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#string-Flux-long-BeginRecognizeCustomFormOptions
     }
 
     // Recognize Content
@@ -195,15 +197,15 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link FormRecognizerAsyncClient#beginRecognizeContentFromUrl(String, RecognizeOptions)} with
+     * Code snippet for {@link FormRecognizerAsyncClient#beginRecognizeContentFromUrl(String, com.azure.ai.formrecognizer.models.BeginRecognizeContentOptions)} with
      * options
      */
     public void beginRecognizeContentFromUrlWithOptions() {
-        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContentFromUrl#string-recognizeOptions
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContentFromUrl#string-BeginRecognizeContentOptions
         String formUrl = "{formUrl}";
         // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeContentFromUrl(formUrl,
-            new RecognizeOptions().setPollInterval(Duration.ofSeconds(5)))
+            new BeginRecognizeContentOptions().setPollInterval(Duration.ofSeconds(5)))
             .flatMap(AsyncPollResponse::getFinalResult)
             .flatMap(Flux::fromIterable)
             .subscribe(formPage -> {
@@ -215,7 +217,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                     formTable.getCells().forEach(recognizedTableCell ->
                         System.out.printf("%s ", recognizedTableCell.getText())));
             });
-        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContentFromUrl#string-recognizeOptions
+        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContentFromUrl#string-BeginRecognizeContentOptions
     }
 
     /**
@@ -246,19 +248,19 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link FormRecognizerAsyncClient#beginRecognizeContent(Flux, long, RecognizeOptions)} with
+     * Code snippet for {@link FormRecognizerAsyncClient#beginRecognizeContent(Flux, long, com.azure.ai.formrecognizer.models.BeginRecognizeContentOptions)} with
      * options
      *
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public void beginRecognizeContentWithOptions() throws IOException {
-        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContent#Flux-long-recognizeOptions
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContent#Flux-long-BeginRecognizeContentOptions
         File form = new File("{local/file_path/fileName.jpg}");
         // Utility method to convert input stream to Byte buffer
         Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(form.toPath())));
         // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeContent(buffer, form.length(),
-            new RecognizeOptions()
+            new BeginRecognizeContentOptions()
                 .setContentType(FormContentType.APPLICATION_PDF)
                 .setPollInterval(Duration.ofSeconds(5)))
             .flatMap(AsyncPollResponse::getFinalResult)
@@ -271,7 +273,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                 formPage.getTables().forEach(formTable -> formTable.getCells().forEach(recognizedTableCell ->
                     System.out.printf("%s ", recognizedTableCell.getText())));
             });
-        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContent#Flux-long-recognizeOptions
+        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContent#Flux-long-BeginRecognizeContentOptions
     }
 
     // Recognize Receipts
@@ -343,15 +345,15 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link FormRecognizerAsyncClient#beginRecognizeReceiptsFromUrl(String, RecognizeOptions)}
+     * Code snippet for {@link FormRecognizerAsyncClient#beginRecognizeReceiptsFromUrl(String, com.azure.ai.formrecognizer.models.BeginRecognizeReceiptOptions)}
      */
     public void beginRecognizeReceiptsFromUrlWithOptions() {
-        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceiptsFromUrl#string-recognizeOptions
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceiptsFromUrl#string-BeginRecognizeReceiptOptions
         String receiptUrl = "{receiptUrl}";
         boolean includeFieldElements = true;
         // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeReceiptsFromUrl(receiptUrl,
-            new RecognizeOptions()
+            new BeginRecognizeReceiptOptions()
                 .setFieldElementsIncluded(includeFieldElements)
                 .setPollInterval(Duration.ofSeconds(5)))
             .flatMap(AsyncPollResponse::getFinalResult)
@@ -408,7 +410,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                     }
                 }
             });
-        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceiptsFromUrl#string-recognizeOptions
+        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceiptsFromUrl#string-BeginRecognizeReceiptOptions
     }
 
     /**
@@ -480,20 +482,20 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link FormRecognizerAsyncClient#beginRecognizeReceipts(Flux, long, RecognizeOptions)} with
+     * Code snippet for {@link FormRecognizerAsyncClient#beginRecognizeReceipts(Flux, long, com.azure.ai.formrecognizer.models.BeginRecognizeReceiptOptions)} with
      * options
      *
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public void beginRecognizeReceiptsWithOptions() throws IOException {
-        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceipts#Flux-long-recognizeOptions
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceipts#Flux-long-BeginRecognizeReceiptOptions
         File receipt = new File("{local/file_path/fileName.jpg}");
         boolean includeFieldElements = true;
         // Utility method to convert input stream to Byte buffer
         Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(receipt.toPath())));
         // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeReceipts(buffer, receipt.length(),
-            new RecognizeOptions()
+            new BeginRecognizeReceiptOptions()
                 .setContentType(FormContentType.IMAGE_JPEG)
                 .setFieldElementsIncluded(includeFieldElements)
                 .setPollInterval(Duration.ofSeconds(5)))
@@ -551,6 +553,6 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                     }
                 }
             });
-        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceipts#Flux-long-recognizeOptions
+        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceipts#Flux-long-BeginRecognizeReceiptOptions
     }
 }
