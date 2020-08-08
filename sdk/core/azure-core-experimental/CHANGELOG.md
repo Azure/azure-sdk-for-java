@@ -1,5 +1,8 @@
 # Release History
 
+## 1.0.0-beta.3 (Unreleased)
+
+
 ## 1.0.0-beta.2 (2020-08-07)
 
 - Moved `ObjectSerializer` and some implementation of `JsonSerializer` into `azure-core`.
