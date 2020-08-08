@@ -61,7 +61,7 @@ The `DefaultAzureCredential` is appropriate for most scenarios where the applica
 
 ![DefaultAzureCredential authentication flow](./images/defaultazurecredential.png)
 
- - Environment - The `DefaultAzureCredential` will read account information specified via [environment variables](#Enviornment-variables) and use it to authenticate.
+ - Environment - The `DefaultAzureCredential` will read account information specified via [environment variables](#environment-variables) and use it to authenticate.
  - Managed Identity - If the application is deployed to an Azure host with Managed Identity enabled, the `DefaultAzureCredential` will authenticate with that account.
  - IntelliJ - If the developer has authenticated via Azure Toolkit for IntelliJ, the `DefaultAzureCredential` will authenticate with that account.
  - Visual Studio Code - If the developer has authenticated via the Visual Studio Code Azure Account plugin, the `DefaultAzureCredential` will authenticate with that account.
@@ -274,6 +274,83 @@ public void createIntelliJCredential() {
 
 Credentials can be chained together to be tried in turn until one succeeds using the `ChainedTokenCredential`; see [chaining credentials](#chaining-credentials) for details.
 
+## Environment Variables
+`DefaultAzureCredential` and `EnvironmentCredential` can be configured with environment variables. Each type of authentication requires values for specific variables:
+
+#### Service principal with secret
+<table border="1">
+  <thead>
+    <tr>
+      <th>variable name</th>
+      <th>value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>`AZURE_CLIENT_ID`</td>
+      <td>id of an Azure Active Directory application</td>
+    </tr>
+    <tr>
+      <td>`AZURE_TENANT_ID`</td>
+      <td>id of the application's Azure Active Directory tenant</td>
+    </tr>
+    <tr>
+      <td>`AZURE_CLIENT_SECRET`</td>
+      <td>one of the application's client secrets</td>
+    </tr>
+  </tbody>
+</table>
+
+#### Service principal with certificate
+<table border="1">
+  <thead>
+    <tr>
+      <th>variable name</th>
+      <th>value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>`AZURE_CLIENT_ID`</td>
+      <td>id of an Azure Active Directory application</td>
+    </tr>
+    <tr>
+      <td>`AZURE_TENANT_ID`</td>
+      <td>id of the application's Azure Active Directory tenant</td>
+    </tr>
+    <tr>
+      <td>`AZURE_CLIENT_CERTIFICATE_PATH`</td>
+      <td>path to a PEM-encoded certificate file including private key (without password protection)</td>
+    </tr>
+  </tbody>
+</table>
+
+#### Username and password
+<table border="1">
+  <thead>
+    <tr>
+      <th>variable name</th>
+      <th>value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>`AZURE_CLIENT_ID`</td>
+      <td>id of an Azure Active Directory application</td>
+    </tr>
+    <tr>
+      <td>`AZURE_USERNAME`</td>
+      <td>a username (usually an email address)</td>
+    </tr>
+    <tr>
+      <td>`AZURE_PASSWORD`</td>
+      <td>that user's password</td>
+    </tr>
+  </tbody>
+</table>
+
+Configuration is attempted in the above order. For example, if values for a client secret and certificate are both present, the client secret will be used.
+f
 ## Troubleshooting
 Credentials raise exceptions either when they fail to authenticate or cannot execute authentication.
 When credentials fail to authenticate, the`ClientAuthenticationException` is raised and it has a `message` attribute which
