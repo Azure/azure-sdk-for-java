@@ -50,7 +50,7 @@ Click on each item above to learn about how to configure them for Azure Identity
 
 A credential is a class which contains or can obtain the data needed for a service client to authenticate requests. Service clients across Azure SDK accept credentials when they are constructed, and service clients use those credentials to authenticate requests to the service. 
 
-The Azure Identity library focuses on OAuth authentication with Azure Active directory, and it offers a variety of credential classes capable of acquiring an AAD token to authenticate service requests. All of the credential classes in this library are implementations of the `TokenCredential` abstract class in [Azure.Core][azure_core_library], and any of them can be used by to construct service clients capable of authenticating with a `TokenCredential`. 
+The Azure Identity library focuses on OAuth authentication with Azure Active directory, and it offers a variety of credential classes capable of acquiring an AAD token to authenticate service requests. All of the credential classes in this library are implementations of the `TokenCredential` abstract class in [azure-core][azure_core_library], and any of them can be used by to construct service clients capable of authenticating with a `TokenCredential`. 
 
 See [Credential Classes](#credential-classes) for a complete list of available credential classes.
 
@@ -285,15 +285,15 @@ Credentials can be chained together to be tried in turn until one succeeds using
   </thead>
   <tbody>
     <tr>
-      <td>`AZURE_CLIENT_ID`</td>
+      <td><code>AZURE_CLIENT_ID</code></td>
       <td>id of an Azure Active Directory application</td>
     </tr>
     <tr>
-      <td>`AZURE_TENANT_ID`</td>
+      <td><code>AZURE_TENANT_ID</code></td>
       <td>id of the application's Azure Active Directory tenant</td>
     </tr>
     <tr>
-      <td>`AZURE_CLIENT_SECRET`</td>
+      <td><code>AZURE_CLIENT_SECRET</code></td>
       <td>one of the application's client secrets</td>
     </tr>
   </tbody>
@@ -309,15 +309,15 @@ Credentials can be chained together to be tried in turn until one succeeds using
   </thead>
   <tbody>
     <tr>
-      <td>`AZURE_CLIENT_ID`</td>
+      <td><code>AZURE_CLIENT_ID</code></td>
       <td>id of an Azure Active Directory application</td>
     </tr>
     <tr>
-      <td>`AZURE_TENANT_ID`</td>
+      <td><code>AZURE_TENANT_ID</code></td>
       <td>id of the application's Azure Active Directory tenant</td>
     </tr>
     <tr>
-      <td>`AZURE_CLIENT_CERTIFICATE_PATH`</td>
+      <td><code>AZURE_CLIENT_CERTIFICATE_PATH</code></td>
       <td>path to a PEM-encoded certificate file including private key (without password protection)</td>
     </tr>
   </tbody>
@@ -333,15 +333,15 @@ Credentials can be chained together to be tried in turn until one succeeds using
   </thead>
   <tbody>
     <tr>
-      <td>`AZURE_CLIENT_ID`</td>
+      <td><code>AZURE_CLIENT_ID</code></td>
       <td>id of an Azure Active Directory application</td>
     </tr>
     <tr>
-      <td>`AZURE_USERNAME`</td>
+      <td><code>AZURE_USERNAME</code></td>
       <td>a username (usually an email address)</td>
     </tr>
     <tr>
-      <td>`AZURE_PASSWORD`</td>
+      <td><code>AZURE_PASSWORD</code></td>
       <td>that user's password</td>
     </tr>
   </tbody>
