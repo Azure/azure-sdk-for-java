@@ -37,7 +37,7 @@ public interface CosmosOperations {
      *
      * @param domainType the domain type
      * @param <T> class type of domain
-     * @return found results in a List
+     * @return results in an Iterable
      */
     <T> Iterable<T> findAll(Class<T> domainType);
 
@@ -47,7 +47,7 @@ public interface CosmosOperations {
      * @param containerName the container name
      * @param domainType the domain type
      * @param <T> class type of domain
-     * @return found results in a List
+     * @return results in an Iterable
      */
     <T> Iterable<T> findAll(String containerName, Class<T> domainType);
 
@@ -57,7 +57,7 @@ public interface CosmosOperations {
      * @param partitionKey the partition key
      * @param domainType the domain type
      * @param <T> class type of domain
-     * @return found results in a List
+     * @return results in an Iterable
      */
     <T> Iterable<T> findAll(PartitionKey partitionKey, Class<T> domainType);
 
@@ -182,7 +182,7 @@ public interface CosmosOperations {
      * @param domainType type class
      * @param containerName the container name
      * @param <T> type class of domainType
-     * @return deleted items in a List
+     * @return deleted items in a Iterable
      */
     <T> Iterable<T> delete(CosmosQuery query, Class<T> domainType, String containerName);
 
@@ -193,7 +193,7 @@ public interface CosmosOperations {
      * @param domainType type class
      * @param containerName the container name
      * @param <T> type class of domainType
-     * @return found results in a List
+     * @return results in an Iterable
      */
     <T> Iterable<T> find(CosmosQuery query, Class<T> domainType, String containerName);
 
@@ -205,7 +205,7 @@ public interface CosmosOperations {
      * @param containerName the container name
      * @param <T> type of domainType
      * @param <ID> type of ID
-     * @return Mono
+     * @return results in an Iterable
      */
     <T, ID> Iterable<T> findByIds(Iterable<ID> ids, Class<T> domainType, String containerName);
 
@@ -227,7 +227,7 @@ public interface CosmosOperations {
      * @param domainType the domainType
      * @param containerName the container name
      * @param <T> type of domainType
-     * @return Page
+     * @return results as Page
      */
     <T> Page<T> findAll(Pageable pageable, Class<T> domainType, String containerName);
 
@@ -238,7 +238,7 @@ public interface CosmosOperations {
      * @param domainType type class
      * @param containerName the container name
      * @param <T> type class of domainType
-     * @return Page
+     * @return results as Page
      */
     <T> Page<T> paginationQuery(CosmosQuery query, Class<T> domainType, String containerName);
 
