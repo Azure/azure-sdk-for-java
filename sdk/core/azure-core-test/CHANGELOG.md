@@ -1,6 +1,6 @@
 # Release History
 
-## 1.4.0-beta.1 (2020-08-07)
+## 1.4.0 (2020-08-07)
 
 - Added `AzureTestWatch` which implements JUnit's `Extension` SPI. It adds test watching extensibility such as logging test completion time.
 - Fixed a bug in test recording redaction which was accidentally redacting XML values when they shouldn't be redacted.
