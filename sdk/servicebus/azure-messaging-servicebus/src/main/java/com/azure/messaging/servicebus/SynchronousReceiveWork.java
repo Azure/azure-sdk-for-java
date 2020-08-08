@@ -6,6 +6,7 @@ package com.azure.messaging.servicebus;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.Disposable;
 import reactor.core.publisher.DirectProcessor;
+import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
@@ -57,15 +58,14 @@ class SynchronousReceiveWork implements AutoCloseable{
         this.numberToReceive = numberToReceive;
         this.timeout = timeout;
         this.emitter = emitter;
-
+        
         nextMessageSubscriber = Flux.switchOnNext(messageReceivedEmitter
             .map(messageContext -> {
                 emitter.next(messageContext);
                 remaining.decrementAndGet();
-                return messageContext;
+                return Mono.delay(SHORT_TIMEOUT_BETWEEN_MESSAGES);
             })
-            .flatMap(lockToken -> Mono.delay(SHORT_TIMEOUT_BETWEEN_MESSAGES))
-            //.takeUntilOther(Flux.first(Mono.delay(SHORT_TIMEOUT_BETWEEN_MESSAGES)))
+            //.flatMap(lockToken -> Mono.delay(SHORT_TIMEOUT_BETWEEN_MESSAGES))
             .handle((l, sink) -> {
                 emitter.complete();
                 sink.complete();
