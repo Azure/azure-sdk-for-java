@@ -17,7 +17,7 @@
   <version>7.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;current} -->
 
   <name>Microsoft Azure client library for Service Bus</name>
-  <description>Libraries built on Microsoft Azure  Service Bus</description>
+  <description>Libraries built on Microsoft Azure Service Bus</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <distributionManagement>
@@ -101,34 +101,24 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>3.0.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <version>3.3.3</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
 
-  <profiles>
-    <profile>
-      <id>parallel-test-playback</id>
-      <activation>
-        <property>
-          <name>parallel-test-playback</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-            <configuration>
-              <systemPropertyVariables>
-                <!-- Parallel runs disabled due to concurrency issues causing failures in mocked tests. -->
-                <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
-              </systemPropertyVariables>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+        <configuration>
+          <systemPropertyVariables>
+            <!-- Parallel runs disabled due to concurrency issues causing failures in mocked tests. -->
+            <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
+          </systemPropertyVariables>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>

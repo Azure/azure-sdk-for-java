@@ -5,6 +5,7 @@ package com.azure.identity;
 
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.implementation.util.ValidationUtil;
 
 /**
  * Fluent credential builder for instantiating a {@link IntelliJCredential}.
@@ -24,6 +25,7 @@ public class IntelliJCredentialBuilder extends CredentialBuilderBase<VisualStudi
      * @return An updated instance of this builder with the tenant id set as specified.
      */
     public IntelliJCredentialBuilder tenantId(String tenantId) {
+        ValidationUtil.validateTenantIdCharacterRange(getClass().getSimpleName(), tenantId);
         this.tenantId = tenantId;
         return this;
     }
@@ -46,6 +48,8 @@ public class IntelliJCredentialBuilder extends CredentialBuilderBase<VisualStudi
                 new IllegalArgumentException("The KeePass database path is either empty or not configured."
                                                  + " Please configure it on the builder."));
         }
+        ValidationUtil.validateFilePath(getClass().getSimpleName(), databasePath,
+            "IntelliJ Kee Pass Database Path");
         this.identityClientOptions.setIntelliJKeePassDatabasePath(databasePath);
         return this;
     }

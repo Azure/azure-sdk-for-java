@@ -1,0 +1,1071 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerRegistry/registries?api-version=2017-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:47:08 GMT",
+      "content-length" : "12",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11911",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "b5cff343-02da-43ef-a431-21da264c1746",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064708Z:b5cff343-02da-43ef-a431-21da264c1746",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "b5cff343-02da-43ef-a431-21da264c1746",
+      "Body" : "{\"value\":[]}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerRegistry/registries?api-version=2017-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:47:08 GMT",
+      "content-length" : "12",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11926",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "f20d0697-2e00-4a4b-9e1c-f9819fa66508",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064708Z:f20d0697-2e00-4a4b-9e1c-f9819fa66508",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "f20d0697-2e00-4a4b-9e1c-f9819fa66508",
+      "Body" : "{\"value\":[]}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgacr535543?api-version=2020-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:47:11 GMT",
+      "content-length" : "309",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1145",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "9a5e22f3-5d9a-4d50-aa30-b0df02d4f933",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064712Z:9a5e22f3-5d9a-4d50-aa30-b0df02d4f933",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "9a5e22f3-5d9a-4d50-aa30-b0df02d4f933",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543\",\"name\":\"rgacr535543\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"eastus\",\"tags\":{\"date\":\"2020-07-28T06:47:09.369784500Z\",\"product\":\"javasdk\",\"cause\":\"automation\"},\"properties\":{\"provisioningState\":\"Succeeded\"}}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355431?api-version=2017-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:47:18 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "459",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1166",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "13921d14-6821-4948-8b52-3bb2ec79a27a",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064718Z:13921d14-6821-4948-8b52-3bb2ec79a27a",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "13921d14-6821-4948-8b52-3bb2ec79a27a",
+      "Body" : "{\"sku\":{\"name\":\"Standard\",\"tier\":\"Standard\"},\"type\":\"Microsoft.ContainerRegistry/registries\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355431\",\"name\":\"acr5355431\",\"location\":\"eastus\",\"tags\":{\"tag1\":\"value1\"},\"properties\":{\"loginServer\":\"acr5355431.azurecr.io\",\"creationDate\":\"2020-07-28T06:47:16.8825379Z\",\"provisioningState\":\"Succeeded\",\"adminUserEnabled\":true}}"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355431/listCredentials?api-version=2017-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:47:19 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "166",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1199",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "14697ba2-f7e3-4074-a727-cc76dc4e0a00",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064719Z:14697ba2-f7e3-4074-a727-cc76dc4e0a00",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "14697ba2-f7e3-4074-a727-cc76dc4e0a00",
+      "Body" : "{\"username\":\"acr5355431\",\"passwords\":[{\"name\":\"password\",\"value\":\"VJqzVbT3GG1Ar1wZ583Jx6kl/akxI6Ue\"},{\"name\":\"password2\",\"value\":\"WZx37IcLg+55buy3em6lak9jIG2Y6Ht+\"}]}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355431/webhooks?api-version=2017-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:47:19 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "12",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11899",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "9639a04d-2341-4352-8d1a-12229d186895",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064720Z:9639a04d-2341-4352-8d1a-12229d186895",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "9639a04d-2341-4352-8d1a-12229d186895",
+      "Body" : "{\"value\":[]}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgacr535543?api-version=2020-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:47:21 GMT",
+      "content-length" : "309",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1173",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "6d91deaa-2413-49cc-8c17-3bd2c5febc53",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064722Z:6d91deaa-2413-49cc-8c17-3bd2c5febc53",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "6d91deaa-2413-49cc-8c17-3bd2c5febc53",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543\",\"name\":\"rgacr535543\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"eastus\",\"tags\":{\"date\":\"2020-07-28T06:47:20.403396900Z\",\"product\":\"javasdk\",\"cause\":\"automation\"},\"properties\":{\"provisioningState\":\"Succeeded\"}}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432?api-version=2017-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:47:27 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "453",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1146",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "3ac09e85-8221-45a6-af94-51b840b61932",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064727Z:3ac09e85-8221-45a6-af94-51b840b61932",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "3ac09e85-8221-45a6-af94-51b840b61932",
+      "Body" : "{\"sku\":{\"name\":\"Basic\",\"tier\":\"Basic\"},\"type\":\"Microsoft.ContainerRegistry/registries\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432\",\"name\":\"acr5355432\",\"location\":\"eastus\",\"tags\":{\"tag1\":\"value1\"},\"properties\":{\"loginServer\":\"acr5355432.azurecr.io\",\"creationDate\":\"2020-07-28T06:47:25.9606434Z\",\"provisioningState\":\"Succeeded\",\"adminUserEnabled\":true}}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432/webhooks/webhookbing1?api-version=2017-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:47:31 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "396",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1165",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "c996d101-92db-42b2-8574-9f2a6ebf84f9",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064731Z:c996d101-92db-42b2-8574-9f2a6ebf84f9",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "c996d101-92db-42b2-8574-9f2a6ebf84f9",
+      "Body" : "{\"type\":\"Microsoft.ContainerRegistry/registries/webhooks\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432/webhooks/webhookbing1\",\"name\":\"webhookbing1\",\"location\":\"eastus\",\"tags\":{\"tag\":\"value\"},\"properties\":{\"status\":\"enabled\",\"scope\":\"\",\"actions\":[\"push\",\"delete\"],\"provisioningState\":\"Succeeded\"}}"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432/webhooks/webhookbing1/getCallbackConfig?api-version=2017-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:47:32 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "70",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1199",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "49bc059c-f492-497e-b83e-0479df1a3126",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064732Z:49bc059c-f492-497e-b83e-0479df1a3126",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "49bc059c-f492-497e-b83e-0479df1a3126",
+      "Body" : "{\"serviceUri\":\"https://www.bing.com\",\"customHeaders\":{\"name\":\"value\"}}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432/webhooks/webhookbing2?api-version=2017-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:47:32 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "388",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1140",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "f9f102dd-71d3-4eaf-9843-556f42c2d5d0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064732Z:f9f102dd-71d3-4eaf-9843-556f42c2d5d0",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "f9f102dd-71d3-4eaf-9843-556f42c2d5d0",
+      "Body" : "{\"type\":\"Microsoft.ContainerRegistry/registries/webhooks\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432/webhooks/webhookbing2\",\"name\":\"webhookbing2\",\"location\":\"eastus\",\"tags\":{\"tag\":\"value\"},\"properties\":{\"status\":\"disabled\",\"scope\":\"\",\"actions\":[\"push\"],\"provisioningState\":\"Succeeded\"}}"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432/webhooks/webhookbing2/getCallbackConfig?api-version=2017-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:47:32 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "70",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1199",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "9e43be1e-fe2d-4567-bf68-befeb2b4dd74",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064733Z:9e43be1e-fe2d-4567-bf68-befeb2b4dd74",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "9e43be1e-fe2d-4567-bf68-befeb2b4dd74",
+      "Body" : "{\"serviceUri\":\"https://www.bing.com\",\"customHeaders\":{\"name\":\"value\"}}"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432/listCredentials?api-version=2017-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:47:33 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "166",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1198",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "00e3dfed-e0d8-47bd-8254-136d554d15a1",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064734Z:00e3dfed-e0d8-47bd-8254-136d554d15a1",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "00e3dfed-e0d8-47bd-8254-136d554d15a1",
+      "Body" : "{\"username\":\"acr5355432\",\"passwords\":[{\"name\":\"password\",\"value\":\"iOuWWnv+s7DcSC6U2faGdJXv634G+229\"},{\"name\":\"password2\",\"value\":\"AdLxFq8DDNod6e3NBCWAgQ/Y=zdKad0U\"}]}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432/webhooks?api-version=2017-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:47:34 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "797",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11887",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "521a76f2-0f56-4715-9517-2c44caf610d9",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064734Z:521a76f2-0f56-4715-9517-2c44caf610d9",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "521a76f2-0f56-4715-9517-2c44caf610d9",
+      "Body" : "{\"value\":[{\"type\":\"Microsoft.ContainerRegistry/registries/webhooks\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432/webhooks/webhookbing1\",\"name\":\"webhookbing1\",\"location\":\"eastus\",\"tags\":{\"tag\":\"value\"},\"properties\":{\"status\":\"enabled\",\"scope\":\"\",\"actions\":[\"push\",\"delete\"],\"provisioningState\":\"Succeeded\"}},{\"type\":\"Microsoft.ContainerRegistry/registries/webhooks\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432/webhooks/webhookbing2\",\"name\":\"webhookbing2\",\"location\":\"eastus\",\"tags\":{\"tag\":\"value\"},\"properties\":{\"status\":\"disabled\",\"scope\":\"\",\"actions\":[\"push\"],\"provisioningState\":\"Succeeded\"}}]}"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432/webhooks/webhookbing1/getCallbackConfig?api-version=2017-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:47:35 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "70",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1199",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "ef2f4ef7-84d2-4268-aa19-c6e0bebed67c",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064735Z:ef2f4ef7-84d2-4268-aa19-c6e0bebed67c",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "ef2f4ef7-84d2-4268-aa19-c6e0bebed67c",
+      "Body" : "{\"serviceUri\":\"https://www.bing.com\",\"customHeaders\":{\"name\":\"value\"}}"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432/webhooks/webhookbing2/getCallbackConfig?api-version=2017-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:47:35 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "70",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1197",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "dc3bf4eb-bbb2-45d1-b120-a22d6a898b61",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064735Z:dc3bf4eb-bbb2-45d1-b120-a22d6a898b61",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "dc3bf4eb-bbb2-45d1-b120-a22d6a898b61",
+      "Body" : "{\"serviceUri\":\"https://www.bing.com\",\"customHeaders\":{\"name\":\"value\"}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432/webhooks/webhookbing1?api-version=2017-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:47:35 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "396",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11908",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "ab1f83fd-5324-4bcf-b364-12dc21e95006",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064735Z:ab1f83fd-5324-4bcf-b364-12dc21e95006",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "ab1f83fd-5324-4bcf-b364-12dc21e95006",
+      "Body" : "{\"type\":\"Microsoft.ContainerRegistry/registries/webhooks\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432/webhooks/webhookbing1\",\"name\":\"webhookbing1\",\"location\":\"eastus\",\"tags\":{\"tag\":\"value\"},\"properties\":{\"status\":\"enabled\",\"scope\":\"\",\"actions\":[\"push\",\"delete\"],\"provisioningState\":\"Succeeded\"}}"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432/webhooks/webhookbing1/getCallbackConfig?api-version=2017-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:47:36 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "70",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1198",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "562243c0-37c7-4ad1-b2cc-4b7ddb7ee3aa",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064736Z:562243c0-37c7-4ad1-b2cc-4b7ddb7ee3aa",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "562243c0-37c7-4ad1-b2cc-4b7ddb7ee3aa",
+      "Body" : "{\"serviceUri\":\"https://www.bing.com\",\"customHeaders\":{\"name\":\"value\"}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432/webhooks/webhookbing2?api-version=2017-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:47:36 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "388",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11885",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "4fa68d00-732d-43bb-8ed2-0440e34307f9",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064737Z:4fa68d00-732d-43bb-8ed2-0440e34307f9",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "4fa68d00-732d-43bb-8ed2-0440e34307f9",
+      "Body" : "{\"type\":\"Microsoft.ContainerRegistry/registries/webhooks\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432/webhooks/webhookbing2\",\"name\":\"webhookbing2\",\"location\":\"eastus\",\"tags\":{\"tag\":\"value\"},\"properties\":{\"status\":\"disabled\",\"scope\":\"\",\"actions\":[\"push\"],\"provisioningState\":\"Succeeded\"}}"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432/webhooks/webhookbing2/getCallbackConfig?api-version=2017-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:47:37 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "70",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1198",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "686b5bfd-043d-4608-844d-006bc5e49196",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064737Z:686b5bfd-043d-4608-844d-006bc5e49196",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "686b5bfd-043d-4608-844d-006bc5e49196",
+      "Body" : "{\"serviceUri\":\"https://www.bing.com\",\"customHeaders\":{\"name\":\"value\"}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432?api-version=2017-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:47:38 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "453",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11846",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "b435a206-56e8-4786-b1d2-7b735c7c9d40",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064738Z:b435a206-56e8-4786-b1d2-7b735c7c9d40",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "b435a206-56e8-4786-b1d2-7b735c7c9d40",
+      "Body" : "{\"sku\":{\"name\":\"Basic\",\"tier\":\"Basic\"},\"type\":\"Microsoft.ContainerRegistry/registries\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432\",\"name\":\"acr5355432\",\"location\":\"eastus\",\"tags\":{\"tag1\":\"value1\"},\"properties\":{\"loginServer\":\"acr5355432.azurecr.io\",\"creationDate\":\"2020-07-28T06:47:25.9606434Z\",\"provisioningState\":\"Succeeded\",\"adminUserEnabled\":true}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerRegistry/registries?api-version=2017-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:47:38 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "925",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11845",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "d438c957-bede-4c1e-b108-5cadef6f05e6",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064739Z:d438c957-bede-4c1e-b108-5cadef6f05e6",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "d438c957-bede-4c1e-b108-5cadef6f05e6",
+      "Body" : "{\"value\":[{\"sku\":{\"name\":\"Standard\",\"tier\":\"Standard\"},\"type\":\"Microsoft.ContainerRegistry/registries\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355431\",\"name\":\"acr5355431\",\"location\":\"eastus\",\"tags\":{\"tag1\":\"value1\"},\"properties\":{\"loginServer\":\"acr5355431.azurecr.io\",\"creationDate\":\"2020-07-28T06:47:16.8825379Z\",\"provisioningState\":\"Succeeded\",\"adminUserEnabled\":true}},{\"sku\":{\"name\":\"Basic\",\"tier\":\"Basic\"},\"type\":\"Microsoft.ContainerRegistry/registries\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432\",\"name\":\"acr5355432\",\"location\":\"eastus\",\"tags\":{\"tag1\":\"value1\"},\"properties\":{\"loginServer\":\"acr5355432.azurecr.io\",\"creationDate\":\"2020-07-28T06:47:25.9606434Z\",\"provisioningState\":\"Succeeded\",\"adminUserEnabled\":true}}]}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerRegistry/registries?api-version=2017-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:47:39 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "925",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11884",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "ba96e5d8-82b5-47f5-a0b8-b9263743fdeb",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064740Z:ba96e5d8-82b5-47f5-a0b8-b9263743fdeb",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "ba96e5d8-82b5-47f5-a0b8-b9263743fdeb",
+      "Body" : "{\"value\":[{\"sku\":{\"name\":\"Standard\",\"tier\":\"Standard\"},\"type\":\"Microsoft.ContainerRegistry/registries\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355431\",\"name\":\"acr5355431\",\"location\":\"eastus\",\"tags\":{\"tag1\":\"value1\"},\"properties\":{\"loginServer\":\"acr5355431.azurecr.io\",\"creationDate\":\"2020-07-28T06:47:16.8825379Z\",\"provisioningState\":\"Succeeded\",\"adminUserEnabled\":true}},{\"sku\":{\"name\":\"Basic\",\"tier\":\"Basic\"},\"type\":\"Microsoft.ContainerRegistry/registries\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432\",\"name\":\"acr5355432\",\"location\":\"eastus\",\"tags\":{\"tag1\":\"value1\"},\"properties\":{\"loginServer\":\"acr5355432.azurecr.io\",\"creationDate\":\"2020-07-28T06:47:25.9606434Z\",\"provisioningState\":\"Succeeded\",\"adminUserEnabled\":true}}]}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432?api-version=2017-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:47:41 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "453",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11842",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "9616a6dc-b4ea-47f6-b7fe-d9821a03f7bc",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064741Z:9616a6dc-b4ea-47f6-b7fe-d9821a03f7bc",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "9616a6dc-b4ea-47f6-b7fe-d9821a03f7bc",
+      "Body" : "{\"sku\":{\"name\":\"Basic\",\"tier\":\"Basic\"},\"type\":\"Microsoft.ContainerRegistry/registries\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432\",\"name\":\"acr5355432\",\"location\":\"eastus\",\"tags\":{\"tag1\":\"value1\"},\"properties\":{\"loginServer\":\"acr5355432.azurecr.io\",\"creationDate\":\"2020-07-28T06:47:25.9606434Z\",\"provisioningState\":\"Succeeded\",\"adminUserEnabled\":true}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432?api-version=2017-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:47:41 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "453",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11868",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "210c51f2-faa8-4756-a165-f8cfb89fd4e9",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064742Z:210c51f2-faa8-4756-a165-f8cfb89fd4e9",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "210c51f2-faa8-4756-a165-f8cfb89fd4e9",
+      "Body" : "{\"sku\":{\"name\":\"Basic\",\"tier\":\"Basic\"},\"type\":\"Microsoft.ContainerRegistry/registries\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432\",\"name\":\"acr5355432\",\"location\":\"eastus\",\"tags\":{\"tag1\":\"value1\"},\"properties\":{\"loginServer\":\"acr5355432.azurecr.io\",\"creationDate\":\"2020-07-28T06:47:25.9606434Z\",\"provisioningState\":\"Succeeded\",\"adminUserEnabled\":true}}"
+    }
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432?api-version=2017-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:47:45 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "458",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1162",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "3aeca34b-ff8b-459b-aa1d-a3c144034e29",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064745Z:3aeca34b-ff8b-459b-aa1d-a3c144034e29",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "3aeca34b-ff8b-459b-aa1d-a3c144034e29",
+      "Body" : "{\"sku\":{\"name\":\"Standard\",\"tier\":\"Standard\"},\"type\":\"Microsoft.ContainerRegistry/registries\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432\",\"name\":\"acr5355432\",\"location\":\"eastus\",\"tags\":{\"tag2\":\"value\"},\"properties\":{\"loginServer\":\"acr5355432.azurecr.io\",\"creationDate\":\"2020-07-28T06:47:25.9606434Z\",\"provisioningState\":\"Succeeded\",\"adminUserEnabled\":true}}"
+    }
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432/webhooks/webhookbing2?api-version=2017-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:47:48 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "391",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1143",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "2e27a7b0-8181-43b2-9621-548628ef3b58",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064749Z:2e27a7b0-8181-43b2-9621-548628ef3b58",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "2e27a7b0-8181-43b2-9621-548628ef3b58",
+      "Body" : "{\"type\":\"Microsoft.ContainerRegistry/registries/webhooks\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432/webhooks/webhookbing2\",\"name\":\"webhookbing2\",\"location\":\"eastus\",\"tags\":{\"tag2\":\"value\"},\"properties\":{\"status\":\"disabled\",\"scope\":\"\",\"actions\":[\"delete\"],\"provisioningState\":\"Succeeded\"}}"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432/webhooks/webhookbing2/getCallbackConfig?api-version=2017-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:47:49 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "77",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1197",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "ee41051d-5609-4c49-bea8-d824abbb3511",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064750Z:ee41051d-5609-4c49-bea8-d824abbb3511",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "ee41051d-5609-4c49-bea8-d824abbb3511",
+      "Body" : "{\"serviceUri\":\"https://www.bing.com/maps\",\"customHeaders\":{\"header\":\"value\"}}"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432/webhooks/webhookbing1?api-version=2017-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:47:49 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "0",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-deletes" : "14995",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "d076bc01-3bcf-4934-ae0e-d1f25be57264",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064750Z:d076bc01-3bcf-4934-ae0e-d1f25be57264",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "d076bc01-3bcf-4934-ae0e-d1f25be57264",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432/webhooks/webhookms?api-version=2017-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:47:49 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "377",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1139",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "8ad3c303-89e0-49a8-bcfc-e93dbefbdb1e",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064750Z:8ad3c303-89e0-49a8-bcfc-e93dbefbdb1e",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "8ad3c303-89e0-49a8-bcfc-e93dbefbdb1e",
+      "Body" : "{\"type\":\"Microsoft.ContainerRegistry/registries/webhooks\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432/webhooks/webhookms\",\"name\":\"webhookms\",\"location\":\"eastus\",\"tags\":{},\"properties\":{\"status\":\"enabled\",\"scope\":\"\",\"actions\":[\"push\",\"delete\"],\"provisioningState\":\"Succeeded\"}}"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432/webhooks/webhookms/getCallbackConfig?api-version=2017-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:47:50 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "42",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1196",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "214c9132-1567-4aa0-8911-f23b8c45d01d",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064751Z:214c9132-1567-4aa0-8911-f23b8c45d01d",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "214c9132-1567-4aa0-8911-f23b8c45d01d",
+      "Body" : "{\"serviceUri\":\"https://www.microsoft.com\"}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432/webhooks/webhookbing2?api-version=2017-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:47:51 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "391",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11859",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "285fdd41-1e93-4d41-a71f-338b1f524fcb",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064751Z:285fdd41-1e93-4d41-a71f-338b1f524fcb",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "285fdd41-1e93-4d41-a71f-338b1f524fcb",
+      "Body" : "{\"type\":\"Microsoft.ContainerRegistry/registries/webhooks\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432/webhooks/webhookbing2\",\"name\":\"webhookbing2\",\"location\":\"eastus\",\"tags\":{\"tag2\":\"value\"},\"properties\":{\"status\":\"disabled\",\"scope\":\"\",\"actions\":[\"delete\"],\"provisioningState\":\"Succeeded\"}}"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432/webhooks/webhookbing2/getCallbackConfig?api-version=2017-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:47:52 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "77",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1197",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "fe88b891-fc64-4f00-a6b6-899ada4b45ec",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064752Z:fe88b891-fc64-4f00-a6b6-899ada4b45ec",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "fe88b891-fc64-4f00-a6b6-899ada4b45ec",
+      "Body" : "{\"serviceUri\":\"https://www.bing.com/maps\",\"customHeaders\":{\"header\":\"value\"}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432/webhooks/webhookbing2?api-version=2017-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:47:52 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "391",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11858",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "60fbc0c4-9535-4cae-ad9c-0f63ee469854",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064753Z:60fbc0c4-9535-4cae-ad9c-0f63ee469854",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "60fbc0c4-9535-4cae-ad9c-0f63ee469854",
+      "Body" : "{\"type\":\"Microsoft.ContainerRegistry/registries/webhooks\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432/webhooks/webhookbing2\",\"name\":\"webhookbing2\",\"location\":\"eastus\",\"tags\":{\"tag2\":\"value\"},\"properties\":{\"status\":\"disabled\",\"scope\":\"\",\"actions\":[\"delete\"],\"provisioningState\":\"Succeeded\"}}"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432/webhooks/webhookbing2/getCallbackConfig?api-version=2017-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:47:54 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "77",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1198",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "b938a58f-4a2d-4c15-bed9-e7fa70750544",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064754Z:b938a58f-4a2d-4c15-bed9-e7fa70750544",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "b938a58f-4a2d-4c15-bed9-e7fa70750544",
+      "Body" : "{\"serviceUri\":\"https://www.bing.com/maps\",\"customHeaders\":{\"header\":\"value\"}}"
+    }
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432/webhooks/webhookbing2?api-version=2017-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:47:54 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "390",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1138",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "b3cd0930-93a8-43f7-84ea-e4e205846438",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064755Z:b3cd0930-93a8-43f7-84ea-e4e205846438",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "b3cd0930-93a8-43f7-84ea-e4e205846438",
+      "Body" : "{\"type\":\"Microsoft.ContainerRegistry/registries/webhooks\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432/webhooks/webhookbing2\",\"name\":\"webhookbing2\",\"location\":\"eastus\",\"tags\":{\"tag2\":\"value\"},\"properties\":{\"status\":\"enabled\",\"scope\":\"\",\"actions\":[\"delete\"],\"provisioningState\":\"Succeeded\"}}"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432/webhooks/webhookbing2/getCallbackConfig?api-version=2017-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:47:55 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "77",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1196",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "25c5206d-6ae4-4333-af83-7f66ff906c55",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064756Z:25c5206d-6ae4-4333-af83-7f66ff906c55",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "25c5206d-6ae4-4333-af83-7f66ff906c55",
+      "Body" : "{\"serviceUri\":\"https://www.bing.com/maps\",\"customHeaders\":{\"header\":\"value\"}}"
+    }
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432/webhooks/webhookbing2?api-version=2017-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:47:58 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "389",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1134",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "1e17da28-3c62-4841-bfc3-b8b6e32ba899",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064759Z:1e17da28-3c62-4841-bfc3-b8b6e32ba899",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "1e17da28-3c62-4841-bfc3-b8b6e32ba899",
+      "Body" : "{\"type\":\"Microsoft.ContainerRegistry/registries/webhooks\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432/webhooks/webhookbing2\",\"name\":\"webhookbing2\",\"location\":\"eastus\",\"tags\":{\"tag3\":\"value\"},\"properties\":{\"status\":\"disabled\",\"scope\":\"\",\"actions\":[\"push\"],\"provisioningState\":\"Succeeded\"}}"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432/webhooks/webhookbing2/getCallbackConfig?api-version=2017-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:47:59 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "71",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1195",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "cc023f9f-7d25-4e5a-bd23-09c70dc77563",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064759Z:cc023f9f-7d25-4e5a-bd23-09c70dc77563",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "cc023f9f-7d25-4e5a-bd23-09c70dc77563",
+      "Body" : "{\"serviceUri\":\"https://www.msn.com\",\"customHeaders\":{\"header\":\"value\"}}"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432/webhooks/webhookbing2/ping?api-version=2017-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:48:00 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "45",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1197",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "2fdd28fa-f71f-42de-bfff-d30378ce8fd2",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064800Z:2fdd28fa-f71f-42de-bfff-d30378ce8fd2",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "2fdd28fa-f71f-42de-bfff-d30378ce8fd2",
+      "Body" : "{\"id\":\"2fdd28fa-f71f-42de-bfff-d30378ce8fd2\"}"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432/webhooks/webhookbing2?api-version=2017-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:48:04 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "0",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-deletes" : "14991",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "acb7d2ed-87a9-4825-b57f-0ce319723568",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064804Z:acb7d2ed-87a9-4825-b57f-0ce319723568",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "acb7d2ed-87a9-4825-b57f-0ce319723568",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr535543/providers/Microsoft.ContainerRegistry/registries/acr5355432?api-version=2017-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:48:15 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "0",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-deletes" : "14988",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "0ac7703c-9fb6-4725-8c8b-9b6e8e1c9798",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064816Z:0ac7703c-9fb6-4725-8c8b-9b6e8e1c9798",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "0ac7703c-9fb6-4725-8c8b-9b6e8e1c9798",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgacr535543?api-version=2020-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:48:17 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-deletes" : "14990",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "bf1a4eff-398c-47a9-bd7a-2604971c8433",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064818Z:bf1a4eff-398c-47a9-bd7a-2604971c8433",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR0FDUjUzNTU0My1FQVNUVVMiLCJqb2JMb2NhdGlvbiI6ImVhc3R1cyJ9?api-version=2020-06-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "bf1a4eff-398c-47a9-bd7a-2604971c8433",
+      "Body" : ""
+    }
+  } ],
+  "variables" : [ "535543" ]
+}

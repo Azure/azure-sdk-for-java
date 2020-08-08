@@ -3,23 +3,32 @@
 
 package com.azure.core.serializer.json.jackson;
 
-import com.azure.core.experimental.serializer.JsonNode;
-import com.azure.core.experimental.serializer.JsonSerializer;
-import com.azure.core.experimental.serializer.TypeReference;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JsonSerializer;
+import com.azure.core.util.serializer.MemberNameConverter;
+import com.azure.core.util.serializer.TypeReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.introspect.AnnotatedMethod;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.fasterxml.jackson.databind.util.BeanUtil;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Member;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 
 /**
  * Jackson based implementation of the {@link JsonSerializer} interface.
  */
-public final class JacksonJsonSerializer implements JsonSerializer {
+public final class JacksonJsonSerializer implements MemberNameConverter, JsonSerializer {
     private final ClientLogger logger = new ClientLogger(JacksonJsonSerializer.class);
 
     private final ObjectMapper mapper;
@@ -54,67 +63,55 @@ public final class JacksonJsonSerializer implements JsonSerializer {
     }
 
     @Override
-    public <T> T deserializeTree(JsonNode jsonNode, TypeReference<T> typeReference) {
-        try {
-            return mapper.readerFor(typeFactory.constructType(typeReference.getJavaType()))
-                .readValue(JsonNodeUtils.toJacksonNode(jsonNode));
-        } catch (IOException ex) {
-            throw logger.logExceptionAsError(new UncheckedIOException(ex));
-        }
-    }
-
-    @Override
-    public <T> Mono<T> deserializeTreeAsync(JsonNode jsonNode, TypeReference<T> typeReference) {
-        return Mono.fromCallable(() -> deserializeTree(jsonNode, typeReference));
-    }
-
-    @Override
-    public <S extends OutputStream> S serialize(S stream, Object value) {
+    public void serialize(OutputStream stream, Object value) {
         try {
             mapper.writeValue(stream, value);
         } catch (IOException ex) {
             throw logger.logExceptionAsError(new UncheckedIOException(ex));
         }
-
-        return stream;
     }
 
     @Override
-    public <S extends OutputStream> Mono<S> serializeAsync(S stream, Object value) {
-        return Mono.fromCallable(() -> serialize(stream, value));
+    public Mono<Void> serializeAsync(OutputStream stream, Object value) {
+        return Mono.fromRunnable(() -> serialize(stream, value));
     }
 
-    @Override
-    public <S extends OutputStream> S serializeTree(S stream, JsonNode jsonNode) {
-        return serialize(stream, JsonNodeUtils.toJacksonNode(jsonNode));
-    }
 
     @Override
-    public <S extends OutputStream> Mono<S> serializeTreeAsync(S stream, JsonNode jsonNode) {
-        return serializeAsync(stream, JsonNodeUtils.toJacksonNode(jsonNode));
-    }
-
-    @Override
-    public JsonNode toTree(InputStream stream) {
-        try {
-            return JsonNodeUtils.fromJacksonNode(mapper.readTree(stream));
-        } catch (IOException ex) {
-            throw logger.logExceptionAsError(new UncheckedIOException(ex));
+    public String convertMemberName(Member member) {
+        if (Modifier.isTransient(member.getModifiers())) {
+            return null;
         }
+        if (member instanceof Field) {
+            Field f = (Field) member;
+            if (f.isAnnotationPresent(JsonIgnore.class)) {
+                return null;
+            }
+            if (f.isAnnotationPresent(JsonProperty.class)) {
+                String propertyName = f.getDeclaredAnnotation(JsonProperty.class).value();
+                return CoreUtils.isNullOrEmpty(propertyName) ? f.getName() : propertyName;
+            }
+            return f.getName();
+        }
+
+        if (member instanceof Method) {
+            Method m = (Method) member;
+            String methodNameWithoutJavaBeans = removePrefix(m);
+            if (m.isAnnotationPresent(JsonIgnore.class)) {
+                return null;
+            }
+            if (m.isAnnotationPresent(JsonProperty.class)) {
+                String propertyName = m.getDeclaredAnnotation(JsonProperty.class).value();
+                return CoreUtils.isNullOrEmpty(propertyName) ? methodNameWithoutJavaBeans : propertyName;
+            }
+            return methodNameWithoutJavaBeans;
+        }
+
+        return null;
     }
 
-    @Override
-    public Mono<JsonNode> toTreeAsync(InputStream stream) {
-        return Mono.fromCallable(() -> toTree(stream));
-    }
-
-    @Override
-    public JsonNode toTree(Object value) {
-        return JsonNodeUtils.fromJacksonNode(mapper.valueToTree(value));
-    }
-
-    @Override
-    public Mono<JsonNode> toTreeAsync(Object value) {
-        return Mono.fromCallable(() -> toTree(value));
+    private String removePrefix(Method method) {
+        return BeanUtil.okNameForGetter(
+                new AnnotatedMethod(null, method, null, null), false);
     }
 }

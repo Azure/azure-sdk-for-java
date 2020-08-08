@@ -132,7 +132,7 @@ public class PollerTests {
     @Test
     public void subscribeToSpecificOtherOperationStatusTest() {
         // Arrange
-        final Duration retryAfter = Duration.ofMillis(100);
+        final Duration retryAfter = Duration.ofMillis(10);
         //
         PollResponse<Response> response0 = new PollResponse<>(IN_PROGRESS,
             new Response("0"), retryAfter);
@@ -162,7 +162,7 @@ public class PollerTests {
 
         // Act
         PollerFlux<Response, CertificateOutput> pollerFlux = new PollerFlux<>(
-            Duration.ofSeconds(1),
+            Duration.ofMillis(10),
             activationOperation,
             pollOperation,
             cancelOperation,
@@ -190,7 +190,7 @@ public class PollerTests {
         }));
 
         PollerFlux<Response, CertificateOutput> pollerFlux = create(
-            Duration.ofSeconds(1),
+            Duration.ofMillis(10),
             activationOperationWithResponse,
             pollOperation,
             cancelOperation,
@@ -209,7 +209,7 @@ public class PollerTests {
 
     @Test
     public void ensurePollingForInProgressActivationResponseTest() {
-        final Duration retryAfter = Duration.ofMillis(100);
+        final Duration retryAfter = Duration.ofMillis(10);
 
         int[] activationCallCount = new int[1];
         activationCallCount[0] = 0;
@@ -220,7 +220,7 @@ public class PollerTests {
         }));
 
         PollerFlux<Response, CertificateOutput> pollerFlux = create(
-            Duration.ofSeconds(1),
+            Duration.ofMillis(10),
             activationOperationWithResponse,
             pollOperation,
             cancelOperation,
@@ -258,7 +258,7 @@ public class PollerTests {
     @Test
     public void subscribeToActivationOnlyOnceTest() {
         // Arrange
-        final Duration retryAfter = Duration.ofMillis(100);
+        final Duration retryAfter = Duration.ofMillis(10);
 
         PollResponse<Response> response0 = new PollResponse<>(IN_PROGRESS,
             new Response("0"), retryAfter);
@@ -277,7 +277,7 @@ public class PollerTests {
         }));
 
         PollerFlux<Response, CertificateOutput> pollerFlux = new PollerFlux<>(
-            Duration.ofSeconds(1),
+            Duration.ofMillis(10),
             activationOperation,
             pollOperation,
             cancelOperation,
@@ -312,7 +312,7 @@ public class PollerTests {
 
     @Test
     public void cancellationCanBeCalledFromOperatorChainTest() {
-        final Duration retryAfter = Duration.ofMillis(100);
+        final Duration retryAfter = Duration.ofMillis(10);
 
         PollResponse<Response> response0 = new PollResponse<>(IN_PROGRESS,
             new Response("0"), retryAfter);
@@ -336,7 +336,7 @@ public class PollerTests {
         });
 
         PollerFlux<Response, CertificateOutput> pollerFlux = new PollerFlux<>(
-            Duration.ofSeconds(1),
+            Duration.ofMillis(10),
             activationOperation,
             pollOperation,
             cancelOperation,
@@ -370,7 +370,7 @@ public class PollerTests {
 
     @Test
     public void getResultCanBeCalledFromOperatorChainTest() {
-        final Duration retryAfter = Duration.ofMillis(100);
+        final Duration retryAfter = Duration.ofMillis(10);
 
         PollResponse<Response> response0 = new PollResponse<>(IN_PROGRESS,
             new Response("0"), retryAfter);
@@ -393,7 +393,7 @@ public class PollerTests {
         });
 
         PollerFlux<Response, CertificateOutput> pollerFlux = new PollerFlux<>(
-            Duration.ofSeconds(1),
+            Duration.ofMillis(10),
             activationOperation,
             pollOperation,
             cancelOperation,
@@ -450,7 +450,7 @@ public class PollerTests {
         };
 
         PollerFlux<Response, CertificateOutput> pollerFlux = new PollerFlux<>(
-            Duration.ofSeconds(1),
+            Duration.ofMillis(10),
             activationOperation,
             pollOperation,
             cancelOperation,
@@ -485,7 +485,7 @@ public class PollerTests {
         };
 
         PollerFlux<Response, CertificateOutput> pollerFlux = new PollerFlux<>(
-            Duration.ofSeconds(1),
+            Duration.ofMillis(10),
             activationOperation,
             pollOperation,
             cancelOperation,
@@ -585,7 +585,7 @@ public class PollerTests {
         }));
 
         SyncPoller<Response, CertificateOutput> poller = new DefaultSyncPoller<>(
-                Duration.ofSeconds(1),
+                Duration.ofMillis(10),
             cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
                 activationOperation.apply(cxt).block()),
                 pollOperation,
@@ -607,12 +607,12 @@ public class PollerTests {
             PollResponse<Response> latestResponse = pollingContext.getLatestResponse();
             Assertions.assertNotNull(latestResponse);
             PollResponse<Response> nextResponse = new PollResponse<>(IN_PROGRESS,
-                    new Response(latestResponse.getValue().toString() + "A"), Duration.ofMillis(100));
+                    new Response(latestResponse.getValue().toString() + "A"), Duration.ofMillis(10));
             return Mono.just(nextResponse);
         });
 
         SyncPoller<Response, CertificateOutput> poller = new DefaultSyncPoller<>(
-                Duration.ofSeconds(1),
+                Duration.ofMillis(10),
             cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
                 activationOperation.apply(cxt).block()),
                 pollOperation,
@@ -644,13 +644,13 @@ public class PollerTests {
     @Test
     public void waitForCompletionShouldReturnTerminalPollResponse() {
         PollResponse<Response> response0 = new PollResponse<>(IN_PROGRESS,
-                new Response("0"), Duration.ofMillis(100));
+                new Response("0"), Duration.ofMillis(10));
 
         PollResponse<Response> response1 = new PollResponse<>(IN_PROGRESS,
-                new Response("1"), Duration.ofMillis(100));
+                new Response("1"), Duration.ofMillis(10));
 
         PollResponse<Response> response2 = new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
-                new Response("2"), Duration.ofMillis(100));
+                new Response("2"), Duration.ofMillis(10));
 
         final Response activationResponse = new Response("Activated");
         when(activationOperation.apply(any())).thenReturn(Mono.defer(() -> Mono.just(activationResponse)));
@@ -661,7 +661,7 @@ public class PollerTests {
                 Mono.just(response2));
 
         SyncPoller<Response, CertificateOutput> poller = new DefaultSyncPoller<>(
-                Duration.ofSeconds(1),
+                Duration.ofMillis(10),
             cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
                 activationOperation.apply(cxt).block()),
                 pollOperation,
@@ -687,13 +687,13 @@ public class PollerTests {
             switch (invocationCount[0]) {
                 case 0:
                     return Mono.just(new PollResponse<>(IN_PROGRESS,
-                            new Response("0"), Duration.ofMillis(100)));
+                            new Response("0"), Duration.ofMillis(10)));
                 case 1:
                     return Mono.just(new PollResponse<>(IN_PROGRESS,
-                            new Response("1"), Duration.ofMillis(100)));
+                            new Response("1"), Duration.ofMillis(10)));
                 case 2:
                     return Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
-                            new Response("2"), Duration.ofMillis(100)));
+                            new Response("2"), Duration.ofMillis(10)));
                 default:
                     throw new RuntimeException("Poll should not be called after terminal response");
             }
@@ -704,7 +704,7 @@ public class PollerTests {
         }));
 
         SyncPoller<Response, CertificateOutput> poller = new DefaultSyncPoller<>(
-                Duration.ofSeconds(1),
+                Duration.ofMillis(10),
             cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
                 activationOperation.apply(cxt).block()),
                 pollOperation,
@@ -720,13 +720,13 @@ public class PollerTests {
     @Test
     public void getResultShouldNotPollOnCompletedPoller() {
         PollResponse<Response> response0 = new PollResponse<>(IN_PROGRESS,
-                new Response("0"), Duration.ofMillis(100));
+                new Response("0"), Duration.ofMillis(10));
 
         PollResponse<Response> response1 = new PollResponse<>(IN_PROGRESS,
-                new Response("1"), Duration.ofMillis(100));
+                new Response("1"), Duration.ofMillis(10));
 
         PollResponse<Response> response2 = new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
-                new Response("2"), Duration.ofMillis(100));
+                new Response("2"), Duration.ofMillis(10));
 
         final Response activationResponse = new Response("Activated");
         when(activationOperation.apply(any())).thenReturn(Mono.defer(() -> Mono.just(activationResponse)));
@@ -741,7 +741,7 @@ public class PollerTests {
                 Mono.just(response2));
 
         SyncPoller<Response, CertificateOutput> poller = new DefaultSyncPoller<>(
-                Duration.ofSeconds(1),
+                Duration.ofMillis(10),
             cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
                 activationOperation.apply(cxt).block()),
                 pollOperation,
@@ -778,20 +778,20 @@ public class PollerTests {
             switch (invocationCount[0]) {
                 case 0:
                     return Mono.just(new PollResponse<>(IN_PROGRESS,
-                            new Response("0"), Duration.ofMillis(100)));
+                            new Response("0"), Duration.ofMillis(10)));
                 case 1:
                     return Mono.just(new PollResponse<>(IN_PROGRESS,
-                            new Response("1"), Duration.ofMillis(100)));
+                            new Response("1"), Duration.ofMillis(10)));
                 case 2:
                     return Mono.just(new PollResponse<>(matchStatus,
-                            new Response("1"), Duration.ofMillis(100)));
+                            new Response("1"), Duration.ofMillis(10)));
                 default:
                     throw new RuntimeException("Poll should not be called after matching response");
             }
         });
 
         SyncPoller<Response, CertificateOutput> poller = new DefaultSyncPoller<>(
-                Duration.ofSeconds(1),
+                Duration.ofMillis(10),
             cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
                 activationOperation.apply(cxt).block()),
                 pollOperation,
@@ -824,7 +824,7 @@ public class PollerTests {
         };
 
         SyncPoller<Response, CertificateOutput> poller = new DefaultSyncPoller<>(
-            Duration.ofSeconds(1),
+            Duration.ofMillis(10),
             cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
                 activationOperation.apply(cxt).block()),
             pollOperation,

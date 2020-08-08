@@ -30,8 +30,7 @@ import static org.mockito.Mockito.when;
 @PowerMockIgnore({"com.sun.org.apache.xerces.*", "javax.xml.*", "org.xml.*"})
 public class InteractiveBrowserCredentialTest {
 
-    private final String tenantId = "contoso.com";
-    private final String clientId = UUID.randomUUID().toString();
+    private static final String CLIENT_ID = UUID.randomUUID().toString();
 
     @Test
     public void testValidInteractive() throws Exception {
@@ -63,7 +62,7 @@ public class InteractiveBrowserCredentialTest {
 
         // test
         InteractiveBrowserCredential credential =
-            new InteractiveBrowserCredentialBuilder().port(port).clientId(clientId).build();
+            new InteractiveBrowserCredentialBuilder().port(port).clientId(CLIENT_ID).build();
         StepVerifier.create(credential.getToken(request1))
             .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
                 && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
@@ -92,7 +91,7 @@ public class InteractiveBrowserCredentialTest {
 
         // test
         InteractiveBrowserCredential credential =
-                new InteractiveBrowserCredentialBuilder().port(port).clientId(clientId).build();
+                new InteractiveBrowserCredentialBuilder().port(port).clientId(CLIENT_ID).build();
         StepVerifier.create(credential.authenticate(request1))
                 .expectNextMatches(authenticationRecord -> authenticationRecord.getAuthority()
                                                                .equals("http://login.microsoftonline.com")
