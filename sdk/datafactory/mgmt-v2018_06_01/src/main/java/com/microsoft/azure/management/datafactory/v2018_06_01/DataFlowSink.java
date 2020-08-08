@@ -33,6 +33,12 @@ public class DataFlowSink extends Transformation {
     private LinkedServiceReference schemaLinkedService;
 
     /**
+     * Staging info for execute data flow activity.
+     */
+    @JsonProperty(value = "staging")
+    private DataFlowStagingInfo staging;
+
+    /**
      * Get dataset reference.
      *
      * @return the dataset value
@@ -89,6 +95,26 @@ public class DataFlowSink extends Transformation {
      */
     public DataFlowSink withSchemaLinkedService(LinkedServiceReference schemaLinkedService) {
         this.schemaLinkedService = schemaLinkedService;
+        return this;
+    }
+
+    /**
+     * Get staging info for execute data flow activity.
+     *
+     * @return the staging value
+     */
+    public DataFlowStagingInfo staging() {
+        return this.staging;
+    }
+
+    /**
+     * Set staging info for execute data flow activity.
+     *
+     * @param staging the staging value to set
+     * @return the DataFlowSink object itself.
+     */
+    public DataFlowSink withStaging(DataFlowStagingInfo staging) {
+        this.staging = staging;
         return this;
     }
 
