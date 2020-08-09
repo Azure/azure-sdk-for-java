@@ -877,8 +877,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         if (unnamedSessionManager != null) {
             return unnamedSessionManager.receive();
         } else {
-            return getOrCreateConsumer().receive()
-                .map(ServiceBusReceivedMessageContext::new);
+            return getOrCreateConsumer().receive().map(ServiceBusReceivedMessageContext::new);
         }
     }
 

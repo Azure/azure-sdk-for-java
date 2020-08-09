@@ -65,5 +65,4 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
             .then();
         return operator;
     }
-
 }

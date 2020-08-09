@@ -26,9 +26,9 @@ If you would like to become an active contributor to this project please follow 
 Azure Projects Contribution Guidelines](http://azure.github.io/guidelines.html).
 
 1. Fork it
-1. Create your feature branch (`git checkout -b my-new-feature`)
-1. Commit your changes (`git commit -am 'Add some feature'`)
-1. Push to the branch (`git push origin my-new-feature`)
-1. Create new Pull Request
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create new Pull Request
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fservicebus%2Fazure-messaging-servicebus-track2-perf%2FREADME.png)
