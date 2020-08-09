@@ -91,26 +91,49 @@ public void createDefaultAzureCredential() {
 
 See more how to configure the `DefaultAzureCredential` on your workstation or Azure in [Configure DefaultAzureCredential](https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#configure-defaultazurecredential).
 
-### Authenticating a user account with IntelliJ IDEA
-This example demonstrates authenticating the `KeyClient` from the [azure-security-keyvault-keys][keys_client_library] client library using the `IntelliJCredential` on a workstation with IntelliJ IDEA installed, and the user has signed in with an Azure account.
+### Authenticating a user assigned managed identity with `DefaultAzureCredential`
+This example demonstrates authenticating the `SecretClient` from the [azure-security-keyvault-secrets][secrets_client_library] client library using the `DefaultAzureCredential`, deployed to an Azure resource with a user assigned managed identity configured.
 
-See more about how to configure your IntelliJ IDEA in [Sign in Azure Toolkit for IntelliJ for IntelliJCredential](https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#sign-in-azure-toolkit-for-intellij-for-intellijcredential).
+See more about how to configure a user assigned managed identity for an Azure resource in [Enable managed identity for Azure resources](https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#enable-managed-identity-for-azure-resources).
 
-<!-- embedme ../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java#L170-L184 -->
+<!-- embedme ../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java#L242-L255 -->
 ```java
 /**
- * Authenticate with IntelliJ IDEA.
+ * The default credential will use the user assigned managed identity with the specified client ID.
  */
-public void createIntelliJCredential() {
-    IntelliJCredential intelliJCredential = new IntelliJCredentialBuilder()
-        // KeePass configuration required only for Windows. No configuration needed for Linux / Mac
-        .keePassDatabasePath("C:\\Users\\user\\AppData\\Roaming\\JetBrains\\IdeaIC2020.1\\c.kdbx")
+public void createDefaultAzureCredentialForUserAssignedManagedIdentity() {
+    DefaultAzureCredential defaultCredential = new DefaultAzureCredentialBuilder()
+        .managedIdentityClientId("<MANAGED_IDENTITY_CLIENT_ID>")
         .build();
 
     // Azure SDK client builders accept the credential as a parameter
     SecretClient client = new SecretClientBuilder()
         .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
-        .credential(intelliJCredential)
+        .credential(defaultCredential)
+        .buildClient();
+}
+```
+
+### Authenticating a user in Azure Toolkit for IntelliJ with `DefaultAzureCredential`
+This example demonstrates authenticating the `SecretClient` from the [azure-security-keyvault-secrets][secrets_client_library] client library using the `DefaultAzureCredential`, on a workstation with IntelliJ IDEA installed, and the user has signed in with an Azure account to the Azure Toolkit for IntelliJ.
+
+See more about how to configure your IntelliJ IDEA in [Sign in Azure Toolkit for IntelliJ for IntelliJCredential](https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#sign-in-azure-toolkit-for-intellij-for-intellijcredential).
+
+<!-- embedme ../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java#L257-L271 -->
+```java
+/**
+ * The default credential will use the KeePass database path to find the user account in IntelliJ on Windows.
+ */
+public void createDefaultAzureCredentialForIntelliJ() {
+    DefaultAzureCredential defaultCredential = new DefaultAzureCredentialBuilder()
+        // KeePass configuration required only for Windows. No configuration needed for Linux / Mac
+        .intelliJKeePassDatabasePath("C:\\Users\\user\\AppData\\Roaming\\JetBrains\\IdeaIC2020.1\\c.kdbx")
+        .build();
+
+    // Azure SDK client builders accept the credential as a parameter
+    SecretClient client = new SecretClientBuilder()
+        .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
+        .credential(defaultCredential)
         .buildClient();
 }
 ```

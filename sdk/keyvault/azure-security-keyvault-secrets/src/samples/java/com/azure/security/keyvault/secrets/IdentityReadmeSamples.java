@@ -238,4 +238,35 @@ public class IdentityReadmeSamples {
             .credential(credentialChain)
             .buildClient();
     }
+
+    /**
+     * The default credential will use the user assigned managed identity with the specified client ID.
+     */
+    public void createDefaultAzureCredentialForUserAssignedManagedIdentity() {
+        DefaultAzureCredential defaultCredential = new DefaultAzureCredentialBuilder()
+            .managedIdentityClientId("<MANAGED_IDENTITY_CLIENT_ID>")
+            .build();
+
+        // Azure SDK client builders accept the credential as a parameter
+        SecretClient client = new SecretClientBuilder()
+            .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
+            .credential(defaultCredential)
+            .buildClient();
+    }
+
+    /**
+     * The default credential will use the KeePass database path to find the user account in IntelliJ on Windows.
+     */
+    public void createDefaultAzureCredentialForIntelliJ() {
+        DefaultAzureCredential defaultCredential = new DefaultAzureCredentialBuilder()
+            // KeePass configuration required only for Windows. No configuration needed for Linux / Mac
+            .intelliJKeePassDatabasePath("C:\\Users\\user\\AppData\\Roaming\\JetBrains\\IdeaIC2020.1\\c.kdbx")
+            .build();
+
+        // Azure SDK client builders accept the credential as a parameter
+        SecretClient client = new SecretClientBuilder()
+            .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
+            .credential(defaultCredential)
+            .buildClient();
+    }
 }
