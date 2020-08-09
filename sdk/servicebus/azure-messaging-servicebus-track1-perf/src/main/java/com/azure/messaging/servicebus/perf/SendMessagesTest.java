@@ -3,13 +3,13 @@
 
 package com.azure.messaging.servicebus.perf;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.perf.core.ServiceBusStressOptions;
 import com.azure.messaging.servicebus.perf.core.ServiceTest;
 import com.microsoft.azure.servicebus.IMessage;
 import com.microsoft.azure.servicebus.Message;
 import com.microsoft.azure.servicebus.ReceiveMode;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -23,12 +23,18 @@ import java.util.stream.IntStream;
  * Performance test.
  */
 public class SendMessagesTest extends ServiceTest<ServiceBusStressOptions> {
+    private final ClientLogger logger = new ClientLogger(SendMessagesTest.class);
     private List<IMessage> messages = new ArrayList<>();
 
-    public SendMessagesTest(ServiceBusStressOptions options) throws InterruptedException, ExecutionException, ServiceBusException {
+    /**
+     * Creates test object
+     * @param options to set performance test options.
+     */
+    public SendMessagesTest(ServiceBusStressOptions options) {
         super(options, ReceiveMode.PEEKLOCK);
     }
 
+    @Override
     public Mono<Void> globalSetupAsync() {
         String messageId = UUID.randomUUID().toString();
         Message message = new Message(CONTENTS);
@@ -46,10 +52,8 @@ public class SendMessagesTest extends ServiceTest<ServiceBusStressOptions> {
     public void run() {
         try {
             sender.sendBatch(messages);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ServiceBusException e) {
-            e.printStackTrace();
+        } catch (InterruptedException | ServiceBusException e) {
+            throw logger.logExceptionAsWarning(new RuntimeException(e));
         }
     }
 
@@ -57,10 +61,8 @@ public class SendMessagesTest extends ServiceTest<ServiceBusStressOptions> {
     public Mono<Void> runAsync() {
         try {
             sender.sendBatchAsync(messages).get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+        } catch (InterruptedException | ExecutionException e) {
+            throw logger.logExceptionAsWarning(new RuntimeException(e));
         }
         return Mono.empty();
     }

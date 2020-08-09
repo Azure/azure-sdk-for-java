@@ -9,22 +9,23 @@ import com.azure.messaging.servicebus.perf.core.ServiceBusStressOptions;
 import com.azure.messaging.servicebus.perf.core.ServiceTest;
 import reactor.core.publisher.Mono;
 
+import java.nio.charset.Charset;
+
 /**
  * Performance test.
  */
 public class SendMessageTest extends ServiceTest<ServiceBusStressOptions> {
-    private ServiceBusMessage message =  new ServiceBusMessage(CONTENTS.getBytes());;
+    private final ServiceBusMessage message =  new ServiceBusMessage(CONTENTS.getBytes(Charset.defaultCharset()));;
 
+    /**
+     * Creates test object
+     * @param options to set performance test options.
+     */
     public SendMessageTest(ServiceBusStressOptions options) {
         super(options, ReceiveMode.PEEK_LOCK);
     }
 
-    private  Mono<Void> sendMessages()
-    {
-        ServiceBusMessage message =  new ServiceBusMessage(CONTENTS.getBytes());
-        return senderAsync.sendMessage(message).then();
-    }
-
+    @Override
     public Mono<Void> globalSetupAsync() {
         return Mono.empty();
     }

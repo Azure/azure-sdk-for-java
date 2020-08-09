@@ -3,21 +3,19 @@
 
 package com.azure.messaging.servicebus.perf;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.perf.core.ServiceBusStressOptions;
 import com.azure.messaging.servicebus.perf.core.ServiceTest;
 import com.microsoft.azure.servicebus.IMessage;
 import com.microsoft.azure.servicebus.Message;
 import com.microsoft.azure.servicebus.ReceiveMode;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -25,12 +23,19 @@ import java.util.stream.IntStream;
  * Performance test.
  */
 public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptions> {
+    private final ClientLogger logger = new ClientLogger(ReceiveAndLockMessageTest.class);
+
     private List<Message> messages = new ArrayList<>();
 
-    public ReceiveAndLockMessageTest(ServiceBusStressOptions options) throws InterruptedException, ExecutionException, ServiceBusException {
+    /**
+     * Creates test object
+     * @param options to set performance test options.
+     */
+    public ReceiveAndLockMessageTest(ServiceBusStressOptions options) {
         super(options, ReceiveMode.PEEKLOCK);
     }
 
+    @Override
     public Mono<Void> globalSetupAsync() {
         // Since test does warm up and test many times, we are sending many messages, so we will have them available.
         int totalMessageMultiplier = 50;
@@ -44,12 +49,10 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
                 .mapToObj(index -> message)
                 .collect(Collectors.toList());
 
-            try{
+            try {
                 sender.sendBatch(messages);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ServiceBusException e) {
-                e.printStackTrace();
+            } catch (InterruptedException | ServiceBusException e) {
+                throw logger.logExceptionAsWarning(new RuntimeException(e));
             }
             return Mono.empty();
         });
@@ -60,49 +63,41 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
         Collection<IMessage> messages = null;
         try {
             messages = receiver.receiveBatch(options.getMessagesToReceive());
-        } catch  (Exception ee) {
-            ee.printStackTrace();
+        } catch  (Exception e) {
+            throw logger.logExceptionAsWarning(new RuntimeException(e));
         }
 
-        for(IMessage message : messages) {
+        for (IMessage message : messages) {
             try {
                 receiver.complete(message.getLockToken());
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ServiceBusException e) {
-                e.printStackTrace();
+            } catch (InterruptedException | ServiceBusException e) {
+                throw logger.logExceptionAsWarning(new RuntimeException(e));
             }
         }
     }
 
     @Override
     public Mono<Void> runAsync() {
-        CompletableFuture<Collection<IMessage>> receiveFuture = receiver.receiveBatchAsync(options.getMessagesToReceive());
-        try {
-            Collection<IMessage> messages = receiveFuture.get();
-            for(IMessage message : messages){
+        return Mono.fromFuture(receiver.receiveBatchAsync(options.getMessagesToReceive()))
+            .map(iMessages -> {
                 try {
-                    receiver.complete(message.getLockToken());
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ServiceBusException e) {
-                    e.printStackTrace();
+                    for (IMessage message : iMessages) {
+                        receiver.complete(message.getLockToken());
+                    }
+                } catch (InterruptedException | ServiceBusException e) {
+                    throw logger.logExceptionAsWarning(new RuntimeException(e));
                 }
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-
-        return Mono.empty();
+                return Mono.just(iMessages);
+            })
+            .then();
     }
 
+    @Override
     public Mono<Void> cleanupAsync() {
         try {
             sender.close();
         } catch (ServiceBusException e) {
-            e.printStackTrace();
+            throw logger.logExceptionAsWarning(new RuntimeException(e));
         }
         return Mono.empty();
     }
@@ -115,7 +110,7 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
         try {
             sender.close();
         } catch (ServiceBusException e) {
-            e.printStackTrace();
+            throw logger.logExceptionAsWarning(new RuntimeException(e));
         }
         return Mono.empty();
     }

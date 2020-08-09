@@ -351,6 +351,15 @@
     <Bug pattern="BC_UNCONFIRMED_CAST"/>
   </Match>
 
+  <!-- The casting problems do not exist in Azure use cases -->
+  <Match>
+    <Or>
+      <Class name="com.azure.messaging.servicebus.perf.ReceiveAndDeleteMessageTest"/>
+      <Class name="com.azure.messaging.servicebus.perf.ReceiveAndLockMessageTest"/>
+    </Or>
+    <Bug pattern="BC_UNCONFIRMED_CAST"/>
+  </Match>
+
   <!-- These fields are designed to be not written. They are for deserializing. -->
   <Match>
     <Class name="com.azure.core.auth.credentials.AzureCliSubscription$UserInfo"/>
@@ -670,6 +679,13 @@
   <Match>
     <Class name="com.azure.identity.implementation.msalextensions.cachepersister.windows.WindowsDPAPICacheProtector"/>
     <Bug pattern="RV_RETURN_VALUE_IGNORED_BAD_PRACTICE"/>
+  </Match>
+
+  <Match>
+    <Or>
+      <Class name="com.azure.messaging.servicebus.perf.core.ServiceTest"/>
+    </Or>
+    <Bug pattern="REC_CATCH_EXCEPTION"/>
   </Match>
 
   <!-- Serializers define non-transient non-serializable instance field -->
@@ -1481,6 +1497,12 @@
   <Match>
     <Class name="com.azure.cosmos.implementation.QueryMetrics"/>
     <Method name="createFromDelimitedString"/>
+    <Bug pattern="DLS_DEAD_LOCAL_STORE"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.messaging.servicebus.perf.ReceiveAndDeleteMessageTest"/>
+    <Method name="run"/>
     <Bug pattern="DLS_DEAD_LOCAL_STORE"/>
   </Match>
 

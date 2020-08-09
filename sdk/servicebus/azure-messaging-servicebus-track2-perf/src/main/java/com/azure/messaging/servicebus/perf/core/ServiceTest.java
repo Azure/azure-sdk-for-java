@@ -19,34 +19,41 @@ import com.azure.perf.test.core.PerfStressTest;
 import java.time.Duration;
 
 /**
- * Performance test.
+ * Base class for performance etest.
+ * @param <TOptions> for performance configuration.
  */
 public abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStressTest<TOptions> {
     protected static final Duration TIMEOUT = Duration.ofSeconds(60);
     protected static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions().setTryTimeout(TIMEOUT);
+    protected static final String CONTENTS = "Track 2 AMQP message - Perf Test";
+
     private static final String AZURE_SERVICE_BUS_CONNECTION_STRING = "AZURE_SERVICE_BUS_CONNECTION_STRING";
     private static final String AZURE_SERVICEBUS_QUEUE_NAME = "AZURE_SERVICEBUS_QUEUE_NAME";
     private static final String AZURE_SERVICEBUS_TOPIC_NAME = "AZURE_SERVICEBUS_TOPIC_NAME";
     private static final String AZURE_SERVICEBUS_SUBSCRIPTION_NAME = "AZURE_SERVICEBUS_SUBSCRIPTION_NAME";
-
 
     protected final ServiceBusReceiverClient receiver;
     protected final ServiceBusReceiverAsyncClient receiverAsync;
     protected final ServiceBusSenderClient sender;
     protected final ServiceBusSenderAsyncClient senderAsync;
 
-    protected final String CONTENTS = "Performance Test Message";
-
+    /**
+     *
+     * @param options to configure.
+     * @param receiveMode to receive messages.
+     * @throws IllegalArgumentException if environment variable not being available.
+     */
     public ServiceTest(TOptions options, ReceiveMode receiveMode) {
         super(options);
         String connectionString = System.getenv(AZURE_SERVICE_BUS_CONNECTION_STRING);
         if (CoreUtils.isNullOrEmpty(connectionString)) {
-            throw new IllegalArgumentException("Environment variable "+AZURE_SERVICE_BUS_CONNECTION_STRING+" must be set");
+            throw new IllegalArgumentException("Environment variable " + AZURE_SERVICE_BUS_CONNECTION_STRING
+                + " must be set");
         }
 
         String queueName = System.getenv(AZURE_SERVICEBUS_QUEUE_NAME);
         if (CoreUtils.isNullOrEmpty(queueName)) {
-            throw new IllegalArgumentException("Environment variable "+AZURE_SERVICEBUS_QUEUE_NAME+" must be set");
+            throw new IllegalArgumentException("Environment variable " + AZURE_SERVICEBUS_QUEUE_NAME + " must be set");
         }
 
         // Setup the service client

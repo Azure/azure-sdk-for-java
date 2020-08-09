@@ -20,6 +20,7 @@ public class App {
     /**
      *  main function.
      * @param args args
+     * @throws RuntimeException If not able to load test classes.
      */
     public static void main(String[] args) {
         Class<?>[] testClasses;

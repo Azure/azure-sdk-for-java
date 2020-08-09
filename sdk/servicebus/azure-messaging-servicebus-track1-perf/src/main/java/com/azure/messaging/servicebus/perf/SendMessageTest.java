@@ -3,17 +3,14 @@
 
 package com.azure.messaging.servicebus.perf;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.perf.core.ServiceBusStressOptions;
 import com.azure.messaging.servicebus.perf.core.ServiceTest;
-import com.microsoft.azure.servicebus.IMessage;
 import com.microsoft.azure.servicebus.Message;
 import com.microsoft.azure.servicebus.ReceiveMode;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
@@ -21,17 +18,25 @@ import java.util.concurrent.ExecutionException;
  * Performance test.
  */
 public class SendMessageTest extends ServiceTest<ServiceBusStressOptions> {
+    private final ClientLogger logger = new ClientLogger(SendMessageTest.class);
     private Message message  = null;
 
-    public SendMessageTest(ServiceBusStressOptions options) throws InterruptedException, ExecutionException, ServiceBusException {
+    /**
+     * Creates test object
+     * @param options to set performance test options.
+     */
+    public SendMessageTest(ServiceBusStressOptions options) {
         super(options, ReceiveMode.PEEKLOCK);
     }
 
+    @Override
     public Mono<Void> globalSetupAsync() {
-        String messageId = UUID.randomUUID().toString();
-        message = new Message(CONTENTS);
-        message.setMessageId(messageId);
-        return Mono.empty();
+        return Mono.defer(() -> {
+            String messageId = UUID.randomUUID().toString();
+            message = new Message(CONTENTS);
+            message.setMessageId(messageId);
+            return Mono.empty();
+        });
     }
 
     @Override
@@ -39,10 +44,8 @@ public class SendMessageTest extends ServiceTest<ServiceBusStressOptions> {
         try {
 
             sender.send(message);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ServiceBusException e) {
-            e.printStackTrace();
+        } catch (InterruptedException | ServiceBusException e) {
+            throw logger.logExceptionAsWarning(new RuntimeException(e));
         }
     }
 
@@ -50,10 +53,8 @@ public class SendMessageTest extends ServiceTest<ServiceBusStressOptions> {
     public Mono<Void> runAsync() {
         try {
             sender.sendAsync(message).get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+        } catch (InterruptedException | ExecutionException e) {
+            throw logger.logExceptionAsWarning(new RuntimeException(e));
         }
         return Mono.empty();
     }
