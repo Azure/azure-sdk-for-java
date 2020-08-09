@@ -12,6 +12,7 @@ import com.azure.storage.blob.options.BlobChangeLeaseOptions;
 import com.azure.storage.blob.options.BlobReleaseLeaseOptions;
 import com.azure.storage.blob.options.BlobRenewLeaseOptions;
 
+import java.time.Duration;
 import java.time.OffsetDateTime;
 
 
@@ -178,7 +179,7 @@ public class LeaseAsyncClientJavaDocCodeSnippets {
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
         BlobBreakLeaseOptions options = new BlobBreakLeaseOptions()
-            .setBreakPeriodInSeconds(retainLeaseInSeconds)
+            .setBreakPeriod(Duration.ofSeconds(retainLeaseInSeconds))
             .setRequestConditions(requestConditions);
 
         client.breakLeaseWithResponse(options).subscribe(response ->

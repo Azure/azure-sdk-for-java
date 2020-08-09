@@ -6,7 +6,6 @@ variables:
   MemoryOptions: '-Xmx3072m'
   #Agent.Source.Git.ShallowFetchDepth: 1
   skipComponentGovernanceDetection: true
-  EmulatorMsiUrl: 'https://aka.ms/cosmosdb-emulator'
   AdditionalOptions: ''
   # format !<group1Id>:<artifact1Id>, !<group2Id>:<artifact2Id>,... no trailing comma is necessary
   PLSkipOptions: ''

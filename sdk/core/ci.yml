@@ -58,9 +58,6 @@ extends:
       - name: azure-core-serializer-avro-apache
         groupId: com.azure
         safeName: azurecoreserializeravroapache
-      - name: azure-core-serializer-avro-jackson
-        groupId: com.azure
-        safeName: azurecoreserializeravrojackson
       - name: azure-core-serializer-json-gson
         groupId: com.azure
         safeName: azurecoreserializerjsongson
@@ -78,3 +75,7 @@ extends:
         groupId: com.azure
       - name: perf-test-core
         groupId: com.azure
+      - name: spring-integration-azure-core
+        groupId: com.microsoft.azure
+      - name: spring-integration-azure-test
+        groupId: com.microsoft.azure

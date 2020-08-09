@@ -8,6 +8,7 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.implementation.AuthenticationRecord;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
@@ -42,19 +43,17 @@ public class InteractiveBrowserCredential implements TokenCredential {
      * {@code http://localhost:{port}} must be registered as a valid reply URL on the application.
      *
      * @param clientId the client ID of the application
-     * @param clientSecret the client secret of the application
      * @param tenantId the tenant ID of the application
      * @param port the port on which the credential will listen for the browser authentication result
      * @param automaticAuthentication indicates whether automatic authentication should be attempted or not.
      * @param identityClientOptions the options for configuring the identity client
      */
     InteractiveBrowserCredential(String clientId, String tenantId, int port, boolean automaticAuthentication,
-                                 String clientSecret, IdentityClientOptions identityClientOptions) {
+                                 IdentityClientOptions identityClientOptions) {
         this.port = port;
         identityClient = new IdentityClientBuilder()
             .tenantId(tenantId)
             .clientId(clientId)
-            .clientSecret(clientSecret)
             .identityClientOptions(identityClientOptions)
             .build();
         cachedToken = new AtomicReference<>();
@@ -93,9 +92,9 @@ public class InteractiveBrowserCredential implements TokenCredential {
      *
      * @return The {@link AuthenticationRecord} which can be used to silently authenticate the account
      * on future execution if persistent caching was enabled via
-     * {@link InteractiveBrowserCredentialBuilder#enablePersistentCache(boolean)} when credential was instantiated.
+     * {@link InteractiveBrowserCredentialBuilder#enablePersistentCache()} when credential was instantiated.
      */
-    public Mono<AuthenticationRecord> authenticate(TokenRequestContext request) {
+    Mono<AuthenticationRecord> authenticate(TokenRequestContext request) {
         return Mono.defer(() -> identityClient.authenticateWithBrowserInteraction(request, port))
                 .map(this::updateCache)
                 .map(msalToken -> cachedToken.get().getAuthenticationRecord());
@@ -106,10 +105,10 @@ public class InteractiveBrowserCredential implements TokenCredential {
      *
      * @return The {@link AuthenticationRecord} which can be used to silently authenticate the account
      * on future execution if persistent caching was enabled via
-     * {@link InteractiveBrowserCredentialBuilder#enablePersistentCache(boolean)} when credential was instantiated.
+     * {@link InteractiveBrowserCredentialBuilder#enablePersistentCache()} when credential was instantiated.
      */
-    public Mono<AuthenticationRecord> authenticate() {
-        String defaultScope = KnownAuthorityHosts.getDefaultScope(authorityHost);
+    Mono<AuthenticationRecord> authenticate() {
+        String defaultScope = AzureAuthorityHosts.getDefaultScope(authorityHost);
         if (defaultScope == null) {
             return Mono.error(logger.logExceptionAsError(new CredentialUnavailableException("Authenticating in this "
                                                     + "environment requires specifying a TokenRequestContext.")));
@@ -121,8 +120,7 @@ public class InteractiveBrowserCredential implements TokenCredential {
         cachedToken.set(
                 new MsalAuthenticationAccount(
                         new AuthenticationRecord(msalToken.getAuthenticationResult(),
-                                identityClient.getTenantId())));
+                                identityClient.getTenantId(), identityClient.getClientId())));
         return msalToken;
     }
-
 }

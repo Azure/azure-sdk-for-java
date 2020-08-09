@@ -199,11 +199,6 @@ public final class Constants {
         public static final String  KeyWrapMetadataType = "type";
         public static final String  KeyWrapMetadataValue = "value";
         public static final String  EncryptedInfo = "_ei";
-//        public static final String  DataEncryptionKeyRid = "_ek";
-        public static final String  EncryptionFormatVersion = "_ef";
-        public static final String  EncryptedData = "_ed";
-        public static final String  EncryptionAlgorithm = "_ea";
-        public static final String  DataEncryptionKeyId = "_en";
 
     }
 

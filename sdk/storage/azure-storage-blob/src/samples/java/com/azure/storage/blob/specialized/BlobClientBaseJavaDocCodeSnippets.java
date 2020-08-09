@@ -9,6 +9,7 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.blob.BlobServiceClientBuilder;
+import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.models.BlobProperties;
@@ -293,7 +294,7 @@ public class BlobClientBaseJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.beginCopy#BlobBeginCopyOptions
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         Map<String, String> tags = Collections.singletonMap("tag", "value");
-        RequestConditions modifiedRequestConditions = new RequestConditions()
+        BlobBeginCopySourceRequestConditions modifiedRequestConditions = new BlobBeginCopySourceRequestConditions()
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(7));
         BlobRequestConditions blobRequestConditions = new BlobRequestConditions().setLeaseId(leaseId);
         SyncPoller<BlobCopyInfo, Void> poller = client.beginCopy(new BlobBeginCopyOptions(url).setMetadata(metadata)
@@ -489,7 +490,7 @@ public class BlobClientBaseJavaDocCodeSnippets {
             client.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT)
                 .setPriority(RehydratePriority.STANDARD)
                 .setLeaseId(leaseId)
-                .setIfTagsMatch(tags),
+                .setTagsConditions(tags),
                 timeout, new Context(key2, value2)).getStatusCode());
         // END: com.azure.storage.blob.specialized.BlobClientBase.setAccessTierWithResponse#BlobSetAccessTierOptions-Duration-Context
     }
@@ -552,7 +553,7 @@ public class BlobClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobClientBase#openQueryInputStream(BlobQueryOptions)}
+     * Code snippet for {@link BlobClientBase#openQueryInputStreamWithResponse(BlobQueryOptions)}
      */
     public void openQueryInputStream2() {
         // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.openQueryInputStream#BlobQueryOptions
@@ -577,7 +578,7 @@ public class BlobClientBaseJavaDocCodeSnippets {
             .setErrorConsumer(errorConsumer)
             .setProgressConsumer(progressConsumer);
 
-        InputStream inputStream = client.openQueryInputStream(queryOptions);
+        InputStream inputStream = client.openQueryInputStreamWithResponse(queryOptions).getValue();
         // Now you can read from the input stream like you would normally.
         // END: com.azure.storage.blob.specialized.BlobClientBase.openQueryInputStream#BlobQueryOptions
     }

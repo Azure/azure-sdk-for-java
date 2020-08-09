@@ -3,9 +3,9 @@
 
 package com.azure.cosmos.implementation.encryption;
 
-import com.azure.cosmos.implementation.encryption.api.CosmosEncryptionAlgorithm;
-import com.azure.cosmos.implementation.encryption.api.DataEncryptionKey;
-import com.azure.cosmos.implementation.encryption.api.EncryptionType;
+import com.azure.cosmos.encryption.CosmosEncryptionAlgorithm;
+import com.azure.cosmos.encryption.DataEncryptionKey;
+import com.azure.cosmos.encryption.EncryptionType;
 
 
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -91,7 +91,7 @@ class AeadAes256CbcHmac256Algorithm implements DataEncryptionKey {
 
     @Override
     public String getEncryptionAlgorithm() {
-        return CosmosEncryptionAlgorithm.AEAes256CbcHmacSha256Randomized;
+        return CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256_RANDOMIZED;
     }
 
     /**

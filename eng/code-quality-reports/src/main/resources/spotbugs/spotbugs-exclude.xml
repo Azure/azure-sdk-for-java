@@ -391,6 +391,13 @@
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
   </Match>
 
+  <!-- The fields are checked for null in the build method and throw exceptions if values for fields are not specified. -->
+  <Match>
+      <Class name="com.azure.identity.InteractiveBrowserCredentialBuilder"/>
+      <Field name="port"/>
+      <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
+  </Match>
+
   <!-- The major fields of poll strategy data subclass are non-serializable, and there is another design for serializing
   the class proposed. Suppress the warning for current design. -->
   <Match>
@@ -955,14 +962,14 @@
   <!-- Suppress URF_UNREAD_FIELD, the fields are read but during serialization -->
   <Match>
     <Class name="com.azure.cosmos.ClientSideRequestStatistics$AddressResolutionStatistics"/>
-    <Field name="endTime"/>
+    <Field name="endTimeUTC"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
   <!-- Suppress URF_UNREAD_FIELD, the fields are read but during serialization -->
   <Match>
     <Class name="com.azure.cosmos.ClientSideRequestStatistics$AddressResolutionStatistics"/>
-    <Field name="startTime"/>
+    <Field name="startTimeUTC"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
@@ -983,7 +990,7 @@
   <!-- Suppress URF_UNREAD_FIELD, the field is read but during serialization -->
   <Match>
     <Class name="com.azure.cosmos.ClientSideRequestStatistics$StoreResponseStatistics"/>
-    <Field name="requestResponseTime"/>
+    <Field name="requestResponseTimeUTC"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
@@ -1238,6 +1245,13 @@
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
+  <!-- FormRecognizerException fields re serializable -->
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.models.FormRecognizerException" />
+    <Field name="errorInformationList" />
+    <Bug pattern="SE_BAD_FIELD" />
+  </Match>
+  
   <!-- Exception is required to catch, ref: code comment in the OrderbyRowComparer::compare() method  -->
   <Match>
     <Class name="com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer"/>
@@ -1271,6 +1285,12 @@
     <Class name="com.azure.cosmos.implementation.ResourceId"/>
     <Method name="tryParse"/>
     <Bug pattern="REC_CATCH_EXCEPTION"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.cosmos.encryption.EncryptionCosmosAsyncContainer"/>
+    <Method name="decryptResponseAsync"/>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
 
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9089 -->
@@ -1696,22 +1716,42 @@
 
   <!-- Returning a new copy of the object is not necessary -->
   <Match>
-    <Class name="com.azure.cosmos.implementation.encryption.EncryptionKeyUnwrapResult"/>
+    <Class name="com.azure.cosmos.encryption.EncryptionKeyUnwrapResult"/>
     <Method name="getDataEncryptionKey"/>
     <Bug pattern="EI_EXPOSE_REP"/>
   </Match>
 
   <!-- Returning a new copy of the object is not necessary -->
   <Match>
-    <Class name="com.azure.cosmos.implementation.encryption.EncryptionKeyUnwrapResult"/>
+    <Class name="com.azure.cosmos.encryption.EncryptionKeyUnwrapResult"/>
     <Method name="getWrappedDataEncryptionKey"/>
     <Bug pattern="EI_EXPOSE_REP"/>
   </Match>
 
+  <!-- Returning a new copy of the object is not necessary -->
+  <Match>
+    <Class name="com.azure.cosmos.encryption.DecryptionResult"/>
+    <Method name="getEncryptedContent"/>
+    <Bug pattern="EI_EXPOSE_REP"/>
+  </Match>
 
   <!-- Returning a new copy of the object is not necessary -->
   <Match>
-    <Class name="com.azure.cosmos.implementation.encryption.EncryptionKeyUnwrapResult"/>
+    <Class name="com.azure.cosmos.implementation.encryption.EncryptionProperties"/>
+    <Method name="getEncryptedData"/>
+    <Bug pattern="EI_EXPOSE_REP"/>
+  </Match>
+
+  <!-- Returning a new copy of the object is not necessary -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.encryption.EncryptionProperties"/>
+    <Method name="&lt;init&gt;"/>
+    <Bug pattern="EI_EXPOSE_REP2"/>
+  </Match>
+
+  <!-- Returning a new copy of the object is not necessary -->
+  <Match>
+    <Class name="com.azure.cosmos.encryption.EncryptionKeyUnwrapResult"/>
     <Method name="&lt;init&gt;"/>
     <Bug pattern="EI_EXPOSE_REP2"/>
   </Match>
@@ -1725,21 +1765,21 @@
 
   <!-- Returning a new copy of the object is not necessary -->
   <Match>
-    <Class name="com.azure.cosmos.implementation.encryption.EncryptionKeyWrapResult"/>
+    <Class name="com.azure.cosmos.encryption.EncryptionKeyWrapResult"/>
     <Method name="getWrappedDataEncryptionKey"/>
     <Bug pattern="EI_EXPOSE_REP2,EI_EXPOSE_REP"/>
   </Match>
 
   <!-- Returning a new copy of the object is not necessary -->
   <Match>
-    <Class name="com.azure.cosmos.implementation.encryption.EncryptionKeyWrapResult"/>
+    <Class name="com.azure.cosmos.encryption.EncryptionKeyWrapResult"/>
     <Method name="getEncryptionKeyWrapMetadata"/>
     <Bug pattern="EI_EXPOSE_REP2,EI_EXPOSE_REP"/>
   </Match>
 
   <!-- Returning a new copy of the object is not necessary -->
   <Match>
-    <Class name="com.azure.cosmos.implementation.encryption.EncryptionKeyWrapResult"/>
+    <Class name="com.azure.cosmos.encryption.EncryptionKeyWrapResult"/>
     <Method name="&lt;init&gt;"/>
     <Bug pattern="EI_EXPOSE_REP2"/>
   </Match>
@@ -2081,10 +2121,12 @@
     <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE,SIC_INNER_SHOULD_BE_STATIC_ANON,SKIPPED_CLASS_TOO_BIG"/>
   </Match>
 
-  <!-- Exclude REC_CATCH_EXCEPTION for management samples. All samples in management catch Exception instead of throw it. -->
+  <!-- Exclude REC_CATCH_EXCEPTION and false positive error for management samples. All samples in management catch Exception instead of throw it. -->
   <Match>
     <Package name="~com\.azure\.resourcemanager(\.[^.]+)*\.samples(\.[^.]+)*"/>
-    <Bug pattern="REC_CATCH_EXCEPTION"/>
+    <Bug pattern="REC_CATCH_EXCEPTION,
+                  RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE, 
+                  RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
 
   <!-- Exclude from spring related classes -->
@@ -2099,6 +2141,21 @@
                   RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"/>
   </Match>
 
+  <Match>
+    <Or>
+      <Class name="com.microsoft.azure.telemetry.TelemetryEventData$EventData$CustomData"/> <!-- false positive -->
+    </Or>
+    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
+  </Match>
+
+  <Match>
+    <Or>
+      <Class name="com.microsoft.azure.spring.integration.servicebus.queue.ServiceBusQueueTemplate$QueueMessageHandler"/> <!-- false positive -->
+      <Class name="com.microsoft.azure.spring.integration.servicebus.topic.ServiceBusTopicTemplate$TopicMessageHandler"/> <!-- false positive -->
+    </Or>
+    <Method name="OnCloseSessionAsync"/>
+    <Bug pattern="NM_METHOD_NAMING_CONVENTION"/>
+  </Match>
 
   <!-- These fields are designed to be not written. They are for deserializing. -->
   <Match>
@@ -2132,4 +2189,44 @@
     <Bug pattern="IP_PARAMETER_IS_DEAD_BUT_OVERWRITTEN"/>
   </Match>
 
+  <Match>
+    <Class name="com.azure.core.experimental.serializer.JsonSerializer"/>
+    <Bug pattern="NM_SAME_SIMPLE_NAME_AS_INTERFACE"/>
+  </Match>
+
+  <!-- Use the property to take the custom serializer from SearchClient. -->
+  <Match>
+    <Class name="~com\.azure\.search\.documents\.models\.(SearchResult|SuggestResult)" />
+    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" />
+  </Match>
+
+  <!-- Use abstract TypeReference class for serialize and deserialize API. -->
+  <Match>
+    <Class name="~com\.azure\.search\.documents\.models\.(SearchResult|SuggestResult)" />
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON" />
+  </Match>
+
+  <Match>
+    <Or>
+      <Class name="com.azure.core.serializer.json.jackson.JacksonJsonSerializer"/>
+      <Class name="com.azure.core.serializer.json.gson.GsonJsonSerializer"/>
+    </Or>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
+  <!-- Setup in Identity Test classes, required for the tests to work properly.-->
+  <Match>
+      <Class name="com.azure.identity.ClientCertificateCredentialTest" />
+      <Bug pattern="DMI_HARDCODED_ABSOLUTE_FILENAME"/>
+  </Match>
+
+  <Match>
+      <Or>
+          <Class name="com.azure.identity.implementation.IdentityClientTests"/>
+          <Class name="com.azure.identity.implementation.SynchronizedAccessorTests"/>
+      </Or>
+      <Or>
+          <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/> <!-- false positive -->
+          <Bug pattern="UI_INHERITANCE_UNSAFE_GETRESOURCE"/>
+      </Or>
+  </Match>
 </FindBugsFilter>
