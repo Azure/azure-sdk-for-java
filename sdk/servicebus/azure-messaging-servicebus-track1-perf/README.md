@@ -31,4 +31,4 @@ Azure Projects Contribution Guidelines](http://azure.github.io/guidelines.html).
 1. Push to the branch (`git push origin my-new-feature`)
 1. Create new Pull Request
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fservicebus%2Fperf-test-core%2FREADME.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fservicebus%2Fazure-messaging-servicebus-track1-perf%2FREADME.png)
