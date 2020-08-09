@@ -125,6 +125,17 @@ on which actual message transmission takes place. The namespace often serves as 
 * A **[subscription][subscription_concept]** receives messages from a topic. Each subscription is independent and
   receives a copy of the message sent to the topic.
 
+### Service Bus Clients
+The builder [`ServiceClientBuilder`][ServiceClientBuilder] is used to create all the servicebus clients.
+* **[`ServiceBusSenderClient`][ServiceBusSenderClient]** A <b>synchronous</b> sender responsible for sending 
+[`ServiceBusMessage`][ServiceBusMessage] to specific queue or topic on Azure Service Bus.
+* **[`ServiceBusSenderAsyncClient`][ServiceBusSenderAsyncClient]** A <b>asynchronous</b> sender responsible for sending 
+[`ServiceBusMessage`][ServiceBusMessage] to specific queue or topic on Azure Service Bus.
+* **[`ServiceBusReceiverClient`][ServiceBusReceiverClient]** A <b>synchronous</b> receiver responsible for receiving 
+ [`ServiceBusMessage`][ServiceBusMessage] from a specific queue or topic on Azure Service Bus.
+* **[`ServiceBusReceiverAsyncClient`][ServiceBusReceiverAsyncClient]** A <b>asynchronous</b> receiver responsible for 
+receiving [`ServiceBusMessage`][ServiceBusMessage] from a specific queue or topic on Azure Service Bus.
+
 ## Examples
  - [Send messages](#send-messages)
  - [Receive messages](#receive-messages)
@@ -414,7 +425,9 @@ Guidelines](./../../../CONTRIBUTING.md) for more information.
 [ServiceBusReceiverAsyncClient]: ./src/main/java/com/azure/messaging/servicebus/ServiceBusReceiverAsyncClient.java
 [ServiceBusReceiverClient]: ./src/main/java/com/azure/messaging/servicebus/ServiceBusReceiverClient.java
 [ServiceBusSenderAsyncClient]: ./src/main/java/com/azure/messaging/servicebus/ServiceBusSenderAsyncClient.java
+[ServiceClientBuilder]: ./src/main/java/com/azure/messaging/servicebus/ServiceBusClientBuilder.java
 [ServiceBusSenderClient]: ./src/main/java/com/azure/messaging/servicebus/ServiceBusSenderClient.java
+[ServiceBusMessage]: ./src/main/java/com/azure/messaging/servicebus/ServiceBusMessage.java
 [service_bus_create]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-create-namespace-portal
 [source_code]: ./
 [subscription_concept]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-queues-topics-subscriptions#topics-and-subscriptions
