@@ -97,7 +97,7 @@ class UnnamedSessionReceiver implements AutoCloseable {
                 return new ServiceBusReceivedMessageContext(deserialized);
             })
             .onErrorResume(error -> {
-                logger.warning("sessionId[{}]. Error occurred. Ending session.", sessionId, error);
+                logger.warning("!!!! sessionId[{}]. Error occurred. Ending session.", sessionId, error);
                 return Mono.just(new ServiceBusReceivedMessageContext(getSessionId(), error));
             })
             .doOnNext(context -> {
@@ -111,7 +111,11 @@ class UnnamedSessionReceiver implements AutoCloseable {
                     : "";
 
                 logger.verbose("Received sessionId[{}] messageId[{}]", context.getSessionId(), message.getMessageId());
+                logger.verbose("!!!! Received sessionId[{}] SQ[{}]", context.getSessionId(), message.getSequenceNumber());
                 messageReceivedSink.next(token);
+            })
+            .doOnComplete(() -> {
+                logger.verbose("!!!! completing receivedMessagesFlux !!!!");
             });
 
         this.receivedMessages = Flux.concat(receivedMessagesFlux, cancelReceiveProcessor);
@@ -121,10 +125,14 @@ class UnnamedSessionReceiver implements AutoCloseable {
         // receiver is idle.
         if (disposeOnIdle) {
             this.subscriptions.add(Flux.switchOnNext(messageReceivedEmitter
-                .flatMap(lockToken -> Mono.delay(retryOptions.getTryTimeout()))
+                .flatMap(lockToken -> {
+                    logger.verbose("!!!! Starting a short delay for next message to arrive.");
+                    return Mono.delay(Duration.ofSeconds(15));
+                    //return Mono.delay(retryOptions.getTryTimeout());
+                })
                 .handle((l, sink) -> {
-                    logger.info("entityPath[{}]. sessionId[{}]. Did not a receive message within timeout {}.",
-                        receiveLink.getEntityPath(), sessionId.get(), retryOptions.getTryTimeout());
+                    logger.info("!!!! entityPath[{}]. sessionId[{}]. Did not a receive message within timeout {}.",
+                        receiveLink.getEntityPath(), sessionId.get(), Duration.ofSeconds(15)/*retryOptions.getTryTimeout()*/);
                     cancelReceiveProcessor.onComplete();
                     sink.complete();
                 }))
