@@ -116,8 +116,8 @@ public final class EventGridAsyncConsumer {
     }
 
     /**
-     * Deserialize the given JSON into a given custom event schema and return the rich event type, using
-     * available mappings to fill in rich object data
+     * Deserialize the given JSON into a given custom event schema and return event type, deserializing all
+     * known data using the deserializer set with {@link EventGridConsumerBuilder#dataDeserializer(JsonSerializer)}
      * @param json     The information to deserialize as a JSON string
      * @param clazz    The class type of the custom event
      * @param <TEvent> The custom event object. Must be deserializable by the set deserializer.
@@ -125,14 +125,14 @@ public final class EventGridAsyncConsumer {
      * @return The deserialized events in an {@link Flux}
      */
     public <TEvent> Flux<TEvent> deserializeCustomEvents(String json, Class<TEvent> clazz) {
-        return deserializer.toTree(new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8)))
+        return dataDeserializer.toTree(new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8)))
             .flatMapMany(jsonNode -> {
                 if (jsonNode.isArray()) {
                     JsonArray jsonArr = (JsonArray) jsonNode;
                     return Flux.fromStream(jsonArr.elements())
-                        .flatMap(node -> deserializer.deserializeTree(node, clazz));
+                        .flatMap(node -> dataDeserializer.deserializeTree(node, clazz));
                 } else {
-                    return deserializer.deserializeTree(jsonNode, clazz)
+                    return dataDeserializer.deserializeTree(jsonNode, clazz)
                         .as(Flux::from);
                 }
             });
