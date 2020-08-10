@@ -1,22 +1,22 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.0-preview//custom/models/00000000-0000-0000-0000-000000000000/analyze?includeTextDetails=false",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.0//custom/models/00000000-0000-0000-0000-000000000000/analyze?includeTextDetails=false",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.5 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "3c3164ca-42b0-4038-bc95-37b99f45668b",
+      "x-ms-client-request-id" : "020b3a2c-ffe3-41fc-a658-06b0a83017c9",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "211",
+      "x-envoy-upstream-service-time" : "11",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "72e691d7-6d7b-442d-89ec-9fffdc3fc101",
+      "apim-request-id" : "6980f089-efd2-4f64-8abc-300c811e9741",
       "retry-after" : "0",
       "StatusCode" : "400",
       "Body" : "{\"error\":{\"code\":\"1001\",\"message\":\"Specified model not found or not ready, Model Id: 00000000-0000-0000-0000-000000000000\"}}",
-      "Date" : "Thu, 23 Jul 2020 15:58:12 GMT",
+      "Date" : "Thu, 06 Aug 2020 22:40:12 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

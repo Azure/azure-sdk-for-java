@@ -3,23 +3,26 @@
 
 package com.azure.messaging.servicebus.implementation;
 
+import com.azure.messaging.servicebus.implementation.models.MessageCountDetails;
 import com.azure.messaging.servicebus.implementation.models.NamespacePropertiesEntry;
+import com.azure.messaging.servicebus.implementation.models.QueueDescription;
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionEntry;
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionEntryContent;
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionFeed;
 import com.azure.messaging.servicebus.implementation.models.ResponseAuthor;
 import com.azure.messaging.servicebus.implementation.models.ResponseLink;
+import com.azure.messaging.servicebus.implementation.models.SubscriptionDescription;
 import com.azure.messaging.servicebus.implementation.models.SubscriptionDescriptionEntry;
 import com.azure.messaging.servicebus.implementation.models.SubscriptionDescriptionEntryContent;
 import com.azure.messaging.servicebus.implementation.models.SubscriptionDescriptionFeed;
+import com.azure.messaging.servicebus.models.CreateQueueOptions;
+import com.azure.messaging.servicebus.models.CreateSubscriptionOptions;
 import com.azure.messaging.servicebus.models.EntityStatus;
-import com.azure.messaging.servicebus.models.MessageCountDetails;
 import com.azure.messaging.servicebus.models.MessagingSku;
 import com.azure.messaging.servicebus.models.NamespaceProperties;
 import com.azure.messaging.servicebus.models.NamespaceType;
-import com.azure.messaging.servicebus.models.QueueDescription;
+import com.azure.messaging.servicebus.models.QueueProperties;
 import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
-import com.azure.messaging.servicebus.models.SubscriptionDescription;
 import com.azure.messaging.servicebus.models.SubscriptionRuntimeInfo;
 import org.junit.jupiter.api.Test;
 
@@ -56,7 +59,7 @@ class ServiceBusManagementSerializerTest {
     void deserializeQueueDescription() throws IOException {
         // Arrange
         final String contents = getContents("QueueDescriptionEntry.xml");
-        final QueueDescription expected = new QueueDescription("my-test-queue")
+        final CreateQueueOptions expected = new CreateQueueOptions("my-test-queue")
             .setLockDuration(Duration.ofMinutes(5))
             .setMaxSizeInMegabytes(1024)
             .setRequiresDuplicateDetection(true)
@@ -104,24 +107,22 @@ class ServiceBusManagementSerializerTest {
 
         // Act
         final QueueDescriptionEntry entry = serializer.deserialize(contents, QueueDescriptionEntry.class);
-        final QueueRuntimeInfo actual = new QueueRuntimeInfo(entry.getContent().getQueueDescription());
+        final QueueProperties properties = EntityHelper.toModel(entry.getContent().getQueueDescription());
+        final QueueRuntimeInfo actual = new QueueRuntimeInfo(properties);
 
         // Assert
         assertEquals(sizeInBytes, actual.getSizeInBytes());
-        assertEquals(messageCount, actual.getMessageCount());
+        assertEquals(messageCount, actual.getTotalMessageCount());
 
         assertEquals(createdAt, actual.getCreatedAt());
         assertEquals(updatedAt, actual.getUpdatedAt());
         assertEquals(accessedAt, actual.getAccessedAt());
 
-        final MessageCountDetails details = actual.getDetails();
-        assertNotNull(details);
-
-        assertEquals(expectedCount.getActiveMessageCount(), details.getActiveMessageCount());
-        assertEquals(expectedCount.getDeadLetterMessageCount(), details.getDeadLetterMessageCount());
-        assertEquals(expectedCount.getScheduledMessageCount(), details.getScheduledMessageCount());
-        assertEquals(expectedCount.getTransferMessageCount(), details.getTransferMessageCount());
-        assertEquals(expectedCount.getTransferDeadLetterMessageCount(), details.getTransferDeadLetterMessageCount());
+        assertEquals(expectedCount.getActiveMessageCount(), actual.getActiveMessageCount());
+        assertEquals(expectedCount.getDeadLetterMessageCount(), actual.getDeadLetterMessageCount());
+        assertEquals(expectedCount.getScheduledMessageCount(), actual.getScheduledMessageCount());
+        assertEquals(expectedCount.getTransferMessageCount(), actual.getTransferMessageCount());
+        assertEquals(expectedCount.getTransferDeadLetterMessageCount(), actual.getTransferDeadLetterMessageCount());
     }
 
     /**
@@ -137,7 +138,7 @@ class ServiceBusManagementSerializerTest {
                 .setHref("https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2017-04&enrich=false&%24skip=5&%24top=5")
         );
 
-        final QueueDescription queueDescription = new QueueDescription("q-0")
+        final CreateQueueOptions options = new CreateQueueOptions("q-0")
             .setLockDuration(Duration.ofMinutes(10))
             .setMaxSizeInMegabytes(102)
             .setRequiresDuplicateDetection(true)
@@ -149,6 +150,7 @@ class ServiceBusManagementSerializerTest {
             .setEnableBatchedOperations(true)
             .setAutoDeleteOnIdle(Duration.ofSeconds(5))
             .setEnablePartitioning(true);
+        final QueueDescription queueProperties = EntityHelper.getQueueDescription(options);
 
         final QueueDescriptionEntry entry1 = new QueueDescriptionEntry()
             .setBase("https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2017-04&enrich=false&$skip=0&$top=5")
@@ -159,7 +161,7 @@ class ServiceBusManagementSerializerTest {
             .setAuthor(new ResponseAuthor().setName("sb-java"))
             .setLink(new ResponseLink().setRel("self").setHref("../q-0?api-version=2017-04"))
             .setContent(new QueueDescriptionEntryContent().setType("application/xml")
-                .setQueueDescription(queueDescription));
+                .setQueueDescription(queueProperties));
         final QueueDescriptionEntry entry2 = new QueueDescriptionEntry()
             .setBase("https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2017-04&enrich=false&$skip=0&$top=5")
             .setId("https://sb-java.servicebus.windows.net/q-1?api-version=2017-04")
@@ -169,7 +171,7 @@ class ServiceBusManagementSerializerTest {
             .setAuthor(new ResponseAuthor().setName("sb-java2"))
             .setLink(new ResponseLink().setRel("self").setHref("../q-1?api-version=2017-04"))
             .setContent(new QueueDescriptionEntryContent().setType("application/xml")
-                .setQueueDescription(queueDescription));
+                .setQueueDescription(queueProperties));
         final QueueDescriptionEntry entry3 = new QueueDescriptionEntry()
             .setBase("https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2017-04&enrich=false&$skip=0&$top=5")
             .setId("https://sb-java.servicebus.windows.net/q-2?api-version=2017-04")
@@ -179,7 +181,7 @@ class ServiceBusManagementSerializerTest {
             .setAuthor(new ResponseAuthor().setName("sb-java3"))
             .setLink(new ResponseLink().setRel("self").setHref("../q-2?api-version=2017-04"))
             .setContent(new QueueDescriptionEntryContent().setType("application/xml")
-                .setQueueDescription(queueDescription));
+                .setQueueDescription(queueProperties));
 
         final Map<String, String> titleMap = new HashMap<>();
         titleMap.put("", "Queues");
@@ -224,8 +226,7 @@ class ServiceBusManagementSerializerTest {
             assertEquals(expectedEntry.getPublished(), actualEntry.getPublished());
             assertEquals(expectedEntry.getAuthor().getName(), actualEntry.getAuthor().getName());
 
-            assertQueueEquals(expectedEntry.getContent().getQueueDescription(), EntityStatus.ACTIVE,
-                actualEntry.getContent().getQueueDescription());
+            assertQueueEquals(options, EntityStatus.ACTIVE, actualEntry.getContent().getQueueDescription());
         }
     }
 
@@ -269,12 +270,12 @@ class ServiceBusManagementSerializerTest {
     void deserializeSubscription() throws IOException {
         // Arrange
         final String contents = getContents("SubscriptionDescriptionEntry.xml");
-        final SubscriptionDescription expected = new SubscriptionDescription("my-topic", "subscription-session-9")
+        final SubscriptionDescription expected = new SubscriptionDescription()
             .setLockDuration(Duration.ofSeconds(15))
             .setRequiresSession(true)
             .setDefaultMessageTimeToLive(ServiceBusConstants.MAX_DURATION)
             .setDeadLetteringOnMessageExpiration(false)
-            .setEnableDeadLetteringOnFilterEvaluationExceptions(true)
+            .setDeadLetteringOnFilterEvaluationExceptions(true)
             .setEnableBatchedOperations(true)
             .setMaxDeliveryCount(5)
             .setAutoDeleteOnIdle(Duration.ofHours(1).plusMinutes(48));
@@ -298,12 +299,13 @@ class ServiceBusManagementSerializerTest {
     void deserializeCreateSubscription() throws IOException {
         // Arrange
         final String contents = getContents("CreateSubscriptionEntry.xml");
-        final SubscriptionDescription expected = new SubscriptionDescription("topic", "sub46850f")
-            .setAutoDeleteOnIdle(Duration.parse("P10675199DT2H48M5.477S"))
-            .setDefaultMessageTimeToLive(Duration.parse("P10675199DT2H48M5.477S"))
-            .setLockDuration(Duration.ofSeconds(45))
-            .setEnableDeadLetteringOnFilterEvaluationExceptions(true)
-            .setMaxDeliveryCount(7);
+        final SubscriptionDescription expected = EntityHelper.getSubscriptionDescription(
+            new CreateSubscriptionOptions("topic", "sub46850f")
+                .setAutoDeleteOnIdle(Duration.parse("P10675199DT2H48M5.477S"))
+                .setDefaultMessageTimeToLive(Duration.parse("P10675199DT2H48M5.477S"))
+                .setRequiresSession(false)
+                .setLockDuration(Duration.ofSeconds(45))
+                .setMaxDeliveryCount(7));
 
         // Act
         final SubscriptionDescriptionEntry entry = serializer.deserialize(contents, SubscriptionDescriptionEntry.class);
@@ -318,8 +320,8 @@ class ServiceBusManagementSerializerTest {
     }
 
     /**
-     * Verify we can deserialize XML from a GET subscription request and create convenience model,
-     * {@link SubscriptionRuntimeInfo}.
+     * Verify we can deserialize XML from a GET subscription request and create convenience model, {@link
+     * SubscriptionRuntimeInfo}.
      */
     @Test
     void deserializeSubscriptionRuntimeInfo() throws IOException {
@@ -339,23 +341,20 @@ class ServiceBusManagementSerializerTest {
         // Act
         final SubscriptionDescriptionEntry entry = serializer.deserialize(contents, SubscriptionDescriptionEntry.class);
         final SubscriptionRuntimeInfo actual = new SubscriptionRuntimeInfo(
-            entry.getContent().getSubscriptionDescription());
+            EntityHelper.toModel(entry.getContent().getSubscriptionDescription()));
 
         // Assert
-        assertEquals(messageCount, actual.getMessageCount());
+        assertEquals(messageCount, actual.getTotalMessageCount());
 
         assertEquals(createdAt, actual.getCreatedAt());
         assertEquals(updatedAt, actual.getUpdatedAt());
         assertEquals(accessedAt, actual.getAccessedAt());
 
-        final MessageCountDetails details = actual.getDetails();
-        assertNotNull(details);
-
-        assertEquals(expectedCount.getActiveMessageCount(), details.getActiveMessageCount());
-        assertEquals(expectedCount.getDeadLetterMessageCount(), details.getDeadLetterMessageCount());
-        assertEquals(expectedCount.getScheduledMessageCount(), details.getScheduledMessageCount());
-        assertEquals(expectedCount.getTransferMessageCount(), details.getTransferMessageCount());
-        assertEquals(expectedCount.getTransferDeadLetterMessageCount(), details.getTransferDeadLetterMessageCount());
+        assertEquals(expectedCount.getActiveMessageCount(), actual.getActiveMessageCount());
+        assertEquals(expectedCount.getDeadLetterMessageCount(), actual.getDeadLetterMessageCount());
+        assertEquals(expectedCount.getScheduledMessageCount(), actual.getScheduledMessageCount());
+        assertEquals(expectedCount.getTransferMessageCount(), actual.getTransferMessageCount());
+        assertEquals(expectedCount.getTransferDeadLetterMessageCount(), actual.getTransferDeadLetterMessageCount());
     }
 
     /**
@@ -370,23 +369,33 @@ class ServiceBusManagementSerializerTest {
                 .setHref("https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions?api-version=2017-04&enrich=false&$skip=0&$top=100")
         );
 
-        final SubscriptionDescription subscription1 = new SubscriptionDescription("topic", "subscription-0")
-            .setLockDuration(Duration.ofSeconds(15))
-            .setDefaultMessageTimeToLive(Duration.ofMinutes(5))
-            .setMaxDeliveryCount(5)
-            .setAutoDeleteOnIdle(Duration.ofDays(1));
-        final SubscriptionDescription subscription2 = new SubscriptionDescription("topic", "subscription-session-0")
-            .setRequiresSession(true)
-            .setLockDuration(Duration.ofSeconds(15))
-            .setMaxDeliveryCount(5);
-        final SubscriptionDescription subscription3 = new SubscriptionDescription("topic", "subscription-session-1")
-            .setRequiresSession(true)
-            .setLockDuration(Duration.ofSeconds(15))
-            .setMaxDeliveryCount(5);
+        final String topicName = "topic";
+        final String subscriptionName1 = "subscription-0";
+        final String subscriptionName2 = "subscription-session-0";
+        final String subscriptionName3 = "subscription-session-1";
+
+        final SubscriptionDescription subscription1 = EntityHelper.getSubscriptionDescription(
+            new CreateSubscriptionOptions(topicName, subscriptionName1)
+                .setLockDuration(Duration.ofSeconds(15))
+                .setDefaultMessageTimeToLive(Duration.ofMinutes(5))
+                .setMaxDeliveryCount(5)
+                .setAutoDeleteOnIdle(Duration.ofDays(1)));
+        final SubscriptionDescription subscription2 = EntityHelper.getSubscriptionDescription(
+            new CreateSubscriptionOptions(topicName, subscriptionName2)
+                .setRequiresSession(true)
+                .setLockDuration(Duration.ofSeconds(15))
+                .setMaxDeliveryCount(5));
+        final SubscriptionDescription subscription3 = EntityHelper.getSubscriptionDescription(
+            new CreateSubscriptionOptions(topicName, subscriptionName3)
+                .setRequiresSession(true)
+                .setLockDuration(Duration.ofSeconds(15))
+                .setMaxDeliveryCount(5));
+        final List<SubscriptionDescription> expectedDescriptions = Arrays.asList(
+            subscription1, subscription2, subscription3);
 
         final SubscriptionDescriptionEntry entry1 = new SubscriptionDescriptionEntry()
             .setId("https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-0?api-version=2017-04")
-            .setTitle(getResponseTitle(subscription1.getSubscriptionName()))
+            .setTitle(getResponseTitle(subscriptionName1))
             .setPublished(OffsetDateTime.parse("2020-06-22T23:47:53Z"))
             .setUpdated(OffsetDateTime.parse("2020-06-23T23:47:53Z"))
             .setLink(new ResponseLink().setRel("self").setHref("Subscriptions/subscription-0?api-version=2017-04"))
@@ -395,7 +404,7 @@ class ServiceBusManagementSerializerTest {
                 .setSubscriptionDescription(subscription1));
         final SubscriptionDescriptionEntry entry2 = new SubscriptionDescriptionEntry()
             .setId("https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-session-0?api-version=2017-04")
-            .setTitle(getResponseTitle(subscription2.getSubscriptionName()))
+            .setTitle(getResponseTitle(subscriptionName2))
             .setPublished(OffsetDateTime.parse("2020-06-22T23:47:53Z"))
             .setUpdated(OffsetDateTime.parse("2020-05-22T23:47:53Z"))
             .setLink(new ResponseLink().setRel("self").setHref("Subscriptions/subscription-session-0?api-version=2017-04"))
@@ -404,7 +413,7 @@ class ServiceBusManagementSerializerTest {
                 .setSubscriptionDescription(subscription2));
         final SubscriptionDescriptionEntry entry3 = new SubscriptionDescriptionEntry()
             .setId("https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-session-1?api-version=2017-04")
-            .setTitle(getResponseTitle(subscription3.getSubscriptionName()))
+            .setTitle(getResponseTitle(subscriptionName3))
             .setPublished(OffsetDateTime.parse("2020-06-22T23:47:54Z"))
             .setUpdated(OffsetDateTime.parse("2020-04-22T23:47:54Z"))
             .setLink(new ResponseLink().setRel("self").setHref("Subscriptions/subscription-session-1?api-version=2017-04"))
@@ -459,7 +468,8 @@ class ServiceBusManagementSerializerTest {
             assertEquals(expectedEntry.getUpdated(), actualEntry.getUpdated());
             assertEquals(expectedEntry.getPublished(), actualEntry.getPublished());
 
-            assertSubscriptionEquals(expectedEntry.getContent().getSubscriptionDescription(), EntityStatus.ACTIVE,
+            final SubscriptionDescription expectedSubscription = expectedDescriptions.get(i);
+            assertSubscriptionEquals(expectedSubscription, EntityStatus.ACTIVE,
                 actualEntry.getContent().getSubscriptionDescription());
         }
     }
@@ -468,6 +478,7 @@ class ServiceBusManagementSerializerTest {
      * Given a file name, gets the corresponding resource and its contents as a string.
      *
      * @param fileName Name of file to fetch.
+     *
      * @return Contents of the file.
      */
     private String getContents(String fileName) {
@@ -486,19 +497,22 @@ class ServiceBusManagementSerializerTest {
         }
     }
 
-    private static void assertQueueEquals(QueueDescription expected, EntityStatus expectedStatus, QueueDescription actual) {
-        assertEquals(expected.getLockDuration(), actual.getLockDuration());
-        assertEquals(expected.getMaxSizeInMegabytes(), actual.getMaxSizeInMegabytes());
-        assertEquals(expected.requiresDuplicateDetection(), actual.requiresDuplicateDetection());
-        assertEquals(expected.requiresSession(), actual.requiresSession());
-        assertEquals(expected.getDefaultMessageTimeToLive(), actual.getDefaultMessageTimeToLive());
-        assertEquals(expected.deadLetteringOnMessageExpiration(), actual.deadLetteringOnMessageExpiration());
-        assertEquals(expected.getDuplicateDetectionHistoryTimeWindow(), actual.getDuplicateDetectionHistoryTimeWindow());
-        assertEquals(expected.getMaxDeliveryCount(), actual.getMaxDeliveryCount());
-        assertEquals(expected.enableBatchedOperations(), actual.enableBatchedOperations());
+    private static void assertQueueEquals(CreateQueueOptions expected, EntityStatus expectedStatus,
+        QueueDescription actual) {
 
         assertEquals(expected.getAutoDeleteOnIdle(), actual.getAutoDeleteOnIdle());
-        assertEquals(expected.enablePartitioning(), actual.enablePartitioning());
+        assertEquals(expected.getLockDuration(), actual.getLockDuration());
+        assertEquals(expected.getMaxSizeInMegabytes(), actual.getMaxSizeInMegabytes());
+        assertEquals(expected.requiresDuplicateDetection(), actual.isRequiresDuplicateDetection());
+        assertEquals(expected.requiresSession(), actual.isRequiresSession());
+        assertEquals(expected.getDefaultMessageTimeToLive(), actual.getDefaultMessageTimeToLive());
+        assertEquals(expected.deadLetteringOnMessageExpiration(), actual.isDeadLetteringOnMessageExpiration());
+        assertEquals(expected.getDuplicateDetectionHistoryTimeWindow(), actual.getDuplicateDetectionHistoryTimeWindow());
+        assertEquals(expected.getMaxDeliveryCount(), actual.getMaxDeliveryCount());
+        assertEquals(expected.enableBatchedOperations(), actual.isEnableBatchedOperations());
+
+        assertEquals(expected.getAutoDeleteOnIdle(), actual.getAutoDeleteOnIdle());
+        assertEquals(expected.enablePartitioning(), actual.isEnablePartitioning());
 
         assertEquals(expectedStatus, actual.getStatus());
     }
@@ -506,14 +520,15 @@ class ServiceBusManagementSerializerTest {
     private static void assertSubscriptionEquals(SubscriptionDescription expected, EntityStatus expectedStatus,
         SubscriptionDescription actual) {
 
+        assertEquals(expected.getAutoDeleteOnIdle(), actual.getAutoDeleteOnIdle());
         assertEquals(expected.getLockDuration(), actual.getLockDuration());
-        assertEquals(expected.enableDeadLetteringOnFilterEvaluationExceptions(),
-            actual.enableDeadLetteringOnFilterEvaluationExceptions());
-        assertEquals(expected.requiresSession(), actual.requiresSession());
+        assertEquals(expected.isDeadLetteringOnFilterEvaluationExceptions(),
+            actual.isDeadLetteringOnFilterEvaluationExceptions());
+        assertEquals(expected.isRequiresSession(), actual.isRequiresSession());
         assertEquals(expected.getDefaultMessageTimeToLive(), actual.getDefaultMessageTimeToLive());
-        assertEquals(expected.deadLetteringOnMessageExpiration(), actual.deadLetteringOnMessageExpiration());
+        assertEquals(expected.isDeadLetteringOnMessageExpiration(), actual.isDeadLetteringOnMessageExpiration());
         assertEquals(expected.getMaxDeliveryCount(), actual.getMaxDeliveryCount());
-        assertEquals(expected.enableBatchedOperations(), actual.enableBatchedOperations());
+        assertEquals(expected.isEnableBatchedOperations(), actual.isEnableBatchedOperations());
         assertEquals(expected.getAutoDeleteOnIdle(), actual.getAutoDeleteOnIdle());
 
         assertEquals(expectedStatus, actual.getStatus());

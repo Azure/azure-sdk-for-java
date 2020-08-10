@@ -202,7 +202,7 @@ public final class Utility {
         if (throwable instanceof ErrorResponseException) {
             ErrorResponseException errorResponseException = (ErrorResponseException) throwable;
             return new HttpResponseException(errorResponseException.getMessage(), errorResponseException.getResponse(),
-                new ErrorInformation().setCode(errorResponseException.getValue().getError().getCode()).setMessage(
+                new ErrorInformation(errorResponseException.getValue().getError().getCode(),
                     errorResponseException.getValue().getError().getMessage()));
         }
         return throwable;

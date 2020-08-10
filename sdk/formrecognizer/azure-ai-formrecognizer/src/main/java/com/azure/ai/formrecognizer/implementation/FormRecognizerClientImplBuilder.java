@@ -10,6 +10,8 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 
 /** A builder for creating a new instance of the FormRecognizerClient type. */
 @ServiceClientBuilder(serviceClients = {FormRecognizerClientImpl.class})
@@ -25,7 +27,7 @@ public final class FormRecognizerClientImplBuilder {
      * https://westus2.api.cognitive.microsoft.com).
      *
      * @param endpoint the endpoint value.
-     * @return the FormRecognizerClientBuilder.
+     * @return the FormRecognizerClientImplBuilder.
      */
     public FormRecognizerClientImplBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
@@ -41,10 +43,26 @@ public final class FormRecognizerClientImplBuilder {
      * Sets The HTTP pipeline to send requests through.
      *
      * @param pipeline the pipeline value.
-     * @return the FormRecognizerClientBuilder.
+     * @return the FormRecognizerClientImplBuilder.
      */
     public FormRecognizerClientImplBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
+        return this;
+    }
+
+    /*
+     * The serializer to serialize an object into a string
+     */
+    private SerializerAdapter serializerAdapter;
+
+    /**
+     * Sets The serializer to serialize an object into a string.
+     *
+     * @param serializerAdapter the serializerAdapter value.
+     * @return the FormRecognizerClientImplBuilder.
+     */
+    public FormRecognizerClientImplBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
+        this.serializerAdapter = serializerAdapter;
         return this;
     }
 
@@ -60,8 +78,10 @@ public final class FormRecognizerClientImplBuilder {
                             .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                             .build();
         }
-        FormRecognizerClientImpl client = new FormRecognizerClientImpl(pipeline);
-        client.setEndpoint(this.endpoint);
+        if (serializerAdapter == null) {
+            this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
+        }
+        FormRecognizerClientImpl client = new FormRecognizerClientImpl(pipeline, serializerAdapter, endpoint);
         return client;
     }
 }
