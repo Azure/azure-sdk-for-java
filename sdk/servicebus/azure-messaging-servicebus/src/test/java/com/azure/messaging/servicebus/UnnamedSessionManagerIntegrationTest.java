@@ -69,13 +69,13 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
         final String messageId = "singleUnnamedSession";
         final String sessionId = "singleUnnamedSession-" + Instant.now().toString();
         final String contents = "Some-contents";
-        final int numberToSend = 3;
+        final int numberToSend = 5;
         final List<String> lockTokens = new ArrayList<>();
 
         setSenderAndReceiver(entityType, entityIndex, TIMEOUT,
             builder -> builder.maxAutoLockRenewalDuration(Duration.ofMinutes(2)));
 
-        final Disposable subscription = Flux.interval(Duration.ofMillis(500 * 2 * 10))
+        final Disposable subscription = Flux.interval(Duration.ofMillis(500))
             .take(numberToSend)
             .flatMap(index -> {
                 final ServiceBusMessage message = getServiceBusMessage(contents, messageId)
@@ -96,7 +96,7 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
                 .assertNext(context -> assertMessageEquals(sessionId, messageId, contents, context))
                 .assertNext(context -> assertMessageEquals(sessionId, messageId, contents, context))
                 .thenCancel()
-                .verify(Duration.ofMinutes(3));
+                .verify(Duration.ofMinutes(2));
         } finally {
             subscription.dispose();
             Mono.when(lockTokens.stream().map(e -> receiver.complete(e, sessionId))
@@ -195,7 +195,6 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
         ServiceBusSessionReceiverClientBuilder sessionBuilder = getSessionReceiverBuilder(false,
             entityType, entityIndex,
             builder -> builder.retryOptions(new AmqpRetryOptions().setTryTimeout(operationTimeout)), false);
-        sessionBuilder.maxConcurrentSessions(1);
         this.receiver = onBuild.apply(sessionBuilder).buildAsyncClient();
     }
 
@@ -206,10 +205,10 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
         assertNotNull(message, "'message' should not be null. Error? " + actual.getThrowable());
 
         if (!CoreUtils.isNullOrEmpty(sessionId)) {
-            //assertEquals(sessionId, message.getSessionId());
+            assertEquals(sessionId, message.getSessionId());
         }
 
-        //assertEquals(messageId, message.getMessageId());
+        assertEquals(messageId, message.getMessageId());
         assertEquals(contents, new String(message.getBody(), StandardCharsets.UTF_8));
 
         assertNull(actual.getThrowable());

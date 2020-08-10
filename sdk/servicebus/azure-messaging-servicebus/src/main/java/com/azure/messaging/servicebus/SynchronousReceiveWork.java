@@ -6,10 +6,8 @@ package com.azure.messaging.servicebus;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.Disposable;
 import reactor.core.publisher.DirectProcessor;
-import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
-import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -18,7 +16,10 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Synchronous work for receiving messages.
  */
 class SynchronousReceiveWork implements AutoCloseable{
-    private static final Duration SHORT_TIMEOUT_BETWEEN_MESSAGES = Duration.ofMillis(100);
+
+    /*This is timeout between messages. When we have received at-least one message and next message does not arrive in
+    this time, the work to complete.*/
+    private static final Duration SHORT_TIMEOUT_BETWEEN_MESSAGES = Duration.ofMillis(1000);
 
     private final ClientLogger logger = new ClientLogger(SynchronousReceiveWork.class);
     private final long id;
@@ -32,16 +33,14 @@ class SynchronousReceiveWork implements AutoCloseable{
 
     // Indicate state that timeout has occurred for this work because next message has not arrived in pre defined time.
     private boolean nextMessageTimedOut = false;
+    private Disposable nextMessageSubscriber;
 
     // Indicate that if processing started or not.
     private boolean processingStarted;
 
-    private Disposable nextMessageSubscriber;
-
     private volatile Throwable error = null;
 
-    private final DirectProcessor<ServiceBusReceivedMessageContext> messageReceivedEmitter = DirectProcessor.create();
-    private final FluxSink<ServiceBusReceivedMessageContext> messageReceivedSink = messageReceivedEmitter.sink(FluxSink.OverflowStrategy.BUFFER);
+    private final FluxSink<ServiceBusReceivedMessageContext> messageReceivedSink;
 
     /**
      * Creates a new synchronous receive work.
@@ -58,19 +57,17 @@ class SynchronousReceiveWork implements AutoCloseable{
         this.numberToReceive = numberToReceive;
         this.timeout = timeout;
         this.emitter = emitter;
-        
-        nextMessageSubscriber = Flux.switchOnNext(messageReceivedEmitter
-            .map(messageContext -> {
-                emitter.next(messageContext);
-                remaining.decrementAndGet();
-                return Mono.delay(SHORT_TIMEOUT_BETWEEN_MESSAGES);
-            })
-            //.flatMap(lockToken -> Mono.delay(SHORT_TIMEOUT_BETWEEN_MESSAGES))
-            .handle((l, sink) -> {
+
+        DirectProcessor<ServiceBusReceivedMessageContext> directProcessor = DirectProcessor.create();
+        messageReceivedSink = directProcessor.sink();
+
+        nextMessageSubscriber = Flux.switchOnNext(directProcessor.map(messageContext ->
+            Flux.interval(SHORT_TIMEOUT_BETWEEN_MESSAGES)))
+            .handle((delay, sink) -> {
+                sink.next(delay);
                 emitter.complete();
-                sink.complete();
-            }))
-            .subscribe();
+            })
+        .subscribe();
     }
 
     /**
@@ -123,14 +120,9 @@ class SynchronousReceiveWork implements AutoCloseable{
      * @param messageContext Event to publish downstream.
      */
     void next(ServiceBusReceivedMessageContext messageContext) {
-        try {
-            logger.verbose("!!!!  received SQ " + messageContext.getMessage().getSequenceNumber());
-            messageReceivedSink.next(messageContext);
-
-        } catch (Exception e) {
-            logger.warning("Exception occurred while publishing downstream.", e);
-            error(e);
-        }
+        emitter.next(messageContext);
+        messageReceivedSink.next(messageContext);
+        remaining.decrementAndGet();
     }
 
     /**
@@ -191,15 +183,5 @@ class SynchronousReceiveWork implements AutoCloseable{
         if (nextMessageSubscriber != null && !nextMessageSubscriber.isDisposed()) {
             nextMessageSubscriber.dispose();
         }
-    }
-
-    /**
-     * Completes the publisher and sets the state to timeout.
-     */
-    private void timeoutNextMessage() {
-        logger.info("[{}]: Work timeout occurred due to next message not arriving in time. Completing the work.", id);
-        emitter.complete();
-        nextMessageTimedOut = true;
-        close();
     }
 }
