@@ -5,82 +5,48 @@
 package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The RedisUpdateParameters model. */
-@JsonFlatten
+/** The RedisCommonProperties model. */
 @Fluent
-public class RedisUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RedisUpdateParameters.class);
-
-    /*
-     * Resource tags.
-     */
-    @JsonProperty(value = "tags")
-    private Map<String, String> tags;
+public class RedisCommonProperties {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RedisCommonProperties.class);
 
     /*
      * All Redis Settings. Few possible keys:
      * rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value
      * etc.
      */
-    @JsonProperty(value = "properties.redisConfiguration")
+    @JsonProperty(value = "redisConfiguration")
     private Map<String, String> redisConfiguration;
 
     /*
      * Specifies whether the non-ssl Redis server port (6379) is enabled.
      */
-    @JsonProperty(value = "properties.enableNonSslPort")
+    @JsonProperty(value = "enableNonSslPort")
     private Boolean enableNonSslPort;
 
     /*
      * A dictionary of tenant settings
      */
-    @JsonProperty(value = "properties.tenantSettings")
+    @JsonProperty(value = "tenantSettings")
     private Map<String, String> tenantSettings;
 
     /*
      * The number of shards to be created on a Premium Cluster Cache.
      */
-    @JsonProperty(value = "properties.shardCount")
+    @JsonProperty(value = "shardCount")
     private Integer shardCount;
 
     /*
      * Optional: requires clients to use a specified TLS version (or higher) to
      * connect (e,g, '1.0', '1.1', '1.2')
      */
-    @JsonProperty(value = "properties.minimumTlsVersion")
+    @JsonProperty(value = "minimumTlsVersion")
     private TlsVersion minimumTlsVersion;
-
-    /*
-     * The SKU of the Redis cache to deploy.
-     */
-    @JsonProperty(value = "properties.sku")
-    private Sku sku;
-
-    /**
-     * Get the tags property: Resource tags.
-     *
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: Resource tags.
-     *
-     * @param tags the tags value to set.
-     * @return the RedisUpdateParameters object itself.
-     */
-    public RedisUpdateParameters withTags(Map<String, String> tags) {
-        this.tags = tags;
-        return this;
-    }
 
     /**
      * Get the redisConfiguration property: All Redis Settings. Few possible keys:
@@ -99,9 +65,9 @@ public class RedisUpdateParameters {
      * etc.
      *
      * @param redisConfiguration the redisConfiguration value to set.
-     * @return the RedisUpdateParameters object itself.
+     * @return the RedisCommonProperties object itself.
      */
-    public RedisUpdateParameters withRedisConfiguration(Map<String, String> redisConfiguration) {
+    public RedisCommonProperties withRedisConfiguration(Map<String, String> redisConfiguration) {
         this.redisConfiguration = redisConfiguration;
         return this;
     }
@@ -119,9 +85,9 @@ public class RedisUpdateParameters {
      * Set the enableNonSslPort property: Specifies whether the non-ssl Redis server port (6379) is enabled.
      *
      * @param enableNonSslPort the enableNonSslPort value to set.
-     * @return the RedisUpdateParameters object itself.
+     * @return the RedisCommonProperties object itself.
      */
-    public RedisUpdateParameters withEnableNonSslPort(Boolean enableNonSslPort) {
+    public RedisCommonProperties withEnableNonSslPort(Boolean enableNonSslPort) {
         this.enableNonSslPort = enableNonSslPort;
         return this;
     }
@@ -139,9 +105,9 @@ public class RedisUpdateParameters {
      * Set the tenantSettings property: A dictionary of tenant settings.
      *
      * @param tenantSettings the tenantSettings value to set.
-     * @return the RedisUpdateParameters object itself.
+     * @return the RedisCommonProperties object itself.
      */
-    public RedisUpdateParameters withTenantSettings(Map<String, String> tenantSettings) {
+    public RedisCommonProperties withTenantSettings(Map<String, String> tenantSettings) {
         this.tenantSettings = tenantSettings;
         return this;
     }
@@ -159,9 +125,9 @@ public class RedisUpdateParameters {
      * Set the shardCount property: The number of shards to be created on a Premium Cluster Cache.
      *
      * @param shardCount the shardCount value to set.
-     * @return the RedisUpdateParameters object itself.
+     * @return the RedisCommonProperties object itself.
      */
-    public RedisUpdateParameters withShardCount(Integer shardCount) {
+    public RedisCommonProperties withShardCount(Integer shardCount) {
         this.shardCount = shardCount;
         return this;
     }
@@ -181,30 +147,10 @@ public class RedisUpdateParameters {
      * connect (e,g, '1.0', '1.1', '1.2').
      *
      * @param minimumTlsVersion the minimumTlsVersion value to set.
-     * @return the RedisUpdateParameters object itself.
+     * @return the RedisCommonProperties object itself.
      */
-    public RedisUpdateParameters withMinimumTlsVersion(TlsVersion minimumTlsVersion) {
+    public RedisCommonProperties withMinimumTlsVersion(TlsVersion minimumTlsVersion) {
         this.minimumTlsVersion = minimumTlsVersion;
-        return this;
-    }
-
-    /**
-     * Get the sku property: The SKU of the Redis cache to deploy.
-     *
-     * @return the sku value.
-     */
-    public Sku sku() {
-        return this.sku;
-    }
-
-    /**
-     * Set the sku property: The SKU of the Redis cache to deploy.
-     *
-     * @param sku the sku value to set.
-     * @return the RedisUpdateParameters object itself.
-     */
-    public RedisUpdateParameters withSku(Sku sku) {
-        this.sku = sku;
         return this;
     }
 
@@ -214,8 +160,5 @@ public class RedisUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (sku() != null) {
-            sku().validate();
-        }
     }
 }

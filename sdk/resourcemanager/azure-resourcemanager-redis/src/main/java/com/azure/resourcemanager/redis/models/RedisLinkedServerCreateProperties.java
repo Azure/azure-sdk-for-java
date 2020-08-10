@@ -5,33 +5,31 @@
 package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The RedisLinkedServerCreateParameters model. */
-@JsonFlatten
+/** The RedisLinkedServerCreateProperties model. */
 @Fluent
-public class RedisLinkedServerCreateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RedisLinkedServerCreateParameters.class);
+public class RedisLinkedServerCreateProperties {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RedisLinkedServerCreateProperties.class);
 
     /*
      * Fully qualified resourceId of the linked redis cache.
      */
-    @JsonProperty(value = "properties.linkedRedisCacheId", required = true)
+    @JsonProperty(value = "linkedRedisCacheId", required = true)
     private String linkedRedisCacheId;
 
     /*
      * Location of the linked redis cache.
      */
-    @JsonProperty(value = "properties.linkedRedisCacheLocation", required = true)
+    @JsonProperty(value = "linkedRedisCacheLocation", required = true)
     private String linkedRedisCacheLocation;
 
     /*
      * Role of the linked server.
      */
-    @JsonProperty(value = "properties.serverRole", required = true)
+    @JsonProperty(value = "serverRole", required = true)
     private ReplicationRole serverRole;
 
     /**
@@ -47,9 +45,9 @@ public class RedisLinkedServerCreateParameters {
      * Set the linkedRedisCacheId property: Fully qualified resourceId of the linked redis cache.
      *
      * @param linkedRedisCacheId the linkedRedisCacheId value to set.
-     * @return the RedisLinkedServerCreateParameters object itself.
+     * @return the RedisLinkedServerCreateProperties object itself.
      */
-    public RedisLinkedServerCreateParameters withLinkedRedisCacheId(String linkedRedisCacheId) {
+    public RedisLinkedServerCreateProperties withLinkedRedisCacheId(String linkedRedisCacheId) {
         this.linkedRedisCacheId = linkedRedisCacheId;
         return this;
     }
@@ -67,9 +65,9 @@ public class RedisLinkedServerCreateParameters {
      * Set the linkedRedisCacheLocation property: Location of the linked redis cache.
      *
      * @param linkedRedisCacheLocation the linkedRedisCacheLocation value to set.
-     * @return the RedisLinkedServerCreateParameters object itself.
+     * @return the RedisLinkedServerCreateProperties object itself.
      */
-    public RedisLinkedServerCreateParameters withLinkedRedisCacheLocation(String linkedRedisCacheLocation) {
+    public RedisLinkedServerCreateProperties withLinkedRedisCacheLocation(String linkedRedisCacheLocation) {
         this.linkedRedisCacheLocation = linkedRedisCacheLocation;
         return this;
     }
@@ -87,9 +85,9 @@ public class RedisLinkedServerCreateParameters {
      * Set the serverRole property: Role of the linked server.
      *
      * @param serverRole the serverRole value to set.
-     * @return the RedisLinkedServerCreateParameters object itself.
+     * @return the RedisLinkedServerCreateProperties object itself.
      */
-    public RedisLinkedServerCreateParameters withServerRole(ReplicationRole serverRole) {
+    public RedisLinkedServerCreateProperties withServerRole(ReplicationRole serverRole) {
         this.serverRole = serverRole;
         return this;
     }
@@ -104,20 +102,20 @@ public class RedisLinkedServerCreateParameters {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property linkedRedisCacheId in model RedisLinkedServerCreateParameters"));
+                        "Missing required property linkedRedisCacheId in model RedisLinkedServerCreateProperties"));
         }
         if (linkedRedisCacheLocation() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property linkedRedisCacheLocation in model"
-                            + " RedisLinkedServerCreateParameters"));
+                            + " RedisLinkedServerCreateProperties"));
         }
         if (serverRole() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property serverRole in model RedisLinkedServerCreateParameters"));
+                        "Missing required property serverRole in model RedisLinkedServerCreateProperties"));
         }
     }
 }
