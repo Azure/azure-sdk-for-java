@@ -119,6 +119,7 @@ org.springframework:spring-tx;5.2.6.RELEASE
 org.springframework:spring-web;5.2.6.RELEASE
 org.springframework:spring-webmvc;5.2.6.RELEASE
 
+org.springframework.cloud:spring-cloud-dependencies;Hoxton.SR7
 org.springframework.cloud:spring-cloud-bus;2.2.0.RELEASE
 org.springframework.cloud:spring-cloud-context;2.2.0.RELEASE
 
