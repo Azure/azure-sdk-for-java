@@ -1,0 +1,3 @@
+# Bootstrap Configuration
+org.springframework.cloud.bootstrap.BootstrapConfiguration=\
+com.microsoft.azure.spring.cloud.keyvault.config.KeyVaultConfigBootstrapConfiguration

@@ -102,7 +102,6 @@ public class DnsZoneRecordSetETagTests extends TestBase {
                 .zones()
                 .define(topLevelDomain)
                 .withNewResourceGroup(rgName, region)
-                .withPrivateAccess()
                 .defineARecordSet("www")
                 .withIPv4Address("23.96.104.40")
                 .withIPv4Address("24.97.105.41")
@@ -153,7 +152,7 @@ public class DnsZoneRecordSetETagTests extends TestBase {
         Assertions.assertEquals(4, (long) caaRecordSet1.records().get(0).flags());
         Assertions.assertTrue(caaRecordSet1.fqdn().startsWith("caaname.www.contoso"));
 
-        Assertions.assertEquals(ZoneType.PRIVATE, dnsZone.accessType());
+        Assertions.assertEquals(ZoneType.PUBLIC, dnsZone.accessType());
 
         Exception compositeException = null;
         try {
@@ -161,7 +160,6 @@ public class DnsZoneRecordSetETagTests extends TestBase {
                 .zones()
                 .define(topLevelDomain)
                 .withNewResourceGroup(rgName, region)
-                .withPrivateAccess()
                 .defineARecordSet("www")
                 .withIPv4Address("23.96.104.40")
                 .withIPv4Address("24.97.105.41")
