@@ -36,7 +36,7 @@ def get_spring_boot_version():
     Lines = file1.readlines()
     count = 0
     for line in Lines:
-        if line.startswith('org.springframework.boot:spring-boot;'):
+        if line.startswith('org.springframework.boot:spring-boot-dependencies;'):
             return line.split(';', 1)[1].strip()
     raise Exception("Can not get spring boot version.")
 

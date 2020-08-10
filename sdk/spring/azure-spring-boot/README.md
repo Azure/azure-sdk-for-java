@@ -1,7 +1,15 @@
 # Azure Spring Boot client library for Java
 This repo is for Spring Boot Starters of Azure services. It helps Spring Boot developers to adopt Azure services.
 
+[Source code][src] | [Package (Maven)][package] | [API reference documentation][refdocs] | [Product documentation][docs] | [Samples][sample]
+
 ## Getting started
+
+### Prerequisites
+- JDK 1.8 and above
+- [Maven](http://maven.apache.org/) 3.0 and above
+
+### Include the Package
 To start a new project using Azure, go on [start.spring.io](https://start.spring.io) and select "Azure
 Support": this will configure the project to make sure you can integrate easily with Azure service.
 
@@ -10,7 +18,7 @@ dependency to your project and the Spring Boot auto-configuration will kick-in:
 
 ```xml
 <dependency>
-  <groupId>com.azure</groupId>
+  <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-security-keyvault-secrets</artifactId>
 </dependency>
 ```
@@ -19,12 +27,12 @@ Note that there is no need to add a `version` as those are managed already by th
 
 Alternatively you may want to use the [starters](../azure-spring-boot-starters)
 
-[//]: # ({x-version-update-start;com.microsoft.azure:azure-keyvault-secrets-spring-boot-starter;dependency})
+[//]: # ({x-version-update-start;com.microsoft.azure:azure-keyvault-secrets-spring-boot-starter;current})
 ```xml
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-keyvault-secrets-spring-boot-starter</artifactId>
-    <version>2.3.3-beta.1</version>
+    <version>2.3.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -36,7 +44,7 @@ This project provides auto-configuration for the following Azure services:
 - [Azure Active Directory B2C](../azure-spring-boot-starter-active-directory-b2c)
 - [Cosmos DB SQL API](../azure-spring-boot-starter-cosmosdb)
 - [Gremlin SQL API](../azure-spring-boot-starter-data-gremlin)
-- [Key Vault](../azure-spring-boot-starter-keyvault-secrets)
+- [Key Vault Secrets](../azure-spring-boot-starter-keyvault-secrets)
 - [Metrics Service](../azure-spring-boot-starter-metrics)
 - [JMS Service Bus](../azure-spring-boot-starter-servicebus-jms)
 
@@ -47,24 +55,37 @@ variable and setting the appropriate properties used by auto-configuration code.
 For details, please see sample code in the [azure-spring-boot-sample-cloud-foundry](../azure-spring-boot-samples/azure-spring-boot-sample-cloud-foundry) 
 
 ## Examples
-Please refer to the [samples](../azure-spring-boot-samples) for more getting started instructions.
 
 ## Troubleshooting
-If you encounter any bug, please file an issue [here](https://github.com/Azure/azure-sdk-for-java/issues).
+### Enable client logging
+Azure SDKs for Java offer a consistent logging story to help aid in troubleshooting application errors and expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
 
-To suggest a new feature or changes that could be made, file an issue the same way you would for a bug.
+### Enable Spring logging
+Spring allow all the supported logging systems to set logger levels set in the Spring Environment (for example, in application.properties) by using `logging.level.<logger-name>=<level>` where level is one of TRACE, DEBUG, INFO, WARN, ERROR, FATAL, or OFF. The root logger can be configured by using logging.level.root.
 
-You can participate community driven [![Gitter](https://badges.gitter.im/Microsoft/spring-on-azure.svg)](https://gitter.im/Microsoft/spring-on-azure)
+The following example shows potential logging settings in `application.properties`:
+
+```properties
+logging.level.root=WARN
+logging.level.org.springframework.web=DEBUG
+logging.level.org.hibernate=ERROR
+```
+
+For more information about setting loging in pring, please refer to the [official doc](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging).
+ 
 
 ## Next steps
-Microsoft would like to collect data about how users use this Spring boot starter.
-Microsoft uses this information to improve our tooling experience. Participation is voluntary.
-If you don't want to participate, just simply disable it by setting below configuration in `application.properties`.
-```properties
-azure.activedirectory.allow-telemetry=false
-```
-When telemetry is enabled, an HTTP request will be sent to URL `https://dc.services.visualstudio.com/v2/track`. So please make sure it's not blocked by your firewall.  
-Find more information about Azure Service Privacy Statement, please check [Microsoft Online Services Privacy Statement](https://www.microsoft.com/privacystatement/OnlineServices/Default.aspx). 
+The following section provides sample projects illustrating how to use the Azure Spring Boot starters.
+### More sample code
+- [Azure Active Directory for Frontend](../azure-spring-boot-samples/azure-spring-boot-sample-active-directory)
+- [Azure Active Directory for Backend](../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-backend)
+- [Azure Active Directory for Backend with Microsoft Graph API](../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-backend-v2)
+- [Azure Active Directory B2C](../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-oidc)
+- [Cosmos DB SQL API](../azure-spring-boot-samples/azure-spring-boot-sample-cosmosdb)
+- [Gremlin SQL API](../azure-spring-boot-samples/azure-spring-boot-sample-data-gremlin)
+- [Key Vault](../azure-spring-boot-samples/azure-spring-boot-sample-keyvault-secrets)
+- [JMS Service Bus Queue](../azure-spring-boot-samples/azure-spring-boot-sample-servicebus-jms-queue)
+- [JMS Service Bus Topic](../azure-spring-boot-samples/azure-spring-boot-sample-servicebus-jms-topic)
 
 ## Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
@@ -77,4 +98,10 @@ To suggest a new feature or changes that could be made, file an issue the same w
 
 You can participate community driven [![Gitter](https://badges.gitter.im/Microsoft/spring-on-azure.svg)](https://gitter.im/Microsoft/spring-on-azure)
 
-
+<!-- LINKS -->
+[src]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot/src
+[docs]: https://docs.microsoft.com/azure/developer/java/spring-framework/spring-boot-starters-for-azure
+[refdocs]: https://azure.github.io/azure-sdk-for-java/spring.html#azure-spring-boot
+[package]: https://mvnrepository.com/artifact/com.microsoft.azure/azure-spring-boot
+[sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application

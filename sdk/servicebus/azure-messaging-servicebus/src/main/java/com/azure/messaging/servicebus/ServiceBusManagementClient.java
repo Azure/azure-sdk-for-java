@@ -15,12 +15,14 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.messaging.servicebus.models.CreateQueueOptions;
+import com.azure.messaging.servicebus.models.CreateSubscriptionOptions;
+import com.azure.messaging.servicebus.models.CreateTopicOptions;
 import com.azure.messaging.servicebus.models.NamespaceProperties;
 import com.azure.messaging.servicebus.models.QueueProperties;
 import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
-import com.azure.messaging.servicebus.models.SubscriptionDescription;
+import com.azure.messaging.servicebus.models.SubscriptionProperties;
 import com.azure.messaging.servicebus.models.SubscriptionRuntimeInfo;
-import com.azure.messaging.servicebus.models.TopicDescription;
+import com.azure.messaging.servicebus.models.TopicProperties;
 import com.azure.messaging.servicebus.models.TopicRuntimeInfo;
 import reactor.core.publisher.Mono;
 
@@ -124,12 +126,12 @@ public final class ServiceBusManagementClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SubscriptionDescription createSubscription(String topicName, String subscriptionName) {
+    public SubscriptionProperties createSubscription(String topicName, String subscriptionName) {
         return asyncClient.createSubscription(topicName, subscriptionName).block();
     }
 
     /**
-     * Creates a subscription with the {@link SubscriptionDescription}.
+     * Creates a subscription with the {@link SubscriptionProperties}.
      *
      * @param subscription Information about the subscription to create.
      *
@@ -143,7 +145,7 @@ public final class ServiceBusManagementClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SubscriptionDescription createSubscription(SubscriptionDescription subscription) {
+    public SubscriptionProperties createSubscription(CreateSubscriptionOptions subscription) {
         return asyncClient.createSubscription(subscription).block();
     }
 
@@ -163,7 +165,7 @@ public final class ServiceBusManagementClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SubscriptionDescription> createSubscriptionWithResponse(SubscriptionDescription subscription,
+    public Response<SubscriptionProperties> createSubscriptionWithResponse(CreateSubscriptionOptions subscription,
         Context context) {
         return asyncClient.createSubscriptionWithResponse(subscription, context != null ? context : Context.NONE)
             .block();
@@ -185,34 +187,34 @@ public final class ServiceBusManagementClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TopicDescription createTopic(String topicName) {
+    public TopicProperties createTopic(String topicName) {
         return asyncClient.createTopic(topicName).block();
     }
 
     /**
-     * Creates a topic with the {@link TopicDescription}.
+     * Creates a topic with the {@link TopicProperties}.
      *
-     * @param topic Information about the topic to create.
+     * @param topicOptions Information about the topic to create.
      *
      * @return Information about the created topic.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
-     * @throws HttpResponseException If the request body was invalid, the topic quota is exceeded, or an error
-     *     occurred processing the request.
-     * @throws NullPointerException if {@code topic} is null.
-     * @throws ResourceExistsException if a topic exists with the same {@link TopicDescription#getName()
+     * @throws HttpResponseException If the request body was invalid, the topicOptions quota is exceeded, or an
+     *     error occurred processing the request.
+     * @throws NullPointerException if {@code topicOptions} is null.
+     * @throws ResourceExistsException if a topic exists with the same {@link CreateTopicOptions#getName()
      *     topicName}.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TopicDescription createTopic(TopicDescription topic) {
-        return asyncClient.createTopic(topic).block();
+    public TopicProperties createTopic(CreateTopicOptions topicOptions) {
+        return asyncClient.createTopic(topicOptions).block();
     }
 
     /**
      * Creates a topic and returns the created topic in addition to the HTTP response.
      *
-     * @param topic The topic to create.
+     * @param topicOptions The topic to create.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return The created topic in addition to the HTTP response.
@@ -220,16 +222,16 @@ public final class ServiceBusManagementClient {
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the topic quota is exceeded, or an error
      *     occurred processing the request.
-     * @throws IllegalArgumentException if {@link TopicDescription#getName() topic.getName()} is null or an empty
-     *     string.
+     * @throws IllegalArgumentException if {@link CreateTopicOptions#getName() topicOptions.getName()} is null or an
+     *     empty string.
      * @throws NullPointerException if {@code topic} is null.
-     * @throws ResourceExistsException if a topic exists with the same {@link TopicDescription#getName()
-     *     topicName}.
+     * @throws ResourceExistsException if a topic exists with the same {@link CreateTopicOptions#getName() topic
+     *     name}.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TopicDescription> createTopicWithResponse(TopicDescription topic, Context context) {
-        return asyncClient.createTopicWithResponse(topic, context != null ? context : Context.NONE).block();
+    public Response<TopicProperties> createTopicWithResponse(CreateTopicOptions topicOptions, Context context) {
+        return asyncClient.createTopicWithResponse(topicOptions, context != null ? context : Context.NONE).block();
     }
 
     /**
@@ -510,7 +512,7 @@ public final class ServiceBusManagementClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SubscriptionDescription getSubscription(String topicName, String subscriptionName) {
+    public SubscriptionProperties getSubscription(String topicName, String subscriptionName) {
         return asyncClient.getSubscription(topicName, subscriptionName).block();
     }
 
@@ -531,7 +533,7 @@ public final class ServiceBusManagementClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SubscriptionDescription> getSubscriptionWithResponse(String topicName,
+    public Response<SubscriptionProperties> getSubscriptionWithResponse(String topicName,
         String subscriptionName, Context context) {
         return asyncClient.getSubscriptionWithResponse(topicName, subscriptionName,
             context != null ? context : Context.NONE, Function.identity()).block();
@@ -573,7 +575,7 @@ public final class ServiceBusManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> getSubscriptionExistsWithResponse(String topicName, String subscriptionName,
         Context context) {
-        final Mono<Response<SubscriptionDescription>> subscriptionWithResponse =
+        final Mono<Response<SubscriptionProperties>> subscriptionWithResponse =
             asyncClient.getSubscriptionWithResponse(topicName, subscriptionName,
                 context != null ? context : Context.NONE, Function.identity());
         return asyncClient.getEntityExistsWithResponse(subscriptionWithResponse).block();
@@ -637,7 +639,7 @@ public final class ServiceBusManagementClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TopicDescription getTopic(String topicName) {
+    public TopicProperties getTopic(String topicName) {
         return asyncClient.getTopic(topicName).block();
     }
 
@@ -657,7 +659,7 @@ public final class ServiceBusManagementClient {
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TopicDescription> getTopicWithResponse(String topicName, Context context) {
+    public Response<TopicProperties> getTopicWithResponse(String topicName, Context context) {
         return asyncClient.getTopicWithResponse(topicName, context != null ? context : Context.NONE,
             Function.identity()).block();
     }
@@ -695,7 +697,7 @@ public final class ServiceBusManagementClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> getTopicExistsWithResponse(String topicName, Context context) {
-        final Mono<Response<TopicDescription>> topicWithResponse =
+        final Mono<Response<TopicProperties>> topicWithResponse =
             asyncClient.getTopicWithResponse(topicName, context != null ? context : Context.NONE, Function.identity());
         return asyncClient.getEntityExistsWithResponse(topicWithResponse).block();
     }
@@ -780,7 +782,7 @@ public final class ServiceBusManagementClient {
      *
      * @param topicName The topic name under which all the subscriptions need to be retrieved.
      *
-     * @return A paged iterable of {@link SubscriptionDescription subscriptions} for the {@code topicName}.
+     * @return A paged iterable of {@link SubscriptionProperties subscriptions} for the {@code topicName}.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws NullPointerException if {@code topicName} is null.
@@ -789,7 +791,7 @@ public final class ServiceBusManagementClient {
      *     authorization rules</a>
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SubscriptionDescription> listSubscriptions(String topicName) {
+    public PagedIterable<SubscriptionProperties> listSubscriptions(String topicName) {
         return new PagedIterable<>(asyncClient.listSubscriptions(topicName));
     }
 
@@ -799,7 +801,7 @@ public final class ServiceBusManagementClient {
      * @param topicName The topic name under which all the subscriptions need to be retrieved.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
-     * @return A paged iterable of {@link SubscriptionDescription subscriptions} for the {@code topicName}.
+     * @return A paged iterable of {@link SubscriptionProperties subscriptions} for the {@code topicName}.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @throws NullPointerException if {@code topicName} is null.
@@ -808,8 +810,8 @@ public final class ServiceBusManagementClient {
      *     authorization rules</a>
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SubscriptionDescription> listSubscriptions(String topicName, Context context) {
-        final PagedFlux<SubscriptionDescription> pagedFlux = new PagedFlux<>(
+    public PagedIterable<SubscriptionProperties> listSubscriptions(String topicName, Context context) {
+        final PagedFlux<SubscriptionProperties> pagedFlux = new PagedFlux<>(
             () -> asyncClient.listSubscriptionsFirstPage(topicName, context != null ? context : Context.NONE),
             continuationToken -> asyncClient.listSubscriptionsNextPage(topicName, continuationToken,
                 context != null ? context : Context.NONE));
@@ -820,14 +822,14 @@ public final class ServiceBusManagementClient {
     /**
      * Fetches all the topics in the Service Bus namespace.
      *
-     * @return A paged iterable of {@link TopicDescription topics} in the Service Bus namespace.
+     * @return A paged iterable of {@link TopicProperties topics} in the Service Bus namespace.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/enumeration">List entities, subscriptions, or
      *     authorization rules</a>
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TopicDescription> listTopics() {
+    public PagedIterable<TopicProperties> listTopics() {
         return new PagedIterable<>(asyncClient.listTopics());
     }
 
@@ -836,15 +838,15 @@ public final class ServiceBusManagementClient {
      *
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
-     * @return A paged iterable of {@link TopicDescription topics} in the Service Bus namespace.
+     * @return A paged iterable of {@link TopicProperties topics} in the Service Bus namespace.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/enumeration">List entities, subscriptions, or
      *     authorization rules</a>
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TopicDescription> listTopics(Context context) {
-        final PagedFlux<TopicDescription> pagedFlux = new PagedFlux<>(
+    public PagedIterable<TopicProperties> listTopics(Context context) {
+        final PagedFlux<TopicProperties> pagedFlux = new PagedFlux<>(
             () -> asyncClient.listTopicsFirstPage(context),
             continuationToken -> asyncClient.listTopicsNextPage(continuationToken,
                 context != null ? context : Context.NONE));
@@ -930,7 +932,7 @@ public final class ServiceBusManagementClient {
     }
 
     /**
-     * Updates a subscription with the given {@link SubscriptionDescription}. The {@link SubscriptionDescription} must
+     * Updates a subscription with the given {@link SubscriptionProperties}. The {@link SubscriptionProperties} must
      * be fully populated as all of the properties are replaced. If a property is not set the service default value is
      * used.
      *
@@ -944,9 +946,9 @@ public final class ServiceBusManagementClient {
      * <p>
      * There are a subset of properties that can be updated. More information can be found in the links below. They are:
      * <ul>
-     * <li>{@link SubscriptionDescription#setDefaultMessageTimeToLive(Duration) DefaultMessageTimeToLive}</li>
-     * <li>{@link SubscriptionDescription#setLockDuration(Duration) LockDuration}</li>
-     * <li>{@link SubscriptionDescription#setMaxDeliveryCount(Integer) MaxDeliveryCount}</li>
+     * <li>{@link SubscriptionProperties#setDefaultMessageTimeToLive(Duration) DefaultMessageTimeToLive}</li>
+     * <li>{@link SubscriptionProperties#setLockDuration(Duration) LockDuration}</li>
+     * <li>{@link SubscriptionProperties#setMaxDeliveryCount(int) MaxDeliveryCount}</li>
      * </ul>
      *
      * @param subscription Information about the subscription to update. You must provide all the property values
@@ -957,18 +959,18 @@ public final class ServiceBusManagementClient {
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the subscription quota is exceeded, or an
      *     error occurred processing the request.
-     * @throws IllegalArgumentException if {@link SubscriptionDescription#getTopicName()} or {@link
-     *     SubscriptionDescription#getSubscriptionName()} is null or an empty string.
+     * @throws IllegalArgumentException if {@link SubscriptionProperties#getTopicName()} or {@link
+     *     SubscriptionProperties#getSubscriptionName()} is null or an empty string.
      * @throws NullPointerException if {@code subscription} is null.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SubscriptionDescription updateSubscription(SubscriptionDescription subscription) {
+    public SubscriptionProperties updateSubscription(SubscriptionProperties subscription) {
         return asyncClient.updateSubscription(subscription).block();
     }
 
     /**
-     * Updates a subscription with the given {@link SubscriptionDescription}. The {@link SubscriptionDescription} must
+     * Updates a subscription with the given {@link SubscriptionProperties}. The {@link SubscriptionProperties} must
      * be fully populated as all of the properties are replaced. If a property is not set the service default value is
      * used.
      *
@@ -982,9 +984,9 @@ public final class ServiceBusManagementClient {
      * <p>
      * There are a subset of properties that can be updated. More information can be found in the links below. They are:
      * <ul>
-     * <li>{@link SubscriptionDescription#setDefaultMessageTimeToLive(Duration) DefaultMessageTimeToLive}</li>
-     * <li>{@link SubscriptionDescription#setLockDuration(Duration) LockDuration}</li>
-     * <li>{@link SubscriptionDescription#setMaxDeliveryCount(Integer) MaxDeliveryCount}</li>
+     * <li>{@link SubscriptionProperties#setDefaultMessageTimeToLive(Duration) DefaultMessageTimeToLive}</li>
+     * <li>{@link SubscriptionProperties#setLockDuration(Duration) LockDuration}</li>
+     * <li>{@link SubscriptionProperties#setMaxDeliveryCount(int) MaxDeliveryCount}</li>
      * </ul>
      *
      * @param subscription Information about the subscription to update. You must provide all the property values
@@ -996,20 +998,20 @@ public final class ServiceBusManagementClient {
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the subscription quota is exceeded, or an
      *     error occurred processing the request.
-     * @throws IllegalArgumentException if {@link SubscriptionDescription#getTopicName()} or {@link
-     *     SubscriptionDescription#getSubscriptionName()} is null or an empty string.
+     * @throws IllegalArgumentException if {@link SubscriptionProperties#getTopicName()} or {@link
+     *     SubscriptionProperties#getSubscriptionName()} is null or an empty string.
      * @throws NullPointerException if {@code subscription} is null.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SubscriptionDescription> updateSubscriptionWithResponse(
-        SubscriptionDescription subscription, Context context) {
+    public Response<SubscriptionProperties> updateSubscriptionWithResponse(
+        SubscriptionProperties subscription, Context context) {
         return asyncClient.updateSubscriptionWithResponse(subscription, context != null ? context : Context.NONE)
             .block();
     }
 
     /**
-     * Updates a topic with the given {@link TopicDescription}. The {@link TopicDescription} must be fully populated as
+     * Updates a topic with the given {@link TopicProperties}. The {@link TopicProperties} must be fully populated as
      * all of the properties are replaced. If a property is not set the service default value is used.
      *
      * The suggested flow is:
@@ -1022,8 +1024,8 @@ public final class ServiceBusManagementClient {
      * <p>
      * There are a subset of properties that can be updated. More information can be found in the links below. They are:
      * <ul>
-     * <li>{@link TopicDescription#setDefaultMessageTimeToLive(Duration) DefaultMessageTimeToLive}</li>
-     * <li>{@link TopicDescription#setDuplicateDetectionHistoryTimeWindow(Duration) DuplicateDetectionHistoryTimeWindow}
+     * <li>{@link TopicProperties#setDefaultMessageTimeToLive(Duration) DefaultMessageTimeToLive}</li>
+     * <li>{@link TopicProperties#setDuplicateDetectionHistoryTimeWindow(Duration) DuplicateDetectionHistoryTimeWindow}
      * </li>
      * </ul>
      *
@@ -1035,19 +1037,19 @@ public final class ServiceBusManagementClient {
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the topic quota is exceeded, or an error
      *     occurred processing the request.
-     * @throws IllegalArgumentException if {@link TopicDescription#getName() topic.getName()} is null or an empty
+     * @throws IllegalArgumentException if {@link TopicProperties#getName() topic.getName()} is null or an empty
      *     string.
      * @throws NullPointerException if {@code topic} is null.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-topic">Update Topic</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TopicDescription updateTopic(TopicDescription topic) {
+    public TopicProperties updateTopic(TopicProperties topic) {
         return asyncClient.updateTopic(topic).block();
     }
 
     /**
-     * Updates a topic with the given {@link TopicDescription}. The {@link TopicDescription} must be fully populated as
+     * Updates a topic with the given {@link TopicProperties}. The {@link TopicProperties} must be fully populated as
      * all of the properties are replaced. If a property is not set the service default value is used.
      *
      * The suggested flow is:
@@ -1060,8 +1062,8 @@ public final class ServiceBusManagementClient {
      * <p>
      * There are a subset of properties that can be updated. More information can be found in the links below. They are:
      * <ul>
-     * <li>{@link TopicDescription#setDefaultMessageTimeToLive(Duration) DefaultMessageTimeToLive}</li>
-     * <li>{@link TopicDescription#setDuplicateDetectionHistoryTimeWindow(Duration) DuplicateDetectionHistoryTimeWindow}
+     * <li>{@link TopicProperties#setDefaultMessageTimeToLive(Duration) DefaultMessageTimeToLive}</li>
+     * <li>{@link TopicProperties#setDuplicateDetectionHistoryTimeWindow(Duration) DuplicateDetectionHistoryTimeWindow}
      * </li>
      * </ul>
      *
@@ -1074,14 +1076,14 @@ public final class ServiceBusManagementClient {
      *     namespace.
      * @throws HttpResponseException If the request body was invalid, the topic quota is exceeded, or an error
      *     occurred processing the request.
-     * @throws IllegalArgumentException if {@link TopicDescription#getName() topic.getName()} is null or an empty
+     * @throws IllegalArgumentException if {@link TopicProperties#getName() topic.getName()} is null or an empty
      *     string.
      * @throws NullPointerException if {@code topic} is null.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-topic">Update Topic</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TopicDescription> updateTopicWithResponse(TopicDescription topic, Context context) {
+    public Response<TopicProperties> updateTopicWithResponse(TopicProperties topic, Context context) {
         return asyncClient.updateTopicWithResponse(topic, context != null ? context : Context.NONE).block();
     }
 }

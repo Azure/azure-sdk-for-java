@@ -17,7 +17,6 @@ import static com.azure.search.documents.TestHelpers.assertObjectEquals;
 public class FieldBuilderServiceTests extends SearchTestBase {
     private SearchIndexClient client;
     private final List<String> indexesToDelete = new ArrayList<>();
-    private final List<String> synonymMapsToDelete = new ArrayList<>();
     private SearchIndex index;
     String synonymMapName = "fieldbuilder";
 
@@ -43,7 +42,7 @@ public class FieldBuilderServiceTests extends SearchTestBase {
     public void createIndexWithFieldBuilder() {
         SynonymMap synonymMap = new SynonymMap(synonymMapName).setSynonyms("hotel,motel");
         client.createSynonymMap(synonymMap);
-        index.setFields(FieldBuilder.build(Hotel.class));
+        index.setFields(SearchIndexClient.buildSearchFields(Hotel.class, null));
         client.createIndex(index);
         indexesToDelete.add(index.getName());
         assertObjectEquals(index, client.getIndex(index.getName()), true);

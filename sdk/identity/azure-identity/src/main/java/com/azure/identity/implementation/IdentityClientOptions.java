@@ -9,11 +9,7 @@ import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Configuration;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.implementation.util.ValidationUtil;
-import com.microsoft.aad.msal4jextensions.PersistenceSettings;
-import com.sun.jna.Platform;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
@@ -24,20 +20,6 @@ import java.util.function.Function;
  */
 public final class IdentityClientOptions {
     private static final int MAX_RETRY_DEFAULT_LIMIT = 3;
-    private static final String DEFAULT_PUBLIC_CACHE_FILE_NAME = "msal.cache";
-    private static final String DEFAULT_CONFIDENTIAL_CACHE_FILE_NAME = "msal.confidential.cache";
-    private static final Path DEFAULT_CACHE_FILE_PATH = Platform.isWindows()
-            ? Paths.get(System.getProperty("user.home"), "AppData", "Local", ".IdentityService")
-            : Paths.get(System.getProperty("user.home"), ".IdentityService");
-    private static final String DEFAULT_KEYCHAIN_SERVICE = "Microsoft.Developer.IdentityService";
-    private static final String DEFAULT_PUBLIC_KEYCHAIN_ACCOUNT = "MSALCache";
-    private static final String DEFAULT_CONFIDENTIAL_KEYCHAIN_ACCOUNT = "MSALConfidentialCache";
-    private static final String DEFAULT_KEYRING_NAME = "default";
-    private static final String DEFAULT_KEYRING_SCHEMA = "msal.cache";
-    private static final String DEFAULT_PUBLIC_KEYRING_ITEM_NAME = DEFAULT_PUBLIC_KEYCHAIN_ACCOUNT;
-    private static final String DEFAULT_CONFIDENTIAL_KEYRING_ITEM_NAME = DEFAULT_CONFIDENTIAL_KEYCHAIN_ACCOUNT;
-    private static final String DEFAULT_KEYRING_ATTR_NAME = "MsalClientID";
-    private static final String DEFAULT_KEYRING_ATTR_VALUE = "Microsoft.Developer.IdentityService";
 
     private String authorityHost;
     private int maxRetry;
@@ -193,25 +175,6 @@ public final class IdentityClientOptions {
         return this;
     }
 
-    PersistenceSettings getPublicClientPersistenceSettings() {
-        return PersistenceSettings.builder(DEFAULT_PUBLIC_CACHE_FILE_NAME, DEFAULT_CACHE_FILE_PATH)
-            .setMacKeychain(DEFAULT_KEYCHAIN_SERVICE, DEFAULT_PUBLIC_KEYCHAIN_ACCOUNT)
-            .setLinuxKeyring(DEFAULT_KEYRING_NAME, DEFAULT_KEYRING_SCHEMA, DEFAULT_PUBLIC_KEYRING_ITEM_NAME,
-                DEFAULT_KEYRING_ATTR_NAME, DEFAULT_KEYRING_ATTR_VALUE, null, null)
-            .setLinuxUseUnprotectedFileAsCacheStorage(allowUnencryptedCache)
-            .build();
-    }
-
-    PersistenceSettings getConfidentialClientPersistenceSettings() {
-        return PersistenceSettings.builder(DEFAULT_CONFIDENTIAL_CACHE_FILE_NAME, DEFAULT_CACHE_FILE_PATH)
-            .setMacKeychain(DEFAULT_KEYCHAIN_SERVICE, DEFAULT_CONFIDENTIAL_KEYCHAIN_ACCOUNT)
-            .setLinuxKeyring(DEFAULT_KEYRING_NAME, DEFAULT_KEYRING_SCHEMA, DEFAULT_CONFIDENTIAL_KEYRING_ITEM_NAME,
-                DEFAULT_KEYRING_ATTR_NAME, DEFAULT_KEYRING_ATTR_VALUE, null, null)
-            .setLinuxUseUnprotectedFileAsCacheStorage(allowUnencryptedCache)
-            .build();
-    }
-
-
     /**
      * Allows to use an unprotected file specified by <code>cacheFileLocation()</code> instead of
      * Gnome keyring on Linux. This is restricted by default.
@@ -221,6 +184,10 @@ public final class IdentityClientOptions {
     public IdentityClientOptions allowUnencryptedCache() {
         this.allowUnencryptedCache = true;
         return this;
+    }
+
+    public boolean getAllowUnencryptedCache() {
+        return this.allowUnencryptedCache;
     }
 
     /**
