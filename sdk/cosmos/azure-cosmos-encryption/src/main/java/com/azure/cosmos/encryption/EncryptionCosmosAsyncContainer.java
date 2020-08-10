@@ -42,7 +42,7 @@ public class EncryptionCosmosAsyncContainer {
         this.container = BridgeInternal.createCosmosAsyncContainer(id, database);
         this.encryptor = encryptor;
         // TODO: moderakh once EncryptionKeyWrapProvider apis are made async this should change to Schedulers.parallel()
-        this.encryptionScheduler = Schedulers.elastic();
+        this.encryptionScheduler = Schedulers.boundedElastic();
     }
 
     private Mono<CosmosItemResponse<byte[]>> createItemStream(byte[] payload,

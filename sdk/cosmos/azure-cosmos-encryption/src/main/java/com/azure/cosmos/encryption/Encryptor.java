@@ -17,7 +17,7 @@ public interface Encryptor {
      * @param plainText           Plain text.
      * @param dataEncryptionKeyId Identifier of the data encryption key.
      * @param encryptionAlgorithm Identifier for the encryption algorithm.
-     * @return Cipher text.
+     * @return Mono of Cipher text byte array.
      */
     Mono<byte[]> encryptAsync(
         byte[] plainText,
@@ -30,7 +30,7 @@ public interface Encryptor {
      * @param cipherText          Ciphertext to be decrypted.
      * @param dataEncryptionKeyId Identifier of the data encryption key.
      * @param encryptionAlgorithm Identifier for the encryption algorithm.
-     * @return Plain text.
+     * @return Mono of Plain text byte array.
      */
     Mono<byte[]> decryptAsync(
         byte[] cipherText,

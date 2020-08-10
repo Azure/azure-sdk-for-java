@@ -608,6 +608,8 @@ public class EncryptionTests extends TestSuiteBase {
             requestOptions)
                      .flatMap(
                          createResponse -> {
+                             logger.info("1 on thread [{}]",
+                                 Thread.currentThread().getName());
                              return encryptionContainer.upsertItem(
                                  properties,
                                  new PartitionKey(properties.pk),
@@ -615,7 +617,7 @@ public class EncryptionTests extends TestSuiteBase {
                          })
                      .flatMap(
                          response -> {
-                             logger.info("1 on thread [{}]",
+                             logger.info("2 on thread [{}]",
                                  Thread.currentThread().getName());
                              Mono<CosmosItemResponse<TestDoc>> readItem = encryptionContainer.readItem(properties.id,
                                  new PartitionKey(properties.pk),
@@ -625,15 +627,14 @@ public class EncryptionTests extends TestSuiteBase {
                          })
                      .flatMap(
                          readItem -> {
-
-                             logger.info("2 on thread [{}]",
+                             logger.info("3 on thread [{}]",
                                  Thread.currentThread().getName());
                              return itemContainer.readItem(properties.id, new PartitionKey(properties.pk), TestDoc.class);
 
                          })
                      .flatMap(
                          readItem -> {
-                             logger.info("3 on thread [{}]",
+                             logger.info("4 on thread [{}]",
                                  Thread.currentThread().getName());
                              return encryptionContainer.readItem(properties.id, new PartitionKey(properties.pk),
                                  requestOptions,

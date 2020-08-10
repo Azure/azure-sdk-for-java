@@ -15,7 +15,7 @@ public interface DataEncryptionKeyProvider {
      * Retrieves the data encryption key for the given id.
      * @param id Identifier of the data encryption key.
      * @param encryptionAlgorithm Encryption algorithm that the retrieved key will be used with.
-     * @return Data encryption key bytes.
+     * @return a Mono of Data encryption key bytes.
      */
     Mono<DataEncryptionKey> getDataEncryptionKey(
         String id,
