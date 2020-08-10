@@ -10,7 +10,7 @@ import org.joda.time.Period;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
-import com.azure.resourcemanager.redis.implementation.RedisManager;
+import com.azure.resourcemanager.redis.RedisManager;
 import com.azure.resourcemanager.redis.implementation.RedisResourceInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasId;

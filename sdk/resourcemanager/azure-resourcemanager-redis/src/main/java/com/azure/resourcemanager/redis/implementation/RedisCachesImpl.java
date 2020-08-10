@@ -6,6 +6,7 @@
 
 package com.azure.resourcemanager.redis.implementation;
 
+import com.azure.resourcemanager.redis.RedisManager;
 import com.azure.resourcemanager.redis.models.RedisCache;
 import com.azure.resourcemanager.redis.models.RedisCaches;
 import com.microsoft.azure.Page;
@@ -25,7 +26,7 @@ class RedisCachesImpl
         RedisCacheImpl,
         RedisResourceInner,
         RedisInner,
-        RedisManager>
+    RedisManager>
     implements RedisCaches {
 
     RedisCachesImpl(final RedisManager redisManager) {

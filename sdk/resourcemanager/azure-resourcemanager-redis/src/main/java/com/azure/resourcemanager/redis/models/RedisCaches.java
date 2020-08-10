@@ -11,7 +11,7 @@ import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.azure.resourcemanager.redis.implementation.OperationInner;
 import com.azure.resourcemanager.redis.implementation.RedisInner;
-import com.azure.resourcemanager.redis.implementation.RedisManager;
+import com.azure.resourcemanager.redis.RedisManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;

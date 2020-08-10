@@ -6,6 +6,7 @@
 
 package com.azure.resourcemanager.redis.implementation;
 
+import com.azure.resourcemanager.redis.RedisManager;
 import com.azure.resourcemanager.redis.models.DayOfWeek;
 import com.azure.resourcemanager.redis.models.ExportRDBParameters;
 import com.azure.resourcemanager.redis.models.ImportRDBParameters;
@@ -55,7 +56,7 @@ class RedisCacheImpl
     RedisCache,
             RedisResourceInner,
             RedisCacheImpl,
-            RedisManager>
+    RedisManager>
         implements
             RedisCache,
     RedisCachePremium,

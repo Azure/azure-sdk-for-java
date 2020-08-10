@@ -7,7 +7,6 @@
 package com.azure.resourcemanager.redis;
 
 
-import com.azure.resourcemanager.redis.implementation.RedisManager;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.core.TestBase;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;

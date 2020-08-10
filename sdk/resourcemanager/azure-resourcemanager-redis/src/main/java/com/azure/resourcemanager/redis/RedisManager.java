@@ -4,8 +4,9 @@
  * license information.
  */
 
-package com.azure.resourcemanager.redis.implementation;
+package com.azure.resourcemanager.redis;
 
+import com.azure.resourcemanager.redis.implementation.RedisCachesImpl;
 import com.azure.resourcemanager.redis.models.RedisCaches;
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.AzureResponseBuilder;
