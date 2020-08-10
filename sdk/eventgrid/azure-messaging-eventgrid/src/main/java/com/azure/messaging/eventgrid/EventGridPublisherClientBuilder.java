@@ -144,7 +144,7 @@ public class EventGridPublisherClientBuilder {
 
     /**
      * Build a publisher client with synchronous publishing methods and the current settings. Endpoint and a credential
-     * must be set (either keyCredential or sharedAccessToken), all other settings have defaults and are optional.
+     * must be set (either keyCredential or sharedAccessSignatureCredential), all other settings have defaults and are optional.
      * Note that currently the asynchronous client created by the method above is the recommended version for higher
      * performance, as the synchronous client simply blocks on the same asynchronous calls.
      * @return a publisher client with synchronous publishing methods.
@@ -197,7 +197,8 @@ public class EventGridPublisherClientBuilder {
      *
      * @return the builder itself.
      */
-    public EventGridPublisherClientBuilder sharedAccessToken(EventGridSharedAccessSignatureCredential credential) {
+    public EventGridPublisherClientBuilder sharedAccessSignatureCredential(EventGridSharedAccessSignatureCredential
+                                                                               credential) {
         this.sasToken = credential;
         return this;
     }

@@ -7,13 +7,14 @@ package com.azure.messaging.eventgrid;
 import com.azure.messaging.eventgrid.systemevents.*;
 import com.azure.messaging.eventgrid.models.*;
 import org.apache.commons.io.IOUtils;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class DeserializationTests {
 
@@ -25,10 +26,10 @@ public class DeserializationTests {
 
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof StorageBlobDeletedEventData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof StorageBlobDeletedEventData);
         StorageBlobDeletedEventData eventData = (StorageBlobDeletedEventData) events[0].getData();
-        Assert.assertEquals("https://example.blob.core.windows.net/testcontainer/testfile.txt", eventData.getUrl());
+        assertEquals("https://example.blob.core.windows.net/testcontainer/testfile.txt", eventData.getUrl());
     }
 
     @Test
@@ -40,12 +41,12 @@ public class DeserializationTests {
 
         List<CloudEvent> events = consumer.deserializeCloudEvents(jsonData);
 
-        Assert.assertNotNull(events);
-        Assert.assertEquals(1, events.size());
+        assertNotNull(events);
+        assertEquals(1, events.size());
 
-        Assert.assertEquals(events.get(0).getSpecVersion(), "1.0");
+        assertEquals(events.get(0).getSpecVersion(), "1.0");
 
-        Assert.assertNull(events.get(0).getData());
+        assertNull(events.get(0).getData());
     }
 
     @Test
@@ -57,16 +58,16 @@ public class DeserializationTests {
 
         List<CloudEvent> events = consumer.deserializeCloudEvents(jsonData);
 
-        Assert.assertNotNull(events);
-        Assert.assertEquals(1, events.size());
+        assertNotNull(events);
+        assertEquals(1, events.size());
 
-        Assert.assertEquals(events.get(0).getSpecVersion(), "1.0");
+        assertEquals(events.get(0).getSpecVersion(), "1.0");
 
-        Assert.assertNotNull(events.get(0).getBinaryData());
+        assertNotNull(events.get(0).getBinaryData());
 
         String decoded = Base64.getEncoder().encodeToString(events.get(0).getBinaryData());
 
-        Assert.assertEquals("samplebinarydataasstring", decoded);
+        assertEquals("samplebinarydataasstring", decoded);
     }
 
     @Test
@@ -79,20 +80,20 @@ public class DeserializationTests {
 
         List<CloudEvent> events = consumer.deserializeCloudEvents(jsonData);
 
-        Assert.assertNotNull(events);
-        Assert.assertEquals(1, events.size());
+        assertNotNull(events);
+        assertEquals(1, events.size());
 
-        Assert.assertEquals(events.get(0).getSpecVersion(), "1.0");
+        assertEquals(events.get(0).getSpecVersion(), "1.0");
 
-        Assert.assertTrue(events.get(0).getData() instanceof ContosoItemReceivedEventData);
+        assertTrue(events.get(0).getData() instanceof ContosoItemReceivedEventData);
         ContosoItemReceivedEventData data = (ContosoItemReceivedEventData) events.get(0).getData();
-        Assert.assertEquals("512d38b6-c7b8-40c8-89fe-f46f9e9622b6", data.getItemSku());
+        assertEquals("512d38b6-c7b8-40c8-89fe-f46f9e9622b6", data.getItemSku());
 
         Map<String, Object> additionalProperties = events.get(0).getExtensionAttributes();
 
-        Assert.assertNotNull(additionalProperties);
-        Assert.assertTrue(additionalProperties.containsKey("foo"));
-        Assert.assertEquals("bar", additionalProperties.get("foo"));
+        assertNotNull(additionalProperties);
+        assertTrue(additionalProperties.containsKey("foo"));
+        assertEquals("bar", additionalProperties.get("foo"));
 
     }
 
@@ -106,20 +107,20 @@ public class DeserializationTests {
 
         List<CustomSchema> events = consumer.deserializeCustomEvents(jsonData, CustomSchema.class);
 
-        Assert.assertNotNull(events);
-        Assert.assertEquals(1, events.size());
+        assertNotNull(events);
+        assertEquals(1, events.size());
 
         ContosoItemSentEventData sentData = events.get(0).getSentData();
 
-        Assert.assertNotNull(sentData);
-        Assert.assertEquals("1234567890", sentData.getShippingInfo().getShipmentId());
+        assertNotNull(sentData);
+        assertEquals("1234567890", sentData.getShippingInfo().getShipmentId());
 
 
         Map<String, Object> additionalProperties = events.get(0).getAdditionalProperties();
 
-        Assert.assertNotNull(additionalProperties);
-        Assert.assertTrue(additionalProperties.containsKey("foo"));
-        Assert.assertEquals("bar", additionalProperties.get("foo"));
+        assertNotNull(additionalProperties);
+        assertTrue(additionalProperties.containsKey("foo"));
+        assertEquals("bar", additionalProperties.get("foo"));
     }
 
     @Test
@@ -133,11 +134,11 @@ public class DeserializationTests {
 
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertEquals(1, events.length);
-        Assert.assertTrue(events[0].getData() instanceof ContosoItemReceivedEventData);
+        assertNotNull(events);
+        assertEquals(1, events.length);
+        assertTrue(events[0].getData() instanceof ContosoItemReceivedEventData);
         ContosoItemReceivedEventData eventData = (ContosoItemReceivedEventData) events[0].getData();
-        Assert.assertEquals("512d38b6-c7b8-40c8-89fe-f46f9e9622b6", eventData.getItemSku());
+        assertEquals("512d38b6-c7b8-40c8-89fe-f46f9e9622b6", eventData.getItemSku());
     }
 
     @Test
@@ -153,11 +154,11 @@ public class DeserializationTests {
 
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertEquals(1, events.length);
-        Assert.assertTrue(events[0].getData() instanceof ContosoItemReceivedEventData[]);
+        assertNotNull(events);
+        assertEquals(1, events.length);
+        assertTrue(events[0].getData() instanceof ContosoItemReceivedEventData[]);
         ContosoItemReceivedEventData[] eventData = (ContosoItemReceivedEventData[]) events[0].getData();
-        Assert.assertEquals("512d38b6-c7b8-40c8-89fe-f46f9e9622b6", (eventData[0]).getItemSku());
+        assertEquals("512d38b6-c7b8-40c8-89fe-f46f9e9622b6", (eventData[0]).getItemSku());
     }
 
     @Test
@@ -170,11 +171,11 @@ public class DeserializationTests {
 
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertEquals(1, events.length);
-        Assert.assertTrue(events[0].getData() instanceof Boolean);
+        assertNotNull(events);
+        assertEquals(1, events.length);
+        assertTrue(events[0].getData() instanceof Boolean);
         Boolean eventData = (Boolean) events[0].getData();
-        Assert.assertTrue(eventData);
+        assertTrue(eventData);
     }
 
     @Test
@@ -185,11 +186,11 @@ public class DeserializationTests {
 
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertEquals(1, events.length);
-        Assert.assertTrue(events[0].getData() instanceof String);
+        assertNotNull(events);
+        assertEquals(1, events.length);
+        assertTrue(events[0].getData() instanceof String);
         String eventData = (String) events[0].getData();
-        Assert.assertEquals("stringdata", eventData);
+        assertEquals("stringdata", eventData);
     }
 
     @Test
@@ -202,14 +203,14 @@ public class DeserializationTests {
 
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertEquals(2, events.length);
-        Assert.assertTrue(events[0].getData() instanceof ContosoItemSentEventData);
-        Assert.assertTrue(events[1].getData() instanceof ContosoItemSentEventData);
+        assertNotNull(events);
+        assertEquals(2, events.length);
+        assertTrue(events[0].getData() instanceof ContosoItemSentEventData);
+        assertTrue(events[1].getData() instanceof ContosoItemSentEventData);
         ContosoItemSentEventData eventData0 = (ContosoItemSentEventData) events[0].getData();
-        Assert.assertTrue(eventData0.getShippingInfo() instanceof DroneShippingInfo);
+        assertTrue(eventData0.getShippingInfo() instanceof DroneShippingInfo);
         ContosoItemSentEventData eventData1 = (ContosoItemSentEventData) events[1].getData();
-        Assert.assertTrue(eventData1.getShippingInfo() instanceof RocketShippingInfo);
+        assertTrue(eventData1.getShippingInfo() instanceof RocketShippingInfo);
     }
 
 
@@ -220,14 +221,14 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertEquals(4, events.length);
-        Assert.assertTrue(events[0].getData() instanceof StorageBlobCreatedEventData);
-        Assert.assertTrue(events[1].getData() instanceof StorageBlobDeletedEventData);
-        Assert.assertTrue(events[2].getData() instanceof StorageBlobDeletedEventData);
-        Assert.assertTrue(events[3].getData() instanceof ServiceBusDeadletterMessagesAvailableWithNoListenersEventData);
+        assertNotNull(events);
+        assertEquals(4, events.length);
+        assertTrue(events[0].getData() instanceof StorageBlobCreatedEventData);
+        assertTrue(events[1].getData() instanceof StorageBlobDeletedEventData);
+        assertTrue(events[2].getData() instanceof StorageBlobDeletedEventData);
+        assertTrue(events[3].getData() instanceof ServiceBusDeadletterMessagesAvailableWithNoListenersEventData);
         StorageBlobDeletedEventData eventData = (StorageBlobDeletedEventData) events[2].getData();
-        Assert.assertEquals("https://example.blob.core.windows.net/testcontainer/testfile.txt", eventData.getUrl());
+        assertEquals("https://example.blob.core.windows.net/testcontainer/testfile.txt", eventData.getUrl());
     }
 
     // AppConfiguration events
@@ -238,10 +239,10 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof AppConfigurationKeyValueDeletedEventData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof AppConfigurationKeyValueDeletedEventData);
         AppConfigurationKeyValueDeletedEventData eventData = (AppConfigurationKeyValueDeletedEventData) events[0].getData();
-        Assert.assertEquals("key1", eventData.getKey());
+        assertEquals("key1", eventData.getKey());
     }
 
     @Test
@@ -251,10 +252,10 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof AppConfigurationKeyValueModifiedEventData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof AppConfigurationKeyValueModifiedEventData);
         AppConfigurationKeyValueModifiedEventData eventData = (AppConfigurationKeyValueModifiedEventData) events[0].getData();
-        Assert.assertEquals("key1", eventData.getKey());
+        assertEquals("key1", eventData.getKey());
     }
 
     // ContainerRegistry events
@@ -265,10 +266,10 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof ContainerRegistryImagePushedEventData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof ContainerRegistryImagePushedEventData);
         ContainerRegistryImagePushedEventData eventData = (ContainerRegistryImagePushedEventData) events[0].getData();
-        Assert.assertEquals("127.0.0.1", eventData.getRequest().getAddr());
+        assertEquals("127.0.0.1", eventData.getRequest().getAddr());
     }
 
     @Test
@@ -278,10 +279,10 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof ContainerRegistryImageDeletedEventData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof ContainerRegistryImageDeletedEventData);
         ContainerRegistryImageDeletedEventData eventData = (ContainerRegistryImageDeletedEventData) events[0].getData();
-        Assert.assertEquals("testactor", eventData.getActor().getName());
+        assertEquals("testactor", eventData.getActor().getName());
     }
 
     @Test
@@ -291,10 +292,10 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof ContainerRegistryChartDeletedEventData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof ContainerRegistryChartDeletedEventData);
         ContainerRegistryChartDeletedEventData eventData = (ContainerRegistryChartDeletedEventData) events[0].getData();
-        Assert.assertEquals("mediatype1", eventData.getTarget().getMediaType());
+        assertEquals("mediatype1", eventData.getTarget().getMediaType());
     }
 
     @Test
@@ -304,10 +305,10 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof ContainerRegistryChartPushedEventData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof ContainerRegistryChartPushedEventData);
         ContainerRegistryChartPushedEventData eventData = (ContainerRegistryChartPushedEventData) events[0].getData();
-        Assert.assertEquals("mediatype1", eventData.getTarget().getMediaType());
+        assertEquals("mediatype1", eventData.getTarget().getMediaType());
     }
 
     // IoTHub Device events
@@ -318,10 +319,10 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof IotHubDeviceCreatedEventData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof IotHubDeviceCreatedEventData);
         IotHubDeviceCreatedEventData eventData = (IotHubDeviceCreatedEventData) events[0].getData();
-        Assert.assertEquals("enabled", eventData.getTwin().getStatus());
+        assertEquals("enabled", eventData.getTwin().getStatus());
     }
 
     @Test
@@ -331,10 +332,10 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof IotHubDeviceDeletedEventData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof IotHubDeviceDeletedEventData);
         IotHubDeviceDeletedEventData eventData = (IotHubDeviceDeletedEventData) events[0].getData();
-        Assert.assertEquals("AAAAAAAAAAE=", eventData.getTwin().getEtag());
+        assertEquals("AAAAAAAAAAE=", eventData.getTwin().getEtag());
     }
 
     @Test
@@ -344,10 +345,10 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof IotHubDeviceConnectedEventData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof IotHubDeviceConnectedEventData);
         IotHubDeviceConnectedEventData eventData = (IotHubDeviceConnectedEventData) events[0].getData();
-        Assert.assertEquals("EGTESTHUB1", eventData.getHubName());
+        assertEquals("EGTESTHUB1", eventData.getHubName());
     }
 
     @Test
@@ -357,10 +358,10 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof IotHubDeviceDisconnectedEventData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof IotHubDeviceDisconnectedEventData);
         IotHubDeviceDisconnectedEventData eventData = (IotHubDeviceDisconnectedEventData) events[0].getData();
-        Assert.assertEquals("000000000000000001D4132452F67CE200000002000000000000000000000002", eventData.getDeviceConnectionStateEventInfo().getSequenceNumber());
+        assertEquals("000000000000000001D4132452F67CE200000002000000000000000000000002", eventData.getDeviceConnectionStateEventInfo().getSequenceNumber());
     }
 
     @Test
@@ -370,10 +371,10 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof IotHubDeviceTelemetryEventData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof IotHubDeviceTelemetryEventData);
         IotHubDeviceTelemetryEventData eventData = (IotHubDeviceTelemetryEventData) events[0].getData();
-        Assert.assertEquals("Active", eventData.getProperties().get("Status"));
+        assertEquals("Active", eventData.getProperties().get("Status"));
     }
 
     // EventGrid events
@@ -384,10 +385,10 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof SubscriptionValidationEventData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof SubscriptionValidationEventData);
         SubscriptionValidationEventData eventData = (SubscriptionValidationEventData) events[0].getData();
-        Assert.assertEquals("512d38b6-c7b8-40c8-89fe-f46f9e9622b6", eventData.getValidationCode());
+        assertEquals("512d38b6-c7b8-40c8-89fe-f46f9e9622b6", eventData.getValidationCode());
     }
 
     @Test
@@ -397,10 +398,10 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof SubscriptionDeletedEventData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof SubscriptionDeletedEventData);
         SubscriptionDeletedEventData eventData = (SubscriptionDeletedEventData) events[0].getData();
-        Assert.assertEquals("/subscriptions/id/resourceGroups/rg/providers/Microsoft.EventGrid/topics/topic1/providers/Microsoft.EventGrid/eventSubscriptions/eventsubscription1", eventData.getEventSubscriptionId());
+        assertEquals("/subscriptions/id/resourceGroups/rg/providers/Microsoft.EventGrid/topics/topic1/providers/Microsoft.EventGrid/eventSubscriptions/eventsubscription1", eventData.getEventSubscriptionId());
     }
 
     // Event Hub Events
@@ -411,10 +412,10 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof EventHubCaptureFileCreatedEventData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof EventHubCaptureFileCreatedEventData);
         EventHubCaptureFileCreatedEventData eventData = (EventHubCaptureFileCreatedEventData) events[0].getData();
-        Assert.assertEquals("AzureBlockBlob", eventData.getFileType());
+        assertEquals("AzureBlockBlob", eventData.getFileType());
     }
 
     // Maps events
@@ -425,10 +426,10 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof MapsGeofenceEnteredEventData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof MapsGeofenceEnteredEventData);
         MapsGeofenceEnteredEventData eventData = (MapsGeofenceEnteredEventData) events[0].getData();
-        Assert.assertEquals(true, eventData.isEventPublished());
+        assertEquals(true, eventData.isEventPublished());
     }
 
     @Test
@@ -438,10 +439,10 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof MapsGeofenceExitedEventData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof MapsGeofenceExitedEventData);
         MapsGeofenceExitedEventData eventData = (MapsGeofenceExitedEventData) events[0].getData();
-        Assert.assertEquals(true, eventData.isEventPublished());
+        assertEquals(true, eventData.isEventPublished());
     }
 
     @Test
@@ -451,10 +452,10 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof MapsGeofenceResultEventData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof MapsGeofenceResultEventData);
         MapsGeofenceResultEventData eventData = (MapsGeofenceResultEventData) events[0].getData();
-        Assert.assertEquals(true, eventData.isEventPublished());
+        assertEquals(true, eventData.isEventPublished());
     }
 
     // Media Services events
@@ -465,20 +466,20 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof MediaJobCanceledEventData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof MediaJobCanceledEventData);
         MediaJobCanceledEventData eventData = (MediaJobCanceledEventData) events[0].getData();
-        Assert.assertEquals(MediaJobState.CANCELING, eventData.getPreviousState());
-        Assert.assertEquals(MediaJobState.CANCELED, eventData.getState());
-        Assert.assertEquals(1, eventData.getOutputs().size());
-        Assert.assertTrue(eventData.getOutputs().get(0) instanceof MediaJobOutputAsset);
+        assertEquals(MediaJobState.CANCELING, eventData.getPreviousState());
+        assertEquals(MediaJobState.CANCELED, eventData.getState());
+        assertEquals(1, eventData.getOutputs().size());
+        assertTrue(eventData.getOutputs().get(0) instanceof MediaJobOutputAsset);
 
         MediaJobOutputAsset outputAsset = (MediaJobOutputAsset) eventData.getOutputs().get(0);
 
-        Assert.assertEquals(MediaJobState.CANCELED, outputAsset.getState());
-        Assert.assertNull(outputAsset.getError());
-        Assert.assertNotEquals(100, outputAsset.getProgress());
-        Assert.assertEquals("output-7a8215f9-0f8d-48a6-82ed-1ead772bc221", outputAsset.getAssetName());
+        assertEquals(MediaJobState.CANCELED, outputAsset.getState());
+        assertNull(outputAsset.getError());
+        assertNotEquals(100, outputAsset.getProgress());
+        assertEquals("output-7a8215f9-0f8d-48a6-82ed-1ead772bc221", outputAsset.getAssetName());
     }
 
     @Test
@@ -488,11 +489,11 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof MediaJobCancelingEventData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof MediaJobCancelingEventData);
         MediaJobCancelingEventData eventData = (MediaJobCancelingEventData) events[0].getData();
-        Assert.assertEquals(MediaJobState.PROCESSING, eventData.getPreviousState());
-        Assert.assertEquals(MediaJobState.CANCELING, eventData.getState());
+        assertEquals(MediaJobState.PROCESSING, eventData.getPreviousState());
+        assertEquals(MediaJobState.CANCELING, eventData.getState());
     }
 
     @Test
@@ -502,11 +503,11 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof MediaJobProcessingEventData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof MediaJobProcessingEventData);
         MediaJobProcessingEventData eventData = (MediaJobProcessingEventData) events[0].getData();
-        Assert.assertEquals(MediaJobState.SCHEDULED, eventData.getPreviousState());
-        Assert.assertEquals(MediaJobState.PROCESSING, eventData.getState());
+        assertEquals(MediaJobState.SCHEDULED, eventData.getPreviousState());
+        assertEquals(MediaJobState.PROCESSING, eventData.getState());
     }
 
     @Test
@@ -516,19 +517,19 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof MediaJobFinishedEventData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof MediaJobFinishedEventData);
         MediaJobFinishedEventData eventData = (MediaJobFinishedEventData) events[0].getData();
-        Assert.assertEquals(MediaJobState.PROCESSING, eventData.getPreviousState());
-        Assert.assertEquals(MediaJobState.FINISHED, eventData.getState());
-        Assert.assertEquals(1, eventData.getOutputs().size());
-        Assert.assertTrue(eventData.getOutputs().get(0) instanceof MediaJobOutputAsset);
+        assertEquals(MediaJobState.PROCESSING, eventData.getPreviousState());
+        assertEquals(MediaJobState.FINISHED, eventData.getState());
+        assertEquals(1, eventData.getOutputs().size());
+        assertTrue(eventData.getOutputs().get(0) instanceof MediaJobOutputAsset);
         MediaJobOutputAsset outputAsset = (MediaJobOutputAsset) eventData.getOutputs().get(0);
 
-        Assert.assertEquals(MediaJobState.FINISHED, outputAsset.getState());
-        Assert.assertNull(outputAsset.getError());
-        Assert.assertEquals(100, outputAsset.getProgress());
-        Assert.assertEquals("output-298338bb-f8d1-4d0f-9fde-544e0ac4d983", outputAsset.getAssetName());
+        assertEquals(MediaJobState.FINISHED, outputAsset.getState());
+        assertNull(outputAsset.getError());
+        assertEquals(100, outputAsset.getProgress());
+        assertEquals("output-298338bb-f8d1-4d0f-9fde-544e0ac4d983", outputAsset.getAssetName());
     }
 
     @Test
@@ -538,18 +539,18 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof MediaJobErroredEventData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof MediaJobErroredEventData);
         MediaJobErroredEventData eventData = (MediaJobErroredEventData) events[0].getData();
-        Assert.assertEquals(MediaJobState.PROCESSING, eventData.getPreviousState());
-        Assert.assertEquals(MediaJobState.ERROR, eventData.getState());
-        Assert.assertEquals(1, eventData.getOutputs().size());
-        Assert.assertTrue(eventData.getOutputs().get(0) instanceof MediaJobOutputAsset);
+        assertEquals(MediaJobState.PROCESSING, eventData.getPreviousState());
+        assertEquals(MediaJobState.ERROR, eventData.getState());
+        assertEquals(1, eventData.getOutputs().size());
+        assertTrue(eventData.getOutputs().get(0) instanceof MediaJobOutputAsset);
 
-        Assert.assertEquals(MediaJobState.ERROR, eventData.getOutputs().get(0).getState());
-        Assert.assertNotNull(eventData.getOutputs().get(0).getError());
-        Assert.assertEquals(MediaJobErrorCategory.SERVICE, eventData.getOutputs().get(0).getError().getCategory());
-        Assert.assertEquals(MediaJobErrorCode.SERVICE_ERROR, eventData.getOutputs().get(0).getError().getCode());
+        assertEquals(MediaJobState.ERROR, eventData.getOutputs().get(0).getState());
+        assertNotNull(eventData.getOutputs().get(0).getError());
+        assertEquals(MediaJobErrorCategory.SERVICE, eventData.getOutputs().get(0).getError().getCategory());
+        assertEquals(MediaJobErrorCode.SERVICE_ERROR, eventData.getOutputs().get(0).getError().getCode());
     }
 
     @Test
@@ -559,14 +560,14 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof MediaJobOutputStateChangeEventData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof MediaJobOutputStateChangeEventData);
         MediaJobOutputStateChangeEventData eventData = (MediaJobOutputStateChangeEventData) events[0].getData();
-        Assert.assertEquals(MediaJobState.SCHEDULED, eventData.getPreviousState());
-        Assert.assertEquals(MediaJobState.PROCESSING, eventData.getOutput().getState());
-        Assert.assertTrue(eventData.getOutput() instanceof MediaJobOutputAsset);
+        assertEquals(MediaJobState.SCHEDULED, eventData.getPreviousState());
+        assertEquals(MediaJobState.PROCESSING, eventData.getOutput().getState());
+        assertTrue(eventData.getOutput() instanceof MediaJobOutputAsset);
         MediaJobOutputAsset outputAsset = (MediaJobOutputAsset) eventData.getOutput();
-        Assert.assertEquals("output-2ac2fe75-6557-4de5-ab25-5713b74a6901", outputAsset.getAssetName());
+        assertEquals("output-2ac2fe75-6557-4de5-ab25-5713b74a6901", outputAsset.getAssetName());
     }
 
     @Test
@@ -576,11 +577,11 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof MediaJobScheduledEventData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof MediaJobScheduledEventData);
         MediaJobScheduledEventData eventData = (MediaJobScheduledEventData) events[0].getData();
-        Assert.assertEquals(MediaJobState.QUEUED, eventData.getPreviousState());
-        Assert.assertEquals(MediaJobState.SCHEDULED, eventData.getState());
+        assertEquals(MediaJobState.QUEUED, eventData.getPreviousState());
+        assertEquals(MediaJobState.SCHEDULED, eventData.getState());
     }
 
     @Test
@@ -590,12 +591,12 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof MediaJobOutputCanceledEventData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof MediaJobOutputCanceledEventData);
         MediaJobOutputCanceledEventData eventData = (MediaJobOutputCanceledEventData) events[0].getData();
-        Assert.assertEquals(MediaJobState.CANCELING, eventData.getPreviousState());
-        Assert.assertEquals(MediaJobState.CANCELED, eventData.getOutput().getState());
-        Assert.assertTrue(eventData.getOutput() instanceof MediaJobOutputAsset);
+        assertEquals(MediaJobState.CANCELING, eventData.getPreviousState());
+        assertEquals(MediaJobState.CANCELED, eventData.getOutput().getState());
+        assertTrue(eventData.getOutput() instanceof MediaJobOutputAsset);
     }
 
     @Test
@@ -605,12 +606,12 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof MediaJobOutputCancelingEventData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof MediaJobOutputCancelingEventData);
         MediaJobOutputCancelingEventData eventData = (MediaJobOutputCancelingEventData) events[0].getData();
-        Assert.assertEquals(MediaJobState.PROCESSING, eventData.getPreviousState());
-        Assert.assertEquals(MediaJobState.CANCELING, eventData.getOutput().getState());
-        Assert.assertTrue(eventData.getOutput() instanceof MediaJobOutputAsset);
+        assertEquals(MediaJobState.PROCESSING, eventData.getPreviousState());
+        assertEquals(MediaJobState.CANCELING, eventData.getOutput().getState());
+        assertTrue(eventData.getOutput() instanceof MediaJobOutputAsset);
     }
 
     @Test
@@ -620,15 +621,15 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof MediaJobOutputErroredEventData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof MediaJobOutputErroredEventData);
         MediaJobOutputErroredEventData eventData = (MediaJobOutputErroredEventData) events[0].getData();
-        Assert.assertEquals(MediaJobState.PROCESSING, eventData.getPreviousState());
-        Assert.assertEquals(MediaJobState.ERROR, eventData.getOutput().getState());
-        Assert.assertTrue(eventData.getOutput() instanceof MediaJobOutputAsset);
-        Assert.assertNotNull(eventData.getOutput().getError());
-        Assert.assertEquals(MediaJobErrorCategory.SERVICE, eventData.getOutput().getError().getCategory());
-        Assert.assertEquals(MediaJobErrorCode.SERVICE_ERROR, eventData.getOutput().getError().getCode());
+        assertEquals(MediaJobState.PROCESSING, eventData.getPreviousState());
+        assertEquals(MediaJobState.ERROR, eventData.getOutput().getState());
+        assertTrue(eventData.getOutput() instanceof MediaJobOutputAsset);
+        assertNotNull(eventData.getOutput().getError());
+        assertEquals(MediaJobErrorCategory.SERVICE, eventData.getOutput().getError().getCategory());
+        assertEquals(MediaJobErrorCode.SERVICE_ERROR, eventData.getOutput().getError().getCode());
     }
 
     @Test
@@ -638,16 +639,16 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof MediaJobOutputFinishedEventData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof MediaJobOutputFinishedEventData);
         MediaJobOutputFinishedEventData eventData = (MediaJobOutputFinishedEventData) events[0].getData();
-        Assert.assertEquals(MediaJobState.PROCESSING, eventData.getPreviousState());
-        Assert.assertEquals(MediaJobState.FINISHED, eventData.getOutput().getState());
-        Assert.assertTrue(eventData.getOutput() instanceof MediaJobOutputAsset);
-        Assert.assertEquals(100, eventData.getOutput().getProgress());
+        assertEquals(MediaJobState.PROCESSING, eventData.getPreviousState());
+        assertEquals(MediaJobState.FINISHED, eventData.getOutput().getState());
+        assertTrue(eventData.getOutput() instanceof MediaJobOutputAsset);
+        assertEquals(100, eventData.getOutput().getProgress());
 
         MediaJobOutputAsset outputAsset = (MediaJobOutputAsset) eventData.getOutput();
-        Assert.assertEquals("output-2ac2fe75-6557-4de5-ab25-5713b74a6901", outputAsset.getAssetName());
+        assertEquals("output-2ac2fe75-6557-4de5-ab25-5713b74a6901", outputAsset.getAssetName());
     }
 
     @Test
@@ -657,12 +658,12 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof MediaJobOutputProcessingEventData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof MediaJobOutputProcessingEventData);
         MediaJobOutputProcessingEventData eventData = (MediaJobOutputProcessingEventData) events[0].getData();
-        Assert.assertEquals(MediaJobState.SCHEDULED, eventData.getPreviousState());
-        Assert.assertEquals(MediaJobState.PROCESSING, eventData.getOutput().getState());
-        Assert.assertTrue(eventData.getOutput() instanceof MediaJobOutputAsset);
+        assertEquals(MediaJobState.SCHEDULED, eventData.getPreviousState());
+        assertEquals(MediaJobState.PROCESSING, eventData.getOutput().getState());
+        assertTrue(eventData.getOutput() instanceof MediaJobOutputAsset);
     }
 
     @Test
@@ -672,12 +673,12 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof MediaJobOutputScheduledEventData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof MediaJobOutputScheduledEventData);
         MediaJobOutputScheduledEventData eventData = (MediaJobOutputScheduledEventData) events[0].getData();
-        Assert.assertEquals(MediaJobState.QUEUED, eventData.getPreviousState());
-        Assert.assertEquals(MediaJobState.SCHEDULED, eventData.getOutput().getState());
-        Assert.assertTrue(eventData.getOutput() instanceof MediaJobOutputAsset);
+        assertEquals(MediaJobState.QUEUED, eventData.getPreviousState());
+        assertEquals(MediaJobState.SCHEDULED, eventData.getOutput().getState());
+        assertTrue(eventData.getOutput() instanceof MediaJobOutputAsset);
     }
 
     @Test
@@ -687,14 +688,14 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof MediaJobOutputProgressEventData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof MediaJobOutputProgressEventData);
         MediaJobOutputProgressEventData eventData = (MediaJobOutputProgressEventData) events[0].getData();
-        Assert.assertEquals("TestLabel", eventData.getLabel());
-        Assert.assertTrue(eventData.getJobCorrelationData().containsKey("Field1"));
-        Assert.assertEquals("test1", eventData.getJobCorrelationData().get("Field1"));
-        Assert.assertTrue(eventData.getJobCorrelationData().containsKey("Field2"));
-        Assert.assertEquals("test2", eventData.getJobCorrelationData().get("Field2"));
+        assertEquals("TestLabel", eventData.getLabel());
+        assertTrue(eventData.getJobCorrelationData().containsKey("Field1"));
+        assertEquals("test1", eventData.getJobCorrelationData().get("Field1"));
+        assertTrue(eventData.getJobCorrelationData().containsKey("Field2"));
+        assertEquals("test2", eventData.getJobCorrelationData().get("Field2"));
     }
 
     @Test
@@ -704,11 +705,11 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof MediaJobStateChangeEventData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof MediaJobStateChangeEventData);
         MediaJobStateChangeEventData eventData = (MediaJobStateChangeEventData) events[0].getData();
-        Assert.assertEquals(MediaJobState.SCHEDULED, eventData.getPreviousState());
-        Assert.assertEquals(MediaJobState.PROCESSING, eventData.getState());
+        assertEquals(MediaJobState.SCHEDULED, eventData.getPreviousState());
+        assertEquals(MediaJobState.PROCESSING, eventData.getState());
     }
 
     @Test
@@ -718,13 +719,13 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof MediaLiveEventEncoderConnectedEventData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof MediaLiveEventEncoderConnectedEventData);
         MediaLiveEventEncoderConnectedEventData eventData = (MediaLiveEventEncoderConnectedEventData) events[0].getData();
-        Assert.assertEquals("rtmp://liveevent-ec9d26a8.channel.media.azure.net:1935/live/cb5540b10a5646218c1328be95050c59", eventData.getIngestUrl());
-        Assert.assertEquals("Mystream1", eventData.getStreamId());
-        Assert.assertEquals("<ip address>", eventData.getEncoderIp());
-        Assert.assertEquals("3557", eventData.getEncoderPort());
+        assertEquals("rtmp://liveevent-ec9d26a8.channel.media.azure.net:1935/live/cb5540b10a5646218c1328be95050c59", eventData.getIngestUrl());
+        assertEquals("Mystream1", eventData.getStreamId());
+        assertEquals("<ip address>", eventData.getEncoderIp());
+        assertEquals("3557", eventData.getEncoderPort());
     }
 
     @Test
@@ -734,10 +735,10 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof MediaLiveEventConnectionRejectedEventData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof MediaLiveEventConnectionRejectedEventData);
         MediaLiveEventConnectionRejectedEventData eventData = (MediaLiveEventConnectionRejectedEventData) events[0].getData();
-        Assert.assertEquals("Mystream1", eventData.getStreamId());
+        assertEquals("Mystream1", eventData.getStreamId());
     }
 
     @Test
@@ -747,13 +748,13 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof MediaLiveEventEncoderDisconnectedEventData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof MediaLiveEventEncoderDisconnectedEventData);
         MediaLiveEventEncoderDisconnectedEventData eventData = (MediaLiveEventEncoderDisconnectedEventData) events[0].getData();
-        Assert.assertEquals("rtmp://liveevent-ec9d26a8.channel.media.azure.net:1935/live/cb5540b10a5646218c1328be95050c59", eventData.getIngestUrl());
-        Assert.assertEquals("Mystream1", eventData.getStreamId());
-        Assert.assertEquals("<ip address>", eventData.getEncoderIp());
-        Assert.assertEquals("3557", eventData.getEncoderPort());
+        assertEquals("rtmp://liveevent-ec9d26a8.channel.media.azure.net:1935/live/cb5540b10a5646218c1328be95050c59", eventData.getIngestUrl());
+        assertEquals("Mystream1", eventData.getStreamId());
+        assertEquals("<ip address>", eventData.getEncoderIp());
+        assertEquals("3557", eventData.getEncoderPort());
     }
 
     @Test
@@ -763,18 +764,18 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof MediaLiveEventIncomingStreamReceivedEventData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof MediaLiveEventIncomingStreamReceivedEventData);
         MediaLiveEventIncomingStreamReceivedEventData eventData = (MediaLiveEventIncomingStreamReceivedEventData) events[0].getData();
-        Assert.assertEquals("rtmp://liveevent-ec9d26a8.channel.media.azure.net:1935/live/cb5540b10a5646218c1328be95050c59", eventData.getIngestUrl());
-        Assert.assertEquals("<ip address>", eventData.getEncoderIp());
-        Assert.assertEquals("3557", eventData.getEncoderPort());
+        assertEquals("rtmp://liveevent-ec9d26a8.channel.media.azure.net:1935/live/cb5540b10a5646218c1328be95050c59", eventData.getIngestUrl());
+        assertEquals("<ip address>", eventData.getEncoderIp());
+        assertEquals("3557", eventData.getEncoderPort());
 
-        Assert.assertEquals("audio", eventData.getTrackType());
-        Assert.assertEquals("audio_160000", eventData.getTrackName());
-        Assert.assertEquals("66", eventData.getTimestamp());
-        Assert.assertEquals("1950", eventData.getDuration());
-        Assert.assertEquals("1000", eventData.getTimescale());
+        assertEquals("audio", eventData.getTrackType());
+        assertEquals("audio_160000", eventData.getTrackName());
+        assertEquals("66", eventData.getTimestamp());
+        assertEquals("1950", eventData.getDuration());
+        assertEquals("1000", eventData.getTimescale());
     }
 
     @Test
@@ -784,15 +785,15 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof MediaLiveEventIncomingStreamsOutOfSyncEventData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof MediaLiveEventIncomingStreamsOutOfSyncEventData);
         MediaLiveEventIncomingStreamsOutOfSyncEventData eventData = (MediaLiveEventIncomingStreamsOutOfSyncEventData) events[0].getData();
-        Assert.assertEquals("10999", eventData.getMinLastTimestamp());
-        Assert.assertEquals("video", eventData.getTypeOfStreamWithMinLastTimestamp());
-        Assert.assertEquals("100999", eventData.getMaxLastTimestamp());
-        Assert.assertEquals("audio", eventData.getTypeOfStreamWithMaxLastTimestamp());
-        Assert.assertEquals("1000", eventData.getTimescaleOfMinLastTimestamp());
-        Assert.assertEquals("1000", eventData.getTimescaleOfMaxLastTimestamp());
+        assertEquals("10999", eventData.getMinLastTimestamp());
+        assertEquals("video", eventData.getTypeOfStreamWithMinLastTimestamp());
+        assertEquals("100999", eventData.getMaxLastTimestamp());
+        assertEquals("audio", eventData.getTypeOfStreamWithMaxLastTimestamp());
+        assertEquals("1000", eventData.getTimescaleOfMinLastTimestamp());
+        assertEquals("1000", eventData.getTimescaleOfMaxLastTimestamp());
     }
 
     @Test
@@ -802,14 +803,14 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof MediaLiveEventIncomingVideoStreamsOutOfSyncEventData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof MediaLiveEventIncomingVideoStreamsOutOfSyncEventData);
         MediaLiveEventIncomingVideoStreamsOutOfSyncEventData eventData = (MediaLiveEventIncomingVideoStreamsOutOfSyncEventData) events[0].getData();
-        Assert.assertEquals("10999", eventData.getFirstTimestamp());
-        Assert.assertEquals("2000", eventData.getFirstDuration());
-        Assert.assertEquals("100999", eventData.getSecondTimestamp());
-        Assert.assertEquals("2000", eventData.getSecondDuration());
-        Assert.assertEquals("1000", eventData.getTimescale());
+        assertEquals("10999", eventData.getFirstTimestamp());
+        assertEquals("2000", eventData.getFirstDuration());
+        assertEquals("100999", eventData.getSecondTimestamp());
+        assertEquals("2000", eventData.getSecondDuration());
+        assertEquals("1000", eventData.getTimescale());
     }
 
     @Test
@@ -819,14 +820,14 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof MediaLiveEventIncomingDataChunkDroppedEventData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof MediaLiveEventIncomingDataChunkDroppedEventData);
         MediaLiveEventIncomingDataChunkDroppedEventData eventData = (MediaLiveEventIncomingDataChunkDroppedEventData) events[0].getData();
-        Assert.assertEquals("8999", eventData.getTimestamp());
-        Assert.assertEquals("video", eventData.getTrackType());
-        Assert.assertEquals("video1", eventData.getTrackName());
-        Assert.assertEquals("1000", eventData.getTimescale());
-        Assert.assertEquals("FragmentDrop_OverlapTimestamp", eventData.getResultCode());
+        assertEquals("8999", eventData.getTimestamp());
+        assertEquals("video", eventData.getTrackType());
+        assertEquals("video1", eventData.getTrackName());
+        assertEquals("1000", eventData.getTimescale());
+        assertEquals("FragmentDrop_OverlapTimestamp", eventData.getResultCode());
     }
 
     @Test
@@ -836,16 +837,16 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof MediaLiveEventIngestHeartbeatEventData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof MediaLiveEventIngestHeartbeatEventData);
         MediaLiveEventIngestHeartbeatEventData eventData = (MediaLiveEventIngestHeartbeatEventData) events[0].getData();
-        Assert.assertEquals("video", eventData.getTrackType());
-        Assert.assertEquals("video", eventData.getTrackName());
-        Assert.assertEquals("11999", eventData.getLastTimestamp());
-        Assert.assertEquals("1000", eventData.getTimescale());
-        Assert.assertTrue(eventData.isUnexpectedBitrate());
-        Assert.assertEquals("Running", eventData.getState());
-        Assert.assertFalse(eventData.isHealthy());
+        assertEquals("video", eventData.getTrackType());
+        assertEquals("video", eventData.getTrackName());
+        assertEquals("11999", eventData.getLastTimestamp());
+        assertEquals("1000", eventData.getTimescale());
+        assertTrue(eventData.isUnexpectedBitrate());
+        assertEquals("Running", eventData.getState());
+        assertFalse(eventData.isHealthy());
     }
 
     @Test
@@ -855,15 +856,15 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof MediaLiveEventTrackDiscontinuityDetectedEventData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof MediaLiveEventTrackDiscontinuityDetectedEventData);
         MediaLiveEventTrackDiscontinuityDetectedEventData eventData = (MediaLiveEventTrackDiscontinuityDetectedEventData) events[0].getData();
-        Assert.assertEquals("video", eventData.getTrackType());
-        Assert.assertEquals("video", eventData.getTrackName());
-        Assert.assertEquals("10999", eventData.getPreviousTimestamp());
-        Assert.assertEquals("14999", eventData.getNewTimestamp());
-        Assert.assertEquals("1000", eventData.getTimescale());
-        Assert.assertEquals("4000", eventData.getDiscontinuityGap());
+        assertEquals("video", eventData.getTrackType());
+        assertEquals("video", eventData.getTrackName());
+        assertEquals("10999", eventData.getPreviousTimestamp());
+        assertEquals("14999", eventData.getNewTimestamp());
+        assertEquals("1000", eventData.getTimescale());
+        assertEquals("4000", eventData.getDiscontinuityGap());
     }
 
     // Resource Manager (Azure Subscription/Resource Group) events
@@ -874,10 +875,10 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof ResourceWriteFailureData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof ResourceWriteFailureData);
         ResourceWriteFailureData eventData = (ResourceWriteFailureData) events[0].getData();
-        Assert.assertEquals("72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.getTenantId());
+        assertEquals("72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.getTenantId());
     }
 
     @Test
@@ -887,10 +888,10 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof ResourceWriteCancelData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof ResourceWriteCancelData);
         ResourceWriteCancelData eventData = (ResourceWriteCancelData) events[0].getData();
-        Assert.assertEquals("72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.getTenantId());
+        assertEquals("72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.getTenantId());
     }
 
     @Test
@@ -900,10 +901,10 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof ResourceDeleteSuccessData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof ResourceDeleteSuccessData);
         ResourceDeleteSuccessData eventData = (ResourceDeleteSuccessData) events[0].getData();
-        Assert.assertEquals("72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.getTenantId());
+        assertEquals("72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.getTenantId());
     }
 
     @Test
@@ -913,10 +914,10 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof ResourceDeleteFailureData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof ResourceDeleteFailureData);
         ResourceDeleteFailureData eventData = (ResourceDeleteFailureData) events[0].getData();
-        Assert.assertEquals("72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.getTenantId());
+        assertEquals("72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.getTenantId());
     }
 
     @Test
@@ -926,10 +927,10 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof ResourceDeleteCancelData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof ResourceDeleteCancelData);
         ResourceDeleteCancelData eventData = (ResourceDeleteCancelData) events[0].getData();
-        Assert.assertEquals("72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.getTenantId());
+        assertEquals("72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.getTenantId());
     }
 
     @Test
@@ -939,10 +940,10 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof ResourceActionSuccessData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof ResourceActionSuccessData);
         ResourceActionSuccessData eventData = (ResourceActionSuccessData) events[0].getData();
-        Assert.assertEquals("72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.getTenantId());
+        assertEquals("72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.getTenantId());
     }
 
     @Test
@@ -952,10 +953,10 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof ResourceActionFailureData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof ResourceActionFailureData);
         ResourceActionFailureData eventData = (ResourceActionFailureData) events[0].getData();
-        Assert.assertEquals("72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.getTenantId());
+        assertEquals("72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.getTenantId());
     }
 
     @Test
@@ -965,10 +966,10 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof ResourceActionCancelData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof ResourceActionCancelData);
         ResourceActionCancelData eventData = (ResourceActionCancelData) events[0].getData();
-        Assert.assertEquals("72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.getTenantId());
+        assertEquals("72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.getTenantId());
     }
 
     // ServiceBus events
@@ -979,10 +980,10 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof ServiceBusActiveMessagesAvailableWithNoListenersEventData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof ServiceBusActiveMessagesAvailableWithNoListenersEventData);
         ServiceBusActiveMessagesAvailableWithNoListenersEventData eventData = (ServiceBusActiveMessagesAvailableWithNoListenersEventData) events[0].getData();
-        Assert.assertEquals("testns1", eventData.getNamespaceName());
+        assertEquals("testns1", eventData.getNamespaceName());
     }
 
     @Test
@@ -992,10 +993,10 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof ServiceBusDeadletterMessagesAvailableWithNoListenersEventData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof ServiceBusDeadletterMessagesAvailableWithNoListenersEventData);
         ServiceBusDeadletterMessagesAvailableWithNoListenersEventData eventData = (ServiceBusDeadletterMessagesAvailableWithNoListenersEventData) events[0].getData();
-        Assert.assertEquals("testns1", eventData.getNamespaceName());
+        assertEquals("testns1", eventData.getNamespaceName());
     }
 
     // Storage events
@@ -1006,10 +1007,10 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof StorageBlobCreatedEventData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof StorageBlobCreatedEventData);
         StorageBlobCreatedEventData eventData = (StorageBlobCreatedEventData) events[0].getData();
-        Assert.assertEquals("https://myaccount.blob.core.windows.net/testcontainer/file1.txt", eventData.getUrl());
+        assertEquals("https://myaccount.blob.core.windows.net/testcontainer/file1.txt", eventData.getUrl());
     }
 
     @Test
@@ -1019,10 +1020,10 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof StorageBlobDeletedEventData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof StorageBlobDeletedEventData);
         StorageBlobDeletedEventData eventData = (StorageBlobDeletedEventData) events[0].getData();
-        Assert.assertEquals("https://example.blob.core.windows.net/testcontainer/testfile.txt", eventData.getUrl());
+        assertEquals("https://example.blob.core.windows.net/testcontainer/testfile.txt", eventData.getUrl());
     }
 
     // Resource Manager (Azure Subscription/Resource Group) events
@@ -1033,10 +1034,10 @@ public class DeserializationTests {
         EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
         EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
 
-        Assert.assertNotNull(events);
-        Assert.assertTrue(events[0].getData() instanceof ResourceWriteSuccessData);
+        assertNotNull(events);
+        assertTrue(events[0].getData() instanceof ResourceWriteSuccessData);
         ResourceWriteSuccessData eventData = (ResourceWriteSuccessData) events[0].getData();
-        Assert.assertEquals("72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.getTenantId());
+        assertEquals("72f988bf-86f1-41af-91ab-2d7cd011db47", eventData.getTenantId());
     }
 
     // TODO: When new event types are introduced, add one test here for each event type

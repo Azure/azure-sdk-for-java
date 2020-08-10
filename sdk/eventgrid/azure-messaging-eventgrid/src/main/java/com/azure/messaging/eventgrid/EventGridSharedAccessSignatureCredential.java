@@ -27,7 +27,7 @@ public final class EventGridSharedAccessSignatureCredential {
 
     private String accessToken;
 
-    public static String createSharedAccessSignature(String resource, OffsetDateTime expiration,
+    public static String createSharedAccessSignature(String endpoint, OffsetDateTime expiration,
                                                      AzureKeyCredential key) {
         try {
             String resKey = "r";
@@ -35,7 +35,7 @@ public final class EventGridSharedAccessSignatureCredential {
             String signKey = "s";
 
             Charset charset = StandardCharsets.UTF_8;
-            String encodedResource = URLEncoder.encode(resource, charset.name());
+            String encodedResource = URLEncoder.encode(endpoint, charset.name());
             String encodedExpiration = URLEncoder.encode(expiration.atZoneSameInstant(ZoneOffset.UTC).format(
                 DateTimeFormatter.ofPattern("M/d/yyyy h:m:s a")),
                 charset.name());
@@ -83,6 +83,6 @@ public final class EventGridSharedAccessSignatureCredential {
      * @param accessSignature the shared access signature token to use.
      */
     public void update(String accessSignature) {
-        this.accessToken = accessToken;
+        this.accessToken = accessSignature;
     }
 }

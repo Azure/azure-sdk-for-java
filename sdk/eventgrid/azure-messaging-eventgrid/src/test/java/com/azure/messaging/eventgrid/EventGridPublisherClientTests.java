@@ -6,33 +6,69 @@ package com.azure.messaging.eventgrid;
 
 
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.TestBase;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.JacksonAdapter;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import org.junit.Ignore;
-import org.junit.Test;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class EventGridPublisherClientTests {
+
+public class EventGridPublisherClientTests extends TestBase {
+
+    private EventGridPublisherClientBuilder builder;
+
+    private boolean playback;
+
+    private static final String EVENTGRID_ENDPOINT = "EG_ENDPOINT";
+
+    private static final String CLOUD_ENDPOINT = "EG_CLOUD_ENDPOINT";
+
+    private static final String CUSTOM_ENDPOINT = "EG_CUSTOM_ENDPOINT";
+
+    private static final String EVENTGRID_KEY = "EG_KEY";
+
+    private static final String CLOUD_KEY = "EG_CLOUD_KEY";
+
+    private static final String CUSTOM_KEY = "EG_CUSTOM_KEY";
+
+    private static final String DUMMY_ENDPOINT = "dummyEndpoint";
+
+    private static final String DUMMY_KEY = "dummyKey";
+
+    @Override
+    protected void beforeTest() {
+        playback = interceptorManager.isPlaybackMode();
+
+        builder = new EventGridPublisherClientBuilder();
+
+        if (playback) {
+            builder.httpClient(interceptorManager.getPlaybackClient());
+        } else {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+                .retryPolicy(new RetryPolicy());
+        }
+    }
 
     @Test
-    @Ignore
     public void testPublishEventGridEvents() {
-        // using @Ignore because it requires the correct environment variables
-        String endpoint = System.getenv("EG_ENDPOINT");
-        String key = System.getenv("EG_KEY");
-        EventGridPublisherAsyncClient egClient = new EventGridPublisherClientBuilder()
-            .keyCredential(new AzureKeyCredential(key))
-            .endpoint(endpoint)
+        EventGridPublisherAsyncClient egClient = builder
+            .endpoint(getEndpoint(EVENTGRID_ENDPOINT))
+            .keyCredential(getKey(EVENTGRID_KEY))
             .buildAsyncClient();
 
         List<EventGridEvent> events = new ArrayList<>();
@@ -47,25 +83,21 @@ public class EventGridPublisherClientTests {
         Response<Void> response = egClient.sendEventsWithResponse(events).block();
 
         assertNotNull(response);
-        System.out.println("Got response " + response.getStatusCode());
         assertEquals(response.getStatusCode(), 200);
 
     }
 
     @Test
-    @Ignore
     public void testSasToken() {
-        // using @Ignore because it requires the correct environment variables
-        String endpoint = System.getenv("EG_ENDPOINT");
-        String key = System.getenv("EG_KEY");
-        EventGridSharedAccessSignatureCredential sasToken = new EventGridSharedAccessSignatureCredential(
-            EventGridSharedAccessSignatureCredential.createSharedAccessSignature(
-                endpoint, OffsetDateTime.now().plusMinutes(20), new AzureKeyCredential(key)));
-        System.out.println(sasToken.getSignature());
+        String sasToken = EventGridSharedAccessSignatureCredential.createSharedAccessSignature(
+            getEndpoint(EVENTGRID_ENDPOINT),
+            OffsetDateTime.now().plusMinutes(20),
+            getKey(EVENTGRID_KEY)
+        );
 
         EventGridPublisherAsyncClient egClient = new EventGridPublisherClientBuilder()
-            .sharedAccessToken(sasToken)
-            .endpoint(endpoint)
+            .sharedAccessSignatureCredential(new EventGridSharedAccessSignatureCredential(sasToken))
+            .endpoint(getEndpoint(EVENTGRID_ENDPOINT))
             .buildAsyncClient();
 
         List<EventGridEvent> events = new ArrayList<>();
@@ -80,19 +112,14 @@ public class EventGridPublisherClientTests {
         Response<Void> response = egClient.sendEventsWithResponse(events).block();
 
         assertNotNull(response);
-        System.out.println("Got response " + response.getStatusCode());
         assertEquals(response.getStatusCode(), 200);
     }
 
     @Test
-    @Ignore
     public void testPublishCloudEvents() {
-        // using @Ignore because it requires the correct environment variables
-        String endpoint = System.getenv("EG_CLOUD_ENDPOINT");
-        String key = System.getenv("EG_CLOUD_KEY");
-        EventGridPublisherAsyncClient egClient = new EventGridPublisherClientBuilder()
-            .keyCredential(new AzureKeyCredential(key))
-            .endpoint(endpoint)
+        EventGridPublisherAsyncClient egClient = builder
+            .endpoint(getEndpoint(CLOUD_ENDPOINT))
+            .keyCredential(getKey(CLOUD_KEY))
             .buildAsyncClient();
 
         List<CloudEvent> events = new ArrayList<>();
@@ -104,15 +131,15 @@ public class EventGridPublisherClientTests {
                 put("Field3", "Value3");
             }})
             .setTime(OffsetDateTime.now()));
+
         Response<Void> response = egClient.sendCloudEventsWithResponse(events).block();
 
         assertNotNull(response);
-        System.out.println("Got response " + response.getStatusCode());
         assertEquals(response.getStatusCode(), 200);
     }
 
     public static class TestData {
-        @JsonProperty
+
         private String name;
 
         public TestData setName(String name) {
@@ -126,14 +153,23 @@ public class EventGridPublisherClientTests {
     }
 
     @Test
-    @Ignore
     public void testPublishCloudEventsCustomSerializer() {
-        String endpoint = System.getenv("EG_CLOUD_ENDPOINT");
-        String key = System.getenv("EG_CLOUD_KEY");
-        EventGridPublisherAsyncClient egClient = new EventGridPublisherClientBuilder()
-            .keyCredential(new AzureKeyCredential(key))
-            .endpoint(endpoint)
-            .serializer(JacksonAdapter.createDefaultSerializerAdapter())
+
+        // Custom Serializer for testData
+        JacksonAdapter customSerializer = new JacksonAdapter();
+        customSerializer.serializer().registerModule(new SimpleModule().addSerializer(TestData.class,
+            new JsonSerializer<TestData>() {
+                @Override
+                public void serialize(TestData testData, JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
+                    throws IOException {
+                    jsonGenerator.writeString(testData.getName());
+                }
+            }));
+
+        EventGridPublisherAsyncClient egClient = builder
+            .keyCredential(getKey(CLOUD_KEY))
+            .endpoint(getEndpoint(CLOUD_ENDPOINT))
+            .serializer(customSerializer)
             .buildAsyncClient();
 
         List<CloudEvent> events = new ArrayList<>();
@@ -146,20 +182,15 @@ public class EventGridPublisherClientTests {
         Response<Void> response = egClient.sendCloudEventsWithResponse(events).block();
 
         assertNotNull(response);
-        System.out.println("Got response " + response.getStatusCode());
         assertEquals(response.getStatusCode(), 200);
     }
 
 
     @Test
-    @Ignore
     public void testPublishCustomEvents() {
-        // using @Ignore because it requires the correct environment variables
-        String endpoint = System.getenv("EG_CUSTOM_ENDPOINT");
-        String key = System.getenv("EG_CUSTOM_KEY");
-        EventGridPublisherAsyncClient egClient = new EventGridPublisherClientBuilder()
-            .keyCredential(new AzureKeyCredential(key))
-            .endpoint(endpoint)
+        EventGridPublisherAsyncClient egClient = builder
+            .keyCredential(getKey(CUSTOM_KEY))
+            .endpoint(getEndpoint(CUSTOM_ENDPOINT))
             .buildAsyncClient();
 
         List<Object> events = new ArrayList<>();
@@ -174,19 +205,14 @@ public class EventGridPublisherClientTests {
         Response<Void> response = egClient.sendCustomEventsWithResponse(events).block();
 
         assertNotNull(response);
-        System.out.println("Got response " + response.getStatusCode());
         assertEquals(response.getStatusCode(), 200);
     }
 
     @Test
-    @Ignore
     public void testPublishEventGridEventsSync() {
-        // using @Ignore because it requires the correct environment variables
-        String endpoint = System.getenv("EG_ENDPOINT");
-        String key = System.getenv("EG_KEY");
-        EventGridPublisherClient egClient = new EventGridPublisherClientBuilder()
-            .keyCredential(new AzureKeyCredential(key))
-            .endpoint(endpoint)
+        EventGridPublisherClient egClient = builder
+            .keyCredential(getKey(EVENTGRID_KEY))
+            .endpoint(getEndpoint(EVENTGRID_ENDPOINT))
             .buildClient();
 
         List<EventGridEvent> events = new ArrayList<>();
@@ -199,22 +225,18 @@ public class EventGridPublisherClientTests {
             .setEventTime(OffsetDateTime.now()));
 
         Response<Void> response = egClient.sendEventsWithResponse(events, Context.NONE);
+
         assertNotNull(response);
-        System.out.println("Got response " + response.getStatusCode());
         assertEquals(response.getStatusCode(), 200);
 
 
     }
 
     @Test
-    @Ignore
     public void testPublishCloudEventsSync() {
-        // using @Ignore because it requires the correct environment variables
-        String endpoint = System.getenv("EG_CLOUD_ENDPOINT");
-        String key = System.getenv("EG_CLOUD_KEY");
         EventGridPublisherClient egClient = new EventGridPublisherClientBuilder()
-            .keyCredential(new AzureKeyCredential(key))
-            .endpoint(endpoint)
+            .keyCredential(getKey(CLOUD_KEY))
+            .endpoint(getEndpoint(CLOUD_ENDPOINT))
             .buildClient();
 
         List<CloudEvent> events = new ArrayList<>();
@@ -229,20 +251,16 @@ public class EventGridPublisherClientTests {
             .setTime(OffsetDateTime.now()));
 
         Response<Void> response = egClient.sendCloudEventsWithResponse(events, Context.NONE);
+
         assertNotNull(response);
-        System.out.println("Got response " + response.getStatusCode());
         assertEquals(response.getStatusCode(), 200);
     }
 
     @Test
-    @Ignore
     public void testPublishCustomEventsSync() {
-        // using @Ignore because it requires the correct environment variables
-        String endpoint = System.getenv("EG_CUSTOM_ENDPOINT");
-        String key = System.getenv("EG_CUSTOM_KEY");
         EventGridPublisherClient egClient = new EventGridPublisherClientBuilder()
-            .keyCredential(new AzureKeyCredential(key))
-            .endpoint(endpoint)
+            .keyCredential(getKey(CUSTOM_KEY))
+            .endpoint(getEndpoint(CUSTOM_ENDPOINT))
             .buildClient();
 
         List<Object> events = new ArrayList<>();
@@ -255,8 +273,22 @@ public class EventGridPublisherClientTests {
             }});
         }
         Response<Void> response = egClient.sendCustomEventsWithResponse(events, Context.NONE);
+
         assertNotNull(response);
-        System.out.println("Got response " + response.getStatusCode());
         assertEquals(response.getStatusCode(), 200);
+    }
+
+    private String getEndpoint(String liveEnvName) {
+        if (playback) {
+            return DUMMY_ENDPOINT;
+        }
+        return System.getenv(liveEnvName);
+    }
+
+    private AzureKeyCredential getKey(String liveEnvName) {
+        if (playback) {
+            return new AzureKeyCredential(DUMMY_KEY);
+        }
+        return new AzureKeyCredential(System.getenv(liveEnvName));
     }
 }
