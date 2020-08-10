@@ -12,6 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class UserAgentContainerTest {
     private final static String SPACE = " ";
+    private final static int TIMEOUT = 40000;
 
     @Test(groups = {"unit"})
     public void userAgentContainerSetSuffix() {
@@ -37,7 +38,7 @@ public class UserAgentContainerTest {
         assertThat(userAgentContainer.getUserAgent()).isEqualTo(expectedString);
     }
 
-    @Test(groups = {"emulator"})
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void UserAgentIntegrationTest() {
         String userProvidedSuffix = "test-application-id";
         CosmosAsyncClient gatewayClient = null;
