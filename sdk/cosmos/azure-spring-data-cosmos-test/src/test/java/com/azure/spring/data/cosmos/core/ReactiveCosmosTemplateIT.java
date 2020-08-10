@@ -116,6 +116,7 @@ public class ReactiveCosmosTemplateIT {
                 new MappingCosmosConverter(mappingContext, null);
             cosmosTemplate = new ReactiveCosmosTemplate(dbFactory, cosmosConfig, dbConverter);
             cosmosTemplate.createContainerIfNotExists(personInfo).block();
+            cosmosTemplate.createContainerIfNotExists(CosmosEntityInformation.getInstance(GenIdEntity.class)).block();
             initialized = true;
         }
 

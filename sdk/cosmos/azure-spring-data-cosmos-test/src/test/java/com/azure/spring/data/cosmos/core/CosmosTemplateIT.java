@@ -111,7 +111,7 @@ public class CosmosTemplateIT {
                 null);
 
             cosmosTemplate = new CosmosTemplate(cosmosFactory, cosmosConfig, cosmosConverter);
-            cosmosTemplate.createContainerIfNotExists(CosmosEntityInformation.getInstance(Person.class));
+            cosmosTemplate.createContainerIfNotExists(personInfo);
             cosmosTemplate.createContainerIfNotExists(CosmosEntityInformation.getInstance(GenIdEntity.class));
             initialized = true;
         }
