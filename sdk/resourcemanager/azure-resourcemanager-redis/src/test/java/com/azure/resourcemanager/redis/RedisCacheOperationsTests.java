@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
 
 public class RedisCacheOperationsTests extends RedisManagementTest {
     @Test
+    @SuppressWarnings("unchecked")
     public void canCRUDRedisCache() throws Exception {
         // Create
         Creatable<ResourceGroup> resourceGroups = resourceManager.resourceGroups()

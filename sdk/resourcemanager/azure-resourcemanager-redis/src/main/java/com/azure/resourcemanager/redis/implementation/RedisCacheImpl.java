@@ -535,12 +535,10 @@ class RedisCacheImpl
 
     @Override
     public Mono<RedisCache> refreshAsync() {
-        return super.refreshAsync().map(redisCache -> {
-            RedisCacheImpl impl = (RedisCacheImpl) redisCache;
-            impl.firewallRules.refresh();
-            impl.patchSchedules.refresh();
-            return impl;
-        });
+        return super.refreshAsync()
+            .then(this.firewallRules.refreshAsync())
+            .then(this.patchSchedules.refreshAsync())
+            .then(Mono.just(this));
     }
 
     @Override
