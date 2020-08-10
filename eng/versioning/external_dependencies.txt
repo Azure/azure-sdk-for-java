@@ -31,7 +31,7 @@ com.microsoft.rest.v2:client-runtime;2.1.1
 com.microsoft.sqlserver:mssql-jdbc;7.4.1.jre8
 com.microsoft.azure:spring-data-cosmosdb;2.3.0
 com.microsoft.spring.data.gremlin:spring-data-gremlin;2.3.0
-com.squareup.okhttp3:okhttp;4.2.2
+com.squareup.okhttp3:okhttp;4.8.1
 com.zaxxer:HikariCP;3.4.5
 commons-codec:commons-codec;1.14
 commons-net:commons-net;3.6

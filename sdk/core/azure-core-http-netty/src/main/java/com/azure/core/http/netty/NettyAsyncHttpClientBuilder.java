@@ -28,13 +28,12 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * Builder class responsible for creating instances of {@link NettyAsyncHttpClient}.
+ * Builder class responsible for creating instances of {@link com.azure.core.http.HttpClient} backed by Reactor Netty.
  *
  * <p><strong>Building a new HttpClient instance</strong></p>
  *
  * {@codesnippet com.azure.core.http.netty.instantiation-simple}
  *
- * @see NettyAsyncHttpClient
  * @see HttpClient
  */
 public class NettyAsyncHttpClientBuilder {
@@ -57,7 +56,7 @@ public class NettyAsyncHttpClientBuilder {
 
     /**
      * Creates a new builder instance, where a builder is capable of generating multiple instances of {@link
-     * NettyAsyncHttpClient}.
+     * com.azure.core.http.HttpClient} backed by Reactor Netty.
      */
     public NettyAsyncHttpClientBuilder() {
         this.baseHttpClient = null;
@@ -65,7 +64,7 @@ public class NettyAsyncHttpClientBuilder {
 
     /**
      * Creates a new builder instance, where a builder is capable of generating multiple instances of {@link
-     * NettyAsyncHttpClient} based on the provided reactor netty HttpClient.
+     * HttpClient} based on the provided Reactor Netty HttpClient.
      *
      * {@codesnippet com.azure.core.http.netty.from-existing-http-client}
      *
