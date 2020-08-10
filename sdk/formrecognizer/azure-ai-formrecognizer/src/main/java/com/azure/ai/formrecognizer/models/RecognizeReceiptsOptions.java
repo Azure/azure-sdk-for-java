@@ -10,7 +10,7 @@ import java.time.Duration;
  * Options that may be passed when using recognize receipt APIs on Form Recognizer client.
  */
 @Fluent
-public class RecognizeReceiptOptions {
+public class RecognizeReceiptsOptions {
     private FormContentType contentType;
     private boolean includeFieldElements;
     private Duration pollInterval = DEFAULT_POLL_INTERVAL;
@@ -49,9 +49,9 @@ public class RecognizeReceiptOptions {
      *
      * @param contentType the provided form content type.
      *
-     * @return the updated {@code RecognizeReceiptOptions} value.
+     * @return the updated {@code RecognizeReceiptsOptions} value.
      */
-    public RecognizeReceiptOptions setContentType(final FormContentType contentType) {
+    public RecognizeReceiptsOptions setContentType(final FormContentType contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -61,9 +61,9 @@ public class RecognizeReceiptOptions {
      *
      * @param includeFieldElements the boolean to specify if to include form element references in the result.
      *
-     * @return the updated {@code RecognizeReceiptOptions} value.
+     * @return the updated {@code RecognizeReceiptsOptions} value.
      */
-    public RecognizeReceiptOptions setFieldElementsIncluded(final boolean includeFieldElements) {
+    public RecognizeReceiptsOptions setFieldElementsIncluded(final boolean includeFieldElements) {
         this.includeFieldElements = includeFieldElements;
         return this;
     }
@@ -74,9 +74,9 @@ public class RecognizeReceiptOptions {
      *
      * @param pollInterval the duration to specify between each poll for the operation status.
      *
-     * @return the updated {@code RecognizeReceiptOptions} value.
+     * @return the updated {@code RecognizeReceiptsOptions} value.
      */
-    public RecognizeReceiptOptions setPollInterval(final Duration pollInterval) {
+    public RecognizeReceiptsOptions setPollInterval(final Duration pollInterval) {
         this.pollInterval = pollInterval == null ? DEFAULT_POLL_INTERVAL : pollInterval;
         return this;
     }

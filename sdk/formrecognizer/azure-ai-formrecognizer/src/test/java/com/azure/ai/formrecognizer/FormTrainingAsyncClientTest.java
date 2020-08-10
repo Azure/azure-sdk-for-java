@@ -3,7 +3,7 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.models.RecognizeReceiptOptions;
+import com.azure.ai.formrecognizer.models.RecognizeReceiptsOptions;
 import com.azure.ai.formrecognizer.models.ErrorInformation;
 import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.FormRecognizerException;
@@ -73,7 +73,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
         blankPdfDataRunner(data -> {
             SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
                 formRecognizerClient.beginRecognizeReceipts(toFluxByteBuffer(data), BLANK_FORM_FILE_LENGTH,
-                    new RecognizeReceiptOptions()
+                    new RecognizeReceiptsOptions()
                         .setContentType(FormContentType.APPLICATION_PDF)
                         .setPollInterval(durationTestMode))
                     .getSyncPoller();

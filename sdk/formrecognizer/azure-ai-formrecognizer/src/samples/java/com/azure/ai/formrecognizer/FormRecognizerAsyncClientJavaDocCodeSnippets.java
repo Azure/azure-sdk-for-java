@@ -4,11 +4,11 @@
 package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.RecognizeContentOptions;
-import com.azure.ai.formrecognizer.models.RecognizeReceiptOptions;
+import com.azure.ai.formrecognizer.models.RecognizeReceiptsOptions;
 import com.azure.ai.formrecognizer.models.FieldValueType;
 import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.FormField;
-import com.azure.ai.formrecognizer.models.RecognizeCustomFormOptions;
+import com.azure.ai.formrecognizer.models.RecognizeCustomFormsOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpPipeline;
@@ -89,16 +89,16 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
 
     /**
      * Code snippet for
-     * {@link FormRecognizerAsyncClient#beginRecognizeCustomFormsFromUrl(String, String, RecognizeCustomFormOptions)} with options
+     * {@link FormRecognizerAsyncClient#beginRecognizeCustomFormsFromUrl(String, String, RecognizeCustomFormsOptions)} with options
      */
     public void beginRecognizeCustomFormsFromUrlWithOptions() {
-        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl#string-string-RecognizeCustomFormOptions
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl#string-string-RecognizeCustomFormsOptions
         String formUrl = "{formUrl}";
         String modelId = "{model_id}";
         boolean includeFieldElements = true;
 
         formRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl(modelId, formUrl,
-            new RecognizeCustomFormOptions()
+            new RecognizeCustomFormsOptions()
                 .setFieldElementsIncluded(includeFieldElements)
                 .setPollInterval(Duration.ofSeconds(10)))
             // if training polling operation completed, retrieve the final result.
@@ -110,7 +110,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                     System.out.printf("Field value data text: %s%n", formField.getValueData().getText());
                     System.out.printf("Confidence score: %.2f%n", formField.getConfidence());
                 }));
-        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl#string-string-RecognizeCustomFormOptions
+        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl#string-string-RecognizeCustomFormsOptions
     }
 
     /**
@@ -141,13 +141,13 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
 
     /**
      * Code snippet for
-     * {@link FormRecognizerAsyncClient#beginRecognizeCustomForms(String, Flux, long, RecognizeCustomFormOptions)}
+     * {@link FormRecognizerAsyncClient#beginRecognizeCustomForms(String, Flux, long, RecognizeCustomFormsOptions)}
      * with options
      *
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public void beginRecognizeCustomFormsWithOptions() throws IOException {
-        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#string-Flux-long-RecognizeCustomFormOptions
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#string-Flux-long-RecognizeCustomFormsOptions
         File form = new File("{local/file_path/fileName.jpg}");
         String modelId = "{custom_trained_model_id}";
         boolean includeFieldElements = true;
@@ -156,7 +156,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
 
         // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeCustomForms(modelId, buffer, form.length(),
-            new RecognizeCustomFormOptions()
+            new RecognizeCustomFormsOptions()
                 .setContentType(FormContentType.IMAGE_JPEG)
                 .setFieldElementsIncluded(includeFieldElements)
                 .setPollInterval(Duration.ofSeconds(5)))
@@ -169,7 +169,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                     System.out.printf("Field value data text: %s%n", formField.getValueData().getText());
                     System.out.printf("Confidence score: %.2f%n", formField.getConfidence());
                 }));
-        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#string-Flux-long-RecognizeCustomFormOptions
+        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#string-Flux-long-RecognizeCustomFormsOptions
     }
 
     // Recognize Content
@@ -345,15 +345,15 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link FormRecognizerAsyncClient#beginRecognizeReceiptsFromUrl(String, RecognizeReceiptOptions)}
+     * Code snippet for {@link FormRecognizerAsyncClient#beginRecognizeReceiptsFromUrl(String, RecognizeReceiptsOptions)}
      */
     public void beginRecognizeReceiptsFromUrlWithOptions() {
-        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceiptsFromUrl#string-RecognizeReceiptOptions
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceiptsFromUrl#string-RecognizeReceiptsOptions
         String receiptUrl = "{receiptUrl}";
         boolean includeFieldElements = true;
         // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeReceiptsFromUrl(receiptUrl,
-            new RecognizeReceiptOptions()
+            new RecognizeReceiptsOptions()
                 .setFieldElementsIncluded(includeFieldElements)
                 .setPollInterval(Duration.ofSeconds(5)))
             .flatMap(AsyncPollResponse::getFinalResult)
@@ -410,7 +410,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                     }
                 }
             });
-        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceiptsFromUrl#string-RecognizeReceiptOptions
+        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceiptsFromUrl#string-RecognizeReceiptsOptions
     }
 
     /**
@@ -482,20 +482,20 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link FormRecognizerAsyncClient#beginRecognizeReceipts(Flux, long, RecognizeReceiptOptions)} with
+     * Code snippet for {@link FormRecognizerAsyncClient#beginRecognizeReceipts(Flux, long, RecognizeReceiptsOptions)} with
      * options
      *
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public void beginRecognizeReceiptsWithOptions() throws IOException {
-        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceipts#Flux-long-RecognizeReceiptOptions
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceipts#Flux-long-RecognizeReceiptsOptions
         File receipt = new File("{local/file_path/fileName.jpg}");
         boolean includeFieldElements = true;
         // Utility method to convert input stream to Byte buffer
         Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(receipt.toPath())));
         // if training polling operation completed, retrieve the final result.
         formRecognizerAsyncClient.beginRecognizeReceipts(buffer, receipt.length(),
-            new RecognizeReceiptOptions()
+            new RecognizeReceiptsOptions()
                 .setContentType(FormContentType.IMAGE_JPEG)
                 .setFieldElementsIncluded(includeFieldElements)
                 .setPollInterval(Duration.ofSeconds(5)))
@@ -553,6 +553,6 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                     }
                 }
             });
-        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceipts#Flux-long-RecognizeReceiptOptions
+        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceipts#Flux-long-RecognizeReceiptsOptions
     }
 }
