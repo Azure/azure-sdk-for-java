@@ -11,6 +11,7 @@ import xml.etree.ElementTree as elementTree
 from itertools import takewhile
 
 import in_place
+from termcolor import colored, cprint
 
 EXTERNAL_DEPENDENCIES_FILE = 'eng/versioning/external_dependencies.txt'
 POM = 'https://repo.maven.apache.org/maven2/{group}/{artifact}/{version}/{artifact}-{version}.pom'
@@ -21,6 +22,8 @@ LOG_LEVEL_WARN = 3
 LOG_LEVEL_ERROR = 2
 LOG_LEVEL_NONE = 1
 logLevel = LOG_LEVEL_INFO
+
+os.system('color')
 
 
 class PomModule:
@@ -186,22 +189,22 @@ def print_dict(d):
 
 def debug(string):
     if (logLevel >= LOG_LEVEL_DEBUG):
-        print('[DEBUG] {}'.format(string))
+        print(colored('[DEBUG] {}'.format(string), 'grey'))
 
 
 def info(string):
     if (logLevel >= LOG_LEVEL_INFO):
-        print('[INFO ] {}'.format(string))
+        print(colored('[INFO ] {}'.format(string), 'blue'))
 
 
 def warn(string):
     if (logLevel >= LOG_LEVEL_WARN):
-        print('[WARN ] {}'.format(string))
+        print(colored('[WARN ] {}'.format(string), 'yellow'))
 
 
 def error(string):
     if (logLevel >= LOG_LEVEL_ERROR):
-        print('[WARN ] {}'.format(string))
+        cprint(colored('[WARN ] {}'.format(string), 'red'))
 
 
 class Tests(unittest.TestCase):
@@ -220,7 +223,15 @@ class Tests(unittest.TestCase):
         self.assertEqual(version_bigger_than('1.1-RELEASE', '1.1.1-RELEASE'), False)
 
 
+def log_level_test():
+    debug('This is debug log.')
+    info('This is info log.')
+    warn('This is warn log.')
+    error('This is error log.')
+
+
 if __name__ == '__main__':
     # unittest.main()
-    logLevel = LOG_LEVEL_INFO
-    main()
+    logLevel = LOG_LEVEL_DEBUG
+    log_level_test()
+    # main()
