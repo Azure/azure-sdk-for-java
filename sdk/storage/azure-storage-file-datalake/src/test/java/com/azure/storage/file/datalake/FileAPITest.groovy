@@ -1,12 +1,15 @@
 package com.azure.storage.file.datalake
 
 import com.azure.core.exception.UnexpectedLengthException
+import com.azure.core.http.policy.HttpLogDetailLevel
+import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.util.Context
 import com.azure.core.util.FluxUtil
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
+import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.file.datalake.implementation.util.ModelHelper
 import com.azure.storage.file.datalake.models.DownloadRetryOptions
 import com.azure.storage.common.ParallelTransferOptions
@@ -2236,9 +2239,16 @@ class FileAPITest extends APISpec {
     // Test uploads large amount of data
     def "Async buffered upload"() {
         setup:
-        DataLakeFileAsyncClient fac = getPrimaryServiceClientForWrites(bufferSize)
+        int retryTimeout = Math.toIntExact((long) (bufferSize) * 10)
+        retryTimeout = Math.max(300, retryTimeout)
+        def fac = getServiceClientBuilder(primaryCredential,
+            String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
+            .retryOptions(new RequestRetryOptions(null, null, retryTimeout, null, null, null))
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.HEADERS))
+            .buildAsyncClient()
             .getFileSystemAsyncClient(fscAsync.getFileSystemName())
             .getFileAsyncClient(generatePathName())
+        System.setProperty("AZURE_LOG_LEVEL", "INFO")
         fac.create().block()
 
         when:
@@ -2255,6 +2265,9 @@ class FileAPITest extends APISpec {
                 .assertNext({ assert it == data })
                 .verifyComplete()
         }
+
+        cleanup:
+        System.clearProperty("AZURE_LOG_LEVEL")
 
         where:
         dataSize | bufferSize | numBuffs || blockCount
@@ -2341,9 +2354,17 @@ class FileAPITest extends APISpec {
     // Test uploads large amount of data
     def "Buffered upload chunked source"() {
         setup:
-        DataLakeFileAsyncClient fac = getPrimaryServiceClientForWrites(bufferSize * Constants.MB)
+        int retryTimeout = Math.toIntExact((long) (bufferSize) * 10)
+        retryTimeout = Math.max(300, retryTimeout)
+        def fac = getServiceClientBuilder(primaryCredential,
+            String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
+            .retryOptions(new RequestRetryOptions(null, null, retryTimeout, null, null, null))
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.HEADERS))
+            .buildAsyncClient()
             .getFileSystemAsyncClient(fscAsync.getFileSystemName())
             .getFileAsyncClient(generatePathName())
+        System.setProperty("AZURE_LOG_LEVEL", "INFO")
+
         fac.create().block()
         /*
         This test should validate that the upload should work regardless of what format the passed data is in because
@@ -2361,6 +2382,9 @@ class FileAPITest extends APISpec {
         StepVerifier.create(uploadOperation.then(collectBytesInBuffer(fac.read())))
             .assertNext({ assert compareListToBuffer(dataList, it) })
             .verifyComplete()
+
+        cleanup:
+        System.clearProperty("AZURE_LOG_LEVEL")
 
         where:
         dataSizeList          | bufferSize | numBuffers || blockCount

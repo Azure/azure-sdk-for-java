@@ -55,7 +55,8 @@ public class FluxInputStream extends InputStream {
         this.subscribed = false;
         this.fluxComplete = false;
         this.waitingForData = false;
-        this.data = data;
+        this.data = data
+            .doOnNext(b -> System.out.println("Received buffer with remaining: " + b.remaining()));
         this.lock = new ReentrantLock();
         this.dataAvailable = lock.newCondition();
     }

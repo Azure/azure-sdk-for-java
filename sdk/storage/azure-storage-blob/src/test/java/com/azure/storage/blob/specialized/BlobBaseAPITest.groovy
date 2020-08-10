@@ -130,6 +130,7 @@ class BlobBaseAPITest extends APISpec {
 
         cleanup:
         bc = oldBc
+        System.clearProperty("AZURE_LOG_LEVEL")
 
         // To calculate the size of data being tested = numCopies * 32 bytes
         where:

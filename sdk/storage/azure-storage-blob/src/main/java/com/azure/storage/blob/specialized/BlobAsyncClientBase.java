@@ -1775,7 +1775,7 @@ public class BlobAsyncClientBase {
             .map(response -> new BlobQueryAsyncResponse(response.getRequest(), response.getStatusCode(),
                 response.getHeaders(),
                 /* Parse the avro reactive stream. */
-                new BlobQueryReader(response.getValue(), queryOptions.getProgressConsumer(),
+                new BlobQueryReader(response.getValue().doOnNext(b -> System.out.println("Received raw buffer with remaining: " + b.remaining())), queryOptions.getProgressConsumer(),
                     queryOptions.getErrorConsumer())
                     .read(),
                 response.getDeserializedHeaders()));
