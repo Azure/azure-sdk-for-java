@@ -51,7 +51,7 @@ public class AdvancedDiffLabeledUnlabeledData {
             client.beginRecognizeCustomForms(
                 "{labeled_model_Id}", new FileInputStream(analyzeFile), analyzeFile.length(),
                 new RecognizeCustomFormsOptions()
-                    .setContentType(FormContentType.APPLICATION_PDF)
+                    .setContentType(FormContentType.IMAGE_JPEG)
                     .setFieldElementsIncluded(true)
                     .setPollInterval(Duration.ofSeconds(5)), Context.NONE)
                 .getFinalResult();
@@ -60,7 +60,7 @@ public class AdvancedDiffLabeledUnlabeledData {
             client.beginRecognizeCustomForms("{unlabeled_model_Id}", new FileInputStream(analyzeFile),
                 analyzeFile.length(),
                 new RecognizeCustomFormsOptions()
-                    .setContentType(FormContentType.APPLICATION_PDF)
+                    .setContentType(FormContentType.IMAGE_JPEG)
                     .setFieldElementsIncluded(true)
                     .setPollInterval(Duration.ofSeconds(5)), Context.NONE)
                 .getFinalResult();

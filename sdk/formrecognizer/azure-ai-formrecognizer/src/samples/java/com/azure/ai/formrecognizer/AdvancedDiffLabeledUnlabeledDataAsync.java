@@ -59,7 +59,7 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
                 toFluxByteBuffer(new ByteArrayInputStream(fileContent)),
                 analyzeFile.length(),
                     new RecognizeCustomFormsOptions()
-                    .setContentType(FormContentType.APPLICATION_PDF)
+                    .setContentType(FormContentType.IMAGE_JPEG)
                     .setFieldElementsIncluded(true)
                     .setPollInterval(Duration.ofSeconds(5)));
 
@@ -68,7 +68,7 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
                 toFluxByteBuffer(new ByteArrayInputStream(fileContent)),
                 analyzeFile.length(),
                     new RecognizeCustomFormsOptions()
-                    .setContentType(FormContentType.APPLICATION_PDF)
+                    .setContentType(FormContentType.IMAGE_JPEG)
                     .setFieldElementsIncluded(true)
                     .setPollInterval(Duration.ofSeconds(5)));
 
