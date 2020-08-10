@@ -3,7 +3,7 @@
 
 
 import os
-from termcolor import colored, cprint
+from termcolor import colored
 
 
 class Log:
@@ -36,7 +36,7 @@ class Log:
 
     def error(self, string):
         if self.level >= Log.ERROR:
-            cprint(colored('[ERROR] {}'.format(string), 'red'))
+            print(colored('[ERROR] {}'.format(string), 'red'))
 
     def log_level_test(self):
         self.debug('This is debug log.')
