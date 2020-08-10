@@ -27,7 +27,7 @@
       "sku": {
         "name": "Standard",
         "tier": "Standard",
-        "capacity": 20
+        "capacity": 1
       },
       "properties": {
         "zoneRedundant": false,
