@@ -3,7 +3,10 @@
 
 package com.azure.resourcemanager.resources.childresource;
 
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesCachedImpl;
+import reactor.core.publisher.Flux;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,14 +33,14 @@ class PulletsImpl extends ExternalChildResourcesCachedImpl<PulletImpl, Pullet, O
     }
 
     @Override
-    protected List<PulletImpl> listChildResources() {
+    protected Flux<PulletImpl> listChildResourcesAsync() {
         List<PulletImpl> resources = new ArrayList<>();
         resources.add(new PulletImpl("Tilly", this.getParent()));
         resources.add(new PulletImpl("Clover", this.getParent()));
         resources.add(new PulletImpl("Savvy", this.getParent()));
         resources.add(new PulletImpl("Pinky", this.getParent()));
         resources.add(new PulletImpl("Goldilocks", this.getParent()));
-        return resources;
+        return Flux.fromIterable(resources);
     }
 
     @Override

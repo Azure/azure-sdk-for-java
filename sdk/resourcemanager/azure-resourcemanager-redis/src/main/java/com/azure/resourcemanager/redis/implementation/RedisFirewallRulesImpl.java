@@ -10,6 +10,7 @@ import com.azure.resourcemanager.redis.fluent.inner.RedisFirewallRuleInner;
 import com.azure.resourcemanager.redis.models.RedisCache;
 import com.azure.resourcemanager.redis.models.RedisFirewallRule;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesCachedImpl;
+import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -56,14 +57,11 @@ class RedisFirewallRulesImpl extends
     }
 
     @Override
-    protected List<RedisFirewallRuleImpl> listChildResources() {
-        List<RedisFirewallRuleImpl> childResources = new ArrayList<>();
-        for (RedisFirewallRuleInner firewallRule : this.getParent().manager().inner().getFirewallRules().listByRedisResource(
+    protected Flux<RedisFirewallRuleImpl> listChildResourcesAsync() {
+        return this.getParent().manager().inner().getFirewallRules().listByRedisResourceAsync(
                 this.getParent().resourceGroupName(),
-                this.getParent().name())) {
-            childResources.add(new RedisFirewallRuleImpl(firewallRule.name(), this.getParent(), firewallRule));
-        }
-        return Collections.unmodifiableList(childResources);
+                this.getParent().name())
+            .map(firewallRuleInner -> new RedisFirewallRuleImpl(firewallRuleInner.name(), this.getParent(), firewallRuleInner));
     }
 
     @Override

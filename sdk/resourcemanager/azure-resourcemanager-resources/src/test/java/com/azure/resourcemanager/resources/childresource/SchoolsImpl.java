@@ -223,8 +223,8 @@ class SchoolsImpl {
         }
 
         @Override
-        protected List<TeacherImpl> listChildResources() {
-            return new ArrayList<>();
+        protected Flux<TeacherImpl> listChildResourcesAsync() {
+            return Flux.empty();
         }
 
         @Override
@@ -348,8 +348,8 @@ class SchoolsImpl {
         }
 
         @Override
-        protected List<StudentImpl> listChildResources() {
-            return new ArrayList<>();
+        protected Flux<StudentImpl> listChildResourcesAsync() {
+            return Flux.empty();
         }
 
         @Override

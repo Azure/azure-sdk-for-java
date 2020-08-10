@@ -10,6 +10,7 @@ import com.azure.resourcemanager.redis.fluent.inner.RedisPatchScheduleInner;
 import com.azure.resourcemanager.redis.models.RedisCache;
 import com.azure.resourcemanager.redis.models.RedisPatchSchedule;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesCachedImpl;
+import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -73,14 +74,11 @@ class RedisPatchSchedulesImpl extends
     }
 
     @Override
-    protected List<RedisPatchScheduleImpl> listChildResources() {
-        List<RedisPatchScheduleImpl> childResources = new ArrayList<>();
-        for (RedisPatchScheduleInner patchSchedule : this.getParent().manager().inner().getPatchSchedules().listByRedisResource(
+    protected Flux<RedisPatchScheduleImpl> listChildResourcesAsync() {
+        return this.getParent().manager().inner().getPatchSchedules().listByRedisResourceAsync(
                 this.getParent().resourceGroupName(),
-                this.getParent().name())) {
-            childResources.add(new RedisPatchScheduleImpl(patchSchedule.name(), this.getParent(), patchSchedule));
-        }
-        return Collections.unmodifiableList(childResources);
+                this.getParent().name())
+            .map(patchScheduleInner -> new RedisPatchScheduleImpl(patchScheduleInner.name(), this.getParent(), patchScheduleInner));
     }
 
     @Override

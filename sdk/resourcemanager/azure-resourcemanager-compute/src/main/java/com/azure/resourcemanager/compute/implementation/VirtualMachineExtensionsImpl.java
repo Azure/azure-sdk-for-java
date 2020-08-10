@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.compute.implementation;
 
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtension;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineExtensionInner;
@@ -13,6 +14,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -112,7 +115,7 @@ class VirtualMachineExtensionsImpl
     }
 
     @Override
-    protected List<VirtualMachineExtensionImpl> listChildResources() {
+    protected Flux<VirtualMachineExtensionImpl> listChildResourcesAsync() {
         List<VirtualMachineExtensionImpl> childResources = new ArrayList<>();
         if (getParent().inner().resources() != null) {
             for (VirtualMachineExtensionInner inner : getParent().inner().resources()) {
@@ -130,7 +133,7 @@ class VirtualMachineExtensionsImpl
                 }
             }
         }
-        return childResources;
+        return Flux.fromIterable(childResources);
     }
 
     @Override

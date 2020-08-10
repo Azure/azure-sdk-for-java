@@ -2,10 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation;
 
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ExternalChildResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Map;
@@ -45,6 +48,13 @@ public abstract class ExternalChildResourcesCachedImpl<
     protected ExternalChildResourcesCachedImpl(ParentImplT parent,
                                                TaskGroup parentTaskGroup, String childResourceName) {
         super(parent, parentTaskGroup, childResourceName);
+    }
+
+    /**
+     * Refresh the child resource collection.
+     */
+    public Mono<Void> refreshAsync() {
+        return cacheCollectionAsync();
     }
 
     /**
@@ -184,10 +194,17 @@ public abstract class ExternalChildResourcesCachedImpl<
      * Initializes the external child resource collection.
      */
     protected void cacheCollection() {
+        cacheCollectionAsync().block();
+    }
+
+    /**
+     * Initializes the external child resource collection.
+     */
+    protected Mono<Void> cacheCollectionAsync() {
         this.clear();
-        for (FluentModelTImpl childResource : this.listChildResources()) {
-            this.childCollection.put(childResource.childResourceKey(), childResource);
-        }
+        return this.listChildResourcesAsync()
+            .map(childResource -> this.childCollection.put(childResource.childResourceKey(), childResource))
+            .then();
     }
 
     @Override
@@ -200,7 +217,7 @@ public abstract class ExternalChildResourcesCachedImpl<
      *
      * @return the list of external child resources
      */
-    protected abstract List<FluentModelTImpl> listChildResources();
+    protected abstract Flux<FluentModelTImpl> listChildResourcesAsync();
 
     /**
      * Gets a new external child resource model instance.
