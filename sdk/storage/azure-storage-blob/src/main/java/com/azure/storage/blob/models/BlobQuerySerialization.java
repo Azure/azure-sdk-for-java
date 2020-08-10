@@ -7,5 +7,5 @@ package com.azure.storage.blob.models;
  * Defines the input and output serialization for a blob quick query request.
  * either {@link BlobQueryJsonSerialization} or {@link BlobQueryDelimitedSerialization}
  */
-public abstract class BlobQuerySerialization {
+public interface BlobQuerySerialization {
 }
