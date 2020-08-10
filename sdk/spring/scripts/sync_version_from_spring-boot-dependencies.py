@@ -14,25 +14,9 @@ from itertools import takewhile
 import in_place
 
 from log import log, Log
+from pom import Pom
 
 EXTERNAL_DEPENDENCIES_FILE = 'eng/versioning/external_dependencies.txt'
-POM = 'https://repo.maven.apache.org/maven2/{group}/{artifact}/{version}/{artifact}-{version}.pom'
-
-
-class PomModule:
-    def __init__(self, group_id, artifact_id, version):
-        self.group_id = group_id
-        self.artifact_id = artifact_id
-        self.version = version
-
-    def to_url(self):
-        return POM.format(
-            group = self.group_id.replace('.', '/'),
-            artifact = self.artifact_id,
-            version = self.version)
-
-    def __str__(self):
-        return '{}:{}:{}'.format(self.group_id, self.artifact_id, self.version)
 
 
 def main():
@@ -61,16 +45,16 @@ def get_spring_boot_version():
 
 def get_dependency_dict():
     spring_boot_version = get_spring_boot_version()
-    pom_module = PomModule(
+    pom = Pom(
         'org.springframework.boot',
         'spring-boot-dependencies',
         spring_boot_version)
     q = queue.Queue()
-    q.put(pom_module)
+    q.put(pom)
     dependency_dict = {}
     while not q.empty():
-        pom_module = q.get()
-        pom_url = pom_module.to_url()
+        pom = q.get()
+        pom_url = pom.to_url()
         log.info('Get dependencies from pom: {}.'.format(pom_url))
         tree = elementTree.ElementTree(file = request.urlopen(pom_url))
         project_element = tree.getroot()
@@ -122,9 +106,9 @@ def get_dependency_dict():
                     '    Dependency version skipped. key = {}, value = {}'.format(key, version))
             artifact_type = dependency_element.find('./maven:type', name_space)
             if artifact_type is not None and artifact_type.text.strip() == 'pom':
-                new_pom_module = PomModule(group_id, artifact_id, version)
-                q.put(new_pom_module)
-                log.debug('Added new pom pom: {}.'.format(new_pom_module.to_url()))
+                new_pom = Pom(group_id, artifact_id, version)
+                q.put(new_pom)
+                log.debug('Added new pom pom: {}.'.format(new_pom.to_url()))
     return dependency_dict
 
 
