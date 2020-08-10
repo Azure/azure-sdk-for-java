@@ -3,6 +3,7 @@
 
 package com.azure.core.serializer.json.jackson;
 
+import com.azure.core.util.serializer.MemberNameConverter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.junit.jupiter.api.BeforeAll;
@@ -10,19 +11,30 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.Member;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class JacksonPropertyNameTests {
+/**
+ * Tests {@link JacksonJsonSerializer JacksonJsonSerializer's} {@link MemberNameConverter} functionality.
+ */
+public class JacksonMemberNameConverterTests {
     private static final String EXPECT_VALUE_IN_FIELD = "expectFieldName";
     private static final String EXPECT_VALUE_IN_METHOD = "expectMethodName";
-    private static JacksonJsonSerializer serializer;
+    private static MemberNameConverter memberNameConverter;
 
     @BeforeAll
     public static void setup() {
-        serializer = new JacksonJsonSerializerProvider().createInstance();
+        memberNameConverter = new JacksonJsonSerializerProvider().createInstance();
     }
 
     @Test
@@ -31,7 +43,7 @@ public class JacksonPropertyNameTests {
             String hotelName;
         }
         Field f = LocalHotel.class.getDeclaredField("hotelName");
-        assertEquals("hotelName", serializer.convertMemberName(f));
+        assertEquals("hotelName", memberNameConverter.convertMemberName(f));
     }
 
     @Test
@@ -41,7 +53,7 @@ public class JacksonPropertyNameTests {
             String hotelName;
         }
         Field f = LocalHotel.class.getDeclaredField("hotelName");
-        assertNull(serializer.convertMemberName(f));
+        assertNull(memberNameConverter.convertMemberName(f));
     }
 
     @Test
@@ -54,7 +66,7 @@ public class JacksonPropertyNameTests {
             }
         }
         Field f = LocalHotel.class.getDeclaredField("hotelName");
-        assertNull(serializer.convertMemberName(f));
+        assertNull(memberNameConverter.convertMemberName(f));
     }
 
     @Test
@@ -64,7 +76,7 @@ public class JacksonPropertyNameTests {
             String hotelName;
         }
         Field f = LocalHotel.class.getDeclaredField("hotelName");
-        assertEquals(EXPECT_VALUE_IN_FIELD, serializer.convertMemberName(f));
+        assertEquals(EXPECT_VALUE_IN_FIELD, memberNameConverter.convertMemberName(f));
     }
 
     @Test
@@ -75,7 +87,7 @@ public class JacksonPropertyNameTests {
         }
         Field f = LocalHotel.class.getDeclaredField("hotelName");
 
-        assertEquals("hotelName", serializer.convertMemberName(f));
+        assertEquals("hotelName", memberNameConverter.convertMemberName(f));
     }
 
     @Test
@@ -85,7 +97,7 @@ public class JacksonPropertyNameTests {
             String hotelName;
         }
         Field f = LocalHotel.class.getDeclaredField("hotelName");
-        assertEquals("hotelName", serializer.convertMemberName(f));
+        assertEquals("hotelName", memberNameConverter.convertMemberName(f));
     }
 
     @Test
@@ -110,13 +122,13 @@ public class JacksonPropertyNameTests {
         }
 
         Method getterM = LocalHotel.class.getDeclaredMethod("getHotelName");
-        assertEquals("hotelName", serializer.convertMemberName(getterM));
+        assertEquals("hotelName", memberNameConverter.convertMemberName(getterM));
         Method setterM = LocalHotel.class.getDeclaredMethod("setHotelName", String.class);
-        assertNull(serializer.convertMemberName(setterM));
+        assertNull(memberNameConverter.convertMemberName(setterM));
         Method getterWithIs = LocalHotel.class.getDeclaredMethod("isFlag");
-        assertEquals("flag", serializer.convertMemberName(getterWithIs));
+        assertEquals("flag", memberNameConverter.convertMemberName(getterWithIs));
         Method setterWithIs = LocalHotel.class.getDeclaredMethod("setFlag", boolean.class);
-        assertNull(serializer.convertMemberName(setterWithIs));
+        assertNull(memberNameConverter.convertMemberName(setterWithIs));
     }
 
     @Test
@@ -134,9 +146,9 @@ public class JacksonPropertyNameTests {
         }
 
         Method getterM = LocalHotel.class.getDeclaredMethod("hotelName1");
-        assertNull(serializer.convertMemberName(getterM));
+        assertNull(memberNameConverter.convertMemberName(getterM));
         Method setterM = LocalHotel.class.getDeclaredMethod("hotelName2", String.class);
-        assertNull(serializer.convertMemberName(setterM));
+        assertNull(memberNameConverter.convertMemberName(setterM));
     }
 
     @Test
@@ -163,9 +175,9 @@ public class JacksonPropertyNameTests {
         Method getterM2 = LocalHotel.class.getDeclaredMethod("getHotelGetId");
         Method getterM3 = LocalHotel.class.getDeclaredMethod("isFlag");
 
-        assertNull(serializer.convertMemberName(getterM1));
-        assertEquals("hotelGetId", serializer.convertMemberName(getterM2));
-        assertNull(serializer.convertMemberName(getterM3));
+        assertNull(memberNameConverter.convertMemberName(getterM1));
+        assertEquals("hotelGetId", memberNameConverter.convertMemberName(getterM2));
+        assertNull(memberNameConverter.convertMemberName(getterM3));
     }
     @Test
     public void testPropertyNameOnIgnoredMethodName() throws NoSuchMethodException {
@@ -178,7 +190,7 @@ public class JacksonPropertyNameTests {
             }
         }
         Method m = LocalHotel.class.getDeclaredMethod("getHotelName");
-        assertNull(serializer.convertMemberName(m));
+        assertNull(memberNameConverter.convertMemberName(m));
     }
 
     @Test
@@ -193,7 +205,7 @@ public class JacksonPropertyNameTests {
         }
 
         Method m = LocalHotel.class.getDeclaredMethod("getHotelName");
-        assertEquals(EXPECT_VALUE_IN_METHOD, serializer.convertMemberName(m));
+        assertEquals(EXPECT_VALUE_IN_METHOD, memberNameConverter.convertMemberName(m));
     }
 
 
@@ -209,7 +221,7 @@ public class JacksonPropertyNameTests {
         }
 
         Method m = LocalHotel.class.getDeclaredMethod("getHotelName");
-        assertEquals("hotelName", serializer.convertMemberName(m));
+        assertEquals("hotelName", memberNameConverter.convertMemberName(m));
     }
 
     @Test
@@ -225,14 +237,109 @@ public class JacksonPropertyNameTests {
 
         Method m = LocalHotel.class.getDeclaredMethod("getHotelName");
 
-        assertEquals("hotelName", serializer.convertMemberName(m));
+        assertEquals("hotelName", memberNameConverter.convertMemberName(m));
     }
 
     @Test
-    public void testPropertyNameOnConstructor() throws NoSuchMethodException {
+    public void testPropertyNameOnConstructor() {
         Constructor<?>[] constructors = Hotel.class.getConstructors();
         assertEquals(1, constructors.length);
 
-        assertNull(serializer.convertMemberName(constructors[0]));
+        assertNull(memberNameConverter.convertMemberName(constructors[0]));
+    }
+
+    @Test
+    public void classWithPublicProperties() {
+        Set<String> expected = new HashSet<>();
+        expected.add("age");
+        expected.add("name");
+
+        Set<String> actual = getAllDeclaredMembers(NoAnnotationsPublicFields.class)
+            .map(memberNameConverter::convertMemberName)
+            .collect(Collectors.toSet());
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void classWithGettersWithoutAnnotations() {
+        Set<String> expected = new HashSet<>();
+        expected.add("age");
+        expected.add("name");
+
+        Set<String> actual = getAllDeclaredMembers(NoAnnotationsGetters.class)
+            .map(memberNameConverter::convertMemberName)
+            .collect(Collectors.toSet());
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void classWithGettersWithAnnotations() {
+        Set<String> expected = new HashSet<>();
+        expected.add("_age");
+        expected.add("_name");
+
+        Set<String> actual = getAllDeclaredMembers(GettersWithAnnotations.class)
+            .map(memberNameConverter::convertMemberName)
+            .collect(Collectors.toSet());
+
+        assertEquals(expected, actual);
+    }
+
+    private static Stream<Member> getAllDeclaredMembers(Class<?> clazz) {
+        List<Member> members = new ArrayList<>(Arrays.asList(clazz.getDeclaredFields()));
+        members.addAll(Arrays.asList(clazz.getDeclaredMethods()));
+        members.addAll(Arrays.asList(clazz.getDeclaredConstructors()));
+
+        return members.stream();
+    }
+
+    private static final class NoAnnotationsPublicFields {
+        public int age;
+        public String name;
+
+        public NoAnnotationsPublicFields(int age, String name) {
+            this.age = age;
+            this.name = name;
+        }
+    }
+
+    private static final class NoAnnotationsGetters {
+        private int age;
+        private String name;
+
+        public int getAge() {
+            return age;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public NoAnnotationsGetters(int age, String name) {
+            this.age = age;
+            this.name = name;
+        }
+    }
+
+    private static final class GettersWithAnnotations {
+        private int age;
+        private String name;
+
+        @JsonProperty("_age")
+        public int getAge() {
+            return age;
+        }
+
+        @JsonProperty("_name")
+        public String getName() {
+            return name;
+        }
+
+        public GettersWithAnnotations(int age, String name) {
+            this.age = age;
+            this.name = name;
+        }
     }
 }

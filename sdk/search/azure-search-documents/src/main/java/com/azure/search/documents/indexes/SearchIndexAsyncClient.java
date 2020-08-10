@@ -34,6 +34,8 @@ import com.azure.search.documents.indexes.models.SearchServiceStatistics;
 import com.azure.search.documents.indexes.models.SynonymMap;
 import reactor.core.publisher.Mono;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
@@ -728,11 +730,13 @@ public final class SearchIndexAsyncClient {
     }
 
     /**
-     * Helper method to build list of {@link SearchField}.
+     * Convenience method to convert a {@link Class Class's} {@link Field Fields} and {@link Method Methods} into {@link
+     * SearchField SearchFields} to help aid the creation of a {@link SearchField} which represents the {@link Class}.
      *
-     * @param model The model class where {@link SearchField} converts from.
-     * @param options The option property bag.
-     * @return The list {@link SearchField} for search index schema.
+     * @param model The model {@link Class} that will have {@link SearchField SearchFields} generated from its
+     * structure.
+     * @param options Configuration used to determine generation of the {@link SearchField SearchFields}.
+     * @return A list {@link SearchField SearchFields} which represent the model {@link Class}.
      */
     public static List<SearchField> buildSearchFields(Class<?> model, FieldBuilderOptions options) {
         if (options == null || options.getConverter() == null) {
