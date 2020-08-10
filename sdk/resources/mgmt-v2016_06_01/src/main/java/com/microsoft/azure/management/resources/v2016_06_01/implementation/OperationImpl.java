@@ -8,12 +8,13 @@
 
 package com.microsoft.azure.management.resources.v2016_06_01.implementation;
 
-import com.microsoft.azure.management.resources.v2016_06_01.TenantIdDescription;
+import com.microsoft.azure.management.resources.v2016_06_01.Operation;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
+import com.microsoft.azure.management.resources.v2016_06_01.OperationDisplay;
 
-class TenantIdDescriptionImpl extends WrapperImpl<TenantIdDescriptionInner> implements TenantIdDescription {
+class OperationImpl extends WrapperImpl<OperationInner> implements Operation {
     private final ResourcesManager manager;
-    TenantIdDescriptionImpl(TenantIdDescriptionInner inner, ResourcesManager manager) {
+    OperationImpl(OperationInner inner, ResourcesManager manager) {
         super(inner);
         this.manager = manager;
     }
@@ -24,13 +25,13 @@ class TenantIdDescriptionImpl extends WrapperImpl<TenantIdDescriptionInner> impl
     }
 
     @Override
-    public String id() {
-        return this.inner().id();
+    public OperationDisplay display() {
+        return this.inner().display();
     }
 
     @Override
-    public String tenantId() {
-        return this.inner().tenantId();
+    public String name() {
+        return this.inner().name();
     }
 
 }
