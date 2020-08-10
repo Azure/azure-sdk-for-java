@@ -365,7 +365,7 @@ public class EncryptionCosmosAsyncContainer {
                             Exception exception = Utils.as(throwable, Exception.class);
 
                             if (exception == null || decryptionResultConsumer == null) {
-                                return Mono.error(exception);
+                                return Mono.error(throwable);
                             }
 
                             decryptionResultConsumer.accept(DecryptionResult.createFailure(null, exception));
@@ -400,7 +400,7 @@ public class EncryptionCosmosAsyncContainer {
                 Exception exception = Utils.as(throwable, Exception.class);
 
                     if (exception == null || decryptionResultHandler == null) {
-                        return Mono.error(exception);
+                        return Mono.error(throwable);
                     }
 
                     decryptionResultHandler.accept(

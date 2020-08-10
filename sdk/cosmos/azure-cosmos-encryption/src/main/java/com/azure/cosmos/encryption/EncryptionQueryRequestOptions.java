@@ -16,7 +16,7 @@ public class EncryptionQueryRequestOptions extends CosmosQueryRequestOptions {
      * If DecryptionResultHandler is not configured, we throw exception.
      * If DecryptionResultHandler is configured, we invoke the delegate method and return the encrypted document as is (without decryption) in case of failure.
      *
-     * @param decryptionResultHandler
+     * @param decryptionResultHandler decryption result handler.
      * @return the current request options
      */
     public EncryptionQueryRequestOptions setDecryptionResultHandler(Consumer<DecryptionResult> decryptionResultHandler) {
@@ -26,7 +26,7 @@ public class EncryptionQueryRequestOptions extends CosmosQueryRequestOptions {
 
     /**
      * Gets delegate method that will be invoked (if configured) in case of decryption failure.
-     * @return Consumer<DecryptionResult>
+     * @return Consumer of DecryptionResult
      */
     public Consumer<DecryptionResult> getDecryptionResultHandler() {
         return decryptionResultHandler;

@@ -48,6 +48,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -602,7 +603,8 @@ public class EncryptionTests extends TestSuiteBase {
         requestOptions.setEncryptionOptions(encryptionOptions);
 
         TestDoc properties = getItem(UUID.randomUUID().toString());
-        itemContainer.createItem(
+
+        StepVerifier.create(itemContainer.createItem(
             properties,
             new PartitionKey(properties.pk),
             requestOptions)
@@ -640,7 +642,13 @@ public class EncryptionTests extends TestSuiteBase {
                                  requestOptions,
                                  TestDoc.class);
                          }
-                     ).block();
+                     ))
+                    .expectNextMatches(testDocCosmosItemResponse ->
+                        {
+                            TestDoc item = testDocCosmosItemResponse.getItem();
+                            return item.sensitive != null;
+                        })
+                    .verifyComplete();
     }
 
     private void validateWriteResponseIsValid(TestDoc originalItem, TestDoc result) {
