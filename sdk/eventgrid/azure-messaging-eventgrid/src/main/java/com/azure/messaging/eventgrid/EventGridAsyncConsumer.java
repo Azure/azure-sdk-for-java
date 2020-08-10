@@ -6,10 +6,10 @@ package com.azure.messaging.eventgrid;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.experimental.serializer.JsonArray;
+import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.experimental.serializer.JsonSerializer;
 import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -40,7 +40,8 @@ public final class EventGridAsyncConsumer {
     EventGridAsyncConsumer(Map<String, Class<?>> typeMappings, JsonSerializer dataDeserializer) {
         this.typeMappings = typeMappings;
         this.deserializer = new JacksonJsonSerializerBuilder()
-            .serializer(new ObjectMapper().registerModule(new JavaTimeModule())
+            .serializer(new JacksonAdapter().serializer() // this is a workaround to get the FlatteningDeserializer
+                .registerModule(new JavaTimeModule()) // probably also change this to DateTimeDeserializer when possible
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false))
             .build();
         this.dataDeserializer = dataDeserializer == null ? this.deserializer : dataDeserializer;
