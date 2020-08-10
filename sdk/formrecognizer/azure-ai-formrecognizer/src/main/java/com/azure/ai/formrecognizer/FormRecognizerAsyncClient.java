@@ -657,12 +657,12 @@ public final class FormRecognizerAsyncClient {
         return userProvidedOptions == null ? new RecognizeCustomFormOptions() : userProvidedOptions;
     }
 
-    private RecognizeContentOptions
+    private static RecognizeContentOptions
         getRecognizeContentOptions(RecognizeContentOptions userProvidedOptions) {
         return userProvidedOptions == null ? new RecognizeContentOptions() : userProvidedOptions;
     }
 
-    private RecognizeReceiptOptions
+    private static RecognizeReceiptOptions
         getRecognizeReceiptOptions(RecognizeReceiptOptions userProvidedOptions) {
         return userProvidedOptions == null ? new RecognizeReceiptOptions() : userProvidedOptions;
     }
