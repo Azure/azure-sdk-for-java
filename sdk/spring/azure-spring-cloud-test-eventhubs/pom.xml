@@ -60,7 +60,7 @@
             <bannedDependencies>
               <includes>
                 <include>com.microsoft.azure:spring-cloud-azure-eventhubs-stream-binder:[1.2.7]</include> <!-- {x-include-update;com.microsoft.azure:spring-cloud-azure-eventhubs-stream-binder;external_dependency} -->
-                <include>com.google.code.gson:gson:[2.8.6]</include> <!-- {x-version-update;com.google.code.gson:gson;external_dependency} -->
+                <include>com.google.code.gson:gson:[2.8.6]</include> <!-- {x-include-update;com.google.code.gson:gson;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
