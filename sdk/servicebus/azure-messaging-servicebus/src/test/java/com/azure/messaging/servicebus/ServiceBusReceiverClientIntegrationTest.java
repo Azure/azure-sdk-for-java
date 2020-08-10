@@ -269,13 +269,11 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         int receivedMessageCount = 0;
         final long startTime = System.currentTimeMillis();
         for (ServiceBusReceivedMessageContext context : messages) {
-            logger.verbose("!!!! Test received SQ " + context.getMessage().getSequenceNumber());
             ServiceBusReceivedMessage receivedMessage = context.getMessage();
             assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
             receiver.complete(receivedMessage.getLockToken());
             messagesPending.decrementAndGet();
             ++receivedMessageCount;
-            logger.verbose("!!!! Test PROCESSED SQ " + context.getMessage().getSequenceNumber());
         }
         final long endTime = System.currentTimeMillis();
         assertEquals(messagesToSend, receivedMessageCount);
@@ -818,7 +816,6 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
                 .buildClient();
         } else {
             this.receiver = getReceiverBuilder(false, entityType, entityIndex, Function.identity(), sharedConnection)
-                //.prefetchCount(5)
                 .buildClient();
             this.receiveAndDeleteReceiver = getReceiverBuilder(false, entityType, entityIndex,
                 Function.identity(), sharedConnection)

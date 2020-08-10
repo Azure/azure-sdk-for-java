@@ -64,6 +64,7 @@ class SynchronousReceiveWork implements AutoCloseable{
         nextMessageSubscriber = Flux.switchOnNext(directProcessor.map(messageContext ->
             Flux.interval(SHORT_TIMEOUT_BETWEEN_MESSAGES)))
             .handle((delay, sink) -> {
+                logger.info("[{}]: Timeout between the messages occurred. Completing the work.", id);
                 sink.next(delay);
                 emitter.complete();
             })
@@ -120,9 +121,14 @@ class SynchronousReceiveWork implements AutoCloseable{
      * @param messageContext Event to publish downstream.
      */
     void next(ServiceBusReceivedMessageContext messageContext) {
-        emitter.next(messageContext);
-        messageReceivedSink.next(messageContext);
-        remaining.decrementAndGet();
+        try{
+            emitter.next(messageContext);
+            messageReceivedSink.next(messageContext);
+            remaining.decrementAndGet();
+        } catch (Exception e) {
+            logger.warning("Exception occurred while publishing downstream.", e);
+            error(e);
+        }
     }
 
     /**

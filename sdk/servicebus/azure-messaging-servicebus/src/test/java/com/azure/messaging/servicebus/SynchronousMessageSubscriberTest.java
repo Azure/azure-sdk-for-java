@@ -24,6 +24,7 @@ import static org.mockito.Mockito.when;
  * Unit test for sync subscriber.
  */
 public class SynchronousMessageSubscriberTest {
+
     private static final int PREFETCH = 1;
 
     @Mock
