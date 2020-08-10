@@ -74,4 +74,4 @@ extends:
       - name: azure-storage-file-share
         groupId: com.azure
       - name: azure-cosmos
-        groupId: com.aure
+        groupId: com.azure
