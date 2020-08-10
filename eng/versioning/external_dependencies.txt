@@ -91,6 +91,8 @@ org.springframework.boot:spring-boot-configuration-processor;2.3.2.RELEASE
 org.springframework.boot:spring-boot-dependencies;2.3.2.RELEASE
 org.springframework.boot:spring-boot-starter-actuator;2.3.2.RELEASE
 org.springframework.boot:spring-boot-starter-aop;2.3.2.RELEASE
+org.springframework.boot:spring-boot-starter-cache;2.3.2.RELEASE
+org.springframework.boot:spring-boot-starter-data-redis;2.3.2.RELEASE
 org.springframework.boot:spring-boot-starter-parent;2.3.0.RELEASE
 org.springframework.boot:spring-boot-starter-test;2.3.2.RELEASE
 org.springframework.boot:spring-boot-starter-validation;2.3.2.RELEASE
@@ -120,7 +122,7 @@ org.springframework:spring-webmvc;5.2.6.RELEASE
 
 org.springframework.cloud:spring-cloud-bus;2.2.0.RELEASE
 org.springframework.cloud:spring-cloud-context;2.2.0.RELEASE
-
+org.springframework.cloud:spring-cloud-starter-stream-kafka;3.0.0.RELEASE
 org.springframework.data:spring-data-redis;2.2.5.RELEASE
 org.springframework.data:spring-data-mongodb;2.2.5.RELEASE
 

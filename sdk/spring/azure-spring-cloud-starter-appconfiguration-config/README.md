@@ -1,6 +1,10 @@
-# Azure App Configuration for Spring Cloud
+# Azure Spring cloud starter App Configuration client library for Java
 
 This project allows Spring Application to load properties from Azure Configuration Store.
+
+## Key concepts
+
+## Getting started
 
 ## Samples
 
@@ -46,7 +50,7 @@ dependencies {
 }
 ```
 
-## Supported properties
+### Supported properties
 
 Name | Description | Required | Default
 ---|---|---|---
@@ -69,9 +73,9 @@ spring.cloud.azure.appconfiguration.stores[0].label | Comma separated list of la
 spring.cloud.azure.appconfiguration.stores[0].fail-fast | Whether throw `RuntimeException` or not when fail to read App Configuration during application start-up. If an exception does occur during startup when set to false the store is skipped. | No |  true
 spring.cloud.azure.appconfiguration.stores[0].watched-key | The single watched key(or by default *) used to indicate configuration change.  | No | *
 
-## Advanced usage
+### Advanced usage
 
-### Load from multiple configuration stores
+#### Load from multiple configuration stores
 
 If the application needs to load configuration properties from multiple stores, following configuration sample describes how the bootstrap.properties(or .yaml) can be configured.
 
@@ -84,7 +88,7 @@ spring.cloud.azure.appconfiguration.stores[1].connection-string=[second-store-co
 
 If duplicate keys exists for multiple stores, the last configuration store has the highest priority.
 
-### Load from multiple labels
+#### Load from multiple labels
 
 If the application needs to load property values from multiple labels in the same configuration store, following configuration can be used:
 
@@ -95,7 +99,7 @@ spring.cloud.azure.appconfiguration.stores[0].label=[my-label1], [my-label2]
 
 Multiple labels can be separated with comma, if duplicate keys exists for multiple labels, the last label has highest priority.
 
-### Spring Profiles
+#### Spring Profiles
 
 Spring Profiles are supported by setting labels on your configurations that match your profile. Then set your label on your config store:
 
@@ -103,7 +107,7 @@ Spring Profiles are supported by setting labels on your configurations that matc
 spring.cloud.azure.appconfiguration.stores[0].label=${spring.profiles.active}
 ```
 
-### Configuration Refresh
+#### Configuration Refresh
 
 Configuration Refresh feature allows the application to load the latest property value from configuration store automatically, without restarting the application.
 
@@ -155,7 +159,7 @@ Note: This validation only happens on the creation/modification of the endpoint.
 
 It is also highly recommended that filters are setup as otherwise a refresh will be triggered after every key creation and modification.
 
-### Failfast
+#### Failfast
 
 Failfast feature decides whether throw RuntimeException or not when exception happens. If an exception does occur when false the store is skipped. Any store skipped on startup will be automatically skipped on Refresh. By default, failfast is enabled, it can be disabled with below configuration:
 
@@ -163,7 +167,7 @@ Failfast feature decides whether throw RuntimeException or not when exception ha
 spring.cloud.azure.appconfiguration.stores[0].fail-fast=false
 ```
 
-### Placeholders in App Configuration
+#### Placeholders in App Configuration
 
 The values in App Configuration are filtered through the existing Environment when they are used. Placeholders can be used just like in `application.properties`, but with the added benefit of support for key vault references. Example with kafka:
 
@@ -172,7 +176,7 @@ The values in App Configuration are filtered through the existing Environment wh
 /application/app.description=${app.name} is configured with Azure App Configuration
 ```
 
-### Use Managed Identity to access App Configuration
+#### Use Managed Identity to access App Configuration
 
 [Managed identity](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview) allows application to access [Azure Active Directory][azure_active_directory] protected resource on [Azure][azure].
 
@@ -188,7 +192,7 @@ Follow the below steps to enable accessing App Configuration with managed identi
 
 The configuration store endpoint must be configured when `connection-string` is empty. When using a User Assigned Id the value `spring.cloud.azure.appconfiguration.managed-identity.client-id=[client-id]` must be set.
 
-#### bootstrap.application
+##### bootstrap.application
 
 ```application
 spring.cloud.azure.appconfiguration.stores[0].endpoint=[config-store-endpoint]
@@ -197,7 +201,7 @@ spring.cloud.azure.appconfiguration.stores[0].endpoint=[config-store-endpoint]
 spring.cloud.azure.appconfiguration.managed-identity.client-id=[client-id]
 ```
 
-### Token Credential Provider
+#### Token Credential Provider
 
 Another method of authentication is using AppConfigCredentialProvider and/or KeyVaultCredentialProvider. By implementing either of these classes and providing and generating a @Bean of them will enable authentication through any method defined by the [Java Azure SDK][azure_identity_sdk]. The uri value is the endpoint/dns name of the connection service, so if needed different credentials can be used per config store/key vault.
 
@@ -221,7 +225,7 @@ public class MyCredentials implements AppConfigCredentialProvider, KeyVaultCrede
 }
 ```
 
-### Client Builder Customization
+#### Client Builder Customization
 
 The service client builders used for connecting to App Configuration and Key Vault can be customized by implementing interfaces `ConfigurationClientBuilderSetup` and `SecretClientBuilderSetup` respectively. Generating and providing a `@Bean` of them will update the default service client builders used in [App Configuration SDK](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/appconfiguration/azure-data-appconfiguration#key-concepts) and [Key Vault SDK](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/keyvault/azure-security-keyvault-secrets#key-concepts). If necessary, the customization can be done per App Configuration store or Key Vault instance.
 
@@ -270,3 +274,7 @@ public class MyClient implements ConfigurationClientBuilderSetup, SecretClientBu
 [azure_active_directory]: https://azure.microsoft.com/services/active-directory/
 [azure_identity_sdk]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity
 [azure_rbac]: https://docs.microsoft.com/azure/role-based-access-control/role-assignments-portal
+
+## Troubleshooting
+## Next steps
+## Contributing

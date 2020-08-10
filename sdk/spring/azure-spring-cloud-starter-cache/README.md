@@ -1,4 +1,4 @@
-# Azure Spring cloud starter Event Hubs client library for Java
+# Azure Spring Cloud Starter Cache client library for Java
 
 ## Key concepts
 ## Getting started
