@@ -10,6 +10,7 @@ package com.microsoft.azure.management.cosmosdb.v2019_08_01.implementation;
 
 import com.microsoft.azure.management.cosmosdb.v2019_08_01.ThroughputSettingsGetResults;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
+import com.microsoft.azure.management.cosmosdb.v2019_08_01.ThroughputSettingsGetPropertiesResource;
 import java.util.Map;
 
 class ThroughputSettingsGetResultsImpl extends WrapperImpl<ThroughputSettingsGetResultsInner> implements ThroughputSettingsGetResults {
@@ -35,28 +36,18 @@ class ThroughputSettingsGetResultsImpl extends WrapperImpl<ThroughputSettingsGet
     }
 
     @Override
-    public String minimumThroughput() {
-        return this.inner().minimumThroughput();
-    }
-
-    @Override
     public String name() {
         return this.inner().name();
     }
 
     @Override
-    public String offerReplacePending() {
-        return this.inner().offerReplacePending();
+    public ThroughputSettingsGetPropertiesResource resource() {
+        return this.inner().resource();
     }
 
     @Override
     public Map<String, String> tags() {
         return this.inner().getTags();
-    }
-
-    @Override
-    public int throughput() {
-        return this.inner().throughput();
     }
 
     @Override
