@@ -6,24 +6,22 @@
 
 package com.azure.resourcemanager.redis.implementation;
 
+import com.azure.resourcemanager.redis.fluent.inner.RedisFirewallRuleInner;
 import com.azure.resourcemanager.redis.models.RedisCache;
 import com.azure.resourcemanager.redis.models.RedisFirewallRule;
 import com.azure.resourcemanager.redis.models.RedisFirewallRuleCreateParameters;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
-import rx.Observable;
-import rx.functions.Func1;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
+import reactor.core.publisher.Mono;
 
 /**
  * The Azure {@link RedisFirewallRule} wrapper class implementation.
  */
-@LangDefinition
 class RedisFirewallRuleImpl extends
-        ExternalChildResourceImpl<RedisFirewallRule,
-                RedisFirewallRuleInner,
-                RedisCacheImpl,
-            RedisCache>
-        implements RedisFirewallRule {
+    ExternalChildResourceImpl<RedisFirewallRule,
+        RedisFirewallRuleInner,
+        RedisCacheImpl,
+        RedisCache>
+    implements RedisFirewallRule {
 
     RedisFirewallRuleImpl(String name, RedisCacheImpl parent, RedisFirewallRuleInner innerObject) {
         super(getChildName(name, parent.name()), parent, innerObject);
@@ -35,57 +33,53 @@ class RedisFirewallRuleImpl extends
     }
 
     @Override
-    public String startIP() {
-        return this.inner().startIP();
+    public String startIp() {
+        return this.inner().startIp();
     }
 
     @Override
-    public String endIP() {
-        return this.inner().endIP();
+    public String endIp() {
+        return this.inner().endIp();
     }
 
     @Override
-    public Observable<RedisFirewallRule> createResourceAsync() {
+    public Mono<RedisFirewallRule> createResourceAsync() {
         final RedisFirewallRuleImpl self = this;
         RedisFirewallRuleCreateParameters parameters = new RedisFirewallRuleCreateParameters()
-                .withStartIP(this.startIP())
-                .withEndIP(this.endIP());
-        return this.parent().manager().inner().firewallRules().createOrUpdateAsync(
+                .withStartIp(this.startIp())
+                .withEndIp(this.endIp());
+        return this.parent().manager().inner().getFirewallRules().createOrUpdateAsync(
                 this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.name(),
                 parameters)
-                .map(new Func1<RedisFirewallRuleInner, RedisFirewallRule>() {
-                    @Override
-                    public RedisFirewallRule call(RedisFirewallRuleInner redisFirewallRuleInner) {
-                        self.setInner(redisFirewallRuleInner);
-                        return self;
-                    }
+                .map(redisFirewallRuleInner -> {
+                    self.setInner(redisFirewallRuleInner);
+                    return self;
                 });
     }
 
     @Override
-    public Observable<RedisFirewallRule> updateResourceAsync() {
+    public Mono<RedisFirewallRule> updateResourceAsync() {
         return this.createResourceAsync();
     }
 
     @Override
-    public Observable<Void> deleteResourceAsync() {
-        return this.parent().manager().inner().firewallRules().deleteAsync(this.parent().resourceGroupName(),
+    public Mono<Void> deleteResourceAsync() {
+        return this.parent().manager().inner().getFirewallRules().deleteAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.name());
     }
 
     @Override
-    protected Observable<RedisFirewallRuleInner> getInnerAsync() {
-        return this.parent().manager().inner().firewallRules().getAsync(this.parent().resourceGroupName(),
+    protected Mono<RedisFirewallRuleInner> getInnerAsync() {
+        return this.parent().manager().inner().getFirewallRules().getAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.name());
     }
 
     private static String getChildName(String name, String parentName) {
-        if (name != null
-                && name.indexOf("/") != -1) {
+        if (name != null && name.contains("/")) {
             // rule name consist of "parent/child" name syntax but delete/update/get should be called only on child name
             return name.substring(parentName.length() + 1);
         }

@@ -46,9 +46,9 @@ public interface RedisCache extends
     String provisioningState();
 
     /**
-     * @return the hostName value
+     * @return the hostname value
      */
-    String hostName();
+    String hostname();
 
     /**
      * @return the port value
@@ -93,7 +93,7 @@ public interface RedisCache extends
     /**
      * @return the staticIP value
      */
-    String staticIP();
+    String staticIp();
 
     /**
      * @return the minimum TLS version (or higher) that clients require to use.
@@ -359,10 +359,10 @@ public interface RedisCache extends
             /**
              * Sets Redis Cache static IP. Required when deploying a Redis Cache inside an existing Azure Virtual Network.
              *
-             * @param staticIP the static IP value to set.
+             * @param staticIp the static IP value to set.
              * @return the next stage of Redis Cache definition.
              */
-            WithCreate withStaticIP(String staticIP);
+            WithCreate withStaticIp(String staticIp);
         }
     }
 

@@ -6,10 +6,10 @@
 
 package com.azure.resourcemanager.redis.implementation;
 
+import com.azure.resourcemanager.redis.fluent.inner.RedisPatchScheduleInner;
 import com.azure.resourcemanager.redis.models.RedisCache;
 import com.azure.resourcemanager.redis.models.RedisPatchSchedule;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesCachedImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesCachedImpl;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,13 +20,12 @@ import java.util.Map;
 /**
  * Represents a Redis patch schedule collection associated with a Redis cache instance.
  */
-@LangDefinition
 class RedisPatchSchedulesImpl extends
-        ExternalChildResourcesCachedImpl<RedisPatchScheduleImpl,
-            RedisPatchSchedule,
-                RedisPatchScheduleInner,
+    ExternalChildResourcesCachedImpl<RedisPatchScheduleImpl,
+        RedisPatchSchedule,
+        RedisPatchScheduleInner,
                 RedisCacheImpl,
-            RedisCache> {
+        RedisCache> {
     // Currently Redis Cache has one PatchSchedule
     private final String patchScheduleName = "default";
 
@@ -57,7 +56,7 @@ class RedisPatchSchedulesImpl extends
     public void removePatchSchedule() {
         RedisPatchScheduleImpl psch = this.getPatchSchedule();
         if (psch != null) {
-            psch.deleteResourceAsync().toBlocking().last();
+            psch.deleteResourceAsync().block();
         }
 }
 
@@ -76,16 +75,16 @@ class RedisPatchSchedulesImpl extends
     @Override
     protected List<RedisPatchScheduleImpl> listChildResources() {
         List<RedisPatchScheduleImpl> childResources = new ArrayList<>();
-        for (RedisPatchScheduleInner patchSchedule : this.parent().manager().inner().patchSchedules().listByRedisResource(
-                this.parent().resourceGroupName(),
-                this.parent().name())) {
-            childResources.add(new RedisPatchScheduleImpl(patchSchedule.name(), this.parent(), patchSchedule));
+        for (RedisPatchScheduleInner patchSchedule : this.getParent().manager().inner().getPatchSchedules().listByRedisResource(
+                this.getParent().resourceGroupName(),
+                this.getParent().name())) {
+            childResources.add(new RedisPatchScheduleImpl(patchSchedule.name(), this.getParent(), patchSchedule));
         }
         return Collections.unmodifiableList(childResources);
     }
 
     @Override
     protected RedisPatchScheduleImpl newChildResource(String name) {
-        return new RedisPatchScheduleImpl(name, this.parent(), new RedisPatchScheduleInner());
+        return new RedisPatchScheduleImpl(name, this.getParent(), new RedisPatchScheduleInner());
     }
 }

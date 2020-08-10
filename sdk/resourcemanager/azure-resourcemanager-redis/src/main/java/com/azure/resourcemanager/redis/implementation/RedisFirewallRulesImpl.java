@@ -6,10 +6,10 @@
 
 package com.azure.resourcemanager.redis.implementation;
 
+import com.azure.resourcemanager.redis.fluent.inner.RedisFirewallRuleInner;
 import com.azure.resourcemanager.redis.models.RedisCache;
 import com.azure.resourcemanager.redis.models.RedisFirewallRule;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesCachedImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesCachedImpl;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,13 +20,12 @@ import java.util.Map;
 /**
  * Represents a Redis firewall rules collection associated with a Redis cache instance.
  */
-@LangDefinition
 class RedisFirewallRulesImpl extends
-        ExternalChildResourcesCachedImpl<RedisFirewallRuleImpl,
-            RedisFirewallRule,
-                RedisFirewallRuleInner,
+    ExternalChildResourcesCachedImpl<RedisFirewallRuleImpl,
+        RedisFirewallRule,
+        RedisFirewallRuleInner,
                 RedisCacheImpl,
-            RedisCache> {
+        RedisCache> {
 
     RedisFirewallRulesImpl(RedisCacheImpl parent) {
         super(parent, parent.taskGroup(), "FirewallRule");
@@ -59,16 +58,16 @@ class RedisFirewallRulesImpl extends
     @Override
     protected List<RedisFirewallRuleImpl> listChildResources() {
         List<RedisFirewallRuleImpl> childResources = new ArrayList<>();
-        for (RedisFirewallRuleInner firewallRule : this.parent().manager().inner().firewallRules().listByRedisResource(
-                this.parent().resourceGroupName(),
-                this.parent().name())) {
-            childResources.add(new RedisFirewallRuleImpl(firewallRule.name(), this.parent(), firewallRule));
+        for (RedisFirewallRuleInner firewallRule : this.getParent().manager().inner().getFirewallRules().listByRedisResource(
+                this.getParent().resourceGroupName(),
+                this.getParent().name())) {
+            childResources.add(new RedisFirewallRuleImpl(firewallRule.name(), this.getParent(), firewallRule));
         }
         return Collections.unmodifiableList(childResources);
     }
 
     @Override
     protected RedisFirewallRuleImpl newChildResource(String name) {
-        return new RedisFirewallRuleImpl(name, this.parent(), new RedisFirewallRuleInner());
+        return new RedisFirewallRuleImpl(name, this.getParent(), new RedisFirewallRuleInner());
     }
 }

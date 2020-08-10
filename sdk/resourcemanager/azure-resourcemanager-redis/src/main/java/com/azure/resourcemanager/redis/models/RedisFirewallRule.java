@@ -24,16 +24,16 @@ public interface RedisFirewallRule extends
     String name();
 
     /**
-     * Get the startIP value.
+     * Get the startIp value.
      *
-     * @return the startIP value
+     * @return the startIp value
      */
-    String startIP();
+    String startIp();
 
     /**
-     * Get the endIP value.
+     * Get the endIp value.
      *
-     * @return the endIP value
+     * @return the endIp value
      */
-    String endIP();
+    String endIp();
 }

@@ -6,13 +6,13 @@
 
 package com.azure.resourcemanager.redis.implementation;
 
+import com.azure.resourcemanager.redis.fluent.inner.RedisPatchScheduleInner;
+import com.azure.resourcemanager.redis.models.DefaultName;
 import com.azure.resourcemanager.redis.models.RedisCache;
 import com.azure.resourcemanager.redis.models.RedisPatchSchedule;
 import com.azure.resourcemanager.redis.models.ScheduleEntry;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
-import rx.Observable;
-import rx.functions.Func1;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
+import reactor.core.publisher.Mono;
 
 import java.util.Collections;
 import java.util.List;
@@ -20,13 +20,12 @@ import java.util.List;
 /**
  * The Azure {@link RedisPatchSchedule} wrapper class implementation.
  */
-@LangDefinition
 class RedisPatchScheduleImpl extends
-        ExternalChildResourceImpl<RedisPatchSchedule,
-                RedisPatchScheduleInner,
-                RedisCacheImpl,
-            RedisCache>
-        implements RedisPatchSchedule {
+    ExternalChildResourceImpl<RedisPatchSchedule,
+        RedisPatchScheduleInner,
+        RedisCacheImpl,
+        RedisCache>
+    implements RedisPatchSchedule {
 
     RedisPatchScheduleImpl(String name, RedisCacheImpl parent, RedisPatchScheduleInner innerObject) {
         super(getChildName(name, parent.name()), parent, innerObject);
@@ -43,42 +42,39 @@ class RedisPatchScheduleImpl extends
     }
 
     @Override
-    public Observable<RedisPatchSchedule> createResourceAsync() {
+    public Mono<RedisPatchSchedule> createResourceAsync() {
         final RedisPatchScheduleImpl self = this;
-        return this.parent().manager().inner().patchSchedules().createOrUpdateAsync(
+        return this.parent().manager().inner().getPatchSchedules().createOrUpdateAsync(
                 this.parent().resourceGroupName(),
                 this.parent().name(),
+                DefaultName.DEFAULT,
                 this.inner().scheduleEntries())
-                .map(new Func1<RedisPatchScheduleInner, RedisPatchSchedule>() {
-                    @Override
-                    public RedisPatchSchedule call(RedisPatchScheduleInner patchScheduleInner) {
-                        self.setInner(patchScheduleInner);
-                        return self;
-                    }
+                .map(patchScheduleInner -> {
+                    self.setInner(patchScheduleInner);
+                    return self;
                 });
     }
 
     @Override
-    public Observable<RedisPatchSchedule> updateResourceAsync() {
+    public Mono<RedisPatchSchedule> updateResourceAsync() {
         return this.createResourceAsync();
     }
 
     @Override
-    public Observable<Void> deleteResourceAsync() {
-        return this.parent().manager().inner().patchSchedules().deleteAsync(this.parent().resourceGroupName(),
-                this.parent().name());
+    public Mono<Void> deleteResourceAsync() {
+        return this.parent().manager().inner().getPatchSchedules().deleteAsync(this.parent().resourceGroupName(),
+                this.parent().name(), DefaultName.DEFAULT);
     }
 
     @Override
-    protected Observable<RedisPatchScheduleInner> getInnerAsync() {
-        return this.parent().manager().inner().patchSchedules().getAsync(this.parent().resourceGroupName(),
-                this.parent().name());
+    protected Mono<RedisPatchScheduleInner> getInnerAsync() {
+        return this.parent().manager().inner().getPatchSchedules().getAsync(this.parent().resourceGroupName(),
+                this.parent().name(), DefaultName.DEFAULT);
     }
 
 
     private static String getChildName(String name, String parentName) {
-        if (name != null
-                && name.indexOf("/") != -1) {
+        if (name != null && name.contains("/")) {
             // Patch Schedule name consist of "parent/child" name syntax but delete/update/get should be called only on child name
             return name.substring(parentName.length() + 1);
         }
