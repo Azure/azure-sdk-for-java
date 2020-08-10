@@ -2,6 +2,7 @@
 # Licensed under the MIT License.
 
 
+import argparse
 import os
 import queue
 import time
@@ -11,19 +12,11 @@ import xml.etree.ElementTree as elementTree
 from itertools import takewhile
 
 import in_place
-from termcolor import colored, cprint
+
+from log import log, Log
 
 EXTERNAL_DEPENDENCIES_FILE = 'eng/versioning/external_dependencies.txt'
 POM = 'https://repo.maven.apache.org/maven2/{group}/{artifact}/{version}/{artifact}-{version}.pom'
-
-LOG_LEVEL_DEBUG = 5
-LOG_LEVEL_INFO = 4
-LOG_LEVEL_WARN = 3
-LOG_LEVEL_ERROR = 2
-LOG_LEVEL_NONE = 1
-logLevel = LOG_LEVEL_INFO
-
-os.system('color')
 
 
 class PomModule:
@@ -45,11 +38,11 @@ class PomModule:
 def main():
     start_time = time.time()
     change_to_root_dir()
-    debug('Current working directory = {}.'.format(os.getcwd()))
+    log.debug('Current working directory = {}.'.format(os.getcwd()))
     dependency_dict = get_dependency_dict()
     update_version_for_external_dependencies(dependency_dict)
     elapsed_time = time.time() - start_time
-    info('elapsed_time = {}'.format(elapsed_time))
+    log.info('elapsed_time = {}'.format(elapsed_time))
 
 
 def change_to_root_dir():
@@ -78,7 +71,7 @@ def get_dependency_dict():
     while not q.empty():
         pom_module = q.get()
         pom_url = pom_module.to_url()
-        info('Get dependencies from pom: {}.'.format(pom_url))
+        log.info('Get dependencies from pom: {}.'.format(pom_url))
         tree = elementTree.ElementTree(file = request.urlopen(pom_url))
         project_element = tree.getroot()
         name_space = {'maven': 'http://maven.apache.org/POM/4.0.0'}
@@ -123,14 +116,15 @@ def get_dependency_dict():
                 version = property_dict[version]
             if key not in dependency_dict:
                 dependency_dict[key] = version
-                debug('    Dependency version added. key = {}, value = {}'.format(key, version))
+                log.debug('    Dependency version added. key = {}, value = {}'.format(key, version))
             else:
-                debug('    Dependency version skipped. key = {}, value = {}'.format(key, version))
+                log.debug(
+                    '    Dependency version skipped. key = {}, value = {}'.format(key, version))
             artifact_type = dependency_element.find('./maven:type', name_space)
             if artifact_type is not None and artifact_type.text.strip() == 'pom':
                 new_pom_module = PomModule(group_id, artifact_id, version)
                 q.put(new_pom_module)
-                debug('Added new pom pom: {}.'.format(new_pom_module.to_url()))
+                log.debug('Added new pom pom: {}.'.format(new_pom_module.to_url()))
     return dependency_dict
 
 
@@ -147,11 +141,11 @@ def update_version_for_external_dependencies(dependency_dict):
                 if key in dependency_dict:
                     value_in_dict = dependency_dict[key]
                     if version_bigger_than(value, value_in_dict):
-                        warn('Version update skipped. key = {}, value = {}, new_value = {}'
-                             .format(key, value, value_in_dict))
+                        log.warn('Version update skipped. key = {}, value = {}, new_value = {}'
+                                 .format(key, value, value_in_dict))
                         file.write(line)
                     elif version_bigger_than(value_in_dict, value):
-                        info('Version updated. key = {}, value = {}, new_value = {}'.format(
+                        log.info('Version updated. key = {}, value = {}, new_value = {}'.format(
                             key,
                             value,
                             value_in_dict))
@@ -187,26 +181,6 @@ def print_dict(d):
         print('key = {}, value = {}.'.format(key, value))
 
 
-def debug(string):
-    if (logLevel >= LOG_LEVEL_DEBUG):
-        print(colored('[DEBUG] {}'.format(string), 'grey'))
-
-
-def info(string):
-    if (logLevel >= LOG_LEVEL_INFO):
-        print(colored('[INFO ] {}'.format(string), 'blue'))
-
-
-def warn(string):
-    if (logLevel >= LOG_LEVEL_WARN):
-        print(colored('[WARN ] {}'.format(string), 'yellow'))
-
-
-def error(string):
-    if (logLevel >= LOG_LEVEL_ERROR):
-        cprint(colored('[WARN ] {}'.format(string), 'red'))
-
-
 class Tests(unittest.TestCase):
     def test_version_bigger_than(self):
         self.assertEqual(version_bigger_than('1', '2'), False)
@@ -223,15 +197,31 @@ class Tests(unittest.TestCase):
         self.assertEqual(version_bigger_than('1.1-RELEASE', '1.1.1-RELEASE'), False)
 
 
-def log_level_test():
-    debug('This is debug log.')
-    info('This is info log.')
-    warn('This is warn log.')
-    error('This is error log.')
+def init():
+    parser = argparse.ArgumentParser(
+        description = 'Update versions in /eng/versioning/external_dependencies.txt.'
+    )
+    parser.add_argument(
+        '--log',
+        type = str,
+        choices = ['DEBUG', 'INFO', 'WARN', 'ERROR', 'NONE'],
+        required = False,
+        default = 'INFO',
+        help = 'Set log level.'
+    )
+    args = parser.parse_args()
+    log_dict = {
+        'DEBUG': Log.DEBUG,
+        'INFO': Log.INFO,
+        'WARN': Log.WARN,
+        'ERROR': Log.ERROR,
+        'NONE': Log.NONE
+    }
+    log.set_log_level(log_dict[args.log])
+    log.log_level_test()
 
 
 if __name__ == '__main__':
     # unittest.main()
-    logLevel = LOG_LEVEL_DEBUG
-    log_level_test()
+    init()
     # main()
