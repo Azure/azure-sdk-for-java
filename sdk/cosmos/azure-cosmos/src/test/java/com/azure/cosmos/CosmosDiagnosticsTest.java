@@ -79,16 +79,16 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
     @Test(groups = {"simple"})
     public void gatewayDiagnostics() {
-        CosmosClient gatewayClient = null;
+        CosmosClient testGatewayClient = null;
         try {
-            gatewayClient = new CosmosClientBuilder()
+            testGatewayClient = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
                 .key(TestConfigurations.MASTER_KEY)
                 .contentResponseOnWriteEnabled(true)
                 .gatewayMode()
                 .buildClient();
             CosmosContainer container =
-                gatewayClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
+                testGatewayClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
             InternalObjectNode internalObjectNode = getInternalObjectNode();
             CosmosItemResponse<InternalObjectNode> createResponse = container.createItem(internalObjectNode);
             String diagnostics = createResponse.getDiagnostics().toString();
@@ -102,8 +102,8 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             validateTransportRequestTimelineGateway(diagnostics);
             validateJson(diagnostics);
         } finally {
-            if (gatewayClient != null) {
-                gatewayClient.close();
+            if (testGatewayClient != null) {
+                testGatewayClient.close();
             }
         }
     }
@@ -151,16 +151,16 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
     @Test(groups = {"simple"})
     public void directDiagnostics() {
-        CosmosClient directClient = null;
+        CosmosClient testDirectClient = null;
         try {
-            directClient = new CosmosClientBuilder()
+            testDirectClient = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
                 .key(TestConfigurations.MASTER_KEY)
                 .contentResponseOnWriteEnabled(true)
                 .directMode()
                 .buildClient();
             CosmosContainer cosmosContainer =
-                directClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
+                testDirectClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
             InternalObjectNode internalObjectNode = getInternalObjectNode();
             CosmosItemResponse<InternalObjectNode> createResponse = cosmosContainer.createItem(internalObjectNode);
             String diagnostics = createResponse.getDiagnostics().toString();
@@ -177,8 +177,8 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             validateTransportRequestTimelineDirect(diagnostics);
             validateJson(diagnostics);
         } finally {
-            if (directClient != null) {
-                directClient.close();
+            if (testDirectClient != null) {
+                testDirectClient.close();
             }
         }
     }

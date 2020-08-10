@@ -616,6 +616,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             ModelBridgeInternal
                                 .addQueryInfoToFeedResponse(tFeedResponse, finalQueryInfo);
                         }
+
                         if (isFirstResponse.compareAndSet(true, false)) {
                             ModelBridgeInternal.addQueryPlanDiagnosticsContextToFeedResponse(tFeedResponse,
                                 finalQueryInfo.getQueryPlanDiagnosticsContext());

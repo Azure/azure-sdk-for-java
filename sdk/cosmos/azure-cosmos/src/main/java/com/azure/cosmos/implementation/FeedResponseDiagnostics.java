@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.query.metrics.QueryMetricsTextWriter;
 
@@ -16,7 +15,8 @@ import java.util.Map;
 public final class FeedResponseDiagnostics {
 
     private final static String EQUALS = "=";
-    private final static String QUERY_PLAN = "QueryPlan ";
+    private final static String QUERY_PLAN = "QueryPlan";
+    private final static String SPACE = " ";
     private Map<String, QueryMetrics> queryMetricsMap;
     private QueryInfo.QueryPlanDiagnosticsContext diagnosticsContext;
 
@@ -43,16 +43,16 @@ public final class FeedResponseDiagnostics {
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
         if (diagnosticsContext != null) {
-            stringBuilder.append(QUERY_PLAN + QueryMetricsTextWriter.START_TIME_HEADER)
+            stringBuilder.append(QUERY_PLAN + SPACE + QueryMetricsTextWriter.START_TIME_HEADER)
                 .append(EQUALS)
                 .append(QueryMetricsTextWriter.DATE_TIME_FORMATTER.format(diagnosticsContext.getStartTimeUTC()))
                 .append(System.lineSeparator());
-            stringBuilder.append(QUERY_PLAN + QueryMetricsTextWriter.END_TIME_HEADER)
+            stringBuilder.append(QUERY_PLAN + SPACE + QueryMetricsTextWriter.END_TIME_HEADER)
                 .append(EQUALS)
                 .append(QueryMetricsTextWriter.DATE_TIME_FORMATTER.format(diagnosticsContext.getEndTimeUTC()))
                 .append(System.lineSeparator());
             if (diagnosticsContext.getStartTimeUTC() != null && diagnosticsContext.getEndTimeUTC() != null) {
-                stringBuilder.append(QUERY_PLAN + QueryMetricsTextWriter.DURATION_HEADER)
+                stringBuilder.append(QUERY_PLAN + SPACE + QueryMetricsTextWriter.DURATION_HEADER)
                     .append(EQUALS)
                     .append(Duration.between(diagnosticsContext.getStartTimeUTC(),
                         diagnosticsContext.getEndTimeUTC()).toMillis()).append(System.lineSeparator());
