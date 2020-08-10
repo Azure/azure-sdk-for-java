@@ -27,9 +27,11 @@ import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
 import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
+import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.exception.CosmosExceptionUtils;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import com.fasterxml.jackson.databind.JsonNode;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -41,6 +43,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.parser.Part;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
+import org.springframework.util.ReflectionUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -48,6 +51,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.azure.spring.data.cosmos.common.CosmosUtils.createPartitionKey;
@@ -165,14 +169,16 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         Assert.hasText(containerName, "containerName should not be null, empty or only whitespaces");
         Assert.notNull(objectToSave, "objectToSave should not be null");
 
+        @SuppressWarnings("unchecked") final Class<T> domainType = (Class<T>) objectToSave.getClass();
+
+        generateIdIfNullAndAutoGenerationEnabled(objectToSave, domainType);
+
         final JsonNode originalItem = prepareToPersistAndConvertToItemProperties(objectToSave);
 
         LOGGER.debug("execute createItem in database {} container {}", this.databaseName,
             containerName);
 
         final CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-
-        @SuppressWarnings("unchecked") final Class<T> domainType = (Class<T>) objectToSave.getClass();
 
         final CosmosItemResponse<JsonNode> response = cosmosAsyncClient
             .getDatabase(this.databaseName)
@@ -187,6 +193,14 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
 
         assert response != null;
         return toDomainObject(domainType, response.getItem());
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> void generateIdIfNullAndAutoGenerationEnabled(T originalItem, Class<?> type) {
+        CosmosEntityInformation<?, ?> entityInfo = CosmosEntityInformation.getInstance(type);
+        if (entityInfo.shouldGenerateId() && ReflectionUtils.getField(entityInfo.getIdField(), originalItem) == null) {
+            ReflectionUtils.setField(entityInfo.getIdField(), originalItem, UUID.randomUUID().toString());
+        }
     }
 
     /**

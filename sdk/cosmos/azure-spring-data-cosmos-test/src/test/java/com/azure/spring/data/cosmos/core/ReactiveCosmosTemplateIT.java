@@ -16,6 +16,7 @@ import com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext;
 import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
+import com.azure.spring.data.cosmos.domain.GenIdEntity;
 import com.azure.spring.data.cosmos.domain.Person;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
@@ -42,6 +43,10 @@ import reactor.test.StepVerifier;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import static com.azure.spring.data.cosmos.common.TestConstants.ADDRESSES;
+import static com.azure.spring.data.cosmos.common.TestConstants.FIRST_NAME;
+import static com.azure.spring.data.cosmos.common.TestConstants.HOBBIES;
+import static com.azure.spring.data.cosmos.common.TestConstants.LAST_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -223,6 +228,25 @@ public class ReactiveCosmosTemplateIT {
 
         Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+    }
+
+    @Test
+    public void testInsertShouldFailIfColumnNotAnnotatedWithAutoGenerate() {
+        final Person person = new Person(null, FIRST_NAME, LAST_NAME, HOBBIES, ADDRESSES);
+        Mono<GenIdEntity> entityMono = cosmosTemplate.insert(Person.class.getSimpleName(),
+            person, new PartitionKey(person.getLastName()));
+        StepVerifier.create(entityMono).verifyError(CosmosAccessException.class);
+
+    }
+
+    @Test
+    public void testInsertShouldGenerateIdIfColumnAnnotatedWithAutoGenerate() {
+        final GenIdEntity entity = new GenIdEntity(null, "foo");
+        final Mono<GenIdEntity> insertedEntityMono = cosmosTemplate.insert(GenIdEntity.class.getSimpleName(),
+            entity, null);
+        GenIdEntity insertedEntity = insertedEntityMono.block();
+        assertThat(insertedEntity).isNotNull();
+        assertThat(insertedEntity.getId()).isNotNull();
     }
 
     @Test

@@ -32,8 +32,11 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.data.auditing.IsNewAwareAuditingHandler;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
+import org.springframework.util.ReflectionUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.UUID;
 
 import static com.azure.spring.data.cosmos.common.CosmosUtils.createPartitionKey;
 
@@ -327,6 +330,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         Assert.notNull(objectToSave, "objectToSave should not be null");
 
         final Class<T> domainType = (Class<T>) objectToSave.getClass();
+        generateIdIfNullAndAutoGenerationEnabled(objectToSave, domainType);
         final JsonNode originalItem =
             mappingCosmosConverter.writeJsonNode(objectToSave);
         return cosmosAsyncClient.getDatabase(this.databaseName)
@@ -357,6 +361,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         Assert.notNull(objectToSave, "objectToSave should not be null");
 
         final Class<T> domainType = (Class<T>) objectToSave.getClass();
+        generateIdIfNullAndAutoGenerationEnabled(objectToSave, domainType);
         final JsonNode originalItem = prepareToPersistAndConvertToItemProperties(objectToSave);
         final CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         if (partitionKey == null) {
@@ -373,6 +378,14 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                                     return Mono.just(toDomainObject(domainType,
                                         cosmosItemResponse.getItem()));
                                 });
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> void generateIdIfNullAndAutoGenerationEnabled(T originalItem, Class<?> type) {
+        CosmosEntityInformation<?, ?> entityInfo = CosmosEntityInformation.getInstance(type);
+        if (entityInfo.shouldGenerateId() && ReflectionUtils.getField(entityInfo.getIdField(), originalItem) == null) {
+            ReflectionUtils.setField(entityInfo.getIdField(), originalItem, UUID.randomUUID().toString());
+        }
     }
 
     /**
