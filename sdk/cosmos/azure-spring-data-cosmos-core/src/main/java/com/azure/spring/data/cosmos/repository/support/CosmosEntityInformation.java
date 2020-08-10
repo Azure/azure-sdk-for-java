@@ -279,7 +279,8 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
             if (idField.getType() == String.class) {
                 return true;
             } else {
-                throw new IllegalArgumentException("id field must be of type String if GeneratedValue annotation is present");
+                throw new IllegalArgumentException("id field must be of type String if "
+                    + "GeneratedValue annotation is present");
             }
         }
         return false;
