@@ -26,7 +26,8 @@ public class OkHttpAsyncHttpClientBuilder {
     private final okhttp3.OkHttpClient okHttpClient;
 
     private static final Duration MINIMUM_TIMEOUT = Duration.ofMillis(1);
-    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(60);
+    private static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(10);
+    private static final Duration DEFAULT_IO_TIMEOUT = Duration.ofSeconds(60);
 
     private List<Interceptor> networkInterceptors = new ArrayList<>();
     private Duration readTimeout;
@@ -82,8 +83,8 @@ public class OkHttpAsyncHttpClientBuilder {
      * Sets the read timeout.
      * <p>
      * If {@code readTimeout} is {@code null} a default timeout of 60 seconds will be used. If the timeout is less than
-     * or equal to zero then no timeout will be used. If the timeout is less than one millisecond a timeout of one
-     * millisecond will be used. Otherwise, the timeout is used as-is.
+     * or equal to zero then no timeout will be used. Otherwise, the maximum of one millisecond and the passed timeout
+     * will be used.
      *
      * @param readTimeout The read timeout.
      * @return The updated OkHttpAsyncHttpClientBuilder object.
@@ -97,9 +98,9 @@ public class OkHttpAsyncHttpClientBuilder {
     /**
      * Sets the write timeout.
      * <p>
-     * If {@code readTimeout} is {@code null} a default timeout of 60 seconds will be used. If the timeout is less than
-     * or equal to zero then no timeout will be used. If the timeout is less than one millisecond a timeout of one
-     * millisecond will be used. Otherwise, the timeout is used as-is.
+     * If {@code writeTimeout} is {@code null} a default timeout of 60 seconds will be used. If the timeout is less than
+     * or equal to zero then no timeout will be used. Otherwise, the maximum of one millisecond and the passed timeout
+     * will be used.
      *
      * @param writeTimeout The write timeout.
      * @return The updated OkHttpAsyncHttpClientBuilder object.
@@ -112,9 +113,8 @@ public class OkHttpAsyncHttpClientBuilder {
     /**
      * Sets the connection timeout.
      * <p>
-     * If {@code readTimeout} is {@code null} a default timeout of 60 seconds will be used. If the timeout is less than
-     * or equal to zero then no timeout will be used. If the timeout is less than one millisecond a timeout of one
-     * millisecond will be used. Otherwise, the timeout is used as-is.
+     * If {@code connectionTimeout} is {@code null} or less than or equal to zero a default timeout of 10 seconds will
+     * be used. Otherwise, the maximum of one millisecond and the passed timeout will be used.
      *
      * @param connectionTimeout The connection timeout.
      * @return The updated OkHttpAsyncHttpClientBuilder object.
@@ -192,9 +192,9 @@ public class OkHttpAsyncHttpClientBuilder {
         }
 
         // Configure operation timeouts.
-        httpClientBuilder = httpClientBuilder.connectTimeout(convertTimeout(connectionTimeout))
-            .writeTimeout(convertTimeout(writeTimeout))
-            .readTimeout(convertTimeout(readTimeout));
+        httpClientBuilder = httpClientBuilder.connectTimeout(convertConnectTimeout(connectionTimeout))
+            .writeTimeout(convertIoTimeout(writeTimeout))
+            .readTimeout(convertIoTimeout(readTimeout));
 
         // If set use the configured connection pool.
         if (this.connectionPool != null) {
@@ -233,18 +233,32 @@ public class OkHttpAsyncHttpClientBuilder {
     }
 
     /*
-     * Convert the timeout configured in the builder. If the timeout is null a default timeout period of 60 seconds will
-     * be used. If the timeout is less than or equal to zero a zero duration timeout will be used it indicate no
-     * timeout. Finally, if neither of the cases above are true then the maximum of the configured timeout and one
-     * millisecond is used.
+     * Convert the connect timeout configured in the builder. If the timeout is null or less than or equal to zero a
+     * default timeout of 10 seconds will be used. Otherwise, the maximum of the configured timeout and one millisecond
+     * is used.
      */
-    private static Duration convertTimeout(Duration timeout) {
+    private static Duration convertConnectTimeout(Duration timeout) {
+        return convertTimeout(timeout, DEFAULT_CONNECT_TIMEOUT, true);
+    }
+
+    /*
+     * Convert the IO timeout configured in the builder. If the timeout is null a default timeout of 60 seconds will be
+     * used. If the timeout is less than or equal to zero a zero duration timeout will be used it indicate no timeout.
+     * Finally, if neither of the cases above are true then the maximum of the configured timeout and one millisecond is
+     * used.
+     */
+    private static Duration convertIoTimeout(Duration timeout) {
+        return convertTimeout(timeout, DEFAULT_IO_TIMEOUT, false);
+    }
+
+    private static Duration convertTimeout(Duration timeout, Duration defaultTimeout,
+        boolean useDefaultWhenLessThanZero) {
         if (timeout == null) {
-            return DEFAULT_TIMEOUT;
+            return defaultTimeout;
         }
 
         if (timeout.isNegative() || timeout.isZero()) {
-            return Duration.ZERO;
+            return useDefaultWhenLessThanZero ? defaultTimeout : Duration.ZERO;
         }
 
         return (timeout.compareTo(MINIMUM_TIMEOUT) < 0) ? MINIMUM_TIMEOUT : timeout;
