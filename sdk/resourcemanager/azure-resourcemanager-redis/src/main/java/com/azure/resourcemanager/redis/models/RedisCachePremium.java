@@ -5,12 +5,10 @@
  */
 package com.azure.resourcemanager.redis.models;
 
+import com.azure.core.annotation.Fluent;
+
 import java.util.List;
 import java.util.Map;
-
-import com.microsoft.azure.management.apigeneration.Beta;
-import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.apigeneration.Method;
 
 /**
  * An immutable client-side representation of an Azure Redis cache with Premium SKU.

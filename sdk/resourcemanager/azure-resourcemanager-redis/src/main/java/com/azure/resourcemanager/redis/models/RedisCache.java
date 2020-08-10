@@ -5,20 +5,19 @@
  */
 
 package com.azure.resourcemanager.redis.models;
-import com.microsoft.azure.management.apigeneration.Beta;
-import org.joda.time.Period;
 
-import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.apigeneration.Method;
+import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.redis.RedisManager;
-import com.azure.resourcemanager.redis.implementation.RedisResourceInner;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.HasId;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
-import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
-import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
-import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
+import com.azure.resourcemanager.redis.fluent.inner.RedisResourceInner;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
+import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
+import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
+import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
+import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
+
+import java.time.Period;
 import java.util.List;
 import java.util.Map;
 
@@ -28,8 +27,8 @@ import java.util.Map;
 @Fluent
 public interface RedisCache extends
         GroupableResource<RedisManager, RedisResourceInner>,
-        Refreshable<RedisCache>,
-        Updatable<RedisCache.Update> {
+    Refreshable<RedisCache>,
+    Updatable<RedisCache.Update> {
 
     /**
      * @return exposes features available only to Premium Sku Redis Cache instances.
@@ -231,7 +230,7 @@ public interface RedisCache extends
          * specify.
          */
         interface WithCreate extends
-                 Creatable<RedisCache>,
+             Creatable<RedisCache>,
                  DefinitionWithTags<WithCreate> {
              /**
               * Enables non-ssl Redis server port (6379).
@@ -484,7 +483,7 @@ public interface RedisCache extends
      * The template for a Redis Cache update operation, containing all the settings that can be modified.
      */
     interface Update extends
-            Appliable<RedisCache>,
+        Appliable<RedisCache>,
             Resource.UpdateWithTags<Update>,
             UpdateStages.WithSku,
             UpdateStages.WithNonSslPort,

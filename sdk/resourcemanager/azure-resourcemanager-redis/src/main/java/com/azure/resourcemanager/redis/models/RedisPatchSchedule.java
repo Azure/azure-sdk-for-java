@@ -6,27 +6,22 @@
 
 package com.azure.resourcemanager.redis.models;
 
-import com.microsoft.azure.management.apigeneration.Beta;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.apigeneration.LangMethodDefinition;
-import com.azure.resourcemanager.redis.implementation.RedisPatchScheduleInner;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.ExternalChildResource;
-import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.redis.fluent.inner.RedisPatchScheduleInner;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.ExternalChildResource;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 
 import java.util.List;
 
 /**
  * The Azure Redis Patch Schedule entries are of type ScheduleEntry.
  */
-@LangDefinition(ContainerName = "/Microsoft.Azure.Management.Redis.Fluent.Models")
 public interface RedisPatchSchedule extends
-        ExternalChildResource<RedisPatchSchedule, RedisCache>,
-        HasInner<RedisPatchScheduleInner> {
+    ExternalChildResource<RedisPatchSchedule, RedisCache>,
+    HasInner<RedisPatchScheduleInner> {
     /**
      * Get the scheduleEntries value.
      *
      * @return the scheduleEntries value
      */
-    @LangMethodDefinition(AsType = LangMethodDefinition.LangMethodType.Property)
     List<ScheduleEntry> scheduleEntries();
 }

@@ -6,26 +6,21 @@
 
 package com.azure.resourcemanager.redis.models;
 
-import com.microsoft.azure.management.apigeneration.Beta;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.apigeneration.LangMethodDefinition;
-import com.azure.resourcemanager.redis.implementation.RedisFirewallRuleInner;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.ExternalChildResource;
-import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.redis.fluent.inner.RedisFirewallRuleInner;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.ExternalChildResource;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 
 /**
  * The Azure Redis Firewall rule entries are of type RedisFirewallRule.
  */
-@LangDefinition(ContainerName = "/Microsoft.Azure.Management.Redis.Fluent.Models")
 public interface RedisFirewallRule extends
-        ExternalChildResource<RedisFirewallRule, RedisCache>,
-        HasInner<RedisFirewallRuleInner> {
+    ExternalChildResource<RedisFirewallRule, RedisCache>,
+    HasInner<RedisFirewallRuleInner> {
     /**
      * Get the name value.
      *
      * @return the name value
      */
-    @LangMethodDefinition(AsType = LangMethodDefinition.LangMethodType.Property)
     String name();
 
     /**
@@ -33,7 +28,6 @@ public interface RedisFirewallRule extends
      *
      * @return the startIP value
      */
-    @LangMethodDefinition(AsType = LangMethodDefinition.LangMethodType.Property)
     String startIP();
 
     /**
