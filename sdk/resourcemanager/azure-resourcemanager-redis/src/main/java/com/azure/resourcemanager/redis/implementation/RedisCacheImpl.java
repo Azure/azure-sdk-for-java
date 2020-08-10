@@ -39,7 +39,6 @@ import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.time.Period;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -166,7 +165,7 @@ class RedisCacheImpl
     @Override
     public RedisCachePremium asPremium() {
         if (this.isPremium()) {
-            return (RedisCachePremium) this;
+            return this;
         }
         return null;
     }
@@ -279,12 +278,12 @@ class RedisCacheImpl
     public RedisCacheImpl withRedisConfiguration(String key, String value) {
         if (isInCreateMode()) {
             if (createParameters.redisConfiguration() == null) {
-                createParameters.withRedisConfiguration(new TreeMap<String, String>());
+                createParameters.withRedisConfiguration(new TreeMap<>());
             }
             createParameters.redisConfiguration().put(key, value);
         } else {
             if (updateParameters.redisConfiguration() == null) {
-                updateParameters.withRedisConfiguration(new TreeMap<String, String>());
+                updateParameters.withRedisConfiguration(new TreeMap<>());
             }
             updateParameters.redisConfiguration().put(key, value);
         }
@@ -504,11 +503,11 @@ class RedisCacheImpl
 
     @Override
     public RedisCacheImpl withPatchSchedule(ScheduleEntry scheduleEntry) {
-        RedisPatchScheduleImpl psch = null;
+        RedisPatchScheduleImpl psch;
         if (this.patchSchedules.patchSchedulesAsMap().isEmpty()) {
             psch = this.patchSchedules.defineInlinePatchSchedule();
             this.patchScheduleAdded = true;
-            psch.inner().withScheduleEntries(new ArrayList<ScheduleEntry>());
+            psch.inner().withScheduleEntries(new ArrayList<>());
             this.patchSchedules.addPatchSchedule(psch);
         } else if (!this.patchScheduleAdded) {
             psch = this.patchSchedules.updateInlinePatchSchedule();
