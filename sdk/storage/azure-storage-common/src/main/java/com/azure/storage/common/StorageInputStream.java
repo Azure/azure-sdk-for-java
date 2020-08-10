@@ -286,15 +286,12 @@ public abstract class StorageInputStream extends InputStream {
         int chunks = (int) (Math.ceil((double) len / (double) this.chunkSize));
         int numOfBytesRead = 0;
         for (int i = 0; i < chunks; i++) {
-            System.out.println("calling readInternal");
             int results = this.readInternal(b, off + numOfBytesRead, len - numOfBytesRead);
             if (results == -1) {
-                System.out.println("read is received -1. Returning: " + (numOfBytesRead == 0 ? -1 : numOfBytesRead));
                 return numOfBytesRead == 0 ? -1 : numOfBytesRead;
             }
             numOfBytesRead += results;
         }
-        System.out.println("read has exited chunk loop. Returning: " + numOfBytesRead);
         return numOfBytesRead;
     }
 
@@ -316,7 +313,6 @@ public abstract class StorageInputStream extends InputStream {
         // if buffer is empty do next get operation
         if ((this.currentBuffer == null || this.currentBuffer.remaining() == 0)
             && this.currentAbsoluteReadPosition < this.streamLength + this.rangeOffset) {
-            System.out.println("calling dispatchRead");
             this.currentBuffer = this.dispatchRead((int) Math.min(this.chunkSize,
                 this.streamLength + this.rangeOffset - this.currentAbsoluteReadPosition),
                 this.currentAbsoluteReadPosition);
@@ -326,12 +322,10 @@ public abstract class StorageInputStream extends InputStream {
 
         final int numberOfBytesRead;
         if (currentBuffer.remaining() == 0) {
-            System.out.println("Returning -1");
             numberOfBytesRead = -1;
         } else {
             numberOfBytesRead = Math.min(len, this.currentBuffer.remaining());
             // do read from buffer
-            System.out.println("Transferring data");
             this.currentBuffer = this.currentBuffer.get(b, off, numberOfBytesRead);
         }
 

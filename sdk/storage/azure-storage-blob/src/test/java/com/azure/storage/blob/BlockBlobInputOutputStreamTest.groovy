@@ -18,17 +18,14 @@ class BlockBlobInputOutputStreamTest extends APISpec {
     def "BlobInputStream read to large buffer"() {
         setup:
         byte[] data = getRandomByteArray(dataSize)
-        System.out.println("Allocated array size " + dataSize)
         bc.upload(new ByteArrayInputStream(data), data.length, true)
         def is = bc.openInputStream()
         byte[] outArr = new byte[10 * 1024 * 1024]
-        System.out.println("Allocated array size " + 10 * 1024 * 1024)
 
         when:
         def count = is.read(outArr)
 
         then:
-        System.out.println("Comparing data")
         for (int i=0; i < dataSize; i++) {
             assert data[i] == outArr[i]
         }
