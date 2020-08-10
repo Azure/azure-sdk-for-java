@@ -1,6 +1,5 @@
 package com.azure.storage.blob.changefeed
 
-import reactor.core.publisher.Hooks
 import spock.lang.Ignore
 import reactor.test.StepVerifier
 import spock.lang.Requires
@@ -15,13 +14,12 @@ relationship programmatically, so we have recorded a successful interaction and 
  */
 class ChangefeedNetworkTest extends APISpec {
 
-//    @Ignore("For debugging larger Change Feeds locally. Infeasible to record due to large number of events. ")
+    @Ignore("For debugging larger Change Feeds locally. Infeasible to record due to large number of events. ")
     def "min"() {
         setup:
-        Hooks.onOperatorDebug();
         BlobChangefeedPagedFlux flux = new BlobChangefeedClientBuilder(primaryBlobServiceAsyncClient)
             .buildAsyncClient()
-            .getEvents(OffsetDateTime.now().minusDays(1), OffsetDateTime.MAX)
+            .getEvents()
         when:
         def sv = StepVerifier.create(
             flux
@@ -29,6 +27,40 @@ class ChangefeedNetworkTest extends APISpec {
         )
         then:
         sv.expectNextCount(17513) /* Note this number should be adjusted to verify the number of events expected */
+            .verifyComplete()
+    }
+
+    /* TODO : Record this. */
+    @Ignore("For debugging larger Change Feeds locally.")
+    def "historical"() {
+        setup:
+        BlobChangefeedPagedFlux flux = new BlobChangefeedClientBuilder(primaryBlobServiceAsyncClient)
+            .buildAsyncClient()
+            .getEvents(OffsetDateTime.now().minusHours(2), OffsetDateTime.now().plusHours(1))
+        when:
+        def sv = StepVerifier.create(
+            flux
+//            .map({ event -> System.out.println(event); return event; })
+        )
+        then:
+        sv.expectNextCount(1599) /* Note this number should be adjusted to verify the number of events expected */
+            .verifyComplete()
+    }
+
+    /* TODO : Record this. */
+//    @Ignore("For debugging larger Change Feeds locally.")
+    def "last hour"() {
+        setup:
+        BlobChangefeedPagedFlux flux = new BlobChangefeedClientBuilder(primaryBlobServiceAsyncClient)
+            .buildAsyncClient()
+            .getEvents(OffsetDateTime.now(), OffsetDateTime.now())
+        when:
+        def sv = StepVerifier.create(
+            flux
+//            .map({ event -> System.out.println(event); return event; })
+        )
+        then:
+        sv.expectNextCount(430) /* Note this number should be adjusted to verify the number of events expected */
             .verifyComplete()
     }
 
