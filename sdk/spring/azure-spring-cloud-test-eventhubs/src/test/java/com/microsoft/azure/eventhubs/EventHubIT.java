@@ -13,7 +13,7 @@ import org.springframework.messaging.support.GenericMessage;
 
 @EnableBinding(Source.class)
 @SpringBootTest
-class EventHubIntegrationTests {
+class EventHubIT {
 
     private static final String MESSAGE = "Azure Spring Cloud EventHub Test";
 
