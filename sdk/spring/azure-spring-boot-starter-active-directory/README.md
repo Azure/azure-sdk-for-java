@@ -6,7 +6,8 @@ With Spring Starter for Azure Active Directory, now you can get started quickly 
 
 ## Getting started
 ### Prerequisites
-- JDK 1.8 and above
+- Java Development Kit (JDK) with version 8 or above
+- [Azure Subscription][azure_subscription]
 - [Maven](http://maven.apache.org/) 3.0 and above
 
 ### Register the Application in Azure AD
@@ -15,11 +16,6 @@ With Spring Starter for Azure Active Directory, now you can get started quickly 
 * **Create a client secret key for the application**: Go to API ACCESS - Keys to create a secret key (`client-secret`).
 
 ### Include the package
-
-`azure-active-directory-spring-boot-starter` is published on Maven Central Repository.
-If you are using Maven, add the following dependency.
-
-[//]: # "{x-version-update-start;com.microsoft.azure:azure-active-directory-spring-boot-starter;current}"
 ```xml
 <dependency>
     <groupId>com.microsoft.azure</groupId>
@@ -228,13 +224,6 @@ public class AADOAuth2LoginConditionalPolicyConfigSample extends WebSecurityConf
 }
 ```
 
-## Next steps
-The following section provides sample projects illustrating how to use the starter in different cases.
-### More sample code
-- [Azure Active Directory for Frontend](../azure-spring-boot-samples/azure-spring-boot-sample-active-directory)
-- [Azure Active Directory for Backend](../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-backend)
-- [Azure Active Directory for Backend with Microsoft Graph API](../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-backend-v2)
-
 ## Troubleshooting
 ### Enable client logging
 Azure SDKs for Java offer a consistent logging story to help aid in troubleshooting application errors and expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
@@ -253,6 +242,13 @@ logging.level.org.hibernate=ERROR
 For more information about setting loging in pring, please refer to the [official doc](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging).
  
 
+## Next steps
+The following section provides sample projects illustrating how to use the starter in different cases.
+### More sample code
+- [Azure Active Directory for Frontend](../azure-spring-boot-samples/azure-spring-boot-sample-active-directory)
+- [Azure Active Directory for Backend](../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-backend)
+- [Azure Active Directory for Backend with Microsoft Graph API](../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-backend-v2)
+
 ## Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
 
@@ -264,3 +260,4 @@ Please follow [instructions here](../CONTRIBUTING.md) to build from source or co
 [package]: https://mvnrepository.com/artifact/com.microsoft.azure/azure-active-directory-spring-boot-starter
 [sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
+[azure_subscription]: https://azure.microsoft.com/free
