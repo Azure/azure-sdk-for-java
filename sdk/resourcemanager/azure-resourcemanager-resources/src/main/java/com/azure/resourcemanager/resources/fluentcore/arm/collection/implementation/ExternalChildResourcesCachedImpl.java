@@ -203,7 +203,7 @@ public abstract class ExternalChildResourcesCachedImpl<
     protected Mono<Void> cacheCollectionAsync() {
         this.clear();
         return this.listChildResourcesAsync()
-            .map(childResource -> this.childCollection.put(childResource.childResourceKey(), childResource))
+            .doOnNext(childResource -> this.childCollection.put(childResource.childResourceKey(), childResource))
             .then();
     }
 
