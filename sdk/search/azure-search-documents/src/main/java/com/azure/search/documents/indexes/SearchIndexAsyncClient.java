@@ -12,7 +12,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.MemberNameConverterProviders;
 import com.azure.search.documents.SearchAsyncClient;
 import com.azure.search.documents.SearchClientBuilder;
 import com.azure.search.documents.SearchServiceVersion;
@@ -739,10 +738,7 @@ public final class SearchIndexAsyncClient {
      * @return A list {@link SearchField SearchFields} which represent the model {@link Class}.
      */
     public static List<SearchField> buildSearchFields(Class<?> model, FieldBuilderOptions options) {
-        if (options == null || options.getConverter() == null) {
-            return FieldBuilder.build(model, MemberNameConverterProviders.createInstance());
-        }
-        return FieldBuilder.build(model, options.getConverter());
+        return FieldBuilder.build(model, options);
     }
 
     Mono<Response<Void>> deleteSynonymMapWithResponse(String synonymMapName, String etag,
