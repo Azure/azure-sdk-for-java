@@ -49,7 +49,6 @@
     <module>azure-spring-integration-servicebus</module>
     <module>azure-spring-integration-storage-queue</module>
     <module>azure-spring-integration-test</module>
-    <module>azure-spring-cloud-keyvault-config</module>
     <module>azure-spring-cloud-messaging</module>
   </modules>
 

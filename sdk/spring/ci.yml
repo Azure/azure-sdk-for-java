@@ -85,9 +85,6 @@ extends:
       - name: spring-cloud-azure-autoconfigure
         groupId: com.microsoft.azure
         safeName: springcloudazureautoconfigure
-      - name: spring-cloud-azure-keyvault-config
-        groupId: com.microsoft.azure
-        safeName: springcloudazurekeyvaultconfig
       - name: spring-cloud-azure-messaging
         groupId: com.microsoft.azure
         safeName: springcloudazuremessaging
