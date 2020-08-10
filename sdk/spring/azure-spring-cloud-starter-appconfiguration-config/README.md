@@ -6,7 +6,7 @@ This project allows Spring Application to load properties from Azure Configurati
 
 ## Getting started
 
-## Samples
+## Examples
 
 Please use this [sample](../../spring-cloud-azure-samples/azure-appconfiguration-sample/) as a reference for how to use this starter.
 
