@@ -1,8 +1,6 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 
 package com.azure.resourcemanager.redis.models;
 
@@ -18,7 +16,6 @@ import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 
 import java.time.Duration;
-import java.time.Period;
 import java.util.List;
 import java.util.Map;
 
@@ -254,7 +251,7 @@ public interface RedisCache extends
               * list-max-ziplist-value, hash-max-ziplist-entries, hash-max-ziplist-value, set -max-intset-entries,
               * zset-max-ziplist-entries, zset-max-ziplist-value etc.
               *
-              * @param key   Redis configuration name.
+              * @param key Redis configuration name.
               * @param value Redis configuration value.
               * @return the next stage of Redis Cache definition.
               */
@@ -452,7 +449,7 @@ public interface RedisCache extends
              * list-max-ziplist-value, hash-max-ziplist-entries, hash-max-ziplist-value, set -max-intset-entries,
              * zset-max-ziplist-entries, zset-max-ziplist-value etc.
              *
-             * @param key   Redis configuration name.
+             * @param key Redis configuration name.
              * @param value Redis configuration value.
              * @return the next stage of Redis Cache update.
              */

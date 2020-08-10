@@ -1,8 +1,6 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.annotation.Fluent;
@@ -20,14 +18,14 @@ public interface RedisCachePremium extends RedisCache {
      *
      * @param rebootType specifies which Redis node(s) to reboot. Depending on this value data loss is
      *                   possible. Possible values include: 'PrimaryNode', 'SecondaryNode', 'AllNodes'.
-     * @param shardId    In case of cluster cache, this specifies shard id which should be rebooted.
+     * @param shardId In case of cluster cache, this specifies shard id which should be rebooted.
      */
     void forceReboot(RebootType rebootType, int shardId);
 
     /**
      * Import data into Redis Cache.
      *
-     * @param files      files to import.
+     * @param files files to import.
      * @param fileFormat specifies file format.
      */
     void importData(List<String> files, String fileFormat);
@@ -43,7 +41,7 @@ public interface RedisCachePremium extends RedisCache {
      * Export data from Redis Cache.
      *
      * @param containerSASUrl container name to export to.
-     * @param prefix          prefix to use for exported files.
+     * @param prefix prefix to use for exported files.
      */
     void exportData(String containerSASUrl, String prefix);
 
@@ -51,8 +49,8 @@ public interface RedisCachePremium extends RedisCache {
      * Export data from Redis Cache.
      *
      * @param containerSASUrl container name to export to.
-     * @param prefix          prefix to use for exported files.
-     * @param fileFormat      specifies file format.
+     * @param prefix prefix to use for exported files.
+     * @param fileFormat specifies file format.
      */
     void exportData(String containerSASUrl, String prefix, String fileFormat);
 

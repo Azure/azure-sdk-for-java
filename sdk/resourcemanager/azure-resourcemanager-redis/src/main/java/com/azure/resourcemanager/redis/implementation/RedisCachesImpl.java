@@ -1,12 +1,9 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 
 package com.azure.resourcemanager.redis.implementation;
 
-import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.redis.RedisManager;
@@ -16,7 +13,6 @@ import com.azure.resourcemanager.redis.fluent.inner.RedisResourceInner;
 import com.azure.resourcemanager.redis.models.RedisCache;
 import com.azure.resourcemanager.redis.models.RedisCaches;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.PagedList;
 
 /**
  * The implementation of RedisCaches and its parent interfaces.
