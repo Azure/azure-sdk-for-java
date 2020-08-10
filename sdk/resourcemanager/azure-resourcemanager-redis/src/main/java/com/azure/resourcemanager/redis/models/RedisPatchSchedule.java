@@ -19,7 +19,6 @@ import java.util.List;
  * The Azure Redis Patch Schedule entries are of type ScheduleEntry.
  */
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.Redis.Fluent.Models")
-@Beta(Beta.SinceVersion.V1_12_0)
 public interface RedisPatchSchedule extends
         ExternalChildResource<RedisPatchSchedule, RedisCache>,
         HasInner<RedisPatchScheduleInner> {

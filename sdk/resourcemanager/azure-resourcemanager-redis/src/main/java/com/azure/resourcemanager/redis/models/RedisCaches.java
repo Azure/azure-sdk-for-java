@@ -47,7 +47,6 @@ public interface RedisCaches extends
      *
      * @return list of available Redis REST operations.
      */
-    @Beta(Beta.SinceVersion.V1_12_0)
     PagedList<OperationInner> listOperations();
 
     /**
@@ -55,6 +54,5 @@ public interface RedisCaches extends
      *
      * @return a representation of the future computation of this call
      */
-    @Beta(Beta.SinceVersion.V1_12_0)
     Observable<OperationInner> listOperationsAsync();
 }

@@ -166,7 +166,6 @@ class RedisCacheImpl
     }
 
     @Override
-    @Method
     public RedisCachePremium asPremium() {
         if (this.isPremium()) {
             return (RedisCachePremium) this;
