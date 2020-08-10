@@ -24,19 +24,19 @@ class Log:
 
     def debug(self, string):
         if self.level >= Log.DEBUG:
-            print(colored('[DEBUG] {}'.format(string), 'grey'))
+            print(colored('[DEBUG] {}'.format(string), 'yellow'))
 
     def info(self, string):
         if self.level >= Log.INFO:
-            print(colored('[INFO ] {}'.format(string), 'blue'))
+            print(colored('[INFO ] {}'.format(string), 'grey'))
 
     def warn(self, string):
         if self.level >= Log.WARN:
-            print(colored('[WARN ] {}'.format(string), 'yellow'))
+            print(colored('[WARN ] {}'.format(string), 'red'))
 
     def error(self, string):
         if self.level >= Log.ERROR:
-            cprint(colored('[ERROR ] {}'.format(string), 'red'))
+            cprint(colored('[ERROR] {}'.format(string), 'red'))
 
     def log_level_test(self):
         self.debug('This is debug log.')

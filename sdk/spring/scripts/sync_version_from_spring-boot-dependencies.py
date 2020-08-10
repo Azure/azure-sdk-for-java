@@ -188,24 +188,24 @@ def init():
     parser.add_argument(
         '--log',
         type = str,
-        choices = ['DEBUG', 'INFO', 'WARN', 'ERROR', 'NONE'],
+        choices = ['debug', 'info', 'warn', 'error', 'none'],
         required = False,
         default = 'INFO',
         help = 'Set log level.'
     )
     args = parser.parse_args()
     log_dict = {
-        'DEBUG': Log.DEBUG,
-        'INFO': Log.INFO,
-        'WARN': Log.WARN,
-        'ERROR': Log.ERROR,
-        'NONE': Log.NONE
+        'debug': Log.DEBUG,
+        'info': Log.INFO,
+        'warn': Log.WARN,
+        'error': Log.ERROR,
+        'none': Log.NONE
     }
     log.set_log_level(log_dict[args.log])
-    log.log_level_test()
+    # log.log_level_test()
 
 
 if __name__ == '__main__':
     # unittest.main()
     init()
-    # main()
+    main()
