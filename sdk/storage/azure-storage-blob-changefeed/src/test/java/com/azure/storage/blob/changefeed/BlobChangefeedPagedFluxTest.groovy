@@ -1,9 +1,8 @@
 package com.azure.storage.blob.changefeed
 
 import com.azure.storage.blob.BlobContainerAsyncClient
-import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedCursor
-import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor
+import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper
 import com.azure.storage.blob.changefeed.models.BlobChangefeedEvent
 import reactor.core.publisher.Flux
 import reactor.test.StepVerifier
@@ -23,7 +22,7 @@ class BlobChangefeedPagedFluxTest extends Specification {
     ChangefeedFactory mockChangefeedFactory
     Changefeed mockChangefeed
 
-    List<BlobChangefeedCursor> mockCursors
+    List<ChangefeedCursor> mockCursors
     List<BlobChangefeedEvent> mockEvents
     List<BlobChangefeedEventWrapper> mockEventWrappers
 
@@ -220,16 +219,16 @@ class BlobChangefeedPagedFluxTest extends Specification {
         byte[] urlHash = MessageDigest.getInstance("MD5").digest('https://testaccount.blob.core.windows.net/$blobchangefeed'.getBytes(StandardCharsets.UTF_8))
         OffsetDateTime endTime = OffsetDateTime.of(2020, 10, 2, 20, 15, 0, 0, ZoneOffset.UTC)
         String segmentPath = "idx/segments/2020/08/02/2300/meta.json"
-        mockCursors.add(new BlobChangefeedCursor(urlHash, endTime).toSegmentCursor(segmentPath).toShardCursor("log/00/2020/08/02/2300/"))
-        mockCursors.add(new BlobChangefeedCursor(urlHash, endTime).toSegmentCursor(segmentPath).toShardCursor("log/01/2020/08/02/2300/"))
-        mockCursors.add(new BlobChangefeedCursor(urlHash, endTime).toSegmentCursor(segmentPath).toShardCursor("log/02/2020/08/02/2300/"))
-        mockCursors.add(new BlobChangefeedCursor(urlHash, endTime).toSegmentCursor(segmentPath).toShardCursor("log/03/2020/08/02/2300/"))
-        mockCursors.add(new BlobChangefeedCursor(urlHash, endTime).toSegmentCursor(segmentPath).toShardCursor("log/04/2020/08/02/2300/"))
-        mockCursors.add(new BlobChangefeedCursor(urlHash, endTime).toSegmentCursor(segmentPath).toShardCursor("log/05/2020/08/02/2300/"))
-        mockCursors.add(new BlobChangefeedCursor(urlHash, endTime).toSegmentCursor(segmentPath).toShardCursor("log/06/2020/08/02/2300/"))
-        mockCursors.add(new BlobChangefeedCursor(urlHash, endTime).toSegmentCursor(segmentPath).toShardCursor("log/07/2020/08/02/2300/"))
-        mockCursors.add(new BlobChangefeedCursor(urlHash, endTime).toSegmentCursor(segmentPath).toShardCursor("log/08/2020/08/02/2300/"))
-        mockCursors.add(new BlobChangefeedCursor(urlHash, endTime).toSegmentCursor(segmentPath).toShardCursor("log/09/2020/08/02/2300/"))
+        mockCursors.add(new ChangefeedCursor(urlHash, endTime).toSegmentCursor(segmentPath).toShardCursor("log/00/2020/08/02/2300/"))
+        mockCursors.add(new ChangefeedCursor(urlHash, endTime).toSegmentCursor(segmentPath).toShardCursor("log/01/2020/08/02/2300/"))
+        mockCursors.add(new ChangefeedCursor(urlHash, endTime).toSegmentCursor(segmentPath).toShardCursor("log/02/2020/08/02/2300/"))
+        mockCursors.add(new ChangefeedCursor(urlHash, endTime).toSegmentCursor(segmentPath).toShardCursor("log/03/2020/08/02/2300/"))
+        mockCursors.add(new ChangefeedCursor(urlHash, endTime).toSegmentCursor(segmentPath).toShardCursor("log/04/2020/08/02/2300/"))
+        mockCursors.add(new ChangefeedCursor(urlHash, endTime).toSegmentCursor(segmentPath).toShardCursor("log/05/2020/08/02/2300/"))
+        mockCursors.add(new ChangefeedCursor(urlHash, endTime).toSegmentCursor(segmentPath).toShardCursor("log/06/2020/08/02/2300/"))
+        mockCursors.add(new ChangefeedCursor(urlHash, endTime).toSegmentCursor(segmentPath).toShardCursor("log/07/2020/08/02/2300/"))
+        mockCursors.add(new ChangefeedCursor(urlHash, endTime).toSegmentCursor(segmentPath).toShardCursor("log/08/2020/08/02/2300/"))
+        mockCursors.add(new ChangefeedCursor(urlHash, endTime).toSegmentCursor(segmentPath).toShardCursor("log/09/2020/08/02/2300/"))
         for (int i = 0; i < 10; i++) {
             mockEventWrappers.add(new BlobChangefeedEventWrapper(mockEvents.get(i), mockCursors.get(i)))
         }

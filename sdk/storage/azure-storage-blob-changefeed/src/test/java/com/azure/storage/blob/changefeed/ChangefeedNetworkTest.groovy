@@ -1,14 +1,13 @@
 package com.azure.storage.blob.changefeed
 
+import reactor.core.publisher.Hooks
 import spock.lang.Ignore
 import reactor.test.StepVerifier
 import spock.lang.Requires
 import spock.lang.Unroll
 
-import java.time.Duration
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
-import java.time.temporal.TemporalAmount
 
 /*
 These tests requires an accounts having a fixed size changefeed It is not feasible to setup that
@@ -16,19 +15,24 @@ relationship programmatically, so we have recorded a successful interaction and 
  */
 class ChangefeedNetworkTest extends APISpec {
 
-//    @Requires( { playbackMode() })
-    @Ignore("Infeasible to record due to large number of events. ")
+//    @Ignore("For debugging larger Change Feeds locally. Infeasible to record due to large number of events. ")
     def "min"() {
         setup:
+        Hooks.onOperatorDebug();
         BlobChangefeedPagedFlux flux = new BlobChangefeedClientBuilder(primaryBlobServiceAsyncClient)
             .buildAsyncClient()
             .getEvents(OffsetDateTime.now().minusDays(1), OffsetDateTime.MAX)
         when:
-        def sv = StepVerifier.create(flux)
+        def sv = StepVerifier.create(
+            flux
+//            .map({ event -> System.out.println(event); return event; })
+        )
         then:
-        sv.expectNextCount(15000) /* Note this number should be adjusted to verify the number of events expected if re-recording. */
+        sv.expectNextCount(17513) /* Note this number should be adjusted to verify the number of events expected */
             .verifyComplete()
     }
+
+
     @Ignore
     def "min resume from cursor"() {
 //        when:

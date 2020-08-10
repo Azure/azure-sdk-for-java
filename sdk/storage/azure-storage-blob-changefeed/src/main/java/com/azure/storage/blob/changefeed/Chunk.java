@@ -3,9 +3,8 @@
 
 package com.azure.storage.blob.changefeed;
 
-import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedCursor;
-import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper;
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor;
+import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper;
 import com.azure.storage.blob.changefeed.implementation.models.InternalBlobChangefeedEvent;
 import com.azure.storage.blob.changefeed.models.BlobChangefeedEvent;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -20,13 +19,14 @@ import reactor.core.publisher.Flux;
 class Chunk {
 
     private final String chunkPath;
-    private final BlobChangefeedCursor changefeedCursor; /* Cursor associated with parent shard. */
+    private final ChangefeedCursor changefeedCursor; /* Cursor associated with parent shard. */
     private final AvroReader avroReader; /* AvroReader to read objects off of. */
 
     /**
      * Creates a new Chunk.
      */
-    Chunk(String chunkPath, BlobChangefeedCursor changefeedCursor, AvroReader avroReader) {
+    Chunk(String chunkPath, ChangefeedCursor changefeedCursor, AvroReader avroReader) {
+        StorageImplUtils.assertNotNull("chunkPath", chunkPath);
         StorageImplUtils.assertNotNull("changefeedCursor", changefeedCursor);
         StorageImplUtils.assertNotNull("avroReader", avroReader);
         this.chunkPath = chunkPath;
@@ -49,7 +49,7 @@ class Chunk {
                 Object object = avroObject.getObject();
 
                 /* Get the event cursor associated with this event. */
-                BlobChangefeedCursor eventCursor = changefeedCursor.toEventCursor(chunkPath, blockOffset, eventIndex);
+                ChangefeedCursor eventCursor = changefeedCursor.toEventCursor(chunkPath, blockOffset, eventIndex);
 
                 BlobChangefeedEvent event = InternalBlobChangefeedEvent.fromRecord(object);
 

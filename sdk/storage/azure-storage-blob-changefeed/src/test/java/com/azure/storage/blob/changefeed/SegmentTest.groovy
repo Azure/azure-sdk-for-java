@@ -3,7 +3,7 @@ package com.azure.storage.blob.changefeed
 import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobContainerAsyncClient
 import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper
-import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedCursor
+import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor
 import com.azure.storage.blob.changefeed.implementation.models.SegmentCursor
 import com.azure.storage.blob.changefeed.implementation.models.ShardCursor
 import reactor.core.publisher.Flux
@@ -35,7 +35,7 @@ class SegmentTest extends Specification {
     byte[] urlHash = MessageDigest.getInstance("MD5").digest('https://testaccount.blob.core.windows.net/$blobchangefeed'.getBytes(StandardCharsets.UTF_8))
     OffsetDateTime endTime = OffsetDateTime.MAX
     static String segmentPath = "idx/segments/2020/03/25/0200/meta.json"
-    BlobChangefeedCursor cfCursor
+    ChangefeedCursor cfCursor
 
     def setup() {
         String fullTestName = specificationContext.getCurrentIteration().getName().replace(' ', '').toLowerCase()
@@ -49,7 +49,7 @@ class SegmentTest extends Specification {
         mockShard1 = mock(Shard.class)
         mockShard2 = mock(Shard.class)
 
-        cfCursor = new BlobChangefeedCursor(urlHash, endTime).toSegmentCursor(segmentPath)
+        cfCursor = new ChangefeedCursor(urlHash, endTime).toSegmentCursor(segmentPath)
 
         when(mockContainer.getBlobAsyncClient(anyString()))
             .thenReturn(mockBlob)
@@ -57,11 +57,11 @@ class SegmentTest extends Specification {
         when(mockBlob.download())
             .thenReturn(MockedChangefeedResources.readFile("segment_manifest.json", getClass()))
 
-        when(mockShardFactory.getShard(eq(shardPath0), any(BlobChangefeedCursor.class), nullable(ShardCursor.class)))
+        when(mockShardFactory.getShard(eq(shardPath0), any(ChangefeedCursor.class), nullable(ShardCursor.class)))
             .thenReturn(mockShard0)
-        when(mockShardFactory.getShard(eq(shardPath1), any(BlobChangefeedCursor.class), nullable(ShardCursor.class)))
+        when(mockShardFactory.getShard(eq(shardPath1), any(ChangefeedCursor.class), nullable(ShardCursor.class)))
             .thenReturn(mockShard1)
-        when(mockShardFactory.getShard(eq(shardPath2), any(BlobChangefeedCursor.class), nullable(ShardCursor.class)))
+        when(mockShardFactory.getShard(eq(shardPath2), any(ChangefeedCursor.class), nullable(ShardCursor.class)))
             .thenReturn(mockShard2)
 
         when(mockShard0.getEvents())

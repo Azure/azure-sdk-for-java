@@ -5,12 +5,17 @@ package com.azure.storage.blob.changefeed.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -21,15 +26,23 @@ import java.util.Objects;
 public class ChangefeedCursor {
 
     private ClientLogger logger = new ClientLogger(ChangefeedCursor.class);
+    private static final ObjectMapper MAPPER = new ObjectMapper()
+        .disable(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE)
+        .registerModule(new JavaTimeModule());
 
-    private static final ObjectMapper MAPPER = new ObjectMapper();
+    @JsonProperty("CursorVersion")
+    private int cursorVersion;
 
-    private String endTime;
-    private String segmentTime;
-    private String shardPath;
-    private String chunkPath;
-    private long blockOffset;
-    private long objectBlockIndex;
+    @JsonProperty("UrlHash")
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    private byte[] urlHash;
+
+    @JsonProperty("EndTime")
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    private OffsetDateTime endTime;
+
+    @JsonProperty("CurrentSegmentCursor")
+    private SegmentCursor currentSegmentCursor;
 
     /**
      * Default constructor (used to serialize and deserialize).
@@ -40,160 +53,118 @@ public class ChangefeedCursor {
     /**
      * Constructor for use by to*Cursor methods.
      */
-    private ChangefeedCursor(String endTime, String segmentTime, String shardPath, String chunkPath, long blockOffset,
-        long objectBlockIndex) {
+    public ChangefeedCursor(int cursorVersion, byte[] urlHash, OffsetDateTime endTime, SegmentCursor currentSegmentCursor) {
+        this.cursorVersion = cursorVersion;
+        this.urlHash = urlHash;
         this.endTime = endTime;
-        this.segmentTime = segmentTime;
-        this.shardPath = shardPath;
-        this.chunkPath = chunkPath;
-        this.blockOffset = blockOffset;
-        this.objectBlockIndex = objectBlockIndex;
+        this.currentSegmentCursor = currentSegmentCursor;
     }
 
     /**
      * Creates a new changefeed level cursor with the specified end time.
      *
+     * @param urlHash The url hash of the changefeed container.
      * @param endTime The {@link OffsetDateTime end time}.
      */
-    public ChangefeedCursor(OffsetDateTime endTime) {
-        this(endTime.toString(), null, null, null, 0, 0);
+    public ChangefeedCursor(byte[] urlHash, OffsetDateTime endTime) {
+        this(1, urlHash, endTime, null);
     }
 
     /**
-     * Creates a new segment level cursor.
+     * Creates a new segment level cursor with the specified segment path.
      *
-     * @param segmentTime The {@link OffsetDateTime segment time}.
+     * @param segmentPath The segment path.
      * @return A new segment level {@link ChangefeedCursor cursor}.
      */
-    public ChangefeedCursor toSegmentCursor(OffsetDateTime segmentTime) {
-        return new ChangefeedCursor(this.getEndTime(), segmentTime.toString(), null, null, 0, 0);
+    public ChangefeedCursor toSegmentCursor(String segmentPath) {
+        return new ChangefeedCursor(this.cursorVersion, this.urlHash, this.endTime, new SegmentCursor(segmentPath));
     }
 
     /**
-     * Creates a new shard level cursor.
+     * Creates a new shard level cursor with the specified shard path.
      *
      * @param shardPath The shard path.
      * @return A new shard level {@link ChangefeedCursor cursor}.
      */
     public ChangefeedCursor toShardCursor(String shardPath) {
-        return new ChangefeedCursor(this.getEndTime(), this.getSegmentTime(), shardPath, null, 0, 0);
+        return new ChangefeedCursor(this.cursorVersion, this.urlHash, this.endTime,
+            currentSegmentCursor.toShardCursor(shardPath));
     }
 
     /**
-     * Creates a new chunk level cursor.
+     * Creates a new event level cursor with the specified chunk path, block offset and event index.
      *
      * @param chunkPath The chunk path.
-     * @return A new chunk level {@link ChangefeedCursor cursor}.
+     * @param blockOffset The block offset.
+     * @param eventIndex The event index.
+     * @return A new event level {@link ChangefeedCursor cursor}.
      */
-    public ChangefeedCursor toChunkCursor(String chunkPath) {
-        return new ChangefeedCursor(this.getEndTime(), this.getSegmentTime(), this.getShardPath(), chunkPath, 0, 0);
+    public ChangefeedCursor toEventCursor(String chunkPath, long blockOffset, long eventIndex) {
+        return new ChangefeedCursor(this.cursorVersion, this.urlHash, this.endTime,
+            currentSegmentCursor.toEventCursor(chunkPath, blockOffset, eventIndex));
     }
 
     /**
-     * Creates a new event level cursor.
-     *
-     * @param blockOffset The block offset.
-     * @param objectBlockIndex The object block index.
-     * @return A new event level {@link ChangefeedCursor cursor}.
+     * @return the cursor version.
      */
-    public ChangefeedCursor toEventCursor(long blockOffset, long objectBlockIndex) {
-        return new ChangefeedCursor(this.getEndTime(), this.getSegmentTime(), this.getShardPath(), this.getChunkPath(), blockOffset, objectBlockIndex);
+    public int getCursorVersion() {
+        return cursorVersion;
+    }
 
+    /**
+     * @return the url hash.
+     */
+    public byte[] getUrlHash() {
+        return urlHash.clone();
     }
 
     /**
      * @return the end time.
      */
-    public String getEndTime() {
+    public OffsetDateTime getEndTime() {
         return endTime;
     }
 
     /**
-     * @return the segment time.
+     * @return the segment cursor.
      */
-    public String getSegmentTime() {
-        return segmentTime;
+    public SegmentCursor getCurrentSegmentCursor() {
+        return currentSegmentCursor;
     }
 
     /**
-     * @return the shard path.
+     * @param cursorVersion the cursor version.
+     * @return the updated BlobChangefeedCursor
      */
-    public String getShardPath() {
-        return shardPath;
+    public ChangefeedCursor setCursorVersion(int cursorVersion) {
+        this.cursorVersion = cursorVersion;
+        return this;
     }
 
     /**
-     * @return the chunk path.
+     * @param urlHash the url hash.
+     * @return the updated BlobChangefeedCursor
      */
-    public String getChunkPath() {
-        return chunkPath;
-    }
-
-    /**
-     * @return the block offset
-     */
-    public long getBlockOffset() {
-        return blockOffset;
-    }
-
-    /**
-     * @return the object block index.
-     */
-    public long getObjectBlockIndex() {
-        return objectBlockIndex;
+    public ChangefeedCursor setUrl(byte[] urlHash) {
+        this.urlHash = urlHash.clone();
+        return this;
     }
 
     /**
      * @param endTime the end time.
      * @return the updated BlobChangefeedCursor
      */
-    public ChangefeedCursor setEndTime(String endTime) {
+    public ChangefeedCursor setEndTime(OffsetDateTime endTime) {
         this.endTime = endTime;
         return this;
     }
 
     /**
-     * @param segmentTime the segment time.
+     * @param currentSegmentCursor the segment cursor.
      * @return the updated BlobChangefeedCursor
      */
-    public ChangefeedCursor setSegmentTime(String segmentTime) {
-        this.segmentTime = segmentTime;
-        return this;
-    }
-
-    /**
-     * @param shardPath the shard path.
-     * @return the updated BlobChangefeedCursor
-     */
-    public ChangefeedCursor setShardPath(String shardPath) {
-        this.shardPath = shardPath;
-        return this;
-    }
-
-    /**
-     * @param chunkPath the chunk path.
-     * @return the updated BlobChangefeedCursor
-     */
-    public ChangefeedCursor setChunkPath(String chunkPath) {
-        this.chunkPath = chunkPath;
-        return this;
-    }
-
-    /**
-     * @param blockOffset the block offset.
-     * @return the updated BlobChangefeedCursor
-     */
-    public ChangefeedCursor setBlockOffset(long blockOffset) {
-        this.blockOffset = blockOffset;
-        return this;
-    }
-
-    /**
-     * @param objectBlockIndex the object block index.
-     * @return the updated BlobChangefeedCursor
-     */
-    public ChangefeedCursor setObjectBlockIndex(long objectBlockIndex) {
-        this.objectBlockIndex = objectBlockIndex;
+    public ChangefeedCursor setCurrentSegmentCursor(SegmentCursor currentSegmentCursor) {
+        this.currentSegmentCursor = currentSegmentCursor;
         return this;
     }
 
@@ -226,24 +197,19 @@ public class ChangefeedCursor {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof ChangefeedCursor)) {
-            return false;
-        }
+        if (this == o) return true;
+        if (!(o instanceof ChangefeedCursor)) return false;
         ChangefeedCursor that = (ChangefeedCursor) o;
-        return Objects.equals(getEndTime(), that.getEndTime())
-            && Objects.equals(getSegmentTime(), that.getSegmentTime())
-            && Objects.equals(getShardPath(), that.getShardPath())
-            && Objects.equals(getChunkPath(), that.getChunkPath())
-            && Objects.equals(getBlockOffset(), that.getBlockOffset())
-            && Objects.equals(getObjectBlockIndex(), that.getObjectBlockIndex());
+        return getCursorVersion() == that.getCursorVersion() &&
+            Arrays.equals(getUrlHash(), that.getUrlHash()) &&
+            Objects.equals(getEndTime(), that.getEndTime()) &&
+            Objects.equals(getCurrentSegmentCursor(), that.getCurrentSegmentCursor());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getEndTime(), getSegmentTime(), getShardPath(), getChunkPath(), getBlockOffset(),
-            getObjectBlockIndex());
+        int result = Objects.hash(logger, getCursorVersion(), getEndTime(), getCurrentSegmentCursor());
+        result = 31 * result + Arrays.hashCode(getUrlHash());
+        return result;
     }
 }

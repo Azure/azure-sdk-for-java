@@ -3,25 +3,17 @@
 
 package com.azure.storage.blob.changefeed;
 
-import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
-import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedCursor;
-import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper;
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor;
+import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper;
 import com.azure.storage.blob.changefeed.implementation.models.SegmentCursor;
 import com.azure.storage.blob.changefeed.implementation.models.ShardCursor;
 import com.azure.storage.blob.changefeed.implementation.util.DownloadUtils;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Represents a Segment in Changefeed.
@@ -43,14 +35,14 @@ class Segment {
 
     private final BlobContainerAsyncClient client; /* Changefeed container */
     private final String segmentPath; /* Segment manifest location. */
-    private final BlobChangefeedCursor changefeedCursor; /* Cursor associated with parent changefeed. */
+    private final ChangefeedCursor changefeedCursor; /* Cursor associated with parent changefeed. */
     private final SegmentCursor userCursor; /* User provided cursor. */
     private final ShardFactory shardFactory;
 
     /**
      * Creates a new Segment.
      */
-    Segment(BlobContainerAsyncClient client, String segmentPath, BlobChangefeedCursor changefeedCursor,
+    Segment(BlobContainerAsyncClient client, String segmentPath, ChangefeedCursor changefeedCursor,
         SegmentCursor userCursor, ShardFactory shardFactory) {
         this.client = client;
         this.segmentPath = segmentPath;
@@ -76,7 +68,6 @@ class Segment {
 
     private Flux<Shard> getShards(JsonNode node) {
         List<Shard> shards = new ArrayList<>();
-//        boolean validShard = false;
 
         /* Iterate over each shard element. */
         for (JsonNode shard : node.withArray(CHUNK_FILE_PATHS)) {

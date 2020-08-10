@@ -1,7 +1,7 @@
 package com.azure.storage.blob.changefeed
 
 import com.azure.core.util.logging.ClientLogger
-import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedCursor
+import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor
 import com.azure.storage.blob.changefeed.implementation.models.SegmentCursor
 import com.azure.storage.blob.changefeed.implementation.models.ShardCursor
 import spock.lang.Specification
@@ -38,7 +38,7 @@ class ChangefeedCursorTest extends Specification {
 
     def "constructor"() {
         when:
-        BlobChangefeedCursor cursor = new BlobChangefeedCursor(urlHash, endTime)
+        ChangefeedCursor cursor = new ChangefeedCursor(urlHash, endTime)
 
         then:
         cursor.getCursorVersion() == 1
@@ -49,7 +49,7 @@ class ChangefeedCursorTest extends Specification {
 
     def "toSegmentCursor"() {
         when:
-        BlobChangefeedCursor cursor = new BlobChangefeedCursor(urlHash, endTime)
+        ChangefeedCursor cursor = new ChangefeedCursor(urlHash, endTime)
             .toSegmentCursor(segmentPath)
 
         then:
@@ -65,7 +65,7 @@ class ChangefeedCursorTest extends Specification {
 
     def "toShardCursor"() {
         when:
-        BlobChangefeedCursor cursor = new BlobChangefeedCursor(urlHash, endTime)
+        ChangefeedCursor cursor = new ChangefeedCursor(urlHash, endTime)
             .toSegmentCursor(segmentPath)
             .toShardCursor(currentShardPath0)
 
@@ -82,7 +82,7 @@ class ChangefeedCursorTest extends Specification {
 
     def "toEventCursor"() {
         when:
-        BlobChangefeedCursor cursor = new BlobChangefeedCursor(urlHash, endTime)
+        ChangefeedCursor cursor = new ChangefeedCursor(urlHash, endTime)
             .toSegmentCursor(segmentPath)
             .toShardCursor(currentShardPath0)
             .toEventCursor(chunk0, offset0, index0)
@@ -104,21 +104,21 @@ class ChangefeedCursorTest extends Specification {
     def "state is saved in cursor across events"() {
         /* Note only state we care about is across events. */
         when:
-        BlobChangefeedCursor changefeedCursor = new BlobChangefeedCursor(urlHash, endTime)
+        ChangefeedCursor changefeedCursor = new ChangefeedCursor(urlHash, endTime)
 
-        BlobChangefeedCursor segmentCursor = changefeedCursor.toSegmentCursor(segmentPath)
+        ChangefeedCursor segmentCursor = changefeedCursor.toSegmentCursor(segmentPath)
 
-        BlobChangefeedCursor shardCursor0 = segmentCursor.toShardCursor(currentShardPath0)
+        ChangefeedCursor shardCursor0 = segmentCursor.toShardCursor(currentShardPath0)
 
-        BlobChangefeedCursor eventCursor0 = shardCursor0.toEventCursor(chunk0, offset0, 0)
-        BlobChangefeedCursor eventCursor1 = shardCursor0.toEventCursor(chunk0, offset0, 1)
-        BlobChangefeedCursor eventCursor2 = shardCursor0.toEventCursor(chunk1, offset1, 0) /* Make sure it still works across chunks. */
+        ChangefeedCursor eventCursor0 = shardCursor0.toEventCursor(chunk0, offset0, 0)
+        ChangefeedCursor eventCursor1 = shardCursor0.toEventCursor(chunk0, offset0, 1)
+        ChangefeedCursor eventCursor2 = shardCursor0.toEventCursor(chunk1, offset1, 0) /* Make sure it still works across chunks. */
 
-        BlobChangefeedCursor shardCursor1 = segmentCursor.toShardCursor(currentShardPath1)
+        ChangefeedCursor shardCursor1 = segmentCursor.toShardCursor(currentShardPath1)
 
-        BlobChangefeedCursor eventCursor3 = shardCursor1.toEventCursor(chunk2, offset1, 0)
-        BlobChangefeedCursor eventCursor4 = shardCursor1.toEventCursor(chunk2, offset1, 1)
-        BlobChangefeedCursor eventCursor5 = shardCursor1.toEventCursor(chunk2, offset1, 2)
+        ChangefeedCursor eventCursor3 = shardCursor1.toEventCursor(chunk2, offset1, 0)
+        ChangefeedCursor eventCursor4 = shardCursor1.toEventCursor(chunk2, offset1, 1)
+        ChangefeedCursor eventCursor5 = shardCursor1.toEventCursor(chunk2, offset1, 2)
 
         then:
         // Changefeed cursor.
@@ -271,7 +271,7 @@ class ChangefeedCursorTest extends Specification {
         SegmentCursor segmentCursor = new SegmentCursor(segmentPath, shardCursors, currentShardPath1)
 
 
-        BlobChangefeedCursor cursor = new BlobChangefeedCursor(1, urlHash, endTime, segmentCursor)
+        ChangefeedCursor cursor = new ChangefeedCursor(1, urlHash, endTime, segmentCursor)
 
         when:
         String serialized = cursor.serialize()
@@ -285,7 +285,7 @@ class ChangefeedCursorTest extends Specification {
         String cursor = '{"CursorVersion":1,"UrlHash":"47n9w8I/1TCXguW7cH7ePw==","EndTime":"+999999999-12-31T23:59:59.999999999-18:00","CurrentSegmentCursor":{"ShardCursors":[{"CurrentChunkPath":"log/00/2020/08/02/2300/00000.avro","BlockOffset":2434,"EventIndex":2},{"CurrentChunkPath":"log/01/2020/08/02/2300/00000.avro","BlockOffset":18954,"EventIndex":15}],"CurrentShardPath":"log/01/2020/08/02/2300/","SegmentPath":"idx/segments/2020/08/02/2300/meta.json"}}'
 
         when:
-        BlobChangefeedCursor deserialized = BlobChangefeedCursor.deserialize(cursor, new ClientLogger(ChangefeedCursorTest.class))
+        ChangefeedCursor deserialized = ChangefeedCursor.deserialize(cursor, new ClientLogger(ChangefeedCursorTest.class))
 
         then:
         deserialized.getCursorVersion() == 1

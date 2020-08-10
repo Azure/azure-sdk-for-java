@@ -5,12 +5,10 @@ package com.azure.storage.blob.changefeed;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
-import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedCursor;
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor;
 import com.azure.storage.blob.changefeed.implementation.util.TimeUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
-import java.security.NoSuchAlgorithmException;
 import java.time.OffsetDateTime;
 
 /**
@@ -49,7 +47,7 @@ class ChangefeedFactory {
     Changefeed getChangefeed(String cursor) {
         StorageImplUtils.assertNotNull("cursor", cursor);
 
-        BlobChangefeedCursor userCursor = BlobChangefeedCursor.deserialize(cursor, logger);
+        ChangefeedCursor userCursor = ChangefeedCursor.deserialize(cursor, logger);
         OffsetDateTime start = TimeUtils.convertPathToTime(userCursor.getCurrentSegmentCursor().getSegmentPath());
         OffsetDateTime end = userCursor.getEndTime();
 

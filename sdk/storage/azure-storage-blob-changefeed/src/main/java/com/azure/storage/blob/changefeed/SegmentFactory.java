@@ -4,7 +4,6 @@
 package com.azure.storage.blob.changefeed;
 
 import com.azure.storage.blob.BlobContainerAsyncClient;
-import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedCursor;
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor;
 import com.azure.storage.blob.changefeed.implementation.models.SegmentCursor;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -30,7 +29,7 @@ class SegmentFactory {
     /**
      * Gets a new instance of a Segment.
      */
-    Segment getSegment(String segmentPath, BlobChangefeedCursor changefeedCursor,
+    Segment getSegment(String segmentPath, ChangefeedCursor changefeedCursor,
         SegmentCursor userCursor) {
         /* Validate parameters. */
         StorageImplUtils.assertNotNull("segmentPath", segmentPath);

@@ -6,9 +6,8 @@ package com.azure.storage.blob.changefeed;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
-import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedCursor;
-import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper;
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor;
+import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper;
 import com.azure.storage.blob.changefeed.implementation.util.DownloadUtils;
 import com.azure.storage.blob.changefeed.implementation.util.TimeUtils;
 import com.azure.storage.blob.models.BlobItem;
@@ -44,15 +43,15 @@ class Changefeed {
     private final BlobContainerAsyncClient client; /* Changefeed container */
     private final OffsetDateTime startTime; /* User provided start time. */
     private final OffsetDateTime endTime; /* User provided end time. */
-    private final BlobChangefeedCursor changefeedCursor; /* Cursor associated with changefeed. */
-    private final BlobChangefeedCursor userCursor; /* User provided cursor. */
+    private final ChangefeedCursor changefeedCursor; /* Cursor associated with changefeed. */
+    private final ChangefeedCursor userCursor; /* User provided cursor. */
     private final SegmentFactory segmentFactory; /* Segment factory. */
 
     /**
      * Creates a new Changefeed.
      */
     Changefeed(BlobContainerAsyncClient client, OffsetDateTime startTime, OffsetDateTime endTime,
-        BlobChangefeedCursor userCursor, SegmentFactory segmentFactory) {
+        ChangefeedCursor userCursor, SegmentFactory segmentFactory) {
         this.client = client;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -65,7 +64,7 @@ class Changefeed {
         } catch (NoSuchAlgorithmException e) {
             throw logger.logExceptionAsError(new RuntimeException(e));
         }
-        this.changefeedCursor = new BlobChangefeedCursor(urlHash, this.endTime);
+        this.changefeedCursor = new ChangefeedCursor(urlHash, this.endTime);
 
         /* Validate the cursor. */
         if (userCursor != null) {

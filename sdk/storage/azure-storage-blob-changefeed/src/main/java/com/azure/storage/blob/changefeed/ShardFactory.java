@@ -4,7 +4,6 @@
 package com.azure.storage.blob.changefeed;
 
 import com.azure.storage.blob.BlobContainerAsyncClient;
-import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedCursor;
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor;
 import com.azure.storage.blob.changefeed.implementation.models.ShardCursor;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -34,7 +33,7 @@ class ShardFactory {
      * @param userCursor The cursor provided by the user.
      * @return {@link Shard}
      */
-    Shard getShard(String shardPath, BlobChangefeedCursor changefeedCursor, ShardCursor userCursor) {
+    Shard getShard(String shardPath, ChangefeedCursor changefeedCursor, ShardCursor userCursor) {
         /* Validate parameters. */
         StorageImplUtils.assertNotNull("shardPath", shardPath);
         StorageImplUtils.assertNotNull("changefeedCursor", changefeedCursor);

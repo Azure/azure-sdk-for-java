@@ -4,7 +4,7 @@ import com.azure.core.http.rest.PagedFlux
 import com.azure.core.http.rest.PagedResponse
 import com.azure.core.http.rest.PagedResponseBase
 import com.azure.storage.blob.BlobContainerAsyncClient
-import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedCursor
+import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor
 import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper
 import com.azure.storage.blob.changefeed.implementation.models.ShardCursor
 import com.azure.storage.blob.models.BlobItem
@@ -42,7 +42,7 @@ class ShardTest extends Specification {
     static String chunkPath1 = "log/00/2020/08/02/2300/00001.avro"
     static String chunkPath2 = "log/00/2020/08/02/2300/00002.avro"
 
-    BlobChangefeedCursor segmentCursor
+    ChangefeedCursor segmentCursor
 
     def setup() {
         String fullTestName = specificationContext.getCurrentIteration().getName().replace(' ', '').toLowerCase()
@@ -66,18 +66,18 @@ class ShardTest extends Specification {
         }
         PagedFlux<BlobItem> mockPagedFlux = new PagedFlux<>(chunkSupplier)
 
-        segmentCursor = new BlobChangefeedCursor(urlHash, endTime)
+        segmentCursor = new ChangefeedCursor(urlHash, endTime)
             .toSegmentCursor(segmentPath)
             .toShardCursor(currentShardPath0)
 
         when(mockContainer.listBlobs(any(ListBlobsOptions.class)))
             .thenReturn(mockPagedFlux)
 
-        when(mockChunkFactory.getChunk(eq(chunkPath0), any(BlobChangefeedCursor.class), anyLong(), anyLong()))
+        when(mockChunkFactory.getChunk(eq(chunkPath0), any(ChangefeedCursor.class), anyLong(), anyLong()))
             .thenReturn(mockChunk0)
-        when(mockChunkFactory.getChunk(eq(chunkPath1), any(BlobChangefeedCursor.class), anyLong(), anyLong()))
+        when(mockChunkFactory.getChunk(eq(chunkPath1), any(ChangefeedCursor.class), anyLong(), anyLong()))
             .thenReturn(mockChunk1)
-        when(mockChunkFactory.getChunk(eq(chunkPath2), any(BlobChangefeedCursor.class), anyLong(), anyLong()))
+        when(mockChunkFactory.getChunk(eq(chunkPath2), any(ChangefeedCursor.class), anyLong(), anyLong()))
             .thenReturn(mockChunk2)
 
         when(mockChunk0.getEvents())

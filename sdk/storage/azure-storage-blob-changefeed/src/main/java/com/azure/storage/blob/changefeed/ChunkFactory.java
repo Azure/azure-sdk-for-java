@@ -3,7 +3,6 @@
 
 package com.azure.storage.blob.changefeed;
 
-import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedCursor;
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -45,7 +44,7 @@ class ChunkFactory {
      * @param eventIndex The index of the last object in the block that was returned to the user.
      * @return {@link Chunk}
      */
-    Chunk getChunk(String chunkPath, BlobChangefeedCursor changefeedCursor, long blockOffset, long eventIndex) {
+    Chunk getChunk(String chunkPath, ChangefeedCursor changefeedCursor, long blockOffset, long eventIndex) {
         /* Validate parameters. */
         StorageImplUtils.assertNotNull("chunkPath", chunkPath);
         StorageImplUtils.assertNotNull("changefeedCursor", changefeedCursor);

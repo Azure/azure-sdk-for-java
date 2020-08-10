@@ -4,9 +4,8 @@
 package com.azure.storage.blob.changefeed;
 
 import com.azure.storage.blob.BlobContainerAsyncClient;
-import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedCursor;
-import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper;
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor;
+import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper;
 import com.azure.storage.blob.changefeed.implementation.models.ShardCursor;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.ListBlobsOptions;
@@ -26,14 +25,14 @@ class Shard  {
 
     private final BlobContainerAsyncClient client; /* Changefeed container */
     private final String shardPath; /* Shard virtual directory path/prefix. */
-    private final BlobChangefeedCursor changefeedCursor; /* Cursor associated with parent segment. */
+    private final ChangefeedCursor changefeedCursor; /* Cursor associated with parent segment. */
     private final ShardCursor userCursor; /* User provided cursor. */
     private final ChunkFactory chunkFactory;
 
     /**
      * Creates a new Shard.
      */
-    Shard(BlobContainerAsyncClient client, String shardPath, BlobChangefeedCursor changefeedCursor,
+    Shard(BlobContainerAsyncClient client, String shardPath, ChangefeedCursor changefeedCursor,
         ShardCursor userCursor, ChunkFactory chunkFactory) {
         this.client = client;
         this.shardPath = shardPath;

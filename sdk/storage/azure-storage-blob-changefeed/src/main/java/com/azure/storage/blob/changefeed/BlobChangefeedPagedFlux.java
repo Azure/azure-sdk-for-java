@@ -7,7 +7,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.paging.ContinuablePage;
 import com.azure.core.util.paging.ContinuablePagedFlux;
-import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedCursor;
+import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor;
 import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper;
 import com.azure.storage.blob.changefeed.models.BlobChangefeedEvent;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -27,10 +27,7 @@ public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, 
 
     private final ClientLogger logger = new ClientLogger(BlobChangefeedPagedFlux.class);
 
-    private final ChangefeedFactory changefeedFactory;
-    private final OffsetDateTime startTime;
-    private final OffsetDateTime endTime;
-    private final String cursor;
+    private final Changefeed changefeed;
 
     private static final Integer DEFAULT_PAGE_SIZE = 5000;
 
@@ -39,10 +36,7 @@ public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, 
      */
     BlobChangefeedPagedFlux(ChangefeedFactory changefeedFactory, OffsetDateTime startTime, OffsetDateTime endTime) {
         StorageImplUtils.assertNotNull("changefeedFactory", changefeedFactory);
-        this.changefeedFactory = changefeedFactory;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.cursor = null;
+        this.changefeed = changefeedFactory.getChangefeed(startTime, endTime);
     }
 
     /**
@@ -50,10 +44,7 @@ public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, 
      */
     BlobChangefeedPagedFlux(ChangefeedFactory changefeedFactory, String cursor) {
         StorageImplUtils.assertNotNull("changefeedFactory", changefeedFactory);
-        this.changefeedFactory = changefeedFactory;
-        this.startTime = null;
-        this.endTime = null;
-        this.cursor = cursor;
+        this.changefeed = changefeedFactory.getChangefeed(cursor);
     }
 
     @Override
@@ -104,13 +95,6 @@ public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, 
         }
         preferredPageSize = Integer.min(preferredPageSize, DEFAULT_PAGE_SIZE);
 
-        Changefeed changefeed;
-        if (cursor != null) {
-            changefeed = changefeedFactory.getChangefeed(cursor);
-        } else {
-            changefeed = changefeedFactory.getChangefeed(startTime, endTime);
-        }
-
         return changefeed.getEvents()
             /* Window the events to the page size. This takes the Flux<BlobChangefeedEventWrapper> and
                transforms it into a Flux<Flux<BlobChangefeedEventWrapper>>, where the internal Fluxes can have at most
@@ -123,7 +107,7 @@ public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, 
                 Flux<BlobChangefeedEventWrapper> cachedEventWrappers = eventWrappers.cache();
                 /* 2. Get the last element in the flux and grab it's cursor. This will be the continuationToken
                       returned to the user if they want to get the next page. */
-                Mono<BlobChangefeedCursor> c = cachedEventWrappers.last()
+                Mono<ChangefeedCursor> c = cachedEventWrappers.last()
                     .map(BlobChangefeedEventWrapper::getCursor);
                 /* 3. Map all the BlobChangefeedEventWrapper to just the BlobChangefeedEvents, and turn them into
                       a list. */
@@ -139,8 +123,10 @@ public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, 
 
     @Override
     public void subscribe(CoreSubscriber<? super BlobChangefeedEvent> coreSubscriber) {
-        byPage(null, DEFAULT_PAGE_SIZE)
-            .flatMap((page) -> Flux.fromIterable(page.getElements()))
+        changefeed.getEvents().map(BlobChangefeedEventWrapper::getEvent)
             .subscribe(coreSubscriber);
+//        byPage(null, DEFAULT_PAGE_SIZE)
+//            .flatMap((page) -> Flux.fromIterable(page.getElements()))
+//            .subscribe(coreSubscriber);
     }
 }
