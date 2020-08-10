@@ -7,9 +7,9 @@
 package com.microsoft.azure.management.redis.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.redis.RedisCache;
-import com.microsoft.azure.management.redis.RedisPatchSchedule;
-import com.microsoft.azure.management.redis.ScheduleEntry;
+import com.microsoft.azure.management.redis.models.RedisCache;
+import com.microsoft.azure.management.redis.models.RedisPatchSchedule;
+import com.microsoft.azure.management.redis.models.ScheduleEntry;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import rx.Observable;
 import rx.functions.Func1;

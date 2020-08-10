@@ -9,7 +9,7 @@
 package com.microsoft.azure.management.redis.implementation;
 
 import java.util.List;
-import com.microsoft.azure.management.redis.ScheduleEntry;
+import com.microsoft.azure.management.redis.models.ScheduleEntry;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 

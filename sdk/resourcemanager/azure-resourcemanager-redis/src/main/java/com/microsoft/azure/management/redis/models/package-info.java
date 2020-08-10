@@ -8,4 +8,4 @@
  * This package contains the classes for RedisManagementClient.
  * REST API for Azure Redis Cache Service.
  */
-package com.microsoft.azure.management.redis;
+package com.microsoft.azure.management.redis.models;

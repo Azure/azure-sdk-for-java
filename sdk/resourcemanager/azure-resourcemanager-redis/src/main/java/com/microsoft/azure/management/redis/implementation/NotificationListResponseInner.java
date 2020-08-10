@@ -9,7 +9,7 @@
 package com.microsoft.azure.management.redis.implementation;
 
 import java.util.List;
-import com.microsoft.azure.management.redis.UpgradeNotification;
+import com.microsoft.azure.management.redis.models.UpgradeNotification;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**

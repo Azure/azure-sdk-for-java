@@ -7,6 +7,16 @@
 package com.microsoft.azure.management.redis;
 
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.redis.models.DayOfWeek;
+import com.microsoft.azure.management.redis.models.RebootType;
+import com.microsoft.azure.management.redis.models.RedisAccessKeys;
+import com.microsoft.azure.management.redis.models.RedisCache;
+import com.microsoft.azure.management.redis.models.RedisCachePremium;
+import com.microsoft.azure.management.redis.models.RedisKeyType;
+import com.microsoft.azure.management.redis.models.ReplicationRole;
+import com.microsoft.azure.management.redis.models.ScheduleEntry;
+import com.microsoft.azure.management.redis.models.SkuFamily;
+import com.microsoft.azure.management.redis.models.SkuName;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;

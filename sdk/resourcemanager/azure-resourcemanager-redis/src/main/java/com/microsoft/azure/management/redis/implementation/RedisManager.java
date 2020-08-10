@@ -9,7 +9,7 @@ package com.microsoft.azure.management.redis.implementation;
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.AzureResponseBuilder;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
-import com.microsoft.azure.management.redis.RedisCaches;
+import com.microsoft.azure.management.redis.models.RedisCaches;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Manager;

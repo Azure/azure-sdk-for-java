@@ -7,9 +7,9 @@
 package com.microsoft.azure.management.redis.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.redis.RedisCache;
-import com.microsoft.azure.management.redis.RedisFirewallRule;
-import com.microsoft.azure.management.redis.RedisFirewallRuleCreateParameters;
+import com.microsoft.azure.management.redis.models.RedisCache;
+import com.microsoft.azure.management.redis.models.RedisFirewallRule;
+import com.microsoft.azure.management.redis.models.RedisFirewallRuleCreateParameters;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import rx.Observable;
 import rx.functions.Func1;

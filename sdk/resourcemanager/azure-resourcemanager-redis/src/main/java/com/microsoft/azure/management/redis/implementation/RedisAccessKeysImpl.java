@@ -7,8 +7,8 @@
 package com.microsoft.azure.management.redis.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.redis.RedisAccessKeys;
-import com.microsoft.azure.management.redis.RedisCache;
+import com.microsoft.azure.management.redis.models.RedisAccessKeys;
+import com.microsoft.azure.management.redis.models.RedisCache;
 
 /**
  * The {@link RedisCache#keys} action result.

@@ -4,43 +4,30 @@
  * license information.
  */
 
-package com.microsoft.azure.management.redis;
+package com.microsoft.azure.management.redis.models;
 
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.apigeneration.LangMethodDefinition;
-import com.microsoft.azure.management.redis.implementation.RedisFirewallRuleInner;
+import com.microsoft.azure.management.redis.implementation.RedisPatchScheduleInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ExternalChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
+import java.util.List;
+
 /**
- * The Azure Redis Firewall rule entries are of type RedisFirewallRule.
+ * The Azure Redis Patch Schedule entries are of type ScheduleEntry.
  */
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.Redis.Fluent.Models")
 @Beta(Beta.SinceVersion.V1_12_0)
-public interface RedisFirewallRule extends
-        ExternalChildResource<RedisFirewallRule, RedisCache>,
-        HasInner<RedisFirewallRuleInner> {
+public interface RedisPatchSchedule extends
+        ExternalChildResource<RedisPatchSchedule, RedisCache>,
+        HasInner<RedisPatchScheduleInner> {
     /**
-     * Get the name value.
+     * Get the scheduleEntries value.
      *
-     * @return the name value
+     * @return the scheduleEntries value
      */
     @LangMethodDefinition(AsType = LangMethodDefinition.LangMethodType.Property)
-    String name();
-
-    /**
-     * Get the startIP value.
-     *
-     * @return the startIP value
-     */
-    @LangMethodDefinition(AsType = LangMethodDefinition.LangMethodType.Property)
-    String startIP();
-
-    /**
-     * Get the endIP value.
-     *
-     * @return the endIP value
-     */
-    String endIP();
+    List<ScheduleEntry> scheduleEntries();
 }

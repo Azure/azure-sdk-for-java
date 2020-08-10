@@ -3,7 +3,7 @@
  * Licensed under the MIT License. See License.txt in the project root for
  * license information.
  */
-package com.microsoft.azure.management.redis;
+package com.microsoft.azure.management.redis.models;
 
 import java.util.List;
 import java.util.Map;

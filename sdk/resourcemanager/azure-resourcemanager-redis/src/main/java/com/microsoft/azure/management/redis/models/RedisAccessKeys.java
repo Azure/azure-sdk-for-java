@@ -4,7 +4,7 @@
  * license information.
  */
 
-package com.microsoft.azure.management.redis;
+package com.microsoft.azure.management.redis.models;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 

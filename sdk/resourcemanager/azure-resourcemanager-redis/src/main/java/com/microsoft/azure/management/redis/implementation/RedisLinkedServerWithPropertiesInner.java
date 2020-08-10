@@ -8,7 +8,7 @@
 
 package com.microsoft.azure.management.redis.implementation;
 
-import com.microsoft.azure.management.redis.ReplicationRole;
+import com.microsoft.azure.management.redis.models.ReplicationRole;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 

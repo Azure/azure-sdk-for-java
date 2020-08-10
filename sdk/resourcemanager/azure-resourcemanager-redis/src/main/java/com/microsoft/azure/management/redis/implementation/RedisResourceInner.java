@@ -9,11 +9,11 @@
 package com.microsoft.azure.management.redis.implementation;
 
 import java.util.Map;
-import com.microsoft.azure.management.redis.TlsVersion;
-import com.microsoft.azure.management.redis.Sku;
-import com.microsoft.azure.management.redis.ProvisioningState;
+import com.microsoft.azure.management.redis.models.TlsVersion;
+import com.microsoft.azure.management.redis.models.Sku;
+import com.microsoft.azure.management.redis.models.ProvisioningState;
 import java.util.List;
-import com.microsoft.azure.management.redis.RedisLinkedServer;
+import com.microsoft.azure.management.redis.models.RedisLinkedServer;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 

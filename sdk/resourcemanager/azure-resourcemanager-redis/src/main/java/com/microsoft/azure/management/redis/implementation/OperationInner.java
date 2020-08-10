@@ -8,7 +8,7 @@
 
 package com.microsoft.azure.management.redis.implementation;
 
-import com.microsoft.azure.management.redis.OperationDisplay;
+import com.microsoft.azure.management.redis.models.OperationDisplay;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
