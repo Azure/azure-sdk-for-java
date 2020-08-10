@@ -6,6 +6,7 @@
 
 package com.azure.resourcemanager.redis;
 
+import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.redis.models.DayOfWeek;
 import com.azure.resourcemanager.redis.models.RebootType;
 import com.azure.resourcemanager.redis.models.RedisAccessKeys;
@@ -16,21 +17,19 @@ import com.azure.resourcemanager.redis.models.ReplicationRole;
 import com.azure.resourcemanager.redis.models.ScheduleEntry;
 import com.azure.resourcemanager.redis.models.SkuFamily;
 import com.azure.resourcemanager.redis.models.SkuName;
-import com.microsoft.azure.CloudException;
-import com.microsoft.azure.management.resources.ResourceGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
-import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.model.CreatedResources;
-import com.microsoft.azure.management.storage.StorageAccount;
-import org.joda.time.Period;
-import org.junit.Assert;
-import org.junit.Test;
+import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
+import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
+import com.azure.resourcemanager.resources.fluentcore.model.CreatedResources;
+import com.azure.resourcemanager.resources.models.ResourceGroup;
+import com.azure.resourcemanager.storage.models.StorageAccount;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
-
-import static org.junit.Assert.fail;
+import java.util.stream.Collectors;
 
 public class RedisCacheOperationsTests extends RedisManagementTest {
     @Test
@@ -51,7 +50,7 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
                 .withNewResourceGroup(resourceGroups)
                 .withPremiumSku()
                 .withShardCount(10)
-                .withPatchSchedule(DayOfWeek.SUNDAY, 10, Period.minutes(302));
+                .withPatchSchedule(DayOfWeek.SUNDAY, 10, Duration.ofMinutes(302));
         Creatable<RedisCache> redisCacheDefinition3 = redisManager.redisCaches()
                 .define(RR_NAME_THIRD)
                 .withRegion(Region.US_CENTRAL)
@@ -75,69 +74,69 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
 
         RedisCache redisCache = batchRedisCaches.get(redisCacheDefinition1.key());
         RedisCache redisCachePremium = batchRedisCaches.get(redisCacheDefinition3.key());
-        Assert.assertEquals(RG_NAME, redisCache.resourceGroupName());
-        Assert.assertEquals(SkuName.BASIC, redisCache.sku().name());
+        Assertions.assertEquals(RG_NAME, redisCache.resourceGroupName());
+        Assertions.assertEquals(SkuName.BASIC, redisCache.sku().name());
 
         // List by Resource Group
-        List<RedisCache> redisCaches = redisManager.redisCaches().listByResourceGroup(RG_NAME);
+        List<RedisCache> redisCaches = redisManager.redisCaches().listByResourceGroup(RG_NAME).stream().collect(Collectors.toList());
         boolean found = false;
         for (RedisCache existingRedisCache : redisCaches) {
             if (existingRedisCache.name().equals(RR_NAME)) {
                 found = true;
             }
         }
-        Assert.assertTrue(found);
-        Assert.assertEquals(1, redisCaches.size());
+        Assertions.assertTrue(found);
+        Assertions.assertEquals(1, redisCaches.size());
 
         // List all Redis resources
-        redisCaches = redisManager.redisCaches().list();
+        redisCaches = redisManager.redisCaches().list().stream().collect(Collectors.toList());
         found = false;
         for (RedisCache existingRedisCache : redisCaches) {
             if (existingRedisCache.name().equals(RR_NAME)) {
                 found = true;
             }
         }
-        Assert.assertTrue(found);
-        Assert.assertTrue(redisCaches.size() >= 3);
+        Assertions.assertTrue(found);
+        Assertions.assertTrue(redisCaches.size() >= 3);
 
         // Get
         RedisCache redisCacheGet = redisManager.redisCaches().getByResourceGroup(RG_NAME, RR_NAME);
-        Assert.assertNotNull(redisCacheGet);
-        Assert.assertEquals(redisCache.id(), redisCacheGet.id());
-        Assert.assertEquals(redisCache.provisioningState(), redisCacheGet.provisioningState());
+        Assertions.assertNotNull(redisCacheGet);
+        Assertions.assertEquals(redisCache.id(), redisCacheGet.id());
+        Assertions.assertEquals(redisCache.provisioningState(), redisCacheGet.provisioningState());
 
         // Get Keys
         RedisAccessKeys redisKeys = redisCache.keys();
-        Assert.assertNotNull(redisKeys);
-        Assert.assertNotNull(redisKeys.primaryKey());
-        Assert.assertNotNull(redisKeys.secondaryKey());
+        Assertions.assertNotNull(redisKeys);
+        Assertions.assertNotNull(redisKeys.primaryKey());
+        Assertions.assertNotNull(redisKeys.secondaryKey());
 
         // Regen key
         RedisAccessKeys oldKeys = redisCache.refreshKeys();
         RedisAccessKeys updatedPrimaryKey = redisCache.regenerateKey(RedisKeyType.PRIMARY);
         RedisAccessKeys updatedSecondaryKey = redisCache.regenerateKey(RedisKeyType.SECONDARY);
-        Assert.assertNotNull(oldKeys);
-        Assert.assertNotNull(updatedPrimaryKey);
-        Assert.assertNotNull(updatedSecondaryKey);
-        Assert.assertNotEquals(oldKeys.primaryKey(), updatedPrimaryKey.primaryKey());
-        Assert.assertEquals(oldKeys.secondaryKey(), updatedPrimaryKey.secondaryKey());
-        Assert.assertNotEquals(oldKeys.secondaryKey(), updatedSecondaryKey.secondaryKey());
-        Assert.assertNotEquals(updatedPrimaryKey.secondaryKey(), updatedSecondaryKey.secondaryKey());
-        Assert.assertEquals(updatedPrimaryKey.primaryKey(), updatedSecondaryKey.primaryKey());
+        Assertions.assertNotNull(oldKeys);
+        Assertions.assertNotNull(updatedPrimaryKey);
+        Assertions.assertNotNull(updatedSecondaryKey);
+        Assertions.assertNotEquals(oldKeys.primaryKey(), updatedPrimaryKey.primaryKey());
+        Assertions.assertEquals(oldKeys.secondaryKey(), updatedPrimaryKey.secondaryKey());
+        Assertions.assertNotEquals(oldKeys.secondaryKey(), updatedSecondaryKey.secondaryKey());
+        Assertions.assertNotEquals(updatedPrimaryKey.secondaryKey(), updatedSecondaryKey.secondaryKey());
+        Assertions.assertEquals(updatedPrimaryKey.primaryKey(), updatedSecondaryKey.primaryKey());
 
         // Update to STANDARD Sku from BASIC SKU
         redisCache = redisCache.update()
                 .withStandardSku()
                 .apply();
-        Assert.assertEquals(SkuName.STANDARD, redisCache.sku().name());
-        Assert.assertEquals(SkuFamily.C, redisCache.sku().family());
+        Assertions.assertEquals(SkuName.STANDARD, redisCache.sku().name());
+        Assertions.assertEquals(SkuFamily.C, redisCache.sku().family());
 
         try {
             redisCache.update()
                     .withBasicSku(1)
                     .apply();
-            fail();
-        } catch (CloudException e) {
+            Assertions.fail();
+        } catch (ManagementException e) {
             // expected since Sku downgrade is not supported
         }
 
@@ -149,10 +148,10 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
 
         // Premium SKU Functionality
         RedisCachePremium premiumCache = redisCachePremium.asPremium();
-        Assert.assertEquals(SkuFamily.P, premiumCache.sku().family());
-        Assert.assertEquals(2, premiumCache.firewallRules().size());
-        Assert.assertTrue(premiumCache.firewallRules().containsKey("rule1"));
-        Assert.assertTrue(premiumCache.firewallRules().containsKey("rule2"));
+        Assertions.assertEquals(SkuFamily.P, premiumCache.sku().family());
+        Assertions.assertEquals(2, premiumCache.firewallRules().size());
+        Assertions.assertTrue(premiumCache.firewallRules().containsKey("rule1"));
+        Assertions.assertTrue(premiumCache.firewallRules().containsKey("rule2"));
 
         // Redis configuration update
         premiumCache.update()
@@ -162,10 +161,10 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
                 .withoutMinimumTlsVersion()
                 .apply();
 
-        Assert.assertEquals(2, premiumCache.firewallRules().size());
-        Assert.assertTrue(premiumCache.firewallRules().containsKey("rule2"));
-        Assert.assertTrue(premiumCache.firewallRules().containsKey("rule3"));
-        Assert.assertFalse(premiumCache.firewallRules().containsKey("rule1"));
+        Assertions.assertEquals(2, premiumCache.firewallRules().size());
+        Assertions.assertTrue(premiumCache.firewallRules().containsKey("rule2"));
+        Assertions.assertTrue(premiumCache.firewallRules().containsKey("rule3"));
+        Assertions.assertFalse(premiumCache.firewallRules().containsKey("rule1"));
 
         premiumCache.update()
                 .withoutRedisConfiguration("maxclients")
@@ -175,19 +174,19 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
                 .withoutRedisConfiguration()
                 .apply();
 
-        Assert.assertEquals(0, premiumCache.patchSchedules().size());
+        Assertions.assertEquals(0, premiumCache.patchSchedules().size());
         premiumCache.update()
                 .withPatchSchedule(DayOfWeek.MONDAY, 1)
                 .withPatchSchedule(DayOfWeek.TUESDAY, 5)
                 .apply();
 
-        Assert.assertEquals(2, premiumCache.patchSchedules().size());
+        Assertions.assertEquals(2, premiumCache.patchSchedules().size());
         // Reboot
         premiumCache.forceReboot(RebootType.ALL_NODES);
 
         // Patch Schedule
         List<ScheduleEntry> patchSchedule = premiumCache.listPatchSchedules();
-        Assert.assertEquals(2, patchSchedule.size());
+        Assertions.assertEquals(2, patchSchedule.size());
 
         premiumCache.deletePatchSchedule();
 
@@ -195,7 +194,7 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
                                     .getById(premiumCache.id())
                                     .asPremium()
                                     .listPatchSchedules();
-        Assert.assertNull(patchSchedule);
+        Assertions.assertNull(patchSchedule);
 
         // currently throws because SAS url of the container should be provided as
         // {"error":{
@@ -217,7 +216,7 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
                 .withRegion(Region.US_CENTRAL)
                 .withNewResourceGroup(RG_NAME_SECOND)
                 .withPremiumSku(2)
-                .withPatchSchedule(DayOfWeek.SATURDAY, 5, Period.hours(5))
+                .withPatchSchedule(DayOfWeek.SATURDAY, 5, Duration.ofHours(5))
                 .withRedisConfiguration("maxclients", "2")
                 .withNonSslPort()
                 .withFirewallRule("rule1", "192.168.0.1", "192.168.0.4")
@@ -231,22 +230,22 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
                 .withPremiumSku(2)
                 .create();
 
-        Assert.assertNotNull(rgg);
-        Assert.assertNotNull(rggLinked);
+        Assertions.assertNotNull(rgg);
+        Assertions.assertNotNull(rggLinked);
 
         RedisCachePremium premiumRgg = rgg.asPremium();
 
         String llName = premiumRgg.addLinkedServer(rggLinked.id(), rggLinked.regionName(), ReplicationRole.PRIMARY);
 
-        Assert.assertEquals(ResourceUtils.nameFromResourceId(rggLinked.id()), llName);
+        Assertions.assertEquals(ResourceUtils.nameFromResourceId(rggLinked.id()), llName);
 
         Map<String, ReplicationRole> linkedServers = premiumRgg.listLinkedServers();
-        Assert.assertEquals(1, linkedServers.size());
-        Assert.assertTrue(linkedServers.keySet().contains(llName));
-        Assert.assertEquals(ReplicationRole.PRIMARY, linkedServers.get(llName));
+        Assertions.assertEquals(1, linkedServers.size());
+        Assertions.assertTrue(linkedServers.keySet().contains(llName));
+        Assertions.assertEquals(ReplicationRole.PRIMARY, linkedServers.get(llName));
 
         ReplicationRole repRole = premiumRgg.getLinkedServerRole(llName);
-        Assert.assertEquals(ReplicationRole.PRIMARY, repRole);
+        Assertions.assertEquals(ReplicationRole.PRIMARY, repRole);
 
         premiumRgg.removeLinkedServer(llName);
 
@@ -259,6 +258,6 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
                 .apply();
 
         linkedServers = premiumRgg.listLinkedServers();
-        Assert.assertEquals(0, linkedServers.size());
+        Assertions.assertEquals(0, linkedServers.size());
     }
 }

@@ -6,29 +6,28 @@
 
 package com.azure.resourcemanager.redis;
 
-
-import com.microsoft.azure.CloudException;
-import com.microsoft.azure.management.resources.core.TestBase;
-import com.microsoft.azure.management.resources.implementation.ResourceManager;
-import com.microsoft.azure.management.storage.implementation.StorageManager;
-import com.microsoft.rest.RestClient;
+import com.azure.core.http.HttpPipeline;
+import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.core.TestBase;
+import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.resourcemanager.storage.StorageManager;
 
 /**
  * The base for Redis cache manager tests.
  */
 public class RedisManagementTest extends TestBase {
-    protected static ResourceManager resourceManager;
-    protected static RedisManager redisManager;
-    protected static StorageManager storageManager;
-    protected static String RG_NAME = "";
-    protected static String RG_NAME_SECOND = "";
-    protected static String RR_NAME = "";
-    protected static String RR_NAME_SECOND = "";
-    protected static String RR_NAME_THIRD = "";
-    protected static String SA_NAME = "";
+    protected ResourceManager resourceManager;
+    protected RedisManager redisManager;
+    protected StorageManager storageManager;
+    protected String RG_NAME = "";
+    protected String RG_NAME_SECOND = "";
+    protected String RR_NAME = "";
+    protected String RR_NAME_SECOND = "";
+    protected String RR_NAME_THIRD = "";
+    protected String SA_NAME = "";
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         RG_NAME = generateRandomResourceName("javacsmrg", 15);
         RR_NAME = generateRandomResourceName("javacsmrc", 15);
         RG_NAME_SECOND = RG_NAME + "Second";
@@ -37,24 +36,25 @@ public class RedisManagementTest extends TestBase {
         SA_NAME = generateRandomResourceName("javacsmsa", 15);
 
         resourceManager = ResourceManager
-                .authenticate(restClient)
-                .withSubscription(defaultSubscription);
+                .authenticate(httpPipeline, profile)
+                .withSdkContext(sdkContext)
+                .withDefaultSubscription();
 
         redisManager = RedisManager
-                .authenticate(restClient, defaultSubscription);
+                .authenticate(httpPipeline, profile, sdkContext);
 
         storageManager = StorageManager
-                .authenticate(restClient, defaultSubscription);
+                .authenticate(httpPipeline, profile, sdkContext);
     }
 
     @Override
     protected void cleanUpResources() {
         try {
-            resourceManager.resourceGroups().deleteByName(RG_NAME);
-        } catch (CloudException ex) {}
+            resourceManager.resourceGroups().beginDeleteByName(RG_NAME);
+        } catch (Exception e) {}
         try {
-            resourceManager.resourceGroups().deleteByName(RG_NAME_SECOND);
-        } catch (CloudException ex) {}
+            resourceManager.resourceGroups().beginDeleteByName(RG_NAME_SECOND);
+        } catch (Exception e) {}
     }
 }
 
