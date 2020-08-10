@@ -113,14 +113,12 @@ class UnnamedSessionReceiver implements AutoCloseable {
         // receiver is idle.
         if (disposeOnIdle) {
             this.subscriptions.add(Flux.switchOnNext(messageReceivedEmitter
-                .flatMap(lockToken -> Mono.delay(retryOptions.getTryTimeout()))
-                .handle((l, sink) -> {
+                .map((String lockToken) -> Mono.delay(retryOptions.getTryTimeout())))
+                .subscribe(item -> {
                     logger.info("entityPath[{}]. sessionId[{}]. Did not a receive message within timeout {}.",
                         receiveLink.getEntityPath(), sessionId.get(), retryOptions.getTryTimeout());
                     cancelReceiveProcessor.onComplete();
-                    sink.complete();
-                }))
-                .subscribe());
+                }));
         }
 
         this.subscriptions.add(receiveLink.getSessionId().subscribe(id -> {
