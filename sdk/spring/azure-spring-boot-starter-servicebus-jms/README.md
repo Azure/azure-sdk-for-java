@@ -6,20 +6,17 @@ With this starter you could easily use Spring JMS Queue and Topic with Azure Ser
 
 ## Getting started
 ### Prerequisites
-- JDK 1.8 and above
+- Java Development Kit (JDK) with version 8 or above
+- [Azure Subscription][azure_subscription]
 - [Maven](http://maven.apache.org/) 3.0 and above
 
 ### Include the package
-
-`azure-servicebus-jms-spring-boot-starter` is published on Maven Central Repository.  
-Add the following dependency to your project:
-
 [//]: # ({x-version-update-start;com.microsoft.azure:azure-servicebus-jms-spring-boot-starter;current})
 ```xml
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-servicebus-jms-spring-boot-starter</artifactId>
-    <version>2.3.3-beta.1</version>
+    <version>2.3.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -142,11 +139,11 @@ public class SendController {
     
         private static final String QUEUE_NAME = "<ServiceBusQueueName>";
     
-        private final Logger LOGGER = LoggerFactory.getLogger(QueueReceiveController.class);
+        private final Logger logger = LoggerFactory.getLogger(QueueReceiveController.class);
     
         @JmsListener(destination = QUEUE_NAME, containerFactory = "jmsListenerContainerFactory")
         public void receiveMessage(User user) {
-            LOGGER.info("Received message: {}", user.getName());
+            logger.info("Received message: {}", user.getName());
         }
     }
     ```
@@ -172,12 +169,12 @@ public class SendController {
     
         private static final String SUBSCRIPTION_NAME = "<ServiceBusSubscriptionName>";
     
-        private final Logger LOGGER = LoggerFactory.getLogger(TopicReceiveController.class);
+        private final Logger logger = LoggerFactory.getLogger(TopicReceiveController.class);
     
         @JmsListener(destination = TOPIC_NAME, containerFactory = "topicJmsListenerContainerFactory",
             subscription = SUBSCRIPTION_NAME)
         public void receiveMessage(User user) {
-            LOGGER.info("Received message: {}", user.getName());
+            logger.info("Received message: {}", user.getName());
         }
     }
     ```
@@ -231,3 +228,4 @@ Please follow [instructions here](../CONTRIBUTING.md) to build from source or co
 [package]: https://mvnrepository.com/artifact/com.microsoft.azure/azure-servicebus-jms-spring-boot-starter
 [sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
+[azure_subscription]: https://azure.microsoft.com/free

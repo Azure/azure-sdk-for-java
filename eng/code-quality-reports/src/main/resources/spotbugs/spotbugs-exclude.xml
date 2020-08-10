@@ -1235,7 +1235,7 @@
     <Field name="errorInformationList" />
     <Bug pattern="SE_BAD_FIELD" />
   </Match>
-  
+
   <!-- Exception is required to catch, ref: code comment in the OrderbyRowComparer::compare() method  -->
   <Match>
     <Class name="com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer"/>
@@ -2099,10 +2099,12 @@
     <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE,SIC_INNER_SHOULD_BE_STATIC_ANON,SKIPPED_CLASS_TOO_BIG"/>
   </Match>
 
-  <!-- Exclude REC_CATCH_EXCEPTION for management samples. All samples in management catch Exception instead of throw it. -->
+  <!-- Exclude REC_CATCH_EXCEPTION and false positive error for management samples. All samples in management catch Exception instead of throw it. -->
   <Match>
     <Package name="~com\.azure\.resourcemanager(\.[^.]+)*\.samples(\.[^.]+)*"/>
-    <Bug pattern="REC_CATCH_EXCEPTION"/>
+    <Bug pattern="REC_CATCH_EXCEPTION,
+                  RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE, 
+                  RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
 
   <!-- Exclude from spring related classes -->
@@ -2131,6 +2133,11 @@
     </Or>
     <Method name="OnCloseSessionAsync"/>
     <Bug pattern="NM_METHOD_NAMING_CONVENTION"/>
+  </Match>
+
+  <Match>
+    <Class name="com.microsoft.azure.spring.messaging.config.AzureListenerEndpointRegistrar" />
+    <Bug pattern="NP_NULL_ON_SOME_PATH"/>
   </Match>
 
   <!-- These fields are designed to be not written. They are for deserializing. -->

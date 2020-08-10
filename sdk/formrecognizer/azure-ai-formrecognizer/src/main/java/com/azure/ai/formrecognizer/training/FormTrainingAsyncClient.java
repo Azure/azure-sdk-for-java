@@ -545,8 +545,8 @@ public final class FormTrainingAsyncClient {
                 PollResponse<OperationResult> operationResultPollResponse = pollingContext.getLatestResponse();
                 UUID targetId = UUID.fromString(operationResultPollResponse.getValue().getResultId());
                 return service.getCustomModelCopyResultWithResponseAsync(UUID.fromString(modelId), targetId, context)
-                        .flatMap(modelSimpleResponse ->
-                            processCopyModelResponse(modelSimpleResponse, operationResultPollResponse))
+                    .flatMap(modelSimpleResponse ->
+                        processCopyModelResponse(modelSimpleResponse, operationResultPollResponse))
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
             } catch (HttpResponseException ex) {
                 return monoError(logger, ex);
@@ -578,7 +578,7 @@ public final class FormTrainingAsyncClient {
     }
 
     private Mono<PollResponse<OperationResult>> processCopyModelResponse(
-        SimpleResponse<CopyOperationResult> copyModel,
+        Response<CopyOperationResult> copyModel,
         PollResponse<OperationResult> copyModelOperationResponse) {
         LongRunningOperationStatus status;
         switch (copyModel.getValue().getStatus()) {
@@ -653,7 +653,7 @@ public final class FormTrainingAsyncClient {
     }
 
     private Mono<PollResponse<OperationResult>> processTrainingModelResponse(
-        SimpleResponse<Model> trainingModel,
+        Response<Model> trainingModel,
         PollResponse<OperationResult> trainingModelOperationResponse) {
         LongRunningOperationStatus status;
         switch (trainingModel.getValue().getModelInfo().getStatus()) {

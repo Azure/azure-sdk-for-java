@@ -28,7 +28,6 @@ import com.azure.storage.blob.models.ListBlobContainersOptions
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.common.StorageSharedKeyCredential
-import com.azure.storage.common.implementation.Constants
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import spock.lang.Requires
@@ -112,6 +111,9 @@ class APISpec extends Specification {
      */
     static final String receivedEtag = "received"
 
+    static final int KB = 1024
+    static final int MB = 1024 * KB
+
     def setupSpec() {
         testMode = setupTestMode()
         primaryCredential = getCredential(PRIMARY_STORAGE)
@@ -131,6 +133,9 @@ class APISpec extends Specification {
         this.testName = fullTestName.substring(0, substringIndex)
         this.interceptorManager = new InterceptorManager(className + fullTestName, testMode)
         this.resourceNamer = new TestResourceNamer(className + testName, testMode, interceptorManager.getRecordedData())
+
+        // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
+        System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
 
         // If the test doesn't have the Requires tag record it in live mode.
         recordLiveMode = specificationContext.getCurrentIteration().getDescription().getAnnotation(Requires.class) != null
@@ -154,8 +159,7 @@ class APISpec extends Specification {
 
         interceptorManager.close()
     }
-
-    //TODO: Should this go in core.
+    
     static Mono<ByteBuffer> collectBytesInBuffer(Flux<ByteBuffer> content) {
         return FluxUtil.collectBytesInByteBufferStream(content).map { bytes -> ByteBuffer.wrap(bytes) }
     }
@@ -441,9 +445,9 @@ class APISpec extends Specification {
         file.deleteOnExit()
         FileOutputStream fos = new FileOutputStream(file)
 
-        if (size > Constants.MB) {
-            for (def i = 0; i < size / Constants.MB; i++) {
-                def dataSize = Math.min(Constants.MB, size - i * Constants.MB)
+        if (size > MB) {
+            for (def i = 0; i < size / MB; i++) {
+                def dataSize = Math.min(MB, size - i * MB)
                 fos.write(getRandomByteArray(dataSize))
             }
         } else {
@@ -473,7 +477,7 @@ class APISpec extends Specification {
 
     def compareInputStreams(InputStream stream1, InputStream stream2, long count) {
         def pos = 0L
-        def defaultReadBuffer = 128 * Constants.KB
+        def defaultReadBuffer = 128 * KB
         try {
             // If the amount we are going to read is smaller than the default buffer size use that instead.
             def bufferSize = (int) Math.min(defaultReadBuffer, count)

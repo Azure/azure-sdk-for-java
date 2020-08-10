@@ -79,6 +79,18 @@ extends:
       - name: spring-integration-storage-queue
         groupId: com.microsoft.azure
         safeName: springintegrationstoragequeue
+      - name: spring-cloud-azure-storage
+        groupId: com.microsoft.azure
+        safeName: springcloudazurestorage
+      - name: spring-cloud-azure-autoconfigure
+        groupId: com.microsoft.azure
+        safeName: springcloudazureautoconfigure
+      - name: spring-cloud-azure-keyvault-config
+        groupId: com.microsoft.azure
+        safeName: springcloudazurekeyvaultconfig
+      - name: spring-cloud-azure-messaging
+        groupId: com.microsoft.azure
+        safeName: springcloudazuremessaging
     AdditionalModules:
       - name: azure-spring-boot-sample-active-directory
         groupId: com.azure
