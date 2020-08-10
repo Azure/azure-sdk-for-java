@@ -23,6 +23,7 @@ import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.ApiProperties
 import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.CreateMode;
 import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.RestoreParameters;
 import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.BackupPolicy;
+import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.CorsPolicy;
 import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.SystemData;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
@@ -213,6 +214,12 @@ public class DatabaseAccountGetResultsInner extends ARMResourceProperties {
      */
     @JsonProperty(value = "properties.backupPolicy")
     private BackupPolicy backupPolicy;
+
+    /**
+     * The CORS policy for the Cosmos DB database account.
+     */
+    @JsonProperty(value = "properties.cors")
+    private List<CorsPolicy> cors;
 
     /**
      * The system meta data relating to this resource.
@@ -689,6 +696,26 @@ public class DatabaseAccountGetResultsInner extends ARMResourceProperties {
      */
     public DatabaseAccountGetResultsInner withBackupPolicy(BackupPolicy backupPolicy) {
         this.backupPolicy = backupPolicy;
+        return this;
+    }
+
+    /**
+     * Get the CORS policy for the Cosmos DB database account.
+     *
+     * @return the cors value
+     */
+    public List<CorsPolicy> cors() {
+        return this.cors;
+    }
+
+    /**
+     * Set the CORS policy for the Cosmos DB database account.
+     *
+     * @param cors the cors value to set
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withCors(List<CorsPolicy> cors) {
+        this.cors = cors;
         return this;
     }
 
