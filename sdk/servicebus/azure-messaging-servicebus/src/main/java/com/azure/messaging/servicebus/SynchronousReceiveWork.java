@@ -17,8 +17,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 class SynchronousReceiveWork implements AutoCloseable{
 
-    /*This is timeout between messages. When we have received at-least one message and next message does not arrive in
-    this time, the work to complete.*/
+    /* When we have received at-least one message and next message does not arrive in this time. The work will
+    complete.*/
     private static final Duration SHORT_TIMEOUT_BETWEEN_MESSAGES = Duration.ofMillis(1000);
 
     private final ClientLogger logger = new ClientLogger(SynchronousReceiveWork.class);
@@ -33,6 +33,7 @@ class SynchronousReceiveWork implements AutoCloseable{
 
     // Indicate state that timeout has occurred for this work because next message has not arrived in pre defined time.
     private boolean nextMessageTimedOut = false;
+    // Subscribes to next message from upstream and implement short timeout between the messages.
     private Disposable nextMessageSubscriber;
 
     // Indicate that if processing started or not.
@@ -58,10 +59,10 @@ class SynchronousReceiveWork implements AutoCloseable{
         this.timeout = timeout;
         this.emitter = emitter;
 
-        DirectProcessor<ServiceBusReceivedMessageContext> directProcessor = DirectProcessor.create();
-        messageReceivedSink = directProcessor.sink();
+        DirectProcessor<ServiceBusReceivedMessageContext> emitterProcessor = DirectProcessor.create();
+        messageReceivedSink = emitterProcessor.sink();
 
-        nextMessageSubscriber = Flux.switchOnNext(directProcessor.map(messageContext ->
+        nextMessageSubscriber = Flux.switchOnNext(emitterProcessor.map(messageContext ->
             Flux.interval(SHORT_TIMEOUT_BETWEEN_MESSAGES)))
             .handle((delay, sink) -> {
                 logger.info("[{}]: Timeout between the messages occurred. Completing the work.", id);
