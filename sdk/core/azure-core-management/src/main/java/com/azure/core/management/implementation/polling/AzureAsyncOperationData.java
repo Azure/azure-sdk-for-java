@@ -102,7 +102,7 @@ final class AzureAsyncOperationData {
                 HttpHeaders pollResponseHeaders,
                 String pollResponseBody,
                 SerializerAdapter adapter) {
-        if (pollResponseStatusCode != 200) {
+        if (pollResponseStatusCode != 200 && pollResponseStatusCode != 201 && pollResponseStatusCode != 202) {
             this.provisioningState = ProvisioningState.FAILED;
             this.pollError = new Error("Polling failed with status code:" + pollResponseStatusCode,
                 pollResponseStatusCode,

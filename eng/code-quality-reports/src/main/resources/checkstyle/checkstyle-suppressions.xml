@@ -417,6 +417,8 @@
   <suppress checks="LineLength" files="com.azure.ai.formrecognizer.implementation.models"/>
   <suppress checks="LineLength" files="com.azure.ai.formrecognizer.Transforms.java"/>
 
+  <suppress checks="Indentation" files="com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl" />
+
   <suppress checks="GoodLoggingCheck" files="com.azure.ai.formrecognizer.models.FieldValueType.java" />
 
   <!-- TODO: Fix with https://github.com/Azure/azure-sdk-for-java/issues#6716 Method name should follow a common vocabulary. -->
@@ -507,6 +509,9 @@
 
   <!-- Checkstyle suppressions for azure-spring-integration-servicebus package -->
   <suppress checks="MethodName" files="com.microsoft.azure.spring.integration.servicebus.ServiceBusClientConfig.java"/>
+
+  <!-- Checkstyle suppressions for azure-spring-cloud-keyvault-config package -->
+  <suppress checks="ConstantName" files="com.microsoft.azure.spring.cloud.keyvault.config.auth.CertificateUtils"/>
 
   <!-- These suppressions were added due to limitations in our custom Checkstyle rules and should be addressed in the future. -->
   <!-- API naming is too restrictive -->

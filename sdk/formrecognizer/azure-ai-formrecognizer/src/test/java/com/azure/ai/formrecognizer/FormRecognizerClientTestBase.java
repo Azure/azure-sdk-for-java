@@ -84,7 +84,8 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     private static final String INVOICE_PDF = "Invoice_6.pdf";
     private static final String MULTIPAGE_INVOICE_PDF = "multipage_invoice1.pdf";
     private static final Pattern NON_DIGIT_PATTERN = Pattern.compile("[^0-9]+");
-    private static final String EXPECTED_MULTIPAGE_ADDRESS_VALUE = "123 Hobbit Lane 567 Main St. Redmond, WA Redmond, WA";
+    private static final String EXPECTED_MULTIPAGE_ADDRESS_VALUE = "123 Hobbit Lane 567 Main St. Redmond, WA Redmond,"
+        + " WA";
     private static final String EXPECTED_MULTIPAGE_PHONE_NUMBER_VALUE = "+15555555555";
     private static final String ITEMIZED_RECEIPT_VALUE = "Itemized";
     private static final String IS_PLAYBACK_MODE = "isPlaybackMode";
@@ -101,13 +102,15 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     static final String EXPECTED_HTTPS_EXCEPTION_MESSAGE =
         "Max retries 3 times exceeded. Error Details: Key credentials require HTTPS to prevent leaking the key.";
     static final String EXPECTED_INVALID_IMAGE_CODE = "InvalidImage";
-    static final String EXPECTED_INVALID_IMAGE_ERROR_MESSAGE = "The input data is not a valid image or password protected.";
+    static final String EXPECTED_INVALID_IMAGE_ERROR_MESSAGE = "The input data is not a valid image or password "
+        + "protected.";
     static final String EXPECTED_INVALID_MODEL_ID_ERROR_CODE = "1001";
     static final String EXPECTED_INVALID_MODEL_ID_ERROR_MESSAGE =
         "Specified model not found or not ready, Model Id: 00000000-0000-0000-0000-000000000000";
     static final String EXPECTED_INVALID_UUID_EXCEPTION_MESSAGE = "Invalid UUID string: ";
     static final String EXPECTED_MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE = "'modelId' is required and cannot be null.";
-    static final String EXPECTED_UNABLE_TO_READ_FILE = "Analyze operation failed, errorCode: [2005], message: Unable to read file.";
+    static final String EXPECTED_UNABLE_TO_READ_FILE = "Analyze operation failed, errorCode: [2005], message: Unable "
+        + "to read file.";
 
     static final String ENCODED_EMPTY_SPACE = "{\"source\":\"https://fakeuri.com/blank%20space\"}";
 
@@ -150,7 +153,6 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion)
             .addPolicy(interceptorManager.getRecordPolicy());
-
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new AzureKeyCredential(INVALID_KEY));
         } else {
@@ -311,7 +313,8 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
                 case OBJECT:
                     expectedFieldValue.getValueObject().forEach((key, formField) -> {
                         FormField actualFormFieldValue = actualFormField.getValue().asMap().get(key);
-                        validateFieldValueTransforms(formField, actualFormFieldValue, readResults, includeFieldElements);
+                        validateFieldValueTransforms(formField, actualFormFieldValue, readResults,
+                            includeFieldElements);
                     });
                     break;
                 case ARRAY:
@@ -319,7 +322,8 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
                     for (int i = 0; i < expectedFieldValue.getValueArray().size(); i++) {
                         FieldValue expectedReceiptItem = expectedFieldValue.getValueArray().get(i);
                         FormField actualReceiptItem = actualFormField.getValue().asList().get(i);
-                        validateFieldValueTransforms(expectedReceiptItem, actualReceiptItem, readResults, includeFieldElements);
+                        validateFieldValueTransforms(expectedReceiptItem, actualReceiptItem, readResults,
+                            includeFieldElements);
                     }
                     break;
                 default:
@@ -347,7 +351,8 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeReceiptDataIncludeFieldElements(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+    abstract void recognizeReceiptDataIncludeFieldElements(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
 
     @Test
     abstract void recognizeReceiptDataWithPngFile(HttpClient httpClient,
@@ -480,7 +485,8 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     // Custom form - URL - unlabeled data
 
     @Test
-    abstract void recognizeCustomFormUrlUnlabeledData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+    abstract void recognizeCustomFormUrlUnlabeledData(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
 
     @Test
     abstract void recognizeCustomFormUrlUnlabeledDataIncludeFieldElements(HttpClient httpClient,
@@ -534,15 +540,16 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             actualRecognizedReceiptFields.get("MerchantAddress"), readResults, includeFieldElements);
         validateFieldValueTransforms(expectedReceiptFields.get("Total"), actualRecognizedReceiptFields.get("Total"),
             readResults, includeFieldElements);
-        validateFieldValueTransforms(expectedReceiptFields.get("Subtotal"), actualRecognizedReceiptFields.get("Subtotal"),
+        validateFieldValueTransforms(expectedReceiptFields.get("Subtotal"),
+            actualRecognizedReceiptFields.get("Subtotal"), readResults, includeFieldElements);
+        validateFieldValueTransforms(expectedReceiptFields.get("Tax"), actualRecognizedReceiptFields.get("Tax"),
             readResults, includeFieldElements);
-        validateFieldValueTransforms(expectedReceiptFields.get("Tax"), actualRecognizedReceiptFields.get("Tax"), readResults,
-            includeFieldElements);
         validateFieldValueTransforms(expectedReceiptFields.get("TransactionDate"),
             actualRecognizedReceiptFields.get("TransactionDate"), readResults, includeFieldElements);
         validateFieldValueTransforms(expectedReceiptFields.get("TransactionTime"),
             actualRecognizedReceiptFields.get("TransactionTime"), readResults, includeFieldElements);
-        validateFieldValueTransforms(expectedReceiptFields.get("Items"), actualRecognizedReceiptFields.get("Items"), readResults, includeFieldElements);
+        validateFieldValueTransforms(expectedReceiptFields.get("Items"), actualRecognizedReceiptFields.get("Items"),
+            readResults, includeFieldElements);
     }
 
     void validateContentResultData(List<FormPage> actualFormPageList, boolean includeFieldElements) {
@@ -618,7 +625,8 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
     void receiptDataRunner(BiConsumer<InputStream, Long> testRunner) {
         if (interceptorManager.isPlaybackMode()) {
-            testRunner.accept(new ByteArrayInputStream(IS_PLAYBACK_MODE.getBytes(StandardCharsets.UTF_8)), RECEIPT_FILE_LENGTH);
+            testRunner.accept(new ByteArrayInputStream(IS_PLAYBACK_MODE.getBytes(StandardCharsets.UTF_8)),
+                RECEIPT_FILE_LENGTH);
         } else {
             testRunner.accept(getFileData(getStorageTestingFileUrl(RECEIPT_CONTOSO_JPG)), RECEIPT_FILE_LENGTH);
         }
@@ -646,7 +654,8 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
     void contentFromDataRunner(BiConsumer<InputStream, Long> testRunner) {
         if (interceptorManager.isPlaybackMode()) {
-            testRunner.accept(new ByteArrayInputStream(IS_PLAYBACK_MODE.getBytes(StandardCharsets.UTF_8)), LAYOUT_FILE_LENGTH);
+            testRunner.accept(new ByteArrayInputStream(IS_PLAYBACK_MODE.getBytes(StandardCharsets.UTF_8)),
+                LAYOUT_FILE_LENGTH);
         } else {
             testRunner.accept(getFileData(getStorageTestingFileUrl(FORM_JPG)), LAYOUT_FILE_LENGTH);
         }
@@ -654,7 +663,8 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
     void multipageFromDataRunner(BiConsumer<InputStream, Long> testRunner) {
         if (interceptorManager.isPlaybackMode()) {
-            testRunner.accept(new ByteArrayInputStream(IS_PLAYBACK_MODE.getBytes(StandardCharsets.UTF_8)), MULTIPAGE_INVOICE_FILE_LENGTH);
+            testRunner.accept(new ByteArrayInputStream(IS_PLAYBACK_MODE.getBytes(StandardCharsets.UTF_8)),
+                MULTIPAGE_INVOICE_FILE_LENGTH);
         } else {
             testRunner.accept(
                 getFileData(getStorageTestingFileUrl(MULTIPAGE_INVOICE_PDF)), MULTIPAGE_INVOICE_FILE_LENGTH);

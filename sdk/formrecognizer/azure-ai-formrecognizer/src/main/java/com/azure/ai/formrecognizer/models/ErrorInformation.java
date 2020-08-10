@@ -3,12 +3,12 @@
 
 package com.azure.ai.formrecognizer.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 
 /**
  * The ErrorInformation model.
  */
-@Fluent
+@Immutable
 public final class ErrorInformation {
     /*
      * The errorCode property.

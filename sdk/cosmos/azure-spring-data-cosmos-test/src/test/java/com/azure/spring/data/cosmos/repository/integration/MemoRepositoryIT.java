@@ -26,6 +26,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -48,7 +49,7 @@ public class MemoRepositoryIT {
     private static Memo testMemo3;
 
     private static final CosmosEntityInformation<Memo, String> entityInformation =
-            new CosmosEntityInformation<>(Memo.class);
+        new CosmosEntityInformation<>(Memo.class);
 
     private static CosmosTemplate staticTemplate;
     private static boolean isSetupDone;
@@ -100,7 +101,7 @@ public class MemoRepositoryIT {
 
     @Test
     public void testFindByDate() {
-        final List<Memo> result = repository.findMemoByDate(memoDate);
+        final List<Memo> result = TestUtils.toList(repository.findMemoByDate(memoDate));
 
         assertThat(result.size()).isEqualTo(1);
         assertMemoEquals(result.get(0), testMemo1);
@@ -108,7 +109,7 @@ public class MemoRepositoryIT {
 
     @Test
     public void testFindByEnum() {
-        final List<Memo> result = repository.findMemoByImportance(testMemo1.getImportance());
+        final List<Memo> result = TestUtils.toList(repository.findMemoByImportance(testMemo1.getImportance()));
 
         assertThat(result.size()).isEqualTo(1);
         assertMemoEquals(result.get(0), testMemo1);
@@ -123,16 +124,16 @@ public class MemoRepositoryIT {
 
     @Test
     public void testFindByBefore() {
-        List<Memo> memos = this.repository.findByDateBefore(memoDateBefore);
+        List<Memo> memos = TestUtils.toList(this.repository.findByDateBefore(memoDateBefore));
 
         Assert.assertTrue(memos.isEmpty());
 
-        memos = this.repository.findByDateBefore(memoDate);
+        memos = TestUtils.toList(this.repository.findByDateBefore(memoDate));
 
         Assert.assertEquals(1, memos.size());
         Assert.assertEquals(testMemo1, memos.get(0));
 
-        memos = this.repository.findByDateBefore(memoDateAfter);
+        memos = TestUtils.toList(this.repository.findByDateBefore(memoDateAfter));
         final List<Memo> reference = Arrays.asList(testMemo1, testMemo2);
 
         memos.sort(Comparator.comparing(Memo::getId));
@@ -144,16 +145,17 @@ public class MemoRepositoryIT {
 
     @Test
     public void testFindByBeforeWithAndOr() {
-        List<Memo> memos = this.repository.findByDateBeforeAndMessage(memoDate, TestConstants.NEW_MESSAGE);
+        List<Memo> memos = TestUtils.toList(this.repository.findByDateBeforeAndMessage(memoDate,
+            TestConstants.NEW_MESSAGE));
 
         Assert.assertTrue(memos.isEmpty());
 
-        memos = this.repository.findByDateBeforeAndMessage(memoDate, TestConstants.MESSAGE);
+        memos = TestUtils.toList(this.repository.findByDateBeforeAndMessage(memoDate, TestConstants.MESSAGE));
 
         Assert.assertEquals(1, memos.size());
         Assert.assertEquals(testMemo1, memos.get(0));
 
-        memos = this.repository.findByDateBeforeOrMessage(memoDateAfter, TestConstants.MESSAGE);
+        memos = TestUtils.toList(this.repository.findByDateBeforeOrMessage(memoDateAfter, TestConstants.MESSAGE));
         final List<Memo> reference = Arrays.asList(testMemo1, testMemo2);
 
         memos.sort(Comparator.comparing(Memo::getId));
@@ -165,16 +167,16 @@ public class MemoRepositoryIT {
 
     @Test
     public void testFindByAfter() {
-        List<Memo> memos = this.repository.findByDateAfter(memoDateAfter);
+        List<Memo> memos = TestUtils.toList(this.repository.findByDateAfter(memoDateAfter));
 
         Assert.assertTrue(memos.isEmpty());
 
-        memos = this.repository.findByDateAfter(memoDate);
+        memos = TestUtils.toList(this.repository.findByDateAfter(memoDate));
 
         Assert.assertEquals(1, memos.size());
         Assert.assertEquals(testMemo3, memos.get(0));
 
-        memos = this.repository.findByDateAfter(memoDateBefore);
+        memos = TestUtils.toList(this.repository.findByDateAfter(memoDateBefore));
         final List<Memo> reference = Arrays.asList(testMemo2, testMemo3);
 
         memos.sort(Comparator.comparing(Memo::getId));
@@ -186,16 +188,16 @@ public class MemoRepositoryIT {
 
     @Test
     public void testFindByAfterWithAndOr() {
-        List<Memo> memos = this.repository.findByDateAfterAndMessage(memoDate, TestConstants.MESSAGE);
+        List<Memo> memos = TestUtils.toList(this.repository.findByDateAfterAndMessage(memoDate, TestConstants.MESSAGE));
 
         Assert.assertTrue(memos.isEmpty());
 
-        memos = this.repository.findByDateAfterAndMessage(memoDate, TestConstants.NEW_MESSAGE);
+        memos = TestUtils.toList(this.repository.findByDateAfterAndMessage(memoDate, TestConstants.NEW_MESSAGE));
 
         Assert.assertEquals(1, memos.size());
         Assert.assertEquals(testMemo3, memos.get(0));
 
-        memos = this.repository.findByDateAfterOrMessage(memoDateBefore, TestConstants.MESSAGE);
+        memos = TestUtils.toList(this.repository.findByDateAfterOrMessage(memoDateBefore, TestConstants.MESSAGE));
         final List<Memo> reference = Arrays.asList(testMemo1, testMemo2, testMemo3);
 
         memos.sort(Comparator.comparing(Memo::getId));
@@ -207,34 +209,34 @@ public class MemoRepositoryIT {
 
     @Test
     public void testFindByBetween() {
-        List<Memo> memos = this.repository
-                .findByDateBetween(testMemo1.getDate(), testMemo3.getDate());
+        List<Memo> memos = TestUtils.toList(this.repository
+            .findByDateBetween(testMemo1.getDate(), testMemo3.getDate()));
         List<Memo> reference = Arrays.asList(testMemo1, testMemo2, testMemo3);
 
         assertMemoListEquals(memos, reference);
 
-        memos = this.repository.findByDateBetween(testMemo1.getDate(), testMemo2.getDate());
+        memos = TestUtils.toList(this.repository.findByDateBetween(testMemo1.getDate(), testMemo2.getDate()));
         reference = Arrays.asList(testMemo1, testMemo2);
 
         assertMemoListEquals(memos, reference);
 
-        memos = this.repository.findByDateBetween(futureDate1, futureDate2);
-        reference = Arrays.asList();
+        memos = TestUtils.toList(this.repository.findByDateBetween(futureDate1, futureDate2));
+        reference = Collections.emptyList();
 
         assertMemoListEquals(memos, reference);
     }
 
     @Test
     public void testFindByBetweenWithAnd() {
-        final List<Memo> memos = this.repository
-                .findByDateBetweenAndMessage(testMemo1.getDate(), testMemo2.getDate(), TestConstants.MESSAGE);
-        assertMemoListEquals(memos, Arrays.asList(testMemo1));
+        final List<Memo> memos = TestUtils.toList(this.repository
+            .findByDateBetweenAndMessage(testMemo1.getDate(), testMemo2.getDate(), TestConstants.MESSAGE));
+        assertMemoListEquals(memos, Collections.singletonList(testMemo1));
     }
 
     @Test
     public void testFindByBetweenWithOr() {
-        final List<Memo> memos = this.repository
-                .findByDateBetweenOrMessage(testMemo1.getDate(), testMemo2.getDate(), TestConstants.NEW_MESSAGE);
+        final List<Memo> memos = TestUtils.toList(this.repository
+            .findByDateBetweenOrMessage(testMemo1.getDate(), testMemo2.getDate(), TestConstants.NEW_MESSAGE));
         assertMemoListEquals(memos, Arrays.asList(testMemo1, testMemo2, testMemo3));
     }
 
@@ -254,7 +256,8 @@ public class MemoRepositoryIT {
 
     @Test
     public void testFindByStartsWith() {
-        final List<Memo> result = repository.findByMessageStartsWith(testMemo1.getMessage().substring(0, 10));
+        final List<Memo> result =
+            TestUtils.toList(repository.findByMessageStartsWith(testMemo1.getMessage().substring(0, 10)));
         Assert.assertEquals(testMemo1, result.get(0));
         Assert.assertEquals(1, result.size());
     }

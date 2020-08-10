@@ -26,12 +26,6 @@ public final class FilterBlobItem {
     @JsonProperty(value = "ContainerName", required = true)
     private String containerName;
 
-    /*
-     * The tagValue property.
-     */
-    @JsonProperty(value = "TagValue", required = true)
-    private String tagValue;
-
     /**
      * Get the name property: The name property.
      *
@@ -69,26 +63,6 @@ public final class FilterBlobItem {
      */
     public FilterBlobItem setContainerName(String containerName) {
         this.containerName = containerName;
-        return this;
-    }
-
-    /**
-     * Get the tagValue property: The tagValue property.
-     *
-     * @return the tagValue value.
-     */
-    public String getTagValue() {
-        return this.tagValue;
-    }
-
-    /**
-     * Set the tagValue property: The tagValue property.
-     *
-     * @param tagValue the tagValue value to set.
-     * @return the FilterBlobItem object itself.
-     */
-    public FilterBlobItem setTagValue(String tagValue) {
-        this.tagValue = tagValue;
         return this;
     }
 }

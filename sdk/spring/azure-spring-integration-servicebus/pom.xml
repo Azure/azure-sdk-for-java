@@ -59,8 +59,8 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.microsoft.azure:spring-integration-azure-core:[1.2.8-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-integration-azure-core;current} -->
                 <include>com.microsoft.azure:azure-servicebus:[3.4.0]</include> <!-- {x-include-update;com.microsoft.azure:azure-servicebus;external_dependency} -->
+                <include>com.microsoft.azure:spring-integration-azure-core:[1.2.8-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-integration-azure-core;current} -->
               </includes>
             </bannedDependencies>
           </rules>
