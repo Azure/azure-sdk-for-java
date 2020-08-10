@@ -40,3 +40,8 @@ extends:
       - name: azure-messaging-servicebus
         groupId: com.azure
         safeName: azuremessagingservicebus
+    AdditionalModules:
+        - name: azure-messagingservicebus-track1-perf
+          groupId: com.azure
+        - name: azure-messagingservicebus-track2-perf
+          groupId: com.azure
