@@ -224,13 +224,19 @@
     "dir": "azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--payload-flattening-threshold=1 --tag=package-policy-2019-09"	
+    "args": "--payload-flattening-threshold=1 --tag=package-policy-2019-09"
   },
   "powerbi": {
     "dir": "azure-resourcemanager-powerbi",
     "source": "specification/powerbiembedded/resource-manager/readme.md",
     "package": "com.microsoft.azure.resourcemanager.powerbi",
     "args": "--payload-flattening-threshold=1 --tag=package-2016-01"
+  },
+  "privatedns": {
+    "dir": "azure-resourcemanager-privatedns",
+    "source": "specification/privatedns/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.privatedns",
+    "args": "--payload-flattening-threshold=1 --tag=package-2018-09"
   },
   "recoveryservices": {
     "dir": "azure-resourcemanager-recoveryservices",
