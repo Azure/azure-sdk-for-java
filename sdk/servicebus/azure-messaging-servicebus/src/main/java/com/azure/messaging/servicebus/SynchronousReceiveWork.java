@@ -31,8 +31,6 @@ class SynchronousReceiveWork implements AutoCloseable{
     // Indicate state that timeout has occurred for this work.
     private boolean workTimedOut = false;
 
-    // Indicate state that timeout has occurred for this work because next message has not arrived in pre defined time.
-    private boolean nextMessageTimedOut = false;
     // Subscribes to next message from upstream and implement short timeout between the messages.
     private Disposable nextMessageSubscriber;
 
@@ -113,18 +111,18 @@ class SynchronousReceiveWork implements AutoCloseable{
      *     false} otherwise.
      */
     boolean isTerminal() {
-        return emitter.isCancelled() || remaining.get() == 0 || error != null || workTimedOut || nextMessageTimedOut;
+        return emitter.isCancelled() || remaining.get() == 0 || error != null || workTimedOut;
     }
 
     /**
      * Publishes the next message to a downstream subscriber.
      *
-     * @param messageContext Event to publish downstream.
+     * @param message Event to publish downstream.
      */
-    void next(ServiceBusReceivedMessageContext messageContext) {
+    void next(ServiceBusReceivedMessageContext message) {
         try{
-            emitter.next(messageContext);
-            messageReceivedSink.next(messageContext);
+            emitter.next(message);
+            messageReceivedSink.next(message);
             remaining.decrementAndGet();
         } catch (Exception e) {
             logger.warning("Exception occurred while publishing downstream.", e);
