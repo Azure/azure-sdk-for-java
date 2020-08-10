@@ -1,7 +1,6 @@
 package com.azure.storage.internal.avro.implementation
 
 import com.azure.core.util.FluxUtil
-import com.azure.storage.common.implementation.Constants
 import com.azure.storage.internal.avro.implementation.schema.primitive.AvroNullSchema
 import reactor.core.publisher.Flux
 import reactor.test.StepVerifier
@@ -16,6 +15,13 @@ import java.nio.file.Paths
 import java.nio.file.StandardOpenOption
 
 class AvroReaderTest extends Specification {
+
+    def setup() {
+        String fullTestName = specificationContext.getCurrentIteration().getName().replace(' ', '').toLowerCase()
+        String className = specificationContext.getCurrentSpec().getName()
+        // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
+        System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
+    }
 
     String getTestCasePath(int testCase) {
         String fileName = String.format("test_null_%d.avro", testCase)
@@ -241,7 +247,7 @@ class AvroReaderTest extends Specification {
 
         /* Special use case for Changefeed - parse header and block separate. */
         when:
-        Flux<ByteBuffer> header = FluxUtil.readFile(fileChannel, 0, 5 * Constants.KB)
+        Flux<ByteBuffer> header = FluxUtil.readFile(fileChannel, 0, 5 * 1024)
         Flux<ByteBuffer> body = FluxUtil.readFile(fileChannel, blockOffset, fileChannel.size())
         def complexVerifier = StepVerifier.create(
             new AvroReaderFactory().getAvroReader(header, body, blockOffset, -1 as long)
@@ -286,7 +292,7 @@ class AvroReaderTest extends Specification {
 
         /* Special use case for Changefeed - parse header and block separate. */
         when:
-        Flux<ByteBuffer> header = FluxUtil.readFile(fileChannel, 0, 5 * Constants.KB)
+        Flux<ByteBuffer> header = FluxUtil.readFile(fileChannel, 0, 5 * 1024)
         Flux<ByteBuffer> body = FluxUtil.readFile(fileChannel, blockOffset, fileChannel.size())
         def complexVerifier = StepVerifier.create(
             new AvroReaderFactory().getAvroReader(header, body, blockOffset, filterIndex)

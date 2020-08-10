@@ -1,4 +1,24 @@
-# Sample for Azure Gremlin Spring Boot Starter client library for Java
+# Azure Gremlin Spring Boot Starter client library for Java
+The Spring Data Gremlin Starter provides Spring Data support for the Gremlin query language from Apache, which developers can use with any Gremlin-compatible data store.
+
+[Package (Maven)][package] | [API reference documentation][refdocs] | [Product documentation][docs] | [Samples][sample]
+
+## Getting started
+### Prerequisites
+- Java Development Kit (JDK) with version 8 or above
+- [Azure Subscription][azure_subscription]
+- [Maven](http://maven.apache.org/) 3.0 and above
+
+### Include the package
+[//]: # ({x-version-update-start;com.microsoft.azure:azure-data-gremlin-spring-boot-starter;current})
+```xml
+<dependency>
+    <groupId>com.microsoft.azure</groupId>
+    <artifactId>azure-data-gremlin-spring-boot-starter</artifactId>
+    <version>2.3.3</version>
+</dependency>
+```
+[//]: # ({x-version-update-end})
 
 ## Key concepts
 
@@ -7,22 +27,6 @@
 This project works with *any Gremlin-compatible* data store, and also with [Azure Cosmos DB](https://docs.microsoft.com/azure/cosmos-db/introduction). Cosmos is a globally-distributed database service that allows developers to work with data using a variety of standard APIs, such as Graph, MongoDB, and SQL. Spring Data Gremlin provides a delightful experience to interact with Azure Cosmos DB Graph API. 
 
 ## Examples
-Please refer to [sample project here](../azure-spring-boot-samples/azure-spring-boot-sample-data-gremlin).
-
-## Getting started
-
-### Add the dependency
-`azure-data-gremlin-spring-boot-starter` is published on Maven Central Repository. If you are using Maven, add the following dependency.  
-
-[//]: # ({x-version-update-start;com.azure:azure-data-gremlin-spring-boot-starter;current})
-```xml
-<dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-data-gremlin-spring-boot-starter</artifactId>
-    <version>2.3.3-beta.1</version>
-</dependency>
-```
-[//]: # ({x-version-update-end})
 
 ### Setup Configuration
 Setup ```application.yml``` file.(Use Azure Cosmos DB Graph as an example.)
@@ -192,20 +196,39 @@ public class SampleApplication implements CommandLineRunner {
 ```
 Autowired UserRepository interface, then can do save, delete and find operations. Spring Data Azure Cosmos DB uses the DocumentTemplate to execute the queries behind *find*, *save* methods. You can use the template yourself for more complex queries.
 
-## Allow telemetry
-Microsoft would like to collect data about how users use this Spring boot starter. Microsoft uses this information to improve our tooling experience. Participation is voluntary. If you don't want to participate, just simply disable it by setting below configuration in `application.properties`.
-```properties
-gremlin.allow-telemetry=false
-```
-When telemetry is enabled, an HTTP request will be sent to URL `https://dc.services.visualstudio.com/v2/track`. So please make sure it's not blocked by your firewall.  
-Find more information about Azure Service Privacy Statement, please check [Microsoft Online Services Privacy Statement](https://www.microsoft.com/privacystatement/OnlineServices/Default.aspx). 
-
-
 ## Troubleshooting
+### Enable client logging
+Azure SDKs for Java offer a consistent logging story to help aid in troubleshooting application errors and expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
 
-If you encounter any bug, please file an issue [here](https://github.com/Microsoft/spring-data-gremlin/issues/new?template=custom.md).
+### Enable Spring logging
+Spring allow all the supported logging systems to set logger levels set in the Spring Environment (for example, in application.properties) by using `logging.level.<logger-name>=<level>` where level is one of TRACE, DEBUG, INFO, WARN, ERROR, FATAL, or OFF. The root logger can be configured by using logging.level.root.
 
-To suggest a new feature or changes that could be made, file an issue the same way you would for a bug.
+The following example shows potential logging settings in `application.properties`:
+
+```properties
+logging.level.root=WARN
+logging.level.org.springframework.web=DEBUG
+logging.level.org.hibernate=ERROR
+```
+
+For more information about setting loging in pring, please refer to the [official doc](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging).
+ 
 
 ## Next steps
+
+The following section provide a sample project illustrating how to use the starter.
+### More sample code
+- [Gremlin SQL API](../azure-spring-boot-samples/azure-spring-boot-sample-data-gremlin)
+
 ## Contributing
+This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
+
+Please follow [instructions here](../CONTRIBUTING.md) to build from source or contribute.
+
+<!-- LINKS -->
+[docs]: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-data-gremlin-java-app-with-cosmos-db
+[refdocs]: https://azure.github.io/azure-sdk-for-java/spring.html#azure-data-gremlin-spring-boot-starter
+[package]: https://mvnrepository.com/artifact/com.microsoft.azure/spring-data-gremlin-boot-starter
+[sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-data-gremlin
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
+[azure_subscription]: https://azure.microsoft.com/free

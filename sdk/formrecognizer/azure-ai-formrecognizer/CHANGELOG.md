@@ -1,20 +1,44 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
-### Breaking Changes
-- Rename properties `requestedOn` to `trainingStartedOn` and `completedOn` to `trainingCompletedOn` on model
-- Throw `HttpResponseException` instead of `ErrorResponseException` to model service side exceptions
-`CustomFormModel` and `CustomFormModelInfo`.
-- Change `CopyAuthorization.getExpiresOn()` to return a `OffsetDateTime` instead of a `long` value
-- Add `RecognizeOptions` and `RecognizeCustomFormOptions` to pass configurable options when using recognize APIs on FormRecognizerClient.
-- Change `submodels` property on `CustomFormModel` to return a `List` instead of `IterableStream`
-- Rename `fieldMap` property to `fields` on `CustomFormSubmodel` model
-- Rename `elements` property on model `FormTableCell` to `textContent`
-- Rename `includeTextDetails` references in parameter and model properties to `includeTextContent`
-- Remove `TextContentType` model and use `instanceOf` to detect the FormContent type
+## 3.0.0-beta.1 (Unreleased)
+First stable release of the azure-ai-formrecognizer package. Targets the service's v2.0 API.
+
+- Added support for context passing.
+- Moved training client models under `com.azure.ai.formrecognizer.training.models` namespace
+- Renamed accessors for property `includeFieldElements` to `isFieldElementsIncluded` and `setFieldElementsIncluded`
+- Renamed property `type` on `FieldValue` model to `valueType`
+- Renamed property `formWords` on `FormLine` model to `words`
+- Renamed property `code` on `FormRecognizerError` model to `errorCode`
+- Renamed accessors for property `includeSubFolders` to `isSubfoldersIncluded` and `setSubfoldersIncluded`
+- Renamed property `trainingStatus` and `documentErrors` on `TrainingDocumentInfo` model to `status` and `errors` 
+respectively
+- Renamed property `formPageRange` on `RecognizedForm` model to `pageRange`
+- Changed param ordering for methods `beginRecognizeCustomForms` and `beginRecognizeCustomFormsFromUrl`
 
 ### Key Bug Fixes
-- Fixes `textAngle` to be returned between `(-180, 180]`.
+- Fixed `getFields()` to preserve service side ordering of fields.
+
+## 1.0.0-beta.4 (2020-07-07)
+### Breaking Changes
+- `beginRecognizeReceipt` APIs now return a `RecognizedForm` model instead of a `RecognizedReceipt`. See
+[this](https://github.com/Azure/azure-sdk-for-java/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/StronglyTypedRecognizedFormUSReceipt.java)
+suggested approach for extracting information from receipts.
+- Methods returning `textContent` have been renamed to `fieldElements` on `FieldData` and `FormTableCell`
+- Renamed `FormContent` to `FormElement`
+- Renamed `FieldText` to `FieldData`
+- Renamed properties `requestedOn` to `trainingStartedOn` and `completedOn` to `trainingCompletedOn` on model
+- Throw `HttpResponseException` instead of `ErrorResponseException` to model service side exceptions
+`CustomFormModel` and `CustomFormModelInfo`.
+- Changed `CopyAuthorization.getExpiresOn()` to return a `OffsetDateTime` instead of a `long` value
+- Added `RecognizeOptions` to pass configurable options when using recognize APIs on FormRecognizerClient.
+- Changed `submodels` property on `CustomFormModel` to return a `List` instead of `IterableStream`
+- Renamed `fieldMap` property to `fields` on `CustomFormSubmodel` model
+- Renamed `elements` property on model `FormTableCell` to `textContent`
+- Renamed `includeTextDetails` references in parameter and model properties to `includeFieldElements`
+- Removed `TextContentType` model and use `instanceOf` to detect the FormContent type
+
+### Key Bug Fixes
+- Fixed `textAngle` to be returned between `(-180, 180]`.
 
 ## 1.0.0-beta.3 (2020-06-10)
 ### New Features

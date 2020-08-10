@@ -1,4 +1,4 @@
-# Azure Identity shared library for Java
+# Azure Identity client library for Java
 The Azure Identity library provides Azure Active Directory token authentication support across the Azure SDK. It provides a set of TokenCredential implementations which can be used to construct Azure SDK clients which support AAD token authentication.
 
  This library currently supports:
@@ -11,32 +11,8 @@ The Azure Identity library provides Azure Active Directory token authentication 
 
   [Source code][source] | [API reference documentation][javadoc] | [Azure Active Directory documentation][aad_doc]
 
-## Table of contents
-- [Getting started](#getting-started)
-  - [Adding the package to your project](#adding-the-package-to-your-project)
-  - [Prerequisites](#prerequisites)
-    - [Creating a Service Principal with the Azure CLI](#creating-a-service-principal-with-the-azure-cli)
-    - [Enable applications for device code flow](#enable-applications-for-device-code-flow)
-    - [Enable applications for interactive browser oauth 2 flow](#enable-applications-for-interactive-browser-oauth-2-flow)
-    - [Enable applications for oauth 2 auth code flow](#enable-applications-for-oauth-2-auth-code-flow)
-    - [Enable applications for shared token cache credential](#enable-applications-for-shared-token-cache-credential)
-  - [Key concepts](#key-concepts)
-    - [Credentials](#credentials)
-    - [DefaultAzureCredential](#defaultazurecredential)
-    - [Environment variables](#environment-variables)
-- [Examples](#examples)
-  - [Authenticating with `DefaultAzureCredential`](#authenticating-with-defaultazurecredential)
-  - [Authenticating a service principal with a client secret](#authenticating-a-service-principal-with-a-client-secret)
-  - [Authenticating a user account with device code flow](#authenticating-a-user-account-with-device-code-flow)
-  - [Authenticating a user account with username and password](#authenticating-a-user-account-with-username-and-password)
-  - [Authenticating a user account with auth code flow](#authenticating-a-user-account-with-auth-code-flow)
-  - [Chaining credentials](#chaining-credentials)
-- [Troubleshooting](#troubleshooting)
-- [Next steps](#next-steps)
-- [Contributing](#contributing)
-
 ## Getting started
-### Adding the package to your project
+### Include the package
 
 Maven dependency for Azure Secret Client library. Add it to your project's pom file.
 
@@ -45,7 +21,7 @@ Maven dependency for Azure Secret Client library. Add it to your project's pom f
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.0.7</version>
+    <version>1.0.9</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -115,21 +91,62 @@ If you see an error "MSAL V3 Deserialization failed", try clearing the cache in 
 ## Key concepts
 ### Credentials
 
-A credential is a class which contains or can obtain the data needed for a service client to authenticate requests. Service clients across Azure SDK accept credentials when they are constructed and use those credentials to authenticate requests to the service.Azure Identity offers a variety of credential classes in the `azure-identity` package capable of acquiring an AAD token. All of these credential classes are implementations of the `TokenCredential` abstract class in [Azure Core][azure_core_library], and can be used by any service client which can be constructed with a `TokenCredential`.
+A credential is a class which contains or can obtain the data needed for a service client to authenticate requests. Service clients across Azure SDK accept credentials when they are constructed and use those credentials to authenticate requests to the service. Azure Identity offers a variety of credential classes in the `azure-identity` package capable of acquiring an AAD token. All of these credential classes are implementations of the `TokenCredential` abstract class in [Azure Core][azure_core_library], and can be used by any service client which can be constructed with a `TokenCredential`.
 
 
 The credential types in Azure Identity differ in the types of AAD identities they can authenticate and how they are configured:
-
-|credential class|identity|configuration
-|-|-|-
-|`DefaultAzureCredential`|service principal or managed identity|none for managed identity; [environment variables](#environment-variables) for service principal
-|`ManagedIdentityCredential`|managed identity|`ManagedIdentityCredentialBuilder`
-|`EnvironmentCredential`|service principal|[environment variables](#environment-variables)
-|`ClientSecretCredential`|service principal|`ClientSecretCredentialBuilder`
-|`ClientCertificateCredential`|service principal|`ClientCertificateCredentialBuilder`
-|`DeviceCodeCredential`|user account|`DeviceCodeCredentialBuilder`
-|`InteractiveBrowserCredential`|user account|`InteractiveBrowserCredentialBuilder`
-|`UsernamePasswordCredential`|user account|`UsernamePasswordCredentialBuilder`
+        
+<table border="1">
+  <thead>
+    <tr>
+      <th>credential class</th>
+      <th>identity</th>
+      <th>configuration</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>DefaultAzureCredential</code></td>
+      <td>service principal or managed identity</td>
+      <td>none for managed identity; <a href="#environment-variables">environment variables</a> for service principal</td>
+    </tr>
+    <tr>
+      <td><code>ManagedIdentityCredential</code></td>
+      <td>managed identity</td>
+      <td><code>ManagedIdentityCredentialBuilder</code></td>
+    </tr>
+    <tr>
+      <td><code>EnvironmentCredential</code></td>
+      <td>service principal</td>
+      <td><a href="#environment-variables">environment variables</a></td>
+    </tr>
+    <tr>
+      <td><code>ClientSecretCredential</code></td>
+      <td>service principal</td>
+      <td><code>ClientSecretCredentialBuilder</code></td>
+    </tr>
+    <tr>
+      <td><code>ClientCertificateCredential</code></td>
+      <td>service principal</td>
+      <td><code>ClientCertificateCredentialBuilder</code></td>
+    </tr>
+    <tr>
+      <td><code>DeviceCodeCredential</code></td>
+      <td>user account</td>
+      <td><code>DeviceCodeCredentialBuilder</code></td>
+    </tr>
+    <tr>
+      <td><code>InteractiveBrowserCredential</code></td>
+      <td>user account</td>
+      <td><code>InteractiveBrowserCredentialBuilder</code></td>
+    </tr>
+    <tr>
+      <td><code>UsernamePasswordCredential</code></td>
+      <td>user account</td>
+      <td><code>UsernamePasswordCredentialBuilder</code></td>
+    </tr>
+  </tbody>
+</table>
 
 Credentials can be chained together to be tried in turn until one succeeds using the `ChainedTokenCredential`; see [chaining credentials](#chaining-credentials) for details.
 
@@ -156,6 +173,14 @@ principal authentication with these environment variables:
 |`AZURE_CLIENT_SECRET`|one of the service principal's client secrets
 
 ## Examples
+
+### Table of contents
+  - [Authenticating with `DefaultAzureCredential`](#authenticating-with-defaultazurecredential)
+  - [Authenticating a service principal with a client secret](#authenticating-a-service-principal-with-a-client-secret)
+  - [Authenticating a user account with device code flow](#authenticating-a-user-account-with-device-code-flow)
+  - [Authenticating a user account with username and password](#authenticating-a-user-account-with-username-and-password)
+  - [Authenticating a user account with auth code flow](#authenticating-a-user-account-with-auth-code-flow)
+  - [Chaining credentials](#chaining-credentials)
 
 ### Authenticating with `DefaultAzureCredential`
 This example demonstrates authenticating the `SecretClient` from the [azure-security-keyvault-secrets][secrets_client_library] client library using the `DefaultAzureCredential`. There's also [a compilable sample](../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentitySamples.java) to create a Key Vault secret client you can copy-paste.

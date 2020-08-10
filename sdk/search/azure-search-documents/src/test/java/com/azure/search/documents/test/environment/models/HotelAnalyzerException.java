@@ -6,7 +6,7 @@ package com.azure.search.documents.test.environment.models;
 import com.azure.search.documents.indexes.SearchableFieldProperty;
 
 public class HotelAnalyzerException {
-    @SearchableFieldProperty(analyzerName = "en.microsoft", indexAnalyzer = "whitespce")
+    @SearchableFieldProperty(analyzerName = "en.microsoft", indexAnalyzerName = "whitespce")
     private String tag;
 
     /**

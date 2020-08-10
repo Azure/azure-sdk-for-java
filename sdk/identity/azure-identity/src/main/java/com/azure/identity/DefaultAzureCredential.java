@@ -22,7 +22,6 @@ import java.util.List;
  */
 @Immutable
 public final class DefaultAzureCredential extends ChainedTokenCredential {
-
     /**
      * Creates default DefaultAzureCredential instance to use. This will use AZURE_CLIENT_ID,
      * AZURE_CLIENT_SECRET, and AZURE_TENANT_ID environment variables to create a
@@ -35,17 +34,5 @@ public final class DefaultAzureCredential extends ChainedTokenCredential {
      */
     DefaultAzureCredential(List<TokenCredential> tokenCredentials) {
         super(tokenCredentials);
-    }
-
-
-    /**
-     * {@inheritDoc}
-     * The credentials in the returned list and their order may change in future versions of Identity.
-     * This API is not intended to be used in production ready code and should only be used for development purposes.
-     *
-     * @return The list of {@link TokenCredential}.
-     */
-    public List<TokenCredential> getCredentials() {
-        return super.getCredentials();
     }
 }

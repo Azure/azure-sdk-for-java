@@ -2,16 +2,17 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.test.environment.models;
 
-import com.azure.core.models.spatial.PointGeometry;
 import com.azure.search.documents.indexes.FieldIgnore;
 import com.azure.search.documents.indexes.SearchableFieldProperty;
 import com.azure.search.documents.indexes.SimpleFieldProperty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Hotel {
     @SimpleFieldProperty(isKey = true, isSortable = true)
     @JsonProperty(value = "HotelId")
@@ -49,9 +50,9 @@ public class Hotel {
     @JsonProperty(value = "Rating")
     private Integer rating;
 
-    @SimpleFieldProperty
-    @JsonProperty(value = "Location")
-    private PointGeometry location;
+//    @SimpleFieldProperty
+//    @JsonIgnoreProperties(ignoreUnknown = true)
+//    private PointGeometry location;
 
     @JsonProperty(value = "Address")
     private HotelAddress address;
@@ -152,15 +153,6 @@ public class Hotel {
 
     public Hotel rating(Integer rating) {
         this.rating = rating;
-        return this;
-    }
-
-    public PointGeometry location() {
-        return this.location;
-    }
-
-    public Hotel location(PointGeometry location) {
-        this.location = location;
         return this;
     }
 

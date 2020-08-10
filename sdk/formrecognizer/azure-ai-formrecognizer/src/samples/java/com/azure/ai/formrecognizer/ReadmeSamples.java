@@ -3,16 +3,14 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.models.AccountProperties;
-import com.azure.ai.formrecognizer.models.CustomFormModel;
-import com.azure.ai.formrecognizer.models.CustomFormModelInfo;
+import com.azure.ai.formrecognizer.training.models.AccountProperties;
+import com.azure.ai.formrecognizer.training.models.CustomFormModel;
+import com.azure.ai.formrecognizer.training.models.CustomFormModelInfo;
 import com.azure.ai.formrecognizer.models.FieldValueType;
-import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.FormField;
 import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
-import com.azure.ai.formrecognizer.models.RecognizedReceipt;
 import com.azure.ai.formrecognizer.training.FormTrainingClient;
 import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
@@ -27,9 +25,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS ARE USED TO EXTRACT
@@ -90,20 +88,19 @@ public class ReadmeSamples {
         String formUrl = "{form_url}";
         String modelId = "{custom_trained_model_id}";
         SyncPoller<OperationResult, List<RecognizedForm>> recognizeFormPoller =
-            formRecognizerClient.beginRecognizeCustomFormsFromUrl(formUrl, modelId);
+            formRecognizerClient.beginRecognizeCustomFormsFromUrl(modelId, formUrl);
 
         List<RecognizedForm> recognizedForms = recognizeFormPoller.getFinalResult();
 
         for (int i = 0; i < recognizedForms.size(); i++) {
             RecognizedForm form = recognizedForms.get(i);
-            System.out.printf("----------- Recognized Form %d-----------%n", i);
+            System.out.printf("----------- Recognized custom form info for page %d -----------%n", i);
             System.out.printf("Form type: %s%n", form.getFormType());
-            form.getFields().forEach((label, formField) -> {
+            form.getFields().forEach((label, formField) ->
                 System.out.printf("Field %s has value %s with confidence score of %f.%n", label,
-                    formField.getValueText().getText(),
-                    formField.getConfidence());
-            });
-            System.out.print("-----------------------------------");
+                    formField.getValueData().getText(),
+                    formField.getConfidence())
+            );
         }
     }
 
@@ -114,18 +111,18 @@ public class ReadmeSamples {
      */
     public void recognizeContent() throws IOException {
         // recognize form content using file input stream
-        File sourceFile = new File("local/file_path/filename.png");
-        byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
+        File form = new File("local/file_path/filename.png");
+        byte[] fileContent = Files.readAllBytes(form.toPath());
         InputStream inputStream = new ByteArrayInputStream(fileContent);
 
         SyncPoller<OperationResult, List<FormPage>> recognizeContentPoller =
-            formRecognizerClient.beginRecognizeContent(inputStream, sourceFile.length(), FormContentType.IMAGE_PNG);
+            formRecognizerClient.beginRecognizeContent(inputStream, form.length());
 
         List<FormPage> contentPageResults = recognizeContentPoller.getFinalResult();
 
         for (int i = 0; i < contentPageResults.size(); i++) {
             FormPage formPage = contentPageResults.get(i);
-            System.out.printf("----Recognizing content for page %d----%n", i);
+            System.out.printf("----Recognizing content info for page %d ----%n", i);
             // Table information
             System.out.printf("Has width: %f and height: %f, measured with unit: %s.%n", formPage.getWidth(),
                 formPage.getHeight(),
@@ -133,66 +130,74 @@ public class ReadmeSamples {
             formPage.getTables().forEach(formTable -> {
                 System.out.printf("Table has %d rows and %d columns.%n", formTable.getRowCount(),
                     formTable.getColumnCount());
-                formTable.getCells().forEach(formTableCell -> {
-                    System.out.printf("Cell has text %s.%n", formTableCell.getText());
-                });
-                System.out.println();
+                formTable.getCells().forEach(formTableCell ->
+                    System.out.printf("Cell has text %s.%n", formTableCell.getText()));
             });
         }
     }
 
     public void recognizeReceipt() {
-        String receiptUrl = "https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/media"
+        String receiptUrl = "https://docs.microsoft.com/azure/cognitive-services/form-recognizer/media"
             + "/contoso-allinone.jpg";
-        SyncPoller<OperationResult, List<RecognizedReceipt>> syncPoller =
+        SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
             formRecognizerClient.beginRecognizeReceiptsFromUrl(receiptUrl);
-        List<RecognizedReceipt> receiptPageResults = syncPoller.getFinalResult();
+        List<RecognizedForm> receiptPageResults = syncPoller.getFinalResult();
 
         for (int i = 0; i < receiptPageResults.size(); i++) {
-            RecognizedReceipt recognizedReceipt = receiptPageResults.get(i);
-            Map<String, FormField> recognizedFields = recognizedReceipt.getRecognizedForm().getFields();
-            System.out.printf("----------- Recognized Receipt page %d -----------%n", i);
+            RecognizedForm recognizedForm = receiptPageResults.get(i);
+            Map<String, FormField> recognizedFields = recognizedForm.getFields();
+            System.out.printf("----------- Recognizing receipt info for page %d -----------%n", i);
             FormField merchantNameField = recognizedFields.get("MerchantName");
-            if (merchantNameField.getFieldValue().getType() == FieldValueType.STRING) {
-                System.out.printf("Merchant Name: %s, confidence: %.2f%n",
-                    merchantNameField.getFieldValue().asString(),
-                    merchantNameField.getConfidence());
+            if (merchantNameField != null) {
+                if (FieldValueType.STRING == merchantNameField.getValue().getValueType()) {
+                    String merchantName = merchantNameField.getValue().asString();
+                    System.out.printf("Merchant Name: %s, confidence: %.2f%n",
+                        merchantName, merchantNameField.getConfidence());
+                }
             }
+
+            FormField merchantPhoneNumberField = recognizedFields.get("MerchantPhoneNumber");
+            if (merchantPhoneNumberField != null) {
+                if (FieldValueType.PHONE_NUMBER == merchantPhoneNumberField.getValue().getValueType()) {
+                    String merchantAddress = merchantPhoneNumberField.getValue().asPhoneNumber();
+                    System.out.printf("Merchant Phone number: %s, confidence: %.2f%n",
+                        merchantAddress, merchantPhoneNumberField.getConfidence());
+                }
+            }
+
             FormField transactionDateField = recognizedFields.get("TransactionDate");
-            if (transactionDateField.getFieldValue().getType() == FieldValueType.DATE) {
-                System.out.printf("Transaction Date: %s, confidence: %.2f%n",
-                    transactionDateField.getFieldValue().asDate(),
-                    transactionDateField.getConfidence());
+            if (transactionDateField != null) {
+                if (FieldValueType.DATE == transactionDateField.getValue().getValueType()) {
+                    LocalDate transactionDate = transactionDateField.getValue().asDate();
+                    System.out.printf("Transaction Date: %s, confidence: %.2f%n",
+                        transactionDate, transactionDateField.getConfidence());
+                }
             }
+
             FormField receiptItemsField = recognizedFields.get("Items");
-            System.out.printf("Receipt Items: %n");
-            if (receiptItemsField.getFieldValue().getType() == FieldValueType.LIST) {
-                List<FormField> receiptItems = receiptItemsField.getFieldValue().asList();
-                receiptItems.forEach(receiptItem -> {
-                    if (receiptItem.getFieldValue().getType() == FieldValueType.MAP) {
-                        receiptItem.getFieldValue().asMap().forEach((key, formField) -> {
-                            if (key.equals("Name")) {
-                                if (formField.getFieldValue().getType() == FieldValueType.STRING) {
-                                    System.out.printf("Name: %s, confidence: %.2fs%n",
-                                        formField.getFieldValue().asString(),
-                                        formField.getConfidence());
+            if (receiptItemsField != null) {
+                System.out.printf("Receipt Items: %n");
+                if (FieldValueType.LIST == receiptItemsField.getValue().getValueType()) {
+                    List<FormField> receiptItems = receiptItemsField.getValue().asList();
+                    receiptItems.stream()
+                        .filter(receiptItem -> FieldValueType.MAP == receiptItem.getValue().getValueType())
+                        .map(formField -> formField.getValue().asMap())
+                        .forEach(formFieldMap -> formFieldMap.forEach((key, formField) -> {
+                            if ("Quantity".equals(key)) {
+                                if (FieldValueType.FLOAT == formField.getValue().getValueType()) {
+                                    Float quantity = formField.getValue().asFloat();
+                                    System.out.printf("Quantity: %f, confidence: %.2f%n",
+                                        quantity, formField.getConfidence());
                                 }
                             }
-                            if (key.equals("Quantity")) {
-                                if (formField.getFieldValue().getType() == FieldValueType.INTEGER) {
-                                    System.out.printf("Quantity: %d, confidence: %.2f%n",
-                                        formField.getFieldValue().asInteger(), formField.getConfidence());
-                                }
-                            }
-                        });
-                    }
-                });
+                        }));
+                }
             }
         }
     }
 
     public void trainModel() {
-        String trainingFilesUrl = "{SAS-URL-of-your-container-in-blob-storage}";
+        String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
         SyncPoller<OperationResult, CustomFormModel> trainingPoller =
             formTrainingClient.beginTraining(trainingFilesUrl, false);
 
@@ -205,7 +210,7 @@ public class ReadmeSamples {
         System.out.printf("Training completed on: %s%n%n", customFormModel.getTrainingCompletedOn());
 
         System.out.println("Recognized Fields:");
-        // looping through the sub-models, which contains the fields they were trained on
+        // looping through the subModels, which contains the fields they were trained on
         // Since the given training documents are unlabeled, we still group them but they do not have a label.
         customFormModel.getSubmodels().forEach(customFormSubmodel -> {
             // Since the training data is unlabeled, we are unable to return the accuracy of this model
@@ -216,7 +221,6 @@ public class ReadmeSamples {
     }
 
     public void manageModels() {
-        AtomicReference<String> modelId = new AtomicReference<>();
         // First, we see how many custom models we have, and what our limit is
         AccountProperties accountProperties = formTrainingClient.getAccountProperties();
         System.out.printf("The account has %d custom models, and we can have at most %d custom models",
@@ -227,8 +231,7 @@ public class ReadmeSamples {
         System.out.println("We have following models in the account:");
         customModels.forEach(customFormModelInfo -> {
             System.out.printf("Model Id: %s%n", customFormModelInfo.getModelId());
-            // get custom model info
-            modelId.set(customFormModelInfo.getModelId());
+            // get specific custom model info
             CustomFormModel customModel = formTrainingClient.getCustomModel(customFormModelInfo.getModelId());
             System.out.printf("Model Status: %s%n", customModel.getModelStatus());
             System.out.printf("Training started on: %s%n", customModel.getTrainingStartedOn());
@@ -244,8 +247,9 @@ public class ReadmeSamples {
                 }
             });
         });
+
         // Delete Custom Model
-        formTrainingClient.deleteModel(modelId.get());
+        formTrainingClient.deleteModel("{modelId}");
     }
 
     /**

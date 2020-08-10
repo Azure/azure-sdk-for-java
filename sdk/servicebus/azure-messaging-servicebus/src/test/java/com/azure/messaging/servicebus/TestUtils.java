@@ -100,15 +100,6 @@ public class TestUtils {
     }
 
     /**
-     * The Service Bus topic name.
-     *
-     * @return The Service bus topic name.
-     */
-    public static String getTopicName() {
-        return System.getenv("AZURE_SERVICEBUS_TOPIC_NAME");
-    }
-
-    /**
      * Gets the Service Bus subscription name (NOT session enabled)
      *
      * @return The Service Bus subscription name.

@@ -5,7 +5,6 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.ConsistencyPolicy;
-import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.CosmosResourceType;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.DatabaseAccount;
@@ -14,6 +13,8 @@ import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Index;
+import com.azure.cosmos.implementation.InternalObjectNode;
+import com.azure.cosmos.implementation.ItemDeserializer;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Offer;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -50,6 +51,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
+import java.util.function.Function;
 
 import static com.azure.cosmos.implementation.Warning.INTERNAL_USE_ONLY_WARNING;
 
@@ -79,13 +81,13 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> CosmosItemResponse<T> createCosmosAsyncItemResponse(ResourceResponse<Document> response, Class<T> classType) {
-        return new CosmosItemResponse<>(response, classType);
+    public static <T> CosmosItemResponse<T> createCosmosAsyncItemResponse(ResourceResponse<Document> response, Class<T> classType, ItemDeserializer itemDeserializer) {
+        return new CosmosItemResponse<>(response, classType, itemDeserializer);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosItemResponse<Object> createCosmosAsyncItemResponseWithObjectType(ResourceResponse<Document> response) {
-        return new CosmosItemResponse<>(response, Object.class);
+        return new CosmosItemResponse<>(response, Object.class, null);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -483,6 +485,15 @@ public final class ModelBridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> T toObjectFromJsonSerializable(JsonSerializable jsonSerializable, Class<T> c) {
         return jsonSerializable.toObject(c);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <T> T toObjectFromJsonSerializable(Document jsonSerializable, Class<T> c, Function<Document, Document> transformer) {
+        if (transformer != null) {
+            return transformer.apply(jsonSerializable).toObject(c);
+        } else {
+            return jsonSerializable.toObject(c);
+        }
     }
 
     public static ByteBuffer serializeJsonToByteBuffer(JsonSerializable jsonSerializable, ObjectMapper objectMapper) {

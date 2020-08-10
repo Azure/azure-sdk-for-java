@@ -192,4 +192,16 @@ public class ReadmeSamples {
             .queueName("<< QUEUE NAME >>")
             .buildAsyncClient();
     }
+
+    /**
+     * Code sample for creating an synchronous Service Bus receiver to read message from dead-letter queue.
+     */
+    public void createSynchronousServiceBusDeadLetterQueueReceiver() {
+        ServiceBusReceiverClient receiver = new ServiceBusClientBuilder()
+            .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
+            .deadLetterReceiver()
+            .topicName("<< TOPIC NAME >>")
+            .subscriptionName("<< SUBSCRIPTION NAME >>")
+            .buildClient();
+    }
 }

@@ -1,6 +1,13 @@
 # Release History
 
-## 12.8.0-beta.1 (Unreleased)
+## 12.8.0-beta.2 (Unreleased)
+- Added support for setting tags and filterTags operations on SAS by adding to AccountSASPermissions.
+- Fixed bug where FluxInputStream would throw when a ByteBuffer of length 0 was encountered.
+- Added appendQueryParameter method to support adding version and snapshot support to BlobBatch setTier.
+
+## 12.8.0-beta.1 (2020-07-07)
+- Added support for the 2019-12-12 service version.
+- Buffered UploadUtils now supports uploading data of long sized length.
 
 ## 12.7.0 (2020-06-12)
 - Updated azure-core dependency.

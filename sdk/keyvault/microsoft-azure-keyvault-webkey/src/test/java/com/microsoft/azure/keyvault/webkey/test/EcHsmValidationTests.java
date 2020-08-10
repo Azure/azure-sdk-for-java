@@ -12,7 +12,7 @@ import org.junit.Test;
 public class EcHsmValidationTests {
 
     String keyWithoutT = "{\"kid\":\"key_id\",\"kty\":\"EC-HSM\",\"key_ops\":null,\"n\":null,\"e\":null,\"d\":null,\"dp\":null,\"dq\":null,\"qi\":null,\"p\":null,\"q\":null,\"k\":null,\"key_hsm\":null,\"crv\":\"P-256\",\"x\":\"KyjF795jLyVIgswKSQInEGYHNBKSKyPgNojEgYlldMI\",\"y\":\"AIl_ca1ZIKbJ5YGdgGr_7HySldI2aWeBaOImZEYIMpVe\"}";
-    String keyWithT = "{\"kid\":\"key_id\",\"kty\":\"EC-HSM\",\"key_ops\":null,\"key_hsm\":\"T-TOKEN\"}";
+    String keyWithT = "{\"kid\":\"key_id\",\"kty\":\"EC-HSM\",\"key_ops\":null,\"key_hsm\":\"VC1UT0tFTg\"}";
 
     @Test
     public void ecHsmValidation() throws Exception {

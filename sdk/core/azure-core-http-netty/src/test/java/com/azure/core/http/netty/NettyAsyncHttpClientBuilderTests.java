@@ -141,6 +141,24 @@ public class NettyAsyncHttpClientBuilderTests {
     }
 
     @Test
+    public void buildWithAuthenticatedProxy() {
+        HttpClient validatorClient = HttpClient.create().tcpConfiguration(tcpClient -> tcpClient
+            .bootstrap(bootstrap -> BootstrapHandlers.updateConfiguration(bootstrap, "TestProxyHandler",
+                (connectionObserver, channel) ->
+                    channel.pipeline().addFirst("TestProxyHandler", new TestProxyValidator(ProxyOptions.Type.HTTP)))));
+
+        ProxyOptions proxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 12345))
+            .setCredentials("1", "1");
+
+        NettyAsyncHttpClient nettyClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder(validatorClient)
+            .proxy(proxyOptions)
+            .build();
+
+        StepVerifier.create(nettyClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
+            .verifyError();
+    }
+
+    @Test
     public void buildWithConfigurationNone() {
         NettyAsyncHttpClient nettyClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder()
             .configuration(Configuration.NONE)
@@ -184,11 +202,32 @@ public class NettyAsyncHttpClientBuilderTests {
             .verifyComplete();
     }
 
+    @Test
+    public void buildWithAuthenticatedNonProxyConfigurationProxy() {
+        Configuration configuration = new Configuration()
+            .put(Configuration.PROPERTY_HTTP_PROXY, "http://1:1@localhost:8888")
+            .put(Configuration.PROPERTY_NO_PROXY, "localhost");
+
+        NettyAsyncHttpClient nettyClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder()
+            .configuration(configuration)
+            .build();
+
+        StepVerifier.create(nettyClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+    }
+
     private static final class TestProxyValidator extends ChannelDuplexHandler {
         private final ProxyOptions.Type proxyType;
+        private final boolean isAuthenticated;
 
         private TestProxyValidator(ProxyOptions.Type proxyType) {
+            this(proxyType, false);
+        }
+
+        private TestProxyValidator(ProxyOptions.Type proxyType, boolean isAuthenticated) {
             this.proxyType = proxyType;
+            this.isAuthenticated = isAuthenticated;
         }
 
         @Override
@@ -199,7 +238,11 @@ public class NettyAsyncHttpClientBuilderTests {
 
             switch (proxyType) {
                 case HTTP:
-                    assertTrue(proxyHandler instanceof HttpProxyHandler);
+                    if (isAuthenticated) {
+                        assertTrue(proxyHandler instanceof com.azure.core.http.netty.implementation.HttpProxyHandler);
+                    } else {
+                        assertTrue(proxyHandler instanceof HttpProxyHandler);
+                    }
                     break;
 
                 case SOCKS5:
