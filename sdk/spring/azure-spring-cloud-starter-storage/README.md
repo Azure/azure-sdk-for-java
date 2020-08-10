@@ -4,7 +4,7 @@ The project provides a Spring Boot Starter `spring-cloud-starter-azure-storage` 
 
 ## Key concepts
 ## Getting started
-## Samples 
+## Examples
 
 Please use this [sample](../../spring-cloud-azure-samples/spring-cloud-azure-storage-sample/) as a reference for how to use **Spring Cloud Azure Storage** in your projects. 
 
