@@ -25,8 +25,8 @@ public final class PrimaryAggregationType extends ExpandableStringEnum<PrimaryAg
     /** Static value Total for PrimaryAggregationType. */
     public static final PrimaryAggregationType TOTAL = fromString("Total");
 
-    /** Static value Minimimum for PrimaryAggregationType. */
-    public static final PrimaryAggregationType MINIMIMUM = fromString("Minimimum");
+    /** Static value Minimum for PrimaryAggregationType. */
+    public static final PrimaryAggregationType MINIMUM = fromString("Minimum");
 
     /** Static value Maximum for PrimaryAggregationType. */
     public static final PrimaryAggregationType MAXIMUM = fromString("Maximum");
