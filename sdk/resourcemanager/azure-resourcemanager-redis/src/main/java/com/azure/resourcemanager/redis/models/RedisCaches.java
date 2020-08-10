@@ -6,53 +6,54 @@
 
 package com.azure.resourcemanager.redis.models;
 
-import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.apigeneration.Beta;
-import com.microsoft.azure.management.apigeneration.Fluent;
-import com.azure.resourcemanager.redis.implementation.OperationInner;
-import com.azure.resourcemanager.redis.implementation.RedisInner;
+import com.azure.core.annotation.Fluent;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.redis.RedisManager;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsBatchDeletion;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
-import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
-import rx.Observable;
+import com.azure.resourcemanager.redis.fluent.RedisClient;
+import com.azure.resourcemanager.redis.fluent.inner.OperationInner;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsBatchCreation;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedList;
+import reactor.core.publisher.Mono;
 
 /**
  * Entry point for Redis Cache management API.
  */
 @Fluent
 public interface RedisCaches extends
-        SupportsCreating<RedisCache.DefinitionStages.Blank>,
-        SupportsListing<RedisCache>,
-        SupportsListingByResourceGroup<RedisCache>,
-        SupportsGettingByResourceGroup<RedisCache>,
-        SupportsGettingById<RedisCache>,
-        SupportsDeletingById,
-        SupportsDeletingByResourceGroup,
-        SupportsBatchCreation<RedisCache>,
-        SupportsBatchDeletion,
-        HasManager<RedisManager>,
-        HasInner<RedisInner> {
+    SupportsCreating<RedisCache.DefinitionStages.Blank>,
+    SupportsListing<RedisCache>,
+    SupportsListingByResourceGroup<RedisCache>,
+    SupportsGettingByResourceGroup<RedisCache>,
+    SupportsGettingById<RedisCache>,
+    SupportsDeletingById,
+    SupportsDeletingByResourceGroup,
+    SupportsBatchCreation<RedisCache>,
+    SupportsBatchDeletion,
+    HasManager<RedisManager>,
+    HasInner<RedisClient> {
 
     /**
      * Lists all of the available Redis REST API operations.
      *
      * @return list of available Redis REST operations.
      */
-    PagedList<OperationInner> listOperations();
+    PagedIterable<OperationInner> listOperations();
 
     /**
      * Lists all of the available Redis REST API operations.
      *
      * @return a representation of the future computation of this call
      */
-    Observable<OperationInner> listOperationsAsync();
+    PagedFlux<OperationInner> listOperationsAsync();
 }

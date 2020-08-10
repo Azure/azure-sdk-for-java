@@ -17,6 +17,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 
+import java.time.Duration;
 import java.time.Period;
 import java.util.List;
 import java.util.Map;
@@ -117,11 +118,6 @@ public interface RedisCache extends
      *                   possible. Possible values include: 'PrimaryNode', 'SecondaryNode', 'AllNodes'.
      */
     void forceReboot(RebootType rebootType);
-
-    /**
-     * @return a Redis Cache's access keys. This operation requires write permission to the Cache resource.
-     */
-    RedisAccessKeys getKeys();
 
     /**
      * @return a Redis Cache's access keys. This operation requires write permission to the Cache resource.
@@ -307,7 +303,7 @@ public interface RedisCache extends
               * @param maintenanceWindow ISO8601 timespan specifying how much time cache patching can take.
               * @return the next stage of Redis Cache with Premium SKU definition.
               */
-             WithCreate withPatchSchedule(DayOfWeek dayOfWeek, int startHourUtc, Period maintenanceWindow);
+             WithCreate withPatchSchedule(DayOfWeek dayOfWeek, int startHourUtc, Duration maintenanceWindow);
 
              /**
               * Patch schedule on a Premium Cluster Cache.
@@ -513,7 +509,7 @@ public interface RedisCache extends
          * @param maintenanceWindow ISO8601 timespan specifying how much time cache patching can take.
          * @return the next stage of Redis Cache with Premium SKU definition.
          */
-        Update withPatchSchedule(DayOfWeek dayOfWeek, int startHourUtc, Period maintenanceWindow);
+        Update withPatchSchedule(DayOfWeek dayOfWeek, int startHourUtc, Duration maintenanceWindow);
 
         /**
          * Adds Patch schedule to the current Premium Cluster Cache.

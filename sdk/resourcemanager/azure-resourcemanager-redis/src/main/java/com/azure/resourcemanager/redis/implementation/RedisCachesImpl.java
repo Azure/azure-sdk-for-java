@@ -6,32 +6,33 @@
 
 package com.azure.resourcemanager.redis.implementation;
 
+import com.azure.core.http.rest.Page;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.redis.RedisManager;
+import com.azure.resourcemanager.redis.fluent.RedisClient;
+import com.azure.resourcemanager.redis.fluent.inner.OperationInner;
+import com.azure.resourcemanager.redis.fluent.inner.RedisResourceInner;
 import com.azure.resourcemanager.redis.models.RedisCache;
 import com.azure.resourcemanager.redis.models.RedisCaches;
-import com.microsoft.azure.Page;
-import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
-import rx.Observable;
-import rx.functions.Func1;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedList;
 
 /**
  * The implementation of RedisCaches and its parent interfaces.
  */
-@LangDefinition
 public
 class RedisCachesImpl
     extends TopLevelModifiableResourcesImpl<
-    RedisCache,
+        RedisCache,
         RedisCacheImpl,
         RedisResourceInner,
-        RedisInner,
-    RedisManager>
+        RedisClient,
+        RedisManager>
     implements RedisCaches {
 
     public RedisCachesImpl(final RedisManager redisManager) {
-        super(redisManager.inner().redis(), redisManager);
+        super(redisManager.inner().getRedis(), redisManager);
     }
 
     @Override
@@ -59,17 +60,12 @@ class RedisCachesImpl
     }
 
     @Override
-    public PagedList<OperationInner> listOperations() {
-        return this.manager().inner().operations().list();
+    public PagedIterable<OperationInner> listOperations() {
+        return new PagedIterable<>(listOperationsAsync());
     }
 
     @Override
-    public Observable<OperationInner> listOperationsAsync() {
-        return this.manager().inner().operations().listAsync().flatMap(new Func1<Page<OperationInner>, Observable<OperationInner>>() {
-            @Override
-            public Observable<OperationInner> call(Page<OperationInner> pageInner) {
-                return Observable.from(pageInner.items());
-            }
-        });
+    public PagedFlux<OperationInner> listOperationsAsync() {
+        return this.manager().inner().getOperations().listAsync();
     }
 }

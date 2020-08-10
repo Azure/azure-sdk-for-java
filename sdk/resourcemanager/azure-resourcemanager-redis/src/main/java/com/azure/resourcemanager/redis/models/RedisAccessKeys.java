@@ -6,7 +6,7 @@
 
 package com.azure.resourcemanager.redis.models;
 
-import com.microsoft.azure.management.apigeneration.Fluent;
+import com.azure.core.annotation.Fluent;
 
 /**
  * The <code>RedisCache.keys()</code> action result.
