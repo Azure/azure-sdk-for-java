@@ -1,7 +1,7 @@
 # Release History
 
 ## 3.0.0-beta.1 (2020-08-11)
-First stable release of the azure-ai-formrecognizer package. Targets the service's v2.0 API.
+This beta version targets Azure Form Recognizer service API version v2.0.
 
 - Added models `BeginRecognizeCustomFormOptions`, `BeginRecognizeReceiptOptions` and `BeginRecognizeContentOptions`
 to support passing configurable options fo recognize API's.

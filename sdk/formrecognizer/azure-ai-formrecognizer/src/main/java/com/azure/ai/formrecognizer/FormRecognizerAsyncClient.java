@@ -110,7 +110,7 @@ public final class FormRecognizerAsyncClient {
      * @param modelId The UUID string format custom trained model Id to be used.
      * @param formUrl The source URL to the input form.
      * @param beginRecognizeCustomFormOptions The additional configurable
-     * {@link BeginRecognizeCustomFormOptions options} that may be passed when recognizing custom form.
+     * {@link BeginRecognizeCustomFormOptions options} that may be passed when recognizing custom forms.
      *
      * @return A {@link PollerFlux} that polls the recognize custom form operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
@@ -198,7 +198,7 @@ public final class FormRecognizerAsyncClient {
      * @param form The data of the form to recognize form information from.
      * @param length The exact length of the data.
      * @param beginRecognizeCustomFormOptions The additional configurable
-     * {@link BeginRecognizeCustomFormOptions options} that may be passed when recognizing custom form.
+     * {@link BeginRecognizeCustomFormOptions options} that may be passed when recognizing custom forms.
      *
      * @return A {@link PollerFlux} that polls the recognize custom form operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
@@ -275,8 +275,8 @@ public final class FormRecognizerAsyncClient {
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContentFromUrl#string-BeginRecognizeContentOptions}
      *
      * @param formUrl The source URL to the input form.
-     * @param beginRecognizeContentOptions The additional configurable
-     * {@link BeginRecognizeContentOptions options} that may be passed when recognizing content/layout on a form.
+     * @param beginRecognizeContentOptions The additional configurable {@link BeginRecognizeContentOptions options}
+     * that may be passed when recognizing content/layout on a form.
      *
      * @return A {@link PollerFlux} that polls the recognized content/layout operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns a List of {@link FormPage}.
@@ -354,8 +354,8 @@ public final class FormRecognizerAsyncClient {
      *
      * @param form The data of the form to recognize content information from.
      * @param length The exact length of the data.
-     * @param beginRecognizeContentOptions The additional configurable
-     * {@link BeginRecognizeContentOptions options} that may be passed when recognizing content/layout on a form.
+     * @param beginRecognizeContentOptions The additional configurable {@link BeginRecognizeContentOptions options}
+     * that may be passed when recognizing content/layout on a form.
      *
      * @return A {@link PollerFlux} polls the recognize content operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns a List of {@link FormPage}.
@@ -427,8 +427,8 @@ public final class FormRecognizerAsyncClient {
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceiptsFromUrl#string-BeginRecognizeReceiptOptions}
      *
      * @param receiptUrl The source URL to the input receipt.
-     * @param beginRecognizeReceiptOptions The additional configurable
-     * {@link BeginRecognizeReceiptOptions options} that may be passed when analyzing a receipt.
+     * @param beginRecognizeReceiptOptions The additional configurable {@link BeginRecognizeReceiptOptions options}
+     * that may be passed when analyzing a receipt.
      *
      * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
@@ -512,8 +512,8 @@ public final class FormRecognizerAsyncClient {
      *
      * @param receipt The data of the document to recognize receipt information from.
      * @param length The exact length of the data.
-     * @param beginRecognizeReceiptOptions The additional configurable
-     * {@link BeginRecognizeReceiptOptions options} that may be passed when analyzing a receipt.
+     * @param beginRecognizeReceiptOptions The additional configurable {@link BeginRecognizeReceiptOptions options}
+     * that may be passed when analyzing a receipt.
      *
      * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.

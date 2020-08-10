@@ -84,7 +84,7 @@ public final class FormRecognizerClient {
      * @param modelId The UUID string format custom trained model Id to be used.
      * @param formUrl The source URL to the input form.
      * @param beginRecognizeCustomFormOptions The additional configurable
-     * {@link BeginRecognizeCustomFormOptions options} that may be passed when recognizing custom form.
+     * {@link BeginRecognizeCustomFormOptions options} that may be passed when recognizing custom forms.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return A {@link SyncPoller} to poll the progress of the recognize custom form operation until it has completed,
@@ -140,7 +140,7 @@ public final class FormRecognizerClient {
      * @param form The data of the form to recognize form information from.
      * @param length The exact length of the data.
      * @param beginRecognizeCustomFormOptions The additional configurable
-     * {@link BeginRecognizeCustomFormOptions options} that may be passed whens recognizing custom form.
+     * {@link BeginRecognizeCustomFormOptions options} that may be passed when recognizing custom forms.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return A {@link SyncPoller} that polls the recognize custom form operation until it has completed,
@@ -239,7 +239,7 @@ public final class FormRecognizerClient {
      *  @param form The data of the form to recognize content information from.
      * @param length The exact length of the data.
      * @param beginRecognizeContentOptions The additional configurable {@link BeginRecognizeContentOptions options}
-     * that may be passed when analyzing a receipt.
+     * that may be passed when recognizing content/layout on a form.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return A {@link SyncPoller} that polls the recognize content operation until it has completed,
