@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.8 (Unreleased)
+## 1.1.0 (2020-08-10)
 
 ### Breaking Changes
 - Removing Application Authentication APIs for GA release. These will be reintroduced in 1.2.0-beta.1.
