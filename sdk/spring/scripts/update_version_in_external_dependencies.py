@@ -27,7 +27,9 @@ def main():
     start_time = time.time()
     change_to_root_dir()
     log.debug('Current working directory = {}.'.format(os.getcwd()))
-    dependency_dict = get_dependency_dict()
+    dependency_dict = {}
+    for root_pom in ROOT_POMS:
+        update_dependency_dict(dependency_dict, root_pom)
     update_version_for_external_dependencies(dependency_dict)
     elapsed_time = time.time() - start_time
     log.info('elapsed_time = {}'.format(elapsed_time))
@@ -47,22 +49,20 @@ def get_version_from_external_dependencies(key):
     raise Exception('Can not get version from external_dependencies, key = {}.'.format(key))
 
 
-def get_dependency_dict():
+def update_dependency_dict(dependency_dict, root_pom):
+    root_pom_info = root_pom.split(':')
+    root_pom_group_id = root_pom_info[0]
+    root_pom_artifact_id = root_pom_info[1]
+    root_pom_version = get_version_from_external_dependencies(root_pom)
+    pom = Pom(
+        root_pom_group_id,
+        root_pom_artifact_id,
+        root_pom_version,
+        1
+    )
     q = queue.Queue()
-    dependency_dict = {}
-    for root_pom in ROOT_POMS:
-        root_pom_info = root_pom.split(':')
-        root_pom_group_id = root_pom_info[0]
-        root_pom_artifact_id = root_pom_info[1]
-        root_pom_version = get_version_from_external_dependencies(root_pom)
-        pom = Pom(
-            root_pom_group_id,
-            root_pom_artifact_id,
-            root_pom_version,
-            1
-        )
-        q.put(pom)
-        log.debug('Added new root pom: {}, depth = {}.'.format(pom.to_url(), pom.depth))
+    q.put(pom)
+    log.info('Added root pom: {}, depth = {}.'.format(pom.to_url(), pom.depth))
     while not q.empty():
         pom = q.get()
         pom_url = pom.to_url()
