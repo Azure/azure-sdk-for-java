@@ -93,7 +93,7 @@ class BlobBaseAPITest extends APISpec {
         def oldBc = bc
         System.setProperty("AZURE_LOG_LEVEL", "INFO")
         bc = getServiceClientBuilder(primaryCredential, primaryBlobServiceClient.getAccountUrl())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.HEADERS))
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.HEADERS).addAllowedHeaderName("x-ms-request-id"))
             .buildClient().getBlobContainerClient(bc.getContainerName())
             .getBlobClient(bc.getBlobName())
         BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()
