@@ -25,7 +25,7 @@ public class DigitalTwinsClient
                     new UserAgentPolicy(),
                     new RetryPolicy(),
                     new CookiePolicy(),
-                    new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", "https://digitaltwins.azure.net"))                    )
+                    new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", "https://digitaltwins.azure.net")))
                 .build();
 
         // TODO: Implement credential scope for digital twins and make a method call to get it.
