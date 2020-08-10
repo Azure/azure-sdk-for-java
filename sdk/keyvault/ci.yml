@@ -71,3 +71,5 @@ extends:
         groupId: com.azure.resourcemanager
       - name: spring-integration-storage-queue
         groupId: com.microsoft.azure
+      - name: azure-storage-file-share
+        groupId: com.azure
