@@ -11,36 +11,12 @@ import java.time.Instant;
 /**
  * Specifies the {@link ChangeFeedProcessor} state for a particular lease/worker.
  */
-@Beta(Beta.SinceVersion.V4_2_0)
+@Beta(Beta.SinceVersion.V4_3_0)
 public class ChangeFeedProcessorState {
-    private String id;
     private String leaseToken;
     private String hostName;
-    private Instant lastUpdatedTime;
     private String continuationToken;
-    private Instant continuationTokenTimestamp;
-    private String latestToken;
     private int estimatedLag;
-
-    /**
-     * Gets the ID of the lease item representing the persistent state of a change feed processor worker.
-     *
-     * @return the ID of the lease item.
-     */
-    public String getId() {
-        return this.id;
-    }
-
-    /**
-     * Sets the ID of the lease item representing the persistent state of a chenge feed processor worker.
-     *
-     * @param id a unique string.
-     * @return the current ChangeFeedProcessorState instance.
-     */
-    public ChangeFeedProcessorState setId(String id) {
-        this.id = id;
-        return this;
-    }
 
     /**
      * Gets the token of the lease item representing the persistent state of a change feed processor worker.
@@ -91,12 +67,12 @@ public class ChangeFeedProcessorState {
     }
 
     /**
-     * Gets the time when the lease item was last updated.
+     * Gets a marker representing the last item that was processed.
      *
-     * @return time when the lease item was last updated.
+     * @return the marker representing the last item that was processed.
      */
-    public Instant getLastUpdatedTime() {
-        return this.lastUpdatedTime;
+    public String getContinuationToken() {
+        return this.continuationToken;
     }
 
     /**
@@ -107,46 +83,6 @@ public class ChangeFeedProcessorState {
      */
     public ChangeFeedProcessorState setContinuationToken(String continuationToken) {
         this.continuationToken = continuationToken;
-        return this;
-    }
-
-    /**
-     * Gets the system time for the last item that was processed.
-     *
-     * @return the system time for the last item that was processed.
-     */
-    public Instant getContinuationTokenTimestamp() {
-        return this.continuationTokenTimestamp;
-    }
-
-    /**
-     * Sets the system time for the last item that was processed.
-     *
-     * @param continuationTokenTimestamp the system time for the last item that was processed.
-     * @return the current ChangeFeedProcessorState instance.
-     */
-    public ChangeFeedProcessorState setContinuationTokenTimestamp(Instant continuationTokenTimestamp) {
-        this.continuationTokenTimestamp = continuationTokenTimestamp;
-        return this;
-    }
-
-    /**
-     * Gets a marker representing the latest item that will be processed.
-     *
-     * @return the marker representing the latest item that will be processed.
-     */
-    public String getLatestToken() {
-        return this.latestToken;
-    }
-
-    /**
-     * Sets a marker representing the latest item that will be processed.
-     *
-     * @param latestToken the marker representing the latest item that will be processed.
-     * @return the current ChangeFeedProcessorState instance.
-     */
-    public ChangeFeedProcessorState setLatestToken(String latestToken) {
-        this.latestToken = latestToken;
         return this;
     }
 

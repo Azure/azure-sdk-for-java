@@ -254,11 +254,11 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
                             latestLsn = segments[1];
                         }
 
+                        // lease.getId() - the ID of the lease item representing the persistent state of a change feed processor worker.
+                        // latestLsn - a marker representing the latest item that will be processed.
                         ChangeFeedProcessorState changeFeedProcessorState = new ChangeFeedProcessorState()
-                            .setId(lease.getId())
                             .setHostName(lease.getOwner())
-                            .setLeaseToken(lease.getLeaseToken())
-                            .setLatestToken(latestLsn);
+                            .setLeaseToken(lease.getLeaseToken());
 
                         // An empty list of documents returned means that we are current (zero lag)
                         if (feedResponse.getResults() == null || feedResponse.getResults().size() == 0) {
@@ -270,13 +270,14 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
 
                         changeFeedProcessorState.setContinuationToken(feedResponse.getResults().get(0).get(PROPERTY_NAME_LSN).asText(null));
 
-                        try {
-                            changeFeedProcessorState.setContinuationTokenTimestamp(Instant.ofEpochMilli(Long.valueOf(
-                                    feedResponse.getResults().get(0).get(PROPERTY_NAME_TS).asText("0"))));
-                        } catch (NumberFormatException ex) {
-                            logger.warn("Unexpected Cosmos _ts found", ex);
-                            changeFeedProcessorState.setContinuationTokenTimestamp(null);
-                        }
+                        // continuationTokenTimestamp - the system time for the last item that was processed.
+//                        try {
+//                            changeFeedProcessorState.setContinuationTokenTimestamp(Instant.ofEpochSecond(Long.valueOf(
+//                                    feedResponse.getResults().get(0).get(PROPERTY_NAME_TS).asText("0"))));
+//                        } catch (NumberFormatException ex) {
+//                            logger.warn("Unexpected Cosmos _ts found", ex);
+//                            changeFeedProcessorState.setContinuationTokenTimestamp(null);
+//                        }
 
                         Integer currentLsn = 0;
                         Integer estimatedLag = 0;
