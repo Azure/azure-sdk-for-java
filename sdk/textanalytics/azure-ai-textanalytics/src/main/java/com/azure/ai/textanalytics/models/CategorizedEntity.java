@@ -59,16 +59,15 @@ public final class CategorizedEntity {
 
     /**
      * Creates a {@link CategorizedEntity} model that describes entity.
-     *
      * @param text The entity text as appears in the request.
      * @param category The entity category, such as Person/Location/Org/SSN etc.
      * @param subcategory The entity subcategory, such as Age/Year/TimeRange etc.
+     * @param confidenceScore A confidence score between 0 and 1 of the extracted entity.
      * @param offset The start position for the entity text.
      * @param length The length for the entity text.
-     * @param confidenceScore A confidence score between 0 and 1 of the extracted entity.
      */
-    public CategorizedEntity(String text, EntityCategory category, String subcategory, int offset, int length,
-        double confidenceScore) {
+    public CategorizedEntity(String text, EntityCategory category, String subcategory, double confidenceScore,
+        int offset, int length) {
         this.text = text;
         this.category = category;
         this.subcategory = subcategory;

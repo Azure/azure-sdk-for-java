@@ -180,9 +180,9 @@ final class TestUtils {
      * Helper method to get the expected Categorized Entities List 1
      */
     static List<CategorizedEntity> getCategorizedEntitiesList1() {
-        CategorizedEntity categorizedEntity1 = new CategorizedEntity("trip", EntityCategory.EVENT, null, 18, 4, 0.0);
-        CategorizedEntity categorizedEntity2 = new CategorizedEntity("Seattle", EntityCategory.LOCATION, "GPE", 26, 7, 0.0);
-        CategorizedEntity categorizedEntity3 = new CategorizedEntity("last week", EntityCategory.DATE_TIME, "DateRange", 34, 9, 0.0);
+        CategorizedEntity categorizedEntity1 = new CategorizedEntity("trip", EntityCategory.EVENT, null, 0.0, 18, 4);
+        CategorizedEntity categorizedEntity2 = new CategorizedEntity("Seattle", EntityCategory.LOCATION, "GPE", 0.0, 26, 7);
+        CategorizedEntity categorizedEntity3 = new CategorizedEntity("last week", EntityCategory.DATE_TIME, "DateRange", 0.0, 34, 9);
         return Arrays.asList(categorizedEntity1, categorizedEntity2, categorizedEntity3);
     }
 
@@ -190,7 +190,7 @@ final class TestUtils {
      * Helper method to get the expected Categorized Entities List 2
      */
     static List<CategorizedEntity> getCategorizedEntitiesList2() {
-        return Arrays.asList(new CategorizedEntity("Microsoft", EntityCategory.ORGANIZATION, null, 10, 9, 0.0));
+        return Arrays.asList(new CategorizedEntity("Microsoft", EntityCategory.ORGANIZATION, null, 0.0, 10, 9));
     }
 
     /**

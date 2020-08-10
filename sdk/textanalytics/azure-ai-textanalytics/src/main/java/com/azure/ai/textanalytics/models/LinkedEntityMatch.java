@@ -17,17 +17,17 @@ public final class LinkedEntityMatch {
     private final double confidenceScore;
 
     /*
-     * Entity text as appears in the request.
+     * Linked entity match text as appears in the request.
      */
     private final String text;
 
     /*
-     * Start position for the entity text.
+     * Start position for the linked entity match text.
      */
     private final int offset;
 
     /*
-     * Length for the entity text.
+     * Length for the linked entity match text.
      */
     private final int length;
 
@@ -72,7 +72,7 @@ public final class LinkedEntityMatch {
     }
 
     /**
-     * Get the text property: Entity text as appears in the request.
+     * Get the linked entity match text property: Entity text as appears in the request.
      *
      * @return The text value.
      */
@@ -81,18 +81,18 @@ public final class LinkedEntityMatch {
     }
 
     /**
-     * Get the offset of entity text.
+     * Get the offset of linked entity match text.
      *
-     * @return The offset of entity text.
+     * @return The offset of linked entity match text.
      */
     public int getOffset() {
         return offset;
     }
 
     /**
-     * Get the length of entity text.
+     * Get the length of linked entity match text.
      *
-     * @return The length of entity text.
+     * @return The length of linked entity match text.
      */
     public int getLength() {
         return length;
