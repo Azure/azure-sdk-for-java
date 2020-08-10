@@ -67,7 +67,6 @@ org.apache.logging.log4j:log4j-api;2.11.1
 org.apache.logging.log4j:log4j-core;2.11.1
 org.apache.logging.log4j:log4j-slf4j-impl;2.13.0
 org.apache.qpid:proton-j;0.33.4
-org.apache.qpid:qpid-jms-client;0.43.0
 org.apache.tinkerpop:gremlin-driver;3.2.4
 org.asynchttpclient:async-http-client;2.10.5
 org.codehaus.groovy:groovy-eclipse-batch;2.5.8-01
