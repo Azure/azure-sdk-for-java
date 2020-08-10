@@ -27,6 +27,7 @@ class SynchronousReceiveWork implements AutoCloseable{
     private final int numberToReceive;
     private final Duration timeout;
     private final FluxSink<ServiceBusReceivedMessageContext> emitter;
+    private final FluxSink<ServiceBusReceivedMessageContext> messageReceivedSink;
 
     // Indicate state that timeout has occurred for this work.
     private boolean workTimedOut = false;
@@ -38,8 +39,6 @@ class SynchronousReceiveWork implements AutoCloseable{
     private boolean processingStarted;
 
     private volatile Throwable error = null;
-
-    private final FluxSink<ServiceBusReceivedMessageContext> messageReceivedSink;
 
     /**
      * Creates a new synchronous receive work.
@@ -120,7 +119,7 @@ class SynchronousReceiveWork implements AutoCloseable{
      * @param message Event to publish downstream.
      */
     void next(ServiceBusReceivedMessageContext message) {
-        try{
+        try {
             emitter.next(message);
             messageReceivedSink.next(message);
             remaining.decrementAndGet();
