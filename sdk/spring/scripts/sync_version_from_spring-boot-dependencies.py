@@ -73,13 +73,13 @@ def get_dependency_dict():
         # get properties
         properties = project_element.find('maven:properties', name_space)
         property_dict = {}
-        # some property contain 'project.version', so put project_version first.
+        # some property contain 'project.version', so put 'project.version' into property_dict.
         version_element = project_element.find('./maven:version', name_space)
         if version_element is None:
             version_element = project_element.find('./maven:parent/maven:version', name_space)
         project_version = version_element.text.strip()
         property_dict['project.version'] = project_version
-        # some property contain 'project.groupId', so put project_version first.
+        # some property contain 'project.groupId', so put 'project.groupId' into property_dict.
         group_id_element = project_element.find('./maven:groupId', name_space)
         if group_id_element is None:
             group_id_element = project_element.find('./maven:parent/maven:groupId', name_space)
