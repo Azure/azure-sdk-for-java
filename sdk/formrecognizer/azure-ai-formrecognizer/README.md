@@ -23,7 +23,7 @@ from form documents. It includes the following main functionalities:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-formrecognizer</artifactId>
-    <version>1.0.0-beta.4</version>
+    <version>3.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

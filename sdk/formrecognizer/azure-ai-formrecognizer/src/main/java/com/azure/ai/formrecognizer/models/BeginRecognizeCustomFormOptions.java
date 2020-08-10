@@ -7,7 +7,7 @@ import com.azure.core.annotation.Fluent;
 import java.time.Duration;
 
 /**
- * Options that may be passed when using recognize APIs on Form Recognizer client.
+ * Options that may be passed when using recognize custom form APIs on Form Recognizer client.
  */
 @Fluent
 public class BeginRecognizeCustomFormOptions {
@@ -49,7 +49,7 @@ public class BeginRecognizeCustomFormOptions {
      *
      * @param contentType the provided form content type.
      *
-     * @return the updated {@code RecognizeOptions} value.
+     * @return the updated {@code BeginRecognizeCustomFormOptions} value.
      */
     public BeginRecognizeCustomFormOptions setContentType(final FormContentType contentType) {
         this.contentType = contentType;
@@ -61,7 +61,7 @@ public class BeginRecognizeCustomFormOptions {
      *
      * @param includeFieldElements the boolean to specify if to include form element references in the result.
      *
-     * @return the updated {@code RecognizeOptions} value.
+     * @return the updated {@code BeginRecognizeCustomFormOptions} value.
      */
     public BeginRecognizeCustomFormOptions setFieldElementsIncluded(final boolean includeFieldElements) {
         this.includeFieldElements = includeFieldElements;
@@ -74,7 +74,7 @@ public class BeginRecognizeCustomFormOptions {
      *
      * @param pollInterval the duration to specify between each poll for the operation status.
      *
-     * @return the updated {@code RecognizeOptions} value.
+     * @return the updated {@code BeginRecognizeCustomFormOptions} value.
      */
     public BeginRecognizeCustomFormOptions setPollInterval(final Duration pollInterval) {
         this.pollInterval = pollInterval == null ? DEFAULT_POLL_INTERVAL : pollInterval;

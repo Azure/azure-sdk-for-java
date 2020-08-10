@@ -1,8 +1,10 @@
 # Release History
 
-## 3.0.0-beta.1 (Unreleased)
+## 3.0.0-beta.1 (2020-08-11)
 First stable release of the azure-ai-formrecognizer package. Targets the service's v2.0 API.
 
+- Added models `BeginRecognizeCustomFormOptions`, `BeginRecognizeReceiptOptions` and `BeginRecognizeContentOptions`
+to support passing configurable options fo recognize API's.
 - Added support for context passing.
 - Moved training client models under `com.azure.ai.formrecognizer.training.models` namespace
 - Renamed accessors for property `includeFieldElements` to `isFieldElementsIncluded` and `setFieldElementsIncluded`
