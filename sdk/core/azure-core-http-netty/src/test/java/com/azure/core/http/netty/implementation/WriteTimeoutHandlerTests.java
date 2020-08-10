@@ -12,8 +12,6 @@ import io.netty.util.concurrent.DefaultEventExecutor;
 import io.netty.util.concurrent.EventExecutor;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
@@ -30,7 +28,7 @@ import static org.mockito.internal.verification.VerificationModeFactory.times;
 public class WriteTimeoutHandlerTests {
     @Test
     public void noTimeoutDoesNotAddWatcher() {
-        WriteTimeoutHandler writeTimeoutHandler = new WriteTimeoutHandler(Duration.ZERO);
+        WriteTimeoutHandler writeTimeoutHandler = new WriteTimeoutHandler(0);
 
         EventExecutor eventExecutor = mock(EventExecutor.class);
         when(eventExecutor.scheduleAtFixedRate(any(), anyLong(), anyLong(), any())).thenReturn(null);
@@ -45,7 +43,7 @@ public class WriteTimeoutHandlerTests {
 
     @Test
     public void timeoutAddsWatcher() {
-        WriteTimeoutHandler writeTimeoutHandler = new WriteTimeoutHandler(Duration.ofMillis(1));
+        WriteTimeoutHandler writeTimeoutHandler = new WriteTimeoutHandler(1);
 
         EventExecutor eventExecutor = mock(EventExecutor.class);
         when(eventExecutor.scheduleAtFixedRate(any(), eq(1L), eq(1L), any())).thenReturn(null);
@@ -60,7 +58,7 @@ public class WriteTimeoutHandlerTests {
 
     @Test
     public void removingHandlerCancelsTimeout() throws InterruptedException {
-        WriteTimeoutHandler writeTimeoutHandler = new WriteTimeoutHandler(Duration.ofMillis(100));
+        WriteTimeoutHandler writeTimeoutHandler = new WriteTimeoutHandler(100);
 
         ChannelHandlerContext ctx = mock(ChannelHandlerContext.class);
         when(ctx.executor()).thenReturn(new DefaultEventExecutor());
@@ -75,7 +73,7 @@ public class WriteTimeoutHandlerTests {
 
     @Test
     public void writeTimesOut() throws InterruptedException {
-        WriteTimeoutHandler writeTimeoutHandler = new WriteTimeoutHandler(Duration.ofMillis(100));
+        WriteTimeoutHandler writeTimeoutHandler = new WriteTimeoutHandler(100);
 
         Channel.Unsafe unsafe = mock(Channel.Unsafe.class);
         when(unsafe.outboundBuffer()).thenReturn(null);
@@ -96,7 +94,7 @@ public class WriteTimeoutHandlerTests {
 
     @Test
     public void writingUpdatesTimeout() throws InterruptedException {
-        WriteTimeoutHandler writeTimeoutHandler = new WriteTimeoutHandler(Duration.ofMillis(500));
+        WriteTimeoutHandler writeTimeoutHandler = new WriteTimeoutHandler(500);
 
         Channel.Unsafe unsafe = mock(Channel.Unsafe.class);
         when(unsafe.outboundBuffer()).thenReturn(null);

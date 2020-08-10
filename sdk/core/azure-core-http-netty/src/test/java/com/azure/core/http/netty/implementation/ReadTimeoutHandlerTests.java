@@ -8,8 +8,6 @@ import io.netty.util.concurrent.DefaultEventExecutor;
 import io.netty.util.concurrent.EventExecutor;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
@@ -26,7 +24,7 @@ import static org.mockito.internal.verification.VerificationModeFactory.times;
 public class ReadTimeoutHandlerTests {
     @Test
     public void noTimeoutDoesNotAddWatcher() {
-        ReadTimeoutHandler readTimeoutHandler = new ReadTimeoutHandler(Duration.ZERO);
+        ReadTimeoutHandler readTimeoutHandler = new ReadTimeoutHandler(0);
 
         EventExecutor eventExecutor = mock(EventExecutor.class);
         when(eventExecutor.scheduleAtFixedRate(any(), anyLong(), anyLong(), any())).thenReturn(null);
@@ -41,7 +39,7 @@ public class ReadTimeoutHandlerTests {
 
     @Test
     public void timeoutAddsWatcher() {
-        ReadTimeoutHandler readTimeoutHandler = new ReadTimeoutHandler(Duration.ofMillis(1));
+        ReadTimeoutHandler readTimeoutHandler = new ReadTimeoutHandler(1);
 
         EventExecutor eventExecutor = mock(EventExecutor.class);
         when(eventExecutor.scheduleAtFixedRate(any(), eq(1L), eq(1L), any())).thenReturn(null);
@@ -56,7 +54,7 @@ public class ReadTimeoutHandlerTests {
 
     @Test
     public void removingHandlerCancelsTimeout() throws InterruptedException {
-        ReadTimeoutHandler readTimeoutHandler = new ReadTimeoutHandler(Duration.ofMillis(100));
+        ReadTimeoutHandler readTimeoutHandler = new ReadTimeoutHandler(100);
 
         ChannelHandlerContext ctx = mock(ChannelHandlerContext.class);
         when(ctx.executor()).thenReturn(new DefaultEventExecutor());
@@ -71,7 +69,7 @@ public class ReadTimeoutHandlerTests {
 
     @Test
     public void readTimesOut() throws InterruptedException {
-        ReadTimeoutHandler readTimeoutHandler = new ReadTimeoutHandler(Duration.ofMillis(100));
+        ReadTimeoutHandler readTimeoutHandler = new ReadTimeoutHandler(100);
 
         ChannelHandlerContext ctx = mock(ChannelHandlerContext.class);
         when(ctx.executor()).thenReturn(new DefaultEventExecutor());
@@ -85,7 +83,7 @@ public class ReadTimeoutHandlerTests {
 
     @Test
     public void readingUpdatesTimeout() throws InterruptedException {
-        ReadTimeoutHandler readTimeoutHandler = new ReadTimeoutHandler(Duration.ofMillis(500));
+        ReadTimeoutHandler readTimeoutHandler = new ReadTimeoutHandler(500);
 
         ChannelHandlerContext ctx = mock(ChannelHandlerContext.class);
         when(ctx.executor()).thenReturn(new DefaultEventExecutor());

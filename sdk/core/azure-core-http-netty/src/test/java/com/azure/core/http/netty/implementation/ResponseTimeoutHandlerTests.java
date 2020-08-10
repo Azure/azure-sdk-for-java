@@ -8,8 +8,6 @@ import io.netty.util.concurrent.DefaultEventExecutor;
 import io.netty.util.concurrent.EventExecutor;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
@@ -26,7 +24,7 @@ import static org.mockito.internal.verification.VerificationModeFactory.times;
 public class ResponseTimeoutHandlerTests {
     @Test
     public void noTimeoutDoesNotAddWatcher() {
-        ResponseTimeoutHandler responseTimeoutHandler = new ResponseTimeoutHandler(Duration.ZERO);
+        ResponseTimeoutHandler responseTimeoutHandler = new ResponseTimeoutHandler(0);
 
         EventExecutor eventExecutor = mock(EventExecutor.class);
         when(eventExecutor.schedule(any(Runnable.class), anyLong(), any())).thenReturn(null);
@@ -41,7 +39,7 @@ public class ResponseTimeoutHandlerTests {
 
     @Test
     public void timeoutAddsWatcher() {
-        ResponseTimeoutHandler responseTimeoutHandler = new ResponseTimeoutHandler(Duration.ofMillis(1));
+        ResponseTimeoutHandler responseTimeoutHandler = new ResponseTimeoutHandler(1);
 
         EventExecutor eventExecutor = mock(EventExecutor.class);
         when(eventExecutor.schedule(any(Runnable.class), eq(1L), any())).thenReturn(null);
@@ -56,7 +54,7 @@ public class ResponseTimeoutHandlerTests {
 
     @Test
     public void removingHandlerCancelsTimeout() throws InterruptedException {
-        ResponseTimeoutHandler responseTimeoutHandler = new ResponseTimeoutHandler(Duration.ofMillis(100));
+        ResponseTimeoutHandler responseTimeoutHandler = new ResponseTimeoutHandler(100);
 
         ChannelHandlerContext ctx = mock(ChannelHandlerContext.class);
         when(ctx.executor()).thenReturn(new DefaultEventExecutor());
@@ -71,7 +69,7 @@ public class ResponseTimeoutHandlerTests {
 
     @Test
     public void responseTimesOut() throws InterruptedException {
-        ResponseTimeoutHandler responseTimeoutHandler = new ResponseTimeoutHandler(Duration.ofMillis(100));
+        ResponseTimeoutHandler responseTimeoutHandler = new ResponseTimeoutHandler(100);
 
         ChannelHandlerContext ctx = mock(ChannelHandlerContext.class);
         when(ctx.executor()).thenReturn(new DefaultEventExecutor());
