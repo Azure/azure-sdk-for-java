@@ -5,10 +5,11 @@ URL = 'https://repo.maven.apache.org/maven2/{group}/{artifact}/{version}/{artifa
 
 
 class Pom:
-    def __init__(self, group_id, artifact_id, version):
+    def __init__(self, group_id, artifact_id, version, depth):
         self.group_id = group_id
         self.artifact_id = artifact_id
         self.version = version
+        self.depth = depth
 
     def to_url(self):
         return URL.format(

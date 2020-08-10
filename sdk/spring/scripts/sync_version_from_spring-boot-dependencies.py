@@ -48,14 +48,16 @@ def get_dependency_dict():
     pom = Pom(
         'org.springframework.boot',
         'spring-boot-dependencies',
-        spring_boot_version)
+        spring_boot_version,
+        1
+    )
     q = queue.Queue()
     q.put(pom)
     dependency_dict = {}
     while not q.empty():
         pom = q.get()
         pom_url = pom.to_url()
-        log.info('Get dependencies from pom: {}.'.format(pom_url))
+        log.info('Get dependencies from pom: {}, depth = {}.'.format(pom_url, pom.depth))
         tree = elementTree.ElementTree(file = request.urlopen(pom_url))
         project_element = tree.getroot()
         name_space = {'maven': 'http://maven.apache.org/POM/4.0.0'}
@@ -106,9 +108,9 @@ def get_dependency_dict():
                     '    Dependency version skipped. key = {}, value = {}'.format(key, version))
             artifact_type = dependency_element.find('./maven:type', name_space)
             if artifact_type is not None and artifact_type.text.strip() == 'pom':
-                new_pom = Pom(group_id, artifact_id, version)
+                new_pom = Pom(group_id, artifact_id, version, pom.depth + 1)
                 q.put(new_pom)
-                log.debug('Added new pom pom: {}.'.format(new_pom.to_url()))
+                log.debug('Added new pom pom: {}, depth = {}.'.format(new_pom.to_url(), new_pom.depth))
     return dependency_dict
 
 
@@ -190,7 +192,7 @@ def init():
         type = str,
         choices = ['debug', 'info', 'warn', 'error', 'none'],
         required = False,
-        default = 'INFO',
+        default = 'info',
         help = 'Set log level.'
     )
     args = parser.parse_args()
