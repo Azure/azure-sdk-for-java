@@ -6,9 +6,9 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.implementation.Utility;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeOperationResult;
 import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
-import com.azure.ai.formrecognizer.models.BeginRecognizeContentOptions;
-import com.azure.ai.formrecognizer.models.BeginRecognizeCustomFormOptions;
-import com.azure.ai.formrecognizer.models.BeginRecognizeReceiptOptions;
+import com.azure.ai.formrecognizer.models.RecognizeContentOptions;
+import com.azure.ai.formrecognizer.models.RecognizeCustomFormOptions;
+import com.azure.ai.formrecognizer.models.RecognizeReceiptOptions;
 import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.FormRecognizerException;
 import com.azure.ai.formrecognizer.models.OperationResult;
@@ -79,12 +79,12 @@ public final class FormRecognizerClient {
      * error message indicating absence of cancellation support</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomFormsFromUrl#string-string-BeginRecognizeCustomFormOptions-Context}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomFormsFromUrl#string-string-RecognizeCustomFormOptions-Context}
      *
      * @param modelId The UUID string format custom trained model Id to be used.
      * @param formUrl The source URL to the input form.
-     * @param beginRecognizeCustomFormOptions The additional configurable
-     * {@link BeginRecognizeCustomFormOptions options} that may be passed when recognizing custom forms.
+     * @param recognizeCustomFormOptions The additional configurable
+     * {@link RecognizeCustomFormOptions options} that may be passed when recognizing custom forms.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return A {@link SyncPoller} to poll the progress of the recognize custom form operation until it has completed,
@@ -96,9 +96,9 @@ public final class FormRecognizerClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<RecognizedForm>>
         beginRecognizeCustomFormsFromUrl(String modelId, String formUrl,
-        BeginRecognizeCustomFormOptions beginRecognizeCustomFormOptions, Context context) {
+        RecognizeCustomFormOptions recognizeCustomFormOptions, Context context) {
         return client.beginRecognizeCustomFormsFromUrl(formUrl, modelId,
-            beginRecognizeCustomFormOptions, context).getSyncPoller();
+            recognizeCustomFormOptions, context).getSyncPoller();
     }
 
     /**
@@ -134,13 +134,13 @@ public final class FormRecognizerClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomForms#string-InputStream-long-BeginRecognizeCustomFormOptions-Context}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomForms#string-InputStream-long-RecognizeCustomFormOptions-Context}
      *
      * @param modelId The UUID string format custom trained model Id to be used.
      * @param form The data of the form to recognize form information from.
      * @param length The exact length of the data.
-     * @param beginRecognizeCustomFormOptions The additional configurable
-     * {@link BeginRecognizeCustomFormOptions options} that may be passed when recognizing custom forms.
+     * @param recognizeCustomFormOptions The additional configurable
+     * {@link RecognizeCustomFormOptions options} that may be passed when recognizing custom forms.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return A {@link SyncPoller} that polls the recognize custom form operation until it has completed,
@@ -152,10 +152,10 @@ public final class FormRecognizerClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<RecognizedForm>>
         beginRecognizeCustomForms(String modelId, InputStream form, long length,
-        BeginRecognizeCustomFormOptions beginRecognizeCustomFormOptions, Context context) {
+        RecognizeCustomFormOptions recognizeCustomFormOptions, Context context) {
         Flux<ByteBuffer> buffer = Utility.toFluxByteBuffer(form);
         return client.beginRecognizeCustomForms(modelId, buffer, length,
-            beginRecognizeCustomFormOptions, context).getSyncPoller();
+            recognizeCustomFormOptions, context).getSyncPoller();
     }
 
     /**
@@ -185,10 +185,10 @@ public final class FormRecognizerClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContentFromUrl#string-BeginRecognizeContentOptions-Context}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContentFromUrl#string-RecognizeContentOptions-Context}
      *
      * @param formUrl The source URL to the input form.
-     * @param beginRecognizeContentOptions The additional configurable {@link BeginRecognizeContentOptions options}
+     * @param recognizeContentOptions The additional configurable {@link RecognizeContentOptions options}
      * that may be passed when recognizing content/layout on a form.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
@@ -201,8 +201,8 @@ public final class FormRecognizerClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<FormPage>>
         beginRecognizeContentFromUrl(String formUrl,
-        BeginRecognizeContentOptions beginRecognizeContentOptions, Context context) {
-        return client.beginRecognizeContentFromUrl(formUrl, beginRecognizeContentOptions, context).getSyncPoller();
+        RecognizeContentOptions recognizeContentOptions, Context context) {
+        return client.beginRecognizeContentFromUrl(formUrl, recognizeContentOptions, context).getSyncPoller();
     }
 
     /**
@@ -234,11 +234,11 @@ public final class FormRecognizerClient {
      * error message indicating absence of cancellation support</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContent#InputStream-long-BeginRecognizeContentOptions-Context}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContent#InputStream-long-RecognizeContentOptions-Context}
      *
      *  @param form The data of the form to recognize content information from.
      * @param length The exact length of the data.
-     * @param beginRecognizeContentOptions The additional configurable {@link BeginRecognizeContentOptions options}
+     * @param recognizeContentOptions The additional configurable {@link RecognizeContentOptions options}
      * that may be passed when recognizing content/layout on a form.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
@@ -250,9 +250,9 @@ public final class FormRecognizerClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<FormPage>> beginRecognizeContent(InputStream form, long length,
-        BeginRecognizeContentOptions beginRecognizeContentOptions, Context context) {
+        RecognizeContentOptions recognizeContentOptions, Context context) {
         Flux<ByteBuffer> buffer = Utility.toFluxByteBuffer(form);
-        return client.beginRecognizeContent(buffer, length, beginRecognizeContentOptions, context).getSyncPoller();
+        return client.beginRecognizeContent(buffer, length, recognizeContentOptions, context).getSyncPoller();
     }
 
     /**
@@ -285,10 +285,10 @@ public final class FormRecognizerClient {
      * error message indicating absence of cancellation support</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceiptsFromUrl#string-BeginRecognizeReceiptOptions-Context}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceiptsFromUrl#string-RecognizeReceiptOptions-Context}
      *
      * @param receiptUrl The source URL to the input receipt.
-     * @param beginRecognizeReceiptOptions The additional configurable {@link BeginRecognizeReceiptOptions options}
+     * @param recognizeReceiptOptions The additional configurable {@link RecognizeReceiptOptions options}
      * that may be passed when analyzing a receipt.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
@@ -301,8 +301,8 @@ public final class FormRecognizerClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<RecognizedForm>>
         beginRecognizeReceiptsFromUrl(String receiptUrl,
-        BeginRecognizeReceiptOptions beginRecognizeReceiptOptions, Context context) {
-        return client.beginRecognizeReceiptsFromUrl(receiptUrl, beginRecognizeReceiptOptions, context).getSyncPoller();
+        RecognizeReceiptOptions recognizeReceiptOptions, Context context) {
+        return client.beginRecognizeReceiptsFromUrl(receiptUrl, recognizeReceiptOptions, context).getSyncPoller();
     }
 
     /**
@@ -338,11 +338,11 @@ public final class FormRecognizerClient {
      * See <a href="https://aka.ms/formrecognizer/receiptfields">here</a> for fields found on a receipt.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceipts#InputStream-long-BeginRecognizeReceiptOptions-Context}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceipts#InputStream-long-RecognizeReceiptOptions-Context}
      *
      * @param receipt The data of the receipt to recognize receipt information from.
      * @param length The exact length of the data.
-     * @param beginRecognizeReceiptOptions The additional configurable {@link BeginRecognizeReceiptOptions options}
+     * @param recognizeReceiptOptions The additional configurable {@link RecognizeReceiptOptions options}
      * that may be passed when analyzing a receipt.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
@@ -355,8 +355,8 @@ public final class FormRecognizerClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<RecognizedForm>>
         beginRecognizeReceipts(InputStream receipt, long length,
-        BeginRecognizeReceiptOptions beginRecognizeReceiptOptions, Context context) {
+        RecognizeReceiptOptions recognizeReceiptOptions, Context context) {
         Flux<ByteBuffer> buffer = Utility.toFluxByteBuffer(receipt);
-        return client.beginRecognizeReceipts(buffer, length, beginRecognizeReceiptOptions, context).getSyncPoller();
+        return client.beginRecognizeReceipts(buffer, length, recognizeReceiptOptions, context).getSyncPoller();
     }
 }

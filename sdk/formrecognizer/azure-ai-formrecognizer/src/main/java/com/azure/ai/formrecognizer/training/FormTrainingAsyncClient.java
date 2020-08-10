@@ -20,11 +20,11 @@ import com.azure.ai.formrecognizer.models.ErrorInformation;
 import com.azure.ai.formrecognizer.models.FormRecognizerException;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.training.models.AccountProperties;
+import com.azure.ai.formrecognizer.training.models.TrainingOptions;
 import com.azure.ai.formrecognizer.training.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.training.models.CustomFormModel;
 import com.azure.ai.formrecognizer.training.models.CustomFormModelInfo;
 import com.azure.ai.formrecognizer.training.models.CustomFormModelStatus;
-import com.azure.ai.formrecognizer.training.models.TrainingFileFilter;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -142,7 +142,7 @@ public final class FormTrainingAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<OperationResult, CustomFormModel> beginTraining(String trainingFilesUrl,
         boolean useTrainingLabels) {
-        return beginTraining(trainingFilesUrl, useTrainingLabels, null, null);
+        return beginTraining(trainingFilesUrl, useTrainingLabels, null);
     }
 
     /**
@@ -156,14 +156,13 @@ public final class FormTrainingAsyncClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginTraining#string-boolean-trainingFileFilter-Duration}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginTraining#string-boolean-TrainingOptions}
      *
      * @param trainingFilesUrl an externally accessible Azure storage blob container Uri (preferably a
      * Shared Access Signature Uri).
      * @param useTrainingLabels boolean to specify the use of labeled files for training the model.
-     * @param trainingFileFilter Filter to apply to the documents in the source path for training.
-     * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
-     * 5 seconds is used.
+     * @param trainingOptions The additional configurable {@link TrainingOptions options}
+     * that may be passed when training a model.
      *
      * @return A {@link PollerFlux} that polls the training model operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns the trained {@link CustomFormModel custom form model}.
@@ -172,18 +171,22 @@ public final class FormTrainingAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<OperationResult, CustomFormModel> beginTraining(String trainingFilesUrl,
-        boolean useTrainingLabels, TrainingFileFilter trainingFileFilter, Duration pollInterval) {
-        return beginTraining(trainingFilesUrl, useTrainingLabels, trainingFileFilter, pollInterval, Context.NONE);
+        boolean useTrainingLabels, TrainingOptions trainingOptions) {
+        return beginTraining(trainingFilesUrl, useTrainingLabels, trainingOptions,
+            Context.NONE);
     }
 
     PollerFlux<OperationResult, CustomFormModel> beginTraining(String trainingFilesUrl,
-        boolean useTrainingLabels, TrainingFileFilter trainingFileFilter, Duration pollInterval, Context context) {
-        final Duration interval = pollInterval != null ? pollInterval : DEFAULT_DURATION;
+        boolean useTrainingLabels,
+        TrainingOptions trainingOptions, Context context) {
+        trainingOptions =  trainingOptions == null ? new TrainingOptions() : trainingOptions;
         return new PollerFlux<OperationResult, CustomFormModel>(
-            interval,
+            trainingOptions.getPollInterval(),
             getTrainingActivationOperation(trainingFilesUrl,
-                trainingFileFilter != null ? trainingFileFilter.isSubfoldersIncluded() : false,
-                trainingFileFilter != null ? trainingFileFilter.getPrefix() : null,
+                trainingOptions.getTrainingFileFilter() != null
+                    ? trainingOptions.getTrainingFileFilter().isSubfoldersIncluded() : false,
+                trainingOptions.getTrainingFileFilter() != null
+                    ? trainingOptions.getTrainingFileFilter().getPrefix() : null,
                 useTrainingLabels, context),
             createTrainingPollOperation(context),
             (activationResponse, pollingContext) -> Mono.error(new RuntimeException("Cancellation is not supported")),

@@ -9,14 +9,14 @@ import com.azure.ai.formrecognizer.implementation.models.AnalyzeOperationResult;
 import com.azure.ai.formrecognizer.implementation.models.ContentType;
 import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
 import com.azure.ai.formrecognizer.implementation.models.SourcePath;
-import com.azure.ai.formrecognizer.models.BeginRecognizeContentOptions;
-import com.azure.ai.formrecognizer.models.BeginRecognizeReceiptOptions;
+import com.azure.ai.formrecognizer.models.RecognizeContentOptions;
+import com.azure.ai.formrecognizer.models.RecognizeReceiptOptions;
 import com.azure.ai.formrecognizer.models.ErrorInformation;
 import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.FormRecognizerException;
 import com.azure.ai.formrecognizer.models.OperationResult;
-import com.azure.ai.formrecognizer.models.BeginRecognizeCustomFormOptions;
+import com.azure.ai.formrecognizer.models.RecognizeCustomFormOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -105,12 +105,12 @@ public final class FormRecognizerAsyncClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl#string-string-BeginRecognizeCustomFormOptions}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl#string-string-RecognizeCustomFormOptions}
      *
      * @param modelId The UUID string format custom trained model Id to be used.
      * @param formUrl The source URL to the input form.
-     * @param beginRecognizeCustomFormOptions The additional configurable
-     * {@link BeginRecognizeCustomFormOptions options} that may be passed when recognizing custom forms.
+     * @param recognizeCustomFormOptions The additional configurable
+     * {@link RecognizeCustomFormOptions options} that may be passed when recognizing custom forms.
      *
      * @return A {@link PollerFlux} that polls the recognize custom form operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
@@ -121,22 +121,22 @@ public final class FormRecognizerAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedForm>>
         beginRecognizeCustomFormsFromUrl(String modelId, String formUrl,
-        BeginRecognizeCustomFormOptions beginRecognizeCustomFormOptions) {
-        return beginRecognizeCustomFormsFromUrl(formUrl, modelId, beginRecognizeCustomFormOptions, Context.NONE);
+        RecognizeCustomFormOptions recognizeCustomFormOptions) {
+        return beginRecognizeCustomFormsFromUrl(formUrl, modelId, recognizeCustomFormOptions, Context.NONE);
     }
 
     PollerFlux<OperationResult, List<RecognizedForm>>
         beginRecognizeCustomFormsFromUrl(String formUrl, String modelId,
-        BeginRecognizeCustomFormOptions beginRecognizeCustomFormOptions,
+        RecognizeCustomFormOptions recognizeCustomFormOptions,
         Context context) {
         try {
             Objects.requireNonNull(formUrl, "'formUrl' is required and cannot be null.");
             Objects.requireNonNull(modelId, "'modelId' is required and cannot be null.");
 
-            beginRecognizeCustomFormOptions = getBeginRecognizeCustomFormOptions(beginRecognizeCustomFormOptions);
-            final boolean isFieldElementsIncluded = beginRecognizeCustomFormOptions.isFieldElementsIncluded();
+            recognizeCustomFormOptions = getRecognizeCustomFormOptions(recognizeCustomFormOptions);
+            final boolean isFieldElementsIncluded = recognizeCustomFormOptions.isFieldElementsIncluded();
             return new PollerFlux<>(
-                beginRecognizeCustomFormOptions.getPollInterval(),
+                recognizeCustomFormOptions.getPollInterval(),
                 urlActivationOperation(() -> service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId),
                     isFieldElementsIncluded, new SourcePath().setSource(formUrl), context).map(response ->
                         new OperationResult(parseModelId(response.getDeserializedHeaders().getOperationLocation())))),
@@ -192,13 +192,13 @@ public final class FormRecognizerAsyncClient {
      * {@code Flux} must produce the same data each time it is subscribed to.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#string-Flux-long-BeginRecognizeCustomFormOptions}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#string-Flux-long-RecognizeCustomFormOptions}
      *
      * @param modelId The UUID string format custom trained model Id to be used.
      * @param form The data of the form to recognize form information from.
      * @param length The exact length of the data.
-     * @param beginRecognizeCustomFormOptions The additional configurable
-     * {@link BeginRecognizeCustomFormOptions options} that may be passed when recognizing custom forms.
+     * @param recognizeCustomFormOptions The additional configurable
+     * {@link RecognizeCustomFormOptions options} that may be passed when recognizing custom forms.
      *
      * @return A {@link PollerFlux} that polls the recognize custom form operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
@@ -209,26 +209,26 @@ public final class FormRecognizerAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedForm>>
         beginRecognizeCustomForms(String modelId, Flux<ByteBuffer> form, long length,
-        BeginRecognizeCustomFormOptions beginRecognizeCustomFormOptions) {
-        return beginRecognizeCustomForms(modelId, form, length, beginRecognizeCustomFormOptions, Context.NONE);
+        RecognizeCustomFormOptions recognizeCustomFormOptions) {
+        return beginRecognizeCustomForms(modelId, form, length, recognizeCustomFormOptions, Context.NONE);
     }
 
     PollerFlux<OperationResult, List<RecognizedForm>>
         beginRecognizeCustomForms(String modelId, Flux<ByteBuffer> form, long length,
-        BeginRecognizeCustomFormOptions beginRecognizeCustomFormOptions, Context context) {
+        RecognizeCustomFormOptions recognizeCustomFormOptions, Context context) {
         try {
             Objects.requireNonNull(form, "'form' is required and cannot be null.");
             Objects.requireNonNull(modelId, "'modelId' is required and cannot be null.");
 
-            beginRecognizeCustomFormOptions = getBeginRecognizeCustomFormOptions(beginRecognizeCustomFormOptions);
-            final boolean isFieldElementsIncluded = beginRecognizeCustomFormOptions.isFieldElementsIncluded();
+            recognizeCustomFormOptions = getRecognizeCustomFormOptions(recognizeCustomFormOptions);
+            final boolean isFieldElementsIncluded = recognizeCustomFormOptions.isFieldElementsIncluded();
             return new PollerFlux<>(
-                beginRecognizeCustomFormOptions.getPollInterval(),
+                recognizeCustomFormOptions.getPollInterval(),
                 streamActivationOperation(
                     contentType -> service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId),
                         contentType, form, length, isFieldElementsIncluded, context).map(response ->
                         new OperationResult(parseModelId(response.getDeserializedHeaders().getOperationLocation()))),
-                    form, beginRecognizeCustomFormOptions.getContentType()),
+                    form, recognizeCustomFormOptions.getContentType()),
                 pollingOperation(
                     resultUuid -> service.getAnalyzeFormResultWithResponseAsync(
                         UUID.fromString(modelId), resultUuid, context)),
@@ -272,10 +272,10 @@ public final class FormRecognizerAsyncClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContentFromUrl#string-BeginRecognizeContentOptions}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContentFromUrl#string-RecognizeContentOptions}
      *
      * @param formUrl The source URL to the input form.
-     * @param beginRecognizeContentOptions The additional configurable {@link BeginRecognizeContentOptions options}
+     * @param recognizeContentOptions The additional configurable {@link RecognizeContentOptions options}
      * that may be passed when recognizing content/layout on a form.
      *
      * @return A {@link PollerFlux} that polls the recognized content/layout operation until it has completed,
@@ -286,19 +286,19 @@ public final class FormRecognizerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<FormPage>>
-        beginRecognizeContentFromUrl(String formUrl, BeginRecognizeContentOptions beginRecognizeContentOptions) {
-        return beginRecognizeContentFromUrl(formUrl, beginRecognizeContentOptions, Context.NONE);
+        beginRecognizeContentFromUrl(String formUrl, RecognizeContentOptions recognizeContentOptions) {
+        return beginRecognizeContentFromUrl(formUrl, recognizeContentOptions, Context.NONE);
     }
 
     PollerFlux<OperationResult, List<FormPage>>
         beginRecognizeContentFromUrl(String formUrl,
-        BeginRecognizeContentOptions beginRecognizeContentOptions, Context context) {
+        RecognizeContentOptions recognizeContentOptions, Context context) {
         try {
             Objects.requireNonNull(formUrl, "'formUrl' is required and cannot be null.");
 
-            beginRecognizeContentOptions = getBeginRecognizeContentOptions(beginRecognizeContentOptions);
+            recognizeContentOptions = getRecognizeContentOptions(recognizeContentOptions);
             return new PollerFlux<>(
-                beginRecognizeContentOptions.getPollInterval(),
+                recognizeContentOptions.getPollInterval(),
                 urlActivationOperation(
                     () -> service.analyzeLayoutAsyncWithResponseAsync(new SourcePath().setSource(formUrl), context)
                         .map(response -> new OperationResult(
@@ -350,11 +350,11 @@ public final class FormRecognizerAsyncClient {
      * {@code Flux} must produce the same data each time it is subscribed to.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContent#Flux-long-BeginRecognizeContentOptions}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContent#Flux-long-RecognizeContentOptions}
      *
      * @param form The data of the form to recognize content information from.
      * @param length The exact length of the data.
-     * @param beginRecognizeContentOptions The additional configurable {@link BeginRecognizeContentOptions options}
+     * @param recognizeContentOptions The additional configurable {@link RecognizeContentOptions options}
      * that may be passed when recognizing content/layout on a form.
      *
      * @return A {@link PollerFlux} polls the recognize content operation until it has completed, has failed, or has
@@ -365,22 +365,22 @@ public final class FormRecognizerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<FormPage>> beginRecognizeContent(Flux<ByteBuffer> form, long length,
-        BeginRecognizeContentOptions beginRecognizeContentOptions) {
-        return beginRecognizeContent(form, length, beginRecognizeContentOptions, Context.NONE);
+        RecognizeContentOptions recognizeContentOptions) {
+        return beginRecognizeContent(form, length, recognizeContentOptions, Context.NONE);
     }
 
     PollerFlux<OperationResult, List<FormPage>> beginRecognizeContent(Flux<ByteBuffer> form, long length,
-        BeginRecognizeContentOptions beginRecognizeContentOptions, Context context) {
+        RecognizeContentOptions recognizeContentOptions, Context context) {
         try {
             Objects.requireNonNull(form, "'form' is required and cannot be null.");
-            beginRecognizeContentOptions = getBeginRecognizeContentOptions(beginRecognizeContentOptions);
+            recognizeContentOptions = getRecognizeContentOptions(recognizeContentOptions);
             return new PollerFlux<>(
-                beginRecognizeContentOptions.getPollInterval(),
+                recognizeContentOptions.getPollInterval(),
                 streamActivationOperation(
                     contentType -> service.analyzeLayoutAsyncWithResponseAsync(contentType, form, length, context)
                         .map(response -> new OperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation()))),
-                    form, beginRecognizeContentOptions.getContentType()),
+                    form, recognizeContentOptions.getContentType()),
                 pollingOperation(resultId -> service.getAnalyzeLayoutResultWithResponseAsync(resultId, context)),
                 (activationResponse, pollingContext) ->
                     monoError(logger, new RuntimeException("Cancellation is not supported")),
@@ -424,10 +424,10 @@ public final class FormRecognizerAsyncClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceiptsFromUrl#string-BeginRecognizeReceiptOptions}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceiptsFromUrl#string-RecognizeReceiptOptions}
      *
      * @param receiptUrl The source URL to the input receipt.
-     * @param beginRecognizeReceiptOptions The additional configurable {@link BeginRecognizeReceiptOptions options}
+     * @param recognizeReceiptOptions The additional configurable {@link RecognizeReceiptOptions options}
      * that may be passed when analyzing a receipt.
      *
      * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
@@ -438,20 +438,20 @@ public final class FormRecognizerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedForm>>
-        beginRecognizeReceiptsFromUrl(String receiptUrl, BeginRecognizeReceiptOptions beginRecognizeReceiptOptions) {
-        return beginRecognizeReceiptsFromUrl(receiptUrl, beginRecognizeReceiptOptions, Context.NONE);
+        beginRecognizeReceiptsFromUrl(String receiptUrl, RecognizeReceiptOptions recognizeReceiptOptions) {
+        return beginRecognizeReceiptsFromUrl(receiptUrl, recognizeReceiptOptions, Context.NONE);
     }
 
     PollerFlux<OperationResult, List<RecognizedForm>>
         beginRecognizeReceiptsFromUrl(String receiptUrl,
-        BeginRecognizeReceiptOptions beginRecognizeReceiptOptions, Context context) {
+        RecognizeReceiptOptions recognizeReceiptOptions, Context context) {
         try {
             Objects.requireNonNull(receiptUrl, "'receiptUrl' is required and cannot be null.");
 
-            beginRecognizeReceiptOptions = getBeginRecognizeReceiptOptions(beginRecognizeReceiptOptions);
-            final boolean isFieldElementsIncluded = beginRecognizeReceiptOptions.isFieldElementsIncluded();
+            recognizeReceiptOptions = getRecognizeReceiptOptions(recognizeReceiptOptions);
+            final boolean isFieldElementsIncluded = recognizeReceiptOptions.isFieldElementsIncluded();
             return new PollerFlux<>(
-                beginRecognizeReceiptOptions.getPollInterval(),
+                recognizeReceiptOptions.getPollInterval(),
                 urlActivationOperation(
                     () -> service.analyzeReceiptAsyncWithResponseAsync(isFieldElementsIncluded,
                         new SourcePath().setSource(receiptUrl), context)
@@ -508,11 +508,11 @@ public final class FormRecognizerAsyncClient {
      * {@code Flux} must produce the same data each time it is subscribed to.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceipts#Flux-long-BeginRecognizeReceiptOptions}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceipts#Flux-long-RecognizeReceiptOptions}
      *
      * @param receipt The data of the document to recognize receipt information from.
      * @param length The exact length of the data.
-     * @param beginRecognizeReceiptOptions The additional configurable {@link BeginRecognizeReceiptOptions options}
+     * @param recognizeReceiptOptions The additional configurable {@link RecognizeReceiptOptions options}
      * that may be passed when analyzing a receipt.
      *
      * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
@@ -524,25 +524,25 @@ public final class FormRecognizerAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedForm>>
         beginRecognizeReceipts(Flux<ByteBuffer> receipt, long length,
-        BeginRecognizeReceiptOptions beginRecognizeReceiptOptions) {
-        return beginRecognizeReceipts(receipt, length, beginRecognizeReceiptOptions, Context.NONE);
+        RecognizeReceiptOptions recognizeReceiptOptions) {
+        return beginRecognizeReceipts(receipt, length, recognizeReceiptOptions, Context.NONE);
     }
 
     PollerFlux<OperationResult, List<RecognizedForm>>
         beginRecognizeReceipts(Flux<ByteBuffer> receipt, long length,
-        BeginRecognizeReceiptOptions beginRecognizeReceiptOptions,
+        RecognizeReceiptOptions recognizeReceiptOptions,
         Context context) {
         try {
             Objects.requireNonNull(receipt, "'receipt' is required and cannot be null.");
-            beginRecognizeReceiptOptions = getBeginRecognizeReceiptOptions(beginRecognizeReceiptOptions);
-            final boolean isFieldElementsIncluded = beginRecognizeReceiptOptions.isFieldElementsIncluded();
+            recognizeReceiptOptions = getRecognizeReceiptOptions(recognizeReceiptOptions);
+            final boolean isFieldElementsIncluded = recognizeReceiptOptions.isFieldElementsIncluded();
             return new PollerFlux<>(
-                beginRecognizeReceiptOptions.getPollInterval(),
+                recognizeReceiptOptions.getPollInterval(),
                 streamActivationOperation(
                     (contentType -> service.analyzeReceiptAsyncWithResponseAsync(
                         contentType, receipt, length, isFieldElementsIncluded, context).map(response ->
                         new OperationResult(parseModelId(response.getDeserializedHeaders().getOperationLocation())))),
-                    receipt, beginRecognizeReceiptOptions.getContentType()),
+                    receipt, recognizeReceiptOptions.getContentType()),
                 pollingOperation(resultId -> service.getAnalyzeReceiptResultWithResponseAsync(resultId, context)),
                 (activationResponse, pollingContext) -> monoError(logger,
                     new RuntimeException("Cancellation is not supported")),
@@ -652,18 +652,18 @@ public final class FormRecognizerAsyncClient {
         return Mono.just(new PollResponse<>(status, operationResultPollResponse.getValue()));
     }
 
-    private static BeginRecognizeCustomFormOptions
-        getBeginRecognizeCustomFormOptions(BeginRecognizeCustomFormOptions userProvidedOptions) {
-        return userProvidedOptions == null ? new BeginRecognizeCustomFormOptions() : userProvidedOptions;
+    private static RecognizeCustomFormOptions
+        getRecognizeCustomFormOptions(RecognizeCustomFormOptions userProvidedOptions) {
+        return userProvidedOptions == null ? new RecognizeCustomFormOptions() : userProvidedOptions;
     }
 
-    private BeginRecognizeContentOptions
-        getBeginRecognizeContentOptions(BeginRecognizeContentOptions userProvidedOptions) {
-        return userProvidedOptions == null ? new BeginRecognizeContentOptions() : userProvidedOptions;
+    private RecognizeContentOptions
+        getRecognizeContentOptions(RecognizeContentOptions userProvidedOptions) {
+        return userProvidedOptions == null ? new RecognizeContentOptions() : userProvidedOptions;
     }
 
-    private BeginRecognizeReceiptOptions
-        getBeginRecognizeReceiptOptions(BeginRecognizeReceiptOptions userProvidedOptions) {
-        return userProvidedOptions == null ? new BeginRecognizeReceiptOptions() : userProvidedOptions;
+    private RecognizeReceiptOptions
+        getRecognizeReceiptOptions(RecognizeReceiptOptions userProvidedOptions) {
+        return userProvidedOptions == null ? new RecognizeReceiptOptions() : userProvidedOptions;
     }
 }

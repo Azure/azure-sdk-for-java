@@ -7,12 +7,11 @@ import com.azure.core.annotation.Fluent;
 import java.time.Duration;
 
 /**
- * Options that may be passed when using recognize custom form APIs on Form Recognizer client.
+ * Options that may be passed when using recognize content APIs on Form Recognizer client.
  */
 @Fluent
-public class BeginRecognizeCustomFormOptions {
+public class RecognizeContentOptions {
     private FormContentType contentType;
-    private boolean includeFieldElements;
     private Duration pollInterval = DEFAULT_POLL_INTERVAL;
     private static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(5);
 
@@ -23,15 +22,6 @@ public class BeginRecognizeCustomFormOptions {
      */
     public FormContentType getContentType() {
         return contentType;
-    }
-
-    /**
-     * Get the boolean which specifies if to include form element references in the result.
-     *
-     * @return the {@code includeFieldElements} value.
-     */
-    public boolean isFieldElementsIncluded() {
-        return includeFieldElements;
     }
 
     /**
@@ -49,22 +39,10 @@ public class BeginRecognizeCustomFormOptions {
      *
      * @param contentType the provided form content type.
      *
-     * @return the updated {@code BeginRecognizeCustomFormOptions} value.
+     * @return the updated {@code RecognizeContentOptions} value.
      */
-    public BeginRecognizeCustomFormOptions setContentType(final FormContentType contentType) {
+    public RecognizeContentOptions setContentType(final FormContentType contentType) {
         this.contentType = contentType;
-        return this;
-    }
-
-    /**
-     * Set the boolean which specifies if to include form element references in the result.
-     *
-     * @param includeFieldElements the boolean to specify if to include form element references in the result.
-     *
-     * @return the updated {@code BeginRecognizeCustomFormOptions} value.
-     */
-    public BeginRecognizeCustomFormOptions setFieldElementsIncluded(final boolean includeFieldElements) {
-        this.includeFieldElements = includeFieldElements;
         return this;
     }
 
@@ -74,9 +52,9 @@ public class BeginRecognizeCustomFormOptions {
      *
      * @param pollInterval the duration to specify between each poll for the operation status.
      *
-     * @return the updated {@code BeginRecognizeCustomFormOptions} value.
+     * @return the updated {@code RecognizeContentOptions} value.
      */
-    public BeginRecognizeCustomFormOptions setPollInterval(final Duration pollInterval) {
+    public RecognizeContentOptions setPollInterval(final Duration pollInterval) {
         this.pollInterval = pollInterval == null ? DEFAULT_POLL_INTERVAL : pollInterval;
         return this;
     }

@@ -7,11 +7,12 @@ import com.azure.core.annotation.Fluent;
 import java.time.Duration;
 
 /**
- * Options that may be passed when using recognize content APIs on Form Recognizer client.
+ * Options that may be passed when using recognize receipt APIs on Form Recognizer client.
  */
 @Fluent
-public class BeginRecognizeContentOptions {
+public class RecognizeReceiptOptions {
     private FormContentType contentType;
+    private boolean includeFieldElements;
     private Duration pollInterval = DEFAULT_POLL_INTERVAL;
     private static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(5);
 
@@ -22,6 +23,15 @@ public class BeginRecognizeContentOptions {
      */
     public FormContentType getContentType() {
         return contentType;
+    }
+
+    /**
+     * Get the boolean which specifies if to include form element references in the result.
+     *
+     * @return the {@code includeFieldElements} value.
+     */
+    public boolean isFieldElementsIncluded() {
+        return includeFieldElements;
     }
 
     /**
@@ -39,10 +49,22 @@ public class BeginRecognizeContentOptions {
      *
      * @param contentType the provided form content type.
      *
-     * @return the updated {@code BeginRecognizeContentOptions} value.
+     * @return the updated {@code RecognizeReceiptOptions} value.
      */
-    public BeginRecognizeContentOptions setContentType(final FormContentType contentType) {
+    public RecognizeReceiptOptions setContentType(final FormContentType contentType) {
         this.contentType = contentType;
+        return this;
+    }
+
+    /**
+     * Set the boolean which specifies if to include form element references in the result.
+     *
+     * @param includeFieldElements the boolean to specify if to include form element references in the result.
+     *
+     * @return the updated {@code RecognizeReceiptOptions} value.
+     */
+    public RecognizeReceiptOptions setFieldElementsIncluded(final boolean includeFieldElements) {
+        this.includeFieldElements = includeFieldElements;
         return this;
     }
 
@@ -52,9 +74,9 @@ public class BeginRecognizeContentOptions {
      *
      * @param pollInterval the duration to specify between each poll for the operation status.
      *
-     * @return the updated {@code BeginRecognizeContentOptions} value.
+     * @return the updated {@code RecognizeReceiptOptions} value.
      */
-    public BeginRecognizeContentOptions setPollInterval(final Duration pollInterval) {
+    public RecognizeReceiptOptions setPollInterval(final Duration pollInterval) {
         this.pollInterval = pollInterval == null ? DEFAULT_POLL_INTERVAL : pollInterval;
         return this;
     }
