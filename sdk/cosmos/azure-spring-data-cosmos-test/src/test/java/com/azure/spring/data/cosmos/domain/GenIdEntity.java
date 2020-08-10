@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.spring.data.cosmos.domain;
 
 import com.azure.spring.data.cosmos.core.mapping.GeneratedValue;
@@ -13,7 +15,8 @@ public class GenIdEntity {
 
     private String foo;
 
-    public GenIdEntity() {}
+    public GenIdEntity() {
+    }
 
     public GenIdEntity(String id, String foo) {
         this.id = id;
@@ -38,10 +41,12 @@ public class GenIdEntity {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o)
+        if (this == o) {
             return true;
-        if (o == null || getClass() != o.getClass())
+        }
+        if (o == null || getClass() != o.getClass()) {
             return false;
+        }
         GenIdEntity that = (GenIdEntity) o;
         return Objects.equals(id, that.id) && Objects.equals(foo, that.foo);
     }
@@ -53,13 +58,13 @@ public class GenIdEntity {
 
     @Override
     public String toString() {
-        return "GenIdEntity{" +
-            "id='" +
-            id +
-            '\'' +
-            ", foo='" +
-            foo +
-            '\'' +
-            '}';
+        return "GenIdEntity{"
+            + "id='"
+            + id
+            + '\''
+            + ", foo='"
+            + foo
+            + '\''
+            + '}';
     }
 }
