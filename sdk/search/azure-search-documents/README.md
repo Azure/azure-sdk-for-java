@@ -21,7 +21,7 @@ The Azure Cognitive Search service is well suited for the following
 * In a search client application, implement query logic and user experiences
   similar to commercial web search engines.
 
-Use the Azure Search client library to:
+Use the Azure Cognitive Search client library to:
 
 * Submit queries for simple and advanced query forms that include fuzzy
   search, wildcard search, regular expressions.
@@ -330,63 +330,72 @@ SearchPagedIterable searchResultsIterable = searchClient.search("luxury", option
 
 ### Creating an index
 
-You can use the [`SearchIndexClient`](#Create-a-SearchIndexClient) to create a search index. Fields can be
-defined using convenient `SimpleField`, `SearchableField`, or `ComplexField`
-classes. Indexes can also define suggesters, lexical analyzers, and more.
+You can use the [`SearchIndexClient`](#Create-a-SearchIndexClient) to create a search index.
+ Indexes can also define suggesters, lexical analyzers, and more.
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L221-L271 -->
+There are multiple ways of preparing search fields for search index. For basic needs, we provide a static helper method
+`buildSearchFields` in `SearchIndexClient` and `SearchIndexAsyncClient`, which can convert Java POJO class into `List<SearchField>`.
+There are three annotations `SimpleFieldProperty`, `SearchFieldProperty` and `FieldIgnore` to config the field of model class.
+
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L274-L275 -->
+```java
+List<SearchField> searchFields = SearchIndexClient.buildSearchFields(Hotel.class, null);
+searchIndexClient.createIndex(new SearchIndex("index", searchFields));
+```
+
+For advanced scenarios, we can build search fields using `SearchField` directly.
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L221-L270 -->
 ```Java
-    List<SearchField> searchFieldList = new ArrayList<>();
-    searchFieldList.add(new SearchField("hotelId", SearchFieldDataType.STRING)
-        .setKey(true)
-        .setFilterable(true)
-        .setSortable(true));
+List<SearchField> searchFieldList = new ArrayList<>();
+searchFieldList.add(new SearchField("hotelId", SearchFieldDataType.STRING)
+    .setKey(true)
+    .setFilterable(true)
+    .setSortable(true));
 
-    searchFieldList.add(new SearchField("hotelName", SearchFieldDataType.STRING)
-        .setSearchable(true)
-        .setFilterable(true)
-        .setSortable(true));
-    searchFieldList.add(new SearchField("description", SearchFieldDataType.STRING)
-        .setSearchable(true)
-        .setAnalyzerName(LexicalAnalyzerName.EU_LUCENE));
-    searchFieldList.add(new SearchField("tags", SearchFieldDataType.collection(SearchFieldDataType.STRING))
-        .setSearchable(true)
-        .setKey(true)
-        .setFilterable(true)
-        .setFacetable(true));
-    searchFieldList.add(new SearchField("address", SearchFieldDataType.COMPLEX)
-        .setFields(Arrays.asList(
-            new SearchField("streetAddress", SearchFieldDataType.STRING).setSearchable(true),
-            new SearchField("city", SearchFieldDataType.STRING)
-                .setSearchable(true)
-                .setFilterable(true)
-                .setFacetable(true)
-                .setSortable(true),
-            new SearchField("stateProvince", SearchFieldDataType.STRING)
-                .setSearchable(true)
-                .setFilterable(true)
-                .setFacetable(true)
-                .setSortable(true),
-            new SearchField("country", SearchFieldDataType.STRING)
-                .setSearchable(true)
-                .setFilterable(true)
-                .setFacetable(true)
-                .setSortable(true),
-            new SearchField("postalCode", SearchFieldDataType.STRING)
-                .setSearchable(true)
-                .setFilterable(true)
-                .setFacetable(true)
-                .setSortable(true)
-        )));
+searchFieldList.add(new SearchField("hotelName", SearchFieldDataType.STRING)
+    .setSearchable(true)
+    .setFilterable(true)
+    .setSortable(true));
+searchFieldList.add(new SearchField("description", SearchFieldDataType.STRING)
+    .setSearchable(true)
+    .setAnalyzerName(LexicalAnalyzerName.EU_LUCENE));
+searchFieldList.add(new SearchField("tags", SearchFieldDataType.collection(SearchFieldDataType.STRING))
+    .setSearchable(true)
+    .setKey(true)
+    .setFilterable(true)
+    .setFacetable(true));
+searchFieldList.add(new SearchField("address", SearchFieldDataType.COMPLEX)
+    .setFields(Arrays.asList(
+        new SearchField("streetAddress", SearchFieldDataType.STRING).setSearchable(true),
+        new SearchField("city", SearchFieldDataType.STRING)
+            .setSearchable(true)
+            .setFilterable(true)
+            .setFacetable(true)
+            .setSortable(true),
+        new SearchField("stateProvince", SearchFieldDataType.STRING)
+            .setSearchable(true)
+            .setFilterable(true)
+            .setFacetable(true)
+            .setSortable(true),
+        new SearchField("country", SearchFieldDataType.STRING)
+            .setSearchable(true)
+            .setFilterable(true)
+            .setFacetable(true)
+            .setSortable(true),
+        new SearchField("postalCode", SearchFieldDataType.STRING)
+            .setSearchable(true)
+            .setFilterable(true)
+            .setFacetable(true)
+            .setSortable(true)
+    )));
 
-    // Prepare suggester.
-    SearchSuggester suggester = new SearchSuggester("sg", Collections.singletonList("hotelName"));
-    // Prepare SearchIndex with index name and search fields.
-    SearchIndex index = new SearchIndex("hotels").setFields(searchFieldList).setSuggesters(
-        Collections.singletonList(suggester));
-    // Create an index
-    searchIndexClient.createIndex(index);
-}
+// Prepare suggester.
+SearchSuggester suggester = new SearchSuggester("sg", Collections.singletonList("hotelName"));
+// Prepare SearchIndex with index name and search fields.
+SearchIndex index = new SearchIndex("hotels").setFields(searchFieldList).setSuggesters(
+    Collections.singletonList(suggester));
+// Create an index
+searchIndexClient.createIndex(index);
 ```
 
 ### Retrieving a specific document from your index
@@ -428,14 +437,13 @@ with an `IndexDocumentsResult` for inspection.
 All of the examples so far have been using synchronous APIs, but we provide full
 support for async APIs as well. You'll need to use [SearchAsyncClient](#Create-a-SearchClient)
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L201-L206 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L201-L205 -->
 ```Java
-    searchAsyncClient.search("luxury")
-        .subscribe(result -> {
-            Hotel hotel = result.getDocument(Hotel.class);
-            System.out.printf("This is hotelId %s, and this is hotel name %s.%n", hotel.getId(), hotel.getName());
-        });
-}
+searchAsyncClient.search("luxury")
+    .subscribe(result -> {
+        Hotel hotel = result.getDocument(Hotel.class);
+        System.out.printf("This is hotelId %s, and this is hotel name %s.%n", hotel.getId(), hotel.getName());
+    });
 ```
 
 ## Troubleshooting
@@ -482,8 +490,8 @@ detailed in the [HTTP clients wiki](https://github.com/Azure/azure-sdk-for-java/
 ## Next steps
 
 - Samples are explained in detail [here][samples_readme].
-- [Watch a demo or deep dive video](https://azure.microsoft.com/resources/videos/index/?services=search)
-- [Read more about the Azure Cognitive Search service](https://docs.microsoft.com/azure/search/search-what-is-azure-search)
+- Watch a [demo or deep dive video](https://azure.microsoft.com/resources/videos/index/?services=search)
+- Read more about the [Azure Cognitive Search service](https://docs.microsoft.com/azure/search/search-what-is-azure-search)
 
 ## Contributing
 

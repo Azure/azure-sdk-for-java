@@ -86,6 +86,8 @@ public class FileTransferExample {
 
         File downloadFile = createTempEmptyFile("downloadFile.bin");
 
+        Files.deleteIfExists(downloadFile.toPath());
+
         /*
          * Generate random things to uploadFile, which makes the file with size of 100MB.
          */

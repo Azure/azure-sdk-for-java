@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 /**
- * File attributes associated with a file stored as a blob in Azure Storage.
+ * Provides support for attributes associated with a file stored as a blob in Azure Storage.
  * <p>
  * Some of the attributes inherited from {@link BasicFileAttributes} are not supported. See the docs on each method for
  * more information.
@@ -32,10 +32,11 @@ import java.util.function.Supplier;
 public final class AzureBlobFileAttributes implements BasicFileAttributes {
     /*
     Some blob properties do not have getters as they do not make sense in the context of nio. These properties are:
-        - incremental snapshot related properties
-        - lease related properties
-        - sequence number
-        - encryption key sha256
+        - incremental snapshot related properties (only for page blobs)
+        - lease related properties (leases not currently supported)
+        - sequence number (only for page blobs)
+        - encryption key sha256 (cpk not supported)
+        - committed block count (only for append blobs)
      */
 
     private final ClientLogger logger = new ClientLogger(AzureBlobFileAttributes.class);
@@ -69,7 +70,6 @@ public final class AzureBlobFileAttributes implements BasicFileAttributes {
         map.put("archiveStatus", attributes::archiveStatus);
         map.put("accessTierChangeTime", attributes::accessTierChangeTime);
         map.put("metadata", attributes::metadata);
-        map.put("committedBlockCount", attributes::committedBlockCount);
         map.put("isRegularFile", attributes::isRegularFile);
         map.put("isDirectory", attributes::isDirectory);
         map.put("isSymbolicLink", attributes::isSymbolicLink);
@@ -79,7 +79,9 @@ public final class AzureBlobFileAttributes implements BasicFileAttributes {
     }
 
     /**
-     * {@inheritDoc}
+     * Returns the creation time. The creation time is the time that the file was created.
+     *
+     * @return The creation time.
      */
     @Override
     public FileTime creationTime() {
@@ -87,7 +89,9 @@ public final class AzureBlobFileAttributes implements BasicFileAttributes {
     }
 
     /**
-     * {@inheritDoc}
+     * Returns the time of last modification.
+     *
+     * @return the time of last modification.
      */
     @Override
     public FileTime lastModifiedTime() {
@@ -95,6 +99,8 @@ public final class AzureBlobFileAttributes implements BasicFileAttributes {
     }
 
     /**
+     * Returns the eTag of the blob.
+     *
      * @return the eTag of the blob
      */
     public String eTag() {
@@ -102,6 +108,8 @@ public final class AzureBlobFileAttributes implements BasicFileAttributes {
     }
 
     /**
+     * Returns the {@link BlobHttpHeaders} of the blob.
+     *
      * @return {@link BlobHttpHeaders}
      */
     public BlobHttpHeaders blobHttpHeaders() {
@@ -120,6 +128,8 @@ public final class AzureBlobFileAttributes implements BasicFileAttributes {
     }
 
     /**
+     * Returns the type of the blob.
+     *
      * @return the type of the blob
      */
     public BlobType blobType() {
@@ -127,92 +137,116 @@ public final class AzureBlobFileAttributes implements BasicFileAttributes {
     }
 
     /**
-     * @return the identifier of the last copy operation. If this blob hasn't been the target of a copy operation or has
+     * Returns the identifier of the last copy operation. If this blob hasn't been the target of a copy operation or has
      * been modified since this won't be set.
+     *
+     * @return the identifier of the last copy operation.
      */
     public String copyId() {
         return this.properties.getCopyId();
     }
 
     /**
-     * @return the status of the last copy operation. If this blob hasn't been the target of a copy operation or has
+     * Returns the status of the last copy operation. If this blob hasn't been the target of a copy operation or has
      * been modified since this won't be set.
+     *
+     * @return the status of the last copy operation.
      */
     public CopyStatusType copyStatus() {
         return this.properties.getCopyStatus();
     }
 
     /**
-     * @return the source blob URL from the last copy operation. If this blob hasn't been the target of a copy operation
+     * Returns the source blob URL from the last copy operation. If this blob hasn't been the target of a copy operation
      * or has been modified since this won't be set.
+     *
+     * @return the source blob URL from the last copy operation.
      */
     public String copySource() {
         return this.properties.getCopySource();
     }
 
     /**
-     * @return the number of bytes copied and total bytes in the source from the last copy operation (bytes copied/total
+     * Returns the number of bytes copied and total bytes in the source from the last copy operation (bytes copied/total
      * bytes). If this blob hasn't been the target of a copy operation or has been modified since this won't be set.
+     *
+     * @return the number of bytes copied and total bytes in the source from the last copy operation
      */
     public String copyProgress() {
         return this.properties.getCopyProgress();
     }
 
     /**
-     * @return the completion time of the last copy operation. If this blob hasn't been the target of a copy operation
+     * Returns the completion time of the last copy operation. If this blob hasn't been the target of a copy operation
      * or has been modified since this won't be set.
+     *
+     * @return the completion time of the last copy operation.
      */
     public OffsetDateTime copyCompletionTime() {
         return this.properties.getCopyCompletionTime();
     }
 
     /**
-     * @return the description of the last copy failure, this is set when the {@link #copyStatus() getCopyStatus} is
+     * Returns the description of the last copy failure, this is set when the {@link #copyStatus() getCopyStatus} is
      * {@link CopyStatusType#FAILED failed} or {@link CopyStatusType#ABORTED aborted}. If this blob hasn't been the
      * target of a copy operation or has been modified since this won't be set.
+     *
+     * @return the description of the last copy failure.
      */
     public String copyStatusDescription() {
         return this.properties.getCopyStatusDescription();
     }
 
     /**
-     * @return the status of the blob being encrypted on the server
+     * Returns the status of the blob being encrypted on the server.
+     *
+     * @return the status of the blob being encrypted on the server.
      */
     public Boolean isServerEncrypted() {
         return this.properties.isServerEncrypted();
     }
 
     /**
-     * @return the tier of the blob. This is only set for Page blobs on a premium storage account or for Block blobs on
+     * Returns the tier of the blob. This is only set for Page blobs on a premium storage account or for Block blobs on
      * blob storage or general purpose V2 account.
+     *
+     * @return the tier of the blob.
      */
     public AccessTier accessTier() {
         return this.properties.getAccessTier();
     }
 
     /**
-     * @return the status of the tier being inferred for the blob. This is only set for Page blobs on a premium storage
+     * Returns the status of the tier being inferred for the blob. This is only set for Page blobs on a premium storage
      * account or for Block blobs on blob storage or general purpose V2 account.
+     *
+     * @return the status of the tier being inferred for the blob.
      */
     public Boolean isAccessTierInferred() {
         return this.properties.isAccessTierInferred();
     }
 
     /**
-     * @return the archive status of the blob. This is only for blobs on a blob storage and general purpose v2 account.
+     * Returns the archive status of the blob. This is only for blobs on a blob storage and general purpose v2 account.
+     *
+     * @return the archive status of the blob.
      */
     public ArchiveStatus archiveStatus() {
         return this.properties.getArchiveStatus();
     }
 
     /**
-     * @return the time when the access tier for the blob was last changed
+     * Returns the time when the access tier for the blob was last changed.
+     *
+     * @return the time when the access tier for the blob was last changed.
      */
     public OffsetDateTime accessTierChangeTime() {
         return this.properties.getAccessTierChangeTime();
     }
 
     /**
+     * Returns the metadata associated with this blob.
+     *
      * @return the metadata associated with this blob
      */
     public Map<String, String> metadata() {
@@ -220,24 +254,22 @@ public final class AzureBlobFileAttributes implements BasicFileAttributes {
     }
 
     /**
-     * @return the number of committed blocks in the blob. This is only returned for Append blobs.
-     */
-    public Integer committedBlockCount() {
-        return this.properties.getCommittedBlockCount();
-    }
-
-    /**
-     * Unsupported.
-     * @throws UnsupportedOperationException Operation not supported.
-     * {@inheritDoc}
+     * Returns the time of last modification.
+     * <p>
+     * Last access time is not supported by the blob service. In this case, it is typical for implementations to return
+     * the {@link #lastModifiedTime()}.
+     *
+     * @return the time of last modification.
      */
     @Override
     public FileTime lastAccessTime() {
-        throw new UnsupportedOperationException();
+        return this.lastModifiedTime();
     }
 
     /**
-     * {@inheritDoc}
+     * Tells whether the file is a regular file with opaque content.
+     *
+     * @return whether the file is a regular file.
      */
     @Override
     public boolean isRegularFile() {
@@ -245,11 +277,13 @@ public final class AzureBlobFileAttributes implements BasicFileAttributes {
     }
 
     /**
-     * {@inheritDoc}
+     * Tells whether the file is a directory.
      * <p>
      * Will only return true if the directory is a concrete directory. See
      * {@link AzureFileSystemProvider#createDirectory(Path, FileAttribute[])} for more information on virtual and
      * concrete directories.
+     *
+     * @return whether the file is a directory
      */
     @Override
     public boolean isDirectory() {
@@ -257,6 +291,8 @@ public final class AzureBlobFileAttributes implements BasicFileAttributes {
     }
 
     /**
+     * Tells whether the file is a symbolic link.
+     *
      * @return false. Symbolic links are not supported.
      */
     @Override
@@ -265,7 +301,9 @@ public final class AzureBlobFileAttributes implements BasicFileAttributes {
     }
 
     /**
-     * @return false
+     * Tells whether the file is something other than a regular file, directory, or symbolic link.
+     *
+     * @return false. No other object types are supported.
      */
     @Override
     public boolean isOther() {
@@ -273,7 +311,9 @@ public final class AzureBlobFileAttributes implements BasicFileAttributes {
     }
 
     /**
-     * {@inheritDoc}
+     * Returns the size of the file (in bytes).
+     *
+     * @return the size of the file
      */
     @Override
     public long size() {
@@ -283,7 +323,6 @@ public final class AzureBlobFileAttributes implements BasicFileAttributes {
     /**
      * Unsupported.
      * @throws UnsupportedOperationException Operation not supported.
-     * {@inheritDoc}
      */
     @Override
     public Object fileKey() {

@@ -5,7 +5,7 @@ jobs:
     parameters:
       ServiceDirectory: search
       Timeout: 60
-      MaxParallel: 3
+      MaxParallel: 6
       EnvVars:
         AZURE_TEST_MODE: LIVE
       Artifacts:

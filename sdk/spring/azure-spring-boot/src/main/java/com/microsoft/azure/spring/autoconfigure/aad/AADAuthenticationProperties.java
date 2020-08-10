@@ -52,11 +52,6 @@ public class AADAuthenticationProperties {
     private String clientSecret;
 
     /**
-     * Azure AD groups.
-     */
-    private List<String> activeDirectoryGroups = new ArrayList<>();
-
-    /**
      * App ID URI which might be used in the <code>"aud"</code> claim of an <code>id_token</code>.
      */
     private String appIdUri;
@@ -100,7 +95,7 @@ public class AADAuthenticationProperties {
     @DeprecatedConfigurationProperty(reason = "Configuration moved to UserGroup class to keep UserGroup properties "
             + "together", replacement = "azure.activedirectory.user-group.allowed-groups")
     public List<String> getActiveDirectoryGroups() {
-        return activeDirectoryGroups;
+        return userGroup.getAllowedGroups();
     }
     /**
      * Properties dedicated to changing the behavior of how the groups are mapped from the Azure AD response. Depending
@@ -204,10 +199,10 @@ public class AADAuthenticationProperties {
     @PostConstruct
     public void validateUserGroupProperties() {
         if (this.sessionStateless) {
-            if (!this.activeDirectoryGroups.isEmpty()) {
+            if (!this.getUserGroup().getAllowedGroups().isEmpty()) {
                 LOGGER.warn("Group names are not supported if you set 'sessionSateless' to 'true'.");
             }
-        } else if (this.activeDirectoryGroups.isEmpty() && this.getUserGroup().getAllowedGroups().isEmpty()) {
+        } else if (this.getUserGroup().getAllowedGroups().isEmpty()) {
             throw new IllegalStateException("One of the User Group Properties must be populated. "
                 + "Please populate azure.activedirectory.user-group.allowed-groups");
         }
@@ -245,8 +240,9 @@ public class AADAuthenticationProperties {
         this.clientSecret = clientSecret;
     }
 
+    @Deprecated
     public void setActiveDirectoryGroups(List<String> activeDirectoryGroups) {
-        this.activeDirectoryGroups = activeDirectoryGroups;
+        this.userGroup.setAllowedGroups(activeDirectoryGroups);
     }
 
     public String getAppIdUri() {

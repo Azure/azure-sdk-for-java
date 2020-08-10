@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.messaging.servicebus.implementation.models.MessageCountDetails;
 
 import java.time.OffsetDateTime;
 import java.util.Objects;
@@ -15,28 +16,39 @@ import java.util.Objects;
 public class SubscriptionRuntimeInfo {
     private final String subscriptionName;
     private final String topicName;
-    private final MessageCountDetails details;
     private final long messageCount;
     private final OffsetDateTime accessedAt;
     private final OffsetDateTime createdAt;
     private final OffsetDateTime updatedAt;
+    private final int activeMessageCount;
+    private final int deadLetterMessageCount;
+    private final int scheduledMessageCount;
+    private final int transferDeadLetterMessageCount;
+    private final int transferMessageCount;
+
 
     /**
      * Creates a new instance with runtime properties extracted from the given SubscriptionDescription.
      *
-     * @param subscriptionDescription Subscription description to extract runtime information from.
+     * @param subscriptionProperties Subscription description to extract runtime information from.
      *
      * @throws NullPointerException if {@code subscriptionDescription} is null.
      */
-    public SubscriptionRuntimeInfo(SubscriptionDescription subscriptionDescription) {
-        Objects.requireNonNull(subscriptionDescription, "'subscriptionDescription' cannot be null.");
-        this.subscriptionName = subscriptionDescription.getSubscriptionName();
-        this.topicName = subscriptionDescription.getTopicName();
-        this.details = subscriptionDescription.getMessageCountDetails();
-        this.messageCount = subscriptionDescription.getMessageCount();
-        this.accessedAt = subscriptionDescription.getAccessedAt();
-        this.createdAt = subscriptionDescription.getCreatedAt();
-        this.updatedAt = subscriptionDescription.getUpdatedAt();
+    public SubscriptionRuntimeInfo(SubscriptionProperties subscriptionProperties) {
+        Objects.requireNonNull(subscriptionProperties, "'subscriptionProperties' cannot be null.");
+        this.subscriptionName = subscriptionProperties.getSubscriptionName();
+        this.topicName = subscriptionProperties.getTopicName();
+        this.messageCount = subscriptionProperties.getMessageCount();
+        this.accessedAt = subscriptionProperties.getAccessedAt();
+        this.createdAt = subscriptionProperties.getCreatedAt();
+        this.updatedAt = subscriptionProperties.getUpdatedAt();
+
+        final MessageCountDetails details = subscriptionProperties.getMessageCountDetails();
+        this.activeMessageCount = details != null ? details.getActiveMessageCount() : 0;
+        this.deadLetterMessageCount = details != null ? details.getDeadLetterMessageCount() : 0;
+        this.scheduledMessageCount = details != null ? details.getScheduledMessageCount() : 0;
+        this.transferDeadLetterMessageCount = details != null ? details.getTransferDeadLetterMessageCount() : 0;
+        this.transferMessageCount = details != null ? details.getTransferMessageCount() : 0;
     }
 
     /**
@@ -49,6 +61,15 @@ public class SubscriptionRuntimeInfo {
     }
 
     /**
+     * Get the activeMessageCount property: Number of active messages in the queue, topic, or subscription.
+     *
+     * @return the activeMessageCount value.
+     */
+    public int getActiveMessageCount() {
+        return this.activeMessageCount;
+    }
+
+    /**
      * Gets the exact time the subscription was created.
      *
      * @return The exact time the subscription was created.
@@ -58,12 +79,12 @@ public class SubscriptionRuntimeInfo {
     }
 
     /**
-     * Gets details about the message counts in subscription.
+     * Get the deadLetterMessageCount property: Number of messages that are dead lettered.
      *
-     * @return Details about the message counts in subscription.
+     * @return the deadLetterMessageCount value.
      */
-    public MessageCountDetails getDetails() {
-        return details;
+    public int getDeadLetterMessageCount() {
+        return this.deadLetterMessageCount;
     }
 
     /**
@@ -71,8 +92,35 @@ public class SubscriptionRuntimeInfo {
      *
      * @return The number of messages in the subscription.
      */
-    public long getMessageCount() {
+    public long getTotalMessageCount() {
         return messageCount;
+    }
+
+    /**
+     * Get the scheduledMessageCount property: Number of scheduled messages.
+     *
+     * @return the scheduledMessageCount value.
+     */
+    public int getScheduledMessageCount() {
+        return this.scheduledMessageCount;
+    }
+
+    /**
+     * Get the transferDeadLetterMessageCount property: Number of messages transferred into dead letters.
+     *
+     * @return the transferDeadLetterMessageCount value.
+     */
+    public int getTransferDeadLetterMessageCount() {
+        return this.transferDeadLetterMessageCount;
+    }
+
+    /**
+     * Get the transferMessageCount property: Number of messages transferred to another queue, topic, or subscription.
+     *
+     * @return the transferMessageCount value.
+     */
+    public int getTransferMessageCount() {
+        return this.transferMessageCount;
     }
 
     /**

@@ -5,9 +5,9 @@ package com.microsoft.azure.keyvault.spring;
 
 import static com.microsoft.azure.telemetry.TelemetryData.SERVICE_NAME;
 import static com.microsoft.azure.telemetry.TelemetryData.getClassPackageSimpleName;
+import static com.microsoft.azure.utils.ApplicationId.AZURE_SPRING_KEY_VAULT;
 import static com.microsoft.azure.utils.Constants.AZURE_KEYVAULT_PROPERTYSOURCE_NAME;
 import static com.microsoft.azure.utils.Constants.DEFAULT_REFRESH_INTERVAL_MS;
-import static com.microsoft.azure.utils.Constants.SPRINGBOOT_KEY_VAULT_APPLICATION_ID;
 import static org.springframework.core.env.StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME;
 
 import com.azure.core.credential.TokenCredential;
@@ -79,7 +79,7 @@ class KeyVaultEnvironmentPostProcessorHelper {
         final SecretClient secretClient = new SecretClientBuilder()
                 .vaultUrl(vaultUri)
                 .credential(tokenCredential)
-                .httpLogOptions(new HttpLogOptions().setApplicationId(SPRINGBOOT_KEY_VAULT_APPLICATION_ID))
+                .httpLogOptions(new HttpLogOptions().setApplicationId(AZURE_SPRING_KEY_VAULT))
                 .buildClient();
         try {
             final MutablePropertySources sources = this.environment.getPropertySources();

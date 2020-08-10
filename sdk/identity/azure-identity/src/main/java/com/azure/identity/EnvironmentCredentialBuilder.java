@@ -3,6 +3,8 @@
 
 package com.azure.identity;
 
+import com.azure.identity.implementation.util.ValidationUtil;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 
@@ -18,6 +20,7 @@ public class EnvironmentCredentialBuilder extends CredentialBuilderBase<Environm
      * @return An updated instance of this builder with the authority host set as specified.
      */
     public EnvironmentCredentialBuilder authorityHost(String authorityHost) {
+        ValidationUtil.validateAuthHost(getClass().getSimpleName(), authorityHost);
         this.identityClientOptions.setAuthorityHost(authorityHost);
         return this;
     }

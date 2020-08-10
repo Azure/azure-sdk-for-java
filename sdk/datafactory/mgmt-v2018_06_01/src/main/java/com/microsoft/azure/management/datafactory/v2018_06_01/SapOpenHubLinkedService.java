@@ -25,7 +25,7 @@ public class SapOpenHubLinkedService extends LinkedServiceInner {
      * Host name of the SAP BW instance where the open hub destination is
      * located. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.server", required = true)
+    @JsonProperty(value = "typeProperties.server")
     private Object server;
 
     /**
@@ -33,7 +33,7 @@ public class SapOpenHubLinkedService extends LinkedServiceInner {
      * located. (Usually a two-digit decimal number represented as a string.)
      * Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.systemNumber", required = true)
+    @JsonProperty(value = "typeProperties.systemNumber")
     private Object systemNumber;
 
     /**
@@ -41,7 +41,7 @@ public class SapOpenHubLinkedService extends LinkedServiceInner {
      * is located. (Usually a three-digit decimal number represented as a
      * string) Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.clientId", required = true)
+    @JsonProperty(value = "typeProperties.clientId")
     private Object clientId;
 
     /**
@@ -51,6 +51,13 @@ public class SapOpenHubLinkedService extends LinkedServiceInner {
      */
     @JsonProperty(value = "typeProperties.language")
     private Object language;
+
+    /**
+     * SystemID of the SAP system where the table is located. Type: string (or
+     * Expression with resultType string).
+     */
+    @JsonProperty(value = "typeProperties.systemId")
+    private Object systemId;
 
     /**
      * Username to access the SAP BW server where the open hub destination is
@@ -65,6 +72,27 @@ public class SapOpenHubLinkedService extends LinkedServiceInner {
      */
     @JsonProperty(value = "typeProperties.password")
     private SecretBase password;
+
+    /**
+     * The hostname of the SAP Message Server. Type: string (or Expression with
+     * resultType string).
+     */
+    @JsonProperty(value = "typeProperties.messageServer")
+    private Object messageServer;
+
+    /**
+     * The service name or port number of the Message Server. Type: string (or
+     * Expression with resultType string).
+     */
+    @JsonProperty(value = "typeProperties.messageServerService")
+    private Object messageServerService;
+
+    /**
+     * The Logon Group for the SAP System. Type: string (or Expression with
+     * resultType string).
+     */
+    @JsonProperty(value = "typeProperties.logonGroup")
+    private Object logonGroup;
 
     /**
      * The encrypted credential used for authentication. Credentials are
@@ -155,6 +183,26 @@ public class SapOpenHubLinkedService extends LinkedServiceInner {
     }
 
     /**
+     * Get systemID of the SAP system where the table is located. Type: string (or Expression with resultType string).
+     *
+     * @return the systemId value
+     */
+    public Object systemId() {
+        return this.systemId;
+    }
+
+    /**
+     * Set systemID of the SAP system where the table is located. Type: string (or Expression with resultType string).
+     *
+     * @param systemId the systemId value to set
+     * @return the SapOpenHubLinkedService object itself.
+     */
+    public SapOpenHubLinkedService withSystemId(Object systemId) {
+        this.systemId = systemId;
+        return this;
+    }
+
+    /**
      * Get username to access the SAP BW server where the open hub destination is located. Type: string (or Expression with resultType string).
      *
      * @return the userName value
@@ -191,6 +239,66 @@ public class SapOpenHubLinkedService extends LinkedServiceInner {
      */
     public SapOpenHubLinkedService withPassword(SecretBase password) {
         this.password = password;
+        return this;
+    }
+
+    /**
+     * Get the hostname of the SAP Message Server. Type: string (or Expression with resultType string).
+     *
+     * @return the messageServer value
+     */
+    public Object messageServer() {
+        return this.messageServer;
+    }
+
+    /**
+     * Set the hostname of the SAP Message Server. Type: string (or Expression with resultType string).
+     *
+     * @param messageServer the messageServer value to set
+     * @return the SapOpenHubLinkedService object itself.
+     */
+    public SapOpenHubLinkedService withMessageServer(Object messageServer) {
+        this.messageServer = messageServer;
+        return this;
+    }
+
+    /**
+     * Get the service name or port number of the Message Server. Type: string (or Expression with resultType string).
+     *
+     * @return the messageServerService value
+     */
+    public Object messageServerService() {
+        return this.messageServerService;
+    }
+
+    /**
+     * Set the service name or port number of the Message Server. Type: string (or Expression with resultType string).
+     *
+     * @param messageServerService the messageServerService value to set
+     * @return the SapOpenHubLinkedService object itself.
+     */
+    public SapOpenHubLinkedService withMessageServerService(Object messageServerService) {
+        this.messageServerService = messageServerService;
+        return this;
+    }
+
+    /**
+     * Get the Logon Group for the SAP System. Type: string (or Expression with resultType string).
+     *
+     * @return the logonGroup value
+     */
+    public Object logonGroup() {
+        return this.logonGroup;
+    }
+
+    /**
+     * Set the Logon Group for the SAP System. Type: string (or Expression with resultType string).
+     *
+     * @param logonGroup the logonGroup value to set
+     * @return the SapOpenHubLinkedService object itself.
+     */
+    public SapOpenHubLinkedService withLogonGroup(Object logonGroup) {
+        this.logonGroup = logonGroup;
         return this;
     }
 

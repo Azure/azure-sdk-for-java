@@ -1,85 +1,85 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://javaformrecognizertestresource.cognitiveservices.azure.com/formrecognizer/v2.0-preview//custom/models",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.0//custom/models",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.1 (11.0.5; Windows 10 10.0)",
-      "x-ms-client-request-id" : "57654c7c-a024-4998-b07d-5d0ee632ffed",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.5 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7751b622-9828-47d7-bd75-e2b0fc04257c",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-envoy-upstream-service-time" : "54",
+      "x-envoy-upstream-service-time" : "109",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "f756f2af-ad85-458c-b41f-a07089202f0e",
+      "apim-request-id" : "f6df119d-1a08-4e2e-9e2b-749c3c1ad16e",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "Date" : "Wed, 22 Apr 2020 22:28:28 GMT",
-      "Location" : "https://javaformrecognizertestresource.cognitiveservices.azure.com/formrecognizer/v2.0-preview/custom/models/63fd0a24-cdc8-40a6-b2db-3ced0b9c1e82"
+      "Date" : "Thu, 06 Aug 2020 22:31:03 GMT",
+      "Location" : "https://westus2formrecognizershawn.cognitiveservices.azure.com/formrecognizer/v2.0/custom/models/4b8409fe-2e7e-4c5b-803a-c0bc45e011c4"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://javaformrecognizertestresource.cognitiveservices.azure.com/formrecognizer/v2.0-preview//custom/models/63fd0a24-cdc8-40a6-b2db-3ced0b9c1e82?includeKeys=true",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.0//custom/models/4b8409fe-2e7e-4c5b-803a-c0bc45e011c4?includeKeys=true",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.1 (11.0.5; Windows 10 10.0)",
-      "x-ms-client-request-id" : "f97b640f-5520-4bda-8dce-a7282408f68e"
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.5 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2dbe49c4-f1af-49e3-ba05-095dc7aeceb1"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "71",
+      "x-envoy-upstream-service-time" : "47",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "0b962a25-b877-4954-9c5d-3842b155d6ce",
+      "apim-request-id" : "0223d648-54ec-416c-9047-2201a4ca443e",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"63fd0a24-cdc8-40a6-b2db-3ced0b9c1e82\",\"status\":\"ready\",\"createdDateTime\":\"2020-04-22T22:28:28Z\",\"lastUpdatedDateTime\":\"2020-04-22T22:28:30Z\"},\"trainResult\":{\"averageModelAccuracy\":0.92,\"trainingDocuments\":[{\"documentName\":\"Invoice_1.pdf\",\"pages\":1,\"status\":\"succeeded\"},{\"documentName\":\"Invoice_2.pdf\",\"pages\":1,\"status\":\"succeeded\"},{\"documentName\":\"Invoice_3.pdf\",\"pages\":1,\"status\":\"succeeded\"},{\"documentName\":\"Invoice_4.pdf\",\"pages\":1,\"status\":\"succeeded\"},{\"documentName\":\"Invoice_5.pdf\",\"pages\":1,\"status\":\"succeeded\"}],\"fields\":[{\"fieldName\":\"InvoiceCharges\",\"accuracy\":1.0},{\"fieldName\":\"InvoiceDate\",\"accuracy\":0.8},{\"fieldName\":\"InvoiceDueDate\",\"accuracy\":0.8},{\"fieldName\":\"InvoiceNumber\",\"accuracy\":1.0},{\"fieldName\":\"InvoiceVatId\",\"accuracy\":1.0}],\"errors\":[]}}",
-      "Date" : "Wed, 22 Apr 2020 22:28:33 GMT",
+      "Body" : "{\"modelInfo\":{\"modelId\":\"4b8409fe-2e7e-4c5b-803a-c0bc45e011c4\",\"status\":\"ready\",\"createdDateTime\":\"2020-08-06T22:30:57Z\",\"lastUpdatedDateTime\":\"2020-08-06T22:31:02Z\"},\"trainResult\":{\"averageModelAccuracy\":0.973,\"trainingDocuments\":[{\"documentName\":\"Form_1.jpg\",\"pages\":1,\"status\":\"succeeded\"},{\"documentName\":\"Form_2.jpg\",\"pages\":1,\"status\":\"succeeded\"},{\"documentName\":\"Form_3.jpg\",\"pages\":1,\"status\":\"succeeded\"},{\"documentName\":\"Form_4.jpg\",\"pages\":1,\"status\":\"succeeded\"},{\"documentName\":\"Form_5.jpg\",\"pages\":1,\"status\":\"succeeded\"}],\"fields\":[{\"fieldName\":\"CompanyAddress\",\"accuracy\":0.8},{\"fieldName\":\"CompanyName\",\"accuracy\":1.0},{\"fieldName\":\"CompanyPhoneNumber\",\"accuracy\":1.0},{\"fieldName\":\"DatedAs\",\"accuracy\":1.0},{\"fieldName\":\"Email\",\"accuracy\":0.8},{\"fieldName\":\"Merchant\",\"accuracy\":1.0},{\"fieldName\":\"PhoneNumber\",\"accuracy\":1.0},{\"fieldName\":\"PurchaseOrderNumber\",\"accuracy\":1.0},{\"fieldName\":\"Quantity\",\"accuracy\":1.0},{\"fieldName\":\"Signature\",\"accuracy\":1.0},{\"fieldName\":\"Subtotal\",\"accuracy\":1.0},{\"fieldName\":\"Tax\",\"accuracy\":1.0},{\"fieldName\":\"Total\",\"accuracy\":1.0},{\"fieldName\":\"VendorName\",\"accuracy\":1.0},{\"fieldName\":\"Website\",\"accuracy\":1.0}],\"errors\":[]}}",
+      "Date" : "Thu, 06 Aug 2020 22:31:08 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://javaformrecognizertestresource.cognitiveservices.azure.com/formrecognizer/v2.0-preview//custom/models/63fd0a24-cdc8-40a6-b2db-3ced0b9c1e82?includeKeys=true",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.0//custom/models/4b8409fe-2e7e-4c5b-803a-c0bc45e011c4?includeKeys=true",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.1 (11.0.5; Windows 10 10.0)",
-      "x-ms-client-request-id" : "ef5e8d01-ca90-4343-8738-736605c20727"
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.5 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8996c827-0674-48c0-ad5f-09743c7c6cf1"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "49",
+      "x-envoy-upstream-service-time" : "48",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "b88ff439-ced4-4dd3-b32e-3826b79607ba",
+      "apim-request-id" : "72ac6950-24bd-4015-bca1-acd414b9b627",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"63fd0a24-cdc8-40a6-b2db-3ced0b9c1e82\",\"status\":\"ready\",\"createdDateTime\":\"2020-04-22T22:28:28Z\",\"lastUpdatedDateTime\":\"2020-04-22T22:28:30Z\"},\"trainResult\":{\"averageModelAccuracy\":0.92,\"trainingDocuments\":[{\"documentName\":\"Invoice_1.pdf\",\"pages\":1,\"status\":\"succeeded\"},{\"documentName\":\"Invoice_2.pdf\",\"pages\":1,\"status\":\"succeeded\"},{\"documentName\":\"Invoice_3.pdf\",\"pages\":1,\"status\":\"succeeded\"},{\"documentName\":\"Invoice_4.pdf\",\"pages\":1,\"status\":\"succeeded\"},{\"documentName\":\"Invoice_5.pdf\",\"pages\":1,\"status\":\"succeeded\"}],\"fields\":[{\"fieldName\":\"InvoiceCharges\",\"accuracy\":1.0},{\"fieldName\":\"InvoiceDate\",\"accuracy\":0.8},{\"fieldName\":\"InvoiceDueDate\",\"accuracy\":0.8},{\"fieldName\":\"InvoiceNumber\",\"accuracy\":1.0},{\"fieldName\":\"InvoiceVatId\",\"accuracy\":1.0}],\"errors\":[]}}",
-      "Date" : "Wed, 22 Apr 2020 22:28:33 GMT",
+      "Body" : "{\"modelInfo\":{\"modelId\":\"4b8409fe-2e7e-4c5b-803a-c0bc45e011c4\",\"status\":\"ready\",\"createdDateTime\":\"2020-08-06T22:30:57Z\",\"lastUpdatedDateTime\":\"2020-08-06T22:31:02Z\"},\"trainResult\":{\"averageModelAccuracy\":0.973,\"trainingDocuments\":[{\"documentName\":\"Form_1.jpg\",\"pages\":1,\"status\":\"succeeded\"},{\"documentName\":\"Form_2.jpg\",\"pages\":1,\"status\":\"succeeded\"},{\"documentName\":\"Form_3.jpg\",\"pages\":1,\"status\":\"succeeded\"},{\"documentName\":\"Form_4.jpg\",\"pages\":1,\"status\":\"succeeded\"},{\"documentName\":\"Form_5.jpg\",\"pages\":1,\"status\":\"succeeded\"}],\"fields\":[{\"fieldName\":\"CompanyAddress\",\"accuracy\":0.8},{\"fieldName\":\"CompanyName\",\"accuracy\":1.0},{\"fieldName\":\"CompanyPhoneNumber\",\"accuracy\":1.0},{\"fieldName\":\"DatedAs\",\"accuracy\":1.0},{\"fieldName\":\"Email\",\"accuracy\":0.8},{\"fieldName\":\"Merchant\",\"accuracy\":1.0},{\"fieldName\":\"PhoneNumber\",\"accuracy\":1.0},{\"fieldName\":\"PurchaseOrderNumber\",\"accuracy\":1.0},{\"fieldName\":\"Quantity\",\"accuracy\":1.0},{\"fieldName\":\"Signature\",\"accuracy\":1.0},{\"fieldName\":\"Subtotal\",\"accuracy\":1.0},{\"fieldName\":\"Tax\",\"accuracy\":1.0},{\"fieldName\":\"Total\",\"accuracy\":1.0},{\"fieldName\":\"VendorName\",\"accuracy\":1.0},{\"fieldName\":\"Website\",\"accuracy\":1.0}],\"errors\":[]}}",
+      "Date" : "Thu, 06 Aug 2020 22:31:08 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://javaformrecognizertestresource.cognitiveservices.azure.com/formrecognizer/v2.0-preview//custom/models/63fd0a24-cdc8-40a6-b2db-3ced0b9c1e82/analyze?includeTextDetails=false",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.0//custom/models/4b8409fe-2e7e-4c5b-803a-c0bc45e011c4/analyze?includeTextDetails=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.1 (11.0.5; Windows 10 10.0)",
-      "x-ms-client-request-id" : "77ca6a61-6249-4459-8fd5-fe3dd9030cb6",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.5 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "1921d426-5808-4411-8963-74c4a691730b",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "43",
+      "x-envoy-upstream-service-time" : "23",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "aafae05c-38da-439c-add2-f19137161d56",
+      "apim-request-id" : "fa2892a5-6f51-43cb-92f0-992d73eef93a",
       "retry-after" : "0",
       "StatusCode" : "400",
       "Body" : "{\"error\":{\"code\":\"1003\",\"message\":\"Parameter 'Source' is not a valid Uri.\"}}",
-      "Date" : "Wed, 22 Apr 2020 22:28:33 GMT",
+      "Date" : "Thu, 06 Aug 2020 22:31:09 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   } ],
-  "variables" : [ "testfr85561ca" ]
+  "variables" : [ ]
 }

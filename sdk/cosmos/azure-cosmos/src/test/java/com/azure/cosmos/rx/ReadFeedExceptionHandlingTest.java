@@ -2,12 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
+import com.azure.core.util.tracing.Tracer;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.util.CosmosPagedFlux;
+import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import io.reactivex.subscribers.TestSubscriber;
 import org.mockito.Mockito;
@@ -18,6 +20,7 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
+import java.util.ServiceLoader;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -46,7 +49,10 @@ public class ReadFeedExceptionHandlingTest extends TestSuiteBase {
                                                                     .mergeWith(Flux.fromIterable(frps));
 
         final CosmosAsyncClientWrapper mockedClientWrapper = Mockito.spy(new CosmosAsyncClientWrapper(client));
-        Mockito.when(mockedClientWrapper.readAllDatabases()).thenReturn(UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> response));
+        Mockito.when(mockedClientWrapper.readAllDatabases()).thenReturn(UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
+            pagedFluxOptions.setTracerInformation(new TracerProvider(null), "testSpan", "testEndpoint,", "testDb");
+            return response;
+        }));
         TestSubscriber<FeedResponse<CosmosDatabaseProperties>> subscriber = new TestSubscriber<>();
         mockedClientWrapper.readAllDatabases().byPage().subscribe(subscriber);
         assertThat(subscriber.valueCount()).isEqualTo(2);

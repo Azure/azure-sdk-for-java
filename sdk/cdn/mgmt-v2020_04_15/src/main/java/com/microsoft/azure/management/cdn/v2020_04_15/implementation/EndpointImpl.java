@@ -214,7 +214,7 @@ class EndpointImpl extends CreatableUpdatableImpl<Endpoint, EndpointInner, Endpo
     }
 
     @Override
-    public UrlSigningKey urlSigningKeys() {
+    public List<UrlSigningKey> urlSigningKeys() {
         return this.inner().urlSigningKeys();
     }
 
@@ -379,7 +379,7 @@ class EndpointImpl extends CreatableUpdatableImpl<Endpoint, EndpointInner, Endpo
     }
 
     @Override
-    public EndpointImpl withUrlSigningKeys(UrlSigningKey urlSigningKeys) {
+    public EndpointImpl withUrlSigningKeys(List<UrlSigningKey> urlSigningKeys) {
         if (isInCreateMode()) {
             this.inner().withUrlSigningKeys(urlSigningKeys);
         } else {
