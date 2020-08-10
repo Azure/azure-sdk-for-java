@@ -157,10 +157,12 @@ class Changefeed {
         OffsetDateTime segmentTime = TimeUtils.convertPathToTime(segment);
         /* Only pass the user cursor in to the segment of interest. */
         if (userCursor != null && segmentTime.isEqual(startTime)) {
-            return segmentFactory.getSegment(segment, changefeedCursor.toSegmentCursor(segment),
+            return segmentFactory.getSegment(segment,
+                changefeedCursor.toSegmentCursor(segment, userCursor.getCurrentSegmentCursor()),
                 userCursor.getCurrentSegmentCursor()).getEvents();
         } else {
-            return segmentFactory.getSegment(segment, changefeedCursor.toSegmentCursor(segment),
+            return segmentFactory.getSegment(segment,
+                changefeedCursor.toSegmentCursor(segment, null),
                 null).getEvents();
         }
     }

@@ -60,35 +60,13 @@ class Segment {
         /* We can keep the entire metadata file in memory since it is expected to only be a few hundred bytes. */
         return DownloadUtils.downloadToByteArray(client, segmentPath)
             .flatMap(DownloadUtils::parseJson)
-            .flatMapIterable(this::getShardList)
-//            /* Parse the JSON for shards. */
-//            .flatMapMany(this::getShards)
+            /* Parse the shards from the manifest. */
+            .flatMapIterable(this::getShards)
             /* Get all events for each shard. */
             .concatMap(Shard::getEvents);
     }
 
-    private Flux<Shard> getShards(JsonNode node) {
-        List<Shard> shards = new ArrayList<>();
-
-        /* Iterate over each shard element. */
-        for (JsonNode shard : node.withArray(CHUNK_FILE_PATHS)) {
-            /* Strip out the changefeed container name and the subsequent / */
-            String shardPath =
-                shard.asText().substring(BlobChangefeedClientBuilder.CHANGEFEED_CONTAINER_NAME.length() + 1);
-
-            ShardCursor shardCursor = null; /* By default, read shard from the beginning. */
-            if (userCursor != null) {
-                shardCursor = userCursor.getShardCursors().stream()
-                    .filter(sc -> sc.getCurrentChunkPath().contains(shardPath))
-                    .findFirst()
-                    .orElse(null); /* If this shard does not exist in the list of shard cursors, read shard from the beginning. */
-            }
-            shards.add(shardFactory.getShard(shardPath, changefeedCursor.toShardCursor(shardPath), shardCursor));
-        }
-        return Flux.fromIterable(shards);
-    }
-
-    private List<Shard> getShardList(JsonNode node) {
+    private List<Shard> getShards(JsonNode node) {
         List<Shard> shards = new ArrayList<>();
 
         /* Iterate over each shard element. */

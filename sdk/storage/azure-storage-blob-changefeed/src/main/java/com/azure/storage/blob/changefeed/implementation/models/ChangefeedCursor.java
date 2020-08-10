@@ -74,10 +74,12 @@ public class ChangefeedCursor {
      * Creates a new segment level cursor with the specified segment path.
      *
      * @param segmentPath The segment path.
+     * @param userSegmentCursor The user segment cursor (Used to populate the list of shard cursors).
      * @return A new segment level {@link ChangefeedCursor cursor}.
      */
-    public ChangefeedCursor toSegmentCursor(String segmentPath) {
-        return new ChangefeedCursor(this.cursorVersion, this.urlHash, this.endTime, new SegmentCursor(segmentPath));
+    public ChangefeedCursor toSegmentCursor(String segmentPath, SegmentCursor userSegmentCursor) {
+        return new ChangefeedCursor(this.cursorVersion, this.urlHash, this.endTime,
+            new SegmentCursor(segmentPath, userSegmentCursor));
     }
 
     /**

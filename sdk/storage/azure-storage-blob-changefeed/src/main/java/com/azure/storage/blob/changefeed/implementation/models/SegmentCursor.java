@@ -46,10 +46,19 @@ public class SegmentCursor {
      * Creates a new segment level cursor with the specified segment path.
      *
      * @param segmentPath The segment path.
+     * @param userSegmentCursor The user segment cursor (Used to populate the list of shard cursors).
      */
-    public SegmentCursor(String segmentPath) {
+    public SegmentCursor(String segmentPath, SegmentCursor userSegmentCursor) {
         this.segmentPath = segmentPath;
-        this.shardCursors = new ArrayList<>();
+        /* Deep copy the user segment cursor's list of shard cursors to make a new segment cursor. */
+        List<ShardCursor> copy = new ArrayList<>();
+        if (userSegmentCursor != null) {
+            userSegmentCursor.getShardCursors()
+                .forEach(shardCursor ->
+                    copy.add(new ShardCursor(shardCursor.getCurrentChunkPath(), shardCursor.getBlockOffset(),
+                        shardCursor.getEventIndex())));
+        }
+        this.shardCursors = copy;
         this.currentShardPath = null;
     }
 
