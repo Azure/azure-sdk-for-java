@@ -7,7 +7,6 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.concurrent.ScheduledFuture;
 
-import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
@@ -29,10 +28,10 @@ public final class ResponseTimeoutHandler extends ChannelInboundHandlerAdapter {
     /**
      * Constructs a channel that watches that the channel receives a response within a given timeout period.
      *
-     * @param timeout The period of before a channel's response is considered timed out.
+     * @param timeoutMillis The period of milliseconds before a channel's response is considered timed out.
      */
-    public ResponseTimeoutHandler(Duration timeout) {
-        this.timeoutMillis = ImplUtils.getTimeoutMillis(timeout);
+    public ResponseTimeoutHandler(long timeoutMillis) {
+        this.timeoutMillis = timeoutMillis;
     }
 
     @Override

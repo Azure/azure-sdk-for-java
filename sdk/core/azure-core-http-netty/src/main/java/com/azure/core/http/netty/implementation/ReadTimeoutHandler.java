@@ -7,7 +7,6 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.concurrent.ScheduledFuture;
 
-import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
@@ -30,10 +29,11 @@ public final class ReadTimeoutHandler extends ChannelInboundHandlerAdapter {
     /**
      * Constructs a channel handler that watches channel read operations to ensure they aren't timing out.
      *
-     * @param timeout The period of time when read progress has stopped before a channel is considered timed out.
+     * @param timeoutMillis The period of milliseconds when read progress has stopped before a channel is considered
+     * timed out.
      */
-    public ReadTimeoutHandler(Duration timeout) {
-        this.timeoutMillis = ImplUtils.getTimeoutMillis(timeout);
+    public ReadTimeoutHandler(long timeoutMillis) {
+        this.timeoutMillis = timeoutMillis;
     }
 
     @Override

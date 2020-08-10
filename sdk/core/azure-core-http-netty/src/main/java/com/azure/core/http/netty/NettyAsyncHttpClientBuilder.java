@@ -24,6 +24,7 @@ import reactor.netty.tcp.ProxyProvider;
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -38,6 +39,9 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class NettyAsyncHttpClientBuilder {
     private final ClientLogger logger = new ClientLogger(NettyAsyncHttpClientBuilder.class);
+
+    private static final long MINIMUM_TIMEOUT = TimeUnit.MILLISECONDS.toMillis(1);
+    private static final long DEFAULT_TIMEOUT = TimeUnit.SECONDS.toMillis(60);
 
     private final HttpClient baseHttpClient;
     private ProxyOptions proxyOptions;
@@ -91,9 +95,10 @@ public class NettyAsyncHttpClientBuilder {
         nettyHttpClient = nettyHttpClient
             .port(port)
             .wiretap(enableWiretap)
-            .doOnRequest((request, connection) -> addWriteTimeoutHandler(connection, writeTimeout))
-            .doAfterRequest((request, connection) -> addResponseTimeoutHandler(connection, responseTimeout))
-            .doOnResponse((response, connection) -> addReadTimeoutHandler(connection, readTimeout))
+            .doOnRequest((request, connection) -> addWriteTimeoutHandler(connection, getTimeoutMillis(writeTimeout)))
+            .doAfterRequest((request, connection) ->
+                addResponseTimeoutHandler(connection, getTimeoutMillis(responseTimeout)))
+            .doOnResponse((response, connection) -> addReadTimeoutHandler(connection, getTimeoutMillis(readTimeout)))
             .doAfterResponseSuccess((response, connection) -> removeReadTimeoutHandler(connection));
 
         Configuration buildConfiguration = (configuration == null)
@@ -336,26 +341,26 @@ public class NettyAsyncHttpClientBuilder {
     /*
      * Adds the write timeout handler once the request is ready to begin sending.
      */
-    private static void addWriteTimeoutHandler(Connection connection, Duration writeTimeout) {
-        connection.addHandlerLast(WriteTimeoutHandler.HANDLER_NAME, new WriteTimeoutHandler(writeTimeout));
+    private static void addWriteTimeoutHandler(Connection connection, long timeoutMillis) {
+        connection.addHandlerLast(WriteTimeoutHandler.HANDLER_NAME, new WriteTimeoutHandler(timeoutMillis));
     }
 
     /*
      * First removes the write timeout handler from the connection as the request has finished sending, then adds the
      * response timeout handler.
      */
-    private static void addResponseTimeoutHandler(Connection connection, Duration responseTimeout) {
+    private static void addResponseTimeoutHandler(Connection connection, long timeoutMillis) {
         connection.removeHandler(WriteTimeoutHandler.HANDLER_NAME)
-            .addHandlerLast(ResponseTimeoutHandler.HANDLER_NAME, new ResponseTimeoutHandler(responseTimeout));
+            .addHandlerLast(ResponseTimeoutHandler.HANDLER_NAME, new ResponseTimeoutHandler(timeoutMillis));
     }
 
     /*
      * First removes the response timeout handler from the connection as the response has been received, then adds the
      * read timeout handler.
      */
-    private static void addReadTimeoutHandler(Connection connection, Duration readTimeout) {
+    private static void addReadTimeoutHandler(Connection connection, long timeoutMillis) {
         connection.removeHandler(ResponseTimeoutHandler.HANDLER_NAME)
-            .addHandlerLast(ReadTimeoutHandler.HANDLER_NAME, new ReadTimeoutHandler(readTimeout));
+            .addHandlerLast(ReadTimeoutHandler.HANDLER_NAME, new ReadTimeoutHandler(timeoutMillis));
     }
 
     /*
@@ -363,5 +368,29 @@ public class NettyAsyncHttpClientBuilder {
      */
     private static void removeReadTimeoutHandler(Connection connection) {
         connection.removeHandler(ReadTimeoutHandler.HANDLER_NAME);
+    }
+
+    /*
+     * Returns the timeout in milliseconds to use based on the passed {@link Duration}.
+     * <p>
+     * If the timeout is {@code null} a default of 60 seconds will be used. If the timeout is less than or equal to zero
+     * no timeout will be used. If the timeout is less than one millisecond a timeout of one millisecond will be used.
+     *
+     * @param timeout The {@link Duration} to convert to timeout in milliseconds.
+     * @return The timeout period in milliseconds, zero if no timeout.
+     */
+    static long getTimeoutMillis(Duration timeout) {
+        // Timeout is null, use the 60 second default.
+        if (timeout == null) {
+            return TimeUnit.SECONDS.toMillis(60);
+        }
+
+        // Timeout is less than or equal to zero, return no timeout.
+        if (timeout.isZero() || timeout.isNegative()) {
+            return 0;
+        }
+
+        // Return the maximum of the timeout period and the minimum allowed timeout period.
+        return Math.max(timeout.toMillis(), MINIMUM_TIMEOUT);
     }
 }

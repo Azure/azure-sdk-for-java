@@ -10,7 +10,6 @@ import io.netty.channel.ChannelOutboundHandlerAdapter;
 import io.netty.channel.ChannelPromise;
 import io.netty.util.concurrent.ScheduledFuture;
 
-import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
@@ -36,10 +35,11 @@ public final class WriteTimeoutHandler extends ChannelOutboundHandlerAdapter {
     /**
      * Constructs a channel handler that watches channel write operations to ensure they aren't timing out.
      *
-     * @param timeout The period of time when write progress has stopped before a channel is considered timed out.
+     * @param timeoutMillis The period of milliseconds when write progress has stopped before a channel is considered
+     * timed out.
      */
-    public WriteTimeoutHandler(Duration timeout) {
-        this.timeoutMillis = ImplUtils.getTimeoutMillis(timeout);
+    public WriteTimeoutHandler(long timeoutMillis) {
+        this.timeoutMillis = timeoutMillis;
     }
 
     @Override
