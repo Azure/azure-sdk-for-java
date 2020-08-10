@@ -6,32 +6,23 @@
 
 package com.azure.resourcemanager.redis;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.redis.implementation.RedisCachesImpl;
 import com.azure.resourcemanager.redis.models.RedisCaches;
-import com.microsoft.azure.AzureEnvironment;
-import com.microsoft.azure.AzureResponseBuilder;
-import com.microsoft.azure.credentials.AzureTokenCredentials;
-import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
-import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
-import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Manager;
-import com.microsoft.azure.management.resources.fluentcore.utils.ProviderRegistrationInterceptor;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceManagerThrottlingInterceptor;
-import com.microsoft.azure.serializer.AzureJacksonAdapter;
-import com.microsoft.rest.RestClient;
+import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
+import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
+import com.azure.resourcemanager.resources.fluentcore.arm.implementation.Manager;
+import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 
 /**
  * Entry point to Azure redis resource management.
  */
-public final class RedisManager extends Manager<RedisManager, RedisManagementClientImpl> {
+public final class RedisManager extends Manager<RedisManager, RedisManagementClient> {
     // Collections
     private RedisCaches redisCaches;
-
-    private RedisManager(RestClient restClient, String subscriptionId) {
-        super(
-                restClient,
-                subscriptionId,
-                new RedisManagementClientImpl(restClient).withSubscriptionId(subscriptionId));
-    }
 
     /**
      * Get a Configurable instance that can be used to create RedisManager with optional configuration.
@@ -42,33 +33,71 @@ public final class RedisManager extends Manager<RedisManager, RedisManagementCli
         return new RedisManager.ConfigurableImpl();
     }
 
+
     /**
      * Creates an instance of RedisManager that exposes Redis resource management API entry points.
      *
-     * @param credentials    the credentials to use
-     * @param subscriptionId the subscription UUID
+     * @param credential the credential to use
+     * @param profile the profile to use
      * @return the RedisManager
      */
-    public static RedisManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
-        return new RedisManager(new RestClient.Builder()
-                .withBaseUrl(credentials.environment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
-                .withCredentials(credentials)
-                .withSerializerAdapter(new AzureJacksonAdapter())
-                .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
-                .withInterceptor(new ProviderRegistrationInterceptor(credentials))
-                .withInterceptor(new ResourceManagerThrottlingInterceptor())
-                .build(), subscriptionId);
+    public static RedisManager authenticate(TokenCredential credential, AzureProfile profile) {
+        return authenticate(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
 
     /**
-     * Creates an instance of RedisManager that exposes redis resource management API entry points.
+     * Creates an instance of RedisManager that exposes Redis resource management API entry points.
      *
-     * @param restClient     the RestClient to be used for API calls.
-     * @param subscriptionId the subscription UUID
+     * @param httpPipeline the HttpPipeline to be used for API calls.
+     * @param profile the profile to use
      * @return the RedisManager
      */
-    public static RedisManager authenticate(RestClient restClient, String subscriptionId) {
-        return new RedisManager(restClient, subscriptionId);
+    public static RedisManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        return authenticate(httpPipeline, profile, new SdkContext());
+    }
+
+    /**
+     * Creates an instance of RedisManager that exposes Redis resource management API entry points.
+     *
+     * @param httpPipeline the HttpPipeline to be used for API calls.
+     * @param profile the profile to use
+     * @param sdkContext the sdk context
+     * @return the RedisManager
+     */
+    public static RedisManager authenticate(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
+        return new RedisManager(httpPipeline, profile, sdkContext);
+    }
+
+    /** The interface allowing configurations to be set. */
+    public interface Configurable extends AzureConfigurable<Configurable> {
+        /**
+         * Creates an instance of RedisManager that exposes Redis management API entry points.
+         *
+         * @param credential the credential to use
+         * @param profile the profile to use
+         * @return the interface exposing Redis management API entry points that work across subscriptions
+         */
+        RedisManager authenticate(TokenCredential credential, AzureProfile profile);
+    }
+
+    /** The implementation for Configurable interface. */
+    private static class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
+
+        public RedisManager authenticate(TokenCredential credential, AzureProfile profile) {
+            return RedisManager.authenticate(buildHttpPipeline(credential, profile), profile);
+        }
+    }
+
+    private RedisManager(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
+        super(
+            httpPipeline,
+            profile,
+            new RedisManagementClientBuilder()
+                .pipeline(httpPipeline)
+                .endpoint(profile.environment().getResourceManagerEndpoint())
+                .subscriptionId(profile.subscriptionId())
+                .buildClient(),
+            sdkContext);
     }
 
     /**
@@ -79,28 +108,5 @@ public final class RedisManager extends Manager<RedisManager, RedisManagementCli
             redisCaches = new RedisCachesImpl(this);
         }
         return redisCaches;
-    }
-
-    /**
-     * The interface allowing configurations to be set.
-     */
-    public interface Configurable extends AzureConfigurable<Configurable> {
-        /**
-         * Creates an instance of RedisManager that exposes Redis management API entry points.
-         *
-         * @param credentials    the credentials to use
-         * @param subscriptionId the subscription UUID
-         * @return the interface exposing Redis management API entry points that work across subscriptions
-         */
-        RedisManager authenticate(AzureTokenCredentials credentials, String subscriptionId);
-    }
-
-    /**
-     * The implementation for Configurable interface.
-     */
-    private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
-        public RedisManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
-            return RedisManager.authenticate(buildRestClient(credentials), subscriptionId);
-        }
     }
 }

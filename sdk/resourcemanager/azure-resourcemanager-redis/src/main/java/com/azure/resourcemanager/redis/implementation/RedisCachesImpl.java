@@ -20,6 +20,7 @@ import rx.functions.Func1;
  * The implementation of RedisCaches and its parent interfaces.
  */
 @LangDefinition
+public
 class RedisCachesImpl
     extends TopLevelModifiableResourcesImpl<
     RedisCache,
@@ -29,7 +30,7 @@ class RedisCachesImpl
     RedisManager>
     implements RedisCaches {
 
-    RedisCachesImpl(final RedisManager redisManager) {
+    public RedisCachesImpl(final RedisManager redisManager) {
         super(redisManager.inner().redis(), redisManager);
     }
 
