@@ -6,7 +6,7 @@ package com.azure.storage.blob.models;
 /**
  * Defines the input or output JSON serialization for a blob quick query request.
  */
-public class BlobQueryJsonSerialization extends BlobQuerySerialization {
+public class BlobQueryJsonSerialization implements BlobQuerySerialization {
 
     private char recordSeparator;
 
