@@ -27,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.atMost;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -196,5 +197,33 @@ class LockRenewalOperationTest {
             "initial lockedUntil[%s] is not before lockedUntil[%s]", lockedUntil, operation.getLockedUntil()));
 
         verify(renewalOperation, atMost(atMost)).apply(A_LOCK_TOKEN);
+    }
+
+    /**
+     * Verify that when a duration of Duration.ZERO is passed, then we do not renew at all.
+     */
+    @Test
+    void renewDurationZero() throws InterruptedException {
+        // Arrange
+        final Duration maxDuration = Duration.ZERO;
+        final Duration renewalPeriod = Duration.ofSeconds(3);
+        final Instant lockedUntil = Instant.now().plus(renewalPeriod);
+
+        when(renewalOperation.apply(A_LOCK_TOKEN))
+            .thenReturn(Mono.fromCallable(() -> Instant.now().plus(renewalPeriod)));
+
+        operation = new LockRenewalOperation(A_LOCK_TOKEN, lockedUntil, maxDuration,
+            false, renewalOperation);
+
+        // Act
+        Thread.sleep(renewalPeriod.toMillis());
+
+        // Assert
+        assertEquals(LockRenewalStatus.COMPLETE, operation.getStatus());
+        assertNull(operation.getThrowable());
+        assertEquals(lockedUntil, operation.getLockedUntil(), String.format(
+            "initial lockedUntil[%s] is not equal to lockedUntil[%s]", lockedUntil, operation.getLockedUntil()));
+
+        verify(renewalOperation, never()).apply(A_LOCK_TOKEN);
     }
 }

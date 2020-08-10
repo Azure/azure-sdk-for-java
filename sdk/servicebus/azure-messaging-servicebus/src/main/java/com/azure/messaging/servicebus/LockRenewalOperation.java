@@ -16,6 +16,7 @@ import reactor.core.publisher.MonoProcessor;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
@@ -47,9 +48,17 @@ public class LockRenewalOperation implements AutoCloseable {
      */
     LockRenewalOperation(String lockToken, Instant lockedUntil, Duration maxLockRenewalDuration, boolean isSession,
         Function<String, Mono<Instant>> renewalOperation) {
-        this.lockToken = lockToken;
+        this.lockToken = Objects.requireNonNull(lockToken, "'lockToken' cannot be null.");
+        this.renewalOperation = Objects.requireNonNull(renewalOperation, "'renewalOperation' cannot be null.");
         this.isSession = isSession;
-        this.renewalOperation = renewalOperation;
+
+        Objects.requireNonNull(lockedUntil, "'lockedUntil cannot be null.'");
+        Objects.requireNonNull(maxLockRenewalDuration, "'maxLockRenewalDuration' cannot be null.");
+
+        if (maxLockRenewalDuration.isNegative()) {
+            throw logger.logThrowableAsError(new IllegalArgumentException(
+                "'maxLockRenewalDuration' cannot be negative."));
+        }
 
         this.lockedUntil.set(lockedUntil);
         this.subscription = getRenewLockOperation(lockedUntil, maxLockRenewalDuration);
@@ -127,6 +136,7 @@ public class LockRenewalOperation implements AutoCloseable {
      */
     private Disposable getRenewLockOperation(Instant initialLockedUntil, Duration maxLockRenewalDuration) {
         if (maxLockRenewalDuration.isZero()) {
+            status.set(LockRenewalStatus.COMPLETE);
             return Disposables.single();
         }
 
