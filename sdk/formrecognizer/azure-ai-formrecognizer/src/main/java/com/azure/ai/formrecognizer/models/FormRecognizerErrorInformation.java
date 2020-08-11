@@ -6,10 +6,10 @@ package com.azure.ai.formrecognizer.models;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The ErrorInformation model.
+ * The FormRecognizerErrorInformation model.
  */
 @Immutable
-public final class ErrorInformation {
+public final class FormRecognizerErrorInformation {
     /*
      * The errorCode property.
      */
@@ -21,12 +21,12 @@ public final class ErrorInformation {
     private final String message;
 
     /**
-     * Constructs an ErrorInformation object.
+     * Constructs a FormRecognizerErrorInformation object.
      *
      * @param errorCode the error code returned by the service.
      * @param message the error message returned by the service
      */
-    public ErrorInformation(final String errorCode, final String message) {
+    public FormRecognizerErrorInformation(final String errorCode, final String message) {
         this.errorCode = errorCode;
         this.message = message;
     }

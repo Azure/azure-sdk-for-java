@@ -6,7 +6,8 @@
 ## 12.2.0-beta.1 (2019-07-07)
 - Added support for the 2019-12-12 service version.
 - Added support to query a file. 
-- Added support to increase the maximum size of data that can be sent via an append. 
+- Added support to increase the maximum size of data that can be sent via an append.
+- Fixed a bug that would cause buffered upload to always put an empty file before uploading actual data. 
 
 ## 12.1.2 (2020-06-12)
 - Updated azure-storage-common and azure-core dependencies.
