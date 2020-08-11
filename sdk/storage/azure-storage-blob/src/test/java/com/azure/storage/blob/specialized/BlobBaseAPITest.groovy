@@ -5,13 +5,13 @@ import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.models.*
 import com.azure.storage.blob.options.BlobQueryOptions
 import com.azure.storage.common.implementation.Constants
+import org.junit.Ignore
 import reactor.core.Exceptions
 import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.util.function.Consumer
 
-@Requires({ playbackMode() }) // TODO (rickle-msft): Remove annotation
 class BlobBaseAPITest extends APISpec {
 
     BlobClient bc
@@ -87,6 +87,7 @@ class BlobBaseAPITest extends APISpec {
     }
 
     @Unroll
+    @Requires({ playbackMode() }) // TODO (rickle-msft): Remove annotation
     def "Query min"() {
         setup:
         BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()
@@ -132,6 +133,7 @@ class BlobBaseAPITest extends APISpec {
     }
 
     @Unroll
+    @Requires({ playbackMode() }) // TODO (rickle-msft): Remove annotation
     def "Query csv serialization separator"() {
         setup:
         BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()
@@ -207,6 +209,7 @@ class BlobBaseAPITest extends APISpec {
     }
 
     @Unroll
+    @Requires({ playbackMode() }) // TODO (rickle-msft): Remove annotation
     def "Query csv serialization escape and field quote"() {
         setup:
         BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()
@@ -247,6 +250,7 @@ class BlobBaseAPITest extends APISpec {
 
     /* Note: Input delimited tested everywhere */
     @Unroll
+    @Requires({ playbackMode() }) // TODO (rickle-msft): Remove annotation
     def "Query Input json"() {
         setup:
         BlobQueryJsonSerialization ser = new BlobQueryJsonSerialization()
@@ -288,6 +292,7 @@ class BlobBaseAPITest extends APISpec {
         1000      || _
     }
 
+    @Requires({ playbackMode() }) // TODO (rickle-msft): Remove annotation
     def "Query Input csv Output json"() {
         setup:
         BlobQueryDelimitedSerialization inSer = new BlobQueryDelimitedSerialization()
@@ -327,6 +332,7 @@ class BlobBaseAPITest extends APISpec {
         }
     }
 
+    @Requires({ playbackMode() }) // TODO (rickle-msft): Remove annotation
     def "Query Input json Output csv"() {
         setup:
         BlobQueryJsonSerialization inSer = new BlobQueryJsonSerialization()
@@ -366,6 +372,7 @@ class BlobBaseAPITest extends APISpec {
         }
     }
 
+    @Requires({ playbackMode() }) // TODO (rickle-msft): Remove annotation
     def "Query non fatal error"() {
         setup:
         BlobQueryDelimitedSerialization base = new BlobQueryDelimitedSerialization()
@@ -404,6 +411,7 @@ class BlobBaseAPITest extends APISpec {
         receiver.numErrors > 0
     }
 
+    @Requires({ playbackMode() }) // TODO (rickle-msft): Remove annotation
     def "Query fatal error"() {
         setup:
         BlobQueryDelimitedSerialization base = new BlobQueryDelimitedSerialization()
@@ -432,6 +440,7 @@ class BlobBaseAPITest extends APISpec {
         thrown(Exceptions.ReactiveException)
     }
 
+    @Requires({ playbackMode() }) // TODO (rickle-msft): Remove annotation
     def "Query progress receiver"() {
         setup:
         BlobQueryDelimitedSerialization base = new BlobQueryDelimitedSerialization()
@@ -474,7 +483,8 @@ class BlobBaseAPITest extends APISpec {
         mockReceiver.progressList.contains(sizeofBlobToRead)
     }
 
-    @Requires( { liveMode() } ) // Large amount of data.
+    //@Requires( { liveMode() } ) // Large amount of data.
+    @Ignore // TODO (rickle-msft): Remove annotation
     def "Query multiple records with progress receiver"() {
         setup:
         BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()
@@ -525,6 +535,7 @@ class BlobBaseAPITest extends APISpec {
         }
     }
 
+    @Requires({ playbackMode() }) // TODO (rickle-msft): Remove annotation
     def "Query snapshot"() {
         setup:
         BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()
@@ -565,6 +576,7 @@ class BlobBaseAPITest extends APISpec {
     }
 
     @Unroll
+    @Requires({ playbackMode() }) // TODO (rickle-msft): Remove annotation
     def "Query input output IA"() {
         setup:
         /* Mock random impl of QQ Serialization*/
@@ -595,6 +607,7 @@ class BlobBaseAPITest extends APISpec {
     }
 
     @Unroll
+    @Requires({ playbackMode() }) // TODO (rickle-msft): Remove annotation
     def "Query AC"() {
         setup:
         def t = new HashMap<String, String>()
@@ -641,6 +654,7 @@ class BlobBaseAPITest extends APISpec {
     }
 
     @Unroll
+    @Requires({ playbackMode() }) // TODO (rickle-msft): Remove annotation
     def "Query AC fail"() {
         setup:
         setupBlobLeaseCondition(bc, leaseID)

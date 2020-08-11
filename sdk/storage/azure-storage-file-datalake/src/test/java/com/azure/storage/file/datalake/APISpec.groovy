@@ -202,6 +202,10 @@ class APISpec extends Specification {
         return setupTestMode() == TestMode.LIVE
     }
 
+    static boolean playbackMode() {
+        return setupTestMode() == TestMode.PLAYBACK
+    }
+
     private StorageSharedKeyCredential getCredential(String accountType) {
         String accountName
         String accountKey

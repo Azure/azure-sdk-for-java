@@ -28,6 +28,7 @@ import com.azure.storage.file.datalake.models.PathHttpHeaders
 import com.azure.storage.file.datalake.models.PathPermissions
 import com.azure.storage.file.datalake.models.RolePermissions
 import com.azure.storage.file.datalake.options.FileQueryOptions
+import org.junit.Ignore
 import reactor.core.Exceptions
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Hooks
@@ -3187,8 +3188,8 @@ class FileAPITest extends APISpec {
         mockReceiver.progressList.contains(sizeofBlobToRead)
     }
 
-    @Requires({ playbackMode() }) // TODO (rickle-msft): Remove annotation
-    @Requires( { liveMode() } ) // Large amount of data.
+    //@Requires( { liveMode() } ) // Large amount of data.
+    @Ignore // TODO (rickle-msft): Remove annotation
     def "Query multiple records with progress receiver"() {
         setup:
         FileQueryDelimitedSerialization ser = new FileQueryDelimitedSerialization()
