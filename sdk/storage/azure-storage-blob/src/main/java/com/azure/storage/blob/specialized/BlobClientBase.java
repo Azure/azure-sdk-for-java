@@ -13,6 +13,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.models.BlobQueryHeaders;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.models.BlobProperties;
@@ -1119,15 +1120,11 @@ public class BlobClientBase {
 
         // Data to subscribe to and read from.
         System.out.println("Making call to queryWR");
-        BlobQueryAsyncResponse response = client.queryWithResponse(queryOptions).block();
-        System.out.println("Got a response from query");
-
-        // Create input stream from the data.
-        if (response == null) {
-            throw logger.logExceptionAsError(new IllegalStateException("Query response cannot be null"));
-        }
-        return new ResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-            new FluxInputStream(response.getValue()), response.getDeserializedHeaders());
+        return client.queryWithResponse(queryOptions).map(response -> {
+            System.out.println("Got a response from queryWR");
+            return new ResponseBase<BlobQueryHeaders, InputStream>(
+                response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                new FluxInputStream(response.getValue()), response.getDeserializedHeaders());}).block();
     }
 
     /**
