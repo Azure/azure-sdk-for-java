@@ -88,7 +88,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework.data:spring-data-commons:[2.3.0.RELEASE]</include> <!-- {x-include-update;org.springframework.data:spring-data-commons;external_dependency} -->
+                <include>org.springframework.data:spring-data-commons:[2.3.2.RELEASE]</include> <!-- {x-include-update;org.springframework.data:spring-data-commons;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
