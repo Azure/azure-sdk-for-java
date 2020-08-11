@@ -489,12 +489,8 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> Mono<T> toObjectFromJsonSerializable(Document jsonSerializable, Class<T> c, Function<Document, Mono<Document>> transformer) {
-        if (transformer != null) {
-            return transformer.apply(jsonSerializable).map(js -> js.toObject(c));
-        } else {
-            return Mono.just(jsonSerializable.toObject(c));
-        }
+    public static <T> T toObjectFromJsonSerializable(Document jsonSerializable, Class<T> c, Function<Document, Document> transformer) {
+        return jsonSerializable.toObject(c);
     }
 
     public static ByteBuffer serializeJsonToByteBuffer(JsonSerializable jsonSerializable, ObjectMapper objectMapper) {

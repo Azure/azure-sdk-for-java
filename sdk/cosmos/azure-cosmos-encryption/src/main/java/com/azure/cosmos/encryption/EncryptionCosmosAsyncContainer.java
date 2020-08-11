@@ -8,6 +8,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosBridgeInternal;
+import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.ItemDeserializer;
 import com.azure.cosmos.implementation.Utils;
@@ -16,19 +17,26 @@ import com.azure.cosmos.implementation.encryption.CosmosResponseFactoryCore;
 import com.azure.cosmos.implementation.encryption.EncryptionProcessor;
 import com.azure.cosmos.implementation.encryption.EncryptionUtils;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
+import com.azure.cosmos.implementation.query.Transformer;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.EncryptionModelBridgeInternal;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 
 // TODO: for now basic functionality is in. some APIs and some logic branch is not complete yet.
@@ -335,8 +343,8 @@ public class EncryptionCosmosAsyncContainer {
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained items or an
      * error.
      */
-    public <T> CosmosPagedFlux<T> queryItems(SqlQuerySpec query, CosmosQueryRequestOptions options,
-                                             Class<T> classType) {
+    public <T> CosmosPagedFlux queryItems(SqlQuerySpec query, CosmosQueryRequestOptions options,
+                                          Class<T> classType) {
         if (options == null) {
             options = new CosmosQueryRequestOptions();
         }
@@ -349,8 +357,16 @@ public class EncryptionCosmosAsyncContainer {
             decryptionResultConsumer = encryptionQueryRequestOptions.getDecryptionResultHandler();
         }
 
+        final Consumer<DecryptionResult> finalDecryptionResultConsumer = decryptionResultConsumer;
+
         return CosmosBridgeInternal.queryItemsInternal(container, query, options, classType,
-            createTransformer(decryptionResultConsumer), encryptionScheduler);
+            new Transformer<T>() {
+
+                @Override
+                public Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> transform(Function<CosmosPagedFluxOptions, Flux<FeedResponse<ObjectNode>>> func) {
+                    return queryDecryptionTransformer(classType, finalDecryptionResultConsumer, func);
+                }
+            } , encryptionScheduler);
     }
 
     private Function<Document, Mono<Document>> createTransformer(Consumer<DecryptionResult> decryptionResultConsumer) {
@@ -421,6 +437,31 @@ public class EncryptionCosmosAsyncContainer {
                 return Mono.just(rsp);
             }
         );
+    }
+
+    private <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> queryDecryptionTransformer(Class<T> classType,
+                                                                                                   Consumer<DecryptionResult> handler,
+                                                                                                   Function<CosmosPagedFluxOptions, Flux<FeedResponse<ObjectNode>>> func) {
+        return func.andThen(flux -> {
+            return flux.flatMap(
+                page -> {
+                    List<byte[]> bytesList =
+                        page.getResults().stream().map(node -> cosmosSerializerToStream(node)).collect(Collectors.toList());
+
+                    List<Mono<byte[]>> list =
+                        bytesList.stream().map(bytes -> decryptResponseAsync(bytes, handler)).collect(Collectors.toList());
+
+                    return Flux.merge(list).map(
+                        item -> {
+                            return getItemDeserializer().parseFrom(classType, item);
+                        }
+
+                    ).collectList().map(itemList ->
+                        ModelBridgeInternal.createFeedResponseWithQueryMetrics(itemList, page.getResponseHeaders(), BridgeInternal.queryMetricsFromFeedResponse(page))
+                    );
+                }
+            );
+        });
     }
 }
 

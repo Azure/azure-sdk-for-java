@@ -360,7 +360,7 @@ public class EncryptionTests extends TestSuiteBase {
     public void encryptionChangeFeedDecryptionSuccessful() {
     }
 
-    @Test(groups = {"encryption"}, timeOut = TIMEOUT * 100)
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT)
     public void encryptionHandleDecryptionFailure() {
         String dek2 = "failDek";
         EncryptionTests.createDek(EncryptionTests.dekProvider, dek2);
@@ -451,7 +451,7 @@ public class EncryptionTests extends TestSuiteBase {
             expectedDoc);
     }
 
-    @Test(groups = { "encryption" }, timeOut = TIMEOUT)
+    @Test(groups = { "encryption" }, timeOut = TIMEOUT, enabled = false)
     public void encryptionDecryptQueryValueResponse() {
         EncryptionTests.createItem(EncryptionTests.encryptionContainer,
             EncryptionTests.dekId,
@@ -688,9 +688,8 @@ public class EncryptionTests extends TestSuiteBase {
         String query,
         CosmosQueryRequestOptions requestOptions)
     {
-        List<TestDoc> readDocs =
-            container.queryItems(new SqlQuerySpec(query), requestOptions, TestDoc.class).collectList().block();
-
+        CosmosPagedFlux<TestDoc> pageFlux = container.queryItems(new SqlQuerySpec(query), requestOptions, TestDoc.class);
+        List<TestDoc> readDocs = pageFlux.collectList().block();
 
         assertThat(readDocs.size()).isEqualTo(2);
         assertThat(readDocs).containsExactlyInAnyOrder(testDoc1, testDoc2);
