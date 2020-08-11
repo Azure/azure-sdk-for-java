@@ -83,7 +83,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
-      <version>3.11.1</version> <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
+      <version>3.16.1</version> <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
 

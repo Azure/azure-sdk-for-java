@@ -1,6 +1,8 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 3.0.0-beta.1 (Unreleased)
+First stable release of the azure-ai-formrecognizer package. Targets the service's v2.0 API.
+
 - Added support for context passing.
 - Moved training client models under `com.azure.ai.formrecognizer.training.models` namespace
 - Renamed accessors for property `includeFieldElements` to `isFieldElementsIncluded` and `setFieldElementsIncluded`
@@ -10,6 +12,7 @@
 - Renamed accessors for property `includeSubFolders` to `isSubfoldersIncluded` and `setSubfoldersIncluded`
 - Renamed property `trainingStatus` and `documentErrors` on `TrainingDocumentInfo` model to `status` and `errors` 
 respectively
+- Renamed property `formPageRange` on `RecognizedForm` model to `pageRange`
 - Changed param ordering for methods `beginRecognizeCustomForms` and `beginRecognizeCustomFormsFromUrl`
 
 ### Key Bug Fixes

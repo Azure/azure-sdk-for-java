@@ -3409,11 +3409,6 @@ class FileAPITest extends APISpec {
         }
     }
 
-    class RandomOtherSerialization extends FileQuerySerialization {
-        @Override
-        public RandomOtherSerialization setRecordSeparator(char recordSeparator) {
-            this.recordSeparator = recordSeparator;
-            return this;
-        }
+    class RandomOtherSerialization implements FileQuerySerialization {
     }
 }

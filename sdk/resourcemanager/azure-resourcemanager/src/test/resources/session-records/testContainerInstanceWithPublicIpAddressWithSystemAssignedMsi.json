@@ -1,0 +1,570 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerInstance/containerGroups?api-version=2019-12-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerinstance/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:46:29 GMT",
+      "content-length" : "12",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11932",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "c0d85c21-3afd-4469-9299-6dd2d4743f2a",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064630Z:c0d85c21-3afd-4469-9299-6dd2d4743f2a",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "c0d85c21-3afd-4469-9299-6dd2d4743f2a",
+      "Body" : "{\"value\":[]}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerInstance/containerGroups?api-version=2019-12-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerinstance/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:46:29 GMT",
+      "content-length" : "12",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11931",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "a4d97fe0-879c-4bf9-aee1-450a22d967c4",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064630Z:a4d97fe0-879c-4bf9-aee1-450a22d967c4",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "a4d97fe0-879c-4bf9-aee1-450a22d967c4",
+      "Body" : "{\"value\":[]}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgaci12683?api-version=2020-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:46:32 GMT",
+      "content-length" : "308",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1172",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "30ec1192-c083-474a-b2be-8739eedb633a",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064633Z:30ec1192-c083-474a-b2be-8739eedb633a",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "30ec1192-c083-474a-b2be-8739eedb633a",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaci12683\",\"name\":\"rgaci12683\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"eastus2\",\"tags\":{\"date\":\"2020-07-28T06:46:30.810708400Z\",\"product\":\"javasdk\",\"cause\":\"automation\"},\"properties\":{\"provisioningState\":\"Succeeded\"}}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaci12683/providers/Microsoft.ContainerInstance/containerGroups/aci325973?api-version=2019-12-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerinstance/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:46:46 GMT",
+      "content-length" : "1218",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1153",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "pragma" : "no-cache",
+      "x-ms-ratelimit-remaining-subscription-resource-requests-pt1h" : "299",
+      "x-ms-correlation-request-id" : "d1e34de0-a274-41f2-86ae-3e932b9f5558",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-ratelimit-remaining-subscription-resource-requests-pt5m" : "99",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064647Z:d1e34de0-a274-41f2-86ae-3e932b9f5558",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "eastus2:53d14e1f-9907-4e7b-a2f2-d6dafe0f0476",
+      "Body" : "{\"properties\":{\"sku\":\"Standard\",\"provisioningState\":\"Pending\",\"containers\":[{\"name\":\"tomcat\",\"properties\":{\"image\":\"tomcat\",\"ports\":[{\"protocol\":\"TCP\",\"port\":8080}],\"environmentVariables\":[{\"name\":\"ENV1\",\"value\":\"value1\"}],\"resources\":{\"requests\":{\"memoryInGB\":1.5,\"cpu\":1.0}}}},{\"name\":\"nginx\",\"properties\":{\"image\":\"nginx\",\"ports\":[{\"protocol\":\"TCP\",\"port\":80}],\"environmentVariables\":[{\"name\":\"ENV2\"}],\"resources\":{\"requests\":{\"memoryInGB\":1.5,\"cpu\":1.0}}}}],\"initContainers\":[],\"restartPolicy\":\"Never\",\"ipAddress\":{\"ports\":[{\"protocol\":\"TCP\",\"port\":8080},{\"protocol\":\"TCP\",\"port\":80}],\"ip\":\"52.242.99.201\",\"type\":\"Public\",\"dnsNameLabel\":\"aci325973\",\"fqdn\":\"aci325973.eastus2.azurecontainer.io\"},\"osType\":\"Linux\",\"volumes\":[{\"name\":\"emptydir1\",\"emptyDir\":{}}],\"instanceView\":{\"events\":[],\"state\":\"Pending\"}},\"identity\":{\"principalId\":\"ce8ea86d-8c2a-419c-ba03-e958ba64c54f\",\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"type\":\"SystemAssigned\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaci12683/providers/Microsoft.ContainerInstance/containerGroups/aci325973\",\"name\":\"aci325973\",\"type\":\"Microsoft.ContainerInstance/containerGroups\",\"location\":\"eastus2\",\"tags\":{\"tag1\":\"value1\"}}",
+      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerInstance/locations/eastus2/operations/53d14e1f-9907-4e7b-a2f2-d6dafe0f0476?api-version=2018-06-01"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerInstance/locations/eastus2/operations/53d14e1f-9907-4e7b-a2f2-d6dafe0f0476?api-version=2018-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:47:17 GMT",
+      "content-length" : "571",
+      "expires" : "-1",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11886",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "05868df2-67b3-48ed-95d1-bdd47aa072e0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064717Z:05868df2-67b3-48ed-95d1-bdd47aa072e0",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "eastus2:491edc81-8dde-4113-b8f2-ea07a96f5951",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaci12683/providers/Microsoft.ContainerInstance/containerGroups/aci325973\",\"status\":\"Creating\",\"startTime\":\"2020-07-28T06:46:45.643489Z\",\"properties\":{\"events\":[{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:46:50Z\",\"lastTimestamp\":\"2020-07-28T06:46:50Z\",\"name\":\"Pulling\",\"message\":\"pulling image \\\"tomcat\\\"\",\"type\":\"Normal\"},{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:07Z\",\"lastTimestamp\":\"2020-07-28T06:47:07Z\",\"name\":\"Pulled\",\"message\":\"Successfully pulled image \\\"tomcat\\\"\",\"type\":\"Normal\"}]}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerInstance/locations/eastus2/operations/53d14e1f-9907-4e7b-a2f2-d6dafe0f0476?api-version=2018-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:47:48 GMT",
+      "content-length" : "571",
+      "expires" : "-1",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11901",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "1248426e-a6ec-4082-b1a3-4ff7b0bb2c93",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064749Z:1248426e-a6ec-4082-b1a3-4ff7b0bb2c93",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "eastus2:b3f8dbea-a257-4342-986b-016e0e101381",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaci12683/providers/Microsoft.ContainerInstance/containerGroups/aci325973\",\"status\":\"Creating\",\"startTime\":\"2020-07-28T06:46:45.643489Z\",\"properties\":{\"events\":[{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:46:50Z\",\"lastTimestamp\":\"2020-07-28T06:46:50Z\",\"name\":\"Pulling\",\"message\":\"pulling image \\\"tomcat\\\"\",\"type\":\"Normal\"},{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:07Z\",\"lastTimestamp\":\"2020-07-28T06:47:07Z\",\"name\":\"Pulled\",\"message\":\"Successfully pulled image \\\"tomcat\\\"\",\"type\":\"Normal\"}]}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerInstance/locations/eastus2/operations/53d14e1f-9907-4e7b-a2f2-d6dafe0f0476?api-version=2018-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:48:19 GMT",
+      "content-length" : "1519",
+      "expires" : "-1",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11834",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "b1f1e462-32c7-4c08-8504-61056aed268e",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064819Z:b1f1e462-32c7-4c08-8504-61056aed268e",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "eastus2:aef41d6f-fa08-48b1-9f3d-610c272bd72e",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaci12683/providers/Microsoft.ContainerInstance/containerGroups/aci325973\",\"status\":\"Succeeded\",\"startTime\":\"2020-07-28T06:46:45.643489Z\",\"properties\":{\"events\":[{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:46:50Z\",\"lastTimestamp\":\"2020-07-28T06:46:50Z\",\"name\":\"Pulling\",\"message\":\"pulling image \\\"tomcat\\\"\",\"type\":\"Normal\"},{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:07Z\",\"lastTimestamp\":\"2020-07-28T06:47:07Z\",\"name\":\"Pulled\",\"message\":\"Successfully pulled image \\\"tomcat\\\"\",\"type\":\"Normal\"},{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:35Z\",\"lastTimestamp\":\"2020-07-28T06:47:35Z\",\"name\":\"Created\",\"message\":\"Created container\",\"type\":\"Normal\"},{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:35Z\",\"lastTimestamp\":\"2020-07-28T06:47:35Z\",\"name\":\"Started\",\"message\":\"Started container\",\"type\":\"Normal\"},{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:35Z\",\"lastTimestamp\":\"2020-07-28T06:47:35Z\",\"name\":\"Pulling\",\"message\":\"pulling image \\\"nginx\\\"\",\"type\":\"Normal\"},{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:41Z\",\"lastTimestamp\":\"2020-07-28T06:47:41Z\",\"name\":\"Pulled\",\"message\":\"Successfully pulled image \\\"nginx\\\"\",\"type\":\"Normal\"},{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:49Z\",\"lastTimestamp\":\"2020-07-28T06:47:49Z\",\"name\":\"Created\",\"message\":\"Created container\",\"type\":\"Normal\"},{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:49Z\",\"lastTimestamp\":\"2020-07-28T06:47:49Z\",\"name\":\"Started\",\"message\":\"Started container\",\"type\":\"Normal\"}]}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaci12683/providers/Microsoft.ContainerInstance/containerGroups/aci325973?api-version=2019-12-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:48:20 GMT",
+      "content-length" : "2766",
+      "expires" : "-1",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11844",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "5b7b6151-8d27-44b4-b29f-921b4d489dfb",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064820Z:5b7b6151-8d27-44b4-b29f-921b4d489dfb",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "eastus2:4e345400-689f-451f-8609-6356b515d25a",
+      "Body" : "{\"properties\":{\"sku\":\"Standard\",\"provisioningState\":\"Succeeded\",\"containers\":[{\"name\":\"tomcat\",\"properties\":{\"image\":\"tomcat\",\"ports\":[{\"protocol\":\"TCP\",\"port\":8080}],\"environmentVariables\":[{\"name\":\"ENV1\",\"value\":\"value1\"}],\"instanceView\":{\"restartCount\":0,\"currentState\":{\"state\":\"Running\",\"startTime\":\"2020-07-28T06:47:35Z\",\"detailStatus\":\"\"},\"events\":[{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:46:50Z\",\"lastTimestamp\":\"2020-07-28T06:46:50Z\",\"name\":\"Pulling\",\"message\":\"pulling image \\\"tomcat\\\"\",\"type\":\"Normal\"},{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:07Z\",\"lastTimestamp\":\"2020-07-28T06:47:07Z\",\"name\":\"Pulled\",\"message\":\"Successfully pulled image \\\"tomcat\\\"\",\"type\":\"Normal\"},{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:35Z\",\"lastTimestamp\":\"2020-07-28T06:47:35Z\",\"name\":\"Created\",\"message\":\"Created container\",\"type\":\"Normal\"},{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:35Z\",\"lastTimestamp\":\"2020-07-28T06:47:35Z\",\"name\":\"Started\",\"message\":\"Started container\",\"type\":\"Normal\"}]},\"resources\":{\"requests\":{\"memoryInGB\":1.5,\"cpu\":1.0}}}},{\"name\":\"nginx\",\"properties\":{\"image\":\"nginx\",\"ports\":[{\"protocol\":\"TCP\",\"port\":80}],\"environmentVariables\":[{\"name\":\"ENV2\"}],\"instanceView\":{\"restartCount\":0,\"currentState\":{\"state\":\"Running\",\"startTime\":\"2020-07-28T06:47:49Z\",\"detailStatus\":\"\"},\"events\":[{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:35Z\",\"lastTimestamp\":\"2020-07-28T06:47:35Z\",\"name\":\"Pulling\",\"message\":\"pulling image \\\"nginx\\\"\",\"type\":\"Normal\"},{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:41Z\",\"lastTimestamp\":\"2020-07-28T06:47:41Z\",\"name\":\"Pulled\",\"message\":\"Successfully pulled image \\\"nginx\\\"\",\"type\":\"Normal\"},{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:49Z\",\"lastTimestamp\":\"2020-07-28T06:47:49Z\",\"name\":\"Created\",\"message\":\"Created container\",\"type\":\"Normal\"},{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:49Z\",\"lastTimestamp\":\"2020-07-28T06:47:49Z\",\"name\":\"Started\",\"message\":\"Started container\",\"type\":\"Normal\"}]},\"resources\":{\"requests\":{\"memoryInGB\":1.5,\"cpu\":1.0}}}}],\"initContainers\":[],\"restartPolicy\":\"Never\",\"ipAddress\":{\"ports\":[{\"protocol\":\"TCP\",\"port\":8080},{\"protocol\":\"TCP\",\"port\":80}],\"ip\":\"52.242.99.201\",\"type\":\"Public\",\"dnsNameLabel\":\"aci325973\",\"fqdn\":\"aci325973.eastus2.azurecontainer.io\"},\"osType\":\"Linux\",\"volumes\":[{\"name\":\"emptydir1\",\"emptyDir\":{}}],\"instanceView\":{\"events\":[],\"state\":\"Running\"}},\"identity\":{\"principalId\":\"ce8ea86d-8c2a-419c-ba03-e958ba64c54f\",\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"type\":\"SystemAssigned\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaci12683/providers/Microsoft.ContainerInstance/containerGroups/aci325973\",\"name\":\"aci325973\",\"type\":\"Microsoft.ContainerInstance/containerGroups\",\"location\":\"eastus2\",\"tags\":{\"tag1\":\"value1\"}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaci12683/providers/Microsoft.Authorization/roleDefinitions?$filter=roleName%20eq%20%27Contributor%27&api-version=2018-01-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:48:20 GMT",
+      "content-length" : "832",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11833",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "b7b9ea0b-8d53-4770-96f3-b2485e866fff",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "set-cookie" : "x-ms-gateway-slice=Production; path=/; secure; samesite=none; httponly",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064820Z:b7b9ea0b-8d53-4770-96f3-b2485e866fff",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "358309bd-a87d-498d-9db9-89fef6e6ef14",
+      "Body" : "{\"value\":[{\"properties\":{\"roleName\":\"Contributor\",\"type\":\"BuiltInRole\",\"description\":\"Lets you manage everything except access to resources.\",\"assignableScopes\":[\"/\"],\"permissions\":[{\"actions\":[\"*\"],\"notActions\":[\"Microsoft.Authorization/*/Delete\",\"Microsoft.Authorization/*/Write\",\"Microsoft.Authorization/elevateAccess/Action\",\"Microsoft.Blueprint/blueprintAssignments/write\",\"Microsoft.Blueprint/blueprintAssignments/delete\"],\"dataActions\":[],\"notDataActions\":[]}],\"createdOn\":\"2015-02-02T21:55:09.8806423Z\",\"updatedOn\":\"2019-02-05T21:24:38.4580610Z\",\"createdBy\":null,\"updatedBy\":null},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c\",\"type\":\"Microsoft.Authorization/roleDefinitions\",\"name\":\"b24988ac-6180-42a0-ab88-20f7382dd24c\"}]}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaci12683/providers/Microsoft.Authorization/roleAssignments/a8b8a3a4-c920-4512-9b53-2b765e5cf552?api-version=2018-01-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:48:26 GMT",
+      "content-length" : "773",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1127",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "cc27eda1-19e9-4f31-b43f-58cb0ce4931b",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "set-cookie" : "x-ms-gateway-slice=Production; path=/; secure; samesite=none; httponly",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064826Z:cc27eda1-19e9-4f31-b43f-58cb0ce4931b",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "3764ef3f-b3db-4659-80d1-2925e08528b0",
+      "Body" : "{\"properties\":{\"roleDefinitionId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c\",\"principalId\":\"ce8ea86d-8c2a-419c-ba03-e958ba64c54f\",\"principalType\":\"ServicePrincipal\",\"scope\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaci12683\",\"createdOn\":\"2020-07-28T06:48:21.3630709Z\",\"updatedOn\":\"2020-07-28T06:48:21.3630709Z\",\"createdBy\":null,\"updatedBy\":\"0c421105-9e6b-4a09-bcda-fa4ddd2e70da\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaci12683/providers/Microsoft.Authorization/roleAssignments/a8b8a3a4-c920-4512-9b53-2b765e5cf552\",\"type\":\"Microsoft.Authorization/roleAssignments\",\"name\":\"a8b8a3a4-c920-4512-9b53-2b765e5cf552\"}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaci12683/providers/Microsoft.ContainerInstance/containerGroups/aci325973?api-version=2019-12-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerinstance/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:48:26 GMT",
+      "content-length" : "2766",
+      "expires" : "-1",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11881",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "493b7895-8f27-4618-a001-0dbba77f13a6",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064827Z:493b7895-8f27-4618-a001-0dbba77f13a6",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "eastus2:cf9a32e3-5ba4-428a-a9af-730fd6bef2c5",
+      "Body" : "{\"properties\":{\"sku\":\"Standard\",\"provisioningState\":\"Succeeded\",\"containers\":[{\"name\":\"tomcat\",\"properties\":{\"image\":\"tomcat\",\"ports\":[{\"protocol\":\"TCP\",\"port\":8080}],\"environmentVariables\":[{\"name\":\"ENV1\",\"value\":\"value1\"}],\"instanceView\":{\"restartCount\":0,\"currentState\":{\"state\":\"Running\",\"startTime\":\"2020-07-28T06:47:35Z\",\"detailStatus\":\"\"},\"events\":[{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:46:50Z\",\"lastTimestamp\":\"2020-07-28T06:46:50Z\",\"name\":\"Pulling\",\"message\":\"pulling image \\\"tomcat\\\"\",\"type\":\"Normal\"},{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:07Z\",\"lastTimestamp\":\"2020-07-28T06:47:07Z\",\"name\":\"Pulled\",\"message\":\"Successfully pulled image \\\"tomcat\\\"\",\"type\":\"Normal\"},{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:35Z\",\"lastTimestamp\":\"2020-07-28T06:47:35Z\",\"name\":\"Created\",\"message\":\"Created container\",\"type\":\"Normal\"},{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:35Z\",\"lastTimestamp\":\"2020-07-28T06:47:35Z\",\"name\":\"Started\",\"message\":\"Started container\",\"type\":\"Normal\"}]},\"resources\":{\"requests\":{\"memoryInGB\":1.5,\"cpu\":1.0}}}},{\"name\":\"nginx\",\"properties\":{\"image\":\"nginx\",\"ports\":[{\"protocol\":\"TCP\",\"port\":80}],\"environmentVariables\":[{\"name\":\"ENV2\"}],\"instanceView\":{\"restartCount\":0,\"currentState\":{\"state\":\"Running\",\"startTime\":\"2020-07-28T06:47:49Z\",\"detailStatus\":\"\"},\"events\":[{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:35Z\",\"lastTimestamp\":\"2020-07-28T06:47:35Z\",\"name\":\"Pulling\",\"message\":\"pulling image \\\"nginx\\\"\",\"type\":\"Normal\"},{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:41Z\",\"lastTimestamp\":\"2020-07-28T06:47:41Z\",\"name\":\"Pulled\",\"message\":\"Successfully pulled image \\\"nginx\\\"\",\"type\":\"Normal\"},{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:49Z\",\"lastTimestamp\":\"2020-07-28T06:47:49Z\",\"name\":\"Created\",\"message\":\"Created container\",\"type\":\"Normal\"},{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:49Z\",\"lastTimestamp\":\"2020-07-28T06:47:49Z\",\"name\":\"Started\",\"message\":\"Started container\",\"type\":\"Normal\"}]},\"resources\":{\"requests\":{\"memoryInGB\":1.5,\"cpu\":1.0}}}}],\"initContainers\":[],\"restartPolicy\":\"Never\",\"ipAddress\":{\"ports\":[{\"protocol\":\"TCP\",\"port\":8080},{\"protocol\":\"TCP\",\"port\":80}],\"ip\":\"52.242.99.201\",\"type\":\"Public\",\"dnsNameLabel\":\"aci325973\",\"fqdn\":\"aci325973.eastus2.azurecontainer.io\"},\"osType\":\"Linux\",\"volumes\":[{\"name\":\"emptydir1\",\"emptyDir\":{}}],\"instanceView\":{\"events\":[],\"state\":\"Running\"}},\"identity\":{\"principalId\":\"ce8ea86d-8c2a-419c-ba03-e958ba64c54f\",\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"type\":\"SystemAssigned\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaci12683/providers/Microsoft.ContainerInstance/containerGroups/aci325973\",\"name\":\"aci325973\",\"type\":\"Microsoft.ContainerInstance/containerGroups\",\"location\":\"eastus2\",\"tags\":{\"tag1\":\"value1\"}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaci12683/providers/Microsoft.ContainerInstance/containerGroups?api-version=2019-12-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerinstance/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:48:27 GMT",
+      "content-length" : "1185",
+      "expires" : "-1",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11835",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "b022762a-b2b1-4f1b-b2ea-ed4f625e1559",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064827Z:b022762a-b2b1-4f1b-b2ea-ed4f625e1559",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "eastus2:8468ca89-f830-47e6-a7f1-b0b7ecc4c626",
+      "Body" : "{\"value\":[{\"properties\":{\"sku\":\"Standard\",\"provisioningState\":\"Succeeded\",\"containers\":[{\"name\":\"tomcat\",\"properties\":{\"image\":\"tomcat\",\"ports\":[{\"protocol\":\"TCP\",\"port\":8080}],\"environmentVariables\":[{\"name\":\"ENV1\",\"value\":\"value1\"}],\"resources\":{\"requests\":{\"memoryInGB\":1.5,\"cpu\":1.0}}}},{\"name\":\"nginx\",\"properties\":{\"image\":\"nginx\",\"ports\":[{\"protocol\":\"TCP\",\"port\":80}],\"environmentVariables\":[{\"name\":\"ENV2\"}],\"resources\":{\"requests\":{\"memoryInGB\":1.5,\"cpu\":1.0}}}}],\"initContainers\":[],\"restartPolicy\":\"Never\",\"ipAddress\":{\"ports\":[{\"protocol\":\"TCP\",\"port\":8080},{\"protocol\":\"TCP\",\"port\":80}],\"ip\":\"52.242.99.201\",\"type\":\"Public\",\"dnsNameLabel\":\"aci325973\",\"fqdn\":\"aci325973.eastus2.azurecontainer.io\"},\"osType\":\"Linux\",\"volumes\":[{\"name\":\"emptydir1\",\"emptyDir\":{}}]},\"identity\":{\"principalId\":\"ce8ea86d-8c2a-419c-ba03-e958ba64c54f\",\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"type\":\"SystemAssigned\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaci12683/providers/Microsoft.ContainerInstance/containerGroups/aci325973\",\"name\":\"aci325973\",\"type\":\"Microsoft.ContainerInstance/containerGroups\",\"location\":\"eastus2\",\"tags\":{\"tag1\":\"value1\"}}]}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaci12683/providers/Microsoft.ContainerInstance/containerGroups/aci325973?api-version=2019-12-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerinstance/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:48:27 GMT",
+      "content-length" : "2766",
+      "expires" : "-1",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11792",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "1cab44bc-9483-4714-af46-acf5031d0ee1",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064828Z:1cab44bc-9483-4714-af46-acf5031d0ee1",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "eastus2:cafb8d03-6719-4044-94a4-1516b61c1ae7",
+      "Body" : "{\"properties\":{\"sku\":\"Standard\",\"provisioningState\":\"Succeeded\",\"containers\":[{\"name\":\"tomcat\",\"properties\":{\"image\":\"tomcat\",\"ports\":[{\"protocol\":\"TCP\",\"port\":8080}],\"environmentVariables\":[{\"name\":\"ENV1\",\"value\":\"value1\"}],\"instanceView\":{\"restartCount\":0,\"currentState\":{\"state\":\"Running\",\"startTime\":\"2020-07-28T06:47:35Z\",\"detailStatus\":\"\"},\"events\":[{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:46:50Z\",\"lastTimestamp\":\"2020-07-28T06:46:50Z\",\"name\":\"Pulling\",\"message\":\"pulling image \\\"tomcat\\\"\",\"type\":\"Normal\"},{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:07Z\",\"lastTimestamp\":\"2020-07-28T06:47:07Z\",\"name\":\"Pulled\",\"message\":\"Successfully pulled image \\\"tomcat\\\"\",\"type\":\"Normal\"},{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:35Z\",\"lastTimestamp\":\"2020-07-28T06:47:35Z\",\"name\":\"Created\",\"message\":\"Created container\",\"type\":\"Normal\"},{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:35Z\",\"lastTimestamp\":\"2020-07-28T06:47:35Z\",\"name\":\"Started\",\"message\":\"Started container\",\"type\":\"Normal\"}]},\"resources\":{\"requests\":{\"memoryInGB\":1.5,\"cpu\":1.0}}}},{\"name\":\"nginx\",\"properties\":{\"image\":\"nginx\",\"ports\":[{\"protocol\":\"TCP\",\"port\":80}],\"environmentVariables\":[{\"name\":\"ENV2\"}],\"instanceView\":{\"restartCount\":0,\"currentState\":{\"state\":\"Running\",\"startTime\":\"2020-07-28T06:47:49Z\",\"detailStatus\":\"\"},\"events\":[{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:35Z\",\"lastTimestamp\":\"2020-07-28T06:47:35Z\",\"name\":\"Pulling\",\"message\":\"pulling image \\\"nginx\\\"\",\"type\":\"Normal\"},{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:41Z\",\"lastTimestamp\":\"2020-07-28T06:47:41Z\",\"name\":\"Pulled\",\"message\":\"Successfully pulled image \\\"nginx\\\"\",\"type\":\"Normal\"},{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:49Z\",\"lastTimestamp\":\"2020-07-28T06:47:49Z\",\"name\":\"Created\",\"message\":\"Created container\",\"type\":\"Normal\"},{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:49Z\",\"lastTimestamp\":\"2020-07-28T06:47:49Z\",\"name\":\"Started\",\"message\":\"Started container\",\"type\":\"Normal\"}]},\"resources\":{\"requests\":{\"memoryInGB\":1.5,\"cpu\":1.0}}}}],\"initContainers\":[],\"restartPolicy\":\"Never\",\"ipAddress\":{\"ports\":[{\"protocol\":\"TCP\",\"port\":8080},{\"protocol\":\"TCP\",\"port\":80}],\"ip\":\"52.242.99.201\",\"type\":\"Public\",\"dnsNameLabel\":\"aci325973\",\"fqdn\":\"aci325973.eastus2.azurecontainer.io\"},\"osType\":\"Linux\",\"volumes\":[{\"name\":\"emptydir1\",\"emptyDir\":{}}],\"instanceView\":{\"events\":[],\"state\":\"Running\"}},\"identity\":{\"principalId\":\"ce8ea86d-8c2a-419c-ba03-e958ba64c54f\",\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"type\":\"SystemAssigned\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaci12683/providers/Microsoft.ContainerInstance/containerGroups/aci325973\",\"name\":\"aci325973\",\"type\":\"Microsoft.ContainerInstance/containerGroups\",\"location\":\"eastus2\",\"tags\":{\"tag1\":\"value1\"}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/providers/Microsoft.ContainerInstance/operations?api-version=2019-12-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerinstance/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:48:28 GMT",
+      "content-length" : "8445",
+      "expires" : "-1",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "712867be-e3e3-47d5-ac89-bc62d41d0c28",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-ratelimit-remaining-tenant-reads" : "11999",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064828Z:712867be-e3e3-47d5-ac89-bc62d41d0c28",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "southeastasia:8577c2b2-db22-4be5-a280-16ce95b1eb14",
+      "Body" : "{\"value\":[{\"name\":\"Microsoft.ContainerInstance/register/action\",\"display\":{\"provider\":\"Microsoft Container Instance\",\"resource\":\"Container Group\",\"operation\":\"Register Microsoft Container Instance\",\"description\":\"Registers the subscription for the container instance resource provider and enables the creation of container groups.\"},\"origin\":\"User\"},{\"name\":\"Microsoft.ContainerInstance/containerGroups/read\",\"display\":{\"provider\":\"Microsoft Container Instance\",\"resource\":\"Container Group\",\"operation\":\"Get Container Groups\",\"description\":\"Get all container goups.\"},\"origin\":\"User\"},{\"name\":\"Microsoft.ContainerInstance/containerGroups/write\",\"display\":{\"provider\":\"Microsoft Container Instance\",\"resource\":\"Container Group\",\"operation\":\"Create or update Container Group\",\"description\":\"Create or update a specific container group.\"},\"origin\":\"User\"},{\"name\":\"Microsoft.ContainerInstance/containerGroups/delete\",\"display\":{\"provider\":\"Microsoft Container Instance\",\"resource\":\"Container Group\",\"operation\":\"Delete Container Group\",\"description\":\"Delete the specific container group.\"},\"origin\":\"User\"},{\"name\":\"Microsoft.ContainerInstance/containerGroups/restart/action\",\"display\":{\"provider\":\"Microsoft Container Instance\",\"resource\":\"Container Group\",\"operation\":\"Restart Container Group\",\"description\":\"Restarts a specific container group.\"},\"origin\":\"User\"},{\"name\":\"Microsoft.ContainerInstance/containerGroups/stop/action\",\"display\":{\"provider\":\"Microsoft Container Instance\",\"resource\":\"Container Group\",\"operation\":\"Stop Container Group\",\"description\":\"Stops a specific container group. Compute resources will be deallocated and billing will stop.\"},\"origin\":\"User\"},{\"name\":\"Microsoft.ContainerInstance/containerGroups/start/action\",\"display\":{\"provider\":\"Microsoft Container Instance\",\"resource\":\"Container Group\",\"operation\":\"Start Container Group\",\"description\":\"Starts a specific container group.\"},\"origin\":\"User\"},{\"name\":\"Microsoft.ContainerInstance/containerGroups/containers/logs/read\",\"display\":{\"provider\":\"Microsoft Container Instance\",\"resource\":\"Container Group\",\"operation\":\"Get Container Logs\",\"description\":\"Get logs for a specific container.\"},\"origin\":\"User\"},{\"name\":\"Microsoft.ContainerInstance/containerGroups/containers/buildlogs/read\",\"display\":{\"provider\":\"Microsoft Container Instance\",\"resource\":\"Container Group\",\"operation\":\"Get Container Build Logs\",\"description\":\"Get build logs for a specific container.\"},\"origin\":\"User\"},{\"name\":\"Microsoft.ContainerInstance/containerGroups/containers/exec/action\",\"display\":{\"provider\":\"Microsoft Container Instance\",\"resource\":\"Container Group\",\"operation\":\"Exec Into a Container\",\"description\":\"Exec into a specific container.\"},\"origin\":\"User\"},{\"name\":\"Microsoft.ContainerInstance/locations/operationResults/read\",\"display\":{\"provider\":\"Microsoft Container Instance\",\"resource\":\"Resource provider operations.\",\"operation\":\"Async operation result\",\"description\":\"Get async operation result\"},\"origin\":\"User\"},{\"name\":\"Microsoft.ContainerInstance/containerGroups/operationResults/read\",\"display\":{\"provider\":\"Microsoft Container Instance\",\"resource\":\"Resource provider operations.\",\"operation\":\"Async operation result\",\"description\":\"Get async operation result\"},\"origin\":\"User\"},{\"name\":\"Microsoft.ContainerInstance/locations/cachedImages/read\",\"display\":{\"provider\":\"Microsoft Container Instance\",\"resource\":\"Cached Images\",\"operation\":\"Get cached images.\",\"description\":\"Gets the cached images for the subscription in a region.\"},\"origin\":\"User\"},{\"name\":\"Microsoft.ContainerInstance/locations/capabilities/read\",\"display\":{\"provider\":\"Microsoft Container Instance\",\"resource\":\"Capabilities\",\"operation\":\"Get Capabilities\",\"description\":\"Get the capabilities for a region.\"},\"origin\":\"User\"},{\"name\":\"Microsoft.ContainerInstance/locations/usages/read\",\"display\":{\"provider\":\"Microsoft Container Instance\",\"resource\":\"Usages\",\"operation\":\"Get Regional Usage\",\"description\":\"Get the usage for a specific region.\"},\"origin\":\"User\"},{\"name\":\"Microsoft.ContainerInstance/containerGroups/providers/Microsoft.Insights/metricDefinitions/read\",\"display\":{\"provider\":\"Microsoft Container Instance\",\"resource\":\"Container Group\",\"operation\":\"Read container group metric definitions\",\"description\":\"Gets the available metrics for container group.\"},\"origin\":\"System\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{\"name\":\"CpuUsage\",\"displayName\":\"CPU Usage\",\"displayDescription\":\"CPU usage on all cores in millicores.\",\"unit\":\"Count\",\"aggregationType\":\"Average\",\"supportedAggregationTypes\":[\"Maximum\",\"Minimum\",\"Average\"],\"supportedTimeGrainTypes\":[\"PT1M\",\"PT5M\",\"PT15M\",\"PT30M\",\"PT1H\",\"PT6H\",\"PT12H\",\"PT1D\"],\"enableRegionalMdmAccount\":true,\"sourceMdmAccount\":\"MicrosoftContainerInstanceShoebox\",\"sourceMdmNamespace\":\"AzureMonitoringMetrics\",\"fillGapWithZero\":false,\"dimensions\":[{\"name\":\"containerName\",\"displayName\":\"Container Name\",\"toBeExportedForShoebox\":true}]},{\"name\":\"MemoryUsage\",\"displayName\":\"Memory Usage\",\"displayDescription\":\"Total memory usage in byte.\",\"unit\":\"Bytes\",\"aggregationType\":\"Average\",\"supportedAggregationTypes\":[\"Maximum\",\"Minimum\",\"Average\"],\"supportedTimeGrainTypes\":[\"PT1M\",\"PT5M\",\"PT15M\",\"PT30M\",\"PT1H\",\"PT6H\",\"PT12H\",\"PT1D\"],\"enableRegionalMdmAccount\":true,\"sourceMdmAccount\":\"MicrosoftContainerInstanceShoebox\",\"sourceMdmNamespace\":\"AzureMonitoringMetrics\",\"fillGapWithZero\":false,\"dimensions\":[{\"name\":\"containerName\",\"displayName\":\"Container Name\",\"toBeExportedForShoebox\":true}]},{\"name\":\"NetworkBytesReceivedPerSecond\",\"displayName\":\"Network Bytes Received Per Second\",\"displayDescription\":\"The network bytes received per second.\",\"unit\":\"Bytes\",\"aggregationType\":\"Average\",\"supportedAggregationTypes\":[\"Maximum\",\"Minimum\",\"Average\"],\"supportedTimeGrainTypes\":[\"PT1M\",\"PT5M\",\"PT15M\",\"PT30M\",\"PT1H\",\"PT6H\",\"PT12H\",\"PT1D\"],\"enableRegionalMdmAccount\":true,\"sourceMdmAccount\":\"MicrosoftContainerInstanceShoebox\",\"sourceMdmNamespace\":\"AzureMonitoringMetrics\",\"fillGapWithZero\":false},{\"name\":\"NetworkBytesTransmittedPerSecond\",\"displayName\":\"Network Bytes Transmitted Per Second\",\"displayDescription\":\"The network bytes transmitted per second.\",\"unit\":\"Bytes\",\"aggregationType\":\"Average\",\"supportedAggregationTypes\":[\"Maximum\",\"Minimum\",\"Average\"],\"supportedTimeGrainTypes\":[\"PT1M\",\"PT5M\",\"PT15M\",\"PT30M\",\"PT1H\",\"PT6H\",\"PT12H\",\"PT1D\"],\"enableRegionalMdmAccount\":true,\"sourceMdmAccount\":\"MicrosoftContainerInstanceShoebox\",\"sourceMdmNamespace\":\"AzureMonitoringMetrics\",\"fillGapWithZero\":false}]}}},{\"name\":\"Microsoft.ContainerInstance/containerGroups/providers/Microsoft.Insights/diagnosticSettings/read\",\"display\":{\"provider\":\"Microsoft Container Instance\",\"resource\":\"Container Group\",\"operation\":\"Read Diagnostic Setting\",\"description\":\"Gets the diagnostic setting for the container group.\"},\"origin\":\"System\"},{\"name\":\"Microsoft.ContainerInstance/containerGroups/providers/Microsoft.Insights/diagnosticSettings/write\",\"display\":{\"provider\":\"Microsoft Container Instance\",\"resource\":\"Container Group\",\"operation\":\"Write Diagnostic Setting\",\"description\":\"Creates or updates the diagnostic setting for the container group.\"},\"origin\":\"System\"},{\"name\":\"Microsoft.ContainerInstance/locations/deleteVirtualNetworkOrSubnets/action\",\"display\":{\"provider\":\"Microsoft Container Instance\",\"resource\":\"Delete virtual network or subnet notification\",\"operation\":\"Delete virtual network or subnet notification\",\"description\":\"Notifies Microsoft.ContainerInstance that virtual network or subnet is being deleted.\"},\"origin\":\"User\"},{\"name\":\"Microsoft.ContainerInstance/locations/operations/read\",\"display\":{\"provider\":\"Microsoft Container Instance\",\"resource\":\"Resource provider operations.\",\"operation\":\"Read operations.\",\"description\":\"List the operations for Azure Container Instance service.\"},\"origin\":\"User\"},{\"name\":\"Microsoft.ContainerInstance/operations/read\",\"display\":{\"provider\":\"Microsoft Container Instance\",\"resource\":\"Resource provider operations.\",\"operation\":\"Read operations.\",\"description\":\"List the operations for Azure Container Instance service.\"},\"origin\":\"User\"},{\"name\":\"Microsoft.ContainerInstance/serviceassociationlinks/delete\",\"display\":{\"provider\":\"Microsoft Container Instance\",\"resource\":\"Service Association Link.\",\"operation\":\"Delete Service Association Link.\",\"description\":\"Delete the service association link created by azure container instance resource provider on a subnet.\"},\"origin\":\"User\"}]}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerInstance/containerGroups?api-version=2019-12-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerinstance/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:48:28 GMT",
+      "content-length" : "2849",
+      "expires" : "-1",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11826",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "28dcb933-5481-4d82-b4df-43738c3bd953",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064829Z:28dcb933-5481-4d82-b4df-43738c3bd953",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "eastus2:e8a115de-744e-4e32-b6a7-f85f58c8c3b2",
+      "Body" : "{\"value\":[{\"properties\":{\"sku\":\"Standard\",\"provisioningState\":\"Succeeded\",\"containers\":[{\"name\":\"tomcat\",\"properties\":{\"image\":\"tomcat\",\"ports\":[{\"protocol\":\"TCP\",\"port\":8080}],\"environmentVariables\":[{\"name\":\"ENV1\",\"value\":\"value1\"}],\"resources\":{\"requests\":{\"memoryInGB\":1.5,\"cpu\":1.0}}}},{\"name\":\"nginx\",\"properties\":{\"image\":\"nginx\",\"ports\":[{\"protocol\":\"TCP\",\"port\":80}],\"environmentVariables\":[{\"name\":\"ENV2\"}],\"resources\":{\"requests\":{\"memoryInGB\":1.5,\"cpu\":1.0}}}}],\"initContainers\":[],\"restartPolicy\":\"Never\",\"ipAddress\":{\"ports\":[{\"protocol\":\"TCP\",\"port\":8080},{\"protocol\":\"TCP\",\"port\":80}],\"ip\":\"52.242.99.201\",\"type\":\"Public\",\"dnsNameLabel\":\"aci325973\",\"fqdn\":\"aci325973.eastus2.azurecontainer.io\"},\"osType\":\"Linux\",\"volumes\":[{\"name\":\"emptydir1\",\"emptyDir\":{}}]},\"identity\":{\"principalId\":\"ce8ea86d-8c2a-419c-ba03-e958ba64c54f\",\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"type\":\"SystemAssigned\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaci12683/providers/Microsoft.ContainerInstance/containerGroups/aci325973\",\"name\":\"aci325973\",\"type\":\"Microsoft.ContainerInstance/containerGroups\",\"location\":\"eastus2\",\"tags\":{\"tag1\":\"value1\"}},{\"properties\":{\"sku\":\"Standard\",\"provisioningState\":\"Succeeded\",\"containers\":[{\"name\":\"tomcat\",\"properties\":{\"image\":\"tomcat\",\"ports\":[{\"protocol\":\"TCP\",\"port\":8080}],\"environmentVariables\":[{\"name\":\"ENV1\",\"value\":\"value1\"}],\"resources\":{\"requests\":{\"memoryInGB\":1.5,\"cpu\":1.0}}}},{\"name\":\"nginx\",\"properties\":{\"image\":\"nginx\",\"ports\":[{\"protocol\":\"TCP\",\"port\":80}],\"environmentVariables\":[{\"name\":\"ENV2\"}],\"resources\":{\"requests\":{\"memoryInGB\":1.5,\"cpu\":1.0}}}}],\"initContainers\":[],\"restartPolicy\":\"Never\",\"ipAddress\":{\"ports\":[{\"protocol\":\"TCP\",\"port\":8080},{\"protocol\":\"TCP\",\"port\":80}],\"ip\":\"40.65.242.178\",\"type\":\"Public\",\"dnsNameLabel\":\"aci743819\",\"fqdn\":\"aci743819.eastus2.azurecontainer.io\"},\"osType\":\"Linux\",\"volumes\":[{\"name\":\"emptydir1\",\"emptyDir\":{}}]},\"identity\":{\"userAssignedIdentities\":{\"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgaci95013/providers/Microsoft.ManagedIdentity/userAssignedIdentities/msi-ida1292131\":{\"principalId\":\"92bdaf9f-d964-44ba-b650-1a48f3674659\",\"clientId\":\"36ab0319-ef2d-44e6-90d7-0fc41f0d3ada\"},\"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgaci95013/providers/Microsoft.ManagedIdentity/userAssignedIdentities/msi-id85718041\":{\"principalId\":\"d3741819-af29-4aa0-9927-d223a71601a1\",\"clientId\":\"a64f587d-37b8-4e36-b54a-77fbc01fad77\"}},\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"type\":\"UserAssigned\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaci95013/providers/Microsoft.ContainerInstance/containerGroups/aci743819\",\"name\":\"aci743819\",\"type\":\"Microsoft.ContainerInstance/containerGroups\",\"location\":\"eastus2\",\"tags\":{\"tag1\":\"value1\"}}]}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerInstance/containerGroups?api-version=2019-12-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerinstance/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:59:44 GMT",
+      "content-length" : "2849",
+      "expires" : "-1",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "4524",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "25dfafcc-ccda-4938-812b-e9f17b5e16f2",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T065945Z:25dfafcc-ccda-4938-812b-e9f17b5e16f2",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "eastus2:3be721a2-46ce-424f-9d32-0d07e6d1722c",
+      "Body" : "{\"value\":[{\"properties\":{\"sku\":\"Standard\",\"provisioningState\":\"Succeeded\",\"containers\":[{\"name\":\"tomcat\",\"properties\":{\"image\":\"tomcat\",\"ports\":[{\"protocol\":\"TCP\",\"port\":8080}],\"environmentVariables\":[{\"name\":\"ENV1\",\"value\":\"value1\"}],\"resources\":{\"requests\":{\"memoryInGB\":1.5,\"cpu\":1.0}}}},{\"name\":\"nginx\",\"properties\":{\"image\":\"nginx\",\"ports\":[{\"protocol\":\"TCP\",\"port\":80}],\"environmentVariables\":[{\"name\":\"ENV2\"}],\"resources\":{\"requests\":{\"memoryInGB\":1.5,\"cpu\":1.0}}}}],\"initContainers\":[],\"restartPolicy\":\"Never\",\"ipAddress\":{\"ports\":[{\"protocol\":\"TCP\",\"port\":8080},{\"protocol\":\"TCP\",\"port\":80}],\"ip\":\"52.242.99.201\",\"type\":\"Public\",\"dnsNameLabel\":\"aci325973\",\"fqdn\":\"aci325973.eastus2.azurecontainer.io\"},\"osType\":\"Linux\",\"volumes\":[{\"name\":\"emptydir1\",\"emptyDir\":{}}]},\"identity\":{\"principalId\":\"ce8ea86d-8c2a-419c-ba03-e958ba64c54f\",\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"type\":\"SystemAssigned\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaci12683/providers/Microsoft.ContainerInstance/containerGroups/aci325973\",\"name\":\"aci325973\",\"type\":\"Microsoft.ContainerInstance/containerGroups\",\"location\":\"eastus2\",\"tags\":{\"tag1\":\"value1\"}},{\"properties\":{\"sku\":\"Standard\",\"provisioningState\":\"Succeeded\",\"containers\":[{\"name\":\"tomcat\",\"properties\":{\"image\":\"tomcat\",\"ports\":[{\"protocol\":\"TCP\",\"port\":8080}],\"environmentVariables\":[{\"name\":\"ENV1\",\"value\":\"value1\"}],\"resources\":{\"requests\":{\"memoryInGB\":1.5,\"cpu\":1.0}}}},{\"name\":\"nginx\",\"properties\":{\"image\":\"nginx\",\"ports\":[{\"protocol\":\"TCP\",\"port\":80}],\"environmentVariables\":[{\"name\":\"ENV2\"}],\"resources\":{\"requests\":{\"memoryInGB\":1.5,\"cpu\":1.0}}}}],\"initContainers\":[],\"restartPolicy\":\"Never\",\"ipAddress\":{\"ports\":[{\"protocol\":\"TCP\",\"port\":8080},{\"protocol\":\"TCP\",\"port\":80}],\"ip\":\"40.65.242.178\",\"type\":\"Public\",\"dnsNameLabel\":\"aci743819\",\"fqdn\":\"aci743819.eastus2.azurecontainer.io\"},\"osType\":\"Linux\",\"volumes\":[{\"name\":\"emptydir1\",\"emptyDir\":{}}]},\"identity\":{\"userAssignedIdentities\":{\"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgaci95013/providers/Microsoft.ManagedIdentity/userAssignedIdentities/msi-ida1292131\":{\"principalId\":\"92bdaf9f-d964-44ba-b650-1a48f3674659\",\"clientId\":\"36ab0319-ef2d-44e6-90d7-0fc41f0d3ada\"},\"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgaci95013/providers/Microsoft.ManagedIdentity/userAssignedIdentities/msi-id85718041\":{\"principalId\":\"d3741819-af29-4aa0-9927-d223a71601a1\",\"clientId\":\"a64f587d-37b8-4e36-b54a-77fbc01fad77\"}},\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"type\":\"UserAssigned\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaci95013/providers/Microsoft.ContainerInstance/containerGroups/aci743819\",\"name\":\"aci743819\",\"type\":\"Microsoft.ContainerInstance/containerGroups\",\"location\":\"eastus2\",\"tags\":{\"tag1\":\"value1\"}}]}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaci12683/providers/Microsoft.ContainerInstance/containerGroups/aci325973?api-version=2019-12-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerinstance/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:59:46 GMT",
+      "content-length" : "2766",
+      "expires" : "-1",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "5859",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "d4f31246-92b1-49a7-81e7-d6daf854f763",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T065946Z:d4f31246-92b1-49a7-81e7-d6daf854f763",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "eastus2:7f42ed2c-000c-40f1-9ff3-f86be8c13f59",
+      "Body" : "{\"properties\":{\"sku\":\"Standard\",\"provisioningState\":\"Succeeded\",\"containers\":[{\"name\":\"tomcat\",\"properties\":{\"image\":\"tomcat\",\"ports\":[{\"protocol\":\"TCP\",\"port\":8080}],\"environmentVariables\":[{\"name\":\"ENV1\",\"value\":\"value1\"}],\"instanceView\":{\"restartCount\":0,\"currentState\":{\"state\":\"Running\",\"startTime\":\"2020-07-28T06:47:35Z\",\"detailStatus\":\"\"},\"events\":[{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:46:50Z\",\"lastTimestamp\":\"2020-07-28T06:46:50Z\",\"name\":\"Pulling\",\"message\":\"pulling image \\\"tomcat\\\"\",\"type\":\"Normal\"},{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:07Z\",\"lastTimestamp\":\"2020-07-28T06:47:07Z\",\"name\":\"Pulled\",\"message\":\"Successfully pulled image \\\"tomcat\\\"\",\"type\":\"Normal\"},{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:35Z\",\"lastTimestamp\":\"2020-07-28T06:47:35Z\",\"name\":\"Created\",\"message\":\"Created container\",\"type\":\"Normal\"},{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:35Z\",\"lastTimestamp\":\"2020-07-28T06:47:35Z\",\"name\":\"Started\",\"message\":\"Started container\",\"type\":\"Normal\"}]},\"resources\":{\"requests\":{\"memoryInGB\":1.5,\"cpu\":1.0}}}},{\"name\":\"nginx\",\"properties\":{\"image\":\"nginx\",\"ports\":[{\"protocol\":\"TCP\",\"port\":80}],\"environmentVariables\":[{\"name\":\"ENV2\"}],\"instanceView\":{\"restartCount\":0,\"currentState\":{\"state\":\"Running\",\"startTime\":\"2020-07-28T06:47:49Z\",\"detailStatus\":\"\"},\"events\":[{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:35Z\",\"lastTimestamp\":\"2020-07-28T06:47:35Z\",\"name\":\"Pulling\",\"message\":\"pulling image \\\"nginx\\\"\",\"type\":\"Normal\"},{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:41Z\",\"lastTimestamp\":\"2020-07-28T06:47:41Z\",\"name\":\"Pulled\",\"message\":\"Successfully pulled image \\\"nginx\\\"\",\"type\":\"Normal\"},{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:49Z\",\"lastTimestamp\":\"2020-07-28T06:47:49Z\",\"name\":\"Created\",\"message\":\"Created container\",\"type\":\"Normal\"},{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:49Z\",\"lastTimestamp\":\"2020-07-28T06:47:49Z\",\"name\":\"Started\",\"message\":\"Started container\",\"type\":\"Normal\"}]},\"resources\":{\"requests\":{\"memoryInGB\":1.5,\"cpu\":1.0}}}}],\"initContainers\":[],\"restartPolicy\":\"Never\",\"ipAddress\":{\"ports\":[{\"protocol\":\"TCP\",\"port\":8080},{\"protocol\":\"TCP\",\"port\":80}],\"ip\":\"52.242.99.201\",\"type\":\"Public\",\"dnsNameLabel\":\"aci325973\",\"fqdn\":\"aci325973.eastus2.azurecontainer.io\"},\"osType\":\"Linux\",\"volumes\":[{\"name\":\"emptydir1\",\"emptyDir\":{}}],\"instanceView\":{\"events\":[],\"state\":\"Running\"}},\"identity\":{\"principalId\":\"ce8ea86d-8c2a-419c-ba03-e958ba64c54f\",\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"type\":\"SystemAssigned\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaci12683/providers/Microsoft.ContainerInstance/containerGroups/aci325973\",\"name\":\"aci325973\",\"type\":\"Microsoft.ContainerInstance/containerGroups\",\"location\":\"eastus2\",\"tags\":{\"tag1\":\"value1\"}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaci12683/providers/Microsoft.ContainerInstance/containerGroups/aci325973?api-version=2019-12-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerinstance/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:59:47 GMT",
+      "content-length" : "2766",
+      "expires" : "-1",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "7230",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "a3c2284b-79a6-4159-839e-f75c0d0dff8b",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T065947Z:a3c2284b-79a6-4159-839e-f75c0d0dff8b",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "eastus2:b99b1ee9-1f0e-48ad-b073-fdc0bd5485e9",
+      "Body" : "{\"properties\":{\"sku\":\"Standard\",\"provisioningState\":\"Succeeded\",\"containers\":[{\"name\":\"tomcat\",\"properties\":{\"image\":\"tomcat\",\"ports\":[{\"protocol\":\"TCP\",\"port\":8080}],\"environmentVariables\":[{\"name\":\"ENV1\",\"value\":\"value1\"}],\"instanceView\":{\"restartCount\":0,\"currentState\":{\"state\":\"Running\",\"startTime\":\"2020-07-28T06:47:35Z\",\"detailStatus\":\"\"},\"events\":[{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:46:50Z\",\"lastTimestamp\":\"2020-07-28T06:46:50Z\",\"name\":\"Pulling\",\"message\":\"pulling image \\\"tomcat\\\"\",\"type\":\"Normal\"},{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:07Z\",\"lastTimestamp\":\"2020-07-28T06:47:07Z\",\"name\":\"Pulled\",\"message\":\"Successfully pulled image \\\"tomcat\\\"\",\"type\":\"Normal\"},{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:35Z\",\"lastTimestamp\":\"2020-07-28T06:47:35Z\",\"name\":\"Created\",\"message\":\"Created container\",\"type\":\"Normal\"},{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:35Z\",\"lastTimestamp\":\"2020-07-28T06:47:35Z\",\"name\":\"Started\",\"message\":\"Started container\",\"type\":\"Normal\"}]},\"resources\":{\"requests\":{\"memoryInGB\":1.5,\"cpu\":1.0}}}},{\"name\":\"nginx\",\"properties\":{\"image\":\"nginx\",\"ports\":[{\"protocol\":\"TCP\",\"port\":80}],\"environmentVariables\":[{\"name\":\"ENV2\"}],\"instanceView\":{\"restartCount\":0,\"currentState\":{\"state\":\"Running\",\"startTime\":\"2020-07-28T06:47:49Z\",\"detailStatus\":\"\"},\"events\":[{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:35Z\",\"lastTimestamp\":\"2020-07-28T06:47:35Z\",\"name\":\"Pulling\",\"message\":\"pulling image \\\"nginx\\\"\",\"type\":\"Normal\"},{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:41Z\",\"lastTimestamp\":\"2020-07-28T06:47:41Z\",\"name\":\"Pulled\",\"message\":\"Successfully pulled image \\\"nginx\\\"\",\"type\":\"Normal\"},{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:49Z\",\"lastTimestamp\":\"2020-07-28T06:47:49Z\",\"name\":\"Created\",\"message\":\"Created container\",\"type\":\"Normal\"},{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:49Z\",\"lastTimestamp\":\"2020-07-28T06:47:49Z\",\"name\":\"Started\",\"message\":\"Started container\",\"type\":\"Normal\"}]},\"resources\":{\"requests\":{\"memoryInGB\":1.5,\"cpu\":1.0}}}}],\"initContainers\":[],\"restartPolicy\":\"Never\",\"ipAddress\":{\"ports\":[{\"protocol\":\"TCP\",\"port\":8080},{\"protocol\":\"TCP\",\"port\":80}],\"ip\":\"52.242.99.201\",\"type\":\"Public\",\"dnsNameLabel\":\"aci325973\",\"fqdn\":\"aci325973.eastus2.azurecontainer.io\"},\"osType\":\"Linux\",\"volumes\":[{\"name\":\"emptydir1\",\"emptyDir\":{}}],\"instanceView\":{\"events\":[],\"state\":\"Running\"}},\"identity\":{\"principalId\":\"ce8ea86d-8c2a-419c-ba03-e958ba64c54f\",\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"type\":\"SystemAssigned\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaci12683/providers/Microsoft.ContainerInstance/containerGroups/aci325973\",\"name\":\"aci325973\",\"type\":\"Microsoft.ContainerInstance/containerGroups\",\"location\":\"eastus2\",\"tags\":{\"tag1\":\"value1\"}}"
+    }
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaci12683/providers/Microsoft.ContainerInstance/containerGroups/aci325973?api-version=2019-12-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerinstance/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:59:53 GMT",
+      "content-length" : "2766",
+      "expires" : "-1",
+      "vary" : "Accept-Encoding",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1109",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "1c7eb7da-9063-4051-96d5-41ff06d94bff",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T065953Z:1c7eb7da-9063-4051-96d5-41ff06d94bff",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "eastus2:a629aecd-939a-4f76-a2e8-cf1b5445bda6",
+      "Body" : "{\"properties\":{\"sku\":\"Standard\",\"provisioningState\":\"Succeeded\",\"containers\":[{\"name\":\"tomcat\",\"properties\":{\"image\":\"tomcat\",\"ports\":[{\"protocol\":\"TCP\",\"port\":8080}],\"environmentVariables\":[{\"name\":\"ENV1\",\"value\":\"value1\"}],\"instanceView\":{\"restartCount\":0,\"currentState\":{\"state\":\"Running\",\"startTime\":\"2020-07-28T06:47:35Z\",\"detailStatus\":\"\"},\"events\":[{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:46:50Z\",\"lastTimestamp\":\"2020-07-28T06:46:50Z\",\"name\":\"Pulling\",\"message\":\"pulling image \\\"tomcat\\\"\",\"type\":\"Normal\"},{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:07Z\",\"lastTimestamp\":\"2020-07-28T06:47:07Z\",\"name\":\"Pulled\",\"message\":\"Successfully pulled image \\\"tomcat\\\"\",\"type\":\"Normal\"},{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:35Z\",\"lastTimestamp\":\"2020-07-28T06:47:35Z\",\"name\":\"Created\",\"message\":\"Created container\",\"type\":\"Normal\"},{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:35Z\",\"lastTimestamp\":\"2020-07-28T06:47:35Z\",\"name\":\"Started\",\"message\":\"Started container\",\"type\":\"Normal\"}]},\"resources\":{\"requests\":{\"memoryInGB\":1.5,\"cpu\":1.0}}}},{\"name\":\"nginx\",\"properties\":{\"image\":\"nginx\",\"ports\":[{\"protocol\":\"TCP\",\"port\":80}],\"environmentVariables\":[{\"name\":\"ENV2\"}],\"instanceView\":{\"restartCount\":0,\"currentState\":{\"state\":\"Running\",\"startTime\":\"2020-07-28T06:47:49Z\",\"detailStatus\":\"\"},\"events\":[{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:35Z\",\"lastTimestamp\":\"2020-07-28T06:47:35Z\",\"name\":\"Pulling\",\"message\":\"pulling image \\\"nginx\\\"\",\"type\":\"Normal\"},{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:41Z\",\"lastTimestamp\":\"2020-07-28T06:47:41Z\",\"name\":\"Pulled\",\"message\":\"Successfully pulled image \\\"nginx\\\"\",\"type\":\"Normal\"},{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:49Z\",\"lastTimestamp\":\"2020-07-28T06:47:49Z\",\"name\":\"Created\",\"message\":\"Created container\",\"type\":\"Normal\"},{\"count\":1,\"firstTimestamp\":\"2020-07-28T06:47:49Z\",\"lastTimestamp\":\"2020-07-28T06:47:49Z\",\"name\":\"Started\",\"message\":\"Started container\",\"type\":\"Normal\"}]},\"resources\":{\"requests\":{\"memoryInGB\":1.5,\"cpu\":1.0}}}}],\"initContainers\":[],\"restartPolicy\":\"Never\",\"ipAddress\":{\"ports\":[{\"protocol\":\"TCP\",\"port\":8080},{\"protocol\":\"TCP\",\"port\":80}],\"ip\":\"52.242.99.201\",\"type\":\"Public\",\"dnsNameLabel\":\"aci325973\",\"fqdn\":\"aci325973.eastus2.azurecontainer.io\"},\"osType\":\"Linux\",\"volumes\":[{\"name\":\"emptydir1\",\"emptyDir\":{}}],\"instanceView\":{\"events\":[],\"state\":\"Running\"}},\"identity\":{\"principalId\":\"ce8ea86d-8c2a-419c-ba03-e958ba64c54f\",\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"type\":\"SystemAssigned\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaci12683/providers/Microsoft.ContainerInstance/containerGroups/aci325973\",\"name\":\"aci325973\",\"type\":\"Microsoft.ContainerInstance/containerGroups\",\"location\":\"eastus2\",\"tags\":{\"tag2\":\"value2\"}}"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaci12683/providers/Microsoft.ContainerInstance/containerGroups/aci325973/restart?api-version=2019-12-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerinstance/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:59:53 GMT",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1193",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "cedafe9c-86ed-44d2-a417-1b4f222a18ef",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T065954Z:cedafe9c-86ed-44d2-a417-1b4f222a18ef",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "eastus2:50fdd1b8-b915-4d46-90d1-e449b760308f",
+      "Body" : "",
+      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerInstance/locations/eastus2/operations/50fdd1b8-b915-4d46-90d1-e449b760308f?api-version=2018-06-01"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaci12683/providers/Microsoft.ContainerInstance/containerGroups/aci325973/stop?api-version=2019-12-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerinstance/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:59:54 GMT",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1194",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "d85a0eca-43b0-4a53-82f3-271df0c5bfd2",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T065955Z:d85a0eca-43b0-4a53-82f3-271df0c5bfd2",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "eastus2:89239311-67b4-4da9-a5d6-be6e637240d3",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaci12683/providers/Microsoft.ContainerInstance/containerGroups/aci325973?api-version=2019-12-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerinstance/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 07:00:00 GMT",
+      "content-length" : "1219",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-deletes" : "14988",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-ratelimit-remaining-subscription-resource-requests-pt1h" : "299",
+      "x-ms-correlation-request-id" : "8e89a814-aa34-4338-be71-c5c7eaf09d32",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-ratelimit-remaining-subscription-resource-requests-pt5m" : "99",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T070000Z:8e89a814-aa34-4338-be71-c5c7eaf09d32",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "eastus2:666e747d-045f-48e8-b651-95c2281c6b8c",
+      "Body" : "{\"properties\":{\"sku\":\"Standard\",\"provisioningState\":\"Updating\",\"containers\":[{\"name\":\"tomcat\",\"properties\":{\"image\":\"tomcat\",\"ports\":[{\"protocol\":\"TCP\",\"port\":8080}],\"environmentVariables\":[{\"name\":\"ENV1\",\"value\":\"value1\"}],\"resources\":{\"requests\":{\"memoryInGB\":1.5,\"cpu\":1.0}}}},{\"name\":\"nginx\",\"properties\":{\"image\":\"nginx\",\"ports\":[{\"protocol\":\"TCP\",\"port\":80}],\"environmentVariables\":[{\"name\":\"ENV2\"}],\"resources\":{\"requests\":{\"memoryInGB\":1.5,\"cpu\":1.0}}}}],\"initContainers\":[],\"restartPolicy\":\"Never\",\"ipAddress\":{\"ports\":[{\"protocol\":\"TCP\",\"port\":8080},{\"protocol\":\"TCP\",\"port\":80}],\"ip\":\"52.242.99.201\",\"type\":\"Public\",\"dnsNameLabel\":\"aci325973\",\"fqdn\":\"aci325973.eastus2.azurecontainer.io\"},\"osType\":\"Linux\",\"volumes\":[{\"name\":\"emptydir1\",\"emptyDir\":{}}],\"instanceView\":{\"events\":[],\"state\":\"Stopped\"}},\"identity\":{\"principalId\":\"ce8ea86d-8c2a-419c-ba03-e958ba64c54f\",\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"type\":\"SystemAssigned\"},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaci12683/providers/Microsoft.ContainerInstance/containerGroups/aci325973\",\"name\":\"aci325973\",\"type\":\"Microsoft.ContainerInstance/containerGroups\",\"location\":\"eastus2\",\"tags\":{\"tag2\":\"value2\"}}"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgaci12683?api-version=2020-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 07:00:04 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-deletes" : "14982",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "f8d589c1-6e02-4aa7-a2d7-a157a4f90480",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T070005Z:f8d589c1-6e02-4aa7-a2d7-a157a4f90480",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR0FDSTEyNjgzLUVBU1RVUzIiLCJqb2JMb2NhdGlvbiI6ImVhc3R1czIifQ?api-version=2020-06-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "f8d589c1-6e02-4aa7-a2d7-a157a4f90480",
+      "Body" : ""
+    }
+  } ],
+  "variables" : [ "aci325973", "rgaci12683", "5e8db44c-ab91-46e8-9e26-1b38955dca5e", "a8b8a3a4-c920-4512-9b53-2b765e5cf552" ]
+}
