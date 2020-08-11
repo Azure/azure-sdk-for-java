@@ -368,29 +368,6 @@ public class EncryptionCosmosAsyncContainer {
             } , encryptionScheduler);
     }
 
-    private Function<Document, Mono<Document>> createTransformer(Consumer<DecryptionResult> decryptionResultConsumer) {
-
-        return document -> {
-                byte[] contentAsByteArray = EncryptionUtils.toByteArray(document.serializeJsonToByteBuffer());
-                Mono<byte[]> resultMono = decryptResponseAsync(contentAsByteArray, decryptionResultConsumer);
-
-                return resultMono
-                    .onErrorResume(
-                        throwable -> {
-                            Exception exception = Utils.as(throwable, Exception.class);
-
-                            if (exception == null || decryptionResultConsumer == null) {
-                                return Mono.error(throwable);
-                            }
-
-                            decryptionResultConsumer.accept(DecryptionResult.createFailure(null, exception));
-                            return Mono.just(contentAsByteArray);
-                        }
-                    )
-                    .map(bytes -> new Document(bytes));
-        };
-    }
-
     private <T> byte[] cosmosSerializerToStream(T item) {
         // TODO:
         return EncryptionUtils.serializeJsonToByteArray(Utils.getSimpleObjectMapper(), item);

@@ -443,39 +443,23 @@ public class CosmosAsyncContainer {
 
     <T> CosmosPagedFlux<T> queryItemsInternal(
         SqlQuerySpec sqlQuerySpec, CosmosQueryRequestOptions cosmosQueryRequestOptions, Class<T> classType) {
-        return queryItemsInternal(sqlQuerySpec, cosmosQueryRequestOptions, classType, null, null);
-    }
-
-    <T> CosmosPagedFlux<T> queryItemsInternal(
-        SqlQuerySpec sqlQuerySpec, CosmosQueryRequestOptions cosmosQueryRequestOptions, Class<T> classType, Function<Document, Document> transformer, Scheduler scheduler) {
-        return UtilBridgeInternal.createCosmosPagedFlux(queryItemsInternalFunc(sqlQuerySpec, cosmosQueryRequestOptions, classType, transformer, scheduler));
+        return UtilBridgeInternal.createCosmosPagedFlux(queryItemsInternalFunc(sqlQuerySpec, cosmosQueryRequestOptions, classType));
     }
 
     <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> queryItemsInternalFunc(
-        SqlQuerySpec sqlQuerySpec, CosmosQueryRequestOptions cosmosQueryRequestOptions, Class<T> classType, Function<Document, Document> transformer,
-        Scheduler scheduler) {
+        SqlQuerySpec sqlQuerySpec, CosmosQueryRequestOptions cosmosQueryRequestOptions, Class<T> classType) {
         Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> pagedFluxOptionsFluxFunction = (pagedFluxOptions -> {
             String spanName = this.queryItemsSpanName;
             pagedFluxOptions.setTracerInformation(this.getDatabase().getClient().getTracerProvider(), spanName,
                 this.getDatabase().getClient().getServiceEndpoint(), database.getId());
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, cosmosQueryRequestOptions);
 
-            return applyTransformer(
-                getDatabase().getDocClientWrapper()
-                             .queryDocuments(CosmosAsyncContainer.this.getLink(), sqlQuerySpec, cosmosQueryRequestOptions), transformer, scheduler,
-                classType);
-
+                return getDatabase().getDocClientWrapper()
+                             .queryDocuments(CosmosAsyncContainer.this.getLink(), sqlQuerySpec, cosmosQueryRequestOptions)
+                             .map(response -> prepareFeedResponse(response, classType));
         });
 
         return pagedFluxOptionsFluxFunction;
-    }
-
-    private <T> Flux<FeedResponse<T>> applyTransformer(Flux<FeedResponse<Document>> queryDocuments, Function<Document, Document> transformer, Scheduler scheduler, Class<T> classType) {
-        if (transformer == null) {
-            return queryDocuments.map(response -> prepareFeedResponse(response, classType));
-        } else {
-            return queryDocuments.publishOn(scheduler).subscribeOn(scheduler).map(response -> prepareFeedResponse(response, classType, transformer));
-        }
     }
 
     private <T> FeedResponse<T> prepareFeedResponse(FeedResponse<Document> response, Class<T> classType) {
