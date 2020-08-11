@@ -249,8 +249,8 @@ public final class FormRecognizerClient {
      * @throws NullPointerException If {@code form} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<FormRecognizerOperationResult, List<FormPage>> beginRecognizeContent(InputStream form, long length,
-        RecognizeContentOptions recognizeContentOptions, Context context) {
+    public SyncPoller<FormRecognizerOperationResult, List<FormPage>> beginRecognizeContent(InputStream form,
+        long length, RecognizeContentOptions recognizeContentOptions, Context context) {
         Flux<ByteBuffer> buffer = Utility.toFluxByteBuffer(form);
         return client.beginRecognizeContent(buffer, length, recognizeContentOptions, context).getSyncPoller();
     }
@@ -274,7 +274,8 @@ public final class FormRecognizerClient {
      * @throws NullPointerException If {@code receiptUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeReceiptsFromUrl(String receiptUrl) {
+    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>>
+        beginRecognizeReceiptsFromUrl(String receiptUrl) {
         return beginRecognizeReceiptsFromUrl(receiptUrl, null, Context.NONE);
     }
 

@@ -121,7 +121,8 @@ final class CustomModelTransforms {
     }
 
     /**
-     * Helper method to convert the list of {@link FormRecognizerErrorInformation} to list of {@link FormRecognizerError}.
+     * Helper method to convert the list of {@link FormRecognizerErrorInformation} to list of
+     * {@link FormRecognizerError}.
      *
      * @param trainingErrorList The list of {@link FormRecognizerErrorInformation}.
      *

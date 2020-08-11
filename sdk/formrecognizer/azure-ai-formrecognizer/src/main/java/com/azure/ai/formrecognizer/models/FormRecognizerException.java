@@ -24,7 +24,8 @@ public class FormRecognizerException extends AzureException {
      * @param message Text containing the details of the exception.
      * @param errorInformationList The List of error information that caused the exception
      */
-    public FormRecognizerException(final String message, final List<FormRecognizerErrorInformation> errorInformationList) {
+    public FormRecognizerException(final String message,
+        final List<FormRecognizerErrorInformation> errorInformationList) {
         super(message);
         StringBuilder errorInformationStringBuilder = new StringBuilder().append(message);
         if (!CoreUtils.isNullOrEmpty(errorInformationList)) {
