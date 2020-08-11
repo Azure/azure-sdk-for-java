@@ -113,9 +113,8 @@ def update_dependency_dict(dependency_dict, root_pom_id):
             if key not in dependency_dict:
                 dependency_dict[key] = version
                 log.debug('Dependency version added. key = {}, value = {}'.format(key, version))
-            else:
-                log.debug(
-                    'Dependency version skipped. key = {}, value = {}'.format(key, version))
+            elif version != dependency_dict[key]:
+                log.debug('Dependency version skipped. key = {}, version = {}, dependency_dict[key] = {}.'.format(key, version, dependency_dict[key]))
             artifact_type = dependency_element.find('./maven:type', name_space)
             if artifact_type is not None and artifact_type.text.strip() == 'pom':
                 if '$' in group_id or '$' in artifact_id or '$' in version:
