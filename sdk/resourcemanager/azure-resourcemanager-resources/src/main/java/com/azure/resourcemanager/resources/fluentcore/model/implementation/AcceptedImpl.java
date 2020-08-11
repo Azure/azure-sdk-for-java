@@ -287,6 +287,7 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
 
             if (postActivation != null) {
                 T ret = postActivation.apply(accepted.getActivationResponse().getValue().inner());
+                Objects.requireNonNull(ret);    // suppress DLS_DEAD_LOCAL_STORE
             }
 
             return accepted;
