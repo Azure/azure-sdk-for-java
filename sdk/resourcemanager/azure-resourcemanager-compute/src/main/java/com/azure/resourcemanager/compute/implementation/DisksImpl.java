@@ -23,7 +23,7 @@ import java.util.function.Function;
 public class DisksImpl extends TopLevelModifiableResourcesImpl<Disk, DiskImpl, DiskInner, DisksClient, ComputeManager>
     implements Disks {
 
-    private ClientLogger logger = new ClientLogger(this.getClass());
+    private final ClientLogger logger = new ClientLogger(this.getClass());
 
     public DisksImpl(ComputeManager computeManager) {
         super(computeManager.inner().getDisks(), computeManager);

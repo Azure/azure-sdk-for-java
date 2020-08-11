@@ -369,7 +369,7 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
     @Override
     public Accepted<Disk> beginCreate() {
         return AcceptedImpl.newAccepted(logger,
-            () -> manager().inner().getDisks()
+            () -> this.manager().inner().getDisks()
                 .createOrUpdateWithResponseAsync(resourceGroupName(), name(), this.inner()).block(),
             inner -> new DiskImpl(inner.name(), inner, this.manager()),
             this.manager().inner().getSerializerAdapter(),
