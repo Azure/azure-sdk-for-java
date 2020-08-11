@@ -113,8 +113,8 @@ public class SqlDatabaseThreatDetectionPolicyImpl
             .sqlServerManager
             .inner()
             .getDatabaseThreatDetectionPolicies()
-            .getAsync(this.resourceGroupName, this.sqlServerName, this.parent().name()
-                , SecurityAlertPolicyName.DEFAULT);
+            .getAsync(this.resourceGroupName, this.sqlServerName, this.parent().name(),
+                SecurityAlertPolicyName.DEFAULT);
     }
 
     @Override
