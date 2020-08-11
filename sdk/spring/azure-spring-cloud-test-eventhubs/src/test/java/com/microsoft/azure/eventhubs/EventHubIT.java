@@ -20,7 +20,7 @@ class EventHubIT {
     private final Source source;
 
     @Autowired
-    public EventHubIT(Source source) {
+    EventHubIT(Source source) {
         this.source = source;
     }
 
