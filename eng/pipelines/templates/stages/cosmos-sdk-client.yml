@@ -73,6 +73,26 @@ stages:
             ProfileFlag: '-Punit'
         PreTestSteps:
           - template: ../steps/install-reporting-tools.yml
+        PostTestSteps:
+          - script: |
+            python3 --version
+            python3 sdk/spring/script/replace_artifact.py --module cosmos
+            displayName: 'Run replace_artifact.py'
+        - task: Maven@3
+          displayName: 'Run tests after replace_artifact.py'
+          inputs:
+            mavenPomFile: pom.xml
+            options: ${{ parameters.TestOptions }} -pl $(PLSkipOptions)$(ProjectList) -am $(AdditionalOptions)
+            mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+            javaHomeOption: 'JDKVersion'
+            jdkVersionOption: $(JavaTestVersion)
+            jdkArchitectureOption: 'x64'
+            publishJUnitResults: false
+            goals: ${{ parameters.TestGoals }}
+          # we want to run this when TestFromSource isn't true (which covers normal running when it isn't set)
+          # OR when ShouldRunSourceTests is true
+          condition: and(succeeded(), or(ne(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))
+
 
     - template: ../jobs/archetype-sdk-tests.yml
       parameters:
