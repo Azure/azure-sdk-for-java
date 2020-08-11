@@ -4,6 +4,7 @@
 package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.training.models.AccountProperties;
+import com.azure.ai.formrecognizer.training.models.TrainingOptions;
 import com.azure.ai.formrecognizer.training.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.training.models.CustomFormModel;
 import com.azure.ai.formrecognizer.training.models.TrainingFileFilter;
@@ -71,16 +72,18 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link FormTrainingAsyncClient#beginTraining(String, boolean, TrainingFileFilter, Duration)}
+     * Code snippet for {@link FormTrainingAsyncClient#beginTraining(String, boolean, TrainingOptions)}
      * with options
      */
     public void beginTrainingWithOptions() {
-        // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginTraining#string-boolean-trainingFileFilter-Duration
+        // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginTraining#string-boolean-TrainingOptions
         String trainingFilesUrl = "{SAS-URL-of-your-container-in-blob-storage}";
         TrainingFileFilter trainingFileFilter = new TrainingFileFilter().setSubfoldersIncluded(true).setPrefix("Invoice");
 
-        formTrainingAsyncClient.beginTraining(trainingFilesUrl, true, trainingFileFilter,
-            Duration.ofSeconds(5))
+        formTrainingAsyncClient.beginTraining(trainingFilesUrl, true,
+            new TrainingOptions()
+                .setTrainingFileFilter(trainingFileFilter)
+                .setPollInterval(Duration.ofSeconds(5)))
             // if training polling operation completed, retrieve the final result.
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(customFormModel -> {
@@ -91,7 +94,7 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
                         System.out.printf("Form Type: %s Field Text: %s Field Accuracy: %f%n",
                             key, customFormModelField.getName(), customFormModelField.getAccuracy())));
             });
-        // END: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginTraining#string-boolean-trainingFileFilter-Duration
+        // END: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginTraining#string-boolean-TrainingOptions
     }
 
     /**
