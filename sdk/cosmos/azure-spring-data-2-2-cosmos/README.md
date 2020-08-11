@@ -48,7 +48,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 <!-- LINKS -->
-[source_code]: src
+[source_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-spring-data-cosmos-core
 [cosmos_introduction]: https://docs.microsoft.com/en-us/azure/cosmos-db/
 [cosmos_docs]: https://docs.microsoft.com/en-us/azure/cosmos-db/introduction
 [jdk]: https://docs.microsoft.com/java/azure/java-supported-jdk-runtime?view=azure-java-stable

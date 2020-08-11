@@ -9,12 +9,12 @@ This project supports both [spring-data-commons 2.2.x][azure_spring_data_2_2_cos
 ## Getting started
 
 ### Include the package
-Please refer to [azure-spring-data-2-2-cosmos readme] [azure_spring_data_2_2_cosmos_readme] or [azure-spring-data-2-3-cosmos readme] [azure_spring_data_2_3_cosmos_readme] on how to include the individual packages.
+Please refer to [azure-spring-data-2-2-cosmos readme][azure_spring_data_2_2_cosmos_readme] or [azure-spring-data-2-3-cosmos readme][azure_spring_data_2_3_cosmos_readme] on how to include the individual packages.
 
 ### Prerequisites
 
 - Java Development Kit 8
-- An active Azure account. If you don't have one, you can sign up for a [free account][azure_subscription]. Alternatively, you can use the [Azure Cosmos DB Emulator][local-emulator] for development and testing. As emulator https certificate is self signed, you need to import its certificate to java trusted cert store, [explained here][local_emulator_export_ssl_certificates]
+- An active Azure account. If you don't have one, you can sign up for a [free account][azure_subscription]. Alternatively, you can use the [Azure Cosmos DB Emulator][local_emulator] for development and testing. As emulator https certificate is self signed, you need to import its certificate to java trusted cert store, [explained here][local_emulator_export_ssl_certificates]
 - (Optional) SLF4J is a logging facade.
 - (Optional) [SLF4J binding](http://www.slf4j.org/manual.html) is used to associate a specific logging framework with SLF4J.
 - (Optional) Maven
