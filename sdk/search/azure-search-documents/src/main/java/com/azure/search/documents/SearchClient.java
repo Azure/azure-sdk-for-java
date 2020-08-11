@@ -39,7 +39,7 @@ public final class SearchClient {
 
     /**
      * Package private constructor to be used by {@link SearchClientBuilder}
-     *
+     *classWithGettersWithAnnotations
      * @param searchAsyncClient Async SearchIndex Client
      */
     SearchClient(SearchAsyncClient searchAsyncClient) {

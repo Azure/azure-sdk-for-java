@@ -144,7 +144,7 @@ public final class JacksonJsonSerializer implements JsonSerializer, MemberNameCo
 
         return method.getParameterCount() == 0
             && returnType != void.class
-            && returnType != Void.TYPE;
+            && returnType != Void.class;
     }
 
     private static String removePrefix(Method method) {

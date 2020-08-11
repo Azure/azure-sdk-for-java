@@ -7,7 +7,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.MemberNameConverter;
 import com.azure.core.util.serializer.MemberNameConverterProviders;
 import com.azure.core.util.serializer.ObjectSerializer;
-import com.azure.search.documents.indexes.FieldIgnore;
+import com.azure.search.documents.indexes.FieldBuilderIgnore;
 import com.azure.search.documents.indexes.SearchableFieldProperty;
 import com.azure.search.documents.indexes.SimpleFieldProperty;
 import com.azure.search.documents.indexes.models.FieldBuilderOptions;
@@ -16,10 +16,14 @@ import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import reactor.util.annotation.Nullable;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.Member;
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -30,6 +34,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.Stack;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Helper to convert model class to Search {@link SearchField fields}.
@@ -109,52 +114,83 @@ public final class FieldBuilder {
                 "The dependency graph is too deep. Please review your schema."));
         }
         classChain.push(currentClass);
-        List<SearchField> searchFields = Arrays.stream(currentClass.getDeclaredFields())
-            .filter(classField -> !classField.isAnnotationPresent(FieldIgnore.class))
-            .map(classField -> buildField(classField, classChain, serializer))
+        List<SearchField> searchFields = getDeclaredFieldsAndMethods(currentClass)
+            .filter(FieldBuilder::fieldOrMethodIgnored)
+            .map(classField -> buildSearchField(classField, classChain, serializer))
             .filter(Objects::nonNull)
             .collect(Collectors.toList());
         classChain.pop();
         return searchFields;
     }
 
-    private static SearchField buildField(Field classField, Stack<Class<?>> classChain,
+    /*
+     * Retrieves all declared fields and methods from the passed Class.
+     */
+    private static Stream<Member> getDeclaredFieldsAndMethods(Class<?> model) {
+        List<Member> fieldsAndMethods = new ArrayList<>(Arrays.asList(model.getDeclaredFields()));
+        fieldsAndMethods.addAll(Arrays.asList(model.getDeclaredMethods()));
+
+        return fieldsAndMethods.stream();
+    }
+
+    /*
+     * Indicates if the Member, should be a Field or Method, is annotated with FieldBuilderIgnore indicating that it
+     * shouldn't have a SearchField created for it.
+     */
+    private static boolean fieldOrMethodIgnored(Member member) {
+        if (member instanceof Field) {
+            return !((Field) member).isAnnotationPresent(FieldBuilderIgnore.class);
+        } else if (member instanceof Method) {
+            return !((Method) member).isAnnotationPresent(FieldBuilderIgnore.class);
+        } else {
+            return false;
+        }
+    }
+
+    private static SearchField buildSearchField(Member member, Stack<Class<?>> classChain,
         MemberNameConverter serializer) {
-        String fieldName = serializer.convertMemberName(classField);
+        String fieldName = serializer.convertMemberName(member);
         if (fieldName == null) {
             return null;
         }
-        Type type = classField.getGenericType();
 
+        Type type = getFieldOrMethodReturnType(member);
         if (SUPPORTED_NONE_PARAMETERIZED_TYPE.containsKey(type)) {
-            return buildNoneParameterizedType(fieldName, classField);
-        }
-        if (isArrayOrList(type)) {
-            return buildCollectionField(fieldName, classField, classChain, serializer);
+            return buildNoneParameterizedType(fieldName, member, type);
         }
 
-        return getSearchField(classField, classChain, serializer, fieldName, (Class<?>) type);
+        if (isArrayOrList(type)) {
+            return buildCollectionField(fieldName, member, type, classChain, serializer);
+        }
+
+        return getSearchField(type, classChain, serializer, fieldName, (Class<?>) type);
+    }
+
+    private static Type getFieldOrMethodReturnType(Member member) {
+        if (member instanceof Field) {
+            return ((Field) member).getGenericType();
+        } else if (member instanceof Method) {
+            return ((Method) member).getGenericReturnType();
+        } else {
+            throw LOGGER.logExceptionAsError(new IllegalStateException("Member isn't instance of Field or Method."));
+        }
     }
 
     @Nullable
-    private static SearchField getSearchField(Field classField, Stack<Class<?>> classChain,
-        MemberNameConverter serializer, String fieldName, Class<?> type) {
-        List<SearchField> childFields = build(type, classChain, serializer);
-
-        SearchField searchField = convertToBasicSearchField(fieldName, classField);
+    private static SearchField getSearchField(Type type, Stack<Class<?>> classChain, MemberNameConverter serializer,
+        String fieldName, Class<?> clazz) {
+        SearchField searchField = convertToBasicSearchField(fieldName, type);
         if (searchField == null) {
             return null;
         }
 
-        return searchField.setFields(childFields);
+        return searchField.setFields(build(clazz, classChain, serializer));
     }
 
-    private static SearchField buildNoneParameterizedType(String fieldName, Field classField) {
-        SearchField searchField = convertToBasicSearchField(fieldName, classField);
-        if (searchField == null) {
-            return null;
-        }
-        return enrichWithAnnotation(searchField, classField);
+    private static SearchField buildNoneParameterizedType(String fieldName, Member member, Type type) {
+        SearchField searchField = convertToBasicSearchField(fieldName, type);
+
+        return (searchField == null) ? null : enrichWithAnnotation(searchField, member);
     }
 
 
@@ -172,19 +208,19 @@ public final class FieldBuilder {
         return List.class.isAssignableFrom((Class<?>) rawType);
     }
 
-    private static SearchField buildCollectionField(String fieldName, Field classField,
+    private static SearchField buildCollectionField(String fieldName, Member member, Type type,
         Stack<Class<?>> classChain, MemberNameConverter serializer) {
-        Type componentOrElementType = getComponentOrElementType(classField.getGenericType());
+        Type componentOrElementType = getComponentOrElementType(type);
 
         validateType(componentOrElementType, true);
         if (SUPPORTED_NONE_PARAMETERIZED_TYPE.containsKey(componentOrElementType)) {
-            SearchField searchField = convertToBasicSearchField(fieldName, classField);
+            SearchField searchField = convertToBasicSearchField(fieldName, type);
             if (searchField == null) {
                 return null;
             }
-            return enrichWithAnnotation(searchField, classField);
+            return enrichWithAnnotation(searchField, member);
         }
-        return getSearchField(classField, classChain, serializer, fieldName, (Class<?>) componentOrElementType);
+        return getSearchField(type, classChain, serializer, fieldName, (Class<?>) componentOrElementType);
     }
 
     private static Type getComponentOrElementType(Type arrayOrListType) {
@@ -201,9 +237,9 @@ public final class FieldBuilder {
             "Collection type %s is not supported.", arrayOrListType.getTypeName())));
     }
 
-    private static SearchField convertToBasicSearchField(String fieldName, Field classField) {
+    private static SearchField convertToBasicSearchField(String fieldName, Type type) {
 
-        SearchFieldDataType dataType = covertToSearchFieldDataType(classField.getGenericType(), false);
+        SearchFieldDataType dataType = covertToSearchFieldDataType(type, false);
         if (dataType == null) {
             return null;
         }
@@ -211,63 +247,72 @@ public final class FieldBuilder {
         return new SearchField(fieldName, dataType);
     }
 
-    private static SearchField enrichWithAnnotation(SearchField searchField, java.lang.reflect.Field classField) {
-        if (classField.isAnnotationPresent(SimpleFieldProperty.class)
-            && classField.isAnnotationPresent(SearchableFieldProperty.class)) {
+    private static SearchField enrichWithAnnotation(SearchField searchField, Member member) {
+        SimpleFieldProperty simpleFieldProperty = getDeclaredAnnotation(member, SimpleFieldProperty.class);
+        SearchableFieldProperty searchableFieldProperty = getDeclaredAnnotation(member, SearchableFieldProperty.class);
+
+        if (simpleFieldProperty != null && searchableFieldProperty != null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("@SimpleFieldProperty and @SearchableFieldProperty cannot be present simultaneously "
-                    + "for %s", classField.getName())));
+                    + "for %s", member.getName())));
         }
-        if (classField.isAnnotationPresent(SimpleFieldProperty.class)) {
-            SimpleFieldProperty simpleFieldPropertyAnnotation =
-                classField.getDeclaredAnnotation(SimpleFieldProperty.class);
+        if (simpleFieldProperty != null) {
             searchField.setSearchable(false)
-                .setSortable(simpleFieldPropertyAnnotation.isSortable())
-                .setFilterable(simpleFieldPropertyAnnotation.isFilterable())
-                .setFacetable(simpleFieldPropertyAnnotation.isFacetable())
-                .setKey(simpleFieldPropertyAnnotation.isKey())
-                .setHidden(simpleFieldPropertyAnnotation.isHidden());
-        } else if (classField.isAnnotationPresent(SearchableFieldProperty.class)) {
+                .setSortable(simpleFieldProperty.isSortable())
+                .setFilterable(simpleFieldProperty.isFilterable())
+                .setFacetable(simpleFieldProperty.isFacetable())
+                .setKey(simpleFieldProperty.isKey())
+                .setHidden(simpleFieldProperty.isHidden());
+        } else if (searchableFieldProperty != null) {
             if (!searchField.getType().equals(SearchFieldDataType.STRING)
                 && !searchField.getType().equals(SearchFieldDataType.collection(SearchFieldDataType.STRING))) {
                 throw LOGGER.logExceptionAsError(new RuntimeException(String.format("SearchFieldProperty can only"
                         + " be used on string properties. Property %s returns a %s value.",
-                    classField.getName(), searchField.getType())));
+                    member.getName(), searchField.getType())));
             }
-            SearchableFieldProperty searchableFieldPropertyAnnotation =
-                classField.getDeclaredAnnotation(SearchableFieldProperty.class);
+
             searchField.setSearchable(true)
-                .setSortable(searchableFieldPropertyAnnotation.isSortable())
-                .setFilterable(searchableFieldPropertyAnnotation.isFilterable())
-                .setFacetable(searchableFieldPropertyAnnotation.isFacetable())
-                .setKey(searchableFieldPropertyAnnotation.isKey())
-                .setHidden(searchableFieldPropertyAnnotation.isHidden());
-            String analyzer = searchableFieldPropertyAnnotation.analyzerName();
-            String searchAnalyzer = searchableFieldPropertyAnnotation.searchAnalyzerName();
-            String indexAnalyzer = searchableFieldPropertyAnnotation.indexAnalyzerName();
+                .setSortable(searchableFieldProperty.isSortable())
+                .setFilterable(searchableFieldProperty.isFilterable())
+                .setFacetable(searchableFieldProperty.isFacetable())
+                .setKey(searchableFieldProperty.isKey())
+                .setHidden(searchableFieldProperty.isHidden());
+            String analyzer = searchableFieldProperty.analyzerName();
+            String searchAnalyzer = searchableFieldProperty.searchAnalyzerName();
+            String indexAnalyzer = searchableFieldProperty.indexAnalyzerName();
             if (!analyzer.isEmpty() && (!searchAnalyzer.isEmpty() || !indexAnalyzer.isEmpty())) {
                 throw LOGGER.logExceptionAsError(new RuntimeException(
                     "Please specify either analyzer or both searchAnalyzer and indexAnalyzer."));
             }
-            if (!searchableFieldPropertyAnnotation.analyzerName().isEmpty()) {
+            if (!searchableFieldProperty.analyzerName().isEmpty()) {
                 searchField.setAnalyzerName(LexicalAnalyzerName.fromString(
-                    searchableFieldPropertyAnnotation.analyzerName()));
+                    searchableFieldProperty.analyzerName()));
             }
-            if (!searchableFieldPropertyAnnotation.searchAnalyzerName().isEmpty()) {
+            if (!searchableFieldProperty.searchAnalyzerName().isEmpty()) {
                 searchField.setAnalyzerName(LexicalAnalyzerName.fromString(
-                    searchableFieldPropertyAnnotation.searchAnalyzerName()));
+                    searchableFieldProperty.searchAnalyzerName()));
             }
-            if (!searchableFieldPropertyAnnotation.indexAnalyzerName().isEmpty()) {
+            if (!searchableFieldProperty.indexAnalyzerName().isEmpty()) {
                 searchField.setAnalyzerName(LexicalAnalyzerName.fromString(
-                    searchableFieldPropertyAnnotation.indexAnalyzerName()));
+                    searchableFieldProperty.indexAnalyzerName()));
             }
-            if (searchableFieldPropertyAnnotation.synonymMapNames().length != 0) {
-                List<String> synonymMaps = Arrays.stream(searchableFieldPropertyAnnotation.synonymMapNames())
+            if (searchableFieldProperty.synonymMapNames().length != 0) {
+                List<String> synonymMaps = Arrays.stream(searchableFieldProperty.synonymMapNames())
                     .filter(synonym -> !synonym.trim().isEmpty()).collect(Collectors.toList());
                 searchField.setSynonymMapNames(synonymMaps);
             }
         }
         return searchField;
+    }
+
+    private static <T extends Annotation> T getDeclaredAnnotation(Member member, Class<T> annotationType) {
+        if (member instanceof Field) {
+            return ((Field) member).getAnnotation(annotationType);
+        } else if (member instanceof Method) {
+            return ((Method) member).getAnnotation(annotationType);
+        } else {
+            return null;
+        }
     }
 
     private static void validateType(Type type, boolean hasArrayOrCollectionWrapped) {
