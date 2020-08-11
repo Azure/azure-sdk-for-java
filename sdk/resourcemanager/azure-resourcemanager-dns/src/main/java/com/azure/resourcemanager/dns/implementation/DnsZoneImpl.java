@@ -501,39 +501,4 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
                     });
         return new PagedIterable<>(recordSets);
     }
-
-    @Override
-    public DnsZoneImpl withPublicAccess() {
-        this.inner().withZoneType(ZoneType.PUBLIC);
-        this.inner().withRegistrationVirtualNetworks(null);
-        this.inner().withResolutionVirtualNetworks(null);
-        return this;
-    }
-
-    @Override
-    public DnsZoneImpl withPrivateAccess() {
-        this.inner().withZoneType(ZoneType.PRIVATE);
-        this.inner().withRegistrationVirtualNetworks(null);
-        this.inner().withResolutionVirtualNetworks(null);
-        return this;
-    }
-
-    @Override
-    public DnsZoneImpl withPrivateAccess(
-        List<String> registrationVirtualNetworkIds, List<String> resolutionVirtualNetworkIds) {
-        this.withPrivateAccess();
-        this.inner().withRegistrationVirtualNetworks(new ArrayList<>());
-        this.inner().withResolutionVirtualNetworks(new ArrayList<>());
-        for (String rvnId : registrationVirtualNetworkIds) {
-            SubResource sb = new SubResource();
-            sb.withId(rvnId);
-            this.inner().registrationVirtualNetworks().add(sb);
-        }
-        for (String rvnId : resolutionVirtualNetworkIds) {
-            SubResource sb = new SubResource();
-            sb.withId(rvnId);
-            this.inner().resolutionVirtualNetworks().add(sb);
-        }
-        return this;
-    }
 }
