@@ -188,6 +188,7 @@ class NetworkInterfaceImpl
     @Override
     public NetworkInterfaceImpl withExistingPrimaryPublicIPAddress(PublicIpAddress publicIPAddress) {
         this.primaryIPConfiguration().withExistingPublicIpAddress(publicIPAddress);
+        this.primaryIPConfiguration().withPrivateIpVersion(publicIPAddress.version());
         return this;
     }
 
@@ -466,7 +467,7 @@ class NetworkInterfaceImpl
             inner -> new NetworkInterfaceImpl(inner.name(), inner, this.manager()),
             this.manager().inner().getSerializerAdapter(),
             this.manager().inner().getHttpPipeline(),
-            NetworkInterface.class,
+            NetworkInterfaceInner.class,
             () -> {
                 Flux<Indexable> dependencyTasksAsync =
                     taskGroup().invokeDependencyAsync(taskGroup().newInvocationContext());

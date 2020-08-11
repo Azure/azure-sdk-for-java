@@ -186,7 +186,7 @@ class PublicIpAddressImpl
             inner -> new PublicIpAddressImpl(inner.name(), inner, this.manager()),
             this.manager().inner().getSerializerAdapter(),
             this.manager().inner().getHttpPipeline(),
-            PublicIpAddress.class,
+            PublicIpAddressInner.class,
             () -> {
                 Flux<Indexable> dependencyTasksAsync =
                     taskGroup().invokeDependencyAsync(taskGroup().newInvocationContext());

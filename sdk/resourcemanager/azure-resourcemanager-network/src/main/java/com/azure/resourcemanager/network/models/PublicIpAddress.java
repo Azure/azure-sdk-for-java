@@ -231,7 +231,7 @@ public interface PublicIpAddress
              *
              * @return the accepted create operation
              */
-            Accepted<?> beginCreate();
+            Accepted<PublicIpAddress> beginCreate();
         }
     }
 

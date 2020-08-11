@@ -286,7 +286,7 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
                 convertOperation);
 
             if (postActivation != null) {
-                postActivation.apply(accepted.getActivationResponse().getValue().inner());
+                T ret = postActivation.apply(accepted.getActivationResponse().getValue().inner());
             }
 
             return accepted;
