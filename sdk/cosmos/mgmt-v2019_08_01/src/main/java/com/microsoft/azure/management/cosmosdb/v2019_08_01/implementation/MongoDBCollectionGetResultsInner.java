@@ -8,9 +8,7 @@
 
 package com.microsoft.azure.management.cosmosdb.v2019_08_01.implementation;
 
-import java.util.Map;
-import java.util.List;
-import com.microsoft.azure.management.cosmosdb.v2019_08_01.MongoIndex;
+import com.microsoft.azure.management.cosmosdb.v2019_08_01.MongoDBCollectionGetPropertiesResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.management.cosmosdb.v2019_08_01.ARMResourceProperties;
@@ -21,128 +19,29 @@ import com.microsoft.azure.management.cosmosdb.v2019_08_01.ARMResourceProperties
 @JsonFlatten
 public class MongoDBCollectionGetResultsInner extends ARMResourceProperties {
     /**
-     * Name of the Cosmos DB MongoDB collection.
+     * The resource property.
      */
-    @JsonProperty(value = "properties.id", required = true)
-    private String mongoDBCollectionGetResultsId;
+    @JsonProperty(value = "properties.resource")
+    private MongoDBCollectionGetPropertiesResource resource;
 
     /**
-     * A key-value pair of shard keys to be applied for the request.
-     */
-    @JsonProperty(value = "properties.shardKey")
-    private Map<String, String> shardKey;
-
-    /**
-     * List of index keys.
-     */
-    @JsonProperty(value = "properties.indexes")
-    private List<MongoIndex> indexes;
-
-    /**
-     * A system generated property. A unique identifier.
-     */
-    @JsonProperty(value = "properties._rid", access = JsonProperty.Access.WRITE_ONLY)
-    private String _rid;
-
-    /**
-     * A system generated property that denotes the last updated timestamp of
-     * the resource.
-     */
-    @JsonProperty(value = "properties._ts", access = JsonProperty.Access.WRITE_ONLY)
-    private Object _ts;
-
-    /**
-     * A system generated property representing the resource etag required for
-     * optimistic concurrency control.
-     */
-    @JsonProperty(value = "properties._etag", access = JsonProperty.Access.WRITE_ONLY)
-    private String _etag;
-
-    /**
-     * Get name of the Cosmos DB MongoDB collection.
+     * Get the resource value.
      *
-     * @return the mongoDBCollectionGetResultsId value
+     * @return the resource value
      */
-    public String mongoDBCollectionGetResultsId() {
-        return this.mongoDBCollectionGetResultsId;
+    public MongoDBCollectionGetPropertiesResource resource() {
+        return this.resource;
     }
 
     /**
-     * Set name of the Cosmos DB MongoDB collection.
+     * Set the resource value.
      *
-     * @param mongoDBCollectionGetResultsId the mongoDBCollectionGetResultsId value to set
+     * @param resource the resource value to set
      * @return the MongoDBCollectionGetResultsInner object itself.
      */
-    public MongoDBCollectionGetResultsInner withMongoDBCollectionGetResultsId(String mongoDBCollectionGetResultsId) {
-        this.mongoDBCollectionGetResultsId = mongoDBCollectionGetResultsId;
+    public MongoDBCollectionGetResultsInner withResource(MongoDBCollectionGetPropertiesResource resource) {
+        this.resource = resource;
         return this;
-    }
-
-    /**
-     * Get a key-value pair of shard keys to be applied for the request.
-     *
-     * @return the shardKey value
-     */
-    public Map<String, String> shardKey() {
-        return this.shardKey;
-    }
-
-    /**
-     * Set a key-value pair of shard keys to be applied for the request.
-     *
-     * @param shardKey the shardKey value to set
-     * @return the MongoDBCollectionGetResultsInner object itself.
-     */
-    public MongoDBCollectionGetResultsInner withShardKey(Map<String, String> shardKey) {
-        this.shardKey = shardKey;
-        return this;
-    }
-
-    /**
-     * Get list of index keys.
-     *
-     * @return the indexes value
-     */
-    public List<MongoIndex> indexes() {
-        return this.indexes;
-    }
-
-    /**
-     * Set list of index keys.
-     *
-     * @param indexes the indexes value to set
-     * @return the MongoDBCollectionGetResultsInner object itself.
-     */
-    public MongoDBCollectionGetResultsInner withIndexes(List<MongoIndex> indexes) {
-        this.indexes = indexes;
-        return this;
-    }
-
-    /**
-     * Get a system generated property. A unique identifier.
-     *
-     * @return the _rid value
-     */
-    public String _rid() {
-        return this._rid;
-    }
-
-    /**
-     * Get a system generated property that denotes the last updated timestamp of the resource.
-     *
-     * @return the _ts value
-     */
-    public Object _ts() {
-        return this._ts;
-    }
-
-    /**
-     * Get a system generated property representing the resource etag required for optimistic concurrency control.
-     *
-     * @return the _etag value
-     */
-    public String _etag() {
-        return this._etag;
     }
 
 }

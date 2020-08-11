@@ -8,7 +8,7 @@
 
 package com.microsoft.azure.management.cosmosdb.v2019_08_01.implementation;
 
-import com.microsoft.azure.management.cosmosdb.v2019_08_01.CassandraSchema;
+import com.microsoft.azure.management.cosmosdb.v2019_08_01.CassandraTableGetPropertiesResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.management.cosmosdb.v2019_08_01.ARMResourceProperties;
@@ -19,128 +19,29 @@ import com.microsoft.azure.management.cosmosdb.v2019_08_01.ARMResourceProperties
 @JsonFlatten
 public class CassandraTableGetResultsInner extends ARMResourceProperties {
     /**
-     * Name of the Cosmos DB Cassandra table.
+     * The resource property.
      */
-    @JsonProperty(value = "properties.id", required = true)
-    private String cassandraTableGetResultsId;
+    @JsonProperty(value = "properties.resource")
+    private CassandraTableGetPropertiesResource resource;
 
     /**
-     * Time to live of the Cosmos DB Cassandra table.
-     */
-    @JsonProperty(value = "properties.defaultTtl")
-    private Integer defaultTtl;
-
-    /**
-     * Schema of the Cosmos DB Cassandra table.
-     */
-    @JsonProperty(value = "properties.schema")
-    private CassandraSchema schema;
-
-    /**
-     * A system generated property. A unique identifier.
-     */
-    @JsonProperty(value = "properties._rid", access = JsonProperty.Access.WRITE_ONLY)
-    private String _rid;
-
-    /**
-     * A system generated property that denotes the last updated timestamp of
-     * the resource.
-     */
-    @JsonProperty(value = "properties._ts", access = JsonProperty.Access.WRITE_ONLY)
-    private Object _ts;
-
-    /**
-     * A system generated property representing the resource etag required for
-     * optimistic concurrency control.
-     */
-    @JsonProperty(value = "properties._etag", access = JsonProperty.Access.WRITE_ONLY)
-    private String _etag;
-
-    /**
-     * Get name of the Cosmos DB Cassandra table.
+     * Get the resource value.
      *
-     * @return the cassandraTableGetResultsId value
+     * @return the resource value
      */
-    public String cassandraTableGetResultsId() {
-        return this.cassandraTableGetResultsId;
+    public CassandraTableGetPropertiesResource resource() {
+        return this.resource;
     }
 
     /**
-     * Set name of the Cosmos DB Cassandra table.
+     * Set the resource value.
      *
-     * @param cassandraTableGetResultsId the cassandraTableGetResultsId value to set
+     * @param resource the resource value to set
      * @return the CassandraTableGetResultsInner object itself.
      */
-    public CassandraTableGetResultsInner withCassandraTableGetResultsId(String cassandraTableGetResultsId) {
-        this.cassandraTableGetResultsId = cassandraTableGetResultsId;
+    public CassandraTableGetResultsInner withResource(CassandraTableGetPropertiesResource resource) {
+        this.resource = resource;
         return this;
-    }
-
-    /**
-     * Get time to live of the Cosmos DB Cassandra table.
-     *
-     * @return the defaultTtl value
-     */
-    public Integer defaultTtl() {
-        return this.defaultTtl;
-    }
-
-    /**
-     * Set time to live of the Cosmos DB Cassandra table.
-     *
-     * @param defaultTtl the defaultTtl value to set
-     * @return the CassandraTableGetResultsInner object itself.
-     */
-    public CassandraTableGetResultsInner withDefaultTtl(Integer defaultTtl) {
-        this.defaultTtl = defaultTtl;
-        return this;
-    }
-
-    /**
-     * Get schema of the Cosmos DB Cassandra table.
-     *
-     * @return the schema value
-     */
-    public CassandraSchema schema() {
-        return this.schema;
-    }
-
-    /**
-     * Set schema of the Cosmos DB Cassandra table.
-     *
-     * @param schema the schema value to set
-     * @return the CassandraTableGetResultsInner object itself.
-     */
-    public CassandraTableGetResultsInner withSchema(CassandraSchema schema) {
-        this.schema = schema;
-        return this;
-    }
-
-    /**
-     * Get a system generated property. A unique identifier.
-     *
-     * @return the _rid value
-     */
-    public String _rid() {
-        return this._rid;
-    }
-
-    /**
-     * Get a system generated property that denotes the last updated timestamp of the resource.
-     *
-     * @return the _ts value
-     */
-    public Object _ts() {
-        return this._ts;
-    }
-
-    /**
-     * Get a system generated property representing the resource etag required for optimistic concurrency control.
-     *
-     * @return the _etag value
-     */
-    public String _etag() {
-        return this._etag;
     }
 
 }
