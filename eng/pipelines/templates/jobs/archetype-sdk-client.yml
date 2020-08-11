@@ -82,7 +82,7 @@ jobs:
 
       - script: |
           python3 --version
-          python3 eng/versioning/update_versions.py --update-type library --build-type ${{parameters.SDKType}}
+          python3 eng/versioning/update_versions.py --update-type library --build-type ${{parameters.SDKType}} --sr
         condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
         displayName: Apply version settings to repository
 
