@@ -32,7 +32,7 @@ class SegmentTest extends Specification {
     static String shardPath1 = 'log/01/2020/03/25/0200/'
     static String shardPath2 = 'log/02/2020/03/25/0200/'
 
-    byte[] urlHash = MessageDigest.getInstance("MD5").digest('https://testaccount.blob.core.windows.net/$blobchangefeed'.getBytes(StandardCharsets.UTF_8))
+    String urlHost = 'testaccount.blob.core.windows.net'
     OffsetDateTime endTime = OffsetDateTime.MAX
     static String segmentPath = "idx/segments/2020/03/25/0200/meta.json"
     ChangefeedCursor cfCursor
@@ -49,7 +49,7 @@ class SegmentTest extends Specification {
         mockShard1 = mock(Shard.class)
         mockShard2 = mock(Shard.class)
 
-        cfCursor = new ChangefeedCursor(urlHash, endTime).toSegmentCursor(segmentPath, null)
+        cfCursor = new ChangefeedCursor(urlHost, endTime).toSegmentCursor(segmentPath, null)
 
         when(mockContainer.getBlobAsyncClient(anyString()))
             .thenReturn(mockBlob)

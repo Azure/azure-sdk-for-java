@@ -12,15 +12,19 @@ import com.azure.storage.blob.changefeed.implementation.util.DownloadUtils;
 import com.azure.storage.blob.changefeed.implementation.util.TimeUtils;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.ListBlobsOptions;
+import com.azure.storage.blob.models.ObjectReplicationPolicy;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuples;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * A class that represents a Changefeed.
@@ -57,23 +61,22 @@ class Changefeed {
         this.endTime = TimeUtils.roundUpToNearestHour(endTime);
         this.userCursor = userCursor;
         this.segmentFactory = segmentFactory;
-        byte[] urlHash;
+        String urlHost = null;
         try {
-            urlHash = MessageDigest.getInstance("MD5")
-                .digest(client.getBlobContainerUrl().getBytes(StandardCharsets.UTF_8));
-        } catch (NoSuchAlgorithmException e) {
+            urlHost = new URL(client.getBlobContainerUrl()).getHost();
+        } catch (MalformedURLException e) {
             throw logger.logExceptionAsError(new RuntimeException(e));
         }
-        this.changefeedCursor = new ChangefeedCursor(urlHash, this.endTime);
+        this.changefeedCursor = new ChangefeedCursor(urlHost, this.endTime);
 
         /* Validate the cursor. */
         if (userCursor != null) {
             if (userCursor.getCursorVersion() != 1) {
                 throw logger.logExceptionAsError(new IllegalArgumentException("Unsupported cursor version."));
             }
-            if (!Arrays.equals(userCursor.getUrlHash(), urlHash)) {
-                throw logger.logExceptionAsError(new IllegalArgumentException("Cursor URL does not match container "
-                    + "URL."));
+            if (!Objects.equals(urlHost, userCursor.getUrlHost())) {
+                throw logger.logExceptionAsError(new IllegalArgumentException("Cursor URL host does not match "
+                    + "container URL host."));
             }
         }
     }

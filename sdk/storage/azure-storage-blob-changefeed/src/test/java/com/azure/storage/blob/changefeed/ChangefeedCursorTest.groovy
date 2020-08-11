@@ -19,7 +19,7 @@ class ChangefeedCursorTest extends Specification {
         System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
     }
 
-    byte[] urlHash = MessageDigest.getInstance("MD5").digest('https://testaccount.blob.core.windows.net/$blobchangefeed'.getBytes(StandardCharsets.UTF_8))
+    String urlHost = 'testaccount.blob.core.windows.net'
     OffsetDateTime endTime = OffsetDateTime.MAX
 
     String segmentPath = "idx/segments/2020/08/02/2300/meta.json"
@@ -38,23 +38,23 @@ class ChangefeedCursorTest extends Specification {
 
     def "constructor"() {
         when:
-        ChangefeedCursor cursor = new ChangefeedCursor(urlHash, endTime)
+        ChangefeedCursor cursor = new ChangefeedCursor(urlHost, endTime)
 
         then:
         cursor.getCursorVersion() == 1
-        cursor.getUrlHash() == urlHash
+        cursor.getUrlHost() == urlHost
         cursor.getEndTime() == endTime
         cursor.getCurrentSegmentCursor() == null
     }
 
     def "toSegmentCursor"() {
         when:
-        ChangefeedCursor cursor = new ChangefeedCursor(urlHash, endTime)
+        ChangefeedCursor cursor = new ChangefeedCursor(urlHost, endTime)
             .toSegmentCursor(segmentPath, null)
 
         then:
         cursor.getCursorVersion() == 1
-        cursor.getUrlHash() == urlHash
+        cursor.getUrlHost() == urlHost
         cursor.getEndTime() == endTime
         cursor.getCurrentSegmentCursor() != null
         cursor.getCurrentSegmentCursor().getSegmentPath() == segmentPath
@@ -65,13 +65,13 @@ class ChangefeedCursorTest extends Specification {
 
     def "toShardCursor"() {
         when:
-        ChangefeedCursor cursor = new ChangefeedCursor(urlHash, endTime)
+        ChangefeedCursor cursor = new ChangefeedCursor(urlHost, endTime)
             .toSegmentCursor(segmentPath, null)
             .toShardCursor(currentShardPath0)
 
         then:
         cursor.getCursorVersion() == 1
-        cursor.getUrlHash() == urlHash
+        cursor.getUrlHost() == urlHost
         cursor.getEndTime() == endTime
         cursor.getCurrentSegmentCursor() != null
         cursor.getCurrentSegmentCursor().getSegmentPath() == segmentPath
@@ -82,14 +82,14 @@ class ChangefeedCursorTest extends Specification {
 
     def "toEventCursor"() {
         when:
-        ChangefeedCursor cursor = new ChangefeedCursor(urlHash, endTime)
+        ChangefeedCursor cursor = new ChangefeedCursor(urlHost, endTime)
             .toSegmentCursor(segmentPath, null)
             .toShardCursor(currentShardPath0)
             .toEventCursor(chunk0, offset0, index0)
 
         then:
         cursor.getCursorVersion() == 1
-        cursor.getUrlHash() == urlHash
+        cursor.getUrlHost() == urlHost
         cursor.getEndTime() == endTime
         cursor.getCurrentSegmentCursor() != null
         cursor.getCurrentSegmentCursor().getSegmentPath() == segmentPath
@@ -104,7 +104,7 @@ class ChangefeedCursorTest extends Specification {
     def "state is saved in cursor across events"() {
         /* Note only state we care about is across events. */
         when:
-        ChangefeedCursor changefeedCursor = new ChangefeedCursor(urlHash, endTime)
+        ChangefeedCursor changefeedCursor = new ChangefeedCursor(urlHost, endTime)
 
         ChangefeedCursor segmentCursor = changefeedCursor.toSegmentCursor(segmentPath, null)
 
@@ -123,13 +123,13 @@ class ChangefeedCursorTest extends Specification {
         then:
         // Changefeed cursor.
         changefeedCursor.getCursorVersion() == 1
-        changefeedCursor.getUrlHash() == urlHash
+        changefeedCursor.getUrlHost() == urlHost
         changefeedCursor.getEndTime() == endTime
         changefeedCursor.getCurrentSegmentCursor() == null
 
         // Segment cursor (the shard cursors list should be equivalent to the last event cursor.)
         segmentCursor.getCursorVersion() == 1
-        segmentCursor.getUrlHash() == urlHash
+        segmentCursor.getUrlHost() == urlHost
         segmentCursor.getEndTime() == endTime
         segmentCursor.getCurrentSegmentCursor() != null
         segmentCursor.getCurrentSegmentCursor().getSegmentPath() == segmentPath
@@ -145,7 +145,7 @@ class ChangefeedCursorTest extends Specification {
 
         // Shard cursor 0 (Should be equivalent to last event cursor with correct shard cursor populated)
         shardCursor0.getCursorVersion() == 1
-        shardCursor0.getUrlHash() == urlHash
+        shardCursor0.getUrlHost() == urlHost
         shardCursor0.getEndTime() == endTime
         shardCursor0.getCurrentSegmentCursor() != null
         shardCursor0.getCurrentSegmentCursor().getSegmentPath() == segmentPath
@@ -161,7 +161,7 @@ class ChangefeedCursorTest extends Specification {
 
         // Shard cursor 1 (Should be equivalent to last event cursor with correct shard cursor populated)
         shardCursor1.getCursorVersion() == 1
-        shardCursor1.getUrlHash() == urlHash
+        shardCursor1.getUrlHost() == urlHost
         shardCursor1.getEndTime() == endTime
         shardCursor1.getCurrentSegmentCursor() != null
         shardCursor1.getCurrentSegmentCursor().getSegmentPath() == segmentPath
@@ -177,7 +177,7 @@ class ChangefeedCursorTest extends Specification {
 
         // Event cursor 0
         eventCursor0.getCursorVersion() == 1
-        eventCursor0.getUrlHash() == urlHash
+        eventCursor0.getUrlHost() == urlHost
         eventCursor0.getEndTime() == endTime
         eventCursor0.getCurrentSegmentCursor() != null
         eventCursor0.getCurrentSegmentCursor().getSegmentPath() == segmentPath
@@ -190,7 +190,7 @@ class ChangefeedCursorTest extends Specification {
 
         // Event cursor 1
         eventCursor1.getCursorVersion() == 1
-        eventCursor1.getUrlHash() == urlHash
+        eventCursor1.getUrlHost() == urlHost
         eventCursor1.getEndTime() == endTime
         eventCursor1.getCurrentSegmentCursor() != null
         eventCursor1.getCurrentSegmentCursor().getSegmentPath() == segmentPath
@@ -203,7 +203,7 @@ class ChangefeedCursorTest extends Specification {
 
         // Event cursor 2
         eventCursor2.getCursorVersion() == 1
-        eventCursor2.getUrlHash() == urlHash
+        eventCursor2.getUrlHost() == urlHost
         eventCursor2.getEndTime() == endTime
         eventCursor2.getCurrentSegmentCursor() != null
         eventCursor2.getCurrentSegmentCursor().getSegmentPath() == segmentPath
@@ -216,7 +216,7 @@ class ChangefeedCursorTest extends Specification {
 
         // Event cursor 3
         eventCursor3.getCursorVersion() == 1
-        eventCursor3.getUrlHash() == urlHash
+        eventCursor3.getUrlHost() == urlHost
         eventCursor3.getEndTime() == endTime
         eventCursor3.getCurrentSegmentCursor() != null
         eventCursor3.getCurrentSegmentCursor().getSegmentPath() == segmentPath
@@ -232,7 +232,7 @@ class ChangefeedCursorTest extends Specification {
 
         // Event cursor 4
         eventCursor4.getCursorVersion() == 1
-        eventCursor4.getUrlHash() == urlHash
+        eventCursor4.getUrlHost() == urlHost
         eventCursor4.getEndTime() == endTime
         eventCursor4.getCurrentSegmentCursor() != null
         eventCursor4.getCurrentSegmentCursor().getSegmentPath() == segmentPath
@@ -248,7 +248,7 @@ class ChangefeedCursorTest extends Specification {
 
         // Event cursor 5
         eventCursor5.getCursorVersion() == 1
-        eventCursor5.getUrlHash() == urlHash
+        eventCursor5.getUrlHost() == urlHost
         eventCursor5.getEndTime() == endTime
         eventCursor5.getCurrentSegmentCursor() != null
         eventCursor5.getCurrentSegmentCursor().getSegmentPath() == segmentPath
@@ -271,25 +271,25 @@ class ChangefeedCursorTest extends Specification {
         SegmentCursor segmentCursor = new SegmentCursor(segmentPath, shardCursors, currentShardPath1)
 
 
-        ChangefeedCursor cursor = new ChangefeedCursor(1, urlHash, endTime, segmentCursor)
+        ChangefeedCursor cursor = new ChangefeedCursor(1, urlHost, endTime, segmentCursor)
 
         when:
         String serialized = cursor.serialize()
 
         then:
-        serialized == '{"CursorVersion":1,"UrlHash":"47n9w8I/1TCXguW7cH7ePw==","EndTime":"+999999999-12-31T23:59:59.999999999-18:00","CurrentSegmentCursor":{"ShardCursors":[{"CurrentChunkPath":"log/00/2020/08/02/2300/00000.avro","BlockOffset":2434,"EventIndex":2},{"CurrentChunkPath":"log/01/2020/08/02/2300/00000.avro","BlockOffset":18954,"EventIndex":15}],"CurrentShardPath":"log/01/2020/08/02/2300/","SegmentPath":"idx/segments/2020/08/02/2300/meta.json"}}'
+        serialized == '{"CursorVersion":1,"UrlHost":"testaccount.blob.core.windows.net","EndTime":"+999999999-12-31T23:59:59.999999999-18:00","CurrentSegmentCursor":{"ShardCursors":[{"CurrentChunkPath":"log/00/2020/08/02/2300/00000.avro","BlockOffset":2434,"EventIndex":2},{"CurrentChunkPath":"log/01/2020/08/02/2300/00000.avro","BlockOffset":18954,"EventIndex":15}],"CurrentShardPath":"log/01/2020/08/02/2300/","SegmentPath":"idx/segments/2020/08/02/2300/meta.json"}}'
     }
 
     def "deserialize"() {
         setup:
-        String cursor = '{"CursorVersion":1,"UrlHash":"47n9w8I/1TCXguW7cH7ePw==","EndTime":"+999999999-12-31T23:59:59.999999999-18:00","CurrentSegmentCursor":{"ShardCursors":[{"CurrentChunkPath":"log/00/2020/08/02/2300/00000.avro","BlockOffset":2434,"EventIndex":2},{"CurrentChunkPath":"log/01/2020/08/02/2300/00000.avro","BlockOffset":18954,"EventIndex":15}],"CurrentShardPath":"log/01/2020/08/02/2300/","SegmentPath":"idx/segments/2020/08/02/2300/meta.json"}}'
+        String cursor = '{"CursorVersion":1,"UrlHost":"testaccount.blob.core.windows.net","EndTime":"+999999999-12-31T23:59:59.999999999-18:00","CurrentSegmentCursor":{"ShardCursors":[{"CurrentChunkPath":"log/00/2020/08/02/2300/00000.avro","BlockOffset":2434,"EventIndex":2},{"CurrentChunkPath":"log/01/2020/08/02/2300/00000.avro","BlockOffset":18954,"EventIndex":15}],"CurrentShardPath":"log/01/2020/08/02/2300/","SegmentPath":"idx/segments/2020/08/02/2300/meta.json"}}'
 
         when:
         ChangefeedCursor deserialized = ChangefeedCursor.deserialize(cursor, new ClientLogger(ChangefeedCursorTest.class))
 
         then:
         deserialized.getCursorVersion() == 1
-        deserialized.getUrlHash() == urlHash
+        deserialized.getUrlHost() == urlHost
         deserialized.getEndTime() == endTime
         deserialized.getCurrentSegmentCursor().getSegmentPath() == segmentPath
         deserialized.getCurrentSegmentCursor().getCurrentShardPath() == currentShardPath1

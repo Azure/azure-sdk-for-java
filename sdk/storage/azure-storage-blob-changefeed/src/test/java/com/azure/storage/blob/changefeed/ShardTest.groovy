@@ -16,8 +16,6 @@ import reactor.test.StepVerifier
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import java.nio.charset.StandardCharsets
-import java.security.MessageDigest
 import java.time.OffsetDateTime
 import java.util.function.Supplier
 
@@ -27,7 +25,7 @@ import static org.mockito.Mockito.*
 class ShardTest extends Specification {
 
 
-    byte[] urlHash = MessageDigest.getInstance("MD5").digest('https://testaccount.blob.core.windows.net/$blobchangefeed'.getBytes(StandardCharsets.UTF_8))
+    String urlHost = 'testaccount.blob.core.windows.net'
     OffsetDateTime endTime = OffsetDateTime.MAX
     String segmentPath = "idx/segments/2020/08/02/2300/meta.json"
     String currentShardPath0 = "log/00/2020/08/02/2300/"
@@ -66,7 +64,7 @@ class ShardTest extends Specification {
         }
         PagedFlux<BlobItem> mockPagedFlux = new PagedFlux<>(chunkSupplier)
 
-        segmentCursor = new ChangefeedCursor(urlHash, endTime)
+        segmentCursor = new ChangefeedCursor(urlHost, endTime)
             .toSegmentCursor(segmentPath, null)
             .toShardCursor(currentShardPath0)
 
@@ -178,7 +176,7 @@ class ShardTest extends Specification {
 
     boolean verifyWrapper(BlobChangefeedEventWrapper wrapper, long index, String chunkPath, long blockOffset, long blockIndex) {
         boolean verify = true
-        verify &= wrapper.getCursor().getUrlHash() == urlHash
+        verify &= wrapper.getCursor().getUrlHost() == urlHost
         verify &= wrapper.getCursor().getEndTime() == endTime
         verify &= wrapper.getCursor().getCurrentSegmentCursor().getSegmentPath() == segmentPath
         verify &= wrapper.getCursor().getCurrentSegmentCursor().getCurrentShardPath() == currentShardPath0

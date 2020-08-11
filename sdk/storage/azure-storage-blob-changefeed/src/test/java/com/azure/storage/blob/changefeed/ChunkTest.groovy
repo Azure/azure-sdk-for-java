@@ -30,7 +30,7 @@ class ChunkTest extends Specification {
     BlobChunkedDownloaderFactory mockBlobLazyDownloaderFactory
     BlobChunkedDownloader mockBlobLazyDownloader
 
-    byte[] urlHash = MessageDigest.getInstance("MD5").digest('https://testaccount.blob.core.windows.net/$blobchangefeed'.getBytes(StandardCharsets.UTF_8))
+    String urlHost = 'testaccount.blob.core.windows.net'
     OffsetDateTime endTime = OffsetDateTime.MAX
     String segmentPath = "idx/segments/2020/08/02/2300/meta.json"
     String currentShardPath0 = "log/00/2020/08/02/2300/"
@@ -72,7 +72,7 @@ class ChunkTest extends Specification {
     def "getEvents min shard 0 chunk 0"() {
         setup:
         /* Cursor on shard 0, chunk 0 - basically when you first encounter a chunk in a shard. */
-        ChangefeedCursor chunkCursor = new ChangefeedCursor(urlHash, endTime)
+        ChangefeedCursor chunkCursor = new ChangefeedCursor(urlHost, endTime)
             .toSegmentCursor(segmentPath, null)
             .toShardCursor(currentShardPath0)
         when(mockAvroReaderFactory.getAvroReader(any(Flux.class)))
@@ -105,7 +105,7 @@ class ChunkTest extends Specification {
     def "getEvents min shard 0 chunk 1"() {
         setup:
         /* Cursor on shard 0, chunk 1 - basically when you encounter a chunk in a shard after having already encountered a different chunk. */
-        ChangefeedCursor chunkCursor = new ChangefeedCursor(urlHash, endTime)
+        ChangefeedCursor chunkCursor = new ChangefeedCursor(urlHost, endTime)
             .toSegmentCursor(segmentPath, null)
             .toShardCursor(currentShardPath0)
             .toEventCursor(chunkPath0, 9109, 1)
@@ -139,7 +139,7 @@ class ChunkTest extends Specification {
     def "getEvents min shard 1 chunk 0"() {
         setup:
         /* Cursor on shard 1, chunk 0 - basically when you encounter a chunk in a shard after having already encountered a different shard. */
-        ChangefeedCursor chunkCursor = new ChangefeedCursor(urlHash, endTime)
+        ChangefeedCursor chunkCursor = new ChangefeedCursor(urlHost, endTime)
             .toSegmentCursor(segmentPath, null)
             .toShardCursor(currentShardPath0)
             .toEventCursor(chunkPath0, 9109, 1)
@@ -176,7 +176,7 @@ class ChunkTest extends Specification {
     def "getEvents cursor"() {
         setup:
         /* Default chunk cursor on shard 0. */
-        ChangefeedCursor chunkCursor = new ChangefeedCursor(urlHash, endTime)
+        ChangefeedCursor chunkCursor = new ChangefeedCursor(urlHost, endTime)
             .toSegmentCursor(segmentPath, null)
             .toShardCursor(currentShardPath0)
         when(mockAvroReaderFactory.getAvroReader(any(Flux.class), any(Flux.class), anyLong(), anyLong()))
@@ -224,7 +224,7 @@ class ChunkTest extends Specification {
 
     boolean verifyWrapperShard0(BlobChangefeedEventWrapper wrapper, long index, String chunkPath, long blockOffset, long blockIndex) {
         boolean verify = true
-        verify &= wrapper.getCursor().getUrlHash() == urlHash
+        verify &= wrapper.getCursor().getUrlHost() == urlHost
         verify &= wrapper.getCursor().getEndTime() == endTime
         verify &= wrapper.getCursor().getCurrentSegmentCursor().getSegmentPath() == segmentPath
         verify &= wrapper.getCursor().getCurrentSegmentCursor().getCurrentShardPath() == currentShardPath0

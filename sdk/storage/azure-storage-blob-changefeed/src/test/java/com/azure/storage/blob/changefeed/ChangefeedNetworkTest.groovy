@@ -80,8 +80,6 @@ class ChangefeedNetworkTest extends APISpec {
             .verifyComplete()
     }
 
-    /* TODO : Cursor test. */
-
     @Requires( { playbackMode() })
     def "last hour"() {
         setup:
@@ -470,7 +468,7 @@ class ChangefeedNetworkTest extends APISpec {
         then:
         /* You may need to update expected values when re-recording */
         cursor.getCursorVersion() == 1
-        Base64.getEncoder().encodeToString(cursor.getUrlHash()) == "0d+T8JRzJjMbtLIDi1P4gA==" /* Note this will not match the recorded one since playback uses a different account name. This hash is the playback account url hash. */
+        cursor.getUrlHost() == "azstoragesdkaccount.blob.core.windows.net" /* Note this will not match the recorded one since playback uses a different account name. This host is the playback account url host. */
         cursor.getEndTime() == OffsetDateTime.of(2020, 7, 31, 0, 0, 0, 0, ZoneOffset.UTC)
         cursor.getCurrentSegmentCursor().getSegmentPath() == "idx/segments/2020/07/30/2300/meta.json"
         cursor.getCurrentSegmentCursor().getCurrentShardPath() == "log/00/2020/07/30/2300/"

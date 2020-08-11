@@ -33,9 +33,8 @@ public class ChangefeedCursor {
     @JsonProperty("CursorVersion")
     private int cursorVersion;
 
-    @JsonProperty("UrlHash")
-    @JsonFormat(shape = JsonFormat.Shape.STRING)
-    private byte[] urlHash;
+    @JsonProperty("UrlHost")
+    private String urlHost;
 
     @JsonProperty("EndTime")
     @JsonFormat(shape = JsonFormat.Shape.STRING)
@@ -53,9 +52,9 @@ public class ChangefeedCursor {
     /**
      * Constructor for use by to*Cursor methods.
      */
-    public ChangefeedCursor(int cursorVersion, byte[] urlHash, OffsetDateTime endTime, SegmentCursor currentSegmentCursor) {
+    public ChangefeedCursor(int cursorVersion, String urlHost, OffsetDateTime endTime, SegmentCursor currentSegmentCursor) {
         this.cursorVersion = cursorVersion;
-        this.urlHash = urlHash;
+        this.urlHost = urlHost;
         this.endTime = endTime;
         this.currentSegmentCursor = currentSegmentCursor;
     }
@@ -63,11 +62,11 @@ public class ChangefeedCursor {
     /**
      * Creates a new changefeed level cursor with the specified end time.
      *
-     * @param urlHash The url hash of the changefeed container.
+     * @param urlHost The url host of the changefeed container.
      * @param endTime The {@link OffsetDateTime end time}.
      */
-    public ChangefeedCursor(byte[] urlHash, OffsetDateTime endTime) {
-        this(1, urlHash, endTime, null);
+    public ChangefeedCursor(String urlHost, OffsetDateTime endTime) {
+        this(1, urlHost, endTime, null);
     }
 
     /**
@@ -78,7 +77,7 @@ public class ChangefeedCursor {
      * @return A new segment level {@link ChangefeedCursor cursor}.
      */
     public ChangefeedCursor toSegmentCursor(String segmentPath, SegmentCursor userSegmentCursor) {
-        return new ChangefeedCursor(this.cursorVersion, this.urlHash, this.endTime,
+        return new ChangefeedCursor(this.cursorVersion, this.urlHost, this.endTime,
             new SegmentCursor(segmentPath, userSegmentCursor));
     }
 
@@ -89,7 +88,7 @@ public class ChangefeedCursor {
      * @return A new shard level {@link ChangefeedCursor cursor}.
      */
     public ChangefeedCursor toShardCursor(String shardPath) {
-        return new ChangefeedCursor(this.cursorVersion, this.urlHash, this.endTime,
+        return new ChangefeedCursor(this.cursorVersion, this.urlHost, this.endTime,
             currentSegmentCursor.toShardCursor(shardPath));
     }
 
@@ -102,7 +101,7 @@ public class ChangefeedCursor {
      * @return A new event level {@link ChangefeedCursor cursor}.
      */
     public ChangefeedCursor toEventCursor(String chunkPath, long blockOffset, long eventIndex) {
-        return new ChangefeedCursor(this.cursorVersion, this.urlHash, this.endTime,
+        return new ChangefeedCursor(this.cursorVersion, this.urlHost, this.endTime,
             currentSegmentCursor.toEventCursor(chunkPath, blockOffset, eventIndex));
     }
 
@@ -114,10 +113,10 @@ public class ChangefeedCursor {
     }
 
     /**
-     * @return the url hash.
+     * @return the url host.
      */
-    public byte[] getUrlHash() {
-        return urlHash.clone();
+    public String getUrlHost() {
+        return urlHost;
     }
 
     /**
@@ -144,11 +143,11 @@ public class ChangefeedCursor {
     }
 
     /**
-     * @param urlHash the url hash.
+     * @param urlHost the url hash.
      * @return the updated BlobChangefeedCursor
      */
-    public ChangefeedCursor setUrl(byte[] urlHash) {
-        this.urlHash = urlHash.clone();
+    public ChangefeedCursor setUrlHost(String urlHost) {
+        this.urlHost = urlHost;
         return this;
     }
 
@@ -201,17 +200,15 @@ public class ChangefeedCursor {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof ChangefeedCursor)) return false;
-        ChangefeedCursor that = (ChangefeedCursor) o;
-        return getCursorVersion() == that.getCursorVersion() &&
-            Arrays.equals(getUrlHash(), that.getUrlHash()) &&
-            Objects.equals(getEndTime(), that.getEndTime()) &&
-            Objects.equals(getCurrentSegmentCursor(), that.getCurrentSegmentCursor());
+        ChangefeedCursor cursor = (ChangefeedCursor) o;
+        return getCursorVersion() == cursor.getCursorVersion() &&
+            Objects.equals(getUrlHost(), cursor.getUrlHost()) &&
+            Objects.equals(getEndTime(), cursor.getEndTime()) &&
+            Objects.equals(getCurrentSegmentCursor(), cursor.getCurrentSegmentCursor());
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(logger, getCursorVersion(), getEndTime(), getCurrentSegmentCursor());
-        result = 31 * result + Arrays.hashCode(getUrlHash());
-        return result;
+        return Objects.hash(getCursorVersion(), getUrlHost(), getEndTime(), getCurrentSegmentCursor());
     }
 }

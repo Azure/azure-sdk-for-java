@@ -216,19 +216,19 @@ class BlobChangefeedPagedFluxTest extends Specification {
             BlobChangefeedEvent event = MockedChangefeedResources.getMockBlobChangefeedEvent(i)
             mockEvents.add(event)
         }
-        byte[] urlHash = MessageDigest.getInstance("MD5").digest('https://testaccount.blob.core.windows.net/$blobchangefeed'.getBytes(StandardCharsets.UTF_8))
+        String urlHost = 'testaccount.blob.core.windows.net'
         OffsetDateTime endTime = OffsetDateTime.of(2020, 10, 2, 20, 15, 0, 0, ZoneOffset.UTC)
         String segmentPath = "idx/segments/2020/08/02/2300/meta.json"
-        mockCursors.add(new ChangefeedCursor(urlHash, endTime).toSegmentCursor(segmentPath, null).toShardCursor("log/00/2020/08/02/2300/"))
-        mockCursors.add(new ChangefeedCursor(urlHash, endTime).toSegmentCursor(segmentPath, null).toShardCursor("log/01/2020/08/02/2300/"))
-        mockCursors.add(new ChangefeedCursor(urlHash, endTime).toSegmentCursor(segmentPath, null).toShardCursor("log/02/2020/08/02/2300/"))
-        mockCursors.add(new ChangefeedCursor(urlHash, endTime).toSegmentCursor(segmentPath, null).toShardCursor("log/03/2020/08/02/2300/"))
-        mockCursors.add(new ChangefeedCursor(urlHash, endTime).toSegmentCursor(segmentPath, null).toShardCursor("log/04/2020/08/02/2300/"))
-        mockCursors.add(new ChangefeedCursor(urlHash, endTime).toSegmentCursor(segmentPath, null).toShardCursor("log/05/2020/08/02/2300/"))
-        mockCursors.add(new ChangefeedCursor(urlHash, endTime).toSegmentCursor(segmentPath, null).toShardCursor("log/06/2020/08/02/2300/"))
-        mockCursors.add(new ChangefeedCursor(urlHash, endTime).toSegmentCursor(segmentPath, null).toShardCursor("log/07/2020/08/02/2300/"))
-        mockCursors.add(new ChangefeedCursor(urlHash, endTime).toSegmentCursor(segmentPath, null).toShardCursor("log/08/2020/08/02/2300/"))
-        mockCursors.add(new ChangefeedCursor(urlHash, endTime).toSegmentCursor(segmentPath, null).toShardCursor("log/09/2020/08/02/2300/"))
+        mockCursors.add(new ChangefeedCursor(urlHost, endTime).toSegmentCursor(segmentPath, null).toShardCursor("log/00/2020/08/02/2300/"))
+        mockCursors.add(new ChangefeedCursor(urlHost, endTime).toSegmentCursor(segmentPath, null).toShardCursor("log/01/2020/08/02/2300/"))
+        mockCursors.add(new ChangefeedCursor(urlHost, endTime).toSegmentCursor(segmentPath, null).toShardCursor("log/02/2020/08/02/2300/"))
+        mockCursors.add(new ChangefeedCursor(urlHost, endTime).toSegmentCursor(segmentPath, null).toShardCursor("log/03/2020/08/02/2300/"))
+        mockCursors.add(new ChangefeedCursor(urlHost, endTime).toSegmentCursor(segmentPath, null).toShardCursor("log/04/2020/08/02/2300/"))
+        mockCursors.add(new ChangefeedCursor(urlHost, endTime).toSegmentCursor(segmentPath, null).toShardCursor("log/05/2020/08/02/2300/"))
+        mockCursors.add(new ChangefeedCursor(urlHost, endTime).toSegmentCursor(segmentPath, null).toShardCursor("log/06/2020/08/02/2300/"))
+        mockCursors.add(new ChangefeedCursor(urlHost, endTime).toSegmentCursor(segmentPath, null).toShardCursor("log/07/2020/08/02/2300/"))
+        mockCursors.add(new ChangefeedCursor(urlHost, endTime).toSegmentCursor(segmentPath, null).toShardCursor("log/08/2020/08/02/2300/"))
+        mockCursors.add(new ChangefeedCursor(urlHost, endTime).toSegmentCursor(segmentPath, null).toShardCursor("log/09/2020/08/02/2300/"))
         for (int i = 0; i < 10; i++) {
             mockEventWrappers.add(new BlobChangefeedEventWrapper(mockEvents.get(i), mockCursors.get(i)))
         }
