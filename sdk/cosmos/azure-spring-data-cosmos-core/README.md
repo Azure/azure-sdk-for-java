@@ -37,12 +37,13 @@ Please refer to [sample project here](./samplecode).
   By default, container name will be class name of user domain class. To customize it, add the `@Container(containerName="myCustomContainerName")` annotation to the domain class. The container field also supports SpEL expressions (eg. `container = "${dynamic.container.name}"` or `container = "#{@someBean.getContainerName()}"`) in order to provide container names programmatically/via configuration properties.
 - Custom IndexingPolicy
   By default, IndexingPolicy will be set by azure service. To customize it add annotation `@CosmosIndexingPolicy` to domain class. This annotation has 4 attributes to customize, see following:
-<!-- embedme src/samples/java/com/azure/cosmos/CosmosIndexingPolicyCodeSnippet.java#L16-L26 -->
+<!-- embedme src/samples/java/com/azure/cosmos/CosmosIndexingPolicyCodeSnippet.java#L16-L27 -->
 ```java
 // Indicate if indexing policy use automatic or not
+// Default value is true
 boolean automatic() default Constants.DEFAULT_INDEXING_POLICY_AUTOMATIC;
 
-// Indexing policy mode, option Consistent|Lazy|None.
+// Indexing policy mode, option Consistent.
 IndexingMode mode() default IndexingMode.CONSISTENT;
 
 // Included paths for indexing
