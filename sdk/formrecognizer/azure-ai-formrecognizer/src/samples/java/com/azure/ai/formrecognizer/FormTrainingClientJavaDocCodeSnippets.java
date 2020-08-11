@@ -4,6 +4,7 @@
 package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.training.models.AccountProperties;
+import com.azure.ai.formrecognizer.training.models.TrainingOptions;
 import com.azure.ai.formrecognizer.training.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.training.models.CustomFormModel;
 import com.azure.ai.formrecognizer.training.models.TrainingFileFilter;
@@ -50,17 +51,20 @@ public class FormTrainingClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link FormTrainingClient#beginTraining(String, boolean, TrainingFileFilter, Duration, Context)}
+     * Code snippet for {@link FormTrainingClient#beginTraining(String, boolean, TrainingOptions, Context)}
      * with options
      */
     public void beginTrainingWithOptions() {
-        // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingClient.beginTraining#string-boolean-trainingFileFilter-Duration-Context
+        // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingClient.beginTraining#string-boolean-TrainingOptions-Context
         String trainingFilesUrl = "{SAS-URL-of-your-container-in-blob-storage}";
         TrainingFileFilter trainingFileFilter = new TrainingFileFilter().setSubfoldersIncluded(false).setPrefix("Invoice");
         boolean useTrainingLabels = true;
 
         CustomFormModel customFormModel = formTrainingClient.beginTraining(trainingFilesUrl, useTrainingLabels,
-                trainingFileFilter, Duration.ofSeconds(5), Context.NONE).getFinalResult();
+            new TrainingOptions()
+                .setTrainingFileFilter(trainingFileFilter)
+                .setPollInterval(Duration.ofSeconds(5)), Context.NONE)
+            .getFinalResult();
 
         System.out.printf("Model Id: %s%n", customFormModel.getModelId());
         System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
@@ -69,7 +73,7 @@ public class FormTrainingClientJavaDocCodeSnippets {
                 .forEach((key, customFormModelField) ->
                     System.out.printf("Form Type: %s Field Text: %s Field Accuracy: %f%n",
                         key, customFormModelField.getName(), customFormModelField.getAccuracy())));
-        // END: com.azure.ai.formrecognizer.training.FormTrainingClient.beginTraining#string-boolean-trainingFileFilter-Duration-Context
+        // END: com.azure.ai.formrecognizer.training.FormTrainingClient.beginTraining#string-boolean-TrainingOptions-Context
     }
 
     /**

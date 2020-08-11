@@ -16,14 +16,14 @@ from form documents. It includes the following main functionalities:
 - [Cognitive Services or Form Recognizer account][form_recognizer_account] to use this package.
 
 ### Include the Package
-**Note:** This beta version targets Azure Form Recognizer service API version v2.0-preview.
+**Note:** This beta version targets Azure Form Recognizer service API version v2.0.
 
 [//]: # ({x-version-update-start;com.azure:azure-ai-formrecognizer;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-formrecognizer</artifactId>
-    <version>1.0.0-beta.4</version>
+    <version>3.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -199,7 +199,7 @@ so they're tailored to your forms. You should only recognize forms of the same f
 ```java
 String formUrl = "{form_url}";
 String modelId = "{custom_trained_model_id}";
-SyncPoller<OperationResult, List<RecognizedForm>> recognizeFormPoller =
+SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> recognizeFormPoller =
     formRecognizerClient.beginRecognizeCustomFormsFromUrl(modelId, formUrl);
 
 List<RecognizedForm> recognizedForms = recognizeFormPoller.getFinalResult();
@@ -225,7 +225,7 @@ File form = new File("local/file_path/filename.png");
 byte[] fileContent = Files.readAllBytes(form.toPath());
 InputStream inputStream = new ByteArrayInputStream(fileContent);
 
-SyncPoller<OperationResult, List<FormPage>> recognizeContentPoller =
+SyncPoller<FormRecognizerOperationResult, List<FormPage>> recognizeContentPoller =
     formRecognizerClient.beginRecognizeContent(inputStream, form.length());
 
 List<FormPage> contentPageResults = recognizeContentPoller.getFinalResult();
@@ -256,7 +256,7 @@ information from receipts.
 ```java
 String receiptUrl = "https://docs.microsoft.com/azure/cognitive-services/form-recognizer/media"
     + "/contoso-allinone.jpg";
-SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
+SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
     formRecognizerClient.beginRecognizeReceiptsFromUrl(receiptUrl);
 List<RecognizedForm> receiptPageResults = syncPoller.getFinalResult();
 
@@ -320,7 +320,7 @@ in the [service quickstart documentation][quickstart_training].
 <!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L200-L220 -->
 ```java
 String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
-SyncPoller<OperationResult, CustomFormModel> trainingPoller =
+SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller =
     formTrainingClient.beginTraining(trainingFilesUrl, false);
 
 CustomFormModel customFormModel = trainingPoller.getFinalResult();
