@@ -100,7 +100,7 @@ For details on the Azure SDK for Java (July 2019 Preview) release, you can refer
 
 This library is not a direct replacement for keys management operations from [microsoft-azure-keyvault](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/keyvault/microsoft-azure-keyvault). Applications using that library would require code changes to use `azure-keyvault-keys`.
 This package's
-[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-keyvault-keys_4.0.0-preview.1/sdk/keyvault/README.md)
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-keyvault-keys_4.0.0-preview.1/keyvault/client/keys/README.md)
 and
 [samples](https://github.com/Azure/azure-sdk-for-java/tree/azure-keyvault-keys_4.0.0-preview.1/keyvault/client/keys/src/samples/java)
 demonstrate the new API.
