@@ -97,9 +97,7 @@ def update_dependency_dict(dependency_dict, root_pom_id):
         if project_version.startswith('${'):
             property_dict['project.version'] = property_dict[project_version.strip(' ${}')]
         # get dependencies
-        dependency_elements = project_element.findall(
-            './maven:dependencyManagement/maven:dependencies/maven:dependency',
-            name_space)
+        dependency_elements = project_element.findall('./maven:dependencyManagement/maven:dependencies/maven:dependency', name_space)
         for dependency_element in dependency_elements:
             group_id = dependency_element.find('./maven:groupId', name_space).text.strip(' ${}')
             # some group_id contain 'project.groupId', so put project_version first.
@@ -118,8 +116,7 @@ def update_dependency_dict(dependency_dict, root_pom_id):
             artifact_type = dependency_element.find('./maven:type', name_space)
             if artifact_type is not None and artifact_type.text.strip() == 'pom':
                 if '$' in group_id or '$' in artifact_id or '$' in version:
-                    raise Exception('Error: group_id = {}, artifact_id = {}, version = {}.'
-                                    .format(group_id, artifact_id, version))
+                    raise Exception('Error: group_id = {}, artifact_id = {}, version = {}.'.format(group_id, artifact_id, version))
                 new_pom = Pom(group_id, artifact_id, version, pom.depth + 1)
                 q.put(new_pom)
                 pom_count = pom_count + 1
@@ -141,14 +138,10 @@ def update_version_for_external_dependencies(dependency_dict):
                 if key in dependency_dict:
                     value_in_dict = dependency_dict[key]
                     if version_bigger_than(value, value_in_dict):
-                        log.warn('Version update skipped. key = {}, value = {}, new_value = {}'
-                                 .format(key, value, value_in_dict))
+                        log.warn('Version update skipped. key = {}, value = {}, new_value = {}'.format(key, value, value_in_dict))
                         file.write(line)
                     elif version_bigger_than(value_in_dict, value):
-                        log.info('Version updated. key = {}, value = {}, new_value = {}'.format(
-                            key,
-                            value,
-                            value_in_dict))
+                        log.info('Version updated. key = {}, value = {}, new_value = {}'.format(key, value, value_in_dict))
                         file.write('{};{}'.format(key, value_in_dict))
                     else:
                         file.write(line)
