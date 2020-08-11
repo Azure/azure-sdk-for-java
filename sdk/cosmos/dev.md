@@ -2,7 +2,7 @@
 
 ## Checking out the code
 
-The SDK is open source and is available here [sdk](sdk/).
+The SDK is open source and is available here [sdk](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/).
 
 Clone the Repo
 
