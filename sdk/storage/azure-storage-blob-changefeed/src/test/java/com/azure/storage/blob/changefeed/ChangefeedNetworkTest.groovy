@@ -8,6 +8,10 @@ import reactor.test.StepVerifier
 import spock.lang.Requires
 import spock.lang.Unroll
 
+import java.nio.charset.StandardCharsets
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.StandardOpenOption
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 import java.util.stream.Stream
@@ -54,20 +58,25 @@ class ChangefeedNetworkTest extends APISpec {
             .verifyComplete()
     }
 
-    /* TODO : Record this. */
-    @Ignore("For debugging larger Change Feeds locally.")
+    @Requires( { playbackMode() })
     def "historical"() {
         setup:
+        /* Uncomment when recording. */
+//        OffsetDateTime currentTime = OffsetDateTime.now()
+//        System.out.println(currentTime) /* Note: Account the offset when adjusting the below date. */
+
+        /* Update and uncomment after recording. */
+        OffsetDateTime currentTime = OffsetDateTime.of(2020, 8, 10, 23, 59, 0, 597700200, ZoneOffset.UTC)
+
         BlobChangefeedPagedFlux flux = new BlobChangefeedClientBuilder(primaryBlobServiceAsyncClient)
             .buildAsyncClient()
-            .getEvents(OffsetDateTime.now().minusHours(2), OffsetDateTime.now().plusHours(1))
+            .getEvents(currentTime.minusHours(2), currentTime.plusHours(1))
         when:
         def sv = StepVerifier.create(
             flux
-//            .map({ event -> System.out.println(event); return event; })
         )
         then:
-        sv.expectNextCount(1599) /* Note this number should be adjusted to verify the number of events expected */
+        sv.expectNextCount(1790) /* Note this number should be adjusted to verify the number of events expected */
             .verifyComplete()
     }
 
@@ -429,115 +438,46 @@ class ChangefeedNetworkTest extends APISpec {
         !events.any { event -> event.getEventTime().isAfter(roundedEndTime.plusMinutes(15)) } /* There is no event 15 minutes after end */
     }
 
-    @Ignore
-    def "min resume from cursor"() {
-        when:
-        String continuationToken = '{"CursorVersion":1,"UrlHash":"5gX9e+3lzudCNddoahIvqg==","EndTime":"+999999999-12-31T23:59:59.999999999-18:00","CurrentSegmentCursor":{"ShardCursors":[{"CurrentChunkPath":"log/00/2020/08/04/2000/00000.avro","BlockOffset":96853,"EventIndex":6}],"CurrentShardPath":"log/00/2020/08/04/2000/","SegmentPath":"idx/segments/2020/08/04/2000/meta.json"}}'
-        BlobChangefeedPagedFlux flux = new BlobChangefeedClientBuilder(primaryBlobServiceAsyncClient)
-            .buildAsyncClient()
-            .getEvents(continuationToken)
-        def sv = StepVerifier.create(flux)
-        then:
-        sv.expectNextCount(443) /* Note this number should be adjusted to verify the number of events expected if re-recording. */
-            .verifyComplete()
-
-    }
-
     @Requires( { playbackMode() })
-    @Unroll
-    @Ignore
-    def "min byPage"() {
+    def "cursor format"() {
         setup:
-        BlobChangefeedPagedFlux pagedFlux = new BlobChangefeedClientBuilder(primaryBlobServiceAsyncClient)
-            .buildAsyncClient()
-            .getEvents()
-        when:
-        def sv = StepVerifier.create(
-            pagedFlux.byPage(pageSize)
-        )
-        then:
-        sv.expectNextCount(pageCount).verifyComplete()
+        /* Hardcoded for playback stability. If modifying, make sure to re-record. */
+        OffsetDateTime startTime = OffsetDateTime.of(2020, 7, 30, 23, 0, 0, 0, ZoneOffset.UTC)
+        OffsetDateTime endTime = OffsetDateTime.of(2020, 7, 30, 23, 15, 0, 0, ZoneOffset.UTC)
 
-        where:
-        pageSize || pageCount
-        50       || 65 /* Note these numbers should be adjusted to verify the number of events expected if re-recording. */
-        100      || 33
-        1000     || 4
-        5000     || 1
-    }
-
-    @Unroll
-    @Requires( { playbackMode() })
-    @Ignore
-    def "startTime endTime"() {
-        setup:
-        BlobChangefeedPagedFlux flux = new BlobChangefeedClientBuilder(primaryBlobServiceAsyncClient)
-            .buildAsyncClient()
-            .getEvents(startTime, endTime)
-
-        when:
-        def sv = StepVerifier.create(flux)
-
-        then:
-        sv.expectNextCount(numEvents) /* Note this number should be adjusted to verify the number of events expected if re-recording. */
-            .verifyComplete()
-
-        where:
-        startTime                                                   | endTime                                                     || numEvents
-        OffsetDateTime.of(2020, 5, 12, 0, 0, 0, 0, ZoneOffset.UTC)  | OffsetDateTime.of(2020, 5, 13, 0, 0, 0, 0, ZoneOffset.UTC)  || 472
-        OffsetDateTime.of(2020, 6, 4, 0, 0, 0, 0, ZoneOffset.UTC)   | OffsetDateTime.of(2020, 6, 18, 0, 0, 0, 0, ZoneOffset.UTC)  || 445
-        OffsetDateTime.of(2020, 6, 4, 0, 0, 0, 0, ZoneOffset.UTC)   | OffsetDateTime.of(2020, 6, 11, 3, 0, 0, 0, ZoneOffset.UTC)  || 425
-        OffsetDateTime.of(2020, 6, 11, 3, 0, 0, 0, ZoneOffset.UTC)  | OffsetDateTime.of(2020, 6, 18, 0, 0, 0, 0, ZoneOffset.UTC)  || 20
-    }
-
-    @Unroll
-    @Requires( { playbackMode() })
-    @Ignore("flaky in CI")
-    def "get continuationToken"() {
-        when:
-        BlobChangefeedPagedIterable iterable = new BlobChangefeedClientBuilder(primaryBlobServiceClient)
+        when: "Iterate over first two pages"
+        Iterator<BlobChangefeedPagedResponse> iterator = new BlobChangefeedClientBuilder(primaryBlobServiceAsyncClient)
             .buildClient()
-            .getEvents()
-        Iterator<BlobChangefeedPagedResponse> pagedResponses = iterable.iterableByPage(100).iterator()
-
-        def i = 0
-        def continuationToken = ""
-        while (pagedResponses.hasNext() && i < numPagesToIterate) {
-            BlobChangefeedPagedResponse resp = pagedResponses.next()
-            continuationToken = resp.getContinuationToken()
-            i++
+            .getEvents(startTime, endTime)
+            .iterableByPage(50)
+            .iterator()
+        BlobChangefeedPagedResponse lastPage = null
+        int pages = 0
+        int i = 1
+        for (BlobChangefeedPagedResponse page : iterator) {
+            for (BlobChangefeedEvent event : page.getValue()) {
+                i++
+            }
+            pages++
+            lastPage = page
+            if (pages > 2) {
+                break
+            }
         }
+        String continuationToken = lastPage.getContinuationToken()
+        ChangefeedCursor cursor = ChangefeedCursor.deserialize(continuationToken, new ClientLogger(ChangefeedNetworkTest.class))
 
         then:
-        continuationToken == expectedToken
-
-        where:
-        numPagesToIterate || expectedToken
-        33                || "{\"endTime\":\"+999999999-12-31T23:59:59.999999999-18:00\",\"segmentTime\":\"2020-06-16T05:00Z\",\"shardPath\":\"log/00/2020/06/16/0500/\",\"chunkPath\":\"log/00/2020/06/16/0500/00000.avro\",\"blockOffset\":3706,\"objectBlockIndex\":1}"
-        1                 || "{\"endTime\":\"+999999999-12-31T23:59:59.999999999-18:00\",\"segmentTime\":\"2020-05-12T22:00Z\",\"shardPath\":\"log/00/2020/05/12/2200/\",\"chunkPath\":\"log/00/2020/05/12/2200/00000.avro\",\"blockOffset\":2434,\"objectBlockIndex\":99}"
-        5                 || "{\"endTime\":\"+999999999-12-31T23:59:59.999999999-18:00\",\"segmentTime\":\"2020-05-15T22:00Z\",\"shardPath\":\"log/00/2020/05/15/2200/\",\"chunkPath\":\"log/00/2020/05/15/2200/00000.avro\",\"blockOffset\":2434,\"objectBlockIndex\":27}"
-        10                || "{\"endTime\":\"+999999999-12-31T23:59:59.999999999-18:00\",\"segmentTime\":\"2020-05-15T22:00Z\",\"shardPath\":\"log/00/2020/05/15/2200/\",\"chunkPath\":\"log/00/2020/05/15/2200/00000.avro\",\"blockOffset\":335596,\"objectBlockIndex\":1}"
+        /* You may need to update expected values when re-recording */
+        cursor.getCursorVersion() == 1
+        Base64.getEncoder().encodeToString(cursor.getUrlHash()) == "0d+T8JRzJjMbtLIDi1P4gA==" /* Note this will not match the recorded one since playback uses a different account name. This hash is the playback account url hash. */
+        cursor.getEndTime() == OffsetDateTime.of(2020, 7, 31, 0, 0, 0, 0, ZoneOffset.UTC)
+        cursor.getCurrentSegmentCursor().getSegmentPath() == "idx/segments/2020/07/30/2300/meta.json"
+        cursor.getCurrentSegmentCursor().getCurrentShardPath() == "log/00/2020/07/30/2300/"
+        cursor.getCurrentSegmentCursor().getShardCursors().size() == 1
+        cursor.getCurrentSegmentCursor().getShardCursors().get(0).getCurrentChunkPath() == "log/00/2020/07/30/2300/00000.avro"
+        cursor.getCurrentSegmentCursor().getShardCursors().get(0).getBlockOffset() == 89996
+        cursor.getCurrentSegmentCursor().getShardCursors().get(0).getEventIndex() == 9
     }
 
-    @Unroll
-    @Requires( { playbackMode() })
-    @Ignore("flaky in CI")
-    def "resume continuationToken"() {
-        when:
-        BlobChangefeedPagedFlux flux = new BlobChangefeedClientBuilder(primaryBlobServiceAsyncClient)
-            .buildAsyncClient()
-            .getEvents(contToken)
-        def sv = StepVerifier.create(flux)
-
-        then:
-        sv.expectNextCount(numEventsFromContinuationToken) /* Note this number should be adjusted to verify the number of events expected if re-recording. */
-            .verifyComplete()
-
-        where:
-        contToken                                                                                                                                                                                                                                         || numEventsFromContinuationToken
-        "{\"endTime\":\"+999999999-12-31T23:59:59.999999999-18:00\",\"segmentTime\":\"2020-06-16T05:00Z\",\"shardPath\":\"log/00/2020/06/16/0500/\",\"chunkPath\":\"log/00/2020/06/16/0500/00000.avro\",\"blockOffset\":3706,\"objectBlockIndex\":1}"     || 0
-        "{\"endTime\":\"+999999999-12-31T23:59:59.999999999-18:00\",\"segmentTime\":\"2020-05-12T22:00Z\",\"shardPath\":\"log/00/2020/05/12/2200/\",\"chunkPath\":\"log/00/2020/05/12/2200/00000.avro\",\"blockOffset\":2434,\"objectBlockIndex\":99}"    || 3138
-        "{\"endTime\":\"+999999999-12-31T23:59:59.999999999-18:00\",\"segmentTime\":\"2020-05-15T22:00Z\",\"shardPath\":\"log/00/2020/05/15/2200/\",\"chunkPath\":\"log/00/2020/05/15/2200/00000.avro\",\"blockOffset\":2434,\"objectBlockIndex\":27}"    || 2738
-        "{\"endTime\":\"+999999999-12-31T23:59:59.999999999-18:00\",\"segmentTime\":\"2020-05-15T22:00Z\",\"shardPath\":\"log/00/2020/05/15/2200/\",\"chunkPath\":\"log/00/2020/05/15/2200/00000.avro\",\"blockOffset\":335596,\"objectBlockIndex\":1}"   || 2238
-    }
 }

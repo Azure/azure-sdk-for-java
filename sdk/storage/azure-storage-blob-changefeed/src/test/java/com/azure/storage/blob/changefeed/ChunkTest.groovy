@@ -73,7 +73,7 @@ class ChunkTest extends Specification {
         setup:
         /* Cursor on shard 0, chunk 0 - basically when you first encounter a chunk in a shard. */
         ChangefeedCursor chunkCursor = new ChangefeedCursor(urlHash, endTime)
-            .toSegmentCursor(segmentPath)
+            .toSegmentCursor(segmentPath, null)
             .toShardCursor(currentShardPath0)
         when(mockAvroReaderFactory.getAvroReader(any(Flux.class)))
             .thenReturn(mockAvroReader)
@@ -106,7 +106,7 @@ class ChunkTest extends Specification {
         setup:
         /* Cursor on shard 0, chunk 1 - basically when you encounter a chunk in a shard after having already encountered a different chunk. */
         ChangefeedCursor chunkCursor = new ChangefeedCursor(urlHash, endTime)
-            .toSegmentCursor(segmentPath)
+            .toSegmentCursor(segmentPath, null)
             .toShardCursor(currentShardPath0)
             .toEventCursor(chunkPath0, 9109, 1)
         when(mockAvroReaderFactory.getAvroReader(any(Flux.class)))
@@ -140,7 +140,7 @@ class ChunkTest extends Specification {
         setup:
         /* Cursor on shard 1, chunk 0 - basically when you encounter a chunk in a shard after having already encountered a different shard. */
         ChangefeedCursor chunkCursor = new ChangefeedCursor(urlHash, endTime)
-            .toSegmentCursor(segmentPath)
+            .toSegmentCursor(segmentPath, null)
             .toShardCursor(currentShardPath0)
             .toEventCursor(chunkPath0, 9109, 1)
             .toShardCursor(currentShardPath1)
@@ -177,7 +177,7 @@ class ChunkTest extends Specification {
         setup:
         /* Default chunk cursor on shard 0. */
         ChangefeedCursor chunkCursor = new ChangefeedCursor(urlHash, endTime)
-            .toSegmentCursor(segmentPath)
+            .toSegmentCursor(segmentPath, null)
             .toShardCursor(currentShardPath0)
         when(mockAvroReaderFactory.getAvroReader(any(Flux.class), any(Flux.class), anyLong(), anyLong()))
             .thenReturn(mockAvroReader)

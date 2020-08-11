@@ -49,7 +49,7 @@ class SegmentTest extends Specification {
         mockShard1 = mock(Shard.class)
         mockShard2 = mock(Shard.class)
 
-        cfCursor = new ChangefeedCursor(urlHash, endTime).toSegmentCursor(segmentPath)
+        cfCursor = new ChangefeedCursor(urlHash, endTime).toSegmentCursor(segmentPath, null)
 
         when(mockContainer.getBlobAsyncClient(anyString()))
             .thenReturn(mockBlob)
@@ -162,9 +162,9 @@ class SegmentTest extends Specification {
 
         where:
         caseNumber | userCursor                                                                                                                                                                                                                                                            || _
-        1          | new SegmentCursor(segmentPath).toShardCursor(shardPath0).toEventCursor(shardPath0 + "00000.avro", 1257, 84)                                                                                                                                                           || _ /* Shard 0 should use the cursor and Shard 1 and 2 should pass in null. */
-        2          | new SegmentCursor(segmentPath).toShardCursor(shardPath0).toEventCursor(shardPath0 + "00000.avro", 2589, 3).toShardCursor(shardPath1).toEventCursor(shardPath1 + "00000.avro", 345789, 8)                                                                              || _ /* Shard 0 and 1 should use the cursor and Shard 2 should pass in null. */
-        3          | new SegmentCursor(segmentPath).toShardCursor(shardPath0).toEventCursor(shardPath0 + "00000.avro", 492, 67).toShardCursor(shardPath1).toEventCursor(shardPath1 + "00001.avro", 1257, 84).toShardCursor(shardPath2).toEventCursor(shardPath2 + "00002.avro", 5678, 6) || _ /* Shard 0, 1 and 2 should use the cursor. */
+        1          | new SegmentCursor(segmentPath, null).toShardCursor(shardPath0).toEventCursor(shardPath0 + "00000.avro", 1257, 84)                                                                                                                                                           || _ /* Shard 0 should use the cursor and Shard 1 and 2 should pass in null. */
+        2          | new SegmentCursor(segmentPath, null).toShardCursor(shardPath0).toEventCursor(shardPath0 + "00000.avro", 2589, 3).toShardCursor(shardPath1).toEventCursor(shardPath1 + "00000.avro", 345789, 8)                                                                              || _ /* Shard 0 and 1 should use the cursor and Shard 2 should pass in null. */
+        3          | new SegmentCursor(segmentPath, null).toShardCursor(shardPath0).toEventCursor(shardPath0 + "00000.avro", 492, 67).toShardCursor(shardPath1).toEventCursor(shardPath1 + "00001.avro", 1257, 84).toShardCursor(shardPath2).toEventCursor(shardPath2 + "00002.avro", 5678, 6) || _ /* Shard 0, 1 and 2 should use the cursor. */
     }
 
     def "segment metadata error"() {

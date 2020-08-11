@@ -53,8 +53,8 @@ class Changefeed {
     Changefeed(BlobContainerAsyncClient client, OffsetDateTime startTime, OffsetDateTime endTime,
         ChangefeedCursor userCursor, SegmentFactory segmentFactory) {
         this.client = client;
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.startTime = TimeUtils.roundDownToNearestHour(startTime);
+        this.endTime = TimeUtils.roundUpToNearestHour(endTime);
         this.userCursor = userCursor;
         this.segmentFactory = segmentFactory;
         byte[] urlHash;

@@ -67,7 +67,7 @@ class ShardTest extends Specification {
         PagedFlux<BlobItem> mockPagedFlux = new PagedFlux<>(chunkSupplier)
 
         segmentCursor = new ChangefeedCursor(urlHash, endTime)
-            .toSegmentCursor(segmentPath)
+            .toSegmentCursor(segmentPath, null)
             .toShardCursor(currentShardPath0)
 
         when(mockContainer.listBlobs(any(ListBlobsOptions.class)))

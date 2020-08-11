@@ -50,7 +50,7 @@ class ChangefeedCursorTest extends Specification {
     def "toSegmentCursor"() {
         when:
         ChangefeedCursor cursor = new ChangefeedCursor(urlHash, endTime)
-            .toSegmentCursor(segmentPath)
+            .toSegmentCursor(segmentPath, null)
 
         then:
         cursor.getCursorVersion() == 1
@@ -66,7 +66,7 @@ class ChangefeedCursorTest extends Specification {
     def "toShardCursor"() {
         when:
         ChangefeedCursor cursor = new ChangefeedCursor(urlHash, endTime)
-            .toSegmentCursor(segmentPath)
+            .toSegmentCursor(segmentPath, null)
             .toShardCursor(currentShardPath0)
 
         then:
@@ -83,7 +83,7 @@ class ChangefeedCursorTest extends Specification {
     def "toEventCursor"() {
         when:
         ChangefeedCursor cursor = new ChangefeedCursor(urlHash, endTime)
-            .toSegmentCursor(segmentPath)
+            .toSegmentCursor(segmentPath, null)
             .toShardCursor(currentShardPath0)
             .toEventCursor(chunk0, offset0, index0)
 
@@ -106,7 +106,7 @@ class ChangefeedCursorTest extends Specification {
         when:
         ChangefeedCursor changefeedCursor = new ChangefeedCursor(urlHash, endTime)
 
-        ChangefeedCursor segmentCursor = changefeedCursor.toSegmentCursor(segmentPath)
+        ChangefeedCursor segmentCursor = changefeedCursor.toSegmentCursor(segmentPath, null)
 
         ChangefeedCursor shardCursor0 = segmentCursor.toShardCursor(currentShardPath0)
 
