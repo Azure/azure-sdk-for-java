@@ -31,6 +31,11 @@ public interface SBNamespace extends HasInner<SBNamespaceInner>, Resource, Group
     DateTime createdAt();
 
     /**
+     * @return the encryption value.
+     */
+    Encryption encryption();
+
+    /**
      * @return the metricId value.
      */
     String metricId();
@@ -83,6 +88,18 @@ public interface SBNamespace extends HasInner<SBNamespaceInner>, Resource, Group
         }
 
         /**
+         * The stage of the sbnamespace definition allowing to specify Encryption.
+         */
+        interface WithEncryption {
+            /**
+             * Specifies encryption.
+             * @param encryption Properties of BYOK Encryption description
+             * @return the next definition stage
+             */
+            WithCreate withEncryption(Encryption encryption);
+        }
+
+        /**
          * The stage of the sbnamespace definition allowing to specify Sku.
          */
         interface WithSku {
@@ -111,19 +128,43 @@ public interface SBNamespace extends HasInner<SBNamespaceInner>, Resource, Group
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<SBNamespace>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithSku, DefinitionStages.WithZoneRedundant {
+        interface WithCreate extends Creatable<SBNamespace>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithEncryption, DefinitionStages.WithSku, DefinitionStages.WithZoneRedundant {
         }
     }
     /**
      * The template for a SBNamespace update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<SBNamespace>, Resource.UpdateWithTags<Update>, UpdateStages.WithSku, UpdateStages.WithZoneRedundant {
+    interface Update extends Appliable<SBNamespace>, Resource.UpdateWithTags<Update>, UpdateStages.WithEncryption, UpdateStages.WithIdentity, UpdateStages.WithSku, UpdateStages.WithZoneRedundant {
     }
 
     /**
      * Grouping of SBNamespace update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the sbnamespace update allowing to specify Encryption.
+         */
+        interface WithEncryption {
+            /**
+             * Specifies encryption.
+             * @param encryption Properties of BYOK Encryption description
+             * @return the next update stage
+             */
+            Update withEncryption(Encryption encryption);
+        }
+
+        /**
+         * The stage of the sbnamespace update allowing to specify Identity.
+         */
+        interface WithIdentity {
+            /**
+             * Specifies identity.
+             * @param identity Properties of BYOK Identity description
+             * @return the next update stage
+             */
+            Update withIdentity(Identity identity);
+        }
+
         /**
          * The stage of the sbnamespace update allowing to specify Sku.
          */
