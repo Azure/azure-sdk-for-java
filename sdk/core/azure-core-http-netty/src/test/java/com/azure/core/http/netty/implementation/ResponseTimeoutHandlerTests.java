@@ -6,8 +6,12 @@ package com.azure.core.http.netty.implementation;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.concurrent.DefaultEventExecutor;
 import io.netty.util.concurrent.EventExecutor;
+import io.netty.util.concurrent.ScheduledFuture;
 import org.junit.jupiter.api.Test;
 
+import static com.azure.core.http.netty.implementation.TimeoutTestHelpers.getFieldValue;
+import static com.azure.core.http.netty.implementation.TimeoutTestHelpers.getInvokableMethod;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
@@ -53,7 +57,7 @@ public class ResponseTimeoutHandlerTests {
     }
 
     @Test
-    public void removingHandlerCancelsTimeout() throws InterruptedException {
+    public void removingHandlerCancelsTimeout() throws Exception {
         ResponseTimeoutHandler responseTimeoutHandler = new ResponseTimeoutHandler(100);
 
         ChannelHandlerContext ctx = mock(ChannelHandlerContext.class);
@@ -62,13 +66,11 @@ public class ResponseTimeoutHandlerTests {
         responseTimeoutHandler.handlerAdded(ctx);
         responseTimeoutHandler.handlerRemoved(ctx);
 
-        Thread.sleep(100);
-
-        verify(ctx, never()).fireExceptionCaught(any());
+        assertNull(getFieldValue(responseTimeoutHandler, "responseTimeoutWatcher", ScheduledFuture.class));
     }
 
     @Test
-    public void responseTimesOut() throws InterruptedException {
+    public void responseTimesOut() throws Exception {
         ResponseTimeoutHandler responseTimeoutHandler = new ResponseTimeoutHandler(100);
 
         ChannelHandlerContext ctx = mock(ChannelHandlerContext.class);
@@ -76,7 +78,9 @@ public class ResponseTimeoutHandlerTests {
 
         responseTimeoutHandler.handlerAdded(ctx);
 
-        Thread.sleep(500);
+        // Fake that the scheduled timer completed before any response is received.
+        getInvokableMethod(responseTimeoutHandler, "responseTimedOut", ChannelHandlerContext.class)
+            .invoke(responseTimeoutHandler, ctx);
 
         verify(ctx, atLeast(1)).fireExceptionCaught(any());
     }
