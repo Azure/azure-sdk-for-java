@@ -19,7 +19,7 @@ class SynchronousReceiveWork implements AutoCloseable {
 
     /* When we have received at-least one message and next message does not arrive in this time. The work will
     complete.*/
-    private static final Duration SHORT_TIMEOUT_BETWEEN_MESSAGES = Duration.ofMillis(1000);
+    private static final Duration TIMEOUT_BETWEEN_MESSAGES = Duration.ofMillis(1000);
 
     private final ClientLogger logger = new ClientLogger(SynchronousReceiveWork.class);
     private final long id;
@@ -28,6 +28,7 @@ class SynchronousReceiveWork implements AutoCloseable {
     private final Duration timeout;
     private final FluxSink<ServiceBusReceivedMessageContext> emitter;
     private final FluxSink<ServiceBusReceivedMessageContext> messageReceivedSink;
+    private final DirectProcessor<ServiceBusReceivedMessageContext> emitterProcessor;
     // Subscribes to next message from upstream and implement short timeout between the messages.
     private final Disposable nextMessageSubscriber;
 
@@ -55,11 +56,11 @@ class SynchronousReceiveWork implements AutoCloseable {
         this.timeout = timeout;
         this.emitter = emitter;
 
-        DirectProcessor<ServiceBusReceivedMessageContext> emitterProcessor = DirectProcessor.create();
+        emitterProcessor = DirectProcessor.create();
         messageReceivedSink = emitterProcessor.sink();
 
         nextMessageSubscriber = Flux.switchOnNext(emitterProcessor.map(messageContext ->
-            Flux.interval(SHORT_TIMEOUT_BETWEEN_MESSAGES)))
+            Flux.interval(TIMEOUT_BETWEEN_MESSAGES)))
             .handle((delay, sink) -> {
                 logger.info("[{}]: Timeout between the messages occurred. Completing the work.", id);
                 sink.next(delay);
@@ -183,7 +184,7 @@ class SynchronousReceiveWork implements AutoCloseable {
 
     @Override
     public void close() {
-        if (nextMessageSubscriber != null && !nextMessageSubscriber.isDisposed()) {
+        if (!nextMessageSubscriber.isDisposed()) {
             nextMessageSubscriber.dispose();
         }
     }
