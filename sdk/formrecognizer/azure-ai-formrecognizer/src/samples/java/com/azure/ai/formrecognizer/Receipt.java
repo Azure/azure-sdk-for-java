@@ -305,9 +305,9 @@ public final class Receipt {
                     } else {
                         throw new IllegalStateException("Type mismatch error occurred.");
                     }
-                case DOUBLE:
+                case FLOAT:
                     if (type.isAssignableFrom(Double.class)) {
-                        return (T) formField.getValue().asDouble();
+                        return (T) formField.getValue().asFloat();
                     } else {
                         throw new IllegalStateException("Type mismatch error occurred.");
                     }

@@ -69,7 +69,7 @@ public class MyItem {
 - Supports [Spring Data pagable and sort](https://docs.spring.io/spring-data/commons/docs/current/reference/html/#repositories.special-parameters).
   - Based on available RUs on the database account, cosmosDB can return items less than or equal to the requested size.
   - Due to this variable number of returned items in every iteration, user should not rely on the totalPageSize, and instead iterating over pageable should be done in this way.  
-<!-- embedme src/samples/java/com/azure/cosmos/PageableRepositoryCodeSnippet.java#L27-L38 -->
+<!-- embedme src/samples/java/com/azure/cosmos/PageableRepositoryCodeSnippet.java#L24-L35 -->
 ```java
 private List<T> findAllWithPageSize(int pageSize) {
 

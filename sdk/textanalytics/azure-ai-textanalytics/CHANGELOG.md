@@ -1,6 +1,9 @@
 # Release History
 ## 5.1.0-beta.1 (Unreleased)
-
+- Added `offset` and `length` properties for `CategorizedEntity` and `LinkedEntityMatch`.
+  - `length` is the number of characters in the text of these models
+  - `offset` is the offset of the text from the start of the document
+  
 ## 5.0.0 (2020-07-27)
 - Re-release of version `1.0.1` with updated version `5.0.0`.
 

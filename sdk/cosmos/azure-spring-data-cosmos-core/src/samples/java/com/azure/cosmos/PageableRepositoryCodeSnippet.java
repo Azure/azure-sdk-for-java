@@ -9,16 +9,13 @@ package com.azure.cosmos;
  */
 
 import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
-import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.test.context.ContextConfiguration;
 
 import java.util.List;
 
-@ContextConfiguration(classes = TestRepositoryConfig.class)
 public class PageableRepositoryCodeSnippet<T> {
 
     @Autowired

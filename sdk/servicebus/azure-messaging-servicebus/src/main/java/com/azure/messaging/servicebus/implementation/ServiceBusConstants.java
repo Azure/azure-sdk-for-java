@@ -36,4 +36,9 @@ public class ServiceBusConstants {
      * Represents the default queue size in megabytes.
      */
     public static final int DEFAULT_QUEUE_SIZE = 1024;
+
+    /**
+     * Represents the default topic size in megabytes.
+     */
+    public static final int DEFAULT_TOPIC_SIZE = 1024;
 }

@@ -46,6 +46,7 @@ public final class AzureBasicFileAttributeView implements BasicFileAttributeView
      */
     @Override
     public AzureBasicFileAttributes readAttributes() throws IOException {
+        AzurePath.ensureFileSystemOpen(path);
         return new AzureBasicFileAttributes(path);
     }
 

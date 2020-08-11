@@ -23,20 +23,19 @@ public class TopicRuntimeInfo {
     /**
      * Creates a new instance with runtime properties extracted from the given TopicDescription.
      *
-     * @param topicDescription Topic description to extract runtime information from.
+     * @param topicProperties Topic description to extract runtime information from.
      *
      * @throws NullPointerException if {@code topicDescription} is null.
      */
-    public TopicRuntimeInfo(TopicDescription topicDescription) {
-        Objects.requireNonNull(topicDescription, "'topicDescription' cannot be null.");
+    public TopicRuntimeInfo(TopicProperties topicProperties) {
+        Objects.requireNonNull(topicProperties, "'topicDescription' cannot be null.");
 
-        this.name = topicDescription.getName();
-        this.subscriptionCount = topicDescription.getSubscriptionCount() != null
-            ? topicDescription.getSubscriptionCount() : 0;
-        this.sizeInBytes = topicDescription.getSizeInBytes() != null ? topicDescription.getSizeInBytes() : 0L;
-        this.accessedAt = topicDescription.getAccessedAt();
-        this.createdAt = topicDescription.getCreatedAt();
-        this.updatedAt = topicDescription.getUpdatedAt();
+        this.name = topicProperties.getName();
+        this.subscriptionCount = topicProperties.getSubscriptionCount();
+        this.sizeInBytes = topicProperties.getSizeInBytes();
+        this.accessedAt = topicProperties.getAccessedAt();
+        this.createdAt = topicProperties.getCreatedAt();
+        this.updatedAt = topicProperties.getUpdatedAt();
     }
 
     /**

@@ -98,22 +98,22 @@ public class RecognizeReceiptsFromUrl {
                                 }
                             }
                             if ("Quantity".equals(key)) {
-                                if (FieldValueType.DOUBLE == formField.getValue().getValueType()) {
-                                    Double quantity = formField.getValue().asDouble();
+                                if (FieldValueType.FLOAT == formField.getValue().getValueType()) {
+                                    Float quantity = formField.getValue().asFloat();
                                     System.out.printf("Quantity: %f, confidence: %.2f%n",
                                         quantity, formField.getConfidence());
                                 }
                             }
                             if ("Price".equals(key)) {
-                                if (FieldValueType.DOUBLE == formField.getValue().getValueType()) {
-                                    Double price = formField.getValue().asDouble();
+                                if (FieldValueType.FLOAT == formField.getValue().getValueType()) {
+                                    Float price = formField.getValue().asFloat();
                                     System.out.printf("Price: %f, confidence: %.2f%n",
                                         price, formField.getConfidence());
                                 }
                             }
                             if ("TotalPrice".equals(key)) {
-                                if (FieldValueType.DOUBLE == formField.getValue().getValueType()) {
-                                    Double totalPrice = formField.getValue().asDouble();
+                                if (FieldValueType.FLOAT == formField.getValue().getValueType()) {
+                                    Float totalPrice = formField.getValue().asFloat();
                                     System.out.printf("Total Price: %f, confidence: %.2f%n",
                                         totalPrice, formField.getConfidence());
                                 }
