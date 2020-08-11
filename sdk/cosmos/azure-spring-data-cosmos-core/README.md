@@ -113,6 +113,18 @@ public class AuditableUser {
     private OffsetDateTime lastModifiedByDate;
 }
 ```
+- Supports auto generation of string type UUIDs using the @GeneratedValue annotation. The id field of an entity with a string 
+type id can be annotated with @GeneratedValue to automatically generate a random UUID prior to insertion.
+<!-- embedme src/samples/java/com/azure/cosmos/GeneratedIdEntity.java#L6-L12 -->
+```java
+public class GeneratedIdEntity {
+
+    @Id
+    @GeneratedValue
+    public String id;
+
+}
+```
 
 ## Quick Start
 
