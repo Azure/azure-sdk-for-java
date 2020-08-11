@@ -409,12 +409,14 @@ public class Utils {
             osName = "Unknown";
         }
         osName = osName.replaceAll("\\s", "");
-        String userAgent = String.format("%s/%s JRE/%s %s/%s",
+        String userAgent = String.format("%s%s/%s %s/%s JRE/%s",
+                UserAgentContainer.AZSDK_USERAGENT_PREFIX,
+                sdkName,
+                sdkVersion,
                 osName,
                 System.getProperty("os.version"),
-                System.getProperty("java.version"),
-                sdkName,
-                sdkVersion);
+                System.getProperty("java.version")
+                );
         return userAgent;
     }
 

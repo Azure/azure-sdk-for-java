@@ -85,12 +85,30 @@ extends:
       - name: spring-cloud-azure-autoconfigure
         groupId: com.microsoft.azure
         safeName: springcloudazureautoconfigure
-      - name: spring-cloud-azure-keyvault-config
-        groupId: com.microsoft.azure
-        safeName: springcloudazurekeyvaultconfig
       - name: spring-cloud-azure-messaging
         groupId: com.microsoft.azure
         safeName: springcloudazuremessaging
+      - name: spring-cloud-starter-azure-appconfiguration-config
+        groupId: com.microsoft.azure
+        safeName: springcloudstarterazureappconfigurationconfig
+      - name: spring-starter-azure-cache
+        groupId: com.microsoft.azure
+        safeName: springstarterazurecache
+      - name: spring-cloud-starter-azure-eventhubs
+        groupId: com.microsoft.azure
+        safeName: springcloudstarterazureeventhubs
+      - name: spring-cloud-starter-azure-eventhubs-kafka
+        groupId: com.microsoft.azure
+        safeName: springcloudstarterazureeventhubskafka
+      - name: spring-cloud-starter-azure-servicebus
+        groupId: com.microsoft.azure
+        safeName: springcloudstarterazureservicebus
+      - name: spring-starter-azure-storage
+        groupId: com.microsoft.azure
+        safeName: springstarterazurestorage
+      - name: spring-cloud-starter-azure-storage-queue
+        groupId: com.microsoft.azure
+        safeName: springcloudstarterazurestoragequeue
     AdditionalModules:
       - name: azure-spring-boot-sample-active-directory
         groupId: com.azure

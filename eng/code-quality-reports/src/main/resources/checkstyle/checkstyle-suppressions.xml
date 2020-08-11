@@ -510,9 +510,6 @@
   <!-- Checkstyle suppressions for azure-spring-integration-servicebus package -->
   <suppress checks="MethodName" files="com.microsoft.azure.spring.integration.servicebus.ServiceBusClientConfig.java"/>
 
-  <!-- Checkstyle suppressions for azure-spring-cloud-keyvault-config package -->
-  <suppress checks="ConstantName" files="com.microsoft.azure.spring.cloud.keyvault.config.auth.CertificateUtils"/>
-
   <!-- These suppressions were added due to limitations in our custom Checkstyle rules and should be addressed in the future. -->
   <!-- API naming is too restrictive -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.search.documents.indexes.SearchIndexerAsyncClient.java"
