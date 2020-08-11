@@ -32,8 +32,6 @@ public class EventGridPublisherClientTests extends TestBase {
 
     private EventGridPublisherClientBuilder builder;
 
-    private boolean playback;
-
     private static final String EVENTGRID_ENDPOINT = "EG_ENDPOINT";
 
     private static final String CLOUD_ENDPOINT = "EG_CLOUD_ENDPOINT";
@@ -52,11 +50,10 @@ public class EventGridPublisherClientTests extends TestBase {
 
     @Override
     protected void beforeTest() {
-        playback = interceptorManager.isPlaybackMode();
 
         builder = new EventGridPublisherClientBuilder();
 
-        if (playback) {
+        if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(interceptorManager.getPlaybackClient());
         } else {
             builder.addPolicy(interceptorManager.getRecordPolicy())
@@ -95,7 +92,7 @@ public class EventGridPublisherClientTests extends TestBase {
             getKey(EVENTGRID_KEY)
         );
 
-        EventGridPublisherAsyncClient egClient = new EventGridPublisherClientBuilder()
+        EventGridPublisherAsyncClient egClient = builder
             .sharedAccessSignatureCredential(new EventGridSharedAccessSignatureCredential(sasToken))
             .endpoint(getEndpoint(EVENTGRID_ENDPOINT))
             .buildAsyncClient();
@@ -234,7 +231,7 @@ public class EventGridPublisherClientTests extends TestBase {
 
     @Test
     public void testPublishCloudEventsSync() {
-        EventGridPublisherClient egClient = new EventGridPublisherClientBuilder()
+        EventGridPublisherClient egClient = builder
             .keyCredential(getKey(CLOUD_KEY))
             .endpoint(getEndpoint(CLOUD_ENDPOINT))
             .buildClient();
@@ -258,7 +255,7 @@ public class EventGridPublisherClientTests extends TestBase {
 
     @Test
     public void testPublishCustomEventsSync() {
-        EventGridPublisherClient egClient = new EventGridPublisherClientBuilder()
+        EventGridPublisherClient egClient = builder
             .keyCredential(getKey(CUSTOM_KEY))
             .endpoint(getEndpoint(CUSTOM_ENDPOINT))
             .buildClient();
@@ -279,14 +276,14 @@ public class EventGridPublisherClientTests extends TestBase {
     }
 
     private String getEndpoint(String liveEnvName) {
-        if (playback) {
+        if (interceptorManager.isPlaybackMode()) {
             return DUMMY_ENDPOINT;
         }
         return System.getenv(liveEnvName);
     }
 
     private AzureKeyCredential getKey(String liveEnvName) {
-        if (playback) {
+        if (interceptorManager.isPlaybackMode()) {
             return new AzureKeyCredential(DUMMY_KEY);
         }
         return new AzureKeyCredential(System.getenv(liveEnvName));

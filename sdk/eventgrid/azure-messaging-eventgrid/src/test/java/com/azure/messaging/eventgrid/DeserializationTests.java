@@ -6,10 +6,17 @@ package com.azure.messaging.eventgrid;
 
 import com.azure.messaging.eventgrid.systemevents.*;
 import com.azure.messaging.eventgrid.models.*;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.time.OffsetDateTime;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +24,62 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class DeserializationTests {
+
+    // just test to see if these events can be deserialized
+    @Test
+    public void testDeserializeEventGridEvents() throws JsonProcessingException {
+        String storageEventJson = "{\"topic\": \"/subscriptions/subscriptionID/resourceGroups/Storage/providers/Microsoft.Storage/storageAccounts/xstoretestaccount\",\"subject\": \"/blobServices/default/containers/testcontainer/blobs/testfile.txt\",   \"eventType\": \"Microsoft.Storage.BlobCreated\",  \"eventTime\": \"2017-06-26T18:41:00.9584103Z\",  \"id\": \"831e1650-001e-001b-66ab-eeb76e069631\",  \"data\": {    \"api\": \"PutBlockList\",    \"clientRequestId\": \"6d79dbfb-0e37-4fc4-981f-442c9ca65760\",    \"requestId\": \"831e1650-001e-001b-66ab-eeb76e000000\",    \"eTag\": \"0x8D4BCC2E4835CD0\",    \"contentType\": \"text/plain\",    \"contentLength\": 524288,    \"blobType\": \"BlockBlob\",    \"url\": \"https://example.blob.core.windows.net/testcontainer/testfile.txt\",    \"sequencer\": \"00000000000004420000000000028963\",    \"storageDiagnostics\": {      \"batchId\": \"b68529f3-68cd-4744-baa4-3c0498ec19f0\" }},  \"dataVersion\": \"\",  \"metadataVersion\": \"1\"}";
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new SimpleModule()
+            .addDeserializer(OffsetDateTime.class, new JsonDeserializer<OffsetDateTime>() {
+                @Override
+                public OffsetDateTime deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                    return OffsetDateTime.parse(jsonParser.getValueAsString());
+                }
+            }));
+
+        com.azure.messaging.eventgrid.implementation.models.EventGridEvent eventGridEvent =
+            mapper.readValue(storageEventJson, com.azure.messaging.eventgrid.implementation.models.EventGridEvent.class);
+
+        assertNotNull(eventGridEvent);
+        assertEquals("Microsoft.Storage.BlobCreated", eventGridEvent.getEventType(), "Event types do not match");
+    }
+
+    // just test to see if these events can be deserialized
+    @Test
+    public void testDeserializeCloudEvents() throws JsonProcessingException {
+        String cloudEventJson = "{\n" +
+            "  \"id\": \"9ddf9b10-fe3d-4a16-94bc-c0298924ded1\",\n" +
+            "  \"data\": {\n" +
+            "    \"Field2\": \"Value2\",\n" +
+            "    \"Field3\": \"Value3\",\n" +
+            "    \"Field1\": \"Value1\"\n" +
+            "  },\n" +
+            "  \"type\": \"Microsoft.MockPublisher.TestEvent\",\n" +
+            "  \"time\": \"2020-07-21T18:41:31.166Z\",\n" +
+            "  \"specversion\": \"1.0\"\n" +
+            "}";
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new SimpleModule()
+            .addDeserializer(OffsetDateTime.class, new JsonDeserializer<OffsetDateTime>() {
+                @Override
+                public OffsetDateTime deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+                    return OffsetDateTime.parse(jsonParser.getValueAsString());
+                }
+            }));
+
+        com.azure.messaging.eventgrid.implementation.models.CloudEvent cloudEvent = mapper.readValue(cloudEventJson, com.azure.messaging.eventgrid.implementation.models.CloudEvent.class);
+
+        assertNotNull(cloudEvent);
+        assertEquals("Microsoft.MockPublisher.TestEvent", cloudEvent.getType(), "Event types do not match");
+
+        // actually deserialized as a LinkedHashMap instead of generic object.
+        Object data = cloudEvent.getData();
+
+        assertNotNull(data);
+    }
 
     @Test
     public void consumeStorageBlobDeletedEventWithExtraProperty() throws IOException {
