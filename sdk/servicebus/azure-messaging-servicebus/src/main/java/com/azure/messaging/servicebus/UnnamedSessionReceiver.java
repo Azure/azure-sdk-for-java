@@ -6,7 +6,7 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.implementation.MessageLockContainer;
+import com.azure.messaging.servicebus.implementation.LockContainer;
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
@@ -30,7 +30,7 @@ import java.util.function.Function;
  */
 class UnnamedSessionReceiver implements AutoCloseable {
     private final AtomicBoolean isDisposed = new AtomicBoolean();
-    private final MessageLockContainer lockContainer;
+    private final LockContainer<Instant> lockContainer;
     private final AtomicReference<Instant> sessionLockedUntil = new AtomicReference<>();
     private final AtomicReference<String> sessionId = new AtomicReference<>();
     private final AtomicReference<LockRenewalOperation> renewalOperation = new AtomicReference<>();
@@ -62,7 +62,7 @@ class UnnamedSessionReceiver implements AutoCloseable {
         Function<String, Mono<Instant>> renewSessionLock) {
 
         this.receiveLink = receiveLink;
-        this.lockContainer = new MessageLockContainer(ServiceBusConstants.OPERATION_TIMEOUT);
+        this.lockContainer = new LockContainer<>(ServiceBusConstants.OPERATION_TIMEOUT);
 
         receiveLink.setEmptyCreditListener(() -> 1);
 
@@ -80,7 +80,8 @@ class UnnamedSessionReceiver implements AutoCloseable {
 
                 //TODO (conniey): For session receivers, do they have a message lock token?
                 if (!CoreUtils.isNullOrEmpty(deserialized.getLockToken())) {
-                    lockContainer.addOrUpdate(deserialized.getLockToken(), deserialized.getLockedUntil());
+                    lockContainer.addOrUpdate(deserialized.getLockToken(), deserialized.getLockedUntil(),
+                        deserialized.getLockedUntil());
                 } else {
                     logger.info("sessionId[{}] message[{}]. There is no lock token.",
                         deserialized.getSessionId(), deserialized.getMessageId());

@@ -16,7 +16,7 @@ import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
-import com.azure.messaging.servicebus.implementation.MessageLockContainer;
+import com.azure.messaging.servicebus.implementation.LockContainer;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
@@ -89,7 +89,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     private static final String TRANSACTION_LINK_NAME = "coordinator";
 
     private final AtomicBoolean isDisposed = new AtomicBoolean();
-    private final MessageLockContainer managementNodeLocks;
+    private final LockContainer<Instant> managementNodeLocks;
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiverAsyncClient.class);
     private final String fullyQualifiedNamespace;
     private final String entityPath;
@@ -131,7 +131,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.onClientClose = Objects.requireNonNull(onClientClose, "'onClientClose' cannot be null.");
 
-        this.managementNodeLocks = new MessageLockContainer(cleanupInterval);
+        this.managementNodeLocks = new LockContainer<>(cleanupInterval);
         this.unnamedSessionManager = null;
     }
 
@@ -150,7 +150,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         this.onClientClose = Objects.requireNonNull(onClientClose, "'onClientClose' cannot be null.");
         this.unnamedSessionManager = Objects.requireNonNull(unnamedSessionManager, "'sessionManager' cannot be null.");
 
-        this.managementNodeLocks = new MessageLockContainer(cleanupInterval);
+        this.managementNodeLocks = new LockContainer<>(cleanupInterval);
     }
 
     /**
@@ -980,7 +980,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 }
                 if (receiverOptions.getReceiveMode() == ReceiveMode.PEEK_LOCK) {
                     receivedMessage.setLockedUntil(managementNodeLocks.addOrUpdate(receivedMessage.getLockToken(),
-                        receivedMessage.getLockedUntil()));
+                        receivedMessage.getLockedUntil(), receivedMessage.getLockedUntil()));
                 }
 
                 return receivedMessage;
@@ -1025,7 +1025,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 }
                 if (receiverOptions.getReceiveMode() == ReceiveMode.PEEK_LOCK) {
                     receivedMessage.setLockedUntil(managementNodeLocks.addOrUpdate(receivedMessage.getLockToken(),
-                        receivedMessage.getLockedUntil()));
+                        receivedMessage.getLockedUntil(), receivedMessage.getLockedUntil()));
                 }
 
                 return receivedMessage;
@@ -1065,7 +1065,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(serviceBusManagementNode ->
                 serviceBusManagementNode.renewMessageLock(lockToken, getLinkName(null)))
-            .map(instant -> managementNodeLocks.addOrUpdate(lockToken, instant));
+            .map(instant -> managementNodeLocks.addOrUpdate(lockToken, instant, instant));
     }
 
     /**

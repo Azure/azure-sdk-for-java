@@ -3,7 +3,6 @@
 
 package com.azure.messaging.servicebus.implementation;
 
-
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
@@ -35,11 +34,10 @@ public class LockContainer<T> implements AutoCloseable {
     }
 
     public LockContainer(Duration cleanupInterval, Consumer<T> onExpired) {
-        this.onExpired = onExpired;
         Objects.requireNonNull(cleanupInterval, "'cleanupInterval' cannot be null.");
-        Objects.requireNonNull(onExpired, "'onExpired' cannot be null.");
 
-        cleanupOperation = Flux.interval(cleanupInterval).subscribe(e -> {
+        this.onExpired = Objects.requireNonNull(onExpired, "'onExpired' cannot be null.");
+        this.cleanupOperation = Flux.interval(cleanupInterval).subscribe(e -> {
             if (lockTokenExpirationMap.isEmpty()) {
                 return;
             }
@@ -52,10 +50,6 @@ public class LockContainer<T> implements AutoCloseable {
 
             expired.forEach(this::remove);
         });
-    }
-
-    public Instant addOrUpdate(String lockToken, Instant lockTokenExpiration) {
-        return addOrUpdate(lockToken, lockTokenExpiration, null);
     }
 
     /**
@@ -73,6 +67,11 @@ public class LockContainer<T> implements AutoCloseable {
         if (isDisposed.get()) {
             throw logger.logExceptionAsError(new IllegalStateException("Cannot perform operations on a disposed set."));
         }
+
+        Objects.requireNonNull(lockToken, "'lockToken' cannot be null.");
+        Objects.requireNonNull(item, "'item' cannot be null.");
+        Objects.requireNonNull(lockTokenExpiration, "'lockTokenExpiration' cannot be null.");
+
 
         final Instant computed = lockTokenExpirationMap.compute(lockToken, (key, existing) -> {
             if (existing == null) {
