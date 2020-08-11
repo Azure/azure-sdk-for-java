@@ -5,13 +5,18 @@ package com.azure.core.http.netty.implementation;
 
 import io.netty.channel.AbstractChannel;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
 import io.netty.channel.DefaultChannelPromise;
 import io.netty.util.concurrent.DefaultEventExecutor;
 import io.netty.util.concurrent.EventExecutor;
+import io.netty.util.concurrent.ScheduledFuture;
 import org.junit.jupiter.api.Test;
 
+import static com.azure.core.http.netty.implementation.TimeoutTestHelpers.getFieldValue;
+import static com.azure.core.http.netty.implementation.TimeoutTestHelpers.getInvokableMethod;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
@@ -57,7 +62,7 @@ public class WriteTimeoutHandlerTests {
     }
 
     @Test
-    public void removingHandlerCancelsTimeout() throws InterruptedException {
+    public void removingHandlerCancelsTimeout() throws Exception {
         WriteTimeoutHandler writeTimeoutHandler = new WriteTimeoutHandler(100);
 
         ChannelHandlerContext ctx = mock(ChannelHandlerContext.class);
@@ -66,13 +71,12 @@ public class WriteTimeoutHandlerTests {
         writeTimeoutHandler.handlerAdded(ctx);
         writeTimeoutHandler.handlerRemoved(ctx);
 
-        Thread.sleep(100);
-
-        verify(ctx, never()).fireExceptionCaught(any());
+        // When the handler is removed the timer is nulled out.
+        assertNull(getFieldValue(writeTimeoutHandler, "writeTimeoutWatcher", ScheduledFuture.class));
     }
 
     @Test
-    public void writeTimesOut() throws InterruptedException {
+    public void writeTimesOut() throws Exception {
         WriteTimeoutHandler writeTimeoutHandler = new WriteTimeoutHandler(100);
 
         Channel.Unsafe unsafe = mock(Channel.Unsafe.class);
@@ -87,13 +91,15 @@ public class WriteTimeoutHandlerTests {
 
         writeTimeoutHandler.handlerAdded(ctx);
 
-        Thread.sleep(500);
+        // Fake that the scheduled timer completed before any write operations happened.
+        getInvokableMethod(writeTimeoutHandler, "writeTimeoutRunnable", ChannelHandlerContext.class)
+            .invoke(writeTimeoutHandler, ctx);
 
         verify(ctx, atLeast(1)).fireExceptionCaught(any());
     }
 
     @Test
-    public void writingUpdatesTimeout() throws InterruptedException {
+    public void writingUpdatesTimeout() throws Exception {
         WriteTimeoutHandler writeTimeoutHandler = new WriteTimeoutHandler(500);
 
         Channel.Unsafe unsafe = mock(Channel.Unsafe.class);
@@ -112,12 +118,10 @@ public class WriteTimeoutHandlerTests {
 
         writeTimeoutHandler.handlerAdded(ctx);
 
-        Thread.sleep(100);
-
-        writeTimeoutHandler.write(ctx, null, channelPromise);
-        channelPromise.setSuccess();
-
-        Thread.sleep(450);
+        // Fake that the scheduled timer completed before after a write operation happened.
+        getFieldValue(writeTimeoutHandler, "writeListener", ChannelFutureListener.class).operationComplete(null);
+        getInvokableMethod(writeTimeoutHandler, "writeTimeoutRunnable", ChannelHandlerContext.class)
+            .invoke(writeTimeoutHandler, ctx);
 
         writeTimeoutHandler.handlerRemoved(ctx);
 
