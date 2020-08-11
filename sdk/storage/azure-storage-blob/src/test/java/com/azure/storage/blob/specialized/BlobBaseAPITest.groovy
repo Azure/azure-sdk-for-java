@@ -86,6 +86,7 @@ class BlobBaseAPITest extends APISpec {
     }
 
     @Unroll
+    @Requires({ playbackMode() }) // TODO (rickle-msft): Remove annotation
     def "Query min"() {
         setup:
         BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()
