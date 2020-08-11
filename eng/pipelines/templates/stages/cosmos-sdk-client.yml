@@ -71,6 +71,8 @@ stages:
             RunTitle: 'From Source: Windows on Java 1.8'
             TestFromSource: true
             ProfileFlag: '-Punit'
+        TestOptions: '$(DefaultOptions) -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Dparallel-test-playback'
+        TestGoals: verify
         PreTestSteps:
           - template: ../steps/install-reporting-tools.yml
         PostTestSteps:
@@ -92,8 +94,6 @@ stages:
             # we want to run this when TestFromSource isn't true (which covers normal running when it isn't set)
             # OR when ShouldRunSourceTests is true
             condition: and(succeeded(), or(ne(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))
-        TestOptions: '$(DefaultOptions) -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Dparallel-test-playback'
-        TestGoals: verify
 
 
     - template: ../jobs/archetype-sdk-tests.yml
