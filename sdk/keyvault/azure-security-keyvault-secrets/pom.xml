@@ -105,7 +105,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.0.9</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.1.0</version> <!-- {x-version-update;unreleased_com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
 

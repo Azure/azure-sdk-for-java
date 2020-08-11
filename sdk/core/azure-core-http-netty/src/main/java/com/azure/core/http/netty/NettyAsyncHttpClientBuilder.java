@@ -6,11 +6,15 @@ package com.azure.core.http.netty;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.implementation.ChallengeHolder;
 import com.azure.core.http.netty.implementation.DeferredHttpProxyProvider;
+import com.azure.core.http.netty.implementation.ReadTimeoutHandler;
+import com.azure.core.http.netty.implementation.ResponseTimeoutHandler;
+import com.azure.core.http.netty.implementation.WriteTimeoutHandler;
 import com.azure.core.util.AuthorizationChallengeHandler;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
+import reactor.netty.Connection;
 import reactor.netty.NettyPipeline;
 import reactor.netty.channel.BootstrapHandlers;
 import reactor.netty.http.client.HttpClient;
@@ -18,21 +22,25 @@ import reactor.netty.resources.ConnectionProvider;
 import reactor.netty.tcp.ProxyProvider;
 
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * Builder class responsible for creating instances of {@link NettyAsyncHttpClient}.
+ * Builder class responsible for creating instances of {@link com.azure.core.http.HttpClient} backed by Reactor Netty.
  *
  * <p><strong>Building a new HttpClient instance</strong></p>
  *
  * {@codesnippet com.azure.core.http.netty.instantiation-simple}
  *
- * @see NettyAsyncHttpClient
  * @see HttpClient
  */
 public class NettyAsyncHttpClientBuilder {
     private final ClientLogger logger = new ClientLogger(NettyAsyncHttpClientBuilder.class);
+
+    private static final long MINIMUM_TIMEOUT = TimeUnit.MILLISECONDS.toMillis(1);
+    private static final long DEFAULT_TIMEOUT = TimeUnit.SECONDS.toMillis(60);
 
     private final HttpClient baseHttpClient;
     private ProxyOptions proxyOptions;
@@ -42,10 +50,13 @@ public class NettyAsyncHttpClientBuilder {
     private EventLoopGroup eventLoopGroup;
     private Configuration configuration;
     private boolean disableBufferCopy;
+    private Duration writeTimeout;
+    private Duration responseTimeout;
+    private Duration readTimeout;
 
     /**
      * Creates a new builder instance, where a builder is capable of generating multiple instances of {@link
-     * NettyAsyncHttpClient}.
+     * com.azure.core.http.HttpClient} backed by Reactor Netty.
      */
     public NettyAsyncHttpClientBuilder() {
         this.baseHttpClient = null;
@@ -53,7 +64,7 @@ public class NettyAsyncHttpClientBuilder {
 
     /**
      * Creates a new builder instance, where a builder is capable of generating multiple instances of {@link
-     * NettyAsyncHttpClient} based on the provided reactor netty HttpClient.
+     * HttpClient} based on the provided Reactor Netty HttpClient.
      *
      * {@codesnippet com.azure.core.http.netty.from-existing-http-client}
      *
@@ -82,7 +93,12 @@ public class NettyAsyncHttpClientBuilder {
 
         nettyHttpClient = nettyHttpClient
             .port(port)
-            .wiretap(enableWiretap);
+            .wiretap(enableWiretap)
+            .doOnRequest((request, connection) -> addWriteTimeoutHandler(connection, getTimeoutMillis(writeTimeout)))
+            .doAfterRequest((request, connection) ->
+                addResponseTimeoutHandler(connection, getTimeoutMillis(responseTimeout)))
+            .doOnResponse((response, connection) -> addReadTimeoutHandler(connection, getTimeoutMillis(readTimeout)))
+            .doAfterResponseSuccess((response, connection) -> removeReadTimeoutHandler(connection));
 
         Configuration buildConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration()
@@ -246,6 +262,63 @@ public class NettyAsyncHttpClientBuilder {
         return this;
     }
 
+    /**
+     * Sets the write timeout for a request to be sent.
+     * <p>
+     * The write timeout does not apply to the entire request but to the request being sent over the wire. For example a
+     * request body which emits {@code 10} {@code 8KB} buffers will trigger {@code 10} write operations, the last write
+     * tracker will update when each operation completes and the outbound buffer will be periodically checked to
+     * determine if it is still draining.
+     * <p>
+     * If {@code writeTimeout} is {@code null} is {@code null} a 60 second timeout will be used, if it is a {@link
+     * Duration} less than or equal to zero then no write timeout will be applied. When applying the timeout the greater
+     * of one millisecond and the value of {@code writeTimeout} will be used.
+     *
+     * @param writeTimeout Write operation timeout duration.
+     * @return The updated {@link NettyAsyncHttpClientBuilder} object.
+     */
+    public NettyAsyncHttpClientBuilder writeTimeout(Duration writeTimeout) {
+        this.writeTimeout = writeTimeout;
+        return this;
+    }
+
+    /**
+     * Sets the response timeout duration used when waiting for a server to reply.
+     * <p>
+     * The response timeout begins once the request write completes and finishes once the first response read is
+     * triggered when the server response is received.
+     * <p>
+     * If {@code responseTimeout} is {@code null} a 60 second timeout will be used, if it is a {@link Duration} less
+     * than or equal to zero then no timeout will be applied to the response. When applying the timeout the greater of
+     * one millisecond and the value of {@code responseTimeout} will be used.
+     *
+     * @param responseTimeout Response timeout duration.
+     * @return The updated {@link NettyAsyncHttpClientBuilder} object.
+     */
+    public NettyAsyncHttpClientBuilder responseTimeout(Duration responseTimeout) {
+        this.responseTimeout = responseTimeout;
+        return this;
+    }
+
+    /**
+     * Sets the read timeout duration used when reading the server response.
+     * <p>
+     * The read timeout begins once the first response read is triggered after the server response is received. This
+     * timeout triggers periodically but won't fire its operation if another read operation has completed between when
+     * the timeout is triggered and completes.
+     * <p>
+     * If {@code readTimeout} is {@code null} a 60 second timeout will be used, if it is a {@link Duration} less than or
+     * equal to zero then no timeout period will be applied to response read. When applying the timeout the greater of
+     * one millisecond and the value of {@code readTimeout} will be used.
+     *
+     * @param readTimeout Read timeout duration.
+     * @return The updated {@link NettyAsyncHttpClientBuilder} object.
+     */
+    public NettyAsyncHttpClientBuilder readTimeout(Duration readTimeout) {
+        this.readTimeout = readTimeout;
+        return this;
+    }
+
     private static boolean shouldUseCustomProxyHandler(ProxyOptions options) {
         return options != null && options.getUsername() != null && options.getType() == ProxyOptions.Type.HTTP;
     }
@@ -262,5 +335,61 @@ public class NettyAsyncHttpClientBuilder {
                 throw logger.logExceptionAsError(
                     new IllegalArgumentException("Unknown 'ProxyOptions.Type' enum value"));
         }
+    }
+
+    /*
+     * Adds the write timeout handler once the request is ready to begin sending.
+     */
+    private static void addWriteTimeoutHandler(Connection connection, long timeoutMillis) {
+        connection.addHandlerLast(WriteTimeoutHandler.HANDLER_NAME, new WriteTimeoutHandler(timeoutMillis));
+    }
+
+    /*
+     * First removes the write timeout handler from the connection as the request has finished sending, then adds the
+     * response timeout handler.
+     */
+    private static void addResponseTimeoutHandler(Connection connection, long timeoutMillis) {
+        connection.removeHandler(WriteTimeoutHandler.HANDLER_NAME)
+            .addHandlerLast(ResponseTimeoutHandler.HANDLER_NAME, new ResponseTimeoutHandler(timeoutMillis));
+    }
+
+    /*
+     * First removes the response timeout handler from the connection as the response has been received, then adds the
+     * read timeout handler.
+     */
+    private static void addReadTimeoutHandler(Connection connection, long timeoutMillis) {
+        connection.removeHandler(ResponseTimeoutHandler.HANDLER_NAME)
+            .addHandlerLast(ReadTimeoutHandler.HANDLER_NAME, new ReadTimeoutHandler(timeoutMillis));
+    }
+
+    /*
+     * Removes the read timeout handler as the complete response has been received.
+     */
+    private static void removeReadTimeoutHandler(Connection connection) {
+        connection.removeHandler(ReadTimeoutHandler.HANDLER_NAME);
+    }
+
+    /*
+     * Returns the timeout in milliseconds to use based on the passed {@link Duration}.
+     * <p>
+     * If the timeout is {@code null} a default of 60 seconds will be used. If the timeout is less than or equal to zero
+     * no timeout will be used. If the timeout is less than one millisecond a timeout of one millisecond will be used.
+     *
+     * @param timeout The {@link Duration} to convert to timeout in milliseconds.
+     * @return The timeout period in milliseconds, zero if no timeout.
+     */
+    static long getTimeoutMillis(Duration timeout) {
+        // Timeout is null, use the 60 second default.
+        if (timeout == null) {
+            return TimeUnit.SECONDS.toMillis(60);
+        }
+
+        // Timeout is less than or equal to zero, return no timeout.
+        if (timeout.isZero() || timeout.isNegative()) {
+            return 0;
+        }
+
+        // Return the maximum of the timeout period and the minimum allowed timeout period.
+        return Math.max(timeout.toMillis(), MINIMUM_TIMEOUT);
     }
 }
