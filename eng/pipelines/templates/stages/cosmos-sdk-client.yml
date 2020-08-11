@@ -77,7 +77,7 @@ stages:
           - script: |
               python --version
               python -m pip install setuptools termcolor in_place
-              python sdk/spring/scripts/replace_artifact.py --module cosmos
+              python sdk/spring/scripts/replace_artifact.py --module cosmos --log debug --color false
             displayName: 'Run replace_artifact.py'
           - task: Maven@3
             displayName: 'Run tests after replace_artifact.py'

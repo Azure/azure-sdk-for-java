@@ -14,6 +14,7 @@ class Log:
     NONE = 1
 
     level = INFO
+    color = False
 
     def __init__(self):
         self.level = Log.INFO
@@ -22,21 +23,36 @@ class Log:
     def set_log_level(self, level):
         self.level = level
 
+    def set_color(self, color):
+        self.color = color
+
     def debug(self, string):
         if self.level >= Log.DEBUG:
-            print(colored('[DEBUG] {}'.format(string), 'yellow'))
+            if self.color:
+                print(colored('[DEBUG] {}'.format(string), 'yellow'))
+            else:
+                print('[DEBUG] {}'.format(string))
 
     def info(self, string):
         if self.level >= Log.INFO:
-            print(colored('[INFO ] {}'.format(string), 'grey'))
+            if self.color:
+                print(colored('[INFO ] {}'.format(string), 'grey'))
+            else:
+                print('[INFO ] {}'.format(string))
 
     def warn(self, string):
         if self.level >= Log.WARN:
-            print(colored('[WARN ] {}'.format(string), 'red'))
+            if self.color:
+                print(colored('[WARN ] {}'.format(string), 'red'))
+            else:
+                print('[WARN ] {}'.format(string))
 
     def error(self, string):
         if self.level >= Log.ERROR:
-            print(colored('[ERROR] {}'.format(string), 'red'))
+            if self.color:
+                print(colored('[ERROR] {}'.format(string), 'red'))
+            else:
+                print('[ERROR] {}'.format(string))
 
     def log_level_test(self):
         self.debug('This is debug log.')

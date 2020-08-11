@@ -248,24 +248,38 @@ jobs:
 
   - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
     parameters:
-        TestName: Integration_Test_Spring_Data_Cosmosdb
-        ServiceDirectory: cosmos
-        Artifacts:
-          - name: azure-spring-data-cosmos-test
-            groupId: com.azure
-            safeName: azurespringdatacosmostest
-        TimeoutInMinutes: 90
-        Matrix:
-          Session_Integration:
-            ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }"
-            DisplayName: Session Integration
-            OSVmImage: 'ubuntu-18.04'
-            ProfileFlag: '-P integration-test-azure'
+      TestName: Integration_Test_Spring_Data_Cosmosdb
+      ServiceDirectory: cosmos
+      Artifacts:
+        - name: azure-spring-data-cosmos-test
+          groupId: com.azure
+          safeName: azurespringdatacosmostest
+      TimeoutInMinutes: 90
+      Matrix:
+        Session_Integration:
+          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }"
+          DisplayName: Session Integration
+          OSVmImage: 'ubuntu-18.04'
+          ProfileFlag: '-P integration-test-azure'
 
-        EnvVars:
-            AZURE_TEST_MODE: LIVE
-        PreRunSteps:
-            - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-        TestStepMavenInputs:
+      EnvVars:
+        AZURE_TEST_MODE: LIVE
+      PreRunSteps:
+        - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
+      PostRunSteps:
+        - script: |
+            python --version
+            python -m pip install setuptools termcolor in_place
+            python sdk/spring/scripts/replace_artifact.py --module cosmos --log debug --color false
+          displayName: 'Run replace_artifact.py'
+        - task: Maven@3
+          displayName: 'Run tests after run replace_artifact.py: $(DisplayName)'
+          inputs:
+            mavenPomFile: pom.xml
             goals: verify
             options: '$(ProfileFlag) -Dgpg.skip -Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -pl $(ProjectList)'
+          env:
+            AZURE_TEST_MODE: LIVE
+      TestStepMavenInputs:
+        goals: verify
+        options: '$(ProfileFlag) -Dgpg.skip -Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -pl $(ProjectList)'
