@@ -11,6 +11,7 @@ import spock.lang.Unroll
 
 import java.util.function.Consumer
 
+@Requires({ playbackMode() }) // TODO (rickle-msft): Remove annotation
 class BlobBaseAPITest extends APISpec {
 
     BlobClient bc
@@ -86,7 +87,6 @@ class BlobBaseAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires({ playbackMode() }) // TODO (rickle-msft): Remove annotation
     def "Query min"() {
         setup:
         BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()

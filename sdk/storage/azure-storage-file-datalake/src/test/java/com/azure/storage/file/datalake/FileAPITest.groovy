@@ -2787,6 +2787,7 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
+    @Requires({ playbackMode() }) // TODO (rickle-msft): Remove annotation
     def "Query min"() {
         setup:
         FileQueryDelimitedSerialization ser = new FileQueryDelimitedSerialization()
@@ -2832,6 +2833,7 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
+    @Requires({ playbackMode() }) // TODO (rickle-msft): Remove annotation
     def "Query csv serialization separator"() {
         setup:
         FileQueryDelimitedSerialization ser = new FileQueryDelimitedSerialization()
@@ -2907,6 +2909,7 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
+    @Requires({ playbackMode() }) // TODO (rickle-msft): Remove annotation
     def "Query csv serialization escape and field quote"() {
         setup:
         FileQueryDelimitedSerialization ser = new FileQueryDelimitedSerialization()
@@ -2947,6 +2950,7 @@ class FileAPITest extends APISpec {
 
     /* Note: Input delimited tested everywhere else. */
     @Unroll
+    @Requires({ playbackMode() }) // TODO (rickle-msft): Remove annotation
     def "Query Input json"() {
         setup:
         FileQueryJsonSerialization ser = new FileQueryJsonSerialization()
@@ -2988,6 +2992,7 @@ class FileAPITest extends APISpec {
         1000      | '\n'            || _
     }
 
+    @Requires({ playbackMode() }) // TODO (rickle-msft): Remove annotation
     def "Query Input csv Output json"() {
         setup:
         FileQueryDelimitedSerialization inSer = new FileQueryDelimitedSerialization()
@@ -3028,6 +3033,7 @@ class FileAPITest extends APISpec {
         }
     }
 
+    @Requires({ playbackMode() }) // TODO (rickle-msft): Remove annotation
     def "Query Input json Output csv"() {
         setup:
         FileQueryJsonSerialization inSer = new FileQueryJsonSerialization()
@@ -3068,6 +3074,7 @@ class FileAPITest extends APISpec {
         }
     }
 
+    @Requires({ playbackMode() }) // TODO (rickle-msft): Remove annotation
     def "Query non fatal error"() {
         setup:
         FileQueryDelimitedSerialization base = new FileQueryDelimitedSerialization()
@@ -3106,6 +3113,7 @@ class FileAPITest extends APISpec {
         receiver.numErrors > 0
     }
 
+    @Requires({ playbackMode() }) // TODO (rickle-msft): Remove annotation
     def "Query fatal error"() {
         setup:
         FileQueryDelimitedSerialization base = new FileQueryDelimitedSerialization()
@@ -3136,6 +3144,7 @@ class FileAPITest extends APISpec {
         thrown(Exceptions.ReactiveException)
     }
 
+    @Requires({ playbackMode() }) // TODO (rickle-msft): Remove annotation
     def "Query progress receiver"() {
         setup:
         FileQueryDelimitedSerialization base = new FileQueryDelimitedSerialization()
@@ -3178,6 +3187,7 @@ class FileAPITest extends APISpec {
         mockReceiver.progressList.contains(sizeofBlobToRead)
     }
 
+    @Requires({ playbackMode() }) // TODO (rickle-msft): Remove annotation
     @Requires( { liveMode() } ) // Large amount of data.
     def "Query multiple records with progress receiver"() {
         setup:
@@ -3230,6 +3240,7 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
+    @Requires({ playbackMode() }) // TODO (rickle-msft): Remove annotation
     def "Query input output IA"() {
         setup:
         /* Mock random impl of QQ Serialization*/
@@ -3264,6 +3275,7 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
+    @Requires({ playbackMode() }) // TODO (rickle-msft): Remove annotation
     def "Query AC"() {
         setup:
         match = setupPathMatchCondition(fc, match)
@@ -3305,6 +3317,7 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
+    @Requires({ playbackMode() }) // TODO (rickle-msft): Remove annotation
     def "Query AC fail"() {
         setup:
         setupPathLeaseCondition(fc, leaseID)
