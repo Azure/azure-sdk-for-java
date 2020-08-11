@@ -31,6 +31,12 @@ public class PrivateLinkResourceInner extends ARMProxyResource {
     private List<String> requiredMembers;
 
     /**
+     * The private link resource required zone names.
+     */
+    @JsonProperty(value = "properties.requiredZoneNames", access = JsonProperty.Access.WRITE_ONLY)
+    private List<String> requiredZoneNames;
+
+    /**
      * Get the private link resource group id.
      *
      * @return the groupId value
@@ -46,6 +52,15 @@ public class PrivateLinkResourceInner extends ARMProxyResource {
      */
     public List<String> requiredMembers() {
         return this.requiredMembers;
+    }
+
+    /**
+     * Get the private link resource required zone names.
+     *
+     * @return the requiredZoneNames value
+     */
+    public List<String> requiredZoneNames() {
+        return this.requiredZoneNames;
     }
 
 }
