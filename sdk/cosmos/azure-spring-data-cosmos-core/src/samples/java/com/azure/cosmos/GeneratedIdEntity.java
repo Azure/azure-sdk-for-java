@@ -9,6 +9,6 @@ public class GeneratedIdEntity {
 
     @Id
     @GeneratedValue
-    public String id;
+    private String id;
 
 }
