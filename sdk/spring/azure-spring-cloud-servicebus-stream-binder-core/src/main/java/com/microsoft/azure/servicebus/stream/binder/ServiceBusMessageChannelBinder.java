@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.servicebus.stream.binder;
 
@@ -14,7 +11,12 @@ import com.microsoft.azure.spring.integration.core.DefaultMessageHandler;
 import com.microsoft.azure.spring.integration.core.api.CheckpointConfig;
 import com.microsoft.azure.spring.integration.core.api.SendOperation;
 import com.microsoft.azure.spring.integration.servicebus.ServiceBusClientConfig;
-import org.springframework.cloud.stream.binder.*;
+import org.springframework.cloud.stream.binder.BinderHeaders;
+import org.springframework.cloud.stream.binder.ExtendedConsumerProperties;
+import org.springframework.cloud.stream.binder.ExtendedProducerProperties;
+import org.springframework.cloud.stream.binder.ExtendedPropertiesBinder;
+import org.springframework.cloud.stream.binder.BinderSpecificPropertiesProvider;
+import org.springframework.cloud.stream.binder.AbstractMessageChannelBinder;
 import org.springframework.cloud.stream.provisioning.ProducerDestination;
 import org.springframework.integration.expression.FunctionExpression;
 import org.springframework.messaging.Message;
@@ -26,8 +28,8 @@ import org.springframework.messaging.MessageHandler;
  * @author Eduardo Sciullo
  */
 public abstract class ServiceBusMessageChannelBinder<T extends ServiceBusExtendedBindingProperties> extends
-        AbstractMessageChannelBinder<ExtendedConsumerProperties<ServiceBusConsumerProperties>, 
-        ExtendedProducerProperties<ServiceBusProducerProperties>, 
+    AbstractMessageChannelBinder<ExtendedConsumerProperties<ServiceBusConsumerProperties>,
+        ExtendedProducerProperties<ServiceBusProducerProperties>,
         ServiceBusChannelProvisioner>
         implements
         ExtendedPropertiesBinder<MessageChannel, ServiceBusConsumerProperties, ServiceBusProducerProperties> {

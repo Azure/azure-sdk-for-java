@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.servicebus.stream.binder.properties;
 
@@ -31,7 +28,8 @@ public class ServiceBusConsumerProperties {
      * Prefetch count of underlying service bus client.
      *
      * <p>
-     * Default : 1
+     *
+     * @return int, default : 1
      */
     public int getPrefetchCount() {
         return prefetchCount;
@@ -46,7 +44,7 @@ public class ServiceBusConsumerProperties {
      * the size of fixed thread pool that handles user's business logic
      *
      * <p>
-     * Default : 1
+     * @return int, default : 1
      */
     public int getConcurrency() {
         return concurrency;
@@ -60,7 +58,7 @@ public class ServiceBusConsumerProperties {
      * Controls if is session aware
      *
      * <p>
-     * Default : false
+     * @return boolean, default : false
      */
     public boolean isSessionsEnabled() {
         return sessionsEnabled;
@@ -69,6 +67,6 @@ public class ServiceBusConsumerProperties {
     public void setSessionsEnabled(boolean sessionsEnabled) {
         this.sessionsEnabled = sessionsEnabled;
     }
-    
-    
+
+
 }

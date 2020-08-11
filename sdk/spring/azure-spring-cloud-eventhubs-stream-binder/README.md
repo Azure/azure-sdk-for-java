@@ -1,40 +1,44 @@
-# Spring Cloud Azure Event Hub Stream Binder
+# Spring Cloud Azure Event Hub Stream Binder client library for Java
 
 The project provides **Spring Cloud Stream Binder for Azure Event Hub** which allows you to build message-driven 
 microservice using **Spring Cloud Stream** based on [Azure Event Hub](https://azure.microsoft.com/en-us/services/event-hubs/) service.
 
-## EventHub Binder Overview
+## Key concepts
+
+### EventHub Binder Overview
 
 The Spring Cloud Stream Binder for Azure Event Hub provides the binding implementation for the Spring Cloud Stream.
 This implementation uses Spring Integration Event Hub Channel Adapters at its foundation. From design's perspective, 
 Event Hub is similar as Kafka. Also, Event Hub could be accessed via Kafka API. If your project has tight dependency 
 on Kafka API, you can try [Event Hub with Kafka API Sample](../../spring-cloud-azure-samples/eventhubs-kafka-sample/)
 
-### Consumer Group
+#### Consumer Group
 
 Event Hub provides similar support of consumer group as Apache Kafka, but with slight different logic. While Kafka 
 stores all committed offsets in the broker, you have to store offsets of event hub messages 
 being processed manually. Event Hub SDK provide the function to store such offsets inside Azure Storage Account. So 
 that's why you have to fill `spring.cloud.stream.eventhub.checkpoint-storage-account`.
 
-### Partitioning Support
+#### Partitioning Support
 
 Event Hub provides similar concept of physical partition as Kafka. But unlike Kafka's auto rebalancing between 
 consumers and partitions, Event Hub provides a kind of preemptive mode. Storage account acts as lease to 
 determine which partition is owned by which consumer. When a new consumer starts, it will try to steal some partitions 
 from most heavy-loaded consumer to achieve workload balancing.
 
-## Samples 
+## Getting started
+
+## Examples 
 
 Please use this [sample](../../spring-cloud-azure-samples/eventhubs-binder-sample/) as a reference for how to use this binder. 
 
-## Feature List 
+### Feature List 
 
 - [Dependency Management](#dependency-management)
 - [Configuration Options](#configuration-options)
 - [Error Channel](#error-channels)
 
-### Dependency Management
+#### Dependency Management
 
 **Maven Coordinates** 
 ```
@@ -51,11 +55,11 @@ dependencies {
 }
 ```
 
-### Configuration Options 
+#### Configuration Options 
 
 The binder provides the following configuration options in `application.properties`.
 
-#### Spring Cloud Azure Properties ####
+##### Spring Cloud Azure Properties #####
 
 Name | Description | Required | Default 
 ---|---|---|---
@@ -65,7 +69,7 @@ Name | Description | Required | Default
  spring.cloud.azure.eventhub.namespace | Event Hub Namespace. Auto creating if missing | Yes |
  spring.cloud.azure.eventhub.checkpoint-storage-account | StorageAccount name for checkpoint message successfully consumed | Yes
 
- #### Event Hub Producer Properties ####
+ ##### Event Hub Producer Properties #####
 
  It supports the following configurations with the format of `spring.cloud.stream.eventhub.bindings.<channelName>.producer`.
  
@@ -82,7 +86,7 @@ Name | Description | Required | Default
 
  Default: `10000`
  
- #### Event Hub Consumer Properties ####
+ ##### Event Hub Consumer Properties #####
 
   It supports the following configurations with the format of `spring.cloud.stream.eventhub.bindings.<channelName>.consumer`.
 
@@ -121,7 +125,7 @@ Name | Description | Required | Default
 
   Default: `5s`
 
-### Error Channels
+#### Error Channels
 **_consumer error channel_**
 
 this channel is open by default, you can handle the error message in this way:
@@ -149,3 +153,7 @@ you can handle the error message in this way:
         System.out.println("Handling Producer ERROR: " + message);
     }
 ```
+
+## Troubleshooting
+## Next steps
+## Contributing

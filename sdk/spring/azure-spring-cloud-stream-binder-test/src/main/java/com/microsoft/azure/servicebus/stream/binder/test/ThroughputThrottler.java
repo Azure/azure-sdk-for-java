@@ -1,15 +1,13 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus.stream.binder.test;
 
 /**
  * This class helps producers throttle throughput.
  * <p>
- * If targetThroughput >= 0, the resulting average throughput will be approximately
- * min(targetThroughput, maximumPossibleThroughput). If targetThroughput < 0,
+ * If targetThroughput &gt;= 0, the resulting average throughput will be approximately
+ * min(targetThroughput, maximumPossibleThroughput). If targetThroughput &lt; 0,
  * no throttling will occur.
  * <p>
  * To use, do this between successive send attempts:
@@ -50,6 +48,7 @@ public class ThroughputThrottler {
      * @param amountSoFar bytes produced so far if you want to throttle data throughput, or
      *                    messages produced so far if you want to throttle message throughput.
      * @param sendStartMs timestamp of the most recently sent message
+     * @return boolean
      */
     public boolean shouldThrottle(long amountSoFar, long sendStartMs) {
         if (this.targetThroughput < 0) {
