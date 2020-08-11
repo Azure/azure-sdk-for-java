@@ -4,6 +4,9 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.util.logging.ClientLogger;
+import reactor.core.Disposable;
+import reactor.core.publisher.DirectProcessor;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 
 import java.time.Duration;
@@ -12,13 +15,22 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Synchronous work for receiving messages.
  */
-class SynchronousReceiveWork {
+class SynchronousReceiveWork implements AutoCloseable {
+
+    /* When we have received at-least one message and next message does not arrive in this time. The work will
+    complete.*/
+    private static final Duration TIMEOUT_BETWEEN_MESSAGES = Duration.ofMillis(1000);
+
     private final ClientLogger logger = new ClientLogger(SynchronousReceiveWork.class);
     private final long id;
     private final AtomicInteger remaining;
     private final int numberToReceive;
     private final Duration timeout;
     private final FluxSink<ServiceBusReceivedMessageContext> emitter;
+    private final FluxSink<ServiceBusReceivedMessageContext> messageReceivedSink;
+    private final DirectProcessor<ServiceBusReceivedMessageContext> emitterProcessor;
+    // Subscribes to next message from upstream and implement short timeout between the messages.
+    private final Disposable nextMessageSubscriber;
 
     // Indicate state that timeout has occurred for this work.
     private boolean workTimedOut = false;
@@ -43,6 +55,18 @@ class SynchronousReceiveWork {
         this.numberToReceive = numberToReceive;
         this.timeout = timeout;
         this.emitter = emitter;
+
+        emitterProcessor = DirectProcessor.create();
+        messageReceivedSink = emitterProcessor.sink();
+
+        nextMessageSubscriber = Flux.switchOnNext(emitterProcessor.map(messageContext ->
+            Flux.interval(TIMEOUT_BETWEEN_MESSAGES)))
+            .handle((delay, sink) -> {
+                logger.info("[{}]: Timeout between the messages occurred. Completing the work.", id);
+                sink.next(delay);
+                emitter.complete();
+            })
+        .subscribe();
     }
 
     /**
@@ -97,6 +121,7 @@ class SynchronousReceiveWork {
     void next(ServiceBusReceivedMessageContext message) {
         try {
             emitter.next(message);
+            messageReceivedSink.next(message);
             remaining.decrementAndGet();
         } catch (Exception e) {
             logger.warning("Exception occurred while publishing downstream.", e);
@@ -110,6 +135,7 @@ class SynchronousReceiveWork {
     void complete() {
         logger.info("[{}]: Completing task.", id);
         emitter.complete();
+        close();
     }
 
     /**
@@ -119,6 +145,7 @@ class SynchronousReceiveWork {
         logger.info("[{}]: Work timeout occurred. Completing the work.", id);
         emitter.complete();
         workTimedOut = true;
+        close();
     }
 
     /**
@@ -129,6 +156,7 @@ class SynchronousReceiveWork {
     void error(Throwable error) {
         this.error = error;
         emitter.error(error);
+        close();
     }
 
     /**
@@ -152,5 +180,12 @@ class SynchronousReceiveWork {
      */
     boolean isProcessingStarted() {
         return this.processingStarted;
+    }
+
+    @Override
+    public void close() {
+        if (!nextMessageSubscriber.isDisposed()) {
+            nextMessageSubscriber.dispose();
+        }
     }
 }
