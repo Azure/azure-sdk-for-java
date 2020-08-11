@@ -8,6 +8,10 @@ import io.netty.util.concurrent.DefaultEventExecutor;
 import io.netty.util.concurrent.EventExecutor;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Method;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
@@ -62,13 +66,13 @@ public class ResponseTimeoutHandlerTests {
         responseTimeoutHandler.handlerAdded(ctx);
         responseTimeoutHandler.handlerRemoved(ctx);
 
-        Thread.sleep(100);
+        Thread.sleep(200);
 
         verify(ctx, never()).fireExceptionCaught(any());
     }
 
     @Test
-    public void responseTimesOut() throws InterruptedException {
+    public void responseTimesOut() throws Exception {
         ResponseTimeoutHandler responseTimeoutHandler = new ResponseTimeoutHandler(100);
 
         ChannelHandlerContext ctx = mock(ChannelHandlerContext.class);
@@ -76,7 +80,16 @@ public class ResponseTimeoutHandlerTests {
 
         responseTimeoutHandler.handlerAdded(ctx);
 
-        Thread.sleep(500);
+        // Fake that the scheduled timer completed before any response is received.
+        Method responseTimedOut = responseTimeoutHandler.getClass()
+            .getDeclaredMethod("responseTimedOut", ChannelHandlerContext.class);
+
+        AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+            responseTimedOut.setAccessible(true);
+            return null;
+        });
+
+        responseTimedOut.invoke(responseTimeoutHandler, ctx);
 
         verify(ctx, atLeast(1)).fireExceptionCaught(any());
     }
