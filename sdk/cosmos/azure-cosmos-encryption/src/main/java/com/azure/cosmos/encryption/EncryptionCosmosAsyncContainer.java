@@ -432,7 +432,9 @@ public class EncryptionCosmosAsyncContainer {
                             }
                         ).collectList().map(itemList ->
                             ModelBridgeInternal.createFeedResponseWithQueryMetrics(itemList,
-                                page.getResponseHeaders(), BridgeInternal.queryMetricsFromFeedResponse(page))
+                                page.getResponseHeaders(),
+                                BridgeInternal.queryMetricsFromFeedResponse(page),
+                                ModelBridgeInternal.getQueryPlanDiagnosticsContext(page))
                         );
                     }
                 )
