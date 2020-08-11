@@ -51,6 +51,9 @@ public class SegmentCursor {
     public SegmentCursor(String segmentPath, SegmentCursor userSegmentCursor) {
         this.segmentPath = segmentPath;
         /* Deep copy the user segment cursor's list of shard cursors to make a new segment cursor. */
+        /* We need to do this since a shard cursor could sit at the end of a shard, in which case an event will not
+        *  be emitted, but we need to retain it in the list of shard cursors since the absence of a shard cursor
+        *  indicates we need to start from the beginning of a shard. */
         List<ShardCursor> copy = new ArrayList<>();
         if (userSegmentCursor != null) {
             userSegmentCursor.getShardCursors()
