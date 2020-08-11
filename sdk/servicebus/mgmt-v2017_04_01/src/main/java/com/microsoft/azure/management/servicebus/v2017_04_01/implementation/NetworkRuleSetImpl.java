@@ -10,6 +10,7 @@ package com.microsoft.azure.management.servicebus.v2017_04_01.implementation;
 
 import com.microsoft.azure.management.servicebus.v2017_04_01.NetworkRuleSet;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
+import rx.Observable;
 import com.microsoft.azure.management.servicebus.v2017_04_01.DefaultAction;
 import java.util.List;
 import com.microsoft.azure.management.servicebus.v2017_04_01.NWRuleSetIpRules;
@@ -17,7 +18,8 @@ import com.microsoft.azure.management.servicebus.v2017_04_01.NWRuleSetVirtualNet
 
 class NetworkRuleSetImpl extends WrapperImpl<NetworkRuleSetInner> implements NetworkRuleSet {
     private final ServiceBusManager manager;
-    NetworkRuleSetImpl(NetworkRuleSetInner inner, ServiceBusManager manager) {
+
+    NetworkRuleSetImpl(NetworkRuleSetInner inner,  ServiceBusManager manager) {
         super(inner);
         this.manager = manager;
     }
@@ -26,6 +28,8 @@ class NetworkRuleSetImpl extends WrapperImpl<NetworkRuleSetInner> implements Net
     public ServiceBusManager manager() {
         return this.manager;
     }
+
+
 
     @Override
     public DefaultAction defaultAction() {

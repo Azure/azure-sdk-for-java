@@ -76,10 +76,14 @@ class MigrationConfigsImpl extends WrapperImpl<MigrationConfigsInner> implements
     public Observable<MigrationConfigProperties> getAsync(String resourceGroupName, String namespaceName) {
         MigrationConfigsInner client = this.inner();
         return client.getAsync(resourceGroupName, namespaceName)
-        .map(new Func1<MigrationConfigPropertiesInner, MigrationConfigProperties>() {
+        .flatMap(new Func1<MigrationConfigPropertiesInner, Observable<MigrationConfigProperties>>() {
             @Override
-            public MigrationConfigProperties call(MigrationConfigPropertiesInner inner) {
-                return wrapModel(inner);
+            public Observable<MigrationConfigProperties> call(MigrationConfigPropertiesInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((MigrationConfigProperties)wrapModel(inner));
+                }
             }
        });
     }

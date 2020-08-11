@@ -64,10 +64,14 @@ class RulesImpl extends WrapperImpl<RulesInner> implements Rules {
     public Observable<Rule> getAsync(String resourceGroupName, String namespaceName, String topicName, String subscriptionName, String ruleName) {
         RulesInner client = this.inner();
         return client.getAsync(resourceGroupName, namespaceName, topicName, subscriptionName, ruleName)
-        .map(new Func1<RuleInner, Rule>() {
+        .flatMap(new Func1<RuleInner, Observable<Rule>>() {
             @Override
-            public Rule call(RuleInner inner) {
-                return wrapModel(inner);
+            public Observable<Rule> call(RuleInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((Rule)wrapModel(inner));
+                }
             }
        });
     }
