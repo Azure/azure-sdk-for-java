@@ -17,7 +17,7 @@ from log import log, Log
 from pom import Pom
 
 EXTERNAL_DEPENDENCIES_FILE = 'eng/versioning/external_dependencies.txt'
-ROOT_POMS = [
+ROOT_POM_IDS = [
     'org.springframework.boot:spring-boot-dependencies',
     'org.springframework.cloud:spring-cloud-dependencies'
 ]
@@ -27,7 +27,9 @@ def main():
     start_time = time.time()
     change_to_root_dir()
     log.debug('Current working directory = {}.'.format(os.getcwd()))
-    dependency_dict = get_dependency_dict()
+    dependency_dict = {}
+    for root_pom_id in ROOT_POM_IDS:
+        update_dependency_dict(dependency_dict, root_pom_id)
     update_version_for_external_dependencies(dependency_dict)
     elapsed_time = time.time() - start_time
     log.info('elapsed_time = {}'.format(elapsed_time))
@@ -47,22 +49,21 @@ def get_version_from_external_dependencies(key):
     raise Exception('Can not get version from external_dependencies, key = {}.'.format(key))
 
 
-def get_dependency_dict():
+def update_dependency_dict(dependency_dict, root_pom_id):
+    root_pom_info = root_pom_id.split(':')
+    root_pom_group_id = root_pom_info[0]
+    root_pom_artifact_id = root_pom_info[1]
+    root_pom_version = get_version_from_external_dependencies(root_pom_id)
+    root_pom = Pom(
+        root_pom_group_id,
+        root_pom_artifact_id,
+        root_pom_version,
+        1
+    )
     q = queue.Queue()
-    dependency_dict = {}
-    for root_pom in ROOT_POMS:
-        root_pom_info = root_pom.split(':')
-        root_pom_group_id = root_pom_info[0]
-        root_pom_artifact_id = root_pom_info[1]
-        root_pom_version = get_version_from_external_dependencies(root_pom)
-        pom = Pom(
-            root_pom_group_id,
-            root_pom_artifact_id,
-            root_pom_version,
-            1
-        )
-        q.put(pom)
-        log.debug('Added new root pom: {}, depth = {}.'.format(pom.to_url(), pom.depth))
+    q.put(root_pom)
+    pom_count = 1
+    log.info('Added root pom: {}, depth = {}.'.format(root_pom.to_url(), root_pom.depth))
     while not q.empty():
         pom = q.get()
         pom_url = pom.to_url()
@@ -96,9 +97,7 @@ def get_dependency_dict():
         if project_version.startswith('${'):
             property_dict['project.version'] = property_dict[project_version.strip(' ${}')]
         # get dependencies
-        dependency_elements = project_element.findall(
-            './maven:dependencyManagement/maven:dependencies/maven:dependency',
-            name_space)
+        dependency_elements = project_element.findall('./maven:dependencyManagement/maven:dependencies/maven:dependency', name_space)
         for dependency_element in dependency_elements:
             group_id = dependency_element.find('./maven:groupId', name_space).text.strip(' ${}')
             # some group_id contain 'project.groupId', so put project_version first.
@@ -112,17 +111,15 @@ def get_dependency_dict():
             if key not in dependency_dict:
                 dependency_dict[key] = version
                 log.debug('Dependency version added. key = {}, value = {}'.format(key, version))
-            else:
-                log.debug(
-                    'Dependency version skipped. key = {}, value = {}'.format(key, version))
+            elif version != dependency_dict[key]:
+                log.debug('Dependency version skipped. key = {}, version = {}, dependency_dict[key] = {}.'.format(key, version, dependency_dict[key]))
             artifact_type = dependency_element.find('./maven:type', name_space)
             if artifact_type is not None and artifact_type.text.strip() == 'pom':
-                if '$' in group_id or '$' in artifact_id or '$' in version:
-                    raise Exception('Error: group_id = {}, artifact_id = {}, version = {}.'
-                                    .format(group_id, artifact_id, version))
                 new_pom = Pom(group_id, artifact_id, version, pom.depth + 1)
                 q.put(new_pom)
+                pom_count = pom_count + 1
                 log.debug('Added new pom: {}, depth = {}.'.format(new_pom.to_url(), new_pom.depth))
+    log.info('Root pom summary: root_pom = {}, pom_count = {}'.format(root_pom.to_url(), pom_count))
     return dependency_dict
 
 
@@ -139,14 +136,10 @@ def update_version_for_external_dependencies(dependency_dict):
                 if key in dependency_dict:
                     value_in_dict = dependency_dict[key]
                     if version_bigger_than(value, value_in_dict):
-                        log.warn('Version update skipped. key = {}, value = {}, new_value = {}'
-                                 .format(key, value, value_in_dict))
+                        log.warn('Version update skipped. key = {}, value = {}, new_value = {}'.format(key, value, value_in_dict))
                         file.write(line)
                     elif version_bigger_than(value_in_dict, value):
-                        log.info('Version updated. key = {}, value = {}, new_value = {}'.format(
-                            key,
-                            value,
-                            value_in_dict))
+                        log.info('Version updated. key = {}, value = {}, new_value = {}'.format(key, value, value_in_dict))
                         file.write('{};{}'.format(key, value_in_dict))
                     else:
                         file.write(line)
