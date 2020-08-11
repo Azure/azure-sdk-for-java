@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
 
@@ -221,5 +222,39 @@ class LockRenewalOperationTest {
             "initial lockedUntil[%s] is not equal to lockedUntil[%s]", lockedUntil, operation.getLockedUntil()));
 
         verify(renewalOperation, never()).apply(A_LOCK_TOKEN);
+    }
+
+    /**
+     * Verifies that if we do not pass in the lockedUntil parameter, it immediately tries to renew the lock.
+     */
+    @Test
+    void completesRenewFirst() throws InterruptedException {
+        // Arrange
+        final Duration maxDuration = Duration.ofSeconds(8);
+        final Duration renewalPeriod = Duration.ofSeconds(3);
+
+        // At most 4 times because we renew the lock before it expires (by some seconds).
+        final int atLeast = 4;
+        final Instant lockedUntil = Instant.now();
+        final Duration totalSleepPeriod = maxDuration.plusMillis(500);
+
+        when(renewalOperation.apply(A_LOCK_TOKEN))
+            .thenReturn(Mono.fromCallable(() -> Instant.now().plus(renewalPeriod)));
+
+        operation = new LockRenewalOperation(A_LOCK_TOKEN, maxDuration, false, renewalOperation);
+
+        // Act
+        Thread.sleep(totalSleepPeriod.toMillis());
+        logger.info("Finished renewals for first sleep.");
+        Thread.sleep(2000);
+        logger.info("Finished second sleep. Should not have any more renewals.");
+
+        // Assert
+        assertEquals(LockRenewalStatus.COMPLETE, operation.getStatus());
+        assertNull(operation.getThrowable());
+        assertTrue(lockedUntil.isBefore(operation.getLockedUntil()), String.format(
+            "initial lockedUntil[%s] is not before lockedUntil[%s]", lockedUntil, operation.getLockedUntil()));
+
+        verify(renewalOperation, Mockito.atLeast(atLeast)).apply(A_LOCK_TOKEN);
     }
 }
