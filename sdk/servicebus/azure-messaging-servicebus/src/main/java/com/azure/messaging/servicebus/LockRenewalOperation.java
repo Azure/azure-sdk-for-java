@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.messaging.servicebus;
 
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.MessageUtils;
 import com.azure.messaging.servicebus.models.LockRenewalStatus;
@@ -40,7 +39,7 @@ public class LockRenewalOperation implements AutoCloseable {
     /**
      * Creates a new lock renewal operation. The lock is initially renewed.
      *
-     * @param lockToken Lock or session id to renew.
+     * @param lockToken Message lock or session id to renew.
      * @param maxLockRenewalDuration The maximum duration this lock should be renewed.
      * @param isSession Whether the lock represents a session lock or message lock.
      * @param renewalOperation The renewal operation to call.
@@ -179,12 +178,7 @@ public class LockRenewalOperation implements AutoCloseable {
         return Flux.switchOnNext(emitterProcessor.map(Flux::interval))
             .takeUntilOther(cancellationSignals)
             .flatMap(delay -> {
-                final String id = lockToken;
-                logger.info("token[{}]. now[{}]. Starting lock renewal.", id, Instant.now());
-                if (CoreUtils.isNullOrEmpty(id)) {
-                    return Mono.error(new IllegalStateException("Cannot renew session lock without session id."));
-                }
-
+                logger.info("token[{}]. now[{}]. Starting lock renewal.", lockToken, Instant.now());
                 return renewalOperation.apply(lockToken);
             })
             .map(instant -> {

@@ -456,7 +456,9 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @param lockToken Lock token of the message.
      * @param maxLockRenewalDuration Maximum duration to keep renewing the lock token.
      * @return A lock renewal operation for the message.
-     * @throws IllegalStateException if the receiver is a non-session receiver or the receiver is disposed.
+     * @throws NullPointerException if {@code lockToken} or {@code maxLockRenewalDuration} is null.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty string.
+     * @throws IllegalStateException if the receiver is a session receiver or the receiver is disposed.
      */
     public LockRenewalOperation getAutoRenewMessageLock(String lockToken, Duration maxLockRenewalDuration) {
         return asyncClient.getAutoRenewMessageLock(lockToken, maxLockRenewalDuration);
@@ -468,6 +470,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @param sessionId Id for the session to renew.
      * @param maxLockRenewalDuration Maximum duration to keep renewing the lock token.
      * @return A lock renewal operation for the message.
+     * @throws NullPointerException if {@code sessionId} or {@code maxLockRenewalDuration} is null.
+     * @throws IllegalArgumentException if {@code lockToken} is an empty string.
      * @throws IllegalStateException if the receiver is a non-session receiver or the receiver is disposed.
      */
     public LockRenewalOperation getAutoRenewSessionLock(String sessionId, Duration maxLockRenewalDuration) {
