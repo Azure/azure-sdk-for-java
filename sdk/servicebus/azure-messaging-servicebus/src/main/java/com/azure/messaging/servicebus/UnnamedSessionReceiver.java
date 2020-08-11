@@ -134,7 +134,7 @@ class UnnamedSessionReceiver implements AutoCloseable {
 
             final Duration maxRenewal = enableSessionLockRenewal ? maxSessionLockRenewDuration : Duration.ZERO;
             this.renewalOperation.compareAndSet(null, new LockRenewalOperation(sessionId.get(),
-                lockedUntil, maxRenewal, true, renewSessionLock));
+                maxRenewal, true, renewSessionLock, lockedUntil));
         }));
     }
 

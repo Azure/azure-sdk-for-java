@@ -38,6 +38,19 @@ public class LockRenewalOperation implements AutoCloseable {
     private final Disposable subscription;
 
     /**
+     * Creates a new lock renewal operation. The lock is initially renewed.
+     *
+     * @param lockToken Lock or session id to renew.
+     * @param maxLockRenewalDuration The maximum duration this lock should be renewed.
+     * @param isSession Whether the lock represents a session lock or message lock.
+     * @param renewalOperation The renewal operation to call.
+     */
+    LockRenewalOperation(String lockToken, Duration maxLockRenewalDuration, boolean isSession,
+        Function<String, Mono<Instant>> renewalOperation) {
+        this(lockToken, maxLockRenewalDuration, isSession, renewalOperation, Instant.now());
+    }
+
+    /**
      * Creates a new lock renewal operation.
      *
      * @param lockToken Lock or session id to renew.
@@ -46,8 +59,8 @@ public class LockRenewalOperation implements AutoCloseable {
      * @param isSession Whether the lock represents a session lock or message lock.
      * @param renewalOperation The renewal operation to call.
      */
-    LockRenewalOperation(String lockToken, Instant lockedUntil, Duration maxLockRenewalDuration, boolean isSession,
-        Function<String, Mono<Instant>> renewalOperation) {
+    LockRenewalOperation(String lockToken, Duration maxLockRenewalDuration, boolean isSession,
+        Function<String, Mono<Instant>> renewalOperation, Instant lockedUntil) {
         this.lockToken = Objects.requireNonNull(lockToken, "'lockToken' cannot be null.");
         this.renewalOperation = Objects.requireNonNull(renewalOperation, "'renewalOperation' cannot be null.");
         this.isSession = isSession;

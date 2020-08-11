@@ -66,8 +66,7 @@ class LockRenewalOperationTest {
             .thenReturn(Mono.fromCallable(() -> Instant.now().plus(renewalPeriod)));
 
         // Act
-        operation = new LockRenewalOperation(A_LOCK_TOKEN, lockedUntil, maxDuration,
-            isSession, renewalOperation);
+        operation = new LockRenewalOperation(A_LOCK_TOKEN, maxDuration, isSession, renewalOperation, lockedUntil);
 
         // Assert
         if (isSession) {
@@ -116,7 +115,7 @@ class LockRenewalOperationTest {
                 : Mono.error(new IllegalStateException("Should have fetched an item."));
         });
 
-        operation = new LockRenewalOperation(A_LOCK_TOKEN, lockedUntil, maxDuration, isSession, renewalOperation);
+        operation = new LockRenewalOperation(A_LOCK_TOKEN, maxDuration, isSession, renewalOperation, lockedUntil);
 
         // Act
         TimeUnit.MILLISECONDS.sleep(totalSleepPeriod.toMillis());
@@ -144,8 +143,7 @@ class LockRenewalOperationTest {
         when(renewalOperation.apply(A_LOCK_TOKEN))
             .thenReturn(Mono.fromCallable(() -> Instant.now().plus(renewalPeriod)));
 
-        operation = new LockRenewalOperation(A_LOCK_TOKEN, lockedUntil, maxDuration,
-            false, renewalOperation);
+        operation = new LockRenewalOperation(A_LOCK_TOKEN, maxDuration, false, renewalOperation, lockedUntil);
 
         // Act
         Thread.sleep(totalSleepPeriod.toMillis());
@@ -179,8 +177,7 @@ class LockRenewalOperationTest {
         when(renewalOperation.apply(A_LOCK_TOKEN))
             .thenReturn(Mono.fromCallable(() -> Instant.now().plus(renewalPeriod)));
 
-        operation = new LockRenewalOperation(A_LOCK_TOKEN, lockedUntil, maxDuration,
-            false, renewalOperation);
+        operation = new LockRenewalOperation(A_LOCK_TOKEN, maxDuration, false, renewalOperation, lockedUntil);
 
         // Act
         Thread.sleep(totalSleepPeriod.toMillis());
@@ -212,8 +209,7 @@ class LockRenewalOperationTest {
         when(renewalOperation.apply(A_LOCK_TOKEN))
             .thenReturn(Mono.fromCallable(() -> Instant.now().plus(renewalPeriod)));
 
-        operation = new LockRenewalOperation(A_LOCK_TOKEN, lockedUntil, maxDuration,
-            false, renewalOperation);
+        operation = new LockRenewalOperation(A_LOCK_TOKEN, maxDuration, false, renewalOperation, lockedUntil);
 
         // Act
         Thread.sleep(renewalPeriod.toMillis());
