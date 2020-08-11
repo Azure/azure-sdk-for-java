@@ -6,6 +6,7 @@ import com.azure.core.util.serializer.TypeReference;
 import com.azure.data.schemaregistry.models.SerializationType;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
@@ -29,11 +30,11 @@ public class AggregateSchemaRegistrySerializer implements ObjectSerializer {
         this.serializer = serializer;
         this.schemaRegistryClient = serializer.schemaRegistryClient;
         for (SchemaRegistrySerializer d : deserializerList) {
-            if (this.deserializerMap.containsKey(d.getSerializationType())) {
+            if (this.deserializerMap.containsKey(d.serializationUtils.getSerializationType())) {
                 throw logger.logExceptionAsError(
                     new IllegalArgumentException("Only one SR serializer can be provided per schema serialization type."));
             }
-            this.deserializerMap.put(d.getSerializationType().toString(), d);
+            this.deserializerMap.put(d.serializationUtils.getSerializationType().toString(), d);
         }
     }
 
@@ -68,8 +69,6 @@ public class AggregateSchemaRegistrySerializer implements ObjectSerializer {
             String schemaId = new String(schemaGuidByteArray, StandardCharsets.UTF_8);
 
             return this.schemaRegistryClient.getSchema(schemaId)
-//                    .onErrorMap(IOException.class,
-//                        e -> logger.logExceptionAsError(new SerializationException(e.getMessage(), e)))
                 .handle((registryObject, sink) -> {
                     Object payloadSchema = registryObject.getSchema();
 
@@ -86,7 +85,7 @@ public class AggregateSchemaRegistrySerializer implements ObjectSerializer {
                     byte[] b = Arrays.copyOfRange(buffer.array(), start, start + length);
 
                     SchemaRegistrySerializer innerDeserializer = getDeserializer(registryObject.getSerializationType());
-                    Object deserialized = innerDeserializer.decode(b, payloadSchema);
+                    Object deserialized = innerDeserializer.serializationUtils.decode(b, payloadSchema);
                     sink.next((T)deserialized);
                 });
         });

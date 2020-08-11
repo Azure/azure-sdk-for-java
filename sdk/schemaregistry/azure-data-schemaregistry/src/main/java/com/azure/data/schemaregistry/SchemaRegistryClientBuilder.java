@@ -218,21 +218,21 @@ public class SchemaRegistryClientBuilder {
      *
      * The parseMethod argument should be a stateless, idempotent function.
      *
-     * @param schemaRegistryCodec Codec class implementation
+     * @param utils Codec class implementation
      * @return The updated {@link SchemaRegistryClientBuilder} object.
      */
-    public SchemaRegistryClientBuilder addSchemaRegistryUtils(SchemaRegistrySerializerUtils schemaRegistryCodec) {
-        Objects.requireNonNull(schemaRegistryCodec, "'codec' cannot be null.");
-        if (schemaRegistryCodec.getSerializationType() == null) {
+    public SchemaRegistryClientBuilder addSchemaRegistryUtils(SchemaRegistrySerializationUtils utils) {
+        Objects.requireNonNull(utils, "'codec' cannot be null.");
+        if (utils.getSerializationType() == null) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Serialization type cannot be null or empty."));
         }
-        if (this.typeParserMap.containsKey(schemaRegistryCodec.getSerializationType())) {
+        if (this.typeParserMap.containsKey(utils.getSerializationType())) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Multiple parse methods for single serialization type may not be added."));
         }
-        this.typeParserMap.put(schemaRegistryCodec.getSerializationType().toString(),
-            schemaRegistryCodec::parseSchemaString);
+        this.typeParserMap.put(utils.getSerializationType().toString(),
+            utils::parseSchemaString);
         return this;
     }
 

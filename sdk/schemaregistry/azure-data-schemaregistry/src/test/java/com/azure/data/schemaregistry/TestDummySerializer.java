@@ -9,7 +9,7 @@ public class TestDummySerializer extends SchemaRegistrySerializer {
     TestDummySerializer(
         SchemaRegistryAsyncClient mockClient,
         boolean autoRegisterSchemas) {
-        super(mockClient);
+        super(mockClient, );
 
         // allows simulating improperly written serializer constructor that does not initialize byte encoder
         this.autoRegisterSchemas = autoRegisterSchemas;
