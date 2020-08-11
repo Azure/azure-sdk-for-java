@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.servicebus.perf;
+package com.microsoft.azure.messaging.servicebus.perf;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.perf.core.ServiceBusStressOptions;
-import com.azure.messaging.servicebus.perf.core.ServiceTest;
+import com.microsoft.azure.messaging.servicebus.perf.core.ServiceBusStressOptions;
+import com.microsoft.azure.messaging.servicebus.perf.core.ServiceTest;
 import com.microsoft.azure.servicebus.Message;
 import com.microsoft.azure.servicebus.ReceiveMode;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;

@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.servicebus.perf;
+package com.microsoft.azure.messaging.servicebus.perf;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.perf.core.ServiceBusStressOptions;
-import com.azure.messaging.servicebus.perf.core.ServiceTest;
+import com.microsoft.azure.messaging.servicebus.perf.core.ServiceBusStressOptions;
+import com.microsoft.azure.messaging.servicebus.perf.core.ServiceTest;
 import com.microsoft.azure.servicebus.IMessage;
 import com.microsoft.azure.servicebus.Message;
 import com.microsoft.azure.servicebus.ReceiveMode;
@@ -22,36 +22,17 @@ import java.util.stream.IntStream;
 /**
  * Performance test.
  */
-public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOptions> {
-    private final ClientLogger logger = new ClientLogger(ReceiveAndDeleteMessageTest.class);
+public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptions> {
+    private final ClientLogger logger = new ClientLogger(ReceiveAndLockMessageTest.class);
+
     private List<Message> messages = new ArrayList<>();
 
     /**
      * Creates test object
      * @param options to set performance test options.
      */
-    public ReceiveAndDeleteMessageTest(ServiceBusStressOptions options) {
-        super(options, ReceiveMode.RECEIVEANDDELETE);
-    }
-
-    @Override
-    public Mono<Void> cleanupAsync() {
-        try {
-            sender.close();
-        } catch (ServiceBusException e) {
-            throw logger.logExceptionAsWarning(new RuntimeException(e));
-        }
-        return Mono.empty();
-    }
-
-    @Override
-    public Mono<Void> globalCleanupAsync() {
-        try {
-            sender.close();
-        } catch (ServiceBusException e) {
-            throw logger.logExceptionAsWarning(new RuntimeException(e));
-        }
-        return Mono.empty();
+    public ReceiveAndLockMessageTest(ServiceBusStressOptions options) {
+        super(options, ReceiveMode.PEEKLOCK);
     }
 
     @Override
@@ -85,23 +66,52 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
         } catch  (Exception e) {
             throw logger.logExceptionAsWarning(new RuntimeException(e));
         }
-        int count = messages.size();
+
         for (IMessage message : messages) {
-            ++count;
+            try {
+                receiver.complete(message.getLockToken());
+            } catch (InterruptedException | ServiceBusException e) {
+                throw logger.logExceptionAsWarning(new RuntimeException(e));
+            }
         }
     }
 
     @Override
     public Mono<Void> runAsync() {
         return Mono.fromFuture(receiver.receiveBatchAsync(options.getMessagesToReceive()))
-        .map(iMessages -> {
-            int count = 0;
-            for (IMessage message : iMessages) {
-                ++count;
-            }
-            return Mono.just(iMessages);
-        })
+            .map(iMessages -> {
+                try {
+                    for (IMessage message : iMessages) {
+                        receiver.complete(message.getLockToken());
+                    }
+                } catch (InterruptedException | ServiceBusException e) {
+                    throw logger.logExceptionAsWarning(new RuntimeException(e));
+                }
+                return Mono.just(iMessages);
+            })
             .then();
     }
 
+    @Override
+    public Mono<Void> cleanupAsync() {
+        try {
+            sender.close();
+        } catch (ServiceBusException e) {
+            throw logger.logExceptionAsWarning(new RuntimeException(e));
+        }
+        return Mono.empty();
+    }
+
+    /**
+     * Runs the cleanup logic after the performance test finishes.
+     * @return An empty {@link Mono}
+     */
+    public Mono<Void> globalCleanupAsync() {
+        try {
+            sender.close();
+        } catch (ServiceBusException e) {
+            throw logger.logExceptionAsWarning(new RuntimeException(e));
+        }
+        return Mono.empty();
+    }
 }
