@@ -488,11 +488,6 @@ public final class ModelBridgeInternal {
         return jsonSerializable.toObject(c);
     }
 
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> T toObjectFromJsonSerializable(Document jsonSerializable, Class<T> c, Function<Document, Document> transformer) {
-        return jsonSerializable.toObject(c);
-    }
-
     public static ByteBuffer serializeJsonToByteBuffer(JsonSerializable jsonSerializable, ObjectMapper objectMapper) {
         return jsonSerializable.serializeJsonToByteBuffer(objectMapper);
     }

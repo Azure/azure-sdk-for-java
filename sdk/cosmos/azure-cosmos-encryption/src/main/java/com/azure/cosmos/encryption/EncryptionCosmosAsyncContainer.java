@@ -365,7 +365,7 @@ public class EncryptionCosmosAsyncContainer {
                 public Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> transform(Function<CosmosPagedFluxOptions, Flux<FeedResponse<ObjectNode>>> func) {
                     return queryDecryptionTransformer(classType, finalDecryptionResultConsumer, func);
                 }
-            } , encryptionScheduler);
+            });
     }
 
     private <T> byte[] cosmosSerializerToStream(T item) {

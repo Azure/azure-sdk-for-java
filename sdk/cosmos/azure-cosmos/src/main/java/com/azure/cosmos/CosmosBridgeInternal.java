@@ -110,9 +110,10 @@ public final class CosmosBridgeInternal {
     public static <T> CosmosPagedFlux<T> queryItemsInternal(CosmosAsyncContainer container,
                                                             SqlQuerySpec sqlQuerySpec,
                                                             CosmosQueryRequestOptions cosmosQueryRequestOptions,
-                                                            Transformer<T> transformer,
-                                                            Scheduler scheduler) {
-        return UtilBridgeInternal.createCosmosPagedFlux(transformer.transform(container.queryItemsInternalFunc(sqlQuerySpec,
-                    cosmosQueryRequestOptions, ObjectNode.class, null, scheduler)));
+                                                            Transformer<T> transformer) {
+        return UtilBridgeInternal.createCosmosPagedFlux(transformer.transform(container.queryItemsInternalFunc(
+            sqlQuerySpec,
+            cosmosQueryRequestOptions,
+            ObjectNode.class)));
     }
 }

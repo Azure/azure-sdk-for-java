@@ -463,17 +463,13 @@ public class CosmosAsyncContainer {
     }
 
     private <T> FeedResponse<T> prepareFeedResponse(FeedResponse<Document> response, Class<T> classType) {
-        return prepareFeedResponse(response, classType, null);
-    }
-
-    private <T> FeedResponse<T> prepareFeedResponse(FeedResponse<Document> response, Class<T> classType, Function<Document, Document> transformer) {
         QueryInfo queryInfo = ModelBridgeInternal.getQueryInfoFromFeedResponse(response);
         if (queryInfo != null && queryInfo.hasSelectValue()) {
             List<T> transformedResults = response.getResults()
                                                  .stream()
                                                  .map(d -> d.has(Constants.Properties.VALUE) ?
                                                      transform(d.get(Constants.Properties.VALUE), classType) :
-                                                     ModelBridgeInternal.toObjectFromJsonSerializable(d, classType, transformer))
+                                                     ModelBridgeInternal.toObjectFromJsonSerializable(d, classType))
                                                  .collect(Collectors.toList());
 
             return BridgeInternal.createFeedResponseWithQueryMetrics(transformedResults,
@@ -483,8 +479,7 @@ public class CosmosAsyncContainer {
         }
         return BridgeInternal.createFeedResponseWithQueryMetrics(
             (response.getResults().stream().map(document -> ModelBridgeInternal.toObjectFromJsonSerializable(document,
-                classType,
-                transformer))
+                classType))
                      .collect(Collectors.toList())), response.getResponseHeaders(),
             ModelBridgeInternal.queryMetrics(response));
     }
