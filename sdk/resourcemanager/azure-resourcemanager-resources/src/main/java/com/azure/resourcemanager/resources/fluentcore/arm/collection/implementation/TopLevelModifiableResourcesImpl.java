@@ -54,8 +54,8 @@ public abstract class TopLevelModifiableResourcesImpl<
     }
 
     @Override
-    protected Mono<?> deleteInnerAsync(String resourceGroupName, String name) {
-        return inner().deleteAsync(resourceGroupName, name);
+    protected Mono<Void> deleteInnerAsync(String resourceGroupName, String name) {
+        return inner().deleteAsync(resourceGroupName, name).then();
     }
 
     @Override
