@@ -654,7 +654,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentSentiment> analyzeSentiment(String document, String language) {
-        return analyzeSentiment(document, false, language);
+        return analyzeSentiment(document, language, false);
     }
 
     /**
@@ -671,20 +671,20 @@ public final class TextAnalyticsAsyncClient {
      * @param document The document to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
-     * @param includeOpinionMining The boolean indicator to include opinion mining data in the returned result.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      *
+     * @param includeOpinionMining The boolean indicator to include opinion mining data in the returned result.
      * @return A {@link Mono} contains the {@link DocumentSentiment analyzed document sentiment} of the document.
      *
      * @throws NullPointerException if {@code document} is null.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentSentiment> analyzeSentiment(String document, boolean includeOpinionMining, String language) {
+    public Mono<DocumentSentiment> analyzeSentiment(String document, String language, boolean includeOpinionMining) {
         try {
             Objects.requireNonNull(document, "'document' cannot be null.");
-            return analyzeSentimentBatch(Collections.singletonList(document), includeOpinionMining, language, null)
+            return analyzeSentimentBatch(Collections.singletonList(document), language, includeOpinionMining, null)
                 .map(sentimentResultCollection -> {
                     DocumentSentiment documentSentiment = null;
                     for (AnalyzeSentimentResult sentimentResult : sentimentResultCollection) {
@@ -727,7 +727,7 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeSentimentResultCollection> analyzeSentimentBatch(
         Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
-        return analyzeSentimentBatch(documents, false, language, options);
+        return analyzeSentimentBatch(documents, language, false, options);
     }
 
     /**
@@ -744,9 +744,9 @@ public final class TextAnalyticsAsyncClient {
      * @param documents A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
-     * @param includeOpinionMining The boolean indicator to include opinion mining data in the returned result.
      * @param language The 2 letter ISO 639-1 representation of language for the document. If not set, uses "en" for
      * English as default.
+     * @param includeOpinionMining The boolean indicator to include opinion mining data in the returned result.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
@@ -757,7 +757,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeSentimentResultCollection> analyzeSentimentBatch(Iterable<String> documents,
-        boolean includeOpinionMining, String language, TextAnalyticsRequestOptions options) {
+        String language, boolean includeOpinionMining, TextAnalyticsRequestOptions options) {
         try {
             return analyzeSentimentBatchWithResponse(
                 mapByIndex(documents, (index, value) -> {

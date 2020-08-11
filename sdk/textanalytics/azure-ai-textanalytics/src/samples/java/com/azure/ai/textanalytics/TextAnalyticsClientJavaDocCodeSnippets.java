@@ -499,12 +499,12 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsClient#analyzeSentiment(String, boolean, String)}
+     * Code snippet for {@link TextAnalyticsClient#analyzeSentiment(String, String, boolean)}
      */
     public void analyzeSentimentWithLanguageWithOpinionMining() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentiment#String-boolean-String
         final DocumentSentiment documentSentiment = textAnalyticsClient.analyzeSentiment(
-            "The hotel was dark and unclean.", true, "en");
+            "The hotel was dark and unclean.", "en", true);
         List<MinedOpinion> positiveMinedOpinions = new ArrayList<>();
         List<MinedOpinion> mixedMinedOpinions = new ArrayList<>();
         List<MinedOpinion> negativeMinedOpinions = new ArrayList<>();
@@ -574,7 +574,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsClient#analyzeSentimentBatch(Iterable, boolean, String, TextAnalyticsRequestOptions)}
+     * Code snippet for {@link TextAnalyticsClient#analyzeSentimentBatch(Iterable, String, boolean, TextAnalyticsRequestOptions)}
      */
     public void analyzeSentimentStringListWithOptionsAndOpinionMining() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentBatch#Iterable-boolean-String-TextAnalyticsRequestOptions
@@ -585,7 +585,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
         // Analyzing batch sentiments
         AnalyzeSentimentResultCollection resultCollection =
-            textAnalyticsClient.analyzeSentimentBatch(documents, true, "en", null);
+            textAnalyticsClient.analyzeSentimentBatch(documents, "en", true, null);
 
         // Analyzed sentiment for each of documents from a batch of documents
         resultCollection.forEach(analyzeSentimentResult -> {

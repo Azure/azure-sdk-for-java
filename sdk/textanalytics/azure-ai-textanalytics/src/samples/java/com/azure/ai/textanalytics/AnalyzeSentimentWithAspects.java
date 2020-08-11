@@ -38,7 +38,7 @@ public class AnalyzeSentimentWithAspects {
 
         System.out.printf("Text = %s%n", document);
 
-        final DocumentSentiment documentSentiment = client.analyzeSentiment(document, true, "en");
+        final DocumentSentiment documentSentiment = client.analyzeSentiment(document, "en", true);
         SentimentConfidenceScores scores = documentSentiment.getConfidenceScores();
         System.out.printf(
             "Recognized document sentiment: %s, positive score: %f, neutral score: %f, negative score: %f.%n",

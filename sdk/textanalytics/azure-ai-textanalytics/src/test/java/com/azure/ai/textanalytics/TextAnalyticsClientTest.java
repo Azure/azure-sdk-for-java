@@ -533,7 +533,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void analyzeSentimentForTextInputWithOpinionMining(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         DocumentSentiment analyzeSentimentResult =
-            client.analyzeSentiment("The hotel was dark and unclean. The restaurant had amazing gnocchi.", true, "en");
+            client.analyzeSentiment("The hotel was dark and unclean. The restaurant had amazing gnocchi.", "en", true);
         validateAnalyzedSentiment(true, getExpectedDocumentSentiment(), analyzeSentimentResult);
     }
 
@@ -626,7 +626,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         analyzeBatchStringSentimentShowStatsRunner((inputs, options) ->
             validateSentimentResultCollection(true, true, getExpectedBatchTextSentiment(),
-                client.analyzeSentimentBatch(inputs, true, null, options)));
+                client.analyzeSentimentBatch(inputs, null, true, options)));
     }
 
     /**

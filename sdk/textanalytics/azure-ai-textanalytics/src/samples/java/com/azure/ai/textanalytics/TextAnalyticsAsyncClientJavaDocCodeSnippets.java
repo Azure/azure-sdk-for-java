@@ -481,11 +481,11 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsAsyncClient#analyzeSentiment(String, boolean, String)}
+     * Code snippet for {@link TextAnalyticsAsyncClient#analyzeSentiment(String, String, boolean)}
      */
     public void analyzeSentimentWithLanguageWithOpinionMining() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentiment#string-boolean-string
-        textAnalyticsAsyncClient.analyzeSentiment("The hotel was dark and unclean.", true, "en")
+        textAnalyticsAsyncClient.analyzeSentiment("The hotel was dark and unclean.", "en", true)
             .subscribe(documentSentiment -> {
                 List<MinedOpinion> positiveMinedOpinions = new ArrayList<>();
                 List<MinedOpinion> mixedMinedOpinions = new ArrayList<>();
@@ -548,7 +548,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsAsyncClient#analyzeSentimentBatch(Iterable, boolean, String, TextAnalyticsRequestOptions)}
+     * Code snippet for {@link TextAnalyticsAsyncClient#analyzeSentimentBatch(Iterable, String, boolean, TextAnalyticsRequestOptions)}
      */
     public void analyzeSentimentStringListWithOptionsAndOpinionMining() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentimentBatch#Iterable-boolean-String-TextAnalyticsRequestOptions
@@ -557,7 +557,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             "The restaurant had amazing gnocchi."
         );
 
-        textAnalyticsAsyncClient.analyzeSentimentBatch(documents, true, "en", null).subscribe(
+        textAnalyticsAsyncClient.analyzeSentimentBatch(documents, "en", true, null).subscribe(
             response -> {
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = response.getStatistics();

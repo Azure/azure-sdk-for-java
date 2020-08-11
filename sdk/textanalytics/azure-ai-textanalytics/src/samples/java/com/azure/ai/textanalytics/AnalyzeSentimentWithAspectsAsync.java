@@ -36,7 +36,7 @@ public class AnalyzeSentimentWithAspectsAsync {
         // The document that needs be analyzed.
         String document = "Bad atmosphere. Not close to plenty of restaurants, hotels, and transit! Staff are not friendly and helpful.";
 
-        client.analyzeSentiment(document, true, "en").subscribe(
+        client.analyzeSentiment(document, "en", true).subscribe(
             documentSentiment -> {
                 SentimentConfidenceScores scores = documentSentiment.getConfidenceScores();
                 System.out.printf(

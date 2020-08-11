@@ -52,7 +52,7 @@ public class AnalyzeSentimentBatchStringWithAspectsAsync {
         TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true).setModelVersion("latest");
 
         // Analyzing sentiment for each document in a batch of documents
-        client.analyzeSentimentBatch(documents, true, "en", requestOptions).subscribe(
+        client.analyzeSentimentBatch(documents, "en", true, requestOptions).subscribe(
             sentimentBatchResultCollection -> {
                 System.out.printf("Results of Azure Text Analytics \"Sentiment Analysis\" Model, version: %s%n", sentimentBatchResultCollection.getModelVersion());
 

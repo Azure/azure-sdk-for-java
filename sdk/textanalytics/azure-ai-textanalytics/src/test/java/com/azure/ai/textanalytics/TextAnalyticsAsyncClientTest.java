@@ -601,7 +601,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void analyzeSentimentForTextInputWithOpinionMining(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         StepVerifier
-            .create(client.analyzeSentiment("The hotel was dark and unclean. The restaurant had amazing gnocchi.", true, "en"))
+            .create(client.analyzeSentiment("The hotel was dark and unclean. The restaurant had amazing gnocchi.", "en", true))
             .assertNext(response -> validateAnalyzedSentiment(true, getExpectedDocumentSentiment(), response)).verifyComplete();
     }
 
@@ -697,7 +697,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void analyzeSentimentForListStringWithOptionsAndOpinionMining(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         analyzeBatchStringSentimentShowStatsRunner((inputs, options) ->
-            StepVerifier.create(client.analyzeSentimentBatch(inputs, true, null, options))
+            StepVerifier.create(client.analyzeSentimentBatch(inputs, null, true, options))
                 .assertNext(response -> validateSentimentResultCollection(true, true, getExpectedBatchTextSentiment(), response))
                 .verifyComplete());
     }

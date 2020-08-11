@@ -581,18 +581,18 @@ public final class TextAnalyticsClient {
      * @param document The document to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
-     * @param includeOpinionMining The boolean indicator to include opinion mining data in the returned result.
      * @param language The 2 letter ISO 639-1 representation of language for the document. If not set, uses "en" for
      * English as default.
      *
+     * @param includeOpinionMining The boolean indicator to include opinion mining data in the returned result.
      * @return A {@link DocumentSentiment analyzed document sentiment} of the document.
      *
      * @throws NullPointerException if {@code document} is null.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentSentiment analyzeSentiment(String document, boolean includeOpinionMining, String language) {
-        return client.analyzeSentiment(document, includeOpinionMining, language).block();
+    public DocumentSentiment analyzeSentiment(String document, String language, boolean includeOpinionMining) {
+        return client.analyzeSentiment(document, language, includeOpinionMining).block();
     }
 
     /**
@@ -619,7 +619,7 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AnalyzeSentimentResultCollection analyzeSentimentBatch(
         Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
-        return client.analyzeSentimentBatch(documents, false, language, options).block();
+        return client.analyzeSentimentBatch(documents, language, false, options).block();
     }
 
     /**
@@ -635,9 +635,9 @@ public final class TextAnalyticsClient {
      * @param documents A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
-     * @param includeOpinionMining The boolean indicator to include opinion mining data in the returned result.
      * @param language The 2 letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
      * English as default.
+     * @param includeOpinionMining The boolean indicator to include opinion mining data in the returned result.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
@@ -648,8 +648,8 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AnalyzeSentimentResultCollection analyzeSentimentBatch(Iterable<String> documents,
-        boolean includeOpinionMining, String language, TextAnalyticsRequestOptions options) {
-        return client.analyzeSentimentBatch(documents, includeOpinionMining, language, options).block();
+        String language, boolean includeOpinionMining, TextAnalyticsRequestOptions options) {
+        return client.analyzeSentimentBatch(documents, language, includeOpinionMining, options).block();
     }
 
     /**
