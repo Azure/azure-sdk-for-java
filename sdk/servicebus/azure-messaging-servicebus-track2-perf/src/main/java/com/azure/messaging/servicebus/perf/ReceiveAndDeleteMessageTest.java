@@ -23,6 +23,7 @@ import java.util.stream.IntStream;
  */
 public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOptions> {
     private List<ServiceBusMessage> messages = new ArrayList<>();
+    private final ServiceBusStressOptions options;
 
     /**
      * Creates test object
@@ -30,6 +31,7 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
      */
     public ReceiveAndDeleteMessageTest(ServiceBusStressOptions options) {
         super(options, ReceiveMode.RECEIVE_AND_DELETE);
+        this.options = options;
     }
 
     @Override

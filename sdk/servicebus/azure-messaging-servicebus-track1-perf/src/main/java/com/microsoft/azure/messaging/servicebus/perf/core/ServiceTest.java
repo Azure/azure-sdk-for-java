@@ -12,6 +12,9 @@ import com.microsoft.azure.servicebus.IMessageReceiver;
 import com.microsoft.azure.servicebus.IMessageSender;
 import com.microsoft.azure.servicebus.ReceiveMode;
 import com.microsoft.azure.servicebus.primitives.MessagingFactory;
+import com.microsoft.azure.servicebus.primitives.ServiceBusException;
+
+import java.util.concurrent.ExecutionException;
 
 /**
  * Base class for performance etest.
@@ -54,7 +57,7 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
             this.factory = MessagingFactory.createFromConnectionString(connectionString);
             this.sender = ClientFactory.createMessageSenderFromEntityPath(factory, queueName);
             this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, queueName, receiveMode);
-        } catch (Exception e) {
+        } catch (ServiceBusException | InterruptedException | ExecutionException e) {
             throw logger.logExceptionAsWarning(new RuntimeException(e));
 
         }

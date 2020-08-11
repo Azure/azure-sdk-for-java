@@ -24,6 +24,8 @@ import java.util.stream.IntStream;
  */
 public class SendMessagesTest extends ServiceTest<ServiceBusStressOptions> {
     private final ClientLogger logger = new ClientLogger(SendMessagesTest.class);
+    private final ServiceBusStressOptions options;
+
     private List<IMessage> messages = new ArrayList<>();
 
     /**
@@ -32,6 +34,7 @@ public class SendMessagesTest extends ServiceTest<ServiceBusStressOptions> {
      */
     public SendMessagesTest(ServiceBusStressOptions options) {
         super(options, ReceiveMode.PEEKLOCK);
+        this.options = options;
     }
 
     @Override

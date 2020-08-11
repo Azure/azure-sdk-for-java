@@ -23,6 +23,7 @@ import java.util.stream.IntStream;
  */
 public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptions> {
     private List<ServiceBusMessage> messages = new ArrayList<>();
+    private final ServiceBusStressOptions options;
 
     /**
      * Creates test object
@@ -30,6 +31,7 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
      */
     public ReceiveAndLockMessageTest(ServiceBusStressOptions options) {
         super(options, ReceiveMode.PEEK_LOCK);
+        this.options = options;
     }
 
     @Override

@@ -24,6 +24,8 @@ import java.util.stream.IntStream;
  */
 public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOptions> {
     private final ClientLogger logger = new ClientLogger(ReceiveAndDeleteMessageTest.class);
+    private final ServiceBusStressOptions options;
+
     private List<Message> messages = new ArrayList<>();
 
     /**
@@ -32,6 +34,7 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
      */
     public ReceiveAndDeleteMessageTest(ServiceBusStressOptions options) {
         super(options, ReceiveMode.RECEIVEANDDELETE);
+        this.options = options;
     }
 
     @Override
@@ -57,24 +60,18 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
     @Override
     public Mono<Void> globalSetupAsync() {
         // Since test does warm up and test many times, we are sending many messages, so we will have them available.
-        int totalMessageMultiplier = 50;
+        int totalMessageMultiplier = 100;
 
         String messageId = UUID.randomUUID().toString();
         Message message = new Message(CONTENTS);
         message.setMessageId(messageId);
 
-        return Mono.defer(() -> {
-            messages = IntStream.range(0, options.getMessagesToSend() * totalMessageMultiplier)
-                .mapToObj(index -> message)
-                .collect(Collectors.toList());
+        messages = IntStream.range(0, options.getMessagesToSend() * totalMessageMultiplier)
+            .mapToObj(index -> message)
+            .collect(Collectors.toList());
 
-            try {
-                sender.sendBatch(messages);
-            } catch (InterruptedException | ServiceBusException e) {
-                throw logger.logExceptionAsWarning(new RuntimeException(e));
-            }
-            return Mono.empty();
-        });
+        return Mono.fromFuture(sender.sendBatchAsync(messages));
+
     }
 
     @Override
