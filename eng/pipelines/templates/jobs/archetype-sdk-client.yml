@@ -282,9 +282,43 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
           goals: ${{ parameters.TestGoals }}
-        # we want to run this when TestFromSource isn't true (which covers normal running when it isn't set)
-        # OR when ShouldRunSourceTests is true
-        condition: and(succeeded(), or(ne(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))
+        # we want to run this when TestFromSource isn't true
+        condition: and(succeeded(), ne(variables['TestFromSource'],'true'))
+
+      - task: Maven@3
+        displayName: 'Build for From Source run'
+        inputs:
+          mavenPomFile: pom.xml
+          goals: 'install'
+          # Build everything in the root pom.xml and install it. The purpose here is to build and install everything after
+          # the version have been manipulated. The purpose is to have all of the libraries installed on the machine so we
+          # can simply run tests with the -amd switch and it won't have to deal with the AdditionalModules snafu that's causing
+          # us to list every transitive azure client dependency.
+          # Note: yes, this overbuilds, it builds data track libraries but that'll be looked at later.
+          options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true'
+          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: $(JavaBuildVersion)
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+        # We want to run this when we TestFromSource and ShouldRunSourceTests are true
+        condition: and(succeeded(), and(eq(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))
+
+      - task: Maven@3
+        displayName: 'Run tests for From Source run'
+        inputs:
+          mavenPomFile: pom.xml
+          # For the From Source runs we don't want the -am switch as we don't care about running tests for our dependencies
+          # but we do want the -amd switch because we want to run tests on things that depend on us.
+          options: ${{ parameters.TestOptions }} -pl $(PLSkipOptions)$(ProjectList) -amd
+          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: $(JavaTestVersion)
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+          goals: ${{ parameters.TestGoals }}
+        # We want to run this when TestFromSource and ShouldRunSourceTests are true
+        condition: and(succeeded(), and(eq(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))
 
       - ${{ parameters.PostTestSteps }}
 

@@ -31,25 +31,5 @@ extends:
         groupId: com.azure
         safeName: azureidentity
     AdditionalModules:
-      - name: azure-data-appconfiguration
-        groupId: com.azure
-      - name: azure-security-keyvault-certificates
-        groupId: com.azure
-      - name: azure-security-keyvault-keys
-        groupId: com.azure
-      - name: azure-security-keyvault-secrets
-        groupId: com.azure
-      - name: azure-messaging-eventhubs
-        groupId: com.azure
-      - name: azure-messaging-servicebus
-        groupId: com.azure
-      - name: azure-storage-perf
-        groupId: com.azure
-      - name: azure-core-management
-        groupId: com.azure
-      - name: spring-integration-azure-core
-        groupId: com.microsoft.azure
-      - name: spring-integration-azure-test
-        groupId: com.microsoft.azure
-      - name: azure-cosmos
+      - name: azure-identity-perf
         groupId: com.azure
