@@ -23,6 +23,8 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
@@ -40,7 +42,6 @@ import java.util.regex.Pattern;
  * Implementation of {@link SerializerAdapter} for Jackson.
  */
 public class JacksonAdapter implements SerializerAdapter {
-    private static final byte[] EMPTY_BYTE_ARRAY = new byte[] { };
     private static final Pattern PATTERN = Pattern.compile("^\"*|\"*$");
 
     private final ClientLogger logger = new ClientLogger(JacksonAdapter.class);
@@ -135,14 +136,16 @@ public class JacksonAdapter implements SerializerAdapter {
     }
 
     @Override
-    public byte[] serializeToBytes(Object object, SerializerEncoding encoding) throws IOException {
+    public void serialize(Object object, SerializerEncoding encoding, OutputStream outputStream) throws IOException {
         if (object == null) {
-            return EMPTY_BYTE_ARRAY;
+            return;
         }
 
-        return (encoding == SerializerEncoding.XML)
-            ? xmlMapper.writeValueAsBytes(object)
-            : serializer().writeValueAsBytes(object);
+        if ((encoding == SerializerEncoding.XML)) {
+            xmlMapper.writeValue(outputStream, object);
+        } else {
+            serializer().writeValue(outputStream, object);
+        }
     }
 
     @Override
@@ -192,17 +195,18 @@ public class JacksonAdapter implements SerializerAdapter {
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T> T deserializeFromBytes(byte[] value, final Type type, SerializerEncoding encoding) throws IOException {
-        if (value == null || value.length == 0) {
+    public <T> T deserialize(InputStream inputStream, final Type type, SerializerEncoding encoding)
+        throws IOException {
+        if (inputStream == null) {
             return null;
         }
 
         final JavaType javaType = createJavaType(type);
         try {
             if (encoding == SerializerEncoding.XML) {
-                return (T) xmlMapper.readValue(value, javaType);
+                return (T) xmlMapper.readValue(inputStream, javaType);
             } else {
-                return (T) serializer().readValue(value, javaType);
+                return (T) serializer().readValue(inputStream, javaType);
             }
         } catch (JsonParseException jpe) {
             throw logger.logExceptionAsError(new MalformedValueException(jpe.getMessage(), jpe));
@@ -261,7 +265,7 @@ public class JacksonAdapter implements SerializerAdapter {
                     } finally {
                         if (!declaredFieldAccessibleBackup) {
                             AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
-                                declaredField.setAccessible(declaredFieldAccessibleBackup);
+                                declaredField.setAccessible(false);
                                 return null;
                             });
                         }
@@ -289,6 +293,7 @@ public class JacksonAdapter implements SerializerAdapter {
             .registerModule(ByteArraySerializer.getModule())
             .registerModule(Base64UrlSerializer.getModule())
             .registerModule(DateTimeSerializer.getModule())
+            .registerModule(DateTimeDeserializer.getModule())
             .registerModule(DateTimeRfc1123Serializer.getModule())
             .registerModule(DurationSerializer.getModule())
             .registerModule(HttpHeadersSerializer.getModule())

@@ -9,6 +9,7 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
@@ -48,7 +49,10 @@ public class MockHttpResponse extends HttpResponse {
 
     private static byte[] serialize(Object serializable) {
         try {
-            return SERIALIZER.serializeToBytes(serializable, SerializerEncoding.JSON);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            SERIALIZER.serialize(serializable, SerializerEncoding.JSON, stream);
+
+            return stream.toByteArray();
         } catch (IOException e) {
             e.printStackTrace();
         }

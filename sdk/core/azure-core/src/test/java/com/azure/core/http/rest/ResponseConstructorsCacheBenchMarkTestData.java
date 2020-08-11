@@ -17,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
@@ -254,7 +255,10 @@ class ResponseConstructorsCacheBenchMarkTestData {
 
     private static byte[] asJsonByteArray(Object object) {
         try {
-            return SERIALIZER_ADAPTER.serializeToBytes(object, SerializerEncoding.JSON);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            SERIALIZER_ADAPTER.serialize(object, SerializerEncoding.JSON, stream);
+
+            return stream.toByteArray();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

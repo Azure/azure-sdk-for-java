@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.messaging.servicebus.implementation.models.MessageCountDetails;
 
 import java.time.OffsetDateTime;
 import java.util.Objects;
@@ -14,29 +15,39 @@ import java.util.Objects;
 @Immutable
 public class QueueRuntimeInfo {
     private final String name;
-    private final MessageCountDetails details;
     private final long messageCount;
     private final long sizeInBytes;
     private final OffsetDateTime accessedAt;
     private final OffsetDateTime createdAt;
     private final OffsetDateTime updatedAt;
+    private final int activeMessageCount;
+    private final int deadLetterMessageCount;
+    private final int scheduledMessageCount;
+    private final int transferDeadLetterMessageCount;
+    private final int transferMessageCount;
 
     /**
      * Creates a new instance with runtime properties extracted from the given QueueDescription.
      *
-     * @param queueDescription Queue description to extract runtime information from.
+     * @param queueProperties Queue description to extract runtime information from.
      *
      * @throws NullPointerException if {@code queueDescription} is null.
      */
-    public QueueRuntimeInfo(QueueDescription queueDescription) {
-        Objects.requireNonNull(queueDescription, "'queueDescription' cannot be null.");
-        this.name = queueDescription.getName();
-        this.details = queueDescription.getMessageCountDetails();
-        this.messageCount = queueDescription.getMessageCount();
-        this.sizeInBytes = queueDescription.getSizeInBytes();
-        this.accessedAt = queueDescription.getAccessedAt();
-        this.createdAt = queueDescription.getCreatedAt();
-        this.updatedAt = queueDescription.getUpdatedAt();
+    public QueueRuntimeInfo(QueueProperties queueProperties) {
+        Objects.requireNonNull(queueProperties, "'queueProperties' cannot be null.");
+        this.name = queueProperties.getName();
+        this.messageCount = queueProperties.getMessageCount();
+        this.sizeInBytes = queueProperties.getSizeInBytes();
+        this.accessedAt = queueProperties.getAccessedAt();
+        this.createdAt = queueProperties.getCreatedAt();
+        this.updatedAt = queueProperties.getUpdatedAt();
+
+        final MessageCountDetails details = queueProperties.getMessageCountDetails();
+        this.activeMessageCount = details != null ? details.getActiveMessageCount() : 0;
+        this.deadLetterMessageCount = details != null ? details.getDeadLetterMessageCount() : 0;
+        this.scheduledMessageCount = details != null ? details.getScheduledMessageCount() : 0;
+        this.transferDeadLetterMessageCount = details != null ? details.getTransferDeadLetterMessageCount() : 0;
+        this.transferMessageCount = details != null ? details.getTransferMessageCount() : 0;
     }
 
     /**
@@ -49,6 +60,15 @@ public class QueueRuntimeInfo {
     }
 
     /**
+     * Get the activeMessageCount property: Number of active messages in the queue, topic, or subscription.
+     *
+     * @return the activeMessageCount value.
+     */
+    public int getActiveMessageCount() {
+        return this.activeMessageCount;
+    }
+
+    /**
      * Gets the exact time the queue was created.
      *
      * @return The exact time the queue was created.
@@ -58,12 +78,12 @@ public class QueueRuntimeInfo {
     }
 
     /**
-     * Gets details about the message counts in queue.
+     * Get the deadLetterMessageCount property: Number of messages that are dead lettered.
      *
-     * @return Details about the message counts in queue.
+     * @return the deadLetterMessageCount value.
      */
-    public MessageCountDetails getDetails() {
-        return details;
+    public int getDeadLetterMessageCount() {
+        return this.deadLetterMessageCount;
     }
 
     /**
@@ -71,7 +91,7 @@ public class QueueRuntimeInfo {
      *
      * @return The number of messages in the queue.
      */
-    public long getMessageCount() {
+    public long getTotalMessageCount() {
         return messageCount;
     }
 
@@ -85,12 +105,39 @@ public class QueueRuntimeInfo {
     }
 
     /**
+     * Get the scheduledMessageCount property: Number of scheduled messages.
+     *
+     * @return the scheduledMessageCount value.
+     */
+    public int getScheduledMessageCount() {
+        return this.scheduledMessageCount;
+    }
+
+    /**
      * Gets the size of the queue, in bytes.
      *
      * @return The size of the queue, in bytes.
      */
     public long getSizeInBytes() {
         return sizeInBytes;
+    }
+
+    /**
+     * Get the transferDeadLetterMessageCount property: Number of messages transferred into dead letters.
+     *
+     * @return the transferDeadLetterMessageCount value.
+     */
+    public int getTransferDeadLetterMessageCount() {
+        return this.transferDeadLetterMessageCount;
+    }
+
+    /**
+     * Get the transferMessageCount property: Number of messages transferred to another queue, topic, or subscription.
+     *
+     * @return the transferMessageCount value.
+     */
+    public int getTransferMessageCount() {
+        return this.transferMessageCount;
     }
 
     /**

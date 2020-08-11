@@ -5,7 +5,10 @@ package com.azure.core.util.serializer;
 
 import com.azure.core.http.HttpHeaders;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -26,17 +29,20 @@ public interface SerializerAdapter {
     String serialize(Object object, SerializerEncoding encoding) throws IOException;
 
     /**
-     * Serializes an object into a string.
+     * Serializes an object and writes its output into an {@link OutputStream}.
      *
-     * @param object the object to serialize
-     * @param encoding the encoding to use for serialization
-     * @return the serialized byte array, or an empty byte array if the object to serialize is null.
+     * @param object The object to serialize.
+     * @param encoding The encoding to use for serialization.
+     * @param outputStream The {@link OutputStream} where the serialized object will be written.
      * @throws IOException exception from serialization
      */
-    default byte[] serializeToBytes(final Object object, final SerializerEncoding encoding) throws IOException {
+    default void serialize(final Object object, final SerializerEncoding encoding, OutputStream outputStream)
+        throws IOException {
         String serializedObject = serialize(object, encoding);
 
-        return (serializedObject == null) ? new byte[0] : serializedObject.getBytes(StandardCharsets.UTF_8);
+        if (serializedObject != null) {
+            outputStream.write(serializedObject.getBytes(StandardCharsets.UTF_8));
+        }
     }
 
     /**
@@ -72,16 +78,35 @@ public interface SerializerAdapter {
     /**
      * Deserializes a byte[] into a {@code U} object.
      *
-     * @param value the byte[] value to deserialize
-     * @param <U> the type of the deserialized object
-     * @param type the type to deserialize
-     * @param encoding the encoding used in the serialized value
-     * @return the deserialized object, or null if it cannot be deserialized
+     * @param inputStream The {@link InputStream} containing the serialized object data to deserialize.
+     * @param type The type to deserialize.
+     * @param encoding The encoding used to serialize value.
+     * @param <U> The type of the deserialized object.
+     * @return The deserialized object, or null if it cannot be deserialized.
      * @throws IOException exception from deserialization
      */
-    default <U> U deserializeFromBytes(final byte[] value, final Type type, final SerializerEncoding encoding)
+    default <U> U deserialize(final InputStream inputStream, final Type type, final SerializerEncoding encoding)
         throws IOException {
-        return deserialize(new String(value, StandardCharsets.UTF_8), type, encoding);
+        if (inputStream == null) {
+            return deserialize((String) null, type, encoding);
+        }
+
+        /*
+         * Default implementation reads the entire InputStream into a ByteArrayOutputStream. This is done to enable
+         * converting to a String and calling into the implemented API.
+         */
+        ByteArrayOutputStream converterStream = new ByteArrayOutputStream();
+        byte[] buffer = new byte[1024];
+        int length;
+        while ((length = inputStream.read(buffer)) != -1) {
+            converterStream.write(buffer, 0, length);
+        }
+
+        /*
+         * Using ByteArrayOutputStream.toString is better as it won't duplicate the underlying buffer as toByteArray
+         * would but it doesn't have support for passing a Charset until Java 10.
+         */
+        return deserialize(converterStream.toString("UTF-8"), type, encoding);
     }
 
     /**

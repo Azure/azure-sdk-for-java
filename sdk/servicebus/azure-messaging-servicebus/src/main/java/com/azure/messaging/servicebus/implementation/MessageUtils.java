@@ -180,6 +180,36 @@ public final class MessageUtils {
     }
 
     /**
+     * Gets the primitive value or {@code false} if there is no value.
+     *
+     * @param value The value.
+     * @return It's primitive type.
+     */
+    public static boolean toPrimitive(Boolean value) {
+        return value != null ? value : false;
+    }
+
+    /**
+     * Gets the primitive value or 0 if there is no value.
+     *
+     * @param value The value.
+     * @return It's primitive type.
+     */
+    public static int toPrimitive(Integer value) {
+        return value != null ? value : 0;
+    }
+
+    /**
+     * Gets the primitive value or {@code 0L} if there is no value.
+     *
+     * @param value The value.
+     * @return It's primitive type.
+     */
+    public static long toPrimitive(Long value) {
+        return value != null ? value : 0L;
+    }
+
+    /**
      * Creates an exception given the error condition and context.
      *
      * @param errorCondition Error condition for the AMQP exception.

@@ -59,6 +59,18 @@ class AttributeViewTest extends APISpec {
         !attr.isSymbolicLink()
     }
 
+    def "AzureBasicFileAttributeView fs closed"() {
+        setup:
+        def path = fs.getPath(generateBlobName())
+
+        when:
+        fs.close()
+        new AzureBasicFileAttributeView(path).readAttributes()
+
+        then:
+        thrown(IOException)
+    }
+
     def "AzureBlobFileAttributeView readAttributes"() {
         setup:
         def path = fs.getPath(bc.getBlobName())
@@ -97,7 +109,6 @@ class AttributeViewTest extends APISpec {
         props.getArchiveStatus() == attr.archiveStatus()
         props.getAccessTierChangeTime() == attr.accessTierChangeTime()
         props.getMetadata() == attr.metadata()
-        props.getCommittedBlockCount() == attr.committedBlockCount()
 
         /*
         suppliers. Used in FileSystemProvider.readAttributes(String)
@@ -133,7 +144,18 @@ class AttributeViewTest extends APISpec {
         props.getArchiveStatus() == suppliers.get("archiveStatus").get()
         props.getAccessTierChangeTime() == suppliers.get("accessTierChangeTime").get()
         props.getMetadata() == suppliers.get("metadata").get()
-        props.getCommittedBlockCount() == suppliers.get("committedBlockCount").get()
+    }
+
+    def "AzureBlobFileAttributeView read fs closed"() {
+        setup:
+        def path = fs.getPath(generateBlobName())
+
+        when:
+        fs.close()
+        new AzureBlobFileAttributeView(path).readAttributes()
+
+        then:
+        thrown(IOException)
     }
 
     @Unroll
@@ -166,6 +188,18 @@ class AttributeViewTest extends APISpec {
         "control"    | "disposition"      | "encoding"      | "language"      | Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(defaultData.array())) | "type"
     }
 
+    def "AzureBlobFileAttributeView setHeaders fs closed"() {
+        setup:
+        def path = fs.getPath(generateBlobName())
+
+        when:
+        fs.close()
+        new AzureBlobFileAttributeView(path).setBlobHttpHeaders(new BlobHttpHeaders())
+
+        then:
+        thrown(IOException)
+    }
+
     @Unroll
     def "AzureBlobFileAttributeView setMetadata"() {
         setup:
@@ -192,6 +226,18 @@ class AttributeViewTest extends APISpec {
         "i0"  | "a"    | "i_"   | "a"    || 200 /* Test culture sensitive word sort */
     }
 
+    def "AzureBlobFileAttributeView setMetadata fs closed"() {
+        setup:
+        def path = fs.getPath(generateBlobName())
+
+        when:
+        fs.close()
+        new AzureBlobFileAttributeView(path).setMetadata(Collections.emptyMap())
+
+        then:
+        thrown(IOException)
+    }
+
     @Unroll
     def "AzureBlobFileAttributeView setTier"() {
         setup:
@@ -212,6 +258,18 @@ class AttributeViewTest extends APISpec {
         We don't test archive because it takes a while to take effect, and testing these two demonstrates that the tier
         is successfully being passed to the underlying client.
          */
+    }
+
+    def "AzureBlobFileAttributeView setTier fs closed"() {
+        setup:
+        def path = fs.getPath(generateBlobName())
+
+        when:
+        fs.close()
+        new AzureBlobFileAttributeView(path).setTier(AccessTier.HOT)
+
+        then:
+        thrown(IOException)
     }
 
     @Unroll

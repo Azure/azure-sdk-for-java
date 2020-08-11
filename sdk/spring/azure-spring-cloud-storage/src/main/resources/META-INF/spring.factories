@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.microsoft.azure.spring.cloud.autoconfigure.storage.AzureStorageAutoConfiguration,\
+com.microsoft.azure.spring.cloud.autoconfigure.storage.AzureStorageQueueAutoConfiguration

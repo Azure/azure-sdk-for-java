@@ -200,6 +200,19 @@ public class CosmosContainer {
     }
 
     /**
+     * Upserts a item Cosmos sync item while specifying additional options.
+     *
+     * @param <T> the type parameter.
+     * @param item the item.
+     * @param partitionKey the partitionKey.
+     * @param options the options.
+     * @return the Cosmos item response.
+     */
+    public <T> CosmosItemResponse<T> upsertItem(T item, PartitionKey partitionKey, CosmosItemRequestOptions options) {
+        return this.blockItemResponse(this.asyncContainer.upsertItem(item, partitionKey, options));
+    }
+
+    /**
      * Block cosmos item response.
      *
      * @param itemMono the item mono.

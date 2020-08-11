@@ -271,6 +271,8 @@ public class LROPollerTests {
                                 .build();
                         } else if (getCallCount[0] == serverConfigure.pollingCountTillSuccess) {
                             return new com.github.tomakehurst.wiremock.http.Response.Builder()
+                                .headers(new HttpHeaders(
+                                    new HttpHeader("x-ms-request-id", UUID.randomUUID().toString())))
                                 .body("{\"status\": \"Failed\"}")
                                 .build();
                         }
@@ -318,6 +320,9 @@ public class LROPollerTests {
                 } else if (onNextCallCount[0] == 2) {
                     Assertions.assertEquals(LongRunningOperationStatus.FAILED,
                         response.getStatus());
+                    Assertions.assertEquals(200, response.getValue().getError().getResponseStatusCode());
+                    Assertions.assertNotNull(response.getValue().getError());
+                    UUID validUuid = UUID.fromString(response.getValue().getError().getResponseHeaders().getValue("x-ms-request-id"));
                 } else {
                     throw new IllegalStateException("Poller emitted more than expected value.");
                 }
@@ -523,6 +528,46 @@ public class LROPollerTests {
     }
 
     @Test
+    public void lroContextSubscriberContext() {
+        WireMockServer lroServer = startServer();
+
+        HttpPipelinePolicy contextVerifyPolicy = (context, next) -> {
+            Optional<Object> valueOpt = context.getData("key1");
+            if (valueOpt.isPresent() && "value1".equals(valueOpt.get())) {
+                return next.process();
+            } else {
+                return Mono.error(new AssertionError());
+            }
+        };
+        final HttpPipeline httpPipeline =
+            createHttpPipeline(lroServer.port(), Collections.singletonList(contextVerifyPolicy));
+
+        try {
+            final ProvisioningStateLroServiceClient client = RestProxy.create(ProvisioningStateLroServiceClient.class,
+                httpPipeline, SERIALIZER);
+
+            Flux<AsyncPollResponse<PollResult<FooWithProvisioningState>, FooWithProvisioningState>> lroFlux
+                = PollerFactory.create(SERIALIZER,
+                httpPipeline,
+                FooWithProvisioningState.class,
+                FooWithProvisioningState.class,
+                POLLING_DURATION,
+                newLroInitFunction(client));
+            lroFlux = lroFlux.subscriberContext(context -> context.put("key1", "value1"));
+
+            FooWithProvisioningState result = lroFlux
+                .blockLast()
+                .getFinalResult()
+                .block();
+            Assertions.assertNotNull(result);
+        } finally {
+            if (lroServer.isRunning()) {
+                lroServer.shutdown();
+            }
+        }
+    }
+
+    @Test
     public void lroContext() {
         WireMockServer lroServer = startServer();
 
@@ -534,20 +579,21 @@ public class LROPollerTests {
                 return Mono.error(new AssertionError());
             }
         };
+        final HttpPipeline httpPipeline =
+            createHttpPipeline(lroServer.port(), Collections.singletonList(contextVerifyPolicy));
 
         try {
             final ProvisioningStateLroServiceClient client = RestProxy.create(ProvisioningStateLroServiceClient.class,
-                createHttpPipeline(lroServer.port(), Collections.singletonList(contextVerifyPolicy)),
-                SERIALIZER);
+                httpPipeline, SERIALIZER);
 
             Flux<AsyncPollResponse<PollResult<FooWithProvisioningState>, FooWithProvisioningState>> lroFlux
                 = PollerFactory.create(SERIALIZER,
-                new HttpPipelineBuilder().build(),
+                httpPipeline,
                 FooWithProvisioningState.class,
                 FooWithProvisioningState.class,
                 POLLING_DURATION,
-                newLroInitFunction(client));
-            lroFlux = lroFlux.subscriberContext(context -> context.put("key1", "value1"));
+                newLroInitFunction(client).subscriberContext(context -> context.put("key1", "value1")),
+                new Context("key1", "value1"));
 
             FooWithProvisioningState result = lroFlux
                 .blockLast()
