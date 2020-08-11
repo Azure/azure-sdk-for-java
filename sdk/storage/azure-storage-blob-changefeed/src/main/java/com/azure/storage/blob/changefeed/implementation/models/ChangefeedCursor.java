@@ -15,7 +15,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.time.OffsetDateTime;
-import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -198,13 +197,17 @@ public class ChangefeedCursor {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ChangefeedCursor)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof ChangefeedCursor)) {
+            return false;
+        }
         ChangefeedCursor cursor = (ChangefeedCursor) o;
-        return getCursorVersion() == cursor.getCursorVersion() &&
-            Objects.equals(getUrlHost(), cursor.getUrlHost()) &&
-            Objects.equals(getEndTime(), cursor.getEndTime()) &&
-            Objects.equals(getCurrentSegmentCursor(), cursor.getCurrentSegmentCursor());
+        return getCursorVersion() == cursor.getCursorVersion()
+            && Objects.equals(getUrlHost(), cursor.getUrlHost())
+            && Objects.equals(getEndTime(), cursor.getEndTime())
+            && Objects.equals(getCurrentSegmentCursor(), cursor.getCurrentSegmentCursor());
     }
 
     @Override

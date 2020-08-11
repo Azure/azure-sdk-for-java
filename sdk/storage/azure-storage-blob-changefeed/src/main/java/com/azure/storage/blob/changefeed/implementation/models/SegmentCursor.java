@@ -6,7 +6,6 @@ package com.azure.storage.blob.changefeed.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -162,12 +161,16 @@ public class SegmentCursor {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof SegmentCursor)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof SegmentCursor)) {
+            return false;
+        }
         SegmentCursor that = (SegmentCursor) o;
-        return Objects.equals(getShardCursors(), that.getShardCursors()) &&
-            Objects.equals(getCurrentShardPath(), that.getCurrentShardPath()) &&
-            Objects.equals(getSegmentPath(), that.getSegmentPath());
+        return Objects.equals(getShardCursors(), that.getShardCursors())
+            && Objects.equals(getCurrentShardPath(), that.getCurrentShardPath())
+            && Objects.equals(getSegmentPath(), that.getSegmentPath());
     }
 
     @Override

@@ -158,15 +158,15 @@ public class InternalBlobChangefeedEvent implements BlobChangefeedEvent {
 
     @Override
     public String toString() {
-        return "BlobChangefeedEvent{" +
-            "topic='" + topic + '\'' +
-            ", subject='" + subject + '\'' +
-            ", eventType=" + eventType +
-            ", eventTime=" + eventTime +
-            ", id='" + id + '\'' +
-            ", data=" + data +
-            ", dataVersion=" + dataVersion +
-            ", metadataVersion='" + metadataVersion + '\'' +
-            '}';
+        return "BlobChangefeedEvent{"
+            + "topic='" + topic + '\''
+            + ", subject='" + subject + '\''
+            + ", eventType=" + eventType
+            + ", eventTime=" + eventTime
+            + ", id='" + id + '\''
+            + ", data=" + data
+            + ", dataVersion=" + dataVersion
+            + ", metadataVersion='" + metadataVersion + '\''
+            + '}';
     }
 }

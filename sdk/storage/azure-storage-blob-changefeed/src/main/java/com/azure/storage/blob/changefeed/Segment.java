@@ -80,7 +80,8 @@ class Segment {
                 shardCursor = userCursor.getShardCursors().stream()
                     .filter(sc -> sc.getCurrentChunkPath().contains(shardPath))
                     .findFirst()
-                    .orElse(null); /* If this shard does not exist in the list of shard cursors, read shard from the beginning. */
+                    .orElse(null); /* If this shard does not exist in the list of shard cursors,
+                    read shard from the beginning. */
             }
             shards.add(shardFactory.getShard(shardPath, changefeedCursor.toShardCursor(shardPath), shardCursor));
         }

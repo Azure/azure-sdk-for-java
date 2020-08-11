@@ -89,12 +89,16 @@ public class ShardCursor {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ShardCursor)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof ShardCursor)) {
+            return false;
+        }
         ShardCursor cursor = (ShardCursor) o;
-        return getBlockOffset() == cursor.getBlockOffset() &&
-            getEventIndex() == cursor.getEventIndex() &&
-            Objects.equals(getCurrentChunkPath(), cursor.getCurrentChunkPath());
+        return getBlockOffset() == cursor.getBlockOffset()
+            && getEventIndex() == cursor.getEventIndex()
+            && Objects.equals(getCurrentChunkPath(), cursor.getCurrentChunkPath());
     }
 
     @Override

@@ -203,20 +203,20 @@ public class InternalBlobChangefeedEventData implements BlobChangefeedEventData 
 
     @Override
     public String toString() {
-        return "BlobChangefeedEventData{" +
-            "api='" + api + '\'' +
-            ", clientRequestId='" + clientRequestId + '\'' +
-            ", requestId='" + requestId + '\'' +
-            ", eTag='" + eTag + '\'' +
-            ", contentType='" + contentType + '\'' +
-            ", contentLength=" + contentLength +
-            ", blobType=" + blobType +
-            ", contentOffset=" + contentOffset +
-            ", destinationUrl='" + destinationUrl + '\'' +
-            ", sourceUrl='" + sourceUrl + '\'' +
-            ", blobUrl='" + blobUrl + '\'' +
-            ", recursive=" + recursive +
-            ", sequencer='" + sequencer + '\'' +
-            '}';
+        return "BlobChangefeedEventData{"
+            + "api='" + api + '\''
+            + ", clientRequestId='" + clientRequestId + '\''
+            + ", requestId='" + requestId + '\''
+            + ", eTag='" + eTag + '\''
+            + ", contentType='" + contentType + '\''
+            + ", contentLength=" + contentLength
+            + ", blobType=" + blobType
+            + ", contentOffset=" + contentOffset
+            + ", destinationUrl='" + destinationUrl + '\''
+            + ", sourceUrl='" + sourceUrl + '\''
+            + ", blobUrl='" + blobUrl + '\''
+            + ", recursive=" + recursive
+            + ", sequencer='" + sequencer + '\''
+            + '}';
     }
 }
