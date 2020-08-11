@@ -21,17 +21,17 @@ public class PrivateLinkServiceConnectionStateProperty {
     private String status;
 
     /**
-     * The private link service connection description.
-     */
-    @JsonProperty(value = "description")
-    private String description;
-
-    /**
      * Any action that is required beyond basic workflow (approve/ reject/
      * disconnect).
      */
     @JsonProperty(value = "actionsRequired", access = JsonProperty.Access.WRITE_ONLY)
     private String actionsRequired;
+
+    /**
+     * The private link service connection description.
+     */
+    @JsonProperty(value = "description")
+    private String description;
 
     /**
      * Get the private link service connection status.
@@ -54,6 +54,15 @@ public class PrivateLinkServiceConnectionStateProperty {
     }
 
     /**
+     * Get any action that is required beyond basic workflow (approve/ reject/ disconnect).
+     *
+     * @return the actionsRequired value
+     */
+    public String actionsRequired() {
+        return this.actionsRequired;
+    }
+
+    /**
      * Get the private link service connection description.
      *
      * @return the description value
@@ -71,15 +80,6 @@ public class PrivateLinkServiceConnectionStateProperty {
     public PrivateLinkServiceConnectionStateProperty withDescription(String description) {
         this.description = description;
         return this;
-    }
-
-    /**
-     * Get any action that is required beyond basic workflow (approve/ reject/ disconnect).
-     *
-     * @return the actionsRequired value
-     */
-    public String actionsRequired() {
-        return this.actionsRequired;
     }
 
 }
