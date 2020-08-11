@@ -1118,7 +1118,9 @@ public class BlobClientBase {
     public Response<InputStream> openQueryInputStreamWithResponse(BlobQueryOptions queryOptions) {
 
         // Data to subscribe to and read from.
+        System.out.println("Making call to queryWR");
         BlobQueryAsyncResponse response = client.queryWithResponse(queryOptions).block();
+        System.out.println("Got a response from query");
 
         // Create input stream from the data.
         if (response == null) {

@@ -76,6 +76,7 @@ class BlobBaseAPITest extends APISpec {
         def length = numBytesToRead
 
         while (bytesRead != -1 && totalRead < numBytesToRead) {
+            System.out.println("About to call read on stream")
             bytesRead = stream.read(queryData, totalRead, length)
             if (bytesRead != -1) {
                 totalRead += bytesRead
@@ -111,7 +112,9 @@ class BlobBaseAPITest extends APISpec {
 
         /* Input Stream. */
         when:
+        System.out.println("Opening QQIS")
         InputStream qqStream = bc.openQueryInputStream(expression)
+        System.out.println("Reading query data from IS")
         byte[] queryData = readFromInputStream(qqStream, downloadedData.length)
 
         then:

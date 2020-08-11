@@ -52,6 +52,7 @@ public class FluxInputStream extends InputStream {
      * @param data The data to subscribe to and read from.
      */
     public FluxInputStream(Flux<ByteBuffer> data) {
+        System.out.println("Creating a FluxIS");
         this.subscribed = false;
         this.fluxComplete = false;
         this.waitingForData = false;
