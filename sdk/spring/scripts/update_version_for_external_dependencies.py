@@ -115,8 +115,6 @@ def update_dependency_dict(dependency_dict, root_pom_id):
                 log.debug('Dependency version skipped. key = {}, version = {}, dependency_dict[key] = {}.'.format(key, version, dependency_dict[key]))
             artifact_type = dependency_element.find('./maven:type', name_space)
             if artifact_type is not None and artifact_type.text.strip() == 'pom':
-                if '$' in group_id or '$' in artifact_id or '$' in version:
-                    raise Exception('Error: group_id = {}, artifact_id = {}, version = {}.'.format(group_id, artifact_id, version))
                 new_pom = Pom(group_id, artifact_id, version, pom.depth + 1)
                 q.put(new_pom)
                 pom_count = pom_count + 1
