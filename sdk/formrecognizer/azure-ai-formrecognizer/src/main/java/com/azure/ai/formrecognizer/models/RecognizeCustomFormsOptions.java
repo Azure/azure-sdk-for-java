@@ -10,7 +10,7 @@ import java.time.Duration;
  * Options that may be passed when using recognize custom form APIs on Form Recognizer client.
  */
 @Fluent
-public class RecognizeCustomFormsOptions {
+public final class RecognizeCustomFormsOptions {
     private FormContentType contentType;
     private boolean includeFieldElements;
     private Duration pollInterval = DEFAULT_POLL_INTERVAL;

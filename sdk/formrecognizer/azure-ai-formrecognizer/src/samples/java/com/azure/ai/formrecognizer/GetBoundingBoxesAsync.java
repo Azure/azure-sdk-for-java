@@ -6,7 +6,7 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.FormTable;
 import com.azure.ai.formrecognizer.models.FormWord;
-import com.azure.ai.formrecognizer.models.OperationResult;
+import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.ai.formrecognizer.models.RecognizeCustomFormsOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
@@ -36,7 +36,7 @@ public class GetBoundingBoxesAsync {
 
         String modelId = "{model_Id}";
         String formUrl = "{form_url}";
-        PollerFlux<OperationResult, List<RecognizedForm>> recognizeFormPoller =
+        PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> recognizeFormPoller =
             client.beginRecognizeCustomFormsFromUrl(modelId, formUrl,
                     new RecognizeCustomFormsOptions()
                     .setFieldElementsIncluded(true));

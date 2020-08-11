@@ -17,6 +17,8 @@ This beta version targets Azure Form Recognizer service API version v2.0.
 - Renamed property `trainingStatus` and `documentErrors` on `TrainingDocumentInfo` model to `status` and `errors` 
 respectively
 - Renamed property `formPageRange` on `RecognizedForm` model to `pageRange`
+- Renamed model `ErrorInformation` to `FormRecognizerErrorInformation`
+- Renamed model `OperationResult` to `FormRecognizerOperationResult`
 - Changed param ordering for methods `beginRecognizeCustomForms` and `beginRecognizeCustomFormsFromUrl`
 
 ### Key Bug Fixes

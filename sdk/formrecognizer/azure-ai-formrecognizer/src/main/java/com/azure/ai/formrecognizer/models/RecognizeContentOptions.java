@@ -10,7 +10,7 @@ import java.time.Duration;
  * Options that may be passed when using recognize content APIs on Form Recognizer client.
  */
 @Fluent
-public class RecognizeContentOptions {
+public final class RecognizeContentOptions {
     private FormContentType contentType;
     private Duration pollInterval = DEFAULT_POLL_INTERVAL;
     private static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(5);

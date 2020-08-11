@@ -8,10 +8,10 @@ import com.azure.core.annotation.Immutable;
 import java.util.Objects;
 
 /**
- * The OperationResult model.
+ * The FormRecognizerOperationResult model.
  */
 @Immutable
-public final class OperationResult {
+public final class FormRecognizerOperationResult {
     /**
      * Identifier which contains the result of the model/analyze operation.
      */
@@ -22,12 +22,13 @@ public final class OperationResult {
      *
      * @param resultId The identifier which contains the result of the model/analyze operation.
      */
-    public OperationResult(String resultId) {
+    public FormRecognizerOperationResult(String resultId) {
         this.resultId = Objects.requireNonNull(resultId, "'resultId' cannot be null.");
     }
 
     /**
-     * Get the resultId.
+     * Gets an ID representing the operation that can be used to poll for the status
+     * of the long-running operation.
      *
      * @return the resultId.
      */

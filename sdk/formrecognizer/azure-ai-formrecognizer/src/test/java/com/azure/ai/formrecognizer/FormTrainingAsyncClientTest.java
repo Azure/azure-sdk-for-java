@@ -4,10 +4,10 @@
 package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.RecognizeReceiptsOptions;
-import com.azure.ai.formrecognizer.models.ErrorInformation;
+import com.azure.ai.formrecognizer.models.FormRecognizerErrorInformation;
 import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.FormRecognizerException;
-import com.azure.ai.formrecognizer.models.OperationResult;
+import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.training.FormTrainingAsyncClient;
 import com.azure.ai.formrecognizer.training.models.TrainingOptions;
@@ -71,7 +71,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
         FormRecognizerAsyncClient formRecognizerClient = getFormTrainingAsyncClient(httpClient, serviceVersion)
             .getFormRecognizerAsyncClient();
         blankPdfDataRunner(data -> {
-            SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
                 formRecognizerClient.beginRecognizeReceipts(toFluxByteBuffer(data), BLANK_FORM_FILE_LENGTH,
                     new RecognizeReceiptsOptions()
                         .setContentType(FormContentType.APPLICATION_PDF)
@@ -112,7 +112,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
     public void getCustomModelWithResponse(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormTrainingAsyncClient(httpClient, serviceVersion);
         beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-            SyncPoller<OperationResult, CustomFormModel> syncPoller = client.beginTraining(trainingFilesUrl,
+            SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller = client.beginTraining(trainingFilesUrl,
                 useTrainingLabels, new TrainingOptions().setPollInterval(durationTestMode))
                 .getSyncPoller();
             syncPoller.waitForCompletion();
@@ -133,7 +133,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
     public void getCustomModelUnlabeled(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormTrainingAsyncClient(httpClient, serviceVersion);
         beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-            SyncPoller<OperationResult, CustomFormModel> syncPoller = client.beginTraining(
+            SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller = client.beginTraining(
                 trainingFilesUrl, useTrainingLabels, new TrainingOptions().setPollInterval(durationTestMode))
                 .getSyncPoller();
             syncPoller.waitForCompletion();
@@ -152,7 +152,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
     public void getCustomModelLabeled(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormTrainingAsyncClient(httpClient, serviceVersion);
         beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-            SyncPoller<OperationResult, CustomFormModel> syncPoller = client.beginTraining(trainingFilesUrl,
+            SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller = client.beginTraining(trainingFilesUrl,
                 useTrainingLabels, new TrainingOptions().setPollInterval(durationTestMode))
                 .getSyncPoller();
             syncPoller.waitForCompletion();
@@ -205,7 +205,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
     public void deleteModelValidModelIdWithResponse(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormTrainingAsyncClient(httpClient, serviceVersion);
         beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-            SyncPoller<OperationResult, CustomFormModel> syncPoller = client.beginTraining(trainingFilesUrl,
+            SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller = client.beginTraining(trainingFilesUrl,
                 useTrainingLabels, new TrainingOptions().setPollInterval(durationTestMode)).getSyncPoller();
             syncPoller.waitForCompletion();
             CustomFormModel createdModel = syncPoller.getFinalResult();
@@ -258,7 +258,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
     public void beginCopy(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormTrainingAsyncClient(httpClient, serviceVersion);
         beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-            SyncPoller<OperationResult, CustomFormModel> syncPoller =
+            SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller =
                 client.beginTraining(trainingFilesUrl, useTrainingLabels, new TrainingOptions()
                     .setPollInterval(durationTestMode)).getSyncPoller();
             syncPoller.waitForCompletion();
@@ -272,7 +272,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
                     return;
                 }
 
-                PollerFlux<OperationResult, CustomFormModelInfo> copyPoller =
+                PollerFlux<FormRecognizerOperationResult, CustomFormModelInfo> copyPoller =
                     client.beginCopyModel(actualModel.getModelId(), target);
                 CustomFormModelInfo copyModel = copyPoller.getSyncPoller().getFinalResult();
                 assertNotNull(target.getModelId(), copyModel.getModelId());
@@ -292,7 +292,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
     public void beginCopyInvalidRegion(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormTrainingAsyncClient(httpClient, serviceVersion);
         beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-            SyncPoller<OperationResult, CustomFormModel> syncPoller =
+            SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller =
                 client.beginTraining(trainingFilesUrl, useTrainingLabels, new TrainingOptions()
                     .setPollInterval(durationTestMode))
                     .getSyncPoller();
@@ -306,7 +306,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
                     assertTrue(false);
                     return;
                 }
-                PollerFlux<OperationResult, CustomFormModelInfo> copyPoller = client.beginCopyModel(
+                PollerFlux<FormRecognizerOperationResult, CustomFormModelInfo> copyPoller = client.beginCopyModel(
                     actualModel.getModelId(), target);
 
                 Exception thrown = assertThrows(HttpResponseException.class,
@@ -325,7 +325,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
     public void beginCopyIncorrectRegion(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormTrainingAsyncClient(httpClient, serviceVersion);
         beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-            SyncPoller<OperationResult, CustomFormModel> syncPoller =
+            SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller =
                 client.beginTraining(trainingFilesUrl, useTrainingLabels,
                     new TrainingOptions().setPollInterval(durationTestMode)).getSyncPoller();
             syncPoller.waitForCompletion();
@@ -341,7 +341,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
                 FormRecognizerException formRecognizerException = assertThrows(FormRecognizerException.class,
                     () -> client.beginCopyModel(actualModel.getModelId(), target)
                         .getSyncPoller().getFinalResult());
-                ErrorInformation errorInformation = formRecognizerException.getErrorInformation().get(0);
+                FormRecognizerErrorInformation errorInformation = formRecognizerException.getErrorInformation().get(0);
                 // TODO: Service bug https://github.com/Azure/azure-sdk-for-java/issues/12046
                 // assertEquals(RESOURCE_RESOLVER_ERROR, errorInformation.getCode());
                 // assertTrue(formRecognizerException.getMessage().startsWith(COPY_OPERATION_FAILED_STATUS_MESSAGE));
@@ -374,7 +374,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
         beginTrainingInvalidModelStatusRunner((invalidTrainingFilesUrl, useTrainingLabels) -> {
             FormRecognizerException formRecognizerException = assertThrows(FormRecognizerException.class,
                 () -> client.beginTraining(invalidTrainingFilesUrl, useTrainingLabels).getSyncPoller().getFinalResult());
-            ErrorInformation errorInformation = formRecognizerException.getErrorInformation().get(0);
+            FormRecognizerErrorInformation errorInformation = formRecognizerException.getErrorInformation().get(0);
             assertEquals(EXPECTED_INVALID_MODEL_STATUS_ERROR_CODE, errorInformation.getErrorCode());
             assertTrue(formRecognizerException.getMessage().contains(EXPECTED_INVALID_MODEL_STATUS_MESSAGE));
             assertEquals(EXPECTED_INVALID_MODEL_ERROR, errorInformation.getMessage());
@@ -391,7 +391,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
         FormRecognizerServiceVersion serviceVersion) {
         client = getFormTrainingAsyncClient(httpClient, serviceVersion);
         beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-            SyncPoller<OperationResult, CustomFormModel> trainingPoller =
+            SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller =
                 client.beginTraining(trainingFilesUrl, useTrainingLabels, new TrainingOptions()
                     .setPollInterval(durationTestMode)).getSyncPoller();
             trainingPoller.waitForCompletion();
@@ -408,7 +408,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
         FormRecognizerServiceVersion serviceVersion) {
         client = getFormTrainingAsyncClient(httpClient, serviceVersion);
         beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-            SyncPoller<OperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingFilesUrl,
+            SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingFilesUrl,
                 useTrainingLabels, new TrainingOptions().setPollInterval(durationTestMode)).getSyncPoller();
             trainingPoller.waitForCompletion();
             validateCustomModelData(trainingPoller.getFinalResult(), false);
@@ -424,7 +424,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
         FormRecognizerServiceVersion serviceVersion) {
         client = getFormTrainingAsyncClient(httpClient, serviceVersion);
         beginTrainingMultipageRunner(trainingFilesUrl -> {
-            SyncPoller<OperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingFilesUrl,
+            SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingFilesUrl,
                 true, new TrainingOptions().setPollInterval(durationTestMode)).getSyncPoller();
             trainingPoller.waitForCompletion();
             validateCustomModelData(trainingPoller.getFinalResult(), true);
@@ -440,7 +440,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
         FormRecognizerServiceVersion serviceVersion) {
         client = getFormTrainingAsyncClient(httpClient, serviceVersion);
         beginTrainingMultipageRunner(trainingFilesUrl -> {
-            SyncPoller<OperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingFilesUrl,
+            SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingFilesUrl,
                 false, new TrainingOptions().setPollInterval(durationTestMode)).getSyncPoller();
             trainingPoller.waitForCompletion();
             validateCustomModelData(trainingPoller.getFinalResult(), false);
@@ -457,7 +457,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
         FormRecognizerServiceVersion serviceVersion) {
         client = getFormTrainingAsyncClient(httpClient, serviceVersion);
         beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-            SyncPoller<OperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingFilesUrl,
+            SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingFilesUrl,
                 useTrainingLabels, new TrainingOptions()
                     .setPollInterval(durationTestMode)
                     .setTrainingFileFilter(new TrainingFileFilter().setSubfoldersIncluded(true)
@@ -477,7 +477,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
         FormRecognizerServiceVersion serviceVersion) {
         client = getFormTrainingAsyncClient(httpClient, serviceVersion);
         beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-            SyncPoller<OperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingFilesUrl,
+            SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingFilesUrl,
                 useTrainingLabels, new TrainingOptions()
                     .setTrainingFileFilter(new TrainingFileFilter().setPrefix(PREFIX_SUBFOLDER))
                     .setPollInterval(durationTestMode)).getSyncPoller();

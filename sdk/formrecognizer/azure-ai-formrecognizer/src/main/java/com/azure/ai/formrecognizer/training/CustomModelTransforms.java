@@ -11,7 +11,7 @@ import com.azure.ai.formrecognizer.training.models.CustomFormModelField;
 import com.azure.ai.formrecognizer.training.models.CustomFormModelInfo;
 import com.azure.ai.formrecognizer.training.models.CustomFormModelStatus;
 import com.azure.ai.formrecognizer.training.models.CustomFormSubmodel;
-import com.azure.ai.formrecognizer.models.ErrorInformation;
+import com.azure.ai.formrecognizer.models.FormRecognizerErrorInformation;
 import com.azure.ai.formrecognizer.models.FormRecognizerError;
 import com.azure.ai.formrecognizer.training.models.TrainingDocumentInfo;
 import com.azure.ai.formrecognizer.training.models.TrainingStatus;
@@ -121,9 +121,9 @@ final class CustomModelTransforms {
     }
 
     /**
-     * Helper method to convert the list of {@link ErrorInformation} to list of {@link FormRecognizerError}.
+     * Helper method to convert the list of {@link FormRecognizerErrorInformation} to list of {@link FormRecognizerError}.
      *
-     * @param trainingErrorList The list of {@link ErrorInformation}.
+     * @param trainingErrorList The list of {@link FormRecognizerErrorInformation}.
      *
      * @return The list of {@link FormRecognizerError}
      */
