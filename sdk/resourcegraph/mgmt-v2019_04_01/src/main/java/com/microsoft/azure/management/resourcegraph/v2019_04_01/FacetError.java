@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * A facet whose execution resulted in an error.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType", defaultImpl = FacetError.class)
 @JsonTypeName("FacetError")
 public class FacetError extends Facet {
     /**
