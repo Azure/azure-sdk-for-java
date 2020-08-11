@@ -3,7 +3,6 @@
 
 module com.azure.search.documents {
     requires transitive com.azure.core;
-    requires transitive com.azure.core.serializer.json.jackson;
     requires com.fasterxml.jackson.datatype.jsr310;
     requires jakarta.activation;
     requires com.fasterxml.jackson.annotation;

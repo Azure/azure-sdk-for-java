@@ -11,6 +11,7 @@ import com.azure.spring.data.cosmos.Constants;
 import com.azure.spring.data.cosmos.core.mapping.Container;
 import com.azure.spring.data.cosmos.core.mapping.CosmosIndexingPolicy;
 import com.azure.spring.data.cosmos.common.Memoizer;
+import com.azure.spring.data.cosmos.core.mapping.GeneratedValue;
 import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.springframework.data.annotation.Id;
@@ -56,6 +57,8 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
     private final Integer timeToLive;
     private final IndexingPolicy indexingPolicy;
     private final boolean autoCreateContainer;
+    private final boolean autoGenerateId;
+
 
     /**
      * Initialization
@@ -67,6 +70,8 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
 
         this.id = getIdField(domainType);
         ReflectionUtils.makeAccessible(this.id);
+
+        this.autoGenerateId = isIdFieldAnnotatedWithGeneratedValue(this.id);
 
         this.containerName = getContainerName(domainType);
         this.partitionKeyField = getPartitionKeyField(domainType);
@@ -104,6 +109,24 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
      */
     public Field getIdField() {
         return this.id;
+    }
+
+    /**
+     * Get id field name
+     *
+     * @return string
+     */
+    public String getIdFieldName() {
+        return id.getName();
+    }
+
+    /**
+     * Should generate Id field value
+     *
+     * @return boolean
+     */
+    public boolean shouldGenerateId() {
+        return autoGenerateId;
     }
 
     /**
@@ -249,6 +272,18 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
         }
 
         return idField;
+    }
+
+    private boolean isIdFieldAnnotatedWithGeneratedValue(Field idField) {
+        if (id.getAnnotation(GeneratedValue.class) != null) {
+            if (idField.getType() == String.class) {
+                return true;
+            } else {
+                throw new IllegalArgumentException("id field must be of type String if "
+                    + "GeneratedValue annotation is present");
+            }
+        }
+        return false;
     }
 
     private String getContainerName(Class<?> domainType) {
