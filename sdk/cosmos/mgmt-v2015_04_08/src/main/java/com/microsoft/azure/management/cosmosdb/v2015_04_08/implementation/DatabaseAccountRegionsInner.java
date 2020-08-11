@@ -34,7 +34,7 @@ public class DatabaseAccountRegionsInner {
     /** The Retrofit service to perform REST calls. */
     private DatabaseAccountRegionsService service;
     /** The service client containing this operation class. */
-    private CosmosDBImpl client;
+    private CosmosDBManagementClientImpl client;
 
     /**
      * Initializes an instance of DatabaseAccountRegionsInner.
@@ -42,7 +42,7 @@ public class DatabaseAccountRegionsInner {
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public DatabaseAccountRegionsInner(Retrofit retrofit, CosmosDBImpl client) {
+    public DatabaseAccountRegionsInner(Retrofit retrofit, CosmosDBManagementClientImpl client) {
         this.service = retrofit.create(DatabaseAccountRegionsService.class);
         this.client = client;
     }
