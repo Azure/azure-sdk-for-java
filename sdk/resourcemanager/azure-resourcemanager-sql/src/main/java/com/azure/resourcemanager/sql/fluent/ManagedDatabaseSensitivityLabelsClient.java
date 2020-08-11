@@ -364,6 +364,7 @@ public final class ManagedDatabaseSensitivityLabelsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-06-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -693,6 +694,7 @@ public final class ManagedDatabaseSensitivityLabelsClient {
         }
         final String sensitivityLabelSource = "current";
         final String apiVersion = "2018-06-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -996,6 +998,7 @@ public final class ManagedDatabaseSensitivityLabelsClient {
         }
         final String sensitivityLabelSource = "current";
         final String apiVersion = "2018-06-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -1257,6 +1260,7 @@ public final class ManagedDatabaseSensitivityLabelsClient {
         }
         final String sensitivityLabelSource = "recommended";
         final String apiVersion = "2018-06-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .disableRecommendation(
                 this.client.getEndpoint(),
@@ -1521,6 +1525,7 @@ public final class ManagedDatabaseSensitivityLabelsClient {
         }
         final String sensitivityLabelSource = "recommended";
         final String apiVersion = "2018-06-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .enableRecommendation(
                 this.client.getEndpoint(),
@@ -1756,6 +1761,7 @@ public final class ManagedDatabaseSensitivityLabelsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-06-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .listCurrentByDatabase(
                 this.client.getEndpoint(),
@@ -1819,7 +1825,7 @@ public final class ManagedDatabaseSensitivityLabelsClient {
             () ->
                 listCurrentByDatabaseSinglePageAsync(
                     resourceGroupName, managedInstanceName, databaseName, filter, context),
-            nextLink -> listCurrentByDatabaseNextSinglePageAsync(nextLink));
+            nextLink -> listCurrentByDatabaseNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1841,7 +1847,7 @@ public final class ManagedDatabaseSensitivityLabelsClient {
         final Context context = null;
         return new PagedFlux<>(
             () -> listCurrentByDatabaseSinglePageAsync(resourceGroupName, managedInstanceName, databaseName, filter),
-            nextLink -> listCurrentByDatabaseNextSinglePageAsync(nextLink));
+            nextLink -> listCurrentByDatabaseNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2029,6 +2035,7 @@ public final class ManagedDatabaseSensitivityLabelsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-06-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .listRecommendedByDatabase(
                 this.client.getEndpoint(),
@@ -2122,7 +2129,7 @@ public final class ManagedDatabaseSensitivityLabelsClient {
                     skipToken,
                     filter,
                     context),
-            nextLink -> listRecommendedByDatabaseNextSinglePageAsync(nextLink));
+            nextLink -> listRecommendedByDatabaseNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2153,7 +2160,7 @@ public final class ManagedDatabaseSensitivityLabelsClient {
                     includeDisabledRecommendations,
                     skipToken,
                     filter),
-            nextLink -> listRecommendedByDatabaseNextSinglePageAsync(nextLink));
+            nextLink -> listRecommendedByDatabaseNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2298,6 +2305,7 @@ public final class ManagedDatabaseSensitivityLabelsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listCurrentByDatabaseNext(nextLink, context)
             .map(
@@ -2355,6 +2363,7 @@ public final class ManagedDatabaseSensitivityLabelsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listRecommendedByDatabaseNext(nextLink, context)
             .map(

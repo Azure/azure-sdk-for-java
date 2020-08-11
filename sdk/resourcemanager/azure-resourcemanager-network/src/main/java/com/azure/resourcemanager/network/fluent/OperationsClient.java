@@ -158,7 +158,8 @@ public final class OperationsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<OperationInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**

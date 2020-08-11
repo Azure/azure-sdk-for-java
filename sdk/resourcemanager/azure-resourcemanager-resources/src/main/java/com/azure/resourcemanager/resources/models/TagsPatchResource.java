@@ -18,7 +18,7 @@ public final class TagsPatchResource {
      * The operation type for the patch API.
      */
     @JsonProperty(value = "operation")
-    private Operation operation;
+    private TagsPatchResourceOperation operation;
 
     /*
      * The set of tags.
@@ -31,7 +31,7 @@ public final class TagsPatchResource {
      *
      * @return the operation value.
      */
-    public Operation operation() {
+    public TagsPatchResourceOperation operation() {
         return this.operation;
     }
 
@@ -41,7 +41,7 @@ public final class TagsPatchResource {
      * @param operation the operation value to set.
      * @return the TagsPatchResource object itself.
      */
-    public TagsPatchResource withOperation(Operation operation) {
+    public TagsPatchResource withOperation(TagsPatchResourceOperation operation) {
         this.operation = operation;
         return this;
     }

@@ -219,7 +219,7 @@ public final class AvailablePrivateEndpointTypesClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AvailablePrivateEndpointTypeInner> listAsync(String location, Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(location, context), nextLink -> listNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(location, context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -395,7 +395,7 @@ public final class AvailablePrivateEndpointTypesClient {
         String location, String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(location, resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**

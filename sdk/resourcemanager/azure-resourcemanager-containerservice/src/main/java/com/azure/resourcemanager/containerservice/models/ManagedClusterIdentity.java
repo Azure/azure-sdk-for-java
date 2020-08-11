@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ManagedClusterIdentity model. */
 @Fluent
-public final class ManagedClusterIdentity {
+public class ManagedClusterIdentity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterIdentity.class);
 
     /*

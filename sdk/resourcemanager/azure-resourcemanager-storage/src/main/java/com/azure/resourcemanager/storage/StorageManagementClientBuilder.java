@@ -11,6 +11,9 @@ import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
+import com.azure.core.management.serializer.AzureJacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
+import java.time.Duration;
 
 /** A builder for creating a new instance of the StorageManagementClient type. */
 @ServiceClientBuilder(serviceClients = {StorageManagementClient.class})
@@ -79,6 +82,38 @@ public final class StorageManagementClientBuilder {
         return this;
     }
 
+    /*
+     * The serializer to serialize an object into a string
+     */
+    private SerializerAdapter serializerAdapter;
+
+    /**
+     * Sets The serializer to serialize an object into a string.
+     *
+     * @param serializerAdapter the serializerAdapter value.
+     * @return the StorageManagementClientBuilder.
+     */
+    public StorageManagementClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
+        this.serializerAdapter = serializerAdapter;
+        return this;
+    }
+
+    /*
+     * The default poll interval for long-running operation
+     */
+    private Duration defaultPollInterval;
+
+    /**
+     * Sets The default poll interval for long-running operation.
+     *
+     * @param defaultPollInterval the defaultPollInterval value.
+     * @return the StorageManagementClientBuilder.
+     */
+    public StorageManagementClientBuilder defaultPollInterval(Duration defaultPollInterval) {
+        this.defaultPollInterval = defaultPollInterval;
+        return this;
+    }
+
     /**
      * Builds an instance of StorageManagementClient with the provided parameters.
      *
@@ -97,7 +132,15 @@ public final class StorageManagementClientBuilder {
                     .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                     .build();
         }
-        StorageManagementClient client = new StorageManagementClient(pipeline, environment, subscriptionId, endpoint);
+        if (serializerAdapter == null) {
+            this.serializerAdapter = new AzureJacksonAdapter();
+        }
+        if (defaultPollInterval == null) {
+            this.defaultPollInterval = Duration.ofSeconds(30);
+        }
+        StorageManagementClient client =
+            new StorageManagementClient(
+                pipeline, serializerAdapter, defaultPollInterval, environment, subscriptionId, endpoint);
         return client;
     }
 }

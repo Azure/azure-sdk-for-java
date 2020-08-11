@@ -660,7 +660,7 @@ public final class AppServicePlansClient
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AppServicePlanInner> listAsync(Boolean detailed, Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(detailed, context), nextLink -> listNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(detailed, context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -674,7 +674,8 @@ public final class AppServicePlansClient
     public PagedFlux<AppServicePlanInner> listAsync() {
         final Boolean detailed = null;
         final Context context = null;
-        return new PagedFlux<>(() -> listSinglePageAsync(detailed), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(detailed), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -851,7 +852,7 @@ public final class AppServicePlansClient
     public PagedFlux<AppServicePlanInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1173,8 +1174,12 @@ public final class AppServicePlansClient
             createOrUpdateWithResponseAsync(resourceGroupName, name, appServicePlan);
         return this
             .client
-            .<AppServicePlanInner, AppServicePlanInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), AppServicePlanInner.class, AppServicePlanInner.class);
+            .<AppServicePlanInner, AppServicePlanInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                AppServicePlanInner.class,
+                AppServicePlanInner.class,
+                Context.NONE);
     }
 
     /**
@@ -1192,12 +1197,13 @@ public final class AppServicePlansClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<AppServicePlanInner>, AppServicePlanInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String name, AppServicePlanInner appServicePlan, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, name, appServicePlan, context);
         return this
             .client
-            .<AppServicePlanInner, AppServicePlanInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), AppServicePlanInner.class, AppServicePlanInner.class);
+            .<AppServicePlanInner, AppServicePlanInner>getLroResult(
+                mono, this.client.getHttpPipeline(), AppServicePlanInner.class, AppServicePlanInner.class, context);
     }
 
     /**
@@ -2566,7 +2572,7 @@ public final class AppServicePlansClient
             () ->
                 listWebAppsByHybridConnectionSinglePageAsync(
                     resourceGroupName, name, namespaceName, relayName, context),
-            nextLink -> listWebAppsByHybridConnectionNextSinglePageAsync(nextLink));
+            nextLink -> listWebAppsByHybridConnectionNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2919,7 +2925,7 @@ public final class AppServicePlansClient
         String resourceGroupName, String name, Context context) {
         return new PagedFlux<>(
             () -> listHybridConnectionsSinglePageAsync(resourceGroupName, name, context),
-            nextLink -> listHybridConnectionsNextSinglePageAsync(nextLink));
+            nextLink -> listHybridConnectionsNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -3328,7 +3334,7 @@ public final class AppServicePlansClient
         String resourceGroupName, String name, String skipToken, String filter, String top, Context context) {
         return new PagedFlux<>(
             () -> listWebAppsSinglePageAsync(resourceGroupName, name, skipToken, filter, top, context),
-            nextLink -> listWebAppsNextSinglePageAsync(nextLink));
+            nextLink -> listWebAppsNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -3349,7 +3355,7 @@ public final class AppServicePlansClient
         final Context context = null;
         return new PagedFlux<>(
             () -> listWebAppsSinglePageAsync(resourceGroupName, name, skipToken, filter, top),
-            nextLink -> listWebAppsNextSinglePageAsync(nextLink));
+            nextLink -> listWebAppsNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -3732,7 +3738,7 @@ public final class AppServicePlansClient
         String resourceGroupName, String name, String filter, Context context) {
         return new PagedFlux<>(
             () -> listUsagesSinglePageAsync(resourceGroupName, name, filter, context),
-            nextLink -> listUsagesNextSinglePageAsync(nextLink));
+            nextLink -> listUsagesNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -3751,7 +3757,7 @@ public final class AppServicePlansClient
         final Context context = null;
         return new PagedFlux<>(
             () -> listUsagesSinglePageAsync(resourceGroupName, name, filter),
-            nextLink -> listUsagesNextSinglePageAsync(nextLink));
+            nextLink -> listUsagesNextSinglePageAsync(nextLink, context));
     }
 
     /**

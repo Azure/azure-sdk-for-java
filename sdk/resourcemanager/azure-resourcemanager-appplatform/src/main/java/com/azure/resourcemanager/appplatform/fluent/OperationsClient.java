@@ -119,6 +119,7 @@ public final class OperationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), this.client.getApiVersion(), context)
             .map(
@@ -155,7 +156,8 @@ public final class OperationsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<OperationDetailInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -227,6 +229,7 @@ public final class OperationsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listNext(nextLink, context)
             .map(
