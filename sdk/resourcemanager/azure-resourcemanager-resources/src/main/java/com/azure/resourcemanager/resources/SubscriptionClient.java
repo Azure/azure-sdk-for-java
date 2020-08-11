@@ -25,7 +25,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.resourcemanager.resources.fluent.OperationsClient;
+//import com.azure.resourcemanager.resources.fluent.OperationsClient;
 import com.azure.resourcemanager.resources.fluent.SubscriptionsClient;
 import com.azure.resourcemanager.resources.fluent.TenantsClient;
 import com.azure.resourcemanager.resources.fluent.inner.CheckResourceNameResultInner;
@@ -102,17 +102,17 @@ public final class SubscriptionClient extends AzureServiceClient {
         return this.defaultPollInterval;
     }
 
-    /** The OperationsClient object to access its operations. */
-    private final OperationsClient operations;
-
-    /**
-     * Gets the OperationsClient object to access its operations.
-     *
-     * @return the OperationsClient object.
-     */
-    public OperationsClient getOperations() {
-        return this.operations;
-    }
+//    /** The OperationsClient object to access its operations. */
+//    private final OperationsClient operations;
+//
+//    /**
+//     * Gets the OperationsClient object to access its operations.
+//     *
+//     * @return the OperationsClient object.
+//     */
+//    public OperationsClient getOperations() {
+//        return this.operations;
+//    }
 
     /** The SubscriptionsClient object to access its operations. */
     private final SubscriptionsClient subscriptions;
@@ -158,7 +158,7 @@ public final class SubscriptionClient extends AzureServiceClient {
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.apiVersion = "2020-01-01";
-        this.operations = new OperationsClient(this);
+//        this.operations = new OperationsClient(this);
         this.subscriptions = new SubscriptionsClient(this);
         this.tenants = new TenantsClient(this);
         this.service =
