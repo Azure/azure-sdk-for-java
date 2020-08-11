@@ -67,10 +67,14 @@ class TopicsImpl extends WrapperImpl<TopicsInner> implements Topics {
     public Observable<TopicResource> getAsync(String resourceGroupName, String namespaceName, String topicName) {
         TopicsInner client = this.inner();
         return client.getAsync(resourceGroupName, namespaceName, topicName)
-        .map(new Func1<TopicResourceInner, TopicResource>() {
+        .flatMap(new Func1<TopicResourceInner, Observable<TopicResource>>() {
             @Override
-            public TopicResource call(TopicResourceInner inner) {
-                return wrapModel(inner);
+            public Observable<TopicResource> call(TopicResourceInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((TopicResource)wrapModel(inner));
+                }
             }
        });
     }
@@ -107,10 +111,14 @@ class TopicsImpl extends WrapperImpl<TopicsInner> implements Topics {
     public Observable<TopicNamespaceSharedAccessAuthorizationRuleResource> getAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String topicName, String authorizationRuleName) {
         TopicsInner client = this.inner();
         return client.getAuthorizationRuleAsync(resourceGroupName, namespaceName, topicName, authorizationRuleName)
-        .map(new Func1<SharedAccessAuthorizationRuleResourceInner, TopicNamespaceSharedAccessAuthorizationRuleResource>() {
+        .flatMap(new Func1<SharedAccessAuthorizationRuleResourceInner, Observable<TopicNamespaceSharedAccessAuthorizationRuleResource>>() {
             @Override
-            public TopicNamespaceSharedAccessAuthorizationRuleResource call(SharedAccessAuthorizationRuleResourceInner inner) {
-                return wrapTopicNamespaceSharedAccessAuthorizationRuleResourceModel(inner);
+            public Observable<TopicNamespaceSharedAccessAuthorizationRuleResource> call(SharedAccessAuthorizationRuleResourceInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((TopicNamespaceSharedAccessAuthorizationRuleResource)wrapTopicNamespaceSharedAccessAuthorizationRuleResourceModel(inner));
+                }
             }
        });
     }
