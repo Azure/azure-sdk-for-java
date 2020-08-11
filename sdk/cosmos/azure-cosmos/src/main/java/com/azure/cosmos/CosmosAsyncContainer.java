@@ -250,7 +250,8 @@ public class CosmosAsyncContainer {
                 item,
                 null,
                 OperationType.Create,
-                itemType);
+                itemType,
+                this.createItemSpanName);
         }
 
         return withContext(context -> createItemInternal(item, requestOptions, context));
@@ -315,7 +316,8 @@ public class CosmosAsyncContainer {
                 item,
                 null,
                 OperationType.Upsert,
-                itemType);
+                itemType,
+                this.upsertItemSpanName);
         }
 
         return withContext(context -> upsertItemInternal(item, requestOptions, context));
@@ -345,7 +347,8 @@ public class CosmosAsyncContainer {
                 item,
                 null,
                 OperationType.Upsert,
-                itemType);
+                itemType,
+                this.upsertItemSpanName);
         }
 
         return withContext(context -> upsertItemInternal(item, requestOptions, context));
@@ -587,7 +590,8 @@ public class CosmosAsyncContainer {
                 null,
                 itemId,
                 OperationType.Read,
-                itemType);
+                itemType,
+                this.readItemSpanName);
         }
 
         return withContext(context -> readItemInternal(itemId, requestOptions, itemType, context));
@@ -639,7 +643,8 @@ public class CosmosAsyncContainer {
                 item,
                 itemId,
                 OperationType.Replace,
-                itemType);
+                itemType,
+                this.replaceItemSpanName);
         }
 
         return withContext(context -> replaceItemInternal(itemType, itemId, doc, requestOptions, context));
@@ -684,7 +689,8 @@ public class CosmosAsyncContainer {
                 null,
                 itemId,
                 OperationType.Delete,
-                Object.class);
+                Object.class,
+                this.deleteItemSpanName);
         }
 
         return withContext(context -> deleteItemInternal(itemId, requestOptions, context));
@@ -1002,7 +1008,8 @@ public class CosmosAsyncContainer {
                                                                   T item,
                                                                   String itemId,
                                                                   OperationType operationType,
-                                                                  Class<T> itemType) {
+                                                                  Class<T> itemType,
+                                                                  String spanName) {
 
         ItemBatchOperation<T> operation = new ItemBatchOperation.Builder<T>(operationType, 0)
             .requestOptions(bulkRequestOptions)
@@ -1018,7 +1025,7 @@ public class CosmosAsyncContainer {
         return withContext(context -> database.getClient().getTracerProvider().
             traceEnabledCosmosItemResponsePublisher(responseMono,
                 context,
-                this.createItemSpanName,
+                spanName,
                 database.getId(),
                 database.getClient().getServiceEndpoint()));
     }
