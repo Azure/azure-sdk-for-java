@@ -12,10 +12,10 @@ import java.time.Duration;
  */
 @Fluent
 public final class RecognizeReceiptsOptions {
+    private static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(5);
     private FormContentType contentType;
     private boolean includeFieldElements;
     private Duration pollInterval = DEFAULT_POLL_INTERVAL;
-    private static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(5);
 
     /**
      * Get the type of the form. Supported Media types including .pdf, .jpg, .png or .tiff type file stream.

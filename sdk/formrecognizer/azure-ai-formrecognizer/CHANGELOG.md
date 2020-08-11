@@ -4,7 +4,7 @@
 This beta version targets Azure Form Recognizer service API version v2.0.
 
 ### Breaking Changes
-- Updated version number to 3.0.0-beta.1.
+- Updated version number to 3.0.0-beta.1 from 1.0.0-beta.4.
 - Added models `RecognizeCustomFormOptions`, `RecognizeReceiptOptions`, `RecognizeContentOptions` and
 `TrainingOptions` to support passing configurable options to training and recognize API's.
 - Added support for context passing.

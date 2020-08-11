@@ -11,9 +11,9 @@ import java.time.Duration;
  * Options that may be passed when using training APIs on Form Training client.
  */
 @Fluent
-public class TrainingOptions {
-    private Duration pollInterval = DEFAULT_POLL_INTERVAL;
+public final class TrainingOptions {
     private static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(5);
+    private Duration pollInterval = DEFAULT_POLL_INTERVAL;
     private TrainingFileFilter trainingFileFilter;
 
     /**
