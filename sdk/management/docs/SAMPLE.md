@@ -472,11 +472,11 @@ SqlDatabase database = sqlServer.databases().define("myNewDatabase")
   <tr>
     <td>Monitor</td>
     <td><ul style="list-style-type:circle">
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/samples/src/main/java/com/azure/resourcemanager/monitor/samples/QueryMetricsAndActivityLogs.java">Get metrics and activity logs for a resource</a></li>
+<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/monitor/samples/QueryMetricsAndActivityLogs.java">Get metrics and activity logs for a resource</a></li>
 
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/samples/src/main/java/com/azure/resourcemanager/monitor/samples/SecurityBreachOrRiskActivityLogAlerts.java">Configuring activity log alerts to be triggered on potential security breaches or risks.</a></li>
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/samples/src/main/java/com/azure/resourcemanager/monitor/samples/WebAppPerformanceMonitoringAlerts.java">Configuring metric alerts to be triggered on potential performance downgrade.</a></li>
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/samples/src/main/java/com/azure/resourcemanager/monitor/samples/AutoscaleSettingsBasedOnPerformanceOrSchedule.java">Configuring autoscale settings to scale out based on webapp request count statistic.</a></li>
+<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/monitor/samples/SecurityBreachOrRiskActivityLogAlerts.java">Configuring activity log alerts to be triggered on potential security breaches or risks.</a></li>
+<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/monitor/samples/WebAppPerformanceMonitoringAlerts.java">Configuring metric alerts to be triggered on potential performance downgrade.</a></li>
+<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/monitor/samples/AutoscaleSettingsBasedOnPerformanceOrSchedule.java">Configuring autoscale settings to scale out based on webapp request count statistic.</a></li>
 </ul></td>
   </tr>
 
