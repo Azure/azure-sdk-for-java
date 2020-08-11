@@ -6,12 +6,12 @@ package com.azure.core.http.netty.implementation;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.concurrent.DefaultEventExecutor;
 import io.netty.util.concurrent.EventExecutor;
+import io.netty.util.concurrent.ScheduledFuture;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Method;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
-
+import static com.azure.core.http.netty.implementation.TimeoutTestHelpers.getFieldValue;
+import static com.azure.core.http.netty.implementation.TimeoutTestHelpers.getInvokableMethod;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
@@ -57,7 +57,7 @@ public class ResponseTimeoutHandlerTests {
     }
 
     @Test
-    public void removingHandlerCancelsTimeout() throws InterruptedException {
+    public void removingHandlerCancelsTimeout() throws Exception {
         ResponseTimeoutHandler responseTimeoutHandler = new ResponseTimeoutHandler(100);
 
         ChannelHandlerContext ctx = mock(ChannelHandlerContext.class);
@@ -66,9 +66,7 @@ public class ResponseTimeoutHandlerTests {
         responseTimeoutHandler.handlerAdded(ctx);
         responseTimeoutHandler.handlerRemoved(ctx);
 
-        Thread.sleep(200);
-
-        verify(ctx, never()).fireExceptionCaught(any());
+        assertNull(getFieldValue(responseTimeoutHandler, "responseTimeoutWatcher", ScheduledFuture.class));
     }
 
     @Test
@@ -81,15 +79,8 @@ public class ResponseTimeoutHandlerTests {
         responseTimeoutHandler.handlerAdded(ctx);
 
         // Fake that the scheduled timer completed before any response is received.
-        Method responseTimedOut = responseTimeoutHandler.getClass()
-            .getDeclaredMethod("responseTimedOut", ChannelHandlerContext.class);
-
-        AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
-            responseTimedOut.setAccessible(true);
-            return null;
-        });
-
-        responseTimedOut.invoke(responseTimeoutHandler, ctx);
+        getInvokableMethod(responseTimeoutHandler, "responseTimedOut", ChannelHandlerContext.class)
+            .invoke(responseTimeoutHandler, ctx);
 
         verify(ctx, atLeast(1)).fireExceptionCaught(any());
     }

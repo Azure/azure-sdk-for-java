@@ -11,13 +11,12 @@ import io.netty.channel.ChannelPromise;
 import io.netty.channel.DefaultChannelPromise;
 import io.netty.util.concurrent.DefaultEventExecutor;
 import io.netty.util.concurrent.EventExecutor;
+import io.netty.util.concurrent.ScheduledFuture;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
-
+import static com.azure.core.http.netty.implementation.TimeoutTestHelpers.getFieldValue;
+import static com.azure.core.http.netty.implementation.TimeoutTestHelpers.getInvokableMethod;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
@@ -63,7 +62,7 @@ public class WriteTimeoutHandlerTests {
     }
 
     @Test
-    public void removingHandlerCancelsTimeout() throws InterruptedException {
+    public void removingHandlerCancelsTimeout() throws Exception {
         WriteTimeoutHandler writeTimeoutHandler = new WriteTimeoutHandler(100);
 
         ChannelHandlerContext ctx = mock(ChannelHandlerContext.class);
@@ -72,9 +71,8 @@ public class WriteTimeoutHandlerTests {
         writeTimeoutHandler.handlerAdded(ctx);
         writeTimeoutHandler.handlerRemoved(ctx);
 
-        Thread.sleep(200);
-
-        verify(ctx, never()).fireExceptionCaught(any());
+        // When the handler is removed the timer is nulled out.
+        assertNull(getFieldValue(writeTimeoutHandler, "writeTimeoutWatcher", ScheduledFuture.class));
     }
 
     @Test
@@ -94,7 +92,8 @@ public class WriteTimeoutHandlerTests {
         writeTimeoutHandler.handlerAdded(ctx);
 
         // Fake that the scheduled timer completed before any write operations happened.
-        invokeWriteTimeoutRunnable(writeTimeoutHandler, ctx);
+        getInvokableMethod(writeTimeoutHandler, "writeTimeoutRunnable", ChannelHandlerContext.class)
+            .invoke(writeTimeoutHandler, ctx);
 
         verify(ctx, atLeast(1)).fireExceptionCaught(any());
     }
@@ -120,35 +119,12 @@ public class WriteTimeoutHandlerTests {
         writeTimeoutHandler.handlerAdded(ctx);
 
         // Fake that the scheduled timer completed before after a write operation happened.
-        invokeWriteComplete(writeTimeoutHandler);
-        invokeWriteTimeoutRunnable(writeTimeoutHandler, ctx);
+        getFieldValue(writeTimeoutHandler, "writeListener", ChannelFutureListener.class).operationComplete(null);
+        getInvokableMethod(writeTimeoutHandler, "writeTimeoutRunnable", ChannelHandlerContext.class)
+            .invoke(writeTimeoutHandler, ctx);
 
         writeTimeoutHandler.handlerRemoved(ctx);
 
         verify(ctx, never()).fireExceptionCaught(any());
-    }
-
-    private static void invokeWriteTimeoutRunnable(WriteTimeoutHandler writeTimeoutHandler, ChannelHandlerContext ctx)
-        throws Exception {
-        Method writeTimeoutRunnable = writeTimeoutHandler.getClass()
-            .getDeclaredMethod("writeTimeoutRunnable", ChannelHandlerContext.class);
-
-        AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
-            writeTimeoutRunnable.setAccessible(true);
-            return null;
-        });
-
-        writeTimeoutRunnable.invoke(writeTimeoutHandler, ctx);
-    }
-
-    private static void invokeWriteComplete(WriteTimeoutHandler writeTimeoutHandler) throws Exception {
-        Field writeListener = writeTimeoutHandler.getClass().getDeclaredField("writeListener");
-
-        AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
-            writeListener.setAccessible(true);
-            return null;
-        });
-
-        ((ChannelFutureListener) writeListener.get(writeTimeoutHandler)).operationComplete(null);
     }
 }
