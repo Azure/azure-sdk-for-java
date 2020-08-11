@@ -77,7 +77,6 @@ public class RoleAssignmentsImpl extends CreatableResourcesImpl<RoleAssignment, 
     @Override
     public Mono<Void> deleteByIdAsync(String id) {
         return inner().deleteByIdAsync(id).then();
-
     }
 
     @Override
