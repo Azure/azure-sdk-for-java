@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Synchronous work for receiving messages.
  */
-class SynchronousReceiveWork implements AutoCloseable{
+class SynchronousReceiveWork implements AutoCloseable {
 
     /* When we have received at-least one message and next message does not arrive in this time. The work will
     complete.*/
@@ -28,12 +28,11 @@ class SynchronousReceiveWork implements AutoCloseable{
     private final Duration timeout;
     private final FluxSink<ServiceBusReceivedMessageContext> emitter;
     private final FluxSink<ServiceBusReceivedMessageContext> messageReceivedSink;
+    // Subscribes to next message from upstream and implement short timeout between the messages.
+    private final Disposable nextMessageSubscriber;
 
     // Indicate state that timeout has occurred for this work.
     private boolean workTimedOut = false;
-
-    // Subscribes to next message from upstream and implement short timeout between the messages.
-    private Disposable nextMessageSubscriber;
 
     // Indicate that if processing started or not.
     private boolean processingStarted;
