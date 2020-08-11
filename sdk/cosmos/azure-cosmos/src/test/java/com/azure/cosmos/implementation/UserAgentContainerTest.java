@@ -87,7 +87,7 @@ public class UserAgentContainerTest {
         osName = osName.replaceAll("\\s", "");
         String geteUserAgentFixedPart =
             UserAgentContainer.AZSDK_USERAGENT_PREFIX +
-                HttpConstants.Versions.SDK_NAME +
+                "cosmos" +
                 "/" +
                 HttpConstants.Versions.SDK_VERSION +
                 SPACE +
