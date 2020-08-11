@@ -54,7 +54,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /** The Retrofit service to perform REST calls. */
     private DatabaseAccountsService service;
     /** The service client containing this operation class. */
-    private CosmosDBImpl client;
+    private CosmosDBManagementClientImpl client;
 
     /**
      * Initializes an instance of DatabaseAccountsInner.
@@ -62,7 +62,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public DatabaseAccountsInner(Retrofit retrofit, CosmosDBImpl client) {
+    public DatabaseAccountsInner(Retrofit retrofit, CosmosDBManagementClientImpl client) {
         this.service = retrofit.create(DatabaseAccountsService.class);
         this.client = client;
     }

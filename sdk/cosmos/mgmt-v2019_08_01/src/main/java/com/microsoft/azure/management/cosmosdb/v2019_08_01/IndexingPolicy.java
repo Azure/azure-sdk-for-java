@@ -41,6 +41,18 @@ public class IndexingPolicy {
     private List<ExcludedPath> excludedPaths;
 
     /**
+     * List of composite path list.
+     */
+    @JsonProperty(value = "compositeIndexes")
+    private List<List<CompositePath>> compositeIndexes;
+
+    /**
+     * List of spatial specifics.
+     */
+    @JsonProperty(value = "spatialIndexes")
+    private List<SpatialSpec> spatialIndexes;
+
+    /**
      * Get indicates if the indexing policy is automatic.
      *
      * @return the automatic value
@@ -117,6 +129,46 @@ public class IndexingPolicy {
      */
     public IndexingPolicy withExcludedPaths(List<ExcludedPath> excludedPaths) {
         this.excludedPaths = excludedPaths;
+        return this;
+    }
+
+    /**
+     * Get list of composite path list.
+     *
+     * @return the compositeIndexes value
+     */
+    public List<List<CompositePath>> compositeIndexes() {
+        return this.compositeIndexes;
+    }
+
+    /**
+     * Set list of composite path list.
+     *
+     * @param compositeIndexes the compositeIndexes value to set
+     * @return the IndexingPolicy object itself.
+     */
+    public IndexingPolicy withCompositeIndexes(List<List<CompositePath>> compositeIndexes) {
+        this.compositeIndexes = compositeIndexes;
+        return this;
+    }
+
+    /**
+     * Get list of spatial specifics.
+     *
+     * @return the spatialIndexes value
+     */
+    public List<SpatialSpec> spatialIndexes() {
+        return this.spatialIndexes;
+    }
+
+    /**
+     * Set list of spatial specifics.
+     *
+     * @param spatialIndexes the spatialIndexes value to set
+     * @return the IndexingPolicy object itself.
+     */
+    public IndexingPolicy withSpatialIndexes(List<SpatialSpec> spatialIndexes) {
+        this.spatialIndexes = spatialIndexes;
         return this;
     }
 
