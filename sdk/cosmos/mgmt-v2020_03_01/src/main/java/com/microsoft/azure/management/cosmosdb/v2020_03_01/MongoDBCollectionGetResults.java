@@ -80,7 +80,7 @@ public interface MongoDBCollectionGetResults extends HasInner<MongoDBCollectionG
         interface WithMongodbDatabasis {
            /**
             * Specifies resourceGroupName, accountName, databaseName.
-            * @param resourceGroupName Name of an Azure resource group
+            * @param resourceGroupName The name of the resource group. The name is case insensitive
             * @param accountName Cosmos DB database account name
             * @param databaseName Cosmos DB database name
             * @return the next definition stage
