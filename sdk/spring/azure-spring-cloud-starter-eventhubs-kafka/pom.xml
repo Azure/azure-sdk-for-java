@@ -43,12 +43,9 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.microsoft.azure:spring-cloud-azure-autoconfigure:[1.2.8-beta.1]
-                </include> <!-- {x-include-update;com.microsoft.azure:spring-cloud-azure-autoconfigure;current} -->
-                <include>com.microsoft.azure:spring-cloud-azure-context:[1.2.8-beta.1]
-                </include> <!-- {x-include-update;com.microsoft.azure:spring-cloud-azure-context;current} -->
-                <include>org.springframework.cloud:spring-cloud-starter-stream-kafka:[3.0.0.RELEASE]
-                </include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-starter-stream-kafka;external_dependency} -->
+                <include>com.microsoft.azure:spring-cloud-azure-autoconfigure:[1.2.8-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-cloud-azure-autoconfigure;current} -->
+                <include>com.microsoft.azure:spring-cloud-azure-context:[1.2.8-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-cloud-azure-context;current} -->
+                <include>org.springframework.cloud:spring-cloud-starter-stream-kafka:[3.0.7.RELEASE]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-starter-stream-kafka;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
