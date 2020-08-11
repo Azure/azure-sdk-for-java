@@ -1,4 +1,6 @@
 # Release History
+## 7.0.0-beta.5 (2020-08-11)
+- Added a short timeout of 1 second in between messages for sync receive only.
 
 ## 7.0.0-beta.4 (2020-07-10)
 - Add support for send messages via another entity.
