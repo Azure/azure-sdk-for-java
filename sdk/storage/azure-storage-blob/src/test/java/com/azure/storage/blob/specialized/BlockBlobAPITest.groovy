@@ -1203,7 +1203,7 @@ class BlockBlobAPITest extends APISpec {
         then:
         // Due to memory issues, this check only runs on small to medium sized data sets.
         if (dataSize < 100 * 1024 * 1024) {
-            StepVerifier.create(collectBytesInBuffer(blockBlobAsyncClient.download()))
+            StepVerifier.create(collectBytesInBuffer(blockBlobAsyncClient.download())) // Use client with no read timeout
                 .assertNext({ assert it == data })
                 .verifyComplete()
         }
@@ -1313,7 +1313,7 @@ class BlockBlobAPITest extends APISpec {
         def uploadOperation = blobAsyncClient.upload(Flux.fromIterable(dataList), parallelTransferOptions, true)
 
         expect:
-        StepVerifier.create(uploadOperation.then(collectBytesInBuffer(blockBlobAsyncClient.download())))
+        StepVerifier.create(uploadOperation.then(collectBytesInBuffer(blockBlobAsyncClient.download()))) // use client that has no read timeout
             .assertNext({ assert compareListToBuffer(dataList, it) })
             .verifyComplete()
 

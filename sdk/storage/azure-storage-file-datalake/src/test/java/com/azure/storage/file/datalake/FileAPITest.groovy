@@ -2239,29 +2239,34 @@ class FileAPITest extends APISpec {
     // Test uploads large amount of data
     def "Async buffered upload"() {
         setup:
-        int retryTimeout = Math.toIntExact((long) (bufferSize) * 10)
-        retryTimeout = Math.max(300, retryTimeout)
-        def fac = getServiceClientBuilder(primaryCredential,
+        int retryTimeoutWrite = Math.toIntExact((long) (bufferSize) * 10)
+        retryTimeoutWrite = Math.max(300, retryTimeoutWrite)
+        def facWrite = getServiceClientBuilder(primaryCredential,
             String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
-            .retryOptions(new RequestRetryOptions(null, null, retryTimeout, null, null, null))
+            .retryOptions(new RequestRetryOptions(null, null, retryTimeoutWrite, null, null, null))
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.HEADERS))
             .buildAsyncClient()
             .getFileSystemAsyncClient(fscAsync.getFileSystemName())
             .getFileAsyncClient(generatePathName())
+        def facRead = getServiceClientBuilder(primaryCredential,
+            String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
+            .buildAsyncClient()
+            .getFileSystemAsyncClient(fscAsync.getFileSystemName())
+            .getFileAsyncClient(generatePathName())
         System.setProperty("AZURE_LOG_LEVEL", "INFO")
-        fac.create().block()
+        facWrite.create().block()
 
         when:
         def data = getRandomData(dataSize)
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(bufferSize)
             .setMaxConcurrency(numBuffs).setMaxSingleUploadSizeLong(4 * MB)
-        fac.upload(Flux.just(data), parallelTransferOptions, true).block()
+        facWrite.upload(Flux.just(data), parallelTransferOptions, true).block()
         data.position(0)
 
         then:
         // Due to memory issues, this check only runs on small to medium sized data sets.
         if (dataSize < 100 * MB) {
-            StepVerifier.create(collectBytesInBuffer(fac.read()))
+            StepVerifier.create(collectBytesInBuffer(facRead.read())) // Use client with no read timeout
                 .assertNext({ assert it == data })
                 .verifyComplete()
         }
@@ -2354,18 +2359,24 @@ class FileAPITest extends APISpec {
     // Test uploads large amount of data
     def "Buffered upload chunked source"() {
         setup:
-        int retryTimeout = Math.toIntExact((long) (bufferSize) * 10)
-        retryTimeout = Math.max(300, retryTimeout)
-        def fac = getServiceClientBuilder(primaryCredential,
+        int retryTimeoutWrite = Math.toIntExact((long) (bufferSize) * 10)
+        retryTimeoutWrite = Math.max(300, retryTimeoutWrite)
+        def facWrite = getServiceClientBuilder(primaryCredential,
             String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
-            .retryOptions(new RequestRetryOptions(null, null, retryTimeout, null, null, null))
+            .retryOptions(new RequestRetryOptions(null, null, retryTimeoutWrite, null, null, null))
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.HEADERS))
+            .buildAsyncClient()
+            .getFileSystemAsyncClient(fscAsync.getFileSystemName())
+            .getFileAsyncClient(generatePathName())
+        int retryTimeoutRead = 200 * 10 // Just test with max datasize (200) for now
+        def facRead = getServiceClientBuilder(primaryCredential,
+            String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
             .buildAsyncClient()
             .getFileSystemAsyncClient(fscAsync.getFileSystemName())
             .getFileAsyncClient(generatePathName())
         System.setProperty("AZURE_LOG_LEVEL", "INFO")
 
-        fac.create().block()
+        facWrite.create().block()
         /*
         This test should validate that the upload should work regardless of what format the passed data is in because
         it will be chunked appropriately.
@@ -2376,10 +2387,10 @@ class FileAPITest extends APISpec {
         for (def size : dataSizeList) {
             dataList.add(getRandomData(size * Constants.MB))
         }
-        def uploadOperation = fac.upload(Flux.fromIterable(dataList), parallelTransferOptions, true)
+        def uploadOperation = facWrite.upload(Flux.fromIterable(dataList), parallelTransferOptions, true)
 
         expect:
-        StepVerifier.create(uploadOperation.then(collectBytesInBuffer(fac.read())))
+        StepVerifier.create(uploadOperation.then(collectBytesInBuffer(facRead.read()))) // Use client with no read timeout
             .assertNext({ assert compareListToBuffer(dataList, it) })
             .verifyComplete()
 
