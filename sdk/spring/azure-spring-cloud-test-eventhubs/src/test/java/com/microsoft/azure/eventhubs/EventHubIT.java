@@ -17,11 +17,18 @@ class EventHubIT {
 
     private static final String MESSAGE = "Azure Spring Cloud EventHub Test";
 
+    private final Source source;
+
+    @Autowired
+    public EventHubIT(Source source) {
+        this.source = source;
+    }
+
     @Test
-    void integrationTest(@Autowired Source source) throws InterruptedException {
+    void integrationTest() throws InterruptedException {
         // Wait for eventhub initialization to complete
         Thread.sleep(15000);
-        source.output().send(new GenericMessage<>(MESSAGE));
+        this.source.output().send(new GenericMessage<>(MESSAGE));
         String msg = Receiver.EXCHANGER.exchange(MESSAGE);
         Assertions.assertEquals(MESSAGE, msg);
         msg = Receiver.EXCHANGER.exchange("");
