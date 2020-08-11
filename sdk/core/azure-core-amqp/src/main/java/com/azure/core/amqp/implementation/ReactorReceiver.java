@@ -163,7 +163,7 @@ public class ReactorReceiver implements AmqpReceiveLink {
 
         subscriptions.dispose();
         endpointStateSink.complete();
-        drain();
+        messagesProcessor.onComplete();
         tokenManager.close();
         receiver.close();
 
@@ -176,13 +176,6 @@ public class ReactorReceiver implements AmqpReceiveLink {
             logger.warning("Could not schedule disposing of receiver on ReactorDispatcher.", e);
             handler.close();
         }
-    }
-
-    private void drain() {
-        // This is required because unprocessed deliveries on the link still linger in `TransportSession` as
-        // unsettled deliveries and can lead to a memory leak if a lot of links are opened and closed.
-        messagesProcessor.subscribe(message -> { }, error -> messagesProcessor.onComplete(),
-            messagesProcessor::onComplete);
     }
 
     protected Message decodeDelivery(Delivery delivery) {
