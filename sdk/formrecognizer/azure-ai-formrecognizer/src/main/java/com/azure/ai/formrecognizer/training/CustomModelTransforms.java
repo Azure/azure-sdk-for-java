@@ -121,10 +121,10 @@ final class CustomModelTransforms {
     }
 
     /**
-     * Helper method to convert the list of {@link FormRecognizerErrorInformation} to list of
-     * {@link FormRecognizerError}.
+     * Helper method to convert the list of {@link com.azure.ai.formrecognizer.implementation.models.ErrorInformation}
+     * to list of {@link FormRecognizerError}.
      *
-     * @param trainingErrorList The list of {@link FormRecognizerErrorInformation}.
+     * @param trainingErrorList The list of {@link com.azure.ai.formrecognizer.implementation.models.ErrorInformation}.
      *
      * @return The list of {@link FormRecognizerError}
      */
