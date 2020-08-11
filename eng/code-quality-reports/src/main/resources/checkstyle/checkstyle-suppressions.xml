@@ -417,6 +417,8 @@
   <suppress checks="LineLength" files="com.azure.ai.formrecognizer.implementation.models"/>
   <suppress checks="LineLength" files="com.azure.ai.formrecognizer.Transforms.java"/>
 
+  <suppress checks="Indentation" files="com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl" />
+
   <suppress checks="GoodLoggingCheck" files="com.azure.ai.formrecognizer.models.FieldValueType.java" />
 
   <!-- TODO: Fix with https://github.com/Azure/azure-sdk-for-java/issues#6716 Method name should follow a common vocabulary. -->

@@ -6,28 +6,26 @@ import com.azure.spring.data.cosmos.domain.Student;
 import com.azure.spring.data.cosmos.repository.CosmosRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
 public interface StudentRepository extends CosmosRepository<Student, String> {
 
-    List<Student> findByFirstNameContaining(String firstName);
+    Iterable<Student> findByFirstNameContaining(String firstName);
 
-    List<Student> findByFirstNameContainingAndLastNameContaining(String firstName, String lastName);
+    Iterable<Student> findByFirstNameContainingAndLastNameContaining(String firstName, String lastName);
 
-    List<Student> findByFirstNameEndsWith(String firstName);
+    Iterable<Student> findByFirstNameEndsWith(String firstName);
 
-    List<Student> findByFirstNameStartsWith(String firstName);
+    Iterable<Student> findByFirstNameStartsWith(String firstName);
 
-    List<Student> findByLastNameStartsWith(String lastName);
+    Iterable<Student> findByLastNameStartsWith(String lastName);
 
-    List<Student> findByFirstNameStartsWithAndLastNameEndingWith(String firstName, String lastName);
+    Iterable<Student> findByFirstNameStartsWithAndLastNameEndingWith(String firstName, String lastName);
 
-    List<Student> findByFirstNameStartsWithOrLastNameContaining(String firstName, String lastName);
+    Iterable<Student> findByFirstNameStartsWithOrLastNameContaining(String firstName, String lastName);
 
-    List<Student> findByFirstNameNot(String firstName);
+    Iterable<Student> findByFirstNameNot(String firstName);
 
-    List<Student> findByFirstNameContainingAndLastNameNot(String firstName, String lastName);
+    Iterable<Student> findByFirstNameContainingAndLastNameNot(String firstName, String lastName);
 
     Boolean existsByFirstName(String firstName);
 
@@ -35,48 +33,54 @@ public interface StudentRepository extends CosmosRepository<Student, String> {
 
     /**
      * Find student list by last name without case sensitive
+     *
      * @param lastName last name
-     * @return student list
+     * @return student Iterable
      */
-    List<Student> findByLastNameIgnoreCase(String lastName);
+    Iterable<Student> findByLastNameIgnoreCase(String lastName);
 
     /**
      * Find student list by last name and first name without case sensitive
+     *
      * @param lastName last name
      * @param firstName first name
-     * @return student list
+     * @return student Iterable
      */
-    List<Student> findByLastNameAndFirstNameAllIgnoreCase(String lastName, String firstName);
+    Iterable<Student> findByLastNameAndFirstNameAllIgnoreCase(String lastName, String firstName);
 
     /**
      * Find student list by last name or first name without case sensitive
+     *
      * @param lastName last name
      * @param firstName first name
-     * @return Student list
+     * @return Student Iterable
      */
-    List<Student> findByLastNameOrFirstNameAllIgnoreCase(String lastName, String firstName);
+    Iterable<Student> findByLastNameOrFirstNameAllIgnoreCase(String lastName, String firstName);
 
     /**
      * Find student list by first name matching end without case sensitive
-     * @param firstName
-     * @return
+     *
+     * @param firstName first name
+     * @return Student Iterable
      */
-    List<Student> findByFirstNameEndsWithIgnoreCase(String firstName);
+    Iterable<Student> findByFirstNameEndsWithIgnoreCase(String firstName);
 
     /**
      * Find student list by last name matching end and first name matching end without case sensitive
-     * @param lastName
-     * @param firstName
-     * @return
+     *
+     * @param lastName last name
+     * @param firstName first name
+     * @return Student Iterable
      */
-    List<Student> findByLastNameStartsWithAndFirstNameStartsWithAllIgnoreCase(String lastName, String firstName);
+    Iterable<Student> findByLastNameStartsWithAndFirstNameStartsWithAllIgnoreCase(String lastName, String firstName);
 
     /**
      * Find student list by last name matching or and first name matching end without case sensitive
-     * @param lastName
-     * @param firstName
-     * @return
+     *
+     * @param lastName last name
+     * @param firstName first name
+     * @return Student Iterable
      */
-    List<Student> findByLastNameStartsWithOrFirstNameStartsWithAllIgnoreCase(String lastName, String firstName);
+    Iterable<Student> findByLastNameStartsWithOrFirstNameStartsWithAllIgnoreCase(String lastName, String firstName);
 
 }

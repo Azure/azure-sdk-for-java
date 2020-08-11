@@ -9,85 +9,84 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import java.util.Collection;
-import java.util.List;
 
 public interface ProjectRepository extends CosmosRepository<Project, String> {
 
-    List<Project> findByNameAndStarCount(String name, Long startCount);
+    Iterable<Project> findByNameAndStarCount(String name, Long startCount);
 
-    List<Project> findByNameOrForkCount(String name, Long forkCount);
+    Iterable<Project> findByNameOrForkCount(String name, Long forkCount);
 
-    List<Project> findByNameAndCreator(String name, String creator);
+    Iterable<Project> findByNameAndCreator(String name, String creator);
 
-    List<Project> findByNameOrCreator(String name, String creator);
+    Iterable<Project> findByNameOrCreator(String name, String creator);
 
-    List<Project> findByNameAndCreatorOrForkCount(String name, String creator, Long forkCount);
+    Iterable<Project> findByNameAndCreatorOrForkCount(String name, String creator, Long forkCount);
 
-    List<Project> findByNameOrCreatorAndForkCount(String name, String creator, Long forkCount);
+    Iterable<Project> findByNameOrCreatorAndForkCount(String name, String creator, Long forkCount);
 
-    List<Project> findByNameOrCreatorOrForkCount(String name, String creator, Long forkCount);
+    Iterable<Project> findByNameOrCreatorOrForkCount(String name, String creator, Long forkCount);
 
-    List<Project> findByNameOrCreatorAndForkCountOrStarCount(String name, String creator,
-                                                             Long forkCount, Long starCount);
+    Iterable<Project> findByNameOrCreatorAndForkCountOrStarCount(String name, String creator,
+                                                                 Long forkCount, Long starCount);
 
-    List<Project> findByForkCountGreaterThan(Long forkCount);
+    Iterable<Project> findByForkCountGreaterThan(Long forkCount);
 
-    List<Project> findByCreatorAndForkCountGreaterThan(String creator, Long forkCount);
+    Iterable<Project> findByCreatorAndForkCountGreaterThan(String creator, Long forkCount);
 
-    List<Project> findByCreatorOrForkCountGreaterThan(String creator, Long forkCount);
+    Iterable<Project> findByCreatorOrForkCountGreaterThan(String creator, Long forkCount);
 
-    List<Project> findByNameOrCreator(String name, String creator, Sort sort);
+    Iterable<Project> findByNameOrCreator(String name, String creator, Sort sort);
 
-    List<Project> findByNameAndCreator(String name, String creator, Sort sort);
+    Iterable<Project> findByNameAndCreator(String name, String creator, Sort sort);
 
-    List<Project> findByForkCount(Long forkCount, Sort sort);
+    Iterable<Project> findByForkCount(Long forkCount, Sort sort);
 
-    List<Project> findByStarCountLessThan(Long starCount);
+    Iterable<Project> findByStarCountLessThan(Long starCount);
 
-    List<Project> findByForkCountLessThanEqual(Long forkCount);
+    Iterable<Project> findByForkCountLessThanEqual(Long forkCount);
 
-    List<Project> findByStarCountLessThanAndForkCountGreaterThan(Long max, Long min);
+    Iterable<Project> findByStarCountLessThanAndForkCountGreaterThan(Long max, Long min);
 
-    List<Project> findByForkCountLessThanEqualAndStarCountGreaterThan(Long max, Long min);
+    Iterable<Project> findByForkCountLessThanEqualAndStarCountGreaterThan(Long max, Long min);
 
-    List<Project> findByStarCountGreaterThanEqual(Long count);
+    Iterable<Project> findByStarCountGreaterThanEqual(Long count);
 
-    List<Project> findByForkCountGreaterThanEqualAndCreator(Long count, String creator);
+    Iterable<Project> findByForkCountGreaterThanEqualAndCreator(Long count, String creator);
 
-    List<Project> findByHasReleasedTrue();
+    Iterable<Project> findByHasReleasedTrue();
 
-    List<Project> findByHasReleasedFalse();
+    Iterable<Project> findByHasReleasedFalse();
 
-    List<Project> findByHasReleasedTrueAndCreator(String creator);
+    Iterable<Project> findByHasReleasedTrueAndCreator(String creator);
 
-    List<Project> findByHasReleasedFalseAndCreator(String creator);
+    Iterable<Project> findByHasReleasedFalseAndCreator(String creator);
 
-    List<Project> findByHasReleasedTrueOrCreator(String creator);
+    Iterable<Project> findByHasReleasedTrueOrCreator(String creator);
 
-    List<Project> findByHasReleasedFalseOrCreator(String creator);
+    Iterable<Project> findByHasReleasedFalseOrCreator(String creator);
 
-    List<Project> findByCreatorIn(Collection<String> creators);
+    Iterable<Project> findByCreatorIn(Collection<String> creators);
 
-    List<Project> findByCreatorInAndStarCountIn(Collection<String> creators, Collection<Long> starCounts);
+    Iterable<Project> findByCreatorInAndStarCountIn(Collection<String> creators, Collection<Long> starCounts);
 
-    List<Project> findByCreatorNotIn(Collection<String> creators);
+    Iterable<Project> findByCreatorNotIn(Collection<String> creators);
 
-    List<Project> findByCreatorInAndStarCountNotIn(Collection<String> creators, Collection<Long> starCounts);
+    Iterable<Project> findByCreatorInAndStarCountNotIn(Collection<String> creators, Collection<Long> starCounts);
 
-    List<Project> findByNameIsNull();
+    Iterable<Project> findByNameIsNull();
 
-    List<Project> findByNameIsNullAndForkCount(Long forkCount);
+    Iterable<Project> findByNameIsNullAndForkCount(Long forkCount);
 
-    List<Project> findByNameIsNotNull();
+    Iterable<Project> findByNameIsNotNull();
 
-    List<Project> findByNameIsNotNullAndHasReleased(boolean hasReleased);
+    Iterable<Project> findByNameIsNotNullAndHasReleased(boolean hasReleased);
 
     Page<Project> findByForkCount(Long forkCount, Pageable pageable);
-   
-    
-    List<Project> findAllByNameIn(Collection<String> names);
-    
-    List<Project> findAllByStarCountIn(Collection<Long> startCounts);
-    
-    List<Project> findAllByHasReleasedIn(Collection<Boolean> releases);
+
+
+    Iterable<Project> findAllByNameIn(Collection<String> names);
+
+    Iterable<Project> findAllByStarCountIn(Collection<Long> startCounts);
+
+    Iterable<Project> findAllByHasReleasedIn(Collection<Boolean> releases);
 }

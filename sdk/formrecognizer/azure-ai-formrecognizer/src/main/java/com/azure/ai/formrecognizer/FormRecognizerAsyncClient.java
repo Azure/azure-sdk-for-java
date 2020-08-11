@@ -20,7 +20,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -448,7 +448,8 @@ public final class FormRecognizerAsyncClient {
                 recognizeOptions.getPollInterval(),
                 urlActivationOperation(
                     () -> service.analyzeReceiptAsyncWithResponseAsync(isFieldElementsIncluded,
-                        new SourcePath().setSource(receiptUrl), context).map(response -> new OperationResult(
+                        new SourcePath().setSource(receiptUrl), context)
+                        .map(response -> new OperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation())))),
                 pollingOperation(resultId -> service.getAnalyzeReceiptResultWithResponseAsync(resultId, context)),
                 (activationResponse, pollingContext) -> monoError(logger,
@@ -587,13 +588,13 @@ public final class FormRecognizerAsyncClient {
      * Poller's POLLING operation.
      */
     private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>> pollingOperation(
-        Function<UUID, Mono<SimpleResponse<AnalyzeOperationResult>>> pollingFunction) {
+        Function<UUID, Mono<Response<AnalyzeOperationResult>>> pollingFunction) {
         return pollingContext -> {
             try {
                 final PollResponse<OperationResult> operationResultPollResponse = pollingContext.getLatestResponse();
                 final UUID resultUuid = UUID.fromString(operationResultPollResponse.getValue().getResultId());
                 return pollingFunction.apply(resultUuid)
-                    .flatMap(modelSimpleResponse -> processAnalyzeModelResponse(modelSimpleResponse,
+                    .flatMap(modelResponse -> processAnalyzeModelResponse(modelResponse,
                         operationResultPollResponse))
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
             } catch (RuntimeException ex) {
@@ -605,8 +606,8 @@ public final class FormRecognizerAsyncClient {
     /*
      * Poller's FETCHING operation.
      */
-    private Function<PollingContext<OperationResult>, Mono<SimpleResponse<AnalyzeOperationResult>>> fetchingOperation(
-        Function<UUID, Mono<SimpleResponse<AnalyzeOperationResult>>> fetchingFunction) {
+    private Function<PollingContext<OperationResult>, Mono<Response<AnalyzeOperationResult>>> fetchingOperation(
+        Function<UUID, Mono<Response<AnalyzeOperationResult>>> fetchingFunction) {
         return pollingContext -> {
             try {
                 final UUID resultUuid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
@@ -618,10 +619,10 @@ public final class FormRecognizerAsyncClient {
     }
 
     private Mono<PollResponse<OperationResult>> processAnalyzeModelResponse(
-        SimpleResponse<AnalyzeOperationResult> analyzeOperationResultSimpleResponse,
+        Response<AnalyzeOperationResult> analyzeOperationResultResponse,
         PollResponse<OperationResult> operationResultPollResponse) {
         LongRunningOperationStatus status;
-        switch (analyzeOperationResultSimpleResponse.getValue().getStatus()) {
+        switch (analyzeOperationResultResponse.getValue().getStatus()) {
             case NOT_STARTED:
             case RUNNING:
                 status = LongRunningOperationStatus.IN_PROGRESS;
@@ -631,13 +632,13 @@ public final class FormRecognizerAsyncClient {
                 break;
             case FAILED:
                 throw logger.logExceptionAsError(new FormRecognizerException("Analyze operation failed",
-                    analyzeOperationResultSimpleResponse.getValue().getAnalyzeResult().getErrors().stream()
+                    analyzeOperationResultResponse.getValue().getAnalyzeResult().getErrors().stream()
                         .map(errorInformation ->
                             new ErrorInformation(errorInformation.getCode(), errorInformation.getMessage()))
                         .collect(Collectors.toList())));
             default:
                 status = LongRunningOperationStatus.fromString(
-                    analyzeOperationResultSimpleResponse.getValue().getStatus().toString(), true);
+                    analyzeOperationResultResponse.getValue().getStatus().toString(), true);
                 break;
         }
         return Mono.just(new PollResponse<>(status, operationResultPollResponse.getValue()));

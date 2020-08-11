@@ -8,31 +8,30 @@ import com.azure.spring.data.cosmos.repository.CosmosRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
-import java.util.List;
 
 @Repository
 public interface MemoRepository extends CosmosRepository<Memo, String> {
-    List<Memo> findMemoByDate(Date date);
+    Iterable<Memo> findMemoByDate(Date date);
 
-    List<Memo> findMemoByImportance(Importance importance);
+    Iterable<Memo> findMemoByImportance(Importance importance);
 
-    List<Memo> findByDateBefore(Date date);
+    Iterable<Memo> findByDateBefore(Date date);
 
-    List<Memo> findByDateBeforeAndMessage(Date date, String message);
+    Iterable<Memo> findByDateBeforeAndMessage(Date date, String message);
 
-    List<Memo> findByDateBeforeOrMessage(Date date, String message);
+    Iterable<Memo> findByDateBeforeOrMessage(Date date, String message);
 
-    List<Memo> findByDateAfter(Date date);
+    Iterable<Memo> findByDateAfter(Date date);
 
-    List<Memo> findByDateAfterAndMessage(Date date, String message);
+    Iterable<Memo> findByDateAfterAndMessage(Date date, String message);
 
-    List<Memo> findByDateAfterOrMessage(Date date, String message);
+    Iterable<Memo> findByDateAfterOrMessage(Date date, String message);
 
-    List<Memo> findByDateBetween(Date startDate, Date endDate);
+    Iterable<Memo> findByDateBetween(Date startDate, Date endDate);
 
-    List<Memo> findByDateBetweenAndMessage(Date startDate, Date endDate, String message);
+    Iterable<Memo> findByDateBetweenAndMessage(Date startDate, Date endDate, String message);
 
-    List<Memo> findByDateBetweenOrMessage(Date startDate, Date endDate, String message);
+    Iterable<Memo> findByDateBetweenOrMessage(Date startDate, Date endDate, String message);
 
-    List<Memo> findByMessageStartsWith(String message);
+    Iterable<Memo> findByMessageStartsWith(String message);
 }

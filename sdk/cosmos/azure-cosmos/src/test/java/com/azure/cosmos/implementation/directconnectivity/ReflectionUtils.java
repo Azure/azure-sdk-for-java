@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.TracerProvider;
+import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.http.HttpClient;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
@@ -135,5 +136,9 @@ public class ReflectionUtils {
 
     public static void buildConnectionPolicy(CosmosClientBuilder cosmosClientBuilder) {
         invokeMethod(CosmosClientBuilder.class, cosmosClientBuilder, "buildConnectionPolicy");
+    }
+
+    public static UserAgentContainer getUserAgentContainer(RxDocumentClientImpl rxDocumentClient) {
+        return get(UserAgentContainer.class, rxDocumentClient, "userAgentContainer");
     }
 }

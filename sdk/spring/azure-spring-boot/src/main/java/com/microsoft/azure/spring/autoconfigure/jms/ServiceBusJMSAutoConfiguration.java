@@ -20,6 +20,8 @@ import org.springframework.jms.listener.MessageListenerContainer;
 
 import javax.jms.ConnectionFactory;
 
+import static com.microsoft.azure.utils.ApplicationId.AZURE_SPRING_SERVICE_BUS;
+
 /**
  * Auto-configuration for Service Bus JMS.
  * <p>
@@ -32,8 +34,6 @@ import javax.jms.ConnectionFactory;
 @EnableConfigurationProperties(AzureServiceBusJMSProperties.class)
 public class ServiceBusJMSAutoConfiguration {
 
-    private static final String AMQP_URI_FORMAT = "amqps://%s?amqp.idleTimeout=%d";
-
     @Bean
     @ConditionalOnMissingBean
     public ConnectionFactory jmsConnectionFactory(AzureServiceBusJMSProperties serviceBusJMSProperties) {
@@ -43,12 +43,13 @@ public class ServiceBusJMSAutoConfiguration {
 
         final ServiceBusJmsConnectionFactorySettings settings =
             new ServiceBusJmsConnectionFactorySettings(idleTimeout, false);
-        final ServiceBusJmsConnectionFactory serviceBusJmsConnectionFactory =
-            new ServiceBusJmsConnectionFactory(connectionString, settings);
+        final SpringServiceBusJmsConnectionFactory springServiceBusJmsConnectionFactory =
+            new SpringServiceBusJmsConnectionFactory(connectionString, settings);
 
-        serviceBusJmsConnectionFactory.setClientId(clientID);
+        springServiceBusJmsConnectionFactory.setClientId(clientID);
+        springServiceBusJmsConnectionFactory.setCustomUserAgent(AZURE_SPRING_SERVICE_BUS);
 
-        return new CachingConnectionFactory(serviceBusJmsConnectionFactory);
+        return new CachingConnectionFactory(springServiceBusJmsConnectionFactory);
     }
 
     @Bean

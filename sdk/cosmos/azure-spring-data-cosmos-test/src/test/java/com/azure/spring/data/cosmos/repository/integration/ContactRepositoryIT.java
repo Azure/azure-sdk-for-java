@@ -36,7 +36,7 @@ public class ContactRepositoryIT {
     private static final Contact TEST_CONTACT = new Contact("testId", "faketitle");
 
     private static final CosmosEntityInformation<Contact, String> entityInformation =
-            new CosmosEntityInformation<>(Contact.class);
+        new CosmosEntityInformation<>(Contact.class);
 
     private static CosmosTemplate staticTemplate;
     private static boolean isSetupDone;
@@ -168,7 +168,7 @@ public class ContactRepositoryIT {
 
     @Test
     public void testCustomQuery() {
-        final List<Contact> result = repository.findByTitle(TEST_CONTACT.getTitle());
+        final List<Contact> result = TestUtils.toList(repository.findByTitle(TEST_CONTACT.getTitle()));
 
         assertThat(result.size()).isEqualTo(1);
         assertThat(result.get(0).getLogicId()).isEqualTo(TEST_CONTACT.getLogicId());
@@ -227,7 +227,7 @@ public class ContactRepositoryIT {
 
     @Test
     public void testShouldAllowListAndIterableResponses() {
-        final List<Contact> contactList = repository.findByTitle(TEST_CONTACT.getTitle());
+        final List<Contact> contactList = TestUtils.toList(repository.findByTitle(TEST_CONTACT.getTitle()));
         Assert.assertEquals(TEST_CONTACT, contactList.get(0));
         Assert.assertEquals(1, contactList.size());
 

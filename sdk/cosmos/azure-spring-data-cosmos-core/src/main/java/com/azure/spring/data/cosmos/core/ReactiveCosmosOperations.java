@@ -28,7 +28,7 @@ public interface ReactiveCosmosOperations {
      * Creates a container if it doesn't already exist
      *
      * @param information the CosmosEntityInformation
-     * @return Mono
+     * @return Mono of CosmosContainerResponse
      */
     Mono<CosmosContainerResponse> createContainerIfNotExists(CosmosEntityInformation<?, ?> information);
 
@@ -38,7 +38,7 @@ public interface ReactiveCosmosOperations {
      * @param containerName the containerName
      * @param domainType the domainType
      * @param <T> type of domainType
-     * @return Flux
+     * @return Flux of results
      */
     <T> Flux<T> findAll(String containerName, Class<T> domainType);
 
@@ -47,7 +47,7 @@ public interface ReactiveCosmosOperations {
      *
      * @param domainType the domainType
      * @param <T> type of domainType
-     * @return Flux
+     * @return Flux of results
      */
     <T> Flux<T> findAll(Class<T> domainType);
 
@@ -57,7 +57,7 @@ public interface ReactiveCosmosOperations {
      * @param partitionKey partition Key
      * @param domainType the domainType
      * @param <T> type of domainType
-     * @return Flux
+     * @return Flux of results
      */
     <T> Flux<T> findAll(PartitionKey partitionKey, Class<T> domainType);
 
@@ -67,7 +67,7 @@ public interface ReactiveCosmosOperations {
      * @param id the id
      * @param domainType the domainType
      * @param <T> type of domainType
-     * @return Mono
+     * @return Mono of result
      */
     <T> Mono<T> findById(Object id, Class<T> domainType);
 
@@ -78,7 +78,7 @@ public interface ReactiveCosmosOperations {
      * @param id the id
      * @param domainType type class
      * @param <T> type of domainType
-     * @return Mono
+     * @return Mono of result
      */
     <T> Mono<T> findById(String containerName, Object id, Class<T> domainType);
 
@@ -89,7 +89,7 @@ public interface ReactiveCosmosOperations {
      * @param domainType type class
      * @param partitionKey partition Key
      * @param <T> type of domainType
-     * @return Mono
+     * @return Mono of result
      */
     <T> Mono<T> findById(Object id, Class<T> domainType, PartitionKey partitionKey);
 
@@ -99,7 +99,7 @@ public interface ReactiveCosmosOperations {
      * @param objectToSave the object to save
      * @param partitionKey the partition key
      * @param <T> type of inserted objectToSave
-     * @return Mono
+     * @return Mono of result
      */
     <T> Mono<T> insert(T objectToSave, PartitionKey partitionKey);
 
@@ -110,7 +110,7 @@ public interface ReactiveCosmosOperations {
      * @param containerName the container name
      * @param objectToSave the object to save
      * @param partitionKey the partition key
-     * @return Mono
+     * @return Mono of result
      */
     <T> Mono<T> insert(String containerName, Object objectToSave, PartitionKey partitionKey);
 
@@ -119,7 +119,7 @@ public interface ReactiveCosmosOperations {
      *
      * @param object the object to upsert
      * @param <T> type class of object
-     * @return Mono
+     * @return Mono of result
      */
     <T> Mono<T> upsert(T object);
 
@@ -129,7 +129,7 @@ public interface ReactiveCosmosOperations {
      * @param containerName the container name
      * @param object the object to save
      * @param <T> type class of object
-     * @return Mono
+     * @return Mono of result
      */
     <T> Mono<T> upsert(String containerName, T object);
 
@@ -177,7 +177,7 @@ public interface ReactiveCosmosOperations {
      * @param domainType type class
      * @param containerName the container name
      * @param <T> type class of domainType
-     * @return Flux
+     * @return Flux of results
      */
     <T> Flux<T> delete(CosmosQuery query, Class<T> domainType, String containerName);
 
@@ -188,7 +188,7 @@ public interface ReactiveCosmosOperations {
      * @param domainType type class
      * @param containerName the container name
      * @param <T> type class of domainType
-     * @return Flux
+     * @return Flux of results
      */
     <T> Flux<T> find(CosmosQuery query, Class<T> domainType, String containerName);
 
@@ -198,7 +198,7 @@ public interface ReactiveCosmosOperations {
      * @param query the document query
      * @param domainType type class
      * @param containerName the container name
-     * @return Mono
+     * @return Mono of result
      */
     Mono<Boolean> exists(CosmosQuery query, Class<?> domainType, String containerName);
 
@@ -207,7 +207,7 @@ public interface ReactiveCosmosOperations {
      * @param id the id
      * @param domainType type class
      * @param containerName the container name
-     * @return Mono
+     * @return Mono of result
      */
     Mono<Boolean> existsById(Object id, Class<?> domainType, String containerName);
 
@@ -215,7 +215,7 @@ public interface ReactiveCosmosOperations {
      * Count
      *
      * @param containerName the container name
-     * @return Mono
+     * @return Mono of result
      */
     Mono<Long> count(String containerName);
 
@@ -224,7 +224,7 @@ public interface ReactiveCosmosOperations {
      *
      * @param query the document query
      * @param containerName the container name
-     * @return Mono
+     * @return Mono of result
      */
     Mono<Long> count(CosmosQuery query, String containerName);
 

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.integration;
 
+import com.azure.spring.data.cosmos.common.TestUtils;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
 import com.azure.spring.data.cosmos.domain.LongIdDomain;
@@ -47,7 +48,7 @@ public class LongIdDomainRepositoryIT {
     private static final LongIdDomain DOMAIN_2 = new LongIdDomain(ID_2, NAME_2);
 
     private static final CosmosEntityInformation<LongIdDomain, Integer> entityInformation =
-            new CosmosEntityInformation<>(LongIdDomain.class);
+        new CosmosEntityInformation<>(LongIdDomain.class);
 
     private static CosmosTemplate staticTemplate;
     private static boolean isSetupDone;
@@ -124,7 +125,7 @@ public class LongIdDomainRepositoryIT {
         this.repository.saveAll(entitiesToSave);
 
         final Set<LongIdDomain> savedEntities = StreamSupport.stream(this.repository.findAll().spliterator(), false)
-                                                                .collect(Collectors.toSet());
+                                                             .collect(Collectors.toSet());
 
         Assert.assertTrue(entitiesToSave.containsAll(savedEntities));
     }
@@ -132,7 +133,7 @@ public class LongIdDomainRepositoryIT {
     @Test
     public void testFindAllById() {
         final Iterable<LongIdDomain> allById =
-            this.repository.findAllById(Arrays.asList(DOMAIN_1.getNumber(), DOMAIN_2.getNumber()));
+            TestUtils.toList(this.repository.findAllById(Arrays.asList(DOMAIN_1.getNumber(), DOMAIN_2.getNumber())));
         Assert.assertTrue(((ArrayList) allById).size() == 2);
         Iterator<LongIdDomain> it = allById.iterator();
         assertLongIdDomainEquals(Arrays.asList(it.next(), it.next()), Arrays.asList(DOMAIN_1, DOMAIN_2));
