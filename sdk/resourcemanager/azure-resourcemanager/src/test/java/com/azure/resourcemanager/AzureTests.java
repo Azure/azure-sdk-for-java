@@ -1073,12 +1073,15 @@ public class AzureTests extends TestBase {
     //                .runTest(azure.cdnProfiles(), azure.resourceGroups());
     //    }
 
-    //    @Test
-    //    public void testDnsZones() throws Exception {
-    //        addTextReplacementRule("https://management.azure.com:443/", playbackUri + "/");
-    //        new TestDns()
-    //                .runTest(azure.dnsZones(), azure.resourceGroups());
-    //    }
+    @Test
+    public void testDnsZones() throws Exception {
+        new TestDns().runTest(azure.dnsZones(), azure.resourceGroups());
+    }
+
+    @Test
+    public void testPrivateDnsZones() throws Exception {
+        new TestPrivateDns().runTest(azure.privateDnsZones(), azure.resourceGroups());
+    }
 
     @Test
     public void testSqlServer() throws Exception {
