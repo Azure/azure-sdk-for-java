@@ -359,9 +359,8 @@ public class EncryptionCosmosAsyncContainer {
 
         final Consumer<DecryptionResult> finalDecryptionResultConsumer = decryptionResultConsumer;
 
-        return CosmosBridgeInternal.queryItemsInternal(container, query, options, classType,
+        return CosmosBridgeInternal.queryItemsInternal(container, query, options,
             new Transformer<T>() {
-
                 @Override
                 public Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> transform(Function<CosmosPagedFluxOptions, Flux<FeedResponse<ObjectNode>>> func) {
                     return queryDecryptionTransformer(classType, finalDecryptionResultConsumer, func);
