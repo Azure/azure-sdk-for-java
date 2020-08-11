@@ -5,7 +5,7 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.FormTable;
-import com.azure.ai.formrecognizer.models.OperationResult;
+import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
 
@@ -40,7 +40,7 @@ public class RecognizeContent {
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
         InputStream targetStream = new ByteArrayInputStream(fileContent);
 
-        SyncPoller<OperationResult, List<FormPage>> recognizeContentPoller =
+        SyncPoller<FormRecognizerOperationResult, List<FormPage>> recognizeContentPoller =
             client.beginRecognizeContent(targetStream, sourceFile.length());
 
         List<FormPage> contentPageResults = recognizeContentPoller.getFinalResult();
