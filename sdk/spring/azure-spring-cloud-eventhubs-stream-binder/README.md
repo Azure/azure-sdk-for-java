@@ -1,4 +1,4 @@
-# Spring Cloud Azure Event Hub Stream Binder client library for Java
+# Spring Cloud Azure Event Hubs Stream Binder client library for Java
 
 The project provides **Spring Cloud Stream Binder for Azure Event Hub** which allows you to build message-driven 
 microservice using **Spring Cloud Stream** based on [Azure Event Hub](https://azure.microsoft.com/en-us/services/event-hubs/) service.

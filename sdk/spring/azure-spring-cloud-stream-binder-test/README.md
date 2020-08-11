@@ -1,4 +1,4 @@
-# Azure Spring Cloud Stream Binder Core client library for Java
+# Azure Spring Cloud Stream Binder Test client library for Java
 
 ## Key concepts
 ## Getting started

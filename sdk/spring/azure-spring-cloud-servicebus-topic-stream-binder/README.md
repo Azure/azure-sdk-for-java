@@ -1,38 +1,42 @@
-# Spring Cloud Azure Service Bus Topic Stream Binder
+# Spring Cloud Azure Service Bus Topic Stream Binder client library for Java
 
 The project provides **Spring Cloud Stream Binder for Azure Service Bus Topic** which allows you to build message-driven 
 microservice using **Spring Cloud Stream** based on [Azure Service Bus Topic](https://azure.microsoft.com/en-us/services/service-bus/) service.
 
-## Service Bus Topic Binder Overview
+## Key concepts
+
+### Service Bus Topic Binder Overview
 
 The Spring Cloud Stream Binder for Azure Service Bus Topic provides the binding implementation for the Spring Cloud Stream.
 This implementation uses Spring Integration Service Bus Topic Channel Adapters at its foundation. 
 
-### Scheduled Message
+#### Scheduled Message
 
 This binder supports submitting messages to a topic for delayed processing. Users can send scheduled messages with header `x-delay` 
 expressing in milliseconds a delay time for the message. The message will be delivered to the respective topics after `x-delay` milliseconds. 
 
-### Consumer Group
+#### Consumer Group
 
 Service Bus Topic provides similar support of consumer group as Apache Kafka, but with slight different logic.
 This binder rely on `Subscription` of a topic to act as a consumer group.
 
-### Partitioning Support
+#### Partitioning Support
+
+## Getting started
 
 This binder implementation has no partition support even service bus topic supports partition.
 
-## Samples 
+## Examples 
 
 Please use this [sample](../../spring-cloud-azure-samples/servicebus-topic-binder-sample/) as a reference
 for how to use this binder in your projects. 
 
-## Feature List 
+### Feature List 
 
 - [Dependency Management](#dependency-management)
 - [Configuration Options](#configuration-options)
 
-### Dependency Management
+#### Dependency Management
 
 **Maven Coordinates** 
 ```
@@ -49,11 +53,11 @@ dependencies {
 }
 ```
 
-### Configuration Options 
+#### Configuration Options 
 
 The binder provides the following configuration options in `application.properties`.
 
-#### Spring Cloud Azure Properties ####
+##### Spring Cloud Azure Properties #####
 
 Name | Description | Required | Default 
 ---|---|---|---
@@ -62,7 +66,7 @@ spring.cloud.azure.resource-group | Name of Azure resource group | Yes |
 spring.cloud.azure.region | Region name of the Azure resource group, e.g. westus | Yes | 
 spring.cloud.azure.servicebus.namespace | Service Bus Namespace. Auto creating if missing | Yes |
 
-#### Serivce Bus Topic Producer Properties ####
+##### Serivce Bus Topic Producer Properties #####
 
 It supports the following configurations with the format of `spring.cloud.stream.servicebus.topic.bindings.<channelName>.producer`.
 
@@ -79,7 +83,7 @@ Effective only if `sync` is set to true. The amount of time to wait for a respon
 
 Default: `10000`
  
-#### Service Bus Topic Consumer Properties ####
+##### Service Bus Topic Consumer Properties #####
 
 It supports the following configurations with the format of `spring.cloud.stream.servicebus.topic.bindings.<channelName>.consumer`.
 
@@ -110,3 +114,7 @@ Default: `1`
 Controls if is a session aware consumer. Set it to `true` if is a topic with sessions enabled.
 
 Default: `false`
+
+## Troubleshooting
+## Next steps
+## Contributing
