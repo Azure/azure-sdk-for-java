@@ -49,8 +49,14 @@
     <module>azure-spring-integration-servicebus</module>
     <module>azure-spring-integration-storage-queue</module>
     <module>azure-spring-integration-test</module>
-    <module>azure-spring-cloud-keyvault-config</module>
     <module>azure-spring-cloud-messaging</module>
+    <module>azure-spring-cloud-starter-appconfiguration-config</module>
+    <module>azure-spring-cloud-starter-cache</module>
+    <module>azure-spring-cloud-starter-eventhubs</module>
+    <module>azure-spring-cloud-starter-eventhubs-kafka</module>
+    <module>azure-spring-cloud-starter-servicebus</module>
+    <module>azure-spring-cloud-starter-storage</module>
+    <module>azure-spring-cloud-starter-storage-queue</module>
   </modules>
 
 </project>

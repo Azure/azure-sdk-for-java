@@ -20,7 +20,6 @@ com.microsoft.azure:azure-client-authentication;1.7.3
 com.microsoft.azure:azure-client-runtime;1.7.3
 com.microsoft.azure:azure-core;0.9.8
 com.microsoft.azure:azure-cosmos;3.7.3
-com.microsoft.azure:azure-keyvault;1.0.0
 com.microsoft.azure:azure-keyvault-cryptography;1.2.2
 com.microsoft.azure:azure-media;0.9.8
 com.microsoft.azure:azure-servicebus;3.4.0
@@ -31,7 +30,7 @@ com.microsoft.rest.v2:client-runtime;2.1.1
 com.microsoft.sqlserver:mssql-jdbc;7.4.1.jre8
 com.microsoft.azure:spring-data-cosmosdb;2.3.0
 com.microsoft.spring.data.gremlin:spring-data-gremlin;2.3.0
-com.squareup.okhttp3:okhttp;4.2.2
+com.squareup.okhttp3:okhttp;4.8.1
 com.zaxxer:HikariCP;3.4.5
 commons-codec:commons-codec;1.14
 commons-net:commons-net;3.6
@@ -67,7 +66,6 @@ org.apache.logging.log4j:log4j-api;2.11.1
 org.apache.logging.log4j:log4j-core;2.11.1
 org.apache.logging.log4j:log4j-slf4j-impl;2.13.0
 org.apache.qpid:proton-j;0.33.4
-org.apache.qpid:qpid-jms-client;0.43.0
 org.apache.tinkerpop:gremlin-driver;3.2.4
 org.asynchttpclient:async-http-client;2.10.5
 org.codehaus.groovy:groovy-eclipse-batch;2.5.8-01
@@ -91,6 +89,8 @@ org.springframework.boot:spring-boot-configuration-processor;2.3.2.RELEASE
 org.springframework.boot:spring-boot-dependencies;2.3.2.RELEASE
 org.springframework.boot:spring-boot-starter-actuator;2.3.2.RELEASE
 org.springframework.boot:spring-boot-starter-aop;2.3.2.RELEASE
+org.springframework.boot:spring-boot-starter-cache;2.3.2.RELEASE
+org.springframework.boot:spring-boot-starter-data-redis;2.3.2.RELEASE
 org.springframework.boot:spring-boot-starter-parent;2.3.0.RELEASE
 org.springframework.boot:spring-boot-starter-test;2.3.2.RELEASE
 org.springframework.boot:spring-boot-starter-validation;2.3.2.RELEASE
@@ -121,7 +121,7 @@ org.springframework:spring-webmvc;5.2.6.RELEASE
 org.springframework.cloud:spring-cloud-dependencies;Hoxton.SR7
 org.springframework.cloud:spring-cloud-bus;2.2.0.RELEASE
 org.springframework.cloud:spring-cloud-context;2.2.0.RELEASE
-
+org.springframework.cloud:spring-cloud-starter-stream-kafka;3.0.0.RELEASE
 org.springframework.data:spring-data-redis;2.2.5.RELEASE
 org.springframework.data:spring-data-mongodb;2.2.5.RELEASE
 

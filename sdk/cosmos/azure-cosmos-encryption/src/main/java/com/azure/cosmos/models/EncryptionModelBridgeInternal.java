@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.ItemDeserializer;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.Warning;
+import reactor.core.publisher.Mono;
 
 import static com.azure.cosmos.implementation.Warning.INTERNAL_USE_ONLY_WARNING;
 
@@ -28,8 +29,8 @@ public class EncryptionModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static byte[] setByteArrayContent(CosmosItemResponse response, byte[] content) {
-        return response.responseBodyAsByteArray = content;
+    public static void setByteArrayContent(CosmosItemResponse response, byte[] content) {
+        response.responseBodyAsByteArray = content;
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

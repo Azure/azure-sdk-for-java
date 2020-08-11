@@ -1,0 +1,1 @@
+provides: spring-integration-eventhub, spring-cloud-azure-autoconfigure
