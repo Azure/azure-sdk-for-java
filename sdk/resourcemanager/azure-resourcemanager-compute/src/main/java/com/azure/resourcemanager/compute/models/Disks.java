@@ -16,6 +16,7 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsBatchCr
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
+import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
 
@@ -73,4 +74,21 @@ public interface Disks
      * @return a representation of the deferred computation of this call
      */
     Mono<Void> revokeAccessAsync(String resourceGroupName, String diskName);
+
+    /**
+     * Begins deleting a disk from Azure, identifying it by its resource ID.
+     *
+     * @param id the resource ID of the disk to delete
+     * @return the accepted deleting operation
+     */
+    Accepted<Void> beginDeleteById(String id);
+
+    /**
+     * Begins deleting a disk from Azure, identifying it by its name and its resource group.
+     *
+     * @param resourceGroupName the resource group the resource is part of
+     * @param name the disk name
+     * @return the accepted deleting operation
+     */
+    Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name);
 }

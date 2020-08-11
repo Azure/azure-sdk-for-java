@@ -20,6 +20,7 @@ import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineInner;
 import com.azure.resourcemanager.compute.fluent.VirtualMachinesClient;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
@@ -200,6 +201,11 @@ public class VirtualMachinesImpl
     @Override
     public Mono<RunCommandResult> runCommandAsync(String groupName, String name, RunCommandInput inputCommand) {
         return this.inner().runCommandAsync(groupName, name, inputCommand).map(RunCommandResultImpl::new);
+    }
+
+    @Override
+    public Accepted<Void> beginDeleteById(String id) {
+        return beginDeleteByResourceGroup(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
     }
 
     @Override
