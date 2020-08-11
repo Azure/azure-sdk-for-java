@@ -96,6 +96,47 @@ public class DeserializationTests {
     }
 
     @Test
+    public void consumeEventGridEventWithoutArrayBrackets() throws IOException {
+        // using a storageBlobDeletedEvent
+        String jsonData = getTestPayloadFromFile("EventGridEventNoArray.json");
+        //
+        EventGridConsumer consumer = new EventGridConsumerBuilder().buildConsumer();
+        EventGridEvent[] events = consumer.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+
+        assertNotNull(events);
+        assertEquals(1, events.length);
+        assertTrue(events[0].getData() instanceof StorageBlobDeletedEventData);
+        StorageBlobDeletedEventData eventData = (StorageBlobDeletedEventData) events[0].getData();
+        assertEquals("https://example.blob.core.windows.net/testcontainer/testfile.txt", eventData.getUrl());
+    }
+
+    @Test
+    public void consumeCloudEventWithoutArrayBrackets() throws IOException {
+        String jsonData = getTestPayloadFromFile("CloudEventNoArray.json");
+
+        EventGridConsumer consumer = new EventGridConsumerBuilder()
+            .addDataMapping("Contoso.Items.ItemReceived", ContosoItemReceivedEventData.class)
+            .buildConsumer();
+
+        List<CloudEvent> events = consumer.deserializeCloudEvents(jsonData);
+
+        assertNotNull(events);
+        assertEquals(1, events.size());
+
+        assertEquals(events.get(0).getSpecVersion(), "1.0");
+
+        assertTrue(events.get(0).getData() instanceof ContosoItemReceivedEventData);
+        ContosoItemReceivedEventData data = (ContosoItemReceivedEventData) events.get(0).getData();
+        assertEquals("512d38b6-c7b8-40c8-89fe-f46f9e9622b6", data.getItemSku());
+
+        Map<String, Object> additionalProperties = events.get(0).getExtensionAttributes();
+
+        assertNotNull(additionalProperties);
+        assertTrue(additionalProperties.containsKey("foo"));
+        assertEquals("bar", additionalProperties.get("foo"));
+    }
+
+    @Test
     public void consumeCloudEventWithNullData() throws IOException {
         String jsonData = getTestPayloadFromFile("NullData.json");
         EventGridConsumer consumer = new EventGridConsumerBuilder()
@@ -163,6 +204,32 @@ public class DeserializationTests {
     @Test
     public void consumeCustomSchemaEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("CustomSchemaEvent.json");
+
+        EventGridConsumer consumer = new EventGridConsumerBuilder()
+            .addDataMapping("Contoso.Items.ItemReceived", ContosoItemReceivedEventData.class)
+            .buildConsumer();
+
+        List<CustomSchema> events = consumer.deserializeCustomEvents(jsonData, CustomSchema.class);
+
+        assertNotNull(events);
+        assertEquals(1, events.size());
+
+        ContosoItemSentEventData sentData = events.get(0).getSentData();
+
+        assertNotNull(sentData);
+        assertEquals("1234567890", sentData.getShippingInfo().getShipmentId());
+
+
+        Map<String, Object> additionalProperties = events.get(0).getAdditionalProperties();
+
+        assertNotNull(additionalProperties);
+        assertTrue(additionalProperties.containsKey("foo"));
+        assertEquals("bar", additionalProperties.get("foo"));
+    }
+
+    @Test
+    public void consumeCustomSchemaEventWithoutArrayBrackets() throws IOException {
+        String jsonData = getTestPayloadFromFile("CustomSchemaEventNoArray.json");
 
         EventGridConsumer consumer = new EventGridConsumerBuilder()
             .addDataMapping("Contoso.Items.ItemReceived", ContosoItemReceivedEventData.class)

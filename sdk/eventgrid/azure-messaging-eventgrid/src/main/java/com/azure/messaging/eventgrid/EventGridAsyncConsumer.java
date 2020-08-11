@@ -5,16 +5,18 @@
 package com.azure.messaging.eventgrid;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.experimental.serializer.JsonArray;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.experimental.serializer.JsonSerializer;
 import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.JsonSerializer;
+import com.azure.core.util.serializer.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
@@ -41,8 +43,7 @@ public final class EventGridAsyncConsumer {
         this.typeMappings = typeMappings;
         this.deserializer = new JacksonJsonSerializerBuilder()
             .serializer(new JacksonAdapter().serializer() // this is a workaround to get the FlatteningDeserializer
-                .registerModule(new JavaTimeModule()) // probably also change this to DateTimeDeserializer when possible
-                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false))
+                .registerModule(new JavaTimeModule())) // probably also change this to DateTimeDeserializer when possible
             .build();
         this.dataDeserializer = dataDeserializer == null ? this.deserializer : dataDeserializer;
     }
@@ -56,19 +57,10 @@ public final class EventGridAsyncConsumer {
      * @return The deserialized events in an {@link Flux}.
      */
     public Flux<EventGridEvent> deserializeEventGridEvents(String json) {
-        return deserializer.toTree(new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8)))
-            .flatMapMany(jsonNode -> {
-                if (jsonNode.isArray()) {
-                    return deserializer.deserializeTree(jsonNode,
-                        com.azure.messaging.eventgrid.implementation.models.EventGridEvent[].class)
-                        .flatMapMany(Flux::fromArray);
-                } else {
-                    return deserializer.deserializeTree(jsonNode,
-                        com.azure.messaging.eventgrid.implementation.models.EventGridEvent.class)
-                        .as(Flux::from);
-
-                }
-            })
+        return Flux.fromArray(deserializer
+            .deserialize(new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8)),
+                TypeReference.createInstance(com.azure.messaging.eventgrid.implementation.models.EventGridEvent[].class))
+        )
             .flatMap(this::richDataAndConvert);
     }
 
@@ -76,8 +68,12 @@ public final class EventGridAsyncConsumer {
     private Mono<EventGridEvent> richDataAndConvert(com.azure.messaging.eventgrid.implementation.models.EventGridEvent event) {
         String eventType = SystemEventMappings.canonicalizeEventType(event.getEventType());
         if (typeMappings.containsKey(eventType)) {
-            return deserializer.toTree(event.getData())
-                .flatMap(jsonNode -> dataDeserializer.deserializeTree(jsonNode, typeMappings.get(eventType)))
+
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            deserializer.serialize(stream, event.getData());
+
+            return dataDeserializer.deserializeAsync(new ByteArrayInputStream(stream.toByteArray()),
+                TypeReference.createInstance(typeMappings.get(eventType)))
                 .map(data -> new EventGridEvent(event).setData(data));
         }
         return Mono.just(new EventGridEvent(event));
@@ -91,26 +87,22 @@ public final class EventGridAsyncConsumer {
      * @return the deserialized cloud events in an {@link Flux}, with rich object data.
      */
     public Flux<CloudEvent> deserializeCloudEvents(String json) {
-        return deserializer.toTree(new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8)))
-            .flatMapMany(jsonNode -> {
-                if (jsonNode.isArray()) {
-                    return deserializer.deserializeTree(jsonNode,
-                        com.azure.messaging.eventgrid.implementation.models.CloudEvent[].class)
-                        .flatMapMany(Flux::fromArray);
-                } else {
-                    return deserializer.deserializeTree(jsonNode,
-                        com.azure.messaging.eventgrid.implementation.models.CloudEvent.class)
-                        .as(Flux::from);
-                }
-            })
+        return deserializer
+            .deserializeAsync(new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8)),
+                TypeReference.createInstance(com.azure.messaging.eventgrid.implementation.models.CloudEvent[].class))
+            .flatMapMany(Flux::fromArray)
             .flatMap(this::richDataAndConvert);
     }
 
     private Mono<CloudEvent> richDataAndConvert(com.azure.messaging.eventgrid.implementation.models.CloudEvent event) {
         String eventType = SystemEventMappings.canonicalizeEventType(event.getType());
-        if (typeMappings.containsKey(eventType) && event.getData() != null) {
-            return deserializer.toTree(event.getData())
-                .flatMap(jsonNode -> dataDeserializer.deserializeTree(jsonNode, typeMappings.get(eventType)))
+        if (typeMappings.containsKey(eventType)) {
+
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            deserializer.serialize(stream, event.getData());
+
+            return dataDeserializer.deserializeAsync(new ByteArrayInputStream(stream.toByteArray()),
+                TypeReference.createInstance(typeMappings.get(eventType)))
                 .map(data -> new CloudEvent(event).setData(data));
         }
         return Mono.just(new CloudEvent(event));
@@ -126,16 +118,10 @@ public final class EventGridAsyncConsumer {
      * @return The deserialized events in an {@link Flux}
      */
     public <TEvent> Flux<TEvent> deserializeCustomEvents(String json, Class<TEvent> clazz) {
-        return dataDeserializer.toTree(new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8)))
-            .flatMapMany(jsonNode -> {
-                if (jsonNode.isArray()) {
-                    JsonArray jsonArr = (JsonArray) jsonNode;
-                    return Flux.fromStream(jsonArr.elements())
-                        .flatMap(node -> dataDeserializer.deserializeTree(node, clazz));
-                } else {
-                    return dataDeserializer.deserializeTree(jsonNode, clazz)
-                        .as(Flux::from);
-                }
-            });
+
+        return dataDeserializer
+            .deserializeAsync(new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8)),
+                TypeReference.createInstance(Array.newInstance(clazz, 0).getClass()))
+            .flatMapMany(arr -> Flux.fromArray((TEvent[]) arr));
     }
 }
