@@ -8,7 +8,7 @@ import java.util.List;
 
 /** An immutable client-side representation of a PTR (pointer) record set in Azure Private DNS Zone. */
 @Fluent
-public interface PtrRecordSet {
+public interface PtrRecordSet extends PrivateDnsRecordSet {
     /** @return the target domain names of PTR records in this record set */
     List<String> targetDomainNames();
 }

@@ -94,7 +94,7 @@ class PrivateDnsRecordSetImpl
 
     @Override
     public PrivateDnsRecordSetImpl withoutIPv4Address(String ipv4Address) {
-        inner().aRecords().add(new ARecord().withIpv4Address(ipv4Address));
+        recordSetRemoveInfo.aRecords().add(new ARecord().withIpv4Address(ipv4Address));
         return this;
     }
 
@@ -106,13 +106,15 @@ class PrivateDnsRecordSetImpl
 
     @Override
     public PrivateDnsRecordSetImpl withMailExchange(String mailExchangeHostName, int priority) {
-        inner().mxRecords().add(new MxRecord().withExchange(mailExchangeHostName));
+        inner().mxRecords().add(
+            new MxRecord().withExchange(mailExchangeHostName).withPreference(priority));
         return this;
     }
 
     @Override
     public PrivateDnsRecordSetImpl withoutMailExchange(String mailExchangeHostName, int priority) {
-        recordSetRemoveInfo.mxRecords().add(new MxRecord().withExchange(mailExchangeHostName));
+        recordSetRemoveInfo.mxRecords().add(
+            new MxRecord().withExchange(mailExchangeHostName).withPreference(priority));
         return this;
     }
 

@@ -6,12 +6,14 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.privatedns.PrivateDnsZoneManager;
 import com.azure.resourcemanager.privatedns.fluent.PrivateZonesClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsBatchCreation;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
@@ -24,6 +26,8 @@ public interface PrivateDnsZones
         SupportsListingByResourceGroup<PrivateDnsZone>,
         SupportsGettingById<PrivateDnsZone>,
         SupportsGettingByResourceGroup<PrivateDnsZone>,
+        SupportsDeletingById,
+        SupportsDeletingByResourceGroup,
         SupportsBatchCreation<PrivateDnsZone>,
         SupportsBatchDeletion,
         HasManager<PrivateDnsZoneManager>,
