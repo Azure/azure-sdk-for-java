@@ -1776,7 +1776,8 @@ class VirtualMachineImpl
             this.manager().inner().getHttpPipeline(),
             VirtualMachineInner.class,
             () -> {
-                Flux<Indexable> dependencyTasksAsync = taskGroup().invokeDependencyAsync(taskGroup().newInvocationContext());
+                Flux<Indexable> dependencyTasksAsync =
+                    taskGroup().invokeDependencyAsync(taskGroup().newInvocationContext());
                 dependencyTasksAsync.blockLast();
 
                 // same as createResourceAsync

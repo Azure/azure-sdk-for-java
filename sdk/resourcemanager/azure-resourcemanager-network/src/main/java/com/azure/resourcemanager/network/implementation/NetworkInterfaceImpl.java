@@ -16,6 +16,7 @@ import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceIpConfigur
 import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceInner;
 import com.azure.resourcemanager.network.fluent.inner.NetworkSecurityGroupInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
+import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
@@ -28,6 +29,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Implementation for NetworkInterface and its create and update interfaces. */
@@ -464,7 +467,13 @@ class NetworkInterfaceImpl
             this.manager().inner().getSerializerAdapter(),
             this.manager().inner().getHttpPipeline(),
             NetworkInterface.class,
-            this::afterCreating,
+            () -> {
+                Flux<Indexable> dependencyTasksAsync =
+                    taskGroup().invokeDependencyAsync(taskGroup().newInvocationContext());
+                dependencyTasksAsync.blockLast();
+
+                beforeCreating();
+            },
             inner -> {
                 innerToFluentMap(this);
                 initializeChildrenFromInner();

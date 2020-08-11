@@ -21,6 +21,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
+import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import java.util.ArrayList;
@@ -29,6 +30,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Implementation for PublicIPAddress and its create and update interfaces. */
@@ -184,7 +187,14 @@ class PublicIpAddressImpl
             this.manager().inner().getSerializerAdapter(),
             this.manager().inner().getHttpPipeline(),
             PublicIpAddress.class,
-            this::cleanupDnsSettings, innerToFluentMap(this));
+            () -> {
+                Flux<Indexable> dependencyTasksAsync =
+                    taskGroup().invokeDependencyAsync(taskGroup().newInvocationContext());
+                dependencyTasksAsync.blockLast();
+
+                this.cleanupDnsSettings();
+            },
+            innerToFluentMap(this));
     }
 
     // CreateUpdateTaskGroup.ResourceCreator implementation
