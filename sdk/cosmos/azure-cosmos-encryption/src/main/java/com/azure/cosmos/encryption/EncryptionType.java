@@ -8,5 +8,5 @@ package com.azure.cosmos.encryption;
  * Encryption types that may be supported.
  */
 public enum EncryptionType {
-    RANDOMIZED;
+    RANDOMIZED
 }
