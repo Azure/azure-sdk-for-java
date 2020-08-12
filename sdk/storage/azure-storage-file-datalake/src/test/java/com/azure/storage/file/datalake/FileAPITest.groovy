@@ -2496,21 +2496,23 @@ class FileAPITest extends APISpec {
     def "Buffered upload options"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
+        def spyClient = Spy(fac)
         def data = getRandomData(dataSize)
 
         when:
-        fac.uploadWithResponse(Flux.just(data),
+        spyClient.uploadWithResponse(Flux.just(data),
             new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxSingleUploadSizeLong(singleUploadSize), null, null, null).block()
 
         then:
         fac.getProperties().block().getFileSize() == dataSize
+        numAppends * spyClient.appendWithResponse(_, _, _, _, _)
 
         where:
-        dataSize                                          | singleUploadSize | blockSize || _
-        DataLakeFileAsyncClient.MAX_APPEND_FILE_BYTES - 1 | null             | null      || _
-        DataLakeFileAsyncClient.MAX_APPEND_FILE_BYTES + 1 | null             | null      || _
-        100                                               | 50               | null      || _
-        100                                               | 50               | 20        || _
+        dataSize                 | singleUploadSize | blockSize || numAppends
+        (100 * Constants.MB) - 1 | null             | null      || 1
+        (100 * Constants.MB) + 1 | null             | null      || Math.ceil(((double) (100 * MB) + 1) / (double) (4 * MB))
+        100                      | 50               | null      || 1
+        100                      | 50               | 20        || 5
     }
 
     @Unroll

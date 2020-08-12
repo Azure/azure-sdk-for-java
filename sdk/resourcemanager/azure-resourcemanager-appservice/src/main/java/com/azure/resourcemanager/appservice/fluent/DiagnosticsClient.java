@@ -638,7 +638,7 @@ public final class DiagnosticsClient {
         String resourceGroupName, String name, Context context) {
         return new PagedFlux<>(
             () -> listHostingEnvironmentDetectorResponsesSinglePageAsync(resourceGroupName, name, context),
-            nextLink -> listHostingEnvironmentDetectorResponsesNextSinglePageAsync(nextLink));
+            nextLink -> listHostingEnvironmentDetectorResponsesNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1117,7 +1117,7 @@ public final class DiagnosticsClient {
         String resourceGroupName, String siteName, Context context) {
         return new PagedFlux<>(
             () -> listSiteDetectorResponsesSinglePageAsync(resourceGroupName, siteName, context),
-            nextLink -> listSiteDetectorResponsesNextSinglePageAsync(nextLink));
+            nextLink -> listSiteDetectorResponsesNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1594,7 +1594,7 @@ public final class DiagnosticsClient {
         String resourceGroupName, String siteName, Context context) {
         return new PagedFlux<>(
             () -> listSiteDiagnosticCategoriesSinglePageAsync(resourceGroupName, siteName, context),
-            nextLink -> listSiteDiagnosticCategoriesNextSinglePageAsync(nextLink));
+            nextLink -> listSiteDiagnosticCategoriesNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1974,7 +1974,7 @@ public final class DiagnosticsClient {
         String resourceGroupName, String siteName, String diagnosticCategory, Context context) {
         return new PagedFlux<>(
             () -> listSiteAnalysesSinglePageAsync(resourceGroupName, siteName, diagnosticCategory, context),
-            nextLink -> listSiteAnalysesNextSinglePageAsync(nextLink));
+            nextLink -> listSiteAnalysesNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2696,7 +2696,7 @@ public final class DiagnosticsClient {
         String resourceGroupName, String siteName, String diagnosticCategory, Context context) {
         return new PagedFlux<>(
             () -> listSiteDetectorsSinglePageAsync(resourceGroupName, siteName, diagnosticCategory, context),
-            nextLink -> listSiteDetectorsNextSinglePageAsync(nextLink));
+            nextLink -> listSiteDetectorsNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -3416,7 +3416,7 @@ public final class DiagnosticsClient {
         String resourceGroupName, String siteName, String slot, Context context) {
         return new PagedFlux<>(
             () -> listSiteDetectorResponsesSlotSinglePageAsync(resourceGroupName, siteName, slot, context),
-            nextLink -> listSiteDetectorResponsesSlotNextSinglePageAsync(nextLink));
+            nextLink -> listSiteDetectorResponsesSlotNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -3932,7 +3932,7 @@ public final class DiagnosticsClient {
         String resourceGroupName, String siteName, String slot, Context context) {
         return new PagedFlux<>(
             () -> listSiteDiagnosticCategoriesSlotSinglePageAsync(resourceGroupName, siteName, slot, context),
-            nextLink -> listSiteDiagnosticCategoriesSlotNextSinglePageAsync(nextLink));
+            nextLink -> listSiteDiagnosticCategoriesSlotNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -4342,7 +4342,7 @@ public final class DiagnosticsClient {
         String resourceGroupName, String siteName, String diagnosticCategory, String slot, Context context) {
         return new PagedFlux<>(
             () -> listSiteAnalysesSlotSinglePageAsync(resourceGroupName, siteName, diagnosticCategory, slot, context),
-            nextLink -> listSiteAnalysesSlotNextSinglePageAsync(nextLink));
+            nextLink -> listSiteAnalysesSlotNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -5148,7 +5148,7 @@ public final class DiagnosticsClient {
         String resourceGroupName, String siteName, String diagnosticCategory, String slot, Context context) {
         return new PagedFlux<>(
             () -> listSiteDetectorsSlotSinglePageAsync(resourceGroupName, siteName, diagnosticCategory, slot, context),
-            nextLink -> listSiteDetectorsSlotNextSinglePageAsync(nextLink));
+            nextLink -> listSiteDetectorsSlotNextSinglePageAsync(nextLink, context));
     }
 
     /**

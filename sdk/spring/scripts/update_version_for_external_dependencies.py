@@ -21,6 +21,9 @@ ROOT_POM_IDS = [
     'org.springframework.boot:spring-boot-dependencies',
     'org.springframework.cloud:spring-cloud-dependencies'
 ]
+SKIP_IDS = [
+    'org.eclipse.jgit:org.eclipse.jgit'  # Refs: https://github.com/Azure/azure-sdk-for-java/pull/13956/files#r468368271
+]
 
 
 def main():
@@ -133,7 +136,7 @@ def update_version_for_external_dependencies(dependency_dict):
                 key_value = line.split(';', 1)
                 key = key_value[0]
                 value = key_value[1]
-                if key in dependency_dict:
+                if key not in SKIP_IDS and key in dependency_dict:
                     value_in_dict = dependency_dict[key]
                     if version_bigger_than(value, value_in_dict):
                         log.warn('Version update skipped. key = {}, value = {}, new_value = {}'.format(key, value, value_in_dict))

@@ -11,6 +11,9 @@ import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
+import com.azure.core.management.serializer.AzureJacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
+import java.time.Duration;
 
 /** A builder for creating a new instance of the SubscriptionClient type. */
 @ServiceClientBuilder(serviceClients = {SubscriptionClient.class})
@@ -63,6 +66,38 @@ public final class SubscriptionClientBuilder {
         return this;
     }
 
+    /*
+     * The serializer to serialize an object into a string
+     */
+    private SerializerAdapter serializerAdapter;
+
+    /**
+     * Sets The serializer to serialize an object into a string.
+     *
+     * @param serializerAdapter the serializerAdapter value.
+     * @return the SubscriptionClientBuilder.
+     */
+    public SubscriptionClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
+        this.serializerAdapter = serializerAdapter;
+        return this;
+    }
+
+    /*
+     * The default poll interval for long-running operation
+     */
+    private Duration defaultPollInterval;
+
+    /**
+     * Sets The default poll interval for long-running operation.
+     *
+     * @param defaultPollInterval the defaultPollInterval value.
+     * @return the SubscriptionClientBuilder.
+     */
+    public SubscriptionClientBuilder defaultPollInterval(Duration defaultPollInterval) {
+        this.defaultPollInterval = defaultPollInterval;
+        return this;
+    }
+
     /**
      * Builds an instance of SubscriptionClient with the provided parameters.
      *
@@ -81,7 +116,14 @@ public final class SubscriptionClientBuilder {
                     .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                     .build();
         }
-        SubscriptionClient client = new SubscriptionClient(pipeline, environment, endpoint);
+        if (serializerAdapter == null) {
+            this.serializerAdapter = new AzureJacksonAdapter();
+        }
+        if (defaultPollInterval == null) {
+            this.defaultPollInterval = Duration.ofSeconds(30);
+        }
+        SubscriptionClient client =
+            new SubscriptionClient(pipeline, serializerAdapter, defaultPollInterval, environment, endpoint);
         return client;
     }
 }

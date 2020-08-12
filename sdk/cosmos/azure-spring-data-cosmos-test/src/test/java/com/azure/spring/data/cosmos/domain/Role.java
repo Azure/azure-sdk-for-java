@@ -13,7 +13,17 @@ import java.util.Objects;
 
 @CosmosIndexingPolicy(
     mode = IndexingMode.CONSISTENT,
-    automatic = TestConstants.INDEXING_POLICY_AUTOMATIC)
+    automatic = TestConstants.INDEXING_POLICY_AUTOMATIC,
+    includePaths = {
+        TestConstants.INCLUDED_PATH_0,
+        TestConstants.INCLUDED_PATH_1,
+        TestConstants.INCLUDED_PATH_2,
+    },
+    excludePaths = {
+        TestConstants.EXCLUDED_PATH_0,
+        TestConstants.EXCLUDED_PATH_1,
+        TestConstants.EXCLUDED_PATH_2,
+    })
 @Container(containerName = TestConstants.ROLE_COLLECTION_NAME,
     autoCreateContainer = false)
 public class Role {

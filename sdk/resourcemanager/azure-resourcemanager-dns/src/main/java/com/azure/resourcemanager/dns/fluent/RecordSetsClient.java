@@ -333,6 +333,7 @@ public final class RecordSetsClient {
         } else {
             parameters.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .update(
                 this.client.getEndpoint(),
@@ -670,6 +671,7 @@ public final class RecordSetsClient {
         } else {
             parameters.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -1025,6 +1027,7 @@ public final class RecordSetsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -1286,6 +1289,7 @@ public final class RecordSetsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -1508,6 +1512,7 @@ public final class RecordSetsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByType(
                 this.client.getEndpoint(),
@@ -1579,7 +1584,7 @@ public final class RecordSetsClient {
         Context context) {
         return new PagedFlux<>(
             () -> listByTypeSinglePageAsync(resourceGroupName, zoneName, recordType, top, recordsetnamesuffix, context),
-            nextLink -> listByTypeNextSinglePageAsync(nextLink));
+            nextLink -> listByTypeNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1600,7 +1605,7 @@ public final class RecordSetsClient {
         final Context context = null;
         return new PagedFlux<>(
             () -> listByTypeSinglePageAsync(resourceGroupName, zoneName, recordType, top, recordsetnamesuffix),
-            nextLink -> listByTypeNextSinglePageAsync(nextLink));
+            nextLink -> listByTypeNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1769,6 +1774,7 @@ public final class RecordSetsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByDnsZone(
                 this.client.getEndpoint(),
@@ -1832,7 +1838,7 @@ public final class RecordSetsClient {
         String resourceGroupName, String zoneName, Integer top, String recordsetnamesuffix, Context context) {
         return new PagedFlux<>(
             () -> listByDnsZoneSinglePageAsync(resourceGroupName, zoneName, top, recordsetnamesuffix, context),
-            nextLink -> listByDnsZoneNextSinglePageAsync(nextLink));
+            nextLink -> listByDnsZoneNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1852,7 +1858,7 @@ public final class RecordSetsClient {
         final Context context = null;
         return new PagedFlux<>(
             () -> listByDnsZoneSinglePageAsync(resourceGroupName, zoneName, top, recordsetnamesuffix),
-            nextLink -> listByDnsZoneNextSinglePageAsync(nextLink));
+            nextLink -> listByDnsZoneNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2012,6 +2018,7 @@ public final class RecordSetsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listAllByDnsZone(
                 this.client.getEndpoint(),
@@ -2075,7 +2082,7 @@ public final class RecordSetsClient {
         String resourceGroupName, String zoneName, Integer top, String recordSetNameSuffix, Context context) {
         return new PagedFlux<>(
             () -> listAllByDnsZoneSinglePageAsync(resourceGroupName, zoneName, top, recordSetNameSuffix, context),
-            nextLink -> listAllByDnsZoneNextSinglePageAsync(nextLink));
+            nextLink -> listAllByDnsZoneNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2095,7 +2102,7 @@ public final class RecordSetsClient {
         final Context context = null;
         return new PagedFlux<>(
             () -> listAllByDnsZoneSinglePageAsync(resourceGroupName, zoneName, top, recordSetNameSuffix),
-            nextLink -> listAllByDnsZoneNextSinglePageAsync(nextLink));
+            nextLink -> listAllByDnsZoneNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2201,6 +2208,7 @@ public final class RecordSetsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByTypeNext(nextLink, context)
             .map(
@@ -2257,6 +2265,7 @@ public final class RecordSetsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByDnsZoneNext(nextLink, context)
             .map(
@@ -2313,6 +2322,7 @@ public final class RecordSetsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listAllByDnsZoneNext(nextLink, context)
             .map(

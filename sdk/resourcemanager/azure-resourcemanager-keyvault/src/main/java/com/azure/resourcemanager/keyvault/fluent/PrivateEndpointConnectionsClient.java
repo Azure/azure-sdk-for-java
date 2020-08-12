@@ -205,6 +205,7 @@ public final class PrivateEndpointConnectionsClient {
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -416,6 +417,7 @@ public final class PrivateEndpointConnectionsClient {
         } else {
             properties.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .put(
                 this.client.getEndpoint(),
@@ -626,6 +628,7 @@ public final class PrivateEndpointConnectionsClient {
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -655,11 +658,12 @@ public final class PrivateEndpointConnectionsClient {
             deleteWithResponseAsync(resourceGroupName, vaultName, privateEndpointConnectionName);
         return this
             .client
-            .<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResultAsync(
+            .<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 PrivateEndpointConnectionInner.class,
-                PrivateEndpointConnectionInner.class);
+                PrivateEndpointConnectionInner.class,
+                Context.NONE);
     }
 
     /**
@@ -677,15 +681,17 @@ public final class PrivateEndpointConnectionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginDeleteAsync(
         String resourceGroupName, String vaultName, String privateEndpointConnectionName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, vaultName, privateEndpointConnectionName, context);
         return this
             .client
-            .<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResultAsync(
+            .<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 PrivateEndpointConnectionInner.class,
-                PrivateEndpointConnectionInner.class);
+                PrivateEndpointConnectionInner.class,
+                context);
     }
 
     /**

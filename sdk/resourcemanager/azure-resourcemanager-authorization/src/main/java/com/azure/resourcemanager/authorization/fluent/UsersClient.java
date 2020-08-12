@@ -216,6 +216,7 @@ public final class UsersClient {
         } else {
             parameters.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .create(
                 this.client.getEndpoint(), this.client.getApiVersion(), this.client.getTenantId(), parameters, context);
@@ -367,6 +368,7 @@ public final class UsersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getTenantId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
@@ -416,7 +418,7 @@ public final class UsersClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<UserInner> listAsync(String filter, String expand, Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, expand, context), nextLink -> listNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(filter, expand, context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -432,7 +434,7 @@ public final class UsersClient {
         final String expand = null;
         final Context context = null;
         return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, expand), nextLink -> listNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(filter, expand), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -547,6 +549,7 @@ public final class UsersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getTenantId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -710,6 +713,7 @@ public final class UsersClient {
         } else {
             parameters.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .update(
                 this.client.getEndpoint(),
@@ -847,6 +851,7 @@ public final class UsersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getTenantId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -992,6 +997,7 @@ public final class UsersClient {
         }
         UserGetMemberGroupsParameters parameters = new UserGetMemberGroupsParameters();
         parameters.withSecurityEnabledOnly(securityEnabledOnly);
+        context = this.client.mergeContext(context);
         return service
             .getMemberGroups(
                 this.client.getEndpoint(),
@@ -1147,6 +1153,7 @@ public final class UsersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getTenantId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listNext(
                 this.client.getEndpoint(), nextLink, this.client.getApiVersion(), this.client.getTenantId(), context)

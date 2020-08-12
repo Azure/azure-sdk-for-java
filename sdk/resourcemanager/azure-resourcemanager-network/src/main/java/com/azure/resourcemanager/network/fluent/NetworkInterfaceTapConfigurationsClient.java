@@ -260,7 +260,9 @@ public final class NetworkInterfaceTapConfigurationsClient {
         String resourceGroupName, String networkInterfaceName, String tapConfigurationName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, networkInterfaceName, tapConfigurationName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -278,9 +280,12 @@ public final class NetworkInterfaceTapConfigurationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String networkInterfaceName, String tapConfigurationName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, networkInterfaceName, tapConfigurationName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -737,11 +742,12 @@ public final class NetworkInterfaceTapConfigurationsClient {
                 resourceGroupName, networkInterfaceName, tapConfigurationName, tapConfigurationParameters);
         return this
             .client
-            .<NetworkInterfaceTapConfigurationInner, NetworkInterfaceTapConfigurationInner>getLroResultAsync(
+            .<NetworkInterfaceTapConfigurationInner, NetworkInterfaceTapConfigurationInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 NetworkInterfaceTapConfigurationInner.class,
-                NetworkInterfaceTapConfigurationInner.class);
+                NetworkInterfaceTapConfigurationInner.class,
+                Context.NONE);
     }
 
     /**
@@ -765,16 +771,18 @@ public final class NetworkInterfaceTapConfigurationsClient {
             String tapConfigurationName,
             NetworkInterfaceTapConfigurationInner tapConfigurationParameters,
             Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(
                 resourceGroupName, networkInterfaceName, tapConfigurationName, tapConfigurationParameters, context);
         return this
             .client
-            .<NetworkInterfaceTapConfigurationInner, NetworkInterfaceTapConfigurationInner>getLroResultAsync(
+            .<NetworkInterfaceTapConfigurationInner, NetworkInterfaceTapConfigurationInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 NetworkInterfaceTapConfigurationInner.class,
-                NetworkInterfaceTapConfigurationInner.class);
+                NetworkInterfaceTapConfigurationInner.class,
+                context);
     }
 
     /**
@@ -1071,7 +1079,7 @@ public final class NetworkInterfaceTapConfigurationsClient {
         String resourceGroupName, String networkInterfaceName, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, networkInterfaceName, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**

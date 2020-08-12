@@ -451,18 +451,23 @@ public class EncryptionTests extends TestSuiteBase {
             expectedDoc);
     }
 
-    @Test(groups = { "encryption" }, timeOut = TIMEOUT, enabled = false)
+    @Test(groups = { "encryption" }, timeOut = TIMEOUT)
     public void encryptionDecryptQueryValueResponse() {
         EncryptionTests.createItem(EncryptionTests.encryptionContainer,
             EncryptionTests.dekId,
             TestDoc.PathsToEncrypt);
         String query = "SELECT VALUE COUNT(1) FROM c";
-
-        itemContainer.queryItems(new SqlQuerySpec(query),
-            new CosmosQueryRequestOptions(),
-            Integer.class).collectList().block();
-
         EncryptionTests.validateQueryResponse(EncryptionTests.encryptionContainer, query, Integer.class);
+
+        int value1 = itemContainer.queryItems(new SqlQuerySpec(query),
+            new CosmosQueryRequestOptions(),
+            Integer.class).collectList().block().stream().mapToInt(i -> i).sum();
+
+        int value2 = encryptionContainer.queryItems(new SqlQuerySpec(query),
+            new CosmosQueryRequestOptions(),
+            Integer.class).collectList().block().stream().mapToInt(i -> i).sum();
+
+        assertThat(value2).isEqualTo(value1);
     }
 
     @Test(groups = { "encryption" }, timeOut = TIMEOUT)

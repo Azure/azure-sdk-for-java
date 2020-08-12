@@ -99,13 +99,17 @@ public class EncryptionProcessor {
                 Thread.currentThread().getName());
         }
 
-        ObjectNode itemJObj = Utils.parse(input, ObjectNode.class);
-        Mono<ObjectNode> itemJObjMono = decryptAsync(itemJObj, encryptor);
-        return itemJObjMono.flatMap(
-            decryptedItem -> {
-                return Mono.just(EncryptionUtils.serializeJsonToByteArray(Utils.getSimpleObjectMapper(), itemJObj));
-            }
-        );
+        JsonNode itemJObj = Utils.parse(input, JsonNode.class);
+        if (itemJObj instanceof ObjectNode) {
+            Mono<ObjectNode> itemJObjMono = decryptAsync((ObjectNode) itemJObj, encryptor);
+            return itemJObjMono.flatMap(
+                decryptedItem -> {
+                    return Mono.just(EncryptionUtils.serializeJsonToByteArray(Utils.getSimpleObjectMapper(), itemJObj));
+                }
+            );
+        } else {
+            return Mono.just(input);
+        }
     }
 
     public static Mono<ObjectNode> decryptAsync(ObjectNode itemJObj, Encryptor encryptor) {

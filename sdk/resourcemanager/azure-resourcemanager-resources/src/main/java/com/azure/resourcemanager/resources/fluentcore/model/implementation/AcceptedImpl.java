@@ -20,6 +20,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import com.azure.resourcemanager.resources.fluentcore.rest.ActivationResponse;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import reactor.core.publisher.Flux;
@@ -31,7 +32,9 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class AcceptedImpl<InnerT, T> implements Accepted<T> {
 
@@ -228,6 +231,66 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
 
         private PollResponse<Void> voidResponse(PollResponse<PollResult<InnerT>> pollResponse) {
             return new PollResponse<>(pollResponse.getStatus(), null, pollResponse.getRetryAfter());
+        }
+    }
+
+    public static <T, InnerT> Accepted<T> newAccepted(
+        ClientLogger logger,
+        Supplier<Response<Flux<ByteBuffer>>> activationOperation,
+        Function<InnerT, T> convertOperation,
+        SerializerAdapter serializerAdapter,
+        HttpPipeline httpPipeline,
+        Type innerType,
+        Runnable preActivation) {
+
+        if (preActivation != null) {
+            preActivation.run();
+        }
+
+        Response<Flux<ByteBuffer>> activationResponse = activationOperation.get();
+        if (activationResponse == null) {
+            throw logger.logExceptionAsError(new NullPointerException());
+        } else {
+            Accepted<T> accepted = new AcceptedImpl<InnerT, T>(
+                activationResponse,
+                serializerAdapter,
+                httpPipeline,
+                innerType, innerType,
+                convertOperation);
+
+            return accepted;
+        }
+    }
+
+    public static <T extends HasInner<InnerT>, InnerT> Accepted<T> newAccepted(
+        ClientLogger logger,
+        Supplier<Response<Flux<ByteBuffer>>> activationOperation,
+        Function<InnerT, T> convertOperation,
+        SerializerAdapter serializerAdapter,
+        HttpPipeline httpPipeline,
+        Type innerType,
+        Runnable preActivation, Consumer<InnerT> postActivation) {
+
+        if (preActivation != null) {
+            preActivation.run();
+        }
+
+        Response<Flux<ByteBuffer>> activationResponse = activationOperation.get();
+        if (activationResponse == null) {
+            throw logger.logExceptionAsError(new NullPointerException());
+        } else {
+            Accepted<T> accepted = new AcceptedImpl<InnerT, T>(
+                activationResponse,
+                serializerAdapter,
+                httpPipeline,
+                innerType, innerType,
+                convertOperation);
+
+            if (postActivation != null) {
+                postActivation.accept(accepted.getActivationResponse().getValue().inner());
+            }
+
+            return accepted;
         }
     }
 }

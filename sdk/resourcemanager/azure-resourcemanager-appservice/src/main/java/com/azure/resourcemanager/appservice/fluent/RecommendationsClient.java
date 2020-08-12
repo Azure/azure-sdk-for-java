@@ -451,7 +451,8 @@ public final class RecommendationsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RecommendationInner> listAsync(Boolean featured, String filter, Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(featured, filter, context), nextLink -> listNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(featured, filter, context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -467,7 +468,7 @@ public final class RecommendationsClient {
         final String filter = null;
         final Context context = null;
         return new PagedFlux<>(
-            () -> listSinglePageAsync(featured, filter), nextLink -> listNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(featured, filter), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -938,7 +939,7 @@ public final class RecommendationsClient {
             () ->
                 listHistoryForHostingEnvironmentSinglePageAsync(
                     resourceGroupName, hostingEnvironmentName, expiredOnly, filter, context),
-            nextLink -> listHistoryForHostingEnvironmentNextSinglePageAsync(nextLink));
+            nextLink -> listHistoryForHostingEnvironmentNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -961,7 +962,7 @@ public final class RecommendationsClient {
             () ->
                 listHistoryForHostingEnvironmentSinglePageAsync(
                     resourceGroupName, hostingEnvironmentName, expiredOnly, filter),
-            nextLink -> listHistoryForHostingEnvironmentNextSinglePageAsync(nextLink));
+            nextLink -> listHistoryForHostingEnvironmentNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1200,7 +1201,7 @@ public final class RecommendationsClient {
             () ->
                 listRecommendedRulesForHostingEnvironmentSinglePageAsync(
                     resourceGroupName, hostingEnvironmentName, featured, filter, context),
-            nextLink -> listRecommendedRulesForHostingEnvironmentNextSinglePageAsync(nextLink));
+            nextLink -> listRecommendedRulesForHostingEnvironmentNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1223,7 +1224,7 @@ public final class RecommendationsClient {
             () ->
                 listRecommendedRulesForHostingEnvironmentSinglePageAsync(
                     resourceGroupName, hostingEnvironmentName, featured, filter),
-            nextLink -> listRecommendedRulesForHostingEnvironmentNextSinglePageAsync(nextLink));
+            nextLink -> listRecommendedRulesForHostingEnvironmentNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2314,7 +2315,7 @@ public final class RecommendationsClient {
         String resourceGroupName, String siteName, Boolean expiredOnly, String filter, Context context) {
         return new PagedFlux<>(
             () -> listHistoryForWebAppSinglePageAsync(resourceGroupName, siteName, expiredOnly, filter, context),
-            nextLink -> listHistoryForWebAppNextSinglePageAsync(nextLink));
+            nextLink -> listHistoryForWebAppNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2334,7 +2335,7 @@ public final class RecommendationsClient {
         final Context context = null;
         return new PagedFlux<>(
             () -> listHistoryForWebAppSinglePageAsync(resourceGroupName, siteName, expiredOnly, filter),
-            nextLink -> listHistoryForWebAppNextSinglePageAsync(nextLink));
+            nextLink -> listHistoryForWebAppNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2561,7 +2562,7 @@ public final class RecommendationsClient {
         String resourceGroupName, String siteName, Boolean featured, String filter, Context context) {
         return new PagedFlux<>(
             () -> listRecommendedRulesForWebAppSinglePageAsync(resourceGroupName, siteName, featured, filter, context),
-            nextLink -> listRecommendedRulesForWebAppNextSinglePageAsync(nextLink));
+            nextLink -> listRecommendedRulesForWebAppNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2582,7 +2583,7 @@ public final class RecommendationsClient {
         final Context context = null;
         return new PagedFlux<>(
             () -> listRecommendedRulesForWebAppSinglePageAsync(resourceGroupName, siteName, featured, filter),
-            nextLink -> listRecommendedRulesForWebAppNextSinglePageAsync(nextLink));
+            nextLink -> listRecommendedRulesForWebAppNextSinglePageAsync(nextLink, context));
     }
 
     /**

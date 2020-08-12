@@ -4,41 +4,28 @@
 
 package com.azure.resourcemanager.sql.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for JobStepActionSource. */
-public enum JobStepActionSource {
-    /** Enum value Inline. */
-    INLINE("Inline");
-
-    /** The actual serialized value for a JobStepActionSource instance. */
-    private final String value;
-
-    JobStepActionSource(String value) {
-        this.value = value;
-    }
+public final class JobStepActionSource extends ExpandableStringEnum<JobStepActionSource> {
+    /** Static value Inline for JobStepActionSource. */
+    public static final JobStepActionSource INLINE = fromString("Inline");
 
     /**
-     * Parses a serialized value to a JobStepActionSource instance.
+     * Creates or finds a JobStepActionSource from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed JobStepActionSource object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding JobStepActionSource.
      */
     @JsonCreator
-    public static JobStepActionSource fromString(String value) {
-        JobStepActionSource[] items = JobStepActionSource.values();
-        for (JobStepActionSource item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static JobStepActionSource fromString(String name) {
+        return fromString(name, JobStepActionSource.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /** @return known JobStepActionSource values. */
+    public static Collection<JobStepActionSource> values() {
+        return values(JobStepActionSource.class);
     }
 }
