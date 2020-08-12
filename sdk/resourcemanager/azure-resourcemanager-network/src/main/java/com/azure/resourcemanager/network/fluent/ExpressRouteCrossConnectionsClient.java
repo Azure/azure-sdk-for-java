@@ -308,7 +308,8 @@ public final class ExpressRouteCrossConnectionsClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ExpressRouteCrossConnectionInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -464,7 +465,7 @@ public final class ExpressRouteCrossConnectionsClient
         String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -802,11 +803,12 @@ public final class ExpressRouteCrossConnectionsClient
             createOrUpdateWithResponseAsync(resourceGroupName, crossConnectionName, parameters);
         return this
             .client
-            .<ExpressRouteCrossConnectionInner, ExpressRouteCrossConnectionInner>getLroResultAsync(
+            .<ExpressRouteCrossConnectionInner, ExpressRouteCrossConnectionInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 ExpressRouteCrossConnectionInner.class,
-                ExpressRouteCrossConnectionInner.class);
+                ExpressRouteCrossConnectionInner.class,
+                Context.NONE);
     }
 
     /**
@@ -828,15 +830,17 @@ public final class ExpressRouteCrossConnectionsClient
             String crossConnectionName,
             ExpressRouteCrossConnectionInner parameters,
             Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, crossConnectionName, parameters, context);
         return this
             .client
-            .<ExpressRouteCrossConnectionInner, ExpressRouteCrossConnectionInner>getLroResultAsync(
+            .<ExpressRouteCrossConnectionInner, ExpressRouteCrossConnectionInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 ExpressRouteCrossConnectionInner.class,
-                ExpressRouteCrossConnectionInner.class);
+                ExpressRouteCrossConnectionInner.class,
+                context);
     }
 
     /**
@@ -1285,12 +1289,12 @@ public final class ExpressRouteCrossConnectionsClient
             listArpTableWithResponseAsync(resourceGroupName, crossConnectionName, peeringName, devicePath);
         return this
             .client
-            .<ExpressRouteCircuitsArpTableListResultInner, ExpressRouteCircuitsArpTableListResultInner>
-                getLroResultAsync(
-                    mono,
-                    this.client.getHttpPipeline(),
-                    ExpressRouteCircuitsArpTableListResultInner.class,
-                    ExpressRouteCircuitsArpTableListResultInner.class);
+            .<ExpressRouteCircuitsArpTableListResultInner, ExpressRouteCircuitsArpTableListResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ExpressRouteCircuitsArpTableListResultInner.class,
+                ExpressRouteCircuitsArpTableListResultInner.class,
+                Context.NONE);
     }
 
     /**
@@ -1316,16 +1320,17 @@ public final class ExpressRouteCrossConnectionsClient
             String peeringName,
             String devicePath,
             Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             listArpTableWithResponseAsync(resourceGroupName, crossConnectionName, peeringName, devicePath, context);
         return this
             .client
-            .<ExpressRouteCircuitsArpTableListResultInner, ExpressRouteCircuitsArpTableListResultInner>
-                getLroResultAsync(
-                    mono,
-                    this.client.getHttpPipeline(),
-                    ExpressRouteCircuitsArpTableListResultInner.class,
-                    ExpressRouteCircuitsArpTableListResultInner.class);
+            .<ExpressRouteCircuitsArpTableListResultInner, ExpressRouteCircuitsArpTableListResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ExpressRouteCircuitsArpTableListResultInner.class,
+                ExpressRouteCircuitsArpTableListResultInner.class,
+                context);
     }
 
     /**
@@ -1595,11 +1600,12 @@ public final class ExpressRouteCrossConnectionsClient
             .client
             .<ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner,
                 ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner>
-                getLroResultAsync(
+                getLroResult(
                     mono,
                     this.client.getHttpPipeline(),
                     ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner.class,
-                    ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner.class);
+                    ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner.class,
+                    Context.NONE);
     }
 
     /**
@@ -1625,6 +1631,7 @@ public final class ExpressRouteCrossConnectionsClient
             String peeringName,
             String devicePath,
             Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             listRoutesTableSummaryWithResponseAsync(
                 resourceGroupName, crossConnectionName, peeringName, devicePath, context);
@@ -1632,11 +1639,12 @@ public final class ExpressRouteCrossConnectionsClient
             .client
             .<ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner,
                 ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner>
-                getLroResultAsync(
+                getLroResult(
                     mono,
                     this.client.getHttpPipeline(),
                     ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner.class,
-                    ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner.class);
+                    ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner.class,
+                    context);
     }
 
     /**
@@ -1911,11 +1919,12 @@ public final class ExpressRouteCrossConnectionsClient
         return this
             .client
             .<ExpressRouteCircuitsRoutesTableListResultInner, ExpressRouteCircuitsRoutesTableListResultInner>
-                getLroResultAsync(
+                getLroResult(
                     mono,
                     this.client.getHttpPipeline(),
                     ExpressRouteCircuitsRoutesTableListResultInner.class,
-                    ExpressRouteCircuitsRoutesTableListResultInner.class);
+                    ExpressRouteCircuitsRoutesTableListResultInner.class,
+                    Context.NONE);
     }
 
     /**
@@ -1942,16 +1951,18 @@ public final class ExpressRouteCrossConnectionsClient
             String peeringName,
             String devicePath,
             Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             listRoutesTableWithResponseAsync(resourceGroupName, crossConnectionName, peeringName, devicePath, context);
         return this
             .client
             .<ExpressRouteCircuitsRoutesTableListResultInner, ExpressRouteCircuitsRoutesTableListResultInner>
-                getLroResultAsync(
+                getLroResult(
                     mono,
                     this.client.getHttpPipeline(),
                     ExpressRouteCircuitsRoutesTableListResultInner.class,
-                    ExpressRouteCircuitsRoutesTableListResultInner.class);
+                    ExpressRouteCircuitsRoutesTableListResultInner.class,
+                    context);
     }
 
     /**

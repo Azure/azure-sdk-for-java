@@ -165,6 +165,7 @@ public final class ObjectsClient {
         } else {
             parameters.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .getObjectsByObjectIds(
                 this.client.getEndpoint(), this.client.getApiVersion(), this.client.getTenantId(), parameters, context)
@@ -212,7 +213,7 @@ public final class ObjectsClient {
         GetObjectsParameters parameters, Context context) {
         return new PagedFlux<>(
             () -> getObjectsByObjectIdsSinglePageAsync(parameters, context),
-            nextLink -> getObjectsByObjectIdsNextSinglePageAsync(nextLink));
+            nextLink -> getObjectsByObjectIdsNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -322,6 +323,7 @@ public final class ObjectsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getTenantId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getObjectsByObjectIdsNext(
                 this.client.getEndpoint(), nextLink, this.client.getApiVersion(), this.client.getTenantId(), context)

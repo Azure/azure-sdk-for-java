@@ -197,6 +197,7 @@ public final class BaselinesClient {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
         final String apiVersion = "2019-03-01";
+        context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),

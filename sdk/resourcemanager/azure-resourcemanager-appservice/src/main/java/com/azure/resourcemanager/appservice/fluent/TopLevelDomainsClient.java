@@ -215,7 +215,8 @@ public final class TopLevelDomainsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<TopLevelDomainInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -536,7 +537,7 @@ public final class TopLevelDomainsClient {
         String name, TopLevelDomainAgreementOption agreementOption, Context context) {
         return new PagedFlux<>(
             () -> listAgreementsSinglePageAsync(name, agreementOption, context),
-            nextLink -> listAgreementsNextSinglePageAsync(nextLink));
+            nextLink -> listAgreementsNextSinglePageAsync(nextLink, context));
     }
 
     /**

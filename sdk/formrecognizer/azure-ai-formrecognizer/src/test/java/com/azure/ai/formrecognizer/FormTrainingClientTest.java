@@ -11,6 +11,7 @@ import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.training.FormTrainingClient;
 import com.azure.ai.formrecognizer.training.models.AccountProperties;
+import com.azure.ai.formrecognizer.training.models.TrainingFileFilter;
 import com.azure.ai.formrecognizer.training.models.TrainingOptions;
 import com.azure.ai.formrecognizer.training.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.training.models.CustomFormModel;
@@ -443,7 +444,12 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
         beginTrainingMultipageRunner(trainingFilesUrl -> {
             FormRecognizerException thrown = assertThrows(FormRecognizerException.class, () ->
                 client.beginTraining(trainingFilesUrl, false,
-                    new TrainingOptions().setPollInterval(durationTestMode), Context.NONE).getFinalResult());
+                    new TrainingOptions()
+                        .setPollInterval(durationTestMode)
+                        .setTrainingFileFilter(new TrainingFileFilter()
+                            .setSubfoldersIncluded(true)
+                            .setPrefix(INVALID_PREFIX_FILE_NAME)),
+                    Context.NONE).getFinalResult());
             assertEquals(NO_VALID_BLOB_FOUND, thrown.getErrorInformation().get(0).getMessage());
         });
     }
@@ -460,7 +466,9 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
         beginTrainingMultipageRunner(trainingFilesUrl -> {
             FormRecognizerException thrown = assertThrows(FormRecognizerException.class, () ->
                 client.beginTraining(trainingFilesUrl, false,
-                    new TrainingOptions().setPollInterval(durationTestMode), Context.NONE)
+                    new TrainingOptions()
+                        .setTrainingFileFilter(new TrainingFileFilter().setPrefix(INVALID_PREFIX_FILE_NAME))
+                        .setPollInterval(durationTestMode), Context.NONE)
                     .getFinalResult());
             assertEquals(NO_VALID_BLOB_FOUND, thrown.getErrorInformation().get(0).getMessage());
         });

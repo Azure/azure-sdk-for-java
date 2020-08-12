@@ -180,6 +180,7 @@ public final class DatabaseAutomaticTuningsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2015-05-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -389,6 +390,7 @@ public final class DatabaseAutomaticTuningsClient {
             parameters.validate();
         }
         final String apiVersion = "2015-05-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .update(
                 this.client.getEndpoint(),

@@ -4,41 +4,28 @@
 
 package com.azure.resourcemanager.cosmos.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for ConnectorOffer. */
-public enum ConnectorOffer {
-    /** Enum value Small. */
-    SMALL("Small");
-
-    /** The actual serialized value for a ConnectorOffer instance. */
-    private final String value;
-
-    ConnectorOffer(String value) {
-        this.value = value;
-    }
+public final class ConnectorOffer extends ExpandableStringEnum<ConnectorOffer> {
+    /** Static value Small for ConnectorOffer. */
+    public static final ConnectorOffer SMALL = fromString("Small");
 
     /**
-     * Parses a serialized value to a ConnectorOffer instance.
+     * Creates or finds a ConnectorOffer from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed ConnectorOffer object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding ConnectorOffer.
      */
     @JsonCreator
-    public static ConnectorOffer fromString(String value) {
-        ConnectorOffer[] items = ConnectorOffer.values();
-        for (ConnectorOffer item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static ConnectorOffer fromString(String name) {
+        return fromString(name, ConnectorOffer.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /** @return known ConnectorOffer values. */
+    public static Collection<ConnectorOffer> values() {
+        return values(ConnectorOffer.class);
     }
 }

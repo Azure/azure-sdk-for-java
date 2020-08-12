@@ -296,6 +296,7 @@ public final class JobStepsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .listByVersion(
                 this.client.getEndpoint(),
@@ -366,7 +367,7 @@ public final class JobStepsClient {
         return new PagedFlux<>(
             () ->
                 listByVersionSinglePageAsync(resourceGroupName, serverName, jobAgentName, jobName, jobVersion, context),
-            nextLink -> listByVersionNextSinglePageAsync(nextLink));
+            nextLink -> listByVersionNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -541,6 +542,7 @@ public final class JobStepsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .getByVersion(
                 this.client.getEndpoint(),
@@ -791,6 +793,7 @@ public final class JobStepsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .listByJob(
                 this.client.getEndpoint(),
@@ -852,7 +855,7 @@ public final class JobStepsClient {
         String resourceGroupName, String serverName, String jobAgentName, String jobName, Context context) {
         return new PagedFlux<>(
             () -> listByJobSinglePageAsync(resourceGroupName, serverName, jobAgentName, jobName, context),
-            nextLink -> listByJobNextSinglePageAsync(nextLink));
+            nextLink -> listByJobNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1009,6 +1012,7 @@ public final class JobStepsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -1264,6 +1268,7 @@ public final class JobStepsClient {
             parameters.validate();
         }
         final String apiVersion = "2017-03-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -1520,6 +1525,7 @@ public final class JobStepsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -1668,6 +1674,7 @@ public final class JobStepsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByVersionNext(nextLink, context)
             .map(
@@ -1724,6 +1731,7 @@ public final class JobStepsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByJobNext(nextLink, context)
             .map(

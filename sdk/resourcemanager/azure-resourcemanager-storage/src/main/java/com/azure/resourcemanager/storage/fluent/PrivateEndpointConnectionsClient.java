@@ -213,6 +213,7 @@ public final class PrivateEndpointConnectionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
@@ -399,6 +400,7 @@ public final class PrivateEndpointConnectionsClient {
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -642,6 +644,7 @@ public final class PrivateEndpointConnectionsClient {
         PrivateEndpointConnectionInner properties = new PrivateEndpointConnectionInner();
         properties.withPrivateEndpoint(privateEndpoint);
         properties.withPrivateLinkServiceConnectionState(privateLinkServiceConnectionState);
+        context = this.client.mergeContext(context);
         return service
             .put(
                 this.client.getEndpoint(),
@@ -906,6 +909,7 @@ public final class PrivateEndpointConnectionsClient {
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),

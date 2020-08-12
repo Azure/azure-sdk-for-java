@@ -173,6 +173,7 @@ public final class ElasticPoolActivitiesClient {
                 .error(new IllegalArgumentException("Parameter elasticPoolName is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        context = this.client.mergeContext(context);
         return service
             .listByElasticPool(
                 this.client.getEndpoint(),
