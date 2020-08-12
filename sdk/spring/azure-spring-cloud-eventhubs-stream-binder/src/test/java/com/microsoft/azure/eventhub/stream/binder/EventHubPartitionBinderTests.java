@@ -63,7 +63,7 @@ public class EventHubPartitionBinderTests extends
     }
 
     @Override
-    protected EventHubTestBinder getBinder() {
+    protected EventHubTestBinder getBinder() throws Exception {
         return this.binder;
     }
 
