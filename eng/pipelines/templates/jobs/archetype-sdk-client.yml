@@ -33,8 +33,8 @@ parameters:
       RunTitle: 'Windows on Java 1.11'
     Windows From Source - Java 8:
       OSVmImage: 'windows-2019'
-      JavaTestVersion: '1.8'
-      RunTitle: 'From Source: Windows on Java 1.8'
+      JavaTestVersion: '1.11'
+      RunTitle: 'From Source: Windows on Java 1.11'
       PLSkipOptions: '!com.azure:jacoco-test-coverage'
       AdditionalOptions: '-amd'
       TestFromSource: true
