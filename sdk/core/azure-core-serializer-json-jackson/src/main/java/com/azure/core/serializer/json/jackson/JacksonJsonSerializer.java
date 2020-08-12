@@ -91,8 +91,8 @@ public final class JacksonJsonSerializer implements JsonSerializer, MemberNameCo
 
             if (f.isAnnotationPresent(JsonIgnore.class) || !visibilityChecker.isFieldVisible(f)) {
                 if (f.isAnnotationPresent(JsonProperty.class)) {
-                    logger.info("Field {} is annotated with either JsonGetter or JsonProperty but isn't accessible "
-                        + "to JacksonJsonSerializer.", f.getName());
+                    logger.info("Field {} is annotated with JsonProperty but isn't accessible to "
+                        + "JacksonJsonSerializer.", f.getName());
                 }
                 return null;
             }
