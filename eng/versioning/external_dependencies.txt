@@ -98,6 +98,8 @@ org.springframework.boot:spring-boot-starter-web;2.3.2.RELEASE
 org.springframework.boot:spring-boot-starter;2.3.2.RELEASE
 org.springframework.boot:spring-boot;2.3.2.RELEASE
 org.springframework.data:spring-data-commons;2.3.2.RELEASE
+org.springframework.data:spring-data-mongodb;3.0.2.RELEASE
+org.springframework.data:spring-data-redis;2.3.2.RELEASE
 org.springframework.integration:spring-integration-core;5.3.2.RELEASE
 org.springframework.kafka:spring-kafka;2.5.4.RELEASE
 org.springframework.security:spring-security-config;5.3.3.RELEASE
@@ -125,8 +127,6 @@ org.springframework.cloud:spring-cloud-dependencies;Hoxton.SR7
 org.springframework.cloud:spring-cloud-starter-stream-kafka;3.0.7.RELEASE
 org.springframework.cloud:spring-cloud-stream-binder-test;3.0.7.RELEASE
 org.springframework.cloud:spring-cloud-stream;3.0.7.RELEASE
-org.springframework.data:spring-data-mongodb;3.0.2.RELEASE
-org.springframework.data:spring-data-redis;2.3.2.RELEASE
 
 pl.pragmatists:JUnitParams;1.1.1
 
