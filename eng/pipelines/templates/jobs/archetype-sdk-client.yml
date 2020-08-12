@@ -318,7 +318,7 @@ jobs:
       - task: Maven@3
         displayName: 'Run tests for From Source run'
         inputs:
-          mavenPomFile: pom.xml
+          mavenPomFile: ClientAggregatePom.xml
           # For the From Source runs we don't want the -am switch as we don't care about running tests for our dependencies
           # but we do want the -amd switch because we want to run tests on things that depend on us.
           options: ${{ parameters.TestOptions }} -pl $(PLSkipOptions)$(ProjectList) -amd
@@ -329,7 +329,7 @@ jobs:
           publishJUnitResults: false
           # Instead of using the verify or test goals, which would effectively recompile, just run the tests and generate
           # the test report which will be published in the next step
-          goals: 'jacoco:prepare-agent jacoco:instrument surefire:test jacoco:restore-instrumented-classes jacoco:report'
+          goals: 'surefire:test'
         # We want to run this when TestFromSource and ShouldRunSourceTests are true
         condition: and(succeeded(), and(eq(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))
 
