@@ -112,6 +112,12 @@ public class IotHubProperties {
     private Capabilities features;
 
     /**
+     * Primary and secondary location for iot hub.
+     */
+    @JsonProperty(value = "locations", access = JsonProperty.Access.WRITE_ONLY)
+    private List<IotHubLocationDescription> locations;
+
+    /**
      * Get the shared access policies you can use to secure a connection to the IoT hub.
      *
      * @return the authorizationPolicies value
@@ -356,6 +362,15 @@ public class IotHubProperties {
     public IotHubProperties withFeatures(Capabilities features) {
         this.features = features;
         return this;
+    }
+
+    /**
+     * Get primary and secondary location for iot hub.
+     *
+     * @return the locations value
+     */
+    public List<IotHubLocationDescription> locations() {
+        return this.locations;
     }
 
 }
