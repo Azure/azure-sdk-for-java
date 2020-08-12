@@ -14,6 +14,7 @@ import com.microsoft.azure.spring.integration.eventhub.support.EventHubTestOpera
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.cloud.stream.binder.ExtendedConsumerProperties;
@@ -29,6 +30,7 @@ import static org.mockito.Mockito.when;
  * @author Warren Zhu
  */
 @RunWith(PowerMockRunner.class)
+@PowerMockIgnore({"com.sun.org.apache.xerces.*", "javax.xml.*", "org.xml.*"})
 @PrepareForTest(EventContext.class)
 public class EventHubPartitionBinderTests extends
         AzurePartitionBinderTests<EventHubTestBinder, ExtendedConsumerProperties<EventHubConsumerProperties>,
@@ -61,7 +63,7 @@ public class EventHubPartitionBinderTests extends
     }
 
     @Override
-    protected EventHubTestBinder getBinder() throws Exception {
+    protected EventHubTestBinder getBinder() {
         return this.binder;
     }
 
