@@ -49,7 +49,7 @@ public class ExpressRouteCircuitConnectionInner extends SubResource {
      * Express Route Circuit connection state. Possible values include:
      * 'Connected', 'Connecting', 'Disconnected'.
      */
-    @JsonProperty(value = "properties.circuitConnectionStatus", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.circuitConnectionStatus")
     private CircuitConnectionStatus circuitConnectionStatus;
 
     /**
@@ -165,6 +165,17 @@ public class ExpressRouteCircuitConnectionInner extends SubResource {
      */
     public CircuitConnectionStatus circuitConnectionStatus() {
         return this.circuitConnectionStatus;
+    }
+
+    /**
+     * Set express Route Circuit connection state. Possible values include: 'Connected', 'Connecting', 'Disconnected'.
+     *
+     * @param circuitConnectionStatus the circuitConnectionStatus value to set
+     * @return the ExpressRouteCircuitConnectionInner object itself.
+     */
+    public ExpressRouteCircuitConnectionInner withCircuitConnectionStatus(CircuitConnectionStatus circuitConnectionStatus) {
+        this.circuitConnectionStatus = circuitConnectionStatus;
+        return this;
     }
 
     /**

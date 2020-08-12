@@ -91,6 +91,10 @@ public class AzureFirewallsInner implements InnerSupportsGet<AzureFirewallInner>
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/azureFirewalls/{azureFirewallName}")
         Observable<Response<ResponseBody>> updateTags(@Path("resourceGroupName") String resourceGroupName, @Path("azureFirewallName") String azureFirewallName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body TagsObject parameters, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2019_09_01.AzureFirewalls beginUpdateTags" })
+        @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/azureFirewalls/{azureFirewallName}")
+        Observable<Response<ResponseBody>> beginUpdateTags(@Path("resourceGroupName") String resourceGroupName, @Path("azureFirewallName") String azureFirewallName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body TagsObject parameters, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2019_09_01.AzureFirewalls listByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/azureFirewalls")
         Observable<Response<ResponseBody>> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -523,7 +527,7 @@ public class AzureFirewallsInner implements InnerSupportsGet<AzureFirewallInner>
      * @return the AzureFirewallInner object if successful.
      */
     public AzureFirewallInner updateTags(String resourceGroupName, String azureFirewallName) {
-        return updateTagsWithServiceResponseAsync(resourceGroupName, azureFirewallName).toBlocking().single().body();
+        return updateTagsWithServiceResponseAsync(resourceGroupName, azureFirewallName).toBlocking().last().body();
     }
 
     /**
@@ -545,7 +549,7 @@ public class AzureFirewallsInner implements InnerSupportsGet<AzureFirewallInner>
      * @param resourceGroupName The name of the resource group.
      * @param azureFirewallName The name of the Azure Firewall.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the AzureFirewallInner object
+     * @return the observable for the request
      */
     public Observable<AzureFirewallInner> updateTagsAsync(String resourceGroupName, String azureFirewallName) {
         return updateTagsWithServiceResponseAsync(resourceGroupName, azureFirewallName).map(new Func1<ServiceResponse<AzureFirewallInner>, AzureFirewallInner>() {
@@ -562,7 +566,7 @@ public class AzureFirewallsInner implements InnerSupportsGet<AzureFirewallInner>
      * @param resourceGroupName The name of the resource group.
      * @param azureFirewallName The name of the Azure Firewall.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the AzureFirewallInner object
+     * @return the observable for the request
      */
     public Observable<ServiceResponse<AzureFirewallInner>> updateTagsWithServiceResponseAsync(String resourceGroupName, String azureFirewallName) {
         if (resourceGroupName == null) {
@@ -578,20 +582,9 @@ public class AzureFirewallsInner implements InnerSupportsGet<AzureFirewallInner>
         final Map<String, String> tags = null;
         TagsObject parameters = new TagsObject();
         parameters.withTags(null);
-        return service.updateTags(resourceGroupName, azureFirewallName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AzureFirewallInner>>>() {
-                @Override
-                public Observable<ServiceResponse<AzureFirewallInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<AzureFirewallInner> clientResponse = updateTagsDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        Observable<Response<ResponseBody>> observable = service.updateTags(resourceGroupName, azureFirewallName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<AzureFirewallInner>() { }.getType());
     }
-
     /**
      * Updates tags of an Azure Firewall resource.
      *
@@ -604,7 +597,7 @@ public class AzureFirewallsInner implements InnerSupportsGet<AzureFirewallInner>
      * @return the AzureFirewallInner object if successful.
      */
     public AzureFirewallInner updateTags(String resourceGroupName, String azureFirewallName, Map<String, String> tags) {
-        return updateTagsWithServiceResponseAsync(resourceGroupName, azureFirewallName, tags).toBlocking().single().body();
+        return updateTagsWithServiceResponseAsync(resourceGroupName, azureFirewallName, tags).toBlocking().last().body();
     }
 
     /**
@@ -628,7 +621,7 @@ public class AzureFirewallsInner implements InnerSupportsGet<AzureFirewallInner>
      * @param azureFirewallName The name of the Azure Firewall.
      * @param tags Resource tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the AzureFirewallInner object
+     * @return the observable for the request
      */
     public Observable<AzureFirewallInner> updateTagsAsync(String resourceGroupName, String azureFirewallName, Map<String, String> tags) {
         return updateTagsWithServiceResponseAsync(resourceGroupName, azureFirewallName, tags).map(new Func1<ServiceResponse<AzureFirewallInner>, AzureFirewallInner>() {
@@ -646,7 +639,7 @@ public class AzureFirewallsInner implements InnerSupportsGet<AzureFirewallInner>
      * @param azureFirewallName The name of the Azure Firewall.
      * @param tags Resource tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the AzureFirewallInner object
+     * @return the observable for the request
      */
     public Observable<ServiceResponse<AzureFirewallInner>> updateTagsWithServiceResponseAsync(String resourceGroupName, String azureFirewallName, Map<String, String> tags) {
         if (resourceGroupName == null) {
@@ -662,12 +655,82 @@ public class AzureFirewallsInner implements InnerSupportsGet<AzureFirewallInner>
         final String apiVersion = "2019-09-01";
         TagsObject parameters = new TagsObject();
         parameters.withTags(tags);
-        return service.updateTags(resourceGroupName, azureFirewallName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent())
+        Observable<Response<ResponseBody>> observable = service.updateTags(resourceGroupName, azureFirewallName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<AzureFirewallInner>() { }.getType());
+    }
+
+    /**
+     * Updates tags of an Azure Firewall resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the Azure Firewall.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the AzureFirewallInner object if successful.
+     */
+    public AzureFirewallInner beginUpdateTags(String resourceGroupName, String azureFirewallName) {
+        return beginUpdateTagsWithServiceResponseAsync(resourceGroupName, azureFirewallName).toBlocking().single().body();
+    }
+
+    /**
+     * Updates tags of an Azure Firewall resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the Azure Firewall.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<AzureFirewallInner> beginUpdateTagsAsync(String resourceGroupName, String azureFirewallName, final ServiceCallback<AzureFirewallInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginUpdateTagsWithServiceResponseAsync(resourceGroupName, azureFirewallName), serviceCallback);
+    }
+
+    /**
+     * Updates tags of an Azure Firewall resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the Azure Firewall.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AzureFirewallInner object
+     */
+    public Observable<AzureFirewallInner> beginUpdateTagsAsync(String resourceGroupName, String azureFirewallName) {
+        return beginUpdateTagsWithServiceResponseAsync(resourceGroupName, azureFirewallName).map(new Func1<ServiceResponse<AzureFirewallInner>, AzureFirewallInner>() {
+            @Override
+            public AzureFirewallInner call(ServiceResponse<AzureFirewallInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Updates tags of an Azure Firewall resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the Azure Firewall.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AzureFirewallInner object
+     */
+    public Observable<ServiceResponse<AzureFirewallInner>> beginUpdateTagsWithServiceResponseAsync(String resourceGroupName, String azureFirewallName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (azureFirewallName == null) {
+            throw new IllegalArgumentException("Parameter azureFirewallName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2019-09-01";
+        final Map<String, String> tags = null;
+        TagsObject parameters = new TagsObject();
+        parameters.withTags(null);
+        return service.beginUpdateTags(resourceGroupName, azureFirewallName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AzureFirewallInner>>>() {
                 @Override
                 public Observable<ServiceResponse<AzureFirewallInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<AzureFirewallInner> clientResponse = updateTagsDelegate(response);
+                        ServiceResponse<AzureFirewallInner> clientResponse = beginUpdateTagsDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -676,9 +739,94 @@ public class AzureFirewallsInner implements InnerSupportsGet<AzureFirewallInner>
             });
     }
 
-    private ServiceResponse<AzureFirewallInner> updateTagsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    /**
+     * Updates tags of an Azure Firewall resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the Azure Firewall.
+     * @param tags Resource tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the AzureFirewallInner object if successful.
+     */
+    public AzureFirewallInner beginUpdateTags(String resourceGroupName, String azureFirewallName, Map<String, String> tags) {
+        return beginUpdateTagsWithServiceResponseAsync(resourceGroupName, azureFirewallName, tags).toBlocking().single().body();
+    }
+
+    /**
+     * Updates tags of an Azure Firewall resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the Azure Firewall.
+     * @param tags Resource tags.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<AzureFirewallInner> beginUpdateTagsAsync(String resourceGroupName, String azureFirewallName, Map<String, String> tags, final ServiceCallback<AzureFirewallInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginUpdateTagsWithServiceResponseAsync(resourceGroupName, azureFirewallName, tags), serviceCallback);
+    }
+
+    /**
+     * Updates tags of an Azure Firewall resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the Azure Firewall.
+     * @param tags Resource tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AzureFirewallInner object
+     */
+    public Observable<AzureFirewallInner> beginUpdateTagsAsync(String resourceGroupName, String azureFirewallName, Map<String, String> tags) {
+        return beginUpdateTagsWithServiceResponseAsync(resourceGroupName, azureFirewallName, tags).map(new Func1<ServiceResponse<AzureFirewallInner>, AzureFirewallInner>() {
+            @Override
+            public AzureFirewallInner call(ServiceResponse<AzureFirewallInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Updates tags of an Azure Firewall resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the Azure Firewall.
+     * @param tags Resource tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AzureFirewallInner object
+     */
+    public Observable<ServiceResponse<AzureFirewallInner>> beginUpdateTagsWithServiceResponseAsync(String resourceGroupName, String azureFirewallName, Map<String, String> tags) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (azureFirewallName == null) {
+            throw new IllegalArgumentException("Parameter azureFirewallName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        Validator.validate(tags);
+        final String apiVersion = "2019-09-01";
+        TagsObject parameters = new TagsObject();
+        parameters.withTags(tags);
+        return service.beginUpdateTags(resourceGroupName, azureFirewallName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AzureFirewallInner>>>() {
+                @Override
+                public Observable<ServiceResponse<AzureFirewallInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<AzureFirewallInner> clientResponse = beginUpdateTagsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<AzureFirewallInner> beginUpdateTagsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<AzureFirewallInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<AzureFirewallInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
