@@ -18,8 +18,12 @@
   <description>Azure Service Bus Queue binder for Spring Cloud Stream</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
-  <dependencies>
+  <properties>
+    <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.15</jacoco.min.branchcoverage>
+  </properties>
 
+  <dependencies>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>spring-cloud-azure-servicebus-stream-binder-core</artifactId>
