@@ -136,7 +136,7 @@ public class CloudEvent {
      */
     public CloudEvent setBinaryData(byte[] data, String dataContentType) {
         this.cloudEvent
-            .setDataBase64(Base64.getEncoder().encodeToString(data))
+            .setDataBase64(data)
             .setDatacontenttype(dataContentType);
         return this;
     }

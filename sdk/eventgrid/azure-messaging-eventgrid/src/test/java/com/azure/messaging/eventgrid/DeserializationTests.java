@@ -16,6 +16,7 @@ import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Base64;
 import java.util.List;
@@ -160,6 +161,8 @@ public class DeserializationTests {
             .addDataMapping("Contoso.Items.ItemRecieved", Void.TYPE)
             .buildConsumer();
 
+        byte[] data = Base64.getDecoder().decode("samplebinarydata");
+
         List<CloudEvent> events = consumer.deserializeCloudEvents(jsonData);
 
         assertNotNull(events);
@@ -167,11 +170,11 @@ public class DeserializationTests {
 
         assertEquals(events.get(0).getSpecVersion(), "1.0");
 
-        assertNotNull(events.get(0).getBinaryData());
+        byte[] eventData = events.get(0).getBinaryData();
 
-        String decoded = Base64.getEncoder().encodeToString(events.get(0).getBinaryData());
+        assertNotNull(eventData);
 
-        assertEquals("samplebinarydataasstring", decoded);
+        assertArrayEquals(data, eventData);
     }
 
     @Test

@@ -25,6 +25,9 @@ in this folder, with the following tags:
 
 `--api-spec-location=<path to rest-api-spec clone>`
 
+If you are adding or updating swagger files, please make sure that they are included 
+in the input file list.
+
 ``` yaml $(java)
 title: EventGridPublisherClient
 description: EventGrid Publisher Client

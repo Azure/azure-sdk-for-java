@@ -7,6 +7,7 @@
 package com.azure.messaging.eventgrid.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -42,7 +43,7 @@ public final class CloudEvent {
      * Event data specific to the event type, encoded as a base64 string.
      */
     @JsonProperty(value = "data_base64")
-    private String dataBase64;
+    private byte[] dataBase64;
 
     /*
      * Type of event related to the originating occurrence.
@@ -156,8 +157,8 @@ public final class CloudEvent {
      *
      * @return the dataBase64 value.
      */
-    public String getDataBase64() {
-        return this.dataBase64;
+    public byte[] getDataBase64() {
+        return CoreUtils.clone(this.dataBase64);
     }
 
     /**
@@ -166,8 +167,8 @@ public final class CloudEvent {
      * @param dataBase64 the dataBase64 value to set.
      * @return the CloudEvent object itself.
      */
-    public CloudEvent setDataBase64(String dataBase64) {
-        this.dataBase64 = dataBase64;
+    public CloudEvent setDataBase64(byte[] dataBase64) {
+        this.dataBase64 = CoreUtils.clone(dataBase64);
         return this;
     }
 
