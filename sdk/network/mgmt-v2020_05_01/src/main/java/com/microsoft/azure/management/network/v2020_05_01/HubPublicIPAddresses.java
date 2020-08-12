@@ -16,19 +16,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class HubPublicIPAddresses {
     /**
-     * The number of Public IP addresses associated with azure firewall.
+     * The list of Public IP addresses associated with azure firewall or IP
+     * addresses to be retained.
      */
     @JsonProperty(value = "addresses")
     private List<AzureFirewallPublicIPAddress> addresses;
 
     /**
-     * Private IP Address associated with azure firewall.
+     * The number of Public IP addresses associated with azure firewall.
      */
     @JsonProperty(value = "count")
     private Integer count;
 
     /**
-     * Get the number of Public IP addresses associated with azure firewall.
+     * Get the list of Public IP addresses associated with azure firewall or IP addresses to be retained.
      *
      * @return the addresses value
      */
@@ -37,7 +38,7 @@ public class HubPublicIPAddresses {
     }
 
     /**
-     * Set the number of Public IP addresses associated with azure firewall.
+     * Set the list of Public IP addresses associated with azure firewall or IP addresses to be retained.
      *
      * @param addresses the addresses value to set
      * @return the HubPublicIPAddresses object itself.
@@ -48,7 +49,7 @@ public class HubPublicIPAddresses {
     }
 
     /**
-     * Get private IP Address associated with azure firewall.
+     * Get the number of Public IP addresses associated with azure firewall.
      *
      * @return the count value
      */
@@ -57,7 +58,7 @@ public class HubPublicIPAddresses {
     }
 
     /**
-     * Set private IP Address associated with azure firewall.
+     * Set the number of Public IP addresses associated with azure firewall.
      *
      * @param count the count value to set
      * @return the HubPublicIPAddresses object itself.

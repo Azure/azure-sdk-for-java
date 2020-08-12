@@ -52,16 +52,6 @@ public interface FirewallPolicy extends HasInner<FirewallPolicyInner>, Resource,
     List<SubResource> firewalls();
 
     /**
-     * @return the identity value.
-     */
-    ManagedServiceIdentity identity();
-
-    /**
-     * @return the intrusionSystemMode value.
-     */
-    FirewallPolicyIntrusionSystemMode intrusionSystemMode();
-
-    /**
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
@@ -80,11 +70,6 @@ public interface FirewallPolicy extends HasInner<FirewallPolicyInner>, Resource,
      * @return the threatIntelWhitelist value.
      */
     FirewallPolicyThreatIntelWhitelist threatIntelWhitelist();
-
-    /**
-     * @return the transportSecurity value.
-     */
-    FirewallPolicyTransportSecurity transportSecurity();
 
     /**
      * The entirety of the FirewallPolicy definition.
@@ -133,30 +118,6 @@ public interface FirewallPolicy extends HasInner<FirewallPolicyInner>, Resource,
         }
 
         /**
-         * The stage of the firewallpolicy definition allowing to specify Identity.
-         */
-        interface WithIdentity {
-            /**
-             * Specifies identity.
-             * @param identity The identity of the firewall policy
-             * @return the next definition stage
-             */
-            WithCreate withIdentity(ManagedServiceIdentity identity);
-        }
-
-        /**
-         * The stage of the firewallpolicy definition allowing to specify IntrusionSystemMode.
-         */
-        interface WithIntrusionSystemMode {
-            /**
-             * Specifies intrusionSystemMode.
-             * @param intrusionSystemMode The operation mode for Intrusion system. Possible values include: 'Enabled', 'Disabled'
-             * @return the next definition stage
-             */
-            WithCreate withIntrusionSystemMode(FirewallPolicyIntrusionSystemMode intrusionSystemMode);
-        }
-
-        /**
          * The stage of the firewallpolicy definition allowing to specify ThreatIntelMode.
          */
         interface WithThreatIntelMode {
@@ -181,29 +142,17 @@ public interface FirewallPolicy extends HasInner<FirewallPolicyInner>, Resource,
         }
 
         /**
-         * The stage of the firewallpolicy definition allowing to specify TransportSecurity.
-         */
-        interface WithTransportSecurity {
-            /**
-             * Specifies transportSecurity.
-             * @param transportSecurity TLS Configuration definition
-             * @return the next definition stage
-             */
-            WithCreate withTransportSecurity(FirewallPolicyTransportSecurity transportSecurity);
-        }
-
-        /**
          * The stage of the definition which contains all the minimum required inputs for
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<FirewallPolicy>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithBasePolicy, DefinitionStages.WithDnsSettings, DefinitionStages.WithIdentity, DefinitionStages.WithIntrusionSystemMode, DefinitionStages.WithThreatIntelMode, DefinitionStages.WithThreatIntelWhitelist, DefinitionStages.WithTransportSecurity {
+        interface WithCreate extends Creatable<FirewallPolicy>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithBasePolicy, DefinitionStages.WithDnsSettings, DefinitionStages.WithThreatIntelMode, DefinitionStages.WithThreatIntelWhitelist {
         }
     }
     /**
      * The template for a FirewallPolicy update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<FirewallPolicy>, Resource.UpdateWithTags<Update>, UpdateStages.WithBasePolicy, UpdateStages.WithDnsSettings, UpdateStages.WithIdentity, UpdateStages.WithIntrusionSystemMode, UpdateStages.WithThreatIntelMode, UpdateStages.WithThreatIntelWhitelist, UpdateStages.WithTransportSecurity {
+    interface Update extends Appliable<FirewallPolicy>, Resource.UpdateWithTags<Update>, UpdateStages.WithBasePolicy, UpdateStages.WithDnsSettings, UpdateStages.WithThreatIntelMode, UpdateStages.WithThreatIntelWhitelist {
     }
 
     /**
@@ -235,30 +184,6 @@ public interface FirewallPolicy extends HasInner<FirewallPolicyInner>, Resource,
         }
 
         /**
-         * The stage of the firewallpolicy update allowing to specify Identity.
-         */
-        interface WithIdentity {
-            /**
-             * Specifies identity.
-             * @param identity The identity of the firewall policy
-             * @return the next update stage
-             */
-            Update withIdentity(ManagedServiceIdentity identity);
-        }
-
-        /**
-         * The stage of the firewallpolicy update allowing to specify IntrusionSystemMode.
-         */
-        interface WithIntrusionSystemMode {
-            /**
-             * Specifies intrusionSystemMode.
-             * @param intrusionSystemMode The operation mode for Intrusion system. Possible values include: 'Enabled', 'Disabled'
-             * @return the next update stage
-             */
-            Update withIntrusionSystemMode(FirewallPolicyIntrusionSystemMode intrusionSystemMode);
-        }
-
-        /**
          * The stage of the firewallpolicy update allowing to specify ThreatIntelMode.
          */
         interface WithThreatIntelMode {
@@ -280,18 +205,6 @@ public interface FirewallPolicy extends HasInner<FirewallPolicyInner>, Resource,
              * @return the next update stage
              */
             Update withThreatIntelWhitelist(FirewallPolicyThreatIntelWhitelist threatIntelWhitelist);
-        }
-
-        /**
-         * The stage of the firewallpolicy update allowing to specify TransportSecurity.
-         */
-        interface WithTransportSecurity {
-            /**
-             * Specifies transportSecurity.
-             * @param transportSecurity TLS Configuration definition
-             * @return the next update stage
-             */
-            Update withTransportSecurity(FirewallPolicyTransportSecurity transportSecurity);
         }
 
     }
