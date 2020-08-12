@@ -484,7 +484,7 @@ class BlobBaseAPITest extends APISpec {
     }
 
     //@Requires( { liveMode() } ) // Large amount of data.
-    @Ignore // TODO (rickle-msft): Remove annotation
+    @Ignore("Query tests hang in Java 11") // TODO (rickle-msft): Remove annotation
     def "Query multiple records with progress receiver"() {
         setup:
         BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()
