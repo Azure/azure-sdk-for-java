@@ -15,7 +15,6 @@ import java.util.List;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.network.v2020_03_01.ProvisioningState;
 import com.microsoft.azure.management.network.v2020_03_01.AzureFirewallThreatIntelMode;
-import com.microsoft.azure.management.network.v2020_03_01.FirewallPolicyIntrusionSystemMode;
 
 class FirewallPolicyImpl extends GroupableResourceCoreImpl<FirewallPolicy, FirewallPolicyInner, FirewallPolicyImpl, NetworkManager> implements FirewallPolicy, FirewallPolicy.Definition, FirewallPolicy.Update {
     FirewallPolicyImpl(String name, FirewallPolicyInner inner, NetworkManager manager) {
@@ -69,11 +68,6 @@ class FirewallPolicyImpl extends GroupableResourceCoreImpl<FirewallPolicy, Firew
     }
 
     @Override
-    public FirewallPolicyIntrusionSystemMode intrusionSystemMode() {
-        return this.inner().intrusionSystemMode();
-    }
-
-    @Override
     public ProvisioningState provisioningState() {
         return this.inner().provisioningState();
     }
@@ -91,12 +85,6 @@ class FirewallPolicyImpl extends GroupableResourceCoreImpl<FirewallPolicy, Firew
     @Override
     public FirewallPolicyImpl withBasePolicy(SubResource basePolicy) {
         this.inner().withBasePolicy(basePolicy);
-        return this;
-    }
-
-    @Override
-    public FirewallPolicyImpl withIntrusionSystemMode(FirewallPolicyIntrusionSystemMode intrusionSystemMode) {
-        this.inner().withIntrusionSystemMode(intrusionSystemMode);
         return this;
     }
 
