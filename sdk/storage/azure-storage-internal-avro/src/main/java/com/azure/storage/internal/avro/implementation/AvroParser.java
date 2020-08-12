@@ -50,9 +50,6 @@ public class AvroParser {
     private boolean partialRead; /* Whether or not the Avro Parser will read the Header and Block off different
                                      streams. This is custom functionality for Changefeed. */
 
-    private long eventIndex; /* Index of the object in the block. */
-    private long blockOffset; /* Offset of block. */
-
     /**
      * Constructs a new Avro Parser object.
      */
@@ -113,39 +110,19 @@ public class AvroParser {
     /**
      * Block handler.
      *
-     * @param index The object index after which to start aggregating events in the block.
+     * @param threshold The object index after which to start aggregating events in the block.
      *                         By default this is 0 to collect all objects in the block.
      */
-    private void onBlock(Object index) {
+    private void onBlock(Object threshold) {
         /* On reading the block, read another block. */
-        AvroSchema.checkType("eventIndex", index, Long.class);
-        long threshold = (Long) index;
+        AvroSchema.checkType("threshold", threshold, Long.class);
 
-        this.blockOffset = this.state.getSourceOffset();
-        this.eventIndex = 0;
         final AvroBlockSchema blockSchema = new AvroBlockSchema(
             this.objectType,
+            (Long) threshold,
             o -> {
-                if (eventIndex < threshold) {
-                    /* If we have not hit the threshold, do not add the object, just increment the eventIndex. */
-                    this.eventIndex++;
-                } else {
-                    /* If we have hit the threshold, determine the next indexes and add it to the list. */
-                    boolean hasNext = ((AvroBlockSchema) this.state.peekFromStack()).hasNext();
-                    long nextBlockOffset;
-                    long nextEventIndex;
-                    if (hasNext) {
-                        /* If the block has another object, just increment the eventIndex. */
-                        nextBlockOffset = this.blockOffset;
-                        nextEventIndex = this.eventIndex + 1;
-                    } else {
-                        /* Otherwise, we are starting the next block, which starts after the syncMarker. */
-                        nextBlockOffset = this.state.getSourceOffset() + this.syncMarker.length;
-                        nextEventIndex = 0;
-                    }
-                    this.objects.add(new AvroObject(blockOffset, this.eventIndex++, nextBlockOffset,
-                        nextEventIndex, o));
-                }
+                AvroSchema.checkType("object", o, AvroObject.class);
+                this.objects.add((AvroObject) o);
             }, /* Object result handler. */
             this.syncMarker,
             this.state,

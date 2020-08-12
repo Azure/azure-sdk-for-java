@@ -5,6 +5,7 @@ package com.azure.storage.internal.avro.implementation.schema.file;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.internal.avro.implementation.AvroConstants;
+import com.azure.storage.internal.avro.implementation.AvroObject;
 import com.azure.storage.internal.avro.implementation.AvroParserState;
 import com.azure.storage.internal.avro.implementation.schema.AvroCompositeSchema;
 import com.azure.storage.internal.avro.implementation.schema.AvroSchema;
@@ -23,7 +24,7 @@ import java.util.function.Consumer;
  * The serialized objects. If a codec is specified, this is compressed by that codec.
  * The file's 16-byte sync marker.
  *
- * Long Long Object Object Object .... SyncMarker
+ * Long Long Object Object Object .... Object SyncMarker
  */
 public class AvroBlockSchema extends AvroCompositeSchema {
 
@@ -32,21 +33,28 @@ public class AvroBlockSchema extends AvroCompositeSchema {
     private final Consumer<Object> onAvroObject;
     private final AvroType objectType;
     private Long blockCount;
+    private final Long threshold;
+    private long eventIndex;
+    private long blockOffset;
     private final byte[] syncMarker;
 
     /**
      * Constructs a new AvroBlockSchema.
      *
      * @param objectType The type of object to parse in the block.
+     * @param threshold The index after which the objects should be returned.
      * @param onAvroObject The handler to add the object to the AvroParser's list.
      * @param syncMarker The sync marker to use to validate.
      * @param state The state of the parser.
      * @param onResult The result handler.
      */
-    public AvroBlockSchema(AvroType objectType, Consumer<Object> onAvroObject, byte[] syncMarker, AvroParserState state,
-        Consumer<Object> onResult) {
+    public AvroBlockSchema(AvroType objectType, Long threshold, Consumer<Object> onAvroObject, byte[] syncMarker,
+        AvroParserState state, Consumer<Object> onResult) {
         super(state, onResult);
         this.objectType = objectType;
+        this.threshold = threshold;
+        this.eventIndex = 0;
+        this.blockOffset = this.state.getSourceOffset();
         this.onAvroObject = onAvroObject;
         this.syncMarker = syncMarker.clone();
     }
@@ -100,11 +108,31 @@ public class AvroBlockSchema extends AvroCompositeSchema {
      * @param schema The object.
      */
     private void onObject(Object schema) {
-        /* Decrement the block count. */
+        /* Decrement the block count. Increment the eventIndex. */
         this.blockCount--;
 
-        /* Call the object handler to store this object in the AvroParser. */
-        this.onAvroObject.accept(schema);
+        if (this.eventIndex < this.threshold) {
+            /* If we have not hit the threshold, do not emit the object, just increment the eventIndex. */
+            this.eventIndex++;
+        } else {
+            /* If we have hit the threshold, determine the next indexes and call the object consumer to add it to
+            the list. */
+            this.eventIndex++;
+            long nextBlockOffset;
+            long nextEventIndex;
+            if (this.hasNext()) {
+                /* If the block has another object, just increment the eventIndex. */
+                nextBlockOffset = this.blockOffset;
+                nextEventIndex = this.eventIndex;
+            } else {
+                /* Otherwise, we are starting the next block, which starts after the syncMarker. */
+                nextBlockOffset = this.state.getSourceOffset() + AvroConstants.SYNC_MARKER_SIZE;
+                nextEventIndex = 0;
+            }
+            /* Call the object handler to store this object in the AvroParser. */
+            this.onAvroObject.accept(new AvroObject(this.blockOffset, this.eventIndex, nextBlockOffset,
+                nextEventIndex, schema));
+        }
 
         /* If blockCount = 0, there are no more items in the block, read the sync marker, call validateSync */
         if (this.blockCount == 0) {
@@ -136,7 +164,7 @@ public class AvroBlockSchema extends AvroCompositeSchema {
         byte[] syncBytes = AvroSchema.getBytes((List<?>) sync);
         if (Arrays.equals(syncBytes, syncMarker)) {
             this.done = true;
-            this.result = -1L;
+            this.result = 0L;
         } else {
             throw logger.logExceptionAsError(new IllegalStateException("Sync marker validation failed."));
         }

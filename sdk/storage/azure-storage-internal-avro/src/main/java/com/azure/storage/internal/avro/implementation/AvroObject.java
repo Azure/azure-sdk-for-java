@@ -23,7 +23,7 @@ public class AvroObject {
      * @param nextEventIndex The index of the next object in the block.
      * @param object The object.
      */
-    AvroObject(long blockOffset, long eventIndex, long nextBlockOffset, long nextEventIndex,
+    public AvroObject(long blockOffset, long eventIndex, long nextBlockOffset, long nextEventIndex,
         Object object) {
         this.blockOffset = blockOffset;
         this.eventIndex = eventIndex;
