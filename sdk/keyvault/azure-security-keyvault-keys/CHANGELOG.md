@@ -1,32 +1,26 @@
 # Release History
 
-## 4.2.0-beta.6 (Unreleased)
-
-
-## 4.2.0-beta.5 (2020-07-08)
-- Updated versions for azure-core, azure-identity.
-
-## 4.2.0-beta.4 (2020-06-10)
-- Updated version for azure-core, azure-identity and external dependencies.
-- `404` responses from `listPropertiesOfKeyVersions` in `KeyAsyncClient` and `KeyClient` now throw a `ResourceNotFoundException`.
-- `buildAsyncKeyEncryptionKey` in `LocalKeyEncryptionKeyClientBuilder` now throws an exception when no ID is present in a given `JsonWebKey`.
-
-## 4.2.0-beta.3 (2020-04-09)
-- Added `LocalCryptographyClient`, `LocalCryptographyAsyncClient`, `LocalKeyEncryptionKeyClient` and `LocalKeyEncryptionKeyAsyncClient` to perform cryptography operations locally.
-- Added `retryPolicy` setter in `KeyClientBuilder`, `CryptographyClientBuilder` and `KeyEncryptionKeyClientBuilder`
-- Update azure-core dependency to version 1.4.0.
-
-
-## 4.2.0-beta.2 (2020-03-10)
-### Added
+## 4.2.0 (2020-08-12)
+- Added support for `7.1-Preview` service version.
+- Added `retryPolicy` setter in `KeyClientBuilder`, `CryptographyClientBuilder` and `KeyEncryptionKeyClientBuilder`.
 - Added `recoverableDays` property to `KeyProperties`.
 - Added `Import` operation to `KeyOperation`.
-- Added support for `7.1-Preview` service version
 
+## 4.1.5 (2020-07-08)
+- Updated versions for azure-core and azure-identity.
 
-## 4.2.0-beta.1
-- `KeyVaultKey` model can be instantiated using `fromKeyId(String keyId, JsonWebKey jsonWebKey)` and `fromName(String name, JsonWebKey jsonWebKey)` methods on the `KeyVaultKey` model.
-- Allows `KeyEncryptionKeyClientBuilder` to consume `KeyVaultKey` model and build `KeyEncryptionKey` and `AsyncKeyEncryptionKey` via`buildKeyEncryptionKey(KeyVaultKey key) ` and `buildAsyncKeyEncryptionKey(KeyVaultKey key)` methods respectively.
+## 4.1.4 (2020-06-10)
+- Updated version for azure-core, azure-identity and external dependencies.
+- `404` responses from `listPropertiesOfKeyVersions` in `KeyAsyncClient` and `KeyClient` now throw a `ResourceNotFoundException`.
+
+## 4.1.3 (2020-05-06)
+- Update azure-core dependency to version 1.5.0.
+
+## 4.1.2 (2020-04-07)
+- Update azure-core dependency to version 1.4.0.
+
+## 4.1.1 (2020-03-25)
+- Update azure-core dependency to version 1.3.0.
 
 ## 4.1.0 (2020-01-07)
 - Fixes the logic of `getKeyId()` method in `KeyEncryptionKeyClient` and `KeyEncryptionKeyAsyncClient` to ensure key id is available in all scenarios.
