@@ -39,7 +39,7 @@ public class UserAgentContainerTest {
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
-    public void UserAgentIntegrationTest() {
+    public void UserAgentIntegration() {
         String userProvidedSuffix = "test-application-id";
         CosmosAsyncClient gatewayClient = null;
         CosmosAsyncClient directClient = null;
@@ -85,18 +85,17 @@ public class UserAgentContainerTest {
             osName = "Unknown";
         }
         osName = osName.replaceAll("\\s", "");
-        String geteUserAgentFixedPart =
-            UserAgentContainer.AZSDK_USERAGENT_PREFIX +
-                HttpConstants.Versions.SDK_NAME +
-                "/" +
-                HttpConstants.Versions.SDK_VERSION +
-                SPACE +
-                osName +
-                "/" +
-                System.getProperty("os.version") +
-                SPACE +
-                "JRE/" +
-                System.getProperty("java.version");
+        String geteUserAgentFixedPart = "azsdk-java-" +
+            "cosmos" +
+            "/" +
+            HttpConstants.Versions.SDK_VERSION +
+            SPACE +
+            osName +
+            "/" +
+            System.getProperty("os.version") +
+            SPACE +
+            "JRE/" +
+            System.getProperty("java.version");
         return geteUserAgentFixedPart;
     }
 }
