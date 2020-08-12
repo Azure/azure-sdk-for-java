@@ -28,7 +28,7 @@ import com.azure.storage.file.datalake.models.PathHttpHeaders
 import com.azure.storage.file.datalake.models.PathPermissions
 import com.azure.storage.file.datalake.models.RolePermissions
 import com.azure.storage.file.datalake.options.FileQueryOptions
-import org.junit.Ignore
+import spock.lang.Ignore
 import reactor.core.Exceptions
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Hooks
@@ -2232,21 +2232,22 @@ class FileAPITest extends APISpec {
     @Requires({ liveMode() }) // Test uploads large amount of data
     def "Async buffered upload"() {
         setup:
-        DataLakeFileAsyncClient fac = getPrimaryServiceClientForWrites(bufferSize)
+        DataLakeFileAsyncClient facWrite = getPrimaryServiceClientForWrites(bufferSize)
             .getFileSystemAsyncClient(fscAsync.getFileSystemName())
             .getFileAsyncClient(generatePathName())
-        fac.create().block()
+        facWrite.create().block()
+        def facRead = fscAsync.getFileAsyncClient(facWrite.getFileName())
 
         when:
         def data = getRandomData(dataSize)
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(bufferSize).setMaxConcurrency(numBuffs).setMaxSingleUploadSizeLong(4 * Constants.MB)
-        fac.upload(Flux.just(data), parallelTransferOptions, true).block()
+        facWrite.upload(Flux.just(data), parallelTransferOptions, true).block()
         data.position(0)
 
         then:
         // Due to memory issues, this check only runs on small to medium sized data sets.
         if (dataSize < 100 * 1024 * 1024) {
-            StepVerifier.create(collectBytesInBuffer(fac.read()))
+            StepVerifier.create(collectBytesInBuffer(facRead.read()))
                 .assertNext({ assert it == data })
                 .verifyComplete()
         }
@@ -2335,10 +2336,11 @@ class FileAPITest extends APISpec {
     @Requires({liveMode()}) // Test uploads large amount of data
     def "Buffered upload chunked source"() {
         setup:
-        DataLakeFileAsyncClient fac = getPrimaryServiceClientForWrites(bufferSize)
+        DataLakeFileAsyncClient facWrite = getPrimaryServiceClientForWrites(bufferSize)
             .getFileSystemAsyncClient(fscAsync.getFileSystemName())
             .getFileAsyncClient(generatePathName())
-        fac.create().block()
+        facWrite.create().block()
+        def facRead = fscAsync.getFileAsyncClient(facWrite.getFileName())
         /*
         This test should validate that the upload should work regardless of what format the passed data is in because
         it will be chunked appropriately.
@@ -2349,10 +2351,10 @@ class FileAPITest extends APISpec {
         for (def size : dataSizeList) {
             dataList.add(getRandomData(size * Constants.MB))
         }
-        def uploadOperation = fac.upload(Flux.fromIterable(dataList), parallelTransferOptions, true)
+        def uploadOperation = facWrite.upload(Flux.fromIterable(dataList), parallelTransferOptions, true)
 
         expect:
-        StepVerifier.create(uploadOperation.then(collectBytesInBuffer(fac.read())))
+        StepVerifier.create(uploadOperation.then(collectBytesInBuffer(facRead.read())))
             .assertNext({ assert compareListToBuffer(dataList, it) })
             .verifyComplete()
 
@@ -2510,7 +2512,7 @@ class FileAPITest extends APISpec {
         where:
         dataSize                 | singleUploadSize | blockSize || numAppends
         (100 * Constants.MB) - 1 | null             | null      || 1
-        (100 * Constants.MB) + 1 | null             | null      || Math.ceil(((double) (100 * MB) + 1) / (double) (4 * MB))
+        (100 * Constants.MB) + 1 | null             | null      || Math.ceil(((double) (100 * Constants.MB) + 1) / (double) (4 * Constants.MB))
         100                      | 50               | null      || 1
         100                      | 50               | 20        || 5
     }

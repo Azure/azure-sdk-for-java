@@ -5,7 +5,7 @@ import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.models.*
 import com.azure.storage.blob.options.BlobQueryOptions
 import com.azure.storage.common.implementation.Constants
-import org.junit.Ignore
+import spock.lang.Ignore
 import reactor.core.Exceptions
 import spock.lang.Requires
 import spock.lang.Unroll
