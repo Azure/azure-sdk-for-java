@@ -29,9 +29,11 @@ Please refer to [Azure Spring Data Cosmos Core module][azure_spring_data_cosmos_
 ## Troubleshooting
 Please refer to [Azure Spring Data Cosmos Core module][azure_spring_data_cosmos_core_readme_troubleshooting] for troubleshooting guide.
 
-## Next Steps
-
+## Examples
 - Please refer to [sample project here][samples].
+
+## Next steps
+- Read more about azure spring data cosmos [here][azure_spring_data_cosmos_docs].
 - [Read more about Azure CosmosDB Service][cosmos_docs]
 
 ## Contributing

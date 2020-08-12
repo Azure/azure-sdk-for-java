@@ -248,7 +248,7 @@ public class SampleApplication implements CommandLineRunner {
 - Autowire UserRepository interface, to perform operations like save, delete, find, etc. 
 - Spring Data Azure Cosmos DB uses the `CosmosTemplate` and `ReactiveCosmosTemplate` to execute the queries behind *find*, *save* methods. You can use the template yourself for more complex queries. 
 
-## Key Concepts
+## Key concepts
 
 ### CrudRepository and ReactiveCrudRepository
 - Azure Spring Data Cosmos supports ReactiveCrudRepository and CrudRepository which provides basic CRUD functionality
@@ -603,9 +603,11 @@ For example, if you want to use spring logback as logging framework, add the fol
 </configuration>
 ```
 
-## Next Steps
-
+## Examples
 - Please refer to [sample project here][samples].
+
+## Next steps
+- Read more about azure spring data cosmos [here][azure_spring_data_cosmos_docs].
 - [Read more about Azure CosmosDB Service][cosmos_docs]
 
 ## Contributing
