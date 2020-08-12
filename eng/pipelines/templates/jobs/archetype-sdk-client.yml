@@ -262,9 +262,17 @@ jobs:
 
       - script: |
           python --version
-          python eng/versioning/update_versions.py --update-type library --build-type client
+          python eng/versioning/update_versions.py --update-type library --build-type client --sr
         condition: and(succeeded(), eq(variables['ShouldRunSourceTests'],'true'))
         displayName: 'Update versions for source build'
+
+      - task: PowerShell@2
+        displayName: 'Generate Aggregate Pom for From Source Build'
+        inputs:
+          pwsh: true
+          workingDirectory: $(Agent.BuildDirectory)
+          filePath: eng/scripts/Generate-Client-Aggregate-Pom.ps1
+        condition: and(succeeded(), eq(variables['ShouldRunSourceTests'],'true'))
 
       - template: ../steps/generate-project-list.yml
         parameters:
@@ -288,14 +296,14 @@ jobs:
       - task: Maven@3
         displayName: 'Build for From Source run'
         inputs:
-          mavenPomFile: pom.xml
+          mavenPomFile: ClientAggregatePom.xml
           goals: 'install'
           # Build everything in the root pom.xml and install it. The purpose here is to build and install everything after
           # the version have been manipulated. The purpose is to have all of the libraries installed on the machine so we
           # can simply run tests with the -amd switch and it won't have to deal with the AdditionalModules snafu that's causing
           # us to list every transitive azure client dependency.
-          # Note: yes, this overbuilds, it builds data track libraries but that'll be looked at later.
-          options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true'
+          # The -T 1C says spin up a build thread per processor, trying it out here.
+          options: '$(DefaultOptions) -T 1C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaBuildVersion)
@@ -316,7 +324,9 @@ jobs:
           jdkVersionOption: $(JavaTestVersion)
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
-          goals: ${{ parameters.TestGoals }}
+          # Instead of using the verify or test goals, which would effectively recompile, just run the tests and generate
+          # the test report which will be published in the next step
+          goals: 'jacoco:prepare-agent jacoco:instrument surefire:test jacoco:restore-instrumented-classes jacoco:report'
         # We want to run this when TestFromSource and ShouldRunSourceTests are true
         condition: and(succeeded(), and(eq(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))
 
