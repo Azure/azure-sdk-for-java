@@ -119,18 +119,13 @@ org.springframework:spring-web;5.2.8.RELEASE
 org.springframework:spring-webmvc;5.2.8.RELEASE
 
 org.springframework.cloud:spring-cloud-bus;2.2.3.RELEASE
-org.springframework.cloud:spring-cloud-bus;2.2.3.RELEASE
-org.springframework.cloud:spring-cloud-context;2.2.4.RELEASE
 org.springframework.cloud:spring-cloud-context;2.2.4.RELEASE
 # After you update spring-boot-dependencies's version, please run this script: /sdk/spring/scripts/sync_version_from_spring-boot-dependencies.py
 org.springframework.cloud:spring-cloud-dependencies;Hoxton.SR7
 org.springframework.cloud:spring-cloud-starter-stream-kafka;3.0.7.RELEASE
-org.springframework.cloud:spring-cloud-starter-stream-kafka;3.0.7.RELEASE
 org.springframework.cloud:spring-cloud-stream-binder-test;3.0.7.RELEASE
 org.springframework.cloud:spring-cloud-stream;3.0.7.RELEASE
 org.springframework.data:spring-data-mongodb;3.0.2.RELEASE
-org.springframework.data:spring-data-mongodb;3.0.2.RELEASE
-org.springframework.data:spring-data-redis;2.3.2.RELEASE
 org.springframework.data:spring-data-redis;2.3.2.RELEASE
 
 pl.pragmatists:JUnitParams;1.1.1
