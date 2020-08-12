@@ -4,43 +4,22 @@
 
 package com.azure.resourcemanager.resources;
 
-import com.azure.core.annotation.BodyParam;
-import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.Headers;
-import com.azure.core.annotation.Host;
-import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.Post;
-import com.azure.core.annotation.QueryParam;
-import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
-import com.azure.core.annotation.ServiceInterface;
-import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.management.exception.ManagementException;
-import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 //import com.azure.resourcemanager.resources.fluent.OperationsClient;
+import com.azure.resourcemanager.resources.fluent.ResourceNamesClient;
 import com.azure.resourcemanager.resources.fluent.SubscriptionsClient;
 import com.azure.resourcemanager.resources.fluent.TenantsClient;
-import com.azure.resourcemanager.resources.fluent.inner.CheckResourceNameResultInner;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
-import com.azure.resourcemanager.resources.models.ResourceName;
 import java.time.Duration;
-import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the SubscriptionClient type. */
 @ServiceClient(builder = SubscriptionClientBuilder.class)
 public final class SubscriptionClient extends AzureServiceClient {
     private final ClientLogger logger = new ClientLogger(SubscriptionClient.class);
-
-    /** The proxy service used to perform REST calls. */
-    private final SubscriptionClientService service;
 
     /** server parameter. */
     private final String endpoint;
@@ -138,6 +117,18 @@ public final class SubscriptionClient extends AzureServiceClient {
         return this.tenants;
     }
 
+    /** The ResourceNamesClient object to access its operations. */
+    private final ResourceNamesClient resourceNames;
+
+    /**
+     * Gets the ResourceNamesClient object to access its operations.
+     *
+     * @return the ResourceNamesClient object.
+     */
+    public ResourceNamesClient getResourceNames() {
+        return this.resourceNames;
+    }
+
     /**
      * Initializes an instance of SubscriptionClient client.
      *
@@ -161,203 +152,6 @@ public final class SubscriptionClient extends AzureServiceClient {
 //        this.operations = new OperationsClient(this);
         this.subscriptions = new SubscriptionsClient(this);
         this.tenants = new TenantsClient(this);
-        this.service =
-            RestProxy.create(SubscriptionClientService.class, this.httpPipeline, this.getSerializerAdapter());
-    }
-
-    /**
-     * The interface defining all the services for SubscriptionClient to be used by the proxy service to perform REST
-     * calls.
-     */
-    @Host("{$host}")
-    @ServiceInterface(name = "SubscriptionClient")
-    private interface SubscriptionClientService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Post("/providers/Microsoft.Resources/checkResourceName")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CheckResourceNameResultInner>> checkResourceName(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ResourceName resourceNameDefinition,
-            Context context);
-    }
-
-    /**
-     * A resource name is valid if it is not a reserved word, does not contains a reserved word and does not start with
-     * a reserved word.
-     *
-     * @param resourceNameDefinition Name and Type of the Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource Name valid if not a reserved word, does not contain a reserved word and does not start with a
-     *     reserved word.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CheckResourceNameResultInner>> checkResourceNameWithResponseAsync(
-        ResourceName resourceNameDefinition) {
-        if (this.getEndpoint() == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceNameDefinition != null) {
-            resourceNameDefinition.validate();
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .checkResourceName(this.getEndpoint(), this.getApiVersion(), resourceNameDefinition, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
-    }
-
-    /**
-     * A resource name is valid if it is not a reserved word, does not contains a reserved word and does not start with
-     * a reserved word.
-     *
-     * @param resourceNameDefinition Name and Type of the Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource Name valid if not a reserved word, does not contain a reserved word and does not start with a
-     *     reserved word.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CheckResourceNameResultInner>> checkResourceNameWithResponseAsync(
-        ResourceName resourceNameDefinition, Context context) {
-        if (this.getEndpoint() == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceNameDefinition != null) {
-            resourceNameDefinition.validate();
-        }
-        context = this.mergeContext(context);
-        return service.checkResourceName(this.getEndpoint(), this.getApiVersion(), resourceNameDefinition, context);
-    }
-
-    /**
-     * A resource name is valid if it is not a reserved word, does not contains a reserved word and does not start with
-     * a reserved word.
-     *
-     * @param resourceNameDefinition Name and Type of the Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource Name valid if not a reserved word, does not contain a reserved word and does not start with a
-     *     reserved word.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CheckResourceNameResultInner> checkResourceNameAsync(ResourceName resourceNameDefinition) {
-        return checkResourceNameWithResponseAsync(resourceNameDefinition)
-            .flatMap(
-                (Response<CheckResourceNameResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * A resource name is valid if it is not a reserved word, does not contains a reserved word and does not start with
-     * a reserved word.
-     *
-     * @param resourceNameDefinition Name and Type of the Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource Name valid if not a reserved word, does not contain a reserved word and does not start with a
-     *     reserved word.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CheckResourceNameResultInner> checkResourceNameAsync(
-        ResourceName resourceNameDefinition, Context context) {
-        return checkResourceNameWithResponseAsync(resourceNameDefinition, context)
-            .flatMap(
-                (Response<CheckResourceNameResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * A resource name is valid if it is not a reserved word, does not contains a reserved word and does not start with
-     * a reserved word.
-     *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource Name valid if not a reserved word, does not contain a reserved word and does not start with a
-     *     reserved word.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CheckResourceNameResultInner> checkResourceNameAsync() {
-        final ResourceName resourceNameDefinition = null;
-        final Context context = null;
-        return checkResourceNameWithResponseAsync(resourceNameDefinition)
-            .flatMap(
-                (Response<CheckResourceNameResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * A resource name is valid if it is not a reserved word, does not contains a reserved word and does not start with
-     * a reserved word.
-     *
-     * @param resourceNameDefinition Name and Type of the Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource Name valid if not a reserved word, does not contain a reserved word and does not start with a
-     *     reserved word.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckResourceNameResultInner checkResourceName(ResourceName resourceNameDefinition) {
-        return checkResourceNameAsync(resourceNameDefinition).block();
-    }
-
-    /**
-     * A resource name is valid if it is not a reserved word, does not contains a reserved word and does not start with
-     * a reserved word.
-     *
-     * @param resourceNameDefinition Name and Type of the Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource Name valid if not a reserved word, does not contain a reserved word and does not start with a
-     *     reserved word.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckResourceNameResultInner checkResourceName(ResourceName resourceNameDefinition, Context context) {
-        return checkResourceNameAsync(resourceNameDefinition, context).block();
-    }
-
-    /**
-     * A resource name is valid if it is not a reserved word, does not contains a reserved word and does not start with
-     * a reserved word.
-     *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource Name valid if not a reserved word, does not contain a reserved word and does not start with a
-     *     reserved word.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckResourceNameResultInner checkResourceName() {
-        final ResourceName resourceNameDefinition = null;
-        final Context context = null;
-        return checkResourceNameAsync(resourceNameDefinition).block();
+        this.resourceNames = new ResourceNamesClient(this);
     }
 }

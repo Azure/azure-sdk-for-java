@@ -326,7 +326,7 @@
     "dir": "azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-subscriptions-2020-01"
+    "args": "--tag=package-subscriptions-2020-01 --name-for-ungrouped-operations=ResourceName"
   },
   "trafficmanager": {
     "dir": "azure-resourcemanager-trafficmanager",
