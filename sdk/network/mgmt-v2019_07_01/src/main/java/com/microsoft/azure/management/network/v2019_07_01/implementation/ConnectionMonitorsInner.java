@@ -35,8 +35,6 @@ import rx.functions.Func1;
 import rx.Observable;
 import com.microsoft.azure.LongRunningFinalState;
 import com.microsoft.azure.LongRunningOperationOptions;
-import com.microsoft.azure.LongRunningFinalState;
-import com.microsoft.azure.LongRunningOperationOptions;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -195,7 +193,7 @@ public class ConnectionMonitorsInner {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         Validator.validate(parameters);
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-07-01";
         Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, networkWatcherName, connectionMonitorName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<ConnectionMonitorResultInner>() { }.getType());
     }
@@ -277,7 +275,7 @@ public class ConnectionMonitorsInner {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         Validator.validate(parameters);
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-07-01";
         return service.beginCreateOrUpdate(resourceGroupName, networkWatcherName, connectionMonitorName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ConnectionMonitorResultInner>>>() {
                 @Override
@@ -369,7 +367,7 @@ public class ConnectionMonitorsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-07-01";
         return service.get(resourceGroupName, networkWatcherName, connectionMonitorName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ConnectionMonitorResultInner>>>() {
                 @Override
@@ -459,7 +457,7 @@ public class ConnectionMonitorsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-07-01";
         Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, networkWatcherName, connectionMonitorName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
@@ -532,7 +530,7 @@ public class ConnectionMonitorsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-07-01";
         return service.beginDelete(resourceGroupName, networkWatcherName, connectionMonitorName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
@@ -624,7 +622,7 @@ public class ConnectionMonitorsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-07-01";
         final Map<String, String> tags = null;
         TagsObject parameters = new TagsObject();
         parameters.withTags(null);
@@ -716,7 +714,7 @@ public class ConnectionMonitorsInner {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         Validator.validate(tags);
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-07-01";
         TagsObject parameters = new TagsObject();
         parameters.withTags(tags);
         return service.updateTags(resourceGroupName, networkWatcherName, connectionMonitorName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent())
@@ -808,7 +806,7 @@ public class ConnectionMonitorsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-07-01";
         Observable<Response<ResponseBody>> observable = service.stop(resourceGroupName, networkWatcherName, connectionMonitorName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.LOCATION), new TypeToken<Void>() { }.getType());
     }
@@ -881,7 +879,7 @@ public class ConnectionMonitorsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-07-01";
         return service.beginStop(resourceGroupName, networkWatcherName, connectionMonitorName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
@@ -972,7 +970,7 @@ public class ConnectionMonitorsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-07-01";
         Observable<Response<ResponseBody>> observable = service.start(resourceGroupName, networkWatcherName, connectionMonitorName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.LOCATION), new TypeToken<Void>() { }.getType());
     }
@@ -1045,7 +1043,7 @@ public class ConnectionMonitorsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-07-01";
         return service.beginStart(resourceGroupName, networkWatcherName, connectionMonitorName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
@@ -1137,7 +1135,7 @@ public class ConnectionMonitorsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-07-01";
         Observable<Response<ResponseBody>> observable = service.query(resourceGroupName, networkWatcherName, connectionMonitorName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.LOCATION), new TypeToken<ConnectionMonitorQueryResultInner>() { }.getType());
     }
@@ -1211,7 +1209,7 @@ public class ConnectionMonitorsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-07-01";
         return service.beginQuery(resourceGroupName, networkWatcherName, connectionMonitorName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ConnectionMonitorQueryResultInner>>>() {
                 @Override
@@ -1296,7 +1294,7 @@ public class ConnectionMonitorsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2019-07-01";
         return service.list(resourceGroupName, networkWatcherName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<ConnectionMonitorResultInner>>>>() {
                 @Override
