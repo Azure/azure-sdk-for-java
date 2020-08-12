@@ -16,10 +16,7 @@ import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.network.v2020_05_01.ProvisioningState;
 import com.microsoft.azure.management.network.v2020_05_01.AzureFirewallThreatIntelMode;
 import com.microsoft.azure.management.network.v2020_05_01.FirewallPolicyThreatIntelWhitelist;
-import com.microsoft.azure.management.network.v2020_05_01.FirewallPolicyIntrusionSystemMode;
-import com.microsoft.azure.management.network.v2020_05_01.FirewallPolicyTransportSecurity;
 import com.microsoft.azure.management.network.v2020_05_01.DnsSettings;
-import com.microsoft.azure.management.network.v2020_05_01.ManagedServiceIdentity;
 
 class FirewallPolicyImpl extends GroupableResourceCoreImpl<FirewallPolicy, FirewallPolicyInner, FirewallPolicyImpl, NetworkManager> implements FirewallPolicy, FirewallPolicy.Definition, FirewallPolicy.Update {
     FirewallPolicyImpl(String name, FirewallPolicyInner inner, NetworkManager manager) {
@@ -78,16 +75,6 @@ class FirewallPolicyImpl extends GroupableResourceCoreImpl<FirewallPolicy, Firew
     }
 
     @Override
-    public ManagedServiceIdentity identity() {
-        return this.inner().identity();
-    }
-
-    @Override
-    public FirewallPolicyIntrusionSystemMode intrusionSystemMode() {
-        return this.inner().intrusionSystemMode();
-    }
-
-    @Override
     public ProvisioningState provisioningState() {
         return this.inner().provisioningState();
     }
@@ -108,11 +95,6 @@ class FirewallPolicyImpl extends GroupableResourceCoreImpl<FirewallPolicy, Firew
     }
 
     @Override
-    public FirewallPolicyTransportSecurity transportSecurity() {
-        return this.inner().transportSecurity();
-    }
-
-    @Override
     public FirewallPolicyImpl withBasePolicy(SubResource basePolicy) {
         this.inner().withBasePolicy(basePolicy);
         return this;
@@ -125,18 +107,6 @@ class FirewallPolicyImpl extends GroupableResourceCoreImpl<FirewallPolicy, Firew
     }
 
     @Override
-    public FirewallPolicyImpl withIdentity(ManagedServiceIdentity identity) {
-        this.inner().withIdentity(identity);
-        return this;
-    }
-
-    @Override
-    public FirewallPolicyImpl withIntrusionSystemMode(FirewallPolicyIntrusionSystemMode intrusionSystemMode) {
-        this.inner().withIntrusionSystemMode(intrusionSystemMode);
-        return this;
-    }
-
-    @Override
     public FirewallPolicyImpl withThreatIntelMode(AzureFirewallThreatIntelMode threatIntelMode) {
         this.inner().withThreatIntelMode(threatIntelMode);
         return this;
@@ -145,12 +115,6 @@ class FirewallPolicyImpl extends GroupableResourceCoreImpl<FirewallPolicy, Firew
     @Override
     public FirewallPolicyImpl withThreatIntelWhitelist(FirewallPolicyThreatIntelWhitelist threatIntelWhitelist) {
         this.inner().withThreatIntelWhitelist(threatIntelWhitelist);
-        return this;
-    }
-
-    @Override
-    public FirewallPolicyImpl withTransportSecurity(FirewallPolicyTransportSecurity transportSecurity) {
-        this.inner().withTransportSecurity(transportSecurity);
         return this;
     }
 

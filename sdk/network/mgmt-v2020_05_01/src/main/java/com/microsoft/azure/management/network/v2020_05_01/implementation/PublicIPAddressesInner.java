@@ -133,7 +133,7 @@ public class PublicIPAddressesInner implements InnerSupportsGet<PublicIPAddressI
      * Deletes the specified public IP address.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param publicIpAddressName The name of the subnet.
+     * @param publicIpAddressName The name of the public IP address.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -146,7 +146,7 @@ public class PublicIPAddressesInner implements InnerSupportsGet<PublicIPAddressI
      * Deletes the specified public IP address.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param publicIpAddressName The name of the subnet.
+     * @param publicIpAddressName The name of the public IP address.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -159,7 +159,7 @@ public class PublicIPAddressesInner implements InnerSupportsGet<PublicIPAddressI
      * Deletes the specified public IP address.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param publicIpAddressName The name of the subnet.
+     * @param publicIpAddressName The name of the public IP address.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -176,7 +176,7 @@ public class PublicIPAddressesInner implements InnerSupportsGet<PublicIPAddressI
      * Deletes the specified public IP address.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param publicIpAddressName The name of the subnet.
+     * @param publicIpAddressName The name of the public IP address.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -199,7 +199,7 @@ public class PublicIPAddressesInner implements InnerSupportsGet<PublicIPAddressI
      * Deletes the specified public IP address.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param publicIpAddressName The name of the subnet.
+     * @param publicIpAddressName The name of the public IP address.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -212,7 +212,7 @@ public class PublicIPAddressesInner implements InnerSupportsGet<PublicIPAddressI
      * Deletes the specified public IP address.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param publicIpAddressName The name of the subnet.
+     * @param publicIpAddressName The name of the public IP address.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -225,7 +225,7 @@ public class PublicIPAddressesInner implements InnerSupportsGet<PublicIPAddressI
      * Deletes the specified public IP address.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param publicIpAddressName The name of the subnet.
+     * @param publicIpAddressName The name of the public IP address.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
@@ -242,7 +242,7 @@ public class PublicIPAddressesInner implements InnerSupportsGet<PublicIPAddressI
      * Deletes the specified public IP address.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param publicIpAddressName The name of the subnet.
+     * @param publicIpAddressName The name of the public IP address.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
@@ -284,7 +284,7 @@ public class PublicIPAddressesInner implements InnerSupportsGet<PublicIPAddressI
      * Gets the specified public IP address in a specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param publicIpAddressName The name of the subnet.
+     * @param publicIpAddressName The name of the public IP address.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -298,7 +298,7 @@ public class PublicIPAddressesInner implements InnerSupportsGet<PublicIPAddressI
      * Gets the specified public IP address in a specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param publicIpAddressName The name of the subnet.
+     * @param publicIpAddressName The name of the public IP address.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -311,7 +311,7 @@ public class PublicIPAddressesInner implements InnerSupportsGet<PublicIPAddressI
      * Gets the specified public IP address in a specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param publicIpAddressName The name of the subnet.
+     * @param publicIpAddressName The name of the public IP address.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PublicIPAddressInner object
      */
@@ -328,7 +328,7 @@ public class PublicIPAddressesInner implements InnerSupportsGet<PublicIPAddressI
      * Gets the specified public IP address in a specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param publicIpAddressName The name of the subnet.
+     * @param publicIpAddressName The name of the public IP address.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PublicIPAddressInner object
      */
@@ -362,7 +362,7 @@ public class PublicIPAddressesInner implements InnerSupportsGet<PublicIPAddressI
      * Gets the specified public IP address in a specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param publicIpAddressName The name of the subnet.
+     * @param publicIpAddressName The name of the public IP address.
      * @param expand Expands referenced resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -377,7 +377,7 @@ public class PublicIPAddressesInner implements InnerSupportsGet<PublicIPAddressI
      * Gets the specified public IP address in a specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param publicIpAddressName The name of the subnet.
+     * @param publicIpAddressName The name of the public IP address.
      * @param expand Expands referenced resources.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -391,7 +391,7 @@ public class PublicIPAddressesInner implements InnerSupportsGet<PublicIPAddressI
      * Gets the specified public IP address in a specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param publicIpAddressName The name of the subnet.
+     * @param publicIpAddressName The name of the public IP address.
      * @param expand Expands referenced resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PublicIPAddressInner object
@@ -409,7 +409,7 @@ public class PublicIPAddressesInner implements InnerSupportsGet<PublicIPAddressI
      * Gets the specified public IP address in a specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param publicIpAddressName The name of the subnet.
+     * @param publicIpAddressName The name of the public IP address.
      * @param expand Expands referenced resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PublicIPAddressInner object
