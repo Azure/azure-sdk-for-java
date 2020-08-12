@@ -1,5 +1,8 @@
 # Release History
 
+## 1.5.0-beta.1 (Unreleased)
+
+
 ## 1.4.0 (2020-08-11)
 - Settles AMQP deliveries that were received after local link state changed to `CLOSED`
 - Add credits to AMQP link only if the receiver is not disposed.
