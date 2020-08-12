@@ -117,20 +117,19 @@ public class AvroBlockSchema extends AvroCompositeSchema {
         } else {
             /* If we have hit the threshold, determine the next indexes and call the object consumer to add it to
             the list. */
-            this.eventIndex++;
             long nextBlockOffset;
             long nextEventIndex;
             if (this.hasNext()) {
                 /* If the block has another object, just increment the eventIndex. */
                 nextBlockOffset = this.blockOffset;
-                nextEventIndex = this.eventIndex;
+                nextEventIndex = this.eventIndex + 1;
             } else {
                 /* Otherwise, we are starting the next block, which starts after the syncMarker. */
                 nextBlockOffset = this.state.getSourceOffset() + AvroConstants.SYNC_MARKER_SIZE;
                 nextEventIndex = 0;
             }
             /* Call the object handler to store this object in the AvroParser. */
-            this.onAvroObject.accept(new AvroObject(this.blockOffset, this.eventIndex, nextBlockOffset,
+            this.onAvroObject.accept(new AvroObject(this.blockOffset, this.eventIndex++, nextBlockOffset,
                 nextEventIndex, schema));
         }
 

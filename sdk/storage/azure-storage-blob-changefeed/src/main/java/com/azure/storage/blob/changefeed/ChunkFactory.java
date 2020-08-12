@@ -7,7 +7,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.internal.avro.implementation.AvroObject;
 import com.azure.storage.internal.avro.implementation.AvroReader;
 import com.azure.storage.internal.avro.implementation.AvroReaderFactory;
 import reactor.core.publisher.Flux;
@@ -19,7 +18,7 @@ import java.nio.ByteBuffer;
  */
 class ChunkFactory {
 
-    private static ClientLogger logger = new ClientLogger(ChunkFactory.class);
+    private final ClientLogger logger = new ClientLogger(ChunkFactory.class);
     private static final long DEFAULT_HEADER_SIZE = 4 * Constants.KB;
     /* TODO (gapra): This should probably be configurable by a user. */
     private static final long DEFAULT_BODY_SIZE = Constants.MB;
@@ -47,10 +46,11 @@ class ChunkFactory {
      * @param eventIndex The index of the last object in the block that was returned to the user.
      * @return {@link Chunk}
      */
-    Chunk getChunk(String chunkPath, Long chunkLength, ChangefeedCursor changefeedCursor, long blockOffset,
+    Chunk getChunk(String chunkPath, long chunkLength, ChangefeedCursor changefeedCursor, long blockOffset,
         long eventIndex) {
         /* Validate parameters. */
         StorageImplUtils.assertNotNull("chunkPath", chunkPath);
+        StorageImplUtils.assertNotNull("chunkLength", chunkLength);
         StorageImplUtils.assertNotNull("changefeedCursor", changefeedCursor);
         StorageImplUtils.assertInBounds("blockOffset", blockOffset, 0, Long.MAX_VALUE);
         StorageImplUtils.assertInBounds("eventIndex", eventIndex, 0, Long.MAX_VALUE);
