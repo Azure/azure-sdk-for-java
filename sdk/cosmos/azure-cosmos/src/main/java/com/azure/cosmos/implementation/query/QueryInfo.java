@@ -8,8 +8,8 @@ import com.azure.cosmos.implementation.JsonSerializable;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
+import java.time.Instant;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +26,7 @@ public final class QueryInfo extends JsonSerializable {
     private Integer offset;
     private Integer limit;
     private DistinctQueryType distinctQueryType;
+    private QueryPlanDiagnosticsContext queryPlanDiagnosticsContext;
 
     public QueryInfo() {
     }
@@ -153,6 +154,31 @@ public final class QueryInfo extends JsonSerializable {
 
     public List<String> getGroupByAliases() {
         return super.getList("groupByAliases", String.class);
+    }
+
+    public QueryPlanDiagnosticsContext getQueryPlanDiagnosticsContext() {
+        return queryPlanDiagnosticsContext;
+    }
+
+    public void setQueryPlanDiagnosticsContext(QueryPlanDiagnosticsContext queryPlanDiagnosticsContext) {
+        this.queryPlanDiagnosticsContext = queryPlanDiagnosticsContext;
+    }
+
+    public static final class QueryPlanDiagnosticsContext {
+        private volatile Instant startTimeUTC;
+        private volatile Instant endTimeUTC;
+        public QueryPlanDiagnosticsContext(Instant startTimeUTC, Instant endTimeUTC) {
+            this.startTimeUTC = startTimeUTC;
+            this.endTimeUTC = endTimeUTC;
+        }
+
+        public Instant getStartTimeUTC() {
+            return startTimeUTC;
+        }
+
+        public Instant getEndTimeUTC() {
+            return endTimeUTC;
+        }
     }
 }
 
