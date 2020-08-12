@@ -87,7 +87,7 @@ jobs:
         displayName: Apply version settings to repository
 
       - script: |
-          pip install markdown2 BeautifulSoup4 in_place
+          pip install markdown2 BeautifulSoup4
         displayName: 'pip install markdown2 and BeautifulSoup4'
 
       - template: ../steps/cache-maven-repository.yml
