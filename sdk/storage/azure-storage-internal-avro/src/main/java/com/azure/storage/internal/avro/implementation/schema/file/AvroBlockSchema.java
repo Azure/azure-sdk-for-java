@@ -134,22 +134,22 @@ public class AvroBlockSchema extends AvroCompositeSchema {
                 nextEventIndex, schema));
         }
 
-        /* If blockCount = 0, there are no more items in the block, read the sync marker, call validateSync */
-        if (this.blockCount == 0) {
-            AvroFixedSchema syncSchema = new AvroFixedSchema(
-                AvroConstants.SYNC_MARKER_SIZE,
-                this.state,
-                this::validateSync
-            );
-            syncSchema.pushToStack();
-            /* If block count != 0, there are more objects in the block, read another object and call onObject. */
-        } else {
+        if (this.hasNext()) {
+            /* If the block has another object, read another object and call onObject. */
             AvroSchema objectSchema = AvroSchema.getSchema(
                 this.objectType,
                 this.state,
                 this::onObject
             );
             objectSchema.pushToStack();
+        } else {
+            /* Otherwise, read the sync marker, call validateSync. */
+            AvroFixedSchema syncSchema = new AvroFixedSchema(
+                AvroConstants.SYNC_MARKER_SIZE,
+                this.state,
+                this::validateSync
+            );
+            syncSchema.pushToStack();
         }
     }
 
@@ -170,6 +170,9 @@ public class AvroBlockSchema extends AvroCompositeSchema {
         }
     }
 
+    /**
+     * @return Whether or not the block has a next object.
+     */
     public boolean hasNext() {
         return this.blockCount != 0;
     }
