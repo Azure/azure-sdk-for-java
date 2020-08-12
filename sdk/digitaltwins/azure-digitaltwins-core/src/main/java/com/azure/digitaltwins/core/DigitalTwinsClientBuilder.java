@@ -38,16 +38,24 @@ public class DigitalTwinsClientBuilder {
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
+        // Adds a "x-ms-client-request-id" header to each request. This header is useful for tracing requests through Azure ecosystems
         policies.add(new RequestIdPolicy());
 
+        // Only the RequestIdPolicy will take effect prior to the retry policy
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
         policies.add(retryPolicy);
 
+        // Adds a date header to each HTTP request for tracking purposes
         policies.add(new AddDatePolicy());
+
+        // Add authentication policy so that each HTTP request has authorization header
         HttpPipelinePolicy credentialPolicy = new BearerTokenAuthenticationPolicy(tokenCredential, GetAuthorizationScopes(endpoint));
         policies.add(credentialPolicy);
+
         policies.addAll(additionalPolicies);
+
+        // Custom policies, authentication policy, and add date policy all take place after the retry policy
         HttpPolicyProviders.addAfterRetryPolicies(policies);
 
         policies.add(new HttpLoggingPolicy(logOptions));
@@ -94,7 +102,17 @@ public class DigitalTwinsClientBuilder {
         // Set defaults for these fields if they were not set while building the client
         this.serviceVersion = this.serviceVersion != null ? this.serviceVersion : DigitalTwinsServiceVersion.getLatest();
         this.retryPolicy = this.retryPolicy != null ? this.retryPolicy : new RetryPolicy(); // Default is exponential backoff
-        this.httpPipeline = this.httpPipeline != null ? httpPipeline : buildPipeline(this.tokenCredential, this.endpoint, this.logOptions, this.httpClient, this.additionalPolicies, this.retryPolicy);
+
+        if (this.httpPipeline == null)
+        {
+            this.httpPipeline = buildPipeline(
+                this.tokenCredential,
+                this.endpoint,
+                this.logOptions,
+                this.httpClient,
+                this.additionalPolicies,
+                this.retryPolicy);
+        }
 
         return new DigitalTwinsAsyncClient(this.httpPipeline, this.serviceVersion, this.endpoint);
     }
@@ -176,7 +194,8 @@ public class DigitalTwinsClientBuilder {
     }
 
     /**
-     * Sets the request retry options for all the requests made through the client.
+     * Sets the request retry options for all the requests made through the client. By default, the pipeline will
+     * use an exponential backoff retry value as detailed in {@link RetryPolicy#RetryPolicy()}.
      *
      * @param retryPolicy {@link RetryPolicy}.
      * @return the updated DigitalTwinsClientBuilder instance for fluent building.
