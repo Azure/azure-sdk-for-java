@@ -8,8 +8,18 @@ import time
 
 import in_place
 
-import file_loader
 from log import log, Log
+
+config = {
+    'cosmos': {
+        'artifact_dict': {
+            'azure-spring-data-2-3-cosmos': 'azure-spring-data-2-2-cosmos'
+        },
+        'pom_list': [
+            'sdk/cosmos/azure-spring-data-cosmos-test/pom.xml'
+        ]
+    }
+}
 
 
 def main():
@@ -63,10 +73,8 @@ def init_log(args):
 
 
 def replace_artifact(module):
-    artifact_map_file = 'sdk/spring/scripts/replace_artifact_config_{}/artifact_dict.txt'.format(module)
-    pom_list_file = 'sdk/spring/scripts/replace_artifact_config_{}/pom_list.txt'.format(module)
-    artifact_dict = file_loader.load_dict(artifact_map_file)
-    pom_list = file_loader.load_list(pom_list_file)
+    artifact_dict = config[module]['artifact_dict']
+    pom_list = config[module]['pom_list']
     for pom in pom_list:
         log.info('Processing file: {}'.format(pom))
         with in_place.InPlace(pom) as file:

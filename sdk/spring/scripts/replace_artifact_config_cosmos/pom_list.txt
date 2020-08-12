@@ -1,1 +1,0 @@
-sdk/cosmos/azure-spring-data-cosmos-test/pom.xml

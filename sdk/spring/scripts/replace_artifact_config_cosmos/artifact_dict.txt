@@ -1,4 +1,0 @@
-# line format:
-# <current-artifact>:<new-artifact>
-
-azure-spring-data-2-3-cosmos:azure-spring-data-2-2-cosmos
