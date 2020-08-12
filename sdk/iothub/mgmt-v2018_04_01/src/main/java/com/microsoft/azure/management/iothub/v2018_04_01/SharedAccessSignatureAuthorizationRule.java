@@ -10,13 +10,13 @@ package com.microsoft.azure.management.iothub.v2018_04_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.iothub.v2018_04_01.implementation.IoTHubManager;
+import com.microsoft.azure.management.iothub.v2018_04_01.implementation.DevicesManager;
 import com.microsoft.azure.management.iothub.v2018_04_01.implementation.SharedAccessSignatureAuthorizationRuleInner;
 
 /**
  * Type representing SharedAccessSignatureAuthorizationRule.
  */
-public interface SharedAccessSignatureAuthorizationRule extends HasInner<SharedAccessSignatureAuthorizationRuleInner>, HasManager<IoTHubManager> {
+public interface SharedAccessSignatureAuthorizationRule extends HasInner<SharedAccessSignatureAuthorizationRuleInner>, HasManager<DevicesManager> {
     /**
      * @return the keyName value.
      */
