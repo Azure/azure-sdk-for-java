@@ -46,6 +46,11 @@ public interface DatabaseAccountGetResults extends HasInner<DatabaseAccountGetRe
     ConsistencyPolicy consistencyPolicy();
 
     /**
+     * @return the cors value.
+     */
+    List<CorsPolicy> cors();
+
+    /**
      * @return the databaseAccountOfferType value.
      */
     DatabaseAccountOfferType databaseAccountOfferType();
@@ -240,6 +245,18 @@ public interface DatabaseAccountGetResults extends HasInner<DatabaseAccountGetRe
         }
 
         /**
+         * The stage of the databaseaccountgetresults definition allowing to specify Cors.
+         */
+        interface WithCors {
+            /**
+             * Specifies cors.
+             * @param cors The CORS policy for the Cosmos DB database account
+             * @return the next definition stage
+             */
+            WithCreate withCors(List<CorsPolicy> cors);
+        }
+
+        /**
          * The stage of the databaseaccountgetresults definition allowing to specify DisableKeyBasedMetadataWriteAccess.
          */
         interface WithDisableKeyBasedMetadataWriteAccess {
@@ -388,13 +405,13 @@ public interface DatabaseAccountGetResults extends HasInner<DatabaseAccountGetRe
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<DatabaseAccountGetResults>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithApiProperties, DefinitionStages.WithCapabilities, DefinitionStages.WithConnectorOffer, DefinitionStages.WithConsistencyPolicy, DefinitionStages.WithDisableKeyBasedMetadataWriteAccess, DefinitionStages.WithEnableAnalyticalStorage, DefinitionStages.WithEnableAutomaticFailover, DefinitionStages.WithEnableCassandraConnector, DefinitionStages.WithEnableFreeTier, DefinitionStages.WithEnableMultipleWriteLocations, DefinitionStages.WithIpRules, DefinitionStages.WithIsVirtualNetworkFilterEnabled, DefinitionStages.WithKeyVaultKeyUri, DefinitionStages.WithKind, DefinitionStages.WithPublicNetworkAccess, DefinitionStages.WithVirtualNetworkRules {
+        interface WithCreate extends Creatable<DatabaseAccountGetResults>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithApiProperties, DefinitionStages.WithCapabilities, DefinitionStages.WithConnectorOffer, DefinitionStages.WithConsistencyPolicy, DefinitionStages.WithCors, DefinitionStages.WithDisableKeyBasedMetadataWriteAccess, DefinitionStages.WithEnableAnalyticalStorage, DefinitionStages.WithEnableAutomaticFailover, DefinitionStages.WithEnableCassandraConnector, DefinitionStages.WithEnableFreeTier, DefinitionStages.WithEnableMultipleWriteLocations, DefinitionStages.WithIpRules, DefinitionStages.WithIsVirtualNetworkFilterEnabled, DefinitionStages.WithKeyVaultKeyUri, DefinitionStages.WithKind, DefinitionStages.WithPublicNetworkAccess, DefinitionStages.WithVirtualNetworkRules {
         }
     }
     /**
      * The template for a DatabaseAccountGetResults update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<DatabaseAccountGetResults>, Resource.UpdateWithTags<Update>, UpdateStages.WithApiProperties, UpdateStages.WithCapabilities, UpdateStages.WithConnectorOffer, UpdateStages.WithConsistencyPolicy, UpdateStages.WithDisableKeyBasedMetadataWriteAccess, UpdateStages.WithEnableAnalyticalStorage, UpdateStages.WithEnableAutomaticFailover, UpdateStages.WithEnableCassandraConnector, UpdateStages.WithEnableFreeTier, UpdateStages.WithEnableMultipleWriteLocations, UpdateStages.WithIpRules, UpdateStages.WithIsVirtualNetworkFilterEnabled, UpdateStages.WithKeyVaultKeyUri, UpdateStages.WithLocations, UpdateStages.WithPublicNetworkAccess, UpdateStages.WithVirtualNetworkRules {
+    interface Update extends Appliable<DatabaseAccountGetResults>, Resource.UpdateWithTags<Update>, UpdateStages.WithApiProperties, UpdateStages.WithCapabilities, UpdateStages.WithConnectorOffer, UpdateStages.WithConsistencyPolicy, UpdateStages.WithCors, UpdateStages.WithDisableKeyBasedMetadataWriteAccess, UpdateStages.WithEnableAnalyticalStorage, UpdateStages.WithEnableAutomaticFailover, UpdateStages.WithEnableCassandraConnector, UpdateStages.WithEnableFreeTier, UpdateStages.WithEnableMultipleWriteLocations, UpdateStages.WithIpRules, UpdateStages.WithIsVirtualNetworkFilterEnabled, UpdateStages.WithKeyVaultKeyUri, UpdateStages.WithLocations, UpdateStages.WithPublicNetworkAccess, UpdateStages.WithVirtualNetworkRules {
     }
 
     /**
@@ -447,6 +464,18 @@ public interface DatabaseAccountGetResults extends HasInner<DatabaseAccountGetRe
              * @return the next update stage
              */
             Update withConsistencyPolicy(ConsistencyPolicy consistencyPolicy);
+        }
+
+        /**
+         * The stage of the databaseaccountgetresults update allowing to specify Cors.
+         */
+        interface WithCors {
+            /**
+             * Specifies cors.
+             * @param cors The CORS policy for the Cosmos DB database account
+             * @return the next update stage
+             */
+            Update withCors(List<CorsPolicy> cors);
         }
 
         /**

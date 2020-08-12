@@ -193,6 +193,7 @@ public final class RestorableDroppedManagedDatabasesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .listByInstance(
                 this.client.getEndpoint(),
@@ -248,7 +249,7 @@ public final class RestorableDroppedManagedDatabasesClient {
         String resourceGroupName, String managedInstanceName, Context context) {
         return new PagedFlux<>(
             () -> listByInstanceSinglePageAsync(resourceGroupName, managedInstanceName, context),
-            nextLink -> listByInstanceNextSinglePageAsync(nextLink));
+            nextLink -> listByInstanceNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -386,6 +387,7 @@ public final class RestorableDroppedManagedDatabasesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -532,6 +534,7 @@ public final class RestorableDroppedManagedDatabasesClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByInstanceNext(nextLink, context)
             .map(

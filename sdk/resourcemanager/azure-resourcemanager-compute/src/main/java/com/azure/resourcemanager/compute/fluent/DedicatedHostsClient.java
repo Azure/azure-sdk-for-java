@@ -293,8 +293,8 @@ public final class DedicatedHostsClient {
             createOrUpdateWithResponseAsync(resourceGroupName, hostGroupName, hostname, parameters);
         return this
             .client
-            .<DedicatedHostInner, DedicatedHostInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DedicatedHostInner.class, DedicatedHostInner.class);
+            .<DedicatedHostInner, DedicatedHostInner>getLroResult(
+                mono, this.client.getHttpPipeline(), DedicatedHostInner.class, DedicatedHostInner.class, Context.NONE);
     }
 
     /**
@@ -317,12 +317,13 @@ public final class DedicatedHostsClient {
         String hostname,
         DedicatedHostInner parameters,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, hostGroupName, hostname, parameters, context);
         return this
             .client
-            .<DedicatedHostInner, DedicatedHostInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DedicatedHostInner.class, DedicatedHostInner.class);
+            .<DedicatedHostInner, DedicatedHostInner>getLroResult(
+                mono, this.client.getHttpPipeline(), DedicatedHostInner.class, DedicatedHostInner.class, context);
     }
 
     /**
@@ -595,8 +596,8 @@ public final class DedicatedHostsClient {
             updateWithResponseAsync(resourceGroupName, hostGroupName, hostname, parameters);
         return this
             .client
-            .<DedicatedHostInner, DedicatedHostInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DedicatedHostInner.class, DedicatedHostInner.class);
+            .<DedicatedHostInner, DedicatedHostInner>getLroResult(
+                mono, this.client.getHttpPipeline(), DedicatedHostInner.class, DedicatedHostInner.class, Context.NONE);
     }
 
     /**
@@ -620,12 +621,13 @@ public final class DedicatedHostsClient {
         String hostname,
         DedicatedHostUpdate parameters,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateWithResponseAsync(resourceGroupName, hostGroupName, hostname, parameters, context);
         return this
             .client
-            .<DedicatedHostInner, DedicatedHostInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DedicatedHostInner.class, DedicatedHostInner.class);
+            .<DedicatedHostInner, DedicatedHostInner>getLroResult(
+                mono, this.client.getHttpPipeline(), DedicatedHostInner.class, DedicatedHostInner.class, context);
     }
 
     /**
@@ -878,7 +880,9 @@ public final class DedicatedHostsClient {
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String hostGroupName, String hostname) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, hostGroupName, hostname);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -896,9 +900,12 @@ public final class DedicatedHostsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String hostGroupName, String hostname, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, hostGroupName, hostname, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -1391,7 +1398,7 @@ public final class DedicatedHostsClient {
         String resourceGroupName, String hostGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByHostGroupSinglePageAsync(resourceGroupName, hostGroupName, context),
-            nextLink -> listByHostGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByHostGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**

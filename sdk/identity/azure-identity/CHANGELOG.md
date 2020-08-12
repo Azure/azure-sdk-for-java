@@ -1,5 +1,8 @@
 # Release History
 
+## 1.2.0-beta.1 (Unreleased)
+
+
 ## 1.1.0 (2020-08-10)
 - Upgraded core dependency to 1.7.0
 - Removed the default value of 0 for port in `InteractiveBrowserCredential`.

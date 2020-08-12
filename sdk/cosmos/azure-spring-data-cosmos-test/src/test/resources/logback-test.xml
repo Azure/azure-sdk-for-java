@@ -9,7 +9,7 @@
   <root level="info">
     <appender-ref ref="STDOUT"/>
   </root>
-  <logger name="com.azure.data.cosmos" level="error"/>
+  <logger name="com.azure.cosmos" level="error"/>
   <logger name="org.springframework" level="error"/>
   <logger name="io.netty" level="error"/>
 </configuration>

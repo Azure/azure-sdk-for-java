@@ -6,6 +6,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import com.azure.resourcemanager.sql.SqlServerManager;
 import com.azure.resourcemanager.sql.models.SecurityAlertPolicyEmailAccountAdmins;
+import com.azure.resourcemanager.sql.models.SecurityAlertPolicyName;
 import com.azure.resourcemanager.sql.models.SecurityAlertPolicyState;
 import com.azure.resourcemanager.sql.models.SecurityAlertPolicyUseServerDefault;
 import com.azure.resourcemanager.sql.models.SqlDatabase;
@@ -112,7 +113,8 @@ public class SqlDatabaseThreatDetectionPolicyImpl
             .sqlServerManager
             .inner()
             .getDatabaseThreatDetectionPolicies()
-            .getAsync(this.resourceGroupName, this.sqlServerName, this.parent().name());
+            .getAsync(this.resourceGroupName, this.sqlServerName, this.parent().name(),
+                SecurityAlertPolicyName.DEFAULT);
     }
 
     @Override
@@ -122,7 +124,8 @@ public class SqlDatabaseThreatDetectionPolicyImpl
             .sqlServerManager
             .inner()
             .getDatabaseThreatDetectionPolicies()
-            .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.parent().name(), this.inner())
+            .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.parent().name(),
+                SecurityAlertPolicyName.DEFAULT, this.inner())
             .map(
                 databaseSecurityAlertPolicyInner -> {
                     self.setInner(databaseSecurityAlertPolicyInner);

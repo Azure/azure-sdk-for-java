@@ -433,7 +433,9 @@ public final class ApplicationGatewaysClient
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String applicationGatewayName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, applicationGatewayName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -450,9 +452,12 @@ public final class ApplicationGatewaysClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String applicationGatewayName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, applicationGatewayName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -856,8 +861,12 @@ public final class ApplicationGatewaysClient
             createOrUpdateWithResponseAsync(resourceGroupName, applicationGatewayName, parameters);
         return this
             .client
-            .<ApplicationGatewayInner, ApplicationGatewayInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), ApplicationGatewayInner.class, ApplicationGatewayInner.class);
+            .<ApplicationGatewayInner, ApplicationGatewayInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ApplicationGatewayInner.class,
+                ApplicationGatewayInner.class,
+                Context.NONE);
     }
 
     /**
@@ -875,12 +884,17 @@ public final class ApplicationGatewaysClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<ApplicationGatewayInner>, ApplicationGatewayInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, applicationGatewayName, parameters, context);
         return this
             .client
-            .<ApplicationGatewayInner, ApplicationGatewayInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), ApplicationGatewayInner.class, ApplicationGatewayInner.class);
+            .<ApplicationGatewayInner, ApplicationGatewayInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ApplicationGatewayInner.class,
+                ApplicationGatewayInner.class,
+                context);
     }
 
     /**
@@ -1306,7 +1320,7 @@ public final class ApplicationGatewaysClient
     public PagedFlux<ApplicationGatewayInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1437,7 +1451,8 @@ public final class ApplicationGatewaysClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ApplicationGatewayInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listAllNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listAllNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1575,7 +1590,9 @@ public final class ApplicationGatewaysClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String applicationGatewayName) {
         Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, applicationGatewayName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1592,9 +1609,12 @@ public final class ApplicationGatewaysClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginStartAsync(
         String resourceGroupName, String applicationGatewayName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             startWithResponseAsync(resourceGroupName, applicationGatewayName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -1802,7 +1822,9 @@ public final class ApplicationGatewaysClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginStopAsync(String resourceGroupName, String applicationGatewayName) {
         Mono<Response<Flux<ByteBuffer>>> mono = stopWithResponseAsync(resourceGroupName, applicationGatewayName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1819,9 +1841,12 @@ public final class ApplicationGatewaysClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginStopAsync(
         String resourceGroupName, String applicationGatewayName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             stopWithResponseAsync(resourceGroupName, applicationGatewayName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -2038,11 +2063,12 @@ public final class ApplicationGatewaysClient
             backendHealthWithResponseAsync(resourceGroupName, applicationGatewayName, expand);
         return this
             .client
-            .<ApplicationGatewayBackendHealthInner, ApplicationGatewayBackendHealthInner>getLroResultAsync(
+            .<ApplicationGatewayBackendHealthInner, ApplicationGatewayBackendHealthInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 ApplicationGatewayBackendHealthInner.class,
-                ApplicationGatewayBackendHealthInner.class);
+                ApplicationGatewayBackendHealthInner.class,
+                Context.NONE);
     }
 
     /**
@@ -2061,15 +2087,17 @@ public final class ApplicationGatewaysClient
     public PollerFlux<PollResult<ApplicationGatewayBackendHealthInner>, ApplicationGatewayBackendHealthInner>
         beginBackendHealthAsync(
             String resourceGroupName, String applicationGatewayName, String expand, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             backendHealthWithResponseAsync(resourceGroupName, applicationGatewayName, expand, context);
         return this
             .client
-            .<ApplicationGatewayBackendHealthInner, ApplicationGatewayBackendHealthInner>getLroResultAsync(
+            .<ApplicationGatewayBackendHealthInner, ApplicationGatewayBackendHealthInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 ApplicationGatewayBackendHealthInner.class,
-                ApplicationGatewayBackendHealthInner.class);
+                ApplicationGatewayBackendHealthInner.class,
+                context);
     }
 
     /**
@@ -2369,12 +2397,12 @@ public final class ApplicationGatewaysClient
             backendHealthOnDemandWithResponseAsync(resourceGroupName, applicationGatewayName, probeRequest, expand);
         return this
             .client
-            .<ApplicationGatewayBackendHealthOnDemandInner, ApplicationGatewayBackendHealthOnDemandInner>
-                getLroResultAsync(
-                    mono,
-                    this.client.getHttpPipeline(),
-                    ApplicationGatewayBackendHealthOnDemandInner.class,
-                    ApplicationGatewayBackendHealthOnDemandInner.class);
+            .<ApplicationGatewayBackendHealthOnDemandInner, ApplicationGatewayBackendHealthOnDemandInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ApplicationGatewayBackendHealthOnDemandInner.class,
+                ApplicationGatewayBackendHealthOnDemandInner.class,
+                Context.NONE);
     }
 
     /**
@@ -2401,17 +2429,18 @@ public final class ApplicationGatewaysClient
             ApplicationGatewayOnDemandProbe probeRequest,
             String expand,
             Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             backendHealthOnDemandWithResponseAsync(
                 resourceGroupName, applicationGatewayName, probeRequest, expand, context);
         return this
             .client
-            .<ApplicationGatewayBackendHealthOnDemandInner, ApplicationGatewayBackendHealthOnDemandInner>
-                getLroResultAsync(
-                    mono,
-                    this.client.getHttpPipeline(),
-                    ApplicationGatewayBackendHealthOnDemandInner.class,
-                    ApplicationGatewayBackendHealthOnDemandInner.class);
+            .<ApplicationGatewayBackendHealthOnDemandInner, ApplicationGatewayBackendHealthOnDemandInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ApplicationGatewayBackendHealthOnDemandInner.class,
+                ApplicationGatewayBackendHealthOnDemandInner.class,
+                context);
     }
 
     /**
@@ -3368,7 +3397,7 @@ public final class ApplicationGatewaysClient
         Context context) {
         return new PagedFlux<>(
             () -> listAvailableSslPredefinedPoliciesSinglePageAsync(context),
-            nextLink -> listAvailableSslPredefinedPoliciesNextSinglePageAsync(nextLink));
+            nextLink -> listAvailableSslPredefinedPoliciesNextSinglePageAsync(nextLink, context));
     }
 
     /**

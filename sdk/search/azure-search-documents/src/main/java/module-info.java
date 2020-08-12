@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 module com.azure.search.documents {
-    requires transitive com.azure.core.serializer.json.jackson;
+    requires transitive com.azure.core;
     requires com.fasterxml.jackson.datatype.jsr310;
     requires jakarta.activation;
     requires com.fasterxml.jackson.annotation;

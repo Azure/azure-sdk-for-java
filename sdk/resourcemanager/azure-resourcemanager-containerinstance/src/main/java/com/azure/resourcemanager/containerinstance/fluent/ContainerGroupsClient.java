@@ -323,7 +323,8 @@ public final class ContainerGroupsClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ContainerGroupInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -491,7 +492,7 @@ public final class ContainerGroupsClient
     public PagedFlux<ContainerGroupInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -835,8 +836,12 @@ public final class ContainerGroupsClient
             createOrUpdateWithResponseAsync(resourceGroupName, containerGroupName, containerGroup);
         return this
             .client
-            .<ContainerGroupInner, ContainerGroupInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), ContainerGroupInner.class, ContainerGroupInner.class);
+            .<ContainerGroupInner, ContainerGroupInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ContainerGroupInner.class,
+                ContainerGroupInner.class,
+                Context.NONE);
     }
 
     /**
@@ -854,12 +859,13 @@ public final class ContainerGroupsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<ContainerGroupInner>, ContainerGroupInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String containerGroupName, ContainerGroupInner containerGroup, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, containerGroupName, containerGroup, context);
         return this
             .client
-            .<ContainerGroupInner, ContainerGroupInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), ContainerGroupInner.class, ContainerGroupInner.class);
+            .<ContainerGroupInner, ContainerGroupInner>getLroResult(
+                mono, this.client.getHttpPipeline(), ContainerGroupInner.class, ContainerGroupInner.class, context);
     }
 
     /**
@@ -1269,8 +1275,12 @@ public final class ContainerGroupsClient
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, containerGroupName);
         return this
             .client
-            .<ContainerGroupInner, ContainerGroupInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), ContainerGroupInner.class, ContainerGroupInner.class);
+            .<ContainerGroupInner, ContainerGroupInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ContainerGroupInner.class,
+                ContainerGroupInner.class,
+                Context.NONE);
     }
 
     /**
@@ -1288,11 +1298,12 @@ public final class ContainerGroupsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<ContainerGroupInner>, ContainerGroupInner> beginDeleteAsync(
         String resourceGroupName, String containerGroupName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, containerGroupName, context);
         return this
             .client
-            .<ContainerGroupInner, ContainerGroupInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), ContainerGroupInner.class, ContainerGroupInner.class);
+            .<ContainerGroupInner, ContainerGroupInner>getLroResult(
+                mono, this.client.getHttpPipeline(), ContainerGroupInner.class, ContainerGroupInner.class, context);
     }
 
     /**
@@ -1508,7 +1519,9 @@ public final class ContainerGroupsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginRestartAsync(String resourceGroupName, String containerGroupName) {
         Mono<Response<Flux<ByteBuffer>>> mono = restartWithResponseAsync(resourceGroupName, containerGroupName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1526,9 +1539,12 @@ public final class ContainerGroupsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginRestartAsync(
         String resourceGroupName, String containerGroupName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             restartWithResponseAsync(resourceGroupName, containerGroupName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -1891,7 +1907,9 @@ public final class ContainerGroupsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String containerGroupName) {
         Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, containerGroupName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1908,8 +1926,11 @@ public final class ContainerGroupsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginStartAsync(
         String resourceGroupName, String containerGroupName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, containerGroupName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
