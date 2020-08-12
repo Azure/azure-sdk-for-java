@@ -870,7 +870,8 @@ public final class AppServiceEnvironmentsClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AppServiceEnvironmentResourceInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1028,7 +1029,7 @@ public final class AppServiceEnvironmentsClient
         String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1363,11 +1364,12 @@ public final class AppServiceEnvironmentsClient
             createOrUpdateWithResponseAsync(resourceGroupName, name, hostingEnvironmentEnvelope);
         return this
             .client
-            .<AppServiceEnvironmentResourceInner, AppServiceEnvironmentResourceInner>getLroResultAsync(
+            .<AppServiceEnvironmentResourceInner, AppServiceEnvironmentResourceInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 AppServiceEnvironmentResourceInner.class,
-                AppServiceEnvironmentResourceInner.class);
+                AppServiceEnvironmentResourceInner.class,
+                Context.NONE);
     }
 
     /**
@@ -1389,15 +1391,17 @@ public final class AppServiceEnvironmentsClient
             String name,
             AppServiceEnvironmentResourceInner hostingEnvironmentEnvelope,
             Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, name, hostingEnvironmentEnvelope, context);
         return this
             .client
-            .<AppServiceEnvironmentResourceInner, AppServiceEnvironmentResourceInner>getLroResultAsync(
+            .<AppServiceEnvironmentResourceInner, AppServiceEnvironmentResourceInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 AppServiceEnvironmentResourceInner.class,
-                AppServiceEnvironmentResourceInner.class);
+                AppServiceEnvironmentResourceInner.class,
+                context);
     }
 
     /**
@@ -1632,7 +1636,9 @@ public final class AppServiceEnvironmentsClient
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String name, Boolean forceDelete) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, name, forceDelete);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1651,8 +1657,11 @@ public final class AppServiceEnvironmentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String name, Boolean forceDelete, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, name, forceDelete, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -2143,7 +2152,7 @@ public final class AppServiceEnvironmentsClient
     public PagedFlux<StampCapacityInner> listCapacitiesAsync(String resourceGroupName, String name, Context context) {
         return new PagedFlux<>(
             () -> listCapacitiesSinglePageAsync(resourceGroupName, name, context),
-            nextLink -> listCapacitiesNextSinglePageAsync(nextLink));
+            nextLink -> listCapacitiesNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2401,11 +2410,12 @@ public final class AppServiceEnvironmentsClient
                             mono,
                             this
                                 .client
-                                .<WebAppCollectionInner, WebAppCollectionInner>getLroResultAsync(
+                                .<WebAppCollectionInner, WebAppCollectionInner>getLroResult(
                                     mono,
                                     this.client.getHttpPipeline(),
                                     WebAppCollectionInner.class,
-                                    WebAppCollectionInner.class)
+                                    WebAppCollectionInner.class,
+                                    Context.NONE)
                                 .last()
                                 .flatMap(this.client::getLroFinalResultOrError));
                 })
@@ -2477,8 +2487,12 @@ public final class AppServiceEnvironmentsClient
                 mono,
                 this
                     .client
-                    .<WebAppCollectionInner, WebAppCollectionInner>getLroResultAsync(
-                        mono, this.client.getHttpPipeline(), WebAppCollectionInner.class, WebAppCollectionInner.class)
+                    .<WebAppCollectionInner, WebAppCollectionInner>getLroResult(
+                        mono,
+                        this.client.getHttpPipeline(),
+                        WebAppCollectionInner.class,
+                        WebAppCollectionInner.class,
+                        context)
                     .last()
                     .flatMap(this.client::getLroFinalResultOrError))
             .map(
@@ -2527,7 +2541,7 @@ public final class AppServiceEnvironmentsClient
         String resourceGroupName, String name, VirtualNetworkProfile vnetInfo, Context context) {
         return new PagedFlux<>(
             () -> changeVnetSinglePageAsync(resourceGroupName, name, vnetInfo, context),
-            nextLink -> changeVnetNextSinglePageAsync(nextLink));
+            nextLink -> changeVnetNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -3064,7 +3078,7 @@ public final class AppServiceEnvironmentsClient
         String resourceGroupName, String name, Context context) {
         return new PagedFlux<>(
             () -> getInboundNetworkDependenciesEndpointsSinglePageAsync(resourceGroupName, name, context),
-            nextLink -> getInboundNetworkDependenciesEndpointsNextSinglePageAsync(nextLink));
+            nextLink -> getInboundNetworkDependenciesEndpointsNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -3241,7 +3255,7 @@ public final class AppServiceEnvironmentsClient
         String resourceGroupName, String name, Context context) {
         return new PagedFlux<>(
             () -> listMultiRolePoolsSinglePageAsync(resourceGroupName, name, context),
-            nextLink -> listMultiRolePoolsNextSinglePageAsync(nextLink));
+            nextLink -> listMultiRolePoolsNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -3569,8 +3583,12 @@ public final class AppServiceEnvironmentsClient
             createOrUpdateMultiRolePoolWithResponseAsync(resourceGroupName, name, multiRolePoolEnvelope);
         return this
             .client
-            .<WorkerPoolResourceInner, WorkerPoolResourceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), WorkerPoolResourceInner.class, WorkerPoolResourceInner.class);
+            .<WorkerPoolResourceInner, WorkerPoolResourceInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                WorkerPoolResourceInner.class,
+                WorkerPoolResourceInner.class,
+                Context.NONE);
     }
 
     /**
@@ -3589,12 +3607,17 @@ public final class AppServiceEnvironmentsClient
     public PollerFlux<PollResult<WorkerPoolResourceInner>, WorkerPoolResourceInner>
         beginCreateOrUpdateMultiRolePoolAsync(
             String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateMultiRolePoolWithResponseAsync(resourceGroupName, name, multiRolePoolEnvelope, context);
         return this
             .client
-            .<WorkerPoolResourceInner, WorkerPoolResourceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), WorkerPoolResourceInner.class, WorkerPoolResourceInner.class);
+            .<WorkerPoolResourceInner, WorkerPoolResourceInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                WorkerPoolResourceInner.class,
+                WorkerPoolResourceInner.class,
+                context);
     }
 
     /**
@@ -4057,7 +4080,7 @@ public final class AppServiceEnvironmentsClient
         String resourceGroupName, String name, String instance, Context context) {
         return new PagedFlux<>(
             () -> listMultiRolePoolInstanceMetricDefinitionsSinglePageAsync(resourceGroupName, name, instance, context),
-            nextLink -> listMultiRolePoolInstanceMetricDefinitionsNextSinglePageAsync(nextLink));
+            nextLink -> listMultiRolePoolInstanceMetricDefinitionsNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -4240,7 +4263,7 @@ public final class AppServiceEnvironmentsClient
         String resourceGroupName, String name, Context context) {
         return new PagedFlux<>(
             () -> listMultiRoleMetricDefinitionsSinglePageAsync(resourceGroupName, name, context),
-            nextLink -> listMultiRoleMetricDefinitionsNextSinglePageAsync(nextLink));
+            nextLink -> listMultiRoleMetricDefinitionsNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -4416,7 +4439,7 @@ public final class AppServiceEnvironmentsClient
     public PagedFlux<SkuInfoInner> listMultiRolePoolSkusAsync(String resourceGroupName, String name, Context context) {
         return new PagedFlux<>(
             () -> listMultiRolePoolSkusSinglePageAsync(resourceGroupName, name, context),
-            nextLink -> listMultiRolePoolSkusNextSinglePageAsync(nextLink));
+            nextLink -> listMultiRolePoolSkusNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -4589,7 +4612,7 @@ public final class AppServiceEnvironmentsClient
     public PagedFlux<UsageInner> listMultiRoleUsagesAsync(String resourceGroupName, String name, Context context) {
         return new PagedFlux<>(
             () -> listMultiRoleUsagesSinglePageAsync(resourceGroupName, name, context),
-            nextLink -> listMultiRoleUsagesNextSinglePageAsync(nextLink));
+            nextLink -> listMultiRoleUsagesNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -4932,7 +4955,7 @@ public final class AppServiceEnvironmentsClient
         String resourceGroupName, String name, Context context) {
         return new PagedFlux<>(
             () -> getOutboundNetworkDependenciesEndpointsSinglePageAsync(resourceGroupName, name, context),
-            nextLink -> getOutboundNetworkDependenciesEndpointsNextSinglePageAsync(nextLink));
+            nextLink -> getOutboundNetworkDependenciesEndpointsNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -5165,11 +5188,12 @@ public final class AppServiceEnvironmentsClient
                             mono,
                             this
                                 .client
-                                .<WebAppCollectionInner, WebAppCollectionInner>getLroResultAsync(
+                                .<WebAppCollectionInner, WebAppCollectionInner>getLroResult(
                                     mono,
                                     this.client.getHttpPipeline(),
                                     WebAppCollectionInner.class,
-                                    WebAppCollectionInner.class)
+                                    WebAppCollectionInner.class,
+                                    Context.NONE)
                                 .last()
                                 .flatMap(this.client::getLroFinalResultOrError));
                 })
@@ -5234,8 +5258,12 @@ public final class AppServiceEnvironmentsClient
                 mono,
                 this
                     .client
-                    .<WebAppCollectionInner, WebAppCollectionInner>getLroResultAsync(
-                        mono, this.client.getHttpPipeline(), WebAppCollectionInner.class, WebAppCollectionInner.class)
+                    .<WebAppCollectionInner, WebAppCollectionInner>getLroResult(
+                        mono,
+                        this.client.getHttpPipeline(),
+                        WebAppCollectionInner.class,
+                        WebAppCollectionInner.class,
+                        context)
                     .last()
                     .flatMap(this.client::getLroFinalResultOrError))
             .map(
@@ -5280,7 +5308,7 @@ public final class AppServiceEnvironmentsClient
     public PagedFlux<SiteInner> resumeAsync(String resourceGroupName, String name, Context context) {
         return new PagedFlux<>(
             () -> resumeSinglePageAsync(resourceGroupName, name, context),
-            nextLink -> resumeNextSinglePageAsync(nextLink));
+            nextLink -> resumeNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -5455,7 +5483,7 @@ public final class AppServiceEnvironmentsClient
         String resourceGroupName, String name, Context context) {
         return new PagedFlux<>(
             () -> listAppServicePlansSinglePageAsync(resourceGroupName, name, context),
-            nextLink -> listAppServicePlansNextSinglePageAsync(nextLink));
+            nextLink -> listAppServicePlansNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -5637,7 +5665,7 @@ public final class AppServiceEnvironmentsClient
         String resourceGroupName, String name, String propertiesToInclude, Context context) {
         return new PagedFlux<>(
             () -> listWebAppsSinglePageAsync(resourceGroupName, name, propertiesToInclude, context),
-            nextLink -> listWebAppsNextSinglePageAsync(nextLink));
+            nextLink -> listWebAppsNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -5656,7 +5684,7 @@ public final class AppServiceEnvironmentsClient
         final Context context = null;
         return new PagedFlux<>(
             () -> listWebAppsSinglePageAsync(resourceGroupName, name, propertiesToInclude),
-            nextLink -> listWebAppsNextSinglePageAsync(nextLink));
+            nextLink -> listWebAppsNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -5759,11 +5787,12 @@ public final class AppServiceEnvironmentsClient
                             mono,
                             this
                                 .client
-                                .<WebAppCollectionInner, WebAppCollectionInner>getLroResultAsync(
+                                .<WebAppCollectionInner, WebAppCollectionInner>getLroResult(
                                     mono,
                                     this.client.getHttpPipeline(),
                                     WebAppCollectionInner.class,
-                                    WebAppCollectionInner.class)
+                                    WebAppCollectionInner.class,
+                                    Context.NONE)
                                 .last()
                                 .flatMap(this.client::getLroFinalResultOrError));
                 })
@@ -5828,8 +5857,12 @@ public final class AppServiceEnvironmentsClient
                 mono,
                 this
                     .client
-                    .<WebAppCollectionInner, WebAppCollectionInner>getLroResultAsync(
-                        mono, this.client.getHttpPipeline(), WebAppCollectionInner.class, WebAppCollectionInner.class)
+                    .<WebAppCollectionInner, WebAppCollectionInner>getLroResult(
+                        mono,
+                        this.client.getHttpPipeline(),
+                        WebAppCollectionInner.class,
+                        WebAppCollectionInner.class,
+                        context)
                     .last()
                     .flatMap(this.client::getLroFinalResultOrError))
             .map(
@@ -5874,7 +5907,7 @@ public final class AppServiceEnvironmentsClient
     public PagedFlux<SiteInner> suspendAsync(String resourceGroupName, String name, Context context) {
         return new PagedFlux<>(
             () -> suspendSinglePageAsync(resourceGroupName, name, context),
-            nextLink -> suspendNextSinglePageAsync(nextLink));
+            nextLink -> suspendNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -6063,7 +6096,7 @@ public final class AppServiceEnvironmentsClient
         String resourceGroupName, String name, String filter, Context context) {
         return new PagedFlux<>(
             () -> listUsagesSinglePageAsync(resourceGroupName, name, filter, context),
-            nextLink -> listUsagesNextSinglePageAsync(nextLink));
+            nextLink -> listUsagesNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -6082,7 +6115,7 @@ public final class AppServiceEnvironmentsClient
         final Context context = null;
         return new PagedFlux<>(
             () -> listUsagesSinglePageAsync(resourceGroupName, name, filter),
-            nextLink -> listUsagesNextSinglePageAsync(nextLink));
+            nextLink -> listUsagesNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -6281,7 +6314,7 @@ public final class AppServiceEnvironmentsClient
         String resourceGroupName, String name, Context context) {
         return new PagedFlux<>(
             () -> listWorkerPoolsSinglePageAsync(resourceGroupName, name, context),
-            nextLink -> listWorkerPoolsNextSinglePageAsync(nextLink));
+            nextLink -> listWorkerPoolsNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -6640,8 +6673,12 @@ public final class AppServiceEnvironmentsClient
             createOrUpdateWorkerPoolWithResponseAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope);
         return this
             .client
-            .<WorkerPoolResourceInner, WorkerPoolResourceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), WorkerPoolResourceInner.class, WorkerPoolResourceInner.class);
+            .<WorkerPoolResourceInner, WorkerPoolResourceInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                WorkerPoolResourceInner.class,
+                WorkerPoolResourceInner.class,
+                Context.NONE);
     }
 
     /**
@@ -6664,13 +6701,18 @@ public final class AppServiceEnvironmentsClient
         String workerPoolName,
         WorkerPoolResourceInner workerPoolEnvelope,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWorkerPoolWithResponseAsync(
                 resourceGroupName, name, workerPoolName, workerPoolEnvelope, context);
         return this
             .client
-            .<WorkerPoolResourceInner, WorkerPoolResourceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), WorkerPoolResourceInner.class, WorkerPoolResourceInner.class);
+            .<WorkerPoolResourceInner, WorkerPoolResourceInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                WorkerPoolResourceInner.class,
+                WorkerPoolResourceInner.class,
+                context);
     }
 
     /**
@@ -7191,7 +7233,7 @@ public final class AppServiceEnvironmentsClient
             () ->
                 listWorkerPoolInstanceMetricDefinitionsSinglePageAsync(
                     resourceGroupName, name, workerPoolName, instance, context),
-            nextLink -> listWorkerPoolInstanceMetricDefinitionsNextSinglePageAsync(nextLink));
+            nextLink -> listWorkerPoolInstanceMetricDefinitionsNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -7387,7 +7429,7 @@ public final class AppServiceEnvironmentsClient
         String resourceGroupName, String name, String workerPoolName, Context context) {
         return new PagedFlux<>(
             () -> listWebWorkerMetricDefinitionsSinglePageAsync(resourceGroupName, name, workerPoolName, context),
-            nextLink -> listWebWorkerMetricDefinitionsNextSinglePageAsync(nextLink));
+            nextLink -> listWebWorkerMetricDefinitionsNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -7580,7 +7622,7 @@ public final class AppServiceEnvironmentsClient
         String resourceGroupName, String name, String workerPoolName, Context context) {
         return new PagedFlux<>(
             () -> listWorkerPoolSkusSinglePageAsync(resourceGroupName, name, workerPoolName, context),
-            nextLink -> listWorkerPoolSkusNextSinglePageAsync(nextLink));
+            nextLink -> listWorkerPoolSkusNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -7772,7 +7814,7 @@ public final class AppServiceEnvironmentsClient
         String resourceGroupName, String name, String workerPoolName, Context context) {
         return new PagedFlux<>(
             () -> listWebWorkerUsagesSinglePageAsync(resourceGroupName, name, workerPoolName, context),
-            nextLink -> listWebWorkerUsagesNextSinglePageAsync(nextLink));
+            nextLink -> listWebWorkerUsagesNextSinglePageAsync(nextLink, context));
     }
 
     /**

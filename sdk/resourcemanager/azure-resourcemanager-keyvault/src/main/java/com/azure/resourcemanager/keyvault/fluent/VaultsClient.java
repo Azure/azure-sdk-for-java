@@ -359,6 +359,7 @@ public final class VaultsClient implements InnerSupportsGet<VaultInner>, InnerSu
         } else {
             parameters.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -388,8 +389,8 @@ public final class VaultsClient implements InnerSupportsGet<VaultInner>, InnerSu
             createOrUpdateWithResponseAsync(resourceGroupName, vaultName, parameters);
         return this
             .client
-            .<VaultInner, VaultInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), VaultInner.class, VaultInner.class);
+            .<VaultInner, VaultInner>getLroResult(
+                mono, this.client.getHttpPipeline(), VaultInner.class, VaultInner.class, Context.NONE);
     }
 
     /**
@@ -407,12 +408,13 @@ public final class VaultsClient implements InnerSupportsGet<VaultInner>, InnerSu
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<VaultInner>, VaultInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String vaultName, VaultCreateOrUpdateParameters parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, vaultName, parameters, context);
         return this
             .client
-            .<VaultInner, VaultInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), VaultInner.class, VaultInner.class);
+            .<VaultInner, VaultInner>getLroResult(
+                mono, this.client.getHttpPipeline(), VaultInner.class, VaultInner.class, context);
     }
 
     /**
@@ -616,6 +618,7 @@ public final class VaultsClient implements InnerSupportsGet<VaultInner>, InnerSu
         } else {
             parameters.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .update(
                 this.client.getEndpoint(),
@@ -788,6 +791,7 @@ public final class VaultsClient implements InnerSupportsGet<VaultInner>, InnerSu
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -937,6 +941,7 @@ public final class VaultsClient implements InnerSupportsGet<VaultInner>, InnerSu
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getByResourceGroup(
                 this.client.getEndpoint(),
@@ -1137,6 +1142,7 @@ public final class VaultsClient implements InnerSupportsGet<VaultInner>, InnerSu
         }
         VaultAccessPolicyParametersInner parameters = new VaultAccessPolicyParametersInner();
         parameters.withProperties(properties);
+        context = this.client.mergeContext(context);
         return service
             .updateAccessPolicy(
                 this.client.getEndpoint(),
@@ -1336,6 +1342,7 @@ public final class VaultsClient implements InnerSupportsGet<VaultInner>, InnerSu
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(
                 this.client.getEndpoint(),
@@ -1389,7 +1396,7 @@ public final class VaultsClient implements InnerSupportsGet<VaultInner>, InnerSu
     public PagedFlux<VaultInner> listByResourceGroupAsync(String resourceGroupName, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, top, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1408,7 +1415,7 @@ public final class VaultsClient implements InnerSupportsGet<VaultInner>, InnerSu
         final Context context = null;
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, top),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1530,6 +1537,7 @@ public final class VaultsClient implements InnerSupportsGet<VaultInner>, InnerSu
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listBySubscription(
                 this.client.getEndpoint(), top, this.client.getApiVersion(), this.client.getSubscriptionId(), context)
@@ -1573,7 +1581,7 @@ public final class VaultsClient implements InnerSupportsGet<VaultInner>, InnerSu
     public PagedFlux<VaultInner> listBySubscriptionAsync(Integer top, Context context) {
         return new PagedFlux<>(
             () -> listBySubscriptionSinglePageAsync(top, context),
-            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1588,7 +1596,8 @@ public final class VaultsClient implements InnerSupportsGet<VaultInner>, InnerSu
         final Integer top = null;
         final Context context = null;
         return new PagedFlux<>(
-            () -> listBySubscriptionSinglePageAsync(top), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+            () -> listBySubscriptionSinglePageAsync(top),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1699,6 +1708,7 @@ public final class VaultsClient implements InnerSupportsGet<VaultInner>, InnerSu
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listDeleted(
                 this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), context)
@@ -1738,7 +1748,7 @@ public final class VaultsClient implements InnerSupportsGet<VaultInner>, InnerSu
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeletedVaultInner> listDeletedAsync(Context context) {
         return new PagedFlux<>(
-            () -> listDeletedSinglePageAsync(context), nextLink -> listDeletedNextSinglePageAsync(nextLink));
+            () -> listDeletedSinglePageAsync(context), nextLink -> listDeletedNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1843,6 +1853,7 @@ public final class VaultsClient implements InnerSupportsGet<VaultInner>, InnerSu
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getDeleted(
                 this.client.getEndpoint(),
@@ -2007,6 +2018,7 @@ public final class VaultsClient implements InnerSupportsGet<VaultInner>, InnerSu
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .purgeDeleted(
                 this.client.getEndpoint(),
@@ -2030,7 +2042,9 @@ public final class VaultsClient implements InnerSupportsGet<VaultInner>, InnerSu
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginPurgeDeletedAsync(String vaultName, String location) {
         Mono<Response<Flux<ByteBuffer>>> mono = purgeDeletedWithResponseAsync(vaultName, location);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -2047,8 +2061,11 @@ public final class VaultsClient implements InnerSupportsGet<VaultInner>, InnerSu
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginPurgeDeletedAsync(
         String vaultName, String location, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = purgeDeletedWithResponseAsync(vaultName, location, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -2216,6 +2233,7 @@ public final class VaultsClient implements InnerSupportsGet<VaultInner>, InnerSu
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String filter = "resourceType eq 'Microsoft.KeyVault/vaults'";
+        context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
@@ -2261,7 +2279,8 @@ public final class VaultsClient implements InnerSupportsGet<VaultInner>, InnerSu
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<Resource> listAsync(Integer top, Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(top, context), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(top, context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2275,7 +2294,7 @@ public final class VaultsClient implements InnerSupportsGet<VaultInner>, InnerSu
     public PagedFlux<Resource> listAsync() {
         final Integer top = null;
         final Context context = null;
-        return new PagedFlux<>(() -> listSinglePageAsync(top), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(top), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2392,6 +2411,7 @@ public final class VaultsClient implements InnerSupportsGet<VaultInner>, InnerSu
         }
         VaultCheckNameAvailabilityParameters vaultName = new VaultCheckNameAvailabilityParameters();
         vaultName.withName(name);
+        context = this.client.mergeContext(context);
         return service
             .checkNameAvailability(
                 this.client.getEndpoint(),
@@ -2518,6 +2538,7 @@ public final class VaultsClient implements InnerSupportsGet<VaultInner>, InnerSu
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByResourceGroupNext(nextLink, context)
             .map(
@@ -2574,6 +2595,7 @@ public final class VaultsClient implements InnerSupportsGet<VaultInner>, InnerSu
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listBySubscriptionNext(nextLink, context)
             .map(
@@ -2630,6 +2652,7 @@ public final class VaultsClient implements InnerSupportsGet<VaultInner>, InnerSu
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listDeletedNext(nextLink, context)
             .map(
@@ -2686,6 +2709,7 @@ public final class VaultsClient implements InnerSupportsGet<VaultInner>, InnerSu
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listNext(nextLink, context)
             .map(

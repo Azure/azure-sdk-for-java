@@ -139,6 +139,7 @@ public final class UsagesClient {
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByLocation(
                 this.client.getEndpoint(),

@@ -199,6 +199,7 @@ public final class ServiceTierAdvisorsClient {
                     new IllegalArgumentException("Parameter serviceTierAdvisorName is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -409,6 +410,7 @@ public final class ServiceTierAdvisorsClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        context = this.client.mergeContext(context);
         return service
             .listByDatabase(
                 this.client.getEndpoint(),

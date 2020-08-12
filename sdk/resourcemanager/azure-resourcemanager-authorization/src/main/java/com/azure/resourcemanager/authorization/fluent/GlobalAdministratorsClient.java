@@ -99,6 +99,7 @@ public final class GlobalAdministratorsClient {
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String apiVersion = "2015-07-01";
+        context = this.client.mergeContext(context);
         return service.elevateAccess(this.client.getEndpoint(), apiVersion, context);
     }
 

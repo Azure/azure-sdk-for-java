@@ -225,7 +225,7 @@ public final class AvailableResourceGroupDelegationsClient {
     public PagedFlux<AvailableDelegationInner> listAsync(String location, String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(location, resourceGroupName, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**

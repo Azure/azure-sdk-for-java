@@ -253,7 +253,9 @@ public final class RouteFilterRulesClient {
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String routeFilterName, String ruleName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, routeFilterName, ruleName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -271,9 +273,12 @@ public final class RouteFilterRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String routeFilterName, String ruleName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, routeFilterName, ruleName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -720,8 +725,12 @@ public final class RouteFilterRulesClient {
             createOrUpdateWithResponseAsync(resourceGroupName, routeFilterName, ruleName, routeFilterRuleParameters);
         return this
             .client
-            .<RouteFilterRuleInner, RouteFilterRuleInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), RouteFilterRuleInner.class, RouteFilterRuleInner.class);
+            .<RouteFilterRuleInner, RouteFilterRuleInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                RouteFilterRuleInner.class,
+                RouteFilterRuleInner.class,
+                Context.NONE);
     }
 
     /**
@@ -744,13 +753,14 @@ public final class RouteFilterRulesClient {
         String ruleName,
         RouteFilterRuleInner routeFilterRuleParameters,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(
                 resourceGroupName, routeFilterName, ruleName, routeFilterRuleParameters, context);
         return this
             .client
-            .<RouteFilterRuleInner, RouteFilterRuleInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), RouteFilterRuleInner.class, RouteFilterRuleInner.class);
+            .<RouteFilterRuleInner, RouteFilterRuleInner>getLroResult(
+                mono, this.client.getHttpPipeline(), RouteFilterRuleInner.class, RouteFilterRuleInner.class, context);
     }
 
     /**
@@ -1039,7 +1049,7 @@ public final class RouteFilterRulesClient {
         String resourceGroupName, String routeFilterName, Context context) {
         return new PagedFlux<>(
             () -> listByRouteFilterSinglePageAsync(resourceGroupName, routeFilterName, context),
-            nextLink -> listByRouteFilterNextSinglePageAsync(nextLink));
+            nextLink -> listByRouteFilterNextSinglePageAsync(nextLink, context));
     }
 
     /**

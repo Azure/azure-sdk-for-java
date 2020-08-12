@@ -513,7 +513,7 @@ public final class DeploymentOperationsClient {
         String scope, String deploymentName, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listAtScopeSinglePageAsync(scope, deploymentName, top, context),
-            nextLink -> listAtScopeNextSinglePageAsync(nextLink));
+            nextLink -> listAtScopeNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -532,7 +532,7 @@ public final class DeploymentOperationsClient {
         final Context context = null;
         return new PagedFlux<>(
             () -> listAtScopeSinglePageAsync(scope, deploymentName, top),
-            nextLink -> listAtScopeNextSinglePageAsync(nextLink));
+            nextLink -> listAtScopeNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -845,7 +845,7 @@ public final class DeploymentOperationsClient {
         String deploymentName, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listAtTenantScopeSinglePageAsync(deploymentName, top, context),
-            nextLink -> listAtTenantScopeNextSinglePageAsync(nextLink));
+            nextLink -> listAtTenantScopeNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -863,7 +863,7 @@ public final class DeploymentOperationsClient {
         final Context context = null;
         return new PagedFlux<>(
             () -> listAtTenantScopeSinglePageAsync(deploymentName, top),
-            nextLink -> listAtTenantScopeNextSinglePageAsync(nextLink));
+            nextLink -> listAtTenantScopeNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1206,7 +1206,7 @@ public final class DeploymentOperationsClient {
         String groupId, String deploymentName, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listAtManagementGroupScopeSinglePageAsync(groupId, deploymentName, top, context),
-            nextLink -> listAtManagementGroupScopeNextSinglePageAsync(nextLink));
+            nextLink -> listAtManagementGroupScopeNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1225,7 +1225,7 @@ public final class DeploymentOperationsClient {
         final Context context = null;
         return new PagedFlux<>(
             () -> listAtManagementGroupScopeSinglePageAsync(groupId, deploymentName, top),
-            nextLink -> listAtManagementGroupScopeNextSinglePageAsync(nextLink));
+            nextLink -> listAtManagementGroupScopeNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1580,7 +1580,7 @@ public final class DeploymentOperationsClient {
         String deploymentName, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listAtSubscriptionScopeSinglePageAsync(deploymentName, top, context),
-            nextLink -> listAtSubscriptionScopeNextSinglePageAsync(nextLink));
+            nextLink -> listAtSubscriptionScopeNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1598,7 +1598,7 @@ public final class DeploymentOperationsClient {
         final Context context = null;
         return new PagedFlux<>(
             () -> listAtSubscriptionScopeSinglePageAsync(deploymentName, top),
-            nextLink -> listAtSubscriptionScopeNextSinglePageAsync(nextLink));
+            nextLink -> listAtSubscriptionScopeNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1982,7 +1982,7 @@ public final class DeploymentOperationsClient {
         String resourceGroupName, String deploymentName, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, deploymentName, top, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2002,7 +2002,7 @@ public final class DeploymentOperationsClient {
         final Context context = null;
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, deploymentName, top),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**

@@ -203,6 +203,7 @@ public final class FeaturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listAll(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), context)
             .map(
@@ -239,7 +240,8 @@ public final class FeaturesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<FeatureResultInner> listAllAsync(Context context) {
-        return new PagedFlux<>(() -> listAllSinglePageAsync(context), nextLink -> listAllNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listAllSinglePageAsync(context), nextLink -> listAllNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -350,6 +352,7 @@ public final class FeaturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
@@ -397,7 +400,7 @@ public final class FeaturesClient {
     public PagedFlux<FeatureResultInner> listAsync(String resourceProviderNamespace, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceProviderNamespace, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -512,6 +515,7 @@ public final class FeaturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -683,6 +687,7 @@ public final class FeaturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .register(
                 this.client.getEndpoint(),
@@ -855,6 +860,7 @@ public final class FeaturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .unregister(
                 this.client.getEndpoint(),
@@ -987,6 +993,7 @@ public final class FeaturesClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listAllNext(nextLink, context)
             .map(
@@ -1043,6 +1050,7 @@ public final class FeaturesClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listNext(nextLink, context)
             .map(
