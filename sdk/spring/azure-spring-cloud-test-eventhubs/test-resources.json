@@ -7,7 +7,7 @@
       "type": "String"
     },
     "storageNamePrefix": {
-      "defaultValue": "[split(parameters('baseName'),'-')[0]]",
+      "defaultValue": "[substring(uniqueString(parameters('baseName')), 0, 11)]",
       "type": "string"
     }
   },
@@ -15,7 +15,7 @@
   "variables": {
     "eventHubsNamespaceName": "[concat(parameters('baseName'),'-eventhub')]",
     "eventHubsNamespaceKeyName": "RootManageSharedAccessKey",
-    "storageAccountName": "[toLower( concat( parameters('storageNamePrefix'), uniqueString(resourceGroup().id) ) )]",
+    "storageAccountName": "[substring(toLower(concat(parameters('storageNamePrefix'), uniqueString(resourceGroup().id))), 0, 24)]",
     "location": "[resourceGroup().location]"
   },
   "resources": [
