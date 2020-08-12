@@ -1,8 +1,11 @@
 # Release History
 
-## 11.1.0-beta.1 (2020-08-11)
-- Release `buildSearchFields` API in `SearchIndexClient` and `SearchIndexAsyncClient`.
-- User is able to define the serializer through `SearchClientBuilder`.
+## 11.1.0-beta.1 (2020-08-12)
+
+- Added `buildSearchFields` API to `SearchIndexClient` and `SearchIndexAsyncClient` to aid in creating `SearchField`s from the passed `Class`.
+- Added `SearchableFieldProperty`, `SimpleFieldProperty`, and `FieldBuilderIgnore` to annotate `Class`es passed into `buildSearchFields`.
+- Added `getDefaultLogOptions` to `SearchClientBuilder`, `SearchIndexCleintBuilder`, and `SearchIndexerClientBuilder`. Updated client construction to use default log options by default.
+- Added the ability for clients to accept a `JsonSerializer` to specify a custom JSON serialization layer when dealing with Search documents.
 
 ## 11.0.0 (2020-07-13)
 
