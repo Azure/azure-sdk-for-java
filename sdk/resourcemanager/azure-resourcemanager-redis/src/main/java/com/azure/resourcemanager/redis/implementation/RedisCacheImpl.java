@@ -568,23 +568,27 @@ class RedisCacheImpl
 
     @Override
     public Mono<RedisCache> updateResourceAsync() {
-        final RedisCacheImpl self = this;
+        updateParameters.withTags(this.inner().tags());
         return this.manager().inner().getRedis().updateAsync(resourceGroupName(), name(), updateParameters)
                 .map(innerToFluentMap(this))
-                .doOnNext(redisCache -> {
-                    while (!redisCache.provisioningState().equalsIgnoreCase("Succeeded")) {
-                        SdkContext.sleep(30 * 1000);
-
-                        RedisResourceInner innerResource = self.manager().inner().getRedis().getByResourceGroup(resourceGroupName(), name());
-                        ((RedisCacheImpl) redisCache).setInner(innerResource);
-                        self.setInner(innerResource);
-                        self.patchScheduleAdded = false;
+                .filter(redisCache -> !redisCache.provisioningState().equalsIgnoreCase(ProvisioningState.SUCCEEDED.toString()))
+                .flatMap(redisCache -> {
+                    SdkContext.sleep(30 * 1000);
+                    this.patchScheduleAdded = false;
+                    return this.manager().inner().getRedis().getByResourceGroupAsync(resourceGroupName(), name())
+                        .doOnNext( this::setInner)
+                        .filter(redisResourceInner -> redisResourceInner.provisioningState().toString()
+                            .equalsIgnoreCase(ProvisioningState.SUCCEEDED.toString()))
+                        .repeatWhenEmpty(
+                            longFlux -> longFlux.flatMap(
+                                index -> Mono.delay(SdkContext.getDelayDuration(Duration.ofSeconds(30)))
+                            )
+                        );
                     }
-                })
-                .flatMap(redisCache -> self.patchSchedules.commitAndGetAllAsync()
-                        .map(redisPatchSchedules-> self))
-                .flatMap(redisCache -> self.firewallRules.commitAndGetAllAsync()
-                        .map( redisFirewallRules -> self));
+                )
+                .then(this.patchSchedules.commitAndGetAllAsync())
+                .then(this.firewallRules.commitAndGetAllAsync())
+                .then(Mono.just(this));
     }
 
     @Override
