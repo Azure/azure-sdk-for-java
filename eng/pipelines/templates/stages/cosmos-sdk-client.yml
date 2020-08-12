@@ -76,6 +76,7 @@ stages:
         PostTestSteps:
           - script: |
               python3 --version
+              pip install in_place
               python3 sdk/spring/scripts/replace_artifact.py --module cosmos
             displayName: 'Run replace_artifact.py'
           - task: Maven@3
