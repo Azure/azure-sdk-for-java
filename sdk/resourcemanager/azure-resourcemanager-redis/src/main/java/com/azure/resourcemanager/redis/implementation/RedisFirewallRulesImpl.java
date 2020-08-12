@@ -9,6 +9,7 @@ import com.azure.resourcemanager.redis.models.RedisCache;
 import com.azure.resourcemanager.redis.models.RedisFirewallRule;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesCachedImpl;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -23,15 +24,17 @@ class RedisFirewallRulesImpl extends
         RedisFirewallRuleInner,
                 RedisCacheImpl,
         RedisCache> {
+    private boolean load = false;
 
     RedisFirewallRulesImpl(RedisCacheImpl parent) {
         super(parent, parent.taskGroup(), "FirewallRule");
-        if (parent.id() != null) {
-            this.cacheCollection();
-        }
     }
 
     Map<String, RedisFirewallRule> rulesAsMap() {
+        if (!load) {
+            load = true;
+            cacheCollection();
+        }
         Map<String, RedisFirewallRule> result = new HashMap<>();
         for (Map.Entry<String, RedisFirewallRuleImpl> entry : this.collection().entrySet()) {
             RedisFirewallRuleImpl endpoint = entry.getValue();
@@ -41,14 +44,26 @@ class RedisFirewallRulesImpl extends
     }
 
     public void addRule(RedisFirewallRuleImpl rule) {
+        if (!load) {
+            load = true;
+            cacheCollection();
+        }
         this.addChildResource(rule);
     }
 
     public void removeRule(String name) {
+        if (!load) {
+            load = true;
+            cacheCollection();
+        }
         this.prepareInlineRemove(name);
     }
 
     public RedisFirewallRuleImpl defineInlineFirewallRule(String name) {
+        if (!load) {
+            load = true;
+            cacheCollection();
+        }
         return prepareInlineDefine(name);
     }
 
@@ -57,7 +72,8 @@ class RedisFirewallRulesImpl extends
         return this.getParent().manager().inner().getFirewallRules().listByRedisResourceAsync(
                 this.getParent().resourceGroupName(),
                 this.getParent().name())
-            .map(firewallRuleInner -> new RedisFirewallRuleImpl(firewallRuleInner.name(), this.getParent(), firewallRuleInner));
+            .map(firewallRuleInner -> new RedisFirewallRuleImpl(firewallRuleInner.name(), this.getParent(), firewallRuleInner))
+            .onErrorResume(e -> Mono.empty());
     }
 
     @Override

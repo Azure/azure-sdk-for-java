@@ -9,6 +9,7 @@ import com.azure.resourcemanager.redis.models.RedisCache;
 import com.azure.resourcemanager.redis.models.RedisPatchSchedule;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesCachedImpl;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -25,15 +26,17 @@ class RedisPatchSchedulesImpl extends
         RedisCache> {
     // Currently Redis Cache has one PatchSchedule
     private final String patchScheduleName = "default";
+    private boolean load = false;
 
     RedisPatchSchedulesImpl(RedisCacheImpl parent) {
         super(parent, parent.taskGroup(), "PatchSchedule");
-        if (parent.id() != null) {
-            this.cacheCollection();
-        }
     }
 
     Map<String, RedisPatchSchedule> patchSchedulesAsMap() {
+        if (!load) {
+            load = true;
+            cacheCollection();
+        }
         Map<String, RedisPatchSchedule> result = new HashMap<>();
         for (Map.Entry<String, RedisPatchScheduleImpl> entry : this.collection().entrySet()) {
             RedisPatchScheduleImpl patchSchedule = entry.getValue();
@@ -43,14 +46,26 @@ class RedisPatchSchedulesImpl extends
     }
 
     public void addPatchSchedule(RedisPatchScheduleImpl patchSchedule) {
+        if (!load) {
+            load = true;
+            cacheCollection();
+        }
         this.addChildResource(patchSchedule);
     }
 
     public RedisPatchScheduleImpl getPatchSchedule() {
+        if (!load) {
+            load = true;
+            cacheCollection();
+        }
         return this.collection().get(this.patchScheduleName);
     }
 
     public void removePatchSchedule() {
+        if (!load) {
+            load = true;
+            cacheCollection();
+        }
         RedisPatchScheduleImpl psch = this.getPatchSchedule();
         if (psch != null) {
             psch.deleteResourceAsync().block();
@@ -58,14 +73,26 @@ class RedisPatchSchedulesImpl extends
 }
 
     public RedisPatchScheduleImpl defineInlinePatchSchedule() {
+        if (!load) {
+            load = true;
+            cacheCollection();
+        }
         return prepareInlineDefine(this.patchScheduleName);
     }
 
     public RedisPatchScheduleImpl updateInlinePatchSchedule() {
+        if (!load) {
+            load = true;
+            cacheCollection();
+        }
         return prepareInlineUpdate(this.patchScheduleName);
     }
 
     public void deleteInlinePatchSchedule() {
+        if (!load) {
+            load = true;
+            cacheCollection();
+        }
         prepareInlineRemove(this.patchScheduleName);
     }
 
@@ -74,7 +101,8 @@ class RedisPatchSchedulesImpl extends
         return this.getParent().manager().inner().getPatchSchedules().listByRedisResourceAsync(
                 this.getParent().resourceGroupName(),
                 this.getParent().name())
-            .map(patchScheduleInner -> new RedisPatchScheduleImpl(patchScheduleInner.name(), this.getParent(), patchScheduleInner));
+            .map(patchScheduleInner -> new RedisPatchScheduleImpl(patchScheduleInner.name(), this.getParent(), patchScheduleInner))
+            .onErrorResume(e -> Mono.empty());
     }
 
     @Override
