@@ -38,12 +38,6 @@ public class ApplicationRuleCondition extends FirewallPolicyRuleCondition {
     private List<FirewallPolicyRuleConditionApplicationProtocol> protocols;
 
     /**
-     * List of Urls for this rule condition.
-     */
-    @JsonProperty(value = "targetUrls")
-    private List<String> targetUrls;
-
-    /**
      * List of FQDNs for this rule condition.
      */
     @JsonProperty(value = "targetFqdns")
@@ -118,26 +112,6 @@ public class ApplicationRuleCondition extends FirewallPolicyRuleCondition {
      */
     public ApplicationRuleCondition withProtocols(List<FirewallPolicyRuleConditionApplicationProtocol> protocols) {
         this.protocols = protocols;
-        return this;
-    }
-
-    /**
-     * Get list of Urls for this rule condition.
-     *
-     * @return the targetUrls value
-     */
-    public List<String> targetUrls() {
-        return this.targetUrls;
-    }
-
-    /**
-     * Set list of Urls for this rule condition.
-     *
-     * @param targetUrls the targetUrls value to set
-     * @return the ApplicationRuleCondition object itself.
-     */
-    public ApplicationRuleCondition withTargetUrls(List<String> targetUrls) {
-        this.targetUrls = targetUrls;
         return this;
     }
 

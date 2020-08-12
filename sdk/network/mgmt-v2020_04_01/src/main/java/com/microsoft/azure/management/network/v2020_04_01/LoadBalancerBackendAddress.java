@@ -8,8 +8,7 @@
 
 package com.microsoft.azure.management.network.v2020_04_01;
 
-import com.microsoft.azure.management.network.v2020_04_01.implementation.VirtualNetworkInner;
-import com.microsoft.azure.management.network.v2020_04_01.implementation.NetworkInterfaceIPConfigurationInner;
+import com.microsoft.azure.SubResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
@@ -22,7 +21,7 @@ public class LoadBalancerBackendAddress {
      * Reference to an existing virtual network.
      */
     @JsonProperty(value = "properties.virtualNetwork")
-    private VirtualNetworkInner virtualNetwork;
+    private SubResource virtualNetwork;
 
     /**
      * IP Address belonging to the referenced virtual network.
@@ -33,8 +32,8 @@ public class LoadBalancerBackendAddress {
     /**
      * Reference to IP address defined in network interfaces.
      */
-    @JsonProperty(value = "properties.networkInterfaceIPConfiguration")
-    private NetworkInterfaceIPConfigurationInner networkInterfaceIPConfiguration;
+    @JsonProperty(value = "properties.networkInterfaceIPConfiguration", access = JsonProperty.Access.WRITE_ONLY)
+    private SubResource networkInterfaceIPConfiguration;
 
     /**
      * Name of the backend address.
@@ -47,7 +46,7 @@ public class LoadBalancerBackendAddress {
      *
      * @return the virtualNetwork value
      */
-    public VirtualNetworkInner virtualNetwork() {
+    public SubResource virtualNetwork() {
         return this.virtualNetwork;
     }
 
@@ -57,7 +56,7 @@ public class LoadBalancerBackendAddress {
      * @param virtualNetwork the virtualNetwork value to set
      * @return the LoadBalancerBackendAddress object itself.
      */
-    public LoadBalancerBackendAddress withVirtualNetwork(VirtualNetworkInner virtualNetwork) {
+    public LoadBalancerBackendAddress withVirtualNetwork(SubResource virtualNetwork) {
         this.virtualNetwork = virtualNetwork;
         return this;
     }
@@ -87,19 +86,8 @@ public class LoadBalancerBackendAddress {
      *
      * @return the networkInterfaceIPConfiguration value
      */
-    public NetworkInterfaceIPConfigurationInner networkInterfaceIPConfiguration() {
+    public SubResource networkInterfaceIPConfiguration() {
         return this.networkInterfaceIPConfiguration;
-    }
-
-    /**
-     * Set reference to IP address defined in network interfaces.
-     *
-     * @param networkInterfaceIPConfiguration the networkInterfaceIPConfiguration value to set
-     * @return the LoadBalancerBackendAddress object itself.
-     */
-    public LoadBalancerBackendAddress withNetworkInterfaceIPConfiguration(NetworkInterfaceIPConfigurationInner networkInterfaceIPConfiguration) {
-        this.networkInterfaceIPConfiguration = networkInterfaceIPConfiguration;
-        return this;
     }
 
     /**
