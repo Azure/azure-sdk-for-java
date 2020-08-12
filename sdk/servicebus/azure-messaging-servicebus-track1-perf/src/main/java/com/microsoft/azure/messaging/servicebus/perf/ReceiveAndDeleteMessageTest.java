@@ -38,7 +38,8 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
     }
 
     @Override
-    public Mono<Void> cleanupAsync() {
+    public Mono<Void> globalCleanupAsync() {
+        super.globalCleanupAsync();
         try {
             sender.close();
         } catch (ServiceBusException e) {
@@ -47,35 +48,49 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
         return Mono.empty();
     }
 
-    @Override
-    public Mono<Void> globalCleanupAsync() {
-        try {
-            sender.close();
-        } catch (ServiceBusException e) {
-            throw logger.logExceptionAsWarning(new RuntimeException(e));
-        }
-        return Mono.empty();
+    private Mono<Void> sendMessage() {
+        //return Mono.fromFuture(sender.sendBatchAsync(messages));
+        return Mono.fromRunnable(() -> {
+            System.out.println("sendMessage Entry.. ");
+            final int totalMessageMultiplier = 50;
+            String messageId = UUID.randomUUID().toString();
+            Message message = new Message(CONTENTS);
+            message.setMessageId(messageId);
+            messages = IntStream.range(0, options.getParallel() * options.getMessagesToSend() * totalMessageMultiplier)
+                .mapToObj(index -> message)
+                .collect(Collectors.toList());
+            System.out.println("sendMessage Exit.. ");
+        });
     }
 
     @Override
     public Mono<Void> globalSetupAsync() {
+        System.out.println("globalSetupAsync entry");
         // Since test does warm up and test many times, we are sending many messages, so we will have them available.
-        int totalMessageMultiplier = 100;
-
+        final int totalMessageMultiplier = 50;
         String messageId = UUID.randomUUID().toString();
         Message message = new Message(CONTENTS);
         message.setMessageId(messageId);
+        System.out.println("GlobalSetupAsync ..");
+        return super.globalSetupAsync()
+            .then(sendMessage());
+            /*
+            .map(aVoid -> {
+                System.out.println("globalSetupAsync entry map.. ");
+                messages = IntStream.range(0, options.getParallel() * options.getMessagesToSend() * totalMessageMultiplier)
+                    .mapToObj(index -> message)
+                    .collect(Collectors.toList());
+                System.out.println("globalSetupAsync entry sending message with size : " + messages.size());
+                return Mono.fromFuture(sender.sendBatchAsync(messages));
+            }).then();
 
-        messages = IntStream.range(0, options.getMessagesToSend() * totalMessageMultiplier)
-            .mapToObj(index -> message)
-            .collect(Collectors.toList());
-
-        return Mono.fromFuture(sender.sendBatchAsync(messages));
-
+             */
     }
 
     @Override
     public void run() {
+        System.out.println(" Sync received Entry");
+        logger.verbose(" Sync received Entry ");
         Collection<IMessage> messages = null;
         try {
             messages = receiver.receiveBatch(options.getMessagesToReceive());
@@ -83,22 +98,16 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
             throw logger.logExceptionAsWarning(new RuntimeException(e));
         }
         int count = messages.size();
-        for (IMessage message : messages) {
+        logger.verbose(" Sync received count " + count);
+        /*for (IMessage message : messages) {
             ++count;
-        }
+        }*/
     }
 
     @Override
     public Mono<Void> runAsync() {
+        System.out.println(" Async received Entry ");
         return Mono.fromFuture(receiver.receiveBatchAsync(options.getMessagesToReceive()))
-        .map(iMessages -> {
-            int count = 0;
-            for (IMessage message : iMessages) {
-                ++count;
-            }
-            return Mono.just(iMessages);
-        })
             .then();
     }
-
 }

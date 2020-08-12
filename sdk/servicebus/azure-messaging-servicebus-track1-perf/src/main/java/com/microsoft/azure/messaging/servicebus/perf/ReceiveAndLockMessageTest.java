@@ -40,13 +40,13 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
     @Override
     public Mono<Void> globalSetupAsync() {
         // Since test does warm up and test many times, we are sending many messages, so we will have them available.
-        int totalMessageMultiplier = 100;
+        int totalMessageMultiplier = 50;
 
         String messageId = UUID.randomUUID().toString();
         Message message = new Message(CONTENTS);
         message.setMessageId(messageId);
 
-        messages = IntStream.range(0, options.getMessagesToSend() * totalMessageMultiplier)
+        messages = IntStream.range(0, options.getParallel() * options.getMessagesToSend() * totalMessageMultiplier)
             .mapToObj(index -> message)
             .collect(Collectors.toList());
 
@@ -85,16 +85,6 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
                 return Mono.just(iMessages);
             })
             .then();
-    }
-
-    @Override
-    public Mono<Void> cleanupAsync() {
-        try {
-            sender.close();
-        } catch (ServiceBusException e) {
-            throw logger.logExceptionAsWarning(new RuntimeException(e));
-        }
-        return Mono.empty();
     }
 
     /**

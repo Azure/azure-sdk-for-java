@@ -41,7 +41,7 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
 
         ServiceBusMessage message = new ServiceBusMessage(CONTENTS.getBytes(Charset.defaultCharset()));
         return Mono.defer(() -> {
-            messages = IntStream.range(0, options.getMessagesToSend() * totalMessageMultiplier)
+            messages = IntStream.range(0, options.getParallel() * options.getMessagesToSend() * totalMessageMultiplier)
                 .mapToObj(index -> message)
                 .collect(Collectors.toList());
             return senderAsync.sendMessages(messages);
