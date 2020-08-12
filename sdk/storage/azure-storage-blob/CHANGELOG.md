@@ -182,7 +182,7 @@ and
 demonstrate the new API.
 
 ## 12.0.0-preview.2 (2019-08-08)
-For details on the Azure SDK for Java (August 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview2-java).
+For details on the Azure SDK for Java (August 2019 Preview) release refer to the [release announcement](https://azure.github.io/azure-sdk/releases/2019-08-06/java.html).
 
 - Renamed `StorageClient`, `StorageAsyncClient`, and `StorageClientBuilder` to `BlobServiceClient`, `BlobServiceAsyncClient`, and `BlobServiceClientBuilder`.
 - Combined `AppendBlobClientBuilder`, `BlockBlobClientBuilder`, and `PageBlobClientBuilder` into `BlobClientBuilder`. Methods to create each client type were added.

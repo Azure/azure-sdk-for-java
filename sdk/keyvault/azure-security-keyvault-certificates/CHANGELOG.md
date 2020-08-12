@@ -127,7 +127,7 @@ only)
 - Reactive streams support using [Project Reactor](https://projectreactor.io/).
 - Authentication using `azure-identity` credentials
   - see this package's
-  [documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-keyvault-certificates/README.md)
+  [documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-certificates/README.md)
   , and the
   [Azure Identity documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/identity/azure-identity/README.md)
   for more information
