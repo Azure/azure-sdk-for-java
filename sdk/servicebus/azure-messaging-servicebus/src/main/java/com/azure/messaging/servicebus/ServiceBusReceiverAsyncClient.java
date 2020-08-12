@@ -684,19 +684,19 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     public LockRenewalOperation getAutoRenewMessageLock(String lockToken, Duration maxLockRenewalDuration) {
         if (isDisposed.get()) {
-            throw logger.logThrowableAsError(new IllegalStateException(
+            throw logger.logExceptionAsError(new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "getAutoRenewMessageLock")));
         } else if (Objects.isNull(lockToken)) {
-            throw logger.logThrowableAsError(new NullPointerException("'lockToken' cannot be null."));
+            throw logger.logExceptionAsError(new NullPointerException("'lockToken' cannot be null."));
         } else if (lockToken.isEmpty()) {
-            throw logger.logThrowableAsError(new IllegalArgumentException("'lockToken' cannot be empty."));
+            throw logger.logExceptionAsError(new IllegalArgumentException("'lockToken' cannot be empty."));
         } else if (receiverOptions.isSessionReceiver()) {
-            throw logger.logThrowableAsError(new IllegalStateException(
+            throw logger.logExceptionAsError(new IllegalStateException(
                 String.format("Cannot renew message lock [%s] for a session receiver.", lockToken)));
         } else if (maxLockRenewalDuration == null) {
-            throw logger.logThrowableAsError(new NullPointerException("'maxLockRenewalDuration' cannot be null."));
+            throw logger.logExceptionAsError(new NullPointerException("'maxLockRenewalDuration' cannot be null."));
         } else if (maxLockRenewalDuration.isNegative()) {
-            throw logger.logThrowableAsError(new IllegalArgumentException(
+            throw logger.logExceptionAsError(new IllegalArgumentException(
                 "'maxLockRenewalDuration' cannot be negative."));
         }
 
@@ -719,20 +719,20 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     public LockRenewalOperation getAutoRenewSessionLock(String sessionId, Duration maxLockRenewalDuration) {
         if (isDisposed.get()) {
-            throw logger.logThrowableAsError(new IllegalStateException(
+            throw logger.logExceptionAsError(new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "getAutoRenewSessionLock")));
         } else if (!receiverOptions.isSessionReceiver()) {
-            throw logger.logThrowableAsError(new IllegalStateException(
+            throw logger.logExceptionAsError(new IllegalStateException(
                 "Cannot renew session lock on a non-session receiver."));
         } else if (maxLockRenewalDuration == null) {
-            throw logger.logThrowableAsError(new NullPointerException("'maxLockRenewalDuration' cannot be null."));
+            throw logger.logExceptionAsError(new NullPointerException("'maxLockRenewalDuration' cannot be null."));
         } else if (maxLockRenewalDuration.isNegative()) {
-            throw logger.logThrowableAsError(new IllegalArgumentException(
+            throw logger.logExceptionAsError(new IllegalArgumentException(
                 "'maxLockRenewalDuration' cannot be negative."));
         } else if (Objects.isNull(sessionId)) {
-            throw logger.logThrowableAsError(new NullPointerException("'sessionId' cannot be null."));
+            throw logger.logExceptionAsError(new NullPointerException("'sessionId' cannot be null."));
         } else if (sessionId.isEmpty()) {
-            throw logger.logThrowableAsError(new IllegalArgumentException("'sessionId' cannot be empty."));
+            throw logger.logExceptionAsError(new IllegalArgumentException("'sessionId' cannot be empty."));
         }
 
         final LockRenewalOperation operation = new LockRenewalOperation(sessionId, maxLockRenewalDuration, true,
