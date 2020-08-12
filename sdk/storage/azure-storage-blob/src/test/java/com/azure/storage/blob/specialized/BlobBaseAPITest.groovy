@@ -483,7 +483,7 @@ class BlobBaseAPITest extends APISpec {
         mockReceiver.progressList.contains(sizeofBlobToRead)
     }
 
-    //@Requires( { liveMode() } ) // Large amount of data.
+    @Requires( { liveMode() } ) // Large amount of data.
     @Ignore("Query tests hang in Java 11") // TODO (rickle-msft): Remove annotation
     def "Query multiple records with progress receiver"() {
         setup:
