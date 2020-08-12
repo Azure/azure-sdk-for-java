@@ -7,7 +7,7 @@
 [Samples][samples]
 
 ## Spring data version support
-This project supports [spring-data-commons 2.2.x][azure_spring_data_2_2_cosmos] version.
+This project supports [spring-data-commons 2.2.x][spring_data_2_2_commons] version.
 
 ## Getting started
 ### Include the package
@@ -33,8 +33,8 @@ Please refer to [Azure Spring Data Cosmos Core module][azure_spring_data_cosmos_
 - Please refer to [sample project here][samples].
 
 ## Next steps
-- Read more about azure spring data cosmos [here][azure_spring_data_cosmos_docs].
-- [Read more about Azure CosmosDB Service][cosmos_docs]
+- Read more about [azure spring data cosmos][azure_spring_data_cosmos_docs].
+- Read more about [azure cosmosdb service][cosmos_docs].
 
 ## Contributing
 
@@ -61,7 +61,7 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [coc_contact]: mailto:opencode@microsoft.com
 [samples]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-spring-data-cosmos-core/src/samples/java/com/azure/cosmos
 [sql_api_query]: https://docs.microsoft.com/en-us/azure/cosmos-db/sql-api-sql-query
-[azure_spring_data_2_2_cosmos]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-spring-data-2-2-cosmos
+[spring_data_2_2_commons]: https://mvnrepository.com/artifact/org.springframework.data/spring-data-commons/2.2.0.RELEASE
 [api_documentation]: https://azure.github.io/azure-sdk-for-java/cosmos.html#azure-spring-data-2-2-cosmos
 [maven]: https://maven.apache.org/
 [azure_spring_data_cosmos_core_readme_key_concepts]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/cosmos/azure-spring-data-cosmos-core/README.md#key-concepts
