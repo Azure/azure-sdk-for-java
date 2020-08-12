@@ -18,6 +18,7 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsBatchCr
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
+import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 
 /** Entry point to network interface management. */
@@ -86,4 +87,21 @@ public interface NetworkInterfaces
      */
     PagedFlux<VirtualMachineScaleSetNetworkInterface> listByVirtualMachineScaleSetInstanceIdAsync(
         String resourceGroupName, String scaleSetName, String instanceId);
+
+    /**
+     * Begins deleting a virtual machine from Azure, identifying it by its resource ID.
+     *
+     * @param id the resource ID of the virtual machine to delete
+     * @return the accepted deleting operation
+     */
+    Accepted<Void> beginDeleteById(String id);
+
+    /**
+     * Begins deleting a virtual machine from Azure, identifying it by its name and its resource group.
+     *
+     * @param resourceGroupName the resource group the resource is part of
+     * @param name the virtual machine name
+     * @return the accepted deleting operation
+     */
+    Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name);
 }
