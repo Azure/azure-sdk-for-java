@@ -7,12 +7,12 @@ import com.azure.ai.formrecognizer.FormRecognizerClient;
 import com.azure.ai.formrecognizer.FormRecognizerClientBuilder;
 import com.azure.ai.formrecognizer.implementation.models.ModelStatus;
 import com.azure.ai.formrecognizer.training.models.AccountProperties;
+import com.azure.ai.formrecognizer.training.models.TrainingOptions;
 import com.azure.ai.formrecognizer.training.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.training.models.CustomFormModel;
 import com.azure.ai.formrecognizer.training.models.CustomFormModelInfo;
 import com.azure.ai.formrecognizer.models.FormRecognizerException;
-import com.azure.ai.formrecognizer.models.OperationResult;
-import com.azure.ai.formrecognizer.training.models.TrainingFileFilter;
+import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -85,9 +85,9 @@ public final class FormTrainingClient {
      * @throws NullPointerException If {@code trainingFilesUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<OperationResult, CustomFormModel> beginTraining(String trainingFilesUrl,
+    public SyncPoller<FormRecognizerOperationResult, CustomFormModel> beginTraining(String trainingFilesUrl,
         boolean useTrainingLabels) {
-        return beginTraining(trainingFilesUrl, useTrainingLabels, null, null, Context.NONE);
+        return beginTraining(trainingFilesUrl, useTrainingLabels, null, Context.NONE);
     }
 
     /**
@@ -99,16 +99,15 @@ public final class FormTrainingClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.beginTraining#string-boolean-trainingFileFilter-Duration-Context}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.beginTraining#string-boolean-TrainingOptions-Context}
      *
      * @param trainingFilesUrl an externally accessible Azure storage blob container Uri (preferably a
      * Shared Access Signature Uri).
      * For instructions on setting up forms for training in an Azure Storage Blob Container, see
      * https://docs.microsoft.com/azure/cognitive-services/form-recognizer/build-training-data-set#upload-your-training-data
      * @param useTrainingLabels boolean to specify the use of labeled files for training the model.
-     * @param trainingFileFilter Filter to apply to the documents in the source path for training.
-     * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
-     * 5 seconds is used.
+     * @param trainingOptions The additional configurable {@link TrainingOptions options}
+     * that may be passed when training a model.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return A {@link SyncPoller} that polls the training model operation until it has completed, has failed, or has
@@ -117,10 +116,11 @@ public final class FormTrainingClient {
      * @throws NullPointerException If {@code trainingFilesUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<OperationResult, CustomFormModel> beginTraining(String trainingFilesUrl,
-        boolean useTrainingLabels, TrainingFileFilter trainingFileFilter, Duration pollInterval, Context context) {
-        return client.beginTraining(trainingFilesUrl, useTrainingLabels, trainingFileFilter, pollInterval, context)
-            .getSyncPoller();
+    public SyncPoller<FormRecognizerOperationResult, CustomFormModel> beginTraining(String trainingFilesUrl,
+        boolean useTrainingLabels,
+        TrainingOptions trainingOptions, Context context) {
+        return client.beginTraining(trainingFilesUrl, useTrainingLabels,
+            trainingOptions, context).getSyncPoller();
     }
 
     /**
@@ -267,7 +267,7 @@ public final class FormTrainingClient {
      * or has been cancelled.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<OperationResult, CustomFormModelInfo> beginCopyModel(String modelId,
+    public SyncPoller<FormRecognizerOperationResult, CustomFormModelInfo> beginCopyModel(String modelId,
         CopyAuthorization target) {
         return beginCopyModel(modelId, target, null, Context.NONE);
     }
@@ -297,7 +297,7 @@ public final class FormTrainingClient {
      * or has been cancelled.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<OperationResult, CustomFormModelInfo> beginCopyModel(String modelId,
+    public SyncPoller<FormRecognizerOperationResult, CustomFormModelInfo> beginCopyModel(String modelId,
         CopyAuthorization target, Duration pollInterval, Context context) {
         return client.beginCopyModel(modelId, target, pollInterval, context).getSyncPoller();
     }
