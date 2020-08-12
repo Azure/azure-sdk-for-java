@@ -1,5 +1,8 @@
 # Release History
 
+## 1.0.0-beta.4 (Unreleased)
+
+
 ## 1.0.0-beta.3 (2020-08-12)
 
 - Changed `JacksonJsonSerializer` to implement `azure-core`'s `JsonSerialzer` instead of `azure-core-experimental`'s.
