@@ -50,7 +50,7 @@ class LockContainerTest {
         // Arrange
         final String key = "key1";
         final String value = "value";
-        final Instant expiration = Instant.now();
+        final Instant expiration = Instant.now().plusSeconds(10);
 
         // Act
         final Instant added = container.addOrUpdate(key, expiration, value);
