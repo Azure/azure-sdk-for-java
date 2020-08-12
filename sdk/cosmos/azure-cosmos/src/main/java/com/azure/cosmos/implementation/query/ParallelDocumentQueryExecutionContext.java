@@ -4,21 +4,21 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.implementation.Resource;
-import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RequestChargeTracker;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.SqlQuerySpec;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.concurrent.Queues;
@@ -220,8 +220,9 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE,
                     String.valueOf(pageCharge));
             FeedResponse<T> newPage = BridgeInternal.createFeedResponseWithQueryMetrics(page.getResults(),
-                    headers,
-                BridgeInternal.queryMetricsFromFeedResponse(page));
+                headers,
+                BridgeInternal.queryMetricsFromFeedResponse(page),
+                ModelBridgeInternal.getQueryPlanDiagnosticsContext(page));
             documentProducerFeedResponse.pageResult = newPage;
             return documentProducerFeedResponse;
         }
@@ -234,8 +235,10 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             headers.put(HttpConstants.HttpHeaders.CONTINUATION,
                     compositeContinuationToken);
             FeedResponse<T> newPage = BridgeInternal.createFeedResponseWithQueryMetrics(page.getResults(),
-                    headers,
-                BridgeInternal.queryMetricsFromFeedResponse(page));
+                headers,
+                BridgeInternal.queryMetricsFromFeedResponse(page),
+                ModelBridgeInternal.getQueryPlanDiagnosticsContext(page)
+            );
             documentProducerFeedResponse.pageResult = newPage;
             return documentProducerFeedResponse;
         }

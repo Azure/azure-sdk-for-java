@@ -563,7 +563,8 @@ public final class DomainsClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DomainInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -854,7 +855,7 @@ public final class DomainsClient
         DomainRecommendationSearchParameters parameters, Context context) {
         return new PagedFlux<>(
             () -> listRecommendationsSinglePageAsync(parameters, context),
-            nextLink -> listRecommendationsNextSinglePageAsync(nextLink));
+            nextLink -> listRecommendationsNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1014,7 +1015,7 @@ public final class DomainsClient
     public PagedFlux<DomainInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1335,8 +1336,8 @@ public final class DomainsClient
         Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, domainName, domain);
         return this
             .client
-            .<DomainInner, DomainInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DomainInner.class, DomainInner.class);
+            .<DomainInner, DomainInner>getLroResult(
+                mono, this.client.getHttpPipeline(), DomainInner.class, DomainInner.class, Context.NONE);
     }
 
     /**
@@ -1354,12 +1355,13 @@ public final class DomainsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<DomainInner>, DomainInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String domainName, DomainInner domain, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, domainName, domain, context);
         return this
             .client
-            .<DomainInner, DomainInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), DomainInner.class, DomainInner.class);
+            .<DomainInner, DomainInner>getLroResult(
+                mono, this.client.getHttpPipeline(), DomainInner.class, DomainInner.class, context);
     }
 
     /**
@@ -2000,7 +2002,7 @@ public final class DomainsClient
         String resourceGroupName, String domainName, Context context) {
         return new PagedFlux<>(
             () -> listOwnershipIdentifiersSinglePageAsync(resourceGroupName, domainName, context),
-            nextLink -> listOwnershipIdentifiersNextSinglePageAsync(nextLink));
+            nextLink -> listOwnershipIdentifiersNextSinglePageAsync(nextLink, context));
     }
 
     /**

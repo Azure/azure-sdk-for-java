@@ -136,6 +136,7 @@ public final class DiagnosticSettingsCategorysClient {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         final String apiVersion = "2017-05-01-preview";
+        context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceUri, apiVersion, name, context);
     }
 
@@ -266,6 +267,7 @@ public final class DiagnosticSettingsCategorysClient {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
         final String apiVersion = "2017-05-01-preview";
+        context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), resourceUri, apiVersion, context);
     }
 

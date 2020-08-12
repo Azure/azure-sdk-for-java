@@ -83,7 +83,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.0.9</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -102,6 +102,12 @@
       <groupId>cglib</groupId>
       <artifactId>cglib-nodep</artifactId>
       <version>3.2.7</version> <!-- {x-version-update;cglib:cglib-nodep;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.objenesis</groupId>
+      <artifactId>objenesis</artifactId>
+      <version>3.1</version> <!-- {x-version-update;org.objenesis:objenesis;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

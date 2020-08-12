@@ -358,7 +358,9 @@ public final class ExpressRouteCircuitsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String circuitName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, circuitName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -375,8 +377,11 @@ public final class ExpressRouteCircuitsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String circuitName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, circuitName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -768,8 +773,12 @@ public final class ExpressRouteCircuitsClient
             createOrUpdateWithResponseAsync(resourceGroupName, circuitName, parameters);
         return this
             .client
-            .<ExpressRouteCircuitInner, ExpressRouteCircuitInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), ExpressRouteCircuitInner.class, ExpressRouteCircuitInner.class);
+            .<ExpressRouteCircuitInner, ExpressRouteCircuitInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ExpressRouteCircuitInner.class,
+                ExpressRouteCircuitInner.class,
+                Context.NONE);
     }
 
     /**
@@ -787,12 +796,17 @@ public final class ExpressRouteCircuitsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<ExpressRouteCircuitInner>, ExpressRouteCircuitInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String circuitName, ExpressRouteCircuitInner parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, circuitName, parameters, context);
         return this
             .client
-            .<ExpressRouteCircuitInner, ExpressRouteCircuitInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), ExpressRouteCircuitInner.class, ExpressRouteCircuitInner.class);
+            .<ExpressRouteCircuitInner, ExpressRouteCircuitInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ExpressRouteCircuitInner.class,
+                ExpressRouteCircuitInner.class,
+                context);
     }
 
     /**
@@ -1221,12 +1235,12 @@ public final class ExpressRouteCircuitsClient
             listArpTableWithResponseAsync(resourceGroupName, circuitName, peeringName, devicePath);
         return this
             .client
-            .<ExpressRouteCircuitsArpTableListResultInner, ExpressRouteCircuitsArpTableListResultInner>
-                getLroResultAsync(
-                    mono,
-                    this.client.getHttpPipeline(),
-                    ExpressRouteCircuitsArpTableListResultInner.class,
-                    ExpressRouteCircuitsArpTableListResultInner.class);
+            .<ExpressRouteCircuitsArpTableListResultInner, ExpressRouteCircuitsArpTableListResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ExpressRouteCircuitsArpTableListResultInner.class,
+                ExpressRouteCircuitsArpTableListResultInner.class,
+                Context.NONE);
     }
 
     /**
@@ -1247,16 +1261,17 @@ public final class ExpressRouteCircuitsClient
             PollResult<ExpressRouteCircuitsArpTableListResultInner>, ExpressRouteCircuitsArpTableListResultInner>
         beginListArpTableAsync(
             String resourceGroupName, String circuitName, String peeringName, String devicePath, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             listArpTableWithResponseAsync(resourceGroupName, circuitName, peeringName, devicePath, context);
         return this
             .client
-            .<ExpressRouteCircuitsArpTableListResultInner, ExpressRouteCircuitsArpTableListResultInner>
-                getLroResultAsync(
-                    mono,
-                    this.client.getHttpPipeline(),
-                    ExpressRouteCircuitsArpTableListResultInner.class,
-                    ExpressRouteCircuitsArpTableListResultInner.class);
+            .<ExpressRouteCircuitsArpTableListResultInner, ExpressRouteCircuitsArpTableListResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ExpressRouteCircuitsArpTableListResultInner.class,
+                ExpressRouteCircuitsArpTableListResultInner.class,
+                context);
     }
 
     /**
@@ -1510,11 +1525,12 @@ public final class ExpressRouteCircuitsClient
         return this
             .client
             .<ExpressRouteCircuitsRoutesTableListResultInner, ExpressRouteCircuitsRoutesTableListResultInner>
-                getLroResultAsync(
+                getLroResult(
                     mono,
                     this.client.getHttpPipeline(),
                     ExpressRouteCircuitsRoutesTableListResultInner.class,
-                    ExpressRouteCircuitsRoutesTableListResultInner.class);
+                    ExpressRouteCircuitsRoutesTableListResultInner.class,
+                    Context.NONE);
     }
 
     /**
@@ -1535,16 +1551,18 @@ public final class ExpressRouteCircuitsClient
             PollResult<ExpressRouteCircuitsRoutesTableListResultInner>, ExpressRouteCircuitsRoutesTableListResultInner>
         beginListRoutesTableAsync(
             String resourceGroupName, String circuitName, String peeringName, String devicePath, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             listRoutesTableWithResponseAsync(resourceGroupName, circuitName, peeringName, devicePath, context);
         return this
             .client
             .<ExpressRouteCircuitsRoutesTableListResultInner, ExpressRouteCircuitsRoutesTableListResultInner>
-                getLroResultAsync(
+                getLroResult(
                     mono,
                     this.client.getHttpPipeline(),
                     ExpressRouteCircuitsRoutesTableListResultInner.class,
-                    ExpressRouteCircuitsRoutesTableListResultInner.class);
+                    ExpressRouteCircuitsRoutesTableListResultInner.class,
+                    context);
     }
 
     /**
@@ -1805,11 +1823,12 @@ public final class ExpressRouteCircuitsClient
             .client
             .<ExpressRouteCircuitsRoutesTableSummaryListResultInner,
                 ExpressRouteCircuitsRoutesTableSummaryListResultInner>
-                getLroResultAsync(
+                getLroResult(
                     mono,
                     this.client.getHttpPipeline(),
                     ExpressRouteCircuitsRoutesTableSummaryListResultInner.class,
-                    ExpressRouteCircuitsRoutesTableSummaryListResultInner.class);
+                    ExpressRouteCircuitsRoutesTableSummaryListResultInner.class,
+                    Context.NONE);
     }
 
     /**
@@ -1832,17 +1851,19 @@ public final class ExpressRouteCircuitsClient
             ExpressRouteCircuitsRoutesTableSummaryListResultInner>
         beginListRoutesTableSummaryAsync(
             String resourceGroupName, String circuitName, String peeringName, String devicePath, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             listRoutesTableSummaryWithResponseAsync(resourceGroupName, circuitName, peeringName, devicePath, context);
         return this
             .client
             .<ExpressRouteCircuitsRoutesTableSummaryListResultInner,
                 ExpressRouteCircuitsRoutesTableSummaryListResultInner>
-                getLroResultAsync(
+                getLroResult(
                     mono,
                     this.client.getHttpPipeline(),
                     ExpressRouteCircuitsRoutesTableSummaryListResultInner.class,
-                    ExpressRouteCircuitsRoutesTableSummaryListResultInner.class);
+                    ExpressRouteCircuitsRoutesTableSummaryListResultInner.class,
+                    context);
     }
 
     /**
@@ -2457,7 +2478,7 @@ public final class ExpressRouteCircuitsClient
     public PagedFlux<ExpressRouteCircuitInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2588,7 +2609,8 @@ public final class ExpressRouteCircuitsClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ExpressRouteCircuitInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listAllNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listAllNextSinglePageAsync(nextLink, context));
     }
 
     /**

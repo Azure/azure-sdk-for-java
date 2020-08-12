@@ -38,7 +38,7 @@
   <properties>
     <!-- RMJacoco -->
     <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.10</jacoco.min.branchcoverage>
+    <jacoco.min.branchcoverage>0.05</jacoco.min.branchcoverage>
   </properties>
 
   <developers>
@@ -87,7 +87,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.0.9</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
