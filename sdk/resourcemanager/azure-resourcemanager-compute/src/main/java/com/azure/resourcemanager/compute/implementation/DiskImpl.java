@@ -383,6 +383,6 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
                     taskGroup().invokeDependencyAsync(taskGroup().newInvocationContext());
                 dependencyTasksAsync.blockLast();
             },
-            inner -> innerToFluentMap(this).apply(inner));
+            this::setInner);
     }
 }

@@ -194,7 +194,7 @@ class PublicIpAddressImpl
 
                 this.cleanupDnsSettings();
             },
-            inner -> innerToFluentMap(this).apply(inner));
+            this::setInner);
     }
 
     // CreateUpdateTaskGroup.ResourceCreator implementation
