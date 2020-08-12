@@ -13,7 +13,6 @@ import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 import java.util.List;
 import com.microsoft.azure.management.network.v2020_04_01.HubRoute;
-import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.network.v2020_04_01.ProvisioningState;
 
 class HubRouteTableImpl extends CreatableUpdatableImpl<HubRouteTable, HubRouteTableInner, HubRouteTableImpl> implements HubRouteTable, HubRouteTable.Definition, HubRouteTable.Update {
@@ -74,7 +73,7 @@ class HubRouteTableImpl extends CreatableUpdatableImpl<HubRouteTable, HubRouteTa
 
 
     @Override
-    public List<SubResource> associatedConnections() {
+    public List<String> associatedConnections() {
         return this.inner().associatedConnections();
     }
 
@@ -99,7 +98,7 @@ class HubRouteTableImpl extends CreatableUpdatableImpl<HubRouteTable, HubRouteTa
     }
 
     @Override
-    public List<SubResource> propagatingConnections() {
+    public List<String> propagatingConnections() {
         return this.inner().propagatingConnections();
     }
 

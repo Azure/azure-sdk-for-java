@@ -18,7 +18,6 @@ import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.network.v2020_04_01.implementation.NetworkManager;
 import java.util.List;
-import com.microsoft.azure.SubResource;
 
 /**
  * Type representing HubRouteTable.
@@ -27,7 +26,7 @@ public interface HubRouteTable extends HasInner<HubRouteTableInner>, Indexable, 
     /**
      * @return the associatedConnections value.
      */
-    List<SubResource> associatedConnections();
+    List<String> associatedConnections();
 
     /**
      * @return the etag value.
@@ -52,7 +51,7 @@ public interface HubRouteTable extends HasInner<HubRouteTableInner>, Indexable, 
     /**
      * @return the propagatingConnections value.
      */
-    List<SubResource> propagatingConnections();
+    List<String> propagatingConnections();
 
     /**
      * @return the provisioningState value.
