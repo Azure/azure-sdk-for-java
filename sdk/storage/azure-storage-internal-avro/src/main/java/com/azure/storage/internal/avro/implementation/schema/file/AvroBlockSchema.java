@@ -108,7 +108,7 @@ public class AvroBlockSchema extends AvroCompositeSchema {
      * @param schema The object.
      */
     private void onObject(Object schema) {
-        /* Decrement the block count. Increment the eventIndex. */
+        /* Decrement the block count. */
         this.blockCount--;
 
         if (this.eventIndex < this.threshold) {
