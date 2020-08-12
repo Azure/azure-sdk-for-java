@@ -12,10 +12,8 @@ import com.microsoft.azure.servicebus.ReceiveMode;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -24,9 +22,8 @@ import java.util.stream.IntStream;
  */
 public class SendMessagesTest extends ServiceTest<ServiceBusStressOptions> {
     private final ClientLogger logger = new ClientLogger(SendMessagesTest.class);
-    private final ServiceBusStressOptions options;
 
-    private List<IMessage> messages = new ArrayList<>();
+    private final List<IMessage> messages;
 
     /**
      * Creates test object
@@ -34,21 +31,18 @@ public class SendMessagesTest extends ServiceTest<ServiceBusStressOptions> {
      */
     public SendMessagesTest(ServiceBusStressOptions options) {
         super(options, ReceiveMode.PEEKLOCK);
-        this.options = options;
+
+        String messageId = UUID.randomUUID().toString();
+        Message message = new Message(CONTENTS);
+        message.setMessageId(messageId);
+        messages = IntStream.range(0, options.getMessagesToSend())
+            .mapToObj(index -> message)
+            .collect(Collectors.toList());
     }
 
     @Override
     public Mono<Void> globalSetupAsync() {
-        String messageId = UUID.randomUUID().toString();
-        Message message = new Message(CONTENTS);
-        message.setMessageId(messageId);
-
-        return Mono.defer(() -> {
-            messages = IntStream.range(0, options.getMessagesToSend())
-            .mapToObj(index -> message)
-            .collect(Collectors.toList());
-            return Mono.empty();
-        });
+        return super.globalSetupAsync();
     }
 
     @Override
@@ -62,11 +56,6 @@ public class SendMessagesTest extends ServiceTest<ServiceBusStressOptions> {
 
     @Override
     public Mono<Void> runAsync() {
-        try {
-            sender.sendBatchAsync(messages).get();
-        } catch (InterruptedException | ExecutionException e) {
-            throw logger.logExceptionAsWarning(new RuntimeException(e));
-        }
-        return Mono.empty();
+        return Mono.fromFuture(sender.sendBatchAsync(messages));
     }
 }

@@ -10,7 +10,6 @@ import com.azure.messaging.servicebus.perf.core.ServiceTest;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -19,7 +18,7 @@ import java.util.stream.IntStream;
  * Performance test.
  */
 public class SendMessagesTest extends ServiceTest<ServiceBusStressOptions> {
-    private List<ServiceBusMessage> messages = new ArrayList<>();
+    private final List<ServiceBusMessage> messages;
 
     /**
      * Creates test object
@@ -27,17 +26,16 @@ public class SendMessagesTest extends ServiceTest<ServiceBusStressOptions> {
      */
     public SendMessagesTest(ServiceBusStressOptions options) {
         super(options, ReceiveMode.PEEK_LOCK);
+        ServiceBusMessage message =  new ServiceBusMessage(CONTENTS.getBytes(Charset.defaultCharset()));
+        messages = IntStream.range(0, options.getMessagesToSend())
+            .mapToObj(index -> message)
+            .collect(Collectors.toList());
+
     }
 
     @Override
     public Mono<Void> globalSetupAsync() {
-        ServiceBusMessage message =  new ServiceBusMessage(CONTENTS.getBytes(Charset.defaultCharset()));
-        return Mono.defer(() -> {
-            messages = IntStream.range(0, options.getMessagesToSend())
-                .mapToObj(index -> message)
-                .collect(Collectors.toList());
-            return Mono.empty();
-        });
+        return super.globalSetupAsync();
     }
 
     @Override

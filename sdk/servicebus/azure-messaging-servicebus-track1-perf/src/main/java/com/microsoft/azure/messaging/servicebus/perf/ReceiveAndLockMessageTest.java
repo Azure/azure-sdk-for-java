@@ -12,7 +12,6 @@ import com.microsoft.azure.servicebus.ReceiveMode;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -26,8 +25,6 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
     private final ClientLogger logger = new ClientLogger(ReceiveAndLockMessageTest.class);
     private final ServiceBusStressOptions options;
 
-    private List<Message> messages = new ArrayList<>();
-
     /**
      * Creates test object
      * @param options to set performance test options.
@@ -37,20 +34,24 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
         this.options = options;
     }
 
+    private Mono<Void> sendMessage() {
+        return Mono.defer(() -> {
+            String messageId = UUID.randomUUID().toString();
+            Message message = new Message(CONTENTS);
+            message.setMessageId(messageId);
+            int total = options.getParallel() * options.getMessagesToSend() * TOTAL_MESSAGE_MULTIPLIER;
+            List<Message> messages = IntStream.range(0, total)
+                .mapToObj(index -> message)
+                .collect(Collectors.toList());
+            return Mono.fromFuture(sender.sendBatchAsync(messages));
+        });
+    }
+
     @Override
     public Mono<Void> globalSetupAsync() {
         // Since test does warm up and test many times, we are sending many messages, so we will have them available.
-        int totalMessageMultiplier = 50;
-
-        String messageId = UUID.randomUUID().toString();
-        Message message = new Message(CONTENTS);
-        message.setMessageId(messageId);
-
-        messages = IntStream.range(0, options.getParallel() * options.getMessagesToSend() * totalMessageMultiplier)
-            .mapToObj(index -> message)
-            .collect(Collectors.toList());
-
-        return Mono.fromFuture(sender.sendBatchAsync(messages));
+        return super.globalSetupAsync()
+            .then(sendMessage());
     }
 
     @Override
@@ -91,12 +92,10 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
      * Runs the cleanup logic after the performance test finishes.
      * @return An empty {@link Mono}
      */
+    @Override
     public Mono<Void> globalCleanupAsync() {
-        try {
-            sender.close();
-        } catch (ServiceBusException e) {
-            throw logger.logExceptionAsWarning(new RuntimeException(e));
-        }
-        return Mono.empty();
+        return Mono.fromFuture(sender.closeAsync())
+            .then(Mono.fromFuture(receiver.closeAsync()))
+            .then(super.globalCleanupAsync());
     }
 }

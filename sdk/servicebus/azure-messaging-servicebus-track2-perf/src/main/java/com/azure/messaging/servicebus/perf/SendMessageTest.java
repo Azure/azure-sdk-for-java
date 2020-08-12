@@ -27,7 +27,7 @@ public class SendMessageTest extends ServiceTest<ServiceBusStressOptions> {
 
     @Override
     public Mono<Void> globalSetupAsync() {
-        return Mono.empty();
+        return super.globalSetupAsync();
     }
 
     @Override

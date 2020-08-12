@@ -26,6 +26,7 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
     protected static final Duration TIMEOUT = Duration.ofSeconds(60);
     protected static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions().setTryTimeout(TIMEOUT);
     protected static final String CONTENTS = "Track 2 AMQP message - Perf Test";
+    protected static final int TOTAL_MESSAGE_MULTIPLIER = 300;
 
     private static final String AZURE_SERVICE_BUS_CONNECTION_STRING = "AZURE_SERVICE_BUS_CONNECTION_STRING";
     private static final String AZURE_SERVICEBUS_QUEUE_NAME = "AZURE_SERVICEBUS_QUEUE_NAME";

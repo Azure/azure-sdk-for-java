@@ -24,7 +24,8 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
     private final ClientLogger logger = new ClientLogger(ServiceTest.class);
     private static final String AZURE_SERVICE_BUS_CONNECTION_STRING = "AZURE_SERVICE_BUS_CONNECTION_STRING";
     private static final String AZURE_SERVICEBUS_QUEUE_NAME = "AZURE_SERVICEBUS_QUEUE_NAME";
-    protected static final String CONTENTS = "Track 1 AMQP message - Perf Test";
+    protected static final String CONTENTS = "T1-Perf Test";
+    protected static final int TOTAL_MESSAGE_MULTIPLIER = 300;
 
     private final MessagingFactory factory;
 
@@ -45,12 +46,14 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
                 + " must be set");
         }
         logger.verbose("connectionString : {}", connectionString);
+        System.out.println("connectionString : {}" + connectionString);
 
         String queueName = System.getenv(AZURE_SERVICEBUS_QUEUE_NAME);
         if (CoreUtils.isNullOrEmpty(queueName)) {
             throw new IllegalArgumentException("Environment variable " + AZURE_SERVICEBUS_QUEUE_NAME + " must be set");
         }
         logger.verbose("queueName : {}", queueName);
+        System.out.println("queueName : {}" + queueName);
 
         // Setup the service client
         try {
@@ -59,7 +62,6 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
             this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, queueName, receiveMode);
         } catch (ServiceBusException | InterruptedException | ExecutionException e) {
             throw logger.logExceptionAsWarning(new RuntimeException(e));
-
         }
     }
 }

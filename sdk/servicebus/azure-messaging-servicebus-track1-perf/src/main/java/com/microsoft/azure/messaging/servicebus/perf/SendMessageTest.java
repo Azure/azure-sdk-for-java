@@ -12,14 +12,13 @@ import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Performance test.
  */
 public class SendMessageTest extends ServiceTest<ServiceBusStressOptions> {
     private final ClientLogger logger = new ClientLogger(SendMessageTest.class);
-    private Message message  = null;
+    private final Message message;
 
     /**
      * Creates test object
@@ -27,22 +26,19 @@ public class SendMessageTest extends ServiceTest<ServiceBusStressOptions> {
      */
     public SendMessageTest(ServiceBusStressOptions options) {
         super(options, ReceiveMode.PEEKLOCK);
+        String messageId = UUID.randomUUID().toString();
+        message = new Message(CONTENTS);
+        message.setMessageId(messageId);
     }
 
     @Override
     public Mono<Void> globalSetupAsync() {
-        return Mono.defer(() -> {
-            String messageId = UUID.randomUUID().toString();
-            message = new Message(CONTENTS);
-            message.setMessageId(messageId);
-            return Mono.empty();
-        });
+        return super.globalSetupAsync();
     }
 
     @Override
     public void run() {
         try {
-
             sender.send(message);
         } catch (InterruptedException | ServiceBusException e) {
             throw logger.logExceptionAsWarning(new RuntimeException(e));
@@ -51,11 +47,6 @@ public class SendMessageTest extends ServiceTest<ServiceBusStressOptions> {
 
     @Override
     public Mono<Void> runAsync() {
-        try {
-            sender.sendAsync(message).get();
-        } catch (InterruptedException | ExecutionException e) {
-            throw logger.logExceptionAsWarning(new RuntimeException(e));
-        }
-        return Mono.empty();
+        return Mono.fromFuture(sender.sendAsync(message));
     }
 }

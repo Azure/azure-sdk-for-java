@@ -5,6 +5,7 @@ package com.azure.messaging.servicebus.perf;
 
 
 import com.azure.core.util.IterableStream;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.messaging.servicebus.models.ReceiveMode;
@@ -13,7 +14,6 @@ import com.azure.messaging.servicebus.perf.core.ServiceTest;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -22,7 +22,7 @@ import java.util.stream.IntStream;
  * Performance test.
  */
 public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptions> {
-    private List<ServiceBusMessage> messages = new ArrayList<>();
+    private final ClientLogger logger = new ClientLogger(ReceiveAndLockMessageTest.class);
     private final ServiceBusStressOptions options;
 
     /**
@@ -37,11 +37,10 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
     @Override
     public Mono<Void> globalSetupAsync() {
         // Since test does warm up and test many times, we are sending many messages, so we will have them available.
-        int totalMessageMultiplier = 50;
-
-        ServiceBusMessage message = new ServiceBusMessage(CONTENTS.getBytes(Charset.defaultCharset()));
         return Mono.defer(() -> {
-            messages = IntStream.range(0, options.getParallel() * options.getMessagesToSend() * totalMessageMultiplier)
+            ServiceBusMessage message = new ServiceBusMessage(CONTENTS.getBytes(Charset.defaultCharset()));
+            int total = options.getParallel() * options.getMessagesToSend() * TOTAL_MESSAGE_MULTIPLIER;
+            List<ServiceBusMessage> messages = IntStream.range(0, total)
                 .mapToObj(index -> message)
                 .collect(Collectors.toList());
             return senderAsync.sendMessages(messages);
@@ -59,7 +58,7 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
 
     @Override
     public Mono<Void> runAsync() {
-        Mono<Void> operator = receiverAsync
+        return receiverAsync
             .receiveMessages()
             .take(options.getMessagesToReceive())
             .map(messageContext -> {
@@ -67,6 +66,5 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
                 return messageContext;
             })
             .then();
-        return operator;
     }
 }
