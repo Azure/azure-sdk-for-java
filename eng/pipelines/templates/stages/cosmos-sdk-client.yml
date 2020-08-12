@@ -82,7 +82,7 @@ stages:
             displayName: 'Run tests after replace_artifact.py'
             inputs:
               mavenPomFile: pom.xml
-              options: '$(DefaultOptions) -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Dparallel-test-playback'  -pl $(PLSkipOptions)$(ProjectList) -am $(AdditionalOptions)
+              options: '$(DefaultOptions) -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Dparallel-test-playback' -pl $(PLSkipOptions)$(ProjectList) -am $(AdditionalOptions)
               mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
               javaHomeOption: 'JDKVersion'
               jdkVersionOption: $(JavaTestVersion)
