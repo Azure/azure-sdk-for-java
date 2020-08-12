@@ -20,7 +20,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -297,8 +296,7 @@ public class JacksonAdapter implements SerializerAdapter {
             .registerModule(DateTimeRfc1123Serializer.getModule())
             .registerModule(DurationSerializer.getModule())
             .registerModule(HttpHeadersSerializer.getModule())
-            .registerModule(UnixTimeSerializer.getModule())
-            .registerModule(new AfterburnerModule());
+            .registerModule(UnixTimeSerializer.getModule());
         mapper.setVisibility(mapper.getSerializationConfig().getDefaultVisibilityChecker()
             .withFieldVisibility(JsonAutoDetect.Visibility.ANY)
             .withSetterVisibility(JsonAutoDetect.Visibility.NONE)

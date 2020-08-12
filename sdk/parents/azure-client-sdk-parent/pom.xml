@@ -1114,9 +1114,6 @@
                 --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
                 --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
 
-                <!-- Required for running tests with afterburner modules -->
-                --add-exports com.fasterxml.jackson.module.afterburner/com.fasterxml.jackson.module.afterburner.deser=ALL-UNNAMED
-
                 <!-- Needed for JUnit offline instrumentation -->
                 --add-reads com.azure.core=ALL-UNNAMED
                 --add-reads com.azure.core.test=ALL-UNNAMED
