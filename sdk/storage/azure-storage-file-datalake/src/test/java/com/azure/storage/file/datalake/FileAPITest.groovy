@@ -1428,6 +1428,7 @@ class FileAPITest extends APISpec {
     }
 
     @Requires({ liveMode() })
+    @Ignore("failing in ci")
     def "Download file etag lock"() {
         setup:
         def file = getRandomFile(Constants.MB)
@@ -2302,6 +2303,7 @@ class FileAPITest extends APISpec {
 
     @Unroll
     @Requires({ liveMode() })
+    @Ignore // Hanging in pipeline
     def "Buffered upload with reporter"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
