@@ -22,8 +22,7 @@ This binder has no partition support even service bus queue supports partition.
 
 ## Examples
 
-Please use this [sample](../../spring-cloud-azure-samples/servicebus-queue-binder-sample/) as a reference
-for how to use this binder in your projects. 
+Please use this `sample` as a reference for how to use this binder in your projects. 
 
 ### Feature List 
 
