@@ -1,23 +1,25 @@
 # Release History
 
-## 4.2.0-beta.5 (Unreleased)
-
-
-## 4.2.0-beta.4 (2020-07-08)
-- Updated versions for azure-core, azure-identity.
-
-## 4.2.0-beta.3 (2020-06-10)
-- Updated version for azure-core, azure-identity and external dependencies.
-- Fixed `ByteBuf` resource leak in `KeyVaultCredentialPolicy`.
-
-## 4.2.0-beta.2 (2020-04-09)
-- Update azure-core dependency to version 1.4.0.
-- Added `retryPolicy` setter in `SecretClientBuilder`
-
-## 4.2.0-beta.1 (2020-03-10)
-### Added
+## 4.2.0 (2020-08-12)
+- Added support for `7.1-Preview` service version.
+- Added `retryPolicy` setter in `SecretClientBuilder`.
 - Added `recoverableDays` property to `SecretProperties`.
-- Added support for `7.1-Preview` service version
+
+## 4.1.5 (2020-07-08)
+- Updated versions for azure-core and azure-identity.
+
+## 4.1.4 (2020-06-10)
+- Updated version for azure-core, azure-identity and external dependencies.
+
+## 4.1.3 (2020-05-06)
+- Update azure-core dependency to version 1.5.0.
+- Fixed `ByteBuff` resource leak in `KeyVaultCredentialPolicy`.  
+
+## 4.1.2 (2020-04-07)
+- Update azure-core dependency to version 1.4.0.
+
+## 4.1.1 (2020-03-25)
+- Update azure-core dependency to version 1.3.0.
 
 ## 4.1.0 (2020-01-07)
 - Update azure-core dependency to version 1.2.0
