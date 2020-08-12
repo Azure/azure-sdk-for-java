@@ -1,3 +1,0 @@
-# Known failures
-https://opensource.microsoft.com/codeofconduct/
-https://opensource.microsoft.com/codeofconduct/faq/
