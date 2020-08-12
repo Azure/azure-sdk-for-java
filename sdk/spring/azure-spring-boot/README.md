@@ -53,7 +53,7 @@ This module also provides the ability to automatically inject credentials from C
 applications consuming Azure services. It does this by reading the `VCAP_SERVICES` environment
 variable and setting the appropriate properties used by auto-configuration code.
 
-For details, please see sample code in the [azure-spring-boot-sample-cloud-foundry](../azure-spring-boot-samples/azure-spring-boot-sample-cloud-foundry) 
+For details, please see sample code in the [azure-spring-boot-sample-cloud-foundry](../azure-spring-boot-samples/azure-cloud-foundry-service-sample) 
 
 ## Examples
 The following section provides sample projects illustrating how to use the Azure Spring Boot starters.
