@@ -79,7 +79,7 @@ class UnnamedSessionReceiver implements AutoCloseable {
                     ServiceBusReceivedMessage.class);
 
                 //TODO (conniey): For session receivers, do they have a message lock token?
-                if (!CoreUtils.isNullOrEmpty(deserialized.getLockToken())) {
+                if (!CoreUtils.isNullOrEmpty(deserialized.getLockToken()) && deserialized.getLockedUntil() != null) {
                     lockContainer.addOrUpdate(deserialized.getLockToken(), deserialized.getLockedUntil(),
                         deserialized.getLockedUntil());
                 } else {
