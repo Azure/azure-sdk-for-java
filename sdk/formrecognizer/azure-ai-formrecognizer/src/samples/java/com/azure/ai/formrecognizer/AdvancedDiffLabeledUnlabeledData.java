@@ -4,7 +4,7 @@
 package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.FormContentType;
-import com.azure.ai.formrecognizer.models.RecognizeOptions;
+import com.azure.ai.formrecognizer.models.RecognizeCustomFormsOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Context;
@@ -50,8 +50,8 @@ public class AdvancedDiffLabeledUnlabeledData {
         List<RecognizedForm> formsWithLabeledModel =
             client.beginRecognizeCustomForms(
                 "{labeled_model_Id}", new FileInputStream(analyzeFile), analyzeFile.length(),
-                new RecognizeOptions()
-                    .setContentType(FormContentType.APPLICATION_PDF)
+                new RecognizeCustomFormsOptions()
+                    .setContentType(FormContentType.IMAGE_JPEG)
                     .setFieldElementsIncluded(true)
                     .setPollInterval(Duration.ofSeconds(5)), Context.NONE)
                 .getFinalResult();
@@ -59,8 +59,8 @@ public class AdvancedDiffLabeledUnlabeledData {
         List<RecognizedForm> formsWithUnlabeledModel =
             client.beginRecognizeCustomForms("{unlabeled_model_Id}", new FileInputStream(analyzeFile),
                 analyzeFile.length(),
-                new RecognizeOptions()
-                    .setContentType(FormContentType.APPLICATION_PDF)
+                new RecognizeCustomFormsOptions()
+                    .setContentType(FormContentType.IMAGE_JPEG)
                     .setFieldElementsIncluded(true)
                     .setPollInterval(Duration.ofSeconds(5)), Context.NONE)
                 .getFinalResult();

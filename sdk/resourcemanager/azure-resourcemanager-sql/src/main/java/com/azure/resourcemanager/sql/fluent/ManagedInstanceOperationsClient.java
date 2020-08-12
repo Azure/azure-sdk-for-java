@@ -208,6 +208,7 @@ public final class ManagedInstanceOperationsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2019-06-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .cancel(
                 this.client.getEndpoint(),
@@ -384,6 +385,7 @@ public final class ManagedInstanceOperationsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2019-06-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .listByManagedInstance(
                 this.client.getEndpoint(),
@@ -439,7 +441,7 @@ public final class ManagedInstanceOperationsClient {
         String resourceGroupName, String managedInstanceName, Context context) {
         return new PagedFlux<>(
             () -> listByManagedInstanceSinglePageAsync(resourceGroupName, managedInstanceName, context),
-            nextLink -> listByManagedInstanceNextSinglePageAsync(nextLink));
+            nextLink -> listByManagedInstanceNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -571,6 +573,7 @@ public final class ManagedInstanceOperationsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2019-06-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -716,6 +719,7 @@ public final class ManagedInstanceOperationsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByManagedInstanceNext(nextLink, context)
             .map(

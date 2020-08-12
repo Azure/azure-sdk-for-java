@@ -193,6 +193,7 @@ public final class BlobServicesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
@@ -380,6 +381,7 @@ public final class BlobServicesClient {
             parameters.validate();
         }
         final String blobServicesName = "default";
+        context = this.client.mergeContext(context);
         return service
             .setServiceProperties(
                 this.client.getEndpoint(),
@@ -580,6 +582,7 @@ public final class BlobServicesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String blobServicesName = "default";
+        context = this.client.mergeContext(context);
         return service
             .getServiceProperties(
                 this.client.getEndpoint(),

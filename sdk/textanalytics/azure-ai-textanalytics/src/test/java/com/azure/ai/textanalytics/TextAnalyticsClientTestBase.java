@@ -107,9 +107,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     @Test
     abstract void recognizeEntitiesForListLanguageHint(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
-    @Test
-    abstract void recognizeEntitiesTooManyDocuments(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
-
     // Linked Entities
     @Test
     abstract void recognizeLinkedEntitiesForTextInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
@@ -128,9 +125,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     @Test
     abstract void recognizeLinkedEntitiesForListLanguageHint(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
-
-    @Test
-    abstract void recognizeLinkedEntitiesTooManyDocuments(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     // Key Phrases
     @Test
@@ -211,7 +205,27 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         testRunner.accept(TestUtils.getDetectLanguageInputs());
     }
 
+    void detectSingleTextLanguageRunner(Consumer<String> testRunner) {
+        testRunner.accept(DETECT_LANGUAGE_INPUTS.get(0));
+    }
+
+    void detectLanguageInvalidCountryHintRunner(BiConsumer<String, String> testRunner) {
+        testRunner.accept(DETECT_LANGUAGE_INPUTS.get(1), "en");
+    }
+
+    void detectLanguageEmptyCountryHintRunner(BiConsumer<String, String> testRunner) {
+        testRunner.accept(DETECT_LANGUAGE_INPUTS.get(1), "");
+    }
+
+    void detectLanguageNoneCountryHintRunner(BiConsumer<String, String> testRunner) {
+        testRunner.accept(DETECT_LANGUAGE_INPUTS.get(1), "none");
+    }
+
     // Categorized Entity runner
+    void recognizeCategorizedEntitiesForSingleTextInputRunner(Consumer<String> testRunner) {
+        testRunner.accept(CATEGORIZED_ENTITY_INPUTS.get(0));
+    }
+
     void recognizeCategorizedEntityStringInputRunner(Consumer<List<String>> testRunner) {
         testRunner.accept(CATEGORIZED_ENTITY_INPUTS);
     }
@@ -255,6 +269,10 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     // Linked Entity runner
+    void recognizeLinkedEntitiesForSingleTextInputRunner(Consumer<String> testRunner) {
+        testRunner.accept(LINKED_ENTITY_INPUTS.get(0));
+    }
+
     void recognizeBatchStringLinkedEntitiesShowStatsRunner(
         BiConsumer<List<String>, TextAnalyticsRequestOptions> testRunner) {
         testRunner.accept(LINKED_ENTITY_INPUTS, new TextAnalyticsRequestOptions().setIncludeStatistics(true));
@@ -292,6 +310,10 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     // Key Phrases runner
+    void extractKeyPhrasesForSingleTextInputRunner(Consumer<String> testRunner) {
+        testRunner.accept(KEY_PHRASE_INPUTS.get(1));
+    };
+
     void extractBatchStringKeyPhrasesShowStatsRunner(BiConsumer<List<String>, TextAnalyticsRequestOptions> testRunner) {
         testRunner.accept(KEY_PHRASE_INPUTS, new TextAnalyticsRequestOptions().setIncludeStatistics(true));
     }
@@ -354,6 +376,15 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
         TextAnalyticsRequestOptions options = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
         testRunner.accept(textDocumentInputs, options);
+    }
+
+    // other Runners
+    void emptyTextRunner(Consumer<String> testRunner) {
+        testRunner.accept("");
+    }
+
+    void faultyTextRunner(Consumer<String> testRunner) {
+        testRunner.accept("!@#%%");
     }
 
     String getEndpoint() {
@@ -469,8 +500,9 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      * @param actualLanguage detectedLanguage returned by the API.
      */
     static void validatePrimaryLanguage(DetectedLanguage expectedLanguage, DetectedLanguage actualLanguage) {
-        assertEquals(expectedLanguage.getIso6391Name(), actualLanguage.getIso6391Name());
-        assertEquals(expectedLanguage.getName(), actualLanguage.getName());
+        // TODO: issue https://github.com/Azure/azure-sdk-for-java/issues/13841
+        assertNotNull(actualLanguage.getIso6391Name());
+        assertNotNull(actualLanguage.getName());
         assertNotNull(actualLanguage.getConfidenceScore());
     }
 
@@ -484,6 +516,8 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         CategorizedEntity expectedCategorizedEntity, CategorizedEntity actualCategorizedEntity) {
         assertEquals(expectedCategorizedEntity.getSubcategory(), actualCategorizedEntity.getSubcategory());
         assertEquals(expectedCategorizedEntity.getText(), actualCategorizedEntity.getText());
+        assertEquals(expectedCategorizedEntity.getOffset(), actualCategorizedEntity.getOffset());
+        assertEquals(expectedCategorizedEntity.getLength(), actualCategorizedEntity.getLength());
         assertEquals(expectedCategorizedEntity.getCategory(), actualCategorizedEntity.getCategory());
         assertNotNull(actualCategorizedEntity.getConfidenceScore());
     }
@@ -691,6 +725,8 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             LinkedEntityMatch expectedLinkedEntity = expectedLinkedEntityMatches.get(i);
             LinkedEntityMatch actualLinkedEntity = actualLinkedEntityMatches.get(i);
             assertEquals(expectedLinkedEntity.getText(), actualLinkedEntity.getText());
+            assertEquals(expectedLinkedEntity.getOffset(), actualLinkedEntity.getOffset());
+            assertEquals(expectedLinkedEntity.getLength(), actualLinkedEntity.getLength());
             assertNotNull(actualLinkedEntity.getConfidenceScore());
         }
     }

@@ -194,7 +194,7 @@ public final class UsagesClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<UsageInner> listAsync(String location, Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(location, context), nextLink -> listNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(location, context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**

@@ -30,9 +30,11 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.sql.SqlManagementClient;
 import com.azure.resourcemanager.sql.fluent.inner.ManagedBackupShortTermRetentionPolicyInner;
 import com.azure.resourcemanager.sql.fluent.inner.ManagedBackupShortTermRetentionPolicyListResultInner;
+import com.azure.resourcemanager.sql.models.ManagedShortTermRetentionPolicyName;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -86,7 +88,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("managedInstanceName") String managedInstanceName,
             @PathParam("restorableDroppedDatabaseId") String restorableDroppedDatabaseId,
-            @PathParam("policyName") String policyName,
+            @PathParam("policyName") ManagedShortTermRetentionPolicyName policyName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             Context context);
@@ -103,7 +105,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("managedInstanceName") String managedInstanceName,
             @PathParam("restorableDroppedDatabaseId") String restorableDroppedDatabaseId,
-            @PathParam("policyName") String policyName,
+            @PathParam("policyName") ManagedShortTermRetentionPolicyName policyName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ManagedBackupShortTermRetentionPolicyInner parameters,
@@ -121,7 +123,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("managedInstanceName") String managedInstanceName,
             @PathParam("restorableDroppedDatabaseId") String restorableDroppedDatabaseId,
-            @PathParam("policyName") String policyName,
+            @PathParam("policyName") ManagedShortTermRetentionPolicyName policyName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ManagedBackupShortTermRetentionPolicyInner parameters,
@@ -144,42 +146,6 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/restorableDroppedDatabases/{restorableDroppedDatabaseId}"
-                + "/backupShortTermRetentionPolicies/{policyName}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagedBackupShortTermRetentionPolicyInner>> beginCreateOrUpdateWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("managedInstanceName") String managedInstanceName,
-            @PathParam("restorableDroppedDatabaseId") String restorableDroppedDatabaseId,
-            @PathParam("policyName") String policyName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ManagedBackupShortTermRetentionPolicyInner parameters,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/restorableDroppedDatabases/{restorableDroppedDatabaseId}"
-                + "/backupShortTermRetentionPolicies/{policyName}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagedBackupShortTermRetentionPolicyInner>> beginUpdateWithoutPolling(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("managedInstanceName") String managedInstanceName,
-            @PathParam("restorableDroppedDatabaseId") String restorableDroppedDatabaseId,
-            @PathParam("policyName") String policyName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ManagedBackupShortTermRetentionPolicyInner parameters,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -194,6 +160,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
+     * @param policyName The policy name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -201,7 +168,10 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagedBackupShortTermRetentionPolicyInner>> getWithResponseAsync(
-        String resourceGroupName, String managedInstanceName, String restorableDroppedDatabaseId) {
+        String resourceGroupName,
+        String managedInstanceName,
+        String restorableDroppedDatabaseId,
+        ManagedShortTermRetentionPolicyName policyName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -222,13 +192,15 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
                     new IllegalArgumentException(
                         "Parameter restorableDroppedDatabaseId is required and cannot be null."));
         }
+        if (policyName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter policyName is required and cannot be null."));
+        }
         if (this.client.getSubscriptionId() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String policyName = "default";
         final String apiVersion = "2017-03-01-preview";
         return FluxUtil
             .withContext(
@@ -253,6 +225,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
+     * @param policyName The policy name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -261,7 +234,11 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagedBackupShortTermRetentionPolicyInner>> getWithResponseAsync(
-        String resourceGroupName, String managedInstanceName, String restorableDroppedDatabaseId, Context context) {
+        String resourceGroupName,
+        String managedInstanceName,
+        String restorableDroppedDatabaseId,
+        ManagedShortTermRetentionPolicyName policyName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -282,14 +259,17 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
                     new IllegalArgumentException(
                         "Parameter restorableDroppedDatabaseId is required and cannot be null."));
         }
+        if (policyName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter policyName is required and cannot be null."));
+        }
         if (this.client.getSubscriptionId() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String policyName = "default";
         final String apiVersion = "2017-03-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -309,6 +289,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
+     * @param policyName The policy name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -316,8 +297,11 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedBackupShortTermRetentionPolicyInner> getAsync(
-        String resourceGroupName, String managedInstanceName, String restorableDroppedDatabaseId) {
-        return getWithResponseAsync(resourceGroupName, managedInstanceName, restorableDroppedDatabaseId)
+        String resourceGroupName,
+        String managedInstanceName,
+        String restorableDroppedDatabaseId,
+        ManagedShortTermRetentionPolicyName policyName) {
+        return getWithResponseAsync(resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, policyName)
             .flatMap(
                 (Response<ManagedBackupShortTermRetentionPolicyInner> res) -> {
                     if (res.getValue() != null) {
@@ -335,6 +319,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
+     * @param policyName The policy name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -343,8 +328,13 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedBackupShortTermRetentionPolicyInner> getAsync(
-        String resourceGroupName, String managedInstanceName, String restorableDroppedDatabaseId, Context context) {
-        return getWithResponseAsync(resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, context)
+        String resourceGroupName,
+        String managedInstanceName,
+        String restorableDroppedDatabaseId,
+        ManagedShortTermRetentionPolicyName policyName,
+        Context context) {
+        return getWithResponseAsync(
+                resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, policyName, context)
             .flatMap(
                 (Response<ManagedBackupShortTermRetentionPolicyInner> res) -> {
                     if (res.getValue() != null) {
@@ -362,6 +352,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
+     * @param policyName The policy name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -369,8 +360,11 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedBackupShortTermRetentionPolicyInner get(
-        String resourceGroupName, String managedInstanceName, String restorableDroppedDatabaseId) {
-        return getAsync(resourceGroupName, managedInstanceName, restorableDroppedDatabaseId).block();
+        String resourceGroupName,
+        String managedInstanceName,
+        String restorableDroppedDatabaseId,
+        ManagedShortTermRetentionPolicyName policyName) {
+        return getAsync(resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, policyName).block();
     }
 
     /**
@@ -380,6 +374,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
+     * @param policyName The policy name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -388,8 +383,13 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedBackupShortTermRetentionPolicyInner get(
-        String resourceGroupName, String managedInstanceName, String restorableDroppedDatabaseId, Context context) {
-        return getAsync(resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, context).block();
+        String resourceGroupName,
+        String managedInstanceName,
+        String restorableDroppedDatabaseId,
+        ManagedShortTermRetentionPolicyName policyName,
+        Context context) {
+        return getAsync(resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, policyName, context)
+            .block();
     }
 
     /**
@@ -399,6 +399,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
+     * @param policyName The policy name. Should always be "default".
      * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
      *     supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -411,6 +412,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
         String resourceGroupName,
         String managedInstanceName,
         String restorableDroppedDatabaseId,
+        ManagedShortTermRetentionPolicyName policyName,
         Integer retentionDays) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -432,13 +434,15 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
                     new IllegalArgumentException(
                         "Parameter restorableDroppedDatabaseId is required and cannot be null."));
         }
+        if (policyName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter policyName is required and cannot be null."));
+        }
         if (this.client.getSubscriptionId() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String policyName = "default";
         final String apiVersion = "2017-03-01-preview";
         ManagedBackupShortTermRetentionPolicyInner parameters = new ManagedBackupShortTermRetentionPolicyInner();
         parameters.withRetentionDays(retentionDays);
@@ -466,6 +470,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
+     * @param policyName The policy name. Should always be "default".
      * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
      *     supported.
      * @param context The context to associate with this operation.
@@ -479,6 +484,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
         String resourceGroupName,
         String managedInstanceName,
         String restorableDroppedDatabaseId,
+        ManagedShortTermRetentionPolicyName policyName,
         Integer retentionDays,
         Context context) {
         if (this.client.getEndpoint() == null) {
@@ -501,16 +507,19 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
                     new IllegalArgumentException(
                         "Parameter restorableDroppedDatabaseId is required and cannot be null."));
         }
+        if (policyName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter policyName is required and cannot be null."));
+        }
         if (this.client.getSubscriptionId() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String policyName = "default";
         final String apiVersion = "2017-03-01-preview";
         ManagedBackupShortTermRetentionPolicyInner parameters = new ManagedBackupShortTermRetentionPolicyInner();
         parameters.withRetentionDays(retentionDays);
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -531,6 +540,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
+     * @param policyName The policy name. Should always be "default".
      * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
      *     supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -541,21 +551,23 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<
             PollResult<ManagedBackupShortTermRetentionPolicyInner>, ManagedBackupShortTermRetentionPolicyInner>
-        beginCreateOrUpdate(
+        beginCreateOrUpdateAsync(
             String resourceGroupName,
             String managedInstanceName,
             String restorableDroppedDatabaseId,
+            ManagedShortTermRetentionPolicyName policyName,
             Integer retentionDays) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(
-                resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, retentionDays);
+                resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, policyName, retentionDays);
         return this
             .client
-            .<ManagedBackupShortTermRetentionPolicyInner, ManagedBackupShortTermRetentionPolicyInner>getLroResultAsync(
+            .<ManagedBackupShortTermRetentionPolicyInner, ManagedBackupShortTermRetentionPolicyInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 ManagedBackupShortTermRetentionPolicyInner.class,
-                ManagedBackupShortTermRetentionPolicyInner.class);
+                ManagedBackupShortTermRetentionPolicyInner.class,
+                Context.NONE);
     }
 
     /**
@@ -565,6 +577,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
+     * @param policyName The policy name. Should always be "default".
      * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
      *     supported.
      * @param context The context to associate with this operation.
@@ -576,22 +589,59 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<
             PollResult<ManagedBackupShortTermRetentionPolicyInner>, ManagedBackupShortTermRetentionPolicyInner>
+        beginCreateOrUpdateAsync(
+            String resourceGroupName,
+            String managedInstanceName,
+            String restorableDroppedDatabaseId,
+            ManagedShortTermRetentionPolicyName policyName,
+            Integer retentionDays,
+            Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(
+                resourceGroupName,
+                managedInstanceName,
+                restorableDroppedDatabaseId,
+                policyName,
+                retentionDays,
+                context);
+        return this
+            .client
+            .<ManagedBackupShortTermRetentionPolicyInner, ManagedBackupShortTermRetentionPolicyInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ManagedBackupShortTermRetentionPolicyInner.class,
+                ManagedBackupShortTermRetentionPolicyInner.class,
+                context);
+    }
+
+    /**
+     * Sets a database's long term retention policy.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
+     * @param policyName The policy name. Should always be "default".
+     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
+     *     supported.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a short term retention policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<
+            PollResult<ManagedBackupShortTermRetentionPolicyInner>, ManagedBackupShortTermRetentionPolicyInner>
         beginCreateOrUpdate(
             String resourceGroupName,
             String managedInstanceName,
             String restorableDroppedDatabaseId,
-            Integer retentionDays,
-            Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, retentionDays, context);
-        return this
-            .client
-            .<ManagedBackupShortTermRetentionPolicyInner, ManagedBackupShortTermRetentionPolicyInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                ManagedBackupShortTermRetentionPolicyInner.class,
-                ManagedBackupShortTermRetentionPolicyInner.class);
+            ManagedShortTermRetentionPolicyName policyName,
+            Integer retentionDays) {
+        return beginCreateOrUpdateAsync(
+                resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, policyName, retentionDays)
+            .getSyncPoller();
     }
 
     /**
@@ -601,6 +651,38 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
+     * @param policyName The policy name. Should always be "default".
+     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
+     *     supported.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a short term retention policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<
+            PollResult<ManagedBackupShortTermRetentionPolicyInner>, ManagedBackupShortTermRetentionPolicyInner>
+        beginCreateOrUpdate(
+            String resourceGroupName,
+            String managedInstanceName,
+            String restorableDroppedDatabaseId,
+            ManagedShortTermRetentionPolicyName policyName,
+            Integer retentionDays,
+            Context context) {
+        return beginCreateOrUpdateAsync(
+                resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, policyName, retentionDays, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Sets a database's long term retention policy.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
+     * @param policyName The policy name. Should always be "default".
      * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
      *     supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -613,19 +695,12 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
         String resourceGroupName,
         String managedInstanceName,
         String restorableDroppedDatabaseId,
+        ManagedShortTermRetentionPolicyName policyName,
         Integer retentionDays) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, retentionDays);
-        return this
-            .client
-            .<ManagedBackupShortTermRetentionPolicyInner, ManagedBackupShortTermRetentionPolicyInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                ManagedBackupShortTermRetentionPolicyInner.class,
-                ManagedBackupShortTermRetentionPolicyInner.class)
+        return beginCreateOrUpdateAsync(
+                resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, policyName, retentionDays)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -635,6 +710,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
+     * @param policyName The policy name. Should always be "default".
      * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
      *     supported.
      * @param context The context to associate with this operation.
@@ -648,20 +724,13 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
         String resourceGroupName,
         String managedInstanceName,
         String restorableDroppedDatabaseId,
+        ManagedShortTermRetentionPolicyName policyName,
         Integer retentionDays,
         Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, retentionDays, context);
-        return this
-            .client
-            .<ManagedBackupShortTermRetentionPolicyInner, ManagedBackupShortTermRetentionPolicyInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                ManagedBackupShortTermRetentionPolicyInner.class,
-                ManagedBackupShortTermRetentionPolicyInner.class)
+        return beginCreateOrUpdateAsync(
+                resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, policyName, retentionDays, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -671,6 +740,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
+     * @param policyName The policy name. Should always be "default".
      * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
      *     supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -683,8 +753,10 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
         String resourceGroupName,
         String managedInstanceName,
         String restorableDroppedDatabaseId,
+        ManagedShortTermRetentionPolicyName policyName,
         Integer retentionDays) {
-        return createOrUpdateAsync(resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, retentionDays)
+        return createOrUpdateAsync(
+                resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, policyName, retentionDays)
             .block();
     }
 
@@ -695,6 +767,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
+     * @param policyName The policy name. Should always be "default".
      * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
      *     supported.
      * @param context The context to associate with this operation.
@@ -708,10 +781,11 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
         String resourceGroupName,
         String managedInstanceName,
         String restorableDroppedDatabaseId,
+        ManagedShortTermRetentionPolicyName policyName,
         Integer retentionDays,
         Context context) {
         return createOrUpdateAsync(
-                resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, retentionDays, context)
+                resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, policyName, retentionDays, context)
             .block();
     }
 
@@ -722,6 +796,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
+     * @param policyName The policy name. Should always be "default".
      * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
      *     supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -734,6 +809,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
         String resourceGroupName,
         String managedInstanceName,
         String restorableDroppedDatabaseId,
+        ManagedShortTermRetentionPolicyName policyName,
         Integer retentionDays) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -755,13 +831,15 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
                     new IllegalArgumentException(
                         "Parameter restorableDroppedDatabaseId is required and cannot be null."));
         }
+        if (policyName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter policyName is required and cannot be null."));
+        }
         if (this.client.getSubscriptionId() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String policyName = "default";
         final String apiVersion = "2017-03-01-preview";
         ManagedBackupShortTermRetentionPolicyInner parameters = new ManagedBackupShortTermRetentionPolicyInner();
         parameters.withRetentionDays(retentionDays);
@@ -789,6 +867,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
+     * @param policyName The policy name. Should always be "default".
      * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
      *     supported.
      * @param context The context to associate with this operation.
@@ -802,6 +881,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
         String resourceGroupName,
         String managedInstanceName,
         String restorableDroppedDatabaseId,
+        ManagedShortTermRetentionPolicyName policyName,
         Integer retentionDays,
         Context context) {
         if (this.client.getEndpoint() == null) {
@@ -824,16 +904,19 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
                     new IllegalArgumentException(
                         "Parameter restorableDroppedDatabaseId is required and cannot be null."));
         }
+        if (policyName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter policyName is required and cannot be null."));
+        }
         if (this.client.getSubscriptionId() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String policyName = "default";
         final String apiVersion = "2017-03-01-preview";
         ManagedBackupShortTermRetentionPolicyInner parameters = new ManagedBackupShortTermRetentionPolicyInner();
         parameters.withRetentionDays(retentionDays);
+        context = this.client.mergeContext(context);
         return service
             .update(
                 this.client.getEndpoint(),
@@ -854,6 +937,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
+     * @param policyName The policy name. Should always be "default".
      * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
      *     supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -864,20 +948,23 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<
             PollResult<ManagedBackupShortTermRetentionPolicyInner>, ManagedBackupShortTermRetentionPolicyInner>
-        beginUpdate(
+        beginUpdateAsync(
             String resourceGroupName,
             String managedInstanceName,
             String restorableDroppedDatabaseId,
+            ManagedShortTermRetentionPolicyName policyName,
             Integer retentionDays) {
         Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, retentionDays);
+            updateWithResponseAsync(
+                resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, policyName, retentionDays);
         return this
             .client
-            .<ManagedBackupShortTermRetentionPolicyInner, ManagedBackupShortTermRetentionPolicyInner>getLroResultAsync(
+            .<ManagedBackupShortTermRetentionPolicyInner, ManagedBackupShortTermRetentionPolicyInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 ManagedBackupShortTermRetentionPolicyInner.class,
-                ManagedBackupShortTermRetentionPolicyInner.class);
+                ManagedBackupShortTermRetentionPolicyInner.class,
+                Context.NONE);
     }
 
     /**
@@ -887,6 +974,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
+     * @param policyName The policy name. Should always be "default".
      * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
      *     supported.
      * @param context The context to associate with this operation.
@@ -898,22 +986,90 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<
             PollResult<ManagedBackupShortTermRetentionPolicyInner>, ManagedBackupShortTermRetentionPolicyInner>
+        beginUpdateAsync(
+            String resourceGroupName,
+            String managedInstanceName,
+            String restorableDroppedDatabaseId,
+            ManagedShortTermRetentionPolicyName policyName,
+            Integer retentionDays,
+            Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(
+                resourceGroupName,
+                managedInstanceName,
+                restorableDroppedDatabaseId,
+                policyName,
+                retentionDays,
+                context);
+        return this
+            .client
+            .<ManagedBackupShortTermRetentionPolicyInner, ManagedBackupShortTermRetentionPolicyInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ManagedBackupShortTermRetentionPolicyInner.class,
+                ManagedBackupShortTermRetentionPolicyInner.class,
+                context);
+    }
+
+    /**
+     * Sets a database's long term retention policy.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
+     * @param policyName The policy name. Should always be "default".
+     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
+     *     supported.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a short term retention policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<
+            PollResult<ManagedBackupShortTermRetentionPolicyInner>, ManagedBackupShortTermRetentionPolicyInner>
         beginUpdate(
             String resourceGroupName,
             String managedInstanceName,
             String restorableDroppedDatabaseId,
+            ManagedShortTermRetentionPolicyName policyName,
+            Integer retentionDays) {
+        return beginUpdateAsync(
+                resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, policyName, retentionDays)
+            .getSyncPoller();
+    }
+
+    /**
+     * Sets a database's long term retention policy.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
+     * @param policyName The policy name. Should always be "default".
+     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
+     *     supported.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a short term retention policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<
+            PollResult<ManagedBackupShortTermRetentionPolicyInner>, ManagedBackupShortTermRetentionPolicyInner>
+        beginUpdate(
+            String resourceGroupName,
+            String managedInstanceName,
+            String restorableDroppedDatabaseId,
+            ManagedShortTermRetentionPolicyName policyName,
             Integer retentionDays,
             Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(
-                resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, retentionDays, context);
-        return this
-            .client
-            .<ManagedBackupShortTermRetentionPolicyInner, ManagedBackupShortTermRetentionPolicyInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                ManagedBackupShortTermRetentionPolicyInner.class,
-                ManagedBackupShortTermRetentionPolicyInner.class);
+        return beginUpdateAsync(
+                resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, policyName, retentionDays, context)
+            .getSyncPoller();
     }
 
     /**
@@ -923,6 +1079,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
+     * @param policyName The policy name. Should always be "default".
      * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
      *     supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -935,18 +1092,12 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
         String resourceGroupName,
         String managedInstanceName,
         String restorableDroppedDatabaseId,
+        ManagedShortTermRetentionPolicyName policyName,
         Integer retentionDays) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, retentionDays);
-        return this
-            .client
-            .<ManagedBackupShortTermRetentionPolicyInner, ManagedBackupShortTermRetentionPolicyInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                ManagedBackupShortTermRetentionPolicyInner.class,
-                ManagedBackupShortTermRetentionPolicyInner.class)
+        return beginUpdateAsync(
+                resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, policyName, retentionDays)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -956,6 +1107,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
+     * @param policyName The policy name. Should always be "default".
      * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
      *     supported.
      * @param context The context to associate with this operation.
@@ -969,20 +1121,13 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
         String resourceGroupName,
         String managedInstanceName,
         String restorableDroppedDatabaseId,
+        ManagedShortTermRetentionPolicyName policyName,
         Integer retentionDays,
         Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(
-                resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, retentionDays, context);
-        return this
-            .client
-            .<ManagedBackupShortTermRetentionPolicyInner, ManagedBackupShortTermRetentionPolicyInner>getLroResultAsync(
-                mono,
-                this.client.getHttpPipeline(),
-                ManagedBackupShortTermRetentionPolicyInner.class,
-                ManagedBackupShortTermRetentionPolicyInner.class)
+        return beginUpdateAsync(
+                resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, policyName, retentionDays, context)
             .last()
-            .flatMap(client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -992,6 +1137,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
+     * @param policyName The policy name. Should always be "default".
      * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
      *     supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1004,8 +1150,11 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
         String resourceGroupName,
         String managedInstanceName,
         String restorableDroppedDatabaseId,
+        ManagedShortTermRetentionPolicyName policyName,
         Integer retentionDays) {
-        return updateAsync(resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, retentionDays).block();
+        return updateAsync(
+                resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, policyName, retentionDays)
+            .block();
     }
 
     /**
@@ -1015,6 +1164,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
+     * @param policyName The policy name. Should always be "default".
      * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
      *     supported.
      * @param context The context to associate with this operation.
@@ -1028,9 +1178,11 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
         String resourceGroupName,
         String managedInstanceName,
         String restorableDroppedDatabaseId,
+        ManagedShortTermRetentionPolicyName policyName,
         Integer retentionDays,
         Context context) {
-        return updateAsync(resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, retentionDays, context)
+        return updateAsync(
+                resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, policyName, retentionDays, context)
             .block();
     }
 
@@ -1145,6 +1297,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .listByRestorableDroppedDatabase(
                 this.client.getEndpoint(),
@@ -1207,7 +1360,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
             () ->
                 listByRestorableDroppedDatabaseSinglePageAsync(
                     resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, context),
-            nextLink -> listByRestorableDroppedDatabaseNextSinglePageAsync(nextLink));
+            nextLink -> listByRestorableDroppedDatabaseNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1248,508 +1401,6 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
         return new PagedIterable<>(
             listByRestorableDroppedDatabaseAsync(
                 resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, context));
-    }
-
-    /**
-     * Sets a database's long term retention policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
-     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
-     *     supported.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a short term retention policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ManagedBackupShortTermRetentionPolicyInner>>
-        beginCreateOrUpdateWithoutPollingWithResponseAsync(
-            String resourceGroupName,
-            String managedInstanceName,
-            String restorableDroppedDatabaseId,
-            Integer retentionDays) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (managedInstanceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
-        }
-        if (restorableDroppedDatabaseId == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter restorableDroppedDatabaseId is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String policyName = "default";
-        final String apiVersion = "2017-03-01-preview";
-        ManagedBackupShortTermRetentionPolicyInner parameters = new ManagedBackupShortTermRetentionPolicyInner();
-        parameters.withRetentionDays(retentionDays);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginCreateOrUpdateWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            managedInstanceName,
-                            restorableDroppedDatabaseId,
-                            policyName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Sets a database's long term retention policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
-     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
-     *     supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a short term retention policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ManagedBackupShortTermRetentionPolicyInner>>
-        beginCreateOrUpdateWithoutPollingWithResponseAsync(
-            String resourceGroupName,
-            String managedInstanceName,
-            String restorableDroppedDatabaseId,
-            Integer retentionDays,
-            Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (managedInstanceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
-        }
-        if (restorableDroppedDatabaseId == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter restorableDroppedDatabaseId is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String policyName = "default";
-        final String apiVersion = "2017-03-01-preview";
-        ManagedBackupShortTermRetentionPolicyInner parameters = new ManagedBackupShortTermRetentionPolicyInner();
-        parameters.withRetentionDays(retentionDays);
-        return service
-            .beginCreateOrUpdateWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                managedInstanceName,
-                restorableDroppedDatabaseId,
-                policyName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                parameters,
-                context);
-    }
-
-    /**
-     * Sets a database's long term retention policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
-     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
-     *     supported.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a short term retention policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedBackupShortTermRetentionPolicyInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String restorableDroppedDatabaseId,
-        Integer retentionDays) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(
-                resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, retentionDays)
-            .flatMap(
-                (Response<ManagedBackupShortTermRetentionPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Sets a database's long term retention policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
-     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
-     *     supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a short term retention policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedBackupShortTermRetentionPolicyInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String restorableDroppedDatabaseId,
-        Integer retentionDays,
-        Context context) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(
-                resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, retentionDays, context)
-            .flatMap(
-                (Response<ManagedBackupShortTermRetentionPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Sets a database's long term retention policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
-     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
-     *     supported.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a short term retention policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedBackupShortTermRetentionPolicyInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName,
-        String managedInstanceName,
-        String restorableDroppedDatabaseId,
-        Integer retentionDays) {
-        return beginCreateOrUpdateWithoutPollingAsync(
-                resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, retentionDays)
-            .block();
-    }
-
-    /**
-     * Sets a database's long term retention policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
-     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
-     *     supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a short term retention policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedBackupShortTermRetentionPolicyInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName,
-        String managedInstanceName,
-        String restorableDroppedDatabaseId,
-        Integer retentionDays,
-        Context context) {
-        return beginCreateOrUpdateWithoutPollingAsync(
-                resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, retentionDays, context)
-            .block();
-    }
-
-    /**
-     * Sets a database's long term retention policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
-     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
-     *     supported.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a short term retention policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ManagedBackupShortTermRetentionPolicyInner>> beginUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String restorableDroppedDatabaseId,
-        Integer retentionDays) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (managedInstanceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
-        }
-        if (restorableDroppedDatabaseId == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter restorableDroppedDatabaseId is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String policyName = "default";
-        final String apiVersion = "2017-03-01-preview";
-        ManagedBackupShortTermRetentionPolicyInner parameters = new ManagedBackupShortTermRetentionPolicyInner();
-        parameters.withRetentionDays(retentionDays);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .beginUpdateWithoutPolling(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            managedInstanceName,
-                            restorableDroppedDatabaseId,
-                            policyName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Sets a database's long term retention policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
-     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
-     *     supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a short term retention policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ManagedBackupShortTermRetentionPolicyInner>> beginUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String restorableDroppedDatabaseId,
-        Integer retentionDays,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (managedInstanceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
-        }
-        if (restorableDroppedDatabaseId == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter restorableDroppedDatabaseId is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String policyName = "default";
-        final String apiVersion = "2017-03-01-preview";
-        ManagedBackupShortTermRetentionPolicyInner parameters = new ManagedBackupShortTermRetentionPolicyInner();
-        parameters.withRetentionDays(retentionDays);
-        return service
-            .beginUpdateWithoutPolling(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                managedInstanceName,
-                restorableDroppedDatabaseId,
-                policyName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                parameters,
-                context);
-    }
-
-    /**
-     * Sets a database's long term retention policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
-     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
-     *     supported.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a short term retention policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedBackupShortTermRetentionPolicyInner> beginUpdateWithoutPollingAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String restorableDroppedDatabaseId,
-        Integer retentionDays) {
-        return beginUpdateWithoutPollingWithResponseAsync(
-                resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, retentionDays)
-            .flatMap(
-                (Response<ManagedBackupShortTermRetentionPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Sets a database's long term retention policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
-     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
-     *     supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a short term retention policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedBackupShortTermRetentionPolicyInner> beginUpdateWithoutPollingAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String restorableDroppedDatabaseId,
-        Integer retentionDays,
-        Context context) {
-        return beginUpdateWithoutPollingWithResponseAsync(
-                resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, retentionDays, context)
-            .flatMap(
-                (Response<ManagedBackupShortTermRetentionPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Sets a database's long term retention policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
-     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
-     *     supported.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a short term retention policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedBackupShortTermRetentionPolicyInner beginUpdateWithoutPolling(
-        String resourceGroupName,
-        String managedInstanceName,
-        String restorableDroppedDatabaseId,
-        Integer retentionDays) {
-        return beginUpdateWithoutPollingAsync(
-                resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, retentionDays)
-            .block();
-    }
-
-    /**
-     * Sets a database's long term retention policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
-     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
-     *     supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a short term retention policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedBackupShortTermRetentionPolicyInner beginUpdateWithoutPolling(
-        String resourceGroupName,
-        String managedInstanceName,
-        String restorableDroppedDatabaseId,
-        Integer retentionDays,
-        Context context) {
-        return beginUpdateWithoutPollingAsync(
-                resourceGroupName, managedInstanceName, restorableDroppedDatabaseId, retentionDays, context)
-            .block();
     }
 
     /**
@@ -1797,6 +1448,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByRestorableDroppedDatabaseNext(nextLink, context)
             .map(

@@ -18,6 +18,7 @@ import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
 import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
+import com.azure.spring.data.cosmos.domain.GenIdEntity;
 import com.azure.spring.data.cosmos.domain.Person;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
@@ -112,6 +113,7 @@ public class CosmosTemplateIT {
 
             cosmosTemplate = new CosmosTemplate(cosmosFactory, cosmosConfig, cosmosConverter);
             cosmosTemplate.createContainerIfNotExists(personInfo);
+            cosmosTemplate.createContainerIfNotExists(CosmosEntityInformation.getInstance(GenIdEntity.class));
             initialized = true;
         }
 
@@ -133,6 +135,20 @@ public class CosmosTemplateIT {
     public void testInsertDuplicateId() {
         cosmosTemplate.insert(Person.class.getSimpleName(), TEST_PERSON,
             new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON)));
+    }
+
+    @Test(expected = CosmosAccessException.class)
+    public void testInsertShouldFailIfColumnNotAnnotatedWithAutoGenerate() {
+        final Person person = new Person(null, FIRST_NAME, LAST_NAME, HOBBIES, ADDRESSES);
+        cosmosTemplate.insert(Person.class.getSimpleName(), person, new PartitionKey(person.getLastName()));
+    }
+
+    @Test
+    public void testInsertShouldGenerateIdIfColumnAnnotatedWithAutoGenerate() {
+        final GenIdEntity entity = new GenIdEntity(null, "foo");
+        final GenIdEntity insertedEntity = cosmosTemplate.insert(GenIdEntity.class.getSimpleName(),
+            entity, null);
+        assertThat(insertedEntity.getId()).isNotNull();
     }
 
     @Test

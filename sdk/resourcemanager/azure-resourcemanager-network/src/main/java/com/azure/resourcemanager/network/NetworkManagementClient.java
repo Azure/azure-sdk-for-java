@@ -1747,12 +1747,12 @@ public final class NetworkManagementClient extends AzureServiceClient {
                         .zip(
                             mono,
                             this
-                                .<BastionShareableLinkListResultInner, BastionShareableLinkListResultInner>
-                                    getLroResultAsync(
-                                        mono,
-                                        this.getHttpPipeline(),
-                                        BastionShareableLinkListResultInner.class,
-                                        BastionShareableLinkListResultInner.class)
+                                .<BastionShareableLinkListResultInner, BastionShareableLinkListResultInner>getLroResult(
+                                    mono,
+                                    this.getHttpPipeline(),
+                                    BastionShareableLinkListResultInner.class,
+                                    BastionShareableLinkListResultInner.class,
+                                    Context.NONE)
                                 .last()
                                 .flatMap(this::getLroFinalResultOrError));
                 })
@@ -1822,11 +1822,12 @@ public final class NetworkManagementClient extends AzureServiceClient {
             .zip(
                 mono,
                 this
-                    .<BastionShareableLinkListResultInner, BastionShareableLinkListResultInner>getLroResultAsync(
+                    .<BastionShareableLinkListResultInner, BastionShareableLinkListResultInner>getLroResult(
                         mono,
                         this.getHttpPipeline(),
                         BastionShareableLinkListResultInner.class,
-                        BastionShareableLinkListResultInner.class)
+                        BastionShareableLinkListResultInner.class,
+                        context)
                     .last()
                     .flatMap(this::getLroFinalResultOrError))
             .map(
@@ -1876,7 +1877,7 @@ public final class NetworkManagementClient extends AzureServiceClient {
         String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms, Context context) {
         return new PagedFlux<>(
             () -> putBastionShareableLinkSinglePageAsync(resourceGroupName, bastionHostname, vms, context),
-            nextLink -> putBastionShareableLinkNextSinglePageAsync(nextLink));
+            nextLink -> putBastionShareableLinkNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2032,7 +2033,7 @@ public final class NetworkManagementClient extends AzureServiceClient {
         String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteBastionShareableLinkWithResponseAsync(resourceGroupName, bastionHostname, vms);
-        return this.<Void, Void>getLroResultAsync(mono, this.getHttpPipeline(), Void.class, Void.class);
+        return this.<Void, Void>getLroResult(mono, this.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -2050,9 +2051,10 @@ public final class NetworkManagementClient extends AzureServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteBastionShareableLinkAsync(
         String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms, Context context) {
+        context = this.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteBastionShareableLinkWithResponseAsync(resourceGroupName, bastionHostname, vms, context);
-        return this.<Void, Void>getLroResultAsync(mono, this.getHttpPipeline(), Void.class, Void.class);
+        return this.<Void, Void>getLroResult(mono, this.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -2318,7 +2320,7 @@ public final class NetworkManagementClient extends AzureServiceClient {
         String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms, Context context) {
         return new PagedFlux<>(
             () -> getBastionShareableLinkSinglePageAsync(resourceGroupName, bastionHostname, vms, context),
-            nextLink -> getBastionShareableLinkNextSinglePageAsync(nextLink));
+            nextLink -> getBastionShareableLinkNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2404,12 +2406,12 @@ public final class NetworkManagementClient extends AzureServiceClient {
                         .zip(
                             mono,
                             this
-                                .<BastionActiveSessionListResultInner, BastionActiveSessionListResultInner>
-                                    getLroResultAsync(
-                                        mono,
-                                        this.getHttpPipeline(),
-                                        BastionActiveSessionListResultInner.class,
-                                        BastionActiveSessionListResultInner.class)
+                                .<BastionActiveSessionListResultInner, BastionActiveSessionListResultInner>getLroResult(
+                                    mono,
+                                    this.getHttpPipeline(),
+                                    BastionActiveSessionListResultInner.class,
+                                    BastionActiveSessionListResultInner.class,
+                                    Context.NONE)
                                 .last()
                                 .flatMap(this::getLroFinalResultOrError));
                 })
@@ -2472,11 +2474,12 @@ public final class NetworkManagementClient extends AzureServiceClient {
             .zip(
                 mono,
                 this
-                    .<BastionActiveSessionListResultInner, BastionActiveSessionListResultInner>getLroResultAsync(
+                    .<BastionActiveSessionListResultInner, BastionActiveSessionListResultInner>getLroResult(
                         mono,
                         this.getHttpPipeline(),
                         BastionActiveSessionListResultInner.class,
-                        BastionActiveSessionListResultInner.class)
+                        BastionActiveSessionListResultInner.class,
+                        context)
                     .last()
                     .flatMap(this::getLroFinalResultOrError))
             .map(
@@ -2524,7 +2527,7 @@ public final class NetworkManagementClient extends AzureServiceClient {
         String resourceGroupName, String bastionHostname, Context context) {
         return new PagedFlux<>(
             () -> getActiveSessionsSinglePageAsync(resourceGroupName, bastionHostname, context),
-            nextLink -> getActiveSessionsNextSinglePageAsync(nextLink));
+            nextLink -> getActiveSessionsNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2712,7 +2715,7 @@ public final class NetworkManagementClient extends AzureServiceClient {
             () ->
                 disconnectActiveSessionsSinglePageAsync(
                     resourceGroupName, bastionHostname, sessionIdsSessionIds, context),
-            nextLink -> disconnectActiveSessionsNextSinglePageAsync(nextLink));
+            nextLink -> disconnectActiveSessionsNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -3209,8 +3212,12 @@ public final class NetworkManagementClient extends AzureServiceClient {
             generatevirtualwanvpnserverconfigurationvpnprofileWithResponseAsync(
                 resourceGroupName, virtualWanName, vpnClientParams);
         return this
-            .<VpnProfileResponseInner, VpnProfileResponseInner>getLroResultAsync(
-                mono, this.getHttpPipeline(), VpnProfileResponseInner.class, VpnProfileResponseInner.class);
+            .<VpnProfileResponseInner, VpnProfileResponseInner>getLroResult(
+                mono,
+                this.getHttpPipeline(),
+                VpnProfileResponseInner.class,
+                VpnProfileResponseInner.class,
+                Context.NONE);
     }
 
     /**
@@ -3233,12 +3240,13 @@ public final class NetworkManagementClient extends AzureServiceClient {
             String virtualWanName,
             VirtualWanVpnProfileParameters vpnClientParams,
             Context context) {
+        context = this.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             generatevirtualwanvpnserverconfigurationvpnprofileWithResponseAsync(
                 resourceGroupName, virtualWanName, vpnClientParams, context);
         return this
-            .<VpnProfileResponseInner, VpnProfileResponseInner>getLroResultAsync(
-                mono, this.getHttpPipeline(), VpnProfileResponseInner.class, VpnProfileResponseInner.class);
+            .<VpnProfileResponseInner, VpnProfileResponseInner>getLroResult(
+                mono, this.getHttpPipeline(), VpnProfileResponseInner.class, VpnProfileResponseInner.class, context);
     }
 
     /**

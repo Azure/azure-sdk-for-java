@@ -187,7 +187,8 @@ public final class VirtualApplianceSkusClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NetworkVirtualApplianceSkuInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**

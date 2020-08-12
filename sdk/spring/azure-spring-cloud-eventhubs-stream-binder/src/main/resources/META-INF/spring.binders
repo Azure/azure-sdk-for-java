@@ -1,0 +1,1 @@
+eventhub: com.microsoft.azure.eventhub.stream.binder.config.EventHubBinderConfiguration

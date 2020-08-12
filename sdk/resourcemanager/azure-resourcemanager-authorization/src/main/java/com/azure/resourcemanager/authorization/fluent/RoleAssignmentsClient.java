@@ -357,6 +357,7 @@ public final class RoleAssignmentsClient
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-01-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .listForResource(
                 this.client.getEndpoint(),
@@ -452,7 +453,7 @@ public final class RoleAssignmentsClient
                     resourceName,
                     filter,
                     context),
-            nextLink -> listForResourceNextSinglePageAsync(nextLink));
+            nextLink -> listForResourceNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -486,7 +487,7 @@ public final class RoleAssignmentsClient
                     resourceType,
                     resourceName,
                     filter),
-            nextLink -> listForResourceNextSinglePageAsync(nextLink));
+            nextLink -> listForResourceNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -670,6 +671,7 @@ public final class RoleAssignmentsClient
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-01-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(
                 this.client.getEndpoint(),
@@ -726,7 +728,7 @@ public final class RoleAssignmentsClient
         String resourceGroupName, String filter, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, context),
-            nextLink -> listForResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listForResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -744,7 +746,7 @@ public final class RoleAssignmentsClient
         final Context context = null;
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter),
-            nextLink -> listForResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listForResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -859,6 +861,7 @@ public final class RoleAssignmentsClient
                 .error(new IllegalArgumentException("Parameter roleAssignmentName is required and cannot be null."));
         }
         final String apiVersion = "2018-01-01-preview";
+        context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), scope, roleAssignmentName, apiVersion, context);
     }
 
@@ -1023,6 +1026,7 @@ public final class RoleAssignmentsClient
             parameters.validate();
         }
         final String apiVersion = "2018-01-01-preview";
+        context = this.client.mergeContext(context);
         return service.create(this.client.getEndpoint(), scope, roleAssignmentName, apiVersion, parameters, context);
     }
 
@@ -1188,6 +1192,7 @@ public final class RoleAssignmentsClient
                 .error(new IllegalArgumentException("Parameter roleAssignmentName is required and cannot be null."));
         }
         final String apiVersion = "2018-01-01-preview";
+        context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), scope, roleAssignmentName, apiVersion, context);
     }
 
@@ -1317,6 +1322,7 @@ public final class RoleAssignmentsClient
             return Mono.error(new IllegalArgumentException("Parameter roleId is required and cannot be null."));
         }
         final String apiVersion = "2018-01-01-preview";
+        context = this.client.mergeContext(context);
         return service.deleteById(this.client.getEndpoint(), roleId, apiVersion, context);
     }
 
@@ -1457,6 +1463,7 @@ public final class RoleAssignmentsClient
             parameters.validate();
         }
         final String apiVersion = "2018-01-01-preview";
+        context = this.client.mergeContext(context);
         return service.createById(this.client.getEndpoint(), roleId, apiVersion, parameters, context);
     }
 
@@ -1587,6 +1594,7 @@ public final class RoleAssignmentsClient
             return Mono.error(new IllegalArgumentException("Parameter roleId is required and cannot be null."));
         }
         final String apiVersion = "2018-01-01-preview";
+        context = this.client.mergeContext(context);
         return service.getById(this.client.getEndpoint(), roleId, apiVersion, context);
     }
 
@@ -1734,6 +1742,7 @@ public final class RoleAssignmentsClient
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-01-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), filter, apiVersion, this.client.getSubscriptionId(), context)
             .map(
@@ -1778,7 +1787,7 @@ public final class RoleAssignmentsClient
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RoleAssignmentInner> listAsync(String filter, Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, context), nextLink -> listNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(filter, context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1792,7 +1801,8 @@ public final class RoleAssignmentsClient
     public PagedFlux<RoleAssignmentInner> listAsync() {
         final String filter = null;
         final Context context = null;
-        return new PagedFlux<>(() -> listSinglePageAsync(filter), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(filter), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1906,6 +1916,7 @@ public final class RoleAssignmentsClient
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
         final String apiVersion = "2018-01-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .listForScope(this.client.getEndpoint(), scope, filter, apiVersion, context)
             .map(
@@ -1954,7 +1965,7 @@ public final class RoleAssignmentsClient
     public PagedFlux<RoleAssignmentInner> listForScopeAsync(String scope, String filter, Context context) {
         return new PagedFlux<>(
             () -> listForScopeSinglePageAsync(scope, filter, context),
-            nextLink -> listForScopeNextSinglePageAsync(nextLink));
+            nextLink -> listForScopeNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1971,7 +1982,8 @@ public final class RoleAssignmentsClient
         final String filter = null;
         final Context context = null;
         return new PagedFlux<>(
-            () -> listForScopeSinglePageAsync(scope, filter), nextLink -> listForScopeNextSinglePageAsync(nextLink));
+            () -> listForScopeSinglePageAsync(scope, filter),
+            nextLink -> listForScopeNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2069,6 +2081,7 @@ public final class RoleAssignmentsClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listForResourceNext(nextLink, context)
             .map(
@@ -2126,6 +2139,7 @@ public final class RoleAssignmentsClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listForResourceGroupNext(nextLink, context)
             .map(
@@ -2182,6 +2196,7 @@ public final class RoleAssignmentsClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listNext(nextLink, context)
             .map(
@@ -2238,6 +2253,7 @@ public final class RoleAssignmentsClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listForScopeNext(nextLink, context)
             .map(

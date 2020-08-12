@@ -1,5 +1,8 @@
 # Release History
 
+## 1.6.0-beta.1 (Unreleased)
+
+
 ## 1.5.4 (2020-08-07)
 
 - Updated `reactor-core` version to `3.3.8.RELEASE`.
