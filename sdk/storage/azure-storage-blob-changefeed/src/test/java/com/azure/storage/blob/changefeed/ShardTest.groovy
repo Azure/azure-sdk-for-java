@@ -8,6 +8,7 @@ import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor
 import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper
 import com.azure.storage.blob.changefeed.implementation.models.ShardCursor
 import com.azure.storage.blob.models.BlobItem
+import com.azure.storage.blob.models.BlobItemProperties
 import com.azure.storage.blob.models.ListBlobsOptions
 import org.mockito.ArgumentCaptor
 import reactor.core.publisher.Flux
@@ -58,7 +59,7 @@ class ShardTest extends Specification {
             Mono<PagedResponse<BlobItem>> get() {
                 return Mono.just(new PagedResponseBase<>(
                     null, 200, null,
-                   [new BlobItem().setName(chunkPath0), new BlobItem().setName(chunkPath1), new BlobItem().setName(chunkPath2)],
+                   [new BlobItem().setName(chunkPath0).setProperties(new BlobItemProperties().setContentLength(Long.MAX_VALUE)), new BlobItem().setName(chunkPath1).setProperties(new BlobItemProperties().setContentLength(Long.MAX_VALUE)), new BlobItem().setName(chunkPath2).setProperties(new BlobItemProperties().setContentLength(Long.MAX_VALUE))],
                     null, null))
             }
         }
@@ -71,11 +72,11 @@ class ShardTest extends Specification {
         when(mockContainer.listBlobs(any(ListBlobsOptions.class)))
             .thenReturn(mockPagedFlux)
 
-        when(mockChunkFactory.getChunk(eq(chunkPath0), any(ChangefeedCursor.class), anyLong(), anyLong()))
+        when(mockChunkFactory.getChunk(eq(chunkPath0), anyLong(), any(ChangefeedCursor.class), anyLong(), anyLong()))
             .thenReturn(mockChunk0)
-        when(mockChunkFactory.getChunk(eq(chunkPath1), any(ChangefeedCursor.class), anyLong(), anyLong()))
+        when(mockChunkFactory.getChunk(eq(chunkPath1), anyLong(), any(ChangefeedCursor.class), anyLong(), anyLong()))
             .thenReturn(mockChunk1)
-        when(mockChunkFactory.getChunk(eq(chunkPath2), any(ChangefeedCursor.class), anyLong(), anyLong()))
+        when(mockChunkFactory.getChunk(eq(chunkPath2), anyLong(), any(ChangefeedCursor.class), anyLong(), anyLong()))
             .thenReturn(mockChunk2)
 
         when(mockChunk0.getEvents())
@@ -109,9 +110,9 @@ class ShardTest extends Specification {
         ArgumentCaptor<ListBlobsOptions> options = ArgumentCaptor.forClass(ListBlobsOptions.class);
         verify(mockContainer).listBlobs(options.capture()) || true
         options.getValue().getPrefix() == currentShardPath0
-        verify(mockChunkFactory).getChunk(chunkPath0, segmentCursor, 0, 0) || true
-        verify(mockChunkFactory).getChunk(chunkPath1, segmentCursor, 0, 0) || true
-        verify(mockChunkFactory).getChunk(chunkPath2, segmentCursor, 0, 0) || true
+        verify(mockChunkFactory).getChunk(chunkPath0, Long.MAX_VALUE, segmentCursor, 0, 0) || true
+        verify(mockChunkFactory).getChunk(chunkPath1, Long.MAX_VALUE, segmentCursor, 0, 0) || true
+        verify(mockChunkFactory).getChunk(chunkPath2, Long.MAX_VALUE, segmentCursor, 0, 0) || true
         verify(mockChunk0).getEvents() || true
         verify(mockChunk1).getEvents() || true
         verify(mockChunk2).getEvents() || true
@@ -121,7 +122,7 @@ class ShardTest extends Specification {
     @Unroll
     def "getEvents cursor"() {
         setup:
-        ShardCursor userCursor = new ShardCursor(chunkPath as String, blockOffset, objectBlockIndex)
+        ShardCursor userCursor = new ShardCursor(chunkPath as String, blockOffset, eventIndex)
         when:
         ShardFactory shardFactory = new ShardFactory(mockChunkFactory, mockContainer)
         Shard shard = shardFactory.getShard(currentShardPath0, segmentCursor, userCursor)
@@ -151,27 +152,27 @@ class ShardTest extends Specification {
         options.getValue().getPrefix() == currentShardPath0
 
         if (chunkPath == chunkPath0) {
-            verify(mockChunkFactory).getChunk(chunkPath0, segmentCursor, blockOffset, objectBlockIndex) || true
-            verify(mockChunkFactory).getChunk(chunkPath1, segmentCursor, 0, 0) || true
-            verify(mockChunkFactory).getChunk(chunkPath2, segmentCursor, 0, 0) || true
+            verify(mockChunkFactory).getChunk(chunkPath0, Long.MAX_VALUE, segmentCursor, blockOffset, eventIndex) || true
+            verify(mockChunkFactory).getChunk(chunkPath1, Long.MAX_VALUE, segmentCursor, 0, 0) || true
+            verify(mockChunkFactory).getChunk(chunkPath2, Long.MAX_VALUE, segmentCursor, 0, 0) || true
             verify(mockChunk0).getEvents() || true
             verify(mockChunk1).getEvents() || true
             verify(mockChunk2).getEvents() || true
         } else if (chunkPath == chunkPath1) {
-            verify(mockChunkFactory).getChunk(chunkPath1, segmentCursor, blockOffset, objectBlockIndex) || true
-            verify(mockChunkFactory).getChunk(chunkPath2, segmentCursor, 0, 0) || true
+            verify(mockChunkFactory).getChunk(chunkPath1, Long.MAX_VALUE, segmentCursor, blockOffset, eventIndex) || true
+            verify(mockChunkFactory).getChunk(chunkPath2, Long.MAX_VALUE, segmentCursor, 0, 0) || true
             verify(mockChunk1).getEvents() || true
             verify(mockChunk2).getEvents() || true
         } else if (chunkPath == chunkPath2) {
-            verify(mockChunkFactory).getChunk(chunkPath2, segmentCursor, blockOffset, objectBlockIndex) || true
+            verify(mockChunkFactory).getChunk(chunkPath2, Long.MAX_VALUE, segmentCursor, blockOffset, eventIndex) || true
             verify(mockChunk2).getEvents() || true
         }
 
         where:
-        chunkPath   | blockOffset | objectBlockIndex || _
-        chunkPath0  | 1234        | 10               || _
-        chunkPath1  | 5678        | 5                || _
-        chunkPath2  | 435         | 9                || _
+        chunkPath   | blockOffset | eventIndex || _
+        chunkPath0  | 1234        | 10         || _
+        chunkPath1  | 5678        | 5          || _
+        chunkPath2  | 435         | 9          || _
     }
 
     boolean verifyWrapper(BlobChangefeedEventWrapper wrapper, long index, String chunkPath, long blockOffset, long blockIndex) {

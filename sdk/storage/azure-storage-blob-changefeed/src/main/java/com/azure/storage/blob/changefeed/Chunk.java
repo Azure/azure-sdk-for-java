@@ -44,8 +44,8 @@ class Chunk {
             /* Convert AvroObjects into BlobChangefeedEventWrappers. */
             .map(avroObject -> {
                 /* Unwrap AvroObject. */
-                long blockOffset = avroObject.getBlockOffset();
-                long eventIndex = avroObject.getObjectBlockIndex();
+                long blockOffset = avroObject.getNextBlockOffset();
+                long eventIndex = avroObject.getNextEventIndex();
                 Object object = avroObject.getObject();
 
                 /* Get the event cursor associated with this event. */

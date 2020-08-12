@@ -1,17 +1,12 @@
 package com.azure.storage.blob.changefeed
 
+import com.azure.core.test.TestMode
 import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor
 import com.azure.storage.blob.changefeed.models.BlobChangefeedEvent
 import spock.lang.Ignore
 import reactor.test.StepVerifier
 import spock.lang.Requires
-import spock.lang.Unroll
-
-import java.nio.charset.StandardCharsets
-import java.nio.file.Files
-import java.nio.file.Path
-import java.nio.file.StandardOpenOption
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 import java.util.stream.Stream
@@ -34,27 +29,7 @@ class ChangefeedNetworkTest extends APISpec {
 //            .map({ event -> System.out.println(event); return event; })
         )
         then:
-        sv.expectNextCount(17513) /* Note this number should be adjusted to verify the number of events expected */
-            .verifyComplete()
-    }
-
-    @Ignore("For debugging larger Change Feeds locally. Infeasible to record due to large number of events.")
-    def "page size"() {
-        setup:
-        int pageSize = 10000
-        int expectedPageCount = 50
-        BlobChangefeedPagedFlux pagedFlux = new BlobChangefeedClientBuilder(primaryBlobServiceAsyncClient)
-            .buildAsyncClient()
-            .getEvents()
-
-        when:
-        def sv = StepVerifier.create(
-            pagedFlux.byPage(pageSize)
-//                .map({ page -> System.out.println(page.getValue().size()); return page; })
-        )
-
-        then:
-        sv.expectNextCount(expectedPageCount)
+        sv.expectNextCount(297125) /* Note this number should be adjusted to verify the number of events expected */
             .verifyComplete()
     }
 
@@ -89,6 +64,7 @@ class ChangefeedNetworkTest extends APISpec {
 
         /* Update and uncomment after recording. */
         OffsetDateTime startTime = OffsetDateTime.of(2020, 8, 10, 20, 0, 0, 0, ZoneOffset.UTC)
+
         when:
         BlobChangefeedPagedIterable iterable = new BlobChangefeedClientBuilder(primaryBlobServiceAsyncClient)
             .buildClient()
@@ -97,6 +73,130 @@ class ChangefeedNetworkTest extends APISpec {
 
         then:
         stream.count() > 0
+    }
+
+    /**
+     * This test checks if tail of the change feed can be listened to.
+     * To setup recording have an account where changes are generated quite frequently (i.e. every 1 minute).
+     * This test runs long in recording mode as it waits multiple times for events.
+     */
+    @Requires( { playbackMode() })
+    def "tail events"() {
+        setup:
+        /* Uncomment when recording. */
+//        OffsetDateTime startTime = OffsetDateTime.now()
+//        System.out.println(startTime) /* Note: Account the offset when adjusting the below date. */
+
+        /* Update and uncomment after recording. */
+        OffsetDateTime startTime = OffsetDateTime.of(2020, 8, 11, 23, 3, 10, 987532200, ZoneOffset.UTC)
+
+        Long pollInterval = testMode == TestMode.PLAYBACK ? 0 : 1000 * 60 * 3
+
+        Set<String> eventIds1 = new HashSet<>()
+        Set<String> eventIds2 = new HashSet<>()
+        Set<String> eventIds3 = new HashSet<>()
+        BlobChangefeedPagedResponse lastPage = null
+
+        when: "Iteration 1"
+        Iterator<BlobChangefeedPagedResponse> iterator = new BlobChangefeedClientBuilder(primaryBlobServiceAsyncClient)
+            .buildClient()
+            .getEvents(startTime, null)
+            .iterableByPage()
+            .iterator()
+        for (BlobChangefeedPagedResponse page : iterator) {
+            page.getElements().stream().forEach( { event -> eventIds1.add(event.getId()) } )
+            lastPage = page
+        }
+
+        then:
+        eventIds1.size() > 0
+
+        when: "Iteration 2"
+        Thread.sleep(pollInterval)
+        iterator = new BlobChangefeedClientBuilder(primaryBlobServiceAsyncClient)
+            .buildClient()
+            .getEvents(lastPage.getContinuationToken())
+            .iterableByPage()
+            .iterator()
+        for (BlobChangefeedPagedResponse page : iterator) {
+            page.getElements().stream().forEach( { event -> eventIds2.add(event.getId()) } )
+            lastPage = page
+        }
+
+        then:
+        eventIds2.size() > 0
+
+        when: "Iteration 3"
+        Thread.sleep(pollInterval)
+        iterator = new BlobChangefeedClientBuilder(primaryBlobServiceAsyncClient)
+            .buildClient()
+            .getEvents(lastPage.getContinuationToken())
+            .iterableByPage()
+            .iterator()
+        for (BlobChangefeedPagedResponse page : iterator) {
+            page.getElements().stream().forEach( { event -> eventIds3.add(event.getId()) } )
+        }
+
+        then:
+        eventIds3.size() > 0
+
+        eventIds1.intersect(eventIds2).size() == 0
+        eventIds1.intersect(eventIds3).size() == 0
+        eventIds2.intersect(eventIds3).size() == 0
+    }
+
+    @Requires( { playbackMode() })
+    def "page size"() {
+        setup:
+        int pageSize1 = 50
+        int pageSize2 = pageSize1 * 2
+        int expectedPageCount1 = 26
+        int expectedPageCount2 = (int) (expectedPageCount1 / 2)
+        int pageCount1 = 0
+        int pageCount2 = 0
+
+        /* Uncomment when recording. */
+//        OffsetDateTime startTime = OffsetDateTime.now()
+//        System.out.println(startTime) /* Note: Account the offset when adjusting the below date. */
+
+        /* Update and uncomment after recording. */
+        OffsetDateTime startTime = OffsetDateTime.of(2020, 8, 11, 23, 21, 13, 647423, ZoneOffset.UTC)
+
+        Set<String> eventIds1 = new HashSet<>()
+        Set<String> eventIds2 = new HashSet<>()
+
+        when: "Page size 1"
+        Iterator<BlobChangefeedPagedResponse> iterator = new BlobChangefeedClientBuilder(primaryBlobServiceAsyncClient)
+            .buildClient()
+            .getEvents(startTime.minusHours(2), startTime.minusHours(1))
+            .iterableByPage(pageSize1)
+            .iterator()
+        for (BlobChangefeedPagedResponse page : iterator) {
+            page.getElements().stream().forEach( { event -> eventIds1.add(event.getId()) } )
+            pageCount1++
+        }
+
+        then:
+        eventIds1.size() > 0
+        pageCount1 == expectedPageCount1
+
+        when: "Page size 2"
+        iterator = new BlobChangefeedClientBuilder(primaryBlobServiceAsyncClient)
+            .buildClient()
+            .getEvents(startTime.minusHours(2), startTime.minusHours(1))
+            .iterableByPage(pageSize2)
+            .iterator()
+        for (BlobChangefeedPagedResponse page : iterator) {
+            page.getElements().stream().forEach( { event -> eventIds2.add(event.getId()) } )
+            pageCount2++
+        }
+
+        then:
+        eventIds2.size() > 0
+        pageCount2 == expectedPageCount2
+
+        eventIds1 == eventIds2
+
     }
 
     @Requires( { playbackMode() })
@@ -382,6 +482,70 @@ class ChangefeedNetworkTest extends APISpec {
         allEventIds == unionIds
     }
 
+    @Requires( { playbackMode() })
+    def "resume from historical yields no events"() {
+        setup:
+        /* Hardcoded for playback stability. If modifying, make sure to re-record. */
+        OffsetDateTime startTime = OffsetDateTime.of(2020, 7, 30, 23, 0, 0, 0, ZoneOffset.UTC)
+        OffsetDateTime endTime = OffsetDateTime.of(2020, 7, 30, 23, 15, 0, 0, ZoneOffset.UTC)
+        Set<String> eventIds1 = new HashSet<>()
+        Iterator<BlobChangefeedPagedResponse> iterator = new BlobChangefeedClientBuilder(primaryBlobServiceAsyncClient)
+            .buildClient()
+            .getEvents(startTime, endTime)
+            .iterableByPage(50)
+            .iterator()
+        BlobChangefeedPagedResponse lastPage = null
+        for (BlobChangefeedPagedResponse page : iterator) {
+            page.getElements().stream().forEach( { event -> eventIds1.add(event.getId()) } )
+            lastPage = page
+        }
+        String continuationToken = lastPage.getContinuationToken()
+
+        when:
+        BlobChangefeedPagedIterable iterable = new BlobChangefeedClientBuilder(primaryBlobServiceAsyncClient)
+            .buildClient()
+            .getEvents(continuationToken)
+        Stream<BlobChangefeedEvent> stream = iterable.stream()
+
+        then:
+        stream.count() == 0
+        eventIds1.size() > 0
+    }
+
+    @Requires( { playbackMode() })
+    def "immediate resume from last hour yields no events"() {
+        /* Uncomment when recording. */
+//        OffsetDateTime startTime = OffsetDateTime.now()
+//        System.out.println(startTime) /* Note: Account the offset when adjusting the below date. */
+
+        /* Update and uncomment after recording. */
+        OffsetDateTime startTime = OffsetDateTime.of(2020, 8, 11, 23, 32, 31, 903947700, ZoneOffset.UTC)
+
+        Set<String> eventIds1 = new HashSet<>()
+        Iterator<BlobChangefeedPagedResponse> iterator = new BlobChangefeedClientBuilder(primaryBlobServiceAsyncClient)
+            .buildClient()
+            .getEvents(startTime, null)
+            .iterableByPage(50)
+            .iterator()
+        BlobChangefeedPagedResponse lastPage = null
+        for (BlobChangefeedPagedResponse page : iterator) {
+            page.getElements().stream().forEach( { event -> eventIds1.add(event.getId()) } )
+            lastPage = page
+        }
+        String continuationToken = lastPage.getContinuationToken()
+
+        when:
+        BlobChangefeedPagedIterable iterable = new BlobChangefeedClientBuilder(primaryBlobServiceAsyncClient)
+            .buildClient()
+            .getEvents(continuationToken)
+        Stream<BlobChangefeedEvent> stream = iterable.stream()
+
+        then:
+        stream.count() == 0
+        eventIds1.size() > 0
+    }
+
+
     /**
      * To setup account for this test have a steady stream of events (i.e. some changes every 1 minute) that covers at least from an hour before start time
      * to an hour after end time.
@@ -474,8 +638,8 @@ class ChangefeedNetworkTest extends APISpec {
         cursor.getCurrentSegmentCursor().getCurrentShardPath() == "log/00/2020/07/30/2300/"
         cursor.getCurrentSegmentCursor().getShardCursors().size() == 1
         cursor.getCurrentSegmentCursor().getShardCursors().get(0).getCurrentChunkPath() == "log/00/2020/07/30/2300/00000.avro"
-        cursor.getCurrentSegmentCursor().getShardCursors().get(0).getBlockOffset() == 89996
-        cursor.getCurrentSegmentCursor().getShardCursors().get(0).getEventIndex() == 9
+        cursor.getCurrentSegmentCursor().getShardCursors().get(0).getBlockOffset() == 96253
+        cursor.getCurrentSegmentCursor().getShardCursors().get(0).getEventIndex() == 0
     }
 
 }
