@@ -213,6 +213,7 @@ public final class ObjectReplicationPoliciesOperationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
@@ -397,6 +398,7 @@ public final class ObjectReplicationPoliciesOperationsClient {
                     new IllegalArgumentException(
                         "Parameter objectReplicationPolicyId is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -622,6 +624,7 @@ public final class ObjectReplicationPoliciesOperationsClient {
         } else {
             properties.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -850,6 +853,7 @@ public final class ObjectReplicationPoliciesOperationsClient {
                     new IllegalArgumentException(
                         "Parameter objectReplicationPolicyId is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),

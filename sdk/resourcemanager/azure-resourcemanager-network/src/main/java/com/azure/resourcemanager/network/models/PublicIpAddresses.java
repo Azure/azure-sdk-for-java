@@ -15,6 +15,7 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsBatchCr
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
+import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 
 /** Entry point to public IP address management. */
@@ -31,4 +32,21 @@ public interface PublicIpAddresses
         SupportsBatchDeletion,
         HasManager<NetworkManager>,
         HasInner<PublicIpAddressesClient> {
+
+    /**
+     * Begins deleting a public IP address from Azure, identifying it by its resource ID.
+     *
+     * @param id the resource ID of the public IP address to delete
+     * @return the accepted deleting operation
+     */
+    Accepted<Void> beginDeleteById(String id);
+
+    /**
+     * Begins deleting a public IP address from Azure, identifying it by its name and its resource group.
+     *
+     * @param resourceGroupName the resource group the resource is part of
+     * @param name the public IP address name
+     * @return the accepted deleting operation
+     */
+    Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name);
 }

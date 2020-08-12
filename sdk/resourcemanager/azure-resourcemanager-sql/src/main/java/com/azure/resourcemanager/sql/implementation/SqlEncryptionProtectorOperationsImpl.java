@@ -6,6 +6,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.sql.SqlServerManager;
+import com.azure.resourcemanager.sql.models.EncryptionProtectorName;
 import com.azure.resourcemanager.sql.models.SqlEncryptionProtector;
 import com.azure.resourcemanager.sql.models.SqlEncryptionProtectorOperations;
 import com.azure.resourcemanager.sql.models.SqlServer;
@@ -39,7 +40,8 @@ public class SqlEncryptionProtectorOperationsImpl
     @Override
     public SqlEncryptionProtector getBySqlServer(String resourceGroupName, String sqlServerName) {
         EncryptionProtectorInner encryptionProtectorInner =
-            this.sqlServerManager.inner().getEncryptionProtectors().get(resourceGroupName, sqlServerName);
+            this.sqlServerManager.inner().getEncryptionProtectors().get(resourceGroupName, sqlServerName,
+                EncryptionProtectorName.CURRENT);
         return encryptionProtectorInner != null
             ? new SqlEncryptionProtectorImpl(
                 resourceGroupName, sqlServerName, encryptionProtectorInner, this.sqlServerManager)
@@ -54,7 +56,7 @@ public class SqlEncryptionProtectorOperationsImpl
             .sqlServerManager
             .inner()
             .getEncryptionProtectors()
-            .getAsync(resourceGroupName, sqlServerName)
+            .getAsync(resourceGroupName, sqlServerName, EncryptionProtectorName.CURRENT)
             .map(
                 encryptionProtectorInner ->
                     new SqlEncryptionProtectorImpl(
@@ -65,7 +67,8 @@ public class SqlEncryptionProtectorOperationsImpl
     public SqlEncryptionProtector getBySqlServer(SqlServer sqlServer) {
         Objects.requireNonNull(sqlServer);
         EncryptionProtectorInner encryptionProtectorInner =
-            sqlServer.manager().inner().getEncryptionProtectors().get(sqlServer.resourceGroupName(), sqlServer.name());
+            sqlServer.manager().inner().getEncryptionProtectors().get(sqlServer.resourceGroupName(), sqlServer.name(),
+                EncryptionProtectorName.CURRENT);
         return encryptionProtectorInner != null
             ? new SqlEncryptionProtectorImpl((SqlServerImpl) sqlServer, encryptionProtectorInner, sqlServer.manager())
             : null;
@@ -78,7 +81,7 @@ public class SqlEncryptionProtectorOperationsImpl
             .manager()
             .inner()
             .getEncryptionProtectors()
-            .getAsync(sqlServer.resourceGroupName(), sqlServer.name())
+            .getAsync(sqlServer.resourceGroupName(), sqlServer.name(), EncryptionProtectorName.CURRENT)
             .map(
                 encryptionProtectorInner ->
                     new SqlEncryptionProtectorImpl(

@@ -55,6 +55,12 @@ public class SqlContainerResource {
     private ConflictResolutionPolicy conflictResolutionPolicy;
 
     /**
+     * Analytical TTL.
+     */
+    @JsonProperty(value = "analyticalStorageTtl")
+    private Long analyticalStorageTtl;
+
+    /**
      * Get name of the Cosmos DB SQL container.
      *
      * @return the id value
@@ -171,6 +177,26 @@ public class SqlContainerResource {
      */
     public SqlContainerResource withConflictResolutionPolicy(ConflictResolutionPolicy conflictResolutionPolicy) {
         this.conflictResolutionPolicy = conflictResolutionPolicy;
+        return this;
+    }
+
+    /**
+     * Get analytical TTL.
+     *
+     * @return the analyticalStorageTtl value
+     */
+    public Long analyticalStorageTtl() {
+        return this.analyticalStorageTtl;
+    }
+
+    /**
+     * Set analytical TTL.
+     *
+     * @param analyticalStorageTtl the analyticalStorageTtl value to set
+     * @return the SqlContainerResource object itself.
+     */
+    public SqlContainerResource withAnalyticalStorageTtl(Long analyticalStorageTtl) {
+        this.analyticalStorageTtl = analyticalStorageTtl;
         return this;
     }
 

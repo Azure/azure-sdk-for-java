@@ -263,7 +263,9 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClient {
         String resourceGroupName, String applicationGatewayName, String connectionName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, applicationGatewayName, connectionName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -281,9 +283,12 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String applicationGatewayName, String connectionName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, applicationGatewayName, connectionName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -544,11 +549,12 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClient {
         return this
             .client
             .<ApplicationGatewayPrivateEndpointConnectionInner, ApplicationGatewayPrivateEndpointConnectionInner>
-                getLroResultAsync(
+                getLroResult(
                     mono,
                     this.client.getHttpPipeline(),
                     ApplicationGatewayPrivateEndpointConnectionInner.class,
-                    ApplicationGatewayPrivateEndpointConnectionInner.class);
+                    ApplicationGatewayPrivateEndpointConnectionInner.class,
+                    Context.NONE);
     }
 
     /**
@@ -574,16 +580,18 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClient {
             String connectionName,
             ApplicationGatewayPrivateEndpointConnectionInner parameters,
             Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateWithResponseAsync(resourceGroupName, applicationGatewayName, connectionName, parameters, context);
         return this
             .client
             .<ApplicationGatewayPrivateEndpointConnectionInner, ApplicationGatewayPrivateEndpointConnectionInner>
-                getLroResultAsync(
+                getLroResult(
                     mono,
                     this.client.getHttpPipeline(),
                     ApplicationGatewayPrivateEndpointConnectionInner.class,
-                    ApplicationGatewayPrivateEndpointConnectionInner.class);
+                    ApplicationGatewayPrivateEndpointConnectionInner.class,
+                    context);
     }
 
     /**
@@ -1069,7 +1077,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClient {
         String resourceGroupName, String applicationGatewayName, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, applicationGatewayName, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**

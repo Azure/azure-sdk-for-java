@@ -50,5 +50,8 @@ Supported Azure resources:
 - `create` for `Deployment`
 - `create` and `delete` for `GenericResource`
 - `create` and `delete` for `VirtualMachine`
+- `create` and `delete` for `Disk`
+- `create` and `delete` for `NetworkInterface`
+- `create` and `delete` for `PublicIpAddress`
 
 [lro]: https://docs.microsoft.com/en-us/azure/architecture/patterns/async-request-reply

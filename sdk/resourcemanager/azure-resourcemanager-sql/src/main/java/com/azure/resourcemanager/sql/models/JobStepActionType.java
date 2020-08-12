@@ -4,41 +4,28 @@
 
 package com.azure.resourcemanager.sql.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for JobStepActionType. */
-public enum JobStepActionType {
-    /** Enum value TSql. */
-    TSQL("TSql");
-
-    /** The actual serialized value for a JobStepActionType instance. */
-    private final String value;
-
-    JobStepActionType(String value) {
-        this.value = value;
-    }
+public final class JobStepActionType extends ExpandableStringEnum<JobStepActionType> {
+    /** Static value TSql for JobStepActionType. */
+    public static final JobStepActionType TSQL = fromString("TSql");
 
     /**
-     * Parses a serialized value to a JobStepActionType instance.
+     * Creates or finds a JobStepActionType from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed JobStepActionType object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding JobStepActionType.
      */
     @JsonCreator
-    public static JobStepActionType fromString(String value) {
-        JobStepActionType[] items = JobStepActionType.values();
-        for (JobStepActionType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static JobStepActionType fromString(String name) {
+        return fromString(name, JobStepActionType.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /** @return known JobStepActionType values. */
+    public static Collection<JobStepActionType> values() {
+        return values(JobStepActionType.class);
     }
 }
