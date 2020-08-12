@@ -54,7 +54,7 @@ class LockContainerTest {
 
         // Act
         final Instant added = container.addOrUpdate(key, expiration, value);
-        final boolean contains = container.contains(key);
+        final boolean contains = container.containsUnexpired(key);
 
         // Assert
         assertEquals(expiration, added);
@@ -92,6 +92,6 @@ class LockContainerTest {
         container.remove(key);
 
         // Assert
-        assertFalse(container.contains(key));
+        assertFalse(container.containsUnexpired(key));
     }
 }

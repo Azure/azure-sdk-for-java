@@ -95,7 +95,7 @@ public class LockContainer<T> implements AutoCloseable {
      *
      * @return {@code true} if the lock token is in the container and has not expired; {@code false} otherwise.
      */
-    public boolean contains(String lockToken) {
+    public boolean containsUnexpired(String lockToken) {
         if (isDisposed.get()) {
             throw logger.logExceptionAsError(new IllegalStateException("Cannot perform operations on a disposed set."));
         }

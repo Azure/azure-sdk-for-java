@@ -1255,7 +1255,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @return {@code true} if the management node contains the lock token and false otherwise.
      */
     private boolean isManagementToken(String lockToken) {
-        return managementNodeLocks.contains(lockToken);
+        return managementNodeLocks.containsUnexpired(lockToken);
     }
 
     private Mono<Void> updateDisposition(String lockToken, DispositionStatus dispositionStatus,

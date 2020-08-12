@@ -156,7 +156,7 @@ class UnnamedSessionReceiver implements AutoCloseable {
             throw logger.logExceptionAsError(new IllegalArgumentException("'lockToken' cannot be an empty string."));
         }
 
-        return lockContainer.contains(lockToken);
+        return lockContainer.containsUnexpired(lockToken);
     }
 
     String getLinkName() {
