@@ -2230,6 +2230,7 @@ class FileAPITest extends APISpec {
 
     @Unroll
     @Requires({ liveMode() }) // Test uploads large amount of data
+    @Ignore("Timeouts")
     def "Async buffered upload"() {
         setup:
         DataLakeFileAsyncClient facWrite = getPrimaryServiceClientForWrites(bufferSize)
@@ -2334,6 +2335,7 @@ class FileAPITest extends APISpec {
 
     @Unroll
     @Requires({liveMode()}) // Test uploads large amount of data
+    @Ignore("Timeouts")
     def "Buffered upload chunked source"() {
         setup:
         DataLakeFileAsyncClient facWrite = getPrimaryServiceClientForWrites(bufferSize)
