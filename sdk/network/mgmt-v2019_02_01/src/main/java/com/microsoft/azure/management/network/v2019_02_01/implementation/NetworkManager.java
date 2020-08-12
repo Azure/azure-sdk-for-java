@@ -72,6 +72,8 @@ import com.microsoft.azure.management.network.v2019_02_01.ServiceEndpointPolicyD
 import com.microsoft.azure.management.network.v2019_02_01.Usages;
 import com.microsoft.azure.management.network.v2019_02_01.VirtualNetworks;
 import com.microsoft.azure.management.network.v2019_02_01.Subnets;
+import com.microsoft.azure.management.network.v2019_02_01.ResourceNavigationLinks;
+import com.microsoft.azure.management.network.v2019_02_01.ServiceAssociationLinks;
 import com.microsoft.azure.management.network.v2019_02_01.VirtualNetworkPeerings;
 import com.microsoft.azure.management.network.v2019_02_01.VirtualNetworkGateways;
 import com.microsoft.azure.management.network.v2019_02_01.VirtualNetworkGatewayConnections;
@@ -150,6 +152,8 @@ public final class NetworkManager extends ManagerCore<NetworkManager, NetworkMan
     private Usages usages;
     private VirtualNetworks virtualNetworks;
     private Subnets subnets;
+    private ResourceNavigationLinks resourceNavigationLinks;
+    private ServiceAssociationLinks serviceAssociationLinks;
     private VirtualNetworkPeerings virtualNetworkPeerings;
     private VirtualNetworkGateways virtualNetworkGateways;
     private VirtualNetworkGatewayConnections virtualNetworkGatewayConnections;
@@ -770,6 +774,26 @@ public final class NetworkManager extends ManagerCore<NetworkManager, NetworkMan
             this.subnets = new SubnetsImpl(this);
         }
         return this.subnets;
+    }
+
+    /**
+     * @return Entry point to manage ResourceNavigationLinks.
+     */
+    public ResourceNavigationLinks resourceNavigationLinks() {
+        if (this.resourceNavigationLinks == null) {
+            this.resourceNavigationLinks = new ResourceNavigationLinksImpl(this);
+        }
+        return this.resourceNavigationLinks;
+    }
+
+    /**
+     * @return Entry point to manage ServiceAssociationLinks.
+     */
+    public ServiceAssociationLinks serviceAssociationLinks() {
+        if (this.serviceAssociationLinks == null) {
+            this.serviceAssociationLinks = new ServiceAssociationLinksImpl(this);
+        }
+        return this.serviceAssociationLinks;
     }
 
     /**
