@@ -175,7 +175,8 @@ public class LockRenewalOperation implements AutoCloseable {
 
         final Flux<Object> cancellationSignals = Flux.first(cancellationProcessor, Mono.delay(maxLockRenewalDuration));
 
-        return Flux.switchOnNext(emitterProcessor.map(interval -> Mono.delay(interval).thenReturn(Flux.create(s -> s.next(interval)))))
+        return Flux.switchOnNext(emitterProcessor.map(interval -> Mono.delay(interval)
+            .thenReturn(Flux.create(s -> s.next(interval)))))
             .takeUntilOther(cancellationSignals)
             .flatMap(delay -> {
                 logger.info("token[{}]. now[{}]. Starting lock renewal.", lockToken, Instant.now());
