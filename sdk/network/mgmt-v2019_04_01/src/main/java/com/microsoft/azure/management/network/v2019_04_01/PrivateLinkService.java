@@ -20,6 +20,7 @@ import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.network.v2019_04_01.implementation.NetworkManager;
 import java.util.List;
 import com.microsoft.azure.management.network.v2019_04_01.implementation.FrontendIPConfigurationInner;
+import com.microsoft.azure.management.network.v2019_04_01.implementation.PrivateEndpointConnectionInner;
 import com.microsoft.azure.management.network.v2019_04_01.implementation.PrivateLinkServiceInner;
 
 /**
@@ -52,9 +53,9 @@ public interface PrivateLinkService extends HasInner<PrivateLinkServiceInner>, R
     List<PrivateLinkServiceIpConfiguration> ipConfigurations();
 
     /**
-     * @return the loadBalancerFrontendIPConfigurations value.
+     * @return the loadBalancerFrontendIpConfigurations value.
      */
-    List<FrontendIPConfiguration> loadBalancerFrontendIPConfigurations();
+    List<FrontendIPConfiguration> loadBalancerFrontendIpConfigurations();
 
     /**
      * @return the networkInterfaces value.
@@ -69,7 +70,7 @@ public interface PrivateLinkService extends HasInner<PrivateLinkServiceInner>, R
     /**
      * @return the provisioningState value.
      */
-    String provisioningState();
+    ProvisioningState provisioningState();
 
     /**
      * @return the visibility value.
@@ -116,7 +117,7 @@ public interface PrivateLinkService extends HasInner<PrivateLinkServiceInner>, R
         interface WithEtag {
             /**
              * Specifies etag.
-             * @param etag Gets a unique read-only string that changes whenever the resource is updated
+             * @param etag A unique read-only string that changes whenever the resource is updated
              * @return the next definition stage
              */
             WithCreate withEtag(String etag);
@@ -147,15 +148,15 @@ public interface PrivateLinkService extends HasInner<PrivateLinkServiceInner>, R
         }
 
         /**
-         * The stage of the privatelinkservice definition allowing to specify LoadBalancerFrontendIPConfigurations.
+         * The stage of the privatelinkservice definition allowing to specify LoadBalancerFrontendIpConfigurations.
          */
-        interface WithLoadBalancerFrontendIPConfigurations {
+        interface WithLoadBalancerFrontendIpConfigurations {
             /**
-             * Specifies loadBalancerFrontendIPConfigurations.
-             * @param loadBalancerFrontendIPConfigurations An array of references to the load balancer IP configurations
+             * Specifies loadBalancerFrontendIpConfigurations.
+             * @param loadBalancerFrontendIpConfigurations An array of references to the load balancer IP configurations
              * @return the next definition stage
              */
-            WithCreate withLoadBalancerFrontendIPConfigurations(List<FrontendIPConfigurationInner> loadBalancerFrontendIPConfigurations);
+            WithCreate withLoadBalancerFrontendIpConfigurations(List<FrontendIPConfigurationInner> loadBalancerFrontendIpConfigurations);
         }
 
         /**
@@ -167,7 +168,7 @@ public interface PrivateLinkService extends HasInner<PrivateLinkServiceInner>, R
              * @param privateEndpointConnections An array of list about connections to the private endpoint
              * @return the next definition stage
              */
-            WithCreate withPrivateEndpointConnections(List<PrivateEndpointConnection> privateEndpointConnections);
+            WithCreate withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections);
         }
 
         /**
@@ -187,13 +188,13 @@ public interface PrivateLinkService extends HasInner<PrivateLinkServiceInner>, R
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<PrivateLinkService>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAutoApproval, DefinitionStages.WithEtag, DefinitionStages.WithFqdns, DefinitionStages.WithIpConfigurations, DefinitionStages.WithLoadBalancerFrontendIPConfigurations, DefinitionStages.WithPrivateEndpointConnections, DefinitionStages.WithVisibility {
+        interface WithCreate extends Creatable<PrivateLinkService>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAutoApproval, DefinitionStages.WithEtag, DefinitionStages.WithFqdns, DefinitionStages.WithIpConfigurations, DefinitionStages.WithLoadBalancerFrontendIpConfigurations, DefinitionStages.WithPrivateEndpointConnections, DefinitionStages.WithVisibility {
         }
     }
     /**
      * The template for a PrivateLinkService update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<PrivateLinkService>, Resource.UpdateWithTags<Update>, UpdateStages.WithAutoApproval, UpdateStages.WithEtag, UpdateStages.WithFqdns, UpdateStages.WithIpConfigurations, UpdateStages.WithLoadBalancerFrontendIPConfigurations, UpdateStages.WithPrivateEndpointConnections, UpdateStages.WithVisibility {
+    interface Update extends Appliable<PrivateLinkService>, Resource.UpdateWithTags<Update>, UpdateStages.WithAutoApproval, UpdateStages.WithEtag, UpdateStages.WithFqdns, UpdateStages.WithIpConfigurations, UpdateStages.WithLoadBalancerFrontendIpConfigurations, UpdateStages.WithPrivateEndpointConnections, UpdateStages.WithVisibility {
     }
 
     /**
@@ -218,7 +219,7 @@ public interface PrivateLinkService extends HasInner<PrivateLinkServiceInner>, R
         interface WithEtag {
             /**
              * Specifies etag.
-             * @param etag Gets a unique read-only string that changes whenever the resource is updated
+             * @param etag A unique read-only string that changes whenever the resource is updated
              * @return the next update stage
              */
             Update withEtag(String etag);
@@ -249,15 +250,15 @@ public interface PrivateLinkService extends HasInner<PrivateLinkServiceInner>, R
         }
 
         /**
-         * The stage of the privatelinkservice update allowing to specify LoadBalancerFrontendIPConfigurations.
+         * The stage of the privatelinkservice update allowing to specify LoadBalancerFrontendIpConfigurations.
          */
-        interface WithLoadBalancerFrontendIPConfigurations {
+        interface WithLoadBalancerFrontendIpConfigurations {
             /**
-             * Specifies loadBalancerFrontendIPConfigurations.
-             * @param loadBalancerFrontendIPConfigurations An array of references to the load balancer IP configurations
+             * Specifies loadBalancerFrontendIpConfigurations.
+             * @param loadBalancerFrontendIpConfigurations An array of references to the load balancer IP configurations
              * @return the next update stage
              */
-            Update withLoadBalancerFrontendIPConfigurations(List<FrontendIPConfigurationInner> loadBalancerFrontendIPConfigurations);
+            Update withLoadBalancerFrontendIpConfigurations(List<FrontendIPConfigurationInner> loadBalancerFrontendIpConfigurations);
         }
 
         /**
@@ -269,7 +270,7 @@ public interface PrivateLinkService extends HasInner<PrivateLinkServiceInner>, R
              * @param privateEndpointConnections An array of list about connections to the private endpoint
              * @return the next update stage
              */
-            Update withPrivateEndpointConnections(List<PrivateEndpointConnection> privateEndpointConnections);
+            Update withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections);
         }
 
         /**

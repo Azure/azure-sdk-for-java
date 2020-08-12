@@ -49,7 +49,7 @@ public interface PrivateEndpoint extends HasInner<PrivateEndpointInner>, Resourc
     /**
      * @return the provisioningState value.
      */
-    String provisioningState();
+    ProvisioningState provisioningState();
 
     /**
      * @return the subnet value.
@@ -84,7 +84,7 @@ public interface PrivateEndpoint extends HasInner<PrivateEndpointInner>, Resourc
         interface WithEtag {
             /**
              * Specifies etag.
-             * @param etag Gets a unique read-only string that changes whenever the resource is updated
+             * @param etag A unique read-only string that changes whenever the resource is updated
              * @return the next definition stage
              */
             WithCreate withEtag(String etag);
@@ -150,7 +150,7 @@ public interface PrivateEndpoint extends HasInner<PrivateEndpointInner>, Resourc
         interface WithEtag {
             /**
              * Specifies etag.
-             * @param etag Gets a unique read-only string that changes whenever the resource is updated
+             * @param etag A unique read-only string that changes whenever the resource is updated
              * @return the next update stage
              */
             Update withEtag(String etag);

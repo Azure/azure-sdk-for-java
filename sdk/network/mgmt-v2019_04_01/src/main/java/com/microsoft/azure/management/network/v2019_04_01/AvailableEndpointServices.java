@@ -9,12 +9,13 @@
 package com.microsoft.azure.management.network.v2019_04_01;
 
 import rx.Observable;
-import com.microsoft.azure.management.network.v2019_04_01.EndpointServiceResult;
+import com.microsoft.azure.management.network.v2019_04_01.implementation.AvailableEndpointServicesInner;
+import com.microsoft.azure.arm.model.HasInner;
 
 /**
  * Type representing AvailableEndpointServices.
  */
-public interface AvailableEndpointServices {
+public interface AvailableEndpointServices extends HasInner<AvailableEndpointServicesInner> {
     /**
      * List what values of endpoint services are available for use.
      *

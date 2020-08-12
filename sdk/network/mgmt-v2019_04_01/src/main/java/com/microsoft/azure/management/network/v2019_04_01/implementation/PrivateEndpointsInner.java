@@ -424,7 +424,7 @@ public class PrivateEndpointsInner implements InnerSupportsGet<PrivateEndpointIn
      *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
-     * @param parameters Parameters supplied to the create or update private endpoint operation
+     * @param parameters Parameters supplied to the create or update private endpoint operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -439,7 +439,7 @@ public class PrivateEndpointsInner implements InnerSupportsGet<PrivateEndpointIn
      *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
-     * @param parameters Parameters supplied to the create or update private endpoint operation
+     * @param parameters Parameters supplied to the create or update private endpoint operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -453,7 +453,7 @@ public class PrivateEndpointsInner implements InnerSupportsGet<PrivateEndpointIn
      *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
-     * @param parameters Parameters supplied to the create or update private endpoint operation
+     * @param parameters Parameters supplied to the create or update private endpoint operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -471,7 +471,7 @@ public class PrivateEndpointsInner implements InnerSupportsGet<PrivateEndpointIn
      *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
-     * @param parameters Parameters supplied to the create or update private endpoint operation
+     * @param parameters Parameters supplied to the create or update private endpoint operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -499,7 +499,7 @@ public class PrivateEndpointsInner implements InnerSupportsGet<PrivateEndpointIn
      *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
-     * @param parameters Parameters supplied to the create or update private endpoint operation
+     * @param parameters Parameters supplied to the create or update private endpoint operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -514,7 +514,7 @@ public class PrivateEndpointsInner implements InnerSupportsGet<PrivateEndpointIn
      *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
-     * @param parameters Parameters supplied to the create or update private endpoint operation
+     * @param parameters Parameters supplied to the create or update private endpoint operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -528,7 +528,7 @@ public class PrivateEndpointsInner implements InnerSupportsGet<PrivateEndpointIn
      *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
-     * @param parameters Parameters supplied to the create or update private endpoint operation
+     * @param parameters Parameters supplied to the create or update private endpoint operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PrivateEndpointInner object
      */
@@ -546,7 +546,7 @@ public class PrivateEndpointsInner implements InnerSupportsGet<PrivateEndpointIn
      *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
-     * @param parameters Parameters supplied to the create or update private endpoint operation
+     * @param parameters Parameters supplied to the create or update private endpoint operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PrivateEndpointInner object
      */

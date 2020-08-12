@@ -20,9 +20,19 @@ public interface AvailablePrivateEndpointTypes extends HasInner<AvailablePrivate
      * Returns all of the resource types that can be linked to a Private Endpoint in this subscription in this region.
      *
      * @param location The location of the domain name.
+     * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<LocationAvailablePrivateEndpointType> listAsync(final String location);
+    Observable<AvailablePrivateEndpointType> listByResourceGroupAsync(final String location, final String resourceGroupName);
+
+    /**
+     * Returns all of the resource types that can be linked to a Private Endpoint in this subscription in this region.
+     *
+     * @param location The location of the domain name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<AvailablePrivateEndpointType> listAsync(final String location);
 
 }

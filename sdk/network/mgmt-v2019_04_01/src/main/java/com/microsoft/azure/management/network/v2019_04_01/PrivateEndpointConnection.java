@@ -8,94 +8,111 @@
 
 package com.microsoft.azure.management.network.v2019_04_01;
 
+import com.microsoft.azure.arm.model.HasInner;
+import com.microsoft.azure.management.network.v2019_04_01.implementation.PrivateEndpointConnectionInner;
+import com.microsoft.azure.arm.model.Indexable;
+import com.microsoft.azure.arm.model.Updatable;
+import com.microsoft.azure.arm.model.Appliable;
+import com.microsoft.azure.arm.resources.models.HasManager;
+import com.microsoft.azure.management.network.v2019_04_01.implementation.NetworkManager;
 import com.microsoft.azure.management.network.v2019_04_01.implementation.PrivateEndpointInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.SubResource;
 
 /**
- * PrivateEndpointConnection resource.
+ * Type representing PrivateEndpointConnection.
  */
-@JsonFlatten
-public class PrivateEndpointConnection extends SubResource {
+public interface PrivateEndpointConnection extends HasInner<PrivateEndpointConnectionInner>, Indexable, Updatable<PrivateEndpointConnection.Update>, HasManager<NetworkManager> {
     /**
-     * The resource of private end point.
+     * @return the etag value.
      */
-    @JsonProperty(value = "properties.privateEndpoint")
-    private PrivateEndpointInner privateEndpoint;
+    String etag();
 
     /**
-     * A collection of information about the state of the connection between
-     * service consumer and provider.
+     * @return the id value.
      */
-    @JsonProperty(value = "properties.privateLinkServiceConnectionState")
-    private PrivateLinkServiceConnectionState privateLinkServiceConnectionState;
+    String id();
 
     /**
-     * The name of the resource that is unique within a resource group. This
-     * name can be used to access the resource.
+     * @return the name value.
      */
-    @JsonProperty(value = "name")
-    private String name;
+    String name();
 
     /**
-     * Get the resource of private end point.
-     *
-     * @return the privateEndpoint value
+     * @return the privateEndpoint value.
      */
-    public PrivateEndpointInner privateEndpoint() {
-        return this.privateEndpoint;
+    PrivateEndpoint privateEndpoint();
+
+    /**
+     * @return the privateLinkServiceConnectionState value.
+     */
+    PrivateLinkServiceConnectionState privateLinkServiceConnectionState();
+
+    /**
+     * @return the provisioningState value.
+     */
+    ProvisioningState provisioningState();
+
+    /**
+     * @return the type value.
+     */
+    String type();
+
+    /**
+     * The template for a PrivateEndpointConnection update operation, containing all the settings that can be modified.
+     */
+    interface Update extends Appliable<PrivateEndpointConnection>, UpdateStages.WithId, UpdateStages.WithName, UpdateStages.WithPrivateEndpoint, UpdateStages.WithPrivateLinkServiceConnectionState {
     }
 
     /**
-     * Set the resource of private end point.
-     *
-     * @param privateEndpoint the privateEndpoint value to set
-     * @return the PrivateEndpointConnection object itself.
+     * Grouping of PrivateEndpointConnection update stages.
      */
-    public PrivateEndpointConnection withPrivateEndpoint(PrivateEndpointInner privateEndpoint) {
-        this.privateEndpoint = privateEndpoint;
-        return this;
-    }
+    interface UpdateStages {
+        /**
+         * The stage of the privateendpointconnection update allowing to specify Id.
+         */
+        interface WithId {
+            /**
+             * Specifies id.
+             * @param id Resource ID
+             * @return the next update stage
+             */
+            Update withId(String id);
+        }
 
-    /**
-     * Get a collection of information about the state of the connection between service consumer and provider.
-     *
-     * @return the privateLinkServiceConnectionState value
-     */
-    public PrivateLinkServiceConnectionState privateLinkServiceConnectionState() {
-        return this.privateLinkServiceConnectionState;
-    }
+        /**
+         * The stage of the privateendpointconnection update allowing to specify Name.
+         */
+        interface WithName {
+            /**
+             * Specifies name.
+             * @param name The name of the resource that is unique within a resource group. This name can be used to access the resource
+             * @return the next update stage
+             */
+            Update withName(String name);
+        }
 
-    /**
-     * Set a collection of information about the state of the connection between service consumer and provider.
-     *
-     * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set
-     * @return the PrivateEndpointConnection object itself.
-     */
-    public PrivateEndpointConnection withPrivateLinkServiceConnectionState(PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
-        this.privateLinkServiceConnectionState = privateLinkServiceConnectionState;
-        return this;
-    }
+        /**
+         * The stage of the privateendpointconnection update allowing to specify PrivateEndpoint.
+         */
+        interface WithPrivateEndpoint {
+            /**
+             * Specifies privateEndpoint.
+             * @param privateEndpoint The resource of private end point
+             * @return the next update stage
+             */
+            Update withPrivateEndpoint(PrivateEndpointInner privateEndpoint);
+        }
 
-    /**
-     * Get the name of the resource that is unique within a resource group. This name can be used to access the resource.
-     *
-     * @return the name value
-     */
-    public String name() {
-        return this.name;
-    }
+        /**
+         * The stage of the privateendpointconnection update allowing to specify PrivateLinkServiceConnectionState.
+         */
+        interface WithPrivateLinkServiceConnectionState {
+            /**
+             * Specifies privateLinkServiceConnectionState.
+             * @param privateLinkServiceConnectionState A collection of information about the state of the connection between service consumer and provider
+             * @return the next update stage
+             */
+            Update withPrivateLinkServiceConnectionState(PrivateLinkServiceConnectionState privateLinkServiceConnectionState);
+        }
 
-    /**
-     * Set the name of the resource that is unique within a resource group. This name can be used to access the resource.
-     *
-     * @param name the name value to set
-     * @return the PrivateEndpointConnection object itself.
-     */
-    public PrivateEndpointConnection withName(String name) {
-        this.name = name;
-        return this;
     }
-
 }
