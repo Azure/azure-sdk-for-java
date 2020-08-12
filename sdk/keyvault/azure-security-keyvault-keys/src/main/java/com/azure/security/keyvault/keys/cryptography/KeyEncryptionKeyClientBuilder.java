@@ -99,7 +99,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
         builder.keyIdentifier(keyId);
         if (Strings.isNullOrEmpty(keyId)) {
             throw logger.logExceptionAsError(new IllegalStateException(
-                "key identifier parameter cannot be null and is required to create key encryption key async client."));
+                "Json Web Key or jsonWebKey identifier are required to create key encryption key async client"));
         }
         CryptographyServiceVersion serviceVersion = builder.getServiceVersion() != null ? builder.getServiceVersion() : CryptographyServiceVersion.getLatest();
 

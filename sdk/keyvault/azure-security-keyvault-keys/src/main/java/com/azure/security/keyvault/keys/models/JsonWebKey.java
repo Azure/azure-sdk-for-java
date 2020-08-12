@@ -169,7 +169,7 @@ public class JsonWebKey {
      * @param keyId The keyId value to set
      * @return the JsonWebKey object itself.
      */
-    public JsonWebKey setId(String keyId) {
+    JsonWebKey setId(String keyId) {
         this.keyId = keyId;
         return this;
     }
