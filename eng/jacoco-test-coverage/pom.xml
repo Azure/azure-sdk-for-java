@@ -452,6 +452,31 @@
       <artifactId>spring-cloud-starter-azure-storage-queue</artifactId>
       <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-starter-azure-storage-queue;current} -->
     </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>spring-cloud-azure-servicebus-stream-binder-core</artifactId>
+      <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-servicebus-stream-binder-core;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>spring-cloud-azure-stream-binder-test</artifactId>
+      <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-stream-binder-test;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>spring-cloud-azure-servicebus-topic-stream-binder</artifactId>
+      <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-servicebus-topic-stream-binder;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>spring-cloud-azure-servicebus-queue-stream-binder</artifactId>
+      <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-servicebus-queue-stream-binder;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>spring-cloud-azure-eventhubs-stream-binder</artifactId>
+      <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-eventhubs-stream-binder;current} -->
+    </dependency>
   </dependencies>
   <build>
     <plugins>

@@ -122,6 +122,8 @@ org.springframework.cloud:spring-cloud-dependencies;Hoxton.SR7
 org.springframework.cloud:spring-cloud-bus;2.2.0.RELEASE
 org.springframework.cloud:spring-cloud-context;2.2.0.RELEASE
 org.springframework.cloud:spring-cloud-starter-stream-kafka;3.0.0.RELEASE
+org.springframework.cloud:spring-cloud-stream;3.0.0.RELEASE
+org.springframework.cloud:spring-cloud-stream-binder-test;3.0.0.RELEASE
 org.springframework.data:spring-data-redis;2.2.5.RELEASE
 org.springframework.data:spring-data-mongodb;2.2.5.RELEASE
 
