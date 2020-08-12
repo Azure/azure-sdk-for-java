@@ -479,7 +479,6 @@ class NetworkInterfaceImpl
                 innerToFluentMap(this);
                 initializeChildrenFromInner();
                 afterCreating();
-                return this;
             });
     }
 

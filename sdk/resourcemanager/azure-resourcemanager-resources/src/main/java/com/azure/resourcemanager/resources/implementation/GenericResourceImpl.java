@@ -165,7 +165,8 @@ final class GenericResourceImpl
             this.manager().inner().getSerializerAdapter(),
             this.manager().inner().getHttpPipeline(),
             GenericResourceInner.class,
-            null, innerToFluentMap(this));
+            null,
+            inner -> innerToFluentMap(this).apply(inner));
     }
 
     // CreateUpdateTaskGroup.ResourceCreator implementation

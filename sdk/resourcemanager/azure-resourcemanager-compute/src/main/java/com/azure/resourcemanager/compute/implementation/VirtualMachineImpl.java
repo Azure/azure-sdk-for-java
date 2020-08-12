@@ -1783,10 +1783,7 @@ class VirtualMachineImpl
                 // same as createResourceAsync
                 prepareCreateResourceAsync().block();
             },
-            inner -> {
-                reset(inner);
-                return this;
-            });
+            this::reset);
     }
 
     @Override

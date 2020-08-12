@@ -321,7 +321,6 @@ public final class DeploymentImpl extends
             inner -> {
                 setInner(inner);
                 prepareForUpdate(inner);
-                return this;
             });
     }
 

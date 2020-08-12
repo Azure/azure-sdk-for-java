@@ -32,6 +32,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -268,7 +269,7 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
         SerializerAdapter serializerAdapter,
         HttpPipeline httpPipeline,
         Type innerType,
-        Runnable preActivation, Function<InnerT, T> postActivation) {
+        Runnable preActivation, Consumer<InnerT> postActivation) {
 
         if (preActivation != null) {
             preActivation.run();
@@ -286,8 +287,7 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
                 convertOperation);
 
             if (postActivation != null) {
-                T ret = postActivation.apply(accepted.getActivationResponse().getValue().inner());
-                Objects.requireNonNull(ret);    // suppress DLS_DEAD_LOCAL_STORE
+                postActivation.accept(accepted.getActivationResponse().getValue().inner());
             }
 
             return accepted;
