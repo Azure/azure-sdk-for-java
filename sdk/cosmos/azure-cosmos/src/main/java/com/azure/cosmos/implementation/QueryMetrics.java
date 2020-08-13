@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * Query metrics in the Azure Cosmos database service.
@@ -186,6 +187,22 @@ public final class QueryMetrics {
         queryMetricsList.add(this);
 
         return QueryMetrics.createFromCollection(queryMetricsList);
+    }
+
+    /**
+     * Utility method to merge two query metrics map.
+     * @param base metrics map which will be updated with new values.
+     * @param addOn metrics map whose values will be merge in base map.
+     */
+    public static void mergeQueryMetricsMap(ConcurrentMap<String, QueryMetrics> base, ConcurrentMap<String, QueryMetrics> addOn) {
+        for (String key : addOn.keySet()) {
+            if (base.containsKey(key)) {
+                QueryMetrics qm = addOn.get(key);
+                base.get(key).add(qm);
+            } else {
+                base.put(key, addOn.get(key));
+            }
+        }
     }
 
     private String toTextString(int indentLevel) {

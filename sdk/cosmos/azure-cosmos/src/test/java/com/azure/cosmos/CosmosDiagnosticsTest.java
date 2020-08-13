@@ -77,7 +77,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"simple"})
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void gatewayDiagnostics() {
         CosmosClient testGatewayClient = null;
         try {
@@ -108,7 +108,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"simple"})
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void gatewayDiagnosticsOnException() {
         InternalObjectNode internalObjectNode = getInternalObjectNode();
         CosmosItemResponse<InternalObjectNode> createResponse = null;
@@ -135,7 +135,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"simple"})
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void systemDiagnosticsForSystemStateInformation() {
         InternalObjectNode internalObjectNode = getInternalObjectNode();
         CosmosItemResponse<InternalObjectNode> createResponse = this.container.createItem(internalObjectNode);
@@ -149,7 +149,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(createResponse.getDiagnostics().getDuration()).isNotNull();
     }
 
-    @Test(groups = {"simple"})
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void directDiagnostics() {
         CosmosClient testDirectClient = null;
         try {
@@ -183,7 +183,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"simple"})
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void queryPlanDiagnostics() {
         CosmosContainer cosmosContainer = directClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
         List<String> itemIdList = new ArrayList<>();
@@ -232,7 +232,27 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"simple"})
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void queryMetrics() {
+        GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
+        String query = "Select * from c where c.id = 'wrongId'";
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        options.setQueryMetricsEnabled(true);
+        Iterator<FeedResponse<InternalObjectNode>> iterator = this.container.queryItems(query, options,
+            InternalObjectNode.class).iterableByPage().iterator();
+        assertThat(iterator.hasNext()).isTrue();
+        while (iterator.hasNext()) {
+            FeedResponse<InternalObjectNode> feedResponse = iterator.next();
+            String queryDiagnostics = feedResponse.getCosmosDiagnostics().toString();
+            assertThat(feedResponse.getResults().size()).isEqualTo(0);
+            assertThat(queryDiagnostics).contains("Retrieved Document Count");
+            assertThat(queryDiagnostics).contains("Query Preparation Times");
+            assertThat(queryDiagnostics).contains("Runtime Execution Times");
+            assertThat(queryDiagnostics).contains("Partition Execution Timeline");
+        }
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void directDiagnosticsOnException() {
         CosmosContainer cosmosContainer = directClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
         InternalObjectNode internalObjectNode = getInternalObjectNode();
@@ -270,7 +290,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"simple"})
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void supplementalResponseStatisticsList() throws Exception {
         ClientSideRequestStatistics clientSideRequestStatistics = new ClientSideRequestStatistics();
         for (int i = 0; i < 15; i++) {
@@ -320,7 +340,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"simple"})
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void serializationOnVariousScenarios() {
         //checking database serialization
         CosmosDatabaseResponse cosmosDatabase = gatewayClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).read();
