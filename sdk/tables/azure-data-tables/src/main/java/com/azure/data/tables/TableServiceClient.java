@@ -8,8 +8,8 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.data.tables.models.QueryParams;
-import com.azure.data.tables.models.Table;
+import com.azure.data.tables.models.ListTablesOptions;
+import com.azure.data.tables.models.TableItem;
 
 /**
  * client for table service
@@ -21,16 +21,6 @@ public class TableServiceClient {
 
     TableServiceClient(TableServiceAsyncClient client) {
         this.client = client;
-    }
-
-    /**
-     * gets a given table by name
-     *
-     * @param name the name of the table
-     * @return associated azure table object
-     */
-    public Table getTable(String name) {
-        return null;
     }
 
     /**
@@ -50,7 +40,7 @@ public class TableServiceClient {
      * @return AzureTable of the created table
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Table createTable(String tableName) {
+    public TableItem createTable(String tableName) {
         return client.createTable(tableName).block();
     }
 
@@ -62,7 +52,7 @@ public class TableServiceClient {
      * @return response with azureTable of the created table
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Table> createTableWithResponse(String tableName, Context context) {
+    public Response<TableItem> createTableWithResponse(String tableName, Context context) {
         return client.createTableWithResponse(tableName, context).block();
     }
 
@@ -89,15 +79,25 @@ public class TableServiceClient {
     }
 
     /**
-     * query all the tables under the storage account given the query options and returns the ones that fit the
-     * criteria
+     * query all the tables under the storage account
      *
-     * @param queryParams the odata query object
      * @return a list of tables that meet the query
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Table> listTables(QueryParams queryParams) {
-        return new PagedIterable<>(client.listTables(queryParams));
+    public PagedIterable<TableItem> listTables() {
+        return new PagedIterable<>(client.listTables(new ListTablesOptions()));
+    }
+
+    /**
+     * query all the tables under the storage account given the query options and returns the ones that fit the
+     * criteria
+     *
+     * @param options the odata query object
+     * @return a list of tables that meet the query
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<TableItem> listTables(ListTablesOptions options) {
+        return new PagedIterable<>(client.listTables(options));
     }
 
 }

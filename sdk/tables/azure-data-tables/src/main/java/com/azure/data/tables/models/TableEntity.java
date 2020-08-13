@@ -5,7 +5,7 @@ package com.azure.data.tables.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.data.tables.implementation.EntityHelper;
+import com.azure.data.tables.implementation.TableEntityHelper;
 import com.azure.data.tables.implementation.TableConstants;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,8 +18,8 @@ import static com.azure.data.tables.implementation.TableConstants.ROW_KEY;
  * table entity class
  */
 @Fluent
-public class Entity {
-    private final ClientLogger logger = new ClientLogger(Entity.class);
+public class TableEntity {
+    private final ClientLogger logger = new ClientLogger(TableEntity.class);
     private final String partitionKey;
     private final String rowKey;
     private final Map<String, Object> properties = new HashMap<>();
@@ -28,7 +28,7 @@ public class Entity {
 
     static {
         // This is used by classes in different packages to get access to private and package-private methods.
-        EntityHelper.setEntityAccessor((entity, name) -> entity.setETag(name));
+        TableEntityHelper.setEntityAccessor((entity, name) -> entity.setETag(name));
     }
 
     /**
@@ -37,7 +37,7 @@ public class Entity {
      * @param partitionKey the partition key
      * @param rowKey the row key
      */
-    public Entity(String partitionKey, String rowKey) {
+    public TableEntity(String partitionKey, String rowKey) {
         this.rowKey = Objects.requireNonNull(rowKey, "'rowKey' cannot be null.");
         this.partitionKey = Objects.requireNonNull(partitionKey, "'partitionKey' cannot be null.");
         Objects.requireNonNull(properties, "'properties' cannot be null.");
@@ -61,10 +61,10 @@ public class Entity {
      * @param key Key to for the property.
      * @param value Value of the property.
      *
-     * @return The updated {@link Entity} object.
+     * @return The updated {@link TableEntity} object.
      * @throws NullPointerException if {@code key} is null.
      */
-    public Entity addProperty(String key, Object value) {
+    public TableEntity addProperty(String key, Object value) {
         Objects.requireNonNull(key, "'key' cannot be null.");
 
         if (PARTITION_KEY.equals(key)) {

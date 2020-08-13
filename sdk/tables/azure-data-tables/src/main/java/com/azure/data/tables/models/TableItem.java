@@ -5,14 +5,14 @@ package com.azure.data.tables.models;
 /**
  * class for a table object
  */
-public class Table {
+public class TableItem {
     private final String name;
 
     /**
      * crete a table
      * @param name the name of the table
      */
-    public Table(String name) {
+    public TableItem(String name) {
         this.name = name;
     }
 

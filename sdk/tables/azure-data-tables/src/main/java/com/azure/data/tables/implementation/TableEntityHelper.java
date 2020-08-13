@@ -3,14 +3,14 @@
 package com.azure.data.tables.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.data.tables.models.Entity;
+import com.azure.data.tables.models.TableEntity;
 
 import java.util.Objects;
 
 /**
  * Used to access internal methods on models.
  */
-public final class EntityHelper {
+public final class TableEntityHelper {
     private static EntityAccessor entityAccessor;
 
     static {
@@ -18,7 +18,7 @@ public final class EntityHelper {
         try {
             Class.forName(EntityAccessor.class.getName(), true, EntityAccessor.class.getClassLoader());
         } catch (ClassNotFoundException e) {
-            throw new ClientLogger(EntityHelper.class).logThrowableAsError(new AssertionError(e));
+            throw new ClientLogger(TableEntityHelper.class).logThrowableAsError(new AssertionError(e));
         }
     }
 
@@ -31,8 +31,8 @@ public final class EntityHelper {
     public static void setEntityAccessor(EntityAccessor accessor) {
         Objects.requireNonNull(accessor, "'accessor' cannot be null.");
 
-        if (EntityHelper.entityAccessor != null) {
-            throw new ClientLogger(EntityHelper.class).logExceptionAsError(new IllegalStateException(
+        if (TableEntityHelper.entityAccessor != null) {
+            throw new ClientLogger(TableEntityHelper.class).logExceptionAsError(new IllegalStateException(
                 "'entityAccessor' is already set."));
         }
 
@@ -40,14 +40,14 @@ public final class EntityHelper {
     }
 
     /**
-     * Sets the ETag on an {@link Entity}.
+     * Sets the ETag on an {@link TableEntity}.
      *
      * @param entity Entity to set the ETag on.
      * @param eTag ETag to set.
      */
-    public static void setETag(Entity entity, String eTag) {
+    public static void setETag(TableEntity entity, String eTag) {
         if (entityAccessor == null) {
-            throw new ClientLogger(EntityHelper.class).logExceptionAsError(
+            throw new ClientLogger(TableEntityHelper.class).logExceptionAsError(
                 new IllegalStateException("'entityAccessor' should not be null."));
         }
 
@@ -56,11 +56,11 @@ public final class EntityHelper {
 
     public interface EntityAccessor {
         /**
-         * Sets the ETag on an {@link Entity}.
+         * Sets the ETag on an {@link TableEntity}.
          *
          * @param entity Entity to set the ETag on.
          * @param eTag ETag to set.
          */
-        void setETag(Entity entity, String eTag);
+        void setETag(TableEntity entity, String eTag);
     }
 }

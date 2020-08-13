@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.data.tables;
 
-import com.azure.data.tables.models.Entity;
-import com.azure.data.tables.models.QueryParams;
+import com.azure.data.tables.models.TableEntity;
+import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.UpdateMode;
 
 /**

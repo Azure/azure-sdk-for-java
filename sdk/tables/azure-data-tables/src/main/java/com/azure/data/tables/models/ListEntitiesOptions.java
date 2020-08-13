@@ -9,7 +9,7 @@ import com.azure.core.annotation.Fluent;
  * helps construct a query
  */
 @Fluent
-public final class QueryParams {
+public final class ListEntitiesOptions {
     private Integer top;
     private String select;
     private String filter;
@@ -27,9 +27,9 @@ public final class QueryParams {
      * Set the top property: Maximum number of records to return.
      *
      * @param top the top value to set.
-     * @return the QueryOptions object itself.
+     * @return the TableEntityQueryOptions object itself.
      */
-    public QueryParams setTop(Integer top) {
+    public ListEntitiesOptions setTop(Integer top) {
         this.top = top;
         return this;
     }
@@ -49,9 +49,9 @@ public final class QueryParams {
      * requested, e.g. "$select=PolicyAssignmentId, ResourceId".
      *
      * @param select the select value to set.
-     * @return the QueryOptions object itself.
+     * @return the TableEntityQueryOptions object itself.
      */
-    public QueryParams setSelect(String select) {
+    public ListEntitiesOptions setSelect(String select) {
         this.select = select;
         return this;
     }
@@ -69,9 +69,9 @@ public final class QueryParams {
      * Set the filter property: OData filter expression.
      *
      * @param filter the filter value to set.
-     * @return the QueryOptions object itself.
+     * @return the TableEntityQueryOptions object itself.
      */
-    public QueryParams setFilter(String filter) {
+    public ListEntitiesOptions setFilter(String filter) {
         this.filter = filter;
         return this;
     }
