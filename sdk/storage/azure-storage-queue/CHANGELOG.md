@@ -1,7 +1,7 @@
 # Release History
 
 ## 12.6.0 (2020-08-13)
-
+- GA release for 2019-12-12 service version.
 
 ## 12.6.0-beta.1 (2019-07-07)
 - Added support for the 2019-12-12 service version.
