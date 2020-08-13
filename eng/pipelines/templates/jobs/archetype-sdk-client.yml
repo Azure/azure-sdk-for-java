@@ -245,33 +245,17 @@ jobs:
           versionSpec: '3.6'
         condition: and(succeeded(), eq(variables['TestFromSource'],'true'))
 
-      - task: PowerShell@2
-        displayName: 'Set versions for From Source build'
-        inputs:
-          pwsh: true
-          targetType: inline
-          workingDirectory: $(Agent.BuildDirectory)
-          script: |
-            python3 --version
-            python3 eng/versioning/set_versions.py --build-type client --pst
-            if ($LastExitCode -eq 5678) {
-              echo "##vso[task.setvariable variable=ShouldRunSourceTests]$true"
-              echo "Changes detected, return code from set_versions.py is $($LastExitCode)"
-              exit 0
-            } elseif ($LastExitCode -eq 0) {
-              echo "No changes detected, return code from set_versions.py is $($LastExitCode)"
-              exit 0
-            } else {
-              echo "Invalid return code from set_versions.py, return code is $($LastExitCode)"
-              exit 1
-            }
+      - script: |
+          python3 --version
+          python3 eng/versioning/set_versions.py --build-type client --pst
+        displayName: 'Set versions for source build'
         condition: and(succeeded(), eq(variables['TestFromSource'],'true'))
 
       - script: |
           python3 --version
           python3 eng/versioning/update_versions.py --update-type library --build-type client --sr
         condition: and(succeeded(), eq(variables['ShouldRunSourceTests'],'true'))
-        displayName: 'Update versions for From Source build'
+        displayName: 'Update versions for source build'
 
       - task: PowerShell@2
         # The root pom.xml contains both track 1, data, and track 2, client libraries.
@@ -280,7 +264,7 @@ jobs:
         # azure-client-sdk-parent and create a temporary pom file with just those libraries.
         # Note: It excludes items within the /eng directory otherwise we'd be picking up
         # jacoco and spotbugs which are unnecessary for the From Source run.
-        displayName: 'Generate Aggregate POM for From Source Build'
+        displayName: 'Generate Aggregate Pom for From Source Build'
         inputs:
           pwsh: true
           workingDirectory: $(Agent.BuildDirectory)
