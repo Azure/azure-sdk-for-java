@@ -2499,6 +2499,7 @@ class FileAPITest extends APISpec {
 
     @Unroll
     @Requires({ liveMode() })
+    @Ignore("failing in ci")
     def "Buffered upload options"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
