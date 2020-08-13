@@ -110,16 +110,16 @@ public class AvroParser {
     /**
      * Block handler.
      *
-     * @param threshold The object index after which to start aggregating events in the block.
+     * @param beginObjectIndex The object index after which to start aggregating events in the block.
      *                         By default this is 0 to collect all objects in the block.
      */
-    private void onBlock(Object threshold) {
+    private void onBlock(Object beginObjectIndex) {
         /* On reading the block, read another block. */
-        AvroSchema.checkType("threshold", threshold, Long.class);
+        AvroSchema.checkType("beginObjectIndex", beginObjectIndex, Long.class);
 
         final AvroBlockSchema blockSchema = new AvroBlockSchema(
             this.objectType,
-            (Long) threshold,
+            (Long) beginObjectIndex,
             o -> {
                 AvroSchema.checkType("object", o, AvroObject.class);
                 this.objects.add((AvroObject) o);

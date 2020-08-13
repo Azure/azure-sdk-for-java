@@ -45,7 +45,7 @@ class Chunk {
             .map(avroObject -> {
                 /* Unwrap AvroObject. */
                 long blockOffset = avroObject.getNextBlockOffset();
-                long eventIndex = avroObject.getNextEventIndex();
+                long eventIndex = avroObject.getNextObjectIndex();
                 Object object = avroObject.getObject();
 
                 /* Get the event cursor associated with this event. */

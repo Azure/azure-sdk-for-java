@@ -33,8 +33,8 @@ public class AvroBlockSchema extends AvroCompositeSchema {
     private final Consumer<Object> onAvroObject;
     private final AvroType objectType;
     private Long blockCount;
-    private final Long threshold;
-    private long eventIndex;
+    private final Long beginObjectIndex;
+    private long objectIndex;
     private long blockOffset;
     private final byte[] syncMarker;
 
@@ -42,18 +42,18 @@ public class AvroBlockSchema extends AvroCompositeSchema {
      * Constructs a new AvroBlockSchema.
      *
      * @param objectType The type of object to parse in the block.
-     * @param threshold The index after which the objects should be returned.
+     * @param beginObjectIndex The index after which the objects should be returned.
      * @param onAvroObject The handler to add the object to the AvroParser's list.
      * @param syncMarker The sync marker to use to validate.
      * @param state The state of the parser.
      * @param onResult The result handler.
      */
-    public AvroBlockSchema(AvroType objectType, Long threshold, Consumer<Object> onAvroObject, byte[] syncMarker,
+    public AvroBlockSchema(AvroType objectType, Long beginObjectIndex, Consumer<Object> onAvroObject, byte[] syncMarker,
         AvroParserState state, Consumer<Object> onResult) {
         super(state, onResult);
         this.objectType = objectType;
-        this.threshold = threshold;
-        this.eventIndex = 0;
+        this.beginObjectIndex = beginObjectIndex;
+        this.objectIndex = 0;
         this.blockOffset = this.state.getSourceOffset();
         this.onAvroObject = onAvroObject;
         this.syncMarker = syncMarker.clone();
@@ -111,26 +111,26 @@ public class AvroBlockSchema extends AvroCompositeSchema {
         /* Decrement the block count. */
         this.blockCount--;
 
-        if (this.eventIndex < this.threshold) {
-            /* If we have not hit the threshold, do not emit the object, just increment the eventIndex. */
-            this.eventIndex++;
+        if (this.objectIndex < this.beginObjectIndex) {
+            /* If we have not hit the beginObjectIndex, do not emit the object, just increment the objectIndex. */
+            this.objectIndex++;
         } else {
-            /* If we have hit the threshold, determine the next indexes and call the object consumer to add it to
+            /* If we have hit the beginObjectIndex, determine the next indexes and call the object consumer to add it to
             the list. */
             long nextBlockOffset;
-            long nextEventIndex;
+            long nextObjectIndex;
             if (this.hasNext()) {
-                /* If the block has another object, just increment the eventIndex. */
+                /* If the block has another object, just increment the objectIndex. */
                 nextBlockOffset = this.blockOffset;
-                nextEventIndex = this.eventIndex + 1;
+                nextObjectIndex = this.objectIndex + 1;
             } else {
                 /* Otherwise, we are starting the next block, which starts after the syncMarker. */
                 nextBlockOffset = this.state.getSourceOffset() + AvroConstants.SYNC_MARKER_SIZE;
-                nextEventIndex = 0;
+                nextObjectIndex = 0;
             }
             /* Call the object handler to store this object in the AvroParser. */
-            this.onAvroObject.accept(new AvroObject(this.blockOffset, this.eventIndex++, nextBlockOffset,
-                nextEventIndex, schema));
+            this.onAvroObject.accept(new AvroObject(this.blockOffset, this.objectIndex++, nextBlockOffset,
+                nextObjectIndex, schema));
         }
 
         if (this.hasNext()) {

@@ -10,25 +10,25 @@ package com.azure.storage.internal.avro.implementation;
 public class AvroObject {
 
     private final long blockOffset;
-    private final long eventIndex;
+    private final long objectIndex;
     private final long nextBlockOffset;
-    private final long nextEventIndex;
+    private final long nextObjectIndex;
     private final Object object;
 
     /**
      * Creates an AvroObject.
      * @param blockOffset The offset of the block the object is in.
-     * @param eventIndex The index of the object in the block.
+     * @param objectIndex The index of the object in the block.
      * @param nextBlockOffset The offset of the block the next object is in.
-     * @param nextEventIndex The index of the next object in the block.
+     * @param nextObjectIndex The index of the next object in the block.
      * @param object The object.
      */
-    public AvroObject(long blockOffset, long eventIndex, long nextBlockOffset, long nextEventIndex,
+    public AvroObject(long blockOffset, long objectIndex, long nextBlockOffset, long nextObjectIndex,
         Object object) {
         this.blockOffset = blockOffset;
-        this.eventIndex = eventIndex;
+        this.objectIndex = objectIndex;
         this.nextBlockOffset = nextBlockOffset;
-        this.nextEventIndex = nextEventIndex;
+        this.nextObjectIndex = nextObjectIndex;
         this.object = object;
     }
 
@@ -42,8 +42,8 @@ public class AvroObject {
     /**
      * @return The index of the object in the block.
      */
-    public long getEventIndex() {
-        return eventIndex;
+    public long getObjectIndex() {
+        return objectIndex;
     }
 
     /**
@@ -63,7 +63,7 @@ public class AvroObject {
     /**
      * @return The index of the next object in the block.
      */
-    public long getNextEventIndex() {
-        return nextEventIndex;
+    public long getNextObjectIndex() {
+        return nextObjectIndex;
     }
 }
