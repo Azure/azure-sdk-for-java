@@ -16,6 +16,7 @@ import com.azure.storage.file.datalake.models.UserDelegationKey
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues
 import com.azure.storage.file.datalake.sas.FileSystemSasPermission
 import com.azure.storage.file.datalake.sas.PathSasPermission
+import spock.lang.Ignore
 import spock.lang.Unroll
 
 import java.time.LocalDateTime
@@ -165,6 +166,7 @@ class SASTest extends APISpec {
         notThrown(DataLakeStorageException)
     }
 
+    @Ignore("User Delegation SAS string to sign has changed. Reenable when working on feature.")
     def "serviceSASSignatureValues network test file user delegation"() {
         setup:
         def permissions = new PathSasPermission()
@@ -191,6 +193,7 @@ class SASTest extends APISpec {
         notThrown(DataLakeStorageException)
     }
 
+    @Ignore("User Delegation SAS string to sign has changed. Reenable when working on feature.")
     def "serviceSASSignatureValues network test file system user delegation"() {
         setup:
         def permissions = new FileSystemSasPermission()
