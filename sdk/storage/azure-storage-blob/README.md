@@ -111,7 +111,9 @@ Blob Storage is designed for:
 ### URL format
 Blobs are addressable using the following URL format:
 The following URL addresses a blob:
+```
 https://myaccount.blob.core.windows.net/mycontainer/myblob
+```
 
 #### Resource URI Syntax
 For the storage account, the base URI for blob operations includes the name of the account only:
