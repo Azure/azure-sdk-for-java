@@ -35,7 +35,8 @@ public final class SentenceSentiment {
      * Creates a {@link SentenceSentiment} model that describes the sentiment analysis of sentence.
      * @param text The sentence text.
      * @param sentiment The sentiment label of the sentence.
-     * @param minedOpinions The mined opinions of the sentence sentiment.
+     * @param minedOpinions The mined opinions of the sentence sentiment. This is only returned if you pass the
+     * opinion mining parameter to the analyze sentiment APIs.
      * @param confidenceScores The sentiment confidence score (Softmax score) between 0 and 1, for each sentiment label.
      *   Higher values signify higher confidence.
      */
@@ -67,6 +68,7 @@ public final class SentenceSentiment {
 
     /**
      * Get the mined opinions of sentence sentiment.
+     * This is only returned if you pass the opinion mining parameter to the analyze sentiment APIs.
      *
      * @return The mined opinions of sentence sentiment.
      */

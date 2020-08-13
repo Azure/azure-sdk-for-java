@@ -5,6 +5,7 @@ package com.azure.ai.textanalytics.batch;
 
 import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
+import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.MinedOpinion;
@@ -28,7 +29,7 @@ import static com.azure.ai.textanalytics.models.TextSentiment.POSITIVE;
 /**
  * Sample demonstrates how to analyze the sentiments of {@code String} documents with opinion mining.
  */
-public class AnalyzeSentimentBatchStringWithAspects {
+public class AnalyzeSentimentBatchStringWithOpinionMining {
     /**
      * Main method to invoke this demo about how to analyze the sentiments of {@link TextDocumentInput} documents.
      *
@@ -47,11 +48,12 @@ public class AnalyzeSentimentBatchStringWithAspects {
             "Bad atmosphere. Not close to plenty of restaurants, hotels, and transit! Staff are not friendly and helpful."
         );
 
-        // Request options: show statistics and model version
-        TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true).setModelVersion("latest");
+        AnalyzeSentimentOptions options = new AnalyzeSentimentOptions()
+            .setIncludeOpinionMining(true)
+            .setRequestOptions(new TextAnalyticsRequestOptions().setIncludeStatistics(true).setModelVersion("latest"));
 
         // Analyzing sentiment for each document in a batch of documents
-        AnalyzeSentimentResultCollection sentimentBatchResultCollection = client.analyzeSentimentBatch(documents, "en", true, requestOptions);
+        AnalyzeSentimentResultCollection sentimentBatchResultCollection = client.analyzeSentimentBatch(documents, "en", options);
 
         // Model version
         System.out.printf("Results of Azure Text Analytics \"Sentiment Analysis\" Model, version: %s%n", sentimentBatchResultCollection.getModelVersion());
@@ -92,7 +94,7 @@ public class AnalyzeSentimentBatchStringWithAspects {
         for (MinedOpinion positiveMinedOpinion : positiveMinedOpinions) {
             System.out.printf("\tAspect: %s%n", positiveMinedOpinion.getAspect().getText());
             for (OpinionSentiment opinionSentiment : positiveMinedOpinion.getOpinions()) {
-                System.out.printf("\t\t'%s' sentiment because of \"%s\". Does the aspect negated: %s.%n",
+                System.out.printf("\t\t'%s' sentiment because of \"%s\". Is the aspect negated: %s.%n",
                     opinionSentiment.getSentiment(), opinionSentiment.getText(), opinionSentiment.isNegated());
             }
         }
@@ -101,7 +103,7 @@ public class AnalyzeSentimentBatchStringWithAspects {
         for (MinedOpinion mixedMinedOpinion : mixedMinedOpinions) {
             System.out.printf("\tAspect: %s%n", mixedMinedOpinion.getAspect().getText());
             for (OpinionSentiment opinionSentiment : mixedMinedOpinion.getOpinions()) {
-                System.out.printf("\t\t'%s' sentiment because of \"%s\". Does the aspect negated: %s.%n",
+                System.out.printf("\t\t'%s' sentiment because of \"%s\". Is the aspect negated: %s.%n",
                     opinionSentiment.getSentiment(), opinionSentiment.getText(), opinionSentiment.isNegated());
             }
         }
@@ -110,7 +112,7 @@ public class AnalyzeSentimentBatchStringWithAspects {
         for (MinedOpinion negativeMinedOpinion : negativeMinedOpinions) {
             System.out.printf("\tAspect: %s%n", negativeMinedOpinion.getAspect().getText());
             for (OpinionSentiment opinionSentiment : negativeMinedOpinion.getOpinions()) {
-                System.out.printf("\t\t'%s' sentiment because of \"%s\". Does the aspect negated: %s.%n",
+                System.out.printf("\t\t'%s' sentiment because of \"%s\". Is the aspect negated: %s.%n",
                     opinionSentiment.getSentiment(), opinionSentiment.getText(), opinionSentiment.isNegated());
             }
         }

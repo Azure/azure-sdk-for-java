@@ -3,6 +3,7 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
@@ -462,7 +463,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
      * Code snippet for {@link TextAnalyticsAsyncClient#analyzeSentiment(String, String)}
      */
     public void analyzeSentimentWithLanguage() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentiment#string-string
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentiment#String-String
         String document = "The hotel was dark and unclean.";
         textAnalyticsAsyncClient.analyzeSentiment(document, "en")
             .subscribe(documentSentiment -> {
@@ -477,15 +478,16 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                         sentenceSentiment.getConfidenceScores().getNegative());
                 }
             });
-        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentiment#string-string
+        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentiment#String-String
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsAsyncClient#analyzeSentiment(String, String, boolean)}
+     * Code snippet for {@link TextAnalyticsAsyncClient#analyzeSentiment(String, String, AnalyzeSentimentOptions)}
      */
     public void analyzeSentimentWithLanguageWithOpinionMining() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentiment#string-boolean-string
-        textAnalyticsAsyncClient.analyzeSentiment("The hotel was dark and unclean.", "en", true)
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentiment#String-String-AnalyzeSentimentOptions
+        textAnalyticsAsyncClient.analyzeSentiment("The hotel was dark and unclean.", "en",
+            new AnalyzeSentimentOptions().setIncludeOpinionMining(true))
             .subscribe(documentSentiment -> {
                 List<MinedOpinion> positiveMinedOpinions = new ArrayList<>();
                 List<MinedOpinion> mixedMinedOpinions = new ArrayList<>();
@@ -506,12 +508,12 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 for (MinedOpinion negativeMinedOpinion : negativeMinedOpinions) {
                     System.out.printf("\tAspect: %s%n", negativeMinedOpinion.getAspect().getText());
                     for (OpinionSentiment opinionSentiment : negativeMinedOpinion.getOpinions()) {
-                        System.out.printf("\t\t'%s' sentiment because of \"%s\". Does the aspect negated: %s.%n",
+                        System.out.printf("\t\t'%s' sentiment because of \"%s\". Is the aspect negated: %s.%n",
                             opinionSentiment.getSentiment(), opinionSentiment.getText(), opinionSentiment.isNegated());
                     }
                 }
             });
-        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentiment#string-boolean-string
+        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentiment#String-String-AnalyzeSentimentOptions
     }
 
     /**
@@ -524,7 +526,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             "The restaurant had amazing gnocchi."
         );
 
-        textAnalyticsAsyncClient.analyzeSentimentBatch(documents, "en", null).subscribe(
+        textAnalyticsAsyncClient.analyzeSentimentBatch(documents, "en", (TextAnalyticsRequestOptions) null).subscribe(
             response -> {
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = response.getStatistics();
@@ -548,16 +550,18 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsAsyncClient#analyzeSentimentBatch(Iterable, String, boolean, TextAnalyticsRequestOptions)}
+     * Code snippet for {@link TextAnalyticsAsyncClient#analyzeSentimentBatch(Iterable, String, AnalyzeSentimentOptions)}
      */
     public void analyzeSentimentStringListWithOptionsAndOpinionMining() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentimentBatch#Iterable-boolean-String-TextAnalyticsRequestOptions
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentimentBatch#Iterable-String-AnalyzeSentimentOptions
         List<String> documents = Arrays.asList(
             "The hotel was dark and unclean.",
             "The restaurant had amazing gnocchi."
         );
 
-        textAnalyticsAsyncClient.analyzeSentimentBatch(documents, "en", true, null).subscribe(
+        AnalyzeSentimentOptions options = new AnalyzeSentimentOptions().setIncludeOpinionMining(true);
+
+        textAnalyticsAsyncClient.analyzeSentimentBatch(documents, "en", options).subscribe(
             response -> {
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = response.getStatistics();
@@ -588,12 +592,12 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 for (MinedOpinion negativeMinedOpinion : negativeMinedOpinions) {
                     System.out.printf("\tAspect: %s%n", negativeMinedOpinion.getAspect().getText());
                     for (OpinionSentiment opinionSentiment : negativeMinedOpinion.getOpinions()) {
-                        System.out.printf("\t\t'%s' sentiment because of \"%s\". Does the aspect negated: %s.%n",
+                        System.out.printf("\t\t'%s' sentiment because of \"%s\". Is the aspect negated: %s.%n",
                             opinionSentiment.getSentiment(), opinionSentiment.getText(), opinionSentiment.isNegated());
                     }
                 }
             });
-        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentimentBatch#Iterable-boolean-String-TextAnalyticsRequestOptions
+        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentimentBatch#Iterable-String-AnalyzeSentimentOptions
     }
 
     /**
@@ -637,18 +641,19 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsAsyncClient#analyzeSentimentBatchWithResponse(Iterable, boolean, TextAnalyticsRequestOptions)}
+     * Code snippet for {@link TextAnalyticsAsyncClient#analyzeSentimentBatchWithResponse(Iterable, AnalyzeSentimentOptions)}
      */
     public void analyzeBatchSentimentMaxOverloadWithOpinionMining() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentimentBatch#Iterable-boolean-TextAnalyticsRequestOptions
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentimentBatch#Iterable-AnalyzeSentimentOptions
         List<TextDocumentInput> textDocumentInputs1 = Arrays.asList(
             new TextDocumentInput("0", "The hotel was dark and unclean.").setLanguage("en"),
             new TextDocumentInput("1", "The restaurant had amazing gnocchi.").setLanguage("en"));
 
         // Request options: show statistics and model version
-        TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
-
-        textAnalyticsAsyncClient.analyzeSentimentBatchWithResponse(textDocumentInputs1, true, requestOptions)
+        AnalyzeSentimentOptions options = new AnalyzeSentimentOptions()
+            .setIncludeOpinionMining(true)
+            .setRequestOptions(new TextAnalyticsRequestOptions().setIncludeStatistics(true));
+        textAnalyticsAsyncClient.analyzeSentimentBatchWithResponse(textDocumentInputs1, options)
             .subscribe(response -> {
                 // Response's status code
                 System.out.printf("Status code of request response: %d%n", response.getStatusCode());
@@ -684,11 +689,11 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 for (MinedOpinion negativeMinedOpinion : negativeMinedOpinions) {
                     System.out.printf("\tAspect: %s%n", negativeMinedOpinion.getAspect().getText());
                     for (OpinionSentiment opinionSentiment : negativeMinedOpinion.getOpinions()) {
-                        System.out.printf("\t\t'%s' sentiment because of \"%s\". Does the aspect negated: %s.%n",
+                        System.out.printf("\t\t'%s' sentiment because of \"%s\". Is the aspect negated: %s.%n",
                             opinionSentiment.getSentiment(), opinionSentiment.getText(), opinionSentiment.isNegated());
                     }
                 }
             });
-        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentimentBatch#Iterable-boolean-TextAnalyticsRequestOptions
+        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentimentBatch#Iterable-AnalyzeSentimentOptions
     }
 }

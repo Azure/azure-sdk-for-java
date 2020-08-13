@@ -5,6 +5,7 @@ package com.azure.ai.textanalytics.batch;
 
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
+import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.MinedOpinion;
@@ -12,7 +13,9 @@ import com.azure.ai.textanalytics.models.OpinionSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
+import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextSentiment;
+import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.ArrayList;
@@ -26,12 +29,12 @@ import static com.azure.ai.textanalytics.models.TextSentiment.NEGATIVE;
 import static com.azure.ai.textanalytics.models.TextSentiment.POSITIVE;
 
 /**
- * Sample demonstrates how to asynchronously analyze the sentiments of {@code String} documents with opinion mining.
+ * Sample demonstrates how to asynchronously analyze the sentiments of {@link TextDocumentInput} documents with
+ * opinion mining.
  */
-public class AnalyzeSentimentBatchStringWithAspectsAsync {
-
+public class AnalyzeSentimentBatchDocumentsWithOpinionMiningAsync {
     /**
-     * Main method to invoke this demo about how to analyze the sentiments of {@code String} documents.
+     * Main method to invoke this demo about how to analyze the sentiments of {@link TextDocumentInput} documents.
      *
      * @param args Unused arguments to the program.
      */
@@ -43,17 +46,22 @@ public class AnalyzeSentimentBatchStringWithAspectsAsync {
             .buildAsyncClient();
 
         // The texts that need be analyzed.
-        List<String> documents = Arrays.asList(
-            "Great atmosphere. Close to plenty of restaurants, hotels, and transit! Staff are friendly and helpful.",
-            "Bad atmosphere. Not close to plenty of restaurants, hotels, and transit! Staff are not friendly and helpful."
+        List<TextDocumentInput> documents = Arrays.asList(
+            new TextDocumentInput("A", "Great atmosphere. Close to plenty of restaurants, hotels, and transit! Staff are friendly and helpful.").setLanguage("en"),
+            new TextDocumentInput("B", "Bad atmosphere. Not close to plenty of restaurants, hotels, and transit! Staff are not friendly and helpful.").setLanguage("en")
         );
 
-        // Request options: show statistics and model version
-        TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true).setModelVersion("latest");
+        AnalyzeSentimentOptions options = new AnalyzeSentimentOptions()
+            .setIncludeOpinionMining(true)
+            .setRequestOptions(new TextAnalyticsRequestOptions().setIncludeStatistics(true).setModelVersion("latest"));
 
         // Analyzing sentiment for each document in a batch of documents
-        client.analyzeSentimentBatch(documents, "en", true, requestOptions).subscribe(
-            sentimentBatchResultCollection -> {
+        client.analyzeSentimentBatchWithResponse(documents, options).subscribe(
+            sentimentBatchResultResponse -> {
+                // Response's status code
+                System.out.printf("Status code of request response: %d%n", sentimentBatchResultResponse.getStatusCode());
+                AnalyzeSentimentResultCollection sentimentBatchResultCollection = sentimentBatchResultResponse.getValue();
+
                 System.out.printf("Results of Azure Text Analytics \"Sentiment Analysis\" Model, version: %s%n", sentimentBatchResultCollection.getModelVersion());
 
                 // Batch statistics
@@ -63,13 +71,11 @@ public class AnalyzeSentimentBatchStringWithAspectsAsync {
 
                 // Analyzed sentiment for each document in a batch of documents
                 AtomicInteger counter = new AtomicInteger();
-
                 List<MinedOpinion> positiveMinedOpinions = new ArrayList<>();
                 List<MinedOpinion> mixedMinedOpinions = new ArrayList<>();
                 List<MinedOpinion> negativeMinedOpinions = new ArrayList<>();
                 for (AnalyzeSentimentResult analyzeSentimentResult : sentimentBatchResultCollection) {
-                    // Analyzed sentiment for each document
-                    System.out.printf("%nText = %s%n", documents.get(counter.getAndIncrement()));
+                    System.out.printf("%n%s%n", documents.get(counter.getAndIncrement()));
                     if (analyzeSentimentResult.isError()) {
                         // Erroneous document
                         System.out.printf("Cannot analyze sentiment. Error: %s%n", analyzeSentimentResult.getError().getMessage());
@@ -102,7 +108,7 @@ public class AnalyzeSentimentBatchStringWithAspectsAsync {
                 for (MinedOpinion positiveMinedOpinion : positiveMinedOpinions) {
                     System.out.printf("\tAspect: %s%n", positiveMinedOpinion.getAspect().getText());
                     for (OpinionSentiment opinionSentiment : positiveMinedOpinion.getOpinions()) {
-                        System.out.printf("\t\t'%s' sentiment because of \"%s\". Does the aspect negated: %s.%n",
+                        System.out.printf("\t\t'%s' sentiment because of \"%s\". Is the aspect negated: %s.%n",
                             opinionSentiment.getSentiment(), opinionSentiment.getText(), opinionSentiment.isNegated());
                     }
                 }
@@ -111,7 +117,7 @@ public class AnalyzeSentimentBatchStringWithAspectsAsync {
                 for (MinedOpinion mixedMinedOpinion : mixedMinedOpinions) {
                     System.out.printf("\tAspect: %s%n", mixedMinedOpinion.getAspect().getText());
                     for (OpinionSentiment opinionSentiment : mixedMinedOpinion.getOpinions()) {
-                        System.out.printf("\t\t'%s' sentiment because of \"%s\". Does the aspect negated: %s.%n",
+                        System.out.printf("\t\t'%s' sentiment because of \"%s\". Is the aspect negated: %s.%n",
                             opinionSentiment.getSentiment(), opinionSentiment.getText(), opinionSentiment.isNegated());
                     }
                 }
@@ -120,7 +126,7 @@ public class AnalyzeSentimentBatchStringWithAspectsAsync {
                 for (MinedOpinion negativeMinedOpinion : negativeMinedOpinions) {
                     System.out.printf("\tAspect: %s%n", negativeMinedOpinion.getAspect().getText());
                     for (OpinionSentiment opinionSentiment : negativeMinedOpinion.getOpinions()) {
-                        System.out.printf("\t\t'%s' sentiment because of \"%s\". Does the aspect negated: %s.%n",
+                        System.out.printf("\t\t'%s' sentiment because of \"%s\". Is the aspect negated: %s.%n",
                             opinionSentiment.getSentiment(), opinionSentiment.getText(), opinionSentiment.isNegated());
                     }
                 }

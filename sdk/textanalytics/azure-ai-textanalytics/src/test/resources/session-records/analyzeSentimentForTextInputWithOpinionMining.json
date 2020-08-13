@@ -4,20 +4,20 @@
     "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.1//sentiment?opinionMining=true",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "69c1c194-fb33-4908-b2a5-3ebd9d668d1b",
+      "x-ms-client-request-id" : "8bd41d6a-abb5-4839-a05d-3647b03d0d63",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "161",
+      "x-envoy-upstream-service-time" : "935",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
       "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=1",
-      "apim-request-id" : "f3d74f84-bafa-4bd6-9e21-d431acfcb8ba",
+      "apim-request-id" : "dc86f4a0-e4e4-42dd-8754-131ecbfea2ee",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"documents\":[{\"id\":\"0\",\"sentiment\":\"mixed\",\"confidenceScores\":{\"positive\":0.5,\"neutral\":0.0,\"negative\":0.5},\"sentences\":[{\"sentiment\":\"negative\",\"confidenceScores\":{\"positive\":0.0,\"neutral\":0.0,\"negative\":1.0},\"offset\":0,\"length\":31,\"text\":\"The hotel was dark and unclean.\",\"aspects\":[{\"sentiment\":\"negative\",\"confidenceScores\":{\"positive\":0.0,\"negative\":1.0},\"offset\":4,\"length\":5,\"text\":\"hotel\",\"relations\":[{\"relationType\":\"opinion\",\"ref\":\"#/documents/0/sentences/0/opinions/0\"},{\"relationType\":\"opinion\",\"ref\":\"#/documents/0/sentences/0/opinions/1\"}]}],\"opinions\":[{\"sentiment\":\"negative\",\"confidenceScores\":{\"positive\":0.0,\"negative\":1.0},\"offset\":14,\"length\":4,\"text\":\"dark\",\"isNegated\":false},{\"sentiment\":\"negative\",\"confidenceScores\":{\"positive\":0.0,\"negative\":1.0},\"offset\":23,\"length\":7,\"text\":\"unclean\",\"isNegated\":false}]},{\"sentiment\":\"positive\",\"confidenceScores\":{\"positive\":1.0,\"neutral\":0.0,\"negative\":0.0},\"offset\":32,\"length\":35,\"text\":\"The restaurant had amazing gnocchi.\",\"aspects\":[{\"sentiment\":\"positive\",\"confidenceScores\":{\"positive\":1.0,\"negative\":0.0},\"offset\":59,\"length\":7,\"text\":\"gnocchi\",\"relations\":[{\"relationType\":\"opinion\",\"ref\":\"#/documents/0/sentences/1/opinions/0\"}]}],\"opinions\":[{\"sentiment\":\"positive\",\"confidenceScores\":{\"positive\":1.0,\"negative\":0.0},\"offset\":51,\"length\":7,\"text\":\"amazing\",\"isNegated\":false}]}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-04-01\"}",
-      "Date" : "Wed, 05 Aug 2020 04:12:57 GMT",
+      "Date" : "Thu, 13 Aug 2020 02:45:48 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

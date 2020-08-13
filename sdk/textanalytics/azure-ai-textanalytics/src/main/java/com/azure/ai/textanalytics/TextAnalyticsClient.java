@@ -3,6 +3,7 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
@@ -528,6 +529,7 @@ public final class TextAnalyticsClient {
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Analyze the sentiments of documents</p>
+     *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentiment#String}
      *
      * @param document The document to be analyzed.
@@ -550,6 +552,7 @@ public final class TextAnalyticsClient {
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Analyze the sentiments in a document with a provided language representation.</p>
+     *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentiment#String-String}
      *
      * @param document The document to be analyzed.
@@ -570,29 +573,33 @@ public final class TextAnalyticsClient {
 
     /**
      * Returns a sentiment prediction, as well as confidence scores for each sentiment label (Positive, Negative, and
-     * Neutral) for the document and each sentence within it. If {@code includeOpinionMining} set to true, the output
-     * will include the opinion mining result. It mined the opinions of a sentence and conduct more granular analysis
-     * around the aspects of a product or service (also known as aspect-based sentiment analysis).
+     * Neutral) for the document and each sentence within it. If the {@code includeOpinionMining} of
+     * {@link AnalyzeSentimentOptions} set to true, the output will include the opinion mining result. It mined the
+     * opinions of a sentence and conduct more granular analysis around the aspects of a product or service
+     * (also known as aspect-based sentiment analysis).
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Analyze the sentiments in a document with a provided language representation.</p>
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentiment#String-boolean-String}
+     * <p>Analyze the sentiments in a document with a provided language representation and
+     * {@link AnalyzeSentimentOptions} options.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentiment#String-String-AnalyzeSentimentOptions}
      *
      * @param document The document to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language for the document. If not set, uses "en" for
      * English as default.
+     * @param options The additional configurable {@link AnalyzeSentimentOptions options} that may be passed when
+     * analyzing sentiments.
      *
-     * @param includeOpinionMining The boolean indicator to include opinion mining data in the returned result.
      * @return A {@link DocumentSentiment analyzed document sentiment} of the document.
      *
      * @throws NullPointerException if {@code document} is null.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentSentiment analyzeSentiment(String document, String language, boolean includeOpinionMining) {
-        return client.analyzeSentiment(document, language, includeOpinionMining).block();
+    public DocumentSentiment analyzeSentiment(String document, String language, AnalyzeSentimentOptions options) {
+        return client.analyzeSentiment(document, language, options).block();
     }
 
     /**
@@ -619,27 +626,30 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AnalyzeSentimentResultCollection analyzeSentimentBatch(
         Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
-        return client.analyzeSentimentBatch(documents, language, false, options).block();
+        return client.analyzeSentimentBatch(documents, language,
+            new AnalyzeSentimentOptions().setRequestOptions(options)).block();
     }
 
     /**
      * Returns a sentiment prediction, as well as confidence scores for each sentiment label (Positive, Negative, and
-     * Neutral) for the document and each sentence within it. If {@code includeOpinionMining} set to true, the output
-     * will include the opinion mining result. It mined the opinions of a sentence and conduct more granular analysis
-     * around the aspects of a product or service (also known as aspect-based sentiment analysis).
+     * Neutral) for the document and each sentence within it. If the {@code includeOpinionMining} of
+     * {@link AnalyzeSentimentOptions} set to true, the output will include the opinion mining result. It mined the
+     * opinions of a sentence and conduct more granular analysis around the aspects of a product or service
+     * (also known as aspect-based sentiment analysis).
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Analyze the sentiments in a list of documents with a provided language representation and request options.</p>
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentBatch#Iterable-boolean-String-TextAnalyticsRequestOptions}
+     * <p>Analyze the sentiments in a list of documents with a provided language representation and
+     * {@link AnalyzeSentimentOptions} options.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentBatch#Iterable-String-AnalyzeSentimentOptions}
      *
      * @param documents A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
      * English as default.
-     * @param includeOpinionMining The boolean indicator to include opinion mining data in the returned result.
-     * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
-     * and show statistics.
+     * @param options The additional configurable {@link AnalyzeSentimentOptions options} that may be passed when
+     * analyzing sentiments.
      *
      * @return A {@link AnalyzeSentimentResultCollection}.
      *
@@ -648,8 +658,8 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AnalyzeSentimentResultCollection analyzeSentimentBatch(Iterable<String> documents,
-        String language, boolean includeOpinionMining, TextAnalyticsRequestOptions options) {
-        return client.analyzeSentimentBatch(documents, language, includeOpinionMining, options).block();
+        String language, AnalyzeSentimentOptions options) {
+        return client.analyzeSentimentBatch(documents, language, options).block();
     }
 
     /**
@@ -657,8 +667,8 @@ public final class TextAnalyticsClient {
      * (Positive, Negative, and Neutral) for the document and each sentence within it.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Analyze the sentiments with http response in a list of {@link TextDocumentInput documents} with request
-     * options.</p>
+     * <p>Analyze sentiment in a list of {@link TextDocumentInput document} with provided request options.</p>
+     *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentBatch#Iterable-TextAnalyticsRequestOptions-Context}
      *
      * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
@@ -676,27 +686,28 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AnalyzeSentimentResultCollection> analyzeSentimentBatchWithResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
-        return client.analyzeSentimentAsyncClient.analyzeSentimentBatchWithContext(documents, false,
-            options, context).block();
+        return client.analyzeSentimentAsyncClient.analyzeSentimentBatchWithContext(documents,
+            new AnalyzeSentimentOptions().setRequestOptions(options), context).block();
     }
 
     /**
      * Returns a sentiment prediction, as well as confidence scores for each sentiment label (Positive, Negative, and
-     * Neutral) for the document and each sentence within it. If {@code includeOpinionMining} set to true, the output
-     * will include the opinion mining result. It mined the opinions of a sentence and conduct more granular analysis
-     * around the aspects of a product or service (also known as aspect-based sentiment analysis).
+     * Neutral) for the document and each sentence within it. If the {@code includeOpinionMining} of
+     * {@link AnalyzeSentimentOptions} set to true, the output will include the opinion mining result. It mined the
+     * opinions of a sentence and conduct more granular analysis around the aspects of a product or service
+     * (also known as aspect-based sentiment analysis).
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Analyze the sentiments with http response in a list of {@link TextDocumentInput documents} with request
+     * <p>Analyze sentiment in a list of documents with provided language code and {@link AnalyzeSentimentOptions}
      * options.</p>
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentBatch#Iterable-boolean-TextAnalyticsRequestOptions-Context}
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentBatch#Iterable-AnalyzeSentimentOptions-Context}
      *
      * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
-     * @param includeOpinionMining The boolean indicator to include opinion mining data in the returned result.
-     * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
-     * and show statistics.
+     * @param options The additional configurable {@link AnalyzeSentimentOptions options} that may be passed when
+     * analyzing sentiments.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A {@link Response} that contains a {@link AnalyzeSentimentResultCollection}.
@@ -706,9 +717,7 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AnalyzeSentimentResultCollection> analyzeSentimentBatchWithResponse(
-        Iterable<TextDocumentInput> documents, boolean includeOpinionMining, TextAnalyticsRequestOptions options,
-        Context context) {
-        return client.analyzeSentimentAsyncClient.analyzeSentimentBatchWithContext(documents, includeOpinionMining,
-            options, context).block();
+        Iterable<TextDocumentInput> documents, AnalyzeSentimentOptions options, Context context) {
+        return client.analyzeSentimentAsyncClient.analyzeSentimentBatchWithContext(documents, options, context).block();
     }
 }

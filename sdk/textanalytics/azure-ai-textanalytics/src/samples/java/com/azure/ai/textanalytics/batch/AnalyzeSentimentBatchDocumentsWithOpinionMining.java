@@ -5,6 +5,7 @@ package com.azure.ai.textanalytics.batch;
 
 import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
+import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.MinedOpinion;
 import com.azure.ai.textanalytics.models.OpinionSentiment;
@@ -30,7 +31,7 @@ import static com.azure.ai.textanalytics.models.TextSentiment.POSITIVE;
 /**
  * Sample demonstrates how to analyze the sentiments of {@link TextDocumentInput} documents with opinion mining.
  */
-public class AnalyzeSentimentBatchDocumentsWithAspects {
+public class AnalyzeSentimentBatchDocumentsWithOpinionMining {
     /**
      * Main method to invoke this demo about how to analyze the sentiments of {@link TextDocumentInput} documents.
      *
@@ -49,12 +50,13 @@ public class AnalyzeSentimentBatchDocumentsWithAspects {
             new TextDocumentInput("B", "Bad atmosphere. Not close to plenty of restaurants, hotels, and transit! Staff are not friendly and helpful.").setLanguage("en")
         );
 
-        // Request options: show statistics and model version
-        TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true).setModelVersion("latest");
+        AnalyzeSentimentOptions options = new AnalyzeSentimentOptions()
+            .setIncludeOpinionMining(true)
+            .setRequestOptions(new TextAnalyticsRequestOptions().setIncludeStatistics(true).setModelVersion("latest"));
 
         // Analyzing sentiment for each document in a batch of documents
         Response<AnalyzeSentimentResultCollection> sentimentBatchResultResponse =
-            client.analyzeSentimentBatchWithResponse(documents, true, requestOptions, Context.NONE);
+            client.analyzeSentimentBatchWithResponse(documents, options, Context.NONE);
 
         // Response's status code
         System.out.printf("Status code of request response: %d%n", sentimentBatchResultResponse.getStatusCode());
@@ -108,7 +110,7 @@ public class AnalyzeSentimentBatchDocumentsWithAspects {
         for (MinedOpinion positiveMinedOpinion : positiveMinedOpinions) {
             System.out.printf("\tAspect: %s%n", positiveMinedOpinion.getAspect().getText());
             for (OpinionSentiment opinionSentiment : positiveMinedOpinion.getOpinions()) {
-                System.out.printf("\t\t'%s' sentiment because of \"%s\". Does the aspect negated: %s.%n",
+                System.out.printf("\t\t'%s' sentiment because of \"%s\". Is the aspect negated: %s.%n",
                     opinionSentiment.getSentiment(), opinionSentiment.getText(), opinionSentiment.isNegated());
             }
         }
@@ -117,7 +119,7 @@ public class AnalyzeSentimentBatchDocumentsWithAspects {
         for (MinedOpinion mixedMinedOpinion : mixedMinedOpinions) {
             System.out.printf("\tAspect: %s%n", mixedMinedOpinion.getAspect().getText());
             for (OpinionSentiment opinionSentiment : mixedMinedOpinion.getOpinions()) {
-                System.out.printf("\t\t'%s' sentiment because of \"%s\". Does the aspect negated: %s.%n",
+                System.out.printf("\t\t'%s' sentiment because of \"%s\". Is the aspect negated: %s.%n",
                     opinionSentiment.getSentiment(), opinionSentiment.getText(), opinionSentiment.isNegated());
             }
         }
@@ -126,7 +128,7 @@ public class AnalyzeSentimentBatchDocumentsWithAspects {
         for (MinedOpinion negativeMinedOpinion : negativeMinedOpinions) {
             System.out.printf("\tAspect: %s%n", negativeMinedOpinion.getAspect().getText());
             for (OpinionSentiment opinionSentiment : negativeMinedOpinion.getOpinions()) {
-                System.out.printf("\t\t'%s' sentiment because of \"%s\". Does the aspect negated: %s.%n",
+                System.out.printf("\t\t'%s' sentiment because of \"%s\". Is the aspect negated: %s.%n",
                     opinionSentiment.getSentiment(), opinionSentiment.getText(), opinionSentiment.isNegated());
             }
         }

@@ -15,7 +15,7 @@ public final class MinedOpinion {
     /**
      * Create an {@link MinedOpinion} model that describes mined opinion.
      *
-     * @param aspect The aspect of the mined opinion.
+     * @param aspect The aspect of a product/service that this opinion is about.
      * @param opinions The opinions of the aspect text.
      */
     public MinedOpinion(AspectSentiment aspect, IterableStream<OpinionSentiment> opinions) {

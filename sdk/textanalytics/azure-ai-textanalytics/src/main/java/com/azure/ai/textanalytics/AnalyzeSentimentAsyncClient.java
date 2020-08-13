@@ -16,6 +16,7 @@ import com.azure.ai.textanalytics.implementation.models.SentenceSentimentValue;
 import com.azure.ai.textanalytics.implementation.models.SentimentConfidenceScorePerLabel;
 import com.azure.ai.textanalytics.implementation.models.SentimentResponse;
 import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
+import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.AspectSentiment;
 import com.azure.ai.textanalytics.models.MinedOpinion;
@@ -74,19 +75,21 @@ class AnalyzeSentimentAsyncClient {
      * which contains {@link AnalyzeSentimentResultCollection}.
      *
      * @param documents The list of documents to analyze sentiments for.
-     * @param includeOpinionMining The boolean indicator to include opinion mining data in the returned result.
-     * @param options The {@link TextAnalyticsRequestOptions} request options.
+     * @param options The additional configurable {@link AnalyzeSentimentOptions options} that may be passed when
+     * analyzing sentiments.
      * @return A mono {@link Response} contains {@link AnalyzeSentimentResultCollection}.
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
      */
     public Mono<Response<AnalyzeSentimentResultCollection>> analyzeSentimentBatch(
-        Iterable<TextDocumentInput> documents, boolean includeOpinionMining, TextAnalyticsRequestOptions options) {
+        Iterable<TextDocumentInput> documents, AnalyzeSentimentOptions options) {
         try {
             inputDocumentsValidation(documents);
-            return withContext(context ->
-                getAnalyzedSentimentResponse(documents, includeOpinionMining, options, context));
+            return withContext(context -> getAnalyzedSentimentResponse(documents,
+                options == null ? false : options.isIncludeOpinionMining(),
+                options == null ? null : options.getRequestOptions(),
+                context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -97,18 +100,20 @@ class AnalyzeSentimentAsyncClient {
      * which contains {@link AnalyzeSentimentResultCollection}.
      *
      * @param documents The list of documents to analyze sentiments for.
-     * @param includeOpinionMining The boolean indicator to include opinion mining data in the returned result.
-     * @param options The {@link TextAnalyticsRequestOptions} request options.
+     * @param options The additional configurable {@link AnalyzeSentimentOptions options} that may be passed when
+     * analyzing sentiments.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A mono {@link Response} contains {@link AnalyzeSentimentResultCollection}.
      */
     Mono<Response<AnalyzeSentimentResultCollection>> analyzeSentimentBatchWithContext(
-        Iterable<TextDocumentInput> documents, boolean includeOpinionMining, TextAnalyticsRequestOptions options,
-        Context context) {
+        Iterable<TextDocumentInput> documents, AnalyzeSentimentOptions options, Context context) {
         try {
             inputDocumentsValidation(documents);
-            return getAnalyzedSentimentResponse(documents, includeOpinionMining, options, context);
+            return getAnalyzedSentimentResponse(documents,
+                options == null ? false : options.isIncludeOpinionMining(),
+                options == null ? null : options.getRequestOptions(),
+                context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -192,7 +197,9 @@ class AnalyzeSentimentAsyncClient {
      * {@link AnalyzeSentimentResultCollection} from a {@link SimpleResponse} of {@link SentimentResponse}.
      *
      * @param documents A list of documents to be analyzed.
-     * @param includeOpinionMining The boolean indicator to include opinion mining data in the returned result.
+     * @param includeOpinionMining The boolean indicator to include opinion mining data in the returned result. If this
+     * flag is specified, you'll get a {@code minedOpinions} property on SentenceSentiment. It's available start from
+     * v3.1-preview.1 service version.
      * @param options The {@link TextAnalyticsRequestOptions} request options.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *

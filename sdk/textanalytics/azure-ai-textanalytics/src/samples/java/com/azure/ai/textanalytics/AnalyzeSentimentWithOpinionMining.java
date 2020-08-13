@@ -3,6 +3,7 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.MinedOpinion;
 import com.azure.ai.textanalytics.models.OpinionSentiment;
@@ -20,7 +21,7 @@ import static com.azure.ai.textanalytics.models.TextSentiment.POSITIVE;
 /**
  * Sample demonstrates how to synchronously analyze the sentiment of document with opinion mining.
  */
-public class AnalyzeSentimentWithAspects {
+public class AnalyzeSentimentWithOpinionMining {
     /**
      * Main method to invoke this demo about how to analyze the sentiment of document.
      *
@@ -38,7 +39,8 @@ public class AnalyzeSentimentWithAspects {
 
         System.out.printf("Text = %s%n", document);
 
-        final DocumentSentiment documentSentiment = client.analyzeSentiment(document, "en", true);
+        AnalyzeSentimentOptions options = new AnalyzeSentimentOptions().setIncludeOpinionMining(true);
+        final DocumentSentiment documentSentiment = client.analyzeSentiment(document, "en", options);
         SentimentConfidenceScores scores = documentSentiment.getConfidenceScores();
         System.out.printf(
             "Recognized document sentiment: %s, positive score: %f, neutral score: %f, negative score: %f.%n",
@@ -67,7 +69,7 @@ public class AnalyzeSentimentWithAspects {
         for (MinedOpinion positiveMinedOpinion : positiveMinedOpinions) {
             System.out.printf("\tAspect: %s%n", positiveMinedOpinion.getAspect().getText());
             for (OpinionSentiment opinionSentiment : positiveMinedOpinion.getOpinions()) {
-                System.out.printf("\t\t'%s' sentiment because of \"%s\". Does the aspect negated: %s.%n",
+                System.out.printf("\t\t'%s' sentiment because of \"%s\". Is the aspect negated: %s.%n",
                     opinionSentiment.getSentiment(), opinionSentiment.getText(), opinionSentiment.isNegated());
             }
         }
@@ -76,7 +78,7 @@ public class AnalyzeSentimentWithAspects {
         for (MinedOpinion mixedMinedOpinion : mixedMinedOpinions) {
             System.out.printf("\tAspect: %s%n", mixedMinedOpinion.getAspect().getText());
             for (OpinionSentiment opinionSentiment : mixedMinedOpinion.getOpinions()) {
-                System.out.printf("\t\t'%s' sentiment because of \"%s\". Does the aspect negated: %s.%n",
+                System.out.printf("\t\t'%s' sentiment because of \"%s\". Is the aspect negated: %s.%n",
                     opinionSentiment.getSentiment(), opinionSentiment.getText(), opinionSentiment.isNegated());
             }
         }
@@ -85,7 +87,7 @@ public class AnalyzeSentimentWithAspects {
         for (MinedOpinion negativeMinedOpinion : negativeMinedOpinions) {
             System.out.printf("\tAspect: %s%n", negativeMinedOpinion.getAspect().getText());
             for (OpinionSentiment opinionSentiment : negativeMinedOpinion.getOpinions()) {
-                System.out.printf("\t\t'%s' sentiment because of \"%s\". Does the aspect negated: %s.%n",
+                System.out.printf("\t\t'%s' sentiment because of \"%s\". Is the aspect negated: %s.%n",
                     opinionSentiment.getSentiment(), opinionSentiment.getText(), opinionSentiment.isNegated());
             }
         }
