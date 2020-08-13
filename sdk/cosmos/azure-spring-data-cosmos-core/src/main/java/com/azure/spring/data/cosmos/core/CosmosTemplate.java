@@ -385,7 +385,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .publishOn(Schedulers.parallel())
             .flatMap(cosmosItemFeedResponse -> {
                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
-                    null, cosmosItemFeedResponse);
+                    cosmosItemFeedResponse.getCosmosDiagnostics(), cosmosItemFeedResponse);
                 return Flux.fromIterable(cosmosItemFeedResponse.getResults());
             })
             .map(jsonNode -> toDomainObject(domainType, jsonNode))
@@ -728,7 +728,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .onErrorResume(throwable ->
                 CosmosExceptionUtils.exceptionHandler("Failed to get count value", throwable))
             .doOnNext(response -> CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
-                null, response))
+                response.getCosmosDiagnostics(), response))
             .next()
             .map(r -> r.getResults().get(0).asLong())
             .block();
