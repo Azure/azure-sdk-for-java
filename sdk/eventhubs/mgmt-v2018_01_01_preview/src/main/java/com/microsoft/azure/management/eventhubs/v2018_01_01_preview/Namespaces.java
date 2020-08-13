@@ -21,6 +21,7 @@ import com.microsoft.azure.management.eventhubs.v2018_01_01_preview.IpFilterRule
 import rx.Completable;
 import com.microsoft.azure.management.eventhubs.v2018_01_01_preview.VirtualNetworkRule;
 import com.microsoft.azure.management.eventhubs.v2018_01_01_preview.implementation.NetworkRuleSetInner;
+import com.microsoft.azure.management.eventhubs.v2018_01_01_preview.NamespaceAuthorizationRule;
 
 /**
  * Type representing Namespaces.
@@ -41,9 +42,25 @@ public interface Namespaces extends SupportsCreating<EHNamespace.DefinitionStage
     VirtualNetworkRule.DefinitionStages.Blank defineVirtualnetworkrule(String name);
 
     /**
+     * Begins definition for a new AuthorizationRule resource.
+     * @param name resource name.
+     * @return the first stage of the new AuthorizationRule definition.
+     */
+    NamespaceAuthorizationRule.DefinitionStages.Blank defineAuthorizationRule(String name);
+
+    /**
+     * Check the give Namespace name availability.
+     *
+     * @param name Name to check the namespace name availability
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<CheckNameAvailabilityResult> checkNameAvailabilityAsync(String name);
+
+    /**
      * Gets an IpFilterRule for a Namespace by rule name.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name
      * @param ipFilterRuleName The IP Filter Rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -54,7 +71,7 @@ public interface Namespaces extends SupportsCreating<EHNamespace.DefinitionStage
     /**
      * Gets a list of IP Filter rules for a Namespace.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -64,7 +81,7 @@ public interface Namespaces extends SupportsCreating<EHNamespace.DefinitionStage
     /**
      * Deletes an IpFilterRule for a Namespace.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name
      * @param ipFilterRuleName The IP Filter Rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -75,7 +92,7 @@ public interface Namespaces extends SupportsCreating<EHNamespace.DefinitionStage
     /**
      * Gets an VirtualNetworkRule for a Namespace by rule name.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name
      * @param virtualNetworkRuleName The Virtual Network Rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -86,7 +103,7 @@ public interface Namespaces extends SupportsCreating<EHNamespace.DefinitionStage
     /**
      * Gets a list of VirtualNetwork rules for a Namespace.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -96,7 +113,7 @@ public interface Namespaces extends SupportsCreating<EHNamespace.DefinitionStage
     /**
      * Deletes an VirtualNetworkRule for a Namespace.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name
      * @param virtualNetworkRuleName The Virtual Network Rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -107,7 +124,7 @@ public interface Namespaces extends SupportsCreating<EHNamespace.DefinitionStage
     /**
      * Create or update NetworkRuleSet for a Namespace.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name
      * @param parameters The Namespace IpFilterRule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -118,11 +135,66 @@ public interface Namespaces extends SupportsCreating<EHNamespace.DefinitionStage
     /**
      * Gets NetworkRuleSet for a Namespace.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     Observable<NetworkRuleSet> getNetworkRuleSetAsync(String resourceGroupName, String namespaceName);
+
+    /**
+     * Gets an AuthorizationRule for a Namespace by rule name.
+     *
+     * @param resourceGroupName Name of the resource group within the azure subscription.
+     * @param namespaceName The Namespace name
+     * @param authorizationRuleName The authorization rule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<NamespaceAuthorizationRule> getAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String authorizationRuleName);
+
+    /**
+     * Gets a list of authorization rules for a Namespace.
+     *
+     * @param resourceGroupName Name of the resource group within the azure subscription.
+     * @param namespaceName The Namespace name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<NamespaceAuthorizationRule> listAuthorizationRulesAsync(final String resourceGroupName, final String namespaceName);
+
+    /**
+     * Deletes an AuthorizationRule for a Namespace.
+     *
+     * @param resourceGroupName Name of the resource group within the azure subscription.
+     * @param namespaceName The Namespace name
+     * @param authorizationRuleName The authorization rule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable deleteAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String authorizationRuleName);
+
+    /**
+     * Gets the primary and secondary connection strings for the Namespace.
+     *
+     * @param resourceGroupName Name of the resource group within the azure subscription.
+     * @param namespaceName The Namespace name
+     * @param authorizationRuleName The authorization rule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<AccessKeys> listKeysAsync(String resourceGroupName, String namespaceName, String authorizationRuleName);
+
+    /**
+     * Regenerates the primary or secondary connection strings for the specified Namespace.
+     *
+     * @param resourceGroupName Name of the resource group within the azure subscription.
+     * @param namespaceName The Namespace name
+     * @param authorizationRuleName The authorization rule name.
+     * @param parameters Parameters required to regenerate the connection string.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<AccessKeys> regenerateKeysAsync(String resourceGroupName, String namespaceName, String authorizationRuleName, RegenerateAccessKeyParameters parameters);
 
 }
