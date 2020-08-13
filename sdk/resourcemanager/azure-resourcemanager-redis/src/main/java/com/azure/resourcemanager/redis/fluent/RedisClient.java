@@ -713,8 +713,8 @@ public final class RedisClient
         Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, name, parameters);
         return this
             .client
-            .<RedisResourceInner, RedisResourceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), RedisResourceInner.class, RedisResourceInner.class);
+            .<RedisResourceInner, RedisResourceInner>getLroResult(
+                mono, this.client.getHttpPipeline(), RedisResourceInner.class, RedisResourceInner.class, Context.NONE);
     }
 
     /**
@@ -732,11 +732,12 @@ public final class RedisClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<RedisResourceInner>, RedisResourceInner> beginCreateAsync(
         String resourceGroupName, String name, RedisCreateParameters parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, name, parameters, context);
         return this
             .client
-            .<RedisResourceInner, RedisResourceInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), RedisResourceInner.class, RedisResourceInner.class);
+            .<RedisResourceInner, RedisResourceInner>getLroResult(
+                mono, this.client.getHttpPipeline(), RedisResourceInner.class, RedisResourceInner.class, context);
     }
 
     /**
@@ -1138,7 +1139,9 @@ public final class RedisClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String name) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, name);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1154,8 +1157,11 @@ public final class RedisClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String name, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, name, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -1544,7 +1550,7 @@ public final class RedisClient
     public PagedFlux<RedisResourceInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1678,7 +1684,8 @@ public final class RedisClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RedisResourceInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2377,7 +2384,9 @@ public final class RedisClient
     public PollerFlux<PollResult<Void>, Void> beginImportDataAsync(
         String resourceGroupName, String name, ImportRdbParameters parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = importDataWithResponseAsync(resourceGroupName, name, parameters);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -2395,9 +2404,12 @@ public final class RedisClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginImportDataAsync(
         String resourceGroupName, String name, ImportRdbParameters parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             importDataWithResponseAsync(resourceGroupName, name, parameters, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -2623,7 +2635,9 @@ public final class RedisClient
     public PollerFlux<PollResult<Void>, Void> beginExportDataAsync(
         String resourceGroupName, String name, ExportRdbParameters parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = exportDataWithResponseAsync(resourceGroupName, name, parameters);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -2641,9 +2655,12 @@ public final class RedisClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginExportDataAsync(
         String resourceGroupName, String name, ExportRdbParameters parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             exportDataWithResponseAsync(resourceGroupName, name, parameters, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**

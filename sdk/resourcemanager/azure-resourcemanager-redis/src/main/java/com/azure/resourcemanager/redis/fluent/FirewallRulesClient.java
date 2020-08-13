@@ -271,7 +271,7 @@ public final class FirewallRulesClient {
         String resourceGroupName, String cacheName, Context context) {
         return new PagedFlux<>(
             () -> listByRedisResourceSinglePageAsync(resourceGroupName, cacheName, context),
-            nextLink -> listByRedisResourceNextSinglePageAsync(nextLink));
+            nextLink -> listByRedisResourceNextSinglePageAsync(nextLink, context));
     }
 
     /**

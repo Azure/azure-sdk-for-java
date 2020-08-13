@@ -278,11 +278,12 @@ public final class LinkedServersClient {
             createWithResponseAsync(resourceGroupName, name, linkedServerName, parameters);
         return this
             .client
-            .<RedisLinkedServerWithPropertiesInner, RedisLinkedServerWithPropertiesInner>getLroResultAsync(
+            .<RedisLinkedServerWithPropertiesInner, RedisLinkedServerWithPropertiesInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 RedisLinkedServerWithPropertiesInner.class,
-                RedisLinkedServerWithPropertiesInner.class);
+                RedisLinkedServerWithPropertiesInner.class,
+                Context.NONE);
     }
 
     /**
@@ -306,15 +307,17 @@ public final class LinkedServersClient {
             String linkedServerName,
             RedisLinkedServerCreateParameters parameters,
             Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createWithResponseAsync(resourceGroupName, name, linkedServerName, parameters, context);
         return this
             .client
-            .<RedisLinkedServerWithPropertiesInner, RedisLinkedServerWithPropertiesInner>getLroResultAsync(
+            .<RedisLinkedServerWithPropertiesInner, RedisLinkedServerWithPropertiesInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 RedisLinkedServerWithPropertiesInner.class,
-                RedisLinkedServerWithPropertiesInner.class);
+                RedisLinkedServerWithPropertiesInner.class,
+                context);
     }
 
     /**
@@ -943,7 +946,8 @@ public final class LinkedServersClient {
     public PagedFlux<RedisLinkedServerWithPropertiesInner> listAsync(
         String resourceGroupName, String name, Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, name, context), nextLink -> listNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(resourceGroupName, name, context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
