@@ -165,6 +165,40 @@ public final class SearchAsyncClient {
     }
 
     /**
+     * Creates a {@link SearchIndexDocumentBatchingAsyncClient} used to index documents for the Search index associated
+     * with this {@link SearchAsyncClient}.
+     * <p>
+     * The created client will use the default values for {@link SearchIndexDocumentBatchingClientBuilder#flushWindow(Integer)},
+     * {@link SearchIndexDocumentBatchingClientBuilder#batchSize(Integer)}, and {@link
+     * SearchIndexDocumentBatchingClientBuilder#documentPersister(DocumentPersister)}.
+     *
+     * @return A {@link SearchIndexDocumentBatchingAsyncClient} used to index documents for the Search index associated
+     * with this {@link SearchAsyncClient}.
+     */
+    public SearchIndexDocumentBatchingAsyncClient getIndexDocumentBatchingAsyncClient() {
+        return getIndexDocumentBatchingAsyncClient(null, null, null);
+    }
+
+    /**
+     * Creates a {@link SearchIndexDocumentBatchingAsyncClient} used to index documents for the Search index associated
+     * with this {@link SearchAsyncClient}.
+     *
+     * @param flushWindow Time in seconds that will be waited between document being added to the batch before they will
+     * sent to the index. Use zero or {@code null} to disable automatic batch sending.
+     * @param batchSize The number of documents in a batch that will trigger it to be indexed. If automatic batch
+     * sending is disabled this value is ignored.
+     * @param documentPersister An implementation of {@link DocumentPersister} used to persist documents in a batch. If
+     * {@code null} documents won't be persisted.
+     * @return A {@link SearchIndexDocumentBatchingAsyncClient} used to index documents for the Search index associated
+     * with this {@link SearchAsyncClient}.
+     * @throws IllegalArgumentException If {@code flushWindow} is less than zero or {@code batchSize} is less than one.
+     */
+    public SearchIndexDocumentBatchingAsyncClient getIndexDocumentBatchingAsyncClient(Integer flushWindow,
+        Integer batchSize, DocumentPersister documentPersister) {
+        return new SearchIndexDocumentBatchingAsyncClient(this, flushWindow, batchSize, documentPersister);
+    }
+
+    /**
      * Uploads a collection of documents to the target index.
      *
      * <p><strong>Code Sample</strong></p>
