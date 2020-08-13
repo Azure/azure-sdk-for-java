@@ -1,5 +1,8 @@
 # Release History
 
+## 4.3.0-beta.1 (Unreleased)
+
+
 ## 4.2.0 (2020-08-12)
 - Added support for `7.1-Preview` service version.
 - Added `retryPolicy` setter in `KeyClientBuilder`, `CryptographyClientBuilder` and `KeyEncryptionKeyClientBuilder`.
