@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-
 package com.azure.resourcemanager.redis;
 
 import com.azure.core.credential.TokenCredential;
@@ -15,9 +14,7 @@ import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 
-/**
- * Entry point to Azure redis resource management.
- */
+/** Entry point to Azure redis resource management. */
 public final class RedisManager extends Manager<RedisManager, RedisManagementClient> {
     // Collections
     private RedisCaches redisCaches;
@@ -30,7 +27,6 @@ public final class RedisManager extends Manager<RedisManager, RedisManagementCli
     public static Configurable configure() {
         return new RedisManager.ConfigurableImpl();
     }
-
 
     /**
      * Creates an instance of RedisManager that exposes Redis resource management API entry points.
@@ -98,9 +94,7 @@ public final class RedisManager extends Manager<RedisManager, RedisManagementCli
             sdkContext);
     }
 
-    /**
-     * @return the Redis Cache management API entry point
-     */
+    /** @return the Redis Cache management API entry point */
     public RedisCaches redisCaches() {
         if (redisCaches == null) {
             redisCaches = new RedisCachesImpl(this);

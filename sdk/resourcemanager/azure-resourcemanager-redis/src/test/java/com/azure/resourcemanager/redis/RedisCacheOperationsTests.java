@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-
 package com.azure.resourcemanager.redis;
 
 import com.azure.core.management.exception.ManagementException;
@@ -21,36 +20,40 @@ import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.CreatedResources;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.storage.models.StorageAccount;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class RedisCacheOperationsTests extends RedisManagementTest {
     @Test
     @SuppressWarnings("unchecked")
     public void canCRUDRedisCache() throws Exception {
         // Create
-        Creatable<ResourceGroup> resourceGroups = resourceManager.resourceGroups()
-                .define(RG_NAME_SECOND)
-                .withRegion(Region.US_CENTRAL);
+        Creatable<ResourceGroup> resourceGroups =
+            resourceManager.resourceGroups().define(RG_NAME_SECOND).withRegion(Region.US_CENTRAL);
 
-        Creatable<RedisCache> redisCacheDefinition1 = redisManager.redisCaches()
+        Creatable<RedisCache> redisCacheDefinition1 =
+            redisManager
+                .redisCaches()
                 .define(RR_NAME)
                 .withRegion(Region.ASIA_EAST)
                 .withNewResourceGroup(RG_NAME)
                 .withBasicSku();
-        Creatable<RedisCache> redisCacheDefinition2 = redisManager.redisCaches()
+        Creatable<RedisCache> redisCacheDefinition2 =
+            redisManager
+                .redisCaches()
                 .define(RR_NAME_SECOND)
                 .withRegion(Region.US_CENTRAL)
                 .withNewResourceGroup(resourceGroups)
                 .withPremiumSku()
                 .withShardCount(10)
                 .withPatchSchedule(DayOfWeek.SUNDAY, 10, Duration.ofMinutes(302));
-        Creatable<RedisCache> redisCacheDefinition3 = redisManager.redisCaches()
+        Creatable<RedisCache> redisCacheDefinition3 =
+            redisManager
+                .redisCaches()
                 .define(RR_NAME_THIRD)
                 .withRegion(Region.US_CENTRAL)
                 .withNewResourceGroup(resourceGroups)
@@ -59,13 +62,15 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
                 .withNonSslPort()
                 .withFirewallRule("rule1", "192.168.0.1", "192.168.0.4")
                 .withFirewallRule("rule2", "192.168.0.10", "192.168.0.40");
-                // Server throws "The 'minimumTlsVersion' property is not yet supported." exception. Uncomment when fixed.
-                //.withMinimumTlsVersion(TlsVersion.ONE_FULL_STOP_ONE);
+        // Server throws "The 'minimumTlsVersion' property is not yet supported." exception. Uncomment when fixed.
+        // .withMinimumTlsVersion(TlsVersion.ONE_FULL_STOP_ONE);
 
-        CreatedResources<RedisCache> batchRedisCaches = redisManager.redisCaches()
-                .create(redisCacheDefinition1, redisCacheDefinition2, redisCacheDefinition3);
+        CreatedResources<RedisCache> batchRedisCaches =
+            redisManager.redisCaches().create(redisCacheDefinition1, redisCacheDefinition2, redisCacheDefinition3);
 
-        StorageAccount storageAccount = storageManager.storageAccounts()
+        StorageAccount storageAccount =
+            storageManager
+                .storageAccounts()
                 .define(SA_NAME)
                 .withRegion(Region.US_CENTRAL)
                 .withExistingResourceGroup(RG_NAME_SECOND)
@@ -77,7 +82,8 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
         Assertions.assertEquals(SkuName.BASIC, redisCache.sku().name());
 
         // List by Resource Group
-        List<RedisCache> redisCaches = redisManager.redisCaches().listByResourceGroup(RG_NAME).stream().collect(Collectors.toList());
+        List<RedisCache> redisCaches =
+            redisManager.redisCaches().listByResourceGroup(RG_NAME).stream().collect(Collectors.toList());
         boolean found = false;
         for (RedisCache existingRedisCache : redisCaches) {
             if (existingRedisCache.name().equals(RR_NAME)) {
@@ -124,16 +130,12 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
         Assertions.assertEquals(updatedPrimaryKey.primaryKey(), updatedSecondaryKey.primaryKey());
 
         // Update to STANDARD Sku from BASIC SKU
-        redisCache = redisCache.update()
-                .withStandardSku()
-                .apply();
+        redisCache = redisCache.update().withStandardSku().apply();
         Assertions.assertEquals(SkuName.STANDARD, redisCache.sku().name());
         Assertions.assertEquals(SkuFamily.C, redisCache.sku().family());
 
         try {
-            redisCache.update()
-                    .withBasicSku(1)
-                    .apply();
+            redisCache.update().withBasicSku(1).apply();
             Assertions.fail();
         } catch (ManagementException e) {
             // expected since Sku downgrade is not supported
@@ -153,31 +155,25 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
         Assertions.assertTrue(premiumCache.firewallRules().containsKey("rule2"));
 
         // Redis configuration update
-        premiumCache.update()
-                .withRedisConfiguration("maxclients", "3")
-                .withoutFirewallRule("rule1")
-                .withFirewallRule("rule3", "192.168.0.10", "192.168.0.104")
-                .withoutMinimumTlsVersion()
-                .apply();
+        premiumCache
+            .update()
+            .withRedisConfiguration("maxclients", "3")
+            .withoutFirewallRule("rule1")
+            .withFirewallRule("rule3", "192.168.0.10", "192.168.0.104")
+            .withoutMinimumTlsVersion()
+            .apply();
 
         Assertions.assertEquals(2, premiumCache.firewallRules().size());
         Assertions.assertTrue(premiumCache.firewallRules().containsKey("rule2"));
         Assertions.assertTrue(premiumCache.firewallRules().containsKey("rule3"));
         Assertions.assertFalse(premiumCache.firewallRules().containsKey("rule1"));
 
-        premiumCache.update()
-                .withoutRedisConfiguration("maxclients")
-                .apply();
+        premiumCache.update().withoutRedisConfiguration("maxclients").apply();
 
-        premiumCache.update()
-                .withoutRedisConfiguration()
-                .apply();
+        premiumCache.update().withoutRedisConfiguration().apply();
 
         Assertions.assertEquals(0, premiumCache.patchSchedules().size());
-        premiumCache.update()
-                .withPatchSchedule(DayOfWeek.MONDAY, 1)
-                .withPatchSchedule(DayOfWeek.TUESDAY, 5)
-                .apply();
+        premiumCache.update().withPatchSchedule(DayOfWeek.MONDAY, 1).withPatchSchedule(DayOfWeek.TUESDAY, 5).apply();
 
         Assertions.assertEquals(2, premiumCache.patchSchedules().size());
         // Reboot
@@ -189,10 +185,7 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
 
         premiumCache.deletePatchSchedule();
 
-        patchSchedule = redisManager.redisCaches()
-                                    .getById(premiumCache.id())
-                                    .asPremium()
-                                    .listPatchSchedules();
+        patchSchedule = redisManager.redisCaches().getById(premiumCache.id()).asPremium().listPatchSchedules();
         Assertions.assertNull(patchSchedule);
 
         // currently throws because SAS url of the container should be provided as
@@ -201,7 +194,8 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
         //      "message": "One of the SAS URIs provided could not be used for the following reason:
         //                  The SAS token is poorly formatted.\r\nRequestID=ed105089-b93b-427e-9cbb-d78ed80d23b0",
         //      "target":null}}
-        // com.microsoft.azure.CloudException: One of the SAS URIs provided could not be used for the following reason: The SAS token is poorly formatted.
+        // com.microsoft.azure.CloudException: One of the SAS URIs provided could not be used for the following reason:
+        // The SAS token is poorly formatted.
         /*premiumCache.exportData(storageAccount.name(),"snapshot1");
 
         premiumCache.importData(Arrays.asList("snapshot1"));*/
@@ -210,7 +204,9 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
     @Test
     public void canCRUDLinkedServers() throws Exception {
 
-        RedisCache rgg = redisManager.redisCaches()
+        RedisCache rgg =
+            redisManager
+                .redisCaches()
                 .define(RR_NAME_THIRD)
                 .withRegion(Region.US_CENTRAL)
                 .withNewResourceGroup(RG_NAME_SECOND)
@@ -222,7 +218,9 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
                 .withFirewallRule("rule2", "192.168.0.10", "192.168.0.40")
                 .create();
 
-        RedisCache rggLinked = redisManager.redisCaches()
+        RedisCache rggLinked =
+            redisManager
+                .redisCaches()
                 .define(RR_NAME_SECOND)
                 .withRegion(Region.US_EAST)
                 .withExistingResourceGroup(RG_NAME_SECOND)
@@ -248,13 +246,9 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
 
         premiumRgg.removeLinkedServer(llName);
 
-        rgg.update()
-                .withoutPatchSchedule()
-                .apply();
+        rgg.update().withoutPatchSchedule().apply();
 
-        rggLinked.update()
-                .withFirewallRule("rulesmhule", "192.168.1.10", "192.168.1.20")
-                .apply();
+        rggLinked.update().withFirewallRule("rulesmhule", "192.168.1.10", "192.168.1.20").apply();
 
         linkedServers = premiumRgg.listLinkedServers();
         Assertions.assertEquals(0, linkedServers.size());

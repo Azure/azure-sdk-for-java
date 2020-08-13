@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-
 package com.azure.resourcemanager.redis.implementation;
 
 import com.azure.core.http.rest.PagedIterable;
@@ -34,29 +33,17 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
-import reactor.core.publisher.Mono;
-
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import reactor.core.publisher.Mono;
 
-/**
- * Implementation for Redis Cache and its parent interfaces.
- */
-class RedisCacheImpl
-    extends GroupableResourceImpl<
-        RedisCache,
-        RedisResourceInner,
-        RedisCacheImpl,
-        RedisManager>
-    implements
-        RedisCache,
-        RedisCachePremium,
-        RedisCache.Definition,
-        RedisCache.Update {
+/** Implementation for Redis Cache and its parent interfaces. */
+class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInner, RedisCacheImpl, RedisManager>
+    implements RedisCache, RedisCachePremium, RedisCache.Definition, RedisCache.Update {
     private RedisAccessKeys cachedAccessKeys;
     private RedisCreateParameters createParameters;
     private RedisUpdateParameters updateParameters;
@@ -64,9 +51,7 @@ class RedisCacheImpl
     private RedisFirewallRulesImpl firewallRules;
     private boolean patchScheduleAdded;
 
-    RedisCacheImpl(String name,
-                   RedisResourceInner innerModel,
-                   final RedisManager redisManager) {
+    RedisCacheImpl(String name, RedisResourceInner innerModel, final RedisManager redisManager) {
         super(name, innerModel, redisManager);
         this.createParameters = new RedisCreateParameters();
         this.patchSchedules = new RedisPatchSchedulesImpl(this);
@@ -184,7 +169,7 @@ class RedisCacheImpl
     @Override
     public RedisAccessKeys refreshKeys() {
         RedisAccessKeysInner response =
-                this.manager().inner().getRedis().listKeys(this.resourceGroupName(), this.name());
+            this.manager().inner().getRedis().listKeys(this.resourceGroupName(), this.name());
         cachedAccessKeys = new RedisAccessKeysImpl(response);
         return cachedAccessKeys;
     }
@@ -192,55 +177,45 @@ class RedisCacheImpl
     @Override
     public RedisAccessKeys regenerateKey(RedisKeyType keyType) {
         RedisAccessKeysInner response =
-                this.manager().inner().getRedis().regenerateKey(this.resourceGroupName(), this.name(), keyType);
+            this.manager().inner().getRedis().regenerateKey(this.resourceGroupName(), this.name(), keyType);
         cachedAccessKeys = new RedisAccessKeysImpl(response);
         return cachedAccessKeys;
     }
 
     @Override
     public void forceReboot(RebootType rebootType) {
-        RedisRebootParameters parameters = new RedisRebootParameters()
-                .withRebootType(rebootType);
+        RedisRebootParameters parameters = new RedisRebootParameters().withRebootType(rebootType);
         this.manager().inner().getRedis().forceReboot(this.resourceGroupName(), this.name(), parameters);
     }
 
     @Override
     public void forceReboot(RebootType rebootType, int shardId) {
-        RedisRebootParameters parameters = new RedisRebootParameters()
-                .withRebootType(rebootType)
-                .withShardId(shardId);
+        RedisRebootParameters parameters = new RedisRebootParameters().withRebootType(rebootType).withShardId(shardId);
         this.manager().inner().getRedis().forceReboot(this.resourceGroupName(), this.name(), parameters);
     }
 
     @Override
     public void importData(List<String> files) {
-        ImportRdbParameters parameters = new ImportRdbParameters()
-                .withFiles(files);
+        ImportRdbParameters parameters = new ImportRdbParameters().withFiles(files);
         this.manager().inner().getRedis().importData(this.resourceGroupName(), this.name(), parameters);
     }
 
     @Override
     public void importData(List<String> files, String fileFormat) {
-        ImportRdbParameters parameters = new ImportRdbParameters()
-                .withFiles(files)
-                .withFormat(fileFormat);
+        ImportRdbParameters parameters = new ImportRdbParameters().withFiles(files).withFormat(fileFormat);
         this.manager().inner().getRedis().importData(this.resourceGroupName(), this.name(), parameters);
     }
 
     @Override
     public void exportData(String containerSASUrl, String prefix) {
-        ExportRdbParameters parameters = new ExportRdbParameters()
-                .withContainer(containerSASUrl)
-                .withPrefix(prefix);
+        ExportRdbParameters parameters = new ExportRdbParameters().withContainer(containerSASUrl).withPrefix(prefix);
         this.manager().inner().getRedis().exportData(this.resourceGroupName(), this.name(), parameters);
     }
 
     @Override
     public void exportData(String containerSASUrl, String prefix, String fileFormat) {
-        ExportRdbParameters parameters = new ExportRdbParameters()
-                .withContainer(containerSASUrl)
-                .withPrefix(prefix)
-                .withFormat(fileFormat);
+        ExportRdbParameters parameters =
+            new ExportRdbParameters().withContainer(containerSASUrl).withPrefix(prefix).withFormat(fileFormat);
         this.manager().inner().getRedis().exportData(this.resourceGroupName(), this.name(), parameters);
     }
 
@@ -376,13 +351,9 @@ class RedisCacheImpl
     @Override
     public RedisCacheImpl withBasicSku() {
         if (isInCreateMode()) {
-            createParameters.withSku(new Sku()
-                    .withName(SkuName.BASIC)
-                    .withFamily(SkuFamily.C));
+            createParameters.withSku(new Sku().withName(SkuName.BASIC).withFamily(SkuFamily.C));
         } else {
-            updateParameters.withSku(new Sku()
-                    .withName(SkuName.BASIC)
-                    .withFamily(SkuFamily.C));
+            updateParameters.withSku(new Sku().withName(SkuName.BASIC).withFamily(SkuFamily.C));
         }
         return this;
     }
@@ -390,15 +361,9 @@ class RedisCacheImpl
     @Override
     public RedisCacheImpl withBasicSku(int capacity) {
         if (isInCreateMode()) {
-            createParameters.withSku(new Sku()
-                    .withName(SkuName.BASIC)
-                    .withFamily(SkuFamily.C)
-                    .withCapacity(capacity));
+            createParameters.withSku(new Sku().withName(SkuName.BASIC).withFamily(SkuFamily.C).withCapacity(capacity));
         } else {
-            updateParameters.withSku(new Sku()
-                    .withName(SkuName.BASIC)
-                    .withFamily(SkuFamily.C)
-                    .withCapacity(capacity));
+            updateParameters.withSku(new Sku().withName(SkuName.BASIC).withFamily(SkuFamily.C).withCapacity(capacity));
         }
         return this;
     }
@@ -406,13 +371,9 @@ class RedisCacheImpl
     @Override
     public RedisCacheImpl withStandardSku() {
         if (isInCreateMode()) {
-            createParameters.withSku(new Sku()
-                    .withName(SkuName.STANDARD)
-                    .withFamily(SkuFamily.C));
+            createParameters.withSku(new Sku().withName(SkuName.STANDARD).withFamily(SkuFamily.C));
         } else {
-            updateParameters.withSku(new Sku()
-                    .withName(SkuName.STANDARD)
-                    .withFamily(SkuFamily.C));
+            updateParameters.withSku(new Sku().withName(SkuName.STANDARD).withFamily(SkuFamily.C));
         }
         return this;
     }
@@ -420,15 +381,11 @@ class RedisCacheImpl
     @Override
     public RedisCacheImpl withStandardSku(int capacity) {
         if (isInCreateMode()) {
-            createParameters.withSku(new Sku()
-                    .withName(SkuName.STANDARD)
-                    .withFamily(SkuFamily.C)
-                    .withCapacity(capacity));
+            createParameters
+                .withSku(new Sku().withName(SkuName.STANDARD).withFamily(SkuFamily.C).withCapacity(capacity));
         } else {
-            updateParameters.withSku(new Sku()
-                    .withName(SkuName.STANDARD)
-                    .withFamily(SkuFamily.C)
-                    .withCapacity(capacity));
+            updateParameters
+                .withSku(new Sku().withName(SkuName.STANDARD).withFamily(SkuFamily.C).withCapacity(capacity));
         }
         return this;
     }
@@ -436,15 +393,9 @@ class RedisCacheImpl
     @Override
     public RedisCacheImpl withPremiumSku() {
         if (isInCreateMode()) {
-            createParameters.withSku(new Sku()
-                    .withName(SkuName.PREMIUM)
-                    .withFamily(SkuFamily.P)
-                    .withCapacity(1));
+            createParameters.withSku(new Sku().withName(SkuName.PREMIUM).withFamily(SkuFamily.P).withCapacity(1));
         } else {
-            updateParameters.withSku(new Sku()
-                    .withName(SkuName.PREMIUM)
-                    .withFamily(SkuFamily.P)
-                    .withCapacity(1));
+            updateParameters.withSku(new Sku().withName(SkuName.PREMIUM).withFamily(SkuFamily.P).withCapacity(1));
         }
         return this;
     }
@@ -452,15 +403,11 @@ class RedisCacheImpl
     @Override
     public RedisCacheImpl withPremiumSku(int capacity) {
         if (isInCreateMode()) {
-            createParameters.withSku(new Sku()
-                    .withName(SkuName.PREMIUM)
-                    .withFamily(SkuFamily.P)
-                    .withCapacity(capacity));
+            createParameters
+                .withSku(new Sku().withName(SkuName.PREMIUM).withFamily(SkuFamily.P).withCapacity(capacity));
         } else {
-            updateParameters.withSku(new Sku()
-                    .withName(SkuName.PREMIUM)
-                    .withFamily(SkuFamily.P)
-                    .withCapacity(capacity));
+            updateParameters
+                .withSku(new Sku().withName(SkuName.PREMIUM).withFamily(SkuFamily.P).withCapacity(capacity));
         }
         return this;
     }
@@ -477,17 +424,17 @@ class RedisCacheImpl
 
     @Override
     public RedisCacheImpl withPatchSchedule(DayOfWeek dayOfWeek, int startHourUtc) {
-        return this.withPatchSchedule(new ScheduleEntry()
-                .withDayOfWeek(dayOfWeek)
-                .withStartHourUtc(startHourUtc));
+        return this.withPatchSchedule(new ScheduleEntry().withDayOfWeek(dayOfWeek).withStartHourUtc(startHourUtc));
     }
 
     @Override
     public RedisCacheImpl withPatchSchedule(DayOfWeek dayOfWeek, int startHourUtc, Duration maintenanceWindow) {
-        return this.withPatchSchedule(new ScheduleEntry()
-                .withDayOfWeek(dayOfWeek)
-                .withStartHourUtc(startHourUtc)
-                .withMaintenanceWindow(maintenanceWindow));
+        return this
+            .withPatchSchedule(
+                new ScheduleEntry()
+                    .withDayOfWeek(dayOfWeek)
+                    .withStartHourUtc(startHourUtc)
+                    .withMaintenanceWindow(maintenanceWindow));
     }
 
     @Override
@@ -535,7 +482,8 @@ class RedisCacheImpl
 
     @Override
     public Mono<RedisCache> refreshAsync() {
-        return super.refreshAsync()
+        return super
+            .refreshAsync()
             .then(this.firewallRules.refreshAsync())
             .then(this.patchSchedules.refreshAsync())
             .then(Mono.just(this));
@@ -569,26 +517,38 @@ class RedisCacheImpl
     @Override
     public Mono<RedisCache> updateResourceAsync() {
         updateParameters.withTags(this.inner().tags());
-        return this.manager().inner().getRedis().updateAsync(resourceGroupName(), name(), updateParameters)
-                .map(innerToFluentMap(this))
-                .filter(redisCache -> !redisCache.provisioningState().equalsIgnoreCase(ProvisioningState.SUCCEEDED.toString()))
-                .flatMap(redisCache -> {
+        return this
+            .manager()
+            .inner()
+            .getRedis()
+            .updateAsync(resourceGroupName(), name(), updateParameters)
+            .map(innerToFluentMap(this))
+            .filter(
+                redisCache -> !redisCache.provisioningState().equalsIgnoreCase(ProvisioningState.SUCCEEDED.toString()))
+            .flatMap(
+                redisCache -> {
                     SdkContext.sleep(30 * 1000);
                     this.patchScheduleAdded = false;
-                    return this.manager().inner().getRedis().getByResourceGroupAsync(resourceGroupName(), name())
-                        .doOnNext( this::setInner)
-                        .filter(redisResourceInner -> redisResourceInner.provisioningState().toString()
-                            .equalsIgnoreCase(ProvisioningState.SUCCEEDED.toString()))
+                    return this
+                        .manager()
+                        .inner()
+                        .getRedis()
+                        .getByResourceGroupAsync(resourceGroupName(), name())
+                        .doOnNext(this::setInner)
+                        .filter(
+                            redisResourceInner ->
+                                redisResourceInner
+                                    .provisioningState()
+                                    .toString()
+                                    .equalsIgnoreCase(ProvisioningState.SUCCEEDED.toString()))
                         .repeatWhenEmpty(
-                            longFlux -> longFlux.flatMap(
-                                index -> Mono.delay(SdkContext.getDelayDuration(Duration.ofSeconds(30)))
-                            )
-                        );
-                    }
-                )
-                .then(this.patchSchedules.commitAndGetAllAsync())
-                .then(this.firewallRules.commitAndGetAllAsync())
-                .then(Mono.just(this));
+                            longFlux ->
+                                longFlux
+                                    .flatMap(index -> Mono.delay(SdkContext.getDelayDuration(Duration.ofSeconds(30)))));
+                })
+            .then(this.patchSchedules.commitAndGetAllAsync())
+            .then(this.firewallRules.commitAndGetAllAsync())
+            .then(Mono.just(this));
     }
 
     @Override
@@ -596,45 +556,54 @@ class RedisCacheImpl
         createParameters.withLocation(this.regionName());
         createParameters.withTags(this.inner().tags());
         this.patchScheduleAdded = false;
-        return this.manager().inner().getRedis().createAsync(this.resourceGroupName(), this.name(), createParameters)
-                .map(innerToFluentMap(this));
+        return this
+            .manager()
+            .inner()
+            .getRedis()
+            .createAsync(this.resourceGroupName(), this.name(), createParameters)
+            .map(innerToFluentMap(this));
     }
 
     @Override
     public String addLinkedServer(String linkedRedisCacheId, String linkedServerLocation, ReplicationRole role) {
         String linkedRedisName = ResourceUtils.nameFromResourceId(linkedRedisCacheId);
-        RedisLinkedServerCreateParameters params = new RedisLinkedServerCreateParameters()
+        RedisLinkedServerCreateParameters params =
+            new RedisLinkedServerCreateParameters()
                 .withLinkedRedisCacheId(linkedRedisCacheId)
                 .withLinkedRedisCacheLocation(linkedServerLocation)
                 .withServerRole(role);
-        RedisLinkedServerWithPropertiesInner linkedServerInner = this.manager().inner().getLinkedServers().create(
-                this.resourceGroupName(),
-                this.name(),
-                linkedRedisName,
-                params);
+        RedisLinkedServerWithPropertiesInner linkedServerInner =
+            this
+                .manager()
+                .inner()
+                .getLinkedServers()
+                .create(this.resourceGroupName(), this.name(), linkedRedisName, params);
         return linkedServerInner.name();
     }
 
     @Override
     public void removeLinkedServer(String linkedServerName) {
-        RedisLinkedServerWithPropertiesInner linkedServer = this.manager().inner().getLinkedServers().get(this.resourceGroupName(), this.name(), linkedServerName);
+        RedisLinkedServerWithPropertiesInner linkedServer =
+            this.manager().inner().getLinkedServers().get(this.resourceGroupName(), this.name(), linkedServerName);
 
-        this.manager().inner().getLinkedServers().delete(
-                this.resourceGroupName(),
-                this.name(),
-                linkedServerName);
+        this.manager().inner().getLinkedServers().delete(this.resourceGroupName(), this.name(), linkedServerName);
 
         RedisResourceInner innerLinkedResource = null;
         RedisResourceInner innerResource = null;
         while (innerLinkedResource == null
-                || innerLinkedResource.provisioningState() != ProvisioningState.SUCCEEDED
-                || innerResource == null
-                || innerResource.provisioningState() != ProvisioningState.SUCCEEDED) {
+            || innerLinkedResource.provisioningState() != ProvisioningState.SUCCEEDED
+            || innerResource == null
+            || innerResource.provisioningState() != ProvisioningState.SUCCEEDED) {
             SdkContext.sleep(30 * 1000);
 
-            innerLinkedResource = this.manager().inner().getRedis().getByResourceGroup(
-                    ResourceUtils.groupFromResourceId(linkedServer.id()),
-                    ResourceUtils.nameFromResourceId(linkedServer.id()));
+            innerLinkedResource =
+                this
+                    .manager()
+                    .inner()
+                    .getRedis()
+                    .getByResourceGroup(
+                        ResourceUtils.groupFromResourceId(linkedServer.id()),
+                        ResourceUtils.nameFromResourceId(linkedServer.id()));
 
             innerResource = this.manager().inner().getRedis().getByResourceGroup(resourceGroupName(), name());
         }
@@ -642,14 +611,17 @@ class RedisCacheImpl
 
     @Override
     public ReplicationRole getLinkedServerRole(String linkedServerName) {
-        RedisLinkedServerWithPropertiesInner linkedServer = this.manager().inner().getLinkedServers().get(
-                this.resourceGroupName(),
-                this.name(),
-                linkedServerName);
+        RedisLinkedServerWithPropertiesInner linkedServer =
+            this.manager().inner().getLinkedServers().get(this.resourceGroupName(), this.name(), linkedServerName);
         if (linkedServer == null) {
-            throw new IllegalArgumentException("Server returned `null` value for Linked Server '"
-                    + linkedServerName + "' for Redis Cache '" + this.name()
-                    + "' in Resource Group '" + this.resourceGroupName() + "'.");
+            throw new IllegalArgumentException(
+                "Server returned `null` value for Linked Server '"
+                    + linkedServerName
+                    + "' for Redis Cache '"
+                    + this.name()
+                    + "' in Resource Group '"
+                    + this.resourceGroupName()
+                    + "'.");
         }
         return linkedServer.serverRole();
     }
@@ -657,11 +629,10 @@ class RedisCacheImpl
     @Override
     public Map<String, ReplicationRole> listLinkedServers() {
         Map<String, ReplicationRole> result = new TreeMap<>();
-        PagedIterable<RedisLinkedServerWithPropertiesInner> paginatedResponse = this.manager().inner().getLinkedServers().list(
-                this.resourceGroupName(),
-                this.name());
+        PagedIterable<RedisLinkedServerWithPropertiesInner> paginatedResponse =
+            this.manager().inner().getLinkedServers().list(this.resourceGroupName(), this.name());
 
-        for (RedisLinkedServerWithPropertiesInner linkedServer :  paginatedResponse) {
+        for (RedisLinkedServerWithPropertiesInner linkedServer : paginatedResponse) {
             result.put(linkedServer.name(), linkedServer.serverRole());
         }
         return result;

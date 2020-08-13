@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-
 package com.azure.resourcemanager.redis.implementation;
 
 import com.azure.resourcemanager.redis.fluent.inner.RedisFirewallRuleInner;
@@ -11,14 +10,9 @@ import com.azure.resourcemanager.redis.models.RedisFirewallRuleCreateParameters;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import reactor.core.publisher.Mono;
 
-/**
- * The Azure {@link RedisFirewallRule} wrapper class implementation.
- */
-class RedisFirewallRuleImpl extends
-    ExternalChildResourceImpl<RedisFirewallRule,
-        RedisFirewallRuleInner,
-        RedisCacheImpl,
-        RedisCache>
+/** The Azure {@link RedisFirewallRule} wrapper class implementation. */
+class RedisFirewallRuleImpl
+    extends ExternalChildResourceImpl<RedisFirewallRule, RedisFirewallRuleInner, RedisCacheImpl, RedisCache>
     implements RedisFirewallRule {
 
     RedisFirewallRuleImpl(String name, RedisCacheImpl parent, RedisFirewallRuleInner innerObject) {
@@ -43,15 +37,16 @@ class RedisFirewallRuleImpl extends
     @Override
     public Mono<RedisFirewallRule> createResourceAsync() {
         final RedisFirewallRuleImpl self = this;
-        RedisFirewallRuleCreateParameters parameters = new RedisFirewallRuleCreateParameters()
-                .withStartIp(this.startIp())
-                .withEndIp(this.endIp());
-        return this.parent().manager().inner().getFirewallRules().createOrUpdateAsync(
-                this.parent().resourceGroupName(),
-                this.parent().name(),
-                this.name(),
-                parameters)
-                .map(redisFirewallRuleInner -> {
+        RedisFirewallRuleCreateParameters parameters =
+            new RedisFirewallRuleCreateParameters().withStartIp(this.startIp()).withEndIp(this.endIp());
+        return this
+            .parent()
+            .manager()
+            .inner()
+            .getFirewallRules()
+            .createOrUpdateAsync(this.parent().resourceGroupName(), this.parent().name(), this.name(), parameters)
+            .map(
+                redisFirewallRuleInner -> {
                     self.setInner(redisFirewallRuleInner);
                     return self;
                 });
@@ -64,16 +59,22 @@ class RedisFirewallRuleImpl extends
 
     @Override
     public Mono<Void> deleteResourceAsync() {
-        return this.parent().manager().inner().getFirewallRules().deleteAsync(this.parent().resourceGroupName(),
-                this.parent().name(),
-                this.name());
+        return this
+            .parent()
+            .manager()
+            .inner()
+            .getFirewallRules()
+            .deleteAsync(this.parent().resourceGroupName(), this.parent().name(), this.name());
     }
 
     @Override
     protected Mono<RedisFirewallRuleInner> getInnerAsync() {
-        return this.parent().manager().inner().getFirewallRules().getAsync(this.parent().resourceGroupName(),
-                this.parent().name(),
-                this.name());
+        return this
+            .parent()
+            .manager()
+            .inner()
+            .getFirewallRules()
+            .getAsync(this.parent().resourceGroupName(), this.parent().name(), this.name());
     }
 
     private static String getChildName(String name, String parentName) {

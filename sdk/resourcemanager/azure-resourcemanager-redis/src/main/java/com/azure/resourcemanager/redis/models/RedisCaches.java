@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-
 package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.annotation.Fluent;
@@ -22,22 +21,20 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletin
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 
-/**
- * Entry point for Redis Cache management API.
- */
+/** Entry point for Redis Cache management API. */
 @Fluent
-public interface RedisCaches extends
-    SupportsCreating<RedisCache.DefinitionStages.Blank>,
-    SupportsListing<RedisCache>,
-    SupportsListingByResourceGroup<RedisCache>,
-    SupportsGettingByResourceGroup<RedisCache>,
-    SupportsGettingById<RedisCache>,
-    SupportsDeletingById,
-    SupportsDeletingByResourceGroup,
-    SupportsBatchCreation<RedisCache>,
-    SupportsBatchDeletion,
-    HasManager<RedisManager>,
-    HasInner<RedisClient> {
+public interface RedisCaches
+    extends SupportsCreating<RedisCache.DefinitionStages.Blank>,
+        SupportsListing<RedisCache>,
+        SupportsListingByResourceGroup<RedisCache>,
+        SupportsGettingByResourceGroup<RedisCache>,
+        SupportsGettingById<RedisCache>,
+        SupportsDeletingById,
+        SupportsDeletingByResourceGroup,
+        SupportsBatchCreation<RedisCache>,
+        SupportsBatchDeletion,
+        HasManager<RedisManager>,
+        HasInner<RedisClient> {
 
     /**
      * Lists all of the available Redis REST API operations.

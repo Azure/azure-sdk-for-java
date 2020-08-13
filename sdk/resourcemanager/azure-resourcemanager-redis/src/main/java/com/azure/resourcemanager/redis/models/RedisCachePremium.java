@@ -4,20 +4,18 @@
 package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.annotation.Fluent;
-
 import java.util.List;
 import java.util.Map;
 
-/**
- * An immutable client-side representation of an Azure Redis cache with Premium SKU.
- */
+/** An immutable client-side representation of an Azure Redis cache with Premium SKU. */
 @Fluent
 public interface RedisCachePremium extends RedisCache {
     /**
-     * Reboot specified Redis node(s). This operation requires write permission to the cache resource. There can be potential data loss.
+     * Reboot specified Redis node(s). This operation requires write permission to the cache resource. There can be
+     * potential data loss.
      *
-     * @param rebootType specifies which Redis node(s) to reboot. Depending on this value data loss is
-     *                   possible. Possible values include: 'PrimaryNode', 'SecondaryNode', 'AllNodes'.
+     * @param rebootType specifies which Redis node(s) to reboot. Depending on this value data loss is possible.
+     *     Possible values include: 'PrimaryNode', 'SecondaryNode', 'AllNodes'.
      * @param shardId In case of cluster cache, this specifies shard id which should be rebooted.
      */
     void forceReboot(RebootType rebootType, int shardId);
@@ -56,13 +54,12 @@ public interface RedisCachePremium extends RedisCache {
 
     /**
      * Gets the patching schedule for Redis Cache.
+     *
      * @return List of patch schedules for current Redis Cache.
      */
     List<ScheduleEntry> listPatchSchedules();
 
-    /**
-     * Deletes the patching schedule for Redis Cache.
-     */
+    /** Deletes the patching schedule for Redis Cache. */
     void deletePatchSchedule();
 
     /**

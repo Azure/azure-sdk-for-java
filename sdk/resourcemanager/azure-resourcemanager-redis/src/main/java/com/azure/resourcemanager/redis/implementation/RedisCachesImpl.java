@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-
 package com.azure.resourcemanager.redis.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
@@ -14,17 +13,9 @@ import com.azure.resourcemanager.redis.models.RedisCache;
 import com.azure.resourcemanager.redis.models.RedisCaches;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
-/**
- * The implementation of RedisCaches and its parent interfaces.
- */
-public
-class RedisCachesImpl
-    extends TopLevelModifiableResourcesImpl<
-        RedisCache,
-        RedisCacheImpl,
-        RedisResourceInner,
-        RedisClient,
-        RedisManager>
+/** The implementation of RedisCaches and its parent interfaces. */
+public class RedisCachesImpl
+    extends TopLevelModifiableResourcesImpl<RedisCache, RedisCacheImpl, RedisResourceInner, RedisClient, RedisManager>
     implements RedisCaches {
 
     public RedisCachesImpl(final RedisManager redisManager) {
@@ -38,10 +29,7 @@ class RedisCachesImpl
 
     @Override
     protected RedisCacheImpl wrapModel(String name) {
-        return new RedisCacheImpl(
-                name,
-                new RedisResourceInner(),
-                this.manager());
+        return new RedisCacheImpl(name, new RedisResourceInner(), this.manager());
     }
 
     @Override
@@ -49,10 +37,7 @@ class RedisCachesImpl
         if (redisResourceInner == null) {
             return null;
         }
-        return new RedisCacheImpl(
-                redisResourceInner.name(),
-                redisResourceInner,
-                this.manager());
+        return new RedisCacheImpl(redisResourceInner.name(), redisResourceInner, this.manager());
     }
 
     @Override
