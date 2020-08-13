@@ -28,7 +28,7 @@ This binder implementation has no partition support even service bus topic suppo
 
 ## Examples 
 
-Please use this [sample](../../spring-cloud-azure-samples/servicebus-topic-binder-sample/) as a reference
+Please use this `sample` as a reference
 for how to use this binder in your projects. 
 
 ### Feature List 

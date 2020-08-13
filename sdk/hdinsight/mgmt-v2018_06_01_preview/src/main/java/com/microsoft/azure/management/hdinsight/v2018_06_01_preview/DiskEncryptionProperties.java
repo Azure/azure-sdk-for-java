@@ -47,6 +47,12 @@ public class DiskEncryptionProperties {
     private String msiResourceId;
 
     /**
+     * Indicates whether or not resource disk encryption is enabled.
+     */
+    @JsonProperty(value = "encryptionAtHost")
+    private Boolean encryptionAtHost;
+
+    /**
      * Get base key vault URI where the customers key is located eg. https://myvault.vault.azure.net.
      *
      * @return the vaultUri value
@@ -143,6 +149,26 @@ public class DiskEncryptionProperties {
      */
     public DiskEncryptionProperties withMsiResourceId(String msiResourceId) {
         this.msiResourceId = msiResourceId;
+        return this;
+    }
+
+    /**
+     * Get indicates whether or not resource disk encryption is enabled.
+     *
+     * @return the encryptionAtHost value
+     */
+    public Boolean encryptionAtHost() {
+        return this.encryptionAtHost;
+    }
+
+    /**
+     * Set indicates whether or not resource disk encryption is enabled.
+     *
+     * @param encryptionAtHost the encryptionAtHost value to set
+     * @return the DiskEncryptionProperties object itself.
+     */
+    public DiskEncryptionProperties withEncryptionAtHost(Boolean encryptionAtHost) {
+        this.encryptionAtHost = encryptionAtHost;
         return this;
     }
 

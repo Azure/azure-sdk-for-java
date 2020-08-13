@@ -1,5 +1,8 @@
 # Release History
 
+## 11.1.0-beta.2 (Unreleased)
+
+
 ## 11.1.0-beta.1 (2020-08-12)
 
 - Added `buildSearchFields` API to `SearchIndexClient` and `SearchIndexAsyncClient` to aid in creating `SearchField`s from the passed `Class`.
