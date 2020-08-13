@@ -1,6 +1,6 @@
 # Release History
 
-## 12.6.0-beta.2 (Unreleased)
+## 12.6.0 (2020-08-13)
 - Added support to set tier on a snapshot or version.
 - Added support to specify tags conditions and rehydrate priority on batch set tier. 
 
