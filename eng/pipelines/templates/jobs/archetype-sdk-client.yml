@@ -246,8 +246,8 @@ jobs:
         condition: and(succeeded(), eq(variables['TestFromSource'],'true'))
 
       - pwsh: |
-          python --version
-          python eng/versioning/set_versions.py --build-type client --pst
+          python3 --version
+          python3 eng/versioning/set_versions.py --build-type client --pst
           if ($LastExitCode -eq 5678) {
             echo "##vso[task.setvariable variable=ShouldRunSourceTests]$true"
             echo "Changes detected, return code from set_versions.py is $($LastExitCode)"
@@ -263,8 +263,8 @@ jobs:
         condition: and(succeeded(), eq(variables['TestFromSource'],'true'))
 
       - script: |
-          python --version
-          python eng/versioning/update_versions.py --update-type library --build-type client --sr
+          python3 --version
+          python3 eng/versioning/update_versions.py --update-type library --build-type client --sr
         condition: and(succeeded(), eq(variables['ShouldRunSourceTests'],'true'))
         displayName: 'Update versions for source build'
 
