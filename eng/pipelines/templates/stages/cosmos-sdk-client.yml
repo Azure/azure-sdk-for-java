@@ -73,27 +73,6 @@ stages:
             ProfileFlag: '-Punit'
         PreTestSteps:
           - template: ../steps/install-reporting-tools.yml
-        PostTestSteps:
-          - script: |
-              python --version
-              python -m pip install setuptools termcolor in_place
-              python sdk/spring/scripts/replace_artifact.py --module cosmos --log debug --color false
-            displayName: 'Run replace_artifact.py'
-          - task: Maven@3
-            displayName: 'Run tests after replace_artifact.py'
-            inputs:
-              mavenPomFile: pom.xml
-              options: '$(DefaultOptions) -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Dparallel-test-playback -pl $(PLSkipOptions)$(ProjectList) -am $(AdditionalOptions)'
-              mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-              javaHomeOption: 'JDKVersion'
-              jdkVersionOption: $(JavaTestVersion)
-              jdkArchitectureOption: 'x64'
-              publishJUnitResults: false
-              goals: verify
-            # we want to run this when TestFromSource isn't true (which covers normal running when it isn't set)
-            # OR when ShouldRunSourceTests is true
-            condition: and(succeeded(), or(ne(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))
-
 
     - template: ../jobs/archetype-sdk-tests.yml
       parameters:
@@ -159,7 +138,6 @@ stages:
             $cert.Import(".\CosmosDbEmulatorCert.pfx", $Key, "DefaultKeySet")
             $cert | Export-Certificate -FilePath "$env:temp\CosmosDbEmulatorCert.cer" -Type CERT
           displayName: 'Export Cosmos DB Emulator Certificate'
-
         - powershell: |
             cd $env:java_home\jre\lib\security
             cp $env:temp\CosmosDbEmulatorCert.cer .
@@ -169,6 +147,32 @@ stages:
         # We `install` separately from running `site:site site:stage` so that the `install` brings in the non-shipping-modules,
         # but we don't include them in the Maven site commands (so that we don't generate reports for the non-shipping modules).
         - template: ../steps/install-reporting-tools.yml
+
+        PostRunSteps:
+        - script: |
+            python --version
+            python -m pip install setuptools termcolor in_place
+            python sdk/spring/scripts/replace_artifact.py --module cosmos --log debug --color false
+          displayName: 'Run replace_artifact.py'
+        - task: Maven@3
+          displayName: 'Build and Install again, JDK Version: $(JavaBuildVersion)'
+          inputs:
+            mavenPomFile: pom.xml
+            goals: 'install'
+            options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
+            mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+            javaHomeOption: 'JDKVersion'
+            jdkVersionOption: $(JavaBuildVersion)
+            jdkArchitectureOption: 'x64'
+            publishJUnitResults: false
+        - task: Maven@3
+          displayName: 'Run tests again: $(DisplayName)'
+          inputs:
+            mavenPomFile: pom.xml
+            goals: 'clean verify'
+            options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList)'
+            mavenAuthenticateFeed: true
+            jdkVersionOption: $(JavaTestVersion)
 
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
   - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
