@@ -4,7 +4,6 @@ parameters:
   Artifacts: []
   AdditionalModules: []
   PreTestSteps: []
-  PostTestSteps: []
   TestOptions: '$(DefaultOptions) -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Dparallel-test-playback'
   TestGoals: verify
   TestMatrix:
@@ -289,8 +288,6 @@ jobs:
         # we want to run this when TestFromSource isn't true (which covers normal running when it isn't set)
         # OR when ShouldRunSourceTests is true
         condition: and(succeeded(), or(ne(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))
-
-      - ${{ parameters.PostTestSteps }}
 
       - task: PublishTestResults@2
         condition: and(always(), or(ne(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))

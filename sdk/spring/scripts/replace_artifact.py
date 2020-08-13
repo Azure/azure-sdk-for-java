@@ -43,6 +43,14 @@ def get_args():
         description = 'Replace artifact id in pom file.'
     )
     parser.add_argument(
+        '--module',
+        type = str,
+        choices = ['spring', 'cosmos'],
+        required = False,
+        default = 'cosmos',
+        help = 'Specify the target module.'
+    )
+    parser.add_argument(
         '--log',
         type = str,
         choices = ['debug', 'info', 'warn', 'error', 'none'],
@@ -51,12 +59,12 @@ def get_args():
         help = 'Set log level.'
     )
     parser.add_argument(
-        '--module',
+        '--color',
         type = str,
-        choices = ['spring', 'cosmos'],
+        choices = ['true', 'false'],
         required = False,
-        default = 'cosmos',
-        help = 'Specify the target module.'
+        default = 'true',
+        help = 'Whether need colorful log.'
     )
     return parser.parse_args()
 
@@ -70,6 +78,11 @@ def init_log(args):
         'none': Log.NONE
     }
     log.set_log_level(log_dict[args.log])
+    color_dict = {
+        'true': True,
+        'false': False
+    }
+    log.set_color(color_dict[args.color])
 
 
 def replace_artifact(module):
@@ -78,9 +91,16 @@ def replace_artifact(module):
     for pom in pom_list:
         log.info('Processing file: {}'.format(pom))
         with in_place.InPlace(pom) as file:
+            line_num = 0
             for line in file:
+                line_num = line_num + 1
                 for key, value in artifact_dict.items():
-                    line = line.replace(key, value)
+                    new_line = line.replace(key, value)
+                    if line != new_line:
+                        log.debug('Updated line {}'.format(line_num))
+                        log.debug('    old_line = {}.'.format(line.strip('\n')))
+                        log.debug('    new_line = {}.'.format(new_line.strip('\n')))
+                        line = new_line
                 file.write(line)
 
 
