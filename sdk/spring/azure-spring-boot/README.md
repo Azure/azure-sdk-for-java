@@ -26,7 +26,7 @@ dependency to your project and the Spring Boot auto-configuration will kick-in:
 
 Note that there is no need to add a `version` as those are managed already by the project.
 
-Alternatively you may want to use the [starters](../azure-spring-boot-starters)
+Alternatively you may want to use the [starters](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter)
 
 [//]: # ({x-version-update-start;com.microsoft.azure:azure-keyvault-secrets-spring-boot-starter;current})
 ```xml
@@ -53,7 +53,7 @@ This module also provides the ability to automatically inject credentials from C
 applications consuming Azure services. It does this by reading the `VCAP_SERVICES` environment
 variable and setting the appropriate properties used by auto-configuration code.
 
-For details, please see sample code in the [azure-spring-boot-sample-cloud-foundry](../azure-spring-boot-samples/azure-spring-boot-sample-cloud-foundry) 
+For details, please see sample code in the [azure-spring-boot-sample-cloud-foundry](../azure-spring-boot-samples/azure-cloud-foundry-service-sample) 
 
 ## Examples
 The following section provides sample projects illustrating how to use the Azure Spring Boot starters.
