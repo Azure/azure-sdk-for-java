@@ -348,7 +348,7 @@ public class ReactiveCosmosTemplateIT {
         flux = cosmosTemplate.findAll(Person.class.getSimpleName(), Person.class);
         StepVerifier.create(flux).expectNextCount(1).verifyComplete();
 
-        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
         Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
         Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
 

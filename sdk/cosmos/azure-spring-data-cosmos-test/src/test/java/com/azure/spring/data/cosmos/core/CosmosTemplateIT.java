@@ -304,7 +304,7 @@ public class CosmosTemplateIT {
         final long newCount = cosmosTemplate.count(containerName);
         assertThat(newCount).isEqualTo(2);
 
-        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
     }
@@ -360,7 +360,7 @@ public class CosmosTemplateIT {
         assertThat(page2.getContent().size()).isEqualTo(1);
         PageTestUtils.validateLastPage(page2, PAGE_SIZE_1);
 
-        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
     }
