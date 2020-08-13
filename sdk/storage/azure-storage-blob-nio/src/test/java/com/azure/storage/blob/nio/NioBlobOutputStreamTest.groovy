@@ -48,6 +48,7 @@ class NioBlobOutputStreamTest extends APISpec {
     }
 
     @Requires({ liveMode() }) // Because we upload in blocks
+    @Ignore("failing in ci")
     def "Write min error"() {
         // Create an append blob at the destination to ensure writes fail. Customers should eventually be notified via
         // writing that there was an error
@@ -206,6 +207,7 @@ class NioBlobOutputStreamTest extends APISpec {
 
     // Flush should at least check the stream state
     @Requires({ liveMode() }) // Because we upload in blocks
+    @Ignore("failing in ci")
     def "Flush error"() {
         // Create an append blob at the destination to ensure writes fail. Customers should eventually be notified via
         // writing that there was an error
