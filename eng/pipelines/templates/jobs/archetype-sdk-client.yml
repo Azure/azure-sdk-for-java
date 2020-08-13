@@ -31,11 +31,10 @@ parameters:
       OSVmImage: 'windows-2019'
       JavaTestVersion: '1.11'
       RunTitle: 'Windows on Java 1.11'
-    Windows From Source - Java 8:
-      OSVmImage: 'windows-2019'
+    Linux From Source - Java 11:
+      OSVmImage: 'ubuntu-18.04'
       JavaTestVersion: '1.11'
-      RunTitle: 'From Source: Windows on Java 1.11'
-      #PLSkipOptions: '!com.azure:jacoco-test-coverage'
+      RunTitle: 'From Source: Linux on Java 1.11'
       AdditionalOptions: '-amd'
       TestFromSource: true
 
@@ -270,6 +269,12 @@ jobs:
         displayName: 'Update versions for source build'
 
       - task: PowerShell@2
+        # The root pom.xml contains both track 1, data, and track 2, client libraries.
+        # This task calls a powershell script that will go through all of the pom files
+        # in the repository looking, specifically, for ones whose parent is
+        # azure-client-sdk-parent and create a temporary pom file with just those libraries.
+        # Note: It excludes items within the /eng directory otherwise we'd be picking up
+        # jacoco and spotbugs which are unnecessary for the From Source run.
         displayName: 'Generate Aggregate Pom for From Source Build'
         inputs:
           pwsh: true
@@ -301,18 +306,19 @@ jobs:
         inputs:
           mavenPomFile: ClientAggregatePom.xml
           goals: 'install'
-          # Build everything in the root pom.xml and install it. The purpose here is to build and install everything after
-          # the version have been manipulated. The purpose is to have all of the libraries installed on the machine so we
-          # can simply run tests with the -amd switch and it won't have to deal with the AdditionalModules snafu that's causing
-          # us to list every transitive azure client dependency.
-          # The -T 1C says spin up a build thread per processor, trying it out here.
+          # Build and install every track 2, client, library. The purpose is to have all of
+          # the libraries installed on the machine so we can simply run tests with the -amd
+          # switch and we can remove the SNAFU of dependencies that bloated the ci.yml files'
+          # AdditionalModules because we ended up having to list every transitive azure client
+          # dependency. Note: The -T 1C says spin up a build thread per core. Since we're building
+          # all of the track 2, client, libraries (which is now over 100) this effectively cuts the
+          # the build time in half.
           options: '$(DefaultOptions) -T 1C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaBuildVersion)
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
-        # We want to run this when we TestFromSource and ShouldRunSourceTests are true
         condition: and(succeeded(), and(eq(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))
 
       - task: Maven@3
@@ -327,10 +333,11 @@ jobs:
           jdkVersionOption: $(JavaTestVersion)
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
-          # Instead of using the verify or test goals, which would effectively recompile, just run the tests and generate
-          # the test report which will be published in the next step
+          # The From Source runs only care about running tests for libraries within an SDK/area
+          # as well as libraries which depend on them and not the other stages in the Maven
+          # lifecycle that test or verify targets would execute. The libraries were already
+          # compiled and installed in the previous task, this tasks only runs tests.
           goals: 'surefire:test'
-        # We want to run this when TestFromSource and ShouldRunSourceTests are true
         condition: and(succeeded(), and(eq(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))
 
       - task: PublishTestResults@2
