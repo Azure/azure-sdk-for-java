@@ -297,18 +297,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         );
     }
 
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void recognizeEntitiesTooManyDocuments(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsClient(httpClient, serviceVersion);
-        recognizeEntitiesTooManyDocumentsRunner(inputs -> {
-            HttpResponseException exception = assertThrows(HttpResponseException.class,
-                () -> client.recognizeEntitiesBatch(inputs, null, null).stream().findFirst().get());
-            assertEquals(EXCEEDED_ALLOWED_DOCUMENTS_LIMITS_MESSAGE, exception.getMessage());
-            assertEquals(INVALID_DOCUMENT_BATCH, exception.getValue().toString());
-        });
-    }
-
     // Recognize linked entity
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -393,18 +381,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         recognizeBatchStringLinkedEntitiesShowStatsRunner((inputs, options) ->
             validateLinkedEntitiesResultCollection(true, getExpectedBatchLinkedEntities(), client.recognizeLinkedEntitiesBatch(inputs, null, options)));
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void recognizeLinkedEntitiesTooManyDocuments(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsClient(httpClient, serviceVersion);
-        recognizeLinkedEntitiesTooManyDocumentsRunner(inputs -> {
-            HttpResponseException exception = assertThrows(HttpResponseException.class,
-                () -> client.recognizeLinkedEntitiesBatch(inputs, null, null).stream().findFirst().get());
-            assertEquals(EXCEEDED_ALLOWED_DOCUMENTS_LIMITS_MESSAGE, exception.getMessage());
-            assertEquals(INVALID_DOCUMENT_BATCH, exception.getValue().toString());
-        });
     }
 
     // Extract key phrase

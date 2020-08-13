@@ -185,6 +185,7 @@ public final class RoleDefinitionsClient implements InnerSupportsDelete<RoleDefi
                 .error(new IllegalArgumentException("Parameter roleDefinitionId is required and cannot be null."));
         }
         final String apiVersion = "2018-01-01-preview";
+        context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), scope, roleDefinitionId, apiVersion, context);
     }
 
@@ -326,6 +327,7 @@ public final class RoleDefinitionsClient implements InnerSupportsDelete<RoleDefi
                 .error(new IllegalArgumentException("Parameter roleDefinitionId is required and cannot be null."));
         }
         final String apiVersion = "2018-01-01-preview";
+        context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), scope, roleDefinitionId, apiVersion, context);
     }
 
@@ -483,6 +485,7 @@ public final class RoleDefinitionsClient implements InnerSupportsDelete<RoleDefi
             roleDefinition.validate();
         }
         final String apiVersion = "2018-01-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdate(this.client.getEndpoint(), scope, roleDefinitionId, apiVersion, roleDefinition, context);
     }
@@ -634,6 +637,7 @@ public final class RoleDefinitionsClient implements InnerSupportsDelete<RoleDefi
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
         final String apiVersion = "2018-01-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), scope, filter, apiVersion, context)
             .map(
@@ -678,7 +682,7 @@ public final class RoleDefinitionsClient implements InnerSupportsDelete<RoleDefi
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RoleDefinitionInner> listAsync(String scope, String filter, Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(scope, filter, context), nextLink -> listNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(scope, filter, context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -694,7 +698,8 @@ public final class RoleDefinitionsClient implements InnerSupportsDelete<RoleDefi
     public PagedFlux<RoleDefinitionInner> listAsync(String scope) {
         final String filter = null;
         final Context context = null;
-        return new PagedFlux<>(() -> listSinglePageAsync(scope, filter), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(scope, filter), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -800,6 +805,7 @@ public final class RoleDefinitionsClient implements InnerSupportsDelete<RoleDefi
             return Mono.error(new IllegalArgumentException("Parameter roleId is required and cannot be null."));
         }
         final String apiVersion = "2018-01-01-preview";
+        context = this.client.mergeContext(context);
         return service.getById(this.client.getEndpoint(), roleId, apiVersion, context);
     }
 
@@ -932,6 +938,7 @@ public final class RoleDefinitionsClient implements InnerSupportsDelete<RoleDefi
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listNext(nextLink, context)
             .map(

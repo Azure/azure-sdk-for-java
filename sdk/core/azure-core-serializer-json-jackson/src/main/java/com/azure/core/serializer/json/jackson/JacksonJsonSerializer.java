@@ -8,10 +8,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.MemberNameConverter;
 import com.azure.core.util.serializer.TypeReference;
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.introspect.AnnotatedMethod;
+import com.fasterxml.jackson.databind.introspect.VisibilityChecker;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.databind.util.BeanUtil;
 import reactor.core.publisher.Mono;
@@ -26,9 +28,9 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
 /**
- * Jackson based implementation of the {@link JsonSerializer} interface.
+ * Jackson based implementation of the {@link JsonSerializer} and {@link MemberNameConverter} interfaces.
  */
-public final class JacksonJsonSerializer implements MemberNameConverter, JsonSerializer {
+public final class JacksonJsonSerializer implements JsonSerializer, MemberNameConverter {
     private final ClientLogger logger = new ClientLogger(JacksonJsonSerializer.class);
 
     private final ObjectMapper mapper;
@@ -82,36 +84,78 @@ public final class JacksonJsonSerializer implements MemberNameConverter, JsonSer
         if (Modifier.isTransient(member.getModifiers())) {
             return null;
         }
+
+        VisibilityChecker<?> visibilityChecker = mapper.getVisibilityChecker();
         if (member instanceof Field) {
             Field f = (Field) member;
-            if (f.isAnnotationPresent(JsonIgnore.class)) {
+
+            if (f.isAnnotationPresent(JsonIgnore.class) || !visibilityChecker.isFieldVisible(f)) {
+                if (f.isAnnotationPresent(JsonProperty.class)) {
+                    logger.info("Field {} is annotated with JsonProperty but isn't accessible to "
+                        + "JacksonJsonSerializer.", f.getName());
+                }
                 return null;
             }
+
             if (f.isAnnotationPresent(JsonProperty.class)) {
                 String propertyName = f.getDeclaredAnnotation(JsonProperty.class).value();
                 return CoreUtils.isNullOrEmpty(propertyName) ? f.getName() : propertyName;
             }
+
             return f.getName();
         }
 
         if (member instanceof Method) {
             Method m = (Method) member;
-            String methodNameWithoutJavaBeans = removePrefix(m);
-            if (m.isAnnotationPresent(JsonIgnore.class)) {
+
+            /*
+             * If the method isn't a getter, is annotated with JsonIgnore, or isn't visible to the ObjectMapper ignore
+             * it.
+             */
+            if (!verifyGetter(m)
+                || m.isAnnotationPresent(JsonIgnore.class)
+                || !visibilityChecker.isGetterVisible(m)) {
+                if (m.isAnnotationPresent(JsonGetter.class) || m.isAnnotationPresent(JsonProperty.class)) {
+                    logger.info("Method {} is annotated with either JsonGetter or JsonProperty but isn't accessible "
+                        + "to JacksonJsonSerializer.", m.getName());
+                }
                 return null;
             }
+
+            String methodNameWithoutJavaBeans = removePrefix(m);
+
+            /*
+             * Prefer JsonGetter over JsonProperty as it is the more targeted annotation.
+             */
+            if (m.isAnnotationPresent(JsonGetter.class)) {
+                String propertyName = m.getDeclaredAnnotation(JsonGetter.class).value();
+                return CoreUtils.isNullOrEmpty(propertyName) ? methodNameWithoutJavaBeans : propertyName;
+            }
+
             if (m.isAnnotationPresent(JsonProperty.class)) {
                 String propertyName = m.getDeclaredAnnotation(JsonProperty.class).value();
                 return CoreUtils.isNullOrEmpty(propertyName) ? methodNameWithoutJavaBeans : propertyName;
             }
+
+            // If no annotation is present default to the inferred name.
             return methodNameWithoutJavaBeans;
         }
 
         return null;
     }
 
-    private String removePrefix(Method method) {
-        return BeanUtil.okNameForGetter(
-                new AnnotatedMethod(null, method, null, null), false);
+    /*
+     * Only consider methods that don't have parameters and aren't void as valid getter methods.
+     */
+    private static boolean verifyGetter(Method method) {
+        Class<?> returnType = method.getReturnType();
+
+        return method.getParameterCount() == 0
+            && returnType != void.class
+            && returnType != Void.class;
+    }
+
+    private static String removePrefix(Method method) {
+        return BeanUtil.okNameForGetter(new AnnotatedMethod(null, method, null, null), false);
     }
 }

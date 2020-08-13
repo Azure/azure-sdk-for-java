@@ -609,7 +609,8 @@ public final class StaticSitesClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<StaticSiteArmResourceInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -766,7 +767,7 @@ public final class StaticSitesClient
     public PagedFlux<StaticSiteArmResourceInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> getStaticSitesByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> getStaticSitesByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1655,7 +1656,7 @@ public final class StaticSitesClient
         String resourceGroupName, String name, String authprovider, Context context) {
         return new PagedFlux<>(
             () -> listStaticSiteUsersSinglePageAsync(resourceGroupName, name, authprovider, context),
-            nextLink -> listStaticSiteUsersNextSinglePageAsync(nextLink));
+            nextLink -> listStaticSiteUsersNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2269,7 +2270,7 @@ public final class StaticSitesClient
         String resourceGroupName, String name, Context context) {
         return new PagedFlux<>(
             () -> getStaticSiteBuildsSinglePageAsync(resourceGroupName, name, context),
-            nextLink -> getStaticSiteBuildsNextSinglePageAsync(nextLink));
+            nextLink -> getStaticSiteBuildsNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -3018,7 +3019,7 @@ public final class StaticSitesClient
         String resourceGroupName, String name, String prId, Context context) {
         return new PagedFlux<>(
             () -> listStaticSiteBuildFunctionsSinglePageAsync(resourceGroupName, name, prId, context),
-            nextLink -> listStaticSiteBuildFunctionsNextSinglePageAsync(nextLink));
+            nextLink -> listStaticSiteBuildFunctionsNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -3791,7 +3792,7 @@ public final class StaticSitesClient
         String resourceGroupName, String name, Context context) {
         return new PagedFlux<>(
             () -> listStaticSiteCustomDomainsSinglePageAsync(resourceGroupName, name, context),
-            nextLink -> listStaticSiteCustomDomainsNextSinglePageAsync(nextLink));
+            nextLink -> listStaticSiteCustomDomainsNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -4644,7 +4645,7 @@ public final class StaticSitesClient
         String resourceGroupName, String name, Context context) {
         return new PagedFlux<>(
             () -> listStaticSiteFunctionsSinglePageAsync(resourceGroupName, name, context),
-            nextLink -> listStaticSiteFunctionsNextSinglePageAsync(nextLink));
+            nextLink -> listStaticSiteFunctionsNextSinglePageAsync(nextLink, context));
     }
 
     /**

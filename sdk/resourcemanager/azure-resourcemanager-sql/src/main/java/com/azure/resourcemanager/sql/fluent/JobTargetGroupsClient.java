@@ -236,6 +236,7 @@ public final class JobTargetGroupsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .listByAgent(
                 this.client.getEndpoint(),
@@ -294,7 +295,7 @@ public final class JobTargetGroupsClient {
         String resourceGroupName, String serverName, String jobAgentName, Context context) {
         return new PagedFlux<>(
             () -> listByAgentSinglePageAsync(resourceGroupName, serverName, jobAgentName, context),
-            nextLink -> listByAgentNextSinglePageAsync(nextLink));
+            nextLink -> listByAgentNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -437,6 +438,7 @@ public final class JobTargetGroupsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -668,6 +670,7 @@ public final class JobTargetGroupsClient {
         final String apiVersion = "2017-03-01-preview";
         JobTargetGroupInner parameters = new JobTargetGroupInner();
         parameters.withMembers(members);
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -902,6 +905,7 @@ public final class JobTargetGroupsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -1034,6 +1038,7 @@ public final class JobTargetGroupsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByAgentNext(nextLink, context)
             .map(

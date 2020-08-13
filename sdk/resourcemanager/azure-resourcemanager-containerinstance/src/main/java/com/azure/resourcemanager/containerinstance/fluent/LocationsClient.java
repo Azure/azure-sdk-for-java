@@ -375,7 +375,7 @@ public final class LocationsClient {
     public PagedFlux<CachedImages> listCachedImagesAsync(String location, Context context) {
         return new PagedFlux<>(
             () -> listCachedImagesSinglePageAsync(location, context),
-            nextLink -> listCachedImagesNextSinglePageAsync(nextLink));
+            nextLink -> listCachedImagesNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -530,7 +530,7 @@ public final class LocationsClient {
     public PagedFlux<Capabilities> listCapabilitiesAsync(String location, Context context) {
         return new PagedFlux<>(
             () -> listCapabilitiesSinglePageAsync(location, context),
-            nextLink -> listCapabilitiesNextSinglePageAsync(nextLink));
+            nextLink -> listCapabilitiesNextSinglePageAsync(nextLink, context));
     }
 
     /**

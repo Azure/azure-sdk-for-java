@@ -45,7 +45,7 @@
     <dependency>
       <groupId>io.grpc</groupId>
       <artifactId>grpc-context</artifactId>
-      <version>1.30.0</version> <!-- {x-version-update;io.grpc:grpc-context;external_dependency} -->
+      <version>1.30.2</version> <!-- {x-version-update;io.grpc:grpc-context;external_dependency} -->
     </dependency>
 
     <!--test dependencies -->
@@ -86,7 +86,7 @@
             <bannedDependencies>
               <includes>
                 <include>io.opentelemetry:opentelemetry-api:[0.6.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
-                <include>io.grpc:grpc-context:[1.30.0]</include> <!-- {x-include-update;io.grpc:grpc-context;external_dependency} -->
+                <include>io.grpc:grpc-context:[1.30.2]</include> <!-- {x-include-update;io.grpc:grpc-context;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

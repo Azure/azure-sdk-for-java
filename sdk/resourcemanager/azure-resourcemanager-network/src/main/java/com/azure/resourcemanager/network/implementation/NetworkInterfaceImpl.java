@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.network.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.LoadBalancer;
@@ -14,6 +15,9 @@ import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceIpConfigurationInner;
 import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceInner;
 import com.azure.resourcemanager.network.fluent.inner.NetworkSecurityGroupInner;
+import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
+import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
+import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
@@ -25,6 +29,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Implementation for NetworkInterface and its create and update interfaces. */
@@ -32,6 +38,9 @@ class NetworkInterfaceImpl
     extends GroupableParentResourceWithTagsImpl<
         NetworkInterface, NetworkInterfaceInner, NetworkInterfaceImpl, NetworkManager>
     implements NetworkInterface, NetworkInterface.Definition, NetworkInterface.Update {
+
+    private final ClientLogger logger = new ClientLogger(this.getClass());
+
     /** the name of the network interface. */
     private final String nicName;
     /** used to generate unique name for any dependency resources. */
@@ -179,6 +188,7 @@ class NetworkInterfaceImpl
     @Override
     public NetworkInterfaceImpl withExistingPrimaryPublicIPAddress(PublicIpAddress publicIPAddress) {
         this.primaryIPConfiguration().withExistingPublicIpAddress(publicIPAddress);
+        this.primaryIPConfiguration().withPrivateIpVersion(publicIPAddress.version());
         return this;
     }
 
@@ -447,6 +457,29 @@ class NetworkInterfaceImpl
 
     Creatable<ResourceGroup> newGroup() {
         return this.creatableGroup;
+    }
+
+    @Override
+    public Accepted<NetworkInterface> beginCreate() {
+        return AcceptedImpl.newAccepted(logger,
+            () -> this.manager().inner().getNetworkInterfaces()
+                .createOrUpdateWithResponseAsync(resourceGroupName(), name(), this.inner()).block(),
+            inner -> new NetworkInterfaceImpl(inner.name(), inner, this.manager()),
+            this.manager().inner().getSerializerAdapter(),
+            this.manager().inner().getHttpPipeline(),
+            NetworkInterfaceInner.class,
+            () -> {
+                Flux<Indexable> dependencyTasksAsync =
+                    taskGroup().invokeDependencyAsync(taskGroup().newInvocationContext());
+                dependencyTasksAsync.blockLast();
+
+                beforeCreating();
+            },
+            inner -> {
+                innerToFluentMap(this);
+                initializeChildrenFromInner();
+                afterCreating();
+            });
     }
 
     @Override

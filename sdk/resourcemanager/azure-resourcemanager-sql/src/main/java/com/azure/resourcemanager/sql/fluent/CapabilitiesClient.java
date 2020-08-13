@@ -140,6 +140,7 @@ public final class CapabilitiesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-06-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .listByLocation(
                 this.client.getEndpoint(), locationName, include, this.client.getSubscriptionId(), apiVersion, context);

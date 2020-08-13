@@ -4,42 +4,29 @@
 
 package com.azure.resourcemanager.sql.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for PrivateLinkServiceConnectionStateActionsRequire. */
-public enum PrivateLinkServiceConnectionStateActionsRequire {
-    /** Enum value None. */
-    NONE("None");
-
-    /** The actual serialized value for a PrivateLinkServiceConnectionStateActionsRequire instance. */
-    private final String value;
-
-    PrivateLinkServiceConnectionStateActionsRequire(String value) {
-        this.value = value;
-    }
+public final class PrivateLinkServiceConnectionStateActionsRequire
+    extends ExpandableStringEnum<PrivateLinkServiceConnectionStateActionsRequire> {
+    /** Static value None for PrivateLinkServiceConnectionStateActionsRequire. */
+    public static final PrivateLinkServiceConnectionStateActionsRequire NONE = fromString("None");
 
     /**
-     * Parses a serialized value to a PrivateLinkServiceConnectionStateActionsRequire instance.
+     * Creates or finds a PrivateLinkServiceConnectionStateActionsRequire from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed PrivateLinkServiceConnectionStateActionsRequire object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding PrivateLinkServiceConnectionStateActionsRequire.
      */
     @JsonCreator
-    public static PrivateLinkServiceConnectionStateActionsRequire fromString(String value) {
-        PrivateLinkServiceConnectionStateActionsRequire[] items =
-            PrivateLinkServiceConnectionStateActionsRequire.values();
-        for (PrivateLinkServiceConnectionStateActionsRequire item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static PrivateLinkServiceConnectionStateActionsRequire fromString(String name) {
+        return fromString(name, PrivateLinkServiceConnectionStateActionsRequire.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /** @return known PrivateLinkServiceConnectionStateActionsRequire values. */
+    public static Collection<PrivateLinkServiceConnectionStateActionsRequire> values() {
+        return values(PrivateLinkServiceConnectionStateActionsRequire.class);
     }
 }

@@ -270,6 +270,7 @@ public final class CustomDomainsClient {
         if (domainName == null) {
             return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -497,6 +498,7 @@ public final class CustomDomainsClient {
         }
         CustomDomainResourceInner domainResource = new CustomDomainResourceInner();
         domainResource.withProperties(properties);
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -725,6 +727,7 @@ public final class CustomDomainsClient {
         if (domainName == null) {
             return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -934,6 +937,7 @@ public final class CustomDomainsClient {
         }
         CustomDomainResourceInner domainResource = new CustomDomainResourceInner();
         domainResource.withProperties(properties);
+        context = this.client.mergeContext(context);
         return service
             .patch(
                 this.client.getEndpoint(),
@@ -1162,6 +1166,7 @@ public final class CustomDomainsClient {
         if (appName == null) {
             return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
@@ -1220,7 +1225,7 @@ public final class CustomDomainsClient {
         String resourceGroupName, String serviceName, String appName, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, serviceName, appName, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1362,6 +1367,7 @@ public final class CustomDomainsClient {
         }
         CustomDomainValidatePayload validatePayload = new CustomDomainValidatePayload();
         validatePayload.withName(name);
+        context = this.client.mergeContext(context);
         return service
             .validate(
                 this.client.getEndpoint(),
@@ -1511,6 +1517,7 @@ public final class CustomDomainsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listNext(nextLink, context)
             .map(

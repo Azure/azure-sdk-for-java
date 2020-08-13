@@ -41,7 +41,7 @@ ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilde
     .build();
 ```
 
-The value of `AZURE_AUTHORITY_HOST` can be set via [`KnownAuthorityHosts`](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/identity/azure-identity/src/main/java/com/azure/identity/KnownAuthorityHosts.java) or [`AzureEnvironment::getActiveDirectoryEndpoint`](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core-management/src/main/java/com/azure/core/management/AzureEnvironment.java#L192).
+The value of `AZURE_AUTHORITY_HOST` can be set via [`AzureAuthorityHosts`](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/identity/azure-identity/src/main/java/com/azure/identity/AzureAuthorityHosts.java) or [`AzureEnvironment::getActiveDirectoryEndpoint`](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core-management/src/main/java/com/azure/core/management/AzureEnvironment.java#L192).
 
 ### Preparing AzureProfile
   * The `AzureProfile` is a class holding `AzureEnvironment`, `subscriptionId`, `tenantId` to configure the requests sending to wire. 
@@ -72,13 +72,13 @@ EnvironmentCredential credential = new EnvironmentCredentialBuilder()
 
 ### Authenticating with default HttpPipeline
 
-Once the `TokenCredential` and `AzureProfile` are ready, you can move forward with below authenticating code. It helps build http pipeline internally with [default configuration](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resources/mgmt/src/main/java/com/azure/resourcemanager/resources/fluentcore/utils/HttpPipelineProvider.java#L43).
+Once the `TokenCredential` and `AzureProfile` are ready, you can move forward with below authenticating code. It helps build http pipeline internally with [default configuration](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-resources/src/main/java/com/azure/resourcemanager/resources/fluentcore/utils/HttpPipelineProvider.java#L43).
 
 ```java
 Azure azure = Azure.authenticate(credential, profile).withDefaultSubscription();
 ```
 
-The `Authenticated` class provides access to a subset of Azure APIs that do not require a specific subscription. If the profile does not contain a subscription, you can select a subscription via [`Authenticated::subscriptions`](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/azure/src/main/java/com/azure/resourcemanager/Azure.java#L200). Similarly, you can select a tenant via [`Authenticated::tenants`](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/azure/src/main/java/com/azure/resourcemanager/Azure.java#L207).
+The `Authenticated` class provides access to a subset of Azure APIs that do not require a specific subscription. If the profile does not contain a subscription, you can select a subscription via [`Authenticated::subscriptions`](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager/src/main/java/com/azure/resourcemanager/Azure.java#L200). Similarly, you can select a tenant via [`Authenticated::tenants`](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager/src/main/java/com/azure/resourcemanager/Azure.java#L207).
 
 ```java
 Azure.Authenticated authenticated = Azure.authenticate(credential, profile);
@@ -91,7 +91,7 @@ Azure azure = authenticated.withSubscription(subscriptionId);
 If you want to take full control of Azure client, you could build your own http pipeline for authentication.
 
 ### Preparing HttpPipelinePolicy
-  * The `HttpPipelinePolicy` is an interface that process provided request context and invokes the next policy. To learn more, see [policies in Azure Core](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/core/azure-core/src/main/java/com/azure/core/http/policy) and [policies in Azure Management Libraries for Java](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/resources/mgmt/src/main/java/com/azure/resourcemanager/resources/fluentcore/policy).
+  * The `HttpPipelinePolicy` is an interface that process provided request context and invokes the next policy. To learn more, see [policies in Azure Core](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/core/azure-core/src/main/java/com/azure/core/http/policy) and [policies in Azure Management Libraries for Java](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/resourcemanager/azure-resourcemanager-resources/src/main/java/com/azure/resourcemanager/resources/fluentcore/policy).
 
 
 ### Preparing HttpClient

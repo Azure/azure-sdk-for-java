@@ -178,6 +178,7 @@ public final class AlertRuleIncidentsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2016-03-01";
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -357,6 +358,7 @@ public final class AlertRuleIncidentsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2016-03-01";
+        context = this.client.mergeContext(context);
         return service
             .listByAlertRule(
                 this.client.getEndpoint(),

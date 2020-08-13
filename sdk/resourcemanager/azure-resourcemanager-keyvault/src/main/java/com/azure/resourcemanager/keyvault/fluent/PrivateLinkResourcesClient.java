@@ -148,6 +148,7 @@ public final class PrivateLinkResourcesClient {
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByVault(
                 this.client.getEndpoint(),
