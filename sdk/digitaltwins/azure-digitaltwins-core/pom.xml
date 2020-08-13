@@ -22,6 +22,13 @@
       <version>1.6.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
+      <!--Azure identity library has useful classes for authenticating against ADT, but isn't required in the client library. It is used in samples/tests-->
+      <groupId>com.azure</groupId>
+      <artifactId>azure-identity</artifactId>
+      <version>1.0.6</version> <!-- {x-version-update;com.azure:azure-identity-service;dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
       <version>1.5.3</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
