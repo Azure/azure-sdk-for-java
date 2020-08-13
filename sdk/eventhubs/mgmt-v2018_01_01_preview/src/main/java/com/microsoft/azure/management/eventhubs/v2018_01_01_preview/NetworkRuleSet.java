@@ -39,6 +39,11 @@ public interface NetworkRuleSet extends HasInner<NetworkRuleSetInner>, HasManage
     String name();
 
     /**
+     * @return the trustedServiceAccessEnabled value.
+     */
+    Boolean trustedServiceAccessEnabled();
+
+    /**
      * @return the type value.
      */
     String type();
