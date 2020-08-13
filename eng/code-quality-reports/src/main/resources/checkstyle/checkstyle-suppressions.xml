@@ -152,8 +152,9 @@
     https://github.com/Azure/azure-sdk/issues/321 -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files=".*EventHubClientBuilder.java"/>
 
-  <!-- Suppress warnings for KeyEncryptionKey client as it is a specialized client and doesn't follow the guidelines completely -->
+  <!-- Suppress warnings for KeyEncryptionKey and LocalCrypto client as it is a specialized client and doesn't follow the guidelines completely -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files=".*KeyEncryptionKeyClientBuilder.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files=".*LocalCryptographyClientBuilder.java"/>
 
   <!-- Suppress warnings for ServiceBusReceiverClientBuilder and ServiceBusSenderClientBuilder. They are created from
   the main ServiceBusClientBuilder. -->

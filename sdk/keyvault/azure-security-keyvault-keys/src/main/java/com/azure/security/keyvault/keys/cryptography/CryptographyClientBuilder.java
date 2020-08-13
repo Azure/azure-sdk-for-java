@@ -72,7 +72,6 @@ public final class CryptographyClientBuilder {
     private static final String SDK_VERSION = "version";
     private TokenCredential credential;
     private HttpPipeline pipeline;
-    private JsonWebKey jsonWebKey;
     private String keyId;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
@@ -126,18 +125,14 @@ public final class CryptographyClientBuilder {
      * CryptographyClientBuilder#keyIdentifier(String)} have not been set.
      */
     public CryptographyAsyncClient buildAsyncClient() {
-        if (jsonWebKey == null && Strings.isNullOrEmpty(keyId)) {
+        if (Strings.isNullOrEmpty(keyId)) {
             throw logger.logExceptionAsError(new IllegalStateException(
-                "Json Web Key or jsonWebKey identifier are required to create cryptography client"));
+                "JSON Web Key identifier is required to create cryptography client"));
         }
         CryptographyServiceVersion serviceVersion = version != null ? version : CryptographyServiceVersion.getLatest();
 
         if (pipeline != null) {
-            if (jsonWebKey != null) {
-                return new CryptographyAsyncClient(jsonWebKey, pipeline, serviceVersion);
-            } else {
-                return new CryptographyAsyncClient(keyId, pipeline, serviceVersion);
-            }
+            return new CryptographyAsyncClient(keyId, pipeline, serviceVersion);
         }
 
         if (credential == null) {
@@ -147,11 +142,7 @@ public final class CryptographyClientBuilder {
 
         HttpPipeline pipeline = setupPipeline();
 
-        if (jsonWebKey != null) {
-            return new CryptographyAsyncClient(jsonWebKey, pipeline, serviceVersion);
-        } else {
-            return new CryptographyAsyncClient(keyId, pipeline, serviceVersion);
-        }
+        return new CryptographyAsyncClient(keyId, pipeline, serviceVersion);
     }
 
     HttpPipeline setupPipeline() {

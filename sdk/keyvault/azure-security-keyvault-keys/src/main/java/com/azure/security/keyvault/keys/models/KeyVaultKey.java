@@ -31,6 +31,16 @@ public class KeyVaultKey {
         properties = new KeyProperties();
     }
 
+    /*
+     * Creates an instance of KeyVaultKey
+     * @param keyId the vault id name of the key
+     * @param jsonWebKey the json web key to be used for crypto operations
+     */
+    KeyVaultKey(KeyProperties keyProperties, JsonWebKey jsonWebKey) {
+        properties = keyProperties;
+        this.key = jsonWebKey;
+    }
+
     /**
      * Get the key value.
      *
