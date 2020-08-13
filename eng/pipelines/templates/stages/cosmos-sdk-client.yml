@@ -149,13 +149,14 @@ stages:
         - template: ../steps/install-reporting-tools.yml
 
         PostRunSteps:
-          condition: eq(variables['DisplayName'], 'Encryption Emulator only Integration Tests')
           - script: |
               python --version
               python -m pip install setuptools termcolor in_place
               python sdk/spring/scripts/replace_artifact.py --module cosmos --log debug --color false
+            condition: eq(variables['DisplayName'], 'Encryption Emulator only Integration Tests')
             displayName: 'Run replace_artifact.py'
           - task: Maven@3
+            condition: eq(variables['DisplayName'], 'Encryption Emulator only Integration Tests')
             displayName: 'Build and Install again, JDK Version: $(JavaBuildVersion)'
             inputs:
               mavenPomFile: pom.xml
@@ -167,6 +168,7 @@ stages:
               jdkArchitectureOption: 'x64'
               publishJUnitResults: false
           - task: Maven@3
+            condition: eq(variables['DisplayName'], 'Encryption Emulator only Integration Tests')
             displayName: 'Run tests again: $(DisplayName)'
             inputs:
               mavenPomFile: pom.xml
