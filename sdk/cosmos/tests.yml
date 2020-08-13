@@ -287,10 +287,10 @@ jobs:
           displayName: 'Run tests again: $(DisplayName)'
           inputs:
             mavenPomFile: pom.xml
-            goals: verify
+            goals: clean verify
             options: '$(ProfileFlag) -Dgpg.skip -Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -pl $(ProjectList)'
           env:
             AZURE_TEST_MODE: LIVE
       TestStepMavenInputs:
-        goals: verify
+        goals: clean verify
         options: '$(ProfileFlag) -Dgpg.skip -Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -pl $(ProjectList)'
