@@ -116,6 +116,7 @@ public final class VMInsightsClient {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
         final String apiVersion = "2018-11-27-preview";
+        context = this.client.mergeContext(context);
         return service.getOnboardingStatus(this.client.getEndpoint(), apiVersion, resourceUri, context);
     }
 

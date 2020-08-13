@@ -257,7 +257,9 @@ public final class BastionHostsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String bastionHostname) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, bastionHostname);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -274,8 +276,11 @@ public final class BastionHostsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String bastionHostname, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, bastionHostname, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -673,8 +678,8 @@ public final class BastionHostsClient
             createOrUpdateWithResponseAsync(resourceGroupName, bastionHostname, parameters);
         return this
             .client
-            .<BastionHostInner, BastionHostInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), BastionHostInner.class, BastionHostInner.class);
+            .<BastionHostInner, BastionHostInner>getLroResult(
+                mono, this.client.getHttpPipeline(), BastionHostInner.class, BastionHostInner.class, Context.NONE);
     }
 
     /**
@@ -692,12 +697,13 @@ public final class BastionHostsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<BastionHostInner>, BastionHostInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String bastionHostname, BastionHostInner parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, bastionHostname, parameters, context);
         return this
             .client
-            .<BastionHostInner, BastionHostInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), BastionHostInner.class, BastionHostInner.class);
+            .<BastionHostInner, BastionHostInner>getLroResult(
+                mono, this.client.getHttpPipeline(), BastionHostInner.class, BastionHostInner.class, context);
     }
 
     /**
@@ -908,7 +914,8 @@ public final class BastionHostsClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BastionHostInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1062,7 +1069,7 @@ public final class BastionHostsClient
     public PagedFlux<BastionHostInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**

@@ -333,21 +333,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 .verifyComplete());
     }
 
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void recognizeEntitiesTooManyDocuments(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
-        recognizeEntitiesTooManyDocumentsRunner(inputs -> {
-            StepVerifier.create(client.recognizeEntitiesBatch(inputs, null, null))
-                .verifyErrorSatisfies(ex -> {
-                    HttpResponseException exception = (HttpResponseException) ex;
-                    assertEquals(HttpResponseException.class, exception.getClass());
-                    assertEquals(EXCEEDED_ALLOWED_DOCUMENTS_LIMITS_MESSAGE, exception.getMessage());
-                    assertEquals(INVALID_DOCUMENT_BATCH, exception.getValue().toString());
-                });
-        });
-    }
-
     // Linked Entities
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
@@ -437,21 +422,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             StepVerifier.create(client.recognizeLinkedEntitiesBatch(inputs, null, options))
                 .assertNext(response -> validateLinkedEntitiesResultCollection(true, getExpectedBatchLinkedEntities(), response))
                 .verifyComplete());
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void recognizeLinkedEntitiesTooManyDocuments(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
-        recognizeLinkedEntitiesTooManyDocumentsRunner(inputs -> {
-            StepVerifier.create(client.recognizeLinkedEntitiesBatch(inputs, null, null))
-                .verifyErrorSatisfies(ex -> {
-                    HttpResponseException exception = (HttpResponseException) ex;
-                    assertEquals(HttpResponseException.class, exception.getClass());
-                    assertEquals(EXCEEDED_ALLOWED_DOCUMENTS_LIMITS_MESSAGE, exception.getMessage());
-                    assertEquals(INVALID_DOCUMENT_BATCH, exception.getValue().toString());
-                });
-        });
     }
 
     // Key Phrases

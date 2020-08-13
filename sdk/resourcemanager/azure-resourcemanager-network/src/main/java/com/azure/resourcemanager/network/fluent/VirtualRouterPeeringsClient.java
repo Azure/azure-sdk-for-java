@@ -255,7 +255,9 @@ public final class VirtualRouterPeeringsClient {
         String resourceGroupName, String virtualRouterName, String peeringName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, virtualRouterName, peeringName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -273,9 +275,12 @@ public final class VirtualRouterPeeringsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String virtualRouterName, String peeringName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, virtualRouterName, peeringName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -712,8 +717,12 @@ public final class VirtualRouterPeeringsClient {
             createOrUpdateWithResponseAsync(resourceGroupName, virtualRouterName, peeringName, parameters);
         return this
             .client
-            .<VirtualRouterPeeringInner, VirtualRouterPeeringInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), VirtualRouterPeeringInner.class, VirtualRouterPeeringInner.class);
+            .<VirtualRouterPeeringInner, VirtualRouterPeeringInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                VirtualRouterPeeringInner.class,
+                VirtualRouterPeeringInner.class,
+                Context.NONE);
     }
 
     /**
@@ -736,12 +745,17 @@ public final class VirtualRouterPeeringsClient {
         String peeringName,
         VirtualRouterPeeringInner parameters,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, virtualRouterName, peeringName, parameters, context);
         return this
             .client
-            .<VirtualRouterPeeringInner, VirtualRouterPeeringInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), VirtualRouterPeeringInner.class, VirtualRouterPeeringInner.class);
+            .<VirtualRouterPeeringInner, VirtualRouterPeeringInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                VirtualRouterPeeringInner.class,
+                VirtualRouterPeeringInner.class,
+                context);
     }
 
     /**
@@ -1017,7 +1031,7 @@ public final class VirtualRouterPeeringsClient {
         String resourceGroupName, String virtualRouterName, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, virtualRouterName, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**

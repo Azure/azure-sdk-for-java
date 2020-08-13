@@ -209,7 +209,8 @@ public final class DeletedWebAppsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeletedSiteInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -361,7 +362,7 @@ public final class DeletedWebAppsClient {
     public PagedFlux<DeletedSiteInner> listByLocationAsync(String location, Context context) {
         return new PagedFlux<>(
             () -> listByLocationSinglePageAsync(location, context),
-            nextLink -> listByLocationNextSinglePageAsync(nextLink));
+            nextLink -> listByLocationNextSinglePageAsync(nextLink, context));
     }
 
     /**

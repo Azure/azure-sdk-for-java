@@ -8,7 +8,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.monitor.fluent.ActionGroupsClient;
 import com.azure.resourcemanager.monitor.fluent.ActivityLogAlertsClient;
 import com.azure.resourcemanager.monitor.fluent.ActivityLogsClient;
@@ -30,6 +30,8 @@ import com.azure.resourcemanager.monitor.fluent.OperationsClient;
 import com.azure.resourcemanager.monitor.fluent.ScheduledQueryRulesClient;
 import com.azure.resourcemanager.monitor.fluent.TenantActivityLogsClient;
 import com.azure.resourcemanager.monitor.fluent.VMInsightsClient;
+import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
+import java.time.Duration;
 
 /** Initializes a new instance of the MonitorClient type. */
 @ServiceClient(builder = MonitorClientBuilder.class)
@@ -70,6 +72,30 @@ public final class MonitorClient extends AzureServiceClient {
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
+    }
+
+    /** The serializer to serialize an object into a string. */
+    private final SerializerAdapter serializerAdapter;
+
+    /**
+     * Gets The serializer to serialize an object into a string.
+     *
+     * @return the serializerAdapter value.
+     */
+    public SerializerAdapter getSerializerAdapter() {
+        return this.serializerAdapter;
+    }
+
+    /** The default poll interval for long-running operation. */
+    private final Duration defaultPollInterval;
+
+    /**
+     * Gets The default poll interval for long-running operation.
+     *
+     * @return the defaultPollInterval value.
+     */
+    public Duration getDefaultPollInterval() {
+        return this.defaultPollInterval;
     }
 
     /** The AutoscaleSettingsClient object to access its operations. */
@@ -328,11 +354,21 @@ public final class MonitorClient extends AzureServiceClient {
      * Initializes an instance of MonitorClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param serializerAdapter The serializer to serialize an object into a string.
+     * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
      */
-    MonitorClient(HttpPipeline httpPipeline, AzureEnvironment environment, String subscriptionId, String endpoint) {
-        super(httpPipeline, environment);
+    MonitorClient(
+        HttpPipeline httpPipeline,
+        SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval,
+        AzureEnvironment environment,
+        String subscriptionId,
+        String endpoint) {
+        super(httpPipeline, serializerAdapter, environment);
         this.httpPipeline = httpPipeline;
+        this.serializerAdapter = serializerAdapter;
+        this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
         this.autoscaleSettings = new AutoscaleSettingsClient(this);

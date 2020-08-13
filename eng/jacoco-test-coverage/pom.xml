@@ -39,7 +39,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-ai-formrecognizer</artifactId>
-      <version>3.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-formrecognizer;current} -->
+      <version>3.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-ai-formrecognizer;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -54,7 +54,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-amqp</artifactId>
-      <version>1.4.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-amqp;current} -->
+      <version>1.5.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-amqp;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -89,12 +89,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-serializer-json-gson</artifactId>
-      <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-gson;current} -->
+      <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-gson;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-serializer-json-jackson</artifactId>
-      <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;current} -->
+      <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -114,7 +114,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-appconfiguration</artifactId>
-      <version>1.1.4</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;current} -->
+      <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -149,12 +149,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-servicebus</artifactId>
-      <version>7.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;current} -->
+      <version>7.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-search-documents</artifactId>
-      <version>11.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-search-documents;current} -->
+      <version>11.1.0-beta.2</version> <!-- {x-version-update;com.azure:azure-search-documents;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -451,6 +451,31 @@
       <groupId>com.microsoft.azure</groupId>
       <artifactId>spring-cloud-starter-azure-storage-queue</artifactId>
       <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-starter-azure-storage-queue;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>spring-cloud-azure-servicebus-stream-binder-core</artifactId>
+      <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-servicebus-stream-binder-core;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>spring-cloud-azure-stream-binder-test</artifactId>
+      <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-stream-binder-test;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>spring-cloud-azure-servicebus-topic-stream-binder</artifactId>
+      <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-servicebus-topic-stream-binder;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>spring-cloud-azure-servicebus-queue-stream-binder</artifactId>
+      <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-servicebus-queue-stream-binder;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>spring-cloud-azure-eventhubs-stream-binder</artifactId>
+      <version>1.2.8-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-eventhubs-stream-binder;current} -->
     </dependency>
   </dependencies>
   <build>

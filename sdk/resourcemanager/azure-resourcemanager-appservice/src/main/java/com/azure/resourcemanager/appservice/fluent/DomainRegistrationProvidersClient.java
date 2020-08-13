@@ -165,7 +165,8 @@ public final class DomainRegistrationProvidersClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CsmOperationDescriptionInner> listOperationsAsync(Context context) {
         return new PagedFlux<>(
-            () -> listOperationsSinglePageAsync(context), nextLink -> listOperationsNextSinglePageAsync(nextLink));
+            () -> listOperationsSinglePageAsync(context),
+            nextLink -> listOperationsNextSinglePageAsync(nextLink, context));
     }
 
     /**

@@ -6,16 +6,13 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.implementation.MessageLockContainer;
-import com.azure.messaging.servicebus.implementation.MessageManagementOperations;
-import com.azure.messaging.servicebus.implementation.MessageUtils;
+import com.azure.messaging.servicebus.implementation.LockContainer;
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
 import reactor.core.publisher.DirectProcessor;
-import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
@@ -33,14 +30,12 @@ import java.util.function.Function;
  */
 class UnnamedSessionReceiver implements AutoCloseable {
     private final AtomicBoolean isDisposed = new AtomicBoolean();
-    private final MessageLockContainer lockContainer;
+    private final LockContainer<Instant> lockContainer;
     private final AtomicReference<Instant> sessionLockedUntil = new AtomicReference<>();
     private final AtomicReference<String> sessionId = new AtomicReference<>();
+    private final AtomicReference<LockRenewalOperation> renewalOperation = new AtomicReference<>();
     private final ClientLogger logger = new ClientLogger(UnnamedSessionReceiver.class);
     private final ServiceBusReceiveLink receiveLink;
-    private final boolean enableSessionLockRenewal;
-    private final Duration maxSessionLockRenewDuration;
-    private final Function<String, Mono<Instant>> renewSessionLock;
     private final Disposable.Composite subscriptions;
     private final Flux<ServiceBusReceivedMessageContext> receivedMessages;
     private final MonoProcessor<ServiceBusReceivedMessageContext> cancelReceiveProcessor = MonoProcessor.create();
@@ -67,10 +62,7 @@ class UnnamedSessionReceiver implements AutoCloseable {
         Function<String, Mono<Instant>> renewSessionLock) {
 
         this.receiveLink = receiveLink;
-        this.enableSessionLockRenewal = enableSessionLockRenewal;
-        this.maxSessionLockRenewDuration = maxSessionLockRenewDuration;
-        this.renewSessionLock = renewSessionLock;
-        this.lockContainer = new MessageLockContainer(ServiceBusConstants.OPERATION_TIMEOUT);
+        this.lockContainer = new LockContainer<>(ServiceBusConstants.OPERATION_TIMEOUT);
 
         receiveLink.setEmptyCreditListener(() -> 1);
 
@@ -87,8 +79,9 @@ class UnnamedSessionReceiver implements AutoCloseable {
                     ServiceBusReceivedMessage.class);
 
                 //TODO (conniey): For session receivers, do they have a message lock token?
-                if (!CoreUtils.isNullOrEmpty(deserialized.getLockToken())) {
-                    lockContainer.addOrUpdate(deserialized.getLockToken(), deserialized.getLockedUntil());
+                if (!CoreUtils.isNullOrEmpty(deserialized.getLockToken()) && deserialized.getLockedUntil() != null) {
+                    lockContainer.addOrUpdate(deserialized.getLockToken(), deserialized.getLockedUntil(),
+                        deserialized.getLockedUntil());
                 } else {
                     logger.info("sessionId[{}] message[{}]. There is no lock token.",
                         deserialized.getSessionId(), deserialized.getMessageId());
@@ -121,14 +114,12 @@ class UnnamedSessionReceiver implements AutoCloseable {
         // receiver is idle.
         if (disposeOnIdle) {
             this.subscriptions.add(Flux.switchOnNext(messageReceivedEmitter
-                .flatMap(lockToken -> Mono.delay(retryOptions.getTryTimeout()))
-                .handle((l, sink) -> {
+                .map((String lockToken) -> Mono.delay(retryOptions.getTryTimeout())))
+                .subscribe(item -> {
                     logger.info("entityPath[{}]. sessionId[{}]. Did not a receive message within timeout {}.",
                         receiveLink.getEntityPath(), sessionId.get(), retryOptions.getTryTimeout());
                     cancelReceiveProcessor.onComplete();
-                    sink.complete();
-                }))
-                .subscribe());
+                }));
         }
 
         this.subscriptions.add(receiveLink.getSessionId().subscribe(id -> {
@@ -139,9 +130,12 @@ class UnnamedSessionReceiver implements AutoCloseable {
         this.subscriptions.add(receiveLink.getSessionLockedUntil().subscribe(lockedUntil -> {
             if (!sessionLockedUntil.compareAndSet(null, lockedUntil)) {
                 logger.info("SessionLockedUntil was already set: {}", sessionLockedUntil);
-            } else {
-                this.subscriptions.add(getRenewLockOperation(lockedUntil));
+                return;
             }
+
+            final Duration maxRenewal = enableSessionLockRenewal ? maxSessionLockRenewDuration : Duration.ZERO;
+            this.renewalOperation.compareAndSet(null, new LockRenewalOperation(sessionId.get(),
+                maxRenewal, true, renewSessionLock, lockedUntil));
         }));
     }
 
@@ -162,7 +156,7 @@ class UnnamedSessionReceiver implements AutoCloseable {
             throw logger.logExceptionAsError(new IllegalArgumentException("'lockToken' cannot be an empty string."));
         }
 
-        return lockContainer.contains(lockToken);
+        return lockContainer.containsUnexpired(lockToken);
     }
 
     String getLinkName() {
@@ -201,85 +195,12 @@ class UnnamedSessionReceiver implements AutoCloseable {
             return;
         }
 
+        final LockRenewalOperation operation = renewalOperation.getAndSet(null);
+        if (operation != null) {
+            operation.close();
+        }
+
         receiveLink.dispose();
         subscriptions.dispose();
-    }
-
-    private Disposable getRenewLockOperation(Instant initialLockedUntil) {
-        final Instant now = Instant.now();
-        Duration initialInterval = Duration.between(now, initialLockedUntil);
-        if (initialInterval.isNegative()) {
-            logger.info("Duration was negative. now[{}] lockedUntil[{}]", now, initialLockedUntil);
-            initialInterval = Duration.ZERO;
-        } else {
-            final Duration adjusted = MessageUtils.adjustServerTimeout(initialInterval);
-            if (adjusted.isNegative()) {
-                logger.info("Adjusted duration is negative. Adjusted: {}ms", initialInterval.toMillis());
-            } else {
-                initialInterval = adjusted;
-            }
-        }
-
-        final EmitterProcessor<Duration> emitterProcessor = EmitterProcessor.create();
-        final FluxSink<Duration> sink = emitterProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
-
-        // Adjust the interval, so we can buffer time for the time it'll take to refresh.
-        sink.next(MessageUtils.adjustServerTimeout(initialInterval));
-
-        final Flux<Object> cancellationSignals;
-        if (enableSessionLockRenewal) {
-            cancellationSignals = Flux.first(cancelReceiveProcessor, Mono.delay(maxSessionLockRenewDuration));
-        } else {
-            cancellationSignals = Flux.first(cancelReceiveProcessor);
-        }
-
-        return Flux.switchOnNext(emitterProcessor.map(Flux::interval))
-            .takeUntilOther(cancellationSignals)
-            .flatMap(delay -> {
-                final String id = sessionId.get();
-
-                logger.info("sessionId[{}]. now[{}]. Starting lock renewal.", id, Instant.now());
-                if (CoreUtils.isNullOrEmpty(id)) {
-                    return Mono.error(new IllegalStateException("Cannot renew session lock without session id."));
-                }
-
-                return renewSessionLock.apply(sessionId.get());
-            })
-            .map(instant -> {
-                final Duration next = Duration.between(Instant.now(), instant);
-                logger.info("sessionId[{}]. nextExpiration[{}]. Next renewal: [{}]", sessionId, instant, next);
-
-                sink.next(MessageUtils.adjustServerTimeout(next));
-                return instant;
-            })
-            .subscribe(lockedUntil -> {
-                logger.verbose("lockToken[{}]. lockedUntil[{}]. Lock renewal successful.", sessionId,
-                    lockedUntil);
-                sessionLockedUntil.set(lockedUntil);
-            }, error -> {
-                    logger.error("Error occurred while renewing lock token.", error);
-                    cancelReceiveProcessor.onNext(new ServiceBusReceivedMessageContext(sessionId.get(), error));
-                }, () -> {
-                    logger.verbose("Renewing session lock task completed.");
-                    cancelReceiveProcessor.onComplete();
-                });
-    }
-
-    private static final class SessionMessageManagement implements MessageManagementOperations {
-        private final ServiceBusReceiveLink link;
-
-        private SessionMessageManagement(ServiceBusReceiveLink link) {
-            this.link = link;
-        }
-
-        @Override
-        public Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState) {
-            return link.updateDisposition(lockToken, deliveryState);
-        }
-
-        @Override
-        public Mono<Instant> renewMessageLock(String lockToken, String associatedLinkName) {
-            return Mono.just(Instant.now().plusSeconds(60));
-        }
     }
 }

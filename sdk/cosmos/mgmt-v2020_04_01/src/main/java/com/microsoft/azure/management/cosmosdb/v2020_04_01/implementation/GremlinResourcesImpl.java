@@ -140,6 +140,30 @@ class GremlinResourcesImpl extends WrapperImpl<GremlinResourcesInner> implements
     }
 
     @Override
+    public Observable<ThroughputSettingsGetResults> migrateGremlinDatabaseToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName) {
+        GremlinResourcesInner client = this.inner();
+        return client.migrateGremlinDatabaseToAutoscaleAsync(resourceGroupName, accountName, databaseName)
+        .map(new Func1<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResults>() {
+            @Override
+            public ThroughputSettingsGetResults call(ThroughputSettingsGetResultsInner inner) {
+                return new ThroughputSettingsGetResultsImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<ThroughputSettingsGetResults> migrateGremlinDatabaseToManualThroughputAsync(String resourceGroupName, String accountName, String databaseName) {
+        GremlinResourcesInner client = this.inner();
+        return client.migrateGremlinDatabaseToManualThroughputAsync(resourceGroupName, accountName, databaseName)
+        .map(new Func1<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResults>() {
+            @Override
+            public ThroughputSettingsGetResults call(ThroughputSettingsGetResultsInner inner) {
+                return new ThroughputSettingsGetResultsImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
     public Observable<ThroughputSettingsGetResults> getGremlinGraphThroughputAsync(String resourceGroupName, String accountName, String databaseName, String graphName) {
         GremlinResourcesInner client = this.inner();
         return client.getGremlinGraphThroughputAsync(resourceGroupName, accountName, databaseName, graphName)
@@ -155,6 +179,30 @@ class GremlinResourcesImpl extends WrapperImpl<GremlinResourcesInner> implements
     public Observable<ThroughputSettingsGetResults> updateGremlinGraphThroughputAsync(String resourceGroupName, String accountName, String databaseName, String graphName, ThroughputSettingsUpdateParameters updateThroughputParameters) {
         GremlinResourcesInner client = this.inner();
         return client.updateGremlinGraphThroughputAsync(resourceGroupName, accountName, databaseName, graphName, updateThroughputParameters)
+        .map(new Func1<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResults>() {
+            @Override
+            public ThroughputSettingsGetResults call(ThroughputSettingsGetResultsInner inner) {
+                return new ThroughputSettingsGetResultsImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<ThroughputSettingsGetResults> migrateGremlinGraphToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName, String graphName) {
+        GremlinResourcesInner client = this.inner();
+        return client.migrateGremlinGraphToAutoscaleAsync(resourceGroupName, accountName, databaseName, graphName)
+        .map(new Func1<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResults>() {
+            @Override
+            public ThroughputSettingsGetResults call(ThroughputSettingsGetResultsInner inner) {
+                return new ThroughputSettingsGetResultsImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<ThroughputSettingsGetResults> migrateGremlinGraphToManualThroughputAsync(String resourceGroupName, String accountName, String databaseName, String graphName) {
+        GremlinResourcesInner client = this.inner();
+        return client.migrateGremlinGraphToManualThroughputAsync(resourceGroupName, accountName, databaseName, graphName)
         .map(new Func1<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResults>() {
             @Override
             public ThroughputSettingsGetResults call(ThroughputSettingsGetResultsInner inner) {
