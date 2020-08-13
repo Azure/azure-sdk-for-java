@@ -1,4 +1,7 @@
 # Release History
+## 7.0.0-beta.6 (Unreleased)
+
+
 ## 7.0.0-beta.5 (2020-08-11)
 - Remove public constructor for QueueDescription, TopicDescription, SubscriptionDescription.
 - Expose CreateQueueOptions, CreateTopicOptions, CreateSubscriptionOptions to create entities.
