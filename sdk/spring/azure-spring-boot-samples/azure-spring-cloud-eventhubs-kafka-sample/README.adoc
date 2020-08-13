@@ -1,14 +1,19 @@
-= Spring Cloud Azure Stream Kafka Binder for Event Hub Code Sample
+= Spring Cloud Azure Stream Kafka Binder for Event Hub Code Sample shared library for Java
+
+== Key concepts
+== Getting started
 
 This code sample demonstrates how to use the Spring Cloud Stream Kafka binder for Azure Event Hub.
-The sample app exposes a rest api to receive string message. Then message is sent through Azure
-Event Hub to a `sink` which simply logs the message. 
+The sample app exposes a rest api to receive string message.
+Then message is sent through Azure Event Hub to a `sink` which simply logs the message.
 
-Running this sample will be charged by Azure. You can check the usage and bill at https://azure.microsoft.com/en-us/account/[this link].
+Running this sample will be charged by Azure.
+You can check the usage and bill at https://azure.microsoft.com/en-us/account/[this link].
 
-== How to run
+=== How to run
 
-1.  Create Azure credential file. Please see https://github.com/Azure/azure-libraries-for-java/blob/master/AUTH.md[how
+1. Create Azure credential file.
+Please see https://github.com/Azure/azure-libraries-for-java/blob/master/AUTH.md[how
 to create credential file]
 +
 ....
@@ -21,7 +26,8 @@ Make sure `my.azureauth` is encoded with UTF-8.
 
 2. Put credential file under `src/main/resources/`.
 
-3. Create Kafka enabled event hub. Please follow https://github.com/MicrosoftDocs/azure-docs/blob/master/articles/event-hubs/event-hubs-create-kafka-enabled.md[How to create Kafka enabled Event Hubs]
+3. Create Kafka enabled event hub.
+Please follow https://github.com/MicrosoftDocs/azure-docs/blob/master/articles/event-hubs/event-hubs-create-kafka-enabled.md[How to create Kafka enabled Event Hubs]
 
 4. Update link:src/main/resources/application.properties[application.properties] file
 +
@@ -41,7 +47,7 @@ spring.cloud.stream.bindings.output.destination=[eventhub-name]
 
 5. Run the `mvn clean spring-boot:run` in the root of the code sample to get the app running.
 
-6.  Send a POST request
+6. Send a POST request
 +
 ....
 $ curl -X POST http://localhost:8080/messages?message=hello
@@ -52,3 +58,8 @@ $ curl -X POST http://localhost:8080/messages?message=hello
 `New message received: hello`
 
 8. Delete the resources on http://ms.portal.azure.com/[Azure Portal] to avoid unexpected charges.
+
+== Examples
+== Troubleshooting
+== Next steps
+== Contributing

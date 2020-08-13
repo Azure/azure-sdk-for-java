@@ -1,18 +1,15 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
-package com.example;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+package com.example;
 
 import com.microsoft.azure.spring.cloud.feature.manager.feature.filters.PercentageFilter;
 import com.microsoft.azure.spring.cloud.feature.manager.feature.filters.TargetingFilter;
 import com.microsoft.azure.spring.cloud.feature.manager.feature.filters.TimeWindowFilter;
 import com.microsoft.azure.spring.cloud.feature.manager.targeting.ITargetingContextAccessor;
 import com.microsoft.azure.spring.cloud.feature.manager.targeting.TargetingEvaluationOptions;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class FeatureFilterConfigurations {

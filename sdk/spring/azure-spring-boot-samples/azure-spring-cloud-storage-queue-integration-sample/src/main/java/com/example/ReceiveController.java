@@ -1,8 +1,6 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.example;
 
 import com.microsoft.azure.spring.integration.core.AzureHeaders;
@@ -34,7 +32,7 @@ public class ReceiveController {
         storageQueueOperation.setVisibilityTimeoutInSeconds(10);
 
         StorageQueueMessageSource messageSource =
-                new StorageQueueMessageSource(STORAGE_QUEUE_NAME, storageQueueOperation);
+            new StorageQueueMessageSource(STORAGE_QUEUE_NAME, storageQueueOperation);
         return messageSource;
     }
 
@@ -47,9 +45,9 @@ public class ReceiveController {
         String message = new String(payload);
         System.out.println(String.format("New message received: '%s'", message));
         checkpointer.success()
-                .doOnError(Throwable::printStackTrace)
-                .doOnSuccess(t -> System.out.println(String.format("Message '%s' successfully checkpointed", message)))
-                .subscribe();
+            .doOnError(Throwable::printStackTrace)
+            .doOnSuccess(t -> System.out.println(String.format("Message '%s' successfully checkpointed", message)))
+            .subscribe();
 
     }
 }

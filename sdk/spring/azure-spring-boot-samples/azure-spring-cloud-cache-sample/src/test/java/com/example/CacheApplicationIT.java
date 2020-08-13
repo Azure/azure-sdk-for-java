@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.example;
 
@@ -26,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = CacheApplication.class)
 @AutoConfigureMockMvc
 @TestPropertySource(
-        locations = "classpath:application-test.properties")
+    locations = "classpath:application-test.properties")
 public class CacheApplicationIT {
 
     @Autowired
@@ -34,11 +31,11 @@ public class CacheApplicationIT {
 
     @Test
     public void testGetSuccess()
-            throws Exception {
+        throws Exception {
         String key = "key" + UUID.randomUUID();
         mvc.perform(get("/" + key)
-                .contentType(MediaType.APPLICATION_JSON))
-           .andExpect(status().isOk())
-           .andExpect(content().string("Hello " + key));
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string("Hello " + key));
     }
 }

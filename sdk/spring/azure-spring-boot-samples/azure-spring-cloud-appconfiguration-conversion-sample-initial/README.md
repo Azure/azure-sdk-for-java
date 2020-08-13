@@ -1,8 +1,10 @@
-# Spring Cloud Azure Config Conversion Sample
+# Spring Cloud Azure Config Conversion Sample client library for Java
 
 This sample shows how to convert a Spring Cloud Application with Cosmos DB to be using App Configuration + Key Vault
 
-## Prerequisite
+## Key concepts
+## Getting started
+### Prerequisite
 
 * An Azure subscription; if you don't already have an Azure subscription, you can activate your [MSDN subscriber benefits](https://azure.microsoft.com/pricing/member-offers/msdn-benefits-details/) or sign up for a [free Azure account](https://azure.microsoft.com/free/).
 
@@ -10,9 +12,9 @@ This sample shows how to convert a Spring Cloud Application with Cosmos DB to be
 
 * [Apache Maven](http://maven.apache.org/), version 3.0 or later.
 
-## Quick Start
+### Quick Start
 
-### Create an Azure Cosmos DB on Azure
+#### Create an Azure Cosmos DB on Azure
 
 1. Use the Azure CLI [az cosmosdb create](https://docs.microsoft.com/cli/azure/cosmosdb?view=azure-cli-latest#az-cosmosdb-create).
 
@@ -47,7 +49,7 @@ This sample shows how to convert a Spring Cloud Application with Cosmos DB to be
     }
     ```
 
-### Clone the sample Project
+#### Clone the sample Project
 
 In this section, you clone a containerized Spring Boot application and test it locally.
 
@@ -77,7 +79,7 @@ In this section, you clone a containerized Spring Boot application and test it l
    cd spring-cloud-azure/spring-cloud-azure-samples/azure-appconfiguration-conversion-sample-initial
    ```
 
-### Config the sample
+#### Config the sample
 
 1. Navigate to `src/main/resources` and open `application.properties`.
 
@@ -90,7 +92,7 @@ In this section, you clone a containerized Spring Boot application and test it l
 
    ```
 
-### Run the sample
+#### Run the sample
 
 1. Build the JAR file using Maven; for example:
 
@@ -108,7 +110,7 @@ In this section, you clone a containerized Spring Boot application and test it l
 
 1. You should see the following message displayed: **findOne in User collection get result: testFirstName**
 
-### Convert to Using App Configuration
+#### Convert to Using App Configuration
 
 1. Use the Azure CLI [az keyvault create](https://docs.microsoft.com/cli/azure/keyvault?view=azure-cli-latest#az-keyvault-create)
 
@@ -266,7 +268,7 @@ In this section, you clone a containerized Spring Boot application and test it l
     sample.convert.AppConfiguration
     ```
 
-### Run the updated sample
+#### Run the updated sample
 
 1. Build the JAR file using Maven; for example:
 
@@ -283,3 +285,8 @@ In this section, you clone a containerized Spring Boot application and test it l
 1. View the results in the console.
 
 1. You should see the following message displayed: **findOne in User collection get result: testFirstName**
+
+## Examples
+## Troubleshooting
+## Next steps
+## Contributing

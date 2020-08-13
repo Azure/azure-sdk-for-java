@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.example;
 
@@ -30,8 +27,9 @@ public class TopicReceiveController {
     private static final String TOPIC_NAME = "topic1";
     private static final String SUBSCRIPTION_NAME = "group1";
 
-    /** This message receiver binding with {@link ServiceBusTopicInboundChannelAdapter}
-     *  via {@link MessageChannel} has name {@value INPUT_CHANNEL}
+    /**
+     * This message receiver binding with {@link ServiceBusTopicInboundChannelAdapter}
+     * via {@link MessageChannel} has name {@value INPUT_CHANNEL}
      */
     @ServiceActivator(inputChannel = INPUT_CHANNEL)
     public void messageReceiver(byte[] payload, @Header(AzureHeaders.CHECKPOINTER) Checkpointer checkpointer) {
@@ -47,10 +45,10 @@ public class TopicReceiveController {
 
     @Bean
     public ServiceBusTopicInboundChannelAdapter topicMessageChannelAdapter(
-            @Qualifier(INPUT_CHANNEL) MessageChannel inputChannel, ServiceBusTopicOperation topicOperation) {
+        @Qualifier(INPUT_CHANNEL) MessageChannel inputChannel, ServiceBusTopicOperation topicOperation) {
         topicOperation.setCheckpointConfig(CheckpointConfig.builder().checkpointMode(CheckpointMode.MANUAL).build());
         ServiceBusTopicInboundChannelAdapter adapter = new ServiceBusTopicInboundChannelAdapter(TOPIC_NAME,
-                topicOperation, SUBSCRIPTION_NAME);
+            topicOperation, SUBSCRIPTION_NAME);
         adapter.setOutputChannel(inputChannel);
         return adapter;
     }

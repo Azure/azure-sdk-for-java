@@ -1,14 +1,11 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
-package com.example.filters;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
-import org.springframework.stereotype.Component;
+package com.example.filters;
 
 import com.microsoft.azure.spring.cloud.feature.manager.FeatureFilter;
 import com.microsoft.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationContext;
+import org.springframework.stereotype.Component;
 
 @Component("Random")
 public class Random implements FeatureFilter {

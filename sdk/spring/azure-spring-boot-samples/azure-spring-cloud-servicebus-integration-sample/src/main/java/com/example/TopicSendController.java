@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.example;
 
@@ -34,15 +31,6 @@ public class TopicSendController {
     TopicOutboundGateway messagingGateway;
 
     /**
-     * Message gateway binding with {@link MessageHandler}
-     * via {@link MessageChannel} has name {@value OUTPUT_CHANNEL}
-     */
-    @MessagingGateway(defaultRequestChannel = OUTPUT_CHANNEL)
-    public interface TopicOutboundGateway {
-        void send(String text);
-    }
-
-    /**
      * Posts a message to a Service Bus Topic
      */
     @PostMapping("/topics")
@@ -68,5 +56,14 @@ public class TopicSendController {
         });
 
         return handler;
+    }
+
+    /**
+     * Message gateway binding with {@link MessageHandler}
+     * via {@link MessageChannel} has name {@value OUTPUT_CHANNEL}
+     */
+    @MessagingGateway(defaultRequestChannel = OUTPUT_CHANNEL)
+    public interface TopicOutboundGateway {
+        void send(String text);
     }
 }

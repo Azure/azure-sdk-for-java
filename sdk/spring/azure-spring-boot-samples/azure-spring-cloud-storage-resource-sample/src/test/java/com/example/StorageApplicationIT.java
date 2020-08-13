@@ -1,8 +1,6 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.example;
 
 import org.junit.Test;
@@ -26,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = StorageApplication.class)
 @AutoConfigureMockMvc
 @TestPropertySource(
-        locations = "classpath:application-test.properties")
+    locations = "classpath:application-test.properties")
 public class StorageApplicationIT {
 
     @Autowired
@@ -34,17 +32,17 @@ public class StorageApplicationIT {
 
     @Test
     public void testPostAndGetSuccess()
-            throws Exception {
+        throws Exception {
         String content = UUID.randomUUID().toString();
 
         mvc.perform(post("/blob")
-                .contentType(MediaType.APPLICATION_JSON).content(content))
-           .andExpect(status().isOk())
-           .andExpect(content().string("file was updated"));
+            .contentType(MediaType.APPLICATION_JSON).content(content))
+            .andExpect(status().isOk())
+            .andExpect(content().string("file was updated"));
 
         mvc.perform(get("/blob")
-                .contentType(MediaType.APPLICATION_JSON))
-           .andExpect(status().isOk())
-           .andExpect(content().string(content));
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string(content));
     }
 }

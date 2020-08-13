@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.example;
 
@@ -21,20 +18,20 @@ public class SinkExample {
     public void handleMessage(String message, @Header(AzureHeaders.CHECKPOINTER) Checkpointer checkpointer) {
         System.out.println(String.format("[1] New message received: '%s'", message));
         checkpointer.success()
-                .doOnSuccess(s -> System.out.println(String.format("[1] Message '%s' successfully checkpointed",
-                        message)))
-                .doOnError(System.out::println)
-                .subscribe();
+            .doOnSuccess(s -> System.out.println(String.format("[1] Message '%s' successfully checkpointed",
+                message)))
+            .doOnError(System.out::println)
+            .subscribe();
     }
 
     @StreamListener(CustomProcessor.INPUT1)
     public void handleMessage1(String message, @Header(AzureHeaders.CHECKPOINTER) Checkpointer checkpointer) {
         System.out.println(String.format("[2] New message received: '%s'", message));
         checkpointer.success()
-                .doOnSuccess(s -> System.out.println(String.format("[2] Message '%s' successfully checkpointed",
-                        message)))
-                .doOnError(System.out::println)
-                .subscribe();
+            .doOnSuccess(s -> System.out.println(String.format("[2] Message '%s' successfully checkpointed",
+                message)))
+            .doOnError(System.out::println)
+            .subscribe();
     }
 
     // Replace destination with spring.cloud.stream.bindings.input.destination

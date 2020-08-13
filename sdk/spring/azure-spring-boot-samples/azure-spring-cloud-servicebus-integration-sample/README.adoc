@@ -1,12 +1,17 @@
-= Spring Cloud Azure Service Bus Integration Code Sample
+= Spring Cloud Azure Service Bus Integration Code Sample shared library for Java
+
+== Key concepts
+== Getting started
 
 This code sample demonstrates how to use Spring Integration for Azure Service Bus.
 
-Running this sample will be charged by Azure. You can check the usage and bill at https://azure.microsoft.com/en-us/account/[this link].
+Running this sample will be charged by Azure.
+You can check the usage and bill at https://azure.microsoft.com/en-us/account/[this link].
 
-== Connection string based usage
+=== Connection string based usage
 
-1. Create Azure Service Bus namespace, queue and topic. Please see https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-create-namespace-portal[how to create]. 
+1. Create Azure Service Bus namespace, queue and topic.
+Please see https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-create-namespace-portal[how to create].
 
 2. Update link:src/main/resources/application.properties[application.properties]
 
@@ -16,9 +21,10 @@ Running this sample will be charged by Azure. You can check the usage and bill a
 spring.cloud.azure.servicebus.connection-string=[servicebus-namespace-connection-string]
 ....
 
-== Credential file based usage
+=== Credential file based usage
 
-1.  Create Azure credential file. Please see https://github.com/Azure/azure-libraries-for-java/blob/master/AUTH.md[how
+1. Create Azure credential file.
+Please see https://github.com/Azure/azure-libraries-for-java/blob/master/AUTH.md[how
 to create credential file]
 +
 ....
@@ -32,8 +38,8 @@ Make sure `my.azureauth` is encoded with UTF-8.
 2. Put credential file under `src/main/resources/`.
 
 3. Create Azure Service Bus namespace, queue and topic.
-Please see https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-create-namespace-portal[how to create]. Or enable auto create
-resources feature in link:src/main/resources/application.properties[application.properties]:
+Please see https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-create-namespace-portal[how to create].
+Or enable auto create resources feature in link:src/main/resources/application.properties[application.properties]:
 +
 ....
 spring.cloud.azure.auto-create-resources=true
@@ -52,11 +58,10 @@ spring.cloud.azure.resource-group=[resource-group]
 spring.cloud.azure.servicebus.namespace=[servicebus-namespace]
 ....
 
-== How to run
+=== How to run
 
 5. Update queue name in link:src/main/java/com/example/QueueReceiveController.java#L29[QueueReceiveController] and
-link:src/main/java/com/example/QueueSendController.java#L32[QueueSendController], and update topic name and
-subscription in
+link:src/main/java/com/example/QueueSendController.java#L32[QueueSendController], and update topic name and subscription in
 link:src/main/java/com/example/TopicReceiveController.java#L29[TopicReceiveController] and
 link:src/main/java/com/example/TopicSendController.java#L31[TopicSendController].
 
@@ -75,7 +80,7 @@ New message received: 'hello'
 Message 'hello' successfully checkpointed
 ....
 
-9.  Send a POST request to service bus topic
+9. Send a POST request to service bus topic
 +
 ....
 $ curl -X POST localhost:8080/topics?message=hello
@@ -89,3 +94,8 @@ Message 'hello' successfully checkpointed
 ....
 
 11. Delete the resources on http://ms.portal.azure.com/[Azure Portal] to avoid unexpected charges.
+
+== Examples
+== Troubleshooting
+== Next steps
+== Contributing

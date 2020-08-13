@@ -1,10 +1,11 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.example;
 
+import com.microsoft.azure.spring.cloud.feature.manager.FeatureGate;
+import com.microsoft.azure.spring.cloud.feature.manager.FeatureManager;
+import com.microsoft.azure.spring.cloud.feature.manager.FeatureManagerSnapshot;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.microsoft.azure.spring.cloud.feature.manager.FeatureGate;
-import com.microsoft.azure.spring.cloud.feature.manager.FeatureManager;
-import com.microsoft.azure.spring.cloud.feature.manager.FeatureManagerSnapshot;
-
 @Controller
 @ConfigurationProperties("controller")
 public class HelloController {
@@ -24,10 +21,10 @@ public class HelloController {
 
     @Autowired
     private FeatureManager featureManager;
-    
+
     @Autowired
     private FeatureManagerSnapshot featureManagerSnapshot;
-    
+
     @GetMapping("/privacy")
     public String getRequestBased(Model model) {
         model.addAttribute("Beta", featureManager.isEnabledAsync("beta").block());

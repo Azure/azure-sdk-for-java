@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.example;
 
@@ -37,13 +34,13 @@ public class StorageQueueOperationApplicationIT {
         String message = UUID.randomUUID().toString();
 
         mvc.perform(post("/messages?message=" + message)).andExpect(status().isOk())
-           .andExpect(content().string(message));
+            .andExpect(content().string(message));
 
         Thread.sleep(1_000L);
 
         mvc.perform(get("/messages")
-                .contentType(MediaType.APPLICATION_JSON))
-           .andExpect(status().isOk())
-           .andExpect(content().string(message));
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string(message));
     }
 }

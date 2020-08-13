@@ -1,10 +1,14 @@
-= Spring Cloud Azure Storage Queue Operation Code Sample
+= Spring Cloud Azure Storage Queue Operation Code Sample shared library for Java
+
+== Key concepts
+== Getting started
 
 This code sample demonstrates how to use https://github.com/Microsoft/spring-cloud-azure/blob/master/spring-integration-azure/spring-integration-storage-queue/src/main/java/com/microsoft/azure/spring/integration/storage/queue/StorageQueueOperation.java[Storage Queue Operation].
 
-Running this sample will be charged by Azure. You can check the usage and bill at https://azure.microsoft.com/en-us/account/[this link].
+Running this sample will be charged by Azure.
+You can check the usage and bill at https://azure.microsoft.com/en-us/account/[this link].
 
-== Access key based usage
+=== Access key based usage
 
 1. Create https://docs.microsoft.com/en-us/azure/storage/[Azure Storage]
 
@@ -19,9 +23,10 @@ spring.cloud.azure.storage.access-key=[storage-account-accesskey]
 
 ....
 
-== Credential file based usage
+=== Credential file based usage
 
-1. Create azure credential file. Please see https://github.com/Azure/azure-libraries-for-java/blob/master/AUTH.md[how to create credential file].
+1. Create azure credential file.
+Please see https://github.com/Azure/azure-libraries-for-java/blob/master/AUTH.md[how to create credential file].
 +
 ....
 $  az login
@@ -33,8 +38,8 @@ Make sure `my.azureauth` is encoded with UTF-8.
 
 2. Put credential file under `src/main/resources/`.
 
-3. Create https://docs.microsoft.com/en-us/azure/storage/[Azure Storage]. Or enable auto create
-resources feature in link:src/main/resources/application.properties[application.properties]:
+3. Create https://docs.microsoft.com/en-us/azure/storage/[Azure Storage].
+Or enable auto create resources feature in link:src/main/resources/application.properties[application.properties]:
 +
 ....
 spring.cloud.azure.auto-create-resources=true
@@ -55,7 +60,7 @@ spring.cloud.azure.resource-group=[resource-group]
 spring.cloud.azure.storage.account=[account-name]
 ....
 
-== How to run
+=== How to run
 
 2. Update environment if not is Global in link:src/main/resources/application.properties[application.properties]
 
@@ -70,7 +75,7 @@ spring.cloud.azure.storage.account=[account-name]
 
 4. Run the `mvn clean spring-boot:run` in the root of the code sample to get the app running.
 
-5.  Send a POST request
+5. Send a POST request
 +
 ....
 $ curl -X POST localhost:8080/messages?message=hello
@@ -90,3 +95,8 @@ Message 'hello' successfully checkpointed
 ....
 
 9. Delete the resources on http://ms.portal.azure.com/[Azure Portal] to avoid unexpected charges.
+
+== Examples
+== Troubleshooting
+== Next steps
+== Contributing

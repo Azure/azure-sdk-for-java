@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.example;
 
@@ -41,7 +38,7 @@ public class WebController {
     @PostConstruct
     public void subscribeToEventHub() {
         this.eventHubOperation
-                .setCheckpointConfig(CheckpointConfig.builder().checkpointMode(CheckpointMode.MANUAL).build());
+            .setCheckpointConfig(CheckpointConfig.builder().checkpointMode(CheckpointMode.MANUAL).build());
         this.eventHubOperation.subscribe(EVENT_HUB_NAME, CONSUMER_GROUP, this::messageReceiver, String.class);
     }
 
@@ -49,9 +46,9 @@ public class WebController {
         System.out.println(String.format("New message received: '%s'", message.getPayload()));
         Checkpointer checkpointer = message.getHeaders().get(AzureHeaders.CHECKPOINTER, Checkpointer.class);
         checkpointer.success()
-                .doOnSuccess(s -> System.out.println(String.format("Message '%s' successfully checkpointed",
-                        message.getPayload())))
-                .doOnError(System.out::println)
-                .subscribe();
+            .doOnSuccess(s -> System.out.println(String.format("Message '%s' successfully checkpointed",
+                message.getPayload())))
+            .doOnError(System.out::println)
+            .subscribe();
     }
 }

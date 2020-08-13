@@ -1,19 +1,15 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.example;
 
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.rule.OutputCapture;
+import org.springframework.boot.test.system.OutputCaptureRule;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -31,18 +27,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(locations = "classpath:application-test.properties")
 public class EventHubMultiBindersApplicationIT {
 
+    @Rule
+    public OutputCaptureRule capture = new OutputCaptureRule();
     @Autowired
     private MockMvc mvc;
-
-    @Rule
-    public OutputCapture capture = new OutputCapture();
 
     @Test
     public void testSendAndReceiveMessage() throws Exception {
         String message = UUID.randomUUID().toString();
 
         mvc.perform(post("/messages?message=" + message)).andExpect(status().isOk())
-           .andExpect(content().string(message));
+            .andExpect(content().string(message));
 
         String messageReceivedLog = String.format("[1] New message received: '%s'", message);
         String messageCheckpointedLog = String.format("[1] Message '%s' successfully checkpointed", message);
@@ -73,7 +68,7 @@ public class EventHubMultiBindersApplicationIT {
         String message = UUID.randomUUID().toString();
 
         mvc.perform(post("/messages1?message=" + message)).andExpect(status().isOk())
-                .andExpect(content().string(message));
+            .andExpect(content().string(message));
 
         String messageReceivedLog = String.format("[2] New message received: '%s'", message);
         String messageCheckpointedLog = String.format("[2] Message '%s' successfully checkpointed", message);

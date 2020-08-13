@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.example;
 
@@ -39,9 +36,9 @@ public class TopicController {
     }
 
     @PostConstruct
-    public void subscribe(){
+    public void subscribe() {
         this.topicOperation
-                .setCheckpointConfig(CheckpointConfig.builder().checkpointMode(CheckpointMode.MANUAL).build());
+            .setCheckpointConfig(CheckpointConfig.builder().checkpointMode(CheckpointMode.MANUAL).build());
         this.topicOperation.subscribe(TOPIC_NAME, SUBSCRIPTION_NAME, this::messageReceiver, String.class);
     }
 

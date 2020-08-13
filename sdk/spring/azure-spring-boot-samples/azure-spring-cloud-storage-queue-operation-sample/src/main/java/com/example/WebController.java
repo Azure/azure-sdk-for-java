@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.example;
 
@@ -34,7 +31,7 @@ public class WebController {
     @PostMapping("/messages")
     public String send(@RequestParam("message") String message) {
         this.storageQueueOperation.sendAsync(STORAGE_QUEUE_NAME, MessageBuilder.withPayload(message).build())
-                .subscribe();
+            .subscribe();
         return message;
     }
 
@@ -51,8 +48,8 @@ public class WebController {
 
         Checkpointer checkpointer = message.getHeaders().get(AzureHeaders.CHECKPOINTER, Checkpointer.class);
         checkpointer.success()
-                .doOnError(e -> log.info("Message '{}' successfully checkpointed", message.getPayload()))
-                .subscribe();
+            .doOnError(e -> log.info("Message '{}' successfully checkpointed", message.getPayload()))
+            .subscribe();
 
         return (String) message.getPayload();
     }

@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.example;
 
@@ -30,25 +27,26 @@ public class ReceiveController {
     private static final String EVENTHUB_NAME = "eventhub1";
     private static final String CONSUMER_GROUP = "cg1";
 
-    /** This message receiver binding with {@link EventHubInboundChannelAdapter}
-     *  via {@link MessageChannel} has name {@value INPUT_CHANNEL}
+    /**
+     * This message receiver binding with {@link EventHubInboundChannelAdapter}
+     * via {@link MessageChannel} has name {@value INPUT_CHANNEL}
      */
     @ServiceActivator(inputChannel = INPUT_CHANNEL)
     public void messageReceiver(byte[] payload, @Header(AzureHeaders.CHECKPOINTER) Checkpointer checkpointer) {
         String message = new String(payload);
         System.out.println(String.format("New message received: '%s'", message));
         checkpointer.success()
-                .doOnSuccess(s -> System.out.println(String.format("Message '%s' successfully checkpointed", message)))
-                .doOnError(System.out::println)
-                .subscribe();
+            .doOnSuccess(s -> System.out.println(String.format("Message '%s' successfully checkpointed", message)))
+            .doOnError(System.out::println)
+            .subscribe();
     }
 
     @Bean
     public EventHubInboundChannelAdapter messageChannelAdapter(
-            @Qualifier(INPUT_CHANNEL) MessageChannel inputChannel, EventHubOperation eventhubOperation) {
+        @Qualifier(INPUT_CHANNEL) MessageChannel inputChannel, EventHubOperation eventhubOperation) {
         eventhubOperation.setCheckpointConfig(CheckpointConfig.builder().checkpointMode(CheckpointMode.MANUAL).build());
         EventHubInboundChannelAdapter adapter = new EventHubInboundChannelAdapter(EVENTHUB_NAME,
-                eventhubOperation, CONSUMER_GROUP);
+            eventhubOperation, CONSUMER_GROUP);
         adapter.setOutputChannel(inputChannel);
         return adapter;
     }

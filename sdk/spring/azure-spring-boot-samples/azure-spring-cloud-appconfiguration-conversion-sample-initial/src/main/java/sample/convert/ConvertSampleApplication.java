@@ -1,13 +1,7 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package sample.convert;
-
-import java.util.Optional;
-
-import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,9 +10,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.util.Assert;
-
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import javax.annotation.PostConstruct;
+import java.util.Optional;
 
 @SpringBootApplication
 public class ConvertSampleApplication implements CommandLineRunner {
@@ -35,7 +31,7 @@ public class ConvertSampleApplication implements CommandLineRunner {
     public void run(String... var1) throws Exception {
 
         final User testUser = new User("testId", "testFirstName", "testLastName",
-                "test address line one");
+            "test address line one");
 
         // Save the User class to Azure CosmosDB database.
         final Mono<User> saveUserMono = repository.save(testUser);
@@ -50,9 +46,9 @@ public class ConvertSampleApplication implements CommandLineRunner {
 
         final User savedUser = saveUserMono.block();
         Assert.state(savedUser != null,
-                "Saved user must not be null");
+            "Saved user must not be null");
         Assert.state(savedUser.getFirstName().equals(testUser.getFirstName()),
-                "Saved user first name doesn't match");
+            "Saved user first name doesn't match");
 
         firstNameUserFlux.collectList().block();
 
@@ -61,9 +57,9 @@ public class ConvertSampleApplication implements CommandLineRunner {
 
         final User result = optionalUserResult.get();
         Assert.state(result.getFirstName().equals(testUser.getFirstName()),
-                "query result firstName doesn't match!");
+            "query result firstName doesn't match!");
         Assert.state(result.getLastName().equals(testUser.getLastName()),
-                "query result lastName doesn't match!");
+            "query result lastName doesn't match!");
 
         LOGGER.info("findOne in User collection get result: {}", result.getFirstName());
     }

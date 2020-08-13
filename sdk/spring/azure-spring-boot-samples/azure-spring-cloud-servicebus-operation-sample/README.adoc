@@ -1,14 +1,19 @@
-= Spring Cloud Azure Service Bus Operation Code Sample
+= Spring Cloud Azure Service Bus Operation Code Sample shared library for Java
+
+== Key concepts
+== Getting started
 
 This code sample demonstrates how to use
 https://github.com/Microsoft/spring-cloud-azure/blob/master/spring-integration-azure/spring-integration-servicebus/src/main/java/com/microsoft/azure/spring/integration/servicebus/topic/ServiceBusTopicOperation.java[Service Bus Topic Operation]
 and https://github.com/Microsoft/spring-cloud-azure/blob/master/spring-integration-azure/spring-integration-servicebus/src/main/java/com/microsoft/azure/spring/integration/servicebus/queue/ServiceBusQueueOperation.java[Service Bus Queue Operation].
 
-Running this sample will be charged by Azure. You can check the usage and bill at https://azure.microsoft.com/en-us/account/[this link].
+Running this sample will be charged by Azure.
+You can check the usage and bill at https://azure.microsoft.com/en-us/account/[this link].
 
-== Connection string based usage
+=== Connection string based usage
 
-1. Create Azure Service Bus namespace, queue and topic. Please see https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-create-namespace-portal[how to create]. 
+1. Create Azure Service Bus namespace, queue and topic.
+Please see https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-create-namespace-portal[how to create].
 
 2. Update link:src/main/resources/application.properties[application.properties]
 
@@ -18,9 +23,10 @@ Running this sample will be charged by Azure. You can check the usage and bill a
 spring.cloud.azure.servicebus.connection-string=[servicebus-namespace-connection-string]
 ....
 
-== Credential file based usage
+=== Credential file based usage
 
-1.  Create Azure credential file. Please see https://github.com/Azure/azure-libraries-for-java/blob/master/AUTH.md[how
+1. Create Azure credential file.
+Please see https://github.com/Azure/azure-libraries-for-java/blob/master/AUTH.md[how
 to create credential file]
 +
 ....
@@ -34,8 +40,8 @@ Make sure `my.azureauth` is encoded with UTF-8.
 2. Put credential file under `src/main/resources/`.
 
 3. Create Azure Service Bus namespace, queue and topic.
-Please see https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-create-namespace-portal[how to create]. Or enable auto create
-resources feature in link:src/main/resources/application.properties[application.properties]:
+Please see https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-create-namespace-portal[how to create].
+Or enable auto create resources feature in link:src/main/resources/application.properties[application.properties]:
 +
 ....
 spring.cloud.azure.auto-create-resources=true
@@ -57,10 +63,9 @@ spring.cloud.azure.resource-group=[resource-group]
 spring.cloud.azure.servicebus.namespace=[servicebus-namespace]
 ....
 
-== How to run
+=== How to run
 
-5. Update queue name in link:src/main/java/com/example/QueueController.java#L31[QueueController], topic name and
-subscription in
+5. Update queue name in link:src/main/java/com/example/QueueController.java#L31[QueueController], topic name and subscription in
 link:src/main/java/com/example/TopicController.java#L29[TopicController].
 
 6. Run the `mvn clean spring-boot:run` in the root of the code sample to get the app running.
@@ -78,7 +83,7 @@ New message received: 'hello'
 Message 'hello' successfully checkpointed
 ....
 
-9.  Send a POST request to service bus topic
+9. Send a POST request to service bus topic
 +
 ....
 $ curl -X POST localhost:8080/topics?message=hello
@@ -92,3 +97,8 @@ Message 'hello' successfully checkpointed
 ....
 
 11. Delete the resources on http://ms.portal.azure.com/[Azure Portal] to avoid extra charges.
+
+== Examples
+== Troubleshooting
+== Next steps
+== Contributing

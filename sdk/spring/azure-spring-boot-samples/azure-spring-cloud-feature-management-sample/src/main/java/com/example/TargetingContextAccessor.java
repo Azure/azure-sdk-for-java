@@ -1,16 +1,13 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
-package com.example;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
-import java.util.ArrayList;
+package com.example;
 
 import com.microsoft.azure.spring.cloud.feature.manager.targeting.ITargetingContextAccessor;
 import com.microsoft.azure.spring.cloud.feature.manager.targeting.TargetingContext;
-
 import reactor.core.publisher.Mono;
+
+import java.util.ArrayList;
 
 public class TargetingContextAccessor implements ITargetingContextAccessor {
 
