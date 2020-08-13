@@ -273,7 +273,18 @@ jobs:
             python sdk/spring/scripts/replace_artifact.py --module cosmos --log debug --color false
           displayName: 'Run replace_artifact.py'
         - task: Maven@3
-          displayName: 'Run tests after run replace_artifact.py: $(DisplayName)'
+          displayName: 'Build and Install again, JDK Version: $(JavaBuildVersion)'
+          inputs:
+            mavenPomFile: pom.xml
+            goals: 'install'
+            options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
+            mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+            javaHomeOption: 'JDKVersion'
+            jdkVersionOption: $(JavaBuildVersion)
+            jdkArchitectureOption: 'x64'
+            publishJUnitResults: false
+        - task: Maven@3
+          displayName: 'Run tests again: $(DisplayName)'
           inputs:
             mavenPomFile: pom.xml
             goals: verify
