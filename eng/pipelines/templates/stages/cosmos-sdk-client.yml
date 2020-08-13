@@ -148,7 +148,7 @@ stages:
         # but we don't include them in the Maven site commands (so that we don't generate reports for the non-shipping modules).
         - template: ../steps/install-reporting-tools.yml
 
-        - ${{ if eq(DisplayName, 'Spring Emulator only Integration Tests') }}:
+        - ${{ if eq($(DisplayName), 'Spring Emulator only Integration Tests') }}:
           PostRunSteps:
             - script: |
                 python --version
