@@ -26,7 +26,7 @@
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-stream</artifactId>
-      <version>3.0.0.RELEASE</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-stream;external_dependency} -->
+      <version>3.0.7.RELEASE</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-stream;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
@@ -68,7 +68,7 @@
             <bannedDependencies>
               <includes>
                 <include>com.microsoft.azure:spring-cloud-starter-azure-eventhubs:[1.2.8-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-cloud-starter-azure-eventhubs;current} -->
-                <include>org.springframework.cloud:spring-cloud-stream:[3.0.0.RELEASE]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-stream;external_dependency} -->
+                <include>org.springframework.cloud:spring-cloud-stream:[3.0.7.RELEASE]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-stream;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

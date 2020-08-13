@@ -62,7 +62,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.fasterxml.jackson.datatype</groupId>
       <artifactId>jackson-datatype-jsr310</artifactId>
-     <version>2.10.1</version> <!-- {x-version-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
+     <version>2.11.1</version> <!-- {x-version-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -171,21 +171,21 @@ Licensed under the MIT License.
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-slf4j-impl</artifactId>
-      <version>2.13.0</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-slf4j-impl;external_dependency} -->
+      <version>2.13.3</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-slf4j-impl;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-api</artifactId>
-      <version>2.11.1</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-api;external_dependency} -->
+      <version>2.13.3</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-core</artifactId>
-      <version>2.11.1</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-core;external_dependency} -->
+      <version>2.13.3</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -205,7 +205,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>io.micrometer</groupId>
       <artifactId>micrometer-core</artifactId>
-      <version>1.3.0</version> <!-- {x-version-update;io.micrometer:micrometer-core;external_dependency} -->
+      <version>1.5.3</version> <!-- {x-version-update;io.micrometer:micrometer-core;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -276,10 +276,10 @@ Licensed under the MIT License.
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.10.1]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
+                <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.11.1]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
                 <include>com.fasterxml.jackson.module:jackson-module-afterburner:[2.10.1]</include> <!-- {x-include-update;cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;external_dependency} -->
                 <include>io.dropwizard.metrics:metrics-core:[4.1.0]</include> <!-- {x-include-update;cosmos_io.dropwizard.metrics:metrics-core;external_dependency} -->
-                <include>io.micrometer:micrometer-core:[1.3.0]</include> <!-- {x-include-update;io.micrometer:micrometer-core;external_dependency} -->
+                <include>io.micrometer:micrometer-core:[1.5.3]</include> <!-- {x-include-update;io.micrometer:micrometer-core;external_dependency} -->
                 <include>io.netty:netty-codec-http:[4.1.51.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http;external_dependency} -->
                 <include>io.netty:netty-codec-http2:[4.1.51.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http2;external_dependency} -->
                 <include>io.netty:netty-handler:[4.1.51.Final]</include> <!-- {x-include-update;io.netty:netty-handler;external_dependency} -->

@@ -8,7 +8,7 @@ This project allows Spring Application to load properties from Azure Configurati
 
 ## Examples
 
-Please use this [sample](../../spring-cloud-azure-samples/azure-appconfiguration-sample/) as a reference for how to use this starter.
+Please use this `sample` as a reference for how to use this starter.
 
 ### Dependency Management
 
@@ -151,7 +151,7 @@ In addition a required query parameter has been added for security. No token nam
 
 To setup the webhook open your app store and open the events tab. Select "+ Event Subscription". Set the name of your Event and selent the Endpoint type of Web Hook. Select "Select an endpoint". You endpoint will be your look as following:
 
-http://myApplication.azurewebsites.net/actuator/appconfiguration-refresh?myTokenName=mySecret
+`http://myApplication.azurewebsites.net/actuator/appconfiguration-refresh?myTokenName=mySecret`
 
 Your application will need to be up and running with token-name and token-secret set as Selecting Confirm Selection will validate the endpoint.
 
