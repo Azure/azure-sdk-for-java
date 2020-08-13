@@ -12,9 +12,9 @@
 
 # This script can be run locally from the root of the repo. .\eng\scripts\Generate-Client-Aggregate-Pom.ps1
 
-# Since we're skipping Management for the moment, only look for files with certain parents. These
-# limitations will vanish once Management track is updated.
-$ValidTrack2Parents = ("azure-client-sdk-parent")
+# azure-client-sdk-parent is the client track 2 parent, spring-boot-starter-parent is necessary because the
+# samples use it and they're part of the spring/ci.yml
+$ValidTrack2Parents = ("azure-client-sdk-parent", "spring-boot-starter-parent")
 
 $RootPath = Resolve-Path ($PSScriptRoot + "/../../")
 $ClientAggregatePom = Join-Path $RootPath "ClientAggregatePom.xml"
