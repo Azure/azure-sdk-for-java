@@ -19,6 +19,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.test.TestBase;
+import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.ClientSecretCredentialBuilder;
@@ -103,7 +104,7 @@ public abstract class CertificateClientTestBase extends TestBase {
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
 
-        if (!interceptorManager.isPlaybackMode()) {
+        if (getTestMode() == TestMode.RECORD) {
             policies.add(interceptorManager.getRecordPolicy());
         }
 

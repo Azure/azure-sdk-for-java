@@ -3,7 +3,6 @@
 package com.azure.resourcemanager.compute.implementation;
 
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.Response;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
@@ -92,7 +91,6 @@ import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -1769,30 +1767,23 @@ class VirtualMachineImpl
     }
 
     public Accepted<VirtualMachine> beginCreate() {
-        Flux<Indexable> dependencyTasksAsync = taskGroup().invokeDependencyAsync(taskGroup().newInvocationContext());
-        dependencyTasksAsync.blockLast();
+        return AcceptedImpl.<VirtualMachine, VirtualMachineInner>newAccepted(logger,
+            () -> this.manager().inner().getVirtualMachines()
+                .createOrUpdateWithResponseAsync(resourceGroupName(), vmName, inner()).block(),
+            inner -> new VirtualMachineImpl(inner.name(), inner, this.manager(),
+                this.storageManager, this.networkManager, this.authorizationManager),
+            this.manager().inner().getSerializerAdapter(),
+            this.manager().inner().getHttpPipeline(),
+            VirtualMachineInner.class,
+            () -> {
+                Flux<Indexable> dependencyTasksAsync =
+                    taskGroup().invokeDependencyAsync(taskGroup().newInvocationContext());
+                dependencyTasksAsync.blockLast();
 
-        // same as createResourceAsync
-        prepareCreateResourceAsync().block();
-
-        Response<Flux<ByteBuffer>> activationResponse = this.manager().inner().getVirtualMachines()
-            .createOrUpdateWithResponseAsync(resourceGroupName(), vmName, inner()).block();
-
-        if (activationResponse == null) {
-            throw logger.logExceptionAsError(new NullPointerException());
-        } else {
-            Accepted<VirtualMachine> accepted = new AcceptedImpl<VirtualMachineInner, VirtualMachine>(
-                activationResponse,
-                this.manager().inner().getSerializerAdapter(),
-                this.manager().inner().getHttpPipeline(),
-                VirtualMachineInner.class,
-                VirtualMachineInner.class,
-                inner -> new VirtualMachineImpl(inner.name(), inner, this.manager(),
-                    this.storageManager, this.networkManager, this.authorizationManager));
-
-            reset(accepted.getActivationResponse().getValue().inner());
-            return accepted;
-        }
+                // same as createResourceAsync
+                prepareCreateResourceAsync().block();
+            },
+            this::reset);
     }
 
     @Override

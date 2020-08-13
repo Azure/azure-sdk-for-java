@@ -6,7 +6,8 @@ This repo is for Spring Boot Starters of Azure services. It helps Spring Boot de
 ## Getting started
 
 ### Prerequisites
-- JDK 1.8 and above
+- Java Development Kit (JDK) with version 8 or above
+- [Azure Subscription][azure_subscription]
 - [Maven](http://maven.apache.org/) 3.0 and above
 
 ### Include the Package
@@ -25,7 +26,7 @@ dependency to your project and the Spring Boot auto-configuration will kick-in:
 
 Note that there is no need to add a `version` as those are managed already by the project.
 
-Alternatively you may want to use the [starters](../azure-spring-boot-starters)
+Alternatively you may want to use the [starters](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter)
 
 [//]: # ({x-version-update-start;com.microsoft.azure:azure-keyvault-secrets-spring-boot-starter;current})
 ```xml
@@ -52,9 +53,20 @@ This module also provides the ability to automatically inject credentials from C
 applications consuming Azure services. It does this by reading the `VCAP_SERVICES` environment
 variable and setting the appropriate properties used by auto-configuration code.
 
-For details, please see sample code in the [azure-spring-boot-sample-cloud-foundry](../azure-spring-boot-samples/azure-spring-boot-sample-cloud-foundry) 
+For details, please see sample code in the [azure-spring-boot-sample-cloud-foundry](../azure-spring-boot-samples/azure-cloud-foundry-service-sample) 
 
 ## Examples
+The following section provides sample projects illustrating how to use the Azure Spring Boot starters.
+### More sample code
+- [Azure Active Directory for Frontend](../azure-spring-boot-samples/azure-spring-boot-sample-active-directory)
+- [Azure Active Directory for Backend](../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-backend)
+- [Azure Active Directory for Backend with Microsoft Graph API](../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-backend-v2)
+- [Azure Active Directory B2C](../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-oidc)
+- [Cosmos DB SQL API](../azure-spring-boot-samples/azure-spring-boot-sample-cosmosdb)
+- [Gremlin SQL API](../azure-spring-boot-samples/azure-spring-boot-sample-data-gremlin)
+- [Key Vault](../azure-spring-boot-samples/azure-spring-boot-sample-keyvault-secrets)
+- [JMS Service Bus Queue](../azure-spring-boot-samples/azure-spring-boot-sample-servicebus-jms-queue)
+- [JMS Service Bus Topic](../azure-spring-boot-samples/azure-spring-boot-sample-servicebus-jms-topic)
 
 ## Troubleshooting
 ### Enable client logging
@@ -105,3 +117,4 @@ You can participate community driven [![Gitter](https://badges.gitter.im/Microso
 [package]: https://mvnrepository.com/artifact/com.microsoft.azure/azure-spring-boot
 [sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
+[azure_subscription]: https://azure.microsoft.com/free

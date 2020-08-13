@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 @Fluent
 public interface SqlActiveDirectoryAdministrator {
     /** @return the type of administrator. */
-    ManagedInstanceAdministratorType administratorType();
+    AdministratorType administratorType();
 
     /** @return the server administrator login value. */
     String signInName();

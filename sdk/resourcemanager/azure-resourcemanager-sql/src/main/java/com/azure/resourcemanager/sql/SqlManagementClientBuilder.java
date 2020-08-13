@@ -11,6 +11,9 @@ import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
+import com.azure.core.management.serializer.AzureJacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
+import java.time.Duration;
 
 /** A builder for creating a new instance of the SqlManagementClient type. */
 @ServiceClientBuilder(serviceClients = {SqlManagementClient.class})
@@ -79,6 +82,38 @@ public final class SqlManagementClientBuilder {
         return this;
     }
 
+    /*
+     * The serializer to serialize an object into a string
+     */
+    private SerializerAdapter serializerAdapter;
+
+    /**
+     * Sets The serializer to serialize an object into a string.
+     *
+     * @param serializerAdapter the serializerAdapter value.
+     * @return the SqlManagementClientBuilder.
+     */
+    public SqlManagementClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
+        this.serializerAdapter = serializerAdapter;
+        return this;
+    }
+
+    /*
+     * The default poll interval for long-running operation
+     */
+    private Duration defaultPollInterval;
+
+    /**
+     * Sets The default poll interval for long-running operation.
+     *
+     * @param defaultPollInterval the defaultPollInterval value.
+     * @return the SqlManagementClientBuilder.
+     */
+    public SqlManagementClientBuilder defaultPollInterval(Duration defaultPollInterval) {
+        this.defaultPollInterval = defaultPollInterval;
+        return this;
+    }
+
     /**
      * Builds an instance of SqlManagementClient with the provided parameters.
      *
@@ -97,7 +132,15 @@ public final class SqlManagementClientBuilder {
                     .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                     .build();
         }
-        SqlManagementClient client = new SqlManagementClient(pipeline, environment, subscriptionId, endpoint);
+        if (serializerAdapter == null) {
+            this.serializerAdapter = new AzureJacksonAdapter();
+        }
+        if (defaultPollInterval == null) {
+            this.defaultPollInterval = Duration.ofSeconds(30);
+        }
+        SqlManagementClient client =
+            new SqlManagementClient(
+                pipeline, serializerAdapter, defaultPollInterval, environment, subscriptionId, endpoint);
         return client;
     }
 }

@@ -8,9 +8,11 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.dns.fluent.RecordSetsClient;
 import com.azure.resourcemanager.dns.fluent.ZonesClient;
+import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
+import java.time.Duration;
 
 /** Initializes a new instance of the DnsManagementClient type. */
 @ServiceClient(builder = DnsManagementClientBuilder.class)
@@ -65,6 +67,30 @@ public final class DnsManagementClient extends AzureServiceClient {
         return this.httpPipeline;
     }
 
+    /** The serializer to serialize an object into a string. */
+    private final SerializerAdapter serializerAdapter;
+
+    /**
+     * Gets The serializer to serialize an object into a string.
+     *
+     * @return the serializerAdapter value.
+     */
+    public SerializerAdapter getSerializerAdapter() {
+        return this.serializerAdapter;
+    }
+
+    /** The default poll interval for long-running operation. */
+    private final Duration defaultPollInterval;
+
+    /**
+     * Gets The default poll interval for long-running operation.
+     *
+     * @return the defaultPollInterval value.
+     */
+    public Duration getDefaultPollInterval() {
+        return this.defaultPollInterval;
+    }
+
     /** The RecordSetsClient object to access its operations. */
     private final RecordSetsClient recordSets;
 
@@ -93,12 +119,21 @@ public final class DnsManagementClient extends AzureServiceClient {
      * Initializes an instance of DnsManagementClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param serializerAdapter The serializer to serialize an object into a string.
+     * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
      */
     DnsManagementClient(
-        HttpPipeline httpPipeline, AzureEnvironment environment, String subscriptionId, String endpoint) {
-        super(httpPipeline, environment);
+        HttpPipeline httpPipeline,
+        SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval,
+        AzureEnvironment environment,
+        String subscriptionId,
+        String endpoint) {
+        super(httpPipeline, serializerAdapter, environment);
         this.httpPipeline = httpPipeline;
+        this.serializerAdapter = serializerAdapter;
+        this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
         this.apiVersion = "2018-03-01-preview";

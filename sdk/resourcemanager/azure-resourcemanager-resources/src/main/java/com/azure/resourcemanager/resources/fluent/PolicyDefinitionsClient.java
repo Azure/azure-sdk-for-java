@@ -285,6 +285,7 @@ public final class PolicyDefinitionsClient {
         } else {
             parameters.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -444,6 +445,7 @@ public final class PolicyDefinitionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -577,6 +579,7 @@ public final class PolicyDefinitionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -713,6 +716,7 @@ public final class PolicyDefinitionsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getBuiltIn(this.client.getEndpoint(), policyDefinitionName, this.client.getApiVersion(), context);
     }
@@ -872,6 +876,7 @@ public final class PolicyDefinitionsClient {
         } else {
             parameters.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdateAtManagementGroup(
                 this.client.getEndpoint(),
@@ -1038,6 +1043,7 @@ public final class PolicyDefinitionsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .deleteAtManagementGroup(
                 this.client.getEndpoint(),
@@ -1178,6 +1184,7 @@ public final class PolicyDefinitionsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .getAtManagementGroup(
                 this.client.getEndpoint(),
@@ -1333,6 +1340,7 @@ public final class PolicyDefinitionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), context)
             .map(
@@ -1369,7 +1377,8 @@ public final class PolicyDefinitionsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PolicyDefinitionInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1445,6 +1454,7 @@ public final class PolicyDefinitionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listBuiltIn(this.client.getEndpoint(), this.client.getApiVersion(), context)
             .map(
@@ -1483,7 +1493,7 @@ public final class PolicyDefinitionsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PolicyDefinitionInner> listBuiltInAsync(Context context) {
         return new PagedFlux<>(
-            () -> listBuiltInSinglePageAsync(context), nextLink -> listBuiltInNextSinglePageAsync(nextLink));
+            () -> listBuiltInSinglePageAsync(context), nextLink -> listBuiltInNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1574,6 +1584,7 @@ public final class PolicyDefinitionsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByManagementGroup(this.client.getEndpoint(), this.client.getApiVersion(), managementGroupId, context)
             .map(
@@ -1617,7 +1628,7 @@ public final class PolicyDefinitionsClient {
     public PagedFlux<PolicyDefinitionInner> listByManagementGroupAsync(String managementGroupId, Context context) {
         return new PagedFlux<>(
             () -> listByManagementGroupSinglePageAsync(managementGroupId, context),
-            nextLink -> listByManagementGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByManagementGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1692,6 +1703,7 @@ public final class PolicyDefinitionsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listNext(nextLink, context)
             .map(
@@ -1748,6 +1760,7 @@ public final class PolicyDefinitionsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listBuiltInNext(nextLink, context)
             .map(
@@ -1805,6 +1818,7 @@ public final class PolicyDefinitionsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByManagementGroupNext(nextLink, context)
             .map(

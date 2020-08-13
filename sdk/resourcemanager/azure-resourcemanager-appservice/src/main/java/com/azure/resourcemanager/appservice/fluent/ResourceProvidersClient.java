@@ -618,7 +618,7 @@ public final class ResourceProvidersClient {
     public PagedFlux<SourceControlInner> listSourceControlsAsync(Context context) {
         return new PagedFlux<>(
             () -> listSourceControlsSinglePageAsync(context),
-            nextLink -> listSourceControlsNextSinglePageAsync(nextLink));
+            nextLink -> listSourceControlsNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1061,7 +1061,7 @@ public final class ResourceProvidersClient {
     public PagedFlux<BillingMeterInner> listAsync(String billingLocation, String osType, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(billingLocation, osType, context),
-            nextLink -> listBillingMetersNextSinglePageAsync(nextLink));
+            nextLink -> listBillingMetersNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1078,7 +1078,7 @@ public final class ResourceProvidersClient {
         final Context context = null;
         return new PagedFlux<>(
             () -> listSinglePageAsync(billingLocation, osType),
-            nextLink -> listBillingMetersNextSinglePageAsync(nextLink));
+            nextLink -> listBillingMetersNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1610,7 +1610,7 @@ public final class ResourceProvidersClient {
             () ->
                 listGeoRegionsSinglePageAsync(
                     sku, linuxWorkersEnabled, xenonWorkersEnabled, linuxDynamicWorkersEnabled, context),
-            nextLink -> listGeoRegionsNextSinglePageAsync(nextLink));
+            nextLink -> listGeoRegionsNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1631,7 +1631,7 @@ public final class ResourceProvidersClient {
             () ->
                 listGeoRegionsSinglePageAsync(
                     sku, linuxWorkersEnabled, xenonWorkersEnabled, linuxDynamicWorkersEnabled),
-            nextLink -> listGeoRegionsNextSinglePageAsync(nextLink));
+            nextLink -> listGeoRegionsNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1824,7 +1824,7 @@ public final class ResourceProvidersClient {
     public PagedFlux<IdentifierInner> listSiteIdentifiersAssignedToHostnameAsync(String name, Context context) {
         return new PagedFlux<>(
             () -> listSiteIdentifiersAssignedToHostnameSinglePageAsync(name, context),
-            nextLink -> listSiteIdentifiersAssignedToHostnameNextSinglePageAsync(nextLink));
+            nextLink -> listSiteIdentifiersAssignedToHostnameNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1963,7 +1963,7 @@ public final class ResourceProvidersClient {
     public PagedFlux<PremierAddOnOfferInner> listPremierAddOnOffersAsync(Context context) {
         return new PagedFlux<>(
             () -> listPremierAddOnOffersSinglePageAsync(context),
-            nextLink -> listPremierAddOnOffersNextSinglePageAsync(nextLink));
+            nextLink -> listPremierAddOnOffersNextSinglePageAsync(nextLink, context));
     }
 
     /**
