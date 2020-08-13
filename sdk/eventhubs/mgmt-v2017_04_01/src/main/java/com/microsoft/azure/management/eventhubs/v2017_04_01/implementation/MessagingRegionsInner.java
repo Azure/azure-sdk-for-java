@@ -19,13 +19,13 @@ import com.microsoft.azure.Resource;
 @SkipParentValidation
 public class MessagingRegionsInner extends Resource {
     /**
-     * The properties property.
+     * Properties of Messaging Region.
      */
     @JsonProperty(value = "properties")
     private MessagingRegionsProperties properties;
 
     /**
-     * Get the properties value.
+     * Get properties of Messaging Region.
      *
      * @return the properties value
      */
@@ -34,7 +34,7 @@ public class MessagingRegionsInner extends Resource {
     }
 
     /**
-     * Set the properties value.
+     * Set properties of Messaging Region.
      *
      * @param properties the properties value to set
      * @return the MessagingRegionsInner object itself.
