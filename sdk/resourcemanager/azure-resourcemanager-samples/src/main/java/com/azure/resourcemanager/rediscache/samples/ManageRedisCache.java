@@ -4,20 +4,25 @@
  * license information.
  */
 
-package com.microsoft.azure.management.rediscache.samples;
+package com.azure.resourcemanager.rediscache.samples;
 
-import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.redis.DayOfWeek;
-import com.microsoft.azure.management.redis.RebootType;
-import com.microsoft.azure.management.redis.RedisAccessKeys;
-import com.microsoft.azure.management.redis.RedisCache;
-import com.microsoft.azure.management.redis.RedisCachePremium;
-import com.microsoft.azure.management.redis.RedisKeyType;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.model.CreatedResources;
-import com.microsoft.azure.management.samples.Utils;
-import com.microsoft.rest.LogLevel;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.redis.models.DayOfWeek;
+import com.azure.resourcemanager.redis.models.RebootType;
+import com.azure.resourcemanager.redis.models.RedisAccessKeys;
+import com.azure.resourcemanager.redis.models.RedisCache;
+import com.azure.resourcemanager.redis.models.RedisCachePremium;
+import com.azure.resourcemanager.redis.models.RedisKeyType;
+import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
+import com.azure.resourcemanager.resources.fluentcore.model.CreatedResources;
+import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.resourcemanager.samples.Utils;
 
 import java.io.File;
 import java.util.List;
@@ -46,10 +51,10 @@ public final class ManageRedisCache {
      * @return true if sample runs successfully
      */
     public static boolean runSample(Azure azure) {
-        final String redisCacheName1 = Utils.createRandomName("rc1");
-        final String redisCacheName2 = Utils.createRandomName("rc2");
-        final String redisCacheName3 = Utils.createRandomName("rc3");
-        final String rgName = Utils.createRandomName("rgRCMC");
+        final String redisCacheName1 = azure.sdkContext().randomResourceName("rc1", 20);
+        final String redisCacheName2 = azure.sdkContext().randomResourceName("rc2", 20);
+        final String redisCacheName3 = azure.sdkContext().randomResourceName("rc3", 20);
+        final String rgName = azure.sdkContext().randomResourceName("rgRCMC", 20);
         try {
             // ============================================================
             // Define a redis cache
@@ -111,7 +116,7 @@ public final class ManageRedisCache {
 
             System.out.println("Listing Redis Caches");
 
-            List<RedisCache> caches = azure.redisCaches().listByResourceGroup(rgName);
+            PagedIterable<RedisCache> caches = azure.redisCaches().listByResourceGroup(rgName);
 
             // Walk through all the caches
             for (RedisCache redis : caches) {
@@ -170,13 +175,18 @@ public final class ManageRedisCache {
      */
     public static void main(String[] args) {
         try {
+            //=============================================================
+            // Authenticate
 
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .build();
 
-            Azure azure = Azure.configure()
-                    .withLogLevel(LogLevel.BASIC)
-                    .authenticate(credFile)
-                    .withDefaultSubscription();
+            Azure azure = Azure
+                .configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile)
+                .withDefaultSubscription();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());

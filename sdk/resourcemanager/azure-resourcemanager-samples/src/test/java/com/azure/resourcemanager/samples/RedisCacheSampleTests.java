@@ -4,15 +4,15 @@
  * license information.
  */
 
-package com.microsoft.azure.management.samples;
+package com.azure.resourcemanager.samples;
 
-import com.microsoft.azure.management.rediscache.samples.ManageRedisCache;
-import org.junit.Assert;
-import org.junit.Test;
+import com.azure.resourcemanager.rediscache.samples.ManageRedisCache;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class RedisCacheSampleTests extends SamplesTestBase {
     @Test
     public void testManageRedisCache() {
-        Assert.assertTrue(ManageRedisCache.runSample(azure));
+        Assertions.assertTrue(ManageRedisCache.runSample(azure));
     }
 }

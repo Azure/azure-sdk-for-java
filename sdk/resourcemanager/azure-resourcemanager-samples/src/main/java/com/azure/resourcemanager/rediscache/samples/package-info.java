@@ -5,4 +5,4 @@
 /**
  * This package contains the classes for Redis cache samples.
  */
-package com.microsoft.azure.management.rediscache.samples;
+package com.azure.resourcemanager.rediscache.samples;
