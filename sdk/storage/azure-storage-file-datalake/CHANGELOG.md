@@ -1,5 +1,8 @@
 # Release History
 
+## 12.3.0-beta.1 (Unreleased)
+
+
 ## 12.2.0 (2020-08-13)
 - Fixed bug where Query Input Stream would throw when a ByteBuffer of length 0 was encountered.
 
