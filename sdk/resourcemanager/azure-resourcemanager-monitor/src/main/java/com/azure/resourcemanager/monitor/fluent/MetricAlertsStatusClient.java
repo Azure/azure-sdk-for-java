@@ -164,6 +164,7 @@ public final class MetricAlertsStatusClient {
             return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
         }
         final String apiVersion = "2018-03-01";
+        context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
@@ -343,6 +344,7 @@ public final class MetricAlertsStatusClient {
             return Mono.error(new IllegalArgumentException("Parameter statusName is required and cannot be null."));
         }
         final String apiVersion = "2018-03-01";
+        context = this.client.mergeContext(context);
         return service
             .listByName(
                 this.client.getEndpoint(),

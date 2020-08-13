@@ -3,6 +3,11 @@
 #Javadoc files
 dist/
 .publish/
+output/
+temp/
+
+# Spring
+**/*packageOutputDirectory*
 
 #javadoc overview files generated from README.md
 readme_overview.html
@@ -69,3 +74,4 @@ package-lock.json
 .vscode/
 .factorypath
 jacoco.exec
+

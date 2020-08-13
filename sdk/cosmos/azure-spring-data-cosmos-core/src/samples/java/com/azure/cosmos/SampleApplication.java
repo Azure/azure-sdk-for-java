@@ -36,8 +36,6 @@ public class SampleApplication implements CommandLineRunner {
 
         // to find by Id, please specify partition key value if collection is partitioned
         final User result = repository.findOne(testUser.getId(), testUser.getLastName());
-        // if emailAddress is mapped to id, then
-        // final User result = respository.findOne(testUser.getEmailAddress(), testUser.getLastName());
 
         //  Switch to secondary key
         UserRepositoryConfiguration bean =

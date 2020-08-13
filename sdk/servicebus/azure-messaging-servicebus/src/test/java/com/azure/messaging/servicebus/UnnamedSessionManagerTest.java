@@ -164,7 +164,7 @@ class UnnamedSessionManagerTest {
         final String sessionId = "session-1";
         final String lockToken = "a-lock-token";
         final String linkName = "my-link-name";
-        final Instant sessionLockedUntil = Instant.now().plus(Duration.ofSeconds(60));
+        final Instant sessionLockedUntil = Instant.now().plus(Duration.ofSeconds(30));
 
         final Message message = mock(Message.class);
         final ServiceBusReceivedMessage receivedMessage = mock(ServiceBusReceivedMessage.class);
@@ -199,8 +199,8 @@ class UnnamedSessionManagerTest {
             .assertNext(context -> assertMessageEquals(sessionId, receivedMessage, context))
             .assertNext(context -> assertMessageEquals(sessionId, receivedMessage, context))
             .assertNext(context -> assertMessageEquals(sessionId, receivedMessage, context))
-            .expectComplete()
-            .verify();
+            .thenCancel()
+            .verify(Duration.ofSeconds(45));
     }
 
     /**

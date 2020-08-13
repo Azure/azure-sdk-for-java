@@ -307,7 +307,7 @@ public abstract class FormTrainingClientTestBase extends TestBase {
     }
 
     void beginCopyIncorrectRegionRunner(BiConsumer<String, String> testRunner) {
-        testRunner.accept(getTargetResourceId(), "westus2");
+        testRunner.accept(getTargetResourceId(), "eastus");
     }
 
     void beginTrainingInvalidModelStatusRunner(BiConsumer<String, Boolean> testRunner) {

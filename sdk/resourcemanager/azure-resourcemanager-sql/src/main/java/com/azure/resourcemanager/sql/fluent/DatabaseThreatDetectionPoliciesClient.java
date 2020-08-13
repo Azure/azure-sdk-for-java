@@ -25,6 +25,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.SqlManagementClient;
 import com.azure.resourcemanager.sql.fluent.inner.DatabaseSecurityAlertPolicyInner;
+import com.azure.resourcemanager.sql.models.SecurityAlertPolicyName;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DatabaseThreatDetectionPolicies. */
@@ -71,7 +72,7 @@ public final class DatabaseThreatDetectionPoliciesClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serverName") String serverName,
             @PathParam("databaseName") String databaseName,
-            @PathParam("securityAlertPolicyName") String securityAlertPolicyName,
+            @PathParam("securityAlertPolicyName") SecurityAlertPolicyName securityAlertPolicyName,
             @QueryParam("api-version") String apiVersion,
             Context context);
 
@@ -87,7 +88,7 @@ public final class DatabaseThreatDetectionPoliciesClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serverName") String serverName,
             @PathParam("databaseName") String databaseName,
-            @PathParam("securityAlertPolicyName") String securityAlertPolicyName,
+            @PathParam("securityAlertPolicyName") SecurityAlertPolicyName securityAlertPolicyName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") DatabaseSecurityAlertPolicyInner parameters,
             Context context);
@@ -100,6 +101,7 @@ public final class DatabaseThreatDetectionPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which database Threat Detection policy is defined.
+     * @param securityAlertPolicyName The name of the security alert policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -107,7 +109,10 @@ public final class DatabaseThreatDetectionPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DatabaseSecurityAlertPolicyInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName) {
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        SecurityAlertPolicyName securityAlertPolicyName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -130,7 +135,11 @@ public final class DatabaseThreatDetectionPoliciesClient {
         if (databaseName == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
-        final String securityAlertPolicyName = "default";
+        if (securityAlertPolicyName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter securityAlertPolicyName is required and cannot be null."));
+        }
         final String apiVersion = "2014-04-01";
         return FluxUtil
             .withContext(
@@ -155,6 +164,7 @@ public final class DatabaseThreatDetectionPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which database Threat Detection policy is defined.
+     * @param securityAlertPolicyName The name of the security alert policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -163,7 +173,11 @@ public final class DatabaseThreatDetectionPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DatabaseSecurityAlertPolicyInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, Context context) {
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        SecurityAlertPolicyName securityAlertPolicyName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -186,8 +200,13 @@ public final class DatabaseThreatDetectionPoliciesClient {
         if (databaseName == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
-        final String securityAlertPolicyName = "default";
+        if (securityAlertPolicyName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter securityAlertPolicyName is required and cannot be null."));
+        }
         final String apiVersion = "2014-04-01";
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -207,6 +226,7 @@ public final class DatabaseThreatDetectionPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which database Threat Detection policy is defined.
+     * @param securityAlertPolicyName The name of the security alert policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -214,8 +234,11 @@ public final class DatabaseThreatDetectionPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DatabaseSecurityAlertPolicyInner> getAsync(
-        String resourceGroupName, String serverName, String databaseName) {
-        return getWithResponseAsync(resourceGroupName, serverName, databaseName)
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        SecurityAlertPolicyName securityAlertPolicyName) {
+        return getWithResponseAsync(resourceGroupName, serverName, databaseName, securityAlertPolicyName)
             .flatMap(
                 (Response<DatabaseSecurityAlertPolicyInner> res) -> {
                     if (res.getValue() != null) {
@@ -233,6 +256,7 @@ public final class DatabaseThreatDetectionPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which database Threat Detection policy is defined.
+     * @param securityAlertPolicyName The name of the security alert policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -241,8 +265,12 @@ public final class DatabaseThreatDetectionPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DatabaseSecurityAlertPolicyInner> getAsync(
-        String resourceGroupName, String serverName, String databaseName, Context context) {
-        return getWithResponseAsync(resourceGroupName, serverName, databaseName, context)
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        SecurityAlertPolicyName securityAlertPolicyName,
+        Context context) {
+        return getWithResponseAsync(resourceGroupName, serverName, databaseName, securityAlertPolicyName, context)
             .flatMap(
                 (Response<DatabaseSecurityAlertPolicyInner> res) -> {
                     if (res.getValue() != null) {
@@ -260,14 +288,19 @@ public final class DatabaseThreatDetectionPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which database Threat Detection policy is defined.
+     * @param securityAlertPolicyName The name of the security alert policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a database's threat detection policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatabaseSecurityAlertPolicyInner get(String resourceGroupName, String serverName, String databaseName) {
-        return getAsync(resourceGroupName, serverName, databaseName).block();
+    public DatabaseSecurityAlertPolicyInner get(
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        SecurityAlertPolicyName securityAlertPolicyName) {
+        return getAsync(resourceGroupName, serverName, databaseName, securityAlertPolicyName).block();
     }
 
     /**
@@ -277,6 +310,7 @@ public final class DatabaseThreatDetectionPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which database Threat Detection policy is defined.
+     * @param securityAlertPolicyName The name of the security alert policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -285,8 +319,12 @@ public final class DatabaseThreatDetectionPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatabaseSecurityAlertPolicyInner get(
-        String resourceGroupName, String serverName, String databaseName, Context context) {
-        return getAsync(resourceGroupName, serverName, databaseName, context).block();
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        SecurityAlertPolicyName securityAlertPolicyName,
+        Context context) {
+        return getAsync(resourceGroupName, serverName, databaseName, securityAlertPolicyName, context).block();
     }
 
     /**
@@ -296,6 +334,7 @@ public final class DatabaseThreatDetectionPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which database Threat Detection policy is defined.
+     * @param securityAlertPolicyName The name of the security alert policy.
      * @param parameters Contains information about a database Threat Detection policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -304,7 +343,11 @@ public final class DatabaseThreatDetectionPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DatabaseSecurityAlertPolicyInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, DatabaseSecurityAlertPolicyInner parameters) {
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        SecurityAlertPolicyName securityAlertPolicyName,
+        DatabaseSecurityAlertPolicyInner parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -327,12 +370,16 @@ public final class DatabaseThreatDetectionPoliciesClient {
         if (databaseName == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
+        if (securityAlertPolicyName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter securityAlertPolicyName is required and cannot be null."));
+        }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
-        final String securityAlertPolicyName = "default";
         final String apiVersion = "2014-04-01";
         return FluxUtil
             .withContext(
@@ -358,6 +405,7 @@ public final class DatabaseThreatDetectionPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which database Threat Detection policy is defined.
+     * @param securityAlertPolicyName The name of the security alert policy.
      * @param parameters Contains information about a database Threat Detection policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -370,6 +418,7 @@ public final class DatabaseThreatDetectionPoliciesClient {
         String resourceGroupName,
         String serverName,
         String databaseName,
+        SecurityAlertPolicyName securityAlertPolicyName,
         DatabaseSecurityAlertPolicyInner parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
@@ -394,13 +443,18 @@ public final class DatabaseThreatDetectionPoliciesClient {
         if (databaseName == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
+        if (securityAlertPolicyName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter securityAlertPolicyName is required and cannot be null."));
+        }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
-        final String securityAlertPolicyName = "default";
         final String apiVersion = "2014-04-01";
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -421,6 +475,7 @@ public final class DatabaseThreatDetectionPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which database Threat Detection policy is defined.
+     * @param securityAlertPolicyName The name of the security alert policy.
      * @param parameters Contains information about a database Threat Detection policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -429,8 +484,13 @@ public final class DatabaseThreatDetectionPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DatabaseSecurityAlertPolicyInner> createOrUpdateAsync(
-        String resourceGroupName, String serverName, String databaseName, DatabaseSecurityAlertPolicyInner parameters) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, serverName, databaseName, parameters)
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        SecurityAlertPolicyName securityAlertPolicyName,
+        DatabaseSecurityAlertPolicyInner parameters) {
+        return createOrUpdateWithResponseAsync(
+                resourceGroupName, serverName, databaseName, securityAlertPolicyName, parameters)
             .flatMap(
                 (Response<DatabaseSecurityAlertPolicyInner> res) -> {
                     if (res.getValue() != null) {
@@ -448,6 +508,7 @@ public final class DatabaseThreatDetectionPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which database Threat Detection policy is defined.
+     * @param securityAlertPolicyName The name of the security alert policy.
      * @param parameters Contains information about a database Threat Detection policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -460,9 +521,11 @@ public final class DatabaseThreatDetectionPoliciesClient {
         String resourceGroupName,
         String serverName,
         String databaseName,
+        SecurityAlertPolicyName securityAlertPolicyName,
         DatabaseSecurityAlertPolicyInner parameters,
         Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, serverName, databaseName, parameters, context)
+        return createOrUpdateWithResponseAsync(
+                resourceGroupName, serverName, databaseName, securityAlertPolicyName, parameters, context)
             .flatMap(
                 (Response<DatabaseSecurityAlertPolicyInner> res) -> {
                     if (res.getValue() != null) {
@@ -480,6 +543,7 @@ public final class DatabaseThreatDetectionPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which database Threat Detection policy is defined.
+     * @param securityAlertPolicyName The name of the security alert policy.
      * @param parameters Contains information about a database Threat Detection policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -488,8 +552,13 @@ public final class DatabaseThreatDetectionPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatabaseSecurityAlertPolicyInner createOrUpdate(
-        String resourceGroupName, String serverName, String databaseName, DatabaseSecurityAlertPolicyInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, serverName, databaseName, parameters).block();
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        SecurityAlertPolicyName securityAlertPolicyName,
+        DatabaseSecurityAlertPolicyInner parameters) {
+        return createOrUpdateAsync(resourceGroupName, serverName, databaseName, securityAlertPolicyName, parameters)
+            .block();
     }
 
     /**
@@ -499,6 +568,7 @@ public final class DatabaseThreatDetectionPoliciesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which database Threat Detection policy is defined.
+     * @param securityAlertPolicyName The name of the security alert policy.
      * @param parameters Contains information about a database Threat Detection policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -511,8 +581,11 @@ public final class DatabaseThreatDetectionPoliciesClient {
         String resourceGroupName,
         String serverName,
         String databaseName,
+        SecurityAlertPolicyName securityAlertPolicyName,
         DatabaseSecurityAlertPolicyInner parameters,
         Context context) {
-        return createOrUpdateAsync(resourceGroupName, serverName, databaseName, parameters, context).block();
+        return createOrUpdateAsync(
+                resourceGroupName, serverName, databaseName, securityAlertPolicyName, parameters, context)
+            .block();
     }
 }

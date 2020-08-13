@@ -189,6 +189,7 @@ public final class MetricBaselinesClient {
             return Mono.error(new IllegalArgumentException("Parameter metricName is required and cannot be null."));
         }
         final String apiVersion = "2017-11-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -479,6 +480,7 @@ public final class MetricBaselinesClient {
             timeSeriesInformation.validate();
         }
         final String apiVersion = "2017-11-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .calculateBaseline(this.client.getEndpoint(), resourceUri, apiVersion, timeSeriesInformation, context);
     }

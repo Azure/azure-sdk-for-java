@@ -1,7 +1,13 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.4 (Unreleased)
 
+
+## 1.0.0-beta.3 (2020-08-12)
+
+- Changed `GsonJsonSerializer` to implement `azure-core`'s `JsonSerialzer` instead of `azure-core-experimental`'s.
+- Removed JSON tree models and APIs.
+- `GsonJsonSerializer` now implements the interface `MemberNameConverter`.
 
 ## 1.0.0-beta.2 (2020-07-16)
 

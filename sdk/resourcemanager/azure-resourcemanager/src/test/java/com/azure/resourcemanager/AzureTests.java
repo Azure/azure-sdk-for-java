@@ -977,6 +977,11 @@ public class AzureTests extends TestBase {
         new TestVirtualMachineInAvailabilitySet().runTest(azure.virtualMachines(), azure.resourceGroups());
     }
 
+    @Test
+    public void testVirtualMachineSyncPoller() throws Exception {
+        new TestVirtualMachineSyncPoller(azure.networks().manager()).runTest(azure.virtualMachines(), azure.resourceGroups());
+    }
+
     /**
      * Tests subscription listing.
      *

@@ -8,11 +8,13 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.containerinstance.fluent.ContainerGroupsClient;
 import com.azure.resourcemanager.containerinstance.fluent.ContainersClient;
 import com.azure.resourcemanager.containerinstance.fluent.LocationsClient;
 import com.azure.resourcemanager.containerinstance.fluent.OperationsClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
+import java.time.Duration;
 
 /** Initializes a new instance of the ContainerInstanceManagementClient type. */
 @ServiceClient(builder = ContainerInstanceManagementClientBuilder.class)
@@ -71,6 +73,30 @@ public final class ContainerInstanceManagementClient extends AzureServiceClient 
         return this.httpPipeline;
     }
 
+    /** The serializer to serialize an object into a string. */
+    private final SerializerAdapter serializerAdapter;
+
+    /**
+     * Gets The serializer to serialize an object into a string.
+     *
+     * @return the serializerAdapter value.
+     */
+    public SerializerAdapter getSerializerAdapter() {
+        return this.serializerAdapter;
+    }
+
+    /** The default poll interval for long-running operation. */
+    private final Duration defaultPollInterval;
+
+    /**
+     * Gets The default poll interval for long-running operation.
+     *
+     * @return the defaultPollInterval value.
+     */
+    public Duration getDefaultPollInterval() {
+        return this.defaultPollInterval;
+    }
+
     /** The ContainerGroupsClient object to access its operations. */
     private final ContainerGroupsClient containerGroups;
 
@@ -123,12 +149,21 @@ public final class ContainerInstanceManagementClient extends AzureServiceClient 
      * Initializes an instance of ContainerInstanceManagementClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param serializerAdapter The serializer to serialize an object into a string.
+     * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
      */
     ContainerInstanceManagementClient(
-        HttpPipeline httpPipeline, AzureEnvironment environment, String subscriptionId, String endpoint) {
-        super(httpPipeline, environment);
+        HttpPipeline httpPipeline,
+        SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval,
+        AzureEnvironment environment,
+        String subscriptionId,
+        String endpoint) {
+        super(httpPipeline, serializerAdapter, environment);
         this.httpPipeline = httpPipeline;
+        this.serializerAdapter = serializerAdapter;
+        this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
         this.apiVersion = "2019-12-01";

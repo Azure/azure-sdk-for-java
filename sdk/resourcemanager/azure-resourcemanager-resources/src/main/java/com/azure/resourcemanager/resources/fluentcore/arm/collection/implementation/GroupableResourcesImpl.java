@@ -77,12 +77,12 @@ public abstract class GroupableResourcesImpl<
     }
 
     @Override
-    public Mono<?> deleteByResourceGroupAsync(String groupName, String name) {
+    public Mono<Void> deleteByResourceGroupAsync(String groupName, String name) {
         return this.deleteInnerAsync(groupName, name).subscribeOn(SdkContext.getReactorScheduler());
     }
 
     @Override
-    public Mono<?> deleteByIdAsync(String id) {
+    public Mono<Void> deleteByIdAsync(String id) {
         return deleteByResourceGroupAsync(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
     }
 
@@ -99,5 +99,5 @@ public abstract class GroupableResourcesImpl<
 
     protected abstract Mono<InnerT> getInnerAsync(String resourceGroupName, String name);
 
-    protected abstract Mono<?> deleteInnerAsync(String resourceGroupName, String name);
+    protected abstract Mono<Void> deleteInnerAsync(String resourceGroupName, String name);
 }

@@ -459,7 +459,7 @@ public final class PeerExpressRouteCircuitConnectionsClient {
         String resourceGroupName, String circuitName, String peeringName, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, circuitName, peeringName, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**

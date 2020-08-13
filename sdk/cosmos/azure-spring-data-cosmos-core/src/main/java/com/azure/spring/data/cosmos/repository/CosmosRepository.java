@@ -40,7 +40,7 @@ public interface CosmosRepository<T, ID extends Serializable> extends PagingAndS
      * Returns list of items in a specific partition
      *
      * @param partitionKey partition key value
-     * @return list of items with partition key value
+     * @return Iterable of items with partition key value
      */
     Iterable<T> findAll(PartitionKey partitionKey);
 
