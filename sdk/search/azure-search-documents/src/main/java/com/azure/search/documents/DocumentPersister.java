@@ -8,8 +8,8 @@ import com.azure.search.documents.models.IndexAction;
 import java.util.Collection;
 
 /**
- * Handles persisting documents being handled by a {@link SearchIndexDocumentBatchingClient} or {@link
- * SearchIndexDocumentBatchingAsyncClient}. APIs are called when a document is added, completes indexing, or fails to
+ * Handles persisting documents being handled by a {@link SearchIndexBatchingClient} or {@link
+ * SearchIndexBatchingAsyncClient}. APIs are called when a document is added, completes indexing, or fails to
  * index. This allows documents to be stored persistently in case the batching client is closed while documents remain
  * or in the case of an application failure.
  */

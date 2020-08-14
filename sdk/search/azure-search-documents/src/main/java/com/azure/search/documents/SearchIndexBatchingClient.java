@@ -10,10 +10,10 @@ import java.util.Collection;
 /**
  *
  */
-public class SearchIndexDocumentBatchingClient {
-    private final SearchIndexDocumentBatchingAsyncClient client;
+public class SearchIndexBatchingClient {
+    private final SearchIndexBatchingAsyncClient client;
 
-    SearchIndexDocumentBatchingClient(SearchIndexDocumentBatchingAsyncClient client) {
+    SearchIndexBatchingClient(SearchIndexBatchingAsyncClient client) {
         this.client = client;
     }
 
@@ -55,22 +55,62 @@ public class SearchIndexDocumentBatchingClient {
         return client.getBatchSize();
     }
 
+    /**
+     * Adds upload document actions to the batch.
+     * <p>
+     * If the client is enabled for automatic batch sending, adding documents may trigger the batch to be sent for
+     * indexing.
+     *
+     * @param documents Documents to be uploaded.
+     */
     public void addUploadActions(Collection<?> documents) {
         client.addUploadActions(documents).block();
     }
 
+    /**
+     * Adds delete document actions to the batch.
+     * <p>
+     * If the client is enabled for automatic batch sending, adding documents may trigger the batch to be sent for
+     * indexing.
+     *
+     * @param documents Documents to be deleted.
+     */
     public void addDeleteActions(Collection<?> documents) {
         client.addDeleteActions(documents).block();
     }
 
+    /**
+     * Adds merge document actions to the batch.
+     * <p>
+     * If the client is enabled for automatic batch sending, adding documents may trigger the batch to be sent for
+     * indexing.
+     *
+     * @param documents Documents to be merged.
+     */
     public void addMergeActions(Collection<?> documents) {
         client.addMergeActions(documents).block();
     }
 
+    /**
+     * Adds merge or upload document actions to the batch.
+     * <p>
+     * If the client is enabled for automatic batch sending, adding documents may trigger the batch to be sent for
+     * indexing.
+     *
+     * @param documents Documents to be merged or uploaded.
+     */
     public void addMergeOrUploadActions(Collection<?> documents) {
         client.addMergeOrUploadActions(documents).block();
     }
 
+    /**
+     * Adds document index actions to the batch.
+     * <p>
+     * If the client is enabled for automatic batch sending, adding documents may trigger the batch to be sent for
+     * indexing.
+     *
+     * @param actions Index actions.
+     */
     public void addActions(Collection<IndexAction<?>> actions) {
         client.addActions(actions).block();
     }

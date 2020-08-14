@@ -13,7 +13,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.ObjectSerializer;
+import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.search.documents.implementation.util.Constants;
 import com.azure.search.documents.implementation.util.Utility;
 
@@ -25,10 +25,9 @@ import java.util.Objects;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of {@link
- * SearchIndexDocumentBatchingClient SearchIndexDocumentBatchingClients} and {@link
- * SearchIndexDocumentBatchingAsyncClient SearchIndexDocumentBatchingAsyncClients}. Call {@link #buildClient()
- * buildClient} and {@link #buildAsyncClient() buildAsyncClient} respectively to construct an instance of the desired
- * client.
+ * SearchIndexBatchingClient SearchIndexDocumentBatchingClients} and {@link SearchIndexBatchingAsyncClient
+ * SearchIndexDocumentBatchingAsyncClients}. Call {@link #buildClient() buildClient} and {@link #buildAsyncClient()
+ * buildAsyncClient} respectively to construct an instance of the desired client.
  * <p>
  * The following must be provided to construct a client instance.
  * <ul>
@@ -37,13 +36,13 @@ import java.util.Objects;
  * <li>The search index name.</li>
  * </ul>
  *
- * @see SearchIndexDocumentBatchingClient
- * @see SearchIndexDocumentBatchingAsyncClient
+ * @see SearchIndexBatchingClient
+ * @see SearchIndexBatchingAsyncClient
  */
-@ServiceClientBuilder(serviceClients = {SearchIndexDocumentBatchingClient.class,
-    SearchIndexDocumentBatchingAsyncClient.class})
-public final class SearchIndexDocumentBatchingClientBuilder {
-    private final ClientLogger logger = new ClientLogger(SearchIndexDocumentBatchingClientBuilder.class);
+@ServiceClientBuilder(serviceClients = {SearchIndexBatchingClient.class,
+    SearchIndexBatchingAsyncClient.class})
+public final class SearchIndexBatchingClientBuilder {
+    private final ClientLogger logger = new ClientLogger(SearchIndexBatchingClientBuilder.class);
     private final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
     private AzureKeyCredential credential;
@@ -55,46 +54,46 @@ public final class SearchIndexDocumentBatchingClientBuilder {
     private Configuration configuration;
     private String indexName;
     private RetryPolicy retryPolicy;
-    private ObjectSerializer objectSerializer;
+    private JsonSerializer jsonSerializer;
     private Integer flushWindow;
     private Integer batchSize;
     private DocumentPersister documentPersister;
 
     /**
-     * Creates a builder instance that is able to configure and construct {@link SearchIndexDocumentBatchingClient
-     * SearchIndexDocumentBatchingClients} and {@link SearchIndexDocumentBatchingAsyncClient
+     * Creates a builder instance that is able to configure and construct {@link SearchIndexBatchingClient
+     * SearchIndexDocumentBatchingClients} and {@link SearchIndexBatchingAsyncClient
      * SearchIndexDocumentBatchingAsyncClients}.
      */
-    public SearchIndexDocumentBatchingClientBuilder() {
+    public SearchIndexBatchingClientBuilder() {
     }
 
     /**
-     * Creates a {@link SearchIndexDocumentBatchingClient} based on options set in the builder. Every time {@code
-     * buildClient()} is called a new instance of {@link SearchIndexDocumentBatchingClient} is created.
+     * Creates a {@link SearchIndexBatchingClient} based on options set in the builder. Every time {@code buildClient()}
+     * is called a new instance of {@link SearchIndexBatchingClient} is created.
      * <p>
      * If {@link #pipeline(HttpPipeline) pipeline} is set, then only the {@code pipeline}, {@link #endpoint(String)
-     * endpoint}, and {@link #indexName(String) indexName} are used to create the {@link
-     * SearchIndexDocumentBatchingClient client}. All other builder settings are ignored.
+     * endpoint}, and {@link #indexName(String) indexName} are used to create the {@link SearchIndexBatchingClient
+     * client}. All other builder settings are ignored.
      *
      * @return A SearchIndexDocumentBatchingClient with the options set from the builder.
      * @throws NullPointerException If {@code indexName} or {@code endpoint} are {@code null}.
      */
-    public SearchIndexDocumentBatchingClient buildClient() {
-        return new SearchIndexDocumentBatchingClient(buildAsyncClient());
+    public SearchIndexBatchingClient buildClient() {
+        return new SearchIndexBatchingClient(buildAsyncClient());
     }
 
     /**
-     * Creates a {@link SearchIndexDocumentBatchingAsyncClient} based on options set in the builder. Every time {@code
-     * buildAsyncClient()} is called a new instance of {@link SearchIndexDocumentBatchingAsyncClient} is created.
+     * Creates a {@link SearchIndexBatchingAsyncClient} based on options set in the builder. Every time {@code
+     * buildAsyncClient()} is called a new instance of {@link SearchIndexBatchingAsyncClient} is created.
      * <p>
      * If {@link #pipeline(HttpPipeline) pipeline} is set, then only the {@code pipeline}, {@link #endpoint(String)
-     * endpoint}, and {@link #indexName(String) indexName} are used to create the {@link
-     * SearchIndexDocumentBatchingAsyncClient client}. All other builder settings are ignored.
+     * endpoint}, and {@link #indexName(String) indexName} are used to create the {@link SearchIndexBatchingAsyncClient
+     * client}. All other builder settings are ignored.
      *
      * @return A SearchIndexDocumentBatchingAsyncClient with the options set from the builder.
      * @throws NullPointerException If {@code indexName} or {@code endpoint} are {@code null}.
      */
-    public SearchIndexDocumentBatchingAsyncClient buildAsyncClient() {
+    public SearchIndexBatchingAsyncClient buildAsyncClient() {
         Objects.requireNonNull(indexName, "'indexName' cannot be null.");
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
         SearchServiceVersion buildVersion = (serviceVersion == null)
@@ -104,16 +103,16 @@ public final class SearchIndexDocumentBatchingClientBuilder {
         SearchAsyncClient searchAsyncClient;
         if (httpPipeline != null) {
             searchAsyncClient = new SearchAsyncClient(endpoint, indexName, buildVersion, httpPipeline,
-                objectSerializer);
+                jsonSerializer);
         } else {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
             HttpPipeline pipeline = Utility.buildHttpPipeline(httpLogOptions, configuration, retryPolicy, credential,
                 policies, httpClient);
 
-            searchAsyncClient = new SearchAsyncClient(endpoint, indexName, buildVersion, pipeline, objectSerializer);
+            searchAsyncClient = new SearchAsyncClient(endpoint, indexName, buildVersion, pipeline, jsonSerializer);
         }
 
-        return new SearchIndexDocumentBatchingAsyncClient(searchAsyncClient, flushWindow, batchSize, documentPersister);
+        return new SearchIndexBatchingAsyncClient(searchAsyncClient, flushWindow, batchSize, documentPersister);
     }
 
     /**
@@ -123,7 +122,7 @@ public final class SearchIndexDocumentBatchingClientBuilder {
      * @return The updated SearchIndexDocumentBatchingClientBuilder object.
      * @throws IllegalArgumentException If {@code endpoint} is null or it cannot be parsed into a valid URL.
      */
-    public SearchIndexDocumentBatchingClientBuilder endpoint(String endpoint) {
+    public SearchIndexBatchingClientBuilder endpoint(String endpoint) {
         try {
             new URL(endpoint);
         } catch (MalformedURLException ex) {
@@ -141,7 +140,7 @@ public final class SearchIndexDocumentBatchingClientBuilder {
      * @throws NullPointerException If {@code credential} is {@code null}.
      * @throws IllegalArgumentException If {@link AzureKeyCredential#getKey()} is {@code null} or empty.
      */
-    public SearchIndexDocumentBatchingClientBuilder credential(AzureKeyCredential credential) {
+    public SearchIndexBatchingClientBuilder credential(AzureKeyCredential credential) {
         Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.credential = credential;
         return this;
@@ -154,7 +153,7 @@ public final class SearchIndexDocumentBatchingClientBuilder {
      * @return The updated SearchIndexDocumentBatchingClientBuilder object.
      * @throws IllegalArgumentException If {@code indexName} is {@code null} or empty.
      */
-    public SearchIndexDocumentBatchingClientBuilder indexName(String indexName) {
+    public SearchIndexBatchingClientBuilder indexName(String indexName) {
         if (CoreUtils.isNullOrEmpty(indexName)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'indexName' cannot be null or empty."));
         }
@@ -170,7 +169,7 @@ public final class SearchIndexDocumentBatchingClientBuilder {
      * @param logOptions The logging configuration for HTTP requests and responses.
      * @return The updated SearchIndexDocumentBatchingClientBuilder object.
      */
-    public SearchIndexDocumentBatchingClientBuilder httpLogOptions(HttpLogOptions logOptions) {
+    public SearchIndexBatchingClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         httpLogOptions = logOptions;
         return this;
     }
@@ -194,19 +193,20 @@ public final class SearchIndexDocumentBatchingClientBuilder {
      * @return The updated SearchIndexDocumentBatchingClientBuilder object.
      * @throws NullPointerException If {@code policy} is {@code null}.
      */
-    public SearchIndexDocumentBatchingClientBuilder addPolicy(HttpPipelinePolicy policy) {
+    public SearchIndexBatchingClientBuilder addPolicy(HttpPipelinePolicy policy) {
         policies.add(Objects.requireNonNull(policy));
         return this;
     }
 
     /**
-     * Adds customer serializer to apply to external defined models.
+     * Custom JSON serializer that is used to handle model types that are not contained in the Azure Search Documents
+     * library.
      *
-     * @param objectSerializer The serializer to serialize user defined models.
+     * @param jsonSerializer The serializer to serialize user defined models.
      * @return The updated SearchIndexDocumentBatchingClientBuilder object.
      */
-    public SearchIndexDocumentBatchingClientBuilder serializer(ObjectSerializer objectSerializer) {
-        this.objectSerializer = objectSerializer;
+    public SearchIndexBatchingClientBuilder serializer(JsonSerializer jsonSerializer) {
+        this.jsonSerializer = jsonSerializer;
         return this;
     }
 
@@ -216,7 +216,7 @@ public final class SearchIndexDocumentBatchingClientBuilder {
      * @param client The HTTP client that will handle sending requests and receiving responses.
      * @return The updated SearchIndexDocumentBatchingClientBuilder object.
      */
-    public SearchIndexDocumentBatchingClientBuilder httpClient(HttpClient client) {
+    public SearchIndexBatchingClientBuilder httpClient(HttpClient client) {
         if (this.httpClient != null && client == null) {
             logger.info("HttpClient is being set to 'null' when it was previously configured.");
         }
@@ -229,13 +229,13 @@ public final class SearchIndexDocumentBatchingClientBuilder {
      * Sets the HTTP pipeline to use for the service client.
      * <p>
      * If {@code pipeline} is set, all other settings are ignored, aside from {@link #endpoint(String) endpoint} and
-     * {@link #indexName(String) index} when building a {@link SearchIndexDocumentBatchingClient} and {@link
-     * SearchIndexDocumentBatchingAsyncClient}.
+     * {@link #indexName(String) index} when building a {@link SearchIndexBatchingClient} and {@link
+     * SearchIndexBatchingAsyncClient}.
      *
      * @param httpPipeline The HTTP pipeline to use for sending service requests and receiving responses.
      * @return The updated SearchIndexDocumentBatchingClientBuilder object.
      */
-    public SearchIndexDocumentBatchingClientBuilder pipeline(HttpPipeline httpPipeline) {
+    public SearchIndexBatchingClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
             logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
         }
@@ -253,7 +253,7 @@ public final class SearchIndexDocumentBatchingClientBuilder {
      * @param configuration The configuration store that will be used.
      * @return The updated SearchIndexDocumentBatchingClientBuilder object.
      */
-    public SearchIndexDocumentBatchingClientBuilder configuration(Configuration configuration) {
+    public SearchIndexBatchingClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
@@ -266,7 +266,7 @@ public final class SearchIndexDocumentBatchingClientBuilder {
      * @param retryPolicy The {@link RetryPolicy} that will attempt to retry requests when needed.
      * @return The updated SearchIndexDocumentBatchingClientBuilder object.
      */
-    public SearchIndexDocumentBatchingClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+    public SearchIndexBatchingClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
     }
@@ -280,7 +280,7 @@ public final class SearchIndexDocumentBatchingClientBuilder {
      * @param serviceVersion The version of the service to be used when making requests.
      * @return The updated SearchIndexDocumentBatchingClientBuilder object.
      */
-    public SearchIndexDocumentBatchingClientBuilder serviceVersion(SearchServiceVersion serviceVersion) {
+    public SearchIndexBatchingClientBuilder serviceVersion(SearchServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
         return this;
     }
@@ -297,7 +297,7 @@ public final class SearchIndexDocumentBatchingClientBuilder {
      * @return The updated SearchIndexDocumentBatchingClientBuilder object.
      * @throws IllegalArgumentException If {@code flushWindow} is less than zero.
      */
-    public SearchIndexDocumentBatchingClientBuilder flushWindow(Integer flushWindow) {
+    public SearchIndexBatchingClientBuilder flushWindow(Integer flushWindow) {
         if (flushWindow != null && flushWindow < 0) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'flushWindow' cannot be less than zero."));
         }
@@ -315,7 +315,7 @@ public final class SearchIndexDocumentBatchingClientBuilder {
      * @return The updated SearchIndexDocumentBatchingClientBuilder object.
      * @throws IllegalArgumentException If {@code batchSize} is less than one.
      */
-    public SearchIndexDocumentBatchingClientBuilder batchSize(Integer batchSize) {
+    public SearchIndexBatchingClientBuilder batchSize(Integer batchSize) {
         if (batchSize != null && batchSize < 1) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'batchSize' cannot be less than one."));
         }
@@ -332,7 +332,7 @@ public final class SearchIndexDocumentBatchingClientBuilder {
      * @param documentPersister An implementation of {@link DocumentPersister}.
      * @return The updated SearchIndexDocumentBatchingClientBuilder object.
      */
-    public SearchIndexDocumentBatchingClientBuilder documentPersister(DocumentPersister documentPersister) {
+    public SearchIndexBatchingClientBuilder documentPersister(DocumentPersister documentPersister) {
         this.documentPersister = documentPersister;
         return this;
     }

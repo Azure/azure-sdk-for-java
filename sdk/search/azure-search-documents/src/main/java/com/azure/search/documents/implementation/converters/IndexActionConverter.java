@@ -72,17 +72,18 @@ public final class IndexActionConverter {
             if (serializer == null) {
                 try {
                     String serializedJson = searchJacksonAdapter.serialize(properties, SerializerEncoding.JSON);
-                    mapProperties = searchJacksonAdapter.deserialize(serializedJson, MAP_STRING_OBJECT_TYPE_REFERENCE.getJavaType(),
-                        SerializerEncoding.JSON);
+                    mapProperties =
+                        searchJacksonAdapter.deserialize(serializedJson, MAP_STRING_OBJECT_TYPE_REFERENCE.getJavaType(),
+                            SerializerEncoding.JSON);
                 } catch (IOException ex) {
                     throw LOGGER.logExceptionAsError(
                         new RuntimeException("Something wrong with the serialization."));
                 }
             } else {
-
                 ByteArrayOutputStream sourceStream = new ByteArrayOutputStream();
                 serializer.serialize(sourceStream, properties);
-                mapProperties = serializer.deserialize(new ByteArrayInputStream(sourceStream.toByteArray()), MAP_STRING_OBJECT_TYPE_REFERENCE);
+                mapProperties = serializer.deserialize(new ByteArrayInputStream(sourceStream.toByteArray()),
+                    MAP_STRING_OBJECT_TYPE_REFERENCE);
             }
         }
 

@@ -19,13 +19,14 @@ import com.azure.search.documents.implementation.SearchIndexClientImpl;
 import com.azure.search.documents.implementation.SearchIndexClientImplBuilder;
 import com.azure.search.documents.implementation.converters.AutocompleteModeConverter;
 import com.azure.search.documents.implementation.converters.FacetResultConverter;
-import com.azure.search.documents.implementation.converters.IndexBatchBaseConverter;
+import com.azure.search.documents.implementation.converters.IndexActionConverter;
 import com.azure.search.documents.implementation.converters.IndexDocumentsResultConverter;
 import com.azure.search.documents.implementation.converters.QueryTypeConverter;
 import com.azure.search.documents.implementation.converters.SearchModeConverter;
 import com.azure.search.documents.implementation.converters.SearchResultConverter;
 import com.azure.search.documents.implementation.converters.SuggestResultConverter;
 import com.azure.search.documents.implementation.models.AutocompleteRequest;
+import com.azure.search.documents.implementation.models.IndexBatch;
 import com.azure.search.documents.implementation.models.SearchContinuationToken;
 import com.azure.search.documents.implementation.models.SearchDocumentsResult;
 import com.azure.search.documents.implementation.models.SearchFirstPageResponseWrapper;
@@ -114,7 +115,7 @@ public final class SearchAsyncClient {
      */
     private final HttpPipeline httpPipeline;
 
-    private final JsonSerializer serializer;
+    final JsonSerializer serializer;
 
     private static final SerializerAdapter ADAPTER = initializeSerializerAdapter();
 
@@ -165,23 +166,23 @@ public final class SearchAsyncClient {
     }
 
     /**
-     * Creates a {@link SearchIndexDocumentBatchingAsyncClient} used to index documents for the Search index associated
-     * with this {@link SearchAsyncClient}.
+     * Creates a {@link SearchIndexBatchingAsyncClient} used to index documents for the Search index associated with
+     * this {@link SearchAsyncClient}.
      * <p>
-     * The created client will use the default values for {@link SearchIndexDocumentBatchingClientBuilder#flushWindow(Integer)},
-     * {@link SearchIndexDocumentBatchingClientBuilder#batchSize(Integer)}, and {@link
-     * SearchIndexDocumentBatchingClientBuilder#documentPersister(DocumentPersister)}.
+     * The created client will use the default values for {@link SearchIndexBatchingClientBuilder#flushWindow(Integer)},
+     * {@link SearchIndexBatchingClientBuilder#batchSize(Integer)}, and {@link
+     * SearchIndexBatchingClientBuilder#documentPersister(DocumentPersister)}.
      *
-     * @return A {@link SearchIndexDocumentBatchingAsyncClient} used to index documents for the Search index associated
-     * with this {@link SearchAsyncClient}.
+     * @return A {@link SearchIndexBatchingAsyncClient} used to index documents for the Search index associated with
+     * this {@link SearchAsyncClient}.
      */
-    public SearchIndexDocumentBatchingAsyncClient getIndexDocumentBatchingAsyncClient() {
+    public SearchIndexBatchingAsyncClient getIndexDocumentBatchingAsyncClient() {
         return getIndexDocumentBatchingAsyncClient(null, null, null);
     }
 
     /**
-     * Creates a {@link SearchIndexDocumentBatchingAsyncClient} used to index documents for the Search index associated
-     * with this {@link SearchAsyncClient}.
+     * Creates a {@link SearchIndexBatchingAsyncClient} used to index documents for the Search index associated with
+     * this {@link SearchAsyncClient}.
      *
      * @param flushWindow Time in seconds that will be waited between document being added to the batch before they will
      * sent to the index. Use zero or {@code null} to disable automatic batch sending.
@@ -189,13 +190,13 @@ public final class SearchAsyncClient {
      * sending is disabled this value is ignored.
      * @param documentPersister An implementation of {@link DocumentPersister} used to persist documents in a batch. If
      * {@code null} documents won't be persisted.
-     * @return A {@link SearchIndexDocumentBatchingAsyncClient} used to index documents for the Search index associated
-     * with this {@link SearchAsyncClient}.
+     * @return A {@link SearchIndexBatchingAsyncClient} used to index documents for the Search index associated with
+     * this {@link SearchAsyncClient}.
      * @throws IllegalArgumentException If {@code flushWindow} is less than zero or {@code batchSize} is less than one.
      */
-    public SearchIndexDocumentBatchingAsyncClient getIndexDocumentBatchingAsyncClient(Integer flushWindow,
+    public SearchIndexBatchingAsyncClient getIndexDocumentBatchingAsyncClient(Integer flushWindow,
         Integer batchSize, DocumentPersister documentPersister) {
-        return new SearchIndexDocumentBatchingAsyncClient(this, flushWindow, batchSize, documentPersister);
+        return new SearchIndexBatchingAsyncClient(this, flushWindow, batchSize, documentPersister);
     }
 
     /**
@@ -501,13 +502,22 @@ public final class SearchAsyncClient {
 
     Mono<Response<IndexDocumentsResult>> indexDocumentsWithResponse(IndexDocumentsBatch<?> batch,
         IndexDocumentsOptions options, Context context) {
+        List<com.azure.search.documents.implementation.models.IndexAction> indexActions = batch.getActions()
+            .stream()
+            .map(document -> IndexActionConverter.map(document, serializer))
+            .collect(Collectors.toList());
+
+        boolean throwOnAnyError = options != null && options.throwOnAnyError();
+        return indexDocumentsWithResponse(indexActions, throwOnAnyError, context);
+    }
+
+    Mono<Response<IndexDocumentsResult>> indexDocumentsWithResponse(
+        List<com.azure.search.documents.implementation.models.IndexAction> actions, boolean throwOnAnyError,
+        Context context) {
         try {
-            IndexDocumentsOptions documentsOptions = (options == null) ? new IndexDocumentsOptions() : options;
-            return restClient.getDocuments()
-                .indexWithResponseAsync(IndexBatchBaseConverter.map(batch, serializer), null, context)
+            return restClient.getDocuments().indexWithResponseAsync(new IndexBatch(actions), null, context)
                 .onErrorMap(MappingUtils::exceptionMapper)
-                .flatMap(response -> (response.getStatusCode() == MULTI_STATUS_CODE
-                    && documentsOptions.throwOnAnyError())
+                .flatMap(response -> (response.getStatusCode() == MULTI_STATUS_CODE && throwOnAnyError)
                     ? Mono.error(new IndexBatchException(IndexDocumentsResultConverter.map(response.getValue())))
                     : Mono.just(response).map(MappingUtils::mappingIndexDocumentResultResponse));
         } catch (RuntimeException ex) {
@@ -563,7 +573,6 @@ public final class SearchAsyncClient {
         return withContext(context -> getDocumentWithResponse(key, modelClass, selectedFields, context));
     }
 
-    @SuppressWarnings("unchecked")
     <T> Mono<Response<T>> getDocumentWithResponse(String key, Class<T> modelClass, List<String> selectedFields,
         Context context) {
         try {
@@ -884,7 +893,7 @@ public final class SearchAsyncClient {
         if (searchOptions != null) {
             List<String> scoringParameters = searchOptions.getScoringParameters() == null ? null
                 : searchOptions.getScoringParameters().stream().map(ScoringParameter::toString)
-                .collect(Collectors.toList());
+                    .collect(Collectors.toList());
             searchRequest.setSearchMode(SearchModeConverter.map(searchOptions.getSearchMode()))
                 .setFacets(searchOptions.getFacets())
                 .setFilter(searchOptions.getFilter())

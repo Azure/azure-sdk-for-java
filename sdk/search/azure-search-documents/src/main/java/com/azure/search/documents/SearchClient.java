@@ -74,23 +74,23 @@ public final class SearchClient {
     }
 
     /**
-     * Creates a {@link SearchIndexDocumentBatchingClient} used to index documents for the Search index associated with
-     * this {@link SearchClient}.
+     * Creates a {@link SearchIndexBatchingClient} used to index documents for the Search index associated with this
+     * {@link SearchClient}.
      * <p>
-     * The created client will use the default values for {@link SearchIndexDocumentBatchingClientBuilder#flushWindow(Integer)},
-     * {@link SearchIndexDocumentBatchingClientBuilder#batchSize(Integer)}, and {@link
-     * SearchIndexDocumentBatchingClientBuilder#documentPersister(DocumentPersister)}.
+     * The created client will use the default values for {@link SearchIndexBatchingClientBuilder#flushWindow(Integer)},
+     * {@link SearchIndexBatchingClientBuilder#batchSize(Integer)}, and {@link
+     * SearchIndexBatchingClientBuilder#documentPersister(DocumentPersister)}.
      *
-     * @return A {@link SearchIndexDocumentBatchingClient} used to index documents for the Search index associated with
-     * this {@link SearchClient}.
+     * @return A {@link SearchIndexBatchingClient} used to index documents for the Search index associated with this
+     * {@link SearchClient}.
      */
-    public SearchIndexDocumentBatchingClient getIndexDocumentBatchingClient() {
+    public SearchIndexBatchingClient getIndexDocumentBatchingClient() {
         return getIndexDocumentBatchingClient(null, null, null);
     }
 
     /**
-     * Creates a {@link SearchIndexDocumentBatchingClient} used to index documents for the Search index associated with
-     * this {@link SearchClient}.
+     * Creates a {@link SearchIndexBatchingClient} used to index documents for the Search index associated with this
+     * {@link SearchClient}.
      *
      * @param flushWindow Time in seconds that will be waited between document being added to the batch before they will
      * sent to the index. Use zero or {@code null} to disable automatic batch sending.
@@ -98,13 +98,13 @@ public final class SearchClient {
      * sending is disabled this value is ignored.
      * @param documentPersister An implementation of {@link DocumentPersister} used to persist documents in a batch. If
      * {@code null} documents won't be persisted.
-     * @return A {@link SearchIndexDocumentBatchingClient} used to index documents for the Search index associated with
-     * this {@link SearchClient}.
+     * @return A {@link SearchIndexBatchingClient} used to index documents for the Search index associated with this
+     * {@link SearchClient}.
      * @throws IllegalArgumentException If {@code flushWindow} is less than zero or {@code batchSize} is less than one.
      */
-    public SearchIndexDocumentBatchingClient getIndexDocumentBatchingClient(Integer flushWindow, Integer batchSize,
+    public SearchIndexBatchingClient getIndexDocumentBatchingClient(Integer flushWindow, Integer batchSize,
         DocumentPersister documentPersister) {
-        return new SearchIndexDocumentBatchingClient(asyncClient
+        return new SearchIndexBatchingClient(asyncClient
             .getIndexDocumentBatchingAsyncClient(flushWindow, batchSize, documentPersister));
     }
 
