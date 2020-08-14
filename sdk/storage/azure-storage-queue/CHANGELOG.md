@@ -1,7 +1,7 @@
 # Release History
 
 ## 12.7.0-beta.1 (Unreleased)
-
+- Fixed a bug that would cause auth failures when building a client by passing an endpoing which had a sas token with protocol set to https,http
 
 ## 12.6.0 (2020-08-13)
 - GA release for 2019-12-12 service version.
