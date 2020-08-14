@@ -28,10 +28,12 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.resources.fluent.FeaturesClient;
 import com.azure.resourcemanager.resources.fluent.inner.OperationInner;
 import com.azure.resourcemanager.resources.fluent.inner.OperationListResultInner;
+import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
+import java.time.Duration;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the FeatureClient type. */
@@ -90,6 +92,30 @@ public final class FeatureClient extends AzureServiceClient {
         return this.httpPipeline;
     }
 
+    /** The serializer to serialize an object into a string. */
+    private final SerializerAdapter serializerAdapter;
+
+    /**
+     * Gets The serializer to serialize an object into a string.
+     *
+     * @return the serializerAdapter value.
+     */
+    public SerializerAdapter getSerializerAdapter() {
+        return this.serializerAdapter;
+    }
+
+    /** The default poll interval for long-running operation. */
+    private final Duration defaultPollInterval;
+
+    /**
+     * Gets The default poll interval for long-running operation.
+     *
+     * @return the defaultPollInterval value.
+     */
+    public Duration getDefaultPollInterval() {
+        return this.defaultPollInterval;
+    }
+
     /** The FeaturesClient object to access its operations. */
     private final FeaturesClient features;
 
@@ -106,11 +132,21 @@ public final class FeatureClient extends AzureServiceClient {
      * Initializes an instance of FeatureClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param serializerAdapter The serializer to serialize an object into a string.
+     * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
      */
-    FeatureClient(HttpPipeline httpPipeline, AzureEnvironment environment, String subscriptionId, String endpoint) {
-        super(httpPipeline, environment);
+    FeatureClient(
+        HttpPipeline httpPipeline,
+        SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval,
+        AzureEnvironment environment,
+        String subscriptionId,
+        String endpoint) {
+        super(httpPipeline, serializerAdapter, environment);
         this.httpPipeline = httpPipeline;
+        this.serializerAdapter = serializerAdapter;
+        this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
         this.apiVersion = "2015-12-01";
@@ -181,6 +217,7 @@ public final class FeatureClient extends AzureServiceClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
         }
+        context = this.mergeContext(context);
         return service
             .listOperations(this.getEndpoint(), this.getApiVersion(), context)
             .map(
@@ -219,7 +256,8 @@ public final class FeatureClient extends AzureServiceClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<OperationInner> listOperationsAsync(Context context) {
         return new PagedFlux<>(
-            () -> listOperationsSinglePageAsync(context), nextLink -> listOperationsNextSinglePageAsync(nextLink));
+            () -> listOperationsSinglePageAsync(context),
+            nextLink -> listOperationsNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -291,6 +329,7 @@ public final class FeatureClient extends AzureServiceClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.mergeContext(context);
         return service
             .listOperationsNext(nextLink, context)
             .map(

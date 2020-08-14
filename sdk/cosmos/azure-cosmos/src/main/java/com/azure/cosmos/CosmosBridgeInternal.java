@@ -7,9 +7,14 @@ import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.Warning;
+import com.azure.cosmos.implementation.query.Transformer;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
+import com.azure.cosmos.util.UtilBridgeInternal;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 
 import java.util.function.Function;
@@ -106,9 +111,10 @@ public final class CosmosBridgeInternal {
     public static <T> CosmosPagedFlux<T> queryItemsInternal(CosmosAsyncContainer container,
                                                             SqlQuerySpec sqlQuerySpec,
                                                             CosmosQueryRequestOptions cosmosQueryRequestOptions,
-                                                            Class<T> classType, Function<Document, Document> transformer,
-                                                            Scheduler scheduler) {
-        return container.queryItemsInternal(
-            sqlQuerySpec, cosmosQueryRequestOptions, classType, transformer, scheduler);
+                                                            Transformer<T> transformer) {
+        return UtilBridgeInternal.createCosmosPagedFlux(transformer.transform(container.queryItemsInternalFunc(
+            sqlQuerySpec,
+            cosmosQueryRequestOptions,
+            JsonNode.class)));
     }
 }

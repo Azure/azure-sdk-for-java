@@ -109,6 +109,21 @@ extends:
       - name: spring-cloud-starter-azure-storage-queue
         groupId: com.microsoft.azure
         safeName: springcloudstarterazurestoragequeue
+      - name: spring-cloud-azure-servicebus-stream-binder-core
+        groupId: com.microsoft.azure
+        safeName: springcloudazureservicebusstreambindercore
+      - name: spring-cloud-azure-stream-binder-test
+        groupId: com.microsoft.azure
+        safeName: springcloudazurestreambindertest
+      - name: spring-cloud-azure-servicebus-topic-stream-binder
+        groupId: com.microsoft.azure
+        safeName: springcloudazureservicebustopicstreambinder
+      - name: spring-cloud-azure-servicebus-queue-stream-binder
+        groupId: com.microsoft.azure
+        safeName: springcloudazureservicebusqueuestreambinder
+      - name: spring-cloud-azure-eventhubs-stream-binder
+        groupId: com.microsoft.azure
+        safeName: springcloudazureeventhubsstreambinder
     AdditionalModules:
       - name: azure-spring-boot-sample-active-directory
         groupId: com.azure

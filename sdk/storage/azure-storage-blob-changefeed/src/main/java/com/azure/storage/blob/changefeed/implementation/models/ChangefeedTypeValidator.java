@@ -7,7 +7,7 @@ import com.azure.storage.internal.avro.implementation.schema.AvroSchema;
 import com.azure.storage.internal.avro.implementation.schema.primitive.AvroNullSchema;
 
 /**
- * This class contains static help0er methods to validate types for changefeed models.
+ * This class contains static helper methods to validate types for changefeed models.
  */
 class ChangefeedTypeValidator {
 

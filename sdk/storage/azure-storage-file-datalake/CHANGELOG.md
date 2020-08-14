@@ -1,12 +1,16 @@
 # Release History
 
-## 12.2.0-beta.2 (Unreleased)
+## 12.3.0-beta.1 (Unreleased)
+
+
+## 12.2.0 (2020-08-13)
 - Fixed bug where Query Input Stream would throw when a ByteBuffer of length 0 was encountered.
 
 ## 12.2.0-beta.1 (2019-07-07)
 - Added support for the 2019-12-12 service version.
 - Added support to query a file. 
-- Added support to increase the maximum size of data that can be sent via an append. 
+- Added support to increase the maximum size of data that can be sent via an append.
+- Fixed a bug that would cause buffered upload to always put an empty file before uploading actual data. 
 
 ## 12.1.2 (2020-06-12)
 - Updated azure-storage-common and azure-core dependencies.

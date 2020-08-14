@@ -284,7 +284,7 @@ public final class ExpressRouteCrossConnectionPeeringsClient {
         String resourceGroupName, String crossConnectionName, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, crossConnectionName, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -440,7 +440,9 @@ public final class ExpressRouteCrossConnectionPeeringsClient {
         String resourceGroupName, String crossConnectionName, String peeringName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, crossConnectionName, peeringName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -458,9 +460,12 @@ public final class ExpressRouteCrossConnectionPeeringsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String crossConnectionName, String peeringName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, crossConnectionName, peeringName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -907,11 +912,12 @@ public final class ExpressRouteCrossConnectionPeeringsClient {
             createOrUpdateWithResponseAsync(resourceGroupName, crossConnectionName, peeringName, peeringParameters);
         return this
             .client
-            .<ExpressRouteCrossConnectionPeeringInner, ExpressRouteCrossConnectionPeeringInner>getLroResultAsync(
+            .<ExpressRouteCrossConnectionPeeringInner, ExpressRouteCrossConnectionPeeringInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 ExpressRouteCrossConnectionPeeringInner.class,
-                ExpressRouteCrossConnectionPeeringInner.class);
+                ExpressRouteCrossConnectionPeeringInner.class,
+                Context.NONE);
     }
 
     /**
@@ -935,16 +941,18 @@ public final class ExpressRouteCrossConnectionPeeringsClient {
             String peeringName,
             ExpressRouteCrossConnectionPeeringInner peeringParameters,
             Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(
                 resourceGroupName, crossConnectionName, peeringName, peeringParameters, context);
         return this
             .client
-            .<ExpressRouteCrossConnectionPeeringInner, ExpressRouteCrossConnectionPeeringInner>getLroResultAsync(
+            .<ExpressRouteCrossConnectionPeeringInner, ExpressRouteCrossConnectionPeeringInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 ExpressRouteCrossConnectionPeeringInner.class,
-                ExpressRouteCrossConnectionPeeringInner.class);
+                ExpressRouteCrossConnectionPeeringInner.class,
+                context);
     }
 
     /**

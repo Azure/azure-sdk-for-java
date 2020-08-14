@@ -6,8 +6,12 @@ package com.azure.core.http.netty.implementation;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.concurrent.DefaultEventExecutor;
 import io.netty.util.concurrent.EventExecutor;
+import io.netty.util.concurrent.ScheduledFuture;
 import org.junit.jupiter.api.Test;
 
+import static com.azure.core.http.netty.implementation.TimeoutTestHelpers.getFieldValue;
+import static com.azure.core.http.netty.implementation.TimeoutTestHelpers.getInvokableMethod;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
@@ -53,7 +57,7 @@ public class ReadTimeoutHandlerTests {
     }
 
     @Test
-    public void removingHandlerCancelsTimeout() throws InterruptedException {
+    public void removingHandlerCancelsTimeout() throws Exception {
         ReadTimeoutHandler readTimeoutHandler = new ReadTimeoutHandler(100);
 
         ChannelHandlerContext ctx = mock(ChannelHandlerContext.class);
@@ -62,13 +66,11 @@ public class ReadTimeoutHandlerTests {
         readTimeoutHandler.handlerAdded(ctx);
         readTimeoutHandler.handlerRemoved(ctx);
 
-        Thread.sleep(100);
-
-        verify(ctx, never()).fireExceptionCaught(any());
+        assertNull(getFieldValue(readTimeoutHandler, "readTimeoutWatcher", ScheduledFuture.class));
     }
 
     @Test
-    public void readTimesOut() throws InterruptedException {
+    public void readTimesOut() throws Exception {
         ReadTimeoutHandler readTimeoutHandler = new ReadTimeoutHandler(100);
 
         ChannelHandlerContext ctx = mock(ChannelHandlerContext.class);
@@ -76,13 +78,15 @@ public class ReadTimeoutHandlerTests {
 
         readTimeoutHandler.handlerAdded(ctx);
 
-        Thread.sleep(500);
+        // Fake that the scheduled timer completed before any read operations happened.
+        getInvokableMethod(readTimeoutHandler, "readTimeoutRunnable", ChannelHandlerContext.class)
+            .invoke(readTimeoutHandler, ctx);
 
         verify(ctx, atLeast(1)).fireExceptionCaught(any());
     }
 
     @Test
-    public void readingUpdatesTimeout() throws InterruptedException {
+    public void readingUpdatesTimeout() throws Exception {
         ReadTimeoutHandler readTimeoutHandler = new ReadTimeoutHandler(500);
 
         ChannelHandlerContext ctx = mock(ChannelHandlerContext.class);
@@ -90,11 +94,11 @@ public class ReadTimeoutHandlerTests {
 
         readTimeoutHandler.handlerAdded(ctx);
 
-        Thread.sleep(100);
-
         readTimeoutHandler.channelReadComplete(ctx);
 
-        Thread.sleep(450);
+        // Fake that the scheduled timer completed before after a read operation happened.
+        getInvokableMethod(readTimeoutHandler, "readTimeoutRunnable", ChannelHandlerContext.class)
+            .invoke(readTimeoutHandler, ctx);
 
         readTimeoutHandler.handlerRemoved(ctx);
 

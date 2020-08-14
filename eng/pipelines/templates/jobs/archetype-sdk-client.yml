@@ -162,6 +162,10 @@ jobs:
           ward scan -d $(Build.SourcesDirectory) -c $(Build.SourcesDirectory)/eng/.docsettings.yml
         displayName: 'Verify Readmes'
 
+      - template: ../../../common/pipelines/templates/steps/verify-links.yml
+        parameters:
+          Directory: sdk/${{ parameters.ServiceDirectory }}
+
       - ${{ each artifact in parameters.Artifacts }}:
         - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
           parameters:
