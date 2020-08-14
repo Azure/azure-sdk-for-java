@@ -27,7 +27,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.ManagerBase;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
@@ -164,7 +164,8 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
             this.sdkContext = new SdkContext();
             this.subscriptionClient = new SubscriptionClientBuilder()
                     .pipeline(httpPipeline)
-                    .endpoint(profile.environment().getResourceManagerEndpoint())
+                    .environment(profile.getEnvironment())
+                    .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                     .buildClient();
         }
 
@@ -191,15 +192,15 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
         @Override
         public ResourceManager withSubscription(String subscriptionId) {
             Objects.requireNonNull(subscriptionId);
-            profile = new AzureProfile(profile.tenantId(), subscriptionId, profile.environment());
+            profile = new AzureProfile(profile.getTenantId(), subscriptionId, profile.getEnvironment());
             return new ResourceManager(httpPipeline, profile, sdkContext);
         }
 
         @Override
         public ResourceManager withDefaultSubscription() {
-            if (profile.subscriptionId() == null) {
+            if (profile.getSubscriptionId() == null) {
                 String subscriptionId = Utils.defaultSubscription(this.subscriptions().list());
-                profile = new AzureProfile(profile.tenantId(), subscriptionId, profile.environment());
+                profile = new AzureProfile(profile.getTenantId(), subscriptionId, profile.getEnvironment());
             }
             return new ResourceManager(httpPipeline, profile, sdkContext);
         }
@@ -210,14 +211,16 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
         super.withResourceManager(this);
         this.resourceManagementClient = new ResourceManagementClientBuilder()
                 .pipeline(httpPipeline)
-                .endpoint(profile.environment().getResourceManagerEndpoint())
-                .subscriptionId(profile.subscriptionId())
+                .environment(profile.getEnvironment())
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .subscriptionId(profile.getSubscriptionId())
                 .buildClient();
 
         this.featureClient = new FeatureClientBuilder()
                 .pipeline(httpPipeline)
-                .endpoint(profile.environment().getResourceManagerEndpoint())
-                .subscriptionId(profile.subscriptionId())
+                .environment(profile.getEnvironment())
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .subscriptionId(profile.getSubscriptionId())
                 .buildClient();
 
         // Unread in spot bugs
@@ -228,8 +231,9 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
 
         this.policyClient = new PolicyClientBuilder()
                 .pipeline(httpPipeline)
-                .endpoint(profile.environment().getResourceManagerEndpoint())
-                .subscriptionId(profile.subscriptionId())
+                .environment(profile.getEnvironment())
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .subscriptionId(profile.getSubscriptionId())
                 .buildClient();
     }
 
