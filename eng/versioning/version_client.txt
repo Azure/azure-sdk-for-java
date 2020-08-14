@@ -76,6 +76,7 @@ com.azure.resourcemanager:azure-resourcemanager-resources;2.0.0-beta.3;2.0.0-bet
 com.azure.resourcemanager:azure-resourcemanager-samples;2.0.0-beta.3;2.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-sql;2.0.0-beta.3;2.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-storage;2.0.0-beta.3;2.0.0-beta.4
+com.azure.resourcemanager:azure-resourcemanager-test;2.0.0-beta.4;2.0.0-beta.4
 com.microsoft.azure:azure-active-directory-b2c-spring-boot-starter;2.3.3;2.3.3
 com.microsoft.azure:azure-active-directory-spring-boot-starter;2.3.3;2.3.3
 com.microsoft.azure:azure-cosmosdb-spring-boot-starter;2.3.3;2.3.3
