@@ -91,6 +91,7 @@ org.springframework.boot:spring-boot-starter-actuator;2.3.2.RELEASE
 org.springframework.boot:spring-boot-starter-aop;2.3.2.RELEASE
 org.springframework.boot:spring-boot-starter-cache;2.3.2.RELEASE
 org.springframework.boot:spring-boot-starter-data-redis;2.3.2.RELEASE
+org.springframework.boot:spring-boot-starter-logging;2.3.2.RELEASE
 org.springframework.boot:spring-boot-starter-parent;2.3.0.RELEASE
 org.springframework.boot:spring-boot-starter-test;2.3.2.RELEASE
 org.springframework.boot:spring-boot-starter-validation;2.3.2.RELEASE

@@ -1,8 +1,6 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.spring.cloud.autoconfigure.storage.actuator;
 
 import static org.mockito.Mockito.mock;
@@ -33,7 +31,7 @@ public class BlobStorageHealthIndicatorTest {
 
     @Test
     public void testWithNoStorageConfiguration() {
-        ApplicationContextRunner contextRunner = new ApplicationContextRunner()
+        ApplicationContextRunner contextRunner = new ApplicationContextRunner().withPropertyValues("logging.level.root", "trace")
                 .withConfiguration(AutoConfigurations.of(AzureStorageActuatorAutoConfiguration.class));
 
         contextRunner.withBean(BlobStorageHealthIndicator.class).run(context -> {
