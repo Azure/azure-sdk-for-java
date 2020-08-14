@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 /**
@@ -19,8 +20,7 @@ import java.util.Map.Entry;
 public class StoreResponse {
     final static Logger LOGGER = LoggerFactory.getLogger(StoreResponse.class);
     final private int status;
-    final private String[] responseHeaderNames;
-    final private String[] responseHeaderValues;
+    final private Map<String, String> responseHeaders;
     final private byte[] content;
 
     private CosmosDiagnostics cosmosDiagnostics;
@@ -28,20 +28,11 @@ public class StoreResponse {
 
     public StoreResponse(
             int status,
-            List<Entry<String, String>> headerEntries,
+            Map<String, String> headerEntries,
             byte[] content) {
 
         requestTimeline = RequestTimeline.empty();
-        responseHeaderNames = new String[headerEntries.size()];
-        responseHeaderValues = new String[headerEntries.size()];
-
-        int i = 0;
-
-        for(Entry<String, String> headerEntry: headerEntries) {
-            responseHeaderNames[i] = headerEntry.getKey();
-            responseHeaderValues[i] = headerEntry.getValue();
-            i++;
-        }
+        responseHeaders = headerEntries;
 
         this.status = status;
         this.content = content;
@@ -51,12 +42,8 @@ public class StoreResponse {
         return status;
     }
 
-    public String[] getResponseHeaderNames() {
-        return responseHeaderNames;
-    }
-
-    public String[] getResponseHeaderValues() {
-        return responseHeaderValues;
+    public Map<String, String> getResponseHeaders() {
+        return responseHeaders;
     }
 
     public byte[] getResponseBody() {
@@ -81,17 +68,11 @@ public class StoreResponse {
     }
 
     public String getHeaderValue(String attribute) {
-        if (this.responseHeaderValues == null || this.responseHeaderNames.length != this.responseHeaderValues.length) {
+        if (this.responseHeaders == null) {
             return null;
         }
 
-        for (int i = 0; i < responseHeaderNames.length; i++) {
-            if (responseHeaderNames[i].equalsIgnoreCase(attribute)) {
-                return responseHeaderValues[i];
-            }
-        }
-
-        return null;
+        return this.responseHeaders.get(attribute);
     }
 
     public CosmosDiagnostics getCosmosDiagnostics() {

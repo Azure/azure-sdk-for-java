@@ -74,15 +74,10 @@ public class HttpUtils {
         return date != null ? date : StringUtils.EMPTY;
     }
 
-    public static List<Entry<String, String>> unescape(Set<Entry<String, String>> headers) {
-        List<Entry<String, String>> result = new ArrayList<>(headers.size());
-        for (Entry<String, String> entry : headers) {
-            if (entry.getKey().equals(HttpConstants.HttpHeaders.OWNER_FULL_NAME)) {
-                String unescapedUrl = HttpUtils.urlDecode(entry.getValue());
-                entry = new AbstractMap.SimpleEntry<>(entry.getKey(), unescapedUrl);
-            }
-            result.add(entry);
+    public static void unescape(Map<String, String> headers) {
+        if (headers != null) {
+            headers.computeIfPresent(HttpConstants.HttpHeaders.OWNER_FULL_NAME,
+                (ownerKey, ownerValue) -> ownerValue != null ?  HttpUtils.urlDecode(ownerValue) : null);
         }
-        return result;
     }
 }
