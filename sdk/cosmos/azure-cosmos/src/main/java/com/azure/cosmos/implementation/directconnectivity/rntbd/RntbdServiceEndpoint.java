@@ -91,7 +91,9 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         this.concurrentRequests = new AtomicInteger();
         // if no request has been sent over this endpoint we want to make sure we don't trigger a connection close
         // due to elapsedTimeInNanos being negative.
-        // idleEndpointTimeoutInNanos - elapsedTimeInNanos <= 0
+        // if no request has been sent initially over this endpoint, the below calculation can result in a very big difference
+        // long elapsedTimeInNanos = System.nanoTime() - endpoint.lastRequestNanoTime()
+        // which can cause endpoint to close unnecessary.
         this.lastRequestNanoTime = new AtomicLong(System.nanoTime());
         this.closed = new AtomicBoolean();
         this.requestTimer = timer;
