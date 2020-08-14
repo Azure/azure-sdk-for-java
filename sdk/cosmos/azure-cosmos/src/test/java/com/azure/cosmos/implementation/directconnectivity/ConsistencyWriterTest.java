@@ -24,11 +24,7 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Mono;
 
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.TimeUnit;
@@ -145,10 +141,9 @@ public class ConsistencyWriterTest {
 
     @Test(groups = "unit")
     public void getLsnAndGlobalCommittedLsn() {
-        ImmutableList.Builder<Map.Entry<String, String>> builder = new ImmutableList.Builder<>();
-        builder.add(new AbstractMap.SimpleEntry<>(WFConstants.BackendHeaders.LSN, "3"));
-        builder.add(new AbstractMap.SimpleEntry<>(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN, "2"));
-        ImmutableList<Map.Entry<String, String>> headers = builder.build();
+        Map<String, String> headers = new HashMap<>();
+        headers.put(WFConstants.BackendHeaders.LSN, "3");
+        headers.put(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN, "2");
 
         StoreResponse sr = new StoreResponse(0, headers, null);
         Utils.ValueHolder<Long> lsn = Utils.ValueHolder.initialize(-2l);

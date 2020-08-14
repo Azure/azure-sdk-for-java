@@ -9,6 +9,7 @@ import org.mockito.Mockito;
 import org.testng.annotations.Test;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -17,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class HttpUtilsTest {
 
     private static final String OWNER_FULL_NAME_VALUE = "dbs/RxJava.SDKTest.SharedDatabase_20190304T121302_iZc/colls/+%20-_,:.%7C~b2d67001-9000-454e-a140-abceb1756c48%20+-_,:.%7C~";
-    
+
     @Test(groups = { "unit" })
     public void verifyConversionOfHttpResponseHeadersToMap() {
         HttpHeaders headersMap = new HttpHeaders(1);
@@ -27,13 +28,15 @@ public class HttpUtilsTest {
         Mockito.when(httpResponse.headers()).thenReturn(headersMap);
         HttpHeaders httpResponseHeaders = httpResponse.headers();
         Set<Entry<String, String>> resultHeadersSet = HttpUtils.asMap(httpResponseHeaders).entrySet();
-        
+
         assertThat(resultHeadersSet.size()).isEqualTo(1);
         Entry<String, String> entry = resultHeadersSet.iterator().next();
         assertThat(entry.getKey()).isEqualTo(HttpConstants.HttpHeaders.OWNER_FULL_NAME);
         assertThat(entry.getValue()).isEqualTo(HttpUtils.urlDecode(OWNER_FULL_NAME_VALUE));
-        
-        List<Entry<String, String>> resultHeadersList = HttpUtils.unescape(httpResponseHeaders.toMap().entrySet());
+
+        Map<String, String> resultHeadersList = httpResponseHeaders.toMap();
+        HttpUtils.unescape(resultHeadersList);
+
         assertThat(resultHeadersList.size()).isEqualTo(1);
         entry = resultHeadersSet.iterator().next();
         assertThat(entry.getKey()).isEqualTo(HttpConstants.HttpHeaders.OWNER_FULL_NAME);

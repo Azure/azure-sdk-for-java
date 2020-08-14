@@ -119,15 +119,8 @@ public class StoreResult {
                     Double.toString(totalRequestCharge));
         }
         // Set total charge as final charge for the response.
-        else if (response.getResponseHeaderNames() != null) {
-            for (int i = 0; i < response.getResponseHeaderNames().length; ++i) {
-                if (Strings.areEqualIgnoreCase(
-                        response.getResponseHeaderNames()[i],
-                        HttpConstants.HttpHeaders.REQUEST_CHARGE)) {
-                    response.getResponseHeaderValues()[i] = Double.toString(totalRequestCharge);
-                    break;
-                }
-            }
+        else if (response.getResponseHeaders() != null) {
+            response.getResponseHeaders().put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double.toString(totalRequestCharge));
         }
     }
 

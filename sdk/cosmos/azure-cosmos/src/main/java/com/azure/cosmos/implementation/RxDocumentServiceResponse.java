@@ -30,18 +30,9 @@ public class RxDocumentServiceResponse {
     private final StoreResponse storeResponse;
 
     public RxDocumentServiceResponse(StoreResponse response) {
-        String[] headerNames = response.getResponseHeaderNames();
-        String[] headerValues = response.getResponseHeaderValues();
-
-        this.headersMap = new HashMap<>(headerNames.length);
-
         // Gets status code.
         this.statusCode = response.getStatus();
-
-        // Extracts headers.
-        for (int i = 0; i < headerNames.length; i++) {
-            this.headersMap.put(headerNames[i], headerValues[i]);
-        }
+        this.headersMap = response.getResponseHeaders();
 
         this.storeResponse = response;
     }

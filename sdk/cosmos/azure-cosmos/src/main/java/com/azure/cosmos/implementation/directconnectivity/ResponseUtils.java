@@ -9,6 +9,8 @@ import com.azure.cosmos.implementation.http.HttpResponse;
 import io.netty.handler.codec.http.HttpMethod;
 import reactor.core.publisher.Mono;
 
+import java.util.Map;
+
 class ResponseUtils {
     private static byte[] EMPTY_BYTE_ARRAY = {};
 
@@ -27,7 +29,9 @@ class ResponseUtils {
 
         return contentObservable.map(byteArrayContent -> {
             // transforms to Mono<StoreResponse>
-            return new StoreResponse(httpClientResponse.statusCode(), HttpUtils.unescape(httpResponseHeaders.toMap().entrySet()), byteArrayContent);
+            Map<String, String> responseHeaders = httpResponseHeaders.toMap();
+            HttpUtils.unescape(responseHeaders);
+            return new StoreResponse(httpClientResponse.statusCode(), responseHeaders, byteArrayContent);
         });
     }
 }
