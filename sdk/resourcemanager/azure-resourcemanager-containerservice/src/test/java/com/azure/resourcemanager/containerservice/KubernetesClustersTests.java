@@ -26,9 +26,9 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
 
     @Test
     public void canCRUDKubernetesCluster() throws Exception {
-        String aksName = sdkContext.randomResourceName("aks", 15);
-        String dnsPrefix = sdkContext.randomResourceName("dns", 10);
-        String agentPoolName = sdkContext.randomResourceName("ap0", 10);
+        String aksName = generateRandomResourceName("aks", 15);
+        String dnsPrefix = generateRandomResourceName("dns", 10);
+        String agentPoolName = generateRandomResourceName("ap0", 10);
         String servicePrincipalClientId = "spId";
         String servicePrincipalSecret = "spSecret";
 
