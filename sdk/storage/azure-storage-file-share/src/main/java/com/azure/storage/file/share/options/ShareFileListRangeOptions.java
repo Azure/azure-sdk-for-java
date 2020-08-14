@@ -14,34 +14,57 @@ import com.azure.storage.file.share.models.ShareRequestConditions;
 public class ShareFileListRangeOptions {
 
     private ShareFileRange range;
-    private String prevSnapshot;
+    private String previousSnapshot;
     private ShareRequestConditions requestConditions;
 
     public ShareFileListRangeOptions() {
     }
 
+    /**
+     * @return The range of bytes over which to list ranges, inclusively.
+     */
     public ShareFileRange getRange() {
         return range;
     }
 
+    /**
+     * @param range The range of bytes over which to list ranges, inclusively.
+     * @return The updated options.
+     */
     public ShareFileListRangeOptions setRange(ShareFileRange range) {
         this.range = range;
         return this;
     }
 
-    public String getPrevSnapshot() {
-        return prevSnapshot;
+    /**
+     * @return The previous snapshot to compare to.
+     */
+    public String getPreviousSnapshot() {
+        return previousSnapshot;
     }
 
-    public ShareFileListRangeOptions setPrevSnapshot(String prevSnapshot) {
-        this.prevSnapshot = prevSnapshot;
+    /**
+     * @param previousSnapshot Specifies that the response will contain only ranges that were changed between target
+     * file and previous snapshot. Changed ranges include both updated and cleared ranges. The target file may be a
+     * snapshot, as long as the snapshot specified by previousSnapshot is the older of the two.
+     * @return The updated options.
+     */
+    public ShareFileListRangeOptions setPreviousSnapshot(String previousSnapshot) {
+        this.previousSnapshot = previousSnapshot;
         return this;
     }
 
+    /**
+     * @return {@link ShareRequestConditions}
+     */
     public ShareRequestConditions getRequestConditions() {
         return requestConditions;
     }
 
+    /**
+     * @param requestConditions {@link ShareRequestConditions} for the file.
+     * @return The updated options.
+     */
     public ShareFileListRangeOptions setRequestConditions(ShareRequestConditions requestConditions) {
         this.requestConditions = requestConditions;
         return this;

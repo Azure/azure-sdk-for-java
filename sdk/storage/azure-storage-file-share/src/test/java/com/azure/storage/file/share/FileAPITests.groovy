@@ -785,7 +785,7 @@ class FileAPITests extends APISpec {
         primaryFileClient.uploadWithResponse(defaultData, dataLength, 1024, null, null)
 
         expect:
-        primaryFileClient.listRanges(new ShareFileListRangeOptions().setPrevSnapshot(snapInfo.getSnapshot()), null, null).each {
+        primaryFileClient.listRanges(new ShareFileListRangeOptions().setPreviousSnapshot(snapInfo.getSnapshot()), null, null).each {
             assert it.getStart() == 1024 /* These are the changes since the previous snapshot. */
             assert it.getEnd() == 1030
         }
@@ -802,7 +802,7 @@ class FileAPITests extends APISpec {
         primaryFileClient.uploadFromFile(uploadFile)
 
         when:
-        primaryFileClient.listRanges(new ShareFileListRangeOptions().setPrevSnapshot("2020-08-07T16:58:02.0000000Z"), null, null).each {
+        primaryFileClient.listRanges(new ShareFileListRangeOptions().setPreviousSnapshot("2020-08-07T16:58:02.0000000Z"), null, null).each {
             assert it.getStart() == 0
             assert it.getEnd() == 511
         }
