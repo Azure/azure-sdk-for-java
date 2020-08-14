@@ -14,21 +14,21 @@ public class RedisManagementTest extends TestBase {
     protected ResourceManager resourceManager;
     protected RedisManager redisManager;
     protected StorageManager storageManager;
-    protected String RG_NAME = "";
-    protected String RG_NAME_SECOND = "";
-    protected String RR_NAME = "";
-    protected String RR_NAME_SECOND = "";
-    protected String RR_NAME_THIRD = "";
-    protected String SA_NAME = "";
+    protected String rgName = "";
+    protected String rgNameSecond = "";
+    protected String rrName = "";
+    protected String rrNameSecond = "";
+    protected String rrNameThird = "";
+    protected String saName = "";
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
-        RG_NAME = generateRandomResourceName("javacsmrg", 15);
-        RR_NAME = generateRandomResourceName("javacsmrc", 15);
-        RG_NAME_SECOND = RG_NAME + "Second";
-        RR_NAME_SECOND = RR_NAME + "Second";
-        RR_NAME_THIRD = RR_NAME + "Third";
-        SA_NAME = generateRandomResourceName("javacsmsa", 15);
+        rgName = generateRandomResourceName("javacsmrg", 15);
+        rrName = generateRandomResourceName("javacsmrc", 15);
+        rgNameSecond = rgName + "Second";
+        rrNameSecond = rrName + "Second";
+        rrNameThird = rrName + "Third";
+        saName = generateRandomResourceName("javacsmsa", 15);
 
         resourceManager =
             ResourceManager.authenticate(httpPipeline, profile).withSdkContext(sdkContext).withDefaultSubscription();
@@ -41,11 +41,11 @@ public class RedisManagementTest extends TestBase {
     @Override
     protected void cleanUpResources() {
         try {
-            resourceManager.resourceGroups().beginDeleteByName(RG_NAME);
+            resourceManager.resourceGroups().beginDeleteByName(rgName);
         } catch (Exception e) {
         }
         try {
-            resourceManager.resourceGroups().beginDeleteByName(RG_NAME_SECOND);
+            resourceManager.resourceGroups().beginDeleteByName(rgNameSecond);
         } catch (Exception e) {
         }
     }

@@ -3,7 +3,6 @@
 
 package com.azure.resourcemanager.resources.childresource;
 
-import com.azure.core.http.rest.PagedFlux;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesCachedImpl;
 import reactor.core.publisher.Flux;
 

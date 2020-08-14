@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.redis.implementation;
 
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.redis.RedisManager;
 import com.azure.resourcemanager.redis.fluent.inner.RedisAccessKeysInner;
 import com.azure.resourcemanager.redis.fluent.inner.RedisLinkedServerWithPropertiesInner;
@@ -44,6 +45,7 @@ import reactor.core.publisher.Mono;
 /** Implementation for Redis Cache and its parent interfaces. */
 class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInner, RedisCacheImpl, RedisManager>
     implements RedisCache, RedisCachePremium, RedisCache.Definition, RedisCache.Update {
+    private final ClientLogger logger = new ClientLogger(getClass());
     private RedisAccessKeys cachedAccessKeys;
     private RedisCreateParameters createParameters;
     private RedisUpdateParameters updateParameters;
@@ -332,7 +334,9 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
             if (isInCreateMode()) {
                 createParameters.withSubnetId(subnetId);
             } else {
-                throw new UnsupportedOperationException("Subnet cannot be modified during update operation.");
+                throw logger
+                    .logExceptionAsError(
+                        new UnsupportedOperationException("Subnet cannot be modified during update operation."));
             }
         }
         return this;
@@ -343,7 +347,9 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
         if (isInCreateMode()) {
             createParameters.withStaticIp(staticIp);
         } else {
-            throw new UnsupportedOperationException("Static IP cannot be modified during update operation.");
+            throw logger
+                .logExceptionAsError(
+                    new UnsupportedOperationException("Static IP cannot be modified during update operation."));
         }
         return this;
     }
@@ -614,14 +620,16 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
         RedisLinkedServerWithPropertiesInner linkedServer =
             this.manager().inner().getLinkedServers().get(this.resourceGroupName(), this.name(), linkedServerName);
         if (linkedServer == null) {
-            throw new IllegalArgumentException(
-                "Server returned `null` value for Linked Server '"
-                    + linkedServerName
-                    + "' for Redis Cache '"
-                    + this.name()
-                    + "' in Resource Group '"
-                    + this.resourceGroupName()
-                    + "'.");
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Server returned `null` value for Linked Server '"
+                            + linkedServerName
+                            + "' for Redis Cache '"
+                            + this.name()
+                            + "' in Resource Group '"
+                            + this.resourceGroupName()
+                            + "'."));
         }
         return linkedServer.serverRole();
     }

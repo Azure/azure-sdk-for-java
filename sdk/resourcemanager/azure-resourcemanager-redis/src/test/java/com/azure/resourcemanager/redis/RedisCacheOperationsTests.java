@@ -33,19 +33,19 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
     public void canCRUDRedisCache() throws Exception {
         // Create
         Creatable<ResourceGroup> resourceGroups =
-            resourceManager.resourceGroups().define(RG_NAME_SECOND).withRegion(Region.US_CENTRAL);
+            resourceManager.resourceGroups().define(rgNameSecond).withRegion(Region.US_CENTRAL);
 
         Creatable<RedisCache> redisCacheDefinition1 =
             redisManager
                 .redisCaches()
-                .define(RR_NAME)
+                .define(rrName)
                 .withRegion(Region.ASIA_EAST)
-                .withNewResourceGroup(RG_NAME)
+                .withNewResourceGroup(rgName)
                 .withBasicSku();
         Creatable<RedisCache> redisCacheDefinition2 =
             redisManager
                 .redisCaches()
-                .define(RR_NAME_SECOND)
+                .define(rrNameSecond)
                 .withRegion(Region.US_CENTRAL)
                 .withNewResourceGroup(resourceGroups)
                 .withPremiumSku()
@@ -54,7 +54,7 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
         Creatable<RedisCache> redisCacheDefinition3 =
             redisManager
                 .redisCaches()
-                .define(RR_NAME_THIRD)
+                .define(rrNameThird)
                 .withRegion(Region.US_CENTRAL)
                 .withNewResourceGroup(resourceGroups)
                 .withPremiumSku(2)
@@ -71,22 +71,22 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
         StorageAccount storageAccount =
             storageManager
                 .storageAccounts()
-                .define(SA_NAME)
+                .define(saName)
                 .withRegion(Region.US_CENTRAL)
-                .withExistingResourceGroup(RG_NAME_SECOND)
+                .withExistingResourceGroup(rgNameSecond)
                 .create();
 
         RedisCache redisCache = batchRedisCaches.get(redisCacheDefinition1.key());
         RedisCache redisCachePremium = batchRedisCaches.get(redisCacheDefinition3.key());
-        Assertions.assertEquals(RG_NAME, redisCache.resourceGroupName());
+        Assertions.assertEquals(rgName, redisCache.resourceGroupName());
         Assertions.assertEquals(SkuName.BASIC, redisCache.sku().name());
 
         // List by Resource Group
         List<RedisCache> redisCaches =
-            redisManager.redisCaches().listByResourceGroup(RG_NAME).stream().collect(Collectors.toList());
+            redisManager.redisCaches().listByResourceGroup(rgName).stream().collect(Collectors.toList());
         boolean found = false;
         for (RedisCache existingRedisCache : redisCaches) {
-            if (existingRedisCache.name().equals(RR_NAME)) {
+            if (existingRedisCache.name().equals(rrName)) {
                 found = true;
             }
         }
@@ -97,7 +97,7 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
         redisCaches = redisManager.redisCaches().list().stream().collect(Collectors.toList());
         found = false;
         for (RedisCache existingRedisCache : redisCaches) {
-            if (existingRedisCache.name().equals(RR_NAME)) {
+            if (existingRedisCache.name().equals(rrName)) {
                 found = true;
             }
         }
@@ -105,7 +105,7 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
         Assertions.assertTrue(redisCaches.size() >= 3);
 
         // Get
-        RedisCache redisCacheGet = redisManager.redisCaches().getByResourceGroup(RG_NAME, RR_NAME);
+        RedisCache redisCacheGet = redisManager.redisCaches().getByResourceGroup(rgName, rrName);
         Assertions.assertNotNull(redisCacheGet);
         Assertions.assertEquals(redisCache.id(), redisCacheGet.id());
         Assertions.assertEquals(redisCache.provisioningState(), redisCacheGet.provisioningState());
@@ -207,9 +207,9 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
         RedisCache rgg =
             redisManager
                 .redisCaches()
-                .define(RR_NAME_THIRD)
+                .define(rrNameThird)
                 .withRegion(Region.US_CENTRAL)
-                .withNewResourceGroup(RG_NAME_SECOND)
+                .withNewResourceGroup(rgNameSecond)
                 .withPremiumSku(2)
                 .withPatchSchedule(DayOfWeek.SATURDAY, 5, Duration.ofHours(5))
                 .withRedisConfiguration("maxclients", "2")
@@ -221,9 +221,9 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
         RedisCache rggLinked =
             redisManager
                 .redisCaches()
-                .define(RR_NAME_SECOND)
+                .define(rrNameSecond)
                 .withRegion(Region.US_EAST)
-                .withExistingResourceGroup(RG_NAME_SECOND)
+                .withExistingResourceGroup(rgNameSecond)
                 .withPremiumSku(2)
                 .create();
 

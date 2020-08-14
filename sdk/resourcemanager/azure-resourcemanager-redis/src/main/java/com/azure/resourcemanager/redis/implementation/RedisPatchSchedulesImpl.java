@@ -7,19 +7,20 @@ import com.azure.resourcemanager.redis.fluent.inner.RedisPatchScheduleInner;
 import com.azure.resourcemanager.redis.models.RedisCache;
 import com.azure.resourcemanager.redis.models.RedisPatchSchedule;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesCachedImpl;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 /** Represents a Redis patch schedule collection associated with a Redis cache instance. */
 class RedisPatchSchedulesImpl
     extends ExternalChildResourcesCachedImpl<
         RedisPatchScheduleImpl, RedisPatchSchedule, RedisPatchScheduleInner, RedisCacheImpl, RedisCache> {
     // Currently Redis Cache has one PatchSchedule
-    private final String patchScheduleName = "default";
+    private static final String PATCH_SCHEDULE_NAME = "default";
     private boolean load = false;
 
     RedisPatchSchedulesImpl(RedisCacheImpl parent) {
@@ -52,7 +53,7 @@ class RedisPatchSchedulesImpl
             load = true;
             cacheCollection();
         }
-        return this.collection().get(this.patchScheduleName);
+        return this.collection().get(PATCH_SCHEDULE_NAME);
     }
 
     public void removePatchSchedule() {
@@ -71,7 +72,7 @@ class RedisPatchSchedulesImpl
             load = true;
             cacheCollection();
         }
-        return prepareInlineDefine(this.patchScheduleName);
+        return prepareInlineDefine(PATCH_SCHEDULE_NAME);
     }
 
     public RedisPatchScheduleImpl updateInlinePatchSchedule() {
@@ -79,7 +80,7 @@ class RedisPatchSchedulesImpl
             load = true;
             cacheCollection();
         }
-        return prepareInlineUpdate(this.patchScheduleName);
+        return prepareInlineUpdate(PATCH_SCHEDULE_NAME);
     }
 
     public void deleteInlinePatchSchedule() {
@@ -87,7 +88,7 @@ class RedisPatchSchedulesImpl
             load = true;
             cacheCollection();
         }
-        prepareInlineRemove(this.patchScheduleName);
+        prepareInlineRemove(PATCH_SCHEDULE_NAME);
     }
 
     @Override
