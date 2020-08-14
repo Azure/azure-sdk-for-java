@@ -146,7 +146,7 @@ public class EventProcessorClientErrorHandlingTest {
 
     private PartitionEvent getEvent(EventData event) {
         PartitionContext context = new PartitionContext("ns", "foo", "bar", "baz");
-        return new PartitionEvent(context, event, null);
+        return new PartitionEvent(context, event, null, null);
     }
 
 

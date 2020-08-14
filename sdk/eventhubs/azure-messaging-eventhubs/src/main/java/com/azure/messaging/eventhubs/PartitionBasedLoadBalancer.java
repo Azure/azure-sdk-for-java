@@ -225,6 +225,7 @@ final class PartitionBasedLoadBalancer {
                 // If the partitions are evenly distributed among all active event processors, no change required.
                 logger.info("Load is balanced with this event processor owning {} partitions",
                     ownerPartitionMap.get(ownerId).size());
+
                 renewOwnership(partitionOwnershipMap);
                 return;
             }
@@ -266,6 +267,7 @@ final class PartitionBasedLoadBalancer {
     }
 
     private void renewOwnership(Map<String, PartitionOwnership> partitionOwnershipMap) {
+        morePartitionsToClaim.set(false);
         // renew ownership of already owned partitions
         checkpointStore.claimOwnership(partitionPumpManager.getPartitionPumps().keySet()
             .stream()

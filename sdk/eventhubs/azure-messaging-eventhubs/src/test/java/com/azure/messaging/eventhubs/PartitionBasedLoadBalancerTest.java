@@ -117,7 +117,7 @@ public class PartitionBasedLoadBalancerTest {
             .thenReturn(Flux.interval(Duration.ofSeconds(1)).map(index -> {
                 final PartitionContext partitionContext = new PartitionContext("ns", "foo", "bar", "bazz");
                 int i = index.intValue() % eventDataList.size();
-                return new PartitionEvent(partitionContext, eventDataList.get(i), null);
+                return new PartitionEvent(partitionContext, eventDataList.get(i), null, null);
             }));
 
         PartitionBasedLoadBalancer partitionBasedLoadBalancer = createPartitionLoadBalancer("owner1", LoadBalancingStrategy.BALANCED);
@@ -153,7 +153,7 @@ public class PartitionBasedLoadBalancerTest {
             .thenReturn(Flux.interval(Duration.ofSeconds(1)).map(index -> {
                 final PartitionContext partitionContext = new PartitionContext("ns", "foo", "bar", "bazz");
                 int i = index.intValue() % eventDataList.size();
-                return new PartitionEvent(partitionContext, eventDataList.get(i), null);
+                return new PartitionEvent(partitionContext, eventDataList.get(i), null, null);
             }));
 
         PartitionBasedLoadBalancer partitionBasedLoadBalancer1 = createPartitionLoadBalancer("owner1", LoadBalancingStrategy.BALANCED);
@@ -189,7 +189,7 @@ public class PartitionBasedLoadBalancerTest {
             .thenReturn(Flux.interval(Duration.ofSeconds(1)).map(index -> {
                 final PartitionContext partitionContext = new PartitionContext("ns", "foo", "bar", "bazz");
                 int i = index.intValue() % eventDataList.size();
-                return new PartitionEvent(partitionContext, eventDataList.get(i), null);
+                return new PartitionEvent(partitionContext, eventDataList.get(i), null, null);
             }));
 
         PartitionBasedLoadBalancer partitionBasedLoadBalancer1 = createPartitionLoadBalancer("owner1", LoadBalancingStrategy.BALANCED);
@@ -229,7 +229,7 @@ public class PartitionBasedLoadBalancerTest {
             .thenReturn(Flux.interval(Duration.ofSeconds(1)).map(index -> {
                 final PartitionContext partitionContext = new PartitionContext("ns", "foo", "bar", "bazz");
                 int i = index.intValue() % eventDataList.size();
-                return new PartitionEvent(partitionContext, eventDataList.get(i), null);
+                return new PartitionEvent(partitionContext, eventDataList.get(i), null, null);
             }));
 
         List<PartitionBasedLoadBalancer> loadBalancers = new ArrayList<>();
@@ -267,11 +267,12 @@ public class PartitionBasedLoadBalancerTest {
             .thenReturn(Flux.interval(Duration.ofSeconds(1)).map(index -> {
                 final PartitionContext partitionContext = new PartitionContext("ns", "foo", "bar", "bazz");
                 final int i = index.intValue() % eventDataList.size();
-                return new PartitionEvent(partitionContext, eventDataList.get(i), null);
+                return new PartitionEvent(partitionContext, eventDataList.get(i), null, null);
             }));
 
         List<PartitionBasedLoadBalancer> loadBalancers = new ArrayList<>();
-        IntStream.range(0, 4).forEach(index -> loadBalancers.add(createPartitionLoadBalancer("owner" + index, LoadBalancingStrategy.BALANCED)));
+        IntStream.range(0, 4).forEach(
+            index -> loadBalancers.add(createPartitionLoadBalancer("owner" + index, LoadBalancingStrategy.BALANCED)));
 
         IntStream.range(0, partitionIds.size()).forEach(index -> {
             loadBalancers.forEach(lb -> lb.loadBalance());
@@ -426,7 +427,7 @@ public class PartitionBasedLoadBalancerTest {
             .thenReturn(Flux.interval(Duration.ofSeconds(1)).map(index -> {
                 final PartitionContext partitionContext = new PartitionContext("ns", "foo", "bar", "bazz");
                 final int i = index.intValue() % eventDataList.size();
-                return new PartitionEvent(partitionContext, eventDataList.get(i), null);
+                return new PartitionEvent(partitionContext, eventDataList.get(i), null, null);
             }));
 
         String ownerName = "owner1";
