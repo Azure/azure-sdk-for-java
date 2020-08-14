@@ -5,9 +5,21 @@
   - `offset` is the offset of the text from the start of the document
   
 **New features**
-- Added the support for Personally Identifiable Information(PII) entity recognition feature.
-  To use this feature, you need to make sure you are using the 
-  service's v3.1-preview.1 API.
+- Added support for Personally Identifiable Information(PII) entity recognition feature.
+  To use this feature, you need to make sure you are using the service's v3.1-preview.1 API.
+  
+  New synchronous API introduced:
+  - PiiEntityCollection recognizePiiEntities(String document)
+  - PiiEntityCollection recognizePiiEntities(String document, String language)
+  - RecognizePiiEntitiesResultCollection recognizePiiEntitiesBatch(Iterable<String> documents, String language, TextAnalyticsRequestOptions options)
+  - Response<RecognizePiiEntitiesResultCollection> recognizePiiEntitiesBatchWithResponse(Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context)
+  
+  New asynchronous API introduced:
+  - Mono<PiiEntityCollection> recognizePiiEntities(String document)
+  - Mono<PiiEntityCollection> recognizePiiEntities(String document, String language)
+  - Mono<RecognizePiiEntitiesResultCollection> recognizePiiEntitiesBatch(Iterable<String> documents, String language, TextAnalyticsRequestOptions options)
+  - Mono<Response<RecognizePiiEntitiesResultCollection>> recognizePiiEntitiesBatchWithResponse(Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options)
+
 ## 5.0.0 (2020-07-27)
 - Re-release of version `1.0.1` with updated version `5.0.0`.
 

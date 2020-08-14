@@ -335,21 +335,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 .verifyComplete());
     }
 
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void recognizeEntitiesTooManyDocuments(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
-        recognizeEntitiesTooManyDocumentsRunner(inputs -> {
-            StepVerifier.create(client.recognizeEntitiesBatch(inputs, null, null))
-                .verifyErrorSatisfies(ex -> {
-                    HttpResponseException exception = (HttpResponseException) ex;
-                    assertEquals(HttpResponseException.class, exception.getClass());
-                    assertEquals(EXCEEDED_ALLOWED_DOCUMENTS_LIMITS_MESSAGE, exception.getMessage());
-                    assertEquals(INVALID_DOCUMENT_BATCH, exception.getValue().toString());
-                });
-        });
-    }
-
     // Recognize Personally Identifiable Information entity
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -366,16 +351,17 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizePiiEntitiesForEmptyText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.recognizePiiEntities(""))
+        emptyTextRunner(document -> StepVerifier.create(client.recognizePiiEntities(document))
             .expectErrorMatches(throwable -> throwable instanceof TextAnalyticsException
-                && throwable.getMessage().equals(INVALID_DOCUMENT_EXPECTED_EXCEPTION_MESSAGE));
+                && INVALID_DOCUMENT_EXPECTED_EXCEPTION_MESSAGE.equals(throwable.getMessage()))
+            .verify());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizePiiEntitiesForFaultyText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
-        recognizePiiFaultyTextRunner(document ->
+        faultyTextRunner(document ->
             StepVerifier.create(client.recognizePiiEntities(document))
                 .assertNext(result -> assertFalse(result.getWarnings().iterator().hasNext()))
                 .verifyComplete());
@@ -446,31 +432,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 .assertNext(response -> validatePiiEntitiesResultCollection(true, getExpectedBatchPiiEntities(), response))
                 .verifyComplete());
     }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void recognizePiiEntitiesTooManyDocuments(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
-        recognizePiiEntitiesTooManyDocumentsRunner(inputs ->
-            StepVerifier.create(client.recognizePiiEntitiesBatch(inputs, null, null))
-                .verifyErrorSatisfies(ex -> {
-                    HttpResponseException exception = (HttpResponseException) ex;
-                    assertEquals(HttpResponseException.class, exception.getClass());
-                    assertEquals(EXCEEDED_ALLOWED_DOCUMENTS_LIMITS_MESSAGE, exception.getMessage());
-                    assertEquals(INVALID_DOCUMENT_BATCH, exception.getValue().toString());
-                }));
-    }
-
-//    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-//    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-//    public void recognizePiiEntitiesWithDomain(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-//        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
-//        recognizePiiEntitiesWithDomainRunner((inputs, options) ->
-//            StepVerifier.create(client.recognizePiiEntitiesBatch(inputs, null, options))
-//                .assertNext(response -> validatePiiEntitiesResultCollection(true,
-//                    getExpectedBatchPiiEntitiesWithDomainSpecified(), response))
-//                .verifyComplete());
-//    }
 
     // Linked Entities
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

@@ -239,27 +239,11 @@ final class TestUtils {
     }
 
     /**
-     * Helper method to get the expected batch of Personally Identifiable Information entities with domain specified.
-     */
-    static RecognizePiiEntitiesResultCollection getExpectedBatchPiiEntitiesWithDomainSpecified() {
-        PiiEntityCollection piiEntityCollection = new PiiEntityCollection(new IterableStream<>(Arrays.asList(getPiiEntitiesList1().get(1))), null);
-        TextDocumentStatistics textDocumentStatistics = new TextDocumentStatistics(67, 1);
-        TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics(105, 1);
-
-        RecognizePiiEntitiesResult recognizeEntitiesResult = new RecognizePiiEntitiesResult("0", textDocumentStatistics, null, piiEntityCollection);
-
-        return new RecognizePiiEntitiesResultCollection(
-            Arrays.asList(recognizeEntitiesResult),
-            DEFAULT_MODEL_VERSION,
-            new TextDocumentBatchStatistics(1, 1, 0, 1));
-    }
-
-    /**
      * Helper method to get the expected Categorized Entities List 1
      */
     static List<PiiEntity> getPiiEntitiesList1() {
-        PiiEntity piiEntity0 = new PiiEntity("Microsoft", EntityCategory.ORGANIZATION, null, 0, 9, 1.0);
-        PiiEntity piiEntity1 = new PiiEntity("859-98-0987", EntityCategory.fromString("U.S. Social Security Number (SSN)"), null, 28, 11, 0.65);
+        PiiEntity piiEntity0 = new PiiEntity("Microsoft", EntityCategory.ORGANIZATION, null, 1.0, 0, 9);
+        PiiEntity piiEntity1 = new PiiEntity("859-98-0987", EntityCategory.fromString("U.S. Social Security Number (SSN)"), null, 0.65, 28, 11);
         return Arrays.asList(piiEntity0, piiEntity1);
     }
 
@@ -267,11 +251,12 @@ final class TestUtils {
      * Helper method to get the expected Categorized Entities List 2
      */
     static List<PiiEntity> getPiiEntitiesList2() {
-        PiiEntity piiEntity2 = new PiiEntity("111000025", EntityCategory.fromString("Phone Number"), null, 18, 9, 0.8);
-        PiiEntity piiEntity3 = new PiiEntity("111000025", EntityCategory.fromString("ABA Routing Number"), null, 18, 9, 0.75);
-        return Arrays.asList(piiEntity2, piiEntity3);
+        PiiEntity piiEntity2 = new PiiEntity("111000025", EntityCategory.fromString("Phone Number"), null, 0.8, 18, 9);
+        PiiEntity piiEntity3 = new PiiEntity("111000025", EntityCategory.fromString("ABA Routing Number"), null, 0.75, 18, 9);
+        PiiEntity piiEntity4 = new PiiEntity("111000025", EntityCategory.fromString("New Zealand Social Welfare Number"), null, 0.65, 18, 9);
+        PiiEntity piiEntity5 = new PiiEntity("111000025", EntityCategory.fromString("Portugal Tax Identification Number"), null, 0.65, 18, 9);
+        return Arrays.asList(piiEntity2, piiEntity3, piiEntity4, piiEntity5);
     }
-
 
     /**
      * Helper method to get the expected Batch Linked Entities

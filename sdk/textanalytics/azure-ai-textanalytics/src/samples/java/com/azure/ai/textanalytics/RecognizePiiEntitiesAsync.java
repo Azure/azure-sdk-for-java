@@ -24,11 +24,11 @@ public class RecognizePiiEntitiesAsync {
             .buildAsyncClient();
 
         // The document that needs be analyzed.
-        String document = "Microsoft employee with ssn 859-98-0987 is using our awesome API's.";
+        String document = "My SSN is 859-98-0987";
 
         client.recognizePiiEntities(document).subscribe(
             entityCollection -> entityCollection.forEach(entity -> System.out.printf(
-                "Recognized personal identifiable information entity: %s, entity category: %s, entity sub-category: %s, score: %f.%n",
+                "Recognized Personal Identifiable Information entity: %s, entity category: %s, entity sub-category: %s, score: %f.%n",
                 entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore())),
             error -> System.err.println("There was an error recognizing PII entities of the text." + error),
             () -> System.out.println("Entities recognized.")

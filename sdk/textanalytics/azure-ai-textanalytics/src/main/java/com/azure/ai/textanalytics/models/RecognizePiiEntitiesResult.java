@@ -31,6 +31,9 @@ public final class RecognizePiiEntitiesResult extends TextAnalyticsResult {
      * Get an {@link IterableStream} of {@link PiiEntity}.
      *
      * @return An {@link IterableStream} of {@link PiiEntity}.
+     *
+     * @throws TextAnalyticsException if result has {@code isError} equals to true and when a non-error property
+     * was accessed.
      */
     public PiiEntityCollection getEntities() {
         throwExceptionIfError();

@@ -70,8 +70,8 @@ class RecognizePiiEntityAsyncClient {
     Mono<PiiEntityCollection> recognizePiiEntities(String document, String language) {
         try {
             Objects.requireNonNull(document, "'document' cannot be null.");
-            final TextDocumentInput textDocumentInput = new TextDocumentInput("0", document).setLanguage(language);
-            return recognizePiiEntitiesBatch(Collections.singletonList(textDocumentInput), null)
+            return recognizePiiEntitiesBatch(
+                Collections.singletonList(new TextDocumentInput("0", document).setLanguage(language)), null)
                 .map(resultCollectionResponse -> {
                     PiiEntityCollection entityCollection = null;
                     // for each loop will have only one entry inside
@@ -143,8 +143,7 @@ class RecognizePiiEntityAsyncClient {
             // Pii entities list
             final List<PiiEntity> piiEntities = documentEntities.getEntities().stream().map(entity ->
                 new PiiEntity(entity.getText(), EntityCategory.fromString(entity.getCategory()),
-                    entity.getSubcategory(), entity.getOffset(), entity.getLength(),
-                    entity.getConfidenceScore()))
+                    entity.getSubcategory(), entity.getConfidenceScore(), entity.getOffset(), entity.getLength()))
                 .collect(Collectors.toList());
             // Warnings
             final List<TextAnalyticsWarning> warnings = documentEntities.getWarnings().stream()
@@ -193,10 +192,10 @@ class RecognizePiiEntityAsyncClient {
             options == null ? null : options.isIncludeStatistics(),
             null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
-            .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents.toString()))
-            .doOnSuccess(response ->
-                logger.info("Recognized Personally Identifiable Information entities for a batch of documents- {}",
-                response.getValue()))
+            .doOnSubscribe(ignoredValue -> logger.info(
+                "Start recognizing Personally Identifiable Information entities for a batch of documents."))
+            .doOnSuccess(response -> logger.info(
+                "Successfully recognized Personally Identifiable Information entities for a batch of documents."))
             .doOnError(error ->
                 logger.warning("Failed to recognize Personally Identifiable Information entities - {}", error))
             .map(this::toRecognizePiiEntitiesResultCollectionResponse)

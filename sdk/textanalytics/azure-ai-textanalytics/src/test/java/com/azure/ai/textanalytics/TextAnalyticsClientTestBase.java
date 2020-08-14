@@ -110,9 +110,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     @Test
     abstract void recognizeEntitiesForListLanguageHint(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
-    @Test
-    abstract void recognizeEntitiesTooManyDocuments(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
-
     // Personally Identifiable Information Entities
     @Test
     abstract void recognizePiiEntitiesForTextInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
@@ -137,13 +134,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     @Test
     abstract void recognizePiiEntitiesForListLanguageHint(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
-
-    @Test
-    abstract void recognizePiiEntitiesTooManyDocuments(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
-
-    //TODO: add domain test back when domain feature is available
-//    @Test
-//    abstract void recognizePiiEntitiesWithDomain(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     // Linked Entities
     @Test
@@ -309,10 +299,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     // Personally Identifiable Information Entity runner
     void recognizePiiSingleDocumentRunner(Consumer<String> testRunner) {
         testRunner.accept(PII_ENTITY_INPUTS.get(0));
-    }
-
-    void recognizePiiFaultyTextRunner(Consumer<String> testRunner) {
-        testRunner.accept("!@#%%");
     }
 
     void recognizePiiLanguageHintRunner(BiConsumer<List<String>, String> testRunner) {

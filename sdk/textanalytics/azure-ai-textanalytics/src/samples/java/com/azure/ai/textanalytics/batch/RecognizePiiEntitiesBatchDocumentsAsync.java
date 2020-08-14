@@ -36,7 +36,7 @@ public class RecognizePiiEntitiesBatchDocumentsAsync {
 
         // The texts that need be analyzed.
         List<TextDocumentInput> documents = Arrays.asList(
-            new TextDocumentInput("1", "My SSN is 555-55-5555").setLanguage("en"),
+            new TextDocumentInput("1", "My SSN is 859-98-0987").setLanguage("en"),
             new TextDocumentInput("2", "Visa card 4111 1111 1111 1111").setLanguage("en")
         );
 

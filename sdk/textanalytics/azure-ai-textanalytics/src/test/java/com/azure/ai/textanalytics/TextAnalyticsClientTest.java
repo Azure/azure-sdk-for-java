@@ -6,13 +6,11 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.LinkedEntity;
-import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextSentiment;
-import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
 import com.azure.core.exception.HttpResponseException;
@@ -38,8 +36,8 @@ import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchKeyPhrases;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchLinkedEntities;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchPiiEntities;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchTextSentiment;
-import static com.azure.ai.textanalytics.TestUtils.getPiiEntitiesList1;
 import static com.azure.ai.textanalytics.TestUtils.getLinkedEntitiesList1;
+import static com.azure.ai.textanalytics.TestUtils.getPiiEntitiesList1;
 import static com.azure.ai.textanalytics.TestUtils.getUnknownDetectedLanguage;
 import static com.azure.ai.textanalytics.models.WarningCode.LONG_WORDS_IN_DOCUMENT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -301,18 +299,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         );
     }
 
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void recognizeEntitiesTooManyDocuments(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsClient(httpClient, serviceVersion);
-        recognizeEntitiesTooManyDocumentsRunner(inputs -> {
-            HttpResponseException exception = assertThrows(HttpResponseException.class,
-                () -> client.recognizeEntitiesBatch(inputs, null, null).stream().findFirst().get());
-            assertEquals(EXCEEDED_ALLOWED_DOCUMENTS_LIMITS_MESSAGE, exception.getMessage());
-            assertEquals(INVALID_DOCUMENT_BATCH, exception.getValue().toString());
-        });
-    }
-
     // Recognize Personally Identifiable Information entity
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -329,16 +315,18 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizePiiEntitiesForEmptyText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
-        Exception exception = assertThrows(TextAnalyticsException.class, () -> client.recognizePiiEntities("").iterator().hasNext());
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_EXPECTED_EXCEPTION_MESSAGE));
+        emptyTextRunner(document -> {
+            final Exception exception = assertThrows(TextAnalyticsException.class, () ->
+                client.recognizePiiEntities(document).iterator().hasNext());
+            assertTrue(INVALID_DOCUMENT_EXPECTED_EXCEPTION_MESSAGE.equals(exception.getMessage()));
+        });
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizePiiEntitiesForFaultyText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
-        recognizePiiFaultyTextRunner(document ->
-            assertFalse(client.recognizePiiEntities(document).iterator().hasNext()));
+        faultyTextRunner(document -> assertFalse(client.recognizePiiEntities(document).iterator().hasNext()));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -401,27 +389,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             validatePiiEntitiesResultCollection(true, getExpectedBatchPiiEntities(),
                 client.recognizePiiEntitiesBatch(inputs, null, options)));
     }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void recognizePiiEntitiesTooManyDocuments(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsClient(httpClient, serviceVersion);
-        recognizePiiEntitiesTooManyDocumentsRunner(inputs -> {
-            HttpResponseException exception = assertThrows(HttpResponseException.class,
-                () -> client.recognizePiiEntitiesBatch(inputs, null, null).stream().findFirst().get());
-            assertEquals(EXCEEDED_ALLOWED_DOCUMENTS_LIMITS_MESSAGE, exception.getMessage());
-            assertEquals(INVALID_DOCUMENT_BATCH, exception.getValue().toString());
-        });
-    }
-
-//    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-//    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-//    public void recognizePiiEntitiesWithDomain(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-//        client = getTextAnalyticsClient(httpClient, serviceVersion);
-//        recognizePiiEntitiesWithDomainRunner((inputs, options) ->
-//            validatePiiEntitiesResultCollection(true, getExpectedBatchPiiEntitiesWithDomainSpecified(),
-//                client.recognizePiiEntitiesBatch(inputs, null, options)));
-//    }
 
     // Recognize linked entity
 

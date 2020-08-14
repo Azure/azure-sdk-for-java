@@ -211,7 +211,7 @@ TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
 
 ### Analyze sentiment
 Run a Text Analytics predictive model to identify the positive, negative, neutral or mixed sentiment contained in the 
-passed-in document or batch of documents.
+provided document or batch of documents.
 
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L104-L108 -->
 ```java
@@ -238,7 +238,7 @@ For samples on using the production recommended option `DetectLanguageBatch` see
 Please refer to the service documentation for a conceptual discussion of [language detection][language_detection].
 
 ### Extract key phrases
-Run a model to identify a collection of significant phrases found in the passed-in document or batch of documents.
+Run a model to identify a collection of significant phrases found in the provided document or batch of documents.
 
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L149-L151 -->
 ```java
@@ -250,7 +250,7 @@ For samples on using the production recommended option `ExtractKeyPhrasesBatch` 
 Please refer to the service documentation for a conceptual discussion of [key phrase extraction][key_phrase_extraction].
 
 ### Recognize entities
-Run a predictive model to identify a collection of named entities in the passed-in document or batch of documents and 
+Run a predictive model to identify a collection of named entities in the provided document or batch of documents and 
 categorize those entities into categories such as person, location, or organization.  For more information on available
 categories, see [Text Analytics Named Entity Categories][named_entities_categories].
 
@@ -265,14 +265,14 @@ For samples on using the production recommended option `RecognizeEntitiesBatch` 
 Please refer to the service documentation for a conceptual discussion of [named entity recognition][named_entity_recognition].
 
 ### Recognize Personally Identifiable Information entities
-Run a predictive model to identify a collection of Personally Identifiable Information(PII) entities in the passed-in 
+Run a predictive model to identify a collection of Personally Identifiable Information(PII) entities in the provided 
 document. It recognizes and categorizes PII entities in its input text, such as
-Social Security Numbers, bank account information, credit card numbers, and more. This endpoint is only available for 
-v3.1-preview.1 and up.
+Social Security Numbers, bank account information, credit card numbers, and more. This endpoint is only supported for
+API versions v3.1-preview.1 and above.
 
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L158-L161 -->
 ```java
-String document = "My SSN is 555-55-5555";
+String document = "My SSN is 859-98-0987";
 textAnalyticsClient.recognizePiiEntities(document).forEach(entity -> System.out.printf(
     "Recognized Personally Identifiable Information entity: %s, entity category: %s, entity subcategory: %s, offset: %s, length: %s, confidence score: %f.%n",
     entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getOffset(), entity.getLength(), entity.getConfidenceScore()));
@@ -281,7 +281,7 @@ For samples on using the production recommended option `RecognizePiiEntitiesBatc
 Please refer to the service documentation for [supported PII entity types][pii_entity_recognition].
 
 ### Recognize linked entities
-Run a predictive model to identify a collection of entities found in the passed-in document or batch of documents, 
+Run a predictive model to identify a collection of entities found in the provided document or batch of documents, 
 and include information linking the entities to their corresponding entries in a well-known knowledge base.
 
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L135-L142 -->

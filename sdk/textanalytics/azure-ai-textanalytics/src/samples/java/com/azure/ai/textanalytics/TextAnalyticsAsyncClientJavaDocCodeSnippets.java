@@ -242,13 +242,12 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
      */
     public void recognizePiiEntities() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#string
-        String document = "My SSN is 555-55-5555";
+        String document = "My SSN is 859-98-0987";
         textAnalyticsAsyncClient.recognizePiiEntities(document).subscribe(piiEntityCollection ->
             piiEntityCollection.forEach(entity -> System.out.printf(
                 "Recognized Personally Identifiable Information entity: %s, entity category: %s,"
-                    + " entity subcategory: %s, offset: %s, length: %s, confidence score: %f.%n",
-                entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getOffset(),
-                entity.getLength(), entity.getConfidenceScore())));
+                    + " entity subcategory: %s, confidence score: %f.%n",
+                entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore())));
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#string
     }
 
@@ -258,13 +257,12 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     public void recognizePiiEntitiesWithLanguage() {
 
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#string-string
-        String document = "My SSN is 555-55-5555";
+        String document = "My SSN is 859-98-0987";
         textAnalyticsAsyncClient.recognizePiiEntities(document, "en")
             .subscribe(piiEntityCollection -> piiEntityCollection.forEach(entity -> System.out.printf(
                 "Recognized Personally Identifiable Information entity: %s, entity category: %s,"
-                    + " entity subcategory: %s, offset: %s, length: %s, confidence score: %f.%n",
-                entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getOffset(),
-                entity.getLength(), entity.getConfidenceScore())));
+                    + " entity subcategory: %s, confidence score: %f.%n",
+                entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore())));
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#string-string
     }
 
@@ -274,7 +272,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     public void recognizePiiEntitiesStringListWithOptions() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesBatch#Iterable-String-TextAnalyticsRequestOptions
         List<String> documents = Arrays.asList(
-            "My SSN is 555-55-5555.",
+            "My SSN is 859-98-0987.",
             "Visa card 0111 1111 1111 1111."
         );
 
@@ -292,9 +290,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 piiEntitiesResults.forEach(recognizePiiEntitiesResult ->
                     recognizePiiEntitiesResult.getEntities().forEach(entity -> System.out.printf(
                         "Recognized Personally Identifiable Information entity: %s, entity category: %s,"
-                            + " entity subcategory: %s, offset: %s, length: %s, confidence score: %f.%n",
-                        entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getOffset(),
-                        entity.getLength(), entity.getConfidenceScore())));
+                            + " entity subcategory: %s, confidence score: %f.%n",
+                        entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore())));
             });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesBatch#Iterable-String-TextAnalyticsRequestOptions
     }
@@ -306,7 +303,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     public void recognizeBatchPiiEntitiesMaxOverload() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesBatch#Iterable-TextAnalyticsRequestOptions
         List<TextDocumentInput> textDocumentInputs1 = Arrays.asList(
-            new TextDocumentInput("0", "My SSN is 555-55-5555."),
+            new TextDocumentInput("0", "My SSN is 859-98-0987."),
             new TextDocumentInput("1", "Visa card 0111 1111 1111 1111."));
 
         // Request options: show statistics and model version
@@ -323,9 +320,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 piiEntitiesResults.forEach(recognizePiiEntitiesResult ->
                     recognizePiiEntitiesResult.getEntities().forEach(entity -> System.out.printf(
                         "Recognized Personally Identifiable Information entity: %s, entity category: %s,"
-                            + " entity subcategory: %s, offset: %s, length: %s, confidence score: %f.%n",
-                        entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getOffset(),
-                        entity.getLength(), entity.getConfidenceScore())));
+                            + " entity subcategory: %s, confidence score: %f.%n",
+                        entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore())));
             });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesBatch#Iterable-TextAnalyticsRequestOptions
     }

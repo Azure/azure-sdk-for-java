@@ -34,7 +34,7 @@ public class RecognizePiiEntitiesBatchStringDocumentsAsync {
 
         // The texts that need be analyzed.
         List<String> documents = Arrays.asList(
-            "My SSN is 555-55-5555",
+            "My SSN is 859-98-0987",
             "Visa card 4111 1111 1111 1111"
         );
 
