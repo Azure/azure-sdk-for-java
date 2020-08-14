@@ -4,9 +4,9 @@
 package com.azure.resourcemanager.keyvault;
 
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.keyvault.models.Key;
 import com.azure.resourcemanager.keyvault.models.Vault;
-import com.azure.resourcemanager.resources.core.TestBase;
 import com.azure.resourcemanager.resources.core.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
@@ -29,15 +29,15 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class KeyTests extends KeyVaultManagementTest {
-
-    public KeyTests() {
-        super(TestBase.RunCondition.LIVE_ONLY);
-    }
-
     @Test
-    public void canCRUDKey() throws Exception {
+    @DoNotRecord
+    public void canCRUDKey() {
+        if (skipInPlayback()) {
+            return;
+        }
+
         Vault vault = createVault();
-        String keyName = sdkContext.randomResourceName("key", 20);
+        String keyName = generateRandomResourceName("key", 20);
 
         // Create
         Key key =
@@ -105,9 +105,14 @@ public class KeyTests extends KeyVaultManagementTest {
     }
 
     @Test
+    @DoNotRecord
     public void canImportKey() throws Exception {
+        if (skipInPlayback()) {
+            return;
+        }
+
         Vault vault = createVault();
-        String keyName = sdkContext.randomResourceName("key", 20);
+        String keyName = generateRandomResourceName("key", 20);
 
         Key key =
             vault
@@ -121,9 +126,14 @@ public class KeyTests extends KeyVaultManagementTest {
     }
 
     @Test
+    @DoNotRecord
     public void canBackupAndRestore() throws Exception {
+        if (skipInPlayback()) {
+            return;
+        }
+
         Vault vault = createVault();
-        String keyName = sdkContext.randomResourceName("key", 20);
+        String keyName = generateRandomResourceName("key", 20);
 
         Key key =
             vault
@@ -147,9 +157,14 @@ public class KeyTests extends KeyVaultManagementTest {
     }
 
     @Test
+    @DoNotRecord
     public void canEncryptAndDecrypt() throws Exception {
+        if (skipInPlayback()) {
+            return;
+        }
+
         Vault vault = createVault();
-        String keyName = sdkContext.randomResourceName("key", 20);
+        String keyName = generateRandomResourceName("key", 20);
 
         KeyPair keyPair = KeyPairGenerator.getInstance("RSA").generateKeyPair();
 
@@ -177,9 +192,14 @@ public class KeyTests extends KeyVaultManagementTest {
     }
 
     @Test
+    @DoNotRecord
     public void canSignAndVerify() throws Exception {
+        if (skipInPlayback()) {
+            return;
+        }
+
         Vault vault = createVault();
-        String keyName = sdkContext.randomResourceName("key", 20);
+        String keyName = generateRandomResourceName("key", 20);
 
         KeyPair keyPair = KeyPairGenerator.getInstance("RSA").generateKeyPair();
 
@@ -204,9 +224,14 @@ public class KeyTests extends KeyVaultManagementTest {
     }
 
     @Test
+    @DoNotRecord
     public void canWrapAndUnwrap() throws Exception {
+        if (skipInPlayback()) {
+            return;
+        }
+
         Vault vault = createVault();
-        String keyName = sdkContext.randomResourceName("key", 20);
+        String keyName = generateRandomResourceName("key", 20);
 
         Key key =
             vault
@@ -225,8 +250,8 @@ public class KeyTests extends KeyVaultManagementTest {
         Assertions.assertEquals(secretKey, new SecretKeySpec(unwrapped, "AES"));
     }
 
-    private Vault createVault() throws Exception {
-        String vaultName = sdkContext.randomResourceName("vault", 20);
+    private Vault createVault() {
+        String vaultName = generateRandomResourceName("vault", 20);
 
         Vault vault =
             keyVaultManager
