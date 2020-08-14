@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 
 public class NetworkUsageOperationsTests extends NetworkManagementTest {
     @Test
-    public void canListNetworkUsages() throws Exception {
+    public void canListNetworkUsages() {
         PagedIterable<NetworkUsage> usages = networkManager.usages().listByRegion(Region.US_EAST);
         Assertions.assertTrue(TestUtilities.getSize(usages) > 0);
     }
