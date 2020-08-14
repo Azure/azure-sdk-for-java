@@ -7,7 +7,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 public class RntbdTokenTypeTests {
 
     @Test(groups = { "unit" })
-    public void testAllTokenTypes() {
+    public void allTokenTypes() {
         RntbdTokenTypeTests.testById(RntbdTokenType.Byte);
         RntbdTokenTypeTests.testById(RntbdTokenType.UShort);
         RntbdTokenTypeTests.testById(RntbdTokenType.ULong);
