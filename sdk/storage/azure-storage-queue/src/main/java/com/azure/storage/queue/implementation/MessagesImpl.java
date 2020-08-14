@@ -149,13 +149,13 @@ public final class MessagesImpl {
      * The Enqueue operation adds a new message to the back of the message queue. A visibility timeout can also be specified to make the message invisible until the visibility timeout expires. A message must be in a format that can be included in an XML request with UTF-8 encoding. The encoded message can be up to 64 KB in size for versions 2011-08-18 and newer, or 8 KB in size for previous versions.
      *
      * @param queueName The queue name.
+     * @param queueMessage A Message object which can be stored in a Queue.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MessagesEnqueueResponse> enqueueWithRestResponseAsync(String queueName, Context context) {
-        final QueueMessage queueMessage = null;
+    public Mono<MessagesEnqueueResponse> enqueueWithRestResponseAsync(String queueName, QueueMessage queueMessage, Context context) {
         final Integer visibilitytimeout = null;
         final Integer messageTimeToLive = null;
         final Integer timeout = null;
