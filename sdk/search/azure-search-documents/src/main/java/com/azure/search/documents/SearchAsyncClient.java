@@ -12,7 +12,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.ServiceVersion;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.ObjectSerializer;
+import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.search.documents.implementation.SearchIndexClientImpl;
@@ -114,7 +114,7 @@ public final class SearchAsyncClient {
      */
     private final HttpPipeline httpPipeline;
 
-    private final ObjectSerializer serializer;
+    private final JsonSerializer serializer;
 
     private static final SerializerAdapter ADAPTER = initializeSerializerAdapter();
 
@@ -122,7 +122,7 @@ public final class SearchAsyncClient {
      * Package private constructor to be used by {@link SearchClientBuilder}
      */
     SearchAsyncClient(String endpoint, String indexName, SearchServiceVersion serviceVersion,
-        HttpPipeline httpPipeline, ObjectSerializer serializer) {
+        HttpPipeline httpPipeline, JsonSerializer serializer) {
         this.endpoint = endpoint;
         this.indexName = indexName;
         this.serviceVersion = serviceVersion;
