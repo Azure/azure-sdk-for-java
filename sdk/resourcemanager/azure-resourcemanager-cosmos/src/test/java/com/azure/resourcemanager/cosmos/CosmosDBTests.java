@@ -3,7 +3,13 @@
 
 package com.azure.resourcemanager.cosmos;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.resourcemanager.cosmos.models.ConnectorOffer;
 import com.azure.resourcemanager.cosmos.models.CosmosDBAccount;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountKind;
@@ -15,18 +21,22 @@ import com.azure.resourcemanager.network.models.PrivateLinkServiceConnectionStat
 import com.azure.resourcemanager.network.models.ServiceEndpointType;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.inner.PrivateEndpointInner;
-import com.azure.resourcemanager.resources.core.TestBase;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
-public class CosmosDBTests extends TestBase {
+public class CosmosDBTests extends ResourceManagerTestBase {
 
     private String rgName = "";
     protected ResourceManager resourceManager;
@@ -34,18 +44,19 @@ public class CosmosDBTests extends TestBase {
     protected NetworkManager networkManager;
     //    final String sqlPrimaryServerName = sdkContext.randomResourceName("sqlpri", 22);
 
-    public CosmosDBTests() {
-        super(TestBase.RunCondition.BOTH);
+    @Override
+    protected HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile, List<HttpPipelinePolicy> policies, HttpClient httpClient) {
+        return HttpPipelineProvider.buildHttpPipeline(
+            credential, profile, null, new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS),
+            null, new RetryPolicy("Retry-After", ChronoUnit.SECONDS), policies, httpClient);
     }
 
     @Override
-    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile)
-        throws IOException {
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
+        SdkContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
         rgName = generateRandomResourceName("rgcosmosdb", 20);
         resourceManager = ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
-
         cosmosManager = CosmosManager.authenticate(httpPipeline, profile);
-
         networkManager = NetworkManager.authenticate(httpPipeline, profile);
     }
 
@@ -56,7 +67,7 @@ public class CosmosDBTests extends TestBase {
 
     @Test
     public void canCreateCosmosDbSqlAccount() {
-        final String cosmosDbAccountName = sdkContext.randomResourceName("cosmosdb", 22);
+        final String cosmosDbAccountName = generateRandomResourceName("cosmosdb", 22);
 
         CosmosDBAccount cosmosDBAccount =
             cosmosManager
@@ -83,11 +94,11 @@ public class CosmosDBTests extends TestBase {
 
     @Test
     public void canCreateSqlPrivateEndpoint() {
-        final String cosmosDbAccountName = sdkContext.randomResourceName("cosmosdb", 22);
-        final String networkName = sdkContext.randomResourceName("network", 22);
-        final String subnetName = sdkContext.randomResourceName("subnet", 22);
-        final String plsConnectionName = sdkContext.randomResourceName("plsconnect", 22);
-        final String pedName = sdkContext.randomResourceName("ped", 22);
+        final String cosmosDbAccountName = generateRandomResourceName("cosmosdb", 22);
+        final String networkName = generateRandomResourceName("network", 22);
+        final String subnetName = generateRandomResourceName("subnet", 22);
+        final String plsConnectionName = generateRandomResourceName("plsconnect", 22);
+        final String pedName = generateRandomResourceName("ped", 22);
         final Region region = Region.US_WEST;
 
         cosmosManager.resourceManager().resourceGroups().define(rgName).withRegion(region).create();
@@ -170,7 +181,7 @@ public class CosmosDBTests extends TestBase {
 
     @Test
     public void canCreateCosmosDbMongoDBAccount() {
-        final String cosmosDbAccountName = sdkContext.randomResourceName("cosmosdb", 22);
+        final String cosmosDbAccountName = generateRandomResourceName("cosmosdb", 22);
 
         CosmosDBAccount cosmosDBAccount =
             cosmosManager
@@ -195,7 +206,7 @@ public class CosmosDBTests extends TestBase {
 
     @Test
     public void canCreateCosmosDbCassandraAccount() {
-        final String cosmosDbAccountName = sdkContext.randomResourceName("cosmosdb", 22);
+        final String cosmosDbAccountName = generateRandomResourceName("cosmosdb", 22);
 
         CosmosDBAccount cosmosDBAccount =
             cosmosManager
@@ -221,7 +232,7 @@ public class CosmosDBTests extends TestBase {
 
     @Test
     public void canUpdateCosmosDbCassandraConnector() {
-        final String cosmosDbAccountName = sdkContext.randomResourceName("cosmosdb", 22);
+        final String cosmosDbAccountName = generateRandomResourceName("cosmosdb", 22);
 
         // CassandraConnector could only be used in West US and South Central US.
         CosmosDBAccount cosmosDBAccount =
@@ -247,7 +258,7 @@ public class CosmosDBTests extends TestBase {
 
     @Test
     public void canCreateCosmosDbAzureTableAccount() {
-        final String cosmosDbAccountName = sdkContext.randomResourceName("cosmosdb", 22);
+        final String cosmosDbAccountName = generateRandomResourceName("cosmosdb", 22);
 
         CosmosDBAccount cosmosDBAccount =
             cosmosManager

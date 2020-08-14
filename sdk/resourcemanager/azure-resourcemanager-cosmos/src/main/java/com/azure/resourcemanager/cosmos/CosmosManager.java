@@ -10,7 +10,7 @@ import com.azure.resourcemanager.cosmos.models.CosmosDBAccounts;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.Manager;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 
@@ -85,9 +85,10 @@ public final class CosmosManager extends Manager<CosmosManager, CosmosDBManageme
             httpPipeline,
             profile,
             new CosmosDBManagementClientBuilder()
-                .endpoint(profile.environment().getResourceManagerEndpoint())
+                .environment(profile.getEnvironment())
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .pipeline(httpPipeline)
-                .subscriptionId(profile.subscriptionId())
+                .subscriptionId(profile.getSubscriptionId())
                 .buildClient(),
             sdkContext);
     }
