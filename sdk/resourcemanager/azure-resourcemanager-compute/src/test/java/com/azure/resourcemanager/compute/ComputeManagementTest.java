@@ -3,7 +3,13 @@
 
 package com.azure.resourcemanager.compute;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
 import com.azure.resourcemanager.network.models.LoadBalancer;
@@ -13,28 +19,25 @@ import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.PublicIPSkuType;
 import com.azure.resourcemanager.network.models.TransportProtocol;
 import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
-import com.azure.resourcemanager.resources.core.TestBase;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.storage.StorageManager;
+import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.utils.TestDelayProvider;
+import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import java.io.IOException;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 
-public abstract class ComputeManagementTest extends TestBase {
-    public ComputeManagementTest() {
-        super(TestBase.RunCondition.BOTH);
-    }
-
-    public ComputeManagementTest(TestBase.RunCondition runCondition) {
-        super(runCondition);
-    }
-
+public abstract class ComputeManagementTest extends ResourceManagerTestBase {
     protected ResourceManager resourceManager;
     protected ComputeManager computeManager;
     protected NetworkManager networkManager;
@@ -43,18 +46,23 @@ public abstract class ComputeManagementTest extends TestBase {
     protected KeyVaultManager keyVaultManager;
 
     @Override
+    protected HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile, List<HttpPipelinePolicy> policies, HttpClient httpClient) {
+        return HttpPipelineProvider.buildHttpPipeline(
+            credential, profile, null, new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS),
+            null, new RetryPolicy("Retry-After", ChronoUnit.SECONDS), policies, httpClient);
+    }
+
+    @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
+        SdkContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
+        SdkContext sdkContext = new SdkContext();
+        sdkContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
         resourceManager =
             ResourceManager.authenticate(httpPipeline, profile).withSdkContext(sdkContext).withDefaultSubscription();
-
         computeManager = ComputeManager.authenticate(httpPipeline, profile, sdkContext);
-
         networkManager = NetworkManager.authenticate(httpPipeline, profile, sdkContext);
-
         storageManager = StorageManager.authenticate(httpPipeline, profile, sdkContext);
-
         keyVaultManager = KeyVaultManager.authenticate(httpPipeline, profile, sdkContext);
-
         authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile, sdkContext);
     }
 
@@ -119,8 +127,7 @@ public abstract class ComputeManagementTest extends TestBase {
         }
     }
 
-    protected LoadBalancer createHttpLoadBalancers(Region region, ResourceGroup resourceGroup, String id)
-        throws Exception {
+    protected LoadBalancer createHttpLoadBalancers(Region region, ResourceGroup resourceGroup, String id) {
         final String loadBalancerName = generateRandomResourceName("extlb" + id + "-", 18);
         final String publicIpName = "pip-" + loadBalancerName;
         final String frontendName = loadBalancerName + "-FE1";

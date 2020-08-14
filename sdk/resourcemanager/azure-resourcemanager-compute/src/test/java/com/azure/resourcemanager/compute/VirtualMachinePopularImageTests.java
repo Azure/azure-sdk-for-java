@@ -3,10 +3,11 @@
 
 package com.azure.resourcemanager.compute;
 
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.KnownWindowsVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
-import com.azure.resourcemanager.resources.core.TestBase;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import org.junit.jupiter.api.Test;
@@ -16,10 +17,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VirtualMachinePopularImageTests extends ComputeManagementTest {
-    private final String rgName = generateRandomResourceName("rg", 10);
+    private String rgName = "";
 
-    public VirtualMachinePopularImageTests() {
-        super(TestBase.RunCondition.LIVE_ONLY);
+    @Override
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
+        super.initializeClients(httpPipeline, profile);
+        rgName = generateRandomResourceName("rg", 10);
     }
 
     @Test
