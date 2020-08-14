@@ -77,7 +77,7 @@ public class IndexDocumentsBatch<T> extends IndexBatchBase<T> {
     }
 
     /**
-     * Adds merge document actions to the batch..
+     * Adds merge document actions to the batch.
      *
      * @param documents Documents to be merged.
      * @return The updated IndexDocumentsBatch object.

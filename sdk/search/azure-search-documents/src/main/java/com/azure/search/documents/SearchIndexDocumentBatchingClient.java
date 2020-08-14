@@ -78,10 +78,11 @@ public class SearchIndexDocumentBatchingClient {
     /**
      * Sends the current batch of documents to be indexed.
      *
-     * @param raiseError Flag indicating if the batch should raise an error if any documents in the batch fail to index.
+     * @param throwOnAnyFailure Flag indicating if the batch should raise an error if any documents in the batch fail to
+     * index.
      */
-    public void flush(boolean raiseError) {
-        client.flush(raiseError);
+    public void flush(boolean throwOnAnyFailure) {
+        client.flush(throwOnAnyFailure);
     }
 
     /**

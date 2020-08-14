@@ -33,6 +33,8 @@ public class SearchIndexDocumentBatchingAsyncClient {
 
     private TimerTask flushTask;
     private Queue<IndexAction<?>> actions = new ConcurrentLinkedQueue<>();
+    private Collection<IndexAction<?>> successfulActions = new ConcurrentLinkedQueue<>();
+    private Collection<IndexAction<?>> failedActions = new ConcurrentLinkedQueue<>();
 
     SearchIndexDocumentBatchingAsyncClient(SearchAsyncClient client, Integer flushWindow, Integer batchSize,
         DocumentPersister documentPersister) {
@@ -98,6 +100,15 @@ public class SearchIndexDocumentBatchingAsyncClient {
         return batchSize;
     }
 
+    /**
+     * Adds upload document actions to the batch.
+     * <p>
+     * If the client is enabled for automatic batch sending, adding documents may trigger the batch to be sent for
+     * indexing.
+     *
+     * @param documents Documents to be uploaded.
+     * @return A reactive response indicating that the documents have been added to the batch.
+     */
     public Mono<Void> addUploadActions(Collection<?> documents) {
         Collection<IndexAction<?>> uploadActions = createDocumentActions(documents, IndexActionType.UPLOAD);
         if (documentPersister != null) {
@@ -108,6 +119,15 @@ public class SearchIndexDocumentBatchingAsyncClient {
         return flushIfNeeded();
     }
 
+    /**
+     * Adds delete document actions to the batch.
+     * <p>
+     * If the client is enabled for automatic batch sending, adding documents may trigger the batch to be sent for
+     * indexing.
+     *
+     * @param documents Documents to be deleted.
+     * @return A reactive response indicating that the documents have been added to the batch.
+     */
     public Mono<Void> addDeleteActions(Collection<?> documents) {
         Collection<IndexAction<?>> uploadActions = createDocumentActions(documents, IndexActionType.DELETE);
         if (documentPersister != null) {
@@ -118,6 +138,15 @@ public class SearchIndexDocumentBatchingAsyncClient {
         return flushIfNeeded();
     }
 
+    /**
+     * Adds merge document actions to the batch.
+     * <p>
+     * If the client is enabled for automatic batch sending, adding documents may trigger the batch to be sent for
+     * indexing.
+     *
+     * @param documents Documents to be merged.
+     * @return A reactive response indicating that the documents have been added to the batch.
+     */
     public Mono<Void> addMergeActions(Collection<?> documents) {
         Collection<IndexAction<?>> uploadActions = createDocumentActions(documents, IndexActionType.MERGE);
         if (documentPersister != null) {
@@ -128,6 +157,15 @@ public class SearchIndexDocumentBatchingAsyncClient {
         return flushIfNeeded();
     }
 
+    /**
+     * Adds merge or upload document actions to the batch.
+     * <p>
+     * If the client is enabled for automatic batch sending, adding documents may trigger the batch to be sent for
+     * indexing.
+     *
+     * @param documents Documents to be merged or uploaded.
+     * @return A reactive response indicating that the documents have been added to the batch.
+     */
     public Mono<Void> addMergeOrUploadActions(Collection<?> documents) {
         Collection<IndexAction<?>> uploadActions = createDocumentActions(documents, IndexActionType.MERGE_OR_UPLOAD);
         if (documentPersister != null) {
@@ -138,6 +176,15 @@ public class SearchIndexDocumentBatchingAsyncClient {
         return flushIfNeeded();
     }
 
+    /**
+     * Adds document index actions to the batch.
+     * <p>
+     * If the client is enabled for automatic batch sending, adding documents may trigger the batch to be sent for
+     * indexing.
+     *
+     * @param actions Index actions.
+     * @return A reactive response indicating that the documents have been added to the batch.
+     */
     public Mono<Void> addActions(Collection<IndexAction<?>> actions) {
         this.actions.addAll(actions);
         if (documentPersister != null) {
@@ -157,10 +204,11 @@ public class SearchIndexDocumentBatchingAsyncClient {
     /**
      * Sends the current batch of documents to be indexed.
      *
-     * @param raiseError Flag indicating if the batch should raise an error if any documents in the batch fail to index.
+     * @param throwOnAnyFailure Flag indicating if the batch should raise an error if any documents in the batch fail to
+     * index.
      * @return A reactive response that indicates if the flush operation has completed.
      */
-    public Mono<Void> flush(boolean raiseError) {
+    public Mono<Void> flush(boolean throwOnAnyFailure) {
         return Mono.empty();
     }
 
@@ -174,17 +222,14 @@ public class SearchIndexDocumentBatchingAsyncClient {
             this.flushTask = null;
         }
 
-        this.flushTask = createFlushTask();
-        this.autoFlushTimer.schedule(flushTask, flushWindowMillis);
-    }
-
-    private TimerTask createFlushTask() {
-        return new TimerTask() {
+        this.flushTask = new TimerTask() {
             @Override
             public void run() {
                 flush(false);
             }
         };
+
+        this.autoFlushTimer.schedule(flushTask, flushWindowMillis);
     }
 
     private Mono<Void> flushIfNeeded() {
