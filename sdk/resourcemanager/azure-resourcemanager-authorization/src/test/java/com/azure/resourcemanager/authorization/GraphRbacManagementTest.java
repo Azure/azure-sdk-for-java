@@ -3,24 +3,44 @@
 
 package com.azure.resourcemanager.authorization;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.resourcemanager.resources.core.TestBase;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.utils.TestDelayProvider;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 /** The base for storage manager tests. */
-public abstract class GraphRbacManagementTest extends TestBase {
+public abstract class GraphRbacManagementTest extends ResourceManagerTestBase {
     protected AuthorizationManager authorizationManager;
     protected ResourceManager resourceManager;
 
     @Override
+    protected HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile, List<HttpPipelinePolicy> policies, HttpClient httpClient) {
+        return HttpPipelineProvider.buildHttpPipeline(
+            credential, profile, null, new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS),
+            null, new RetryPolicy("Retry-After", ChronoUnit.SECONDS), policies, httpClient);
+    }
+
+    @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
-        authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile, sdkContext);
+        SdkContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
+        authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile);
         resourceManager =
-            ResourceManager.authenticate(httpPipeline, profile).withSdkContext(sdkContext).withDefaultSubscription();
+            ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
     }
 
     @Override

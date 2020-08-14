@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 public class RoleDefinitionTests extends GraphRbacManagementTest {
     @Test
-    public void canGetRoleByRoleName() throws Exception {
+    public void canGetRoleByRoleName() {
         RoleDefinition roleDefinition =
             authorizationManager
                 .roleDefinitions()

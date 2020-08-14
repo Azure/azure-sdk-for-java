@@ -12,28 +12,28 @@ import org.junit.jupiter.api.Test;
 public class UsersTests extends GraphRbacManagementTest {
     @Test
     @Disabled("Need a specific domain")
-    public void canGetUserByEmail() throws Exception {
+    public void canGetUserByEmail() {
         ActiveDirectoryUser user = authorizationManager.users().getByName("admin@azuresdkteam.onmicrosoft.com");
         Assertions.assertEquals("Admin", user.name());
     }
 
     @Test
     @Disabled("Need a specific domain")
-    public void canGetUserByForeignEmail() throws Exception {
+    public void canGetUserByForeignEmail() {
         ActiveDirectoryUser user = authorizationManager.users().getByName("jianghlu@microsoft.com");
         Assertions.assertEquals("Jianghao Lu", user.name());
     }
 
     @Test
     @Disabled("Need a specific domain")
-    public void canGetUserByDisplayName() throws Exception {
+    public void canGetUserByDisplayName() {
         ActiveDirectoryUser user = authorizationManager.users().getByName("Reader zero");
         Assertions.assertEquals("Reader zero", user.name());
     }
 
     @Test
-    public void canCreateUser() throws Exception {
-        String name = sdkContext.randomResourceName("user", 16);
+    public void canCreateUser() {
+        String name = generateRandomResourceName("user", 16);
         ActiveDirectoryUser user =
             authorizationManager
                 .users()
@@ -48,8 +48,8 @@ public class UsersTests extends GraphRbacManagementTest {
     }
 
     @Test
-    public void canUpdateUser() throws Exception {
-        String name = sdkContext.randomResourceName("user", 16);
+    public void canUpdateUser() {
+        String name = generateRandomResourceName("user", 16);
         ActiveDirectoryUser user =
             authorizationManager
                 .users()

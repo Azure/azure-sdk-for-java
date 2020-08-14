@@ -20,7 +20,7 @@ import com.azure.resourcemanager.authorization.models.ServicePrincipals;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 
@@ -112,16 +112,18 @@ public final class AuthorizationManager implements HasInner<GraphRbacManagementC
         this.graphRbacManagementClient =
             new GraphRbacManagementClientBuilder()
                 .pipeline(httpPipeline)
-                .endpoint(profile.environment().getGraphEndpoint())
-                .tenantId(profile.tenantId())
+                .environment(profile.getEnvironment())
+                .endpoint(profile.getEnvironment().getGraphEndpoint())
+                .tenantId(profile.getTenantId())
                 .buildClient();
         this.authorizationManagementClient =
             new AuthorizationManagementClientBuilder()
                 .pipeline(httpPipeline)
-                .endpoint(profile.environment().getResourceManagerEndpoint())
-                .subscriptionId(profile.subscriptionId())
+                .environment(profile.getEnvironment())
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .subscriptionId(profile.getSubscriptionId())
                 .buildClient();
-        this.tenantId = profile.tenantId();
+        this.tenantId = profile.getTenantId();
         this.sdkContext = sdkContext;
     }
 
