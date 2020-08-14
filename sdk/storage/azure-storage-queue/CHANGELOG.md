@@ -1,7 +1,7 @@
 # Release History
 
 ## 12.7.0-beta.1 (Unreleased)
-
+- Fixed a bug that would cause message text to be erased when only updating the visibility timeout
 
 ## 12.6.0 (2020-08-13)
 - GA release for 2019-12-12 service version.
