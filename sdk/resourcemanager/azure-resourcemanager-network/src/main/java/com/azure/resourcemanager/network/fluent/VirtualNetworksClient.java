@@ -318,7 +318,9 @@ public final class VirtualNetworksClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualNetworkName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, virtualNetworkName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -335,8 +337,11 @@ public final class VirtualNetworksClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String virtualNetworkName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, virtualNetworkName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -786,8 +791,12 @@ public final class VirtualNetworksClient
             createOrUpdateWithResponseAsync(resourceGroupName, virtualNetworkName, parameters);
         return this
             .client
-            .<VirtualNetworkInner, VirtualNetworkInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), VirtualNetworkInner.class, VirtualNetworkInner.class);
+            .<VirtualNetworkInner, VirtualNetworkInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                VirtualNetworkInner.class,
+                VirtualNetworkInner.class,
+                Context.NONE);
     }
 
     /**
@@ -805,12 +814,13 @@ public final class VirtualNetworksClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<VirtualNetworkInner>, VirtualNetworkInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String virtualNetworkName, VirtualNetworkInner parameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, virtualNetworkName, parameters, context);
         return this
             .client
-            .<VirtualNetworkInner, VirtualNetworkInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), VirtualNetworkInner.class, VirtualNetworkInner.class);
+            .<VirtualNetworkInner, VirtualNetworkInner>getLroResult(
+                mono, this.client.getHttpPipeline(), VirtualNetworkInner.class, VirtualNetworkInner.class, context);
     }
 
     /**
@@ -1209,7 +1219,8 @@ public final class VirtualNetworksClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualNetworkInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listAllNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listAllNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1362,7 +1373,7 @@ public final class VirtualNetworksClient
     public PagedFlux<VirtualNetworkInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1729,7 +1740,7 @@ public final class VirtualNetworksClient
         String resourceGroupName, String virtualNetworkName, Context context) {
         return new PagedFlux<>(
             () -> listUsageSinglePageAsync(resourceGroupName, virtualNetworkName, context),
-            nextLink -> listUsageNextSinglePageAsync(nextLink));
+            nextLink -> listUsageNextSinglePageAsync(nextLink, context));
     }
 
     /**

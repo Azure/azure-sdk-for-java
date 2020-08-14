@@ -303,8 +303,12 @@ public final class PacketCapturesClient {
             createWithResponseAsync(resourceGroupName, networkWatcherName, packetCaptureName, parameters);
         return this
             .client
-            .<PacketCaptureResultInner, PacketCaptureResultInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), PacketCaptureResultInner.class, PacketCaptureResultInner.class);
+            .<PacketCaptureResultInner, PacketCaptureResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                PacketCaptureResultInner.class,
+                PacketCaptureResultInner.class,
+                Context.NONE);
     }
 
     /**
@@ -327,12 +331,17 @@ public final class PacketCapturesClient {
         String packetCaptureName,
         PacketCaptureInner parameters,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createWithResponseAsync(resourceGroupName, networkWatcherName, packetCaptureName, parameters, context);
         return this
             .client
-            .<PacketCaptureResultInner, PacketCaptureResultInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), PacketCaptureResultInner.class, PacketCaptureResultInner.class);
+            .<PacketCaptureResultInner, PacketCaptureResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                PacketCaptureResultInner.class,
+                PacketCaptureResultInner.class,
+                context);
     }
 
     /**
@@ -776,7 +785,9 @@ public final class PacketCapturesClient {
         String resourceGroupName, String networkWatcherName, String packetCaptureName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, networkWatcherName, packetCaptureName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -794,9 +805,12 @@ public final class PacketCapturesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String networkWatcherName, String packetCaptureName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, networkWatcherName, packetCaptureName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -1025,7 +1039,9 @@ public final class PacketCapturesClient {
         String resourceGroupName, String networkWatcherName, String packetCaptureName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             stopWithResponseAsync(resourceGroupName, networkWatcherName, packetCaptureName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1043,9 +1059,12 @@ public final class PacketCapturesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginStopAsync(
         String resourceGroupName, String networkWatcherName, String packetCaptureName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             stopWithResponseAsync(resourceGroupName, networkWatcherName, packetCaptureName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -1276,11 +1295,12 @@ public final class PacketCapturesClient {
             getStatusWithResponseAsync(resourceGroupName, networkWatcherName, packetCaptureName);
         return this
             .client
-            .<PacketCaptureQueryStatusResultInner, PacketCaptureQueryStatusResultInner>getLroResultAsync(
+            .<PacketCaptureQueryStatusResultInner, PacketCaptureQueryStatusResultInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 PacketCaptureQueryStatusResultInner.class,
-                PacketCaptureQueryStatusResultInner.class);
+                PacketCaptureQueryStatusResultInner.class,
+                Context.NONE);
     }
 
     /**
@@ -1299,15 +1319,17 @@ public final class PacketCapturesClient {
     public PollerFlux<PollResult<PacketCaptureQueryStatusResultInner>, PacketCaptureQueryStatusResultInner>
         beginGetStatusAsync(
             String resourceGroupName, String networkWatcherName, String packetCaptureName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             getStatusWithResponseAsync(resourceGroupName, networkWatcherName, packetCaptureName, context);
         return this
             .client
-            .<PacketCaptureQueryStatusResultInner, PacketCaptureQueryStatusResultInner>getLroResultAsync(
+            .<PacketCaptureQueryStatusResultInner, PacketCaptureQueryStatusResultInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 PacketCaptureQueryStatusResultInner.class,
-                PacketCaptureQueryStatusResultInner.class);
+                PacketCaptureQueryStatusResultInner.class,
+                context);
     }
 
     /**

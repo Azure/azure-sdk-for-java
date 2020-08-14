@@ -25,6 +25,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.SqlManagementClient;
 import com.azure.resourcemanager.sql.fluent.inner.ServerConnectionPolicyInner;
+import com.azure.resourcemanager.sql.models.ConnectionPolicyName;
 import com.azure.resourcemanager.sql.models.ServerConnectionType;
 import reactor.core.publisher.Mono;
 
@@ -69,7 +70,7 @@ public final class ServerConnectionPoliciesClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serverName") String serverName,
-            @PathParam("connectionPolicyName") String connectionPolicyName,
+            @PathParam("connectionPolicyName") ConnectionPolicyName connectionPolicyName,
             @BodyParam("application/json") ServerConnectionPolicyInner parameters,
             Context context);
 
@@ -85,7 +86,7 @@ public final class ServerConnectionPoliciesClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serverName") String serverName,
-            @PathParam("connectionPolicyName") String connectionPolicyName,
+            @PathParam("connectionPolicyName") ConnectionPolicyName connectionPolicyName,
             Context context);
     }
 
@@ -95,6 +96,7 @@ public final class ServerConnectionPoliciesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
+     * @param connectionPolicyName The name of the connection policy.
      * @param connectionType The server connection type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -103,7 +105,10 @@ public final class ServerConnectionPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ServerConnectionPolicyInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String serverName, ServerConnectionType connectionType) {
+        String resourceGroupName,
+        String serverName,
+        ConnectionPolicyName connectionPolicyName,
+        ServerConnectionType connectionType) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -123,8 +128,11 @@ public final class ServerConnectionPoliciesClient {
         if (serverName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
+        if (connectionPolicyName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter connectionPolicyName is required and cannot be null."));
+        }
         final String apiVersion = "2014-04-01";
-        final String connectionPolicyName = "default";
         ServerConnectionPolicyInner parameters = new ServerConnectionPolicyInner();
         parameters.withConnectionType(connectionType);
         return FluxUtil
@@ -149,6 +157,7 @@ public final class ServerConnectionPoliciesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
+     * @param connectionPolicyName The name of the connection policy.
      * @param connectionType The server connection type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -158,7 +167,11 @@ public final class ServerConnectionPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ServerConnectionPolicyInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String serverName, ServerConnectionType connectionType, Context context) {
+        String resourceGroupName,
+        String serverName,
+        ConnectionPolicyName connectionPolicyName,
+        ServerConnectionType connectionType,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -178,10 +191,14 @@ public final class ServerConnectionPoliciesClient {
         if (serverName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
+        if (connectionPolicyName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter connectionPolicyName is required and cannot be null."));
+        }
         final String apiVersion = "2014-04-01";
-        final String connectionPolicyName = "default";
         ServerConnectionPolicyInner parameters = new ServerConnectionPolicyInner();
         parameters.withConnectionType(connectionType);
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -200,6 +217,7 @@ public final class ServerConnectionPoliciesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
+     * @param connectionPolicyName The name of the connection policy.
      * @param connectionType The server connection type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -208,8 +226,11 @@ public final class ServerConnectionPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServerConnectionPolicyInner> createOrUpdateAsync(
-        String resourceGroupName, String serverName, ServerConnectionType connectionType) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, serverName, connectionType)
+        String resourceGroupName,
+        String serverName,
+        ConnectionPolicyName connectionPolicyName,
+        ServerConnectionType connectionType) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, serverName, connectionPolicyName, connectionType)
             .flatMap(
                 (Response<ServerConnectionPolicyInner> res) -> {
                     if (res.getValue() != null) {
@@ -226,6 +247,7 @@ public final class ServerConnectionPoliciesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
+     * @param connectionPolicyName The name of the connection policy.
      * @param connectionType The server connection type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -235,8 +257,13 @@ public final class ServerConnectionPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServerConnectionPolicyInner> createOrUpdateAsync(
-        String resourceGroupName, String serverName, ServerConnectionType connectionType, Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, serverName, connectionType, context)
+        String resourceGroupName,
+        String serverName,
+        ConnectionPolicyName connectionPolicyName,
+        ServerConnectionType connectionType,
+        Context context) {
+        return createOrUpdateWithResponseAsync(
+                resourceGroupName, serverName, connectionPolicyName, connectionType, context)
             .flatMap(
                 (Response<ServerConnectionPolicyInner> res) -> {
                     if (res.getValue() != null) {
@@ -253,6 +280,7 @@ public final class ServerConnectionPoliciesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
+     * @param connectionPolicyName The name of the connection policy.
      * @param connectionType The server connection type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -261,8 +289,11 @@ public final class ServerConnectionPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServerConnectionPolicyInner createOrUpdate(
-        String resourceGroupName, String serverName, ServerConnectionType connectionType) {
-        return createOrUpdateAsync(resourceGroupName, serverName, connectionType).block();
+        String resourceGroupName,
+        String serverName,
+        ConnectionPolicyName connectionPolicyName,
+        ServerConnectionType connectionType) {
+        return createOrUpdateAsync(resourceGroupName, serverName, connectionPolicyName, connectionType).block();
     }
 
     /**
@@ -271,6 +302,7 @@ public final class ServerConnectionPoliciesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
+     * @param connectionPolicyName The name of the connection policy.
      * @param connectionType The server connection type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -280,8 +312,13 @@ public final class ServerConnectionPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServerConnectionPolicyInner createOrUpdate(
-        String resourceGroupName, String serverName, ServerConnectionType connectionType, Context context) {
-        return createOrUpdateAsync(resourceGroupName, serverName, connectionType, context).block();
+        String resourceGroupName,
+        String serverName,
+        ConnectionPolicyName connectionPolicyName,
+        ServerConnectionType connectionType,
+        Context context) {
+        return createOrUpdateAsync(resourceGroupName, serverName, connectionPolicyName, connectionType, context)
+            .block();
     }
 
     /**
@@ -290,6 +327,7 @@ public final class ServerConnectionPoliciesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
+     * @param connectionPolicyName The name of the connection policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -297,7 +335,7 @@ public final class ServerConnectionPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ServerConnectionPolicyInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName) {
+        String resourceGroupName, String serverName, ConnectionPolicyName connectionPolicyName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -317,8 +355,11 @@ public final class ServerConnectionPoliciesClient {
         if (serverName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
+        if (connectionPolicyName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter connectionPolicyName is required and cannot be null."));
+        }
         final String apiVersion = "2014-04-01";
-        final String connectionPolicyName = "default";
         return FluxUtil
             .withContext(
                 context ->
@@ -340,6 +381,7 @@ public final class ServerConnectionPoliciesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
+     * @param connectionPolicyName The name of the connection policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -348,7 +390,7 @@ public final class ServerConnectionPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ServerConnectionPolicyInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, Context context) {
+        String resourceGroupName, String serverName, ConnectionPolicyName connectionPolicyName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -368,8 +410,12 @@ public final class ServerConnectionPoliciesClient {
         if (serverName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
+        if (connectionPolicyName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter connectionPolicyName is required and cannot be null."));
+        }
         final String apiVersion = "2014-04-01";
-        final String connectionPolicyName = "default";
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -387,14 +433,16 @@ public final class ServerConnectionPoliciesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
+     * @param connectionPolicyName The name of the connection policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the server's secure connection policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServerConnectionPolicyInner> getAsync(String resourceGroupName, String serverName) {
-        return getWithResponseAsync(resourceGroupName, serverName)
+    public Mono<ServerConnectionPolicyInner> getAsync(
+        String resourceGroupName, String serverName, ConnectionPolicyName connectionPolicyName) {
+        return getWithResponseAsync(resourceGroupName, serverName, connectionPolicyName)
             .flatMap(
                 (Response<ServerConnectionPolicyInner> res) -> {
                     if (res.getValue() != null) {
@@ -411,6 +459,7 @@ public final class ServerConnectionPoliciesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
+     * @param connectionPolicyName The name of the connection policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -418,8 +467,9 @@ public final class ServerConnectionPoliciesClient {
      * @return the server's secure connection policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServerConnectionPolicyInner> getAsync(String resourceGroupName, String serverName, Context context) {
-        return getWithResponseAsync(resourceGroupName, serverName, context)
+    public Mono<ServerConnectionPolicyInner> getAsync(
+        String resourceGroupName, String serverName, ConnectionPolicyName connectionPolicyName, Context context) {
+        return getWithResponseAsync(resourceGroupName, serverName, connectionPolicyName, context)
             .flatMap(
                 (Response<ServerConnectionPolicyInner> res) -> {
                     if (res.getValue() != null) {
@@ -436,14 +486,16 @@ public final class ServerConnectionPoliciesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
+     * @param connectionPolicyName The name of the connection policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the server's secure connection policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServerConnectionPolicyInner get(String resourceGroupName, String serverName) {
-        return getAsync(resourceGroupName, serverName).block();
+    public ServerConnectionPolicyInner get(
+        String resourceGroupName, String serverName, ConnectionPolicyName connectionPolicyName) {
+        return getAsync(resourceGroupName, serverName, connectionPolicyName).block();
     }
 
     /**
@@ -452,6 +504,7 @@ public final class ServerConnectionPoliciesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
+     * @param connectionPolicyName The name of the connection policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -459,7 +512,8 @@ public final class ServerConnectionPoliciesClient {
      * @return the server's secure connection policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServerConnectionPolicyInner get(String resourceGroupName, String serverName, Context context) {
-        return getAsync(resourceGroupName, serverName, context).block();
+    public ServerConnectionPolicyInner get(
+        String resourceGroupName, String serverName, ConnectionPolicyName connectionPolicyName, Context context) {
+        return getAsync(resourceGroupName, serverName, connectionPolicyName, context).block();
     }
 }

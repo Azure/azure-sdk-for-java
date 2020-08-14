@@ -47,8 +47,6 @@ public class CosmosAnnotationUnitTest {
         // IncludedPaths and ExcludedPaths
         // We do not use testIndexingPolicyPathsEquals generic here, for unit test do not create cosmosdb instance,
         // and the paths of policy will never be set from azure service.
-        // testIndexingPolicyPathsEquals(policy.getIncludedPaths(), TestConstants.DEFAULT_INCLUDEDPATHS);
-        // testIndexingPolicyPathsEquals(policy.getExcludedPaths(), TestConstants.DEFAULT_EXCLUDEDPATHS);
         Assert.isTrue(policy.getIncludedPaths().isEmpty(), "default includedpaths size must be 0");
         Assert.isTrue(policy.getExcludedPaths().isEmpty(), "default excludedpaths size must be 0");
     }
@@ -70,10 +68,6 @@ public class CosmosAnnotationUnitTest {
                 "should be Role(class) indexing policy automatic");
         Assert.isTrue(policy.getIndexingMode() == TestConstants.INDEXING_POLICY_MODE,
                 "should be Role(class) indexing policy mode");
-
-        // IncludedPaths and ExcludedPaths
-//        TestUtils.testIndexingPolicyPathsEquals(policy.getIncludedPaths(), TestConstants.INCLUDED_PATHS);
-//        TestUtils.testIndexingPolicyPathsEquals(policy.getExcludedPaths(), TestConstants.EXCLUDED_PATHS);
     }
 
     @Test

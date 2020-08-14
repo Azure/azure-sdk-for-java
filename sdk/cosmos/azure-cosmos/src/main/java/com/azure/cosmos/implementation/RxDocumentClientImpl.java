@@ -58,6 +58,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -600,21 +601,29 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         Flux<? extends IDocumentQueryExecutionContext<T>> executionContext =
                 DocumentQueryExecutionContextFactory.createDocumentQueryExecutionContextAsync(queryClient, resourceTypeEnum, klass, sqlQuery , options, resourceLink, false, activityId);
 
+        AtomicBoolean isFirstResponse = new AtomicBoolean(true);
         return executionContext.flatMap(iDocumentQueryExecutionContext -> {
             QueryInfo queryInfo = null;
             if (iDocumentQueryExecutionContext instanceof PipelinedDocumentQueryExecutionContext) {
                 queryInfo = ((PipelinedDocumentQueryExecutionContext<T>) iDocumentQueryExecutionContext).getQueryInfo();
             }
-            if (queryInfo != null && queryInfo.hasSelectValue()) {
-                QueryInfo finalQueryInfo = queryInfo;
-                return iDocumentQueryExecutionContext.executeAsync()
-                           .map(tFeedResponse -> {
-                               ModelBridgeInternal
-                                   .addQueryInfoToFeedResponse(tFeedResponse, finalQueryInfo);
-                               return tFeedResponse;
-                           });
-            }
-            return iDocumentQueryExecutionContext.executeAsync();
+
+            QueryInfo finalQueryInfo = queryInfo;
+            return iDocumentQueryExecutionContext.executeAsync()
+                .map(tFeedResponse -> {
+                    if (finalQueryInfo != null) {
+                        if (finalQueryInfo.hasSelectValue()) {
+                            ModelBridgeInternal
+                                .addQueryInfoToFeedResponse(tFeedResponse, finalQueryInfo);
+                        }
+
+                        if (isFirstResponse.compareAndSet(true, false)) {
+                            ModelBridgeInternal.addQueryPlanDiagnosticsContextToFeedResponse(tFeedResponse,
+                                finalQueryInfo.getQueryPlanDiagnosticsContext());
+                        }
+                    }
+                    return tFeedResponse;
+                });
         });
     }
 

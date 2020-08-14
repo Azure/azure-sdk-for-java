@@ -18,7 +18,7 @@
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Storage Management</name>
-  <description>This package contains Microsoft Azure Storage Management SDK.</description>
+  <description>This package contains Microsoft Azure Storage Management SDK. For documentation on how to use this package, please see https://aka.ms/azure-sdk-java-mgmt</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -70,7 +70,7 @@
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>24.1.1-jre</version> <!-- {x-version-update;com.google.guava:guava;external_dependency} -->
+      <version>29.0-jre</version> <!-- {x-version-update;com.google.guava:guava;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

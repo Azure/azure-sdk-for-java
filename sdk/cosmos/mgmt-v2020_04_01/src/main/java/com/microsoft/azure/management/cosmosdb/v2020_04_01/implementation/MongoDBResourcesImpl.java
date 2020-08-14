@@ -140,6 +140,30 @@ class MongoDBResourcesImpl extends WrapperImpl<MongoDBResourcesInner> implements
     }
 
     @Override
+    public Observable<ThroughputSettingsGetResults> migrateMongoDBDatabaseToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName) {
+        MongoDBResourcesInner client = this.inner();
+        return client.migrateMongoDBDatabaseToAutoscaleAsync(resourceGroupName, accountName, databaseName)
+        .map(new Func1<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResults>() {
+            @Override
+            public ThroughputSettingsGetResults call(ThroughputSettingsGetResultsInner inner) {
+                return new ThroughputSettingsGetResultsImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<ThroughputSettingsGetResults> migrateMongoDBDatabaseToManualThroughputAsync(String resourceGroupName, String accountName, String databaseName) {
+        MongoDBResourcesInner client = this.inner();
+        return client.migrateMongoDBDatabaseToManualThroughputAsync(resourceGroupName, accountName, databaseName)
+        .map(new Func1<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResults>() {
+            @Override
+            public ThroughputSettingsGetResults call(ThroughputSettingsGetResultsInner inner) {
+                return new ThroughputSettingsGetResultsImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
     public Observable<ThroughputSettingsGetResults> getMongoDBCollectionThroughputAsync(String resourceGroupName, String accountName, String databaseName, String collectionName) {
         MongoDBResourcesInner client = this.inner();
         return client.getMongoDBCollectionThroughputAsync(resourceGroupName, accountName, databaseName, collectionName)
@@ -155,6 +179,30 @@ class MongoDBResourcesImpl extends WrapperImpl<MongoDBResourcesInner> implements
     public Observable<ThroughputSettingsGetResults> updateMongoDBCollectionThroughputAsync(String resourceGroupName, String accountName, String databaseName, String collectionName, ThroughputSettingsUpdateParameters updateThroughputParameters) {
         MongoDBResourcesInner client = this.inner();
         return client.updateMongoDBCollectionThroughputAsync(resourceGroupName, accountName, databaseName, collectionName, updateThroughputParameters)
+        .map(new Func1<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResults>() {
+            @Override
+            public ThroughputSettingsGetResults call(ThroughputSettingsGetResultsInner inner) {
+                return new ThroughputSettingsGetResultsImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<ThroughputSettingsGetResults> migrateMongoDBCollectionToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName, String collectionName) {
+        MongoDBResourcesInner client = this.inner();
+        return client.migrateMongoDBCollectionToAutoscaleAsync(resourceGroupName, accountName, databaseName, collectionName)
+        .map(new Func1<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResults>() {
+            @Override
+            public ThroughputSettingsGetResults call(ThroughputSettingsGetResultsInner inner) {
+                return new ThroughputSettingsGetResultsImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<ThroughputSettingsGetResults> migrateMongoDBCollectionToManualThroughputAsync(String resourceGroupName, String accountName, String databaseName, String collectionName) {
+        MongoDBResourcesInner client = this.inner();
+        return client.migrateMongoDBCollectionToManualThroughputAsync(resourceGroupName, accountName, databaseName, collectionName)
         .map(new Func1<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResults>() {
             @Override
             public ThroughputSettingsGetResults call(ThroughputSettingsGetResultsInner inner) {

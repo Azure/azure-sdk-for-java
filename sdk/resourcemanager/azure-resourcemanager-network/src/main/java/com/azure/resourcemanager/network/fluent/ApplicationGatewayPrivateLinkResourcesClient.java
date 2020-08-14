@@ -234,7 +234,7 @@ public final class ApplicationGatewayPrivateLinkResourcesClient {
         String resourceGroupName, String applicationGatewayName, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, applicationGatewayName, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**

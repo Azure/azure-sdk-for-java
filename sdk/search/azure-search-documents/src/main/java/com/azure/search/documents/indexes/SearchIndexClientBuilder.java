@@ -11,6 +11,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.util.Constants;
 import com.azure.search.documents.implementation.util.Utility;
@@ -57,6 +58,7 @@ public final class SearchIndexClientBuilder {
     private HttpLogOptions httpLogOptions;
     private Configuration configuration;
     private RetryPolicy retryPolicy;
+    private JsonSerializer jsonSerializer;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link SearchIndexClient SearchIndexClients}
@@ -98,7 +100,7 @@ public final class SearchIndexClientBuilder {
             : serviceVersion;
 
         if (httpPipeline != null) {
-            return new SearchIndexAsyncClient(endpoint, buildVersion, httpPipeline);
+            return new SearchIndexAsyncClient(endpoint, buildVersion, httpPipeline, jsonSerializer);
         }
 
         Objects.requireNonNull(credential, "'credential' cannot be null.");
@@ -106,7 +108,7 @@ public final class SearchIndexClientBuilder {
         HttpPipeline pipeline = Utility.buildHttpPipeline(httpLogOptions, configuration, retryPolicy, credential,
             policies, httpClient);
 
-        return new SearchIndexAsyncClient(endpoint, buildVersion, pipeline);
+        return new SearchIndexAsyncClient(endpoint, buildVersion, pipeline, jsonSerializer);
     }
 
     /**
@@ -174,6 +176,18 @@ public final class SearchIndexClientBuilder {
      */
     public SearchIndexClientBuilder addPolicy(HttpPipelinePolicy policy) {
         policies.add(Objects.requireNonNull(policy));
+        return this;
+    }
+
+    /**
+     * Custom JSON serializer that is used to handle model types that are not contained in the Azure Search Documents
+     * library.
+     *
+     * @param jsonSerializer The serializer to serialize user defined models.
+     * @return The updated SearchIndexClientBuilder object.
+     */
+    public SearchIndexClientBuilder serializer(JsonSerializer jsonSerializer) {
+        this.jsonSerializer = jsonSerializer;
         return this;
     }
 

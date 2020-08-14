@@ -12,7 +12,7 @@ import java.util.Map;
 
 /** The Identity model. */
 @Fluent
-public final class Identity {
+public class Identity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Identity.class);
 
     /*

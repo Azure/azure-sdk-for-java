@@ -13,6 +13,8 @@ import com.azure.resourcemanager.cosmos.models.CosmosDBAccounts;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountListConnectionStringsResult;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountListKeysResult;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountListReadOnlyKeysResult;
+import com.azure.resourcemanager.cosmos.models.DatabaseAccountRegenerateKeyParameters;
+import com.azure.resourcemanager.cosmos.models.FailoverPolicies;
 import com.azure.resourcemanager.cosmos.models.FailoverPolicy;
 import com.azure.resourcemanager.cosmos.models.KeyKind;
 import com.azure.resourcemanager.cosmos.models.Location;
@@ -109,7 +111,8 @@ public class CosmosDBAccountsImpl
             .manager()
             .inner()
             .getDatabaseAccounts()
-            .failoverPriorityChangeAsync(groupName, accountName, policyInners);
+            .failoverPriorityChangeAsync(groupName, accountName,
+                new FailoverPolicies().withFailoverPolicies(policyInners));
     }
 
     @Override
@@ -172,6 +175,7 @@ public class CosmosDBAccountsImpl
 
     @Override
     public Mono<Void> regenerateKeyAsync(String groupName, String accountName, KeyKind keyKind) {
-        return this.manager().inner().getDatabaseAccounts().regenerateKeyAsync(groupName, accountName, keyKind);
+        return this.manager().inner().getDatabaseAccounts().regenerateKeyAsync(groupName, accountName,
+            new DatabaseAccountRegenerateKeyParameters().withKeyKind(keyKind));
     }
 }
