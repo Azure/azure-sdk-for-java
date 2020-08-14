@@ -1009,7 +1009,7 @@ public class BlobAsyncClientBase {
                 rangeGetContentMd5, context);
 
         return ChunkedDownloadUtils.downloadFirstChunk(finalRange, finalParallelTransferOptions, requestConditions,
-            downloadFunc)
+            downloadFunc, true)
             .flatMap(setupTuple3 -> {
                 long newCount = setupTuple3.getT1();
                 BlobRequestConditions finalConditions = setupTuple3.getT2();
