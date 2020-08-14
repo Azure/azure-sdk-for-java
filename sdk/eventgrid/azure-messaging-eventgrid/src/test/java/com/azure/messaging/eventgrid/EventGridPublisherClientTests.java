@@ -44,7 +44,7 @@ public class EventGridPublisherClientTests extends TestBase {
 
     private static final String CUSTOM_KEY = "EG_CUSTOM_KEY";
 
-    private static final String DUMMY_ENDPOINT = "dummyEndpoint";
+    private static final String DUMMY_ENDPOINT = "https://www.dummyEndpoint.com";
 
     private static final String DUMMY_KEY = "dummyKey";
 
