@@ -8,7 +8,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.Manager;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.sql.implementation.SqlServersImpl;
@@ -28,12 +28,13 @@ public class SqlServerManager extends Manager<SqlServerManager, SqlManagementCli
             profile,
             new SqlManagementClientBuilder()
                 .pipeline(httpPipeline)
-                .subscriptionId(profile.subscriptionId())
-                .endpoint(profile.environment().getResourceManagerEndpoint())
+                .environment(profile.getEnvironment())
+                .subscriptionId(profile.getSubscriptionId())
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .buildClient(),
             sdkContext);
         this.storageManager = StorageManager.authenticate(httpPipeline, profile);
-        this.tenantId = profile.tenantId();
+        this.tenantId = profile.getTenantId();
     }
 
     /** @return the storage manager in sql manager */

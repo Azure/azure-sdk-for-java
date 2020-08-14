@@ -5,7 +5,6 @@ package com.azure.resourcemanager.sql;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.resourcemanager.resources.core.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
@@ -212,9 +211,9 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
-    public void canCopySqlDatabase() throws Exception {
-        final String sqlPrimaryServerName = sdkContext.randomResourceName("sqlpri", 22);
-        final String sqlSecondaryServerName = sdkContext.randomResourceName("sqlsec", 22);
+    public void canCopySqlDatabase() {
+        final String sqlPrimaryServerName = generateRandomResourceName("sqlpri", 22);
+        final String sqlSecondaryServerName = generateRandomResourceName("sqlsec", 22);
         final String epName = "epSample";
         final String dbName = "dbSample";
         final String administratorLogin = "sqladmin";
@@ -263,12 +262,12 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
-    public void canCRUDSqlFailoverGroup() throws Exception {
-        final String sqlPrimaryServerName = sdkContext.randomResourceName("sqlpri", 22);
-        final String sqlSecondaryServerName = sdkContext.randomResourceName("sqlsec", 22);
-        final String sqlOtherServerName = sdkContext.randomResourceName("sql000", 22);
-        final String failoverGroupName = sdkContext.randomResourceName("fg", 22);
-        final String failoverGroupName2 = sdkContext.randomResourceName("fg2", 22);
+    public void canCRUDSqlFailoverGroup() {
+        final String sqlPrimaryServerName = generateRandomResourceName("sqlpri", 22);
+        final String sqlSecondaryServerName = generateRandomResourceName("sqlsec", 22);
+        final String sqlOtherServerName = generateRandomResourceName("sql000", 22);
+        final String failoverGroupName = generateRandomResourceName("fg", 22);
+        final String failoverGroupName2 = generateRandomResourceName("fg2", 22);
         final String dbName = "dbSample";
         final String administratorLogin = "sqladmin";
         final String administratorPassword = password();
@@ -408,8 +407,8 @@ public class SqlServerOperationsTests extends SqlServerTest {
         String sqlServerAdminName = "sqladmin";
         String sqlServerAdminPassword = password();
         String databaseName = "db-from-sample";
-        String id = sdkContext.randomUuid();
-        String storageName = sdkContext.randomResourceName(sqlServerName, 22);
+        String id = generateRandomUuid();
+        String storageName = generateRandomResourceName(sqlServerName, 22);
 
         // Create
         SqlServer sqlServer =
@@ -625,8 +624,8 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
         String sqlServerAdminName = "sqladmin";
         String sqlServerAdminPassword = password();
-        String id = sdkContext.randomUuid();
-        String storageName = sdkContext.randomResourceName(sqlServerName, 22);
+        String id = generateRandomUuid();
+        String storageName = generateRandomResourceName(sqlServerName, 22);
 
         SqlServer sqlServer =
             sqlServerManager
@@ -705,7 +704,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     public void canCRUDSqlServerWithFirewallRule() throws Exception {
         // Create
         String sqlServerAdminName = "sqladmin";
-        String id = sdkContext.randomUuid();
+        String id = generateRandomUuid();
 
         SqlServer sqlServer =
             sqlServerManager
@@ -870,7 +869,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
-    public void canUseCoolShortcutsForResourceCreation() throws Exception {
+    public void canUseCoolShortcutsForResourceCreation() {
         String database2Name = "database2";
         String database1InEPName = "database1InEP";
         String database2InEPName = "database2InEP";
@@ -961,7 +960,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
-    public void canCRUDSqlDatabase() throws Exception {
+    public void canCRUDSqlDatabase() {
         // Create
         SqlServer sqlServer = createSqlServer();
         Flux<Indexable> resourceStream =
@@ -987,7 +986,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         transparentDataEncryptionActivities = transparentDataEncryption.listActivities();
         Assertions.assertNotNull(transparentDataEncryptionActivities);
 
-        TestUtilities.sleep(10000, isRecordMode());
+        SdkContext.sleep(10000);
         transparentDataEncryption =
             sqlDatabase.getTransparentDataEncryption().updateStatus(TransparentDataEncryptionStatus.DISABLED);
         Assertions.assertNotNull(transparentDataEncryption);
@@ -1061,7 +1060,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
-    public void canManageReplicationLinks() throws Exception {
+    public void canManageReplicationLinks() {
         // Create
         String anotherSqlServerName = sqlServerName + "another";
         SqlServer sqlServer1 = createSqlServer();
@@ -1085,7 +1084,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
                 .withSourceDatabase(databaseInServer1.id())
                 .withMode(CreateMode.ONLINE_SECONDARY)
                 .create();
-        TestUtilities.sleep(2000, isRecordMode());
+        SdkContext.sleep(2000);
         List<ReplicationLink> replicationLinksInDb1 =
             new ArrayList<>(databaseInServer1.listReplicationLinks().values());
 
@@ -1105,12 +1104,12 @@ public class SqlServerOperationsTests extends SqlServerTest {
         // Failover
         replicationLinksInDb2.get(0).failover();
         replicationLinksInDb2.get(0).refresh();
-        TestUtilities.sleep(30000, isRecordMode());
+        SdkContext.sleep(30000);
         // Force failover
         replicationLinksInDb1.get(0).forceFailoverAllowDataLoss();
         replicationLinksInDb1.get(0).refresh();
 
-        TestUtilities.sleep(30000, isRecordMode());
+        SdkContext.sleep(30000);
 
         replicationLinksInDb2.get(0).delete();
         Assertions.assertEquals(databaseInServer2.listReplicationLinks().size(), 0);
@@ -1125,7 +1124,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
-    public void canDoOperationsOnDataWarehouse() throws Exception {
+    public void canDoOperationsOnDataWarehouse() {
         // Create
         SqlServer sqlServer = createSqlServer();
 
@@ -1175,7 +1174,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
-    public void canCRUDSqlDatabaseWithElasticPool() throws Exception {
+    public void canCRUDSqlDatabaseWithElasticPool() {
         // Create
         SqlServer sqlServer = createSqlServer();
 
