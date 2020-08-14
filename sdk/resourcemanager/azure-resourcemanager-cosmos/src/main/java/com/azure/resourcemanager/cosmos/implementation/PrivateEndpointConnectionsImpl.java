@@ -99,6 +99,11 @@ class PrivateEndpointConnectionsImpl
     }
 
     @Override
+    protected List<PrivateEndpointConnectionImpl> listChildResources() {
+        return listAsync().collectList().block();
+    }
+
+    @Override
     protected PrivateEndpointConnectionImpl newChildResource(String name) {
         return new PrivateEndpointConnectionImpl(name, getParent(), new PrivateEndpointConnectionInner(), this.client);
     }

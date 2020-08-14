@@ -228,6 +228,11 @@ class SchoolsImpl {
         }
 
         @Override
+        protected List<TeacherImpl> listChildResources() {
+            return new ArrayList<>();
+        }
+
+        @Override
         protected TeacherImpl newChildResource(String name) {
             return new TeacherImpl(name, this.getParent(), null);
         }
@@ -350,6 +355,11 @@ class SchoolsImpl {
         @Override
         protected Flux<StudentImpl> listChildResourcesAsync() {
             return Flux.empty();
+        }
+
+        @Override
+        protected List<StudentImpl> listChildResources() {
+            return new ArrayList<>();
         }
 
         @Override

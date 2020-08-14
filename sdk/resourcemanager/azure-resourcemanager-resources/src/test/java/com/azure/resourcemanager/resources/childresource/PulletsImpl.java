@@ -8,6 +8,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementat
 import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 class PulletsImpl extends ExternalChildResourcesCachedImpl<PulletImpl, Pullet, Object, ChickenImpl, Object> {
@@ -33,14 +34,19 @@ class PulletsImpl extends ExternalChildResourcesCachedImpl<PulletImpl, Pullet, O
     }
 
     @Override
-    protected Flux<PulletImpl> listChildResourcesAsync() {
+    protected List<PulletImpl> listChildResources() {
         List<PulletImpl> resources = new ArrayList<>();
         resources.add(new PulletImpl("Tilly", this.getParent()));
         resources.add(new PulletImpl("Clover", this.getParent()));
         resources.add(new PulletImpl("Savvy", this.getParent()));
         resources.add(new PulletImpl("Pinky", this.getParent()));
         resources.add(new PulletImpl("Goldilocks", this.getParent()));
-        return Flux.fromIterable(resources);
+        return Collections.unmodifiableList(resources);
+    }
+
+    @Override
+    protected Flux<PulletImpl> listChildResourcesAsync() {
+        return Flux.fromIterable(listChildResources());
     }
 
     @Override

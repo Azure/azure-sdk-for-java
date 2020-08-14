@@ -9,6 +9,7 @@ import com.azure.resourcemanager.redis.models.RedisPatchSchedule;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesCachedImpl;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -101,6 +102,11 @@ class RedisPatchSchedulesImpl
                 patchScheduleInner ->
                     new RedisPatchScheduleImpl(patchScheduleInner.name(), this.getParent(), patchScheduleInner))
             .onErrorResume(e -> Mono.empty());
+    }
+
+    @Override
+    protected List<RedisPatchScheduleImpl> listChildResources() {
+        return listChildResourcesAsync().collectList().block();
     }
 
     @Override

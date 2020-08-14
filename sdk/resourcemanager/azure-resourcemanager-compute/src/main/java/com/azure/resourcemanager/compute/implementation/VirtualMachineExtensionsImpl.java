@@ -115,7 +115,7 @@ class VirtualMachineExtensionsImpl
     }
 
     @Override
-    protected Flux<VirtualMachineExtensionImpl> listChildResourcesAsync() {
+    protected List<VirtualMachineExtensionImpl> listChildResources() {
         List<VirtualMachineExtensionImpl> childResources = new ArrayList<>();
         if (getParent().inner().resources() != null) {
             for (VirtualMachineExtensionInner inner : getParent().inner().resources()) {
@@ -133,7 +133,12 @@ class VirtualMachineExtensionsImpl
                 }
             }
         }
-        return Flux.fromIterable(childResources);
+        return Collections.unmodifiableList(childResources);
+    }
+
+    @Override
+    protected Flux<VirtualMachineExtensionImpl> listChildResourcesAsync() {
+        return Flux.fromIterable(listChildResources());
     }
 
     @Override

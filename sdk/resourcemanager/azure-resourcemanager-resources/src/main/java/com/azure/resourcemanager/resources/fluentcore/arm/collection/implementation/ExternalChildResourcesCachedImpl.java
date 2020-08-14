@@ -10,6 +10,8 @@ import com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -194,7 +196,9 @@ public abstract class ExternalChildResourcesCachedImpl<
      * Initializes the external child resource collection.
      */
     protected void cacheCollection() {
-        cacheCollectionAsync().block();
+        this.clear();
+        this.listChildResources()
+            .forEach(childResource -> this.childCollection.put(childResource.childResourceKey(), childResource));
     }
 
     /**
@@ -211,6 +215,13 @@ public abstract class ExternalChildResourcesCachedImpl<
     protected final boolean clearAfterCommit() {
         return false;
     }
+
+    /**
+     * Gets the list of external child resources.
+     *
+     * @return the list of external child resources
+     */
+    protected abstract List<FluentModelTImpl> listChildResources();
 
     /**
      * Gets the list of external child resources.

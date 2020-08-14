@@ -9,6 +9,7 @@ import com.azure.resourcemanager.redis.models.RedisFirewallRule;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesCachedImpl;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -72,6 +73,11 @@ class RedisFirewallRulesImpl
                 firewallRuleInner ->
                     new RedisFirewallRuleImpl(firewallRuleInner.name(), this.getParent(), firewallRuleInner))
             .onErrorResume(e -> Mono.empty());
+    }
+
+    @Override
+    protected List<RedisFirewallRuleImpl> listChildResources() {
+        return listChildResourcesAsync().collectList().block();
     }
 
     @Override
