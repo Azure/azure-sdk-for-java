@@ -3,7 +3,7 @@
 
 package com.azure.core.serializer.json.jackson;
 
-import com.azure.core.experimental.serializer.TypeReference;
+import com.azure.core.util.serializer.TypeReference;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
@@ -25,7 +25,6 @@ import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -87,11 +86,12 @@ public class JacksonJsonSerializerTests {
         Person person = new Person().setAge(50);
         byte[] expected = "{\"name\":null,\"age\":50}".getBytes(StandardCharsets.UTF_8);
 
-        StepVerifier.create(DEFAULT_SERIALIZER.serializeAsync(new ByteArrayOutputStream(), person))
-            .assertNext(actual -> {
-                assertNotNull(actual);
-                assertArrayEquals(expected, actual.toByteArray());
-            }).verifyComplete();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+        StepVerifier.create(DEFAULT_SERIALIZER.serializeAsync(stream, person))
+            .verifyComplete();
+
+        assertArrayEquals(expected, stream.toByteArray());
     }
 
     @Test
@@ -99,11 +99,12 @@ public class JacksonJsonSerializerTests {
         Person person = new Person().setAge(50);
         byte[] expected = "{\"name\":\"John Doe\",\"age\":50}".getBytes(StandardCharsets.UTF_8);
 
-        StepVerifier.create(CUSTOM_SERIALIZER.serializeAsync(new ByteArrayOutputStream(), person))
-            .assertNext(actual -> {
-                assertNotNull(actual);
-                assertArrayEquals(expected, actual.toByteArray());
-            }).verifyComplete();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+        StepVerifier.create(CUSTOM_SERIALIZER.serializeAsync(stream, person))
+            .verifyComplete();
+
+        assertArrayEquals(expected, stream.toByteArray());
     }
 
     private static final class PersonSerializer extends JsonSerializer<Person> {

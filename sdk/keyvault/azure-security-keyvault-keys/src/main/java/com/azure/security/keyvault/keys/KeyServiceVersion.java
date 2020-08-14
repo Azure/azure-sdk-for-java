@@ -10,7 +10,7 @@ import com.azure.core.util.ServiceVersion;
  */
 public enum KeyServiceVersion implements ServiceVersion {
     V7_0("7.0"),
-    V7_1_PREVIEW("7.1-preview");
+    V7_1("7.1");
 
     private final String version;
 
@@ -32,6 +32,6 @@ public enum KeyServiceVersion implements ServiceVersion {
      * @return the latest {@link KeyServiceVersion}
      */
     public static KeyServiceVersion getLatest() {
-        return V7_1_PREVIEW;
+        return V7_1;
     }
 }

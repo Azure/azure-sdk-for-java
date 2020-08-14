@@ -75,4 +75,8 @@ public final class CosmosDiagnostics {
 
         return this.clientSideRequestStatistics.getDuration();
     }
+
+    FeedResponseDiagnostics getFeedResponseDiagnostics() {
+        return feedResponseDiagnostics;
+    }
 }

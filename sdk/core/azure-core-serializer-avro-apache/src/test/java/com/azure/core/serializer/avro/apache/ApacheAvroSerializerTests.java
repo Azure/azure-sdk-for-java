@@ -3,11 +3,11 @@
 
 package com.azure.core.serializer.avro.apache;
 
-import com.azure.core.experimental.serializer.TypeReference;
 import com.azure.core.serializer.avro.apache.generatedtestsources.HandOfCards;
 import com.azure.core.serializer.avro.apache.generatedtestsources.LongLinkedList;
 import com.azure.core.serializer.avro.apache.generatedtestsources.PlayingCard;
 import com.azure.core.serializer.avro.apache.generatedtestsources.PlayingCardSuit;
+import com.azure.core.util.serializer.TypeReference;
 import org.apache.avro.util.Utf8;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -28,7 +28,6 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ApacheAvroSerializerTests {
@@ -232,12 +231,12 @@ public class ApacheAvroSerializerTests {
     @ParameterizedTest
     @MethodSource("simpleSerializationSupplier")
     public void simpleSerialization(String schema, Object value, byte[] expected) {
-        StepVerifier.create(getSerializer(schema).serializeAsync(new ByteArrayOutputStream(), value))
-            .assertNext(actual -> {
-                assertNotNull(actual);
-                assertArrayEquals(expected, actual.toByteArray());
-            })
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+        StepVerifier.create(getSerializer(schema).serializeAsync(stream, value))
             .verifyComplete();
+
+        assertArrayEquals(expected, stream.toByteArray());
     }
 
     private static Stream<Arguments> simpleSerializationSupplier() {
@@ -263,13 +262,13 @@ public class ApacheAvroSerializerTests {
     @ParameterizedTest
     @MethodSource("serializeEnumSupplier")
     public void serializeEnum(PlayingCardSuit playingCardSuit, byte[] expected) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
         StepVerifier.create(getSerializer(PlayingCardSuit.getClassSchema().toString())
-            .serializeAsync(new ByteArrayOutputStream(), playingCardSuit))
-            .assertNext(actual -> {
-                assertNotNull(actual);
-                assertArrayEquals(expected, actual.toByteArray());
-            })
+            .serializeAsync(stream, playingCardSuit))
             .verifyComplete();
+
+        assertArrayEquals(expected, stream.toByteArray());
     }
 
     private static Stream<Arguments> serializeEnumSupplier() {
@@ -284,12 +283,12 @@ public class ApacheAvroSerializerTests {
     @ParameterizedTest
     @MethodSource("serializeListAndMapSupplier")
     public void serializeListAndMap(Object obj, String schema, byte[] expected) {
-        StepVerifier.create(getSerializer(schema).serializeAsync(new ByteArrayOutputStream(), obj))
-            .assertNext(actual -> {
-                assertNotNull(actual);
-                assertArrayEquals(expected, actual.toByteArray());
-            })
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+        StepVerifier.create(getSerializer(schema).serializeAsync(stream, obj))
             .verifyComplete();
+
+        assertArrayEquals(expected, stream.toByteArray());
     }
 
     private static Stream<Arguments> serializeListAndMapSupplier() {
@@ -315,12 +314,12 @@ public class ApacheAvroSerializerTests {
     @ParameterizedTest
     @MethodSource("serializeRecordSupplier")
     public void serializeRecord(Object obj, String schema, byte[] expected) {
-        StepVerifier.create(getSerializer(schema).serializeAsync(new ByteArrayOutputStream(), obj))
-            .assertNext(actual -> {
-                assertNotNull(actual);
-                assertArrayEquals(expected, actual.toByteArray());
-            })
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+        StepVerifier.create(getSerializer(schema).serializeAsync(stream, obj))
             .verifyComplete();
+
+        assertArrayEquals(expected, stream.toByteArray());
     }
 
     private static Stream<Arguments> serializeRecordSupplier() {

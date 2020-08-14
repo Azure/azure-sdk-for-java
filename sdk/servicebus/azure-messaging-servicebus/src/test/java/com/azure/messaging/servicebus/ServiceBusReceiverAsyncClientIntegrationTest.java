@@ -7,8 +7,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
+import com.azure.messaging.servicebus.models.LockRenewalStatus;
 import com.azure.messaging.servicebus.models.ReceiveMode;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
@@ -22,6 +22,7 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -48,10 +49,10 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiverAsyncClientIntegrationTest.class);
     private final AtomicInteger messagesPending = new AtomicInteger();
     private final List<Long> messagesDeferredPending = new ArrayList<>();
+    private final boolean isSessionEnabled = false;
 
     private ServiceBusReceiverAsyncClient receiver;
     private ServiceBusSenderAsyncClient sender;
-    private boolean isSessionEnabled;
 
     /**
      * Receiver used to clean up resources in {@link #afterTest()}.
@@ -132,7 +133,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we can create transaction and complete.
      */
-    @MethodSource("messagingEntityProvider")
+    @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
     @ParameterizedTest
     void createTransactionAndRollbackMessagesTest(MessagingEntityType entityType) {
         // Arrange
@@ -167,9 +168,9 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     }
 
     /**
-     * This specifically test that we can use lockToken. This use case is valid when a message is moved from one
-     * machine to another machine and user just have access to lock token.
-     * Verifies that we can complete a message with lock token only with a transaction and rollback.
+     * This specifically test that we can use lockToken. This use case is valid when a message is moved from one machine
+     * to another machine and user just have access to lock token. Verifies that we can complete a message with lock
+     * token only with a transaction and rollback.
      */
     @Test
     void transactionWithLockTokenTest() {
@@ -202,7 +203,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // receive a message and get lock token.
         StepVerifier.create(receiver.receiveMessages().next()
             .map(messageContext -> {
-                ServiceBusReceivedMessage received =  messageContext.getMessage();
+                ServiceBusReceivedMessage received = messageContext.getMessage();
                 messageLockToken.set(received.getLockToken());
                 return messageContext;
             }))
@@ -221,12 +222,9 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     }
 
     /**
-     * Verifies that we can do following using shared connection and on non session entity.
-     * 1. create transaction
-     * 2. receive and settle with transactionContext.
-     * 3. commit Rollback this transaction.
+     * Verifies that we can do following using shared connection and on non session entity. 1. create transaction 2.
+     * receive and settle with transactionContext. 3. commit Rollback this transaction.
      */
-
     @ParameterizedTest
     @EnumSource(DispositionStatus.class)
     void transactionSendReceiveAndCommit(DispositionStatus dispositionStatus) {
@@ -292,10 +290,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     }
 
     /**
-     * Verifies that we can do following on different clients i.e. sender and receiver.
-     * 1. create transaction using sender
-     * 2. receive and complete with transactionContext.
-     * 3. Commit this transaction using sender.
+     * Verifies that we can do following on different clients i.e. sender and receiver. 1. create transaction using
+     * sender 2. receive and complete with transactionContext. 3. Commit this transaction using sender.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
     @ParameterizedTest
@@ -842,7 +838,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         }
     }
 
-
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
     @ParameterizedTest
     void sendReceiveMessageWithVariousPropertyTypes(MessagingEntityType entityType) {
@@ -952,7 +947,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         sendMessage(message).block(TIMEOUT);
 
-        final ServiceBusReceivedMessageContext receivedContext = receiver.receiveMessages().next().block(OPERATION_TIMEOUT);
+        final ServiceBusReceivedMessageContext receivedContext = receiver.receiveMessages().next()
+            .block(OPERATION_TIMEOUT);
         assertNotNull(receivedContext);
 
         final ServiceBusReceivedMessage receivedMessage = receivedContext.getMessage();
@@ -976,6 +972,52 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         }
     }
 
+    @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
+    @ParameterizedTest
+    void renewMessageLock(MessagingEntityType entityType) throws InterruptedException {
+        // Arrange
+        final boolean isSessionEnabled = false;
+        setSenderAndReceiver(entityType, 0, isSessionEnabled);
+
+        final Duration maximumDuration = Duration.ofSeconds(35);
+        final Duration sleepDuration = maximumDuration.plusMillis(500);
+        final String messageId = UUID.randomUUID().toString();
+        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
+
+        sendMessage(message).block(TIMEOUT);
+
+        // Assert & Act
+        StepVerifier.create(receiver.receiveMessages())
+            .assertNext(receivedContext -> {
+                final ServiceBusReceivedMessage receivedMessage = receivedContext.getMessage();
+                assertNotNull(receivedMessage);
+
+                final Instant lockedUntil = receivedMessage.getLockedUntil();
+                assertNotNull(lockedUntil);
+
+                final LockRenewalOperation operation = receiver.getAutoRenewMessageLock(
+                    receivedMessage.getLockToken(), maximumDuration);
+
+                assertEquals(LockRenewalStatus.RUNNING, operation.getStatus());
+                try {
+                    Thread.sleep(sleepDuration.toMillis());
+
+                    assertTrue(lockedUntil.isBefore(operation.getLockedUntil()));
+                    assertEquals(LockRenewalStatus.COMPLETE, operation.getStatus());
+                } catch (InterruptedException e) {
+                    logger.error("Could not sleep.", e);
+
+                    operation.close();
+                    assertEquals(LockRenewalStatus.CANCELLED, operation.getStatus());
+                } finally {
+                    int numberCompleted = completeMessages(receiver,
+                        Collections.singletonList(receivedMessage.getLockToken()));
+                    messagesPending.addAndGet(-numberCompleted);
+                }
+            }).thenCancel()
+            .verify(Duration.ofMinutes(3));
+    }
+
     /**
      * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created.
      */
@@ -984,16 +1026,18 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     }
 
     /**
-     * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created with
-     * shared connection as needed.
+     * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created with shared
+     * connection as needed.
      */
-    private void setSenderAndReceiver(MessagingEntityType entityType, int entityIndex, boolean isSessionEnabled, boolean shareConnection) {
-        this.sender = getSenderBuilder(false, entityType, entityIndex, isSessionEnabled, shareConnection).buildAsyncClient();
-
+    private void setSenderAndReceiver(MessagingEntityType entityType, int entityIndex, boolean isSessionEnabled,
+        boolean shareConnection) {
+        this.sender = getSenderBuilder(false, entityType, entityIndex, isSessionEnabled, shareConnection)
+            .buildAsyncClient();
 
         if (isSessionEnabled) {
             assertNotNull(sessionId, "'sessionId' should have been set.");
-            this.receiver = getSessionReceiverBuilder(false, entityType, entityIndex, Function.identity(), shareConnection)
+            this.receiver = getSessionReceiverBuilder(false, entityType, entityIndex, Function.identity(),
+                shareConnection)
                 .sessionId(sessionId)
                 .buildAsyncClient();
             this.receiveAndDeleteReceiver = getSessionReceiverBuilder(false, entityType, entityIndex,
@@ -1003,9 +1047,11 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
                 .buildAsyncClient();
         } else {
-            this.receiver = getReceiverBuilder(false, entityType, entityIndex, Function.identity(), shareConnection)
+            this.receiver = getReceiverBuilder(false, entityType, entityIndex, Function.identity(),
+                shareConnection)
                 .buildAsyncClient();
-            this.receiveAndDeleteReceiver = getReceiverBuilder(false, entityType, entityIndex, Function.identity(), shareConnection)
+            this.receiveAndDeleteReceiver = getReceiverBuilder(false, entityType, entityIndex,
+                Function.identity(), shareConnection)
                 .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
                 .buildAsyncClient();
         }
@@ -1037,6 +1083,9 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final ServiceBusReceivedMessage receivedDeferredMessage = client
             .receiveDeferredMessage(receivedMessage.getSequenceNumber())
             .block(TIMEOUT);
+
+        assertNotNull(receivedDeferredMessage);
+
         receiver.complete(receivedDeferredMessage.getLockToken()).block(TIMEOUT);
     }
 

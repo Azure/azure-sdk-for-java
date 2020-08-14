@@ -56,7 +56,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.28</version> <!-- {x-version-update;org.slf4j:slf4j-api;external_dependency} -->
+            <version>1.7.30</version> <!-- {x-version-update;org.slf4j:slf4j-api;external_dependency} -->
         </dependency>
 
         <dependency>
@@ -69,7 +69,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.13-beta-3</version> <!-- {x-version-update;junit:junit;external_dependency} -->
+            <version>4.13</version> <!-- {x-version-update;junit:junit;external_dependency} -->
             <scope>test</scope>
         </dependency>
 

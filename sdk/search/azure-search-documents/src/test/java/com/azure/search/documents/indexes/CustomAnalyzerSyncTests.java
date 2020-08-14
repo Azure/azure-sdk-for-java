@@ -4,6 +4,7 @@ package com.azure.search.documents.indexes;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
+import com.azure.core.util.ExpandableStringEnum;
 import com.azure.search.documents.SearchClient;
 import com.azure.search.documents.SearchDocument;
 import com.azure.search.documents.SearchTestBase;
@@ -74,6 +75,7 @@ import com.azure.search.documents.models.SearchResult;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -95,7 +97,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class CustomAnalyzerSyncTests extends SearchTestBase {
     private static final String NAME_PREFIX = "azsmnet";
-    private static final Collection<CharFilterName> CHAR_FILTER_NAMES = new ArrayList<>(CharFilterName.values());
+
+    private static final List<TokenFilterName> TOKEN_FILTER_NAMES = getExpandableEnumValues(TokenFilterName.class);
+    private static final List<CharFilterName> CHAR_FILTER_NAMES = getExpandableEnumValues(CharFilterName.class);
+    private static final List<LexicalAnalyzerName> LEXICAL_ANALYZER_NAMES =
+        getExpandableEnumValues(LexicalAnalyzerName.class);
+    private static final List<LexicalTokenizerName> LEXICAL_TOKENIZER_NAMES =
+        getExpandableEnumValues(LexicalTokenizerName.class);
 
     private SearchIndexClient searchIndexClient;
     private final List<String> indexesToCleanup = new ArrayList<>();
@@ -215,19 +223,17 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
         searchIndexClient.createIndex(index);
         indexesToCleanup.add(index.getName());
 
-        LexicalAnalyzerName.values()
-            .stream()
+        LEXICAL_ANALYZER_NAMES.stream()
             .map(an -> new AnalyzeTextOptions("One two", an))
             .forEach(r -> searchIndexClient.analyzeText(index.getName(), r));
 
-        LexicalTokenizerName.values()
-            .stream()
+        LEXICAL_TOKENIZER_NAMES.stream()
             .map(tn -> new AnalyzeTextOptions("One two", tn))
             .forEach(r -> searchIndexClient.analyzeText(index.getName(), r));
 
         AnalyzeTextOptions request = new AnalyzeTextOptions("One two", LexicalTokenizerName.WHITESPACE)
-            .setTokenFilters(TokenFilterName.values().toArray(new TokenFilterName[0]))
-            .setCharFilters(CharFilterName.values().toArray(new CharFilterName[0]));
+            .setTokenFilters(TOKEN_FILTER_NAMES.toArray(new TokenFilterName[0]))
+            .setCharFilters(CHAR_FILTER_NAMES.toArray(new CharFilterName[0]));
         searchIndexClient.analyzeText(index.getName(), request);
     }
 
@@ -662,7 +668,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
     }
 
     SearchIndex prepareIndexWithAllLexicalAnalyzerNames() {
-        List<LexicalAnalyzerName> allLexicalAnalyzerNames = new ArrayList<>(LexicalAnalyzerName.values());
+        List<LexicalAnalyzerName> allLexicalAnalyzerNames = LEXICAL_ANALYZER_NAMES;
         allLexicalAnalyzerNames.sort(Comparator.comparing(LexicalAnalyzerName::toString));
 
         List<SearchField> fields = new ArrayList<>();
@@ -695,24 +701,27 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
     }
 
     SearchIndex prepareIndexWithAllAnalysisComponentNames() {
+        List<TokenFilterName> tokenFilters = TOKEN_FILTER_NAMES;
+        tokenFilters.sort(Comparator.comparing(TokenFilterName::toString));
+
+        List<CharFilterName> charFilters = CHAR_FILTER_NAMES;
+        charFilters.sort(Comparator.comparing(CharFilterName::toString));
+
         LexicalAnalyzer analyzerWithAllTokenFilterAndCharFilters =
             new CustomAnalyzer("abc", LexicalTokenizerName.LOWERCASE)
-                .setTokenFilters(TokenFilterName.values()
-                    .stream()
-                    .sorted(Comparator.comparing(TokenFilterName::toString))
-                    .collect(Collectors.toList()))
-                .setCharFilters(CHAR_FILTER_NAMES
-                    .stream()
-                    .sorted(Comparator.comparing(CharFilterName::toString))
-                    .collect(Collectors.toList()));
+                .setTokenFilters(tokenFilters)
+                .setCharFilters(charFilters);
 
         SearchIndex index = createTestIndex(null);
         List<LexicalAnalyzer> analyzers = new ArrayList<>();
         analyzers.add(analyzerWithAllTokenFilterAndCharFilters);
-        analyzers.addAll(LexicalTokenizerName.values()
-            .stream()
-            .sorted(Comparator.comparing(LexicalTokenizerName::toString))
-            .map(tn -> new CustomAnalyzer(generateName(), tn))
+        String nameBase = generateName();
+
+        List<LexicalTokenizerName> analyzerNames = LEXICAL_TOKENIZER_NAMES;
+        analyzerNames.sort(Comparator.comparing(LexicalTokenizerName::toString));
+
+        analyzers.addAll(analyzerNames.stream()
+            .map(tn -> new CustomAnalyzer(nameBase + tn, tn))
             .collect(Collectors.toList()));
 
         analyzers.sort(Comparator.comparing(LexicalAnalyzer::getName));
@@ -1057,9 +1066,31 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
     private List<LexicalAnalyzerName> getAnalyzersAllowedForSearchAnalyzerAndIndexAnalyzer() {
         // Only non-language analyzer names can be set on the searchAnalyzer and indexAnalyzer properties.
         // ASSUMPTION: Only language analyzers end in .lucene or .microsoft.
-        return LexicalAnalyzerName.values()
-            .stream()
+        return LEXICAL_ANALYZER_NAMES.stream()
             .filter(an -> !an.toString().endsWith(".lucene") && !an.toString().endsWith(".microsoft"))
             .collect(Collectors.toList());
+    }
+
+    /*
+     * This helper method is used when we want to retrieve all declared ExpandableStringEnum values. Using the
+     * '.values()' method isn't consistently safe as that would include any custom names that have been added into
+     * the enum during runtime.
+     */
+    private static <T extends ExpandableStringEnum<T>> List<T> getExpandableEnumValues(Class<T> clazz) {
+        List<T> fieldValues = new ArrayList<>();
+
+        for (Field field : clazz.getDeclaredFields()) {
+            if (field.getType() != clazz) {
+                continue;
+            }
+
+            try {
+                fieldValues.add(clazz.cast(field.get(null)));
+            } catch (IllegalAccessException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+
+        return fieldValues;
     }
 }

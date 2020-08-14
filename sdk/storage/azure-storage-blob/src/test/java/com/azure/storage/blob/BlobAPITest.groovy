@@ -9,8 +9,7 @@ import com.azure.core.util.polling.LongRunningOperationStatus
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.ArchiveStatus
-import com.azure.storage.blob.options.BlobBeginCopyOptions
-import com.azure.storage.blob.options.BlobCopyFromUrlOptions
+import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.models.BlobRange
@@ -30,6 +29,8 @@ import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.RehydratePriority
 import com.azure.storage.blob.models.SyncCopyStatusType
+import com.azure.storage.blob.options.BlobBeginCopyOptions
+import com.azure.storage.blob.options.BlobCopyFromUrlOptions
 import com.azure.storage.blob.options.BlobGetTagsOptions
 import com.azure.storage.blob.options.BlobParallelUploadOptions
 import com.azure.storage.blob.options.BlobSetAccessTierOptions
@@ -1563,7 +1564,7 @@ class BlobAPITest extends APISpec {
     def "Copy"() {
         setup:
         def copyDestBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient()
-        def poller = copyDestBlob.beginCopy(bc.getBlobUrl(), Duration.ofSeconds(1))
+        def poller = copyDestBlob.beginCopy(bc.getBlobUrl(), getPollingDuration(1000))
 
         when:
         def response = poller.blockLast()
@@ -1588,7 +1589,7 @@ class BlobAPITest extends APISpec {
         def copyDestBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient()
 
         when:
-        def poller = copyDestBlob.beginCopy(bc.getBlobUrl(), Duration.ofSeconds(1))
+        def poller = copyDestBlob.beginCopy(bc.getBlobUrl(), getPollingDuration(1000))
         def verifier = StepVerifier.create(poller.take(1))
 
         then:
@@ -1605,7 +1606,7 @@ class BlobAPITest extends APISpec {
         def copyDestBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient()
 
         when:
-        def poller = copyDestBlob.beginCopy(bc.getBlobUrl(), null, null, null, null, null, null)
+        def poller = copyDestBlob.beginCopy(bc.getBlobUrl(), null, null, null, null, null, getPollingDuration(1000))
 
         then:
         def lastResponse = poller.doOnNext({
@@ -1643,7 +1644,7 @@ class BlobAPITest extends APISpec {
         }
 
         when:
-        def poller = bu2.beginCopy(bc.getBlobUrl(), metadata, null, null, null, null, Duration.ofSeconds(1))
+        def poller = bu2.beginCopy(bc.getBlobUrl(), metadata, null, null, null, null, getPollingDuration(1000))
         poller.blockLast()
 
         then:
@@ -1671,7 +1672,7 @@ class BlobAPITest extends APISpec {
 
         when:
         def poller = bu2.beginCopy(new BlobBeginCopyOptions(bc.getBlobUrl()).setTags(tags)
-            .setPollInterval(Duration.ofSeconds(1)))
+            .setPollInterval(getPollingDuration(1000)))
         poller.blockLast()
 
         then:
@@ -1699,7 +1700,7 @@ class BlobAPITest extends APISpec {
 
         when:
         def poller = bu2.beginCopy(new BlobBeginCopyOptions(appendBlobClient.getBlobUrl()).setSealDestination(destination)
-            .setPollInterval(Duration.ofSeconds(1)))
+            .setPollInterval(getPollingDuration(1000)))
         poller.blockLast()
 
         then:
@@ -1718,53 +1719,61 @@ class BlobAPITest extends APISpec {
     @Unroll
     def "Copy source AC"() {
         setup:
+        def t = new HashMap<String, String>()
+        t.put("foo", "bar")
+        bc.setTags(t)
         def copyDestBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient()
         match = setupBlobMatchCondition(bc, match)
-        def mac = new RequestConditions()
+        def mac = new BlobBeginCopySourceRequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
+            .setTagsConditions(tags)
 
         when:
-        def poller = copyDestBlob.beginCopy(bc.getBlobUrl(), null, null, null, mac, null, null)
+        def poller = copyDestBlob.beginCopy(new BlobBeginCopyOptions(bc.getBlobUrl()).setSourceRequestConditions(mac))
         def response = poller.blockLast()
 
         then:
         response.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
 
         where:
-        modified | unmodified | match        | noneMatch
-        null     | null       | null         | null
-        oldDate  | null       | null         | null
-        null     | newDate    | null         | null
-        null     | null       | receivedEtag | null
-        null     | null       | null         | garbageEtag
+        modified | unmodified | match        | noneMatch    | tags
+        null     | null       | null         | null         | null
+        oldDate  | null       | null         | null         | null
+        null     | newDate    | null         | null         | null
+        null     | null       | receivedEtag | null         | null
+        null     | null       | null         | garbageEtag  | null
+        null     | null       | null         | null         | "\"foo\" = 'bar'"
     }
 
     @Unroll
     def "Copy source AC fail"() {
         setup:
-        def bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        def copyDestBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient()
         noneMatch = setupBlobMatchCondition(bc, noneMatch)
-        def mac = new RequestConditions()
+        def mac = new BlobBeginCopySourceRequestConditions()
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
+            .setTagsConditions(tags)
 
         when:
-        bu2.copyFromUrlWithResponse(bc.getBlobUrl(), null, null, mac, null, null, null)
+        def poller = copyDestBlob.beginCopy(new BlobBeginCopyOptions(bc.getBlobUrl()).setSourceRequestConditions(mac))
+        poller.blockLast()
 
         then:
         thrown(BlobStorageException)
 
         where:
-        modified | unmodified | match       | noneMatch
-        newDate  | null       | null        | null
-        null     | oldDate    | null        | null
-        null     | null       | garbageEtag | null
-        null     | null       | null        | receivedEtag
+        modified | unmodified | match       | noneMatch     | tags
+        newDate  | null       | null        | null          | null
+        null     | oldDate    | null        | null          | null
+        null     | null       | garbageEtag | null          | null
+        null     | null       | null        | receivedEtag  | null
+        null     | null       | null         | null         | "\"notfoo\" = 'notbar'"
     }
 
     @Unroll
@@ -1786,7 +1795,7 @@ class BlobAPITest extends APISpec {
             .setTagsConditions(tags)
 
         when:
-        def poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, bac, Duration.ofSeconds(1))
+        def poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, bac, getPollingDuration(1000))
         def response = poller.blockLast()
 
         then:
@@ -1853,7 +1862,7 @@ class BlobAPITest extends APISpec {
         def blobRequestConditions = new BlobRequestConditions().setLeaseId(leaseId)
 
         when:
-        def poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, blobRequestConditions, Duration.ofMillis(500))
+        def poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, blobRequestConditions, getPollingDuration(500))
         def response = poller.poll()
 
         assert response.getStatus() != LongRunningOperationStatus.FAILED
@@ -1884,7 +1893,7 @@ class BlobAPITest extends APISpec {
         def bu2 = cu2.getBlobClient(generateBlobName())
 
         when:
-        def poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, null, Duration.ofSeconds(1))
+        def poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, null, getPollingDuration(1000))
         def lastResponse = poller.poll()
 
         assert lastResponse != null
@@ -1921,7 +1930,7 @@ class BlobAPITest extends APISpec {
         def blobAccess = new BlobRequestConditions().setLeaseId(leaseId)
 
         when:
-        def poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, blobAccess, Duration.ofSeconds(1))
+        def poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, blobAccess, getPollingDuration(1000))
         def lastResponse = poller.poll()
 
         then:
