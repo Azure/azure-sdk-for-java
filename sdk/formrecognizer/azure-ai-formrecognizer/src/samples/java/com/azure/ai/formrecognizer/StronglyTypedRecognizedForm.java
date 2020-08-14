@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.models.OperationResult;
+import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
@@ -33,7 +33,7 @@ public class StronglyTypedRecognizedForm {
 
         String receiptUrl = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/formrecognizer"
             + "/azure-ai-formrecognizer/src/samples/java/sample-forms/receipts/contoso-allinone.jpg";
-        SyncPoller<OperationResult, List<RecognizedForm>> recognizeReceiptPoller =
+        SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> recognizeReceiptPoller =
             client.beginRecognizeReceiptsFromUrl(receiptUrl);
 
         List<RecognizedForm> receiptPageResults = recognizeReceiptPoller.getFinalResult();

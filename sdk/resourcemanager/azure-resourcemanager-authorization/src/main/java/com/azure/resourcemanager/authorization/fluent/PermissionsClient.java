@@ -183,6 +183,7 @@ public final class PermissionsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-01-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(
                 this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(), context)
@@ -227,7 +228,7 @@ public final class PermissionsClient {
     public PagedFlux<PermissionInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listForResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listForResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -393,6 +394,7 @@ public final class PermissionsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-01-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .listForResource(
                 this.client.getEndpoint(),
@@ -473,7 +475,7 @@ public final class PermissionsClient {
                     resourceType,
                     resourceName,
                     context),
-            nextLink -> listForResourceNextSinglePageAsync(nextLink));
+            nextLink -> listForResourceNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -572,6 +574,7 @@ public final class PermissionsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listForResourceGroupNext(nextLink, context)
             .map(
@@ -628,6 +631,7 @@ public final class PermissionsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listForResourceNext(nextLink, context)
             .map(

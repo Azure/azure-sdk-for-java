@@ -343,8 +343,13 @@ public final class ModelBridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> FeedResponse<T> createFeedResponseWithQueryMetrics(List<T> results,
-                                                                         Map<String, String> headers, ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
-        return new FeedResponse<>(results, headers, queryMetricsMap);
+                                                                         Map<String,
+                                                                         String> headers,
+                                                                         ConcurrentMap<String, QueryMetrics> queryMetricsMap,
+                                                                         QueryInfo.QueryPlanDiagnosticsContext diagnosticsContext) {
+        FeedResponse<T> feedResponse = new FeedResponse<>(results, headers, queryMetricsMap);
+        feedResponse.setQueryPlanDiagnosticsContext(diagnosticsContext);
+        return feedResponse;
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -355,6 +360,11 @@ public final class ModelBridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> ConcurrentMap<String, QueryMetrics> queryMetrics(FeedResponse<T> feedResponse) {
         return feedResponse.queryMetrics();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <T> QueryInfo.QueryPlanDiagnosticsContext getQueryPlanDiagnosticsContext(FeedResponse<T> feedResponse) {
+        return feedResponse.getQueryPlanDiagnosticsContext();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -653,6 +663,11 @@ public final class ModelBridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static void addQueryInfoToFeedResponse(FeedResponse<?> feedResponse, QueryInfo queryInfo){
         feedResponse.setQueryInfo(queryInfo);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static void addQueryPlanDiagnosticsContextToFeedResponse(FeedResponse<?> feedResponse, QueryInfo.QueryPlanDiagnosticsContext queryPlanDiagnosticsContext){
+        feedResponse.setQueryPlanDiagnosticsContext(queryPlanDiagnosticsContext);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

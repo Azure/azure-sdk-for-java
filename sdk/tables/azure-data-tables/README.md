@@ -53,7 +53,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [package]: https://search.maven.org/artifact/com.azure/azure-data-tables
 [samples_readme]: src/samples/README.md
-[samples]: src/samples/java/com/azure/data/tables
+[samples]: src/samples/java/
 [source_code]: src
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Ftables%2Fazure-data-tables%2FREADME.png)

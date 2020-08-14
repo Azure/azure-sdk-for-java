@@ -1,4 +1,14 @@
 # Release History
+## 7.0.0-beta.6 (Unreleased)
+
+
+## 7.0.0-beta.5 (2020-08-11)
+- Remove public constructor for QueueDescription, TopicDescription, SubscriptionDescription.
+- Expose CreateQueueOptions, CreateTopicOptions, CreateSubscriptionOptions to create entities.
+- Flatten and remove MessageCountDetails in QueueRuntimeInfo, TopicRuntimeInfo, and SubscriptionRuntimeInfo.
+- Limiting visibility of properties on QueueDescription, TopicDescription, SubscriptionDescription to only those that 
+  can be updated.
+- Added a short timeout of 1 second in between messages for sync receive only.
 
 ## 7.0.0-beta.4 (2020-07-10)
 - Add support for send messages via another entity.

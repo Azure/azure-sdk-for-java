@@ -213,7 +213,7 @@ public final class AvailableServiceAliasesClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AvailableServiceAliasInner> listAsync(String location, Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(location, context), nextLink -> listNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(location, context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -388,7 +388,7 @@ public final class AvailableServiceAliasesClient {
         String resourceGroupName, String location, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, location, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**

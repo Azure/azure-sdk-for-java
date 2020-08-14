@@ -188,6 +188,7 @@ public final class PrivateLinkResourcesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-06-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .listByServer(
                 this.client.getEndpoint(),
@@ -242,7 +243,7 @@ public final class PrivateLinkResourcesClient {
         String resourceGroupName, String serverName, Context context) {
         return new PagedFlux<>(
             () -> listByServerSinglePageAsync(resourceGroupName, serverName, context),
-            nextLink -> listByServerNextSinglePageAsync(nextLink));
+            nextLink -> listByServerNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -371,6 +372,7 @@ public final class PrivateLinkResourcesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-06-01-preview";
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
@@ -514,6 +516,7 @@ public final class PrivateLinkResourcesClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByServerNext(nextLink, context)
             .map(

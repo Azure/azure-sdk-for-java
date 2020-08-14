@@ -229,7 +229,7 @@ public final class NetworkInterfaceLoadBalancersClient {
         String resourceGroupName, String networkInterfaceName, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, networkInterfaceName, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**

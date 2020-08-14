@@ -22,6 +22,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -86,10 +87,13 @@ public class DocumentQueryExecutionContextFactory {
             QueryPlanRetriever
                 .getQueryPlanThroughGatewayAsync(client, query, resourceLink);
 
-        return collectionObs.single().flatMap(collectionValueHolder ->
-                      queryExecutionInfoMono.flatMap(partitionedQueryExecutionInfo -> {
+        return collectionObs.single().flatMap(collectionValueHolder -> {
+                      Instant startTime = Instant.now();
+                      return queryExecutionInfoMono.flatMap(partitionedQueryExecutionInfo -> {
+                          Instant endTime = Instant.now();
                           QueryInfo queryInfo =
                               partitionedQueryExecutionInfo.getQueryInfo();
+                          queryInfo.setQueryPlanDiagnosticsContext(new QueryInfo.QueryPlanDiagnosticsContext(startTime, endTime));
 
                           Mono<List<PartitionKeyRange>> partitionKeyRanges;
                           // The partitionKeyRangeIdInternal is no more a public API on
@@ -137,7 +141,7 @@ public class DocumentQueryExecutionContextFactory {
                                                                                                               correlatedActivityId)
                                                               .single());
 
-                      })).flux();
+                      });}).flux();
     }
 
 	public static <T extends Resource> Flux<? extends IDocumentQueryExecutionContext<T>> createSpecializedDocumentQueryExecutionContextAsync(

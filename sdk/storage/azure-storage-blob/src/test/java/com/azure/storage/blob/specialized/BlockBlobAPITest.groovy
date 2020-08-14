@@ -1188,6 +1188,7 @@ class BlockBlobAPITest extends APISpec {
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
     @Requires({ liveMode() })
+    @Ignore("Timeouts")
     def "Async buffered upload"() {
         setup:
         def blobAsyncClient = getPrimaryServiceClientForWrites(bufferSize)
@@ -1298,13 +1299,14 @@ class BlockBlobAPITest extends APISpec {
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
     @Requires({ liveMode() })
+    @Ignore("Timeouts")
     def "Buffered upload chunked source"() {
         /*
         This test should validate that the upload should work regardless of what format the passed data is in because
         it will be chunked appropriately.
          */
         setup:
-        def blobAsyncClient = getPrimaryServiceClientForWrites(bufferSize)
+        def blobAsyncClient = getPrimaryServiceClientForWrites(bufferSize * Constants.MB)
             .getBlobContainerAsyncClient(blobAsyncClient.getContainerName())
             .getBlobAsyncClient(blobAsyncClient.getBlobName())
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(bufferSize * Constants.MB).setMaxConcurrency(numBuffers).setMaxSingleUploadSizeLong(4 * Constants.MB)

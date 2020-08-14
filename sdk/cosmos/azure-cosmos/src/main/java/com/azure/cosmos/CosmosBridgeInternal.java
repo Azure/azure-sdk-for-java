@@ -12,6 +12,7 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import static com.azure.cosmos.implementation.Warning.INTERNAL_USE_ONLY_WARNING;
@@ -120,6 +121,6 @@ public final class CosmosBridgeInternal {
         return UtilBridgeInternal.createCosmosPagedFlux(transformer.transform(container.queryItemsInternalFunc(
             sqlQuerySpec,
             cosmosQueryRequestOptions,
-            ObjectNode.class)));
+            JsonNode.class)));
     }
 }

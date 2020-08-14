@@ -293,8 +293,8 @@ public final class GalleriesClient
             createOrUpdateWithResponseAsync(resourceGroupName, galleryName, gallery);
         return this
             .client
-            .<GalleryInner, GalleryInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), GalleryInner.class, GalleryInner.class);
+            .<GalleryInner, GalleryInner>getLroResult(
+                mono, this.client.getHttpPipeline(), GalleryInner.class, GalleryInner.class, Context.NONE);
     }
 
     /**
@@ -313,12 +313,13 @@ public final class GalleriesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<GalleryInner>, GalleryInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String galleryName, GalleryInner gallery, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, galleryName, gallery, context);
         return this
             .client
-            .<GalleryInner, GalleryInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), GalleryInner.class, GalleryInner.class);
+            .<GalleryInner, GalleryInner>getLroResult(
+                mono, this.client.getHttpPipeline(), GalleryInner.class, GalleryInner.class, context);
     }
 
     /**
@@ -560,8 +561,8 @@ public final class GalleriesClient
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, galleryName, gallery);
         return this
             .client
-            .<GalleryInner, GalleryInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), GalleryInner.class, GalleryInner.class);
+            .<GalleryInner, GalleryInner>getLroResult(
+                mono, this.client.getHttpPipeline(), GalleryInner.class, GalleryInner.class, Context.NONE);
     }
 
     /**
@@ -580,12 +581,13 @@ public final class GalleriesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<GalleryInner>, GalleryInner> beginUpdateAsync(
         String resourceGroupName, String galleryName, GalleryUpdate gallery, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateWithResponseAsync(resourceGroupName, galleryName, gallery, context);
         return this
             .client
-            .<GalleryInner, GalleryInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), GalleryInner.class, GalleryInner.class);
+            .<GalleryInner, GalleryInner>getLroResult(
+                mono, this.client.getHttpPipeline(), GalleryInner.class, GalleryInner.class, context);
     }
 
     /**
@@ -974,7 +976,9 @@ public final class GalleriesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String galleryName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, galleryName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -991,8 +995,11 @@ public final class GalleriesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String galleryName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, galleryName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -1214,7 +1221,7 @@ public final class GalleriesClient
     public PagedFlux<GalleryInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1345,7 +1352,8 @@ public final class GalleriesClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<GalleryInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**

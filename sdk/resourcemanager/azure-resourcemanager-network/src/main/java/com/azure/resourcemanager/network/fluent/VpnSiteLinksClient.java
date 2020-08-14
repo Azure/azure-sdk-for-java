@@ -425,7 +425,7 @@ public final class VpnSiteLinksClient {
         String resourceGroupName, String vpnSiteName, Context context) {
         return new PagedFlux<>(
             () -> listByVpnSiteSinglePageAsync(resourceGroupName, vpnSiteName, context),
-            nextLink -> listByVpnSiteNextSinglePageAsync(nextLink));
+            nextLink -> listByVpnSiteNextSinglePageAsync(nextLink, context));
     }
 
     /**

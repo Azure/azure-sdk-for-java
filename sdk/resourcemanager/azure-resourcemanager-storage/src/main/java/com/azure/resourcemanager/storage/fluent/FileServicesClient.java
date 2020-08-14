@@ -186,6 +186,7 @@ public final class FileServicesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
@@ -398,6 +399,7 @@ public final class FileServicesClient {
         FileServicePropertiesInner parameters = new FileServicePropertiesInner();
         parameters.withCors(cors);
         parameters.withShareDeleteRetentionPolicy(shareDeleteRetentionPolicy);
+        context = this.client.mergeContext(context);
         return service
             .setServiceProperties(
                 this.client.getEndpoint(),
@@ -612,6 +614,7 @@ public final class FileServicesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String fileServicesName = "default";
+        context = this.client.mergeContext(context);
         return service
             .getServiceProperties(
                 this.client.getEndpoint(),

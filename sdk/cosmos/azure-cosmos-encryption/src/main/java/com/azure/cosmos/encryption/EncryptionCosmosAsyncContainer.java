@@ -9,7 +9,6 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
-import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.ItemDeserializer;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.encryption.CosmosResponseFactory;
@@ -27,7 +26,7 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.JsonNode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
@@ -343,7 +342,7 @@ public class EncryptionCosmosAsyncContainer {
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained items or an
      * error.
      */
-    public <T> CosmosPagedFlux queryItems(SqlQuerySpec query, CosmosQueryRequestOptions options,
+    public <T> CosmosPagedFlux<T> queryItems(SqlQuerySpec query, CosmosQueryRequestOptions options,
                                           Class<T> classType) {
         if (options == null) {
             options = new CosmosQueryRequestOptions();
@@ -362,7 +361,7 @@ public class EncryptionCosmosAsyncContainer {
         return CosmosBridgeInternal.queryItemsInternal(container, query, options,
             new Transformer<T>() {
                 @Override
-                public Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> transform(Function<CosmosPagedFluxOptions, Flux<FeedResponse<ObjectNode>>> func) {
+                public Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> transform(Function<CosmosPagedFluxOptions, Flux<FeedResponse<JsonNode>>> func) {
                     return queryDecryptionTransformer(classType, finalDecryptionResultConsumer, func);
                 }
             });
@@ -417,27 +416,29 @@ public class EncryptionCosmosAsyncContainer {
 
     private <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> queryDecryptionTransformer(Class<T> classType,
                                                                                                    Consumer<DecryptionResult> handler,
-                                                                                                   Function<CosmosPagedFluxOptions, Flux<FeedResponse<ObjectNode>>> func) {
-        return func.andThen(flux -> {
-            return flux.flatMap(
-                page -> {
-                    List<byte[]> bytesList =
-                        page.getResults().stream().map(node -> cosmosSerializerToStream(node)).collect(Collectors.toList());
+                                                                                                   Function<CosmosPagedFluxOptions, Flux<FeedResponse<JsonNode>>> func) {
+        return func.andThen(flux ->
+            flux.publishOn(encryptionScheduler)
+                .flatMap(
+                    page -> {
+                        List<Mono<byte[]>> byteArrayMonoList = page.getResults().stream()
+                                .map(node -> cosmosSerializerToStream(node))
+                                .map(bytes -> decryptResponseAsync(bytes, handler))
+                                .collect(Collectors.toList());
 
-                    List<Mono<byte[]>> list =
-                        bytesList.stream().map(bytes -> decryptResponseAsync(bytes, handler)).collect(Collectors.toList());
-
-                    return Flux.merge(list).map(
-                        item -> {
-                            return getItemDeserializer().parseFrom(classType, item);
-                        }
-
-                    ).collectList().map(itemList ->
-                        ModelBridgeInternal.createFeedResponseWithQueryMetrics(itemList, page.getResponseHeaders(), BridgeInternal.queryMetricsFromFeedResponse(page))
-                    );
-                }
-            );
-        });
+                        return Flux.concat(byteArrayMonoList).map(
+                            item -> {
+                                return getItemDeserializer().parseFrom(classType, item);
+                            }
+                        ).collectList().map(itemList ->
+                            ModelBridgeInternal.createFeedResponseWithQueryMetrics(itemList,
+                                page.getResponseHeaders(),
+                                BridgeInternal.queryMetricsFromFeedResponse(page),
+                                ModelBridgeInternal.getQueryPlanDiagnosticsContext(page))
+                        );
+                    }
+                )
+        );
     }
 }
 

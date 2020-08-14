@@ -54,9 +54,9 @@ public class ReactorReceiver implements AmqpReceiveLink {
         this.tokenManager = tokenManager;
         this.dispatcher = dispatcher;
         this.messagesProcessor = this.handler.getDeliveredMessages()
-            .map(delivery -> decodeDelivery(delivery))
+            .map(this::decodeDelivery)
             .doOnNext(next -> {
-                if (receiver.getRemoteCredit() == 0) {
+                if (receiver.getRemoteCredit() == 0 && !isDisposed.get()) {
                     final Supplier<Integer> supplier = creditSupplier.get();
                     if (supplier == null) {
                         return;
@@ -115,10 +115,12 @@ public class ReactorReceiver implements AmqpReceiveLink {
 
     @Override
     public void addCredits(int credits) {
-        try {
-            dispatcher.invoke(() -> receiver.flow(credits));
-        } catch (IOException e) {
-            logger.warning("Unable to schedule work to add more credits.", e);
+        if (!isDisposed.get()) {
+            try {
+                dispatcher.invoke(() -> receiver.flow(credits));
+            } catch (IOException e) {
+                logger.warning("Unable to schedule work to add more credits.", e);
+            }
         }
     }
 

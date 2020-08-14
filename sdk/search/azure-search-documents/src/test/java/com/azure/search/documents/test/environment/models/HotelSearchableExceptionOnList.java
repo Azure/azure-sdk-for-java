@@ -11,13 +11,13 @@ import java.util.List;
  * Helper class on test searchable exception field.
  */
 public class HotelSearchableExceptionOnList {
-    @SearchableFieldProperty
     private List<Integer> passcode;
 
     /**
      * Gets passcode.
      * @return the passcode of hotel.
      */
+    @SearchableFieldProperty
     public List<Integer> getPasscode() {
         return passcode;
     }
