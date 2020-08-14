@@ -13,7 +13,6 @@ import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 import java.util.List;
 import com.microsoft.azure.management.storagecache.v2019_11_01.NamespaceJunction;
-import com.microsoft.azure.management.storagecache.v2019_11_01.StorageTargetType;
 import com.microsoft.azure.management.storagecache.v2019_11_01.ProvisioningStateType;
 import com.microsoft.azure.management.storagecache.v2019_11_01.Nfs3Target;
 import com.microsoft.azure.management.storagecache.v2019_11_01.ClfsTarget;
@@ -107,11 +106,6 @@ class StorageTargetImpl extends CreatableUpdatableImpl<StorageTarget, StorageTar
     }
 
     @Override
-    public StorageTargetType targetType() {
-        return this.inner().targetType();
-    }
-
-    @Override
     public String type() {
         return this.inner().type();
     }
@@ -149,12 +143,6 @@ class StorageTargetImpl extends CreatableUpdatableImpl<StorageTarget, StorageTar
     @Override
     public StorageTargetImpl withProvisioningState(ProvisioningStateType provisioningState) {
         this.inner().withProvisioningState(provisioningState);
-        return this;
-    }
-
-    @Override
-    public StorageTargetImpl withTargetType(StorageTargetType targetType) {
-        this.inner().withTargetType(targetType);
         return this;
     }
 

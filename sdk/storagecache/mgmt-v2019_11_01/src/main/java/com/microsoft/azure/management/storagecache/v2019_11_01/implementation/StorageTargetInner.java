@@ -10,7 +10,6 @@ package com.microsoft.azure.management.storagecache.v2019_11_01.implementation;
 
 import java.util.List;
 import com.microsoft.azure.management.storagecache.v2019_11_01.NamespaceJunction;
-import com.microsoft.azure.management.storagecache.v2019_11_01.StorageTargetType;
 import com.microsoft.azure.management.storagecache.v2019_11_01.ProvisioningStateType;
 import com.microsoft.azure.management.storagecache.v2019_11_01.Nfs3Target;
 import com.microsoft.azure.management.storagecache.v2019_11_01.ClfsTarget;
@@ -29,13 +28,6 @@ public class StorageTargetInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.junctions")
     private List<NamespaceJunction> junctions;
-
-    /**
-     * Type of the Storage Target. Possible values include: 'nfs3', 'clfs',
-     * 'unknown'.
-     */
-    @JsonProperty(value = "properties.targetType")
-    private StorageTargetType targetType;
 
     /**
      * ARM provisioning state, see
@@ -81,26 +73,6 @@ public class StorageTargetInner extends ProxyResource {
      */
     public StorageTargetInner withJunctions(List<NamespaceJunction> junctions) {
         this.junctions = junctions;
-        return this;
-    }
-
-    /**
-     * Get type of the Storage Target. Possible values include: 'nfs3', 'clfs', 'unknown'.
-     *
-     * @return the targetType value
-     */
-    public StorageTargetType targetType() {
-        return this.targetType;
-    }
-
-    /**
-     * Set type of the Storage Target. Possible values include: 'nfs3', 'clfs', 'unknown'.
-     *
-     * @param targetType the targetType value to set
-     * @return the StorageTargetInner object itself.
-     */
-    public StorageTargetInner withTargetType(StorageTargetType targetType) {
-        this.targetType = targetType;
         return this;
     }
 
