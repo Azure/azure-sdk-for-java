@@ -234,21 +234,38 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void queryMetrics() {
-        GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
-        String query = "Select * from c where c.id = 'wrongId'";
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setQueryMetricsEnabled(true);
-        Iterator<FeedResponse<InternalObjectNode>> iterator = this.container.queryItems(query, options,
-            InternalObjectNode.class).iterableByPage().iterator();
-        assertThat(iterator.hasNext()).isTrue();
-        while (iterator.hasNext()) {
-            FeedResponse<InternalObjectNode> feedResponse = iterator.next();
-            String queryDiagnostics = feedResponse.getCosmosDiagnostics().toString();
-            assertThat(feedResponse.getResults().size()).isEqualTo(0);
-            assertThat(queryDiagnostics).contains("Retrieved Document Count");
-            assertThat(queryDiagnostics).contains("Query Preparation Times");
-            assertThat(queryDiagnostics).contains("Runtime Execution Times");
-            assertThat(queryDiagnostics).contains("Partition Execution Timeline");
+        List<String> queryList = new ArrayList<>();
+        String query = "Select * from c where c.id = 'wrongId'";
+        queryList.add(query);
+        query = "Select top 1 * from c where c.id = 'wrongId'";
+        queryList.add(query);
+        query = "Select * from c where c.id = 'wrongId' order by c.id";
+        queryList.add(query);
+        query = "Select count(1) from c where c.id = 'wrongId' group by c.pk";
+        queryList.add(query);
+        query = "Select distinct c.pk from c where c.id = 'wrongId'";
+        queryList.add(query);
+        boolean qroupByFirstResponse = true; // TODO https://github.com/Azure/azure-sdk-for-java/issues/14142
+        for (String qry : queryList) {
+            Iterator<FeedResponse<InternalObjectNode>> iterator = this.container.queryItems(qry, options,
+                InternalObjectNode.class).iterableByPage().iterator();
+            assertThat(iterator.hasNext()).isTrue();
+            while (iterator.hasNext()) {
+                FeedResponse<InternalObjectNode> feedResponse = iterator.next();
+                String queryDiagnostics = feedResponse.getCosmosDiagnostics().toString();
+                assertThat(feedResponse.getResults().size()).isEqualTo(0);
+                if (!qry.contains("group by") || qroupByFirstResponse) { // TODO https://github.com/Azure/azure-sdk-for-java/issues/14142
+                    assertThat(queryDiagnostics).contains("Retrieved Document Count");
+                    assertThat(queryDiagnostics).contains("Query Preparation Times");
+                    assertThat(queryDiagnostics).contains("Runtime Execution Times");
+                    assertThat(queryDiagnostics).contains("Partition Execution Timeline");
+                    if (qry.contains("group by")) {
+                        qroupByFirstResponse = false;
+                    }
+                }
+            }
         }
     }
 
