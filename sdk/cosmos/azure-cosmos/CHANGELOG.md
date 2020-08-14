@@ -1,5 +1,8 @@
 # Release History
 
+## 4.4.0-beta.1 (Unreleased)
+
+
 ## 4.3.1 (2020-08-13)
 ### Key Bug Fixes
 * Fixed issue with `GROUP BY` query, where it was returning only one page.
