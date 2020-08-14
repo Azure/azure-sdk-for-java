@@ -41,24 +41,24 @@ Azure Management Libraries require a `TokenCredential` implementation for authen
 
 [Azure Identity][azure_identity] provides Azure Active Directory token authentication support across the Azure SDK.
 
-[//]: # ({x-version-update-start;com.azure:azure-identity;current})
+[//]: # ({x-version-update-start;com.azure:azure-identity;dependency})
 ```xml
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-identity</artifactId>
-  <version>1.0.9</version>
+  <version>1.1.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
 [Azure Core Netty HTTP client][azure_core_http_netty] is a plugin for [Azure Core][azure_core] HTTP client API.
 
-[//]: # ({x-version-update-start;com.azure:azure-core-http-netty;current})
+[//]: # ({x-version-update-start;com.azure:azure-core-http-netty;dependency})
 ```xml
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-netty</artifactId>
-  <version>1.5.3</version>
+  <version>1.5.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -80,6 +80,7 @@ With above configuration, `azure` client can be authenticated by following code:
 ```java
 AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 TokenCredential credential = new DefaultAzureCredentialBuilder()
+    .authorityHost(profile.environment().getActiveDirectoryEndpoint())
     .build();
 Azure azure = Azure
     .authenticate(credential, profile)
