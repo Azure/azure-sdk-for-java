@@ -14,13 +14,14 @@ import com.azure.resourcemanager.monitor.models.MetricDefinition;
 import com.azure.resourcemanager.monitor.models.ResultType;
 import com.azure.resourcemanager.resources.core.TestUtilities;
 import java.time.OffsetDateTime;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class MonitorActivityAndMetricsTests extends MonitorManagementTest {
     @Test
-    public void canListEventsAndMetrics() throws Exception {
-        OffsetDateTime recordDateTime = sdkContext.dateTimeNow().minusDays(40);
+    public void canListEventsAndMetrics() {
+        OffsetDateTime recordDateTime = OffsetDateTime.parse("2020-06-22T21:44:57.424+08:00").minusDays(40);
         VirtualMachine vm = computeManager.virtualMachines().list().iterator().next();
 
         // Metric Definition

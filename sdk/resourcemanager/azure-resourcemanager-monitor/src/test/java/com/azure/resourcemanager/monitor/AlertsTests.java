@@ -20,7 +20,7 @@ import com.azure.resourcemanager.monitor.models.MetricDimension;
 import com.azure.resourcemanager.monitor.models.MetricDynamicAlertCondition;
 import com.azure.resourcemanager.resources.core.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -330,7 +330,7 @@ public class AlertsTests extends MonitorManagementTest {
     }
 
     @Test
-    public void canCRUDMultipleResourceMetricAlerts() throws Exception {
+    public void canCRUDMultipleResourceMetricAlerts() {
         try {
             final String userName = "tirekicker";
             final String password = password();
