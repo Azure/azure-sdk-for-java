@@ -10,10 +10,49 @@ Note:
 This document outlines the APIs for the Digital Twin SDK
 
 ## Azure.Core usage
-Within this SDK, we will make use of several Azure.Core library classes
-(these are recommended by the Azure SDK guidelines):
+Within this SDK, we will make use of several Azure.Core library classes:
+
+Pagination:
 
 [PagedIterable\<T>](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/http/rest/PagedIterable.java): For synchronous APIs - This class provides utility to iterate over PagedResponse using Stream and Iterable interfaces.
+
+Code sample using `Stream` by page:
+```java
+// process the streamByPage
+pagedIterableResponse.streamByPage().forEach(resp -> {
+    System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.getHeaders(),
+        resp.getRequest().getUrl(), resp.getStatusCode());
+    resp.getItems().forEach(value -> {
+        System.out.printf("Response value is %d %n", value);
+    });
+});
+```
+
+ Code sample using `Iterable` by page:
+ ```java
+// process the iterableByPage
+pagedIterableResponse.iterableByPage().forEach(resp -> {
+    System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.getHeaders(),
+        resp.getRequest().getUrl(), resp.getStatusCode());
+    resp.getItems().forEach(value -> {
+        System.out.printf("Response value is %d %n", value);
+    });
+});
+ ```
+
+Code sample using `Iterable` by page and while loop:
+```java
+// iterate over each page
+Iterator<PagedResponse<Integer>> ite = pagedIterableResponse.iterableByPage().iterator();
+while (ite.hasNext()) {
+    PagedResponse<Integer> resp = ite.next();
+    System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.getHeaders(),
+        resp.getRequest().getUrl(), resp.getStatusCode());
+    resp.getItems().forEach(value -> {
+        System.out.printf("Response value is %d %n", value);
+    });
+}
+```
 
 [PagedFlux\<T>](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/http/rest/PagedFlux.java): This type is a Flux that provides the ability to operate on paginated REST responses of type PagedResponse and individual items in such pages. When processing the response by page, each response will contain the items in the page as well as the REST response details like status code and headers.
 
