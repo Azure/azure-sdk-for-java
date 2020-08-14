@@ -7,12 +7,13 @@ import com.azure.resourcemanager.redis.fluent.inner.RedisFirewallRuleInner;
 import com.azure.resourcemanager.redis.models.RedisCache;
 import com.azure.resourcemanager.redis.models.RedisFirewallRule;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesCachedImpl;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 /** Represents a Redis firewall rules collection associated with a Redis cache instance. */
 class RedisFirewallRulesImpl
@@ -24,11 +25,15 @@ class RedisFirewallRulesImpl
         super(parent, parent.taskGroup(), "FirewallRule");
     }
 
-    Map<String, RedisFirewallRule> rulesAsMap() {
+    void ensureCollectionLoaded() {
         if (!load) {
             load = true;
             cacheCollection();
         }
+    }
+
+    Map<String, RedisFirewallRule> rulesAsMap() {
+        ensureCollectionLoaded();
         Map<String, RedisFirewallRule> result = new HashMap<>();
         for (Map.Entry<String, RedisFirewallRuleImpl> entry : this.collection().entrySet()) {
             RedisFirewallRuleImpl endpoint = entry.getValue();
@@ -38,26 +43,17 @@ class RedisFirewallRulesImpl
     }
 
     public void addRule(RedisFirewallRuleImpl rule) {
-        if (!load) {
-            load = true;
-            cacheCollection();
-        }
+        ensureCollectionLoaded();
         this.addChildResource(rule);
     }
 
     public void removeRule(String name) {
-        if (!load) {
-            load = true;
-            cacheCollection();
-        }
+        ensureCollectionLoaded();
         this.prepareInlineRemove(name);
     }
 
     public RedisFirewallRuleImpl defineInlineFirewallRule(String name) {
-        if (!load) {
-            load = true;
-            cacheCollection();
-        }
+        ensureCollectionLoaded();
         return prepareInlineDefine(name);
     }
 

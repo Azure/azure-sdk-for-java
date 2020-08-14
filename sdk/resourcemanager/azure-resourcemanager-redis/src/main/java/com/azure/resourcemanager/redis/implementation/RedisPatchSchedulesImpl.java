@@ -27,11 +27,15 @@ class RedisPatchSchedulesImpl
         super(parent, parent.taskGroup(), "PatchSchedule");
     }
 
-    Map<String, RedisPatchSchedule> patchSchedulesAsMap() {
+    void ensureCollectionLoaded() {
         if (!load) {
             load = true;
             cacheCollection();
         }
+    }
+
+    Map<String, RedisPatchSchedule> patchSchedulesAsMap() {
+        ensureCollectionLoaded();
         Map<String, RedisPatchSchedule> result = new HashMap<>();
         for (Map.Entry<String, RedisPatchScheduleImpl> entry : this.collection().entrySet()) {
             RedisPatchScheduleImpl patchSchedule = entry.getValue();
@@ -41,26 +45,17 @@ class RedisPatchSchedulesImpl
     }
 
     public void addPatchSchedule(RedisPatchScheduleImpl patchSchedule) {
-        if (!load) {
-            load = true;
-            cacheCollection();
-        }
+        ensureCollectionLoaded();
         this.addChildResource(patchSchedule);
     }
 
     public RedisPatchScheduleImpl getPatchSchedule() {
-        if (!load) {
-            load = true;
-            cacheCollection();
-        }
+        ensureCollectionLoaded();
         return this.collection().get(PATCH_SCHEDULE_NAME);
     }
 
     public void removePatchSchedule() {
-        if (!load) {
-            load = true;
-            cacheCollection();
-        }
+        ensureCollectionLoaded();
         RedisPatchScheduleImpl psch = this.getPatchSchedule();
         if (psch != null) {
             psch.deleteResourceAsync().block();
@@ -68,26 +63,17 @@ class RedisPatchSchedulesImpl
     }
 
     public RedisPatchScheduleImpl defineInlinePatchSchedule() {
-        if (!load) {
-            load = true;
-            cacheCollection();
-        }
+        ensureCollectionLoaded();
         return prepareInlineDefine(PATCH_SCHEDULE_NAME);
     }
 
     public RedisPatchScheduleImpl updateInlinePatchSchedule() {
-        if (!load) {
-            load = true;
-            cacheCollection();
-        }
+        ensureCollectionLoaded();
         return prepareInlineUpdate(PATCH_SCHEDULE_NAME);
     }
 
     public void deleteInlinePatchSchedule() {
-        if (!load) {
-            load = true;
-            cacheCollection();
-        }
+        ensureCollectionLoaded();
         prepareInlineRemove(PATCH_SCHEDULE_NAME);
     }
 
