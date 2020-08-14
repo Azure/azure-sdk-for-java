@@ -67,7 +67,7 @@ public class TableServiceAsyncClient {
      * @return associated TableAsyncClient
      */
     public TableAsyncClient getTableClient(String tableName) {
-        return null; //return new TableAsyncClient(implementation.getTables(), tableName);
+        return new TableAsyncClient(tableName, implementation);
     }
 
     /**

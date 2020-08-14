@@ -59,6 +59,15 @@ public class TableAsyncClient {
     private final QueryOptions defaultQueryOptions = new QueryOptions()
         .setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_FULLMETADATA);
 
+    TableAsyncClient(String tableName, AzureTableImpl implementation) {
+        this.implementation = implementation;
+        this.tableImplementation = implementation.getTables();
+        this.tableName = tableName;
+        this.accountName = null;
+        this.tableUrl = null;
+        this.apiVersion = null;
+    }
+
     TableAsyncClient(String tableName, HttpPipeline pipeline, String url, TablesServiceVersion serviceVersion,
         SerializerAdapter serializerAdapter) {
 
@@ -80,7 +89,6 @@ public class TableAsyncClient {
         this.accountName = null;
         this.tableUrl = null;
         this.apiVersion = null;
-
     }
 
     /**
