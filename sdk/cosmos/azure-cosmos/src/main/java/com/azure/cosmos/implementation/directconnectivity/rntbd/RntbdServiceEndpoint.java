@@ -89,7 +89,10 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         this.channelPool = new RntbdClientChannelPool(this, bootstrap, config);
         this.remoteAddress = bootstrap.config().remoteAddress();
         this.concurrentRequests = new AtomicInteger();
-        this.lastRequestNanoTime = new AtomicLong();
+        // if no request has been sent over this endpoint we want to make sure we don't trigger a connection close
+        // due to elapsedTimeInNanos being negative.
+        // idleEndpointTimeoutInNanos - elapsedTimeInNanos <= 0
+        this.lastRequestNanoTime = new AtomicLong(System.nanoTime());
         this.closed = new AtomicBoolean();
         this.requestTimer = timer;
 
