@@ -17,9 +17,11 @@ import com.azure.resourcemanager.msi.MSIManager;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import java.util.Set;
+
+import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -34,6 +36,8 @@ public class WebAppsMsiTests extends AppServiceTest {
         webappName1 = generateRandomResourceName("java-webapp-", 20);
         rgName1 = generateRandomResourceName("javacsmrg", 20);
         vaultName = generateRandomResourceName("java-vault-", 20);
+        SdkContext sdkContext = new SdkContext();
+        sdkContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
         this.msiManager = MSIManager.authenticate(httpPipeline, profile, sdkContext);
 
         super.initializeClients(httpPipeline, profile);

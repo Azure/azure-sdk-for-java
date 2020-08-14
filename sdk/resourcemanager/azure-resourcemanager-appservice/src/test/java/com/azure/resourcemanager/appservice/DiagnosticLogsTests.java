@@ -9,7 +9,7 @@ import com.azure.resourcemanager.appservice.models.LogLevel;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -31,7 +31,7 @@ public class DiagnosticLogsTests extends AppServiceTest {
     }
 
     @Test
-    public void canCRUDWebAppWithDiagnosticLogs() throws Exception {
+    public void canCRUDWebAppWithDiagnosticLogs() {
         // Create with new app service plan
         WebApp webApp1 =
             appServiceManager
