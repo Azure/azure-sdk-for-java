@@ -245,17 +245,19 @@ jobs:
           versionSpec: '3.6'
         condition: and(succeeded(), eq(variables['TestFromSource'],'true'))
 
-      - script: |
-          python3 --version
-          python3 eng/versioning/set_versions.py --build-type client --pst
+      - task: PythonScript@0
         displayName: 'Set versions for source build'
+        inputs:
+          scriptPath: 'eng/versioning/set_versions.py'
+          arguments: '--build-type client --pst'
         condition: and(succeeded(), eq(variables['TestFromSource'],'true'))
 
-      - script: |
-          python3 --version
-          python3 eng/versioning/update_versions.py --update-type library --build-type client --sr
-        condition: and(succeeded(), eq(variables['ShouldRunSourceTests'],'true'))
+      - task: PythonScript@0
         displayName: 'Update versions for source build'
+        inputs:
+          scriptPath: 'eng/versioning/update_versions.py'
+          arguments: '--update-type library --build-type client --sr'
+        condition: and(succeeded(), eq(variables['ShouldRunSourceTests'],'true'))
 
       - task: PowerShell@2
         # The root pom.xml contains both track 1, data, and track 2, client libraries.
