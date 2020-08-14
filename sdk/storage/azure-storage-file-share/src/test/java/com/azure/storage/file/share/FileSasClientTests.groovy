@@ -1,7 +1,5 @@
 package com.azure.storage.file.share
 
-import com.azure.storage.common.StorageSharedKeyCredential
-
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.sas.AccountSasPermission
 import com.azure.storage.common.sas.AccountSasResourceType
