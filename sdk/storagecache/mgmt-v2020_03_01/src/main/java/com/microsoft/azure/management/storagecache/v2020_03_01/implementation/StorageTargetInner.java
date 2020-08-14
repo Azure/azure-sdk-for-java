@@ -30,12 +30,6 @@ public class StorageTargetInner extends StorageTargetResource {
     private List<NamespaceJunction> junctions;
 
     /**
-     * Type of the Storage Target.
-     */
-    @JsonProperty(value = "properties.targetType")
-    private String targetType;
-
-    /**
      * ARM provisioning state, see
      * https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#provisioningstate-property.
      * Possible values include: 'Succeeded', 'Failed', 'Cancelled', 'Creating',
@@ -79,26 +73,6 @@ public class StorageTargetInner extends StorageTargetResource {
      */
     public StorageTargetInner withJunctions(List<NamespaceJunction> junctions) {
         this.junctions = junctions;
-        return this;
-    }
-
-    /**
-     * Get type of the Storage Target.
-     *
-     * @return the targetType value
-     */
-    public String targetType() {
-        return this.targetType;
-    }
-
-    /**
-     * Set type of the Storage Target.
-     *
-     * @param targetType the targetType value to set
-     * @return the StorageTargetInner object itself.
-     */
-    public StorageTargetInner withTargetType(String targetType) {
-        this.targetType = targetType;
         return this;
     }
 

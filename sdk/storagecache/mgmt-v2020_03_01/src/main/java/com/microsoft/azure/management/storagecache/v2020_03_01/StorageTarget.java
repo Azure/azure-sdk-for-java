@@ -54,11 +54,6 @@ public interface StorageTarget extends HasInner<StorageTargetInner>, Indexable, 
     ProvisioningStateType provisioningState();
 
     /**
-     * @return the targetType value.
-     */
-    String targetType();
-
-    /**
      * @return the type value.
      */
     String type();
@@ -146,18 +141,6 @@ public interface StorageTarget extends HasInner<StorageTargetInner>, Indexable, 
         }
 
         /**
-         * The stage of the storagetarget definition allowing to specify TargetType.
-         */
-        interface WithTargetType {
-            /**
-             * Specifies targetType.
-             * @param targetType Type of the Storage Target
-             * @return the next definition stage
-             */
-            WithCreate withTargetType(String targetType);
-        }
-
-        /**
          * The stage of the storagetarget definition allowing to specify Unknown.
          */
         interface WithUnknown {
@@ -174,13 +157,13 @@ public interface StorageTarget extends HasInner<StorageTargetInner>, Indexable, 
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<StorageTarget>, DefinitionStages.WithClfs, DefinitionStages.WithJunctions, DefinitionStages.WithNfs3, DefinitionStages.WithProvisioningState, DefinitionStages.WithTargetType, DefinitionStages.WithUnknown {
+        interface WithCreate extends Creatable<StorageTarget>, DefinitionStages.WithClfs, DefinitionStages.WithJunctions, DefinitionStages.WithNfs3, DefinitionStages.WithProvisioningState, DefinitionStages.WithUnknown {
         }
     }
     /**
      * The template for a StorageTarget update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<StorageTarget>, UpdateStages.WithClfs, UpdateStages.WithJunctions, UpdateStages.WithNfs3, UpdateStages.WithProvisioningState, UpdateStages.WithTargetType, UpdateStages.WithUnknown {
+    interface Update extends Appliable<StorageTarget>, UpdateStages.WithClfs, UpdateStages.WithJunctions, UpdateStages.WithNfs3, UpdateStages.WithProvisioningState, UpdateStages.WithUnknown {
     }
 
     /**
@@ -233,18 +216,6 @@ public interface StorageTarget extends HasInner<StorageTargetInner>, Indexable, 
              * @return the next update stage
              */
             Update withProvisioningState(ProvisioningStateType provisioningState);
-        }
-
-        /**
-         * The stage of the storagetarget update allowing to specify TargetType.
-         */
-        interface WithTargetType {
-            /**
-             * Specifies targetType.
-             * @param targetType Type of the Storage Target
-             * @return the next update stage
-             */
-            Update withTargetType(String targetType);
         }
 
         /**

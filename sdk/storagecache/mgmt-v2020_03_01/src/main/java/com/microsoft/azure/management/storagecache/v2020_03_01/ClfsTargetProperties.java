@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Storage container for use as a CLFS Storage Target.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "targetBaseType", defaultImpl = ClfsTargetProperties.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "targetType", defaultImpl = ClfsTargetProperties.class)
 @JsonTypeName("clfs")
 public class ClfsTargetProperties extends StorageTargetProperties {
 }
