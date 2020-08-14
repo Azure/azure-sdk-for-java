@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.appplatform;
 
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.appplatform.models.RuntimeVersion;
 import com.azure.resourcemanager.appplatform.models.SpringApp;
 import com.azure.resourcemanager.appplatform.models.SpringAppDeployment;
@@ -49,12 +50,12 @@ public class SpringCloudTest extends AppPlatformTest {
 
     private static final String SPRING_CLOUD_SERVICE_PRINCIPAL = "03b39d0f-4213-4864-a245-b1476ec03169";
 
-    SpringCloudTest() {
-        super(RunCondition.LIVE_ONLY); // need storage data-plane and url check
-    }
-
     @Test
+    @DoNotRecord
     public void canCRUDSpringAppWithDeployment() throws IOException {
+        if (skipInPlayback()) {
+            return;
+        }
         String serviceName = generateRandomResourceName("springsvc", 15);
         String appName = "gateway";
         String deploymentName = generateRandomResourceName("deploy", 15);
@@ -155,7 +156,11 @@ public class SpringCloudTest extends AppPlatformTest {
     }
 
     @Test
+    @DoNotRecord
     public void canCreateCustomDomainWithSsl() throws Exception {
+        if (skipInPlayback()) {
+            return;
+        }
         String domainName = generateRandomResourceName("jsdkdemo-", 20) + ".com";
         String certOrderName = generateRandomResourceName("cert", 15);
         String vaultName = generateRandomResourceName("vault", 15);
