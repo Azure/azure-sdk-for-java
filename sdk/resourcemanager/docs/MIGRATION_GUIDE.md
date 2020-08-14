@@ -29,7 +29,7 @@ The latest dependencies for resource management libraries are [available here](h
 
 The latest Azure Java SDK for management libraries is a result of our efforts to create a resource management client library that is user-friendly and idiomatic to the Java ecosystem.
 
-Apart from redesigns resulting from the [new Azure SDK Design Guidelines for Java](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/docs/DESIGN.md), the latest version improves on several areas from old version.
+Apart from redesigns resulting from the [new Azure SDK Design Guidelines for Java](DESIGN.md), the latest version improves on several areas from old version.
 
 While conforming to the new guideline, we have tried our best to minimize the breaking changes. Most of the interfaces / classes / methods have stayed the same to offer user an easier migration experience.
 
@@ -285,8 +285,8 @@ Flux.merge(
 
 More samples can be found at :
 - [README for new version of SDK](http://aka.ms/azure-sdk-java-mgmt)
-- [Code Samples for Resource Management Libraries](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/docs/SAMPLE.md)
-- [Authentication Documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/docs/AUTH.md)
+- [Code Samples for Resource Management Libraries](SAMPLE.md)
+- [Authentication Documentation](AUTH.md)
 
 ## Need help?
 
