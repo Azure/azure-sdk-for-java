@@ -34,13 +34,14 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import reactor.core.publisher.Mono;
+
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import reactor.core.publisher.Mono;
 
 /** Implementation for Redis Cache and its parent interfaces. */
 class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInner, RedisCacheImpl, RedisManager>
@@ -523,6 +524,7 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
     @Override
     public Mono<RedisCache> updateResourceAsync() {
         updateParameters.withTags(this.inner().tags());
+        this.patchScheduleAdded = false;
         return this
             .manager()
             .inner()
@@ -531,27 +533,18 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
             .map(innerToFluentMap(this))
             .filter(
                 redisCache -> !redisCache.provisioningState().equalsIgnoreCase(ProvisioningState.SUCCEEDED.toString()))
-            .flatMap(
-                redisCache -> {
-                    SdkContext.sleep(30 * 1000);
-                    this.patchScheduleAdded = false;
-                    return this
-                        .manager()
-                        .inner()
-                        .getRedis()
-                        .getByResourceGroupAsync(resourceGroupName(), name())
-                        .doOnNext(this::setInner)
-                        .filter(
+            .flatMapMany(
+                redisCache ->
+                    Mono
+                        .delay(SdkContext.getDelayDuration(Duration.ofSeconds(30)))
+                        .flatMap(o -> manager().inner().getRedis().getByResourceGroupAsync(resourceGroupName(), name()))
+                        .repeat()
+                        .takeUntil(
                             redisResourceInner ->
                                 redisResourceInner
                                     .provisioningState()
                                     .toString()
-                                    .equalsIgnoreCase(ProvisioningState.SUCCEEDED.toString()))
-                        .repeatWhenEmpty(
-                            longFlux ->
-                                longFlux
-                                    .flatMap(index -> Mono.delay(SdkContext.getDelayDuration(Duration.ofSeconds(30)))));
-                })
+                                    .equalsIgnoreCase(ProvisioningState.SUCCEEDED.toString())))
             .then(this.patchSchedules.commitAndGetAllAsync())
             .then(this.firewallRules.commitAndGetAllAsync())
             .then(Mono.just(this));
