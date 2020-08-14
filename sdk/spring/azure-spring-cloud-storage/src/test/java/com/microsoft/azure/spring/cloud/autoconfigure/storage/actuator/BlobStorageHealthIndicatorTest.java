@@ -31,7 +31,7 @@ public class BlobStorageHealthIndicatorTest {
 
     @Test
     public void testWithNoStorageConfiguration() {
-        ApplicationContextRunner contextRunner = new ApplicationContextRunner().withPropertyValues("logging.level.root", "trace")
+        ApplicationContextRunner contextRunner = new ApplicationContextRunner()
                 .withConfiguration(AutoConfigurations.of(AzureStorageActuatorAutoConfiguration.class));
 
         contextRunner.withBean(BlobStorageHealthIndicator.class).run(context -> {
