@@ -120,7 +120,7 @@ stages:
             AdditionalArgs: '-DargLine="-DACCOUNT_HOST=https://localhost:8081/"'
 
         TestStepMavenInputs:
-          goals: 'clean verify'
+          goals: verify
           options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList)'
           mavenAuthenticateFeed: true
           jdkVersionOption: $(JavaTestVersion)
@@ -160,8 +160,8 @@ stages:
             displayName: 'Run tests again: $(DisplayName)'
             inputs:
               mavenPomFile: pom.xml
-              goals: 'clean verify'
-              options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList)'
+              goals: verify
+              options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl azure-spring-data-cosmos-test'
               mavenAuthenticateFeed: true
               jdkVersionOption: $(JavaTestVersion)
 
