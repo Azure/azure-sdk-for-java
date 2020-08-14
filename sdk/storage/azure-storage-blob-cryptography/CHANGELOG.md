@@ -1,7 +1,10 @@
 # Release History
 
-## 12.8.0-beta.2 (Unreleased)
+## 12.9.0-beta.1 (Unreleased)
 
+
+## 12.8.0 (2020-08-13)
+- GA release for 2019-12-12 service version
 
 ## 12.8.0-beta.1 (2020-07-07)
 - Added support for setting blob tags on upload. 
