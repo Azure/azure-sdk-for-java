@@ -4,6 +4,9 @@ trigger:
   branches:
     include:
       - master
+      - feature/*
+      - hotfix/*
+      - release/*
   paths:
     include:
       - sdk/digitaltwins/
@@ -14,6 +17,9 @@ pr:
   branches:
     include:
       - master
+      - feature/*
+      - hotfix/*
+      - release/*
   paths:
     include:
       - sdk/digitaltwins/
@@ -25,6 +31,6 @@ extends:
   parameters:
     ServiceDirectory: digitaltwins
     Artifacts:
-      - name: azure-digitaltwins
+      - name: azure-digitaltwins-core
         groupId: com.azure
-        safeName: azuredigitaltwins
+        safeName: azuredigitaltwinscore

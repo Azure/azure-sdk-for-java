@@ -11,9 +11,9 @@
     <relativePath>../../parents/azure-client-sdk-parent</relativePath>
   </parent>
 
-    <groupId>com.azure.digitaltwins.core</groupId>
+    <groupId>com.azure</groupId>
     <artifactId>azure-digitaltwins-core</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0-beta.1</version><!-- {x-version-update;com.azure.digitaltwins.core:azure-digitaltwins-core;current} -->
 
   <dependencies>
     <dependency>
@@ -34,14 +34,9 @@
       <version>1.5.3</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
     <dependency>
-      <groupId>com.microsoft.rest</groupId>
-      <artifactId>client-runtime</artifactId>
-      <version>1.7.4</version>
-    </dependency>
-    <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-annotations</artifactId>
-      <version>2.10.1</version>
+      <version>2.11.1</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
     </dependency>
   </dependencies>
 </project>
