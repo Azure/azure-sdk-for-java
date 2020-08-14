@@ -27,7 +27,7 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 /**
  * Entry point to Azure StorageCache resource management.
  */
-public final class StorageCacheManager extends ManagerCore<StorageCacheManager, StorageCacheMgmtClientImpl> {
+public final class StorageCacheManager extends ManagerCore<StorageCacheManager, StorageCacheManagementClientImpl> {
     private Operations operations;
     private Skus skus;
     private UsageModels usageModels;
@@ -142,6 +142,6 @@ public final class StorageCacheManager extends ManagerCore<StorageCacheManager, 
         super(
             restClient,
             subscriptionId,
-            new StorageCacheMgmtClientImpl(restClient).withSubscriptionId(subscriptionId));
+            new StorageCacheManagementClientImpl(restClient).withSubscriptionId(subscriptionId));
     }
 }
