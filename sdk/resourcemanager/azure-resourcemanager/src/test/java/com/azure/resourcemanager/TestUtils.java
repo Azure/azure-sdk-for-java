@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager;
 
+import com.azure.core.util.Configuration;
 import com.azure.resourcemanager.compute.models.DataDisk;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 
@@ -18,6 +19,14 @@ public final class TestUtils {
     //            .append("\nLevel: ").append(lock.level());
     //        System.out.println(info.toString());
     //    }
+
+    /**
+     * @return whether it it RECORD mode
+     */
+    public static boolean isRecordMode() {
+        String azureTestMode = Configuration.getGlobalConfiguration().get("AZURE_TEST_MODE");
+        return "RECORD".equalsIgnoreCase(azureTestMode);
+    }
 
     /**
      * Shows the virtual machine.

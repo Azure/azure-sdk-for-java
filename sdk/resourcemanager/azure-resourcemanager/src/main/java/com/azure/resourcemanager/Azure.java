@@ -79,7 +79,7 @@ import com.azure.resourcemanager.network.models.VirtualNetworkGateways;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
@@ -263,9 +263,9 @@ public final class Azure {
             this.resourceManagerAuthenticated = ResourceManager.authenticate(httpPipeline, profile);
             this.authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile);
             this.httpPipeline = httpPipeline;
-            this.tenantId = profile.tenantId();
-            this.subscriptionId = profile.subscriptionId();
-            this.environment = profile.environment();
+            this.tenantId = profile.getTenantId();
+            this.subscriptionId = profile.getSubscriptionId();
+            this.environment = profile.getEnvironment();
             this.sdkContext = new SdkContext();
         }
 
@@ -372,7 +372,7 @@ public final class Azure {
         this.monitorManager = MonitorManager.authenticate(httpPipeline, profile, sdkContext);
         //        this.eventHubManager = EventHubManager.authenticate(restClient, subscriptionId, sdkContext);
         this.appPlatformManager = AppPlatformManager.authenticate(httpPipeline, profile, sdkContext);
-        this.subscriptionId = profile.subscriptionId();
+        this.subscriptionId = profile.getSubscriptionId();
         this.authenticated = authenticated;
     }
 
