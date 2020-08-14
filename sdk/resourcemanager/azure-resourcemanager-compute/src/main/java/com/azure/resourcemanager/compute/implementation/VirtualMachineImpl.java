@@ -216,11 +216,11 @@ class VirtualMachineImpl
     public Mono<VirtualMachine> refreshAsync() {
         return super
             .refreshAsync()
-            .flatMap(
+            .map(
                 virtualMachine -> {
                     reset(virtualMachine.inner());
-                    return virtualMachineExtensions.refreshAsync()
-                        .then(Mono.just(virtualMachine));
+                    virtualMachineExtensions.refresh();
+                    return virtualMachine;
                 });
     }
 
