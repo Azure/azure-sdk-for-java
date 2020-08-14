@@ -15,12 +15,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.azure.cosmos.batch.EmulatorTest.BatchTestBase.BATCH_TEST_TIMEOUT;
 import static org.testng.AssertJUnit.assertEquals;
 
 public class PartitionKeyBatchResponseTests {
 
-    @Test(groups = {"simple"}, timeOut = BATCH_TEST_TIMEOUT)
+    private static final int TIMEOUT = 40000;
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void statusCodesAreSetThroughResponseAsync() {
         List<TransactionalBatchOperationResult<?>> results = new ArrayList<>();
         ItemBatchOperation<?>[] arrayOperations = new ItemBatchOperation<?>[1];

@@ -12,11 +12,12 @@ import org.testng.annotations.Test;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 
-import static com.azure.cosmos.batch.EmulatorTest.BatchTestBase.BATCH_TEST_TIMEOUT;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertSame;
 
 public class BatchOperationResultTests {
+
+    private static final int TIMEOUT = 40000;
 
     private TransactionalBatchOperationResult<?> createTestResult() {
         TransactionalBatchOperationResult<?> result = new TransactionalBatchOperationResult<Object>(HttpResponseStatus.OK);
@@ -29,7 +30,7 @@ public class BatchOperationResultTests {
         return result;
     }
 
-    @Test(groups = {"simple"}, timeOut = BATCH_TEST_TIMEOUT)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void propertiesAreSetThroughCopyCtor() {
         TransactionalBatchOperationResult<?> other = createTestResult();
         TransactionalBatchOperationResult<?> result = new TransactionalBatchOperationResult<Object>(other);
@@ -42,7 +43,7 @@ public class BatchOperationResultTests {
         assertSame(other.getResourceObject(), result.getResourceObject());
     }
 
-    @Test(groups = {"simple"}, timeOut = BATCH_TEST_TIMEOUT)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void propertiesAreSetThroughGenericCtor() {
         TransactionalBatchOperationResult<?> other = createTestResult();
         Object testObject = new Object();
@@ -57,7 +58,7 @@ public class BatchOperationResultTests {
         assertSame(testObject, result.getResource());
     }
 
-    @Test(groups = {"simple"}, timeOut = BATCH_TEST_TIMEOUT)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void toResponseMessageHasPropertiesMapped() {
         TransactionalBatchOperationResult<?> result = createTestResult();
 
@@ -71,7 +72,7 @@ public class BatchOperationResultTests {
         assertEquals(result.getResourceObject().toString().getBytes(StandardCharsets.UTF_8), response.getResponseBodyAsByteArray());
     }
 
-    @Test(groups = {"simple"}, timeOut = BATCH_TEST_TIMEOUT)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void isSuccessStatusCodeTrueFor200To299() {
         for (int x = 100; x < 999; ++x) {
             TransactionalBatchOperationResult<?> result = new TransactionalBatchOperationResult<Object>(HttpResponseStatus.valueOf(x));

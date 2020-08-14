@@ -17,27 +17,28 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.azure.cosmos.batch.EmulatorTest.BatchTestBase.BATCH_TEST_TIMEOUT;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 import static org.testng.AssertJUnit.assertEquals;
 
 public class PartitionKeyRangeBatchExecutionResultTests {
 
-    @Test(groups = {"simple"}, timeOut = BATCH_TEST_TIMEOUT)
+    private static final int TIMEOUT = 40000;
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void containsSplitIsTrue() {
         assertTrue (this.containsSplitIsTrueInternal(HttpResponseStatus.GONE, HttpConstants.SubStatusCodes.COMPLETING_SPLIT));
         assertTrue(this.containsSplitIsTrueInternal(HttpResponseStatus.GONE, HttpConstants.SubStatusCodes.COMPLETING_PARTITION_MIGRATION));
         assertTrue(this.containsSplitIsTrueInternal(HttpResponseStatus.GONE, HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE));
     }
 
-    @Test(groups = {"simple"}, timeOut = BATCH_TEST_TIMEOUT)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void containsSplitIsFalse() {
         assertFalse(this.containsSplitIsTrueInternal(HttpResponseStatus.OK, HttpConstants.SubStatusCodes.UNKNOWN));
         assertFalse(this.containsSplitIsTrueInternal(HttpResponseStatus.TOO_MANY_REQUESTS, HttpConstants.SubStatusCodes.UNKNOWN));
     }
 
-    @Test(groups = {"simple"}, timeOut = BATCH_TEST_TIMEOUT)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void statusCodesAreSetThroughResponseAsync() {
         List<TransactionalBatchOperationResult<?>> results = new ArrayList<TransactionalBatchOperationResult<?>>();
         List<ItemBatchOperation<?>> arrayOperations = new ArrayList<>();

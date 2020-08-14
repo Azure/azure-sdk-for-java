@@ -19,11 +19,11 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Semaphore;
 
-import static com.azure.cosmos.batch.EmulatorTest.BatchTestBase.BATCH_TEST_TIMEOUT;
 import static org.testng.Assert.*;
 
 public class BatchAsyncStreamerTests {
 
+    private static final int TIMEOUT = 40000;
     private int MaxBatchByteSize = 100000;
     private int defaultMaxDegreeOfConcurrency = 10;
     private static Exception expectedException = new Exception("Failed exception");
@@ -74,7 +74,7 @@ public class BatchAsyncStreamerTests {
     private void reBatchAsync(ItemBatchOperation<?> operation) {
     }
 
-    @Test(groups = {"simple"}, timeOut = BATCH_TEST_TIMEOUT, expectedExceptions = IllegalArgumentException.class)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT, expectedExceptions = IllegalArgumentException.class)
     public void validatesSize() {
         BatchAsyncStreamer batchAsyncStreamer = new BatchAsyncStreamer(
             -1,
@@ -86,7 +86,7 @@ public class BatchAsyncStreamerTests {
             this::reBatchAsync);
     }
 
-    @Test(groups = {"simple"}, timeOut = BATCH_TEST_TIMEOUT, expectedExceptions = NullPointerException.class)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT, expectedExceptions = NullPointerException.class)
     public void validatesExecutor() {
         BatchAsyncStreamer batchAsyncStreamer = new BatchAsyncStreamer(
             1,
@@ -98,7 +98,7 @@ public class BatchAsyncStreamerTests {
             this::reBatchAsync);
     }
 
-    @Test(groups = {"simple"}, timeOut = BATCH_TEST_TIMEOUT, expectedExceptions = NullPointerException.class)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT, expectedExceptions = NullPointerException.class)
     public void validatesRetrier() {
         BatchAsyncStreamer batchAsyncStreamer = new BatchAsyncStreamer(
             1,
@@ -110,7 +110,7 @@ public class BatchAsyncStreamerTests {
             null);
     }
 
-    @Test(groups = {"simple"}, timeOut = BATCH_TEST_TIMEOUT, expectedExceptions = NullPointerException.class)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT, expectedExceptions = NullPointerException.class)
     public void validatesLimiter() {
         BatchAsyncStreamer batchAsyncStreamer = new BatchAsyncStreamer(
             1,
@@ -122,7 +122,7 @@ public class BatchAsyncStreamerTests {
             this::reBatchAsync);
     }
 
-    @Test(groups = {"simple"}, timeOut = BATCH_TEST_TIMEOUT)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void exceptionsOnBatchBubbleUpAsync() {
         BatchAsyncStreamer batchAsyncStreamer = new BatchAsyncStreamer(
             2,
@@ -149,7 +149,7 @@ public class BatchAsyncStreamerTests {
         }
     }
 
-    @Test(groups = {"simple"}, timeOut = BATCH_TEST_TIMEOUT)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void timerDispatchesAsync() throws Exception {
         // Bigger batch size than the amount of operations, timer should dispatch
         BatchAsyncStreamer batchAsyncStreamer = new BatchAsyncStreamer(
@@ -173,7 +173,7 @@ public class BatchAsyncStreamerTests {
         assertEquals(itemBatchOperation.getId(), result.getETag());
     }
 
-    @Test(groups = {"simple"}, timeOut = BATCH_TEST_TIMEOUT)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void validatesCongestionControlAsync() {
         Semaphore newLimiter = new Semaphore(1);
         BatchAsyncStreamer batchAsyncStreamer =  new BatchAsyncStreamer(
@@ -211,7 +211,7 @@ public class BatchAsyncStreamerTests {
         assertTrue(newLimiter.availablePermits() >= 2, "Count of threads that can enter into semaphore should increase atleast by 1");
     }
 
-    @Test(groups = {"simple"}, timeOut = BATCH_TEST_TIMEOUT)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void dispatchesAsync() throws Exception {
         // Expect all operations to complete as their batches get dispached
         BatchAsyncStreamer batchAsyncStreamer = new BatchAsyncStreamer(

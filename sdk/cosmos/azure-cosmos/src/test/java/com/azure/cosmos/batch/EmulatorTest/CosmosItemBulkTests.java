@@ -4,13 +4,13 @@
 package com.azure.cosmos.batch.EmulatorTest;
 
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.guava25.base.Strings;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -22,17 +22,12 @@ import static org.testng.Assert.*;
 
 public class CosmosItemBulkTests extends BatchTestBase {
 
-    @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
-    public void before_CosmosItemTest() {
-        super.classInit();
+    @Factory(dataProvider = "simpleClientBuilders")
+    public CosmosItemBulkTests(CosmosClientBuilder clientBuilder) {
+        super(clientBuilder);
     }
 
-    @AfterClass(groups = {"simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
-    public void afterClass() {
-        super.classClean();
-    }
-
-    @Test(groups = {"simple"}, timeOut = BATCH_TEST_TIMEOUT)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void createItem_withBulk() {
         CosmosAsyncContainer container = this.bulkContainer;
 
@@ -52,7 +47,7 @@ public class CosmosItemBulkTests extends BatchTestBase {
         }
     }
 
-    @Test(groups = {"simple"}, timeOut = BATCH_TEST_TIMEOUT)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void upsertItem_withbulk() {
         List<Mono<CosmosItemResponse<TestDoc>>> responseMonos = new ArrayList<>();
         CosmosAsyncContainer container = this.bulkContainer;
@@ -72,7 +67,7 @@ public class CosmosItemBulkTests extends BatchTestBase {
         }
     }
 
-    @Test(groups = {"simple"}, timeOut = BATCH_TEST_TIMEOUT)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void deleteItem_withBulk() {
         List<Mono<CosmosItemResponse<TestDoc>>> insertMonos = new ArrayList<>();
         List<TestDoc> createdDocuments = new ArrayList<TestDoc>();
@@ -101,7 +96,7 @@ public class CosmosItemBulkTests extends BatchTestBase {
         }
     }
 
-    @Test(groups = {"simple"}, timeOut = BATCH_TEST_TIMEOUT)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void readItem_withBulk() {
         List<Mono<CosmosItemResponse<TestDoc>>> insertMonos = new ArrayList<>();
         List<TestDoc> createdDocuments = new ArrayList<TestDoc>();
@@ -133,7 +128,7 @@ public class CosmosItemBulkTests extends BatchTestBase {
         }
     }
 
-    @Test(groups = {"simple"}, timeOut = BATCH_TEST_TIMEOUT)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void replaceItem_withBulk() {
         List<Mono<CosmosItemResponse<TestDoc>>> insertMonos = new ArrayList<>();
         List<TestDoc> createdDocuments = new ArrayList<TestDoc>();

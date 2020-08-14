@@ -6,11 +6,13 @@ package com.azure.cosmos.batch.EmulatorTest;
 import com.azure.cosmos.*;
 import com.azure.cosmos.implementation.ISessionToken;
 import com.azure.cosmos.implementation.SessionTokenHelper;
-import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import com.azure.cosmos.models.*;
+import com.azure.cosmos.rx.TestSuiteBase;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 
 import java.util.Random;
 import java.util.UUID;
@@ -18,19 +20,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.*;
 
-public class BatchTestBase extends CosmosAsyncClientTest {
-
-    private static final String DATABASE_NAME = "batch-java-testing";
-    private static final String SHARED_DATABASE_NAME = "batch-java-testing-shared";
-    private static final String BULK_CONTAINER = "bulk_container";
-    private static final String SIMPLE_CONTAINER = "simple_container";
-
-    public static final int BATCH_TEST_TIMEOUT = 40000;
-    public static final int SETUP_TIMEOUT = 60000;
-    public static final int SHUTDOWN_TIMEOUT = 24000;
-
-    private final String host = TestConfigurations.HOST;
-    private final String masterKey = TestConfigurations.MASTER_KEY;
+public class BatchTestBase extends TestSuiteBase {
 
     private CosmosAsyncClient client;
     private CosmosAsyncClient bulkClient;
@@ -46,35 +36,58 @@ public class BatchTestBase extends CosmosAsyncClientTest {
     CosmosAsyncContainer gatewayJsonContainer;
     CosmosAsyncContainer sharedThroughputContainer;
 
-    private com.azure.cosmos.models.PartitionKeyDefinition partitionKeyDefinition;
+    private PartitionKeyDefinition partitionKeyDefinition;
     private Random random = new Random();
-    String PartitionKey1 = "TBD1";
+    String partitionKey1 = "TBD1";
 
-    // Documents in PartitionKey1
+    // Documents in partitionKey1
     TestDoc TestDocPk1ExistingA;
     TestDoc TestDocPk1ExistingB ;
     TestDoc TestDocPk1ExistingC;
     TestDoc TestDocPk1ExistingD;
 
-    void classInit() {
+    public BatchTestBase(CosmosClientBuilder clientBuilder) {
+        super(clientBuilder);
+    }
+
+    @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
+    public void before_BatchTestBase() {
         initializeDirectContainers();
         initializeBulkContainers();
         initializeGatewayContainers();
         initializeSharedThroughputContainer();
     }
 
+    @AfterClass(groups = {"simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    public void afterClass() {
+        assertThat(this.client).isNotNull();
+
+        if (this.database != null) {
+            this.database.delete().block();
+        }
+
+        if(this.bulkDatabase != null) {
+            this.bulkDatabase.delete().block();
+        }
+
+        if (this.sharedThroughputDatabase != null)
+        {
+            this.sharedThroughputDatabase.delete().block();
+        }
+
+        this.client.close();
+    }
+
     private void initializeDirectContainers() {
 
         assertThat(this.client).isNull();
 
-        this.client = new CosmosClientBuilder()
-            .endpoint(host)
-            .key(masterKey)
-            .consistencyLevel(ConsistencyLevel.SESSION)
+        this.client = getClientBuilder()
+            .directMode()
             .contentResponseOnWriteEnabled(true)
             .buildAsyncClient();
 
-        database = client.getDatabase(client.createDatabaseIfNotExists(DATABASE_NAME).block().getProperties().getId());
+        database = client.getDatabase(client.createDatabaseIfNotExists(UUID.randomUUID().toString()).block().getProperties().getId());
 
         PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
         partitionKeyDefinition.getPaths().add("/status");
@@ -83,7 +96,7 @@ public class BatchTestBase extends CosmosAsyncClientTest {
         this.jsonContainer = database.getContainer(
             database.createContainerIfNotExists(
                 new CosmosContainerProperties(
-                    SIMPLE_CONTAINER,
+                    UUID.randomUUID().toString(),
                     partitionKeyDefinition),
                 ThroughputProperties.createManualThroughput(12000)).block().getProperties().getId());
 
@@ -94,20 +107,19 @@ public class BatchTestBase extends CosmosAsyncClientTest {
 
         assertThat(this.bulkClient).isNull();
 
-        this.bulkClient = new CosmosClientBuilder()
-            .endpoint(host)
-            .key(masterKey)
-            .consistencyLevel(ConsistencyLevel.SESSION)
+        this.bulkClient = getClientBuilder()
+            .directMode()
             .contentResponseOnWriteEnabled(true)
             .bulkExecutionEnabled(true)
             .buildAsyncClient();
 
-        bulkDatabase = this.bulkClient.getDatabase(this.bulkClient.createDatabaseIfNotExists(DATABASE_NAME).block().getProperties().getId());
+        bulkDatabase = this.bulkClient.getDatabase(
+            this.bulkClient.createDatabaseIfNotExists(UUID.randomUUID().toString()).block().getProperties().getId());
 
         this.bulkContainer = bulkDatabase.getContainer(
             bulkDatabase.createContainerIfNotExists(
                 new CosmosContainerProperties(
-                    BULK_CONTAINER,
+                    "bulk_" + UUID.randomUUID().toString(),
                     this.partitionKeyDefinition),
                 ThroughputProperties.createManualThroughput(10000)).block().getProperties().getId());
     }
@@ -115,10 +127,7 @@ public class BatchTestBase extends CosmosAsyncClientTest {
     private void initializeGatewayContainers() {
 
         assertThat(this.gatewayClient).isNull();
-        this.gatewayClient =  new CosmosClientBuilder()
-            .endpoint(host)
-            .key(masterKey)
-            .consistencyLevel(ConsistencyLevel.SESSION)
+        this.gatewayClient =  getClientBuilder()
             .contentResponseOnWriteEnabled(true)
             .gatewayMode()
             .buildAsyncClient();
@@ -129,7 +138,7 @@ public class BatchTestBase extends CosmosAsyncClientTest {
 
     private void initializeSharedThroughputContainer() {
         CosmosDatabaseResponse cosmosDatabaseResponse = this.client.createDatabaseIfNotExists(
-            SHARED_DATABASE_NAME,
+            "Shared_" + UUID.randomUUID().toString(),
             ThroughputProperties.createManualThroughput(12000)).block();
 
         CosmosAsyncDatabase db = this.client.getDatabase(cosmosDatabaseResponse.getProperties().getId());
@@ -151,28 +160,11 @@ public class BatchTestBase extends CosmosAsyncClientTest {
         this.sharedThroughputDatabase = db;
     }
 
-    void classClean() {
-        if (this.client == null) {
-            return;
-        }
-
-        if (this.database != null) {
-            this.database.delete().block();
-        }
-
-        if (this.sharedThroughputDatabase != null)
-        {
-            this.sharedThroughputDatabase.delete().block();
-        }
-
-        this.client.close();
-    }
-
     void createJsonTestDocsAsync(CosmosAsyncContainer container) {
-        this.TestDocPk1ExistingA =  this.createJsonTestDocAsync(container, this.PartitionKey1);
-        this.TestDocPk1ExistingB =  this.createJsonTestDocAsync(container, this.PartitionKey1);
-        this.TestDocPk1ExistingC =  this.createJsonTestDocAsync(container, this.PartitionKey1);
-        this.TestDocPk1ExistingD =  this.createJsonTestDocAsync(container, this.PartitionKey1);
+        this.TestDocPk1ExistingA =  this.createJsonTestDocAsync(container, this.partitionKey1);
+        this.TestDocPk1ExistingB =  this.createJsonTestDocAsync(container, this.partitionKey1);
+        this.TestDocPk1ExistingC =  this.createJsonTestDocAsync(container, this.partitionKey1);
+        this.TestDocPk1ExistingD =  this.createJsonTestDocAsync(container, this.partitionKey1);
     }
 
     TestDoc populateTestDoc(String partitionKey) {
@@ -194,14 +186,10 @@ public class BatchTestBase extends CosmosAsyncClientTest {
     }
 
     protected void verifyByReadAsync(CosmosAsyncContainer container, TestDoc doc) {
-        verifyByReadAsync(container, doc, false, null);
+        verifyByReadAsync(container, doc, null);
     }
 
-    protected void verifyByReadAsync(CosmosAsyncContainer container, TestDoc doc, boolean useEpk) {
-        verifyByReadAsync(container, doc, useEpk, null);
-    }
-
-    protected void verifyByReadAsync(CosmosAsyncContainer container, TestDoc doc, boolean useEpk, String eTag) {
+    protected void verifyByReadAsync(CosmosAsyncContainer container, TestDoc doc, String eTag) {
         PartitionKey partitionKey = this.getPartitionKey(doc.getStatus());
 
         CosmosItemResponse<TestDoc> response = container.readItem(doc.getId(), partitionKey, TestDoc.class).block();
@@ -215,16 +203,14 @@ public class BatchTestBase extends CosmosAsyncClientTest {
     }
 
     protected void verifyNotFoundAsync(CosmosAsyncContainer container, TestDoc doc) {
-       this.verifyNotFoundAsync(container, doc, false);
-    }
-
-    protected void verifyNotFoundAsync(CosmosAsyncContainer container, TestDoc doc, boolean useEpk) {
         String id = doc.getId();
         PartitionKey partitionKey = this.getPartitionKey(doc.getStatus());
 
         try {
             CosmosItemResponse<TestDoc> response =  container.readItem(id, partitionKey, TestDoc.class).block();
-            assertFalse(true, "Should not be here");
+
+            // Gateway returns response instead of exception
+            assertEquals(HttpResponseStatus.NOT_FOUND.code(), response.getStatusCode());
         } catch (CosmosException ex) {
             assertEquals(HttpResponseStatus.NOT_FOUND.code(), ex.getStatusCode());
         }

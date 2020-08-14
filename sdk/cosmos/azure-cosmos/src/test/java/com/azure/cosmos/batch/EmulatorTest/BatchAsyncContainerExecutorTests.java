@@ -4,6 +4,7 @@
 package com.azure.cosmos.batch.EmulatorTest;
 
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.batch.BatchAsyncContainerExecutor;
 import com.azure.cosmos.batch.ItemBatchOperation;
 import com.azure.cosmos.batch.TransactionalBatchOperationResult;
@@ -15,8 +16,7 @@ import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
@@ -31,17 +31,12 @@ import static org.testng.Assert.*;
 
 public class BatchAsyncContainerExecutorTests extends BatchTestBase {
 
-    @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
-    public void before_CosmosItemTest() {
-        super.classInit();
+    @Factory(dataProvider = "simpleClientBuilders")
+    public BatchAsyncContainerExecutorTests(CosmosClientBuilder clientBuilder) {
+        super(clientBuilder);
     }
 
-    @AfterClass(groups = {"simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
-    public void afterClass() {
-        super.classClean();
-    }
-
-    @Test(groups = {"simple"}, timeOut = BATCH_TEST_TIMEOUT)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void addAsync() {
         CosmosAsyncContainer container = this.gatewayJsonContainer;
         BatchAsyncContainerExecutor executor = new BatchAsyncContainerExecutor(container, 20, MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES);
@@ -65,7 +60,7 @@ public class BatchAsyncContainerExecutorTests extends BatchTestBase {
         executor.close();
     }
 
-    @Test(groups = {"simple"}, timeOut = BATCH_TEST_TIMEOUT)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void validateRequestOptions_Simple() {
         CosmosAsyncContainer container = this.gatewayJsonContainer;
         BatchAsyncContainerExecutor executor = new BatchAsyncContainerExecutor(container, 20, MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES);
@@ -84,7 +79,7 @@ public class BatchAsyncContainerExecutorTests extends BatchTestBase {
         CompletableFuture<Boolean> resp = executor.validateAndMaterializeOperation(operation, requestOptions);
     }
 
-    @Test(groups = {"simple"}, timeOut = BATCH_TEST_TIMEOUT)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void validateInvalidRequestOptions_sessionToken() {
         CosmosAsyncContainer container = this.gatewayJsonContainer;
         BatchAsyncContainerExecutor executor = new BatchAsyncContainerExecutor(container, 20, MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES);
@@ -108,7 +103,7 @@ public class BatchAsyncContainerExecutorTests extends BatchTestBase {
         }
     }
 
-    @Test(groups = {"simple"}, timeOut = BATCH_TEST_TIMEOUT)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void validateInvalidRequestOptions_PartitionKey() {
         CosmosAsyncContainer container = this.gatewayJsonContainer;
         BatchAsyncContainerExecutor executor = new BatchAsyncContainerExecutor(container, 20, MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES);
@@ -135,7 +130,7 @@ public class BatchAsyncContainerExecutorTests extends BatchTestBase {
         }
     }
 
-    @Test(groups = {"simple"}, timeOut = BATCH_TEST_TIMEOUT)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void validateInvalidRequestOptions_partitionKeyAndEPK() {
         CosmosAsyncContainer container = this.gatewayJsonContainer;
         BatchAsyncContainerExecutor executor = new BatchAsyncContainerExecutor(container, 20, MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES);

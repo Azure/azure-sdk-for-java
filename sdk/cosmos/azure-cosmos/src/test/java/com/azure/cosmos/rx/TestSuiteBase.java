@@ -905,6 +905,11 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     @DataProvider
+    public static Object[][] simpleClientBuilders() {
+        return new Object[][]{{createSimpleRxDocumentClient(ConsistencyLevel.SESSION, false, null)}};
+    }
+
+    @DataProvider
     public static Object[][] simpleClientBuildersWithDirect() {
         return simpleClientBuildersWithDirect(true, toArray(protocols));
     }
@@ -1113,6 +1118,16 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         doAnswer((Answer<Protocol>)invocation -> protocol).when(configs).getProtocol();
 
         return injectConfigs(builder, configs);
+    }
+
+    static protected CosmosClientBuilder createSimpleRxDocumentClient(ConsistencyLevel consistencyLevel,
+                                                                       boolean multiMasterEnabled,
+                                                                       List<String> preferredRegions) {
+        return new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
+            .credential(credential)
+            .multipleWriteRegionsEnabled(multiMasterEnabled)
+            .preferredRegions(preferredRegions)
+            .consistencyLevel(consistencyLevel);
     }
 
     protected int expectedNumberOfPages(int totalExpectedResult, int maxPageSize) {

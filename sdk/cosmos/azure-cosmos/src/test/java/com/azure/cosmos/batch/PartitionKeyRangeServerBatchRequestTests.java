@@ -11,10 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static com.azure.cosmos.batch.EmulatorTest.BatchTestBase.BATCH_TEST_TIMEOUT;
 import static org.testng.AssertJUnit.assertEquals;
 
 public class PartitionKeyRangeServerBatchRequestTests {
+
+    private static final int TIMEOUT = 40000;
 
     private ItemBatchOperation<?> createItemBatchOperation(String id) {
         ItemBatchOperation<?> operation = new ItemBatchOperation.Builder<Object>(OperationType.Create,0)
@@ -25,7 +26,7 @@ public class PartitionKeyRangeServerBatchRequestTests {
         return operation;
     }
 
-    @Test(groups = {"simple"}, timeOut = BATCH_TEST_TIMEOUT)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void fitsAllOperations() throws Exception {
         List<ItemBatchOperation<?>> operations = new ArrayList<ItemBatchOperation<?>>() {{
             createItemBatchOperation("");
@@ -44,7 +45,7 @@ public class PartitionKeyRangeServerBatchRequestTests {
         assertEquals(0, serverOperationBatchRequest.getBatchPendingOperations().size());
     }
 
-    @Test(groups = {"simple"}, timeOut = BATCH_TEST_TIMEOUT)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void overflowsBasedOnCount()  throws Exception {
         List<ItemBatchOperation<?>> operations = new ArrayList<ItemBatchOperation<?>>() {{
             add(createItemBatchOperation("1"));
@@ -67,7 +68,7 @@ public class PartitionKeyRangeServerBatchRequestTests {
         assertEquals(operations.get(2).getId(), serverOperationBatchRequest.getBatchPendingOperations().get(1).getId());
     }
 
-    @Test(groups = {"simple"}, timeOut = BATCH_TEST_TIMEOUT)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void overflowsBasedOnCountWithOffset() throws Exception {
         List<ItemBatchOperation<?>> operations = new ArrayList<ItemBatchOperation<?>>() {{
             add(createItemBatchOperation("1"));
@@ -90,7 +91,7 @@ public class PartitionKeyRangeServerBatchRequestTests {
         assertEquals(operations.get(2).getId(), serverOperationBatchRequest.getBatchPendingOperations().get(0).getId());
     }
 
-    @Test(groups = {"simple"}, timeOut = BATCH_TEST_TIMEOUT)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void partitionKeyRangeServerBatchRequestSizeTests() throws Exception {
 
         int docSizeInBytes = 250;
