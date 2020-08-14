@@ -27,7 +27,7 @@ public class DigitalTwinsAsyncClient {
 
     protected final AzureDigitalTwinsAPI protocolLayer;
 
-    protected DigitalTwinsAsyncClient(HttpPipeline pipeline, DigitalTwinsServiceVersion serviceVersion, String host) {
+    DigitalTwinsAsyncClient(HttpPipeline pipeline, DigitalTwinsServiceVersion serviceVersion, String host) {
         this.protocolLayer = new AzureDigitalTwinsAPIBuilder().host(host).pipeline(pipeline).buildClient();
         this.serviceVersion = serviceVersion;
     }

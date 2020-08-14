@@ -20,7 +20,10 @@ import java.util.Objects;
  * #buildAsyncClient() buildAsyncClient} respectively to construct an instance of the desired client.
  */
 @ServiceClientBuilder(serviceClients = {DigitalTwinsClient.class, DigitalTwinsAsyncClient.class})
-public class DigitalTwinsClientBuilder {
+public final class DigitalTwinsClientBuilder {
+
+    private static final String[] adtPublicScope = new String[]{"https://digitaltwins.azure.net" + "/.default"};
+
     private final List<HttpPipelinePolicy> additionalPolicies = new ArrayList<>();
     // mandatory
     private String endpoint;
@@ -50,7 +53,7 @@ public class DigitalTwinsClientBuilder {
         policies.add(new AddDatePolicy());
 
         // Add authentication policy so that each HTTP request has authorization header
-        HttpPipelinePolicy credentialPolicy = new BearerTokenAuthenticationPolicy(tokenCredential, GetAuthorizationScopes(endpoint));
+        HttpPipelinePolicy credentialPolicy = new BearerTokenAuthenticationPolicy(tokenCredential, getAuthorizationScopes(endpoint));
         policies.add(credentialPolicy);
 
         policies.addAll(additionalPolicies);
@@ -66,16 +69,12 @@ public class DigitalTwinsClientBuilder {
             .build();
     }
 
-    private static String[] GetAuthorizationScopes(String endpoint) {
-        // Uri representation for azure digital twin app Id "0b07f429-9f4b-4714-9392-cc5e8e80c8b0" in the public cloud.
-        String adtPublicCloudAppId = "https://digitaltwins.azure.net";
-        String defaultPermissionConsent = "/.default";
-
+    private static String[] getAuthorizationScopes(String endpoint) {
         // If the endpoint is in Azure public cloud, the suffix will have "azure.net" or "ppe.net".
         // Once ADT becomes available in other clouds, their corresponding scope has to be matched and set.
         if (endpoint.indexOf("azure.net") > 0
             || endpoint.indexOf("ppe.net") > 0) {
-            return new String[]{adtPublicCloudAppId + defaultPermissionConsent};
+            return adtPublicScope;
         }
 
         throw new IllegalArgumentException(String.format("Azure digital twins instance endpoint %s is not valid.", endpoint));
@@ -103,8 +102,7 @@ public class DigitalTwinsClientBuilder {
         this.serviceVersion = this.serviceVersion != null ? this.serviceVersion : DigitalTwinsServiceVersion.getLatest();
         this.retryPolicy = this.retryPolicy != null ? this.retryPolicy : new RetryPolicy(); // Default is exponential backoff
 
-        if (this.httpPipeline == null)
-        {
+        if (this.httpPipeline == null) {
             this.httpPipeline = buildPipeline(
                 this.tokenCredential,
                 this.endpoint,
@@ -176,7 +174,7 @@ public class DigitalTwinsClientBuilder {
      * @throws NullPointerException If {@code logOptions} is {@code null}.
      */
     public DigitalTwinsClientBuilder httpLogOptions(HttpLogOptions logOptions) {
-        this.logOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
+        this.logOptions = logOptions;
         return this;
     }
 

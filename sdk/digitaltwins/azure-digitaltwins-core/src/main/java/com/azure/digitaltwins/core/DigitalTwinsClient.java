@@ -22,10 +22,10 @@ import com.azure.digitaltwins.core.models.DigitalTwinsGetByIdResponse;
  * </p>
  */
 @ServiceClient(builder = DigitalTwinsClientBuilder.class)
-public class DigitalTwinsClient {
+public final class DigitalTwinsClient {
     private final DigitalTwinsAsyncClient digitalTwinsAsyncClient;
 
-    protected DigitalTwinsClient(DigitalTwinsAsyncClient digitalTwinsAsyncClient) {
+    DigitalTwinsClient(DigitalTwinsAsyncClient digitalTwinsAsyncClient) {
         this.digitalTwinsAsyncClient = digitalTwinsAsyncClient;
     }
 
