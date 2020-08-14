@@ -3,27 +3,36 @@
 
 package com.azure.resourcemanager.msi;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.msi.models.Identity;
+import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
-import com.azure.resourcemanager.resources.core.TestBase;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.utils.TestDelayProvider;
+import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MSIIdentityManagementTests extends TestBase {
+public class MSIIdentityManagementTests extends ResourceManagerTestBase {
     private String rgName = "";
     private Region region = Region.fromName("West Central US");
 
@@ -31,7 +40,17 @@ public class MSIIdentityManagementTests extends TestBase {
     private ResourceManager resourceManager;
 
     @Override
-    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) throws IOException {
+    protected HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile, List<HttpPipelinePolicy> policies, HttpClient httpClient) {
+        return HttpPipelineProvider.buildHttpPipeline(
+            credential, profile, null, new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS),
+            null, new RetryPolicy("Retry-After", ChronoUnit.SECONDS), policies, httpClient);
+    }
+
+    @Override
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
+        SdkContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
+        SdkContext sdkContext = new SdkContext();
+        sdkContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
         this.msiManager = MSIManager.authenticate(httpPipeline, profile, sdkContext);
         this.resourceManager = msiManager.resourceManager();
     }
@@ -42,7 +61,7 @@ public class MSIIdentityManagementTests extends TestBase {
     }
 
     @Test
-    public void canCreateGetListDeleteIdentity() throws Exception {
+    public void canCreateGetListDeleteIdentity() {
         rgName = generateRandomResourceName("javaismrg", 15);
         String identityName = generateRandomResourceName("msi-id", 15);
 
@@ -96,7 +115,7 @@ public class MSIIdentityManagementTests extends TestBase {
     }
 
     @Test
-    public void canAssignCurrentResourceGroupAccessRoleToIdentity() throws Exception {
+    public void canAssignCurrentResourceGroupAccessRoleToIdentity() {
         rgName = generateRandomResourceName("javaismrg", 15);
         String identityName = generateRandomResourceName("msi-id", 15);
 
@@ -148,7 +167,7 @@ public class MSIIdentityManagementTests extends TestBase {
     }
 
     @Test
-    public void canAssignRolesToIdentity() throws Exception {
+    public void canAssignRolesToIdentity() {
         rgName = generateRandomResourceName("javaismrg", 15);
         String identityName = generateRandomResourceName("msi-id", 15);
 
