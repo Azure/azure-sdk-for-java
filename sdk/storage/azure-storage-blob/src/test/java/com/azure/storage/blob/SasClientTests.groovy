@@ -26,6 +26,7 @@ import com.azure.storage.common.sas.CommonSasQueryParameters
 import com.azure.storage.common.sas.SasIpRange
 import com.azure.storage.common.sas.SasProtocol
 import spock.lang.Unroll
+import spock.lang.Ignore
 
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
@@ -103,6 +104,7 @@ class SasClientTests extends APISpec {
         notThrown(BlobStorageException)
     }
 
+    @Ignore("User Delegation SAS string to sign has changed. Reenable when working on feature.")
     def "blob sas user delegation"() {
         setup:
         def permissions = new BlobSasPermission()
@@ -168,6 +170,7 @@ class SasClientTests extends APISpec {
         validateSasProperties(properties)
     }
 
+    @Ignore("User Delegation SAS string to sign has changed. Reenable when working on feature.")
     def "blob sas snapshot user delegation"() {
         setup:
         def snapshotBlob = new SpecializedBlobClientBuilder().blobClient(sasClient.createSnapshot()).buildBlockBlobClient()
@@ -205,6 +208,7 @@ class SasClientTests extends APISpec {
         validateSasProperties(properties)
     }
 
+    @Ignore("User Delegation SAS string to sign has changed. Reenable when working on feature.")
     def "container sas user delegation"() {
         setup:
         def permissions = new BlobContainerSasPermission()
