@@ -75,7 +75,7 @@ $ keys *
 8. Delete the resources on http://ms.portal.azure.com/[Azure Portal] to avoid unexpected charges.
 
 == Examples
-link:../../spring-cloud-azure-samples/spring-cloud-azure-cache-sample[Here]
+link:../../azure-spring-cloud-cache-sample[Here]
 is a sample application that uses this starter.
 
 == Troubleshooting

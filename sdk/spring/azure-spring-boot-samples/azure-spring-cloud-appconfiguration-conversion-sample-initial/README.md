@@ -76,7 +76,7 @@ In this section, you clone a containerized Spring Boot application and test it l
 1. Change directory to the initial project; for example:
 
    ```shell
-   cd spring-cloud-azure/spring-cloud-azure-samples/azure-appconfiguration-conversion-sample-initial
+   cd sdk/spring/azure-spring-boot-samples/azure-appconfiguration-conversion-sample-initial
    ```
 
 #### Config the sample
