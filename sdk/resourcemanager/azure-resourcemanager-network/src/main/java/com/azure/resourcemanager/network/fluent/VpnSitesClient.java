@@ -462,8 +462,8 @@ public final class VpnSitesClient
             createOrUpdateWithResponseAsync(resourceGroupName, vpnSiteName, vpnSiteParameters);
         return this
             .client
-            .<VpnSiteInner, VpnSiteInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), VpnSiteInner.class, VpnSiteInner.class);
+            .<VpnSiteInner, VpnSiteInner>getLroResult(
+                mono, this.client.getHttpPipeline(), VpnSiteInner.class, VpnSiteInner.class, Context.NONE);
     }
 
     /**
@@ -481,12 +481,13 @@ public final class VpnSitesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<VpnSiteInner>, VpnSiteInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String vpnSiteName, VpnSiteInner vpnSiteParameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, vpnSiteName, vpnSiteParameters, context);
         return this
             .client
-            .<VpnSiteInner, VpnSiteInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), VpnSiteInner.class, VpnSiteInner.class);
+            .<VpnSiteInner, VpnSiteInner>getLroResult(
+                mono, this.client.getHttpPipeline(), VpnSiteInner.class, VpnSiteInner.class, context);
     }
 
     /**
@@ -885,7 +886,9 @@ public final class VpnSitesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String vpnSiteName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, vpnSiteName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -902,8 +905,11 @@ public final class VpnSitesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String vpnSiteName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, vpnSiteName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -1125,7 +1131,7 @@ public final class VpnSitesClient
     public PagedFlux<VpnSiteInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1256,7 +1262,8 @@ public final class VpnSitesClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VpnSiteInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**

@@ -8,6 +8,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import com.azure.resourcemanager.sql.fluent.BackupLongTermRetentionPoliciesClient;
 import com.azure.resourcemanager.sql.fluent.BackupShortTermRetentionPoliciesClient;
@@ -100,6 +101,7 @@ import com.azure.resourcemanager.sql.fluent.VirtualClustersClient;
 import com.azure.resourcemanager.sql.fluent.VirtualNetworkRulesClient;
 import com.azure.resourcemanager.sql.fluent.WorkloadClassifiersClient;
 import com.azure.resourcemanager.sql.fluent.WorkloadGroupsClient;
+import java.time.Duration;
 
 /** Initializes a new instance of the SqlManagementClient type. */
 @ServiceClient(builder = SqlManagementClientBuilder.class)
@@ -140,6 +142,30 @@ public final class SqlManagementClient extends AzureServiceClient {
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
+    }
+
+    /** The serializer to serialize an object into a string. */
+    private final SerializerAdapter serializerAdapter;
+
+    /**
+     * Gets The serializer to serialize an object into a string.
+     *
+     * @return the serializerAdapter value.
+     */
+    public SerializerAdapter getSerializerAdapter() {
+        return this.serializerAdapter;
+    }
+
+    /** The default poll interval for long-running operation. */
+    private final Duration defaultPollInterval;
+
+    /**
+     * Gets The default poll interval for long-running operation.
+     *
+     * @return the defaultPollInterval value.
+     */
+    public Duration getDefaultPollInterval() {
+        return this.defaultPollInterval;
     }
 
     /** The RecoverableDatabasesClient object to access its operations. */
@@ -1166,30 +1192,6 @@ public final class SqlManagementClient extends AzureServiceClient {
         return this.workloadClassifiers;
     }
 
-    /** The ManagedDatabaseRestoreDetailsClient object to access its operations. */
-    private final ManagedDatabaseRestoreDetailsClient managedDatabaseRestoreDetails;
-
-    /**
-     * Gets the ManagedDatabaseRestoreDetailsClient object to access its operations.
-     *
-     * @return the ManagedDatabaseRestoreDetailsClient object.
-     */
-    public ManagedDatabaseRestoreDetailsClient getManagedDatabaseRestoreDetails() {
-        return this.managedDatabaseRestoreDetails;
-    }
-
-    /** The ManagedDatabasesClient object to access its operations. */
-    private final ManagedDatabasesClient managedDatabases;
-
-    /**
-     * Gets the ManagedDatabasesClient object to access its operations.
-     *
-     * @return the ManagedDatabasesClient object.
-     */
-    public ManagedDatabasesClient getManagedDatabases() {
-        return this.managedDatabases;
-    }
-
     /** The ServerAzureADAdministratorsClient object to access its operations. */
     private final ServerAzureADAdministratorsClient serverAzureADAdministrators;
 
@@ -1238,16 +1240,49 @@ public final class SqlManagementClient extends AzureServiceClient {
         return this.syncMembers;
     }
 
+    /** The ManagedDatabaseRestoreDetailsClient object to access its operations. */
+    private final ManagedDatabaseRestoreDetailsClient managedDatabaseRestoreDetails;
+
+    /**
+     * Gets the ManagedDatabaseRestoreDetailsClient object to access its operations.
+     *
+     * @return the ManagedDatabaseRestoreDetailsClient object.
+     */
+    public ManagedDatabaseRestoreDetailsClient getManagedDatabaseRestoreDetails() {
+        return this.managedDatabaseRestoreDetails;
+    }
+
+    /** The ManagedDatabasesClient object to access its operations. */
+    private final ManagedDatabasesClient managedDatabases;
+
+    /**
+     * Gets the ManagedDatabasesClient object to access its operations.
+     *
+     * @return the ManagedDatabasesClient object.
+     */
+    public ManagedDatabasesClient getManagedDatabases() {
+        return this.managedDatabases;
+    }
+
     /**
      * Initializes an instance of SqlManagementClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param serializerAdapter The serializer to serialize an object into a string.
+     * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
      */
     SqlManagementClient(
-        HttpPipeline httpPipeline, AzureEnvironment environment, String subscriptionId, String endpoint) {
-        super(httpPipeline, environment);
+        HttpPipeline httpPipeline,
+        SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval,
+        AzureEnvironment environment,
+        String subscriptionId,
+        String endpoint) {
+        super(httpPipeline, serializerAdapter, environment);
         this.httpPipeline = httpPipeline;
+        this.serializerAdapter = serializerAdapter;
+        this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
         this.recoverableDatabases = new RecoverableDatabasesClient(this);
@@ -1338,11 +1373,11 @@ public final class SqlManagementClient extends AzureServiceClient {
         this.managedInstanceLongTermRetentionPolicies = new ManagedInstanceLongTermRetentionPoliciesClient(this);
         this.workloadGroups = new WorkloadGroupsClient(this);
         this.workloadClassifiers = new WorkloadClassifiersClient(this);
-        this.managedDatabaseRestoreDetails = new ManagedDatabaseRestoreDetailsClient(this);
-        this.managedDatabases = new ManagedDatabasesClient(this);
         this.serverAzureADAdministrators = new ServerAzureADAdministratorsClient(this);
         this.managedInstanceOperations = new ManagedInstanceOperationsClient(this);
         this.syncGroups = new SyncGroupsClient(this);
         this.syncMembers = new SyncMembersClient(this);
+        this.managedDatabaseRestoreDetails = new ManagedDatabaseRestoreDetailsClient(this);
+        this.managedDatabases = new ManagedDatabasesClient(this);
     }
 }

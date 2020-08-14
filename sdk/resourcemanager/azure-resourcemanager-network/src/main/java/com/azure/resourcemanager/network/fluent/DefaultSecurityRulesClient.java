@@ -243,7 +243,7 @@ public final class DefaultSecurityRulesClient {
         String resourceGroupName, String networkSecurityGroupName, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, networkSecurityGroupName, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**

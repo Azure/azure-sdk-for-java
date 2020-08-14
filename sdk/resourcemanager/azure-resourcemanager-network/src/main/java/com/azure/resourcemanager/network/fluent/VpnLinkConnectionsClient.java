@@ -237,7 +237,7 @@ public final class VpnLinkConnectionsClient {
         String resourceGroupName, String gatewayName, String connectionName, Context context) {
         return new PagedFlux<>(
             () -> listByVpnConnectionSinglePageAsync(resourceGroupName, gatewayName, connectionName, context),
-            nextLink -> listByVpnConnectionNextSinglePageAsync(nextLink));
+            nextLink -> listByVpnConnectionNextSinglePageAsync(nextLink, context));
     }
 
     /**

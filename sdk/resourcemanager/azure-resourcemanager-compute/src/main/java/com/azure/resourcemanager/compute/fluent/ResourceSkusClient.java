@@ -184,7 +184,7 @@ public final class ResourceSkusClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ResourceSkuInner> listAsync(String filter, Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, context), nextLink -> listNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(filter, context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -198,7 +198,8 @@ public final class ResourceSkusClient {
     public PagedFlux<ResourceSkuInner> listAsync() {
         final String filter = null;
         final Context context = null;
-        return new PagedFlux<>(() -> listSinglePageAsync(filter), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(filter), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**

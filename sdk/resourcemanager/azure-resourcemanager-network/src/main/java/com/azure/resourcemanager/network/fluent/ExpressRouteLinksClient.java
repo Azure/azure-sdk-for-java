@@ -429,7 +429,7 @@ public final class ExpressRouteLinksClient {
         String resourceGroupName, String expressRoutePortName, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, expressRoutePortName, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**

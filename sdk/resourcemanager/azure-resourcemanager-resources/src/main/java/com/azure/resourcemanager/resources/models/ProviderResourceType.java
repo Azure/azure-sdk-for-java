@@ -41,6 +41,18 @@ public final class ProviderResourceType {
     private List<String> apiVersions;
 
     /*
+     * The default API version.
+     */
+    @JsonProperty(value = "defaultApiVersion", access = JsonProperty.Access.WRITE_ONLY)
+    private String defaultApiVersion;
+
+    /*
+     * The API profiles for the resource provider.
+     */
+    @JsonProperty(value = "apiProfiles", access = JsonProperty.Access.WRITE_ONLY)
+    private List<ApiProfile> apiProfiles;
+
+    /*
      * The additional capabilities offered by this resource type.
      */
     @JsonProperty(value = "capabilities")
@@ -133,6 +145,24 @@ public final class ProviderResourceType {
     }
 
     /**
+     * Get the defaultApiVersion property: The default API version.
+     *
+     * @return the defaultApiVersion value.
+     */
+    public String defaultApiVersion() {
+        return this.defaultApiVersion;
+    }
+
+    /**
+     * Get the apiProfiles property: The API profiles for the resource provider.
+     *
+     * @return the apiProfiles value.
+     */
+    public List<ApiProfile> apiProfiles() {
+        return this.apiProfiles;
+    }
+
+    /**
      * Get the capabilities property: The additional capabilities offered by this resource type.
      *
      * @return the capabilities value.
@@ -180,6 +210,9 @@ public final class ProviderResourceType {
     public void validate() {
         if (aliases() != null) {
             aliases().forEach(e -> e.validate());
+        }
+        if (apiProfiles() != null) {
+            apiProfiles().forEach(e -> e.validate());
         }
     }
 }

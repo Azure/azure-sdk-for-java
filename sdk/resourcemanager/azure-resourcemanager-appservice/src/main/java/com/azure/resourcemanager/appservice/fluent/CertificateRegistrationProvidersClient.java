@@ -167,7 +167,8 @@ public final class CertificateRegistrationProvidersClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CsmOperationDescriptionInner> listOperationsAsync(Context context) {
         return new PagedFlux<>(
-            () -> listOperationsSinglePageAsync(context), nextLink -> listOperationsNextSinglePageAsync(nextLink));
+            () -> listOperationsSinglePageAsync(context),
+            nextLink -> listOperationsNextSinglePageAsync(nextLink, context));
     }
 
     /**

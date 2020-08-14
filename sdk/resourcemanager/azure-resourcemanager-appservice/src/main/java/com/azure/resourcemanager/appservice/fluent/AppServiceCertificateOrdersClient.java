@@ -498,7 +498,8 @@ public final class AppServiceCertificateOrdersClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AppServiceCertificateOrderInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -804,7 +805,7 @@ public final class AppServiceCertificateOrdersClient
         String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1148,11 +1149,12 @@ public final class AppServiceCertificateOrdersClient
             createOrUpdateWithResponseAsync(resourceGroupName, certificateOrderName, certificateDistinguishedName);
         return this
             .client
-            .<AppServiceCertificateOrderInner, AppServiceCertificateOrderInner>getLroResultAsync(
+            .<AppServiceCertificateOrderInner, AppServiceCertificateOrderInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 AppServiceCertificateOrderInner.class,
-                AppServiceCertificateOrderInner.class);
+                AppServiceCertificateOrderInner.class,
+                Context.NONE);
     }
 
     /**
@@ -1174,16 +1176,18 @@ public final class AppServiceCertificateOrdersClient
             String certificateOrderName,
             AppServiceCertificateOrderInner certificateDistinguishedName,
             Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(
                 resourceGroupName, certificateOrderName, certificateDistinguishedName, context);
         return this
             .client
-            .<AppServiceCertificateOrderInner, AppServiceCertificateOrderInner>getLroResultAsync(
+            .<AppServiceCertificateOrderInner, AppServiceCertificateOrderInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 AppServiceCertificateOrderInner.class,
-                AppServiceCertificateOrderInner.class);
+                AppServiceCertificateOrderInner.class,
+                context);
     }
 
     /**
@@ -1823,7 +1827,7 @@ public final class AppServiceCertificateOrdersClient
         String resourceGroupName, String certificateOrderName, Context context) {
         return new PagedFlux<>(
             () -> listCertificatesSinglePageAsync(resourceGroupName, certificateOrderName, context),
-            nextLink -> listCertificatesNextSinglePageAsync(nextLink));
+            nextLink -> listCertificatesNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2196,11 +2200,12 @@ public final class AppServiceCertificateOrdersClient
                 resourceGroupName, certificateOrderName, name, keyVaultCertificate);
         return this
             .client
-            .<AppServiceCertificateResourceInner, AppServiceCertificateResourceInner>getLroResultAsync(
+            .<AppServiceCertificateResourceInner, AppServiceCertificateResourceInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 AppServiceCertificateResourceInner.class,
-                AppServiceCertificateResourceInner.class);
+                AppServiceCertificateResourceInner.class,
+                Context.NONE);
     }
 
     /**
@@ -2224,16 +2229,18 @@ public final class AppServiceCertificateOrdersClient
             String name,
             AppServiceCertificateResourceInner keyVaultCertificate,
             Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateCertificateWithResponseAsync(
                 resourceGroupName, certificateOrderName, name, keyVaultCertificate, context);
         return this
             .client
-            .<AppServiceCertificateResourceInner, AppServiceCertificateResourceInner>getLroResultAsync(
+            .<AppServiceCertificateResourceInner, AppServiceCertificateResourceInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 AppServiceCertificateResourceInner.class,
-                AppServiceCertificateResourceInner.class);
+                AppServiceCertificateResourceInner.class,
+                context);
     }
 
     /**

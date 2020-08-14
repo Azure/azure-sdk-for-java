@@ -292,6 +292,7 @@ public final class PolicyAssignmentsClient
             return Mono
                 .error(new IllegalArgumentException("Parameter policyAssignmentName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .delete(this.client.getEndpoint(), scope, policyAssignmentName, this.client.getApiVersion(), context);
     }
@@ -489,6 +490,7 @@ public final class PolicyAssignmentsClient
         } else {
             parameters.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .create(
                 this.client.getEndpoint(),
@@ -681,6 +683,7 @@ public final class PolicyAssignmentsClient
             return Mono
                 .error(new IllegalArgumentException("Parameter policyAssignmentName is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .get(this.client.getEndpoint(), scope, policyAssignmentName, this.client.getApiVersion(), context);
     }
@@ -879,6 +882,7 @@ public final class PolicyAssignmentsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(
                 this.client.getEndpoint(),
@@ -949,7 +953,7 @@ public final class PolicyAssignmentsClient
         String resourceGroupName, String filter, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, context),
-            nextLink -> listForResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listForResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -975,7 +979,7 @@ public final class PolicyAssignmentsClient
         final Context context = null;
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter),
-            nextLink -> listForResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listForResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1229,6 +1233,7 @@ public final class PolicyAssignmentsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listForResource(
                 this.client.getEndpoint(),
@@ -1360,7 +1365,7 @@ public final class PolicyAssignmentsClient
                     resourceName,
                     filter,
                     context),
-            nextLink -> listForResourceNextSinglePageAsync(nextLink));
+            nextLink -> listForResourceNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1413,7 +1418,7 @@ public final class PolicyAssignmentsClient
                     resourceType,
                     resourceName,
                     filter),
-            nextLink -> listForResourceNextSinglePageAsync(nextLink));
+            nextLink -> listForResourceNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1649,6 +1654,7 @@ public final class PolicyAssignmentsClient
         if (filter == null) {
             return Mono.error(new IllegalArgumentException("Parameter filter is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listForManagementGroup(
                 this.client.getEndpoint(), managementGroupId, filter, this.client.getApiVersion(), context)
@@ -1710,7 +1716,7 @@ public final class PolicyAssignmentsClient
         String managementGroupId, String filter, Context context) {
         return new PagedFlux<>(
             () -> listForManagementGroupSinglePageAsync(managementGroupId, filter, context),
-            nextLink -> listForManagementGroupNextSinglePageAsync(nextLink));
+            nextLink -> listForManagementGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1844,6 +1850,7 @@ public final class PolicyAssignmentsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
@@ -1905,7 +1912,7 @@ public final class PolicyAssignmentsClient
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PolicyAssignmentInner> listAsync(String filter, Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, context), nextLink -> listNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(filter, context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1926,7 +1933,8 @@ public final class PolicyAssignmentsClient
     public PagedFlux<PolicyAssignmentInner> listAsync() {
         final String filter = null;
         final Context context = null;
-        return new PagedFlux<>(() -> listSinglePageAsync(filter), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(filter), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2062,6 +2070,7 @@ public final class PolicyAssignmentsClient
             return Mono
                 .error(new IllegalArgumentException("Parameter policyAssignmentId is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service.deleteById(this.client.getEndpoint(), policyAssignmentId, this.client.getApiVersion(), context);
     }
 
@@ -2253,6 +2262,7 @@ public final class PolicyAssignmentsClient
         } else {
             parameters.validate();
         }
+        context = this.client.mergeContext(context);
         return service
             .createById(
                 this.client.getEndpoint(), policyAssignmentId, this.client.getApiVersion(), parameters, context);
@@ -2433,6 +2443,7 @@ public final class PolicyAssignmentsClient
             return Mono
                 .error(new IllegalArgumentException("Parameter policyAssignmentId is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service.getById(this.client.getEndpoint(), policyAssignmentId, this.client.getApiVersion(), context);
     }
 
@@ -2578,6 +2589,7 @@ public final class PolicyAssignmentsClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listForResourceGroupNext(nextLink, context)
             .map(
@@ -2635,6 +2647,7 @@ public final class PolicyAssignmentsClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listForResourceNext(nextLink, context)
             .map(
@@ -2692,6 +2705,7 @@ public final class PolicyAssignmentsClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listForManagementGroupNext(nextLink, context)
             .map(
@@ -2748,6 +2762,7 @@ public final class PolicyAssignmentsClient
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        context = this.client.mergeContext(context);
         return service
             .listNext(nextLink, context)
             .map(

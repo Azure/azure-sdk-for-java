@@ -354,11 +354,12 @@ public final class GalleryApplicationVersionsClient {
                 galleryApplicationVersion);
         return this
             .client
-            .<GalleryApplicationVersionInner, GalleryApplicationVersionInner>getLroResultAsync(
+            .<GalleryApplicationVersionInner, GalleryApplicationVersionInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 GalleryApplicationVersionInner.class,
-                GalleryApplicationVersionInner.class);
+                GalleryApplicationVersionInner.class,
+                Context.NONE);
     }
 
     /**
@@ -388,6 +389,7 @@ public final class GalleryApplicationVersionsClient {
             String galleryApplicationVersionName,
             GalleryApplicationVersionInner galleryApplicationVersion,
             Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(
                 resourceGroupName,
@@ -398,11 +400,12 @@ public final class GalleryApplicationVersionsClient {
                 context);
         return this
             .client
-            .<GalleryApplicationVersionInner, GalleryApplicationVersionInner>getLroResultAsync(
+            .<GalleryApplicationVersionInner, GalleryApplicationVersionInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 GalleryApplicationVersionInner.class,
-                GalleryApplicationVersionInner.class);
+                GalleryApplicationVersionInner.class,
+                context);
     }
 
     /**
@@ -806,11 +809,12 @@ public final class GalleryApplicationVersionsClient {
                 galleryApplicationVersion);
         return this
             .client
-            .<GalleryApplicationVersionInner, GalleryApplicationVersionInner>getLroResultAsync(
+            .<GalleryApplicationVersionInner, GalleryApplicationVersionInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 GalleryApplicationVersionInner.class,
-                GalleryApplicationVersionInner.class);
+                GalleryApplicationVersionInner.class,
+                Context.NONE);
     }
 
     /**
@@ -839,6 +843,7 @@ public final class GalleryApplicationVersionsClient {
         String galleryApplicationVersionName,
         GalleryApplicationVersionUpdate galleryApplicationVersion,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateWithResponseAsync(
                 resourceGroupName,
@@ -849,11 +854,12 @@ public final class GalleryApplicationVersionsClient {
                 context);
         return this
             .client
-            .<GalleryApplicationVersionInner, GalleryApplicationVersionInner>getLroResultAsync(
+            .<GalleryApplicationVersionInner, GalleryApplicationVersionInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 GalleryApplicationVersionInner.class,
-                GalleryApplicationVersionInner.class);
+                GalleryApplicationVersionInner.class,
+                context);
     }
 
     /**
@@ -1534,7 +1540,9 @@ public final class GalleryApplicationVersionsClient {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(
                 resourceGroupName, galleryName, galleryApplicationName, galleryApplicationVersionName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1558,10 +1566,13 @@ public final class GalleryApplicationVersionsClient {
         String galleryApplicationName,
         String galleryApplicationVersionName,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(
                 resourceGroupName, galleryName, galleryApplicationName, galleryApplicationVersionName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -1875,7 +1886,7 @@ public final class GalleryApplicationVersionsClient {
             () ->
                 listByGalleryApplicationSinglePageAsync(
                     resourceGroupName, galleryName, galleryApplicationName, context),
-            nextLink -> listByGalleryApplicationNextSinglePageAsync(nextLink));
+            nextLink -> listByGalleryApplicationNextSinglePageAsync(nextLink, context));
     }
 
     /**

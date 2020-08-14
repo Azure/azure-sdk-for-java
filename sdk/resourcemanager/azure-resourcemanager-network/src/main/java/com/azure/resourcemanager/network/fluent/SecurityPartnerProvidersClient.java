@@ -284,7 +284,9 @@ public final class SecurityPartnerProvidersClient
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String securityPartnerProviderName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, securityPartnerProviderName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -301,9 +303,12 @@ public final class SecurityPartnerProvidersClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String securityPartnerProviderName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, securityPartnerProviderName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -716,11 +721,12 @@ public final class SecurityPartnerProvidersClient
             createOrUpdateWithResponseAsync(resourceGroupName, securityPartnerProviderName, parameters);
         return this
             .client
-            .<SecurityPartnerProviderInner, SecurityPartnerProviderInner>getLroResultAsync(
+            .<SecurityPartnerProviderInner, SecurityPartnerProviderInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 SecurityPartnerProviderInner.class,
-                SecurityPartnerProviderInner.class);
+                SecurityPartnerProviderInner.class,
+                Context.NONE);
     }
 
     /**
@@ -741,15 +747,17 @@ public final class SecurityPartnerProvidersClient
         String securityPartnerProviderName,
         SecurityPartnerProviderInner parameters,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, securityPartnerProviderName, parameters, context);
         return this
             .client
-            .<SecurityPartnerProviderInner, SecurityPartnerProviderInner>getLroResultAsync(
+            .<SecurityPartnerProviderInner, SecurityPartnerProviderInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 SecurityPartnerProviderInner.class,
-                SecurityPartnerProviderInner.class);
+                SecurityPartnerProviderInner.class,
+                context);
     }
 
     /**
@@ -1189,7 +1197,7 @@ public final class SecurityPartnerProvidersClient
     public PagedFlux<SecurityPartnerProviderInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1320,7 +1328,8 @@ public final class SecurityPartnerProvidersClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SecurityPartnerProviderInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**

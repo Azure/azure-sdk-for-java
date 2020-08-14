@@ -15,13 +15,23 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
 
 public class EncryptionProcessor {
-    public static byte[] encryptAsync(byte[] payload, Encryptor encryptor, EncryptionOptions encryptionOptions) {
+    private final static Logger LOGGER = LoggerFactory.getLogger(EncryptionProcessor.class);
+
+    public static Mono<byte[]> encryptAsync(byte[] payload, Encryptor encryptor, EncryptionOptions encryptionOptions) {
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Encrypting byte[] of size [{}] on thread [{}]",
+                payload == null ? null : payload.length,
+                Thread.currentThread().getName());
+        }
 
         ObjectNode itemJObj = Utils.parse(payload, ObjectNode.class);
 
@@ -61,33 +71,56 @@ public class EncryptionProcessor {
         SensitiveDataTransformer serializer = new SensitiveDataTransformer();
         byte[] plainText = serializer.toByteArray(toEncryptJObj);
 
-        byte[] cipherText = encryptor.encryptAsync(plainText, encryptionOptions.getDataEncryptionKeyId(), encryptionOptions.getEncryptionAlgorithm());
+        Mono<byte[]> cipherTextMono = encryptor.encryptAsync(plainText, encryptionOptions.getDataEncryptionKeyId(), encryptionOptions.getEncryptionAlgorithm());
 
-        Preconditions.checkNotNull(cipherText, "cipherText");
+        return cipherTextMono.switchIfEmpty(Mono.error(new NullPointerException("cipherText is null")))
+                             .flatMap(
+                                 cipherText -> {
 
+                                     EncryptionProperties encryptionProperties = new EncryptionProperties(
+                                         /* encryptionFormatVersion: */ 2,
+                                         encryptionOptions.getEncryptionAlgorithm(),
+                                         encryptionOptions.getDataEncryptionKeyId(),
+                                         cipherText);
 
-        EncryptionProperties encryptionProperties = new EncryptionProperties(
-            /* encryptionFormatVersion: */ 2,
-            encryptionOptions.getEncryptionAlgorithm(),
-            encryptionOptions.getDataEncryptionKeyId(),
-            cipherText);
+                                     itemJObj.set(Constants.Properties.EncryptedInfo,
+                                         encryptionProperties.toObjectNode());
 
-        itemJObj.set(Constants.Properties.EncryptedInfo, encryptionProperties.toObjectNode());
-
-        // TODO:             return EncryptionProcessor.BaseSerializer.ToStream(itemJObj);
-
-        return EncryptionUtils.serializeJsonToByteArray(Utils.getSimpleObjectMapper(), itemJObj);
-
+                                     // TODO:             return EncryptionProcessor.BaseSerializer.ToStream(itemJObj);
+                                     return Mono.just(EncryptionUtils.serializeJsonToByteArray(Utils.getSimpleObjectMapper(), itemJObj));
+                                 }
+                             );
     }
 
-    public static byte[] decryptAsync(byte[] input, Encryptor encryptor) {
-        ObjectNode itemJObj = Utils.parse(input, ObjectNode.class);
-        itemJObj = decryptAsync(itemJObj, encryptor);
+    public static Mono<byte[]> decryptAsync(byte[] input, Encryptor encryptor) {
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Decrypting byte[] of size [{}] on thread [{}]",
+                input == null ? null : input.length,
+                Thread.currentThread().getName());
+        }
 
-        return EncryptionUtils.serializeJsonToByteArray(Utils.getSimpleObjectMapper(), itemJObj);
+        JsonNode itemJObj = Utils.parse(input, JsonNode.class);
+        if (itemJObj instanceof ObjectNode) {
+            Mono<ObjectNode> itemJObjMono = decryptAsync((ObjectNode) itemJObj, encryptor);
+            return itemJObjMono.flatMap(
+                decryptedItem -> {
+                    return Mono.just(EncryptionUtils.serializeJsonToByteArray(Utils.getSimpleObjectMapper(), itemJObj));
+                }
+            );
+        } else {
+            return Mono.just(input);
+        }
     }
 
-    public static ObjectNode decryptAsync(ObjectNode itemJObj, Encryptor encryptor) {
+    public static Mono<ObjectNode> decryptAsync(ObjectNode itemJObj, Encryptor encryptor) {
+        try {
+            return decryptAsyncInternal(itemJObj, encryptor);
+        } catch (Exception e) {
+            return Mono.error(e);
+        }
+    }
+
+    private static Mono<ObjectNode> decryptAsyncInternal(ObjectNode itemJObj, Encryptor encryptor) {
         assert (itemJObj != null);
         assert (encryptor != null);
 
@@ -98,7 +131,7 @@ public class EncryptionProcessor {
         }
 
         if (encryptionPropertiesJProp == null) {
-            return itemJObj;
+            return Mono.just(itemJObj);
         }
 
         EncryptionProperties encryptionProperties = null;
@@ -112,22 +145,27 @@ public class EncryptionProcessor {
                 "Unknown encryption format version: %s. Please upgrade your SDK to the latest version.", encryptionProperties.getEncryptionFormatVersion()));
         }
 
-        byte[] plainText = encryptor.decryptAsync(encryptionProperties.getEncryptedData(), encryptionProperties.getDataEncryptionKeyId(), encryptionProperties.getEncryptionAlgorithm());
+        Mono<byte[]> plainTextMono = encryptor.decryptAsync(encryptionProperties.getEncryptedData(), encryptionProperties.getDataEncryptionKeyId(), encryptionProperties.getEncryptionAlgorithm());
 
-        SensitiveDataTransformer parser = new SensitiveDataTransformer();
-        ObjectNode plainTextJObj = parser.toObjectNode(plainText);
+        return plainTextMono.flatMap(
+            plainText -> {
 
-        Iterator<Map.Entry<String, JsonNode>> it = plainTextJObj.fields();
-        while (it.hasNext()) {
-            Map.Entry<String, JsonNode> entry = it.next();
-            itemJObj.set(entry.getKey(), entry.getValue());
-        }
+                SensitiveDataTransformer parser = new SensitiveDataTransformer();
+                ObjectNode plainTextJObj = parser.toObjectNode(plainText);
 
-        itemJObj.remove(Constants.Properties.EncryptedInfo);
-        return itemJObj;
+                Iterator<Map.Entry<String, JsonNode>> it = plainTextJObj.fields();
+                while (it.hasNext()) {
+                    Map.Entry<String, JsonNode> entry = it.next();
+                    itemJObj.set(entry.getKey(), entry.getValue());
+                }
+
+                itemJObj.remove(Constants.Properties.EncryptedInfo);
+                return Mono.just(itemJObj);
+            }
+        );
     }
 
-    public static class SensitiveDataTransformer {
+    private static class SensitiveDataTransformer {
         public <T> ObjectNode toObjectNode(byte[] plainText) {
             if (Utils.isEmpty(plainText)) {
                 return null;

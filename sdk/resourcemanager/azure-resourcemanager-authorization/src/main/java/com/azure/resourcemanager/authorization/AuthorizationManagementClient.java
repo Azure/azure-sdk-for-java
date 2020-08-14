@@ -8,13 +8,15 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.authorization.fluent.ClassicAdministratorsClient;
 import com.azure.resourcemanager.authorization.fluent.GlobalAdministratorsClient;
 import com.azure.resourcemanager.authorization.fluent.PermissionsClient;
 import com.azure.resourcemanager.authorization.fluent.ProviderOperationsMetadatasClient;
 import com.azure.resourcemanager.authorization.fluent.RoleAssignmentsClient;
 import com.azure.resourcemanager.authorization.fluent.RoleDefinitionsClient;
+import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
+import java.time.Duration;
 
 /** Initializes a new instance of the AuthorizationManagementClient type. */
 @ServiceClient(builder = AuthorizationManagementClientBuilder.class)
@@ -55,6 +57,30 @@ public final class AuthorizationManagementClient extends AzureServiceClient {
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
+    }
+
+    /** The serializer to serialize an object into a string. */
+    private final SerializerAdapter serializerAdapter;
+
+    /**
+     * Gets The serializer to serialize an object into a string.
+     *
+     * @return the serializerAdapter value.
+     */
+    public SerializerAdapter getSerializerAdapter() {
+        return this.serializerAdapter;
+    }
+
+    /** The default poll interval for long-running operation. */
+    private final Duration defaultPollInterval;
+
+    /**
+     * Gets The default poll interval for long-running operation.
+     *
+     * @return the defaultPollInterval value.
+     */
+    public Duration getDefaultPollInterval() {
+        return this.defaultPollInterval;
     }
 
     /** The ClassicAdministratorsClient object to access its operations. */
@@ -133,12 +159,21 @@ public final class AuthorizationManagementClient extends AzureServiceClient {
      * Initializes an instance of AuthorizationManagementClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param serializerAdapter The serializer to serialize an object into a string.
+     * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
      */
     AuthorizationManagementClient(
-        HttpPipeline httpPipeline, AzureEnvironment environment, String subscriptionId, String endpoint) {
-        super(httpPipeline, environment);
+        HttpPipeline httpPipeline,
+        SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval,
+        AzureEnvironment environment,
+        String subscriptionId,
+        String endpoint) {
+        super(httpPipeline, serializerAdapter, environment);
         this.httpPipeline = httpPipeline;
+        this.serializerAdapter = serializerAdapter;
+        this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
         this.classicAdministrators = new ClassicAdministratorsClient(this);
