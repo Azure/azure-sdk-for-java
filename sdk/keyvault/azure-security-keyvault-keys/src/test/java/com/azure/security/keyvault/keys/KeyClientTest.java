@@ -48,7 +48,7 @@ public class KeyClientTest extends KeyClientTestBase {
             .buildAsyncClient());
 
         if (interceptorManager.isPlaybackMode()) {
-            when(asyncClient.getPollingDuration()).thenReturn(Duration.ofMillis(10));
+            when(asyncClient.getPollDuration()).thenReturn(Duration.ofMillis(10));
         }
 
         client = new KeyClient(asyncClient);

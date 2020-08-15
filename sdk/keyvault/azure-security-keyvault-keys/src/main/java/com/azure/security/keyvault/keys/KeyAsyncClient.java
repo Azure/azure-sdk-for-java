@@ -70,6 +70,8 @@ public final class KeyAsyncClient {
     // for more information on Azure resource provider namespaces.
     private static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
 
+    private static final Duration DEFAULT_POLL_DURATION = Duration.ofSeconds(1);
+
     private final String vaultUrl;
     private final KeyService service;
     private final ClientLogger logger = new ClientLogger(KeyAsyncClient.class);
@@ -98,8 +100,8 @@ public final class KeyAsyncClient {
         return vaultUrl;
     }
 
-    Duration getPollingDuration() {
-        return Duration.ofSeconds(1);
+    Duration getPollDuration() {
+        return DEFAULT_POLL_DURATION;
     }
 
     /**
@@ -689,7 +691,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<DeletedKey, Void> beginDeleteKey(String name) {
-        return new PollerFlux<>(getPollingDuration(),
+        return new PollerFlux<>(getPollDuration(),
             activationOperation(name),
             createPollOperation(name),
             (context, firstResponse) -> Mono.empty(),
@@ -866,7 +868,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<KeyVaultKey, Void> beginRecoverDeletedKey(String name) {
-        return new PollerFlux<>(getPollingDuration(),
+        return new PollerFlux<>(getPollDuration(),
             recoverActivationOperation(name),
             createRecoverPollOperation(name),
             (context, firstResponse) -> Mono.empty(),

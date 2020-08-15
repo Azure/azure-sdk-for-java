@@ -63,6 +63,8 @@ public final class SecretAsyncClient {
     // for more information on Azure resource provider namespaces.
     private static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
 
+    private static final Duration DEFAULT_POLL_DURATION = Duration.ofSeconds(1);
+
     private final String vaultUrl;
     private final SecretService service;
     private final ClientLogger logger = new ClientLogger(SecretAsyncClient.class);
@@ -90,8 +92,8 @@ public final class SecretAsyncClient {
         return vaultUrl;
     }
 
-    Duration getPollingDuration() {
-        return Duration.ofSeconds(1);
+    Duration getPollDuration() {
+        return DEFAULT_POLL_DURATION;
     }
 
     /**
@@ -395,7 +397,7 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<DeletedSecret, Void> beginDeleteSecret(String name) {
-        return new PollerFlux<>(getPollingDuration(),
+        return new PollerFlux<>(getPollDuration(),
             activationOperation(name),
             createPollOperation(name),
             (pollingContext, firstResponse) -> Mono.empty(),
@@ -567,7 +569,7 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<KeyVaultSecret, Void> beginRecoverDeletedSecret(String name) {
-        return new PollerFlux<>(getPollingDuration(),
+        return new PollerFlux<>(getPollDuration(),
             recoverActivationOperation(name),
             createRecoverPollOperation(name),
             (pollerContext, firstResponse) -> Mono.empty(),

@@ -81,6 +81,8 @@ public final class CertificateAsyncClient {
     // for more information on Azure resource provider namespaces.
     private static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
 
+    private static final Duration DEFAULT_POLL_DURATION = Duration.ofSeconds(1);
+
     private final String vaultUrl;
     private final CertificateService service;
     private final ClientLogger logger = new ClientLogger(CertificateAsyncClient.class);
@@ -108,7 +110,7 @@ public final class CertificateAsyncClient {
     }
 
     Duration getPollDuration() {
-        return Duration.ofSeconds(1);
+        return DEFAULT_POLL_DURATION;
     }
 
     /**
