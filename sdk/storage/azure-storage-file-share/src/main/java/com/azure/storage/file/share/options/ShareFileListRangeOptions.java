@@ -17,9 +17,6 @@ public class ShareFileListRangeOptions {
     private String previousSnapshot;
     private ShareRequestConditions requestConditions;
 
-    public ShareFileListRangeOptions() {
-    }
-
     /**
      * @return The range of bytes over which to list ranges, inclusively.
      */
