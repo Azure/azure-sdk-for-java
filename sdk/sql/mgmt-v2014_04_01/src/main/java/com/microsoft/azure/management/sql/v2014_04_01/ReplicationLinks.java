@@ -42,6 +42,18 @@ public interface ReplicationLinks extends HasInner<ReplicationLinksInner> {
     Completable failoverAllowDataLossAsync(String resourceGroupName, String serverName, String databaseName, String linkId);
 
     /**
+     * Deletes a database replication link in forced or friendly way.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database that has the replication link to be failed over.
+     * @param linkId The ID of the replication link to be failed over.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable unlinkAsync(String resourceGroupName, String serverName, String databaseName, String linkId);
+
+    /**
      * Gets a database replication link.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.

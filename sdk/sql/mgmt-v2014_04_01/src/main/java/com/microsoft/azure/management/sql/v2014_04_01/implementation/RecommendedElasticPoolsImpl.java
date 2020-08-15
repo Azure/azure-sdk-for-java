@@ -55,10 +55,14 @@ class RecommendedElasticPoolsImpl extends WrapperImpl<RecommendedElasticPoolsInn
     public Observable<RecommendedElasticPool> getAsync(String resourceGroupName, String serverName, String recommendedElasticPoolName) {
         RecommendedElasticPoolsInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName, recommendedElasticPoolName)
-        .map(new Func1<RecommendedElasticPoolInner, RecommendedElasticPool>() {
+        .flatMap(new Func1<RecommendedElasticPoolInner, Observable<RecommendedElasticPool>>() {
             @Override
-            public RecommendedElasticPool call(RecommendedElasticPoolInner inner) {
-                return wrapModel(inner);
+            public Observable<RecommendedElasticPool> call(RecommendedElasticPoolInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((RecommendedElasticPool)wrapModel(inner));
+                }
             }
        });
     }
