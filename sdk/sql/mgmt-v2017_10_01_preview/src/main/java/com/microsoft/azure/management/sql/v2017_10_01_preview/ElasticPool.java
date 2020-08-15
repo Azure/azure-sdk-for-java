@@ -172,7 +172,11 @@ public interface ElasticPool extends HasInner<ElasticPoolInner>, Indexable, Refr
         interface WithSku {
             /**
              * Specifies sku.
-             * @param sku the sku parameter value
+             * @param sku The elastic pool SKU.
+ The list of SKUs may vary by region and support offer. To determine the SKUs (including the SKU name, tier/edition, family, and capacity) that are available to your subscription in an Azure region, use the `Capabilities_ListByLocation` REST API or the following command:
+ ```azurecli
+ az sql elastic-pool list-editions -l &lt;location&gt; -o table
+ ````
              * @return the next definition stage
              */
             WithCreate withSku(Sku sku);
