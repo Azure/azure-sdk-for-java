@@ -524,7 +524,7 @@ TODO:
 
 The telemetry API requests for generation of a telemetry message for a logical twin. This method sends a fire and forget telemetry message by a digital twin. When this API succeeds, the caller is guaranteed that the telemetry message has been sent. There is no acknowledgement if or when the telemetry message is processed.
 
-Telemtry for digital twin follows the pub/sub model. A digital twin publishes a telemetry message, which is then consumed by one or many destination endpoints (subscribers) defined under [event routes](./Models/EventRoute.cs).
+Telemtry for digital twin follows the pub/sub model. A digital twin publishes a telemetry message, which is then consumed by one or many destination endpoints (subscribers) defined under event routes.
 These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
 
 * Note: Currently, the event route specifies broad filters, eg., `"filter": "$eventType = 'DigitalTwinTelemetryMessages'`. The ability to specify filters with increased granularity will be available sometime between public-preview and GA (TBD). There will also be support for subscriptions, which can be used to create subscriptions between two twins, and used for routing telemetry, notifications etc.
