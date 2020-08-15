@@ -58,20 +58,3 @@ extends:
       - name: azure-security-keyvault-secrets
         groupId: com.azure
         safeName: azuresecuritykeyvaultsecrets
-    AdditionalModules:
-      - name: azure-storage-blob
-        groupId: com.azure
-      - name: perf-test-core
-        groupId: com.azure
-      - name: azure-data-appconfiguration
-        groupId: com.azure
-      - name: spring-integration-azure-core
-        groupId: com.microsoft.azure
-      - name: azure-resourcemanager-resources
-        groupId: com.azure.resourcemanager
-      - name: spring-integration-storage-queue
-        groupId: com.microsoft.azure
-      - name: azure-storage-file-share
-        groupId: com.azure
-      - name: azure-cosmos
-        groupId: com.azure
