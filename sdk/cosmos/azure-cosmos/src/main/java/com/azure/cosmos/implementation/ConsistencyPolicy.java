@@ -52,16 +52,21 @@ public final class ConsistencyPolicy extends JsonSerializable {
      */
     public ConsistencyLevel getDefaultConsistencyLevel() {
 
-        ConsistencyLevel result = ConsistencyPolicy.DEFAULT_DEFAULT_CONSISTENCY_LEVEL;
-        String consistencyLevelString = super.getString(Constants.Properties.DEFAULT_CONSISTENCY_LEVEL);
-        try {
-            result = ConsistencyLevel
-                         .valueOf(CaseFormat.UPPER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, consistencyLevelString));
-        } catch (IllegalArgumentException e) {
-            // ignore the exception and return the default
-            this.getLogger().warn("Unknown consistency level {}, value ignored.", consistencyLevelString);
+        if (this.cachedConsistencyLevel == null) {
+            ConsistencyLevel result = ConsistencyPolicy.DEFAULT_DEFAULT_CONSISTENCY_LEVEL;
+            String consistencyLevelString = super.getString(Constants.Properties.DEFAULT_CONSISTENCY_LEVEL);
+            try {
+                result = ConsistencyLevel
+                    .valueOf(CaseFormat.UPPER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, consistencyLevelString));
+            } catch (IllegalArgumentException e) {
+                // ignore the exception and return the default
+                this.getLogger().warn("Unknown consistency level {}, value ignored.", consistencyLevelString);
+            }
+
+            this.cachedConsistencyLevel = result;
         }
-        return result;
+
+        return cachedConsistencyLevel;
     }
 
     /**
@@ -71,6 +76,7 @@ public final class ConsistencyPolicy extends JsonSerializable {
      * @return the ConsistencyPolicy.
      */
     public ConsistencyPolicy setDefaultConsistencyLevel(ConsistencyLevel level) {
+        this.cachedConsistencyLevel = level;
         super.set(Constants.Properties.DEFAULT_CONSISTENCY_LEVEL, level.toString());
         return this;
     }
@@ -129,4 +135,10 @@ public final class ConsistencyPolicy extends JsonSerializable {
         super.set(Constants.Properties.MAX_STALENESS_INTERVAL_IN_SECONDS, maxStalenessInterval.getSeconds());
         return this;
     }
+
+    /**
+     * Assumption: all consistency mutations are through setDefaultConsistencyLevel only.
+     * NOTE: If the underlying ObjectNode is mutated cache might be stale
+     */
+    private ConsistencyLevel cachedConsistencyLevel = null;
 }
