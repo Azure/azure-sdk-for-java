@@ -1,5 +1,8 @@
 # Release History
 
+## 5.2.0-beta.3 (Unreleased)
+
+
 ## 5.2.0-beta.2 (2020-08-14)
 - Support for object serializer to send and receive strongly-typed objects.
 
