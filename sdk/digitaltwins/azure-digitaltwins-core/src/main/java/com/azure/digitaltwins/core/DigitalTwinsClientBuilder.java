@@ -8,11 +8,19 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.*;
+import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryPolicy;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of {@link DigitalTwinsClient
@@ -22,7 +30,8 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {DigitalTwinsClient.class, DigitalTwinsAsyncClient.class})
 public final class DigitalTwinsClientBuilder {
 
-    private static final String[] adtPublicScope = new String[]{"https://digitaltwins.azure.net" + "/.default"};
+    private static final Pattern ADT_PUBLIC_SCOPE_VALIDATION_PATTERN = Pattern.compile("(ppe|azure)\\.net");
+    private static final String[] ADT_PUBLIC_SCOPE = new String[]{"https://digitaltwins.azure.net" + "/.default"};
 
     private final List<HttpPipelinePolicy> additionalPolicies = new ArrayList<>();
     // mandatory
@@ -72,9 +81,8 @@ public final class DigitalTwinsClientBuilder {
     private static String[] getAuthorizationScopes(String endpoint) {
         // If the endpoint is in Azure public cloud, the suffix will have "azure.net" or "ppe.net".
         // Once ADT becomes available in other clouds, their corresponding scope has to be matched and set.
-        if (endpoint.indexOf("azure.net") > 0
-            || endpoint.indexOf("ppe.net") > 0) {
-            return adtPublicScope;
+        if (ADT_PUBLIC_SCOPE_VALIDATION_PATTERN.matcher(endpoint).find()) {
+            return ADT_PUBLIC_SCOPE;
         }
 
         throw new IllegalArgumentException(String.format("Azure digital twins instance endpoint %s is not valid.", endpoint));

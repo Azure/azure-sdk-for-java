@@ -81,7 +81,7 @@ For more information see the Code of Conduct FAQ or contact opencode@microsoft.c
 [microsoft_sdk_download]: https://azure.microsoft.com/en-us/downloads/?sdk=java
 [azure_cli]: https://docs.microsoft.com/cli/azure
 [azure_sub]: https://azure.microsoft.com/free/
-[source]: https://github.com/Azure/azure-sdk-for-java/tree/feature/adt-dp/sdk/digitaltwins/azure-digitaltwins-core
+[source]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/digitaltwins/azure-digitaltwins-core
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [nuget]: https://www.nuget.org/
 [azure_portal]: https://portal.azure.com/
