@@ -3,18 +3,21 @@
 
 package com.azure.security.keyvault.secrets;
 
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.rest.Page;
-import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.http.rest.RestProxy;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.util.FluxUtil;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.rest.Page;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.RestProxy;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
@@ -32,10 +35,6 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 import java.util.function.Function;
-
-import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.exception.ResourceModifiedException;
-import com.azure.core.exception.HttpResponseException;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -89,6 +88,10 @@ public final class SecretAsyncClient {
      */
     public String getVaultUrl() {
         return vaultUrl;
+    }
+
+    Duration getPollingDuration() {
+        return Duration.ofSeconds(1);
     }
 
     /**
@@ -392,7 +395,7 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<DeletedSecret, Void> beginDeleteSecret(String name) {
-        return new PollerFlux<>(Duration.ofSeconds(1),
+        return new PollerFlux<>(getPollingDuration(),
             activationOperation(name),
             createPollOperation(name),
             (pollingContext, firstResponse) -> Mono.empty(),
@@ -564,7 +567,7 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<KeyVaultSecret, Void> beginRecoverDeletedSecret(String name) {
-        return new PollerFlux<>(Duration.ofSeconds(1),
+        return new PollerFlux<>(getPollingDuration(),
             recoverActivationOperation(name),
             createRecoverPollOperation(name),
             (pollerContext, firstResponse) -> Mono.empty(),
