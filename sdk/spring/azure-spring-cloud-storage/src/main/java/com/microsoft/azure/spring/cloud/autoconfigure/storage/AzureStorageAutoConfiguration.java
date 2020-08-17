@@ -31,6 +31,7 @@ import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.spring.cloud.autoconfigure.context.AzureContextAutoConfiguration;
 import com.microsoft.azure.spring.cloud.context.core.api.EnvironmentProvider;
 import com.microsoft.azure.spring.cloud.context.core.api.ResourceManagerProvider;
+import com.microsoft.azure.spring.cloud.context.core.storage.StorageConnectionStringBuilder;
 import com.microsoft.azure.spring.cloud.context.core.storage.StorageConnectionStringProvider;
 import com.microsoft.azure.spring.cloud.storage.AzureStorageProtocolResolver;
 import com.microsoft.azure.spring.cloud.telemetry.TelemetryCollector;
@@ -86,7 +87,10 @@ public class AzureStorageAutoConfiguration {
         } else {
             TokenCredential defaultIdentityCredential = new SpringEnvironmentTokenBuilder().fromEnvironment(environment)
                     .defaultCredential().build();
-            authenticatedClientBuilder = new BlobServiceClientBuilder().credential(defaultIdentityCredential);
+            String connectionString = StorageConnectionStringBuilder.build(storageProperties.getAccount(),
+                    environmentProvider.getEnvironment(), storageProperties.isSecureTransfer());
+            authenticatedClientBuilder = new BlobServiceClientBuilder().credential(defaultIdentityCredential)
+                    .connectionString(connectionString);
         }
 
         return authenticatedClientBuilder

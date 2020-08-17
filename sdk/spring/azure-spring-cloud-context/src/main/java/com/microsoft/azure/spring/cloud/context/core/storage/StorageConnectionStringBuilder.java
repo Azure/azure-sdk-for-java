@@ -5,6 +5,7 @@ package com.microsoft.azure.spring.cloud.context.core.storage;
 import com.microsoft.azure.AzureEnvironment;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class StorageConnectionStringBuilder {
@@ -23,20 +24,33 @@ public class StorageConnectionStringBuilder {
 
     private static final String SEPARATOR = ";";
 
-    public static String build(String accountName, String accountKey, AzureEnvironment environment, boolean
-        isSecureTransfer) {
+    private static String build(String accountName, Optional<String> accountKey, AzureEnvironment environment,
+            boolean isSecureTransfer) {
         Map<String, String> map = new HashMap<>();
         map.put(DEFAULT_PROTOCOL, resolveProtocol(isSecureTransfer));
         map.put(ACCOUNT_NAME, accountName);
-        map.put(ACCOUNT_KEY, accountKey);
-        // Remove starting dot since AzureEnvironment.storageEndpointSuffix() starts with dot
+
+        if (accountKey.isPresent()) {
+            map.put(ACCOUNT_KEY, accountKey.get());
+        }
+        // Remove starting dot since AzureEnvironment.storageEndpointSuffix() starts
+        // with dot
         map.put(ENDPOINT_SUFFIX, environment.storageEndpointSuffix().substring(1));
 
         return map.entrySet().stream().map(Object::toString).collect(Collectors.joining(SEPARATOR));
     }
 
+    public static String build(String accountName, String accountKey, AzureEnvironment environment,
+            boolean isSecureTransfer) {
+        return build(accountName, Optional.of(accountKey), environment, isSecureTransfer);
+    }
+
     public static String build(String accountName, String accountKey, AzureEnvironment environment) {
-        return build(accountName, accountKey, environment, true);
+        return build(accountName, Optional.of(accountKey), environment, true);
+    }
+
+    public static String build(String accountName, AzureEnvironment environment, boolean isSecureTransfer) {
+        return build(accountName, Optional.empty(), environment, isSecureTransfer);
     }
 
     private static String resolveProtocol(boolean isSecureTransfer) {
