@@ -133,7 +133,7 @@ public final class Azure {
     private final AppPlatformManager appPlatformManager;
     private final PrivateDnsZoneManager privateDnsZoneManager;
     private final String subscriptionId;
-    private final Authenticated authenticated;
+    private final String tenantId;
     private final SdkContext sdkContext;
 
     /**
@@ -377,7 +377,7 @@ public final class Azure {
         this.appPlatformManager = AppPlatformManager.authenticate(httpPipeline, profile, sdkContext);
         this.privateDnsZoneManager = PrivateDnsZoneManager.authenticate(httpPipeline, profile, sdkContext);
         this.subscriptionId = profile.subscriptionId();
-        this.authenticated = authenticated;
+        this.tenantId = profile.tenantId();
     }
 
     /** @return the currently selected subscription ID this client is authenticated to work with */
@@ -390,14 +390,24 @@ public final class Azure {
         return this.subscriptionId;
     }
 
+    /** @return the currently selected tenant ID this client is authenticated to work with */
+    public String tenantId() {
+        return this.tenantId;
+    }
+
     /** @return the currently selected subscription this client is authenticated to work with */
     public Subscription getCurrentSubscription() {
         return this.subscriptions().getById(this.subscriptionId());
     }
 
-    /** @return subscriptions that this authenticated client has access to */
+    /** @return entry point to managing subscriptions */
     public Subscriptions subscriptions() {
-        return this.authenticated.subscriptions();
+        return this.resourceManager.subscriptions();
+    }
+
+    /** @return entry point to managing tenants */
+    public Tenants tenants() {
+        return this.resourceManager.tenants();
     }
 
     /** @return entry point to managing resource groups */
