@@ -259,7 +259,6 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
                         //  Update the master key hash code
                         this.masterKeyHashCode = masterKeyLatestHashCode;
                         this.macInstance = macInstance;
-                        return macInstance;
                     } catch (NoSuchAlgorithmException | InvalidKeyException e) {
                         throw new IllegalStateException(e);
                     }
