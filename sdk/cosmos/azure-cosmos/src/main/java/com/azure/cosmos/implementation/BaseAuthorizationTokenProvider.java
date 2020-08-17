@@ -28,14 +28,13 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
 
     private static final String AUTH_PREFIX = "type=master&ver=1.0&sig=";
     private final AzureKeyCredential credential;
-    private final Mac macInstance;
+    private volatile Mac macInstance;
 
     //  stores current master key's hashcode for performance reasons.
-    private int masterKeyHashCode;
+    private volatile int masterKeyHashCode;
 
     public BaseAuthorizationTokenProvider(AzureKeyCredential credential) {
         this.credential = credential;
-        this.macInstance = getMacInstance();
     }
 
     private static String getResourceSegment(ResourceType resourceType) {
@@ -249,25 +248,29 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
 
         //  Master key has changed, or this is the first time we are getting mac instance
         if (masterKeyLatestHashCode != this.masterKeyHashCode) {
-            byte[] masterKeyBytes = this.credential.getKey().getBytes(StandardCharsets.UTF_8);
-            byte[] masterKeyDecodedBytes = Utils.Base64Decoder.decode(masterKeyBytes);
-            SecretKey signingKey = new SecretKeySpec(masterKeyDecodedBytes, "HMACSHA256");
-            try {
-                Mac macInstance = Mac.getInstance("HMACSHA256");
-                macInstance.init(signingKey);
-                //  Update the master key hash code
-                this.masterKeyHashCode = masterKeyLatestHashCode;
-                return macInstance;
-            } catch (NoSuchAlgorithmException | InvalidKeyException e) {
-                throw new IllegalStateException(e);
+            synchronized (this.credential) {
+                if (masterKeyLatestHashCode != this.masterKeyHashCode) {
+                    byte[] masterKeyBytes = this.credential.getKey().getBytes(StandardCharsets.UTF_8);
+                    byte[] masterKeyDecodedBytes = Utils.Base64Decoder.decode(masterKeyBytes);
+                    SecretKey signingKey = new SecretKeySpec(masterKeyDecodedBytes, "HMACSHA256");
+                    try {
+                        Mac macInstance = Mac.getInstance("HMACSHA256");
+                        macInstance.init(signingKey);
+                        //  Update the master key hash code
+                        this.masterKeyHashCode = masterKeyLatestHashCode;
+                        this.macInstance = macInstance;
+                        return macInstance;
+                    } catch (NoSuchAlgorithmException | InvalidKeyException e) {
+                        throw new IllegalStateException(e);
+                    }
+                }
             }
-        } else {
-            //  Master key hasn't changed, return the cloned mac instance
-            try {
-                return (Mac)this.macInstance.clone();
-            } catch (CloneNotSupportedException e) {
-                throw new IllegalStateException(e);
-            }
+        }
+
+        try {
+            return (Mac)this.macInstance.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new IllegalStateException(e);
         }
     }
 
