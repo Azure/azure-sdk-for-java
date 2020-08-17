@@ -196,7 +196,7 @@ public final class AgentPoolsClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-06-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -253,7 +253,7 @@ public final class AgentPoolsClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-06-01";
         context = this.client.mergeContext(context);
         return service
             .list(
@@ -375,7 +375,7 @@ public final class AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-06-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -428,7 +428,7 @@ public final class AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-06-01";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -566,7 +566,7 @@ public final class AgentPoolsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-06-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -630,7 +630,7 @@ public final class AgentPoolsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-06-01";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -860,7 +860,7 @@ public final class AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-06-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -913,7 +913,7 @@ public final class AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-06-01";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -1111,7 +1111,7 @@ public final class AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-06-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1166,7 +1166,7 @@ public final class AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-06-01";
         context = this.client.mergeContext(context);
         return service
             .getUpgradeProfile(
@@ -1305,7 +1305,7 @@ public final class AgentPoolsClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-06-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1353,7 +1353,7 @@ public final class AgentPoolsClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-06-01";
         context = this.client.mergeContext(context);
         return service
             .getAvailableAgentPoolVersions(

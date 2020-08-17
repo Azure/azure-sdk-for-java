@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.containerservice.implementation;
 
+import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.AgentPoolType;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceVMSizeTypes;
 import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
@@ -123,7 +124,16 @@ public class KubernetesClusterAgentPoolImpl
 
     @Override
     public KubernetesClusterImpl attach() {
+        if (inner().mode() == null) {
+            inner().withMode(AgentPoolMode.SYSTEM);
+        }
         this.parent().inner().agentPoolProfiles().add(this.inner());
         return this.parent();
+    }
+
+    @Override
+    public KubernetesClusterAgentPoolImpl withAgentPoolMode(AgentPoolMode agentPoolMode) {
+        inner().withMode(agentPoolMode);
+        return this;
     }
 }
