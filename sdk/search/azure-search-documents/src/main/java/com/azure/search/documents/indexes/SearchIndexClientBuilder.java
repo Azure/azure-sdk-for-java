@@ -5,30 +5,21 @@ package com.azure.search.documents.indexes;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.AddDatePolicy;
-import com.azure.core.http.policy.AddHeadersFromContextPolicy;
-import com.azure.core.http.policy.AddHeadersPolicy;
-import com.azure.core.http.policy.AzureKeyCredentialPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.HttpPolicyProviders;
-import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.search.documents.SearchServiceVersion;
+import com.azure.search.documents.implementation.util.Constants;
+import com.azure.search.documents.implementation.util.Utility;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -56,42 +47,24 @@ import java.util.Objects;
  */
 @ServiceClientBuilder(serviceClients = {SearchIndexClient.class, SearchIndexAsyncClient.class})
 public final class SearchIndexClientBuilder {
-    private static final String API_KEY = "api-key";
-
-    /*
-     * This header tells the service to return the request ID in the HTTP response. This is useful for correlating the
-     * request sent to the response.
-     */
-    private static final String ECHO_REQUEST_ID_HEADER = "return-client-request-id";
-
-    private static final String SEARCH_PROPERTIES = "azure-search-documents.properties";
-    private static final String NAME = "name";
-    private static final String VERSION = "version";
-
     private final ClientLogger logger = new ClientLogger(SearchIndexClientBuilder.class);
     private final List<HttpPipelinePolicy> policies = new ArrayList<>();
-    private final HttpHeaders headers = new HttpHeaders().put(ECHO_REQUEST_ID_HEADER, "true");
-
-    private final String clientName;
-    private final String clientVersion;
 
     private AzureKeyCredential credential;
     private SearchServiceVersion serviceVersion;
     private String endpoint;
     private HttpClient httpClient;
     private HttpPipeline httpPipeline;
-    private HttpLogOptions httpLogOptions = new HttpLogOptions();
+    private HttpLogOptions httpLogOptions;
     private Configuration configuration;
     private RetryPolicy retryPolicy;
+    private JsonSerializer jsonSerializer;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link SearchIndexClient SearchIndexClients}
      * and {@link SearchIndexAsyncClient SearchIndexAsyncClients}.
      */
     public SearchIndexClientBuilder() {
-        Map<String, String> properties = CoreUtils.getProperties(SEARCH_PROPERTIES);
-        clientName = properties.getOrDefault(NAME, "UnknownName");
-        clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
     }
 
     /**
@@ -127,39 +100,15 @@ public final class SearchIndexClientBuilder {
             : serviceVersion;
 
         if (httpPipeline != null) {
-            return new SearchIndexAsyncClient(endpoint, buildVersion, httpPipeline);
+            return new SearchIndexAsyncClient(endpoint, buildVersion, httpPipeline, jsonSerializer);
         }
 
         Objects.requireNonNull(credential, "'credential' cannot be null.");
-        Configuration buildConfiguration = (configuration == null)
-            ? Configuration.getGlobalConfiguration()
-            : configuration;
-        final List<HttpPipelinePolicy> httpPipelinePolicies = new ArrayList<>();
-        httpPipelinePolicies.add(new AddHeadersPolicy(headers));
-        httpPipelinePolicies.add(new AddHeadersFromContextPolicy());
-        httpPipelinePolicies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
-            buildConfiguration));
-        httpPipelinePolicies.add(new RequestIdPolicy());
 
-        HttpPolicyProviders.addBeforeRetryPolicies(httpPipelinePolicies);
-        httpPipelinePolicies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
+        HttpPipeline pipeline = Utility.buildHttpPipeline(httpLogOptions, configuration, retryPolicy, credential,
+            policies, httpClient);
 
-        httpPipelinePolicies.add(new AddDatePolicy());
-
-        this.policies.add(new AzureKeyCredentialPolicy(API_KEY, credential));
-
-        httpPipelinePolicies.addAll(this.policies);
-
-        HttpPolicyProviders.addAfterRetryPolicies(httpPipelinePolicies);
-
-        httpPipelinePolicies.add(new HttpLoggingPolicy(httpLogOptions));
-
-        HttpPipeline buildPipeline = new HttpPipelineBuilder()
-            .httpClient(httpClient)
-            .policies(httpPipelinePolicies.toArray(new HttpPipelinePolicy[0]))
-            .build();
-
-        return new SearchIndexAsyncClient(endpoint, buildVersion, buildPipeline);
+        return new SearchIndexAsyncClient(endpoint, buildVersion, pipeline, jsonSerializer);
     }
 
     /**
@@ -207,6 +156,15 @@ public final class SearchIndexClientBuilder {
     }
 
     /**
+     * Gets the default Azure Search headers and query parameters allow list.
+     *
+     * @return The default {@link HttpLogOptions} allow list.
+     */
+    public static HttpLogOptions getDefaultLogOptions() {
+        return Constants.DEFAULT_LOG_OPTIONS_SUPPLIER.get();
+    }
+
+    /**
      * Adds a pipeline policy to apply to each request sent.
      * <p>
      * This method may be called multiple times, each time it is called the policy will be added to the end of added
@@ -218,6 +176,18 @@ public final class SearchIndexClientBuilder {
      */
     public SearchIndexClientBuilder addPolicy(HttpPipelinePolicy policy) {
         policies.add(Objects.requireNonNull(policy));
+        return this;
+    }
+
+    /**
+     * Custom JSON serializer that is used to handle model types that are not contained in the Azure Search Documents
+     * library.
+     *
+     * @param jsonSerializer The serializer to serialize user defined models.
+     * @return The updated SearchIndexClientBuilder object.
+     */
+    public SearchIndexClientBuilder serializer(JsonSerializer jsonSerializer) {
+        this.jsonSerializer = jsonSerializer;
         return this;
     }
 

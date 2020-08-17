@@ -310,7 +310,7 @@ public final class RntbdTransportClient extends TransportClient {
             // TODO (DANOBLE) verify the correctness of this statement: Fact: We still see some of these errors. Does
             //  reactor provide a mechanism other than Hooks#onErrorDropped(Consumer<? super Throwable> consumer) for
             //  doing this per Mono or must we, for example, rely on something like this in the consistency layer:
-            //  https://www.codota.com/code/java/classes/reactor.core.publisher.Hooks.
+            //  https://www.codota.com/code/java/classes/reactor.core.publisher.Hooks
 
             if (signalType != SignalType.CANCEL) {
                 return;

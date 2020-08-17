@@ -58,9 +58,6 @@ extends:
       - name: azure-core-serializer-avro-apache
         groupId: com.azure
         safeName: azurecoreserializeravroapache
-      - name: azure-core-serializer-avro-jackson
-        groupId: com.azure
-        safeName: azurecoreserializeravrojackson
       - name: azure-core-serializer-json-gson
         groupId: com.azure
         safeName: azurecoreserializerjsongson
@@ -74,7 +71,5 @@ extends:
         groupId: com.azure
         safeName: azurecoretracingopentelemetry
     AdditionalModules:
-      - name: azure-data-appconfiguration
-        groupId: com.azure
       - name: perf-test-core
         groupId: com.azure

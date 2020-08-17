@@ -14,7 +14,7 @@ Maven dependency for the Azure Key Vault Key client library. Add it to your proj
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-keys</artifactId>
-    <version>4.1.5</version>
+    <version>4.2.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -159,12 +159,12 @@ KeyClient keyClient = new KeyClientBuilder()
 KeyVaultKey rsaKey = keyClient.createRsaKey(new CreateRsaKeyOptions("CloudRsaKey")
     .setExpiresOn(OffsetDateTime.now().plusYears(1))
     .setKeySize(2048));
-System.out.printf("Key created with name \"%s\" and id %s\n", rsaKey.getName(), rsaKey.getId());
+System.out.printf("Key created with name \"%s\" and id %s%n", rsaKey.getName(), rsaKey.getId());
 
 KeyVaultKey ecKey = keyClient.createEcKey(new CreateEcKeyOptions("CloudEcKey")
     .setCurveName(KeyCurveName.P_256)
     .setExpiresOn(OffsetDateTime.now().plusYears(1)));
-System.out.printf("Key created with name \"%s\" and id %s\n", ecKey.getName(), ecKey.getId());
+System.out.printf("Key created with name \"%s\" and id %s%n", ecKey.getName(), ecKey.getId());
 ```
 
 ### Retrieve a key
@@ -172,7 +172,7 @@ Retrieve a previously stored key by calling `getKey`.
 
 ```Java
 KeyVaultKey key = keyClient.getKey("<key-name>");
-System.out.printf("A key was returned with name \"%s\" and id %s\n", key.getName(), key.getId());
+System.out.printf("A key was returned with name \"%s\" and id %s%n", key.getName(), key.getId());
 ```
 
 ### Update an existing key
@@ -184,7 +184,7 @@ KeyVaultKey key = keyClient.getKey("<key-name>");
 // Update the expiry time of the key.
 key.getProperties().setExpiresOn(OffsetDateTime.now().plusDays(30));
 KeyVaultKey updatedKey = keyClient.updateKeyProperties(key.getProperties());
-System.out.printf("Key's updated expiry time: %s\n", updatedKey.getProperties().getExpiresOn().toString());
+System.out.printf("Key's updated expiry time: %s%n", updatedKey.getProperties().getExpiresOn());
 ```
 
 ### Delete a key
@@ -198,7 +198,7 @@ PollResponse<DeletedKey> deletedKeyPollResponse = deletedKeyPoller.poll();
 // Deleted key is accessible as soon as polling begins.
 DeletedKey deletedKey = deletedKeyPollResponse.getValue();
 // Deletion date only works for a SoftDelete-enabled Key Vault.
-System.out.printf("Deletion date: %s\n", deletedKey.getDeletedOn().toString());
+System.out.printf("Deletion date: %s%n", deletedKey.getDeletedOn());
 
 // Key is being deleted on server.
 deletedKeyPoller.waitForCompletion();
@@ -212,7 +212,7 @@ List the keys in the key vault by calling `listPropertiesOfKeys`.
 // get the key with its key material information.
 for (KeyProperties keyProperties : keyClient.listPropertiesOfKeys()) {
     KeyVaultKey keyWithMaterial = keyClient.getKey(keyProperties.getName(), keyProperties.getVersion());
-    System.out.printf("Received key with name \"%s\" and type \"%s\"\n", keyWithMaterial.getName(),
+    System.out.printf("Received key with name \"%s\" and type \"%s\"%n", keyWithMaterial.getName(),
         keyWithMaterial.getKey().getKeyType());
 }
 ```
@@ -231,8 +231,8 @@ new Random(0x1234567L).nextBytes(plainText);
 
 // Let's encrypt a simple plain text of size 100 bytes.
 EncryptResult encryptionResult = cryptoClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plainText);
-System.out.printf("Returned cipherText size is %d bytes with algorithm \"%s\"\n",
-    encryptionResult.getCipherText().length, encryptionResult.getAlgorithm().toString());
+System.out.printf("Returned cipherText size is %d bytes with algorithm \"%s\"%n",
+    encryptionResult.getCipherText().length, encryptionResult.getAlgorithm());
 ```
 
 ### Decrypt
@@ -245,7 +245,7 @@ EncryptResult encryptionResult = cryptoClient.encrypt(EncryptionAlgorithm.RSA_OA
 
 //Let's decrypt the encrypted result.
 DecryptResult decryptionResult = cryptoClient.decrypt(EncryptionAlgorithm.RSA_OAEP, encryptionResult.getCipherText());
-System.out.printf("Returned plainText size is %d bytes\n", decryptionResult.getPlainText().length);
+System.out.printf("Returned plainText size is %d bytes%n", decryptionResult.getPlainText().length);
 ```
 
 ### Async API
@@ -280,12 +280,12 @@ keyAsyncClient.createRsaKey(new CreateRsaKeyOptions("CloudRsaKey")
     .setExpiresOn(OffsetDateTime.now().plusYears(1))
     .setKeySize(2048))
     .subscribe(key ->
-        System.out.printf("Key created with name \"%s\" and id %s\n", key.getName(), key.getId()));
+        System.out.printf("Key created with name \"%s\" and id %s%n", key.getName(), key.getId()));
 
 keyAsyncClient.createEcKey(new CreateEcKeyOptions("CloudEcKey")
     .setExpiresOn(OffsetDateTime.now().plusYears(1)))
     .subscribe(key ->
-        System.out.printf("Key created with name \"%s\" and id %s\n", key.getName(), key.getId()));
+        System.out.printf("Key created with name \"%s\" and id %s%n", key.getName(), key.getId()));
 ```
 
 ### Retrieve a key asynchronously
@@ -294,7 +294,7 @@ Retrieve a previously stored key by calling `getKey`.
 ```Java
 keyAsyncClient.getKey("<key-name>")
     .subscribe(key ->
-        System.out.printf("Key was returned with name \"%s\" and id %s\n", key.getName(), key.getId()));
+        System.out.printf("Key was returned with name \"%s\" and id %s%n", key.getName(), key.getId()));
 ```
 
 ### Update an existing key asynchronously
@@ -308,8 +308,7 @@ keyAsyncClient.getKey("<key-name>")
         key.getProperties().setExpiresOn(OffsetDateTime.now().plusDays(50));
         keyAsyncClient.updateKeyProperties(key.getProperties())
             .subscribe(updatedKey ->
-                System.out.printf("Key's updated expiry time: %s\n",
-                    updatedKey.getProperties().getExpiresOn().toString()));
+                System.out.printf("Key's updated expiry time: %s%n", updatedKey.getProperties().getExpiresOn()));
    });
 ```
 
@@ -319,9 +318,9 @@ Delete an existing key by calling `beginDeleteKey`.
 ```java
 keyAsyncClient.beginDeleteKey("<key-name>")
     .subscribe(pollResponse -> {
-        System.out.printf("Deletetion status: %s\n", pollResponse.getStatus().toString());
-        System.out.printf("Deleted key name: %s\n", pollResponse.getValue().getName());
-        System.out.printf("Key deletion date: %s\n", pollResponse.getValue().getDeletedOn().toString());
+        System.out.printf("Deletetion status: %s%n", pollResponse.getStatus());
+        System.out.printf("Deleted key name: %s%n", pollResponse.getValue().getName());
+        System.out.printf("Key deletion date: %s%n", pollResponse.getValue().getDeletedOn());
     });
 ```
 
@@ -353,8 +352,8 @@ new Random(0x1234567L).nextBytes(plainText);
 // Let's encrypt a simple plain text of size 100 bytes.
 cryptoAsyncClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plainText)
     .subscribe(encryptionResult -> {
-        System.out.printf("Returned cipherText size is %d bytes with algorithm \"%s\"\n",
-            encryptionResult.getCipherText().length, encryptionResult.getAlgorithm().toString());
+        System.out.printf("Returned cipherText size is %d bytes with algorithm \"%s\"%n",
+            encryptionResult.getCipherText().length, encryptionResult.getAlgorithm());
     });
 ```
 
@@ -368,12 +367,12 @@ new Random(0x1234567L).nextBytes(plainText);
 // Let's encrypt a simple plain text of size 100 bytes.
 cryptoAsyncClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plainText)
     .subscribe(encryptionResult -> {
-        System.out.printf("Returned cipherText size is %d bytes with algorithm %s\n",
-            encryptionResult.getCipherText().length, encryptionResult.getAlgorithm().toString());
+        System.out.printf("Returned cipherText size is %d bytes with algorithm \"%s\"%n",
+            encryptionResult.getCipherText().length, encryptionResult.getAlgorithm());
         //Let's decrypt the encrypted response.
         cryptoAsyncClient.decrypt(EncryptionAlgorithm.RSA_OAEP, encryptionResult.getCipherText())
             .subscribe(decryptionResult ->
-                System.out.printf("Returned plainText size is %d bytes\n", decryptionResult.getPlainText().length));
+                System.out.printf("Returned plainText size is %d bytes%n", decryptionResult.getPlainText().length));
     });
 ```
 

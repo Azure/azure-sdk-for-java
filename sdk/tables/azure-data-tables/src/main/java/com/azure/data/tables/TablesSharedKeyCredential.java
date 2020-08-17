@@ -3,6 +3,9 @@
 
 package com.azure.data.tables;
 
+import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.net.URL;
@@ -12,12 +15,13 @@ import java.util.Collections;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import reactor.core.publisher.Mono;
 
 /**
  * A Class which helps generate the shared key credentials for a given storage account to create a Http requests to
  * access Azure Tables
  */
-public class TablesSharedKeyCredential {
+public class TablesSharedKeyCredential implements TokenCredential {
     private static final String AUTHORIZATION_HEADER_FORMAT = "SharedKeyLite %s:%s";
     private final String accountName;
     private final String accountKey;
@@ -40,7 +44,7 @@ public class TablesSharedKeyCredential {
      * @param headers the headers of the request
      * @return the auth header
      */
-    public String generateAuthorizationHeader(URL requestUrl, Map<String, String> headers) {
+    String generateAuthorizationHeader(URL requestUrl, Map<String, String> headers) {
         String signature = StorageImplUtils.computeHMac256(accountKey, buildStringToSign(requestUrl,
             headers));
         return String.format(AUTHORIZATION_HEADER_FORMAT, accountName, signature);
@@ -57,9 +61,10 @@ public class TablesSharedKeyCredential {
         String dateHeader = headers.containsKey("x-ms-date")
             ? ""
             : this.getStandardHeaderValue(headers, "Date");
-        return String.join("\n",
+        String s = String.join("\n",
             dateHeader,  //date
             getCanonicalizedResource(requestUrl)); //Canonicalized resource
+        return s;
     }
 
     /**
@@ -109,5 +114,10 @@ public class TablesSharedKeyCredential {
             }
         }
         return canonicalizedResource.toString();
+    }
+
+    @Override
+    public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
+        return null;
     }
 }

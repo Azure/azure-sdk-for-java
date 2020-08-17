@@ -6,13 +6,13 @@ package com.azure.ai.formrecognizer.training;
 import com.azure.ai.formrecognizer.FormRecognizerClient;
 import com.azure.ai.formrecognizer.FormRecognizerClientBuilder;
 import com.azure.ai.formrecognizer.implementation.models.ModelStatus;
-import com.azure.ai.formrecognizer.models.AccountProperties;
-import com.azure.ai.formrecognizer.models.CopyAuthorization;
-import com.azure.ai.formrecognizer.models.CustomFormModel;
-import com.azure.ai.formrecognizer.models.CustomFormModelInfo;
+import com.azure.ai.formrecognizer.training.models.AccountProperties;
+import com.azure.ai.formrecognizer.training.models.TrainingOptions;
+import com.azure.ai.formrecognizer.training.models.CopyAuthorization;
+import com.azure.ai.formrecognizer.training.models.CustomFormModel;
+import com.azure.ai.formrecognizer.training.models.CustomFormModelInfo;
 import com.azure.ai.formrecognizer.models.FormRecognizerException;
-import com.azure.ai.formrecognizer.models.OperationResult;
-import com.azure.ai.formrecognizer.models.TrainingFileFilter;
+import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -82,12 +82,12 @@ public final class FormTrainingClient {
      * @return A {@link SyncPoller} that polls the training model operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns the trained {@link CustomFormModel custom form model}.
      * @throws FormRecognizerException If training fails and model with {@link ModelStatus#INVALID} is created.
-     * @throws NullPointerException If {@code trainingFilesUrl} is {@code null}.
+     * @throws NullPointerException If {@code trainingFilesUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<OperationResult, CustomFormModel> beginTraining(String trainingFilesUrl,
+    public SyncPoller<FormRecognizerOperationResult, CustomFormModel> beginTraining(String trainingFilesUrl,
         boolean useTrainingLabels) {
-        return beginTraining(trainingFilesUrl, useTrainingLabels, null, null);
+        return beginTraining(trainingFilesUrl, useTrainingLabels, null, Context.NONE);
     }
 
     /**
@@ -99,27 +99,28 @@ public final class FormTrainingClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.beginTraining#string-boolean-trainingFileFilter-Duration}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.beginTraining#string-boolean-TrainingOptions-Context}
      *
      * @param trainingFilesUrl an externally accessible Azure storage blob container Uri (preferably a
      * Shared Access Signature Uri).
      * For instructions on setting up forms for training in an Azure Storage Blob Container, see
      * https://docs.microsoft.com/azure/cognitive-services/form-recognizer/build-training-data-set#upload-your-training-data
      * @param useTrainingLabels boolean to specify the use of labeled files for training the model.
-     * @param trainingFileFilter Filter to apply to the documents in the source path for training.
-     * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
-     * 5 seconds is used.
+     * @param trainingOptions The additional configurable {@link TrainingOptions options}
+     * that may be passed when training a model.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return A {@link SyncPoller} that polls the training model operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns the trained {@link CustomFormModel custom form model}.
      * @throws FormRecognizerException If training fails and model with {@link ModelStatus#INVALID} is created.
-     * @throws NullPointerException If {@code trainingFilesUrl} is {@code null}.
+     * @throws NullPointerException If {@code trainingFilesUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<OperationResult, CustomFormModel> beginTraining(String trainingFilesUrl,
-        boolean useTrainingLabels, TrainingFileFilter trainingFileFilter, Duration pollInterval) {
-        return client.beginTraining(trainingFilesUrl, useTrainingLabels, trainingFileFilter, pollInterval)
-            .getSyncPoller();
+    public SyncPoller<FormRecognizerOperationResult, CustomFormModel> beginTraining(String trainingFilesUrl,
+        boolean useTrainingLabels,
+        TrainingOptions trainingOptions, Context context) {
+        return client.beginTraining(trainingFilesUrl, useTrainingLabels,
+            trainingOptions, context).getSyncPoller();
     }
 
     /**
@@ -131,7 +132,7 @@ public final class FormTrainingClient {
      * @param modelId The UUID string format model identifier.
      *
      * @return The detailed information for the specified model.
-     * @throws IllegalArgumentException If {@code modelId} is {@code null} or empty.
+     * @throws IllegalArgumentException If {@code modelId} is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CustomFormModel getCustomModel(String modelId) {
@@ -148,7 +149,7 @@ public final class FormTrainingClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return The detailed information for the specified model.
-     * @throws IllegalArgumentException If {@code modelId} is {@code null} or empty.
+     * @throws IllegalArgumentException If {@code modelId} is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CustomFormModel> getCustomModelWithResponse(String modelId, Context context) {
@@ -191,7 +192,7 @@ public final class FormTrainingClient {
      * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.deleteModel#string}
      *
      * @param modelId The UUID string format model identifier.
-     * @throws IllegalArgumentException If {@code modelId} is {@code null} or empty.
+     * @throws IllegalArgumentException If {@code modelId} is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteModel(String modelId) {
@@ -208,7 +209,7 @@ public final class FormTrainingClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A {@link Response} containing containing status code and HTTP headers.
-     * @throws IllegalArgumentException If {@code modelId} is {@code null} or empty.
+     * @throws IllegalArgumentException If {@code modelId} is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteModelWithResponse(String modelId, Context context) {
@@ -266,9 +267,9 @@ public final class FormTrainingClient {
      * or has been cancelled.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<OperationResult, CustomFormModelInfo> beginCopyModel(String modelId,
+    public SyncPoller<FormRecognizerOperationResult, CustomFormModelInfo> beginCopyModel(String modelId,
         CopyAuthorization target) {
-        return beginCopyModel(modelId, target, null);
+        return beginCopyModel(modelId, target, null, Context.NONE);
     }
 
     /**
@@ -283,21 +284,22 @@ public final class FormTrainingClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.beginCopyModel#string-copyAuthorization-Duration}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.beginCopyModel#string-copyAuthorization-Duration-Context}
      *
      * @param modelId Model identifier of the model to copy to the target Form Recognizer resource
      * @param target the copy authorization to the target Form Recognizer resource. The copy authorization can be
      * generated from the target resource's call to {@link FormTrainingClient#getCopyAuthorization(String, String)}
      * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
      * 5 seconds is used.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return A {@link SyncPoller} that polls the copy model operation until it has completed, has failed,
      * or has been cancelled.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<OperationResult, CustomFormModelInfo> beginCopyModel(String modelId,
-        CopyAuthorization target, Duration pollInterval) {
-        return client.beginCopyModel(modelId, target, pollInterval).getSyncPoller();
+    public SyncPoller<FormRecognizerOperationResult, CustomFormModelInfo> beginCopyModel(String modelId,
+        CopyAuthorization target, Duration pollInterval, Context context) {
+        return client.beginCopyModel(modelId, target, pollInterval, context).getSyncPoller();
     }
 
     /**

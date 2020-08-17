@@ -3,9 +3,9 @@
 
 package com.azure.cosmos.implementation.encryption;
 
+import com.azure.cosmos.encryption.EncryptionKeyWrapMetadata;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
-import com.azure.cosmos.models.CosmosItemResponse;
 import reactor.core.publisher.Mono;
 
 
@@ -14,7 +14,7 @@ import reactor.core.publisher.Mono;
  * Container for data encryption keys. Provides methods to create, re-wrap, read and enumerate data encryption keys.
  * See https://aka.ms/CosmosClientEncryption for more information on client-side encryption support in Azure Cosmos DB.
  */
-public interface DataEncryptionKeyContainer {
+interface DataEncryptionKeyContainer {
     /**
      * Generates a data encryption key, wraps it using the key wrap metadata provided
      * with the key wrapping provider in the EncryptionSerializer configured on the client via <see cref="CosmosClientBuilder.WithCustomSerializer"/>,

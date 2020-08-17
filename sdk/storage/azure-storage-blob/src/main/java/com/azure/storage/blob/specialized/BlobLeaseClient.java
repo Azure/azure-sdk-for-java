@@ -273,8 +273,9 @@ public final class BlobLeaseClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Integer> breakLeaseWithResponse(Integer breakPeriodInSeconds,
         RequestConditions modifiedRequestConditions, Duration timeout, Context context) {
-        return breakLeaseWithResponse(new BlobBreakLeaseOptions().setBreakPeriodInSeconds(breakPeriodInSeconds)
-            .setRequestConditions(ModelHelper.populateBlobLeaseRequestConditions(modifiedRequestConditions)),
+        return breakLeaseWithResponse(new BlobBreakLeaseOptions()
+                .setBreakPeriod(breakPeriodInSeconds == null ? null : Duration.ofSeconds(breakPeriodInSeconds))
+                .setRequestConditions(ModelHelper.populateBlobLeaseRequestConditions(modifiedRequestConditions)),
             timeout, context);
     }
 

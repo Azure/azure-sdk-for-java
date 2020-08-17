@@ -27,8 +27,8 @@ public final class FieldData extends FormElement {
      * @param pageNumber the 1 based page number.
      * @param fieldElements The list of element references when includeFieldElements is set to true.
      */
-    public FieldData(String text, BoundingBox boundingBox, Integer pageNumber,
-                     final List<FormElement> fieldElements) {
+    public FieldData(String text, BoundingBox boundingBox, int pageNumber,
+        final List<FormElement> fieldElements) {
         super(text, boundingBox, pageNumber);
         this.fieldElements = fieldElements == null ? null : Collections.unmodifiableList(fieldElements);
     }
@@ -53,7 +53,7 @@ public final class FieldData extends FormElement {
      * {@inheritDoc}
      */
     @Override
-    public Integer getPageNumber() {
+    public int getPageNumber() {
         return super.getPageNumber();
     }
 

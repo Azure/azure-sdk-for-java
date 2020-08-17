@@ -192,7 +192,7 @@ class RecognizeLinkedEntityAsyncClient {
             linkedEntitiesList.add(new LinkedEntity(
                 linkedEntity.getName(),
                 new IterableStream<>(linkedEntity.getMatches().stream().map(match -> new LinkedEntityMatch(
-                    match.getText(), match.getConfidenceScore()))
+                    match.getText(), match.getOffset(), match.getLength(), match.getConfidenceScore()))
                     .collect(Collectors.toList())),
                 linkedEntity.getLanguage(),
                 linkedEntity.getId(), linkedEntity.getUrl(), linkedEntity.getDataSource()));

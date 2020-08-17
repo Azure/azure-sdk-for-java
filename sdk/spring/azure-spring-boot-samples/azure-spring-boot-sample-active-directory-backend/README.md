@@ -23,7 +23,7 @@ spring.security.oauth2.client.registration.azure.client-secret=xxxxxx-your-clien
 azure.activedirectory.tenant-id=xxxxxx-your-tenant-id-xxxxxx
 # It's suggested the logged in user should at least belong to one of the below groups
 # If not, the logged in user will not be able to access any authorization controller rest APIs
-azure.activedirectory.active-directory-groups=group1, group2
+azure.activedirectory.user-group.allowed-groups=group1, group2
 ```
 
 If `azure.activedirectory.tenant-id` is configured, `AADOAuth2LoginSecurityConfig` will take effect and this app will use AAD to authentication and authorization.
@@ -66,13 +66,13 @@ spring.security.oauth2.client.provider.azure-oauth-provider.jwk-set-uri=https://
 spring.security.oauth2.client.provider.azure-oauth-provider.user-name-attribute=name
 
 azure.activedirectory.tenant-id=xxxxxx-your-tenant-id-xxxxxx
-azure.activedirectory.active-directory-groups=group1, group2
+azure.activedirectory.user-group.allowed-groups=group1, group2
 ```
 
 ## Troubleshooting
 
 ### If registered application is not multi-tenanted, how to run this sample?
-In this auto-configuration, by [default](https://github.com/Microsoft/azure-spring-boot/blob/master/azure-spring-boot/src/main/resources/aad-oauth2-common.properties#L1-L4) `/common` is used for the tenant value. According to [Active Directory Sign In Request format](https://docs.microsoft.com/azure/active-directory/develop/active-directory-protocols-openid-connect-code#send-the-sign-in-request), if your application is not multi-tenanted, you have to configure a tenant specific authorization endpoints.
+In this auto-configuration, by [default](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot/src/main/resources/aad-oauth2-common.properties#L1-L4) `/common` is used for the tenant value. According to [Active Directory Sign In Request format](https://docs.microsoft.com/azure/active-directory/develop/active-directory-protocols-openid-connect-code#send-the-sign-in-request), if your application is not multi-tenanted, you have to configure a tenant specific authorization endpoints.
 
 Configure endpoints with specific tenant-id by replacing `common` in your application.properties file:
 ```properties

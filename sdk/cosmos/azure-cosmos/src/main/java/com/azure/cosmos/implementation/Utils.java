@@ -4,7 +4,6 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.encryption.api.EncryptionOptions;
 import com.azure.cosmos.implementation.uuid.EthernetAddress;
 import com.azure.cosmos.implementation.uuid.Generators;
 import com.azure.cosmos.implementation.uuid.impl.TimeBasedGenerator;
@@ -410,12 +409,14 @@ public class Utils {
             osName = "Unknown";
         }
         osName = osName.replaceAll("\\s", "");
-        String userAgent = String.format("%s/%s JRE/%s %s/%s",
+        String userAgent = String.format("%s%s/%s %s/%s JRE/%s",
+                UserAgentContainer.AZSDK_USERAGENT_PREFIX,
+                sdkName,
+                sdkVersion,
                 osName,
                 System.getProperty("os.version"),
-                System.getProperty("java.version"),
-                sdkName,
-                sdkVersion);
+                System.getProperty("java.version")
+                );
         return userAgent;
     }
 
@@ -612,15 +613,6 @@ public class Utils {
         }
 
         return itemDeserializer.parseFrom(itemClassType, item);
-    }
-
-    public static <T> T parse(byte[] item, Class<T> itemClassType, EncryptionOptions encryptionOptions) {
-
-        try {
-            return getSimpleObjectMapper().readValue(item, itemClassType);
-        } catch (IOException e) {
-            throw new IllegalStateException("Failed to get POJO.", e);
-        }
     }
 
     public static ByteBuffer serializeJsonToByteBuffer(ObjectMapper objectMapper, Object object) {

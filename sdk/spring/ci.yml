@@ -28,6 +28,9 @@ extends:
   parameters:
     ServiceDirectory: spring
     Artifacts:
+      - name: azure-spring-data-gremlin
+        groupId: com.azure
+        safeName: azurespringdatagremlin
       - name: azure-spring-boot
         groupId: com.microsoft.azure
         safeName: azurespringboot
@@ -55,6 +58,72 @@ extends:
       - name: azure-servicebus-jms-spring-boot-starter
         groupId: com.microsoft.azure
         safeName: azurespringbootstarterservicebusjms
+      - name: spring-cloud-azure-context
+        groupId: com.microsoft.azure
+        safeName: azurespringcloudcontext
+      - name: spring-cloud-azure-telemetry
+        groupId: com.microsoft.azure
+        safeName: azurespringcloudtelemetry
+      - name: spring-integration-azure-core
+        groupId: com.microsoft.azure
+        safeName: springintegrationazurecore
+      - name: spring-integration-azure-test
+        groupId: com.microsoft.azure
+        safeName: springintegrationazuretest
+      - name: spring-integration-eventhubs
+        groupId: com.microsoft.azure
+        safeName: springintegrationeventhubs
+      - name: spring-integration-servicebus
+        groupId: com.microsoft.azure
+        safeName: springintegrationservicebus
+      - name: spring-integration-storage-queue
+        groupId: com.microsoft.azure
+        safeName: springintegrationstoragequeue
+      - name: spring-cloud-azure-storage
+        groupId: com.microsoft.azure
+        safeName: springcloudazurestorage
+      - name: spring-cloud-azure-autoconfigure
+        groupId: com.microsoft.azure
+        safeName: springcloudazureautoconfigure
+      - name: spring-cloud-azure-messaging
+        groupId: com.microsoft.azure
+        safeName: springcloudazuremessaging
+      - name: spring-cloud-starter-azure-appconfiguration-config
+        groupId: com.microsoft.azure
+        safeName: springcloudstarterazureappconfigurationconfig
+      - name: spring-starter-azure-cache
+        groupId: com.microsoft.azure
+        safeName: springstarterazurecache
+      - name: spring-cloud-starter-azure-eventhubs
+        groupId: com.microsoft.azure
+        safeName: springcloudstarterazureeventhubs
+      - name: spring-cloud-starter-azure-eventhubs-kafka
+        groupId: com.microsoft.azure
+        safeName: springcloudstarterazureeventhubskafka
+      - name: spring-cloud-starter-azure-servicebus
+        groupId: com.microsoft.azure
+        safeName: springcloudstarterazureservicebus
+      - name: spring-starter-azure-storage
+        groupId: com.microsoft.azure
+        safeName: springstarterazurestorage
+      - name: spring-cloud-starter-azure-storage-queue
+        groupId: com.microsoft.azure
+        safeName: springcloudstarterazurestoragequeue
+      - name: spring-cloud-azure-servicebus-stream-binder-core
+        groupId: com.microsoft.azure
+        safeName: springcloudazureservicebusstreambindercore
+      - name: spring-cloud-azure-stream-binder-test
+        groupId: com.microsoft.azure
+        safeName: springcloudazurestreambindertest
+      - name: spring-cloud-azure-servicebus-topic-stream-binder
+        groupId: com.microsoft.azure
+        safeName: springcloudazureservicebustopicstreambinder
+      - name: spring-cloud-azure-servicebus-queue-stream-binder
+        groupId: com.microsoft.azure
+        safeName: springcloudazureservicebusqueuestreambinder
+      - name: spring-cloud-azure-eventhubs-stream-binder
+        groupId: com.microsoft.azure
+        safeName: springcloudazureeventhubsstreambinder
     AdditionalModules:
       - name: azure-spring-boot-sample-active-directory
         groupId: com.azure
@@ -81,4 +150,8 @@ extends:
       - name: azure-spring-boot-sample-servicebus-jms-topic
         groupId: com.azure
       - name: azure-spring-boot-sample-storage-blob
+        groupId: com.azure
+      - name: azure-spring-data-sample-gremlin
+        groupId: com.azure
+      - name: azure-spring-data-sample-gremlin-web-service
         groupId: com.azure
