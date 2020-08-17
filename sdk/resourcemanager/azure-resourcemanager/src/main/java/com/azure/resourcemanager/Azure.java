@@ -88,6 +88,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import com.azure.resourcemanager.resources.models.Deployments;
+import com.azure.resourcemanager.resources.models.Features;
 import com.azure.resourcemanager.resources.models.GenericResources;
 import com.azure.resourcemanager.resources.models.PolicyAssignments;
 import com.azure.resourcemanager.resources.models.PolicyDefinitions;
@@ -134,8 +135,9 @@ public final class Azure {
     //    private final EventHubManager eventHubManager;
     private final AppPlatformManager appPlatformManager;
     private final PrivateDnsZoneManager privateDnsZoneManager;
-    private final String subscriptionId;
     private final Authenticated authenticated;
+    private final String subscriptionId;
+    private final String tenantId;
     private final SdkContext sdkContext;
 
     /**
@@ -258,7 +260,7 @@ public final class Azure {
     private static final class AuthenticatedImpl implements Authenticated {
         private final HttpPipeline httpPipeline;
         private final ResourceManager.Authenticated resourceManagerAuthenticated;
-        private final AuthorizationManager authorizationManager;
+        private AuthorizationManager authorizationManager;
         private SdkContext sdkContext;
         private String tenantId;
         private String subscriptionId;
@@ -322,6 +324,8 @@ public final class Azure {
         @Override
         public Authenticated withSdkContext(SdkContext sdkContext) {
             this.sdkContext = sdkContext;
+            this.authorizationManager = AuthorizationManager.authenticate(
+                httpPipeline, new AzureProfile(tenantId, subscriptionId, environment), sdkContext);
             return this;
         }
 
@@ -334,6 +338,8 @@ public final class Azure {
         public Authenticated withTenantId(String tenantId) {
             Objects.requireNonNull(tenantId);
             this.tenantId = tenantId;
+            this.authorizationManager = AuthorizationManager.authenticate(
+                httpPipeline, new AzureProfile(tenantId, subscriptionId, environment), sdkContext);
             return this;
         }
 
@@ -378,8 +384,9 @@ public final class Azure {
         //        this.eventHubManager = EventHubManager.authenticate(restClient, subscriptionId, sdkContext);
         this.appPlatformManager = AppPlatformManager.authenticate(httpPipeline, profile, sdkContext);
         this.privateDnsZoneManager = PrivateDnsZoneManager.authenticate(httpPipeline, profile, sdkContext);
-        this.subscriptionId = profile.subscriptionId();
         this.authenticated = authenticated;
+        this.subscriptionId = profile.subscriptionId();
+        this.tenantId = profile.tenantId();
     }
 
     /** @return the currently selected subscription ID this client is authenticated to work with */
@@ -392,14 +399,24 @@ public final class Azure {
         return this.subscriptionId;
     }
 
+    /** @return the currently selected tenant ID this client is authenticated to work with */
+    public String tenantId() {
+        return this.tenantId;
+    }
+
     /** @return the currently selected subscription this client is authenticated to work with */
     public Subscription getCurrentSubscription() {
         return this.subscriptions().getById(this.subscriptionId());
     }
 
-    /** @return subscriptions that this authenticated client has access to */
+    /** @return entry point to managing subscriptions */
     public Subscriptions subscriptions() {
-        return this.authenticated.subscriptions();
+        return this.resourceManager.subscriptions();
+    }
+
+    /** @return entry point to managing tenants */
+    public Tenants tenants() {
+        return this.resourceManager.tenants();
     }
 
     /** @return entry point to managing resource groups */
@@ -423,13 +440,11 @@ public final class Azure {
     //    public ManagementLocks managementLocks() {
     //        return this.authorizationManager.managementLocks();
     //    }
-    //
-    //    /**
-    //     * @return entry point to managing features
-    //     */
-    //    public Features features() {
-    //        return resourceManager.features();
-    //    }
+
+    /** @return entry point to managing features */
+    public Features features() {
+        return resourceManager.features();
+    }
 
     /** @return entry point to managing resource providers */
     public Providers providers() {
