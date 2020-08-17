@@ -378,35 +378,6 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
         }
     }
 
-    private static Map.Entry<String, String> toBooleanEntry(final String name, final RntbdToken token) {
-        return new Entry(name, String.valueOf(token.getValue(Byte.class) != 0));
-    }
-
-    private static Map.Entry<String, String> toByteEntry(final String name, final RntbdToken token) {
-        return new Entry(name, Byte.toString(token.getValue(Byte.class)));
-    }
-
-    private static Map.Entry<String, String> toCurrencyEntry(final String name, final RntbdToken token) {
-        final BigDecimal value = new BigDecimal(Math.round(token.getValue(Double.class) * 100D)).scaleByPowerOfTen(-2);
-        return new Entry(name, value.toString());
-    }
-
-    private static Map.Entry<String, String> toIntegerEntry(final String name, final RntbdToken token) {
-        return new Entry(name, Long.toString(token.getValue(Long.class)));
-    }
-
-    private static Map.Entry<String, String> toLongEntry(final String name, final RntbdToken token) {
-        return new Entry(name, Long.toString(token.getValue(Long.class)));
-    }
-
-    private Map.Entry<String, String> toSessionTokenEntry(final String name, final RntbdToken token) {
-        return new Entry(name, this.partitionKeyRangeId.getValue(String.class) + ":" + this.sessionToken.getValue(String.class));
-    }
-
-    private static Map.Entry<String, String> toStringEntry(final String name, final RntbdToken token) {
-        return new Entry(name, token.getValue(String.class));
-    }
-
     private static final class Entry extends AbstractMap.SimpleImmutableEntry<String, String> implements Serializable {
         private static final long serialVersionUID = -5926883743469858929L;
 
