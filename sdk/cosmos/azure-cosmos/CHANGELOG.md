@@ -1,5 +1,8 @@
 # Release History
 
+## 4.3.2-beta.2 (Unreleased)
+
+
 ## 4.3.2-beta.1 (2020-08-14)
 ### Key Bug Fixes
 * Fixed issue in RntbdServiceEndpoint to avoid early closure of an unused TCP connection.

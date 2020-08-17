@@ -10,8 +10,8 @@ import java.util.Collection;
 
 /** Defines values for ScaleSetPriority. */
 public final class ScaleSetPriority extends ExpandableStringEnum<ScaleSetPriority> {
-    /** Static value Low for ScaleSetPriority. */
-    public static final ScaleSetPriority LOW = fromString("Low");
+    /** Static value Spot for ScaleSetPriority. */
+    public static final ScaleSetPriority SPOT = fromString("Spot");
 
     /** Static value Regular for ScaleSetPriority. */
     public static final ScaleSetPriority REGULAR = fromString("Regular");
