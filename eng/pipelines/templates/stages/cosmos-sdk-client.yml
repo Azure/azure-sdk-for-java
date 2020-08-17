@@ -121,7 +121,7 @@ stages:
             AdditionalArgs: '-DargLine="-DACCOUNT_HOST=https://localhost:8081/"'
 
         TestStepMavenInputs:
-          goals: 'clean verify'
+          goals: clean verify
           options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList)'
           mavenAuthenticateFeed: true
           jdkVersionOption: $(JavaTestVersion)
@@ -158,23 +158,11 @@ stages:
             displayName: 'Run replace_artifact.py'
           - task: Maven@3
             condition: eq(variables['DisplayName'], 'Spring Emulator only Integration Tests')
-            displayName: 'Build and Install again, JDK Version: $(JavaBuildVersion)'
-            inputs:
-              mavenPomFile: pom.xml
-              goals: 'install'
-              options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
-              mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-              javaHomeOption: 'JDKVersion'
-              jdkVersionOption: $(JavaBuildVersion)
-              jdkArchitectureOption: 'x64'
-              publishJUnitResults: false
-          - task: Maven@3
-            condition: eq(variables['DisplayName'], 'Spring Emulator only Integration Tests')
             displayName: 'Run tests again: $(DisplayName)'
             inputs:
               mavenPomFile: pom.xml
-              goals: 'clean verify'
-              options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList)'
+              goals: clean verify
+              options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl com.azure:azure-spring-data-cosmos-test'
               mavenAuthenticateFeed: true
               jdkVersionOption: $(JavaTestVersion)
 
