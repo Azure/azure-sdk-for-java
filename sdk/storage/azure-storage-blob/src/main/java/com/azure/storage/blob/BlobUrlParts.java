@@ -15,11 +15,8 @@ import com.azure.storage.common.implementation.Constants;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * This class represents the components that make up an Azure Storage Container/Blob URL. You may parse an
