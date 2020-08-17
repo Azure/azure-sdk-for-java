@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.apachecommons.collections.list.Unmodifiab
 import com.azure.cosmos.implementation.directconnectivity.AddressResolverExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
@@ -16,6 +17,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -73,14 +75,14 @@ public class RntbdConnectionStateListener {
 
     private Mono<Void> updateAddressCacheAsync(final RntbdEndpoint endpoint) {
 
-        final Set<RntbdAddressCacheToken> tokens = this.partitionAddressCache.get(endpoint.remoteAddress());
-        final Mono<Void> update;
+        final AtomicReference<Mono<Void>> result = new AtomicReference<>(Mono.empty());
 
-        update = tokens == null
-            ? Mono.empty()
-            : this.addressResolver.updateAsync(new UnmodifiableList<>(new ArrayList<>(tokens)));
+        this.partitionAddressCache.computeIfPresent(endpoint.remoteAddress(), (address, tokens) -> {
+            result.set(this.addressResolver.updateAsync(new UnmodifiableList<>(new ArrayList<>(tokens))));
+            return null;
+        });
 
-        return update;
+        return result.get();
     }
 
     private void updatePartitionAddressCache(final RntbdAddressCacheToken addressCacheToken) {
