@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** The ManagedClusterAadProfile model. */
 @Fluent
@@ -15,15 +16,33 @@ public final class ManagedClusterAadProfile {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterAadProfile.class);
 
     /*
+     * Whether to enable managed AAD.
+     */
+    @JsonProperty(value = "managed")
+    private Boolean managed;
+
+    /*
+     * Whether to enable Azure RBAC for Kubernetes authorization.
+     */
+    @JsonProperty(value = "enableAzureRBAC")
+    private Boolean enableAzureRbac;
+
+    /*
+     * AAD group object IDs that will have admin role of the cluster.
+     */
+    @JsonProperty(value = "adminGroupObjectIDs")
+    private List<String> adminGroupObjectIDs;
+
+    /*
      * The client AAD application ID.
      */
-    @JsonProperty(value = "clientAppID", required = true)
+    @JsonProperty(value = "clientAppID")
     private String clientAppId;
 
     /*
      * The server AAD application ID.
      */
-    @JsonProperty(value = "serverAppID", required = true)
+    @JsonProperty(value = "serverAppID")
     private String serverAppId;
 
     /*
@@ -38,6 +57,66 @@ public final class ManagedClusterAadProfile {
      */
     @JsonProperty(value = "tenantID")
     private String tenantId;
+
+    /**
+     * Get the managed property: Whether to enable managed AAD.
+     *
+     * @return the managed value.
+     */
+    public Boolean managed() {
+        return this.managed;
+    }
+
+    /**
+     * Set the managed property: Whether to enable managed AAD.
+     *
+     * @param managed the managed value to set.
+     * @return the ManagedClusterAadProfile object itself.
+     */
+    public ManagedClusterAadProfile withManaged(Boolean managed) {
+        this.managed = managed;
+        return this;
+    }
+
+    /**
+     * Get the enableAzureRbac property: Whether to enable Azure RBAC for Kubernetes authorization.
+     *
+     * @return the enableAzureRbac value.
+     */
+    public Boolean enableAzureRbac() {
+        return this.enableAzureRbac;
+    }
+
+    /**
+     * Set the enableAzureRbac property: Whether to enable Azure RBAC for Kubernetes authorization.
+     *
+     * @param enableAzureRbac the enableAzureRbac value to set.
+     * @return the ManagedClusterAadProfile object itself.
+     */
+    public ManagedClusterAadProfile withEnableAzureRbac(Boolean enableAzureRbac) {
+        this.enableAzureRbac = enableAzureRbac;
+        return this;
+    }
+
+    /**
+     * Get the adminGroupObjectIDs property: AAD group object IDs that will have admin role of the cluster.
+     *
+     * @return the adminGroupObjectIDs value.
+     */
+    public List<String> adminGroupObjectIDs() {
+        return this.adminGroupObjectIDs;
+    }
+
+    /**
+     * Set the adminGroupObjectIDs property: AAD group object IDs that will have admin role of the cluster.
+     *
+     * @param adminGroupObjectIDs the adminGroupObjectIDs value to set.
+     * @return the ManagedClusterAadProfile object itself.
+     */
+    public ManagedClusterAadProfile withAdminGroupObjectIDs(List<String> adminGroupObjectIDs) {
+        this.adminGroupObjectIDs = adminGroupObjectIDs;
+        return this;
+    }
 
     /**
      * Get the clientAppId property: The client AAD application ID.
@@ -127,17 +206,5 @@ public final class ManagedClusterAadProfile {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (clientAppId() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property clientAppId in model ManagedClusterAadProfile"));
-        }
-        if (serverAppId() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property serverAppId in model ManagedClusterAadProfile"));
-        }
     }
 }
