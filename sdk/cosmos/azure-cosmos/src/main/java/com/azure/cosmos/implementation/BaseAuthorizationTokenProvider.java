@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * This class is used internally by both client (for generating the auth header with master/system key) and by the GATEWAY when
@@ -28,14 +29,13 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
 
     private static final String AUTH_PREFIX = "type=master&ver=1.0&sig=";
     private final AzureKeyCredential credential;
-    private final Mac macInstance;
+    private Mac macInstance;
+    private volatile ConcurrentLinkedQueue<Mac> cachedMacInstances = new ConcurrentLinkedQueue<>();
 
-    //  stores current master key's hashcode for performance reasons.
-    private int masterKeyHashCode;
+    private volatile String currentCredentialKey;
 
     public BaseAuthorizationTokenProvider(AzureKeyCredential credential) {
         this.credential = credential;
-        this.macInstance = getMacInstance();
     }
 
     private static String getResourceSegment(ResourceType resourceType) {
@@ -150,11 +150,18 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
 
         Mac mac = getMacInstance();
 
-        byte[] digest = mac.doFinal(body.toString().getBytes(StandardCharsets.UTF_8));
+        try {
 
-        String auth = Utils.encodeBase64String(digest);
+            byte[] digest = mac.doFinal(body.toString().getBytes(StandardCharsets.UTF_8));
 
-        return AUTH_PREFIX + auth;
+            String auth = Utils.encodeBase64String(digest);
+
+            return AUTH_PREFIX + auth;
+        }
+        finally {
+            // doFinal already resets for re-use
+            cachedMacInstances.add(mac);
+        }
     }
 
     /**
@@ -245,29 +252,37 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
     }
 
     private Mac getMacInstance() {
-        int masterKeyLatestHashCode = this.credential.getKey().hashCode();
 
-        //  Master key has changed, or this is the first time we are getting mac instance
-        if (masterKeyLatestHashCode != this.masterKeyHashCode) {
-            byte[] masterKeyBytes = this.credential.getKey().getBytes(StandardCharsets.UTF_8);
-            byte[] masterKeyDecodedBytes = Utils.Base64Decoder.decode(masterKeyBytes);
-            SecretKey signingKey = new SecretKeySpec(masterKeyDecodedBytes, "HMACSHA256");
-            try {
-                Mac macInstance = Mac.getInstance("HMACSHA256");
-                macInstance.init(signingKey);
-                //  Update the master key hash code
-                this.masterKeyHashCode = masterKeyLatestHashCode;
-                return macInstance;
-            } catch (NoSuchAlgorithmException | InvalidKeyException e) {
-                throw new IllegalStateException(e);
+        // Java == operator is reference equals not content
+        // leveraging reference comparison avoid hash computatio
+        if (this.currentCredentialKey != this.credential.getKey()) {
+            synchronized (this.credential) {
+                if (this.currentCredentialKey != this.credential.getKey()) {
+                    byte[] masterKeyBytes = this.credential.getKey().getBytes(StandardCharsets.UTF_8);
+                    byte[] masterKeyDecodedBytes = Utils.Base64Decoder.decode(masterKeyBytes);
+                    SecretKey signingKey = new SecretKeySpec(masterKeyDecodedBytes, "HMACSHA256");
+                    try {
+                        Mac macInstance = Mac.getInstance("HMACSHA256");
+                        macInstance.init(signingKey);
+
+                        this.currentCredentialKey = this.credential.getKey();
+                        this.macInstance = macInstance;
+                    } catch (NoSuchAlgorithmException | InvalidKeyException e) {
+                        throw new IllegalStateException(e);
+                    }
+                }
             }
-        } else {
-            //  Master key hasn't changed, return the cloned mac instance
-            try {
-                return (Mac)this.macInstance.clone();
-            } catch (CloneNotSupportedException e) {
-                throw new IllegalStateException(e);
+        }
+
+        try {
+            Mac cachedInstance = cachedMacInstances.poll();
+            if (cachedInstance == null) {
+                cachedInstance = (Mac) this.macInstance.clone();
             }
+
+            return cachedInstance;
+        } catch (CloneNotSupportedException e) {
+            throw new IllegalStateException(e);
         }
     }
 
