@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * Properties of the Storage Target.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "targetBaseType", defaultImpl = StorageTargetProperties.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "targetType", defaultImpl = StorageTargetProperties.class)
 @JsonTypeName("StorageTargetProperties")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "nfs3", value = Nfs3TargetProperties.class),
@@ -30,12 +30,6 @@ public class StorageTargetProperties {
      */
     @JsonProperty(value = "junctions")
     private List<NamespaceJunction> junctions;
-
-    /**
-     * Type of the Storage Target.
-     */
-    @JsonProperty(value = "targetType")
-    private String targetType;
 
     /**
      * ARM provisioning state, see
@@ -81,26 +75,6 @@ public class StorageTargetProperties {
      */
     public StorageTargetProperties withJunctions(List<NamespaceJunction> junctions) {
         this.junctions = junctions;
-        return this;
-    }
-
-    /**
-     * Get type of the Storage Target.
-     *
-     * @return the targetType value
-     */
-    public String targetType() {
-        return this.targetType;
-    }
-
-    /**
-     * Set type of the Storage Target.
-     *
-     * @param targetType the targetType value to set
-     * @return the StorageTargetProperties object itself.
-     */
-    public StorageTargetProperties withTargetType(String targetType) {
-        this.targetType = targetType;
         return this;
     }
 

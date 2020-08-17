@@ -106,11 +106,6 @@ class StorageTargetImpl extends CreatableUpdatableImpl<StorageTarget, StorageTar
     }
 
     @Override
-    public String targetType() {
-        return this.inner().targetType();
-    }
-
-    @Override
     public String type() {
         return this.inner().type();
     }
@@ -148,12 +143,6 @@ class StorageTargetImpl extends CreatableUpdatableImpl<StorageTarget, StorageTar
     @Override
     public StorageTargetImpl withProvisioningState(ProvisioningStateType provisioningState) {
         this.inner().withProvisioningState(provisioningState);
-        return this;
-    }
-
-    @Override
-    public StorageTargetImpl withTargetType(String targetType) {
-        this.inner().withTargetType(targetType);
         return this;
     }
 

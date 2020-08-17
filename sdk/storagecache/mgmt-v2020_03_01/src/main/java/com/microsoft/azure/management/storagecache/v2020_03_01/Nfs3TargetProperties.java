@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * An NFSv3 mount point for use as a Storage Target.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "targetBaseType", defaultImpl = Nfs3TargetProperties.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "targetType", defaultImpl = Nfs3TargetProperties.class)
 @JsonTypeName("nfs3")
 public class Nfs3TargetProperties extends StorageTargetProperties {
 }
