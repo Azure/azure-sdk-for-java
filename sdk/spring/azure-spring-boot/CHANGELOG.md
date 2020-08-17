@@ -3,7 +3,7 @@
 ## 2.4.0-beta.1 (Unreleased)
 
 
-## 2.3.3 (2020-08-07)
+## 2.3.3 (2020-08-13)
 _New Features_
 - Support connection to multiple Key Vault from a single application configuration file 
 - Support case sensitive keys in Key Vault 

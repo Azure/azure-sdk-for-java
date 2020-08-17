@@ -148,6 +148,14 @@ import com.azure.resourcemanager.network.models.Topology;
 import com.azure.resourcemanager.network.models.TopologyAssociation;
 import com.azure.resourcemanager.network.models.TopologyResource;
 import com.azure.resourcemanager.network.models.VerificationIPFlow;
+import com.azure.resourcemanager.privatedns.models.CnameRecordSet;
+import com.azure.resourcemanager.privatedns.models.MxRecordSet;
+import com.azure.resourcemanager.privatedns.models.PrivateDnsZone;
+import com.azure.resourcemanager.privatedns.models.VirtualNetworkLink;
+import com.azure.resourcemanager.redis.models.RedisAccessKeys;
+import com.azure.resourcemanager.redis.models.RedisCache;
+import com.azure.resourcemanager.redis.models.RedisCachePremium;
+import com.azure.resourcemanager.redis.models.ScheduleEntry;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
@@ -627,59 +635,59 @@ public final class Utils {
     }
 
 
-//    /**
-//     * Print Redis Cache.
-//     *
-//     * @param redisCache a Redis cache.
-//     */
-//    public static void print(RedisCache redisCache) {
-//        StringBuilder redisInfo = new StringBuilder()
-//                .append("Redis Cache Name: ").append(redisCache.name())
-//                .append("\n\tResource group: ").append(redisCache.resourceGroupName())
-//                .append("\n\tRegion: ").append(redisCache.region())
-//                .append("\n\tSKU Name: ").append(redisCache.sku().name())
-//                .append("\n\tSKU Family: ").append(redisCache.sku().family())
-//                .append("\n\tHost name: ").append(redisCache.hostName())
-//                .append("\n\tSSL port: ").append(redisCache.sslPort())
-//                .append("\n\tNon-SSL port (6379) enabled: ").append(redisCache.nonSslPort());
-//        if (redisCache.redisConfiguration() != null && !redisCache.redisConfiguration().isEmpty()) {
-//            redisInfo.append("\n\tRedis Configuration:");
-//            for (Map.Entry<String, String> redisConfiguration : redisCache.redisConfiguration().entrySet()) {
-//                redisInfo.append("\n\t  '").append(redisConfiguration.getKey())
-//                        .append("' : '").append(redisConfiguration.getValue()).append("'");
-//            }
-//        }
-//        if (redisCache.isPremium()) {
-//            RedisCachePremium premium = redisCache.asPremium();
-//            List<ScheduleEntry> scheduleEntries = premium.listPatchSchedules();
-//            if (scheduleEntries != null && !scheduleEntries.isEmpty()) {
-//                redisInfo.append("\n\tRedis Patch Schedule:");
-//                for (ScheduleEntry schedule : scheduleEntries) {
-//                    redisInfo.append("\n\t\tDay: '").append(schedule.dayOfWeek())
-//                            .append("', start at: '").append(schedule.startHourUtc())
-//                            .append("', maintenance window: '").append(schedule.maintenanceWindow())
-//                            .append("'");
-//                }
-//            }
-//        }
-//
-//        System.out.println(redisInfo.toString());
-//    }
-//
-//    /**
-//     * Print Redis Cache access keys.
-//     *
-//     * @param redisAccessKeys a keys for Redis Cache
-//     */
-//    public static void print(RedisAccessKeys redisAccessKeys) {
-//        StringBuilder redisKeys = new StringBuilder()
-//                .append("Redis Access Keys: ")
-//                .append("\n\tPrimary Key: '").append(redisAccessKeys.primaryKey()).append("', ")
-//                .append("\n\tSecondary Key: '").append(redisAccessKeys.secondaryKey()).append("', ");
-//
-//        System.out.println(redisKeys.toString());
-//    }
-//
+    /**
+     * Print Redis Cache.
+     *
+     * @param redisCache a Redis cache.
+     */
+    public static void print(RedisCache redisCache) {
+        StringBuilder redisInfo = new StringBuilder()
+                .append("Redis Cache Name: ").append(redisCache.name())
+                .append("\n\tResource group: ").append(redisCache.resourceGroupName())
+                .append("\n\tRegion: ").append(redisCache.region())
+                .append("\n\tSKU Name: ").append(redisCache.sku().name())
+                .append("\n\tSKU Family: ").append(redisCache.sku().family())
+                .append("\n\tHostname: ").append(redisCache.hostname())
+                .append("\n\tSSL port: ").append(redisCache.sslPort())
+                .append("\n\tNon-SSL port (6379) enabled: ").append(redisCache.nonSslPort());
+        if (redisCache.redisConfiguration() != null && !redisCache.redisConfiguration().isEmpty()) {
+            redisInfo.append("\n\tRedis Configuration:");
+            for (Map.Entry<String, String> redisConfiguration : redisCache.redisConfiguration().entrySet()) {
+                redisInfo.append("\n\t  '").append(redisConfiguration.getKey())
+                        .append("' : '").append(redisConfiguration.getValue()).append("'");
+            }
+        }
+        if (redisCache.isPremium()) {
+            RedisCachePremium premium = redisCache.asPremium();
+            List<ScheduleEntry> scheduleEntries = premium.listPatchSchedules();
+            if (scheduleEntries != null && !scheduleEntries.isEmpty()) {
+                redisInfo.append("\n\tRedis Patch Schedule:");
+                for (ScheduleEntry schedule : scheduleEntries) {
+                    redisInfo.append("\n\t\tDay: '").append(schedule.dayOfWeek())
+                            .append("', start at: '").append(schedule.startHourUtc())
+                            .append("', maintenance window: '").append(schedule.maintenanceWindow())
+                            .append("'");
+                }
+            }
+        }
+
+        System.out.println(redisInfo.toString());
+    }
+
+    /**
+     * Print Redis Cache access keys.
+     *
+     * @param redisAccessKeys a keys for Redis Cache
+     */
+    public static void print(RedisAccessKeys redisAccessKeys) {
+        StringBuilder redisKeys = new StringBuilder()
+                .append("Redis Access Keys: ")
+                .append("\n\tPrimary Key: '").append(redisAccessKeys.primaryKey()).append("', ")
+                .append("\n\tSecondary Key: '").append(redisAccessKeys.secondaryKey()).append("', ");
+
+        System.out.println(redisKeys.toString());
+    }
+
 //    /**
 //     * Print management lock.
 //     *
@@ -1255,6 +1263,139 @@ public final class Utils {
                     info.append("\n\t\t\tValue: ").append(txtRecord.value().get(0));
                 }
             }
+        }
+        System.out.println(info.toString());
+    }
+
+    /**
+     * Print a private dns zone.
+     *
+     * @param privateDnsZone a private dns zone
+     */
+    public static void print(PrivateDnsZone privateDnsZone) {
+        StringBuilder info = new StringBuilder();
+        info.append("Private DNS Zone: ").append(privateDnsZone.id())
+            .append("\n\tName (Top level domain): ").append(privateDnsZone.name())
+            .append("\n\tResource group: ").append(privateDnsZone.resourceGroupName())
+            .append("\n\tRegion: ").append(privateDnsZone.regionName())
+            .append("\n\tTags: ").append(privateDnsZone.tags())
+            .append("\n\tName servers:");
+        com.azure.resourcemanager.privatedns.models.SoaRecordSet soaRecordSet = privateDnsZone.getSoaRecordSet();
+        com.azure.resourcemanager.privatedns.models.SoaRecord soaRecord = soaRecordSet.record();
+        info.append("\n\tSOA Record:")
+            .append("\n\t\tHost:").append(soaRecord.host())
+            .append("\n\t\tEmail:").append(soaRecord.email())
+            .append("\n\t\tExpire time (seconds):").append(soaRecord.expireTime())
+            .append("\n\t\tRefresh time (seconds):").append(soaRecord.refreshTime())
+            .append("\n\t\tRetry time (seconds):").append(soaRecord.retryTime())
+            .append("\n\t\tNegative response cache ttl (seconds):").append(soaRecord.minimumTtl())
+            .append("\n\t\tTTL (seconds):").append(soaRecordSet.timeToLive());
+
+        PagedIterable<com.azure.resourcemanager.privatedns.models.ARecordSet> aRecordSets = privateDnsZone
+            .aRecordSets().list();
+        info.append("\n\tA Record sets:");
+        for (com.azure.resourcemanager.privatedns.models.ARecordSet aRecordSet : aRecordSets) {
+            info.append("\n\t\tId: ").append(aRecordSet.id())
+                .append("\n\t\tName: ").append(aRecordSet.name())
+                .append("\n\t\tTTL (seconds): ").append(aRecordSet.timeToLive())
+                .append("\n\t\tIP v4 addresses: ");
+            for (String ipAddress : aRecordSet.ipv4Addresses()) {
+                info.append("\n\t\t\t").append(ipAddress);
+            }
+        }
+
+        PagedIterable<com.azure.resourcemanager.privatedns.models.AaaaRecordSet> aaaaRecordSets = privateDnsZone
+            .aaaaRecordSets().list();
+        info.append("\n\tAAAA Record sets:");
+        for (com.azure.resourcemanager.privatedns.models.AaaaRecordSet aaaaRecordSet : aaaaRecordSets) {
+            info.append("\n\t\tId: ").append(aaaaRecordSet.id())
+                .append("\n\t\tName: ").append(aaaaRecordSet.name())
+                .append("\n\t\tTTL (seconds): ").append(aaaaRecordSet.timeToLive())
+                .append("\n\t\tIP v6 addresses: ");
+            for (String ipAddress : aaaaRecordSet.ipv6Addresses()) {
+                info.append("\n\t\t\t").append(ipAddress);
+            }
+        }
+
+        PagedIterable<CnameRecordSet> cnameRecordSets = privateDnsZone.cnameRecordSets().list();
+        info.append("\n\tCNAME Record sets:");
+        for (CnameRecordSet cnameRecordSet : cnameRecordSets) {
+            info.append("\n\t\tId: ").append(cnameRecordSet.id())
+                .append("\n\t\tName: ").append(cnameRecordSet.name())
+                .append("\n\t\tTTL (seconds): ").append(cnameRecordSet.timeToLive())
+                .append("\n\t\tCanonical name: ").append(cnameRecordSet.canonicalName());
+        }
+
+        PagedIterable<MxRecordSet> mxRecordSets = privateDnsZone.mxRecordSets().list();
+        info.append("\n\tMX Record sets:");
+        for (MxRecordSet mxRecordSet : mxRecordSets) {
+            info.append("\n\t\tId: ").append(mxRecordSet.id())
+                .append("\n\t\tName: ").append(mxRecordSet.name())
+                .append("\n\t\tTTL (seconds): ").append(mxRecordSet.timeToLive())
+                .append("\n\t\tRecords: ");
+            for (com.azure.resourcemanager.privatedns.models.MxRecord mxRecord : mxRecordSet.records()) {
+                info.append("\n\t\t\tExchange server, Preference: ")
+                    .append(mxRecord.exchange())
+                    .append(" ")
+                    .append(mxRecord.preference());
+            }
+        }
+
+        PagedIterable<com.azure.resourcemanager.privatedns.models.PtrRecordSet> ptrRecordSets = privateDnsZone
+            .ptrRecordSets().list();
+        info.append("\n\tPTR Record sets:");
+        for (com.azure.resourcemanager.privatedns.models.PtrRecordSet ptrRecordSet : ptrRecordSets) {
+            info.append("\n\t\tId: ").append(ptrRecordSet.id())
+                .append("\n\t\tName: ").append(ptrRecordSet.name())
+                .append("\n\t\tTTL (seconds): ").append(ptrRecordSet.timeToLive())
+                .append("\n\t\tTarget domain names: ");
+            for (String domainNames : ptrRecordSet.targetDomainNames()) {
+                info.append("\n\t\t\t").append(domainNames);
+            }
+        }
+
+        PagedIterable<com.azure.resourcemanager.privatedns.models.SrvRecordSet> srvRecordSets = privateDnsZone
+            .srvRecordSets().list();
+        info.append("\n\tSRV Record sets:");
+        for (com.azure.resourcemanager.privatedns.models.SrvRecordSet srvRecordSet : srvRecordSets) {
+            info.append("\n\t\tId: ").append(srvRecordSet.id())
+                .append("\n\t\tName: ").append(srvRecordSet.name())
+                .append("\n\t\tTTL (seconds): ").append(srvRecordSet.timeToLive())
+                .append("\n\t\tRecords: ");
+            for (com.azure.resourcemanager.privatedns.models.SrvRecord srvRecord : srvRecordSet.records()) {
+                info.append("\n\t\t\tTarget, Port, Priority, Weight: ")
+                    .append(srvRecord.target())
+                    .append(", ")
+                    .append(srvRecord.port())
+                    .append(", ")
+                    .append(srvRecord.priority())
+                    .append(", ")
+                    .append(srvRecord.weight());
+            }
+        }
+
+        PagedIterable<com.azure.resourcemanager.privatedns.models.TxtRecordSet> txtRecordSets = privateDnsZone
+            .txtRecordSets().list();
+        info.append("\n\tTXT Record sets:");
+        for (com.azure.resourcemanager.privatedns.models.TxtRecordSet txtRecordSet : txtRecordSets) {
+            info.append("\n\t\tId: ").append(txtRecordSet.id())
+                .append("\n\t\tName: ").append(txtRecordSet.name())
+                .append("\n\t\tTTL (seconds): ").append(txtRecordSet.timeToLive())
+                .append("\n\t\tRecords: ");
+            for (com.azure.resourcemanager.privatedns.models.TxtRecord txtRecord : txtRecordSet.records()) {
+                if (txtRecord.value().size() > 0) {
+                    info.append("\n\t\t\tValue: ").append(txtRecord.value().get(0));
+                }
+            }
+        }
+
+        PagedIterable<VirtualNetworkLink> virtualNetworkLinks = privateDnsZone.virtualNetworkLinks().list();
+        info.append("\n\tVirtual Network Links:");
+        for (VirtualNetworkLink virtualNetworkLink : virtualNetworkLinks) {
+            info.append("\n\tId: ").append(virtualNetworkLink.id())
+                .append("\n\tName: ").append(virtualNetworkLink.name())
+                .append("\n\tReference of Virtual Network: ").append(virtualNetworkLink.referencedVirtualNetworkId())
+                .append("\n\tRegistration enabled: ").append(virtualNetworkLink.isAutoRegistrationEnabled());
         }
         System.out.println(info.toString());
     }
