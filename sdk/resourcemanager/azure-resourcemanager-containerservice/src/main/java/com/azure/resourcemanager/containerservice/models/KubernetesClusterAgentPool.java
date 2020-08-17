@@ -184,7 +184,7 @@ public interface KubernetesClusterAgentPool
          *
          * @param <ParentT> the stage of the container service definition to return to after attaching this definition
          */
-        interface withAgentPoolMode<ParentT> {
+        interface WithAgentPoolMode<ParentT> {
             /**
              * Specifies the agent pool mode for the agents.
              *
@@ -208,7 +208,7 @@ public interface KubernetesClusterAgentPool
                 WithAgentPoolVirtualMachineCount<ParentT>,
                 WithMaxPodsCount<ParentT>,
                 WithVirtualNetwork<ParentT>,
-                withAgentPoolMode<ParentT>,
+                WithAgentPoolMode<ParentT>,
                 Attachable.InDefinition<ParentT> {
         }
     }
