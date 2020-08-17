@@ -161,7 +161,7 @@ stages:
             inputs:
               mavenPomFile: pom.xml
               goals: clean verify
-              options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl azure-spring-data-cosmos-test'
+              options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl com.azure:azure-spring-data-cosmos-test'
               mavenAuthenticateFeed: true
               jdkVersionOption: $(JavaTestVersion)
 
