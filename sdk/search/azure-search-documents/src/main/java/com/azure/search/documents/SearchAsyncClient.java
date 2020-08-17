@@ -507,7 +507,7 @@ public final class SearchAsyncClient {
             .map(document -> IndexActionConverter.map(document, serializer))
             .collect(Collectors.toList());
 
-        boolean throwOnAnyError = options != null && options.throwOnAnyError();
+        boolean throwOnAnyError = options == null || options.throwOnAnyError();
         return indexDocumentsWithResponse(indexActions, throwOnAnyError, context);
     }
 

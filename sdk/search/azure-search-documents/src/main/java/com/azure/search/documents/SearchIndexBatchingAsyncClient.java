@@ -255,7 +255,8 @@ public class SearchIndexBatchingAsyncClient {
                 }
 
                 return response;
-            }).then(Mono.fromCallable(() -> hasError.get()
+            })
+            .thenEmpty(Mono.defer(() -> hasError.get()
                 ? Mono.error(new RuntimeException("Batching has encountered errors"))
                 : Mono.empty())));
     }

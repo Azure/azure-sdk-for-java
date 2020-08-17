@@ -41,7 +41,7 @@ public class FieldBuilderOptions {
      * @param jsonSerializer The custom serializer.
      * @return The updated FieldBuilderOptions object.
      */
-    public FieldBuilderOptions setConverter(JsonSerializer jsonSerializer) {
+    public FieldBuilderOptions setJsonSerializer(JsonSerializer jsonSerializer) {
         this.jsonSerializer = Objects.requireNonNull(jsonSerializer, "The JsonSerializer cannot be null");
         return this;
     }
