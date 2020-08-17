@@ -1,4 +1,4 @@
-# Azure Resource Manager test library for Java
+# Azure Resource Manager Test shared library for Java
 
 Azure Resource Manager test library for Java
 
