@@ -19,7 +19,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * This class is used internally by client (for generating the auth header with master/system key)
@@ -29,10 +28,8 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
 
     private static final String AUTH_PREFIX = "type=master&ver=1.0&sig=";
     private final AzureKeyCredential credential;
-    private Mac macInstance;
-    private volatile ConcurrentLinkedQueue<Mac> cachedMacInstances = new ConcurrentLinkedQueue<>();
-
     private volatile String currentCredentialKey;
+    private volatile MacPool macPool;
 
     public BaseAuthorizationTokenProvider(AzureKeyCredential credential) {
         this.credential = credential;
@@ -148,19 +145,17 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
 
         body.append('\n');
 
-        Mac mac = getMacInstance();
+        MacPool.ReUsableMac macInstance = getReUseableMacInstance();
 
         try {
 
-            byte[] digest = mac.doFinal(body.toString().getBytes(StandardCharsets.UTF_8));
-
+            byte[] digest = macInstance.get().doFinal(body.toString().getBytes(StandardCharsets.UTF_8));
             String auth = Utils.encodeBase64String(digest);
-
             return AUTH_PREFIX + auth;
         }
         finally {
             // doFinal already resets for re-use
-            cachedMacInstances.add(mac);
+            macInstance.close();
         }
     }
 
@@ -244,17 +239,24 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
 
         String authResourceId = getAuthorizationResourceIdOrFullName(resourceType, resourceIdValue);
         String payLoad = generateMessagePayload(verb, authResourceId, resourceType, headers);
-        Mac mac = this.getMacInstance();
-        byte[] digest = mac.doFinal(payLoad.getBytes(StandardCharsets.UTF_8));
-        String authorizationToken = Utils.encodeBase64String(digest);
-        String authtoken = AUTH_PREFIX + authorizationToken;
-        return HttpUtils.urlEncode(authtoken);
+
+        MacPool.ReUsableMac macInstance = this.getReUseableMacInstance();
+
+        try {
+            byte[] digest = macInstance.get().doFinal(payLoad.getBytes(StandardCharsets.UTF_8));
+            String authorizationToken = Utils.encodeBase64String(digest);
+            String authtoken = AUTH_PREFIX + authorizationToken;
+            return HttpUtils.urlEncode(authtoken);
+        }
+        finally {
+            macInstance.close();
+        }
     }
 
-    private Mac getMacInstance() {
+    private MacPool.ReUsableMac getReUseableMacInstance() {
 
         // Java == operator is reference equals not content
-        // leveraging reference comparison avoid hash computatio
+        // leveraging reference comparison avoid hash computation
         if (this.currentCredentialKey != this.credential.getKey()) {
             synchronized (this.credential) {
                 if (this.currentCredentialKey != this.credential.getKey()) {
@@ -266,7 +268,7 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
                         macInstance.init(signingKey);
 
                         this.currentCredentialKey = this.credential.getKey();
-                        this.macInstance = macInstance;
+                        this.macPool = new MacPool(macInstance);
                     } catch (NoSuchAlgorithmException | InvalidKeyException e) {
                         throw new IllegalStateException(e);
                     }
@@ -274,16 +276,7 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
             }
         }
 
-        try {
-            Mac cachedInstance = cachedMacInstances.poll();
-            if (cachedInstance == null) {
-                cachedInstance = (Mac) this.macInstance.clone();
-            }
-
-            return cachedInstance;
-        } catch (CloneNotSupportedException e) {
-            throw new IllegalStateException(e);
-        }
+        return macPool.take();
     }
 
     private String generateMessagePayload(RequestVerb verb, String resourceId, String resourceType,
