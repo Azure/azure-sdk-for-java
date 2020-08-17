@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation;
 
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.azure.cosmos.implementation.guava25.base.CaseFormat;
@@ -52,21 +53,21 @@ public final class ConsistencyPolicy extends JsonSerializable {
      */
     public ConsistencyLevel getDefaultConsistencyLevel() {
 
-        if (this.cachedConsistencyLevel == null) {
+        if (this.consistencyLevel == null) {
             ConsistencyLevel result = ConsistencyPolicy.DEFAULT_DEFAULT_CONSISTENCY_LEVEL;
             String consistencyLevelString = super.getString(Constants.Properties.DEFAULT_CONSISTENCY_LEVEL);
             try {
                 result = ConsistencyLevel
-                    .valueOf(CaseFormat.UPPER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, consistencyLevelString));
+                    .valueOf(BridgeInternal.fromServiceSerializedFormat(consistencyLevelString));
             } catch (IllegalArgumentException e) {
                 // ignore the exception and return the default
                 this.getLogger().warn("Unknown consistency level {}, value ignored.", consistencyLevelString);
             }
 
-            this.cachedConsistencyLevel = result;
+            this.consistencyLevel = result;
         }
 
-        return cachedConsistencyLevel;
+        return consistencyLevel;
     }
 
     /**
@@ -76,7 +77,7 @@ public final class ConsistencyPolicy extends JsonSerializable {
      * @return the ConsistencyPolicy.
      */
     public ConsistencyPolicy setDefaultConsistencyLevel(ConsistencyLevel level) {
-        this.cachedConsistencyLevel = level;
+        this.consistencyLevel = level;
         super.set(Constants.Properties.DEFAULT_CONSISTENCY_LEVEL, level.toString());
         return this;
     }
@@ -140,5 +141,5 @@ public final class ConsistencyPolicy extends JsonSerializable {
      * Assumption: all consistency mutations are through setDefaultConsistencyLevel only.
      * NOTE: If the underlying ObjectNode is mutated cache might be stale
      */
-    private ConsistencyLevel cachedConsistencyLevel = null;
+    private ConsistencyLevel consistencyLevel = null;
 }
