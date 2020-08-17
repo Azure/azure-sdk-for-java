@@ -57,8 +57,7 @@ public final class ConsistencyPolicy extends JsonSerializable {
             ConsistencyLevel result = ConsistencyPolicy.DEFAULT_DEFAULT_CONSISTENCY_LEVEL;
             String consistencyLevelString = super.getString(Constants.Properties.DEFAULT_CONSISTENCY_LEVEL);
             try {
-                result = ConsistencyLevel
-                    .valueOf(BridgeInternal.fromServiceSerializedFormat(consistencyLevelString));
+                result = BridgeInternal.fromServiceSerializedFormat(consistencyLevelString);
             } catch (IllegalArgumentException e) {
                 // ignore the exception and return the default
                 this.getLogger().warn("Unknown consistency level {}, value ignored.", consistencyLevelString);
