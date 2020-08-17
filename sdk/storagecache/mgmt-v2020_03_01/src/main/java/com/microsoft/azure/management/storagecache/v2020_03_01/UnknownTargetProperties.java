@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Storage container for use as an Unknown Storage Target.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "targetBaseType", defaultImpl = UnknownTargetProperties.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "targetType", defaultImpl = UnknownTargetProperties.class)
 @JsonTypeName("unknown")
 public class UnknownTargetProperties extends StorageTargetProperties {
 }
