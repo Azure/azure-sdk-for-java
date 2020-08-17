@@ -14,7 +14,7 @@
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Managed Service Identity (MSI) Management</name>
-  <description>This package contains Microsoft Azure Managed Service Identity (MSI) SDK.</description>
+  <description>This package contains Microsoft Azure Managed Service Identity (MSI) SDK. For documentation on how to use this package, please see https://aka.ms/azure-sdk-java-mgmt</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>

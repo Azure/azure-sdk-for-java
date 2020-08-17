@@ -180,6 +180,21 @@ public interface KubernetesClusterAgentPool
         }
 
         /**
+         * The stage of a container service agent pool definition allowing to specify the agent pool mode.
+         *
+         * @param <ParentT> the stage of the container service definition to return to after attaching this definition
+         */
+        interface withAgentPoolMode<ParentT> {
+            /**
+             * Specifies the agent pool mode for the agents.
+             *
+             * @param agentPoolMode the agent pool mode
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withAgentPoolMode(AgentPoolMode agentPoolMode);
+        }
+
+        /**
          * The final stage of a container service agent pool definition. At this stage, any remaining optional settings
          * can be specified, or the container service agent pool can be attached to the parent container service
          * definition.
@@ -193,6 +208,7 @@ public interface KubernetesClusterAgentPool
                 WithAgentPoolVirtualMachineCount<ParentT>,
                 WithMaxPodsCount<ParentT>,
                 WithVirtualNetwork<ParentT>,
+                withAgentPoolMode<ParentT>,
                 Attachable.InDefinition<ParentT> {
         }
     }

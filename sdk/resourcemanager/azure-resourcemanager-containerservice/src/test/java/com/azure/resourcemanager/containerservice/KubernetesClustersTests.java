@@ -5,6 +5,7 @@ package com.azure.resourcemanager.containerservice;
 
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.AgentPoolType;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceVMSizeTypes;
 import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
@@ -60,9 +61,10 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
                 .withServicePrincipalClientId(servicePrincipalClientId)
                 .withServicePrincipalSecret(servicePrincipalSecret)
                 .defineAgentPool(agentPoolName)
-                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D1)
+                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
                 .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
                 .withAgentPoolVirtualMachineCount(1)
+                .withAgentPoolMode(AgentPoolMode.SYSTEM)
                 .attach()
                 .withDnsPrefix("mp1" + dnsPrefix)
                 .withTag("tag1", "value1")
@@ -76,7 +78,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         Assertions.assertEquals(1, kubernetesCluster.agentPools().get(agentPoolName).count());
         Assertions
             .assertEquals(
-                ContainerServiceVMSizeTypes.STANDARD_D1, kubernetesCluster.agentPools().get(agentPoolName).vmSize());
+                ContainerServiceVMSizeTypes.STANDARD_D2_V2, kubernetesCluster.agentPools().get(agentPoolName).vmSize());
         Assertions
             .assertEquals(
                 AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS, kubernetesCluster.agentPools().get(agentPoolName).type());

@@ -14,7 +14,7 @@
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Container Service Management</name>
-  <description>This package contains Microsoft Azure Container Service SDK.</description>
+  <description>This package contains Microsoft Azure Container Service SDK. For documentation on how to use this package, please see https://aka.ms/azure-sdk-java-mgmt</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
