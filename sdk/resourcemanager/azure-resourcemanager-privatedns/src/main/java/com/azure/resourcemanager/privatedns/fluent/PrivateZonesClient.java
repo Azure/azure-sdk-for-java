@@ -327,8 +327,8 @@ public final class PrivateZonesClient
             createOrUpdateWithResponseAsync(resourceGroupName, privateZoneName, parameters, ifMatch, ifNoneMatch);
         return this
             .client
-            .<PrivateZoneInner, PrivateZoneInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), PrivateZoneInner.class, PrivateZoneInner.class);
+            .<PrivateZoneInner, PrivateZoneInner>getLroResult(
+                mono, this.client.getHttpPipeline(), PrivateZoneInner.class, PrivateZoneInner.class, Context.NONE);
     }
 
     /**
@@ -355,13 +355,14 @@ public final class PrivateZonesClient
         String ifMatch,
         String ifNoneMatch,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(
                 resourceGroupName, privateZoneName, parameters, ifMatch, ifNoneMatch, context);
         return this
             .client
-            .<PrivateZoneInner, PrivateZoneInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), PrivateZoneInner.class, PrivateZoneInner.class);
+            .<PrivateZoneInner, PrivateZoneInner>getLroResult(
+                mono, this.client.getHttpPipeline(), PrivateZoneInner.class, PrivateZoneInner.class, context);
     }
 
     /**
@@ -705,8 +706,8 @@ public final class PrivateZonesClient
             updateWithResponseAsync(resourceGroupName, privateZoneName, parameters, ifMatch);
         return this
             .client
-            .<PrivateZoneInner, PrivateZoneInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), PrivateZoneInner.class, PrivateZoneInner.class);
+            .<PrivateZoneInner, PrivateZoneInner>getLroResult(
+                mono, this.client.getHttpPipeline(), PrivateZoneInner.class, PrivateZoneInner.class, Context.NONE);
     }
 
     /**
@@ -730,12 +731,13 @@ public final class PrivateZonesClient
         PrivateZoneInner parameters,
         String ifMatch,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateWithResponseAsync(resourceGroupName, privateZoneName, parameters, ifMatch, context);
         return this
             .client
-            .<PrivateZoneInner, PrivateZoneInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), PrivateZoneInner.class, PrivateZoneInner.class);
+            .<PrivateZoneInner, PrivateZoneInner>getLroResult(
+                mono, this.client.getHttpPipeline(), PrivateZoneInner.class, PrivateZoneInner.class, context);
     }
 
     /**
@@ -1027,7 +1029,9 @@ public final class PrivateZonesClient
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String privateZoneName, String ifMatch) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, privateZoneName, ifMatch);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1047,9 +1051,12 @@ public final class PrivateZonesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String privateZoneName, String ifMatch, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, privateZoneName, ifMatch, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -1490,7 +1497,8 @@ public final class PrivateZonesClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PrivateZoneInner> listAsync(Integer top, Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(top, context), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(top, context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1504,7 +1512,7 @@ public final class PrivateZonesClient
     public PagedFlux<PrivateZoneInner> listAsync() {
         final Integer top = null;
         final Context context = null;
-        return new PagedFlux<>(() -> listSinglePageAsync(top), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(top), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1685,7 +1693,7 @@ public final class PrivateZonesClient
         String resourceGroupName, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, top, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1703,7 +1711,7 @@ public final class PrivateZonesClient
         final Context context = null;
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, top),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**

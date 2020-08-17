@@ -332,8 +332,12 @@ public final class VirtualNetworkLinksClient {
                 resourceGroupName, privateZoneName, virtualNetworkLinkName, parameters, ifMatch, ifNoneMatch);
         return this
             .client
-            .<VirtualNetworkLinkInner, VirtualNetworkLinkInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), VirtualNetworkLinkInner.class, VirtualNetworkLinkInner.class);
+            .<VirtualNetworkLinkInner, VirtualNetworkLinkInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                VirtualNetworkLinkInner.class,
+                VirtualNetworkLinkInner.class,
+                Context.NONE);
     }
 
     /**
@@ -363,13 +367,18 @@ public final class VirtualNetworkLinksClient {
         String ifMatch,
         String ifNoneMatch,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(
                 resourceGroupName, privateZoneName, virtualNetworkLinkName, parameters, ifMatch, ifNoneMatch, context);
         return this
             .client
-            .<VirtualNetworkLinkInner, VirtualNetworkLinkInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), VirtualNetworkLinkInner.class, VirtualNetworkLinkInner.class);
+            .<VirtualNetworkLinkInner, VirtualNetworkLinkInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                VirtualNetworkLinkInner.class,
+                VirtualNetworkLinkInner.class,
+                context);
     }
 
     /**
@@ -776,8 +785,12 @@ public final class VirtualNetworkLinksClient {
             updateWithResponseAsync(resourceGroupName, privateZoneName, virtualNetworkLinkName, parameters, ifMatch);
         return this
             .client
-            .<VirtualNetworkLinkInner, VirtualNetworkLinkInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), VirtualNetworkLinkInner.class, VirtualNetworkLinkInner.class);
+            .<VirtualNetworkLinkInner, VirtualNetworkLinkInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                VirtualNetworkLinkInner.class,
+                VirtualNetworkLinkInner.class,
+                Context.NONE);
     }
 
     /**
@@ -804,13 +817,18 @@ public final class VirtualNetworkLinksClient {
         VirtualNetworkLinkInner parameters,
         String ifMatch,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateWithResponseAsync(
                 resourceGroupName, privateZoneName, virtualNetworkLinkName, parameters, ifMatch, context);
         return this
             .client
-            .<VirtualNetworkLinkInner, VirtualNetworkLinkInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), VirtualNetworkLinkInner.class, VirtualNetworkLinkInner.class);
+            .<VirtualNetworkLinkInner, VirtualNetworkLinkInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                VirtualNetworkLinkInner.class,
+                VirtualNetworkLinkInner.class,
+                context);
     }
 
     /**
@@ -1166,7 +1184,9 @@ public final class VirtualNetworkLinksClient {
         String resourceGroupName, String privateZoneName, String virtualNetworkLinkName, String ifMatch) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, privateZoneName, virtualNetworkLinkName, ifMatch);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1192,9 +1212,12 @@ public final class VirtualNetworkLinksClient {
         String virtualNetworkLinkName,
         String ifMatch,
         Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, privateZoneName, virtualNetworkLinkName, ifMatch, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -1727,7 +1750,7 @@ public final class VirtualNetworkLinksClient {
         String resourceGroupName, String privateZoneName, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, privateZoneName, top, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1746,7 +1769,7 @@ public final class VirtualNetworkLinksClient {
         final Context context = null;
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, privateZoneName, top),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**

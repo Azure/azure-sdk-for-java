@@ -1618,7 +1618,7 @@ public final class RecordSetsClient {
             () ->
                 listByTypeSinglePageAsync(
                     resourceGroupName, privateZoneName, recordType, top, recordsetnamesuffix, context),
-            nextLink -> listByTypeNextSinglePageAsync(nextLink));
+            nextLink -> listByTypeNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1640,7 +1640,7 @@ public final class RecordSetsClient {
         final Context context = null;
         return new PagedFlux<>(
             () -> listByTypeSinglePageAsync(resourceGroupName, privateZoneName, recordType, top, recordsetnamesuffix),
-            nextLink -> listByTypeNextSinglePageAsync(nextLink));
+            nextLink -> listByTypeNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1882,7 +1882,7 @@ public final class RecordSetsClient {
         String resourceGroupName, String privateZoneName, Integer top, String recordsetnamesuffix, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, privateZoneName, top, recordsetnamesuffix, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1902,7 +1902,7 @@ public final class RecordSetsClient {
         final Context context = null;
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, privateZoneName, top, recordsetnamesuffix),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
