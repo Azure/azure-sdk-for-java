@@ -758,12 +758,13 @@ public class RxDocumentServiceRequest implements Cloneable {
             throw new IllegalArgumentException(path);
         }
 
+        // Substring excludes the endIndex
         if (endsWithResourceType) {
             // request in form [resourceType]/[resourceId]/[resourceType]
-            return path.substring(lastBeforeIndex, lastIndex -1);
+            return path.substring(lastBeforeIndex, lastIndex);
         } else {
             // request in form [resourceType]/[resourceId]
-            return path.substring(lastIndex, length - 1);
+            return path.substring(lastIndex, length);
         }
     }
 
