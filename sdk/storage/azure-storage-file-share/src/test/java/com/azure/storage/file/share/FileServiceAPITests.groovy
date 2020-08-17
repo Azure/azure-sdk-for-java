@@ -7,6 +7,8 @@ import com.azure.core.test.TestMode
 import com.azure.core.util.Context
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.file.share.models.ListSharesOptions
+import com.azure.storage.file.share.models.ProtocolSettings
+import com.azure.storage.file.share.models.SMB
 import com.azure.storage.file.share.models.ShareCorsRule
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareItem
@@ -15,6 +17,7 @@ import com.azure.storage.file.share.models.ShareProperties
 import com.azure.storage.file.share.models.ShareRetentionPolicy
 import com.azure.storage.file.share.models.ShareServiceProperties
 import com.azure.storage.file.share.models.ShareStorageException
+import com.azure.storage.file.share.models.SmbMultichannel
 import spock.lang.Unroll
 
 import java.time.OffsetDateTime
@@ -219,6 +222,30 @@ class FileServiceAPITests extends APISpec {
         def getPropertiesBeforeResponse = primaryFileServiceClient.getPropertiesWithResponse(null, null)
         def setPropertiesResponse = primaryFileServiceClient.setPropertiesWithResponse(updatedProperties, null, null)
         def getPropertiesAfterResponse = primaryFileServiceClient.getPropertiesWithResponse(null, null)
+
+        then:
+        FileTestHelper.assertResponseStatusCode(getPropertiesBeforeResponse, 200)
+        FileTestHelper.assertFileServicePropertiesAreEqual(originalProperties, getPropertiesBeforeResponse.getValue())
+        FileTestHelper.assertResponseStatusCode(setPropertiesResponse, 202)
+        FileTestHelper.assertResponseStatusCode(getPropertiesAfterResponse, 200)
+        FileTestHelper.assertFileServicePropertiesAreEqual(updatedProperties, getPropertiesAfterResponse.getValue())
+    }
+
+    def "Set and get properties premium"() {
+        given:
+        def originalProperties = premiumFileServiceClient.getProperties()
+        def retentionPolicy = new ShareRetentionPolicy().setEnabled(true).setDays(3)
+        def metrics = new ShareMetrics().setEnabled(true).setIncludeApis(false)
+            .setRetentionPolicy(retentionPolicy).setVersion("1.0")
+        def protocolSettings = new ProtocolSettings().setSMB(new SMB().setMultichannel(new SmbMultichannel().setEnabled(true)))
+        def updatedProperties = new ShareServiceProperties().setHourMetrics(metrics)
+            .setMinuteMetrics(metrics).setCors(new ArrayList<>())
+            .setProtocolSettings(protocolSettings)
+
+        when:
+        def getPropertiesBeforeResponse = premiumFileServiceClient.getPropertiesWithResponse(null, null)
+        def setPropertiesResponse = premiumFileServiceClient.setPropertiesWithResponse(updatedProperties, null, null)
+        def getPropertiesAfterResponse = premiumFileServiceClient.getPropertiesWithResponse(null, null)
 
         then:
         FileTestHelper.assertResponseStatusCode(getPropertiesBeforeResponse, 200)
