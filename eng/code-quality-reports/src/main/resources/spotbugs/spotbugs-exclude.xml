@@ -1487,7 +1487,7 @@
     <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9092 -->
   <Match>
     <Class name="com.azure.cosmos.implementation.QueryMetrics"/>
-    <Method name="~(.*)\$(mergeQueryMetricsMap|null)\$(.*)"/>
+    <Method name="mergeQueryMetricsMap"/>
     <Bug pattern="RV_RETURN_VALUE_IGNORED_INFERRED"/>
   </Match>
 

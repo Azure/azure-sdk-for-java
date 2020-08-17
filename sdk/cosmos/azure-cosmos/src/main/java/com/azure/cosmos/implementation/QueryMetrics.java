@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 
 /**
@@ -195,12 +196,11 @@ public final class QueryMetrics {
      * @param addOn metrics map whose values will be merge in base map.
      */
     public static void mergeQueryMetricsMap(ConcurrentMap<String, QueryMetrics> base, ConcurrentMap<String, QueryMetrics> addOn) {
-        for (String key : addOn.keySet()) {
-            if (base.containsKey(key)) {
-                QueryMetrics qm = addOn.get(key);
-                base.get(key).add(qm);
+        for (ConcurrentMap.Entry<String, QueryMetrics> entry : addOn.entrySet()) {
+            if (base.containsKey(entry.getKey())) {
+                base.get(entry.getKey()).add(entry.getValue());
             } else {
-                base.put(key, addOn.get(key));
+                base.put(entry.getKey(), entry.getValue());
             }
         }
     }
