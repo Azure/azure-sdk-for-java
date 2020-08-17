@@ -17,6 +17,7 @@ import reactor.core.publisher.Flux;
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.security.InvalidParameterException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -713,40 +714,51 @@ public class RxDocumentServiceRequest implements Cloneable {
         );
     }
 
+    // The path will be in the form of
+    // [/]{resourceType/resourceId}+[/] or
+    // [/]{resourceTyp]/resourceI]}+/resourceType[/]
+    //
+    // Expected output in both cases are [resourceId]
     private static String extractIdFromUri(String path) {
         if (path.length() == 0) {
             return path;
         }
 
-        if (path.charAt(path.length() - 1) != '/') {
-            path = path + '/';
+        int lastIndex = 0;
+        int length = path.length();
+
+        if (path.charAt(0) == '/') {
+            lastIndex = 1;
         }
 
-        if (path.charAt(0) != '/') {
-            path = '/' + path;
+        // Exclude last separator '/'
+        if (path.charAt(length -1) == '/') {
+            length = length -1;
         }
-        // This is a hack. We need a padding '=' so that path.split("/")
-        // returns even number of string pieces.
-        // TODO(pushi): Improve the code and remove the hack.
-        path = path + '=';
 
-        // The path will be in the form of
-        // /[resourceType]/[resourceId]/ or
-        // /[resourceType]/[resourceId]/[resourceType]/
-        // The result of split will be in the form of
-        // [[[resourceType], [resourceId] ... ,[resourceType], ""]
-        // In the first case, to extract the resourceId it will the element
-        // before last ( at length -2 ) and the type will before it
-        // ( at length -3 )
-        // In the second case, to extract the resource type it will the element
-        // before last ( at length -2 )
-        String[] pathParts = StringUtils.split(path, "/");
-        if (pathParts.length % 2 == 0) {
-            // request in form /[resourceType]/[resourceId]/.
-            return pathParts[pathParts.length - 2];
+        int lastBeforeIndex = lastIndex;
+        boolean endsWithResourceType = true;
+        for (int iterationIndex = 1; iterationIndex < length ; iterationIndex++) {
+            if (path.charAt(iterationIndex) == '/') {
+                lastBeforeIndex = lastIndex;
+                // Next position guaranteed to exist as last '/' was excluded
+                lastIndex = iterationIndex + 1;
+                endsWithResourceType = !endsWithResourceType;
+            }
+        }
+
+        // At-least one separator is expected as per addressing
+        // Either a code-bug or InvalidException
+        if (lastBeforeIndex == lastIndex) {
+            throw new InvalidParameterException(path);
+        }
+
+        if (endsWithResourceType) {
+            // request in form [resourceType]/[resourceId]/[resourceType]
+            return path.substring(lastBeforeIndex, lastIndex -1);
         } else {
-            // request in form /[resourceType]/[resourceId]/[resourceType]/.
-            return pathParts[pathParts.length - 3];
+            // request in form [resourceType]/[resourceId]
+            return path.substring(lastIndex, length - 1);
         }
     }
 
