@@ -1,7 +1,9 @@
 # Release History
 
 ## 12.7.0-beta.1 (Unreleased)
-
+- Added support for the 2020-02-10 service version. 
+- Added support to getFileRanges on a previous snapshot. 
+- Added support to set whether or not smb multichannel is enabled.
 
 ## 12.6.0 (2020-08-13)
 - GA release for 2019-12-12 service version
