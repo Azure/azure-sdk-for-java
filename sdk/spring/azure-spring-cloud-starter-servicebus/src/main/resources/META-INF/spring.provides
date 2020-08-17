@@ -1,0 +1,1 @@
+provides: spring-integration-servicebus, spring-cloud-azure-autoconfigure

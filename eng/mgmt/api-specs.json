@@ -150,6 +150,10 @@
     "source": "specification/hdinsight/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "hybridcompute/resource-manager": {
+    "source": "specification/hybridcompute/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "iotcentral/resource-manager": {
     "source": "specification/iotcentral/resource-manager/readme.md",
     "args": "--multiapi --fluent",

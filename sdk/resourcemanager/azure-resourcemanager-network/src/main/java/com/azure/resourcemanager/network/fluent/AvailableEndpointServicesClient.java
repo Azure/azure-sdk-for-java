@@ -195,7 +195,7 @@ public final class AvailableEndpointServicesClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<EndpointServiceResultInner> listAsync(String location, Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(location, context), nextLink -> listNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(location, context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**

@@ -106,7 +106,7 @@
     "dir": "azure-resourcemanager-cosmos",
     "source": "specification/cosmos-db/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.cosmos",
-    "args": "--payload-flattening-threshold=1 --tag=package-2019-08-preview"
+    "args": "--payload-flattening-threshold=0 --tag=package-2019-08-preview"
   },
   "customerinsights": {
     "dir": "azure-resourcemanager-customerinsights",
@@ -332,7 +332,7 @@
     "dir": "azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-subscriptions-2020-01"
+    "args": "--tag=package-subscriptions-2020-01 --name-for-ungrouped-operations=ResourceName"
   },
   "trafficmanager": {
     "dir": "azure-resourcemanager-trafficmanager",

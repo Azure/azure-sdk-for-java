@@ -9,6 +9,7 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import reactor.core.publisher.Flux;
 
 import java.util.HashMap;
@@ -77,8 +78,10 @@ public final class SkipDocumentQueryExecutionContext<T extends Resource> impleme
                 headers.put(HttpConstants.HttpHeaders.CONTINUATION, offsetContinuationToken.toJson());
             }
 
-            return BridgeInternal.createFeedResponseWithQueryMetrics(documentsAfterSkip, headers,
-                BridgeInternal.queryMetricsFromFeedResponse(tFeedResponse));
+            return BridgeInternal.createFeedResponseWithQueryMetrics(documentsAfterSkip,
+                headers,
+                BridgeInternal.queryMetricsFromFeedResponse(tFeedResponse),
+                ModelBridgeInternal.getQueryPlanDiagnosticsContext(tFeedResponse));
         });
     }
 

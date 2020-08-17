@@ -98,7 +98,7 @@ public class VirtualMachineScaleSetExtensionImpl
         this
             .inner()
             .withPublisher(image.publisherName())
-            .withType(image.typeName())
+            .withVirtualMachineScaleSetExtensionType(image.typeName())
             .withTypeHandlerVersion(image.versionName());
         return this;
     }
@@ -137,7 +137,7 @@ public class VirtualMachineScaleSetExtensionImpl
 
     @Override
     public VirtualMachineScaleSetExtensionImpl withType(String extensionImageTypeName) {
-        this.inner().withType(extensionImageTypeName);
+        this.inner().withVirtualMachineScaleSetExtensionType(extensionImageTypeName);
         return this;
     }
 

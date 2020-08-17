@@ -1061,7 +1061,8 @@ public final class AvailabilitySetsClient
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AvailabilitySetInner> listAsync(String expand, Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(expand, context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(expand, context),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1076,7 +1077,7 @@ public final class AvailabilitySetsClient
         final String expand = null;
         final Context context = null;
         return new PagedFlux<>(
-            () -> listSinglePageAsync(expand), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(expand), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1246,7 +1247,7 @@ public final class AvailabilitySetsClient
     public PagedFlux<AvailabilitySetInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**

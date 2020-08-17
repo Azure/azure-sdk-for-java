@@ -587,7 +587,7 @@ class BatchAPITest extends APISpec {
         }
 
         cleanup:
-        primaryBlobServiceClient.deleteBlobContainer(containerName)
+        versionedBlobServiceClient.deleteBlobContainer(containerName)
     }
 
     def "Too many operations fails"() {

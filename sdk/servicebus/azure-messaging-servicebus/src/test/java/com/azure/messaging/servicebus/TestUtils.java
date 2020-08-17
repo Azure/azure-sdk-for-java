@@ -39,7 +39,7 @@ public class TestUtils {
     static final Boolean OTHER_SYSTEM_PROPERTY_VALUE = Boolean.TRUE;
     static final Map<String, Object> APPLICATION_PROPERTIES = new HashMap<>();
     static final int USE_CASE_DEFAULT = 0;
-    static final int USE_CASE_RECEIVE_BY_NUMBER = 1;
+    static final int USE_CASE_RECEIVE_MORE_AND_COMPLETE = 1;
     static final int USE_CASE_RECEIVE_BY_TIME = 2;
     static final int USE_CASE_RECEIVE_NO_MESSAGES = 3;
     static final int USE_CASE_SEND_RECEIVE_WITH_PROPERTIES = 4;

@@ -481,8 +481,8 @@ public final class VpnGatewaysClient
             createOrUpdateWithResponseAsync(resourceGroupName, gatewayName, vpnGatewayParameters);
         return this
             .client
-            .<VpnGatewayInner, VpnGatewayInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), VpnGatewayInner.class, VpnGatewayInner.class);
+            .<VpnGatewayInner, VpnGatewayInner>getLroResult(
+                mono, this.client.getHttpPipeline(), VpnGatewayInner.class, VpnGatewayInner.class, Context.NONE);
     }
 
     /**
@@ -500,12 +500,13 @@ public final class VpnGatewaysClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<VpnGatewayInner>, VpnGatewayInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String gatewayName, VpnGatewayInner vpnGatewayParameters, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, gatewayName, vpnGatewayParameters, context);
         return this
             .client
-            .<VpnGatewayInner, VpnGatewayInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), VpnGatewayInner.class, VpnGatewayInner.class);
+            .<VpnGatewayInner, VpnGatewayInner>getLroResult(
+                mono, this.client.getHttpPipeline(), VpnGatewayInner.class, VpnGatewayInner.class, context);
     }
 
     /**
@@ -906,7 +907,9 @@ public final class VpnGatewaysClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String gatewayName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, gatewayName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -923,8 +926,11 @@ public final class VpnGatewaysClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String gatewayName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, gatewayName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -1128,8 +1134,8 @@ public final class VpnGatewaysClient
         Mono<Response<Flux<ByteBuffer>>> mono = resetWithResponseAsync(resourceGroupName, gatewayName);
         return this
             .client
-            .<VpnGatewayInner, VpnGatewayInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), VpnGatewayInner.class, VpnGatewayInner.class);
+            .<VpnGatewayInner, VpnGatewayInner>getLroResult(
+                mono, this.client.getHttpPipeline(), VpnGatewayInner.class, VpnGatewayInner.class, Context.NONE);
     }
 
     /**
@@ -1146,11 +1152,12 @@ public final class VpnGatewaysClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<VpnGatewayInner>, VpnGatewayInner> beginResetAsync(
         String resourceGroupName, String gatewayName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = resetWithResponseAsync(resourceGroupName, gatewayName, context);
         return this
             .client
-            .<VpnGatewayInner, VpnGatewayInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), VpnGatewayInner.class, VpnGatewayInner.class);
+            .<VpnGatewayInner, VpnGatewayInner>getLroResult(
+                mono, this.client.getHttpPipeline(), VpnGatewayInner.class, VpnGatewayInner.class, context);
     }
 
     /**
@@ -1375,7 +1382,7 @@ public final class VpnGatewaysClient
     public PagedFlux<VpnGatewayInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1506,7 +1513,8 @@ public final class VpnGatewaysClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VpnGatewayInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**

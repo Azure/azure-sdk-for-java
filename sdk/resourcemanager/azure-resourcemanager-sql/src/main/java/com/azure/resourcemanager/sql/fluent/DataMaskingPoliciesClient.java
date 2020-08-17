@@ -201,6 +201,7 @@ public final class DataMaskingPoliciesClient {
         }
         final String apiVersion = "2014-04-01";
         final String dataMaskingPolicyName = "Default";
+        context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -411,6 +412,7 @@ public final class DataMaskingPoliciesClient {
         }
         final String apiVersion = "2014-04-01";
         final String dataMaskingPolicyName = "Default";
+        context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),

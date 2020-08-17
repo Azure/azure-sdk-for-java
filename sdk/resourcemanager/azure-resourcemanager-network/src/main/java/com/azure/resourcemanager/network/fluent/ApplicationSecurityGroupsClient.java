@@ -286,7 +286,9 @@ public final class ApplicationSecurityGroupsClient
         String resourceGroupName, String applicationSecurityGroupName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, applicationSecurityGroupName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -303,9 +305,12 @@ public final class ApplicationSecurityGroupsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String applicationSecurityGroupName, Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, applicationSecurityGroupName, context);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -719,11 +724,12 @@ public final class ApplicationSecurityGroupsClient
             createOrUpdateWithResponseAsync(resourceGroupName, applicationSecurityGroupName, parameters);
         return this
             .client
-            .<ApplicationSecurityGroupInner, ApplicationSecurityGroupInner>getLroResultAsync(
+            .<ApplicationSecurityGroupInner, ApplicationSecurityGroupInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 ApplicationSecurityGroupInner.class,
-                ApplicationSecurityGroupInner.class);
+                ApplicationSecurityGroupInner.class,
+                Context.NONE);
     }
 
     /**
@@ -745,15 +751,17 @@ public final class ApplicationSecurityGroupsClient
             String applicationSecurityGroupName,
             ApplicationSecurityGroupInner parameters,
             Context context) {
+        context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, applicationSecurityGroupName, parameters, context);
         return this
             .client
-            .<ApplicationSecurityGroupInner, ApplicationSecurityGroupInner>getLroResultAsync(
+            .<ApplicationSecurityGroupInner, ApplicationSecurityGroupInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
                 ApplicationSecurityGroupInner.class,
-                ApplicationSecurityGroupInner.class);
+                ApplicationSecurityGroupInner.class,
+                context);
     }
 
     /**
@@ -1166,7 +1174,8 @@ public final class ApplicationSecurityGroupsClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ApplicationSecurityGroupInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listAllNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listAllNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1321,7 +1330,7 @@ public final class ApplicationSecurityGroupsClient
         String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**

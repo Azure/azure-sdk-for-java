@@ -51,7 +51,7 @@
   	<dependency>
   		<groupId>com.google.guava</groupId>
   		<artifactId>guava</artifactId>
-    <version>24.1.1-jre</version> <!-- {x-version-update;com.google.guava:guava;external_dependency} -->
+    <version>29.0-jre</version> <!-- {x-version-update;com.google.guava:guava;external_dependency} -->
   	</dependency>
   </dependencies>
 

@@ -3,7 +3,7 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.models.OperationResult;
+import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.PollerFlux;
@@ -44,7 +44,7 @@ public class RecognizeCustomFormsAsync {
             + "forms/Invoice_6.pdf");
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
         String modelId = "{modelId}";
-        PollerFlux<OperationResult, List<RecognizedForm>> recognizeFormPoller;
+        PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> recognizeFormPoller;
         try (InputStream targetStream = new ByteArrayInputStream(fileContent)) {
             recognizeFormPoller = client.beginRecognizeCustomForms(modelId, toFluxByteBuffer(targetStream),
                 sourceFile.length());
