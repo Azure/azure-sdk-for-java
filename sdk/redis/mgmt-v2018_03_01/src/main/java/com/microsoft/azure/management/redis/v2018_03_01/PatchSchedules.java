@@ -19,7 +19,7 @@ import com.microsoft.azure.arm.model.HasInner;
  */
 public interface PatchSchedules extends SupportsCreating<RedisPatchSchedule.DefinitionStages.Blank>, HasInner<PatchSchedulesInner> {
     /**
-     * Gets the patching schedule of a redis cache (requires Premium SKU).
+     * Gets the patching schedule of a redis cache.
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
@@ -39,7 +39,7 @@ public interface PatchSchedules extends SupportsCreating<RedisPatchSchedule.Defi
     Observable<RedisPatchSchedule> listByRedisResourceAsync(final String resourceGroupName, final String cacheName);
 
     /**
-     * Deletes the patching schedule of a redis cache (requires Premium SKU).
+     * Deletes the patching schedule of a redis cache.
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
