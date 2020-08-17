@@ -17,6 +17,7 @@ import com.azure.storage.file.share.models.ShareFileHttpHeaders
 import com.azure.storage.file.share.models.ShareFileRange
 import com.azure.storage.file.share.models.ShareSnapshotInfo
 import com.azure.storage.file.share.models.ShareStorageException
+import com.azure.storage.file.share.options.ShareFileListRangeOptions
 import com.azure.storage.file.share.sas.ShareFileSasPermission
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues
 import spock.lang.Ignore
@@ -720,6 +721,94 @@ class FileAPITests extends APISpec {
             assert it.getStart() == 0
             assert it.getEnd() == 511
         }
+
+        cleanup:
+        FileTestHelper.deleteFilesIfExists(testFolder.getPath())
+    }
+
+    def "List ranges snapshot"() {
+        given:
+        def fileName = testResourceName.randomName("file", 60)
+        primaryFileClient.create(1024)
+        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, testFolder, fileName)
+        primaryFileClient.uploadFromFile(uploadFile)
+
+        def snapInfo = shareClient.createSnapshot()
+
+        primaryFileClient = fileBuilderHelper(interceptorManager, shareName, filePath)
+            .snapshot(snapInfo.getSnapshot())
+            .buildFileClient()
+
+        expect:
+        primaryFileClient.listRanges(new ShareFileRange(0, 511L), null, null).each {
+            assert it.getStart() == 0
+            assert it.getEnd() == 511
+        }
+
+        cleanup:
+        FileTestHelper.deleteFilesIfExists(testFolder.getPath())
+    }
+
+    def "List ranges snapshot fail"() {
+        given:
+        def fileName = testResourceName.randomName("file", 60)
+        primaryFileClient.create(1024)
+        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, testFolder, fileName)
+        primaryFileClient.uploadFromFile(uploadFile)
+
+        primaryFileClient = fileBuilderHelper(interceptorManager, shareName, filePath)
+            .snapshot("2020-08-07T16:58:02.0000000Z")
+            .buildFileClient()
+
+        when:
+        primaryFileClient.listRanges(new ShareFileRange(0, 511L), null, null).each {
+            assert it.getStart() == 0
+            assert it.getEnd() == 511
+        }
+
+        then:
+        def e = thrown(ShareStorageException)
+
+        cleanup:
+        FileTestHelper.deleteFilesIfExists(testFolder.getPath())
+    }
+
+    def "List ranges prev snapshot"() {
+        given:
+        def fileName = testResourceName.randomName("file", 60)
+        primaryFileClient.create(1024 + dataLength)
+        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, testFolder, fileName)
+        primaryFileClient.uploadFromFile(uploadFile)
+
+        def snapInfo = shareClient.createSnapshot()
+
+        primaryFileClient.uploadWithResponse(defaultData, dataLength, 1024, null, null)
+
+        expect:
+        primaryFileClient.listRanges(new ShareFileListRangeOptions().setPreviousSnapshot(snapInfo.getSnapshot()), null, null).each {
+            assert it.getStart() == 1024 /* These are the changes since the previous snapshot. */
+            assert it.getEnd() == 1030
+        }
+
+        cleanup:
+        FileTestHelper.deleteFilesIfExists(testFolder.getPath())
+    }
+
+    def "List ranges prev snapshot fail"() {
+        given:
+        def fileName = testResourceName.randomName("file", 60)
+        primaryFileClient.create(1024)
+        def uploadFile = FileTestHelper.createRandomFileWithLength(1024, testFolder, fileName)
+        primaryFileClient.uploadFromFile(uploadFile)
+
+        when:
+        primaryFileClient.listRanges(new ShareFileListRangeOptions().setPreviousSnapshot("2020-08-07T16:58:02.0000000Z"), null, null).each {
+            assert it.getStart() == 0
+            assert it.getEnd() == 511
+        }
+
+        then:
+        def e = thrown(ShareStorageException)
 
         cleanup:
         FileTestHelper.deleteFilesIfExists(testFolder.getPath())

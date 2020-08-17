@@ -58,6 +58,7 @@ import com.azure.storage.file.share.models.ShareFileUploadInfo;
 import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
+import com.azure.storage.file.share.options.ShareFileListRangeOptions;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
@@ -1570,7 +1571,7 @@ public class ShareFileAsyncClient {
      */
     public PagedFlux<ShareFileRange> listRanges() {
         try {
-            return listRanges(null);
+            return listRanges((ShareFileRange) null);
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
@@ -1613,21 +1614,47 @@ public class ShareFileAsyncClient {
      */
     public PagedFlux<ShareFileRange> listRanges(ShareFileRange range, ShareRequestConditions requestConditions) {
         try {
-            return listRangesWithOptionalTimeout(range, requestConditions, null, Context.NONE);
+            return listRangesWithOptionalTimeout(new ShareFileListRangeOptions().setRange(range)
+                .setRequestConditions(requestConditions), null, Context.NONE);
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
     }
 
-    PagedFlux<ShareFileRange> listRangesWithOptionalTimeout(ShareFileRange range,
-        ShareRequestConditions requestConditions, Duration timeout, Context context) {
-        ShareRequestConditions finalRequestConditions = requestConditions == null
-            ? new ShareRequestConditions() : requestConditions;
-        String rangeString = range == null ? null : range.toString();
+    /**
+     * List of valid ranges for a file.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>List all ranges within the file range from 1KB to 2KB.</p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareFileAsyncClient.listRanges#ShareFileListRangeOptions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-ranges">Azure Docs</a>.</p>
+     *
+     * @param options {@link ShareFileListRangeOptions}.
+     * @return {@link ShareFileRange ranges} in the files that satisfy the requirements
+     */
+    public PagedFlux<ShareFileRange> listRanges(ShareFileListRangeOptions options) {
+        try {
+            return listRangesWithOptionalTimeout(options, null, Context.NONE);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
+    }
+
+    PagedFlux<ShareFileRange> listRangesWithOptionalTimeout(ShareFileListRangeOptions options, Duration timeout,
+        Context context) {
+        ShareFileListRangeOptions finalOptions = options == null ? new ShareFileListRangeOptions() : options;
+
+        ShareRequestConditions finalRequestConditions = finalOptions.getRequestConditions() == null
+            ? new ShareRequestConditions() : finalOptions.getRequestConditions();
+        String rangeString = finalOptions.getRange() == null ? null : finalOptions.getRange().toString();
         Function<String, Mono<PagedResponse<ShareFileRange>>> retriever =
             marker -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.files()
-                .getRangeListWithRestResponseAsync(shareName, filePath, snapshot, null, rangeString,
-                    finalRequestConditions.getLeaseId(), context), timeout)
+                .getRangeListWithRestResponseAsync(shareName, filePath, snapshot, finalOptions.getPreviousSnapshot(),
+                    null, rangeString, finalRequestConditions.getLeaseId(), context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
