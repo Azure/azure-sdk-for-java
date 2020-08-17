@@ -745,12 +745,17 @@ public class RxDocumentServiceRequest implements Cloneable {
                 lastIndex = iterationIndex + 1;
                 endsWithResourceType = !endsWithResourceType;
             }
+
+            // Unexpected sequence of path separators
+            if (lastBeforeIndex + 1 == lastIndex) {
+                throw new IllegalArgumentException(path);
+            }
         }
 
         // At-least one separator is expected as per addressing
         // Either a code-bug or InvalidException
         if (lastBeforeIndex == lastIndex) {
-            throw new InvalidParameterException(path);
+            throw new IllegalArgumentException(path);
         }
 
         if (endsWithResourceType) {
