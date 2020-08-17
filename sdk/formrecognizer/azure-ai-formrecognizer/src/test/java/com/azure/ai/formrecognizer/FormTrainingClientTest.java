@@ -177,13 +177,33 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
             syncPoller.waitForCompletion();
             CustomFormModel createdModel = syncPoller.getFinalResult();
 
-            Response<Void> deleteModelWithResponse = client.deleteModelWithResponse(createdModel.getModelId(),
+            final Response<Void> deleteModelWithResponse = client.deleteModelWithResponse(createdModel.getModelId(),
                 Context.NONE);
             assertEquals(deleteModelWithResponse.getStatusCode(), HttpResponseStatus.NO_CONTENT.code());
-
-            HttpResponseException exception = assertThrows(HttpResponseException.class, () ->
+            final HttpResponseException exception = assertThrows(HttpResponseException.class, () ->
                 client.getCustomModelWithResponse(createdModel.getModelId(), Context.NONE));
-            assertEquals(exception.getResponse().getStatusCode(), HttpResponseStatus.NOT_FOUND.code());
+            final FormRecognizerErrorInformation errorInformation = (FormRecognizerErrorInformation) exception.getValue();
+            assertEquals("1022", errorInformation.getErrorCode());
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void deleteModelValidModelIdWithResponseWithoutTrainingLabels(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormTrainingClient(httpClient, serviceVersion);
+        beginTrainingUnlabeledRunner((trainingDataSASUrl, notUseTrainingLabels) -> {
+            SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller = client.beginTraining(trainingDataSASUrl,
+                notUseTrainingLabels, new TrainingOptions().setPollInterval(durationTestMode), Context.NONE);
+            syncPoller.waitForCompletion();
+            CustomFormModel createdModel = syncPoller.getFinalResult();
+
+            final Response<Void> deleteModelWithResponse = client.deleteModelWithResponse(createdModel.getModelId(),
+                Context.NONE);
+            assertEquals(deleteModelWithResponse.getStatusCode(), HttpResponseStatus.NO_CONTENT.code());
+            final HttpResponseException exception = assertThrows(HttpResponseException.class, () ->
+                client.getCustomModelWithResponse(createdModel.getModelId(), Context.NONE));
+            final FormRecognizerErrorInformation errorInformation = (FormRecognizerErrorInformation) exception.getValue();
+            assertEquals("1022", errorInformation.getErrorCode());
         });
     }
 
