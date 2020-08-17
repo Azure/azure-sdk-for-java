@@ -78,6 +78,8 @@ import com.azure.resourcemanager.network.models.RouteTables;
 import com.azure.resourcemanager.network.models.VirtualNetworkGateways;
 import com.azure.resourcemanager.privatedns.PrivateDnsZoneManager;
 import com.azure.resourcemanager.privatedns.models.PrivateDnsZones;
+import com.azure.resourcemanager.redis.RedisManager;
+import com.azure.resourcemanager.redis.models.RedisCaches;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
@@ -115,7 +117,7 @@ public final class Azure {
     private final KeyVaultManager keyVaultManager;
     //    private final BatchManager batchManager;
     //    private final TrafficManager trafficManager;
-    //    private final RedisManager redisManager;
+    private final RedisManager redisManager;
     //    private final CdnManager cdnManager;
     private final DnsZoneManager dnsZoneManager;
     private final AppServiceManager appServiceManager;
@@ -359,7 +361,7 @@ public final class Azure {
         this.keyVaultManager = KeyVaultManager.authenticate(httpPipeline, profile, sdkContext);
         //        this.batchManager = BatchManager.authenticate(restClient, subscriptionId, sdkContext);
         //        this.trafficManager = TrafficManager.authenticate(restClient, subscriptionId, sdkContext);
-        //        this.redisManager = RedisManager.authenticate(restClient, subscriptionId, sdkContext);
+        this.redisManager = RedisManager.authenticate(httpPipeline, profile, sdkContext);
         //        this.cdnManager = CdnManager.authenticate(restClient, subscriptionId, sdkContext);
         this.dnsZoneManager = DnsZoneManager.authenticate(httpPipeline, profile, sdkContext);
         this.appServiceManager = AppServiceManager.authenticate(httpPipeline, profile, sdkContext);
@@ -434,16 +436,12 @@ public final class Azure {
         return resourceManager.providers();
     }
 
-    /**
-     * @return entry point to managing policy definitions.
-     */
+    /** @return entry point to managing policy definitions. */
     public PolicyDefinitions policyDefinitions() {
         return resourceManager.policyDefinitions();
     }
 
-    /**
-     * @return entry point to managing policy assignments.
-     */
+    /** @return entry point to managing policy assignments. */
     public PolicyAssignments policyAssignments() {
         return resourceManager.policyAssignments();
     }
@@ -611,14 +609,12 @@ public final class Azure {
     //    public TrafficManagerProfiles trafficManagerProfiles() {
     //        return trafficManager.profiles();
     //    }
-    //
-    //    /**
-    //     * @return entry point to managing Redis Caches.
-    //     */
-    //    public RedisCaches redisCaches() {
-    //        return redisManager.redisCaches();
-    //    }
-    //
+
+    /** @return entry point to managing Redis Caches. */
+    public RedisCaches redisCaches() {
+        return redisManager.redisCaches();
+    }
+
     //    /**
     //     * @return entry point to managing cdn manager profiles.
     //     */
@@ -626,9 +622,7 @@ public final class Azure {
     //        return cdnManager.profiles();
     //    }
 
-    /**
-     * @return entry point to managing DNS zones.
-     */
+    /** @return entry point to managing DNS zones. */
     public DnsZones dnsZones() {
         return dnsZoneManager.zones();
     }
@@ -687,9 +681,7 @@ public final class Azure {
         return containerServiceManager.kubernetesClusters();
     }
 
-    /**
-     * @return entry point to managing Azure Container Instances.
-     */
+    /** @return entry point to managing Azure Container Instances. */
     public ContainerGroups containerGroups() {
         return containerInstanceManager.containerGroups();
     }
