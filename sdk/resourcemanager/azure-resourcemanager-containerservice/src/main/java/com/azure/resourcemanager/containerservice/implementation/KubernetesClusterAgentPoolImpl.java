@@ -124,6 +124,9 @@ public class KubernetesClusterAgentPoolImpl
 
     @Override
     public KubernetesClusterImpl attach() {
+        if (inner().mode() == null) {
+            inner().withMode(AgentPoolMode.SYSTEM);
+        }
         this.parent().inner().agentPoolProfiles().add(this.inner());
         return this.parent();
     }
