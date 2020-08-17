@@ -76,6 +76,8 @@ import com.azure.resourcemanager.network.models.PublicIpPrefixes;
 import com.azure.resourcemanager.network.models.RouteFilters;
 import com.azure.resourcemanager.network.models.RouteTables;
 import com.azure.resourcemanager.network.models.VirtualNetworkGateways;
+import com.azure.resourcemanager.privatedns.PrivateDnsZoneManager;
+import com.azure.resourcemanager.privatedns.models.PrivateDnsZones;
 import com.azure.resourcemanager.redis.RedisManager;
 import com.azure.resourcemanager.redis.models.RedisCaches;
 import com.azure.resourcemanager.resources.ResourceManager;
@@ -103,6 +105,7 @@ import com.azure.resourcemanager.storage.models.ManagementPolicies;
 import com.azure.resourcemanager.storage.models.StorageAccounts;
 import com.azure.resourcemanager.storage.models.StorageSkus;
 import com.azure.resourcemanager.storage.models.Usages;
+
 import java.util.Objects;
 
 /** The entry point for accessing resource management APIs in Azure. */
@@ -130,6 +133,7 @@ public final class Azure {
     private final MonitorManager monitorManager;
     //    private final EventHubManager eventHubManager;
     private final AppPlatformManager appPlatformManager;
+    private final PrivateDnsZoneManager privateDnsZoneManager;
     private final String subscriptionId;
     private final Authenticated authenticated;
     private final SdkContext sdkContext;
@@ -373,6 +377,7 @@ public final class Azure {
         this.monitorManager = MonitorManager.authenticate(httpPipeline, profile, sdkContext);
         //        this.eventHubManager = EventHubManager.authenticate(restClient, subscriptionId, sdkContext);
         this.appPlatformManager = AppPlatformManager.authenticate(httpPipeline, profile, sdkContext);
+        this.privateDnsZoneManager = PrivateDnsZoneManager.authenticate(httpPipeline, profile, sdkContext);
         this.subscriptionId = profile.subscriptionId();
         this.authenticated = authenticated;
     }
@@ -806,5 +811,10 @@ public final class Azure {
     /** @return the spring service management API entry point */
     public SpringServices springServices() {
         return this.appPlatformManager.springServices();
+    }
+
+    /** @return the private DNS zone management API entry point */
+    public PrivateDnsZones privateDnsZones() {
+        return this.privateDnsZoneManager.privateZones();
     }
 }
