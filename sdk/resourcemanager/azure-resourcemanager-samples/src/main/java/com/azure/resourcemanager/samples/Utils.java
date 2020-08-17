@@ -24,10 +24,12 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.appplatform.models.ConfigServerProperties;
 import com.azure.resourcemanager.appplatform.models.ConfigServerState;
+import com.azure.resourcemanager.appplatform.models.MonitoringSettingProperties;
+import com.azure.resourcemanager.appplatform.models.MonitoringSettingState;
 import com.azure.resourcemanager.appplatform.models.SpringApp;
 import com.azure.resourcemanager.appplatform.models.SpringService;
-import com.azure.resourcemanager.appplatform.models.TraceProxyState;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrder;
 import com.azure.resourcemanager.appservice.models.AppServiceDomain;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
@@ -3143,10 +3145,11 @@ public final class Utils {
             .append("\n\tRegion: ").append(springService.region())
             .append("\n\tTags: ").append(springService.tags());
 
-        if (springService.serverProperties() != null && springService.serverProperties().state() == ConfigServerState.SUCCEEDED && springService.serverProperties().configServer() != null) {
+        ConfigServerProperties serverProperties = springService.getServerProperties();
+        if (serverProperties != null && serverProperties.provisioningState().equals(ConfigServerState.SUCCEEDED) && serverProperties.configServer() != null) {
             info.append("\n\tProperties: ");
-            if (springService.serverProperties().configServer().gitProperty() != null) {
-                info.append("\n\t\tGit: ").append(springService.serverProperties().configServer().gitProperty().uri());
+            if (serverProperties.configServer().gitProperty() != null) {
+                info.append("\n\t\tGit: ").append(serverProperties.configServer().gitProperty().uri());
             }
         }
 
@@ -3157,10 +3160,11 @@ public final class Utils {
                 .append("\n\t\tCapacity: ").append(springService.sku().capacity());
         }
 
-        if (springService.traceProperties() != null && springService.traceProperties().state() == TraceProxyState.SUCCEEDED) {
+        MonitoringSettingProperties monitoringSettingProperties = springService.getMonitoringSetting();
+        if (monitoringSettingProperties != null && monitoringSettingProperties.provisioningState().equals(MonitoringSettingState.SUCCEEDED)) {
             info.append("\n\tTrace: ")
-                .append("\n\t\tEnabled: ").append(springService.traceProperties().enabled())
-                .append("\n\t\tApp Insight Instrumentation Key: ").append(springService.traceProperties().appInsightInstrumentationKey());
+                .append("\n\t\tEnabled: ").append(monitoringSettingProperties.traceEnabled())
+                .append("\n\t\tApp Insight Instrumentation Key: ").append(monitoringSettingProperties.appInsightsInstrumentationKey());
         }
 
         System.out.println(info.toString());

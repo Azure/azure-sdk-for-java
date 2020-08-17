@@ -104,7 +104,7 @@ public class SpringAppDomainsImpl
 
     @Override
     public Mono<CustomDomainValidateResult> validateAsync(String domain) {
-        return inner().validateAsync(
+        return manager().inner().getApps().validateDomainAsync(
             parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), domain);
     }
 

@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.appplatform;
 
+import com.azure.resourcemanager.appplatform.models.ConfigServerProperties;
 import com.azure.resourcemanager.appplatform.models.RuntimeVersion;
 import com.azure.resourcemanager.appplatform.models.SpringApp;
 import com.azure.resourcemanager.appplatform.models.SpringAppDeployment;
@@ -67,20 +68,25 @@ public class SpringCloudTest extends AppPlatformTest {
             .withRegion(Region.US_EAST)
             .withNewResourceGroup(rgName)
             .withSku("B0")
+            .withGitUri(PIGGYMETRICS_CONFIG_URL)
             .create();
 
         Assertions.assertEquals("B0", service.sku().name());
+        Assertions.assertEquals(PIGGYMETRICS_CONFIG_URL, service.getServerProperties().configServer().gitProperty().uri());
 
         service.update()
-            .withSku("S0")
+            .withSku("S0", 2)
+            .withoutGitConfig()
             .apply();
 
         Assertions.assertEquals("S0", service.sku().name());
 
-        service.update()
-            .withGitUri(PIGGYMETRICS_CONFIG_URL)
-            .apply();
-        Assertions.assertEquals(PIGGYMETRICS_CONFIG_URL, service.serverProperties().configServer().gitProperty().uri());
+        ConfigServerProperties serverProperties = service.getServerProperties();
+        Assertions.assertTrue(serverProperties == null
+            || serverProperties.configServer() == null
+            || serverProperties.configServer().gitProperty() == null
+            || serverProperties.configServer().gitProperty().uri() == null
+            || serverProperties.configServer().gitProperty().uri().isEmpty());
 
         File jarFile = new File("gateway.jar");
         if (!jarFile.exists()) {
@@ -118,7 +124,6 @@ public class SpringCloudTest extends AppPlatformTest {
             .withCpu(2)
             .withMemory(4)
             .withRuntime(RuntimeVersion.JAVA_11)
-            .withInstance(2)
             .apply();
 
         Assertions.assertEquals(2, deployment.settings().cpu());

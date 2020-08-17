@@ -312,13 +312,6 @@ public class SpringAppDeploymentImpl
     }
 
     @Override
-    public SpringAppDeploymentImpl withInstance(int count) {
-        ensureDeploySettings();
-        inner().properties().deploymentSettings().withInstanceCount(count);
-        return this;
-    }
-
-    @Override
     public SpringAppDeploymentImpl withCpu(int cpuCount) {
         ensureDeploySettings();
         inner().properties().deploymentSettings().withCpu(cpuCount);
@@ -391,7 +384,7 @@ public class SpringAppDeploymentImpl
         }
         return manager().inner().getDeployments().createOrUpdateAsync(
             parent().parent().resourceGroupName(), parent().parent().name(),
-            parent().name(), name(), inner().properties()
+            parent().name(), name(), inner()
         )
             .map(inner -> {
                 originalDeploymentSettings = null;
@@ -408,7 +401,7 @@ public class SpringAppDeploymentImpl
         }
         return manager().inner().getDeployments().updateAsync(
             parent().parent().resourceGroupName(), parent().parent().name(),
-            parent().name(), name(), inner().properties()
+            parent().name(), name(), inner()
         )
             .map(inner -> {
                 originalDeploymentSettings = null;

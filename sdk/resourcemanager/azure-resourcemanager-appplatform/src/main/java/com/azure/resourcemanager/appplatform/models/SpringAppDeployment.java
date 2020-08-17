@@ -168,13 +168,6 @@ public interface SpringAppDeployment
         /** The stage of a deployment definition allowing to specify deployment settings. */
         interface WithSettings {
             /**
-             * Specifies the instance number of the deployment.
-             * @param count the number of the instance
-             * @return the next stage of deployment definition
-             */
-            WithSettingsAndCreate withInstance(int count);
-
-            /**
              * Specifies the cpu number of the deployment.
              * @param cpuCount the number of the cpu
              * @return the next stage of deployment definition
@@ -266,13 +259,6 @@ public interface SpringAppDeployment
     interface UpdateStages {
         /** The stage of a deployment update allowing to specify deployment settings. */
         interface WithSettings {
-            /**
-             * Specifies the instance number of the deployment.
-             * @param count the number of the instance
-             * @return the next stage of deployment update
-             */
-            Update withInstance(int count);
-
             /**
              * Specifies the cpu number of the deployment.
              * @param cpuCount the number of the cpu

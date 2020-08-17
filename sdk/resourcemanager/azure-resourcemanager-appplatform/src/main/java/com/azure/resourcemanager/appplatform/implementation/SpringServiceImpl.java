@@ -4,19 +4,20 @@
 package com.azure.resourcemanager.appplatform.implementation;
 
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
+import com.azure.resourcemanager.appplatform.fluent.inner.ConfigServerResourceInner;
+import com.azure.resourcemanager.appplatform.fluent.inner.MonitoringSettingResourceInner;
 import com.azure.resourcemanager.appplatform.fluent.inner.ServiceResourceInner;
 import com.azure.resourcemanager.appplatform.models.CertificateProperties;
-import com.azure.resourcemanager.appplatform.models.ClusterResourceProperties;
 import com.azure.resourcemanager.appplatform.models.ConfigServerGitProperty;
 import com.azure.resourcemanager.appplatform.models.ConfigServerProperties;
 import com.azure.resourcemanager.appplatform.models.ConfigServerSettings;
+import com.azure.resourcemanager.appplatform.models.MonitoringSettingProperties;
 import com.azure.resourcemanager.appplatform.models.Sku;
 import com.azure.resourcemanager.appplatform.models.SpringApps;
 import com.azure.resourcemanager.appplatform.models.SpringService;
 import com.azure.resourcemanager.appplatform.models.SpringServiceCertificates;
 import com.azure.resourcemanager.appplatform.models.TestKeyType;
 import com.azure.resourcemanager.appplatform.models.TestKeys;
-import com.azure.resourcemanager.appplatform.models.TraceProperties;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import reactor.core.publisher.Mono;
@@ -36,16 +37,6 @@ public class SpringServiceImpl
     }
 
     @Override
-    public TraceProperties traceProperties() {
-        return inner().properties().trace();
-    }
-
-    @Override
-    public ConfigServerProperties serverProperties() {
-        return inner().properties().configServerProperties();
-    }
-
-    @Override
     public SpringApps apps() {
         return apps;
     }
@@ -53,6 +44,28 @@ public class SpringServiceImpl
     @Override
     public SpringServiceCertificates certificates() {
         return certificates;
+    }
+
+    @Override
+    public MonitoringSettingProperties getMonitoringSetting() {
+        return getMonitoringSettingAsync().block();
+    }
+
+    @Override
+    public Mono<MonitoringSettingProperties> getMonitoringSettingAsync() {
+        return manager().inner().getMonitoringSettings().getAsync(resourceGroupName(), name())
+            .map(MonitoringSettingResourceInner::properties);
+    }
+
+    @Override
+    public ConfigServerProperties getServerProperties() {
+        return getServerPropertiesAsync().block();
+    }
+
+    @Override
+    public Mono<ConfigServerProperties> getServerPropertiesAsync() {
+        return manager().inner().getConfigServers().getAsync(resourceGroupName(), name())
+            .map(ConfigServerResourceInner::properties);
     }
 
     @Override
@@ -113,64 +126,73 @@ public class SpringServiceImpl
 
     @Override
     public SpringServiceImpl withTracing(String appInsightInstrumentationKey) {
-        if (inner().properties() == null) {
-            inner().withProperties(new ClusterResourceProperties());
-        }
-        inner().properties().withTrace(
-            new TraceProperties().withAppInsightInstrumentationKey(appInsightInstrumentationKey).withEnabled(true));
+        this.addPostRunDependent(
+            context -> manager().inner().getMonitoringSettings()
+                .updatePatchAsync(resourceGroupName(), name(), new MonitoringSettingProperties()
+                    .withAppInsightsInstrumentationKey(appInsightInstrumentationKey)
+                    .withTraceEnabled(true))
+                .then(context.voidMono())
+        );
         return this;
     }
 
     @Override
     public SpringServiceImpl withoutTracing() {
-        if (inner().properties() == null) {
-            inner().withProperties(new ClusterResourceProperties());
-        }
-        inner().properties().withTrace(new TraceProperties().withEnabled(false));
+        this.addPostRunDependent(
+            context -> manager().inner().getMonitoringSettings()
+                .updatePatchAsync(resourceGroupName(), name(), new MonitoringSettingProperties().withTraceEnabled(false))
+                .then(context.voidMono())
+        );
         return this;
-    }
-
-    private void ensureGitConfig() {
-        if (inner().properties() == null) {
-            inner().withProperties(new ClusterResourceProperties());
-        }
-        if (inner().properties().configServerProperties() == null) {
-            inner().properties().withConfigServerProperties(new ConfigServerProperties());
-        }
-        if (inner().properties().configServerProperties().configServer() == null) {
-            inner().properties().configServerProperties().withConfigServer(new ConfigServerSettings());
-        }
-        if (inner().properties().configServerProperties().configServer().gitProperty() == null) {
-            inner().properties().configServerProperties().configServer().withGitProperty(new ConfigServerGitProperty());
-        }
     }
 
     @Override
     public SpringServiceImpl withGitUri(String uri) {
-        ensureGitConfig();
-        inner().properties().configServerProperties().configServer().gitProperty().withUri(uri);
+        this.addPostRunDependent(
+            context -> manager().inner().getConfigServers()
+                .updatePatchAsync(resourceGroupName(), name(), new ConfigServerProperties()
+                    .withConfigServer(new ConfigServerSettings().withGitProperty(
+                        new ConfigServerGitProperty().withUri(uri)
+                    )))
+                .then(context.voidMono())
+        );
         return this;
     }
 
     @Override
     public SpringServiceImpl withGitUriAndCredential(String uri, String username, String password) {
-        ensureGitConfig();
-        inner().properties().configServerProperties().configServer().gitProperty()
-            .withUri(uri).withUsername(username).withPassword(password);
+        this.addPostRunDependent(
+            context -> manager().inner().getConfigServers()
+                .updatePatchAsync(resourceGroupName(), name(), new ConfigServerProperties()
+                    .withConfigServer(new ConfigServerSettings().withGitProperty(
+                        new ConfigServerGitProperty()
+                            .withUri(uri)
+                            .withUsername(username)
+                            .withPassword(password)
+                    )))
+                .then(context.voidMono())
+        );
         return this;
     }
 
     @Override
     public SpringServiceImpl withGitConfig(ConfigServerGitProperty gitConfig) {
-        ensureGitConfig();
-        inner().properties().configServerProperties().configServer().withGitProperty(gitConfig);
+        this.addPostRunDependent(
+            context -> manager().inner().getConfigServers()
+                .updatePatchAsync(resourceGroupName(), name(), new ConfigServerProperties()
+                    .withConfigServer(new ConfigServerSettings().withGitProperty(gitConfig)))
+                .then(context.voidMono())
+        );
         return this;
     }
 
     @Override
     public SpringServiceImpl withoutGitConfig() {
-        ensureGitConfig();
-        inner().properties().configServerProperties().configServer().withGitProperty(null);
+        this.addPostRunDependent(
+            context -> manager().inner().getConfigServers()
+                .updatePatchAsync(resourceGroupName(), name(), new ConfigServerProperties())
+                .then(context.voidMono())
+        );
         return this;
     }
 
