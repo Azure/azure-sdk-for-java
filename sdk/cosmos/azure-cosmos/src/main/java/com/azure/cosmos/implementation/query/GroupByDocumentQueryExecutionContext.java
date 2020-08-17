@@ -105,7 +105,7 @@ public final class GroupByDocumentQueryExecutionContext<T extends Resource> impl
                     groupByResults = this.groupingTable.drain(maxPageSize);
                 }
 
-                if (groupByResults.size() == 0) {
+                if (groupByResults == null || groupByResults.size() == 0) {
                     return Mono.empty();
                 }
 
