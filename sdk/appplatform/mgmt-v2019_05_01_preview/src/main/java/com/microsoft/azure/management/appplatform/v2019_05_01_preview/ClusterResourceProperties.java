@@ -35,6 +35,12 @@ public class ClusterResourceProperties {
     private TraceProperties trace;
 
     /**
+     * Network profile of the Service.
+     */
+    @JsonProperty(value = "networkProfile")
+    private NetworkProfile networkProfile;
+
+    /**
      * Version of the Service.
      */
     @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
@@ -92,6 +98,26 @@ public class ClusterResourceProperties {
      */
     public ClusterResourceProperties withTrace(TraceProperties trace) {
         this.trace = trace;
+        return this;
+    }
+
+    /**
+     * Get network profile of the Service.
+     *
+     * @return the networkProfile value
+     */
+    public NetworkProfile networkProfile() {
+        return this.networkProfile;
+    }
+
+    /**
+     * Set network profile of the Service.
+     *
+     * @param networkProfile the networkProfile value to set
+     * @return the ClusterResourceProperties object itself.
+     */
+    public ClusterResourceProperties withNetworkProfile(NetworkProfile networkProfile) {
+        this.networkProfile = networkProfile;
         return this;
     }
 
