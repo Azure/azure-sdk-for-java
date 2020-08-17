@@ -177,62 +177,62 @@ TODO:
 ## Relationships
 <details><summary><b>Terminology</b></summary>
 
-Relationship: A named set of outgoing edges part of a Digital Twin persisted state.
+Relationships: A named set of outgoing edges/relationships part of a Digital Twin persisted state.
 
-Edge: (aka a "Relationship Edge") an individual edge in the Digital Twin relationship graph, ie. a tuple containing:
+Each Relationship: (aka a "Relationship Edge") an individual edge in the Digital Twin relationship graph, ie. a tuple containing:
     
-	EdgeId (Unique identifier of this edge within the context of the source Digital Twin)
+	RelationshipId (Unique identifier of this edge within the context of the source Digital Twin)
 	SourceId (Id of the source Digital Twin) 
 	TargetId (Id of the target Digital Twin)
-	relationship name (User defined string such as "contains", "hasDoorTo", "isNextTo")
+	RelationshipName (User defined string such as "contains", "hasDoorTo", "isNextTo")
 	0 to many user defined properties (ie: "OccupancyLimit", "temperature")
 
-Each Edge is identified by its EdgeId. An EdgeId must be unique within the scope of the source Digital Twin.
+Each relationship in a digital twin is identified by its RelationshipId. An RelationshipId must be unique within the scope of the source Digital Twin. The combination of SourceId and RelationshipId must be unique within the scope of the service.
 </details>
 
 <details><summary><b>Examples</b></summary>
-An edge that signifies that room1 has a door to room2, and that it is open, would look like
+A relationship that signifies that room1 has a door to room2, and that it is open, would look like
 	
-```csharp
+```json
 {
-    "$edgeId": "Door1",
+    "$relationshipId": "Door1",
     "$sourceId": "Room1",
     "$targetId": "Room2",
-    "$relationship": "hasDoorTo",
+    "$relationshipName": "hasDoorTo",
     "doorStatus": "open"
 }
 ```
 	
-An edge that signifies that Room 1 contains a thermostat would look like
+A relationship that signifies that Room 1 contains a thermostat would look like
 
-```csharp
+```json
 {
-	"$edgeId" : "ThermostatEdge1",
+	"$relationshipId" : "ThermostatEdge1",
 	"$sourceId" : "Room1",
 	"$targetId" : "Thermostat1",
-	"$relationship" : "contains",
+	"$relationshipName" : "contains",
 	"installDate" : "2019-4-1",
 	"replaceBatteryDate" : "2020-4-1"
 }
 ```
 
-When getting a list of edges (operations like "get all edges for a Digital Twin" or "get all edges for a Digital Twin with a given relationshipName"), the SDK will return a string in the below format:
+When getting a list of relationships (operations like "get all relationships for a Digital Twin" or "get all relationships for a Digital Twin with a given relationshipName"), the client library will return a string in the below format:
 
-```csharp
+```json
 {
   "value": [
     {
-      "$edgeId": "Door1",
+      "$relationshipId": "Door1",
       "$sourceId": "Room1",
       "$targetId": "Room2",
-      "$relationship": "hasDoorTo",
+      "$relationshipName": "hasDoorTo",
       "doorStatus": "open"
     },
     {
-      "$edgeId": "Door2",
+      "$relationshipId": "Door2",
       "$sourceId": "Room1",
       "$targetId": "Room3",
-      "$relationship": "hasDoorTo",
+      "$relationshipName": "hasDoorTo",
       "doorStatus": "closed"
     }
   ],
@@ -240,35 +240,32 @@ When getting a list of edges (operations like "get all edges for a Digital Twin"
 }
 ```
 
-When creating a relationship edge, the edge string does not follow the above format. The rest endpoint to create a relationship edge contains the sourceId, relationshipName, and the edgeId, so the payload only needs to specify the targetId and any application properties, as seen below:
-```csharp
+When creating a relationship, the edge string does not follow the above format. The rest endpoint to create a relationship edge contains the sourceId, relationshipName, and the relationShipId, so the payload only needs to specify the targetId and any application properties, as seen below:
+```json
 {
-    "edge": 
-    {
         "$targetId": "myTargetTwin",
         "myApplicationProperty1": 1,
         "myApplicationProperty2": "some value"
-    }
 }
 ```
 
 When updating a relationship edge, the patch string follows the below format
-```csharp
+```json
 {
-	"patchDocument": 
-	[
-	    {
-	        "op": "replace",
-	        "path": "property1",
-	        "value": 1
-	    },
-		{
-	        "op": "add",
-	        "path": "property2/subProperty1",
-	        "value": 1
-	    },
-	    {
-	        "op": "remove",
+    "patchDocument": 
+    [
+        {
+            "op": "replace",
+            "path": "property1",
+            "value": 1
+        },
+        {
+            "op": "add",
+            "path": "property2/subProperty1",
+            "value": 1
+        },
+        {
+            "op": "remove",
             "path": "property3"
         }
     ]
@@ -280,7 +277,235 @@ When updating a relationship edge, the patch string follows the below format
 <details><summary><b>APIs</b></summary>
 
 ```java
-TODO:
+    /**
+     * Creates a relationship on a digital twin.
+     *
+     * @param digitalTwinId The Id of the source digital twin.
+     * @param relationshipId The Id of the relationship to be created.
+     * @param relationship The application/json relationship to be created.
+     * @return The application/json relationship created.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public String createRelationship(String digitalTwinId, String relationshipId, String relationship) { }
+
+    /**
+     * Creates a relationship on a digital twin.
+     *
+     * @param digitalTwinId The Id of the source digital twin.
+     * @param relationshipId The Id of the relationship to be created.
+     * @param relationship The application/json relationship to be created.
+     * @return A REST response containing the application/json relationship created.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<String> createRelationshipWithResponse(String digitalTwinId, String relationshipId, String relationship) { }
+
+    /**
+     * Creates a relationship on a digital twin.
+     *
+     * @param digitalTwinId The Id of the source digital twin.
+     * @param relationshipId The Id of the relationship to be created.
+     * @param relationship The application/json relationship to be created.
+     * @return The application/json relationship created.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<String> createRelationship(String digitalTwinId, String relationshipId, String relationship) { }
+
+    /**
+     * Creates a relationship on a digital twin.
+     *
+     * @param digitalTwinId The Id of the source digital twin.
+     * @param relationshipId The Id of the relationship to be created.
+     * @param relationship The application/json relationship to be created.
+     * @return A REST response containing the application/json relationship created.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<String>> createRelationshipWithResponse(String digitalTwinId, String relationshipId, String relationship) { }
+
+    /**
+     * Gets a relationship on a digital twin.
+     *
+     * @param digitalTwinId The Id of the source digital twin.
+     * @param relationshipId The Id of the relationship to retrieve.
+     * @return The application/json relationship corresponding to the provided relationshipId.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public String getRelationship(String digitalTwinId, String relationshipId) { }
+
+    /**
+     * Gets a relationship on a digital twin.
+     *
+     * @param digitalTwinId The Id of the source digital twin.
+     * @param relationshipId The Id of the relationship to retrieve.
+     * @return A REST response containing the application/json relationship corresponding to the provided relationshipId.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<String> getRelationshipWithResponse(String digitalTwinId, String relationshipId) { }
+    
+    /**
+     * Gets a relationship on a digital twin.
+     *
+     * @param digitalTwinId The Id of the source digital twin.
+     * @param relationshipId The Id of the relationship to retrieve.
+     * @return The application/json relationship corresponding to the provided relationshipId.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<String> getRelationship(String digitalTwinId, String relationshipId) { }
+
+    /**
+     * Gets a relationship on a digital twin.
+     *
+     * @param digitalTwinId The Id of the source digital twin.
+     * @param relationshipId The Id of the relationship to retrieve.
+     * @return A REST response containing the application/json relationship corresponding to the provided relationshipId.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<String>> getRelationshipWithResponse(String digitalTwinId, String relationshipId) { }
+
+    /**
+     * Updates the properties of a relationship on a digital twin.
+     *
+     * @param digitalTwinId The Id of the source digital twin.
+     * @param relationshipId The Id of the relationship to be updated.
+     * @param relationshipUpdateOperations The application/json-patch+json operations to be performed on the specified digital twin's relationship.
+     * @param options The optional settings for this request (ifMatch param).
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void updateRelationship(String digitalTwinId, String relationshipId, String relationshipUpdateOperations, RequestOptions options) { }
+
+    /**
+     * Updates the properties of a relationship on a digital twin.
+     *
+     * @param digitalTwinId The Id of the source digital twin.
+     * @param relationshipId The Id of the relationship to be updated.
+     * @param relationshipUpdateOperations The application/json-patch+json operations to be performed on the specified digital twin's relationship.
+     * @param options The optional settings for this request (ifMatch param).
+     * @return A REST response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response updateRelationshipWithResponse(String digitalTwinId, String relationshipId, String relationshipUpdateOperations, RequestOptions options) { }
+
+    /**
+     * Updates the properties of a relationship on a digital twin.
+     *
+     * @param digitalTwinId The Id of the source digital twin.
+     * @param relationshipId The Id of the relationship to be updated.
+     * @param relationshipUpdateOperations The application/json-patch+json operations to be performed on the specified digital twin's relationship.
+     * @param options The optional settings for this request (ifMatch param).
+     * @return An empty response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> updateRelationship(String digitalTwinId, String relationshipId, String relationshipUpdateOperations, RequestOptions options) { }
+
+    /**
+     * Updates the properties of a relationship on a digital twin.
+     *
+     * @param digitalTwinId The Id of the source digital twin.
+     * @param relationshipId The Id of the relationship to be updated.
+     * @param relationshipUpdateOperations The application/json-patch+json operations to be performed on the specified digital twin's relationship.
+     * @param options The optional settings for this request (ifMatch param).
+     * @return A REST response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response> updateRelationshipWithResponse(String digitalTwinId, String relationshipId, String relationshipUpdateOperations, RequestOptions options) { }
+
+    /**
+     * Deletes a relationship on a digital twin.
+     *
+     * @param digitalTwinId The Id of the source digital twin.
+     * @param relationshipId The Id of the relationship to delete.
+     * @param options The optional settings for this request (ifMatch param).
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteRelationship(String digitalTwinId, String relationshipId, RequestOptions options) { }
+
+    /**
+     * Deletes a relationship on a digital twin.
+     *
+     * @param digitalTwinId The Id of the source digital twin.
+     * @param relationshipId The Id of the relationship to delete.
+     * @param options The optional settings for this request (ifMatch param).
+     * @return A REST response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response deleteRelationshipWithResponse(String digitalTwinId, String relationshipId, RequestOptions options) { }
+
+    /**
+     * Deletes a relationship on a digital twin.
+     *
+     * @param digitalTwinId The Id of the source digital twin.
+     * @param relationshipId The Id of the relationship to delete.
+     * @param options The optional settings for this request (ifMatch param).
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteRelationship(String digitalTwinId, String relationshipId, RequestOptions options) { }
+
+    /**
+     * Deletes a relationship on a digital twin.
+     *
+     * @param digitalTwinId The Id of the source digital twin.
+     * @param relationshipId The Id of the relationship to delete.
+     * @param options The optional settings for this request (ifMatch param).
+     * @return A REST response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response> deleteRelationshipWithResponse(String digitalTwinId, String relationshipId, RequestOptions options) { }
+
+    /**
+     * Gets all the relationships on a digital twin by iterating through a collection.
+     *
+     * @param digitalTwinId The Id of the source digital twin.
+     * @return A {@link PagedIterable} of application/json relationships belonging to the specified digital twin and the http response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<String> listRelationships(String digitalTwinId) { }
+
+    /**
+     * Gets all the relationships on a digital twin filtered by the relationship name, by iterating through a collection.
+     *
+     * @param digitalTwinId The Id of the source digital twin.
+     * @param relationshipName The name of a relationship to filter to.
+     * @return A {@link PagedIterable} of application/json relationships belonging to the specified digital twin and the http response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<String> listRelationships(String digitalTwinId, String relationshipName) { }
+
+    /**
+     * Gets all the relationships on a digital twin by iterating through a collection.
+     *
+     * @param digitalTwinId The Id of the source digital twin.
+     * @return A {@link PagedFlux} of application/json relationships belonging to the specified digital twin and the http response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<String> listRelationships(String digitalTwinId) { }
+
+    /**
+     * Gets all the relationships on a digital twin filtered by the relationship name, by iterating through a collection.
+     *
+     * @param digitalTwinId The Id of the source digital twin.
+     * @param relationshipName The name of a relationship to filter to.
+     * @return A {@link PagedFlux} of application/json relationships belonging to the specified digital twin and the http response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<String> listRelationships(String digitalTwinId, String relationshipName) { }
+
+    /**
+     * Gets all the relationships referencing a digital twin as a target by iterating through a collection.
+     *
+     * @param digitalTwinId The Id of the target digital twin.
+     * @return A {@link PagedIterable} of application/json relationships directed towards the specified digital twin and the http response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<IncomingRelationship> listIncomingRelationships(String digitalTwinId) { }
+
+    /**
+     * Gets all the relationships referencing a digital twin as a target by iterating through a collection.
+     *
+     * @param digitalTwinId The Id of the target digital twin.
+     * @return A {@link PagedFlux} of application/json relationships directed towards the specified digital twin and the http response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<IncomingRelationship> listIncomingRelationships(String digitalTwinId) { }
+
 ```
 </details>
 
