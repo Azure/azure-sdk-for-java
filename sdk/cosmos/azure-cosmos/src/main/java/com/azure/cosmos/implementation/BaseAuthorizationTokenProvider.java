@@ -22,8 +22,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
- * This class is used internally by both client (for generating the auth header with master/system key) and by the GATEWAY when
- * verifying the auth header in the Azure Cosmos DB database service.
+ * This class is used internally by client (for generating the auth header with master/system key)
+ * to generate the master-key auth header for communication with Azure Cosmos DB database service.
  */
 public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvider {
 
