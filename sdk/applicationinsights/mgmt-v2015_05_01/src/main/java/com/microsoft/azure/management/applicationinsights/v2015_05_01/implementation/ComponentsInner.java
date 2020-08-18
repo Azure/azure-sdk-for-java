@@ -221,7 +221,7 @@ public class ComponentsInner implements InnerSupportsGet<ApplicationInsightsComp
     /**
      * Gets a list of Application Insights components within a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -240,7 +240,7 @@ public class ComponentsInner implements InnerSupportsGet<ApplicationInsightsComp
     /**
      * Gets a list of Application Insights components within a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -260,7 +260,7 @@ public class ComponentsInner implements InnerSupportsGet<ApplicationInsightsComp
     /**
      * Gets a list of Application Insights components within a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ApplicationInsightsComponentInner&gt; object
      */
@@ -277,7 +277,7 @@ public class ComponentsInner implements InnerSupportsGet<ApplicationInsightsComp
     /**
      * Gets a list of Application Insights components within a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ApplicationInsightsComponentInner&gt; object
      */
@@ -298,7 +298,7 @@ public class ComponentsInner implements InnerSupportsGet<ApplicationInsightsComp
     /**
      * Gets a list of Application Insights components within a resource group.
      *
-    ServiceResponse<PageImpl<ApplicationInsightsComponentInner>> * @param resourceGroupName The name of the resource group.
+    ServiceResponse<PageImpl<ApplicationInsightsComponentInner>> * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ApplicationInsightsComponentInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -336,7 +336,7 @@ public class ComponentsInner implements InnerSupportsGet<ApplicationInsightsComp
     /**
      * Deletes an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -349,7 +349,7 @@ public class ComponentsInner implements InnerSupportsGet<ApplicationInsightsComp
     /**
      * Deletes an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -362,7 +362,7 @@ public class ComponentsInner implements InnerSupportsGet<ApplicationInsightsComp
     /**
      * Deletes an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
@@ -379,7 +379,7 @@ public class ComponentsInner implements InnerSupportsGet<ApplicationInsightsComp
     /**
      * Deletes an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
@@ -422,7 +422,7 @@ public class ComponentsInner implements InnerSupportsGet<ApplicationInsightsComp
     /**
      * Returns an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -436,7 +436,7 @@ public class ComponentsInner implements InnerSupportsGet<ApplicationInsightsComp
     /**
      * Returns an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -449,7 +449,7 @@ public class ComponentsInner implements InnerSupportsGet<ApplicationInsightsComp
     /**
      * Returns an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ApplicationInsightsComponentInner object
@@ -466,7 +466,7 @@ public class ComponentsInner implements InnerSupportsGet<ApplicationInsightsComp
     /**
      * Returns an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ApplicationInsightsComponentInner object
@@ -508,7 +508,7 @@ public class ComponentsInner implements InnerSupportsGet<ApplicationInsightsComp
     /**
      * Creates (or updates) an Application Insights component. Note: You cannot specify a different value for InstrumentationKey nor AppId in the Put operation.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param insightProperties Properties that need to be specified to create an Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -523,7 +523,7 @@ public class ComponentsInner implements InnerSupportsGet<ApplicationInsightsComp
     /**
      * Creates (or updates) an Application Insights component. Note: You cannot specify a different value for InstrumentationKey nor AppId in the Put operation.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param insightProperties Properties that need to be specified to create an Application Insights component.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -537,7 +537,7 @@ public class ComponentsInner implements InnerSupportsGet<ApplicationInsightsComp
     /**
      * Creates (or updates) an Application Insights component. Note: You cannot specify a different value for InstrumentationKey nor AppId in the Put operation.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param insightProperties Properties that need to be specified to create an Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -555,7 +555,7 @@ public class ComponentsInner implements InnerSupportsGet<ApplicationInsightsComp
     /**
      * Creates (or updates) an Application Insights component. Note: You cannot specify a different value for InstrumentationKey nor AppId in the Put operation.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param insightProperties Properties that need to be specified to create an Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -602,7 +602,7 @@ public class ComponentsInner implements InnerSupportsGet<ApplicationInsightsComp
     /**
      * Updates an existing component's tags. To update other fields use the CreateOrUpdate method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -616,7 +616,7 @@ public class ComponentsInner implements InnerSupportsGet<ApplicationInsightsComp
     /**
      * Updates an existing component's tags. To update other fields use the CreateOrUpdate method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -629,7 +629,7 @@ public class ComponentsInner implements InnerSupportsGet<ApplicationInsightsComp
     /**
      * Updates an existing component's tags. To update other fields use the CreateOrUpdate method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ApplicationInsightsComponentInner object
@@ -646,7 +646,7 @@ public class ComponentsInner implements InnerSupportsGet<ApplicationInsightsComp
     /**
      * Updates an existing component's tags. To update other fields use the CreateOrUpdate method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ApplicationInsightsComponentInner object
@@ -684,7 +684,7 @@ public class ComponentsInner implements InnerSupportsGet<ApplicationInsightsComp
     /**
      * Updates an existing component's tags. To update other fields use the CreateOrUpdate method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param tags Resource tags
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -699,7 +699,7 @@ public class ComponentsInner implements InnerSupportsGet<ApplicationInsightsComp
     /**
      * Updates an existing component's tags. To update other fields use the CreateOrUpdate method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param tags Resource tags
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -713,7 +713,7 @@ public class ComponentsInner implements InnerSupportsGet<ApplicationInsightsComp
     /**
      * Updates an existing component's tags. To update other fields use the CreateOrUpdate method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param tags Resource tags
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -731,7 +731,7 @@ public class ComponentsInner implements InnerSupportsGet<ApplicationInsightsComp
     /**
      * Updates an existing component's tags. To update other fields use the CreateOrUpdate method.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param tags Resource tags
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -776,8 +776,9 @@ public class ComponentsInner implements InnerSupportsGet<ApplicationInsightsComp
 
     /**
      * Purges data in an Application Insights component by a set of user-defined filters.
+     In order to manage system resources, purge requests are throttled at 50 requests per hour. You should batch the execution of purge requests by sending a single command whose predicate includes all user identities that require purging. Use the in operator to specify multiple identities. You should run the query prior to using for a purge request to verify that the results are expected.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param body Describes the body of a request to purge data in a single table of an Application Insights component
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -791,8 +792,9 @@ public class ComponentsInner implements InnerSupportsGet<ApplicationInsightsComp
 
     /**
      * Purges data in an Application Insights component by a set of user-defined filters.
+     In order to manage system resources, purge requests are throttled at 50 requests per hour. You should batch the execution of purge requests by sending a single command whose predicate includes all user identities that require purging. Use the in operator to specify multiple identities. You should run the query prior to using for a purge request to verify that the results are expected.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param body Describes the body of a request to purge data in a single table of an Application Insights component
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -805,8 +807,9 @@ public class ComponentsInner implements InnerSupportsGet<ApplicationInsightsComp
 
     /**
      * Purges data in an Application Insights component by a set of user-defined filters.
+     In order to manage system resources, purge requests are throttled at 50 requests per hour. You should batch the execution of purge requests by sending a single command whose predicate includes all user identities that require purging. Use the in operator to specify multiple identities. You should run the query prior to using for a purge request to verify that the results are expected.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param body Describes the body of a request to purge data in a single table of an Application Insights component
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -823,8 +826,9 @@ public class ComponentsInner implements InnerSupportsGet<ApplicationInsightsComp
 
     /**
      * Purges data in an Application Insights component by a set of user-defined filters.
+     In order to manage system resources, purge requests are throttled at 50 requests per hour. You should batch the execution of purge requests by sending a single command whose predicate includes all user identities that require purging. Use the in operator to specify multiple identities. You should run the query prior to using for a purge request to verify that the results are expected.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param body Describes the body of a request to purge data in a single table of an Application Insights component
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -871,7 +875,7 @@ public class ComponentsInner implements InnerSupportsGet<ApplicationInsightsComp
     /**
      * Get status for an ongoing purge operation.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param purgeId In a purge status request, this is the Id of the operation the status of which is returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -886,7 +890,7 @@ public class ComponentsInner implements InnerSupportsGet<ApplicationInsightsComp
     /**
      * Get status for an ongoing purge operation.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param purgeId In a purge status request, this is the Id of the operation the status of which is returned.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -900,7 +904,7 @@ public class ComponentsInner implements InnerSupportsGet<ApplicationInsightsComp
     /**
      * Get status for an ongoing purge operation.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param purgeId In a purge status request, this is the Id of the operation the status of which is returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -918,7 +922,7 @@ public class ComponentsInner implements InnerSupportsGet<ApplicationInsightsComp
     /**
      * Get status for an ongoing purge operation.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param purgeId In a purge status request, this is the Id of the operation the status of which is returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation

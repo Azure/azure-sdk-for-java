@@ -166,10 +166,14 @@ class ComponentsImpl extends GroupableResourcesCoreImpl<ApplicationInsightsCompo
     public Observable<ComponentPurgeStatusResponse> getPurgeStatusAsync(String resourceGroupName, String resourceName, String purgeId) {
         ComponentsInner client = this.inner();
         return client.getPurgeStatusAsync(resourceGroupName, resourceName, purgeId)
-        .map(new Func1<ComponentPurgeStatusResponseInner, ComponentPurgeStatusResponse>() {
+        .flatMap(new Func1<ComponentPurgeStatusResponseInner, Observable<ComponentPurgeStatusResponse>>() {
             @Override
-            public ComponentPurgeStatusResponse call(ComponentPurgeStatusResponseInner inner) {
-                return wrapComponentPurgeStatusResponseModel(inner);
+            public Observable<ComponentPurgeStatusResponse> call(ComponentPurgeStatusResponseInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ComponentPurgeStatusResponse)wrapComponentPurgeStatusResponseModel(inner));
+                }
             }
        });
     }
