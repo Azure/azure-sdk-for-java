@@ -24,7 +24,6 @@ import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import reactor.core.publisher.Mono;
 
-import java.io.File;
 import java.time.OffsetDateTime;
 
 public class SpringAppImpl
@@ -244,67 +243,24 @@ public class SpringAppImpl
     }
 
     @Override
-    public SpringAppImpl withoutDeployment(String name) {
-        this.addPostRunDependent(
-            context -> deployments().deleteByNameAsync(name)
-                .then(context.voidMono())
-        );
-        return this;
-    }
-
-    @Override
-    public SpringAppImpl deployJar(String name, File jarFile) {
-        ensureProperty();
-        inner().properties().withActiveDeploymentName(name);
-        springAppDeploymentToCreate = deployments().define(name)
-                .withJarFile(jarFile)
-                .withCustomSetting();
-        return this;
-    }
-
-    @Override
-    public SpringAppImpl deploySource(String name, File sourceCodeFolder, String targetModule) {
-        ensureProperty();
-        inner().properties().withActiveDeploymentName(name);
-        springAppDeploymentToCreate = deployments().define(name)
-                .withSourceCodeFolder(sourceCodeFolder)
-                .withTargetModule(targetModule)
-                .withCustomSetting();
-        return this;
-    }
-
-    @Override
     public Mono<SpringApp> createResourceAsync() {
         if (springAppDeploymentToCreate == null) {
-            String defaultDeploymentName = "default";
-            withActiveDeployment(defaultDeploymentName);
-            springAppDeploymentToCreate = deployments().define(defaultDeploymentName)
-                .withExistingSource(UserSourceType.JAR, String.format("<%s>", defaultDeploymentName))
-                .withCustomSetting();
+            withDefaultActiveDeployment();
         }
         return manager().inner().getApps().createOrUpdateAsync(
             parent().resourceGroupName(), parent().name(), name(), new AppResourceInner())
-            .flatMap(inner -> updateResourceAsync());
+            .thenMany(springAppDeploymentToCreate.createAsync())
+            .then(updateResourceAsync());
     }
 
     @Override
     public Mono<SpringApp> updateResourceAsync() {
-        Mono<?> createDeployment;
-        if (springAppDeploymentToCreate != null) {
-            createDeployment = springAppDeploymentToCreate.createAsync().last();
-        } else {
-            createDeployment = Mono.empty();
-        }
-        return createDeployment
-            .then(
-                manager().inner().getApps().updateAsync(
-                    parent().resourceGroupName(), parent().name(), name(), inner()
-                )
-                .map(inner -> {
-                    setInner(inner);
-                    springAppDeploymentToCreate = null;
-                    return this;
-                }));
+        return manager().inner().getApps().updateAsync(
+            parent().resourceGroupName(), parent().name(), name(), inner())
+            .map(inner -> {
+                setInner(inner);
+                return this;
+            });
     }
 
     @Override
@@ -346,5 +302,12 @@ public class SpringAppImpl
             context -> serviceBindings.deleteByNameAsync(name).then(context.voidMono())
         );
         return this;
+    }
+
+    public void withDefaultActiveDeployment() {
+        String defaultDeploymentName = "default";
+        withActiveDeployment(defaultDeploymentName);
+        springAppDeploymentToCreate = deployments().define(defaultDeploymentName)
+            .withExistingSource(UserSourceType.JAR, String.format("<%s>", defaultDeploymentName));
     }
 }

@@ -41,14 +41,10 @@ import java.util.zip.GZIPOutputStream;
 public class SpringAppDeploymentImpl
     extends ExternalChildResourceImpl<SpringAppDeployment, DeploymentResourceInner, SpringAppImpl, SpringApp>
     implements SpringAppDeployment, SpringAppDeployment.Definition, SpringAppDeployment.Update {
-    private static final int BLOCK_SIZE = 4 * 1024 * 1024; // 4MB
-    private final SpringAppDeploymentsImpl client;
-    private DeploymentSettings originalDeploymentSettings;
 
     SpringAppDeploymentImpl(String name, SpringAppImpl parent,
-                            DeploymentResourceInner innerObject, SpringAppDeploymentsImpl client) {
+                            DeploymentResourceInner innerObject) {
         super(name, parent, innerObject);
-        this.client = client;
     }
 
     @Override
@@ -275,43 +271,6 @@ public class SpringAppDeploymentImpl
     }
 
     @Override
-    public SpringAppDeploymentImpl withSettingsFromActiveDeployment() {
-        this.addDependency(
-            context -> client.getByNameAsync(parent().activeDeployment())
-                .map(deployment -> {
-                    originalDeploymentSettings = deployment.settings();
-                    return (Indexable) deployment;
-                })
-        );
-        return this;
-    }
-
-    @Override
-    public SpringAppDeploymentImpl withSettingsFromDeployment(SpringAppDeployment deployment) {
-        originalDeploymentSettings = deployment.settings();
-        return this;
-    }
-
-    @Override
-    public SpringAppDeploymentImpl withSettingsFromDeployment(String deploymentName) {
-        this.addDependency(
-            context -> client.getByNameAsync(deploymentName)
-                .map(deployment -> {
-                    originalDeploymentSettings = deployment.settings();
-                    return (Indexable) deployment;
-                })
-        );
-        return this;
-    }
-
-    @Override
-    public SpringAppDeploymentImpl withCustomSetting() {
-        ensureDeploySettings();
-        inner().properties().withDeploymentSettings(new DeploymentSettings());
-        return this;
-    }
-
-    @Override
     public SpringAppDeploymentImpl withCpu(int cpuCount) {
         ensureDeploySettings();
         inner().properties().deploymentSettings().withCpu(cpuCount);
@@ -378,16 +337,11 @@ public class SpringAppDeploymentImpl
 
     @Override
     public Mono<SpringAppDeployment> createResourceAsync() {
-        if (originalDeploymentSettings != null) {
-            ensureDeploySettings();
-            inner().properties().withDeploymentSettings(originalDeploymentSettings);
-        }
         return manager().inner().getDeployments().createOrUpdateAsync(
             parent().parent().resourceGroupName(), parent().parent().name(),
             parent().name(), name(), inner()
         )
             .map(inner -> {
-                originalDeploymentSettings = null;
                 setInner(inner);
                 return this;
             });
@@ -395,16 +349,11 @@ public class SpringAppDeploymentImpl
 
     @Override
     public Mono<SpringAppDeployment> updateResourceAsync() {
-        if (originalDeploymentSettings != null) {
-            ensureDeploySettings();
-            inner().properties().withDeploymentSettings(originalDeploymentSettings);
-        }
         return manager().inner().getDeployments().updateAsync(
             parent().parent().resourceGroupName(), parent().parent().name(),
             parent().name(), name(), inner()
         )
             .map(inner -> {
-                originalDeploymentSettings = null;
                 setInner(inner);
                 return this;
             });
