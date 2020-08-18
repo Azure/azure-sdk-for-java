@@ -8,6 +8,8 @@ trigger:
   paths:
     include:
       - sdk/digitaltwins/
+    exclude:
+      - sdk/digitaltwins/azure-digitaltwins-core
 
 pr:
   branches:
@@ -19,6 +21,8 @@ pr:
   paths:
     include:
       - sdk/digitaltwins/
+    exclude:
+      - sdk/digitaltwins/azure-digitaltwins-core
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

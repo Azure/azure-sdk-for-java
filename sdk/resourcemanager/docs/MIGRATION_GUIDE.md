@@ -70,7 +70,7 @@ Azure azure = Azure.authenticate(new File("my.azureauth")).withDefaultSubscripti
 ```
 **In new version, this feature has been removed.** If this creates concern on your side, please file an issue to let us know.
 
-For detailed information on the benefits of using the new authentication classes, please refer to [this page](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/docs/AUTH.md)
+For detailed information on the benefits of using the new authentication classes, please refer to [this page](AUTH.md)
 
 ## Customized Policy
 
