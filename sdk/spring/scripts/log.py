@@ -14,7 +14,7 @@ class Log:
     NONE = 1
 
     level = INFO
-    color = False
+    color = True
 
     def __init__(self):
         self.level = Log.INFO

@@ -33,6 +33,7 @@ def main():
     dependency_dict = {}
     for root_pom_id in ROOT_POM_IDS:
         update_dependency_dict(dependency_dict, root_pom_id)
+    output_version_dict_to_file(dependency_dict)
     update_version_for_external_dependencies(dependency_dict)
     elapsed_time = time.time() - start_time
     log.info('elapsed_time = {}'.format(elapsed_time))
@@ -66,11 +67,11 @@ def update_dependency_dict(dependency_dict, root_pom_id):
     q = queue.Queue()
     q.put(root_pom)
     pom_count = 1
-    log.info('Added root pom: {}, depth = {}.'.format(root_pom.to_url(), root_pom.depth))
+    log.info('Added root pom.depth = {}, url = {}.'.format(root_pom.depth, root_pom.to_url()))
     while not q.empty():
         pom = q.get()
         pom_url = pom.to_url()
-        log.info('Get dependencies from pom: {}, depth = {}.'.format(pom_url, pom.depth))
+        log.info('Get dependencies from pom. depth = {}, url = {}.'.format(pom.depth, pom_url))
         tree = elementTree.ElementTree(file = request.urlopen(pom_url))
         project_element = tree.getroot()
         name_space = {'maven': 'http://maven.apache.org/POM/4.0.0'}
@@ -121,9 +122,16 @@ def update_dependency_dict(dependency_dict, root_pom_id):
                 new_pom = Pom(group_id, artifact_id, version, pom.depth + 1)
                 q.put(new_pom)
                 pom_count = pom_count + 1
-                log.debug('Added new pom: {}, depth = {}.'.format(new_pom.to_url(), new_pom.depth))
-    log.info('Root pom summary: root_pom = {}, pom_count = {}'.format(root_pom.to_url(), pom_count))
+                log.debug('Added new pom. depth = {}, url = {}.'.format(new_pom.to_url(), new_pom.depth))
+    log.info('Root pom summary. pom_count = {}, root_pom_url = {}'.format(pom_count, root_pom.to_url()))
     return dependency_dict
+
+
+def output_version_dict_to_file(dependency_dict):
+    output_file = open('sdk/spring/scripts/managed_external_dependencies.txt', 'w''')
+    for key, value in sorted(dependency_dict.items()):
+        output_file.write('{}:{}\n'.format(key, value))
+    output_file.close()
 
 
 def update_version_for_external_dependencies(dependency_dict):
