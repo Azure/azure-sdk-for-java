@@ -227,7 +227,7 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
 
         this.subscriptionClient = new SubscriptionClientBuilder()
                 .pipeline(httpPipeline)
-                .endpoint(profile.environment().getResourceManagerEndpoint())
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .buildClient();
 
         this.policyClient = new PolicyClientBuilder()

@@ -9,6 +9,7 @@ module com.azure.resourcemanager {
     requires transitive com.azure.resourcemanager.monitor;
     requires transitive com.azure.resourcemanager.sql;
     requires transitive com.azure.resourcemanager.privatedns;
+    requires transitive com.azure.resourcemanager.redis;
 
     exports com.azure.resourcemanager;
 }
