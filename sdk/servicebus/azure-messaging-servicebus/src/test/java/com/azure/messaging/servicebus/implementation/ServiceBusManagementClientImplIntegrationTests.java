@@ -68,7 +68,7 @@ class ServiceBusManagementClientImplIntegrationTests extends TestBase {
     void getQueueImplementation(HttpClient httpClient) {
         // Arrange
         final ServiceBusManagementClientImpl managementClient = createClient(httpClient);
-        final EntitysImpl entityClient = managementClient.getEntitys();
+        final EntitiesImpl entityClient = managementClient.getEntities();
         final String queueName = interceptorManager.isPlaybackMode()
             ? "queue-0"
             : TestUtils.getEntityName(TestUtils.getQueueBaseName(), 0);
@@ -95,7 +95,7 @@ class ServiceBusManagementClientImplIntegrationTests extends TestBase {
     void createQueueImplementation(HttpClient httpClient) {
         // Arrange
         final ServiceBusManagementClientImpl managementClient = createClient(httpClient);
-        final EntitysImpl entityClient = managementClient.getEntitys();
+        final EntitiesImpl entityClient = managementClient.getEntities();
 
         final String queueName = testResourceNamer.randomName("test", 7);
         final CreateQueueOptions options = new CreateQueueOptions(queueName)
@@ -134,7 +134,7 @@ class ServiceBusManagementClientImplIntegrationTests extends TestBase {
     void deleteQueueImplementation(HttpClient httpClient) {
         // Arrange
         final ServiceBusManagementClientImpl managementClient = createClient(httpClient);
-        final EntitysImpl entityClient = managementClient.getEntitys();
+        final EntitiesImpl entityClient = managementClient.getEntities();
 
         final String queueName = testResourceNamer.randomName("test", 7);
         final CreateQueueOptions description = new CreateQueueOptions(queueName)
@@ -169,7 +169,7 @@ class ServiceBusManagementClientImplIntegrationTests extends TestBase {
     void editQueueImplementation(HttpClient httpClient) {
         // Arrange
         final ServiceBusManagementClientImpl managementClient = createClient(httpClient);
-        final EntitysImpl entityClient = managementClient.getEntitys();
+        final EntitiesImpl entityClient = managementClient.getEntities();
 
         final String queueName = interceptorManager.isPlaybackMode()
             ? "queue-5"
@@ -258,7 +258,7 @@ class ServiceBusManagementClientImplIntegrationTests extends TestBase {
             .build();
 
         return new ServiceBusManagementClientImplBuilder()
-            .serializer(serializer)
+            .serializerAdapter(serializer)
             .endpoint(properties.getEndpoint().getHost())
             .apiVersion("2017-04")
             .pipeline(pipeline)

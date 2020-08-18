@@ -5,8 +5,6 @@
 package com.azure.messaging.servicebus.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.messaging.servicebus.implementation.models.MessagingSku;
-import com.azure.messaging.servicebus.implementation.models.NamespaceType;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 

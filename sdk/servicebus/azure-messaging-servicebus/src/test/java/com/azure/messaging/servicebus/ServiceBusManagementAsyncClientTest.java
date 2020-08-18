@@ -8,8 +8,8 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.messaging.servicebus.implementation.EntitiesImpl;
 import com.azure.messaging.servicebus.implementation.EntityHelper;
-import com.azure.messaging.servicebus.implementation.EntitysImpl;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementClientImpl;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementSerializer;
 import com.azure.messaging.servicebus.implementation.models.CreateQueueBody;
@@ -68,7 +68,7 @@ class ServiceBusManagementAsyncClientTest {
     @Mock
     private ServiceBusManagementClientImpl serviceClient;
     @Mock
-    private EntitysImpl entitys;
+    private EntitiesImpl entitys;
     @Mock
     private ServiceBusManagementSerializer serializer;
     @Mock
@@ -117,7 +117,7 @@ class ServiceBusManagementAsyncClientTest {
         when(secondObjectResponse.getHeaders()).thenReturn(httpHeaders);
         when(secondObjectResponse.getRequest()).thenReturn(httpRequest);
 
-        when(serviceClient.getEntitys()).thenReturn(entitys);
+        when(serviceClient.getEntities()).thenReturn(entitys);
 
         client = new ServiceBusManagementAsyncClient(serviceClient, serializer);
     }

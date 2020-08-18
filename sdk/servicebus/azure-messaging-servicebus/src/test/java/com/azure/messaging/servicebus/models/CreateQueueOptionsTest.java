@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.DEFAULT_DUPLICATE_DETECTION_DURATION;
@@ -58,9 +59,9 @@ class CreateQueueOptionsTest {
         // Arrange
         final List<AuthorizationRule> rules = Arrays.asList(
             new AuthorizationRule().setClaimType("a").setClaimValue("b").setKeyName("c").setPrimaryKey("pk")
-                .setSecondaryKey("sk").setRights(Arrays.asList("r1", "r2")),
+                .setSecondaryKey("sk").setRights(Arrays.asList(AccessRights.LISTEN, AccessRights.MANAGE)),
             new AuthorizationRule().setClaimType("a2").setClaimValue("b2").setKeyName("c2").setPrimaryKey("pk2")
-                .setSecondaryKey("sk2").setRights(Arrays.asList("r12", "r23"))
+                .setSecondaryKey("sk2").setRights(Collections.singletonList(AccessRights.LISTEN))
         );
         final QueueProperties expected = EntityHelper.toModel(new QueueDescription())
             .setAutoDeleteOnIdle(Duration.ofSeconds(15))

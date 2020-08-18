@@ -22,8 +22,8 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.implementation.EntitiesImpl;
 import com.azure.messaging.servicebus.implementation.EntityHelper;
-import com.azure.messaging.servicebus.implementation.EntitysImpl;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementClientImpl;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementSerializer;
 import com.azure.messaging.servicebus.implementation.models.CreateQueueBody;
@@ -99,7 +99,7 @@ public final class ServiceBusManagementAsyncClient {
     private static final int NUMBER_OF_ELEMENTS = 100;
 
     private final ServiceBusManagementClientImpl managementClient;
-    private final EntitysImpl entityClient;
+    private final EntitiesImpl entityClient;
     private final ClientLogger logger = new ClientLogger(ServiceBusManagementAsyncClient.class);
     private final ServiceBusManagementSerializer serializer;
 
@@ -112,7 +112,7 @@ public final class ServiceBusManagementAsyncClient {
     ServiceBusManagementAsyncClient(ServiceBusManagementClientImpl managementClient,
         ServiceBusManagementSerializer serializer) {
         this.managementClient = Objects.requireNonNull(managementClient, "'managementClient' cannot be null.");
-        this.entityClient = managementClient.getEntitys();
+        this.entityClient = managementClient.getEntities();
         this.serializer = serializer;
     }
 
