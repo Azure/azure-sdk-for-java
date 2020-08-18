@@ -28,7 +28,7 @@ public class SyncSample
             .endpoint(endpoint)
             .buildClient();
 
-        DigitalTwinsGetByIdResponse syncResponse = client.getDigitalTwin(digitalTwinId);
+        Response<Object> syncResponse = client.getDigitalTwin(digitalTwinId);
         Object digitalTwin = syncResponse.getValue();
         System.out.println(digitalTwin);
     }
