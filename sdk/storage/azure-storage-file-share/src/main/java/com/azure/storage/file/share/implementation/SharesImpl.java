@@ -95,27 +95,27 @@ public final class SharesImpl {
         @Put("{shareName}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<SharesAcquireLeaseResponse> acquireLease(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-duration") Integer duration, @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId, @HeaderParam("x-ms-version") String version, @QueryParam("sharesnapshot") String sharesnapshot, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-action") String action, @QueryParam("restype") String restype, Context context);
+        Mono<SharesAcquireLeaseResponse> acquireLease(@PathParam("shareName") String shareName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-duration") Integer duration, @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId, @HeaderParam("x-ms-version") String version, @QueryParam("sharesnapshot") String sharesnapshot, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-action") String action, @QueryParam("restype") String restype, Context context);
 
         @Put("{shareName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<SharesReleaseLeaseResponse> releaseLease(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-version") String version, @QueryParam("sharesnapshot") String sharesnapshot, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-action") String action, @QueryParam("restype") String restype, Context context);
+        Mono<SharesReleaseLeaseResponse> releaseLease(@PathParam("shareName") String shareName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-version") String version, @QueryParam("sharesnapshot") String sharesnapshot, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-action") String action, @QueryParam("restype") String restype, Context context);
 
         @Put("{shareName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<SharesChangeLeaseResponse> changeLease(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId, @HeaderParam("x-ms-version") String version, @QueryParam("sharesnapshot") String sharesnapshot, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-action") String action, @QueryParam("restype") String restype, Context context);
+        Mono<SharesChangeLeaseResponse> changeLease(@PathParam("shareName") String shareName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId, @HeaderParam("x-ms-version") String version, @QueryParam("sharesnapshot") String sharesnapshot, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-action") String action, @QueryParam("restype") String restype, Context context);
 
         @Put("{shareName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<SharesRenewLeaseResponse> renewLease(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-version") String version, @QueryParam("sharesnapshot") String sharesnapshot, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-action") String action, @QueryParam("restype") String restype, Context context);
+        Mono<SharesRenewLeaseResponse> renewLease(@PathParam("shareName") String shareName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-version") String version, @QueryParam("sharesnapshot") String sharesnapshot, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-action") String action, @QueryParam("restype") String restype, Context context);
 
         @Put("{shareName}")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<SharesBreakLeaseResponse> breakLease(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-break-period") Integer breakPeriod, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-action") String action, @QueryParam("restype") String restype, Context context);
+        Mono<SharesBreakLeaseResponse> breakLease(@PathParam("shareName") String shareName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-break-period") Integer breakPeriod, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-action") String action, @QueryParam("restype") String restype, Context context);
 
         @Put("{shareName}")
         @ExpectedResponses({201})
@@ -270,12 +270,13 @@ public final class SharesImpl {
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete share operations.
      *
+     * @param shareName The name of the target share.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SharesAcquireLeaseResponse> acquireLeaseWithRestResponseAsync(Context context) {
+    public Mono<SharesAcquireLeaseResponse> acquireLeaseWithRestResponseAsync(String shareName, Context context) {
         final Integer timeout = null;
         final Integer duration = null;
         final String proposedLeaseId = null;
@@ -284,12 +285,13 @@ public final class SharesImpl {
         final String comp = "lease";
         final String action = "acquire";
         final String restype = "share";
-        return service.acquireLease(this.client.getUrl(), timeout, duration, proposedLeaseId, this.client.getVersion(), sharesnapshot, requestId, comp, action, restype, context);
+        return service.acquireLease(shareName, this.client.getUrl(), timeout, duration, proposedLeaseId, this.client.getVersion(), sharesnapshot, requestId, comp, action, restype, context);
     }
 
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete share operations.
      *
+     * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting Timeouts for File Service Operations.&lt;/a&gt;.
      * @param duration Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite lease can be between 15 and 60 seconds. A lease duration cannot be changed using renew or change.
      * @param proposedLeaseId Proposed lease ID, in a GUID string format. The File service returns 400 (Invalid request) if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID string formats.
@@ -300,35 +302,37 @@ public final class SharesImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SharesAcquireLeaseResponse> acquireLeaseWithRestResponseAsync(Integer timeout, Integer duration, String proposedLeaseId, String sharesnapshot, String requestId, Context context) {
+    public Mono<SharesAcquireLeaseResponse> acquireLeaseWithRestResponseAsync(String shareName, Integer timeout, Integer duration, String proposedLeaseId, String sharesnapshot, String requestId, Context context) {
         final String comp = "lease";
         final String action = "acquire";
         final String restype = "share";
-        return service.acquireLease(this.client.getUrl(), timeout, duration, proposedLeaseId, this.client.getVersion(), sharesnapshot, requestId, comp, action, restype, context);
+        return service.acquireLease(shareName, this.client.getUrl(), timeout, duration, proposedLeaseId, this.client.getVersion(), sharesnapshot, requestId, comp, action, restype, context);
     }
 
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete share operations.
      *
+     * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SharesReleaseLeaseResponse> releaseLeaseWithRestResponseAsync(String leaseId, Context context) {
+    public Mono<SharesReleaseLeaseResponse> releaseLeaseWithRestResponseAsync(String shareName, String leaseId, Context context) {
         final Integer timeout = null;
         final String sharesnapshot = null;
         final String requestId = null;
         final String comp = "lease";
         final String action = "release";
         final String restype = "share";
-        return service.releaseLease(this.client.getUrl(), timeout, leaseId, this.client.getVersion(), sharesnapshot, requestId, comp, action, restype, context);
+        return service.releaseLease(shareName, this.client.getUrl(), timeout, leaseId, this.client.getVersion(), sharesnapshot, requestId, comp, action, restype, context);
     }
 
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete share operations.
      *
+     * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting Timeouts for File Service Operations.&lt;/a&gt;.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
@@ -338,23 +342,24 @@ public final class SharesImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SharesReleaseLeaseResponse> releaseLeaseWithRestResponseAsync(String leaseId, Integer timeout, String sharesnapshot, String requestId, Context context) {
+    public Mono<SharesReleaseLeaseResponse> releaseLeaseWithRestResponseAsync(String shareName, String leaseId, Integer timeout, String sharesnapshot, String requestId, Context context) {
         final String comp = "lease";
         final String action = "release";
         final String restype = "share";
-        return service.releaseLease(this.client.getUrl(), timeout, leaseId, this.client.getVersion(), sharesnapshot, requestId, comp, action, restype, context);
+        return service.releaseLease(shareName, this.client.getUrl(), timeout, leaseId, this.client.getVersion(), sharesnapshot, requestId, comp, action, restype, context);
     }
 
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete share operations.
      *
+     * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SharesChangeLeaseResponse> changeLeaseWithRestResponseAsync(String leaseId, Context context) {
+    public Mono<SharesChangeLeaseResponse> changeLeaseWithRestResponseAsync(String shareName, String leaseId, Context context) {
         final Integer timeout = null;
         final String proposedLeaseId = null;
         final String sharesnapshot = null;
@@ -362,12 +367,13 @@ public final class SharesImpl {
         final String comp = "lease";
         final String action = "change";
         final String restype = "share";
-        return service.changeLease(this.client.getUrl(), timeout, leaseId, proposedLeaseId, this.client.getVersion(), sharesnapshot, requestId, comp, action, restype, context);
+        return service.changeLease(shareName, this.client.getUrl(), timeout, leaseId, proposedLeaseId, this.client.getVersion(), sharesnapshot, requestId, comp, action, restype, context);
     }
 
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete share operations.
      *
+     * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting Timeouts for File Service Operations.&lt;/a&gt;.
      * @param proposedLeaseId Proposed lease ID, in a GUID string format. The File service returns 400 (Invalid request) if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID string formats.
@@ -378,35 +384,37 @@ public final class SharesImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SharesChangeLeaseResponse> changeLeaseWithRestResponseAsync(String leaseId, Integer timeout, String proposedLeaseId, String sharesnapshot, String requestId, Context context) {
+    public Mono<SharesChangeLeaseResponse> changeLeaseWithRestResponseAsync(String shareName, String leaseId, Integer timeout, String proposedLeaseId, String sharesnapshot, String requestId, Context context) {
         final String comp = "lease";
         final String action = "change";
         final String restype = "share";
-        return service.changeLease(this.client.getUrl(), timeout, leaseId, proposedLeaseId, this.client.getVersion(), sharesnapshot, requestId, comp, action, restype, context);
+        return service.changeLease(shareName, this.client.getUrl(), timeout, leaseId, proposedLeaseId, this.client.getVersion(), sharesnapshot, requestId, comp, action, restype, context);
     }
 
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete share operations.
      *
+     * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SharesRenewLeaseResponse> renewLeaseWithRestResponseAsync(String leaseId, Context context) {
+    public Mono<SharesRenewLeaseResponse> renewLeaseWithRestResponseAsync(String shareName, String leaseId, Context context) {
         final Integer timeout = null;
         final String sharesnapshot = null;
         final String requestId = null;
         final String comp = "lease";
         final String action = "renew";
         final String restype = "share";
-        return service.renewLease(this.client.getUrl(), timeout, leaseId, this.client.getVersion(), sharesnapshot, requestId, comp, action, restype, context);
+        return service.renewLease(shareName, this.client.getUrl(), timeout, leaseId, this.client.getVersion(), sharesnapshot, requestId, comp, action, restype, context);
     }
 
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete share operations.
      *
+     * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting Timeouts for File Service Operations.&lt;/a&gt;.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
@@ -416,22 +424,23 @@ public final class SharesImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SharesRenewLeaseResponse> renewLeaseWithRestResponseAsync(String leaseId, Integer timeout, String sharesnapshot, String requestId, Context context) {
+    public Mono<SharesRenewLeaseResponse> renewLeaseWithRestResponseAsync(String shareName, String leaseId, Integer timeout, String sharesnapshot, String requestId, Context context) {
         final String comp = "lease";
         final String action = "renew";
         final String restype = "share";
-        return service.renewLease(this.client.getUrl(), timeout, leaseId, this.client.getVersion(), sharesnapshot, requestId, comp, action, restype, context);
+        return service.renewLease(shareName, this.client.getUrl(), timeout, leaseId, this.client.getVersion(), sharesnapshot, requestId, comp, action, restype, context);
     }
 
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete share operations.
      *
+     * @param shareName The name of the target share.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SharesBreakLeaseResponse> breakLeaseWithRestResponseAsync(Context context) {
+    public Mono<SharesBreakLeaseResponse> breakLeaseWithRestResponseAsync(String shareName, Context context) {
         final Integer timeout = null;
         final Integer breakPeriod = null;
         final String leaseId = null;
@@ -440,12 +449,13 @@ public final class SharesImpl {
         final String comp = "lease";
         final String action = "break";
         final String restype = "share";
-        return service.breakLease(this.client.getUrl(), timeout, breakPeriod, leaseId, this.client.getVersion(), requestId, sharesnapshot, comp, action, restype, context);
+        return service.breakLease(shareName, this.client.getUrl(), timeout, breakPeriod, leaseId, this.client.getVersion(), requestId, sharesnapshot, comp, action, restype, context);
     }
 
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete share operations.
      *
+     * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting Timeouts for File Service Operations.&lt;/a&gt;.
      * @param breakPeriod For a break operation, proposed duration the lease should continue before it is broken, in seconds, between 0 and 60. This break period is only used if it is shorter than the time remaining on the lease. If longer, the time remaining on the lease is used. A new lease will not be available before the break period has expired, but the lease may be held for longer than the break period. If this header does not appear with a break operation, a fixed-duration lease breaks after the remaining lease period elapses, and an infinite lease breaks immediately.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
@@ -456,11 +466,11 @@ public final class SharesImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SharesBreakLeaseResponse> breakLeaseWithRestResponseAsync(Integer timeout, Integer breakPeriod, String leaseId, String requestId, String sharesnapshot, Context context) {
+    public Mono<SharesBreakLeaseResponse> breakLeaseWithRestResponseAsync(String shareName, Integer timeout, Integer breakPeriod, String leaseId, String requestId, String sharesnapshot, Context context) {
         final String comp = "lease";
         final String action = "break";
         final String restype = "share";
-        return service.breakLease(this.client.getUrl(), timeout, breakPeriod, leaseId, this.client.getVersion(), requestId, sharesnapshot, comp, action, restype, context);
+        return service.breakLease(shareName, this.client.getUrl(), timeout, breakPeriod, leaseId, this.client.getVersion(), requestId, sharesnapshot, comp, action, restype, context);
     }
 
     /**

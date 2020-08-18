@@ -7,6 +7,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.FluxUtil;
@@ -15,9 +16,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.file.share.ShareFileAsyncClient;
 import com.azure.storage.file.share.implementation.AzureFileStorageBuilder;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
+import com.azure.storage.file.share.options.ShareAcquireLeaseOptions;
+import com.azure.storage.file.share.options.ShareBreakLeaseOptions;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
+import java.time.Duration;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -47,9 +51,10 @@ public final class ShareLeaseAsyncClient {
     private final String leaseId;
     private final AzureFileStorageImpl client;
     private final String accountName;
+    private final String shareSnapshot;
 
     ShareLeaseAsyncClient(HttpPipeline pipeline, String url, String leaseId, boolean isShareFile, String accountName,
-        String serviceVersion) {
+        String serviceVersion, String shareSnapshot) {
         this.isShareFile = isShareFile;
         this.leaseId = leaseId;
         this.client = new AzureFileStorageBuilder()
@@ -58,6 +63,7 @@ public final class ShareLeaseAsyncClient {
             .version(serviceVersion)
             .build();
         this.accountName = accountName;
+        this.shareSnapshot = shareSnapshot;
     }
 
     /**
@@ -89,7 +95,7 @@ public final class ShareLeaseAsyncClient {
     }
 
     /**
-     * Acquires a lease for write and delete operations. All leases are infinite.
+     * Acquires an infinite lease for write and delete operations.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -107,7 +113,7 @@ public final class ShareLeaseAsyncClient {
     }
 
     /**
-     * Acquires a lease for write and delete operations. All leases are infinite.
+     * Acquires an infinite lease for write and delete operations.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -118,22 +124,42 @@ public final class ShareLeaseAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<String>> acquireLeaseWithResponse() {
         try {
-            return withContext(this::acquireLeaseWithResponse);
+            return acquireLeaseWithResponse(new ShareAcquireLeaseOptions());
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<String>> acquireLeaseWithResponse(Context context) {
+    /**
+     * Acquires a lease for write and delete operations. Note: Share files only support infinite lease.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.acquireLeaseWithResponse#ShareAcquireLeaseOptions}
+     *
+     * @return A reactive response containing the lease ID.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<String>> acquireLeaseWithResponse(ShareAcquireLeaseOptions options) {
+        try {
+            return withContext(context -> acquireLeaseWithResponse(options, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<String>> acquireLeaseWithResponse(ShareAcquireLeaseOptions options, Context context) {
+        options = options == null ? new ShareAcquireLeaseOptions() : options;
         context = context == null ? Context.NONE : context;
 
-        int duration = -1;
         if (this.isShareFile) {
-            return this.client.files().acquireLeaseWithRestResponseAsync(null, null, null, -1, this.leaseId, null,
+            return this.client.files().acquireLeaseWithRestResponseAsync(null, null, null,
+                options.getDuration(), this.leaseId, null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
         } else {
-            return this.client.shares().acquireLeaseWithRestResponseAsync(null, duration, this.leaseId, null,
+            return this.client.shares().acquireLeaseWithRestResponseAsync(null, null,
+                options.getDuration(), this.leaseId, this.shareSnapshot,
                 null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
         }
@@ -177,10 +203,15 @@ public final class ShareLeaseAsyncClient {
 
     Mono<Response<Void>> releaseLeaseWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
-        return this.client.files().releaseLeaseWithRestResponseAsync(null, null, this.leaseId,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
-            .map(response -> new SimpleResponse<>(response, null));
-
+        if (this.isShareFile) {
+            return this.client.files().releaseLeaseWithRestResponseAsync(null, null, this.leaseId,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                .map(response -> new SimpleResponse<>(response, null));
+        } else {
+            return this.client.shares().releaseLeaseWithRestResponseAsync(null, this.leaseId, null,
+                this.shareSnapshot, null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                .map(response -> new SimpleResponse<>(response, null));
+        }
     }
 
     /**
@@ -213,17 +244,45 @@ public final class ShareLeaseAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> breakLeaseWithResponse() {
         try {
-            return withContext(this::breakLeaseWithResponse);
+            return breakLeaseWithResponse(new ShareBreakLeaseOptions());
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<Void>> breakLeaseWithResponse(Context context) {
+    /**
+     * Breaks the previously acquired lease, if it exists. Leases will break immediately.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.breakLeaseWithResponse}
+     *
+     * @return A reactive response signalling completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> breakLeaseWithResponse(ShareBreakLeaseOptions options) {
+        try {
+            return withContext(context -> breakLeaseWithResponse(options, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<Void>> breakLeaseWithResponse(ShareBreakLeaseOptions options, Context context) {
+        options = options == null ? new ShareBreakLeaseOptions() : options;
         context = context == null ? Context.NONE : context;
-        return this.client.files().breakLeaseWithRestResponseAsync(null, null, null, null, null,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
-            .map(rb -> new SimpleResponse<>(rb, null));
+        Integer breakPeriod = options.getBreakPeriod() == null ? null
+            : Math.toIntExact(options.getBreakPeriod().getSeconds());
+        if (this.isShareFile) {
+            return this.client.files().breakLeaseWithRestResponseAsync(null, null, null, null, null,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                .map(rb -> new SimpleResponse<>(rb, null));
+        } else {
+            return this.client.shares().breakLeaseWithRestResponseAsync(null, null, breakPeriod,
+                null, null, this.shareSnapshot,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                .map(rb -> new SimpleResponse<>(rb, null));
+        }
     }
 
     /**
@@ -266,9 +325,62 @@ public final class ShareLeaseAsyncClient {
 
     Mono<Response<String>> changeLeaseWithResponse(String proposedId, Context context) {
         context = context == null ? Context.NONE : context;
-        return this.client.files().changeLeaseWithRestResponseAsync(null, null, this.leaseId, null, proposedId,
-            null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
-            .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
+        if (this.isShareFile) {
+            return this.client.files().changeLeaseWithRestResponseAsync(null, null, this.leaseId, null, proposedId,
+                null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
+        } else {
+            return this.client.shares().changeLeaseWithRestResponseAsync(null, this.leaseId, null, proposedId, this.shareSnapshot,
+                null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
+        }
+    }
+
+    /**
+     * Renews the previously acquired lease on a share.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.renewLease}
+     *
+     * @return A reactive response containing the renewed lease ID.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<String> renewLease() {
+        try {
+            return renewLeaseWithResponse().flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Renews the previously acquired lease on a share.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.renewLeaseWithResponse}
+     *
+     * @return A reactive response containing the renewed lease ID.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<String>> renewLeaseWithResponse() {
+        try {
+            return withContext(this::renewLeaseWithResponse);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<String>> renewLeaseWithResponse(Context context) {
+        context = context == null ? Context.NONE : context;
+        if (this.isShareFile) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Cannot renew a lease on a share file."));
+        } else {
+            return this.client.shares().renewLeaseWithRestResponseAsync(null, this.leaseId, null,
+                this.shareSnapshot, null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
+        }
     }
 
     /**
