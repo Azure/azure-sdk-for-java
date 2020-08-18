@@ -367,7 +367,7 @@ public class ShareAsyncClient {
     Mono<Response<Void>> deleteWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.shares()
-            .deleteWithRestResponseAsync(shareName, snapshot, null, null,
+            .deleteWithRestResponseAsync(shareName, snapshot, null, null, null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
@@ -424,7 +424,7 @@ public class ShareAsyncClient {
     Mono<Response<ShareProperties>> getPropertiesWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.shares()
-            .getPropertiesWithRestResponseAsync(shareName, snapshot, null,
+            .getPropertiesWithRestResponseAsync(shareName, snapshot, null, null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::mapGetPropertiesResponse);
     }
@@ -480,7 +480,7 @@ public class ShareAsyncClient {
 
     Mono<Response<ShareInfo>> setQuotaWithResponse(int quotaInGB, Context context) {
         context = context == null ? Context.NONE : context;
-        return azureFileStorageClient.shares().setQuotaWithRestResponseAsync(shareName, null, quotaInGB,
+        return azureFileStorageClient.shares().setQuotaWithRestResponseAsync(shareName, null, quotaInGB, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::mapToShareInfoResponse);
     }
@@ -548,7 +548,7 @@ public class ShareAsyncClient {
 
     Mono<Response<ShareInfo>> setMetadataWithResponse(Map<String, String> metadata, Context context) {
         context = context == null ? Context.NONE : context;
-        return azureFileStorageClient.shares().setMetadataWithRestResponseAsync(shareName, null, metadata,
+        return azureFileStorageClient.shares().setMetadataWithRestResponseAsync(shareName, null, metadata, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::mapToShareInfoResponse);
     }
@@ -659,7 +659,7 @@ public class ShareAsyncClient {
         context = context == null ? Context.NONE : context;
 
         return azureFileStorageClient.shares()
-            .setAccessPolicyWithRestResponseAsync(shareName, permissions, null,
+            .setAccessPolicyWithRestResponseAsync(shareName, permissions, null, null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::mapToShareInfoResponse);
     }

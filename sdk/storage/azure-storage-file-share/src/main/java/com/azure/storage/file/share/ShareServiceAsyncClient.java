@@ -498,7 +498,7 @@ public final class ShareServiceAsyncClient {
         }
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.shares()
-            .deleteWithRestResponseAsync(shareName, snapshot, null, deleteSnapshots,
+            .deleteWithRestResponseAsync(shareName, snapshot, null, deleteSnapshots, null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }

@@ -43,12 +43,14 @@ import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 public final class ShareLeaseAsyncClient {
     private final ClientLogger logger = new ClientLogger(ShareLeaseAsyncClient.class);
 
+    private final boolean isShareFile;
     private final String leaseId;
     private final AzureFileStorageImpl client;
     private final String accountName;
 
-    ShareLeaseAsyncClient(HttpPipeline pipeline, String url, String leaseId, String accountName,
+    ShareLeaseAsyncClient(HttpPipeline pipeline, String url, String leaseId, boolean isShareFile, String accountName,
         String serviceVersion) {
+        this.isShareFile = isShareFile;
         this.leaseId = leaseId;
         this.client = new AzureFileStorageBuilder()
             .pipeline(pipeline)
@@ -59,11 +61,21 @@ public final class ShareLeaseAsyncClient {
     }
 
     /**
+     * @deprecated Please use {@link #getResourceUrl()}
+     */
+    @Deprecated
+    public String getFileUrl() {
+        return this.client.getUrl();
+    }
+
+    /**
      * Gets the {@link URL} of the lease client.
+     *
+     * <p>The lease will either be a share or share file URL depending on which the lease client is associated.</p>
      *
      * @return URL of the lease client.
      */
-    public String getFileUrl() {
+    public String getResourceUrl() {
         return this.client.getUrl();
     }
 
@@ -114,9 +126,17 @@ public final class ShareLeaseAsyncClient {
 
     Mono<Response<String>> acquireLeaseWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
-        return this.client.files().acquireLeaseWithRestResponseAsync(null, null, null, -1, this.leaseId, null,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
-            .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
+
+        int duration = -1;
+        if (this.isShareFile) {
+            return this.client.files().acquireLeaseWithRestResponseAsync(null, null, null, -1, this.leaseId, null,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
+        } else {
+            return this.client.shares().acquireLeaseWithRestResponseAsync(null, duration, this.leaseId, null,
+                null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
+        }
     }
 
     /**

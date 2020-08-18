@@ -1653,7 +1653,7 @@ public class ShareFileAsyncClient {
         String rangeString = finalOptions.getRange() == null ? null : finalOptions.getRange().toString();
         Function<String, Mono<PagedResponse<ShareFileRange>>> retriever =
             marker -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.files()
-                .getRangeListWithRestResponseAsync(shareName, filePath, snapshot, finalOptions.getPreviousSnapshot(),
+                .getRangeListWithRestResponseAsync(shareName, filePath, snapshot,
                     null, rangeString, finalRequestConditions.getLeaseId(), context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
