@@ -85,8 +85,8 @@ org.springframework.boot:spring-boot-actuator-autoconfigure;2.3.2.RELEASE
 org.springframework.boot:spring-boot-autoconfigure-processor;2.3.2.RELEASE
 org.springframework.boot:spring-boot-autoconfigure;2.3.2.RELEASE
 org.springframework.boot:spring-boot-configuration-processor;2.3.2.RELEASE
-# After you update spring-boot-dependencies's version, please run this script: /sdk/spring/scripts/sync_version_from_spring-boot-dependencies.py
-org.springframework.boot:spring-boot-dependencies;2.3.2.RELEASE
+# After you update spring-boot-dependencies' version, please run this script: /sdk/spring/scripts/sync_version_from_spring-boot-dependencies.py
+org.springframework.boot:spring-boot-dependencies;2.3.3.RELEASE
 org.springframework.boot:spring-boot-starter-actuator;2.3.2.RELEASE
 org.springframework.boot:spring-boot-starter-aop;2.3.2.RELEASE
 org.springframework.boot:spring-boot-starter-cache;2.3.2.RELEASE
@@ -122,7 +122,7 @@ org.springframework:spring-webmvc;5.2.8.RELEASE
 
 org.springframework.cloud:spring-cloud-bus;2.2.3.RELEASE
 org.springframework.cloud:spring-cloud-context;2.2.4.RELEASE
-# After you update spring-boot-dependencies's version, please run this script: /sdk/spring/scripts/sync_version_from_spring-boot-dependencies.py
+# After you update spring-boot-dependencies' version, please run this script: /sdk/spring/scripts/sync_version_from_spring-boot-dependencies.py
 org.springframework.cloud:spring-cloud-dependencies;Hoxton.SR7
 org.springframework.cloud:spring-cloud-starter-stream-kafka;3.0.7.RELEASE
 org.springframework.cloud:spring-cloud-stream-binder-test;3.0.7.RELEASE
