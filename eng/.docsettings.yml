@@ -134,7 +134,7 @@ known_content_issues:
   - ['sdk/keyvault/README.md', '#3113']
   - ['sdk/loganalytics/microsoft-azure-loganalytics/README.md', '#3113']
   - ['sdk/parents/azure-client-sdk-parent/README.md', '#3113']
-  - ['sdk/search/azure-search-documents/swagger/readme.md', '#3113']
+  - ['sdk/search/azure-search-documents/swagger/README.md', '#3113']
   - ['sdk/search/azure-search-documents/src/test/README.md', '#3113']
   - ['sdk/search/open-api/readme.md', '#3113']
   - ['sdk/servicebus/azure-messaging-servicebus/swagger/README.md', '#3113']
