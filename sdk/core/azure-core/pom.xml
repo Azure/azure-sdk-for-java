@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core</artifactId>
   <packaging>jar</packaging>
-  <version>1.7.0-beta.3</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+  <version>1.8.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
 
   <name>Microsoft Azure Java Core Library</name>
   <description>This package contains core types for Azure Java clients.</description>
@@ -58,17 +58,17 @@
     <dependency>
       <groupId>com.fasterxml.jackson.datatype</groupId>
       <artifactId>jackson-datatype-jsr310</artifactId>
-      <version>2.10.1</version> <!-- {x-version-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
+      <version>2.11.2</version> <!-- {x-version-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.dataformat</groupId>
       <artifactId>jackson-dataformat-xml</artifactId>
-      <version>2.10.1</version> <!-- {x-version-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
+      <version>2.11.2</version> <!-- {x-version-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>1.7.28</version> <!-- {x-version-update;org.slf4j:slf4j-api;external_dependency} -->
+      <version>1.7.30</version> <!-- {x-version-update;org.slf4j:slf4j-api;external_dependency} -->
     </dependency>
 
     <!-- Added this dependency to include necessary annotations used by reactor core.
@@ -84,12 +84,12 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-core</artifactId>
-      <version>3.3.8.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-core;external_dependency} -->
+      <version>3.3.9.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-core;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.3.8.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.3.9.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -124,7 +124,7 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>3.0.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <version>3.3.3</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -173,14 +173,11 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.netty:netty-tcnative-boringssl-static:[2.0.31.Final]
-                </include> <!-- {x-include-update;io.netty:netty-tcnative-boringssl-static;external_dependency} -->
-                <include>io.projectreactor:reactor-core:[3.3.8.RELEASE]</include> <!-- {x-include-update;io.projectreactor:reactor-core;external_dependency} -->
-                <include>com.fasterxml.jackson.dataformat:jackson-dataformat-xml:[2.10.1]
-                </include> <!-- {x-include-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
-                <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.10.1]
-                </include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
-                <include>org.slf4j:slf4j-api:[1.7.28]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
+                <include>io.netty:netty-tcnative-boringssl-static:[2.0.31.Final]</include> <!-- {x-include-update;io.netty:netty-tcnative-boringssl-static;external_dependency} -->
+                <include>io.projectreactor:reactor-core:[3.3.9.RELEASE]</include> <!-- {x-include-update;io.projectreactor:reactor-core;external_dependency} -->
+                <include>com.fasterxml.jackson.dataformat:jackson-dataformat-xml:[2.11.2]</include> <!-- {x-include-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
+                <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.11.2]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
+                <include>org.slf4j:slf4j-api:[1.7.30]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

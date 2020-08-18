@@ -25,7 +25,9 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.MethodSource;
 import reactor.netty.channel.BootstrapHandlers;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.resources.ConnectionProvider;
@@ -33,6 +35,9 @@ import reactor.test.StepVerifier;
 
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
+import java.time.Duration;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -317,5 +322,21 @@ public class NettyAsyncHttpClientBuilderTests {
         StepVerifier.create(nettyClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("getTimeoutMillisSupplier")
+    public void getTimeoutMillis(Duration timeout, long expected) {
+        assertEquals(expected, NettyAsyncHttpClientBuilder.getTimeoutMillis(timeout));
+    }
+
+    private static Stream<Arguments> getTimeoutMillisSupplier() {
+        return Stream.of(
+            Arguments.of(null, TimeUnit.SECONDS.toMillis(60)),
+            Arguments.of(Duration.ofSeconds(0), 0),
+            Arguments.of(Duration.ofSeconds(-1), 0),
+            Arguments.of(Duration.ofSeconds(120), TimeUnit.SECONDS.toMillis(120)),
+            Arguments.of(Duration.ofNanos(1), TimeUnit.MILLISECONDS.toMillis(1))
+        );
     }
 }

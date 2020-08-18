@@ -45,7 +45,8 @@ class MockReactorHandlerProvider extends ReactorHandlerProvider {
     }
 
     @Override
-    public ReceiveLinkHandler createReceiveLinkHandler(String connectionId, String fullyQualifiedNamespace, String receiverName, String entityPath) {
+    public ReceiveLinkHandler createReceiveLinkHandler(String connectionId, String fullyQualifiedNamespace,
+        String receiverName, String entityPath) {
         return receiveLinkHandler;
     }
 }

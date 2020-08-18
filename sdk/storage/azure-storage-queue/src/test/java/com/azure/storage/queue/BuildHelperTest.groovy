@@ -15,6 +15,7 @@ import com.azure.core.util.DateTimeRfc1123
 import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.policy.RequestRetryOptions
+import com.azure.storage.common.policy.RetryPolicyType
 import com.azure.storage.queue.implementation.util.BuilderHelper
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -24,6 +25,7 @@ import spock.lang.Specification
 class BuildHelperTest extends Specification {
     static def credentials = new StorageSharedKeyCredential("accountName", "accountKey")
     static def endpoint = "https://account.queue.core.windows.net/"
+    static def requestRetryOptions = new RequestRetryOptions(RetryPolicyType.FIXED, 2, 2, 1000, 4000, null)
 
     static HttpRequest request(String url) {
         return new HttpRequest(HttpMethod.HEAD, new URL(url), new HttpHeaders().put("Content-Length", "0"),
@@ -35,7 +37,7 @@ class BuildHelperTest extends Specification {
      */
     def "Fresh date applied on retry"() {
         when:
-        def pipeline = BuilderHelper.buildPipeline(credentials, null, null, endpoint, new RequestRetryOptions(), null,
+        def pipeline = BuilderHelper.buildPipeline(credentials, null, null, endpoint, requestRetryOptions, null,
             new FreshDateTestClient(), new ArrayList<>(), Configuration.NONE, new ClientLogger(BuildHelperTest.class))
 
         then:
@@ -53,6 +55,7 @@ class BuildHelperTest extends Specification {
             .endpoint(endpoint)
             .credential(credentials)
             .httpClient(new FreshDateTestClient())
+            .retryOptions(requestRetryOptions)
             .buildClient()
 
         then:
@@ -71,6 +74,7 @@ class BuildHelperTest extends Specification {
             .queueName("queue")
             .credential(credentials)
             .httpClient(new FreshDateTestClient())
+            .retryOptions(requestRetryOptions)
             .buildClient()
 
         then:
@@ -100,5 +104,14 @@ class BuildHelperTest extends Specification {
 
             return new DateTimeRfc1123(dateHeader)
         }
+    }
+
+    def "Parse protocol"() {
+        when:
+        def parts = BuilderHelper.parseEndpoint(endpoint +
+            "?sv=2019-12-12&ss=bfqt&srt=s&sp=rwdlacupx&se=2020-08-15T05:43:05Z&st=2020-08-14T21:43:05Z&spr=https,http&sig=sig", null)
+
+        then:
+        parts.getSasToken().contains("https%2Chttp")
     }
 }

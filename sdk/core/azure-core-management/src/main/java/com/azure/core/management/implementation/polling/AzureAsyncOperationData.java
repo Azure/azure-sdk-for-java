@@ -102,10 +102,11 @@ final class AzureAsyncOperationData {
                 HttpHeaders pollResponseHeaders,
                 String pollResponseBody,
                 SerializerAdapter adapter) {
-        if (pollResponseStatusCode != 200) {
+        if (pollResponseStatusCode != 200 && pollResponseStatusCode != 201 && pollResponseStatusCode != 202) {
             this.provisioningState = ProvisioningState.FAILED;
             this.pollError = new Error("Polling failed with status code:" + pollResponseStatusCode,
                 pollResponseStatusCode,
+                pollResponseHeaders.toMap(),
                 pollResponseBody);
         } else {
             AsyncOperationResource resource = tryParseAsyncOperationResource(pollResponseBody, adapter);
@@ -113,6 +114,7 @@ final class AzureAsyncOperationData {
                 this.provisioningState = ProvisioningState.FAILED;
                 this.pollError = new Error("Polling response does not contain a valid body.",
                     pollResponseStatusCode,
+                    pollResponseHeaders.toMap(),
                     pollResponseBody);
             } else {
                 this.provisioningState = resource.getProvisioningState();
@@ -120,6 +122,7 @@ final class AzureAsyncOperationData {
                     || ProvisioningState.CANCELED.equalsIgnoreCase(this.provisioningState)) {
                     this.pollError = new Error("Long running operation is Failed or Cancelled.",
                         pollResponseStatusCode,
+                        pollResponseHeaders.toMap(),
                         pollResponseBody);
                 } else {
                     if (ProvisioningState.SUCCEEDED.equalsIgnoreCase(this.provisioningState)) {

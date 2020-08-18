@@ -19,44 +19,44 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
-      <version>5.2.6.RELEASE</version> <!-- {x-version-update;org.springframework:spring-context;external_dependency} -->
+      <version>5.2.8.RELEASE</version> <!-- {x-version-update;org.springframework:spring-context;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter</artifactId>
-      <version>2.3.0.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
+      <version>2.3.3.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-annotations</artifactId>
-      <version>2.10.1</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
+      <version>2.11.2</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>2.10.1</version>  <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+      <version>2.11.2</version>  <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.projectreactor.netty</groupId>
       <artifactId>reactor-netty</artifactId>
-      <version>0.9.10.RELEASE</version> <!-- {x-version-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
+      <version>0.9.11.RELEASE</version> <!-- {x-version-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.13-beta-3</version> <!-- {x-version-update;junit:junit;external_dependency} -->
+      <version>4.13</version> <!-- {x-version-update;junit:junit;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>3.0.0</version><!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <version>3.3.3</version><!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>2.3.0.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>2.3.3.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -82,11 +82,11 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.fasterxml.jackson.core:jackson-annotations:[2.10.1]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
-                <include>com.fasterxml.jackson.core:jackson-databind:[2.10.1]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
-                <include>io.projectreactor.netty:reactor-netty:[0.9.10.RELEASE]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-starter:[2.3.0.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
-                <include>org.springframework:spring-context:[5.2.6.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-context;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-annotations:[2.11.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-databind:[2.11.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+                <include>io.projectreactor.netty:reactor-netty:[0.9.11.RELEASE]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter:[2.3.3.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
+                <include>org.springframework:spring-context:[5.2.8.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-context;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

@@ -37,8 +37,8 @@ public class LocalCryptographyClientTest extends LocalCryptographyClientTestBase
 
     private LocalCryptographyClient initializeCryptographyClient(JsonWebKey key) {
         return new LocalCryptographyClientBuilder()
-                   .key(key)
-                   .buildClient();
+            .key(key)
+            .buildClient();
     }
 
     @Test

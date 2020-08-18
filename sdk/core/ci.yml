@@ -71,7 +71,5 @@ extends:
         groupId: com.azure
         safeName: azurecoretracingopentelemetry
     AdditionalModules:
-      - name: azure-data-appconfiguration
-        groupId: com.azure
       - name: perf-test-core
         groupId: com.azure

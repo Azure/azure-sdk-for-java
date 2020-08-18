@@ -80,5 +80,3 @@ extends:
     AdditionalModules:
       - name: azure-storage-perf
         groupId: com.azure
-      - name: azure-messaging-eventhubs
-        groupId: com.azure

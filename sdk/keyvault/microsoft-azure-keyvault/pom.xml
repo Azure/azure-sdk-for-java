@@ -142,7 +142,7 @@ the MIT License. See License.txt in the project root for license information. --
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.13-beta-3</version> <!-- {x-version-update;junit:junit;external_dependency} -->
+      <version>4.13</version> <!-- {x-version-update;junit:junit;external_dependency} -->
       <scope>test</scope>
     </dependency>
 

@@ -60,40 +60,40 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.7.0-beta.3</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.8.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
 
     <dependency>
       <groupId>com.squareup.okhttp3</groupId>
       <artifactId>okhttp</artifactId>
-      <version>4.2.2</version> <!-- {x-version-update;com.squareup.okhttp3:okhttp;external_dependency} -->
+      <version>4.8.1</version> <!-- {x-version-update;com.squareup.okhttp3:okhttp;external_dependency} -->
     </dependency>
 
     <!-- test dependencies on azure-core, because we want to run tests inherited from this module using OkHttp -->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.7.0-beta.3</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.8.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.4.0-beta.1</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
+      <version>1.5.0-beta.1</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.4.0-beta.1</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
+      <version>1.5.0-beta.1</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.3.8.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.3.9.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -125,7 +125,7 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>3.0.0</version><!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <version>3.3.3</version><!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -140,7 +140,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.squareup.okhttp3:okhttp:[4.2.2]</include> <!-- {x-include-update;com.squareup.okhttp3:okhttp;external_dependency} -->
+                <include>com.squareup.okhttp3:okhttp:[4.8.1]</include> <!-- {x-include-update;com.squareup.okhttp3:okhttp;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

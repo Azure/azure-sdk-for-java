@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.azure.ai.formrecognizer.models.FieldValueType.DATE;
-import static com.azure.ai.formrecognizer.models.FieldValueType.DOUBLE;
+import static com.azure.ai.formrecognizer.models.FieldValueType.FLOAT;
 import static com.azure.ai.formrecognizer.models.FieldValueType.LIST;
 import static com.azure.ai.formrecognizer.models.FieldValueType.LONG;
 import static com.azure.ai.formrecognizer.models.FieldValueType.MAP;
@@ -26,10 +26,10 @@ import static com.azure.ai.formrecognizer.models.FieldValueType.TIME;
 @Fluent
 public final class FieldValue {
     private final ClientLogger logger = new ClientLogger(FieldValue.class);
-    private final FieldValueType type;
+    private final FieldValueType valueType;
     private Map<String, FormField> formFieldMap;
     private List<FormField> formFieldList;
-    private Double formFieldDouble;
+    private Float formFieldFloat;
     private Long formFieldLong;
     private LocalDate formFieldDate;
     private LocalTime formFieldTime;
@@ -40,12 +40,12 @@ public final class FieldValue {
      * Constructs a FieldValue object
      *
      * @param value The actual value of the field.
-     * @param type The type of the field.
+     * @param valueType The type of the field.
      */
     @SuppressWarnings("unchecked")
-    public FieldValue(final Object value, final FieldValueType type) {
-        this.type = type;
-        switch (type) {
+    public FieldValue(final Object value, final FieldValueType valueType) {
+        this.valueType = valueType;
+        switch (valueType) {
             case STRING:
                 formFieldString = (String) value;
                 break;
@@ -58,8 +58,8 @@ public final class FieldValue {
             case PHONE_NUMBER:
                 formFieldPhoneNumber = (String) value;
                 break;
-            case DOUBLE:
-                formFieldDouble = (Double) value;
+            case FLOAT:
+                formFieldFloat = (Float) value;
                 break;
             case LONG:
                 formFieldLong = (Long) value;
@@ -71,7 +71,7 @@ public final class FieldValue {
                 formFieldMap = (Map<String, FormField>) value;
                 break;
             default:
-                throw logger.logExceptionAsError(new IllegalStateException("Unexpected type value: " + type));
+                throw logger.logExceptionAsError(new IllegalStateException("Unexpected type value: " + valueType));
         }
     }
 
@@ -80,20 +80,20 @@ public final class FieldValue {
      *
      * @return the {@link FieldValueType type} of the field.
      */
-    public FieldValueType getType() {
-        return type;
+    public FieldValueType getValueType() {
+        return valueType;
     }
 
     /**
      * Gets the value of the field as a {@link String}.
      *
      * @return the value of the field as a {@link String}.
-     * @throws UnsupportedOperationException if {@link FieldValue#getType()} is not {@link FieldValueType#STRING}.
+     * @throws UnsupportedOperationException if {@link FieldValue#getValueType()} is not {@link FieldValueType#STRING}.
      */
     public String asString() {
-        if (STRING != this.getType()) {
+        if (STRING != this.getValueType()) {
             throw logger.logExceptionAsError((new UnsupportedOperationException(String.format("Cannot get field as "
-                + "%s from field value of type %s", STRING, this.getType()))));
+                + "%s from field value of type %s", STRING, this.getValueType()))));
         }
         return this.formFieldString;
     }
@@ -102,40 +102,40 @@ public final class FieldValue {
      * Gets the value of the field as a {@link Long}.
      *
      * @return the value of the field as a {@link Long}.
-     * @throws UnsupportedOperationException if {@link FieldValue#getType()} is not {@link FieldValueType#LONG}.
+     * @throws UnsupportedOperationException if {@link FieldValue#getValueType()} is not {@link FieldValueType#LONG}.
      */
     public Long asLong() {
-        if (LONG != this.getType()) {
+        if (LONG != this.getValueType()) {
             throw logger.logExceptionAsError((new UnsupportedOperationException(String.format("Cannot get field as "
-                + "%s from field value of type %s", LONG, this.getType()))));
+                + "%s from field value of type %s", LONG, this.getValueType()))));
         }
         return this.formFieldLong;
     }
 
     /**
-     * Gets the value of the field as a {@link Double}.
+     * Gets the value of the field as a {@link Float}.
      *
-     * @return the value of the field as a {@link Double}.
-     * @throws UnsupportedOperationException if {@link FieldValue#getType()} is not {@link FieldValueType#DOUBLE}.
+     * @return the value of the field as a {@link Float}.
+     * @throws UnsupportedOperationException if {@link FieldValue#getValueType()} is not {@link FieldValueType#FLOAT}.
      */
-    public Double asDouble() {
-        if (DOUBLE != this.getType()) {
+    public Float asFloat() {
+        if (FLOAT != this.getValueType()) {
             throw logger.logExceptionAsError((new UnsupportedOperationException(String.format("Cannot get field as "
-                + "%s from field value of type %s", DOUBLE, this.getType()))));
+                + "%s from field value of type %s", FLOAT, this.getValueType()))));
         }
-        return this.formFieldDouble;
+        return this.formFieldFloat;
     }
 
     /**
      * Gets the value of the field as a {@link LocalDate}.
      *
      * @return the value of the field as a {@link LocalDate}.
-     * @throws UnsupportedOperationException if {@link FieldValue#getType()} is not {@link FieldValueType#DATE}.
+     * @throws UnsupportedOperationException if {@link FieldValue#getValueType()} is not {@link FieldValueType#DATE}.
      */
     public LocalDate asDate() {
-        if (DATE != this.getType()) {
+        if (DATE != this.getValueType()) {
             throw logger.logExceptionAsError((new UnsupportedOperationException(String.format("Cannot get field as "
-                + "%s from field value of type %s", DATE, this.getType()))));
+                + "%s from field value of type %s", DATE, this.getValueType()))));
         }
         return this.formFieldDate;
     }
@@ -144,12 +144,12 @@ public final class FieldValue {
      * Gets the value of the field as a {@link LocalTime}.
      *
      * @return the value of the field as a {@link LocalTime}.
-     * @throws UnsupportedOperationException if {@link FieldValue#getType()} is not {@link FieldValueType#TIME}.
+     * @throws UnsupportedOperationException if {@link FieldValue#getValueType()} is not {@link FieldValueType#TIME}.
      */
     public LocalTime asTime() {
-        if (TIME != this.getType()) {
+        if (TIME != this.getValueType()) {
             throw logger.logExceptionAsError((new UnsupportedOperationException(String.format("Cannot get field as "
-                + "%s from field value of type %s", TIME, this.getType()))));
+                + "%s from field value of type %s", TIME, this.getValueType()))));
         }
         return this.formFieldTime;
     }
@@ -158,12 +158,13 @@ public final class FieldValue {
      * Gets the value of the field as a phone number.
      *
      * @return the value of the field as a phone number.
-     * @throws UnsupportedOperationException if {@link FieldValue#getType()} is not {@link FieldValueType#PHONE_NUMBER}.
+     * @throws UnsupportedOperationException if {@link FieldValue#getValueType()} is not
+     * {@link FieldValueType#PHONE_NUMBER}.
      */
     public String asPhoneNumber() {
-        if (PHONE_NUMBER != this.getType()) {
+        if (PHONE_NUMBER != this.getValueType()) {
             throw logger.logExceptionAsError((new UnsupportedOperationException(String.format("Cannot get field as a"
-                + "%s from field value of type %s", PHONE_NUMBER, this.getType()))));
+                + "%s from field value of type %s", PHONE_NUMBER, this.getValueType()))));
         }
         return this.formFieldPhoneNumber;
     }
@@ -172,12 +173,12 @@ public final class FieldValue {
      * Gets the value of the field as a {@link List}.
      *
      * @return the value of the field as an unmodifiable {@link List}.
-     * @throws UnsupportedOperationException if {@link FieldValue#getType()} is not {@link FieldValueType#LIST}.
+     * @throws UnsupportedOperationException if {@link FieldValue#getValueType()} is not {@link FieldValueType#LIST}.
      */
     public List<FormField> asList() {
-        if (LIST != this.getType()) {
+        if (LIST != this.getValueType()) {
             throw logger.logExceptionAsError((new UnsupportedOperationException(String.format("Cannot get field as a "
-                + "%s from field value of type %s", LIST, this.getType()))));
+                + "%s from field value of type %s", LIST, this.getValueType()))));
         }
         return this.formFieldList;
     }
@@ -186,12 +187,12 @@ public final class FieldValue {
      * Gets the value of the field as a {@link Map}.
      *
      * @return the value of the field as an unmodifiable {@link Map}.
-     * @throws UnsupportedOperationException if {@link FieldValue#getType()} is not {@link FieldValueType#MAP}.
+     * @throws UnsupportedOperationException if {@link FieldValue#getValueType()} is not {@link FieldValueType#MAP}.
      */
     public Map<String, FormField> asMap() {
-        if (MAP != this.getType()) {
+        if (MAP != this.getValueType()) {
             throw logger.logExceptionAsError((new UnsupportedOperationException(String.format("Cannot get field as a "
-                + "%s from field value of type %s", MAP, this.getType()))));
+                + "%s from field value of type %s", MAP, this.getValueType()))));
         }
         return this.formFieldMap;
     }

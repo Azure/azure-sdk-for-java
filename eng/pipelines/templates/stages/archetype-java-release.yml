@@ -87,7 +87,6 @@ stages:
             displayName: "Create release tag"
             condition: and(succeeded(), ne(variables['Skip.TagRepository'], 'true'))
             environment: github
-            timeoutInMinutes: 5
             dependsOn: VerifyReleaseVersion
             variables:
               - template: ../variables/globals.yml
@@ -152,7 +151,8 @@ stages:
               environment: github
               dependsOn: PublishPackage
               variables:
-                - template: ../variables/globals.yml
+                CIConfigs: "{'targets':[{'path_to_config':'package.json','mode':'Preview','monikerid':'1'},{'path_to_config':'package.json','mode':'Latest','monikerid':'0'}]}"
+                skipComponentGovernanceDetection: true
               pool:
                 vmImage: vs2017-win2016
               strategy:
@@ -160,6 +160,10 @@ stages:
                   deploy:
                     steps:
                       - checkout: self
+                      - template: /eng/common/pipelines/templates/steps/get-pr-owners.yml
+                        parameters:
+                          TargetVariable: "OwningGHUser"
+                          ServiceDirectory: ${{parameters.ServiceDirectory}}
                       - template: /eng/common/pipelines/templates/steps/docs-metadata-release.yml
                         parameters:
                           ArtifactLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
@@ -169,10 +173,12 @@ stages:
                           WorkingDirectory: $(System.DefaultWorkingDirectory)
                           TargetDocRepoOwner: ${{parameters.TargetDocRepoOwner}}
                           TargetDocRepoName: ${{parameters.TargetDocRepoName}}
-                          PRBranchName: 'smoke-test-rdme'
-                          ArtifactName: ${{parameters.ArtifactName}}
+                          PRBranchName: onboarding-${{artifact.name}}-$(Build.BuildId)
+                          ArtifactName: ${{artifact.name}}
                           Language: 'java'
                           DocRepoDestinationPath: 'docs-ref-services/'
+                          GHReviewersVariable: 'OwningGHUser'
+                          CIConfigs: $(CIConfigs)
 
           - ${{if ne(artifact.options.skipPublishDocs, 'true')}}:
             - deployment: PublishDocs

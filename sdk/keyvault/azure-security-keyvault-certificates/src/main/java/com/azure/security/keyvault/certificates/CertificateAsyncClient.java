@@ -3,10 +3,6 @@
 
 package com.azure.security.keyvault.certificates;
 
-import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
-
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -17,29 +13,32 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.util.FluxUtil;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.PollingContext;
+import com.azure.security.keyvault.certificates.models.CertificateContact;
 import com.azure.security.keyvault.certificates.models.CertificateContentType;
+import com.azure.security.keyvault.certificates.models.CertificateIssuer;
 import com.azure.security.keyvault.certificates.models.CertificateOperation;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
-import com.azure.security.keyvault.certificates.models.DeletedCertificate;
-import com.azure.security.keyvault.certificates.models.CertificateContact;
-import com.azure.security.keyvault.certificates.models.CertificateIssuer;
-import com.azure.security.keyvault.certificates.models.IssuerProperties;
-import com.azure.security.keyvault.certificates.models.MergeCertificateOptions;
+import com.azure.security.keyvault.certificates.models.CertificatePolicyAction;
 import com.azure.security.keyvault.certificates.models.CertificateProperties;
+import com.azure.security.keyvault.certificates.models.DeletedCertificate;
+import com.azure.security.keyvault.certificates.models.ImportCertificateOptions;
+import com.azure.security.keyvault.certificates.models.IssuerProperties;
 import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
 import com.azure.security.keyvault.certificates.models.KeyVaultCertificateWithPolicy;
-import com.azure.security.keyvault.certificates.models.CertificatePolicyAction;
 import com.azure.security.keyvault.certificates.models.LifetimeAction;
-import com.azure.security.keyvault.certificates.models.ImportCertificateOptions;
+import com.azure.security.keyvault.certificates.models.MergeCertificateOptions;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -51,8 +50,9 @@ import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 /**
  * The CertificateAsyncClient provides asynchronous methods to manage {@link KeyVaultCertificate certifcates} in the Azure Key Vault. The client
@@ -81,6 +81,8 @@ public final class CertificateAsyncClient {
     // for more information on Azure resource provider namespaces.
     private static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
 
+    private static final Duration DEFAULT_POLL_DURATION = Duration.ofSeconds(1);
+
     private final String vaultUrl;
     private final CertificateService service;
     private final ClientLogger logger = new ClientLogger(CertificateAsyncClient.class);
@@ -107,6 +109,10 @@ public final class CertificateAsyncClient {
         return vaultUrl;
     }
 
+    Duration getPollDuration() {
+        return DEFAULT_POLL_DURATION;
+    }
+
     /**
      * Creates a new certificate. If this is the first version, the certificate resource is created. This operation requires
      * the certificates/create permission.
@@ -125,7 +131,7 @@ public final class CertificateAsyncClient {
      * @return A {@link PollerFlux} polling on the create certificate operation status.
      */
     public PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(String certificateName, CertificatePolicy policy, Boolean isEnabled, Map<String, String> tags) {
-        return new PollerFlux<>(Duration.ofSeconds(1),
+        return new PollerFlux<>(getPollDuration(),
                 activationOperation(certificateName, policy, isEnabled, tags),
                 createPollOperation(certificateName),
                 cancelOperation(certificateName),
@@ -240,7 +246,7 @@ public final class CertificateAsyncClient {
      * @return A {@link PollerFlux} polling on the certificate operation status.
      */
     public PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> getCertificateOperation(String certificateName) {
-        return new PollerFlux<>(Duration.ofSeconds(1),
+        return new PollerFlux<>(getPollDuration(),
             (pollingContext) -> Mono.empty(),
             createPollOperation(certificateName),
             cancelOperation(certificateName),
@@ -446,7 +452,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<DeletedCertificate, Void> beginDeleteCertificate(String certificateName) {
-        return new PollerFlux<>(Duration.ofSeconds(1),
+        return new PollerFlux<>(getPollDuration(),
             activationOperation(certificateName),
             createDeletePollOperation(certificateName),
             (context, firstResponse) -> Mono.empty(),
@@ -627,7 +633,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<KeyVaultCertificateWithPolicy, Void> beginRecoverDeletedCertificate(String certificateName) {
-        return new PollerFlux<>(Duration.ofSeconds(1),
+        return new PollerFlux<>(getPollDuration(),
             recoverActivationOperation(certificateName),
             createRecoverPollOperation(certificateName),
             (context, firstResponse) -> Mono.empty(),

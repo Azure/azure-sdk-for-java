@@ -10,7 +10,6 @@ import com.azure.storage.common.sas.AccountSasSignatureValues
 import com.azure.storage.common.sas.SasProtocol
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.sas.SasIpRange
-
 import com.azure.storage.queue.models.QueueAccessPolicy
 import com.azure.storage.queue.models.QueueSignedIdentifier
 import com.azure.storage.queue.models.QueueStorageException
@@ -18,7 +17,6 @@ import com.azure.storage.queue.models.SendMessageResult
 import com.azure.storage.queue.sas.QueueSasPermission
 import com.azure.storage.queue.sas.QueueServiceSasSignatureValues
 import org.junit.Test
-import spock.lang.Ignore
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -354,5 +352,4 @@ class QueueSASTests extends APISpec {
         then:
         notThrown(Exception)
     }
-
 }

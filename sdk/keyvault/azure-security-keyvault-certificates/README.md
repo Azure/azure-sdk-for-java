@@ -14,7 +14,7 @@ Maven dependency for the Azure Key Vault Certificate client library. Add it to y
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-certificates</artifactId>
-    <version>4.0.5</version>
+    <version>4.1.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -138,7 +138,7 @@ SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certificatePolle
     certificateClient.beginCreateCertificate("certificateName", CertificatePolicy.getDefault());
 certificatePoller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
 KeyVaultCertificate certificate = certificatePoller.getFinalResult();
-System.out.printf("Certificate created with name \"%s\"\n", certificate.getName());
+System.out.printf("Certificate created with name \"%s\"%n", certificate.getName());
 ```
 
 ### Retrieve a certificate
@@ -146,7 +146,7 @@ Retrieve a previously stored certificate by calling `getCertificate` or `getCert
 
 ```Java
 KeyVaultCertificateWithPolicy certificate = certificateClient.getCertificate("<certificate-name>");
-System.out.printf("Recevied certificate with name \"%s\", version %s and secret id %s\n",
+System.out.printf("Recevied certificate with name \"%s\", version %s and secret id %s%n",
     certificate.getProperties().getName(), certificate.getProperties().getVersion(), certificate.getSecretId());
 ```
 
@@ -159,7 +159,7 @@ KeyVaultCertificate certificate = certificateClient.getCertificate("<certificate
 // Update certificate enabled status.
 certificate.getProperties().setEnabled(false);
 KeyVaultCertificate updatedCertificate = certificateClient.updateCertificateProperties(certificate.getProperties());
-System.out.printf("Updated certificate with name \"%s\" and enabled status \"%s\"\n",
+System.out.printf("Updated certificate with name \"%s\" and enabled status \"%s\"%n",
     updatedCertificate.getProperties().getName(), updatedCertificate.getProperties().isEnabled());
 ```
 
@@ -235,7 +235,7 @@ Retrieve a previously stored certificate by calling `getCertificate` or `getCert
 ```Java
 certificateAsyncClient.getCertificate("<certificate-name>")
     .subscribe(certificateResponse ->
-        System.out.printf("Certificate was returned with name \"%s\" and secretId %s\n",
+        System.out.printf("Certificate was returned with name \"%s\" and secretId %s%n",
             certificateResponse.getProperties().getName(), certificateResponse.getSecretId()));
 ```
 
@@ -250,8 +250,8 @@ certificateAsyncClient.getCertificate("<certificate-name>")
         certificate.getProperties().setEnabled(false);
         certificateAsyncClient.updateCertificateProperties(certificate.getProperties())
             .subscribe(certificateResponse ->
-                System.out.printf("Certificate's enabled status %s\n",
-                    certificateResponse.getProperties().isEnabled().toString()));
+                System.out.printf("Certificate's enabled status: %s%n",
+                    certificateResponse.getProperties().isEnabled()));
     });
 ```
 
@@ -261,9 +261,9 @@ Delete an existing certificate by calling `beginDeleteCertificate`.
 ```java
 certificateAsyncClient.beginDeleteCertificate("<certificate-name>")
     .subscribe(pollResponse -> {
-        System.out.printf("Deletion status: %s\n", pollResponse.getStatus().toString());
-        System.out.printf("Deleted certificate name: %s\n", pollResponse.getValue().getName());
-        System.out.printf("Certificate deletion date: %s\n", pollResponse.getValue().getDeletedOn().toString());
+        System.out.printf("Deletion status: %s%n", pollResponse.getStatus());
+        System.out.printf("Deleted certificate name: %s%n", pollResponse.getValue().getName());
+        System.out.printf("Certificate deletion date: %s%n", pollResponse.getValue().getDeletedOn());
     });
 ```
 
@@ -278,8 +278,8 @@ certificateAsyncClient.listPropertiesOfCertificates()
         certificateAsyncClient.getCertificateVersion(certificateProperties.getName(),
             certificateProperties.getVersion())
             .subscribe(certificateResponse ->
-                System.out.printf("Received certificate with name \"%s\" and key id %s",
-                    certificateResponse.getName(), certificateResponse.getKeyId())));
+                System.out.printf("Received certificate with name \"%s\" and key id %s", certificateResponse.getName(),
+                    certificateResponse.getKeyId())));
 ```
 
 ## Troubleshooting

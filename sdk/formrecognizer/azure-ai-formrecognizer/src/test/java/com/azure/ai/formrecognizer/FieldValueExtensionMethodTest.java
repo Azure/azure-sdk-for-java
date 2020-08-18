@@ -207,37 +207,37 @@ public class FieldValueExtensionMethodTest {
     }
 
     /**
-     * Test for {@link FieldValue#asDouble()} to double.
+     * Test for {@link FieldValue#asFloat()} to double.
      */
     @Test
-    public void toDoubleFromDouble() {
-        Double inputDouble = 2.2;
-        Double actualDoubleValue = new FormField(null, null, null,
-            new FieldValue(inputDouble, FieldValueType.DOUBLE), 0).getValue().asDouble();
-        assertEquals(inputDouble, actualDoubleValue);
+    public void toFloatFromFloat() {
+        Float inputFloat = 2.2f;
+        Float actualDoubleValue = new FormField(null, null, null,
+            new FieldValue(inputFloat, FieldValueType.FLOAT), 0).getValue().asFloat();
+        assertEquals(inputFloat, actualDoubleValue);
     }
 
     /**
-     * Test for {@link FieldValue#asDouble()} to double from String.
+     * Test for {@link FieldValue#asFloat()} to double from String.
      */
     @Test
-    public void toDoubleFromString() {
-        String doubleString = "2.2";
+    public void toFloatFromString() {
+        String floatString = "2.2";
         final UnsupportedOperationException unsupportedOperationException =
             assertThrows(UnsupportedOperationException.class, () ->
                 new FormField(null, null, null,
-                    new FieldValue(doubleString, FieldValueType.STRING), 0).getValue().asDouble());
-        assertEquals(unsupportedOperationException.getMessage(), "Cannot get field as DOUBLE from "
+                    new FieldValue(floatString, FieldValueType.STRING), 0).getValue().asFloat());
+        assertEquals(unsupportedOperationException.getMessage(), "Cannot get field as FLOAT from "
             + "field value of type STRING");
     }
 
     /**
-     * Test for {@link FieldValue#asDouble()} to double from null field value.
+     * Test for {@link FieldValue#asFloat()} to double from null field value.
      */
     @Test
-    public void toDoubleFromNull() {
+    public void toFloatFromNull() {
         assertNull(new FormField(null, null, null,
-            new FieldValue(null, FieldValueType.DOUBLE), 0).getValue().asDouble());
+            new FieldValue(null, FieldValueType.FLOAT), 0).getValue().asFloat());
     }
 
     /**

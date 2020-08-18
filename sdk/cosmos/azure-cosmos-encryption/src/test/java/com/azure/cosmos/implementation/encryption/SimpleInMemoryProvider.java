@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.encryption;
 
 import com.azure.cosmos.encryption.DataEncryptionKey;
 import com.azure.cosmos.encryption.DataEncryptionKeyProvider;
+import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +18,7 @@ public class SimpleInMemoryProvider implements DataEncryptionKeyProvider {
     }
 
     @Override
-    public DataEncryptionKey getDataEncryptionKey(String id, String algorithm) {
-        return keyMap.get(id);
+    public Mono<DataEncryptionKey> getDataEncryptionKey(String id, String algorithm) {
+        return Mono.just(keyMap.get(id));
     }
 }
