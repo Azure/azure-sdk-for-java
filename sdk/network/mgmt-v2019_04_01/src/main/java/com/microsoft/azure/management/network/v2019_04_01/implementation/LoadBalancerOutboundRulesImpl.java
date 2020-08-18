@@ -54,10 +54,14 @@ class LoadBalancerOutboundRulesImpl extends WrapperImpl<LoadBalancerOutboundRule
     public Observable<OutboundRule> getAsync(String resourceGroupName, String loadBalancerName, String outboundRuleName) {
         LoadBalancerOutboundRulesInner client = this.inner();
         return client.getAsync(resourceGroupName, loadBalancerName, outboundRuleName)
-        .map(new Func1<OutboundRuleInner, OutboundRule>() {
+        .flatMap(new Func1<OutboundRuleInner, Observable<OutboundRule>>() {
             @Override
-            public OutboundRule call(OutboundRuleInner inner) {
-                return wrapModel(inner);
+            public Observable<OutboundRule> call(OutboundRuleInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((OutboundRule)wrapModel(inner));
+                }
             }
        });
     }

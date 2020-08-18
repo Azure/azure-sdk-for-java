@@ -32,8 +32,8 @@ public class PrivateLinkServiceConnectionState {
      * A message indicating if changes on the service provider require any
      * updates on the consumer.
      */
-    @JsonProperty(value = "actionRequired")
-    private String actionRequired;
+    @JsonProperty(value = "actionsRequired")
+    private String actionsRequired;
 
     /**
      * Get indicates whether the connection has been Approved/Rejected/Removed by the owner of the service.
@@ -78,20 +78,20 @@ public class PrivateLinkServiceConnectionState {
     /**
      * Get a message indicating if changes on the service provider require any updates on the consumer.
      *
-     * @return the actionRequired value
+     * @return the actionsRequired value
      */
-    public String actionRequired() {
-        return this.actionRequired;
+    public String actionsRequired() {
+        return this.actionsRequired;
     }
 
     /**
      * Set a message indicating if changes on the service provider require any updates on the consumer.
      *
-     * @param actionRequired the actionRequired value to set
+     * @param actionsRequired the actionsRequired value to set
      * @return the PrivateLinkServiceConnectionState object itself.
      */
-    public PrivateLinkServiceConnectionState withActionRequired(String actionRequired) {
-        this.actionRequired = actionRequired;
+    public PrivateLinkServiceConnectionState withActionsRequired(String actionsRequired) {
+        this.actionsRequired = actionsRequired;
         return this;
     }
 

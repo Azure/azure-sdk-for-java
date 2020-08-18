@@ -64,10 +64,14 @@ class InboundNatRulesImpl extends WrapperImpl<InboundNatRulesInner> implements I
     public Observable<InboundNatRule> getAsync(String resourceGroupName, String loadBalancerName, String inboundNatRuleName) {
         InboundNatRulesInner client = this.inner();
         return client.getAsync(resourceGroupName, loadBalancerName, inboundNatRuleName)
-        .map(new Func1<InboundNatRuleInner, InboundNatRule>() {
+        .flatMap(new Func1<InboundNatRuleInner, Observable<InboundNatRule>>() {
             @Override
-            public InboundNatRule call(InboundNatRuleInner inner) {
-                return wrapModel(inner);
+            public Observable<InboundNatRule> call(InboundNatRuleInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((InboundNatRule)wrapModel(inner));
+                }
             }
        });
     }

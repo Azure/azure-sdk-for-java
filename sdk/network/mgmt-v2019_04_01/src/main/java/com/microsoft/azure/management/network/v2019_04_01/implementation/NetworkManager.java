@@ -20,8 +20,6 @@ import com.microsoft.azure.management.network.v2019_04_01.ApplicationGateways;
 import com.microsoft.azure.management.network.v2019_04_01.ApplicationSecurityGroups;
 import com.microsoft.azure.management.network.v2019_04_01.AvailableDelegations;
 import com.microsoft.azure.management.network.v2019_04_01.AvailableResourceGroupDelegations;
-import com.microsoft.azure.management.network.v2019_04_01.AvailablePrivateEndpointTypes;
-import com.microsoft.azure.management.network.v2019_04_01.AvailableResourceGroupPrivateEndpointTypes;
 import com.microsoft.azure.management.network.v2019_04_01.AzureFirewalls;
 import com.microsoft.azure.management.network.v2019_04_01.AzureFirewallFqdnTags;
 import com.microsoft.azure.management.network.v2019_04_01.BastionHosts;
@@ -42,6 +40,7 @@ import com.microsoft.azure.management.network.v2019_04_01.ExpressRoutePortsLocat
 import com.microsoft.azure.management.network.v2019_04_01.ExpressRoutePorts;
 import com.microsoft.azure.management.network.v2019_04_01.ExpressRouteLinks;
 import com.microsoft.azure.management.network.v2019_04_01.PrivateEndpoints;
+import com.microsoft.azure.management.network.v2019_04_01.AvailablePrivateEndpointTypes;
 import com.microsoft.azure.management.network.v2019_04_01.PrivateLinkServices;
 import com.microsoft.azure.management.network.v2019_04_01.LoadBalancers;
 import com.microsoft.azure.management.network.v2019_04_01.LoadBalancerBackendAddressPools;
@@ -105,8 +104,6 @@ public final class NetworkManager extends ManagerCore<NetworkManager, NetworkMan
     private ApplicationSecurityGroups applicationSecurityGroups;
     private AvailableDelegations availableDelegations;
     private AvailableResourceGroupDelegations availableResourceGroupDelegations;
-    private AvailablePrivateEndpointTypes availablePrivateEndpointTypes;
-    private AvailableResourceGroupPrivateEndpointTypes availableResourceGroupPrivateEndpointTypes;
     private AzureFirewalls azureFirewalls;
     private AzureFirewallFqdnTags azureFirewallFqdnTags;
     private BastionHosts bastionHosts;
@@ -127,6 +124,7 @@ public final class NetworkManager extends ManagerCore<NetworkManager, NetworkMan
     private ExpressRoutePorts expressRoutePorts;
     private ExpressRouteLinks expressRouteLinks;
     private PrivateEndpoints privateEndpoints;
+    private AvailablePrivateEndpointTypes availablePrivateEndpointTypes;
     private PrivateLinkServices privateLinkServices;
     private LoadBalancers loadBalancers;
     private LoadBalancerBackendAddressPools loadBalancerBackendAddressPools;
@@ -264,26 +262,6 @@ public final class NetworkManager extends ManagerCore<NetworkManager, NetworkMan
             this.availableResourceGroupDelegations = new AvailableResourceGroupDelegationsImpl(this);
         }
         return this.availableResourceGroupDelegations;
-    }
-
-    /**
-     * @return Entry point to manage AvailablePrivateEndpointTypes.
-     */
-    public AvailablePrivateEndpointTypes availablePrivateEndpointTypes() {
-        if (this.availablePrivateEndpointTypes == null) {
-            this.availablePrivateEndpointTypes = new AvailablePrivateEndpointTypesImpl(this);
-        }
-        return this.availablePrivateEndpointTypes;
-    }
-
-    /**
-     * @return Entry point to manage AvailableResourceGroupPrivateEndpointTypes.
-     */
-    public AvailableResourceGroupPrivateEndpointTypes availableResourceGroupPrivateEndpointTypes() {
-        if (this.availableResourceGroupPrivateEndpointTypes == null) {
-            this.availableResourceGroupPrivateEndpointTypes = new AvailableResourceGroupPrivateEndpointTypesImpl(this);
-        }
-        return this.availableResourceGroupPrivateEndpointTypes;
     }
 
     /**
@@ -484,6 +462,16 @@ public final class NetworkManager extends ManagerCore<NetworkManager, NetworkMan
             this.privateEndpoints = new PrivateEndpointsImpl(this);
         }
         return this.privateEndpoints;
+    }
+
+    /**
+     * @return Entry point to manage AvailablePrivateEndpointTypes.
+     */
+    public AvailablePrivateEndpointTypes availablePrivateEndpointTypes() {
+        if (this.availablePrivateEndpointTypes == null) {
+            this.availablePrivateEndpointTypes = new AvailablePrivateEndpointTypesImpl(this);
+        }
+        return this.availablePrivateEndpointTypes;
     }
 
     /**

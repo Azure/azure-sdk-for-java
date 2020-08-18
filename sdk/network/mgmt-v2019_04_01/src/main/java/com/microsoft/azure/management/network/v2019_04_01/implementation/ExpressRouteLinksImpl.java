@@ -54,10 +54,14 @@ class ExpressRouteLinksImpl extends WrapperImpl<ExpressRouteLinksInner> implemen
     public Observable<ExpressRouteLink> getAsync(String resourceGroupName, String expressRoutePortName, String linkName) {
         ExpressRouteLinksInner client = this.inner();
         return client.getAsync(resourceGroupName, expressRoutePortName, linkName)
-        .map(new Func1<ExpressRouteLinkInner, ExpressRouteLink>() {
+        .flatMap(new Func1<ExpressRouteLinkInner, Observable<ExpressRouteLink>>() {
             @Override
-            public ExpressRouteLink call(ExpressRouteLinkInner inner) {
-                return wrapModel(inner);
+            public Observable<ExpressRouteLink> call(ExpressRouteLinkInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ExpressRouteLink)wrapModel(inner));
+                }
             }
        });
     }
