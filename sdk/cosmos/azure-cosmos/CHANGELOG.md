@@ -1,5 +1,8 @@
 # Release History
 
+## 4.3.2-beta.3 (Unreleased)
+
+
 ## 4.3.2-beta.2 (2020-08-17)
 ### Key Bug Fixes
 * No changes from previous version, releasing for compatibility issues with spring data modules.
