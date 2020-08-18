@@ -18,25 +18,25 @@ public final class ProtocolSettings {
      * Settings for SMB protocol.
      */
     @JsonProperty(value = "SMB")
-    private SMB sMB;
+    private SmbSettings smbSettings;
 
     /**
-     * Get the sMB property: Settings for SMB protocol.
+     * Get the smbSettings property: Settings for SMB protocol.
      *
-     * @return the sMB value.
+     * @return the smbSettings value.
      */
-    public SMB getSMB() {
-        return this.sMB;
+    public SmbSettings getSmbSettings() {
+        return this.smbSettings;
     }
 
     /**
-     * Set the sMB property: Settings for SMB protocol.
+     * Set the smbSettings property: Settings for SMB protocol.
      *
-     * @param sMB the sMB value to set.
+     * @param smbSettings the smbSettings value to set.
      * @return the ProtocolSettings object itself.
      */
-    public ProtocolSettings setSMB(SMB sMB) {
-        this.sMB = sMB;
+    public ProtocolSettings setSmbSettings(SmbSettings smbSettings) {
+        this.smbSettings = smbSettings;
         return this;
     }
 }

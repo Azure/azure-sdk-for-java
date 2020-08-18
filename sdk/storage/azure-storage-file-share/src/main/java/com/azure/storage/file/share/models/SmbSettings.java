@@ -11,9 +11,9 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 /**
  * Settings for SMB protocol.
  */
-@JacksonXmlRootElement(localName = "SMB")
+@JacksonXmlRootElement(localName = "SmbSettings")
 @Fluent
-public final class SMB {
+public final class SmbSettings {
     /*
      * Settings for SMB Multichannel.
      */
@@ -33,9 +33,9 @@ public final class SMB {
      * Set the multichannel property: Settings for SMB Multichannel.
      *
      * @param multichannel the multichannel value to set.
-     * @return the SMB object itself.
+     * @return the SmbSettings object itself.
      */
-    public SMB setMultichannel(SmbMultichannel multichannel) {
+    public SmbSettings setMultichannel(SmbMultichannel multichannel) {
         this.multichannel = multichannel;
         return this;
     }
