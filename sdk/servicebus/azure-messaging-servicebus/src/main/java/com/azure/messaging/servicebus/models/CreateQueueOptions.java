@@ -4,7 +4,6 @@
 package com.azure.messaging.servicebus.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusManagementAsyncClient;
 import com.azure.messaging.servicebus.ServiceBusManagementClient;
 
@@ -20,8 +19,8 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
 /**
  * Represents the set of options that can be specified for the creation of a queue.
  *
- * @see ServiceBusManagementAsyncClient#createQueue(CreateQueueOptions)
- * @see ServiceBusManagementClient#createQueue(CreateQueueOptions)
+ * @see ServiceBusManagementAsyncClient#createQueue(String, CreateQueueOptions)
+ * @see ServiceBusManagementClient#createQueue(String, CreateQueueOptions)
  */
 @Fluent
 public class CreateQueueOptions {
@@ -85,11 +84,6 @@ public class CreateQueueOptions {
      */
     public CreateQueueOptions(QueueProperties queue) {
         Objects.requireNonNull(queue, "'queue' cannot be null.");
-
-        if (queue.getName().isEmpty()) {
-            final ClientLogger logger = new ClientLogger(CreateQueueOptions.class);
-            throw logger.logExceptionAsError(new IllegalArgumentException("Queue name cannot be empty."));
-        }
 
         this.autoDeleteOnIdle = queue.getAutoDeleteOnIdle();
         this.defaultMessageTimeToLive = queue.getDefaultMessageTimeToLive();

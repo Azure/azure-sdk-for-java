@@ -4,6 +4,9 @@
 package com.azure.messaging.servicebus.models;
 
 
+import com.azure.messaging.servicebus.ServiceBusManagementAsyncClient;
+import com.azure.messaging.servicebus.ServiceBusManagementClient;
+
 import java.time.Duration;
 import java.util.Objects;
 
@@ -15,6 +18,9 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
 
 /**
  * Represents the set of options that can be specified for the creation of a queue.
+ *
+ * @see ServiceBusManagementAsyncClient#createTopic(String, CreateTopicOptions)
+ * @see ServiceBusManagementClient#createTopic(String, CreateTopicOptions)
  */
 public class CreateTopicOptions {
     private Duration autoDeleteOnIdle;
@@ -69,21 +75,21 @@ public class CreateTopicOptions {
      * Initializes a new instance based on the specified {@link CreateTopicOptions} instance. This is useful for
      * creating a new topic based on the properties of an existing topicOptions.
      *
-     * @param topicOptions Existing topicOptions to create options with.
+     * @param topic Existing topicOptions to create options with.
      */
-    public CreateTopicOptions(TopicProperties topicOptions) {
-        Objects.requireNonNull(topicOptions, "'topicOptions' cannot be null.");
+    public CreateTopicOptions(TopicProperties topic) {
+        Objects.requireNonNull(topic, "'topic' cannot be null.");
 
-        this.autoDeleteOnIdle = topicOptions.getAutoDeleteOnIdle();
-        this.defaultMessageTimeToLive = topicOptions.getDefaultMessageTimeToLive();
-        this.duplicateDetectionHistoryTimeWindow = topicOptions.getDuplicateDetectionHistoryTimeWindow();
-        this.enableBatchedOperations = topicOptions.enableBatchedOperations();
-        this.enablePartitioning = topicOptions.enablePartitioning();
-        this.maxSizeInMegabytes = topicOptions.getMaxSizeInMegabytes();
-        this.requiresDuplicateDetection = topicOptions.requiresDuplicateDetection();
-        this.supportOrdering = topicOptions.supportOrdering();
-        this.status = topicOptions.getStatus();
-        this.userMetadata = topicOptions.getUserMetadata();
+        this.autoDeleteOnIdle = topic.getAutoDeleteOnIdle();
+        this.defaultMessageTimeToLive = topic.getDefaultMessageTimeToLive();
+        this.duplicateDetectionHistoryTimeWindow = topic.getDuplicateDetectionHistoryTimeWindow();
+        this.enableBatchedOperations = topic.enableBatchedOperations();
+        this.enablePartitioning = topic.enablePartitioning();
+        this.maxSizeInMegabytes = topic.getMaxSizeInMegabytes();
+        this.requiresDuplicateDetection = topic.requiresDuplicateDetection();
+        this.supportOrdering = topic.supportOrdering();
+        this.status = topic.getStatus();
+        this.userMetadata = topic.getUserMetadata();
     }
 
     /**

@@ -16,8 +16,8 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
 /**
  * Options to set when creating a subscription.
  *
- * @see ServiceBusManagementAsyncClient#createTopic(CreateTopicOptions)
- * @see ServiceBusManagementClient#createTopic(CreateTopicOptions)
+ * @see ServiceBusManagementAsyncClient#createTopic(String, CreateTopicOptions)
+ * @see ServiceBusManagementClient#createTopic(String, CreateTopicOptions)
  */
 @Fluent
 public class CreateSubscriptionOptions {
@@ -74,8 +74,6 @@ public class CreateSubscriptionOptions {
      */
     public CreateSubscriptionOptions(SubscriptionProperties subscription) {
         Objects.requireNonNull(subscription, "'subscription' cannot be null.");
-        Objects.requireNonNull(subscription.getTopicName(), "Topic name cannot be null.");
-        Objects.requireNonNull(subscription.getSubscriptionName(), "Subscription name cannot be null.");
 
         this.autoDeleteOnIdle = subscription.getAutoDeleteOnIdle();
         this.deadLetteringOnMessageExpiration = subscription.deadLetteringOnMessageExpiration();
@@ -103,7 +101,7 @@ public class CreateSubscriptionOptions {
     }
 
     /**
-     * Set the lockDuration property: ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the
+     * Set the lockDuration property: ISO 8601 time-span duration of a peek-lock; that is, the amount of time that the
      * message is locked for other receivers. The maximum value for LockDuration is 5 minutes; the default value is 1
      * minute.
      *

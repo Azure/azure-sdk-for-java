@@ -98,7 +98,7 @@ class ServiceBusManagementClientImplIntegrationTests extends TestBase {
         final EntitiesImpl entityClient = managementClient.getEntities();
 
         final String queueName = testResourceNamer.randomName("test", 7);
-        final CreateQueueOptions options = new CreateQueueOptions(queueName)
+        final CreateQueueOptions options = new CreateQueueOptions()
             .setMaxDeliveryCount(15);
         final QueueDescription queueProperties = EntityHelper.getQueueDescription(options);
         final CreateQueueBody createEntity = new CreateQueueBody();
@@ -137,7 +137,7 @@ class ServiceBusManagementClientImplIntegrationTests extends TestBase {
         final EntitiesImpl entityClient = managementClient.getEntities();
 
         final String queueName = testResourceNamer.randomName("test", 7);
-        final CreateQueueOptions description = new CreateQueueOptions(queueName)
+        final CreateQueueOptions description = new CreateQueueOptions()
             .setMaxDeliveryCount(15);
         final QueueDescription queueProperties = EntityHelper.getQueueDescription(description);
         final CreateQueueBody createEntity = new CreateQueueBody();

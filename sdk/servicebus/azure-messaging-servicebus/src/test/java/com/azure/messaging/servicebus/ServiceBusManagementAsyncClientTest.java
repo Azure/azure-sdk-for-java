@@ -131,7 +131,7 @@ class ServiceBusManagementAsyncClientTest {
     void createQueue() throws IOException {
         // Arrange
         final String updatedName = "some-new-name";
-        final CreateQueueOptions description = new CreateQueueOptions(queueName);
+        final CreateQueueOptions description = new CreateQueueOptions();
         final QueueDescription expectedDescription = EntityHelper.getQueueDescription(description);
         final QueueDescriptionEntry expected = new QueueDescriptionEntry()
             .setTitle(getResponseTitle(updatedName))
@@ -144,7 +144,7 @@ class ServiceBusManagementAsyncClientTest {
         when(serializer.deserialize(responseString, QueueDescriptionEntry.class)).thenReturn(expected);
 
         // Act & Assert
-        StepVerifier.create(client.createQueue(description))
+        StepVerifier.create(client.createQueue(queueName, description))
             .assertNext(e -> assertEquals(updatedName, e.getName()))
             .verifyComplete();
     }
@@ -153,7 +153,7 @@ class ServiceBusManagementAsyncClientTest {
     void createQueueWithResponse() throws IOException {
         // Arrange
         final String updatedName = "some-new-name";
-        final CreateQueueOptions description = new CreateQueueOptions(queueName);
+        final CreateQueueOptions description = new CreateQueueOptions();
         final QueueDescription expectedDescription = EntityHelper.getQueueDescription(description);
         final QueueDescriptionEntry expected = new QueueDescriptionEntry()
             .setTitle(getResponseTitle(updatedName))
@@ -166,7 +166,7 @@ class ServiceBusManagementAsyncClientTest {
         when(serializer.deserialize(responseString, QueueDescriptionEntry.class)).thenReturn(expected);
 
         // Act & Assert
-        StepVerifier.create(client.createQueueWithResponse(description))
+        StepVerifier.create(client.createQueueWithResponse(queueName, description))
             .assertNext(response -> {
                 assertResponse(objectResponse, response);
                 assertEquals(updatedName, response.getValue().getName());
@@ -338,7 +338,7 @@ class ServiceBusManagementAsyncClientTest {
         final String entityType = "queues";
         final List<QueueDescriptionEntry> firstEntries = IntStream.range(0, 4).mapToObj(number -> {
             final String name = String.valueOf(number);
-            final QueueDescription description = EntityHelper.getQueueDescription(new CreateQueueOptions(queueName));
+            final QueueDescription description = EntityHelper.getQueueDescription(new CreateQueueOptions());
             final QueueDescriptionEntryContent content = new QueueDescriptionEntryContent()
                 .setQueueDescription(description);
             return new QueueDescriptionEntry()
@@ -357,7 +357,7 @@ class ServiceBusManagementAsyncClientTest {
 
         final List<QueueDescriptionEntry> secondEntries = IntStream.range(5, 7).mapToObj(number -> {
             final String name = String.valueOf(number);
-            final QueueDescription description = EntityHelper.getQueueDescription(new CreateQueueOptions(name));
+            final QueueDescription description = EntityHelper.getQueueDescription(new CreateQueueOptions());
             final QueueDescriptionEntryContent content = new QueueDescriptionEntryContent()
                 .setQueueDescription(description);
 

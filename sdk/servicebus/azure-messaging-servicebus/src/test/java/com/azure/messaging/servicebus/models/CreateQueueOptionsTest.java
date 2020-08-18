@@ -30,15 +30,10 @@ class CreateQueueOptionsTest {
      */
     @Test
     void constructor() {
-        // Arrange
-        final String queueName = "a-queue";
-
         // Act
-        final CreateQueueOptions actual = new CreateQueueOptions(queueName);
+        final CreateQueueOptions actual = new CreateQueueOptions();
 
         // Assert
-        assertEquals(queueName, actual.getName());
-
         assertEquals(MAX_DURATION, actual.getAutoDeleteOnIdle());
         assertEquals(MAX_DURATION, actual.getDefaultMessageTimeToLive());
         assertEquals(DEFAULT_DUPLICATE_DETECTION_DURATION, actual.getDuplicateDetectionHistoryTimeWindow());
@@ -86,7 +81,6 @@ class CreateQueueOptionsTest {
         final CreateQueueOptions actual = new CreateQueueOptions(expected);
 
         // Assert
-        assertEquals(expected.getName(), actual.getName());
         assertEquals(expected.getAutoDeleteOnIdle(), actual.getAutoDeleteOnIdle());
         assertEquals(expected.getDefaultMessageTimeToLive(), actual.getDefaultMessageTimeToLive());
         assertFalse(actual.deadLetteringOnMessageExpiration());
