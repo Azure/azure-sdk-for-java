@@ -27,6 +27,7 @@ public class SpringServiceImpl
     implements SpringService, SpringService.Definition, SpringService.Update {
     private final SpringServiceCertificatesImpl certificates = new SpringServiceCertificatesImpl(this);
     private final SpringAppsImpl apps = new SpringAppsImpl(this);
+    private boolean needUpdate = false;
 
     SpringServiceImpl(String name, ServiceResourceInner innerObject, AppPlatformManager manager) {
         super(name, innerObject, manager);
@@ -120,6 +121,7 @@ public class SpringServiceImpl
 
     @Override
     public SpringServiceImpl withSku(Sku sku) {
+        needUpdate = true;
         inner().withSku(sku);
         return this;
     }
@@ -201,8 +203,11 @@ public class SpringServiceImpl
         Mono<ServiceResourceInner> createOrUpdate;
         if (isInCreateMode()) {
             createOrUpdate = manager().inner().getServices().createOrUpdateAsync(resourceGroupName(), name(), inner());
-        } else {
+        } else if (needUpdate) {
+            needUpdate = false;
             createOrUpdate = manager().inner().getServices().updateAsync(resourceGroupName(), name(), inner());
+        } else {
+            return Mono.just(this);
         }
         return createOrUpdate
             .map(inner -> {
