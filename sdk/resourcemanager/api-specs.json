@@ -259,7 +259,7 @@
   "redis": {
     "dir": "azure-resourcemanager-redis",
     "source": "specification/redis/resource-manager/readme.md",
-    "package": "com.microsoft.azure.resourcemanager.redis",
+    "package": "com.azure.resourcemanager.redis",
     "args": "--payload-flattening-threshold=1 --tag=package-2018-03"
   },
   "relay": {

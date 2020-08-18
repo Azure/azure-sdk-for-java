@@ -12,8 +12,8 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.sas.CommonSasQueryParameters;
-import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
@@ -248,7 +248,7 @@ public class ShareFileClientBuilder {
             // TODO (gapra): What happens if a user has custom queries?
             // Attempt to get the SAS token from the URL passed
             String sasToken = new CommonSasQueryParameters(
-                StorageImplUtils.parseQueryStringSplitValues(fullUrl.getQuery()), false).encode();
+                SasImplUtils.parseQueryString(fullUrl.getQuery()), false).encode();
             if (!CoreUtils.isNullOrEmpty(sasToken)) {
                 sasToken(sasToken);
             }

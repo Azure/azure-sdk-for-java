@@ -1010,7 +1010,8 @@ public class AzureTests extends ResourceManagerTestBase {
 
     @Test
     public void testVirtualMachineSyncPoller() throws Exception {
-        new TestVirtualMachineSyncPoller(azure.networks().manager()).runTest(azure.virtualMachines(), azure.resourceGroups());
+        new TestVirtualMachineSyncPoller(azure.networks().manager())
+            .runTest(azure.virtualMachines(), azure.resourceGroups());
     }
 
     /**
@@ -1096,13 +1097,12 @@ public class AzureTests extends ResourceManagerTestBase {
     //        new TestTrafficManager(azure.publicIPAddresses())
     //                .runTest(azure.trafficManagerProfiles(), azure.resourceGroups());
     //    }
-    //
-    //    @Test
-    //    public void testRedis() throws Exception {
-    //        new TestRedis()
-    //                .runTest(azure.redisCaches(), azure.resourceGroups());
-    //    }
-    //
+
+    @Test
+    public void testRedis() throws Exception {
+        new TestRedis().runTest(azure.redisCaches(), azure.resourceGroups());
+    }
+
     //    @Test
     //    public void testCdnManager() throws Exception {
     //        new TestCdn()
