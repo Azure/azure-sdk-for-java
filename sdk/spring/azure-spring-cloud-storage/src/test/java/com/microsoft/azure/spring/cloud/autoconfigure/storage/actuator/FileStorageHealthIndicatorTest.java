@@ -32,7 +32,8 @@ public class FileStorageHealthIndicatorTest {
     @Test
     public void testWithNoStorageConfiguration() {
         ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-                .withConfiguration(AutoConfigurations.of(AzureStorageActuatorAutoConfiguration.class));
+            .withAllowBeanDefinitionOverriding(true)
+            .withConfiguration(AutoConfigurations.of(AzureStorageActuatorAutoConfiguration.class));
 
         contextRunner.withBean(FileStorageHealthIndicator.class).run(context -> {
             Health health = context.getBean(FileStorageHealthIndicator.class).getHealth(true);
@@ -44,9 +45,11 @@ public class FileStorageHealthIndicatorTest {
 
     @Test
     public void testWithStorageConfigurationAndNoAccount() {
-        ApplicationContextRunner contextRunner = new ApplicationContextRunner().withConfiguration(
-                AutoConfigurations.of(AzureStorageAutoConfiguration.class, AzureStorageActuatorAutoConfiguration.class))
-                .withBean(FileStorageHealthIndicator.class);
+        ApplicationContextRunner contextRunner = new ApplicationContextRunner()
+            .withAllowBeanDefinitionOverriding(true)
+            .withConfiguration(AutoConfigurations.of(AzureStorageAutoConfiguration.class,
+                AzureStorageActuatorAutoConfiguration.class))
+            .withBean(FileStorageHealthIndicator.class);
         contextRunner.run(context -> {
             Health health = context.getBean(FileStorageHealthIndicator.class).getHealth(true);
             Assert.assertEquals(AzureStorageActuatorConstants.NOT_CONFIGURED_STATUS, health.getStatus());
@@ -56,11 +59,12 @@ public class FileStorageHealthIndicatorTest {
     @Test
     public void testWithStorageConfigurationWithConnectionUp() {
         ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-                .withConfiguration(AutoConfigurations.of(AzureEnvironmentAutoConfiguration.class,
-                        AzureStorageAutoConfiguration.class, AzureStorageActuatorAutoConfiguration.class))
-                .withUserConfiguration(TestConfigurationConnectionUp.class)
-                .withPropertyValues("spring.cloud.azure.storage.account=acc1")
-                .withBean(FileStorageHealthIndicator.class);
+            .withAllowBeanDefinitionOverriding(true)
+            .withConfiguration(AutoConfigurations.of(AzureEnvironmentAutoConfiguration.class,
+                AzureStorageAutoConfiguration.class, AzureStorageActuatorAutoConfiguration.class))
+            .withUserConfiguration(TestConfigurationConnectionUp.class)
+            .withPropertyValues("spring.cloud.azure.storage.account=acc1")
+            .withBean(FileStorageHealthIndicator.class);
         contextRunner.run(context -> {
             Health health = context.getBean(FileStorageHealthIndicator.class).getHealth(true);
             Assert.assertEquals(Status.UP, health.getStatus());
@@ -71,11 +75,12 @@ public class FileStorageHealthIndicatorTest {
     @Test
     public void testWithStorageConfigurationWithConnectionDown() {
         ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-                .withConfiguration(AutoConfigurations.of(AzureEnvironmentAutoConfiguration.class,
-                        AzureStorageAutoConfiguration.class, AzureStorageActuatorAutoConfiguration.class))
-                .withUserConfiguration(TestConfigurationConnectionDown.class)
-                .withPropertyValues("spring.cloud.azure.storage.account=acc1")
-                .withBean(BlobStorageHealthIndicator.class);
+            .withAllowBeanDefinitionOverriding(true)
+            .withConfiguration(AutoConfigurations.of(AzureEnvironmentAutoConfiguration.class,
+                AzureStorageAutoConfiguration.class, AzureStorageActuatorAutoConfiguration.class))
+            .withUserConfiguration(TestConfigurationConnectionDown.class)
+            .withPropertyValues("spring.cloud.azure.storage.account=acc1")
+            .withBean(BlobStorageHealthIndicator.class);
         contextRunner.run(context -> {
             Health health = context.getBean(FileStorageHealthIndicator.class).getHealth(true);
             Assert.assertEquals(Status.DOWN, health.getStatus());

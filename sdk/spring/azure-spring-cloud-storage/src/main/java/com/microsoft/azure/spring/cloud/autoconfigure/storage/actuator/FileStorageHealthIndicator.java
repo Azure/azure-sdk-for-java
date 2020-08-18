@@ -32,23 +32,17 @@ public class FileStorageHealthIndicator implements HealthIndicator {
         try {
             ShareServiceClientBuilder shareStorageClientBuilder = applicationContext
                     .getBean(ShareServiceClientBuilder.class);
-            if (shareStorageClientBuilder == null) { // Not configured
-                healthBuilder.status(NOT_CONFIGURED_STATUS);
-            } else {
-                ShareServiceAsyncClient client = shareStorageClientBuilder.buildAsyncClient();
-                healthBuilder.withDetail(URL_FIELD, client.getFileServiceUrl());
-                Response<ShareServiceProperties> infoResponse = null;
-                try {
-                    infoResponse = client.getPropertiesWithResponse().block(POLL_TIMEOUT);
-                    if (infoResponse != null) {
-                        healthBuilder.up();
-                    }
-                } catch (Exception e) {
-                    healthBuilder.down(e);
+            ShareServiceAsyncClient client = shareStorageClientBuilder.buildAsyncClient();
+            healthBuilder.withDetail(URL_FIELD, client.getFileServiceUrl());
+            Response<ShareServiceProperties> infoResponse = null;
+            try {
+                infoResponse = client.getPropertiesWithResponse().block(POLL_TIMEOUT);
+                if (infoResponse != null) {
+                    healthBuilder.up();
                 }
-
+            } catch (Exception e) {
+                healthBuilder.down(e);
             }
-
         } catch (NoSuchBeanDefinitionException nsbe) {
             healthBuilder.status(NOT_CONFIGURED_STATUS);
         }

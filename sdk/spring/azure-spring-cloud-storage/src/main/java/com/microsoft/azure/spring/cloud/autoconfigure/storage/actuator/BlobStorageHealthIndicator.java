@@ -10,7 +10,6 @@ import static com.microsoft.azure.spring.cloud.autoconfigure.storage.actuator.Az
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
-import org.springframework.boot.actuate.health.Status;
 import org.springframework.context.ApplicationContext;
 
 import com.azure.storage.blob.BlobServiceAsyncClient;
