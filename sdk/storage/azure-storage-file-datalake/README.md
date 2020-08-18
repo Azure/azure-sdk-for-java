@@ -25,7 +25,7 @@ Add a dependency on Azure Storage File Datalake
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-file-datalake</artifactId>
-    <version>12.2.0-beta.1</version>
+    <version>12.2.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

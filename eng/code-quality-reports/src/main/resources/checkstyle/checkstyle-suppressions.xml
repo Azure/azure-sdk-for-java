@@ -526,4 +526,7 @@
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.messaging.servicebus.models.QueueProperties.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.messaging.servicebus.models.SubscriptionProperties.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.messaging.servicebus.models.TopicProperties.java"/>
+
+  <!-- Suppress DigitalTwins for now -->
+  <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-digitaltwins-core[/\\]src[/\\]"/>
 </suppressions>

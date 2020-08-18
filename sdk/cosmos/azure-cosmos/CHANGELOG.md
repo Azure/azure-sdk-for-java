@@ -1,7 +1,17 @@
 # Release History
 
-## 4.4.0-beta.1 (Unreleased)
+## 4.3.2-beta.2 (Unreleased)
 
+
+## 4.3.2-beta.1 (2020-08-14)
+### Key Bug Fixes
+* Fixed issue in RntbdServiceEndpoint to avoid early closure of an unused TCP connection.
+
+## 4.3.1 (2020-08-13)
+### Key Bug Fixes
+* Fixed issue with `GROUP BY` query, where it was returning only one page.
+* Fixed user agent string format to comply with central SDK guidelines.
+* Enhanced diagnostics information to include query plan diagnostics.
 
 ## 4.3.0 (2020-07-29)
 ### New Features

@@ -60,4 +60,3 @@ extends:
         groupId: com.azure
       - name: azure-spring-data-cosmos-test
         groupId: com.azure
-

@@ -1,7 +1,10 @@
 # Release History
 
-## 12.6.0-beta.2 (Unreleased)
+## 12.7.0-beta.1 (Unreleased)
+- Fixed a bug that would cause auth failures when building a client by passing an endpoint which had a sas token with protocol set to https,http
 
+## 12.6.0 (2020-08-13)
+- GA release for 2019-12-12 service version
 
 ## 12.6.0-beta.1 (2019-07-07)
 - Added support for the 2019-12-12 service version.
@@ -37,18 +40,18 @@
 
 ## 12.1.0 (2020-01-08)
 This package's
-[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file_12.1.0/sdk/storage/azure-storage-file-share/README.md)
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file-share_12.1.0/sdk/storage/azure-storage-file-share/README.md)
 and
-[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file_12.1.0/sdk/storage/azure-storage-file-share/src/samples/java/com/azure/storage/file/share)
+[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file-share_12.1.0/sdk/storage/azure-storage-file-share/src/samples/java/com/azure/storage/file/share)
 
 ## 12.1.0-beta.1 (2019-12-18)
 - Added SAS generation methods on clients to improve discoverability and convenience of sas. Deprecated setFilePath, setShareName generateSasQueryParameters methods on ShareServiceSasSignatureValues to direct users to using the methods added on clients.
 
 ## 12.0.0 (2019-12-04)
 This package's
-[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file_12.0.0/sdk/storage/azure-storage-file-share/README.md)
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file-share_12.0.0/sdk/storage/azure-storage-file-share/README.md)
 and
-[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file_12.0.0/sdk/storage/azure-storage-file-share/src/samples/java/com/azure/storage/file/share)
+[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file-share_12.0.0/sdk/storage/azure-storage-file-share/src/samples/java/com/azure/storage/file/share)
 
 - GA release.
 - Changed return type for forceCloseHandle from void to CloseHandlesInfo.
@@ -132,7 +135,7 @@ demonstrate the new API.
 ## 12.0.0-preview.2 (2019-08-08)
 Version 12.0.0-preview.2 is a preview of our efforts in creating a client library that is developer-friendly, idiomatic to the Java ecosystem, and as consistent across different languages and platforms as possible. The principles that guide our efforts can be found in the [Azure SDK Design Guidelines for Java](https://azuresdkspecs.z5.web.core.windows.net/JavaSpec.html).
 
-For details on the Azure SDK for Java (August 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview2-java).
+For details on the Azure SDK for Java (August 2019 Preview) release, you can refer to the [release announcement](https://azure.github.io/azure-sdk/releases/2019-08-06/java.html).
 
 This package's
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file_12.0.0-preview.2/sdk/storage/azure-storage-file/README.md)
@@ -146,4 +149,3 @@ demonstrate the new API.
     - `azure-storage-file` contains a `FileServiceClient`,  `FileServiceAsyncClient`, `ShareClient`, `ShareAsyncClient`, `DirectoryClient`, `DirectoryAsyncClient`, `FileClient` and `FileAsyncClient` for storage file operations.
 - Client instances are scoped to storage file service.
 - Reactive streams support using [Project Reactor](https://projectreactor.io/).
-

@@ -11,21 +11,24 @@ import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.DeletedKey;
-import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.KeyType;
+import com.azure.security.keyvault.keys.models.KeyVaultKey;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.net.HttpURLConnection;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
 
 import static com.azure.security.keyvault.keys.cryptography.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 public class KeyClientTest extends KeyClientTestBase {
 
@@ -38,11 +41,17 @@ public class KeyClientTest extends KeyClientTestBase {
 
     private void getKeyClient(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         HttpPipeline httpPipeline = getHttpPipeline(httpClient, serviceVersion);
-        client = new KeyClientBuilder()
+        KeyAsyncClient asyncClient = spy(new KeyClientBuilder()
             .vaultUrl(getEndpoint())
             .pipeline(httpPipeline)
             .serviceVersion(serviceVersion)
-            .buildClient();
+            .buildAsyncClient());
+
+        if (interceptorManager.isPlaybackMode()) {
+            when(asyncClient.getPollDuration()).thenReturn(Duration.ofMillis(10));
+        }
+
+        client = new KeyClient(asyncClient);
     }
 
     /**

@@ -13,7 +13,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.ObjectSerializer;
+import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.search.documents.implementation.util.Constants;
 import com.azure.search.documents.implementation.util.Utility;
 
@@ -60,7 +60,7 @@ public final class SearchClientBuilder {
     private Configuration configuration;
     private String indexName;
     private RetryPolicy retryPolicy;
-    private ObjectSerializer objectSerializer;
+    private JsonSerializer jsonSerializer;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link SearchClient SearchClients} and {@link
@@ -103,14 +103,14 @@ public final class SearchClientBuilder {
             : serviceVersion;
 
         if (httpPipeline != null) {
-            return new SearchAsyncClient(endpoint, indexName, buildVersion, httpPipeline, objectSerializer);
+            return new SearchAsyncClient(endpoint, indexName, buildVersion, httpPipeline, jsonSerializer);
         }
 
         Objects.requireNonNull(credential, "'credential' cannot be null.");
         HttpPipeline pipeline = Utility.buildHttpPipeline(httpLogOptions, configuration, retryPolicy, credential,
             policies, httpClient);
 
-        return new SearchAsyncClient(endpoint, indexName, buildVersion, pipeline, objectSerializer);
+        return new SearchAsyncClient(endpoint, indexName, buildVersion, pipeline, jsonSerializer);
     }
 
     /**
@@ -197,13 +197,14 @@ public final class SearchClientBuilder {
     }
 
     /**
-     * Adds customer serializer to apply to external defined models.
+     * Custom JSON serializer that is used to handle model types that are not contained in the Azure Search Documents
+     * library.
      *
-     * @param objectSerializer The serializer to serialize user defined models.
+     * @param jsonSerializer The serializer to serialize user defined models.
      * @return The updated SearchClientBuilder object.
      */
-    public SearchClientBuilder serializer(ObjectSerializer objectSerializer) {
-        this.objectSerializer = objectSerializer;
+    public SearchClientBuilder serializer(JsonSerializer jsonSerializer) {
+        this.jsonSerializer = jsonSerializer;
         return this;
     }
 
