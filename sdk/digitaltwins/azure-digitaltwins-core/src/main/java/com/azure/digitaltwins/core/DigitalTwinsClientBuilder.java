@@ -83,7 +83,7 @@ public final class DigitalTwinsClientBuilder {
         // Adds a "x-ms-client-request-id" header to each request. This header is useful for tracing requests through Azure ecosystems
         policies.add(new RequestIdPolicy());
 
-        // Only the RequestIdPolicy  and UserIdPolicy will take effect prior to the retry policy since neither of those need
+        // Only the RequestIdPolicy  and UserAgentPolicy will take effect prior to the retry policy since neither of those need
         // to change in any way upon retry
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
