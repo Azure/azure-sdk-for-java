@@ -101,11 +101,25 @@ public class SpringAppImpl
     }
 
     @Override
-    public String activeDeployment() {
+    public String activeDeploymentName() {
         if (inner().properties() == null) {
             return null;
         }
         return inner().properties().activeDeploymentName();
+    }
+
+    @Override
+    public SpringAppDeployment getActiveDeployment() {
+        return getActiveDeploymentAsync().block();
+    }
+
+    @Override
+    public Mono<SpringAppDeployment> getActiveDeploymentAsync() {
+        String activeDeploymentName = activeDeploymentName();
+        if (activeDeploymentName == null || activeDeploymentName.isEmpty()) {
+            return Mono.empty();
+        }
+        return deployments().getByNameAsync(activeDeploymentName);
     }
 
     @Override

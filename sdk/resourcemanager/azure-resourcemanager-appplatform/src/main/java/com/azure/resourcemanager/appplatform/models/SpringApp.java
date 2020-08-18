@@ -48,7 +48,13 @@ public interface SpringApp
     OffsetDateTime createdTime();
 
     /** @return the active deployment name */
-    String activeDeployment();
+    String activeDeploymentName();
+
+    /** @return the active deployment */
+    SpringAppDeployment getActiveDeployment();
+
+    /** @return the active deployment */
+    Mono<SpringAppDeployment> getActiveDeploymentAsync();
 
     /** @return the entry point of the spring app deployment */
     SpringAppDeployments deployments();
