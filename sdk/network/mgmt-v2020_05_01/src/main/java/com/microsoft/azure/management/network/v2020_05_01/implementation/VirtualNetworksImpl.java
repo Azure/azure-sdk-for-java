@@ -24,6 +24,7 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.management.network.v2020_05_01.IPAddressAvailabilityResult;
 import com.microsoft.azure.management.network.v2020_05_01.VirtualNetworkUsage;
+import com.microsoft.azure.management.network.v2020_05_01.BastionHostListResult;
 
 class VirtualNetworksImpl extends GroupableResourcesCoreImpl<VirtualNetwork, VirtualNetworkImpl, VirtualNetworkInner, VirtualNetworksInner, NetworkManager>  implements VirtualNetworks {
     protected VirtualNetworksImpl(NetworkManager manager) {
@@ -167,6 +168,18 @@ class VirtualNetworksImpl extends GroupableResourcesCoreImpl<VirtualNetwork, Vir
             @Override
             public VirtualNetworkUsage call(VirtualNetworkUsageInner inner) {
                 return wrapVirtualNetworkUsageModel(inner);
+            }
+        });
+    }
+
+    @Override
+    public Observable<BastionHostListResult> getBastionHostsAsync(String resourceGroupName, String virtualNetworkName) {
+        VirtualNetworksInner client = this.inner();
+        return client.getBastionHostsAsync(resourceGroupName, virtualNetworkName)
+        .map(new Func1<BastionHostListResultInner, BastionHostListResult>() {
+            @Override
+            public BastionHostListResult call(BastionHostListResultInner inner) {
+                return new BastionHostListResultImpl(inner, manager());
             }
         });
     }

@@ -107,6 +107,10 @@ public class VirtualNetworksInner implements InnerSupportsGet<VirtualNetworkInne
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/usages")
         Observable<Response<ResponseBody>> listUsage(@Path("resourceGroupName") String resourceGroupName, @Path("virtualNetworkName") String virtualNetworkName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2020_05_01.VirtualNetworks getBastionHosts" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/bastionHosts")
+        Observable<Response<ResponseBody>> getBastionHosts(@Path("resourceGroupName") String resourceGroupName, @Path("virtualNetworkName") String virtualNetworkName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2020_05_01.VirtualNetworks listNext" })
         @GET
         Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -1203,6 +1207,90 @@ public class VirtualNetworksInner implements InnerSupportsGet<VirtualNetworkInne
     private ServiceResponse<PageImpl<VirtualNetworkUsageInner>> listUsageDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<VirtualNetworkUsageInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<VirtualNetworkUsageInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Get a list of bastion hosts accessible from the given network.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the BastionHostListResultInner object if successful.
+     */
+    public BastionHostListResultInner getBastionHosts(String resourceGroupName, String virtualNetworkName) {
+        return getBastionHostsWithServiceResponseAsync(resourceGroupName, virtualNetworkName).toBlocking().single().body();
+    }
+
+    /**
+     * Get a list of bastion hosts accessible from the given network.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<BastionHostListResultInner> getBastionHostsAsync(String resourceGroupName, String virtualNetworkName, final ServiceCallback<BastionHostListResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getBastionHostsWithServiceResponseAsync(resourceGroupName, virtualNetworkName), serviceCallback);
+    }
+
+    /**
+     * Get a list of bastion hosts accessible from the given network.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the BastionHostListResultInner object
+     */
+    public Observable<BastionHostListResultInner> getBastionHostsAsync(String resourceGroupName, String virtualNetworkName) {
+        return getBastionHostsWithServiceResponseAsync(resourceGroupName, virtualNetworkName).map(new Func1<ServiceResponse<BastionHostListResultInner>, BastionHostListResultInner>() {
+            @Override
+            public BastionHostListResultInner call(ServiceResponse<BastionHostListResultInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Get a list of bastion hosts accessible from the given network.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the BastionHostListResultInner object
+     */
+    public Observable<ServiceResponse<BastionHostListResultInner>> getBastionHostsWithServiceResponseAsync(String resourceGroupName, String virtualNetworkName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (virtualNetworkName == null) {
+            throw new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2020-05-01";
+        return service.getBastionHosts(resourceGroupName, virtualNetworkName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BastionHostListResultInner>>>() {
+                @Override
+                public Observable<ServiceResponse<BastionHostListResultInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<BastionHostListResultInner> clientResponse = getBastionHostsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<BastionHostListResultInner> getBastionHostsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<BastionHostListResultInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<BastionHostListResultInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

@@ -44,4 +44,14 @@ public interface VirtualNetworks extends SupportsCreating<VirtualNetwork.Definit
      */
     Observable<VirtualNetworkUsage> listUsageAsync(final String resourceGroupName, final String virtualNetworkName);
 
+    /**
+     * Get a list of bastion hosts accessible from the given network.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<BastionHostListResult> getBastionHostsAsync(String resourceGroupName, String virtualNetworkName);
+
 }
