@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.containerinstance.implementation;
 
 import com.azure.core.management.Resource;
-import com.azure.resourcemanager.authorization.implementation.RoleAssignmentHelper;
+import com.azure.resourcemanager.authorization.utils.RoleAssignmentHelper;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.containerinstance.ContainerInstanceManager;
 import com.azure.resourcemanager.containerinstance.fluent.inner.ContainerGroupInner;

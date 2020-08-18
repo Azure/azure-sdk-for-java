@@ -1137,6 +1137,9 @@
                 <!-- Azure-core needs to open the test entities to Jackson for unit tests to operate -->
                 --add-opens com.azure.core/com.azure.core.implementation.entities=com.fasterxml.jackson.databind
                 --add-opens com.azure.core/com.azure.core.implementation.entities=ALL-UNNAMED
+				
+                <!-- ResourceManager tests fail without these exports. -->
+                --add-exports com.azure.resourcemanager.resources/com.azure.resourcemanager.resources.fluentcore.arm.implementation=ALL-UNNAMED				
               </argLine>
               <systemPropertyVariables>
                 <jacoco-agent.destfile>${project.build.directory}/jacoco.exec</jacoco-agent.destfile>

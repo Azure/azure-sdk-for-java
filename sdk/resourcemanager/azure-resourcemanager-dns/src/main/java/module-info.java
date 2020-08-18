@@ -5,4 +5,7 @@ module com.azure.resourcemanager.dns {
     exports com.azure.resourcemanager.dns.fluent;
     exports com.azure.resourcemanager.dns.fluent.inner;
     exports com.azure.resourcemanager.dns.models;
+
+    opens com.azure.resourcemanager.dns.fluent.inner to com.fasterxml.jackson.databind, com.azure.core;
+    opens com.azure.resourcemanager.dns.models to com.fasterxml.jackson.databind, com.azure.core;
 }
