@@ -11,11 +11,10 @@ import com.microsoft.azure.servicebus.Message;
 import com.microsoft.azure.servicebus.ReceiveMode;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 /**
  * Performance test.
@@ -35,20 +34,20 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
 
     @Override
     public Mono<Void> globalCleanupAsync() {
-        return Mono.fromFuture(sender.closeAsync())
-            .then(Mono.fromFuture(receiver.closeAsync()))
+        return Mono.fromFuture(sender.closeAsync().thenCombine(receiver.closeAsync(), (aVoid, aVoid2) -> true))
             .then(super.globalCleanupAsync());
     }
 
     private Mono<Void> sendMessage() {
         return Mono.defer(() -> {
-            String messageId = UUID.randomUUID().toString();
-            Message message = new Message(CONTENTS);
-            message.setMessageId(messageId);
             int total = options.getParallel() * options.getMessagesToSend() * TOTAL_MESSAGE_MULTIPLIER;
-            List<Message> messages = IntStream.range(0, total)
-                .mapToObj(index -> message)
-                .collect(Collectors.toList());
+
+            List<Message> messages = new ArrayList<>();
+            for (int i = 0; i < total; ++i) {
+                Message message = new Message(CONTENTS);
+                message.setMessageId(UUID.randomUUID().toString());
+                messages.add(message);
+            }
             return Mono.fromFuture(sender.sendBatchAsync(messages));
         });
     }
@@ -76,14 +75,15 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
     @Override
     public Mono<Void> runAsync() {
         return Mono.fromFuture(receiver.receiveBatchAsync(options.getMessagesToReceive()))
-            .map(messages -> {
+            .handle((messages, synchronousSink) -> {
                 int count = messages.size();
-                System.out.println(" Async received  size of received :" + count);
+                logger.verbose(" Async received  size of received :" + count);
+                System.out.println("Async received  size of received :" + count);
+
                 if (count <= 0) {
                     throw logger.logExceptionAsWarning(new RuntimeException("Error. Should have received some messages."));
                 }
-                return messages;
-            })
-            .then();
+                synchronousSink.complete();
+            });
     }
 }

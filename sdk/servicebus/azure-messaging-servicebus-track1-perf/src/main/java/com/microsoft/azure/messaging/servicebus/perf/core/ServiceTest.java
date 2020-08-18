@@ -46,14 +46,12 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
                 + " must be set");
         }
         logger.verbose("connectionString : {}", connectionString);
-        System.out.println("connectionString : {}" + connectionString);
 
         String queueName = System.getenv(AZURE_SERVICEBUS_QUEUE_NAME);
         if (CoreUtils.isNullOrEmpty(queueName)) {
             throw new IllegalArgumentException("Environment variable " + AZURE_SERVICEBUS_QUEUE_NAME + " must be set");
         }
         logger.verbose("queueName : {}", queueName);
-        System.out.println("queueName : {}" + queueName);
 
         // Setup the service client
         try {

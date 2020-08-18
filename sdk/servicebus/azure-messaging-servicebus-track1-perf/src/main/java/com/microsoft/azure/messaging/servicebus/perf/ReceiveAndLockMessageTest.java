@@ -12,11 +12,11 @@ import com.microsoft.azure.servicebus.ReceiveMode;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Performance test.
@@ -36,13 +36,13 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
 
     private Mono<Void> sendMessage() {
         return Mono.defer(() -> {
-            String messageId = UUID.randomUUID().toString();
-            Message message = new Message(CONTENTS);
-            message.setMessageId(messageId);
             int total = options.getParallel() * options.getMessagesToSend() * TOTAL_MESSAGE_MULTIPLIER;
-            List<Message> messages = IntStream.range(0, total)
-                .mapToObj(index -> message)
-                .collect(Collectors.toList());
+            List<Message> messages = new ArrayList<>();
+            for (int i = 0; i < total; ++i) {
+                Message message = new Message(CONTENTS);
+                message.setMessageId(UUID.randomUUID().toString());
+                messages.add(message);
+            }
             return Mono.fromFuture(sender.sendBatchAsync(messages));
         });
     }
@@ -74,18 +74,16 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
 
     @Override
     public Mono<Void> runAsync() {
-        return Mono.fromFuture(receiver.receiveBatchAsync(options.getMessagesToReceive()))
-            .map(iMessages -> {
+        return Mono.fromFuture(receiver.receiveBatchAsync(options.getMessagesToReceive())
+            .thenAccept(iMessages -> {
                 try {
                     for (IMessage message : iMessages) {
-                        receiver.complete(message.getLockToken());
+                        receiver.completeAsync(message.getLockToken()).get();
                     }
-                } catch (InterruptedException | ServiceBusException e) {
+                } catch (InterruptedException | ExecutionException e) {
                     throw logger.logExceptionAsWarning(new RuntimeException(e));
                 }
-                return Mono.just(iMessages);
-            })
-            .then();
+            }));
     }
 
     /**
@@ -94,8 +92,7 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
      */
     @Override
     public Mono<Void> globalCleanupAsync() {
-        return Mono.fromFuture(sender.closeAsync())
-            .then(Mono.fromFuture(receiver.closeAsync()))
+        return Mono.fromFuture(sender.closeAsync().thenCombine(receiver.closeAsync(), (aVoid, aVoid2) -> true))
             .then(super.globalCleanupAsync());
     }
 }

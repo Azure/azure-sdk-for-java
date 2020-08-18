@@ -14,9 +14,9 @@ import com.azure.messaging.servicebus.perf.core.ServiceTest;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.util.UUID;
 
 /**
  * Performance test.
@@ -38,11 +38,13 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
     public Mono<Void> globalSetupAsync() {
         // Since test does warm up and test many times, we are sending many messages, so we will have them available.
         return Mono.defer(() -> {
-            ServiceBusMessage message = new ServiceBusMessage(CONTENTS.getBytes(Charset.defaultCharset()));
             int total = options.getParallel() * options.getMessagesToSend() * TOTAL_MESSAGE_MULTIPLIER;
-            List<ServiceBusMessage> messages = IntStream.range(0, total)
-                .mapToObj(index -> message)
-                .collect(Collectors.toList());
+            List<ServiceBusMessage> messages = new ArrayList<>();
+            for (int i = 0; i< total; ++i) {
+                ServiceBusMessage message =  new ServiceBusMessage(CONTENTS.getBytes(Charset.defaultCharset()));
+                message.setMessageId(UUID.randomUUID().toString());
+                messages.add(message);
+            }
             return senderAsync.sendMessages(messages);
         });
     }

@@ -12,10 +12,9 @@ import com.microsoft.azure.servicebus.ReceiveMode;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 /**
  * Performance test.
@@ -32,12 +31,12 @@ public class SendMessagesTest extends ServiceTest<ServiceBusStressOptions> {
     public SendMessagesTest(ServiceBusStressOptions options) {
         super(options, ReceiveMode.PEEKLOCK);
 
-        String messageId = UUID.randomUUID().toString();
-        Message message = new Message(CONTENTS);
-        message.setMessageId(messageId);
-        messages = IntStream.range(0, options.getMessagesToSend())
-            .mapToObj(index -> message)
-            .collect(Collectors.toList());
+        messages = new ArrayList<>();
+        for (int i = 0; i < options.getMessagesToSend(); ++i) {
+            Message message = new Message(CONTENTS);
+            message.setMessageId(UUID.randomUUID().toString());
+            messages.add(message);
+        }
     }
 
     @Override
