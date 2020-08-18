@@ -31,6 +31,7 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 import java.util.List;
 
+import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.EXPECTED_MODEL_ID_NOT_FOUND_ERROR_CODE;
 import static com.azure.ai.formrecognizer.TestUtils.BLANK_FORM_FILE_LENGTH;
 import static com.azure.ai.formrecognizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_MODEL_ID;
@@ -219,7 +220,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
                     assertEquals(HttpResponseException.class, throwable.getClass());
                     final FormRecognizerErrorInformation errorInformation = (FormRecognizerErrorInformation)
                         ((HttpResponseException) throwable).getValue();
-                    assertEquals("1022", errorInformation.getErrorCode());
+                    assertEquals(EXPECTED_MODEL_ID_NOT_FOUND_ERROR_CODE, errorInformation.getErrorCode());
                 });
         });
     }
@@ -243,7 +244,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
                     assertEquals(HttpResponseException.class, throwable.getClass());
                     final FormRecognizerErrorInformation errorInformation = (FormRecognizerErrorInformation)
                         ((HttpResponseException) throwable).getValue();
-                    assertEquals("1022", errorInformation.getErrorCode());
+                    assertEquals(EXPECTED_MODEL_ID_NOT_FOUND_ERROR_CODE, errorInformation.getErrorCode());
                 });
         });
     }

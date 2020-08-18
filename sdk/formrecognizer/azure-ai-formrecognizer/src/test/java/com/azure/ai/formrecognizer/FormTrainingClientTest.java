@@ -28,6 +28,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.List;
 
+import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.EXPECTED_MODEL_ID_NOT_FOUND_ERROR_CODE;
 import static com.azure.ai.formrecognizer.FormTrainingAsyncClientTest.EXPECTED_COPY_REQUEST_INVALID_TARGET_RESOURCE_REGION;
 import static com.azure.ai.formrecognizer.TestUtils.BLANK_FORM_FILE_LENGTH;
 import static com.azure.ai.formrecognizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
@@ -183,7 +184,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
             final HttpResponseException exception = assertThrows(HttpResponseException.class, () ->
                 client.getCustomModelWithResponse(createdModel.getModelId(), Context.NONE));
             final FormRecognizerErrorInformation errorInformation = (FormRecognizerErrorInformation) exception.getValue();
-            assertEquals("1022", errorInformation.getErrorCode());
+            assertEquals(EXPECTED_MODEL_ID_NOT_FOUND_ERROR_CODE, errorInformation.getErrorCode());
         });
     }
 
@@ -203,7 +204,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
             final HttpResponseException exception = assertThrows(HttpResponseException.class, () ->
                 client.getCustomModelWithResponse(createdModel.getModelId(), Context.NONE));
             final FormRecognizerErrorInformation errorInformation = (FormRecognizerErrorInformation) exception.getValue();
-            assertEquals("1022", errorInformation.getErrorCode());
+            assertEquals(EXPECTED_MODEL_ID_NOT_FOUND_ERROR_CODE, errorInformation.getErrorCode());
         });
     }
 
